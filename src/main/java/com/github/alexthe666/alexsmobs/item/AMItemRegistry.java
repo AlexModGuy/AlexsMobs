@@ -17,12 +17,15 @@ import java.lang.reflect.Field;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMItemRegistry {
 
+    public static final Item TAB_ICON = new Item(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
     public static final Item BEAR_FUR = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:bear_fur");
     public static final Item ROADRUNNER_FEATHER = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:roadrunner_feather");
     public static final Item LAVA_BOTTLE = new Item(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:lava_bottle");
     public static final Item BONE_SERPENT_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:bone_serpent_tooth");
     public static final Item MAGGOT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(1).saturation(0.2F).build())).setRegistryName("alexsmobs:maggot");
     public static final Item BANANA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(0.3F).build())).setRegistryName("alexsmobs:banana");
+    public static final Item HALO = new Item(new Item.Properties()).setRegistryName("alexsmobs:halo");
+    public static final Item RATTLESNAKE_RATTLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:rattlesnake_rattle");
 
     @SubscribeEvent
     public static void registerItem(RegistryEvent.Register<Item> event) {
@@ -37,7 +40,8 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SUNBIRD, 0XF6694F,0XFFDDA0, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_sunbird"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.GORILLA, 0X595B5D,0X1C1C21, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_gorilla"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.CRIMSON_MOSQUITO, 0X53403F,0XC11A1A, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_crimson_mosquito"));
-        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.RATTLESNAKE, 0XCEB994,0X937A5B, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_crimson_mosquito"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.RATTLESNAKE, 0XCEB994,0X937A5B, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_rattlesnake"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ENDERGRADE, 0XE6E6A4,0XB29BDD, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_endergrade"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

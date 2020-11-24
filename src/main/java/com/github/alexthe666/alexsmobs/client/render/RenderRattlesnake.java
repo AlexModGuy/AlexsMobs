@@ -11,11 +11,10 @@ public class RenderRattlesnake extends MobRenderer<EntityRattlesnake, ModelRattl
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/rattlesnake.png");
 
     public RenderRattlesnake(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new ModelRattlesnake(), 0.4F);
+        super(renderManagerIn, new ModelRattlesnake(), 0.2F);
     }
 
     protected void preRenderCallback(EntityRattlesnake entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.scale(0.8F, 0.8F, 0.8F);
     }
 
 

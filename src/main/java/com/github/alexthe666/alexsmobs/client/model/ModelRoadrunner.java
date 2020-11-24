@@ -94,6 +94,9 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
         float idleSpeed = 0.1F;
         float idleDegree = 0.4F;
         float runProgress = 5F * limbSwingAmount;
+        float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+        float biteProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTick;
+        progressRotationPrev(head, biteProgress, (float)Math.toRadians(55), 0, 0, 5F);
         progressRotationPrev(body, runProgress, (float)Math.toRadians(15), 0, 0, 5F);
         progressRotationPrev(head, runProgress, (float)Math.toRadians(5), 0, 0, 5F);
         progressRotationPrev(crest, runProgress, (float)Math.toRadians(-10), 0, 0, 5F);

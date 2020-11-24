@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderGorilla;
 import com.github.alexthe666.alexsmobs.client.render.RenderGrizzlyBear;
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -24,6 +25,21 @@ public class LayerGorillaItem extends LayerRenderer<EntityGorilla, ModelGorilla>
 
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityGorilla entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack itemstack = entitylivingbaseIn.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        String name = entitylivingbaseIn.getName().getString().toLowerCase();
+        if(name.contains("harambe")){
+            ItemStack haloStack = new ItemStack(AMItemRegistry.HALO);
+            matrixStackIn.push();
+            this.getEntityModel().root.translateRotate(matrixStackIn);
+            this.getEntityModel().body.translateRotate(matrixStackIn);
+            this.getEntityModel().bodyfront.translateRotate(matrixStackIn);
+            this.getEntityModel().head.translateRotate(matrixStackIn);
+            float f = 0.1F * (float) Math.sin((entitylivingbaseIn.ticksExisted + partialTicks) * 0.1F) + (entitylivingbaseIn.isChild() ? 0.2F : 0F);
+            matrixStackIn.translate(0.0F, -0.5F - f, -0.2F);
+            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90F));
+            matrixStackIn.scale(1.3F, 1.3F, 1.3F);
+            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entitylivingbaseIn, haloStack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            matrixStackIn.pop();
+        }
         matrixStackIn.push();
         if(entitylivingbaseIn.isChild()){
             matrixStackIn.scale(0.35F, 0.35F, 0.35F);

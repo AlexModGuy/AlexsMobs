@@ -62,7 +62,11 @@ public class HummingbirdAIWander extends Goal {
         Random random = fly.getRNG();
         BlockPos blockpos = null;
         for(int i = 0; i < 15; i++){
-            BlockPos blockpos1 = this.fly.getPosition().add(random.nextInt(rangeXZ) - rangeXZ/2, random.nextInt(rangeY) - rangeY/2, random.nextInt(rangeXZ) - rangeXZ/2);
+            BlockPos blockpos1 = this.fly.getPosition().add(random.nextInt(rangeXZ) - rangeXZ/2, 1, random.nextInt(rangeXZ) - rangeXZ/2);
+            while(fly.world.isAirBlock(blockpos1) && blockpos1.getY() > 0){
+                blockpos1 = blockpos1.down();
+            }
+            blockpos1 = blockpos1.up(1 + random.nextInt(3));
             if(this.fly.world.isAirBlock(blockpos1.down()) && this.fly.world.isAirBlock(blockpos1) && !this.fly.world.isAirBlock(blockpos1.down(2))){
                 blockpos = blockpos1;
             }

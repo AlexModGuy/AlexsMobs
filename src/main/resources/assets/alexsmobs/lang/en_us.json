@@ -12,12 +12,16 @@
   "item.alexsmobs.spawn_egg_gorilla": "Spawn Gorilla",
   "item.alexsmobs.spawn_egg_crimson_mosquito": "Spawn Crimson Mosquito",
   "item.alexsmobs.spawn_egg_rattlesnake": "Spawn Rattlesnake",
+  "item.alexsmobs.spawn_egg_endergrade": "Spawn Endergrade",
+  "item.alexsmobs.tab_icon": "Alex's Mobs",
   "item.alexsmobs.bear_fur": "Hair of Bear",
   "item.alexsmobs.roadrunner_feather": "Roadrunner Feather",
   "item.alexsmobs.lava_bottle": "Bottle of Lava",
   "item.alexsmobs.bone_serpent_tooth": "Bone Serpent Tooth",
   "item.alexsmobs.maggot": "Maggot",
+  "item.alexsmobs.halo": "Halo",
   "item.alexsmobs.banana": "Banana",
+  "item.alexsmobs.rattlesnake_rattle": "Rattlesnake Rattle",
   "alexsmobs.potion.knockback_resistance": "Knockback Resistance",
   "alexsmobs.potion.lava_vision": "Lava Vision",
   "alexsmobs.potion.sunbird_curse": "Sunbird's Curse",
@@ -54,5 +58,6 @@
   "entity.alexsmobs.sunbird": "Sunbird",
   "entity.alexsmobs.gorilla": "Gorilla",
   "entity.alexsmobs.crimson_mosquito": "Crimson Mosquito",
-  "entity.alexsmobs.rattlesnake": "Rattlesnake"
+  "entity.alexsmobs.rattlesnake": "Rattlesnake",
+  "entity.alexsmobs.endergrade": "Endergrade"
 }

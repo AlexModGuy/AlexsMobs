@@ -239,8 +239,11 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
+        if(itemstack.getItem() == Items.NAME_TAG){
+            return super.func_230254_b_(player, hand);
+        }
         ActionResultType type = super.func_230254_b_(player, hand);
-        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)){
+        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack) ){
             if(this.isSitting()){
                 this.forcedSit = false;
                 this.setSitting(false);
