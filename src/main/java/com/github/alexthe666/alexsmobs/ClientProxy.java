@@ -1,8 +1,11 @@
 package com.github.alexthe666.alexsmobs;
 
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
+import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -10,6 +13,9 @@ import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,12 +44,19 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MOSQUITO_SPIT, manager -> new RenderMosquitoSpit(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.RATTLESNAKE, manager -> new RenderRattlesnake(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERGRADE, manager -> new RenderEndergrade(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.HAMMERHEAD_SHARK, manager -> new RenderHammerheadShark(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderType lavaType = RenderType.getTranslucent();
         RenderTypeLookup.setRenderLayer(Fluids.LAVA, lavaType);
         RenderTypeLookup.setRenderLayer(Fluids.FLOWING_LAVA, lavaType);
+        ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
+            return ItemBloodSprayer.isUsable(stack) ? 0.0F : 1.0F;
+        });
     }
 
+    public void openBookGUI(ItemStack itemStackIn) {
+        Minecraft.getInstance().displayGuiScreen(new GUIAnimalDictionary(itemStackIn));
+    }
 
     public Item.Properties setupISTER(Item.Properties group) {
         return group.setISTER(ClientProxy::getTEISR);

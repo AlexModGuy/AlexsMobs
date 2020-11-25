@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "alexsmobs:crocodile_scute"
+    }
+  ],
+  "result": {
+    "item": "alexsmobs:animal_dictionary"
+  }
+}

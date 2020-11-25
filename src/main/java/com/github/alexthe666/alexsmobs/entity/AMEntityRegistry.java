@@ -29,7 +29,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityMosquitoSpit> MOSQUITO_SPIT = registerEntity(EntityType.Builder.create(EntityMosquitoSpit::new, EntityClassification.CREATURE).size(0.5F, 0.5F).setCustomClientFactory(EntityMosquitoSpit::new).immuneToFire(), "mosquito_spit");
     public static final EntityType<EntityRattlesnake> RATTLESNAKE = registerEntity(EntityType.Builder.create(EntityRattlesnake::new, EntityClassification.CREATURE).size(0.95F, 0.35F), "rattlesnake");
     public static final EntityType<EntityEndergrade> ENDERGRADE = registerEntity(EntityType.Builder.create(EntityEndergrade::new, EntityClassification.CREATURE).size(0.95F, 0.85F), "endergrade");
-
+    public static final EntityType<EntityHammerheadShark> HAMMERHEAD_SHARK = registerEntity(EntityType.Builder.create(EntityHammerheadShark::new, EntityClassification.CREATURE).size(2.4F, 1.25F), "hammerhead_shark");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -70,6 +70,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(CRIMSON_MOSQUITO, EntityCrimsonMosquito.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(RATTLESNAKE, EntityRattlesnake.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(ENDERGRADE, EntityEndergrade.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(HAMMERHEAD_SHARK, EntityHammerheadShark.bakeAttributes().create());
 
 
     }

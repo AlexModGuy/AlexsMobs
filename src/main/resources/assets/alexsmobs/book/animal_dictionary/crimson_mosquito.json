@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "crimson_mosquito.txt",
+  "title": "Crimson Mosquito",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:crimson_mosquito",
+      "x": 90,
+      "y": 75,
+      "page" : 0,
+      "scale": 1.2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

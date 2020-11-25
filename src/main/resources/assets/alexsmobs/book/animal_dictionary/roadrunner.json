@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "roadrunner.txt",
+  "title": "Roadrunner",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:roadrunner",
+      "x": 90,
+      "y": 95,
+      "page" : 0,
+      "scale": 2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

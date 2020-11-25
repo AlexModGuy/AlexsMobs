@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.horse.LlamaEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.LlamaSpitEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -41,19 +43,20 @@ public class EntityMosquitoSpit extends Entity {
     public EntityMosquitoSpit(World worldIn, EntityCrimsonMosquito p_i47273_2_) {
         this(AMEntityRegistry.MOSQUITO_SPIT, worldIn);
         this.setShooter(p_i47273_2_);
-        this.setPosition(p_i47273_2_.getPosX() - (double)(p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double) MathHelper.sin(p_i47273_2_.renderYawOffset * ((float)Math.PI / 180F)), p_i47273_2_.getPosYEye() + (double)0.2F, p_i47273_2_.getPosZ() + (double)(p_i47273_2_.getWidth() + 1.0F) * 0.5D * (double)MathHelper.cos(p_i47273_2_.renderYawOffset * ((float)Math.PI / 180F)));
+        this.setPosition(p_i47273_2_.getPosX() - (double)(p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double) MathHelper.sin(p_i47273_2_.renderYawOffset * ((float)Math.PI / 180F)), p_i47273_2_.getPosYEye() + (double)0.2F, p_i47273_2_.getPosZ() + (double)(p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double)MathHelper.cos(p_i47273_2_.renderYawOffset * ((float)Math.PI / 180F)));
+    }
+
+    public EntityMosquitoSpit(World worldIn, LivingEntity p_i47273_2_, boolean right) {
+        this(AMEntityRegistry.MOSQUITO_SPIT, worldIn);
+        this.setShooter(p_i47273_2_);
+        float rot = p_i47273_2_.rotationYawHead + (right ? 60 : -60);
+        this.setPosition(p_i47273_2_.getPosX() - (double)(p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.sin(rot * ((float)Math.PI / 180F)), p_i47273_2_.getPosYEye() - (double)0.2F, p_i47273_2_.getPosZ() + (double)(p_i47273_2_.getWidth()) * 0.5D * (double)MathHelper.cos(rot * ((float)Math.PI / 180F)));
     }
 
     @OnlyIn(Dist.CLIENT)
     public EntityMosquitoSpit(World worldIn, double x, double y, double z, double p_i47274_8_, double p_i47274_10_, double p_i47274_12_) {
         this(AMEntityRegistry.MOSQUITO_SPIT, worldIn);
         this.setPosition(x, y, z);
-
-        for(int i = 0; i < 7; ++i) {
-            double d0 = 0.4D + 0.1D * (double)i;
-            worldIn.addParticle(ParticleTypes.SPIT, x, y, z, p_i47274_8_ * d0, p_i47274_10_, p_i47274_12_ * d0);
-        }
-
         this.setMotion(p_i47274_8_, p_i47274_10_, p_i47274_12_);
     }
 
@@ -80,6 +83,7 @@ public class EntityMosquitoSpit extends Entity {
         double d0 = this.getPosX() + vector3d.x;
         double d1 = this.getPosY() + vector3d.y;
         double d2 = this.getPosZ() + vector3d.z;
+
         this.func_234617_x_();
         float f = 0.99F;
         float f1 = 0.06F;

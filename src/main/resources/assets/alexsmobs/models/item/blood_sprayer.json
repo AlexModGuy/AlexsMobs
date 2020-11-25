@@ -1,0 +1,127 @@
+{
+	"ambientocclusion": false,
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "alexsmobs:item/blood_sprayer",
+		"particle": "alexsmobs:item/blood_sprayer"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"empty": 1
+			},
+			"model": "alexsmobs:item/blood_sprayer_empty"
+		}
+	],
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 5, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2.5, 8.5]},
+			"faces": {
+				"north": {"uv": [11, 1.5, 12, 4], "texture": "#0"},
+				"east": {"uv": [9.5, 1.5, 11, 4], "texture": "#0"},
+				"south": {"uv": [13.5, 1.5, 14.5, 4], "texture": "#0"},
+				"west": {"uv": [12, 1.5, 13.5, 4], "texture": "#0"},
+				"up": {"uv": [12, 1.5, 11, 0], "texture": "#0"},
+				"down": {"uv": [13, 0, 12, 1.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, 5, 3],
+			"to": [10, 9, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2.5, 8.5]},
+			"faces": {
+				"north": {"uv": [5, 5, 7, 7], "texture": "#0"},
+				"east": {"uv": [0, 5, 5, 7], "texture": "#0"},
+				"south": {"uv": [12, 5, 14, 7], "texture": "#0"},
+				"west": {"uv": [7, 5, 12, 7], "texture": "#0"},
+				"up": {"uv": [7, 5, 5, 0], "texture": "#0"},
+				"down": {"uv": [9, 0, 7, 5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, 9, 5],
+			"to": [10, 13, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 11, 9]},
+			"faces": {
+				"north": {"uv": [4, 11.5, 6, 13.5], "texture": "#0"},
+				"east": {"uv": [0, 11.5, 4, 13.5], "texture": "#0"},
+				"south": {"uv": [10, 11.5, 12, 13.5], "texture": "#0"},
+				"west": {"uv": [6, 11.5, 10, 13.5], "texture": "#0"},
+				"up": {"uv": [6, 11.5, 4, 7.5], "texture": "#0"},
+				"down": {"uv": [8, 7.5, 6, 11.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 6, 13],
+			"to": [9, 12, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2.5, 8.5]},
+			"faces": {
+				"north": {"uv": [0.5, 0.5, 1.5, 3.5], "texture": "#0"},
+				"east": {"uv": [0, 0.5, 0.5, 3.5], "texture": "#0"},
+				"south": {"uv": [2, 0.5, 3, 3.5], "texture": "#0"},
+				"west": {"uv": [1.5, 0.5, 2, 3.5], "texture": "#0"},
+				"up": {"uv": [1.5, 0.5, 0.5, 0], "texture": "#0"},
+				"down": {"uv": [2.5, 0, 1.5, 0.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 6, -1],
+			"to": [9, 8, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2.5, 8.5]},
+			"faces": {
+				"north": {"uv": [10.5, 9.5, 11.5, 10.5], "texture": "#0"},
+				"east": {"uv": [8.5, 9.5, 10.5, 10.5], "texture": "#0"},
+				"south": {"uv": [13.5, 9.5, 14.5, 10.5], "texture": "#0"},
+				"west": {"uv": [11.5, 9.5, 13.5, 10.5], "texture": "#0"},
+				"up": {"uv": [11.5, 9.5, 10.5, 7.5], "texture": "#0"},
+				"down": {"uv": [12.5, 7.5, 11.5, 9.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 4.75, 0]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 4.75, 0]
+		},
+		"firstperson_righthand": {
+			"translation": [0, 3, 0]
+		},
+		"firstperson_lefthand": {
+			"translation": [0, 3, 0]
+		},
+		"ground": {
+			"translation": [0, 3.75, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"gui": {
+			"rotation": [20, -145, 0],
+			"translation": [0, 1, 0]
+		},
+		"fixed": {
+			"rotation": [0, 90, 0],
+			"scale": [0.8, 0.8, 0.8]
+		}
+	},
+	"groups": [
+		{
+			"name": "handle",
+			"origin": [8, 8, 8],
+			"children": [0,
+				{
+					"name": "gun_base",
+					"origin": [8, 8, 8],
+					"children": [1,
+						{
+							"name": "sack",
+							"origin": [8, 2.5, 8.5],
+							"children": [2]
+						}, 3, 4]
+				}
+			]
+		}
+	]
+}

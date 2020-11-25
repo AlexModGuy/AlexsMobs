@@ -1,9 +1,12 @@
 package com.github.alexthe666.alexsmobs;
 
+import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.Mod;
@@ -26,4 +29,7 @@ public class CommonProxy {
     public PlayerEntity getClientSidePlayer() {
         return null;
     }
+
+    public void openBookGUI(ItemStack itemStackIn) {
+}
 }
