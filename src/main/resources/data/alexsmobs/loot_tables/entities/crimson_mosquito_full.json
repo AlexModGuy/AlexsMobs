@@ -1,0 +1,40 @@
+{
+  "pools": [
+    {
+      "name": "crimson_mosquito",
+      "conditions": [
+        {
+          "condition": "random_chance_with_looting",
+          "chance": 0.1,
+          "looting_multiplier": 0.01
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:mosquito_proboscis",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "name": "crimson_mosquito",
+      "conditions": [
+        {
+          "condition": "random_chance_with_looting",
+          "chance": 0.8,
+          "looting_multiplier": 0.01
+        }
+      ],
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "alexsmobs:blood_sac",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

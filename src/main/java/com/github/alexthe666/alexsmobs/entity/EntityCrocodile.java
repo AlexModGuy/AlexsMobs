@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -18,6 +19,8 @@ import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -34,6 +37,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -57,6 +61,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     private int swimTimer = -1000;
     private int ticksSinceInWater = 0;
     public boolean forcedSit = false;
+    private int passengerTimer = 0;
     private boolean isLandNavigator;
     private boolean hasSpedUp = false;
     private int animationTick;
@@ -67,12 +72,20 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     protected EntityCrocodile(EntityType type, World worldIn) {
         super(type, worldIn);
         this.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
         switchNavigator(false);
         this.baskingType = rand.nextInt(1);
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.ARMOR, 10.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.4F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    protected void onGrowingAdult() {
+        super.onGrowingAdult();
+        if (!this.isChild() && this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
+            this.entityDropItem(new ItemStack(AMItemRegistry.CROCODILE_SCUTE, rand.nextInt(1) + 1), 1);
+        }
     }
 
     public void writeAdditional(CompoundNBT compound) {
@@ -181,6 +194,9 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         if(baskingTimer < 0){
             baskingTimer++;
         }
+        if(passengerTimer > 0 && this.getPassengers().isEmpty()){
+            passengerTimer = 0;
+        }
         if(!world.isRemote){
             if(isInWater()){
                 swimTimer++;
@@ -241,6 +257,10 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
             double extraZ = radius * MathHelper.cos(angle);
             passenger.setPosition(this.getPosX() + extraX, this.getPosY() + 0.1F, this.getPosZ() + extraZ);
+            passengerTimer++;
+            if(passengerTimer > 0 && passengerTimer % 40 == 0){
+                passenger.attackEntityFrom(DamageSource.causeMobDamage(this), 2);
+            }
         }
     }
 

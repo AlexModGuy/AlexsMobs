@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -37,18 +38,22 @@ import java.util.EnumSet;
 
 public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
 
+    private static final DataParameter<Integer> BITE_TICK = EntityDataManager.createKey(EntityEndergrade.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> SADDLED = EntityDataManager.createKey(EntityEndergrade.class, DataSerializers.BOOLEAN);
     public float tartigradePitch = 0;
     public float prevTartigradePitch = 0;
     public float biteProgress = 0;
     public float prevBiteProgress = 0;
     public boolean stopWandering = false;
     public boolean hasItemTarget = false;
-    private static final DataParameter<Integer> BITE_TICK = EntityDataManager.createKey(EntityEndergrade.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> SADDLED = EntityDataManager.createKey(EntityEndergrade.class, DataSerializers.BOOLEAN);
 
     protected EntityEndergrade(EntityType type, World worldIn) {
         super(type, worldIn);
         this.moveController = new EntityEndergrade.MoveHelperController(this);
+    }
+
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30D).createMutableAttribute(Attributes.ARMOR, 4.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
     public void writeAdditional(CompoundNBT compound) {
@@ -82,7 +87,9 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) passenger;
-                return player;
+                if (player.getHeldItemMainhand().getItem() == AMItemRegistry.CHORUS_ON_A_STICK || player.getHeldItemOffhand().getItem() == AMItemRegistry.CHORUS_ON_A_STICK) {
+                    return player;
+                }
             }
         }
         return null;
@@ -92,15 +99,15 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.func_230254_b_(player, hand);
-        if(item == Items.SADDLE && !this.isSaddled()){
-            if(!player.isCreative()){
+        if (item == Items.SADDLE && !this.isSaddled()) {
+            if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
             this.setSaddled(true);
             return ActionResultType.SUCCESS;
         }
-        if(type != ActionResultType.SUCCESS  && !isBreedingItem(itemstack)){
-            if(!player.isSneaking() && this.isSaddled()){
+        if (type != ActionResultType.SUCCESS && !isBreedingItem(itemstack)) {
+            if (!player.isSneaking() && this.isSaddled()) {
                 player.startRiding(this);
                 return ActionResultType.SUCCESS;
             }
@@ -118,11 +125,10 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
         }
     }
 
-
     public double getMountedYOffset() {
         float f = Math.min(0.25F, this.limbSwingAmount);
         float f1 = this.limbSwing;
-        return (double)this.getHeight() - 0.1D + (double)(0.12F * MathHelper.cos(f1 * 0.7F) * 0.7F * f);
+        return (double) this.getHeight() - 0.1D + (double) (0.12F * MathHelper.cos(f1 * 0.7F) * 0.7F * f);
     }
 
     public boolean hasNoGravity() {
@@ -137,29 +143,25 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
         this.dataManager.set(SADDLED, Boolean.valueOf(saddled));
     }
 
-    public void tick(){
+    public void tick() {
         super.tick();
         prevTartigradePitch = this.tartigradePitch;
         prevBiteProgress = this.biteProgress;
         float f2 = (float) -((float) this.getMotion().y * 3 * (double) (180F / (float) Math.PI));
         this.tartigradePitch = f2;
-        if(this.getMotion().lengthSquared() > 0.005F){
+        if (this.getMotion().lengthSquared() > 0.005F) {
             float angleMotion = (0.01745329251F * this.renderYawOffset);
             double extraXMotion = -0.2F * MathHelper.sin((float) (Math.PI + angleMotion));
             double extraZMotion = -0.2F * MathHelper.cos(angleMotion);
             this.world.addParticle(ParticleTypes.END_ROD, this.getPosXRandom(0.5D), this.getPosY() + 0.3, this.getPosZRandom(0.5D), extraXMotion, 0D, extraZMotion);
         }
         int tick = this.dataManager.get(BITE_TICK);
-        if(tick > 0){
+        if (tick > 0) {
             this.dataManager.set(BITE_TICK, tick - 1);
             this.biteProgress++;
-        }else if(biteProgress > 0){
+        } else if (biteProgress > 0) {
             biteProgress--;
         }
-    }
-
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30D).createMutableAttribute(Attributes.ARMOR, 4.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
@@ -177,7 +179,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
         while (radialPos.getY() > 1 && world.isAirBlock(radialPos)) {
             radialPos = radialPos.down();
         }
-        if(radialPos.getY() <= 1){
+        if (radialPos.getY() <= 1) {
             return new BlockPos(radialPos.getX(), world.getSeaLevel(), radialPos.getZ());
         }
         return radialPos;
@@ -195,8 +197,14 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
     public void onGetItem(ItemEntity targetEntity) {
     }
 
-    public void bite(){
+    public void bite() {
         this.dataManager.set(BITE_TICK, 5);
+    }
+
+    @Nullable
+    @Override
+    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+        return null;
     }
 
     static class RandomFlyGoal extends Goal {
@@ -210,7 +218,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
 
         public boolean shouldExecute() {
             MovementController movementcontroller = this.parentEntity.getMoveHelper();
-            if(parentEntity.stopWandering || parentEntity.hasItemTarget){
+            if (parentEntity.stopWandering || parentEntity.hasItemTarget) {
                 return false;
             }
             if (!movementcontroller.isUpdating() || target == null) {
@@ -259,7 +267,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
             return null;
         }
     }
-    
+
     static class MoveHelperController extends MovementController {
         private final EntityEndergrade parentEntity;
 
@@ -304,7 +312,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
                     parentEntity.setMotion(parentEntity.getMotion().scale(0.5D));
                 } else {
                     double localSpeed = this.speed;
-                    if(parentEntity.isBeingRidden()){
+                    if (parentEntity.isBeingRidden()) {
                         localSpeed *= 1.5D;
                     }
                     parentEntity.setMotion(parentEntity.getMotion().add(vector3d.scale(localSpeed * 0.005D / d0)));
@@ -335,11 +343,5 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
 
             return true;
         }
-    }
-
-    @Nullable
-    @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
-        return null;
     }
 }

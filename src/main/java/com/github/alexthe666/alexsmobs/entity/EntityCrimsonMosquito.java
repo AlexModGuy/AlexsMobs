@@ -14,6 +14,9 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.StriderEntity;
+import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -22,19 +25,26 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public class EntityCrimsonMosquito extends MonsterEntity {
 
+    public static final ResourceLocation FULL_LOOT = new ResourceLocation("alexsmobs", "entities/crimson_mosquito_full");
     protected static final EntitySize FLIGHT_SIZE = EntitySize.fixed(1.2F, 1.8F);
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHOOTING = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BLOOD_LEVEL = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.VARINT);
+    private static final Predicate<AnimalEntity> WARM_BLOODED = (mob) -> {
+        return !(mob instanceof StriderEntity);
+    };
     public float prevFlyProgress;
     public float flyProgress;
     public float prevShootProgress;
@@ -54,9 +64,13 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
     }
 
-
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 2.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return this.getBloodLevel() > 0 ? FULL_LOOT : super.getLootTable();
     }
 
     protected void registerGoals() {
@@ -67,6 +81,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityCrimsonMosquito.class));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, AnimalEntity.class, 40, true, false, WARM_BLOODED));
         this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
     }
 
@@ -90,9 +105,9 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 10.0F);
         if (!this.isSilent()) {
-            this.world.playSound((PlayerEntity) null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_LLAMA_SPIT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+            this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_LLAMA_SPIT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
         }
-        if(this.getBloodLevel() > 0){
+        if (this.getBloodLevel() > 0) {
             this.setBloodLevel(this.getBloodLevel() - 1);
         }
         this.world.addEntity(llamaspitentity);
@@ -191,10 +206,10 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         if (!world.isRemote && this.isPassenger()) {
             this.setFlying(false);
         }
-        if(!world.isRemote){
-            if(isFlying()){
+        if (!world.isRemote) {
+            if (isFlying()) {
                 this.setNoGravity(true);
-            }else{
+            } else {
                 this.setNoGravity(false);
             }
         }
@@ -226,10 +241,10 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                 }
             }
         }
-        if(!world.isRemote && shootingTicks > 0){
+        if (!world.isRemote && shootingTicks > 0) {
             shootingTicks--;
-            if(shootingTicks == 0){
-                if(this.getAttackTarget() != null){
+            if (shootingTicks == 0) {
+                if (this.getAttackTarget() != null) {
                     this.spit(this.getAttackTarget());
                 }
                 this.dataManager.set(SHOOTING, false);
@@ -432,19 +447,16 @@ public class EntityCrimsonMosquito extends MonsterEntity {
             if (!parentEntity.isFlying() || parentEntity.getBloodLevel() > 0) {
                 return false;
             }
-            if (!parentEntity.isPassenger() && parentEntity.getAttackTarget() != null && !isBittenByMosquito(parentEntity.getAttackTarget()) ) {
-                return true;
-            }
-            return false;
+            return !parentEntity.isPassenger() && parentEntity.getAttackTarget() != null && !isBittenByMosquito(parentEntity.getAttackTarget());
         }
 
         public boolean shouldContinueExecuting() {
             return parentEntity.getAttackTarget() != null && !isBittenByMosquito(parentEntity.getAttackTarget()) && !parentEntity.collidedHorizontally && parentEntity.getBloodLevel() == 0 && parentEntity.isFlying() && parentEntity.getMoveHelper().isUpdating();
         }
 
-        public boolean isBittenByMosquito(Entity entity){
-            for(Entity e : entity.getPassengers()){
-                if(e instanceof EntityCrimsonMosquito){
+        public boolean isBittenByMosquito(Entity entity) {
+            for (Entity e : entity.getPassengers()) {
+                if (e instanceof EntityCrimsonMosquito) {
                     return true;
                 }
             }
@@ -457,7 +469,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         public void tick() {
             if (parentEntity.getAttackTarget() != null) {
                 this.parentEntity.getMoveHelper().setMoveTo(parentEntity.getAttackTarget().getPosX(), parentEntity.getAttackTarget().getPosY(), parentEntity.getAttackTarget().getPosZ(), 1.0D);
-                if (parentEntity.getBoundingBox().grow(0.3F, 0.3F, 0.3F).intersects(parentEntity.getAttackTarget().getBoundingBox()) && !isBittenByMosquito(parentEntity.getAttackTarget()) ) {
+                if (parentEntity.getBoundingBox().grow(0.3F, 0.3F, 0.3F).intersects(parentEntity.getAttackTarget().getBoundingBox()) && !isBittenByMosquito(parentEntity.getAttackTarget())) {
                     parentEntity.startRiding(parentEntity.getAttackTarget(), true);
                     if (!parentEntity.world.isRemote) {
                         AlexsMobs.sendMSGToAll(new MessageMountPlayer(parentEntity.getEntityId(), parentEntity.getAttackTarget().getEntityId()));
@@ -497,7 +509,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         }
 
         public void tick() {
-            if(spitCooldown > 0){
+            if (spitCooldown > 0) {
                 spitCooldown--;
             }
             if (parentEntity.getAttackTarget() != null) {
@@ -507,7 +519,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                     this.parentEntity.getMoveHelper().setMoveTo(shootPos.getX() + 0.5D, shootPos.getY() + 0.5D, shootPos.getZ() + 0.5D, 1.0D);
                     this.parentEntity.faceEntity(parentEntity.getAttackTarget(), 30.0F, 30.0F);
                     if (parentEntity.getDistanceSq(Vector3d.copyCentered(shootPos)) < 2.5F) {
-                        if(spitCooldown == 0){
+                        if (spitCooldown == 0) {
                             parentEntity.setupShooting();
                             spitCooldown = 20;
                         }

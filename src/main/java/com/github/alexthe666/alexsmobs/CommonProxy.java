@@ -32,4 +32,8 @@ public class CommonProxy {
 
     public void openBookGUI(ItemStack itemStackIn) {
 }
+
+    public Object getArmorModel(int armorId) {
+        return null;
+    }
 }

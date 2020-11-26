@@ -26,10 +26,12 @@ public class AMEntityRegistry {
     public static final EntityType<EntitySunbird> SUNBIRD = registerEntity(EntityType.Builder.create(EntitySunbird::new, EntityClassification.CREATURE).size(1.75F, 0.75F).immuneToFire().setTrackingRange(10).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "sunbird");
     public static final EntityType<EntityGorilla> GORILLA = registerEntity(EntityType.Builder.create(EntityGorilla::new, EntityClassification.CREATURE).size(1.15F, 1.35F), "gorilla");
     public static final EntityType<EntityCrimsonMosquito> CRIMSON_MOSQUITO = registerEntity(EntityType.Builder.create(EntityCrimsonMosquito::new, EntityClassification.CREATURE).size(1.25F, 1.15F).immuneToFire(), "crimson_mosquito");
-    public static final EntityType<EntityMosquitoSpit> MOSQUITO_SPIT = registerEntity(EntityType.Builder.create(EntityMosquitoSpit::new, EntityClassification.CREATURE).size(0.5F, 0.5F).setCustomClientFactory(EntityMosquitoSpit::new).immuneToFire(), "mosquito_spit");
+    public static final EntityType<EntityMosquitoSpit> MOSQUITO_SPIT = registerEntity(EntityType.Builder.create(EntityMosquitoSpit::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityMosquitoSpit::new).immuneToFire(), "mosquito_spit");
     public static final EntityType<EntityRattlesnake> RATTLESNAKE = registerEntity(EntityType.Builder.create(EntityRattlesnake::new, EntityClassification.CREATURE).size(0.95F, 0.35F), "rattlesnake");
     public static final EntityType<EntityEndergrade> ENDERGRADE = registerEntity(EntityType.Builder.create(EntityEndergrade::new, EntityClassification.CREATURE).size(0.95F, 0.85F), "endergrade");
     public static final EntityType<EntityHammerheadShark> HAMMERHEAD_SHARK = registerEntity(EntityType.Builder.create(EntityHammerheadShark::new, EntityClassification.CREATURE).size(2.4F, 1.25F), "hammerhead_shark");
+    public static final EntityType<EntitySharkToothArrow> SHARK_TOOTH_ARROW = registerEntity(EntityType.Builder.create(EntitySharkToothArrow::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntitySharkToothArrow::new), "shark_tooth_arrow");
+    public static final EntityType<EntityLobster> LOBSTER = registerEntity(EntityType.Builder.create(EntityLobster::new, EntityClassification.CREATURE).size(0.7F, 0.4F), "lobster");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -71,6 +73,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(RATTLESNAKE, EntityRattlesnake.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(ENDERGRADE, EntityEndergrade.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(HAMMERHEAD_SHARK, EntityHammerheadShark.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(LOBSTER, EntityLobster.bakeAttributes().create());
 
 
     }

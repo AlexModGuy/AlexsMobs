@@ -1,14 +1,19 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.citadel.item.ItemCitadelBook;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.util.ResourceLocation;
+import com.github.alexthe666.alexsmobs.entity.EntitySharkToothArrow;
+import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.dispenser.IPosition;
+import net.minecraft.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,19 +22,31 @@ import java.lang.reflect.Field;
 
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMItemRegistry {
+    public static CustomArmorMaterial ROADRUNNER_ARMOR_MATERIAL = new AMArmorMaterial("roadrunner", 18, new int[]{3, 3, 3, 3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0);
+    public static CustomArmorMaterial CROCODILE_ARMOR_MATERIAL = new AMArmorMaterial("crocodile", 22, new int[]{2, 5, 7, 3}, 25, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 1);
 
     public static final Item TAB_ICON = new Item(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:animal_dictionary");
     public static final Item BEAR_FUR = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:bear_fur");
     public static final Item ROADRUNNER_FEATHER = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:roadrunner_feather");
+    public static final Item ROADDRUNNER_BOOTS = new ItemModArmor(ROADRUNNER_ARMOR_MATERIAL, EquipmentSlotType.FEET).setRegistryName("alexsmobs:roadrunner_boots");
     public static final Item LAVA_BOTTLE = new Item(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:lava_bottle");
     public static final Item BONE_SERPENT_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:bone_serpent_tooth");
     public static final Item CROCODILE_SCUTE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:crocodile_scute");
+    public static final Item CROCODILE_CHESTPLATE = new ItemModArmor(CROCODILE_ARMOR_MATERIAL, EquipmentSlotType.CHEST).setRegistryName("alexsmobs:crocodile_chestplate");
     public static final Item MAGGOT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(1).saturation(0.2F).build())).setRegistryName("alexsmobs:maggot");
     public static final Item BANANA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(0.3F).build())).setRegistryName("alexsmobs:banana");
     public static final Item HALO = new Item(new Item.Properties()).setRegistryName("alexsmobs:halo");
+    public static final Item BLOOD_SAC = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:blood_sac");
+    public static final Item MOSQUITO_PROBOSCIS = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mosquito_proboscis");
     public static final Item BLOOD_SPRAYER = new ItemBloodSprayer(new Item.Properties().group(AlexsMobs.TAB).maxDamage(100)).setRegistryName("alexsmobs:blood_sprayer");
     public static final Item RATTLESNAKE_RATTLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:rattlesnake_rattle");
+    public static final Item CHORUS_ON_A_STICK = new Item(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:chorus_on_a_stick");
+    public static final Item SHARK_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:shark_tooth");
+    public static final Item SHARK_TOOTH_ARROW = new ItemModArrow(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:shark_tooth_arrow");
+    public static final Item LOBSTER_TAIL = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(2).saturation(0.4F).meat().build())).setRegistryName("alexsmobs:lobster_tail");
+    public static final Item COOKED_LOBSTER_TAIL = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(6).saturation(0.65F).meat().build())).setRegistryName("alexsmobs:cooked_lobster_tail");
+    public static final Item LOBSTER_BUCKET = new ItemModFishBucket(AMEntityRegistry.LOBSTER, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:lobster_bucket");
 
     @SubscribeEvent
     public static void registerItem(RegistryEvent.Register<Item> event) {
@@ -47,6 +64,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.RATTLESNAKE, 0XCEB994,0X937A5B, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_rattlesnake"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ENDERGRADE, 0XE6E6A4,0XB29BDD, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_endergrade"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.HAMMERHEAD_SHARK, 0X8A92B5,0XB9BED8, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_hammerhead_shark"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.LOBSTER, 0XC43123,0XDD5F38, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_lobster"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -57,5 +75,17 @@ public class AMItemRegistry {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CROCODILE_SCUTE));
+        ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(ROADRUNNER_FEATHER));
+        DispenserBlock.registerDispenseBehavior(SHARK_TOOTH_ARROW, new ProjectileDispenseBehavior() {
+            /**
+             * Return the projectile entity spawned by this dispense behavior.
+             */
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                EntitySharkToothArrow entityarrow = new EntitySharkToothArrow(AMEntityRegistry.SHARK_TOOTH_ARROW, position.getX(), position.getY(), position.getZ(), worldIn);
+                entityarrow.pickupStatus = EntitySharkToothArrow.PickupStatus.ALLOWED;
+                return entityarrow;
+            }
+        });
     }
 }

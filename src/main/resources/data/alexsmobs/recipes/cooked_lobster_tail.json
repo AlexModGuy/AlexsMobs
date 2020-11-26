@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "alexsmobs:lobster_tail"
+  },
+  "result": "alexsmobs:cooked_lobster_tail",
+  "experience": 0.15,
+  "cookingtime": 200
+}

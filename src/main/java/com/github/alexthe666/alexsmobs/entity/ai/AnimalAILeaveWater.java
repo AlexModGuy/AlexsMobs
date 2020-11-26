@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -13,10 +14,10 @@ import java.util.EnumSet;
 import java.util.Random;
 
 public class AnimalAILeaveWater extends Goal {
-    private final AnimalEntity creature;
+    private final CreatureEntity creature;
     private BlockPos targetPos;
 
-    public AnimalAILeaveWater(AnimalEntity creature) {
+    public AnimalAILeaveWater(CreatureEntity creature) {
         this.creature = creature;
         this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }

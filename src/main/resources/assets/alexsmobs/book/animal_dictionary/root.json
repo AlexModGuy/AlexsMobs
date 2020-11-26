@@ -93,6 +93,20 @@
       "x": 90,
       "y": 135,
       "page": 1
+    },
+    {
+      "linked_page": "hammerhead_shark.json",
+      "text": "Hammerhead Shark",
+      "x": 90,
+      "y": 160,
+      "page": 1
+    },
+    {
+      "linked_page": "lobster.json",
+      "text": "Lobster",
+      "x": 290,
+      "y": 10,
+      "page": 1
     }
   ],
   "images": [

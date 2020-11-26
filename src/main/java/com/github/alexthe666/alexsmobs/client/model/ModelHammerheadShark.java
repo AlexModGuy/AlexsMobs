@@ -119,15 +119,15 @@ public class ModelHammerheadShark extends AdvancedEntityModel<EntityHammerheadSh
 	public void setRotationAngles(EntityHammerheadShark entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{main_body, tail1, tail2, tail3};
-		float swimSpeed = 0.8F;
-		float swimDegree = 0.4F;
+		float swimSpeed = 0.4F;
+		float swimDegree = 0.5F;
 		this.chainSwing(tailBoxes, swimSpeed, swimDegree * 0.9F, -2, limbSwing, limbSwingAmount);
 		this.bob(main_body, swimSpeed * 0.5F, swimDegree * 5F, false, limbSwing, limbSwingAmount);
 		this.walk(topfin, swimSpeed, swimDegree * 0.1F, true, 1F, 0.2F, limbSwing, limbSwingAmount);
 		this.walk(tail_finL, swimSpeed, swimDegree * 0.2F, true, 2F, 0.2F, limbSwing, limbSwingAmount);
 		this.walk(tail_finR, swimSpeed, swimDegree * 0.2F, true, 2F, 0.2F, limbSwing, limbSwingAmount);
-		this.flap(finL, swimSpeed, swimDegree * 1F, false, 1F, -0.1F, limbSwing, limbSwingAmount);
-		this.flap(finR, swimSpeed, swimDegree * 1F, true, 1F, -0.1F, limbSwing, limbSwingAmount);
+		this.flap(finL, swimSpeed, swimDegree * 0.6F, false, 1F, 0.1F, limbSwing, limbSwingAmount);
+		this.flap(finR, swimSpeed, swimDegree * 0.6F, true, 1F, 0.1F, limbSwing, limbSwingAmount);
 		this.swing(tail_finL, swimSpeed, swimDegree * 0.1F, false, 3F, -0.1F, limbSwing, limbSwingAmount);
 		this.swing(tail_finR, swimSpeed, swimDegree * 0.1F, true, 3F, -0.1F, limbSwing, limbSwingAmount);
 		this.swing(head, swimSpeed, swimDegree * 0.2F, true, 2F, 0, limbSwing, limbSwingAmount);

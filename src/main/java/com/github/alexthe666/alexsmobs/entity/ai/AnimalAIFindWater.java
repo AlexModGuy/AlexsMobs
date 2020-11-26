@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.tags.FluidTags;
@@ -11,10 +12,10 @@ import java.util.EnumSet;
 import java.util.Random;
 
 public class AnimalAIFindWater extends Goal {
-    private final AnimalEntity creature;
+    private final CreatureEntity creature;
     private BlockPos targetPos;
 
-    public AnimalAIFindWater(AnimalEntity creature) {
+    public AnimalAIFindWater(CreatureEntity creature) {
         this.creature = creature;
         this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
