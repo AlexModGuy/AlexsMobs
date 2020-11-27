@@ -79,6 +79,10 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
     }
 
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.ARTHROPOD;
+    }
+
     public void travel(Vector3d travelVector) {
         if (this.isServerWorld() && this.isInWater()) {
             this.moveRelative(this.getAIMoveSpeed(), travelVector);

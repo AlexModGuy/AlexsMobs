@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "komodo_dragon.txt",
+  "title": "Komodo Dragon",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:komodo_dragon",
+      "x": 110,
+      "y": 78,
+      "page" : 0,
+      "scale": 1.2,
+      "rot_x": 30,
+      "rot_y": 235,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

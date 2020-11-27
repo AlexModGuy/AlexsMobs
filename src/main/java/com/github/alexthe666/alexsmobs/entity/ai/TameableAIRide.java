@@ -58,7 +58,7 @@ public class TameableAIRide extends Goal {
                 y += lookVec.y * 10;
             }
         }
-
+        tameableEntity.stepHeight = 1;
         tameableEntity.getMoveHelper().setMoveTo(x, y, z, speed);
     }
 }

@@ -69,6 +69,12 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
         return true;
     }
 
+    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
+        if (potioneffectIn.getPotion() == Effects.POISON) {
+            return false;
+        }
+        return super.isPotionApplicable(potioneffectIn);
+    }
 
     @Override
     protected void registerData() {

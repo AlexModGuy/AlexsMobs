@@ -15,6 +15,7 @@
   "item.alexsmobs.spawn_egg_endergrade": "Spawn Endergrade",
   "item.alexsmobs.spawn_egg_hammerhead_shark": "Spawn Hammerhead Shark",
   "item.alexsmobs.spawn_egg_lobster": "Spawn Lobster",
+  "item.alexsmobs.spawn_egg_komodo_dragon": "Spawn Komodo Dragon",
   "item.alexsmobs.tab_icon": "Alex's Mobs",
   "item.alexsmobs.animal_dictionary": "Animal Dictionary",
   "item.alexsmobs.animal_dictionary.desc": "By Alex",
@@ -84,5 +85,6 @@
   "entity.alexsmobs.lobster.variant_red": "Red Lobster",
   "entity.alexsmobs.lobster.variant_blue": "Blue Lobster",
   "entity.alexsmobs.lobster.variant_yellow": "Yellow Lobster",
-  "entity.alexsmobs.lobster.variant_redblue": "Red and Blue Lobster"
+  "entity.alexsmobs.lobster.variant_redblue": "Red and Blue Lobster",
+  "entity.alexsmobs.komodo_dragon": "Komodo Dragon"
 }

@@ -61,7 +61,9 @@ public class ServerEvents {
                         event.getWorld().playSound(event.getPlayer(), event.getPlayer().getPosX(), event.getPlayer().getPosY(), event.getPlayer().getPosZ(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                         event.getPlayer().addStat(Stats.ITEM_USED.get(Items.GLASS_BOTTLE));
                         event.getPlayer().setFire(6);
-                        event.getPlayer().addItemStackToInventory(new ItemStack(AMItemRegistry.LAVA_BOTTLE));
+                        if(!event.getPlayer().addItemStackToInventory(new ItemStack(AMItemRegistry.LAVA_BOTTLE))){
+                            event.getPlayer().entityDropItem(new ItemStack(AMItemRegistry.LAVA_BOTTLE));
+                        }
                         event.getPlayer().swingArm(event.getHand());
                         if(!event.getPlayer().isCreative()){
                             event.getItemStack().shrink(1);
@@ -129,7 +131,7 @@ public class ServerEvents {
             if(sand && !modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)){
                 modifiableattributeinstance.applyPersistentModifier(SAND_SPEED_BONUS);
             }
-            if((event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS || !sand) && modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)){
+            if(event.getEntityLiving().ticksExisted % 25 == 0 && (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS || !sand) && modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)){
                 modifiableattributeinstance.removeModifier(SAND_SPEED_BONUS);
             }
         }

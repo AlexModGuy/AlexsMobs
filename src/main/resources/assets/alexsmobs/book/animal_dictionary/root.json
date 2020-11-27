@@ -107,6 +107,13 @@
       "x": 290,
       "y": 10,
       "page": 1
+    },
+    {
+      "linked_page": "komodo_dragon.json",
+      "text": "Komodo Dragon",
+      "x": 290,
+      "y": 35,
+      "page": 1
     }
   ],
   "images": [

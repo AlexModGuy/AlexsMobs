@@ -32,6 +32,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityHammerheadShark> HAMMERHEAD_SHARK = registerEntity(EntityType.Builder.create(EntityHammerheadShark::new, EntityClassification.CREATURE).size(2.4F, 1.25F), "hammerhead_shark");
     public static final EntityType<EntitySharkToothArrow> SHARK_TOOTH_ARROW = registerEntity(EntityType.Builder.create(EntitySharkToothArrow::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntitySharkToothArrow::new), "shark_tooth_arrow");
     public static final EntityType<EntityLobster> LOBSTER = registerEntity(EntityType.Builder.create(EntityLobster::new, EntityClassification.CREATURE).size(0.7F, 0.4F), "lobster");
+    public static final EntityType<EntityKomodoDragon> KOMODO_DRAGON = registerEntity(EntityType.Builder.create(EntityKomodoDragon::new, EntityClassification.CREATURE).size(2.15F, 0.75F), "komodo_dragon");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -74,6 +75,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(ENDERGRADE, EntityEndergrade.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(HAMMERHEAD_SHARK, EntityHammerheadShark.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(LOBSTER, EntityLobster.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(KOMODO_DRAGON, EntityKomodoDragon.bakeAttributes().create());
 
 
     }
