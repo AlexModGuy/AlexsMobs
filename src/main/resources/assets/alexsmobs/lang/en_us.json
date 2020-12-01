@@ -16,6 +16,7 @@
   "item.alexsmobs.spawn_egg_hammerhead_shark": "Spawn Hammerhead Shark",
   "item.alexsmobs.spawn_egg_lobster": "Spawn Lobster",
   "item.alexsmobs.spawn_egg_komodo_dragon": "Spawn Komodo Dragon",
+  "item.alexsmobs.spawn_egg_capuchin_monkey": "Spawn Capuchin Monkey",
   "item.alexsmobs.tab_icon": "Alex's Mobs",
   "item.alexsmobs.animal_dictionary": "Animal Dictionary",
   "item.alexsmobs.animal_dictionary.desc": "By Alex",
@@ -40,6 +41,12 @@
   "item.alexsmobs.lobster_tail": "Lobster Tail",
   "item.alexsmobs.cooked_lobster_tail": "Cooked Lobster Tail",
   "item.alexsmobs.lobster_bucket": "Lobster Bucket",
+  "item.alexsmobs.banana_stick": "Banana Stick",
+  "item.alexsmobs.banana_stick.gorilla": "That's not a monkey, that's a gorilla! Learn your primates!",
+  "item.alexsmobs.banana_stick.sit": "%s is sitting",
+  "item.alexsmobs.banana_stick.follow": "%s is following",
+  "item.alexsmobs.banana_stick.wandering": "%s is wandering",
+  "item.alexsmobs.sopa_de_macaco": "Sopa De Macaco",
   "alexsmobs.potion.knockback_resistance": "Knockback Resistance",
   "alexsmobs.potion.lava_vision": "Lava Vision",
   "alexsmobs.potion.sunbird_curse": "Sunbird's Curse",
@@ -86,5 +93,10 @@
   "entity.alexsmobs.lobster.variant_blue": "Blue Lobster",
   "entity.alexsmobs.lobster.variant_yellow": "Yellow Lobster",
   "entity.alexsmobs.lobster.variant_redblue": "Red and Blue Lobster",
-  "entity.alexsmobs.komodo_dragon": "Komodo Dragon"
+  "entity.alexsmobs.komodo_dragon": "Komodo Dragon",
+  "entity.alexsmobs.capuchin_monkey": "Capuchin Monkey",
+  "entity.alexsmobs.capuchin_monkey.command_0": "%s is wandering",
+  "entity.alexsmobs.capuchin_monkey.command_1": "%s is following",
+  "entity.alexsmobs.capuchin_monkey.command_2": "%s is staying",
+  "entity.alexsmobs.tossed_item": "Tossed Item"
 }

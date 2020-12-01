@@ -114,6 +114,13 @@
       "x": 290,
       "y": 35,
       "page": 1
+    },
+    {
+      "linked_page": "capuchin_monkey.json",
+      "text": "Capuchin Monkey",
+      "x": 290,
+      "y": 60,
+      "page": 1
     }
   ],
   "images": [

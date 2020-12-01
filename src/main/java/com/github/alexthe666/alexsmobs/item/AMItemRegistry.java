@@ -36,6 +36,7 @@ public class AMItemRegistry {
     public static final Item CROCODILE_CHESTPLATE = new ItemModArmor(CROCODILE_ARMOR_MATERIAL, EquipmentSlotType.CHEST).setRegistryName("alexsmobs:crocodile_chestplate");
     public static final Item MAGGOT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(1).saturation(0.2F).build())).setRegistryName("alexsmobs:maggot");
     public static final Item BANANA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(0.3F).build())).setRegistryName("alexsmobs:banana");
+    public static final Item BANANA_STICK = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banana_stick");
     public static final Item HALO = new Item(new Item.Properties()).setRegistryName("alexsmobs:halo");
     public static final Item BLOOD_SAC = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:blood_sac");
     public static final Item MOSQUITO_PROBOSCIS = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mosquito_proboscis");
@@ -47,6 +48,7 @@ public class AMItemRegistry {
     public static final Item LOBSTER_TAIL = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(2).saturation(0.4F).meat().build())).setRegistryName("alexsmobs:lobster_tail");
     public static final Item COOKED_LOBSTER_TAIL = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(6).saturation(0.65F).meat().build())).setRegistryName("alexsmobs:cooked_lobster_tail");
     public static final Item LOBSTER_BUCKET = new ItemModFishBucket(AMEntityRegistry.LOBSTER, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:lobster_bucket");
+    public static final Item SOPA_DE_MACACO = new SoupItem(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(5).saturation(0.4F).meat().build())).setRegistryName("alexsmobs:sopa_de_macaco");
 
     @SubscribeEvent
     public static void registerItem(RegistryEvent.Register<Item> event) {
@@ -66,6 +68,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.HAMMERHEAD_SHARK, 0X8A92B5,0XB9BED8, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_hammerhead_shark"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.LOBSTER, 0XC43123,0XDD5F38, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_lobster"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.KOMODO_DRAGON, 0X746C4F,0X564231, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_komodo_dragon"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.CAPUCHIN_MONKEY, 0X25211F,0XF1DAB3, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_capuchin_monkey"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
