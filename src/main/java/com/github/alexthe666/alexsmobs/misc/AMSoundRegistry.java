@@ -42,6 +42,28 @@ public class AMSoundRegistry {
 
     public static final SoundEvent HUMMINGBIRD_LOOP = createSoundEvent("hummingbird_loop");
 
+    public static final SoundEvent ORCA_IDLE = createSoundEvent("orca_idle");
+
+    public static final SoundEvent ORCA_HURT = createSoundEvent("orca_hurt");
+
+    public static final SoundEvent ORCA_DIE = createSoundEvent("orca_die");
+
+    public static final SoundEvent GORILLA_IDLE = createSoundEvent("gorilla_idle");
+
+    public static final SoundEvent GORILLA_HURT = createSoundEvent("gorilla_hurt");
+
+    public static final SoundEvent MOSQUITO_LOOP = createSoundEvent("mosquito_loop");
+
+    public static final SoundEvent MOSQUITO_HURT = createSoundEvent("mosquito_hurt");
+
+    public static final SoundEvent MOSQUITO_DIE = createSoundEvent("mosquito_die");
+
+    public static final SoundEvent RATTLESNAKE_LOOP = createSoundEvent("rattlesnake_loop");
+
+    public static final SoundEvent RATTLESNAKE_HURT = createSoundEvent("rattlesnake_hurt");
+
+    public static final SoundEvent RATTLESNAKE_ATTACK = createSoundEvent("rattlesnake_attack");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

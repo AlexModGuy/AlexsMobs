@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "alexsmobs:komodo_spit"
+    },
+    {
+      "item": "alexsmobs:komodo_spit"
+    ,
+    {
+      "item": "alexsmobs:komodo_spit"
+    }
+  ],
+  "result": {
+    "item": "minecraft:slime_ball"
+  }
+}

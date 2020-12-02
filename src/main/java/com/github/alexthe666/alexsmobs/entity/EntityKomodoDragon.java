@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -17,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResultType;
@@ -33,6 +35,7 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
 
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(Items.ROTTEN_FLESH);
     public int slaughterCooldown = 0;
+    public int timeUntilSpit = this.rand.nextInt(12000) + 24000;
 
     public static final Predicate<EntityKomodoDragon> HURT_OR_BABY = (p_213616_0_) -> {
         return p_213616_0_.isChild() || p_213616_0_.getHealth() <= 0.7F * p_213616_0_.getMaxHealth();
@@ -59,6 +62,19 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
         this.targetSelector.addGoal(8, new NearestAttackableTargetGoal(this, EntityGazelle.class, 30, true, true, null));
     }
 
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        if (compound.contains("SpitTime")) {
+            this.timeUntilSpit = compound.getInt("SpitTime");
+        }
+
+    }
+
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putInt("SpitTime", this.timeUntilSpit);
+    }
+
     public boolean isBreedingItem(ItemStack stack) {
         Item item = stack.getItem();
         return isTamed() && item == Items.ROTTEN_FLESH;
@@ -68,6 +84,10 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
         super.tick();
         if(slaughterCooldown > 0){
             slaughterCooldown--;
+        }
+        if (!this.world.isRemote && this.isAlive() && !this.isChild() && --this.timeUntilSpit <= 0) {
+            this.entityDropItem(AMItemRegistry.KOMODO_SPIT);
+            this.timeUntilSpit = this.rand.nextInt(12000) + 24000;
         }
     }
     public boolean attackEntityAsMob(Entity entityIn) {

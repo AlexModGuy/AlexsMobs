@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHerdPanic;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -19,6 +20,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -45,7 +47,7 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
     private int animationTick;
     private Animation currentAnimation;
     public static final Animation ANIMATION_BITE = Animation.create(20);
-
+    private int loopSoundTick = 0;
     protected EntityRattlesnake(EntityType type, World worldIn) {
         super(type, worldIn);
     }
@@ -63,6 +65,15 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(2, new ShortDistanceTarget());
     }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.RATTLESNAKE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.RATTLESNAKE_HURT;
+    }
+
 
     public boolean attackEntityAsMob(Entity entityIn) {
         this.setAnimation(ANIMATION_BITE);
@@ -130,11 +141,23 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
             maxCurlTime = 300 + rand.nextInt(250);
             this.setCurled(true);
         }
+        if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 4){
+             this.playSound(AMSoundRegistry.RATTLESNAKE_ATTACK, getSoundVolume(), getSoundPitch());
+        }
         if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 8 && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 2D){
             boolean meepMeep = this.getAttackTarget() instanceof EntityRoadrunner;
             this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), meepMeep ? 1.0F : (float)getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             if(!meepMeep){
                 this.getAttackTarget().addPotionEffect(new EffectInstance(Effects.POISON, 300, 2));
+            }
+        }
+        if(isRattling()){
+            if(loopSoundTick == 0){
+                this.playSound(AMSoundRegistry.RATTLESNAKE_LOOP, this.getSoundVolume() * 0.5F, this.getSoundPitch());
+            }
+            loopSoundTick++;
+            if(loopSoundTick > 50){
+                loopSoundTick = 0;
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -192,7 +215,7 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
         @Override
         public boolean shouldExecute() {
             if(EntityRattlesnake.this.getRNG().nextInt(executionChance) == 0){
-                double dist = 10D;
+                double dist = 5D;
                 List<LivingEntity> list = EntityRattlesnake.this.world.getEntitiesWithinAABB(LivingEntity.class, EntityRattlesnake.this.getBoundingBox().grow(dist, dist, dist), WARNABLE_PREDICATE);
                 double d0 = Double.MAX_VALUE;
                 Entity possibleTarget = null;
@@ -211,7 +234,7 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
 
         @Override
         public boolean shouldContinueExecuting(){
-            return target != null && EntityRattlesnake.this.getDistance(target) < 10D && EntityRattlesnake.this.getAttackTarget() == null;
+            return target != null && EntityRattlesnake.this.getDistance(target) < 5D && EntityRattlesnake.this.getAttackTarget() == null;
         }
 
         @Override

@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.message.MessageMountPlayer;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -26,6 +27,7 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
@@ -54,6 +56,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
     private int flightTicks = 0;
     private boolean prevFlying = false;
     private int spitCooldown = 0;
+    private int loopSoundTick = 0;
 
     protected EntityCrimsonMosquito(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -63,6 +66,15 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
         this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
     }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.MOSQUITO_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.MOSQUITO_DIE;
+    }
+
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 2.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
@@ -142,6 +154,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                     }
                     if (mount.ticksExisted % 20 == 0 && !world.isRemote) {
                         mount.attackEntityFrom(DamageSource.causeMobDamage(this), 2.0F);
+                        this.playSound(SoundEvents.ITEM_HONEY_BOTTLE_DRINK, this.getSoundVolume(), this.getSoundPitch());
                         this.setBloodLevel(this.getBloodLevel() + 1);
                         if (this.getBloodLevel() > 3) {
                             this.dismount();
@@ -248,6 +261,15 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                     this.spit(this.getAttackTarget());
                 }
                 this.dataManager.set(SHOOTING, false);
+            }
+        }
+        if(isFlying()){
+            if(loopSoundTick == 0){
+                this.playSound(AMSoundRegistry.MOSQUITO_LOOP, this.getSoundVolume(), this.getSoundPitch());
+            }
+            loopSoundTick++;
+            if(loopSoundTick > 100){
+                loopSoundTick = 0;
             }
         }
         prevFlyProgress = flyProgress;

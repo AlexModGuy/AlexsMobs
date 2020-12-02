@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIJump;
 import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIMeleeJump;
 import com.github.alexthe666.alexsmobs.entity.ai.SwimmerJumpPathNavigator;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -40,6 +41,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -89,6 +91,18 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(MOISTNESS, 2400);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.ORCA_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.ORCA_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.ORCA_DIE;
     }
 
     protected void registerGoals() {

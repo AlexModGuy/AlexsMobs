@@ -111,12 +111,6 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
             this.goalOwner.getNavigator().clearPath();
         }
         if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < 2.0D && goalOwner.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
-            ItemStack duplicate = this.targetEntity.getItem().copy();
-            duplicate.setCount(1);
-            if (!goalOwner.getHeldItem(Hand.MAIN_HAND).isEmpty() && !goalOwner.world.isRemote) {
-                goalOwner.entityDropItem(goalOwner.getHeldItem(Hand.MAIN_HAND), 0.0F);
-            }
-            goalOwner.setHeldItem(Hand.MAIN_HAND, duplicate);
             hunter.onGetItem(targetEntity);
             this.targetEntity.getItem().shrink(1);
             resetTask();

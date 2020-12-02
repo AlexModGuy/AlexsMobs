@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -32,6 +33,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -102,6 +104,18 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.GORILLA_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.GORILLA_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.GORILLA_HURT;
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -178,7 +192,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     public double getMountedYOffset() {
-        return (double)this.getHeight() * 0.55F * getGorillaScale();
+        return (double)this.getHeight() * 0.55F * getGorillaScale() *(isSilverback() ? 0.75F : 1.0F);
     }
 
     @Override
@@ -408,6 +422,12 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     @Override
     public void onGetItem(ItemEntity targetEntity) {
+        ItemStack duplicate = targetEntity.getItem().copy();
+        duplicate.setCount(1);
+        if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.world.isRemote) {
+            this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
+        }
+        this.setHeldItem(Hand.MAIN_HAND, duplicate);
         if(targetEntity.getItem().getItem() == AMItemRegistry.BANANA && !this.isTamed()){
             bananaThrowerID = targetEntity.getThrowerId();
         }

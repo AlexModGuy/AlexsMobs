@@ -202,5 +202,141 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.hummingbird_loop"
+  },
+
+  "orca_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:orca_idle_0"
+      },
+      {
+        "name": "alexsmobs:orca_idle_1"
+      },
+      {
+        "name": "alexsmobs:orca_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.orca_idle"
+  },
+  "orca_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:orca_hurt_0"
+      },
+      {
+        "name": "alexsmobs:orca_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.orca_hurt"
+  },
+  "orca_die": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:orca_die_0"
+      },
+      {
+        "name": "alexsmobs:orca_die_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.orca_die"
+  },
+  "gorilla_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:gorilla_idle_0"
+      },
+      {
+        "name": "alexsmobs:gorilla_idle_1"
+      },
+      {
+        "name": "alexsmobs:gorilla_idle_2"
+      },
+      {
+        "name": "alexsmobs:gorilla_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.gorilla_idle"
+  },
+  "gorilla_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:gorilla_hurt_0"
+      },
+      {
+        "name": "alexsmobs:gorilla_hurt_1"
+      },
+      {
+        "name": "alexsmobs:gorilla_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.gorilla_hurt"
+  },
+  "mosquito_loop": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "alexsmobs:mosquito_loop"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mosquito_loop"
+  },
+  "mosquito_hurt": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "alexsmobs:mosquito_hurt_0"
+      },
+      {
+        "name": "alexsmobs:mosquito_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mosquito_hurt"
+  },
+  "mosquito_die": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "alexsmobs:mosquito_die_0"
+      },
+      {
+        "name": "alexsmobs:mosquito_die_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mosquito_die"
+  },
+  "rattlesnake_loop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:rattlesnake_loop"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.rattlesnake_loop"
+  },
+  "rattlesnake_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:rattlesnake_hurt_0"
+      },
+      {
+        "name": "alexsmobs:rattlesnake_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.rattlesnake_hurt"
+  },
+  "rattlesnake_attack": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:rattlesnake_attack"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.rattlesnake_attack"
   }
 }

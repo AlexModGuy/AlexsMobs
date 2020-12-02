@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -65,6 +66,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
     @Nullable
     private UUID salmonThrowerID = null;
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(Items.SALMON, Items.HONEYCOMB, Items.HONEY_BOTTLE);
+    public int timeUntilNextFur = this.rand.nextInt(24000) + 24000;
 
     protected EntityGrizzlyBear(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -167,6 +169,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         compound.putBoolean("Standing", this.isStanding());
         compound.putBoolean("BearSitting", this.isSitting());
         compound.putBoolean("ForcedToSit", this.forcedSit);
+        compound.putInt("FurTime", this.timeUntilNextFur);
     }
 
     public void readAdditional(CompoundNBT compound) {
@@ -175,6 +178,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         this.setStanding(compound.getBoolean("Standing"));
         this.setSitting(compound.getBoolean("BearSitting"));
         this.forcedSit = compound.getBoolean("ForcedToSit");
+        this.timeUntilNextFur = compound.getInt("FurTime");
     }
 
     public boolean isBreedingItem(ItemStack stack) {
@@ -363,6 +367,10 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         if(this.isBeingRidden() && this.isSitting()){
             this.setSitting(false);
         }
+        if (!this.world.isRemote && this.isAlive() && isTamed() && !this.isChild() && --this.timeUntilNextFur <= 0) {
+            this.entityDropItem(AMItemRegistry.BEAR_FUR);
+            this.timeUntilNextFur = this.rand.nextInt(24000) + 24000;
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
@@ -454,10 +462,16 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
     }
 
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getCollection().get(AMTagRegistry.GORILLA_FOODSTUFFS).contains(stack.getItem());
+        return ItemTags.getCollection().get(AMTagRegistry.GRIZZLY_FOODSTUFFS).contains(stack.getItem());
     }
 
     public void onGetItem(ItemEntity targetEntity) {
+        ItemStack duplicate = targetEntity.getItem().copy();
+        duplicate.setCount(1);
+        if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.world.isRemote) {
+            this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
+        }
+        this.setHeldItem(Hand.MAIN_HAND, duplicate);
         if(targetEntity.getItem().getItem() == Items.SALMON && this.isHoneyed()){
             salmonThrowerID = targetEntity.getThrowerId();
         }else{

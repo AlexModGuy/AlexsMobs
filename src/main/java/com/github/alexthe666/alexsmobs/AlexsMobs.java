@@ -32,7 +32,7 @@ public class AlexsMobs {
     private static int packetsRegistered;
 
     static {
-        NetworkRegistry.ChannelBuilder channel = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("rats", "main_channel"));
+        NetworkRegistry.ChannelBuilder channel = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("alexsmobs", "main_channel"));
         String version = PROTOCOL_VERSION;
         version.getClass();
         channel = channel.clientAcceptedVersions(version::equals);

@@ -48,6 +48,7 @@ public class AMItemRegistry {
     public static final Item LOBSTER_TAIL = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(2).saturation(0.4F).meat().build())).setRegistryName("alexsmobs:lobster_tail");
     public static final Item COOKED_LOBSTER_TAIL = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(6).saturation(0.65F).meat().build())).setRegistryName("alexsmobs:cooked_lobster_tail");
     public static final Item LOBSTER_BUCKET = new ItemModFishBucket(AMEntityRegistry.LOBSTER, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:lobster_bucket");
+    public static final Item KOMODO_SPIT = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:komodo_spit");
     public static final Item SOPA_DE_MACACO = new SoupItem(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(5).saturation(0.4F).meat().build())).setRegistryName("alexsmobs:sopa_de_macaco");
 
     @SubscribeEvent

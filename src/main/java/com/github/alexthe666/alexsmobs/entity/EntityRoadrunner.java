@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
@@ -14,6 +15,8 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -38,6 +41,7 @@ public class EntityRoadrunner extends AnimalEntity {
     public float prevAttackProgress;
     public float attackProgress;
     private static final DataParameter<Integer> ATTACK_TICK = EntityDataManager.createKey(EntityRoadrunner.class, DataSerializers.VARINT);
+    public int timeUntilNextFeather = this.rand.nextInt(24000) + 24000;
 
     protected EntityRoadrunner(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -54,6 +58,18 @@ public class EntityRoadrunner extends AnimalEntity {
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, EntityRattlesnake.class, 55, true, true, null));
         this.targetSelector.addGoal(2, (new HurtByTargetGoal(this, EntityRattlesnake.class)).setCallsForHelp());
+    }
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        if (compound.contains("FeatherTime")) {
+            this.timeUntilNextFeather = compound.getInt("FeatherTime");
+        }
+
+    }
+
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putInt("FeatherTime", this.timeUntilNextFeather);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -100,7 +116,10 @@ public class EntityRoadrunner extends AnimalEntity {
         if (!this.onGround && this.wingRotDelta < 1.0F) {
             this.wingRotDelta = 1.0F;
         }
-
+        if (!this.world.isRemote && this.isAlive() && !this.isChild() && --this.timeUntilNextFeather <= 0) {
+            this.entityDropItem(AMItemRegistry.ROADRUNNER_FEATHER);
+            this.timeUntilNextFeather = this.rand.nextInt(24000) + 24000;
+        }
         this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
         Vector3d vector3d = this.getMotion();
         if (!this.onGround && vector3d.y < 0.0D) {

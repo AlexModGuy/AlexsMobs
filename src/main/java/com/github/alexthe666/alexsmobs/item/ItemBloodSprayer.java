@@ -7,14 +7,12 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.CooldownTracker;
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
+import net.minecraft.util.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 
+import java.util.Random;
 import java.util.function.Predicate;
 
 public class ItemBloodSprayer extends Item {
@@ -85,6 +83,8 @@ public class ItemBloodSprayer extends Item {
                 EntityMosquitoSpit blood = new EntityMosquitoSpit(worldIn, livingEntityIn, !left);
                 Vector3d vector3d = livingEntityIn.getLook(1.0F);
                 Vector3f vector3f = new Vector3f(vector3d);
+                Random rand = new Random();
+                livingEntityIn.playSound(SoundEvents.BLOCK_LAVA_POP,1.0F, 1.2F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 blood.shoot((double) vector3f.getX(), (double) vector3f.getY(), (double) vector3f.getZ(), 1F, 10);
                 if (!worldIn.isRemote) {
                     worldIn.addEntity(blood);
