@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.HummingbirdAIPollinate;
 import com.github.alexthe666.alexsmobs.entity.ai.HummingbirdAIWander;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -21,6 +22,8 @@ import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -43,6 +46,7 @@ public class EntityHummingbird extends AnimalEntity {
     public float prevMovingProgress;
     public int hummingStill = 0;
     public int pollinateCooldown = 0;
+    private int loopSoundTick = 0;
 
     protected EntityHummingbird(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -53,6 +57,23 @@ public class EntityHummingbird extends AnimalEntity {
         this.setPathPriority(PathNodeType.COCOA, -1.0F);
         this.setPathPriority(PathNodeType.FENCE, -1.0F);
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.HUMMINGBIRD_IDLE;
+    }
+
+    public int getTalkInterval() {
+        return 60;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.HUMMINGBIRD_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.HUMMINGBIRD_HURT;
+    }
+
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 8.0D).createMutableAttribute(Attributes.FLYING_SPEED, 7F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45F);
@@ -184,6 +205,13 @@ public class EntityHummingbird extends AnimalEntity {
         }
         if(pollinateCooldown > 0){
             pollinateCooldown--;
+        }
+        if(loopSoundTick == 0){
+            this.playSound(AMSoundRegistry.HUMMINGBIRD_LOOP, this.getSoundVolume() * 0.33F, this.getSoundPitch());
+        }
+        loopSoundTick++;
+        if(loopSoundTick > 27){
+            loopSoundTick = 0;
         }
         prevFlyProgress = flyProgress;
         prevMovingProgress = movingProgress;

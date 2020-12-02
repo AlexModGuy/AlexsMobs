@@ -1,0 +1,206 @@
+{
+  "grizzly_bear_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:grizzly_bear_idle_0"
+      },
+      {
+        "name": "alexsmobs:grizzly_bear_idle_1"
+      },
+      {
+        "name": "alexsmobs:grizzly_bear_idle_2"
+      },
+      {
+        "name": "alexsmobs:grizzly_bear_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.grizzly_bear_idle"
+  },
+  "grizzly_bear_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:grizzly_bear_hurt_0"
+      },
+      {
+        "name": "alexsmobs:grizzly_bear_hurt_1"
+      },
+      {
+        "name": "alexsmobs:grizzly_bear_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.grizzly_bear_hurt"
+  },
+  "grizzly_bear_die": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:grizzly_bear_die_0"
+      },
+      {
+        "name": "alexsmobs:grizzly_bear_die_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.grizzly_bear_die"
+  },
+  "roadrunner_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:roadrunner_idle_0"
+      },
+      {
+        "name": "alexsmobs:roadrunner_idle_1"
+      },
+      {
+        "name": "alexsmobs:roadrunner_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.roadrunner_idle"
+  },
+  "roadrunner_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:roadrunner_hurt_0"
+      },
+      {
+        "name": "alexsmobs:roadrunner_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.roadrunner_hurt"
+  },
+  "gazelle_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:gazelle_hurt_0"
+      },
+      {
+        "name": "alexsmobs:gazelle_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.gazelle_hurt"
+  },
+  "crocodile_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:crocodile_idle_0"
+      },
+      {
+        "name": "alexsmobs:crocodile_idle_1"
+      },
+      {
+        "name": "alexsmobs:crocodile_idle_2"
+      },
+      {
+        "name": "alexsmobs:crocodile_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.crocodile_idle"
+  },
+  "crocodile_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:crocodile_hurt_0"
+      },
+      {
+        "name": "alexsmobs:crocodile_hurt_1"
+      },
+      {
+        "name": "alexsmobs:crocodile_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.crocodile_hurt"
+  },
+  "crocodile_bite": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:crocodile_bite_0"
+      },
+      {
+        "name": "alexsmobs:crocodile_bite_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.crocodile_bite"
+  },
+  "crocodile_baby": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:crocodile_baby_0"
+      },
+      {
+        "name": "alexsmobs:crocodile_baby_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.crocodile_baby"
+  },
+  "fly_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:fly_idle_0"
+      },
+      {
+        "name": "alexsmobs:fly_idle_1"
+      },
+      {
+        "name": "alexsmobs:fly_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.fly_idle"
+  },
+  "fly_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:fly_hurt_0"
+      },
+      {
+        "name": "alexsmobs:fly_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.fly_hurt"
+  },
+  "hummingbird_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:hummingbird_idle_0"
+      },
+      {
+        "name": "alexsmobs:hummingbird_idle_1"
+      },
+      {
+        "name": "alexsmobs:hummingbird_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.hummingbird_idle"
+  },
+  "hummingbird_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:hummingbird_hurt_0"
+      },
+      {
+        "name": "alexsmobs:hummingbird_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.hummingbird_hurt"
+  },
+  "hummingbird_loop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:hummingbird_loop_0"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.hummingbird_loop"
+  }
+}

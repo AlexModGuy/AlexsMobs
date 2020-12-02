@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.ITargetsDroppedItems;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.item.ItemEntity;
@@ -96,6 +97,12 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
         super.startExecuting();
     }
 
+    public void resetTask() {
+        super.resetTask();
+        this.goalOwner.getNavigator().clearPath();
+        this.targetEntity = null;
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -122,7 +129,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.goalOwner.getNavigator().noPath();
+        return !this.goalOwner.getNavigator().noPath() && targetEntity != null && targetEntity.isAlive();
     }
 
     public static class Sorter implements Comparator<Entity> {

@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
@@ -21,6 +22,7 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -50,6 +52,24 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
     public boolean isInNether() {
         return this.world.getDimensionKey() == World.THE_NETHER && !this.isAIDisabled();
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.FLY_IDLE;
+    }
+
+    public int getTalkInterval() {
+        return 30;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.FLY_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.FLY_HURT;
+    }
+
+
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 2.0D).createMutableAttribute(Attributes.FLYING_SPEED, 0.8F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);

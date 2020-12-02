@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -71,6 +72,18 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 50.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.6F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.GRIZZLY_BEAR_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.GRIZZLY_BEAR_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.GRIZZLY_BEAR_DIE;
     }
 
     public void updatePassenger(Entity passenger) {

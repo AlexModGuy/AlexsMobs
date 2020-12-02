@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -33,6 +34,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -87,6 +90,19 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             this.entityDropItem(new ItemStack(AMItemRegistry.CROCODILE_SCUTE, rand.nextInt(1) + 1), 1);
         }
     }
+
+    protected SoundEvent getAmbientSound() {
+        return isChild() ? AMSoundRegistry.CROCODILE_BABY : AMSoundRegistry.CROCODILE_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.CROCODILE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.CROCODILE_HURT;
+    }
+
 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
@@ -228,6 +244,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
                 if(this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() ){
                     this.getAttackTarget().startRiding(this, true);
                 }
+                this.playSound(AMSoundRegistry.CROCODILE_BITE, this.getSoundVolume(), this.getSoundPitch());
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
         }

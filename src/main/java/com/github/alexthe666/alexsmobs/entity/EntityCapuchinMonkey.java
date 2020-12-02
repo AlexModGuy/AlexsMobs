@@ -300,11 +300,6 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
             this.heal(5);
             return ActionResultType.SUCCESS;
         }
-        if(isTamed() && item == Items.BOWL){
-            this.consumeItemFromStack(player, itemstack);
-            player.addItemStackToInventory(new ItemStack(AMItemRegistry.SOPA_DE_MACACO));
-            return ActionResultType.SUCCESS;
-        }
         if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)){
             if(player.isSneaking() && player.getPassengers().isEmpty()){
                 this.startRiding(player);
@@ -355,6 +350,9 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public void onGetItem(ItemEntity e) {
         this.heal(5);
         if(e.getItem().getItem() == AMItemRegistry.BANANA){
+            if(getRNG().nextInt(4) == 0){
+                this.entityDropItem(new ItemStack(AMItemRegistry.BANANA_PEEL));
+            }
             if(e.getThrowerId() != null && !this.isTamed()){
                 if(getRNG().nextInt(5) == 0){
                     this.setOwnerId(e.getOwnerId());

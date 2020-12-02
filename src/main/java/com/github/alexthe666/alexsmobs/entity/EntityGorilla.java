@@ -46,6 +46,7 @@ import java.util.UUID;
 public class EntityGorilla extends TameableEntity implements IAnimatedEntity, ITargetsDroppedItems {
     private int animationTick;
     private Animation currentAnimation;
+    protected static final EntitySize SILVERBACK_SIZE = EntitySize.fixed(1.15F, 1.85F);
     private static final DataParameter<Boolean> SILVERBACK = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> STANDING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
@@ -71,6 +72,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     private UUID bananaThrowerID = null;
     public boolean forcedSit = false;
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(AMItemRegistry.BANANA);
+    private boolean hasSilverbackAttributes = false;
 
     protected EntityGorilla(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -146,6 +148,10 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             }
         }
         return gorilla;
+    }
+
+    public EntitySize getSize(Pose poseIn) {
+        return isSilverback() && !isChild() ? SILVERBACK_SIZE : super.getSize(poseIn);
     }
 
     public void updatePassenger(Entity passenger) {
@@ -233,7 +239,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 50.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 12.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 12.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 40.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 12.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
@@ -369,6 +375,19 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             this.setMotion(this.getMotion().add((double)(-MathHelper.sin(f1) * 0.02F), 0.0D, (double)(MathHelper.cos(f1) * 0.02F)));
             getAttackTarget().applyKnockback(1F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
             this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+        }
+        if(isSilverback() && !isChild() && !hasSilverbackAttributes){
+            hasSilverbackAttributes = true;
+            recalculateSize();
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100F);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(20F);
+        }
+        if(!isSilverback() && !isChild() && hasSilverbackAttributes){
+            hasSilverbackAttributes = false;
+            recalculateSize();
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40F);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8F);
+
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
