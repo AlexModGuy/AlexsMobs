@@ -1,15 +1,20 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
+import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMEntityRegistry {
@@ -35,6 +40,9 @@ public class AMEntityRegistry {
     public static final EntityType<EntityKomodoDragon> KOMODO_DRAGON = registerEntity(EntityType.Builder.create(EntityKomodoDragon::new, EntityClassification.CREATURE).size(2.15F, 0.75F), "komodo_dragon");
     public static final EntityType<EntityCapuchinMonkey> CAPUCHIN_MONKEY = registerEntity(EntityType.Builder.create(EntityCapuchinMonkey::new, EntityClassification.CREATURE).size(0.65F, 0.75F), "capuchin_monkey");
     public static final EntityType<EntityTossedItem> TOSSED_ITEM = registerEntity(EntityType.Builder.create(EntityTossedItem::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityTossedItem::new).immuneToFire(), "tossed_item");
+    public static final EntityType<EntityCentipedeHead> CENTIPEDE_HEAD = registerEntity(EntityType.Builder.create(EntityCentipedeHead::new, EntityClassification.CREATURE).size(0.9F, 0.9F), "centipede_head");
+    public static final EntityType<EntityCentipedeBody> CENTIPEDE_BODY = registerEntity(EntityType.Builder.create(EntityCentipedeBody::new, EntityClassification.CREATURE).size(0.9F, 0.9F).immuneToFire(), "centipede_body");
+    public static final EntityType<EntityCentipedeTail> CENTIPEDE_TAIL = registerEntity(EntityType.Builder.create(EntityCentipedeTail::new, EntityClassification.CREATURE).size(0.9F, 0.9F).immuneToFire(), "centipede_tail");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -79,8 +87,13 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(LOBSTER, EntityLobster.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(KOMODO_DRAGON, EntityKomodoDragon.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(CAPUCHIN_MONKEY, EntityCapuchinMonkey.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(CENTIPEDE_HEAD, EntityCentipedeHead.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(CENTIPEDE_BODY, EntityCentipedeBody.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(CENTIPEDE_TAIL, EntityCentipedeTail.bakeAttributes().create());
+    }
 
-
+    public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){
+        return (com.google.common.base.Predicate<LivingEntity>) e -> e.isAlive() && e.getType().isContained(entityTag);
     }
 
 }

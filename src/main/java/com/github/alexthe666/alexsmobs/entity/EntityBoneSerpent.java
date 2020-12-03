@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -24,6 +25,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -48,6 +50,18 @@ public class EntityBoneSerpent extends MonsterEntity {
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.setPathPriority(PathNodeType.LAVA, 0.0F);
         switchNavigator(false);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.BONE_SERPENT_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.BONE_SERPENT_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.BONE_SERPENT_HURT;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {

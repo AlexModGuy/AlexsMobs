@@ -338,5 +338,218 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.rattlesnake_attack"
+  },
+  "endergrade_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:endergrade_idle_0"
+      },
+      {
+        "name": "alexsmobs:endergrade_idle_1"
+      },
+      {
+        "name": "alexsmobs:endergrade_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.endergrade_idle"
+  },
+  "endergrade_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:endergrade_hurt_0"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.endergrade_hurt"
+  },
+  "lobster_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:lobster_hurt_0"
+      },
+      {
+        "name": "alexsmobs:lobster_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.lobster_hurt"
+  },
+  "lobster_attack": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:lobster_attack"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.lobster_attack"
+  },
+  "komodo_dragon_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:komodo_dragon_idle_0"
+      },
+      {
+        "name": "alexsmobs:komodo_dragon_idle_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.komodo_dragon_idle"
+  },
+  "komodo_dragon_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:komodo_dragon_hurt_0"
+      },
+      {
+        "name": "alexsmobs:komodo_dragon_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.komodo_dragon_hurt"
+  },
+  "capuchin_monkey_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:capuchin_monkey_idle_0"
+      },
+      {
+        "name": "alexsmobs:capuchin_monkey_idle_1"
+      },
+      {
+        "name": "alexsmobs:capuchin_monkey_idle_2"
+      },
+      {
+        "name": "alexsmobs:capuchin_monkey_idle_3"
+      },
+      {
+        "name": "alexsmobs:capuchin_monkey_idle_4"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.capuchin_monkey_idle"
+  },
+  "capuchin_monkey_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:capuchin_monkey_hurt_0"
+      },
+      {
+        "name": "alexsmobs:capuchin_monkey_hurt_1"
+      },
+      {
+        "name": "alexsmobs:capuchin_monkey_hurt_2"
+      },
+      {
+        "name": "alexsmobs:capuchin_monkey_hurt_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.capuchin_monkey_hurt"
+  },
+  "sunbird_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:sunbird_idle_0"
+      },
+      {
+        "name": "alexsmobs:sunbird_idle_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.sunbird_idle"
+  },
+  "sunbird_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:sunbird_hurt_0"
+      },
+      {
+        "name": "alexsmobs:sunbird_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.sunbird_hurt"
+  },
+  "bone_serpent_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bone_serpent_idle_0"
+      },
+      {
+        "name": "alexsmobs:bone_serpent_idle_1"
+      },
+      {
+        "name": "alexsmobs:bone_serpent_idle_2"
+      },
+      {
+        "name": "alexsmobs:bone_serpent_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bone_serpent_idle"
+  },
+  "bone_serpent_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bone_serpent_hurt_0"
+      },
+      {
+        "name": "alexsmobs:bone_serpent_hurt_1"
+      },
+      {
+        "name": "alexsmobs:bone_serpent_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bone_serpent_hurt"
+  },
+  "centipede_walk": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:centipede_walk_0"
+      },
+      {
+        "name": "alexsmobs:centipede_walk_1"
+      },
+      {
+        "name": "alexsmobs:centipede_walk_2"
+      },
+      {
+        "name": "alexsmobs:centipede_walk_3"
+      },
+      {
+        "name": "alexsmobs:centipede_walk_4"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.centipede_walk"
+  },
+  "centipede_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:centipede_hurt_0"
+      },
+      {
+        "name": "alexsmobs:centipede_hurt_1"
+      },
+      {
+        "name": "alexsmobs:centipede_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.centipede_hurt"
+  },
+  "centipede_attack": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:centipede_attack_0"
+      },
+      {
+        "name": "alexsmobs:centipede_attack_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.centipede_attack"
   }
 }

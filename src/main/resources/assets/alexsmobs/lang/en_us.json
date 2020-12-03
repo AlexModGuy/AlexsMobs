@@ -17,6 +17,7 @@
   "item.alexsmobs.spawn_egg_lobster": "Spawn Lobster",
   "item.alexsmobs.spawn_egg_komodo_dragon": "Spawn Komodo Dragon",
   "item.alexsmobs.spawn_egg_capuchin_monkey": "Spawn Capuchin Monkey",
+  "item.alexsmobs.spawn_egg_centipede": "Spawn Centipede",
   "item.alexsmobs.tab_icon": "Alex's Mobs",
   "item.alexsmobs.animal_dictionary": "Animal Dictionary",
   "item.alexsmobs.animal_dictionary.desc": "By Alex",
@@ -95,5 +96,8 @@
   "entity.alexsmobs.capuchin_monkey.command_0": "%s is wandering",
   "entity.alexsmobs.capuchin_monkey.command_1": "%s is following",
   "entity.alexsmobs.capuchin_monkey.command_2": "%s is staying",
-  "entity.alexsmobs.tossed_item": "Tossed Item"
+  "entity.alexsmobs.tossed_item": "Tossed Item",
+  "entity.alexsmobs.centipede_head": "Cave Centipede",
+  "entity.alexsmobs.centipede_body": "Cave Centipede Body",
+  "entity.alexsmobs.centipede_tail": "Cave Centipede Tail"
 }

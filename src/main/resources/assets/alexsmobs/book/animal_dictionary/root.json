@@ -121,6 +121,13 @@
       "x": 290,
       "y": 60,
       "page": 1
+    },
+    {
+      "linked_page": "cave_centipede.json",
+      "text": "Cave Centipede",
+      "x": 290,
+      "y": 85,
+      "page": 1
     }
   ],
   "images": [

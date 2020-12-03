@@ -64,6 +64,36 @@ public class AMSoundRegistry {
 
     public static final SoundEvent RATTLESNAKE_ATTACK = createSoundEvent("rattlesnake_attack");
 
+    public static final SoundEvent ENDERGRADE_IDLE = createSoundEvent("endergrade_idle");
+
+    public static final SoundEvent ENDERGRADE_HURT = createSoundEvent("endergrade_hurt");
+
+    public static final SoundEvent LOBSTER_HURT = createSoundEvent("lobster_hurt");
+
+    public static final SoundEvent LOBSTER_ATTACK = createSoundEvent("lobster_attack");
+
+    public static final SoundEvent KOMODO_DRAGON_IDLE = createSoundEvent("komodo_dragon_idle");
+
+    public static final SoundEvent KOMODO_DRAGON_HURT = createSoundEvent("komodo_dragon_hurt");
+
+    public static final SoundEvent SUNBIRD_IDLE = createSoundEvent("sunbird_idle");
+
+    public static final SoundEvent SUNBIRD_HURT = createSoundEvent("sunbird_hurt");
+
+    public static final SoundEvent CAPUCHIN_MONKEY_IDLE = createSoundEvent("capuchin_monkey_idle");
+
+    public static final SoundEvent CAPUCHIN_MONKEY_HURT = createSoundEvent("capuchin_monkey_hurt");
+
+    public static final SoundEvent BONE_SERPENT_IDLE = createSoundEvent("bone_serpent_idle");
+
+    public static final SoundEvent BONE_SERPENT_HURT = createSoundEvent("bone_serpent_hurt");
+
+    public static final SoundEvent CENTIPEDE_WALK = createSoundEvent("centipede_walk");
+
+    public static final SoundEvent CENTIPEDE_HURT = createSoundEvent("centipede_hurt");
+
+    public static final SoundEvent CENTIPEDE_ATTACK = createSoundEvent("centipede_attack");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

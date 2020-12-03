@@ -1,0 +1,11 @@
+{
+  "__comment": "all land animal (non villager, non player) mobs that neutral AND somewhat strong. For big predators to target.",
+  "replace": false,
+  "values": [
+    "alexsmobs:grizzly_bear",
+    "alexsmobs:gorilla",
+    "minecraft:polar_bear",
+    "alexsmobs:endergrade",
+    "alexsmobs:rattlesnake"
+  ]
+}

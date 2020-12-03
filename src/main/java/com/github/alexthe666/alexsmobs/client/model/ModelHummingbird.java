@@ -5,6 +5,8 @@ import com.github.alexthe666.alexsmobs.entity.EntityHummingbird;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
@@ -134,6 +136,28 @@ public class ModelHummingbird extends AdvancedEntityModel<EntityHummingbird> {
         return ImmutableList.of(root, body, head, wingL, wingL_r1, wingR, wingR_r1, tail, legL, legR);
     }
 
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.isChild) {
+            float f = 1.75F;
+            head.setScale(f, f, f);
+            head.setShouldScaleChildren(true);
+            matrixStackIn.push();
+            matrixStackIn.scale(0.35F, 0.35F, 0.35F);
+            matrixStackIn.translate(0.0D, 2.75D, 0.125D);
+            getParts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+            head.setScale(1, 1, 1);
+        } else {
+            matrixStackIn.push();
+            getParts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+        }
+
+    }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
         AdvancedModelBox.rotateAngleX = x;

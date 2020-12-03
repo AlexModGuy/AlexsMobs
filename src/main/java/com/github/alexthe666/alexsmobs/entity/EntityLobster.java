@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -25,10 +26,7 @@ import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -56,6 +54,15 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10D).createMutableAttribute(Attributes.ARMOR, 6.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
     }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.LOBSTER_HURT;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.LOBSTER_HURT;
+    }
+
 
     public static String getVariantName(int variant) {
         switch (variant) {
@@ -162,6 +169,9 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
         super.tick();
         prevAttackProgress = attackProgress;
         if (this.dataManager.get(ATTACK_TICK) > 0) {
+            if(attackProgress == 3){
+                this.playSound(AMSoundRegistry.LOBSTER_ATTACK, this.getSoundVolume(), this.getSoundPitch());
+            }
             if (this.dataManager.get(ATTACK_TICK) == 2 && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 1.3D) {
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 2);
             }

@@ -30,10 +30,7 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -323,6 +320,9 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
                     this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, this.getHeldItem(Hand.MAIN_HAND)), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, this.getPosY() + this.getHeight() * 0.5F + (double) (this.rand.nextFloat() * this.getHeight() * 0.5F), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, d0, d1, d2);
                 }
             }
+            if(eatingTime % 5 == 0){
+                this.playSound(SoundEvents.ENTITY_PANDA_EAT, this.getSoundVolume(), this.getSoundPitch());
+            }
             if(eatingTime > 100){
                 ItemStack stack = this.getHeldItem(Hand.MAIN_HAND);
                 if(!stack.isEmpty()){
@@ -410,6 +410,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     public int getAnimationTick() {
         return animationTick;
     }
+
 
     @Override
     public void setAnimationTick(int i) {

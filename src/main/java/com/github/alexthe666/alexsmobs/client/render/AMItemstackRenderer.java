@@ -35,7 +35,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
     private static List<Pair<EntityType, Float>> MOB_ICONS = Util.make(Lists.newArrayList(), (list) -> {
         list.add(new Pair<>(AMEntityRegistry.GRIZZLY_BEAR, 0.6F));
         list.add(new Pair<>(AMEntityRegistry.ROADRUNNER, 0.8F));
-        list.add(new Pair<>(AMEntityRegistry.BONE_SERPENT, 0.4F));
+        list.add(new Pair<>(AMEntityRegistry.BONE_SERPENT, 0.55F));
         list.add(new Pair<>(AMEntityRegistry.GAZELLE, 0.6F));
         list.add(new Pair<>(AMEntityRegistry.CROCODILE, 0.3F));
         list.add(new Pair<>(AMEntityRegistry.FLY, 1.3F));
@@ -50,6 +50,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.LOBSTER, 0.85F));
         list.add(new Pair<>(AMEntityRegistry.KOMODO_DRAGON, 0.5F));
         list.add(new Pair<>(AMEntityRegistry.CAPUCHIN_MONKEY, 0.85F));
+        list.add(new Pair<>(AMEntityRegistry.CENTIPEDE_HEAD, 0.65F));
     });
 
     private Map<String, Entity> renderedEntites = new HashMap();

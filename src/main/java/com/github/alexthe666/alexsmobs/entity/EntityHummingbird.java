@@ -83,6 +83,8 @@ public class EntityHummingbird extends AnimalEntity {
         return stack.getItem().isIn(ItemTags.FLOWERS);
     }
 
+
+
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1, Ingredient.fromTag(ItemTags.FLOWERS), false));
@@ -220,7 +222,7 @@ public class EntityHummingbird extends AnimalEntity {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return null;
+        return AMEntityRegistry.HUMMINGBIRD.create(serverWorld);
     }
 
     private static class MoveHelper extends MovementController {

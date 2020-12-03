@@ -53,6 +53,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.KOMODO_DRAGON, manager -> new RenderKomodoDragon(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CAPUCHIN_MONKEY, manager -> new RenderCapuchinMonkey(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TOSSED_ITEM, manager -> new RenderTossedItem(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CENTIPEDE_HEAD, manager -> new RenderCentipedeHead(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CENTIPEDE_BODY, manager -> new RenderCentipedeBody(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CENTIPEDE_TAIL, manager -> new RenderCentipedeTail(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderType lavaType = RenderType.getTranslucent();
         RenderTypeLookup.setRenderLayer(Fluids.LAVA, lavaType);

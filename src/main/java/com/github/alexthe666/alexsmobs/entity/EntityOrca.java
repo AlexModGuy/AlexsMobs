@@ -29,6 +29,8 @@ import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -40,6 +42,7 @@ import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -118,8 +121,7 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(8, new FollowBoatGoal(this));
         this.goalSelector.addGoal(9, new AvoidEntityGoal<>(this, GuardianEntity.class, 8.0F, 1.0D, 1.0D));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PolarBearEntity.class, false));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractGroupFishEntity.class, 130, false, true, null));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 200, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.ORCA_TARGETS))));
     }
 
     @Override
@@ -277,11 +279,14 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
         return 1;
     }
 
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem() == Items.SALMON;
+    }
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
-        return null;
+    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity p_241840_2_) {
+        return AMEntityRegistry.ORCA.create(serverWorld);
     }
 
     public boolean shouldUseJumpAttack(LivingEntity attackTarget) {

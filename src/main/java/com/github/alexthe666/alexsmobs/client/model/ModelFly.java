@@ -5,6 +5,8 @@ import com.github.alexthe666.alexsmobs.entity.EntityRoadrunner;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
@@ -73,6 +75,25 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
         body.addChild(mouth);
         mouth.setTextureOffset(0, 19).addBox(-0.5F, -1.0F, -0.7F, 1.0F, 3.0F, 1.0F, 0.0F, false);
         this.updateDefaultPose();
+    }
+
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.isChild) {
+            matrixStackIn.push();
+            matrixStackIn.scale(0.35F, 0.35F, 0.35F);
+            matrixStackIn.translate(0.0D, 2.75D, 0.125D);
+            getParts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+        } else {
+            matrixStackIn.push();
+            getParts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+        }
+
     }
 
     @Override

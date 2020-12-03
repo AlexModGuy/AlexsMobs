@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -32,10 +33,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -59,7 +57,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public boolean forcedSit = false;
     private int sittingTime = 0;
     private int maxSitTime = 75;
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(AMItemRegistry.BANANA);
+    private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(AMItemRegistry.BANANA, AMItemRegistry.MAGGOT);
     public boolean attackDecision = false;//true for ranged, false for melee
     private boolean hasSlowed = false;
     private int rideCooldown = 0;
@@ -89,8 +87,21 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(4, (new HurtByTargetGoal(this, EntityCapuchinMonkey.class)).setCallsForHelp());
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.CAPUCHIN_MONKEY_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.CAPUCHIN_MONKEY_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.CAPUCHIN_MONKEY_HURT;
+    }
+
 
     public boolean isOnSameTeam(Entity entityIn) {
         if (this.isTamed()) {
@@ -173,6 +184,12 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         if(rideCooldown > 0){
             rideCooldown--;
         }
+        if(!world.isRemote && getAnimation() == NO_ANIMATION && this.getRNG().nextInt(300) == 0){
+            setAnimation(ANIMATION_HEADTILT);
+        }
+        if(!world.isRemote && this.isSitting()){
+            this.getNavigator().clearPath();
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
@@ -190,6 +207,17 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         return true;
     }
 
+    public void travel(Vector3d vec3d) {
+        if (this.isSitting()) {
+            if (this.getNavigator().getPath() != null) {
+                this.getNavigator().clearPath();
+            }
+            vec3d = Vector3d.ZERO;
+        }
+        super.travel(vec3d);
+    }
+
+
     public void updateRidden() {
         Entity entity = this.getRidingEntity();
         if (this.isPassenger() && !entity.isAlive()) {
@@ -199,7 +227,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
             this.tick();
             if (this.isPassenger()) {
                 Entity mount = this.getRidingEntity();
-                if (mount instanceof LivingEntity) {
+                if (mount instanceof PlayerEntity) {
                     this.renderYawOffset = ((LivingEntity) mount).renderYawOffset;
                     this.rotationYaw = ((LivingEntity) mount).rotationYaw;
                     this.rotationYawHead = ((LivingEntity) mount).rotationYawHead;
@@ -343,18 +371,20 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
 
     public boolean isBreedingItem(ItemStack stack) {
         Item item = stack.getItem();
-        return isTamed() && item == AMItemRegistry.BANANA;
+        return isTamed() && item == AMItemRegistry.MAGGOT;
     }
 
     @Override
     public void onGetItem(ItemEntity e) {
         this.heal(5);
+        this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
         if(e.getItem().getItem() == AMItemRegistry.BANANA){
             if(getRNG().nextInt(4) == 0){
                 this.entityDropItem(new ItemStack(AMItemRegistry.BANANA_PEEL));
             }
             if(e.getThrowerId() != null && !this.isTamed()){
                 if(getRNG().nextInt(5) == 0){
+                    this.setTamed(true);
                     this.setOwnerId(e.getOwnerId());
                     this.world.setEntityState(this, (byte)7);
                 }else{

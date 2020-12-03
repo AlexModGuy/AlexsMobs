@@ -8,6 +8,8 @@ import com.github.alexthe666.alexsmobs.entity.EntityEndergrade;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
@@ -90,6 +92,30 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 		tail.setTextureOffset(0, 20).addBox(-4.0F, -1.5F, -2.4F, 7.0F, 7.0F, 9.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
+
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		if (this.isChild) {
+			float f = 1.75F;
+			head.setScale(f, f, f);
+			head.setShouldScaleChildren(true);
+			matrixStackIn.push();
+			matrixStackIn.scale(0.35F, 0.35F, 0.35F);
+			matrixStackIn.translate(0.0D, 2.75D, 0.125D);
+			getParts().forEach((p_228292_8_) -> {
+				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			});
+			matrixStackIn.pop();
+			head.setScale(1, 1, 1);
+		} else {
+			matrixStackIn.push();
+			getParts().forEach((p_228290_8_) -> {
+				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			});
+			matrixStackIn.pop();
+		}
+
+	}
+
 
 	@Override
 	public void setRotationAngles(EntityEndergrade entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {

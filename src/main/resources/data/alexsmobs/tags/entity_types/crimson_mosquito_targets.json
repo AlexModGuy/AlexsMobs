@@ -1,0 +1,9 @@
+{
+  "__comment": "all non-player targets of the crimson mosquito mob.",
+  "replace": false,
+  "values": [
+    "#alexsmobs:passive_land_animals",
+    "#alexsmobs:neutral_land_animals",
+    "#alexsmobs:villagers"
+  ]
+}

@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -13,6 +14,7 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -21,13 +23,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -77,6 +79,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
         this.goalSelector.addGoal(0, new TameableAIRide(this, 1.2D));
         this.goalSelector.addGoal(1, new EndergradeAIBreakFlowers(this));
         this.goalSelector.addGoal(2, new RandomFlyGoal(this));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.CHORUS_FRUIT), false));
         this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 10));
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new EndergradeAITargetItems(this, true));
@@ -94,6 +97,15 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
         }
         return null;
     }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.ENDERGRADE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.ENDERGRADE_HURT;
+    }
+
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
@@ -113,6 +125,10 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
             }
         }
         return type;
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem() == Items.CHORUS_FRUIT;
     }
 
     public void updatePassenger(Entity passenger) {
@@ -195,6 +211,8 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
     }
 
     public void onGetItem(ItemEntity targetEntity) {
+        this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
+        this.heal(5);
     }
 
     public void bite() {
@@ -204,7 +222,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
-        return null;
+        return AMEntityRegistry.ENDERGRADE.create(p_241840_1_);
     }
 
     static class RandomFlyGoal extends Goal {

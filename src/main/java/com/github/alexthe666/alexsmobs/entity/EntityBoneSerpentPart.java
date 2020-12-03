@@ -111,7 +111,7 @@ public class EntityBoneSerpentPart extends LivingEntity {
             recalculateSize();
             if (parent != null && !world.isRemote) {
                 this.setNoGravity(true);
-                this.setPosition(parent.prevPosX + this.radius * Math.cos(parent.rotationYaw * (Math.PI / 180.0F) + this.angleYaw), parent.prevPosY + this.offsetY, parent.prevPosZ + this.radius * Math.sin(parent.rotationYaw * (Math.PI / 180.0F) + this.angleYaw));
+                this.setPosition(parent.prevPosX + this.radius * Math.cos(parent.prevRotationYaw * (Math.PI / 180.0F) + this.angleYaw), parent.prevPosY + this.offsetY, parent.prevPosZ + this.radius * Math.sin(parent.prevRotationYaw * (Math.PI / 180.0F) + this.angleYaw));
                 double d0 = parent.getPosX() - this.getPosX();
                 double d1 = parent.getPosY() - this.getPosY();
                 double d2 = parent.getPosZ() - this.getPosZ();

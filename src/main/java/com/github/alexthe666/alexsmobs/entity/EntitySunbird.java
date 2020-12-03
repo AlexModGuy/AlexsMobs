@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicates;
 import net.minecraft.block.BlockState;
@@ -24,6 +25,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -54,6 +56,19 @@ public class EntitySunbird extends AnimalEntity implements IFlyingAnimal {
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1F);
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.SUNBIRD_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.SUNBIRD_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.SUNBIRD_HURT;
+    }
+
 
     protected void registerGoals() {
         this.goalSelector.addGoal(3, new RandomFlyGoal(this));

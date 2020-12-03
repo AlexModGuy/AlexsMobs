@@ -18,6 +18,9 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
@@ -43,6 +46,14 @@ public class EntityHammerheadShark extends WaterMobEntity {
 
     protected PathNavigator createNavigator(World worldIn) {
         return new SemiAquaticPathNavigator(this, worldIn);
+    }
+
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_COD_DEATH;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_COD_HURT;
     }
 
     public void travel(Vector3d travelVector) {

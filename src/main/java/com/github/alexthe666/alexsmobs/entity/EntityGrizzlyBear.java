@@ -266,6 +266,9 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
                 double d1 = this.rand.nextGaussian() * 0.02D;
                 this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, this.getHeldItem(Hand.MAIN_HAND)), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, this.getPosY() + this.getHeight() * 0.5F + (double) (this.rand.nextFloat() * this.getHeight() * 0.5F), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, d0, d1, d2);
             }
+            if(eatingTime % 5 == 0){
+                this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
+            }
             if(eatingTime > 100){
                 ItemStack stack = this.getHeldItem(Hand.MAIN_HAND);
                 if(!stack.isEmpty()){

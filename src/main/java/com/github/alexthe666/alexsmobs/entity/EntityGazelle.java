@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHerdPanic;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -16,6 +17,9 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -51,6 +55,7 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
         this.goalSelector.addGoal(1, new AnimalAIHerdPanic(this, 1.1D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.WHEAT), false));
         this.goalSelector.addGoal(5, new AnimalAIWanderRanged(this, 100, 1.0D, 25, 7));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 15.0F));
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
@@ -91,6 +96,10 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
 
     public void setRunning(boolean running) {
         this.dataManager.set(RUNNING, Boolean.valueOf(running));
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem() == Items.WHEAT;
     }
 
     @Override

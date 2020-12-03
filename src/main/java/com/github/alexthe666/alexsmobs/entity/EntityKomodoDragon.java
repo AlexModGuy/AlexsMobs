@@ -2,6 +2,8 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -21,8 +23,11 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
@@ -59,8 +64,22 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
         this.targetSelector.addGoal(4, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, EntityKomodoDragon.class, 50, true, false, HURT_OR_BABY));
         this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, PlayerEntity.class, 150, true, true, null));
-        this.targetSelector.addGoal(8, new NearestAttackableTargetGoal(this, EntityGazelle.class, 30, true, true, null));
+        this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.KOMODO_DRAGON_TARGETS))));
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.KOMODO_DRAGON_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.KOMODO_DRAGON_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.KOMODO_DRAGON_HURT;
+    }
+
+
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);

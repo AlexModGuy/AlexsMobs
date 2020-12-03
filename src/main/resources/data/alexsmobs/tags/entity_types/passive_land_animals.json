@@ -1,0 +1,25 @@
+{
+  "__comment": "all land animal (non villager, non player) mobs that passive.",
+  "replace": false,
+  "values": [
+    "minecraft:cow",
+    "minecraft:sheep",
+    "minecraft:pig",
+    "minecraft:chicken",
+    "minecraft:fox",
+    "minecraft:horse",
+    "minecraft:mooshroom",
+    "minecraft:ocelot",
+    "minecraft:llama",
+    "minecraft:panda",
+    "minecraft:parrot",
+    "minecraft:rabbit",
+    "minecraft:trader_llama",
+    "minecraft:wolf",
+    "minecraft:cat",
+    "minecraft:strider",
+    "alexsmobs:roadrunner",
+    "alexsmobs:gazelle",
+    "alexsmobs:capuchin_monkey"
+  ]
+}
