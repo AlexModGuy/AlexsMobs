@@ -23,6 +23,6 @@ public class RenderCrocodile extends MobRenderer<EntityCrocodile, ModelCrocodile
 
 
     public ResourceLocation getEntityTexture(EntityCrocodile entity) {
-        return TEXTURE_0;
+        return entity.isDesert() ? TEXTURE_1 : TEXTURE_0;
     }
 }

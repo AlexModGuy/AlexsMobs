@@ -47,7 +47,7 @@ import java.util.UUID;
 public class ServerEvents {
 
     private static final UUID SAND_SPEED_MODIFIER = UUID.fromString("7E0292F2-9434-48D5-A29F-9583AF7DF28E");
-    private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.2F, AttributeModifier.Operation.ADDITION);
+    private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
 
 
     @SubscribeEvent
@@ -125,15 +125,34 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
-        ModifiableAttributeInstance modifiableattributeinstance = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);
-        if(event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS || modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)){
-            boolean sand = event.getEntityLiving().world.getBlockState(getDownPos(event.getEntityLiving().getPosition(), event.getEntityLiving().world)).getBlock().isIn(BlockTags.SAND);
-            if(sand && !modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)){
-                modifiableattributeinstance.applyPersistentModifier(SAND_SPEED_BONUS);
+        if(event.getEntityLiving() instanceof PlayerEntity){
+            ModifiableAttributeInstance modifiableattributeinstance = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);
+            if (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS || modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
+                boolean sand = event.getEntityLiving().world.getBlockState(getDownPos(event.getEntityLiving().getPosition(), event.getEntityLiving().world)).getBlock().isIn(BlockTags.SAND);
+                if (sand && !modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
+                    modifiableattributeinstance.applyPersistentModifier(SAND_SPEED_BONUS);
+                }
+                if (event.getEntityLiving().ticksExisted % 25 == 0 && (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS || !sand) && modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
+                    modifiableattributeinstance.removeModifier(SAND_SPEED_BONUS);
+                }
             }
-            if(event.getEntityLiving().ticksExisted % 25 == 0 && (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS || !sand) && modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)){
-                modifiableattributeinstance.removeModifier(SAND_SPEED_BONUS);
+        }
+
+        if (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS) {
+            if(event.getEntityLiving().collidedHorizontally && !event.getEntityLiving().isInWater()){
+                event.getEntityLiving().fallDistance = 0.0F;
+                Vector3d motion = event.getEntityLiving().getMotion();
+                double d0 = MathHelper.clamp(motion.x, (double)-0.15F, (double)0.15F);
+                double d1 = MathHelper.clamp(motion.z, (double)-0.15F, (double)0.15F);
+                double d2 = 0.1D;
+                if (d2 < 0.0D && !event.getEntityLiving().getBlockState().isScaffolding(event.getEntityLiving()) && event.getEntityLiving().hasStoppedClimbing()) {
+                    d2 = 0.0D;
+                }
+                motion = new Vector3d(d0, d2, d1);
+                event.getEntityLiving().setMotion(motion);
             }
+
+
         }
     }
 

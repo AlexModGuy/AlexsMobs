@@ -1,9 +1,11 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.HummingbirdAIPollinate;
 import com.github.alexthe666.alexsmobs.entity.ai.HummingbirdAIWander;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -21,19 +23,18 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntityHummingbird extends AnimalEntity {
 
@@ -56,6 +57,11 @@ public class EntityHummingbird extends AnimalEntity {
         this.setPathPriority(PathNodeType.WATER_BORDER, 16.0F);
         this.setPathPriority(PathNodeType.COCOA, -1.0F);
         this.setPathPriority(PathNodeType.FENCE, -1.0F);
+        this.setPathPriority(PathNodeType.LEAVES, 0.0F);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.hummingbirdSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -83,6 +89,13 @@ public class EntityHummingbird extends AnimalEntity {
         return stack.getItem().isIn(ItemTags.FLOWERS);
     }
 
+    public int getMaxSpawnedInChunk() {
+        return 7;
+    }
+
+    public boolean isMaxGroupSize(int sizeIn) {
+        return false;
+    }
 
 
     protected void registerGoals() {
@@ -262,5 +275,10 @@ public class EntityHummingbird extends AnimalEntity {
             }
 
         }
+    }
+
+    public static <T extends MobEntity> boolean canHummingbirdSpawn(EntityType<EntityHummingbird> hummingbird, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 }

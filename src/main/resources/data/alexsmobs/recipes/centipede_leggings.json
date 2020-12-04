@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "alexsmobs:centipede_leg"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:centipede_leggings",
+    "count": 1
+  }
+}

@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -7,6 +8,8 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -15,9 +18,11 @@ import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.ParrotEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.LlamaEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -29,17 +34,21 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class EntityGorilla extends TameableEntity implements IAnimatedEntity, ITargetsDroppedItems {
@@ -79,9 +88,33 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         this.setPathPriority(PathNodeType.LEAVES, 0.0F);
     }
 
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.gorillaSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
     public boolean isBreedingItem(ItemStack stack) {
         Item item = stack.getItem();
         return isTamed() && item == AMItemRegistry.BANANA;
+    }
+
+    public int getMaxSpawnedInChunk() {
+        return 8;
+    }
+
+    public boolean isMaxGroupSize(int sizeIn) {
+        return false;
+    }
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            Entity entity = source.getTrueSource();
+            this.func_233687_w_(false);
+            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+                amount = (amount + 1.0F) / 2.0F;
+            }
+            return super.attackEntityFrom(source, amount);
+        }
     }
 
     protected void registerGoals() {
@@ -135,15 +168,15 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if(this.getNearestSilverback(16D) == null){
+        if(this.getNearestSilverback(worldIn, 16D) == null){
             this.setSilverback(true);
         }
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     @Nullable
-    public EntityGorilla getNearestSilverback(double dist){
-        List<EntityGorilla> list = this.world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(dist, dist/2, dist));
+    public EntityGorilla getNearestSilverback(IWorld world, double dist){
+        List<EntityGorilla> list = world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(dist, dist/2, dist));
         if(list.isEmpty()){
             return null;
         }
@@ -261,6 +294,8 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         }
         if(isTamed() && item == AMItemRegistry.BANANA && this.getHealth() < this.getMaxHealth()){
             this.heal(5);
+            this.consumeItemFromStack(player, itemstack);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
             return ActionResultType.SUCCESS;
         }
         ActionResultType type = super.func_230254_b_(player, hand);
@@ -475,6 +510,11 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     public float getGorillaScale() {
         return isChild() ? 0.5F : isSilverback() ? 1.3F : 1.0F;
+    }
+
+    public static boolean canGorillaSpawn(EntityType<EntityGorilla> gorilla, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     private class AIWalkIdle extends RandomWalkingGoal {

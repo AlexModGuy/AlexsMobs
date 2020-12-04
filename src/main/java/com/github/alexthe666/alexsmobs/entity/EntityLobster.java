@@ -1,9 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -25,16 +28,15 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
 
@@ -51,8 +53,20 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
         this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
     }
 
+    public int getMaxSpawnedInChunk() {
+        return 7;
+    }
+
+    public boolean isMaxGroupSize(int sizeIn) {
+        return false;
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10D).createMutableAttribute(Attributes.ARMOR, 6.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.lobsterSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     protected SoundEvent getDeathSound() {
@@ -63,6 +77,9 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
         return AMSoundRegistry.LOBSTER_HURT;
     }
 
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return worldIn.checkNoEntityCollision(this);
+    }
 
     public static String getVariantName(int variant) {
         switch (variant) {
@@ -269,5 +286,10 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
     @Override
     public int getWaterSearchRange() {
         return 5;
+    }
+
+    public static <T extends MobEntity> boolean canLobsterSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.LOBSTER_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock || worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
     }
 }

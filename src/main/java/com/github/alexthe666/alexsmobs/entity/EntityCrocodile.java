@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -9,18 +10,24 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.TurtleEntity;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -34,25 +41,31 @@ import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.BiomeDictionary;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
+import java.util.function.Predicate;
 
 public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, ISemiAquatic {
 
+    public static final Animation ANIMATION_LUNGE = Animation.create(23);
+    public static final Animation ANIMATION_DEATHROLL = Animation.create(40);
     private static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BYTE);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DESERT = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
     public float groundProgress = 0;
     public float prevGroundProgress = 0;
     public float swimProgress = 0;
@@ -62,17 +75,20 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     public float grabProgress = 0;
     public float prevGrabProgress = 0;
     public int baskingType = 0;
+    public boolean forcedSit = false;
     private int baskingTimer = 0;
     private int swimTimer = -1000;
     private int ticksSinceInWater = 0;
-    public boolean forcedSit = false;
     private int passengerTimer = 0;
     private boolean isLandNavigator;
     private boolean hasSpedUp = false;
     private int animationTick;
     private Animation currentAnimation;
-    public static final Animation ANIMATION_LUNGE = Animation.create(23);
-    public static final Animation ANIMATION_DEATHROLL = Animation.create(40);
+    public int timeUntilNextEgg = this.rand.nextInt(24000) + 24000;
+
+    public static final Predicate<Entity> NOT_CREEPER = (entity) -> {
+        return entity.isAlive() && !(entity instanceof CreeperEntity);
+    };
 
     protected EntityCrocodile(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -82,8 +98,25 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.baskingType = rand.nextInt(1);
     }
 
+    public static boolean canCrocodileSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.CROCODILE_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.ARMOR, 10.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.4F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.crocSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    public int getMaxSpawnedInChunk() {
+        return 2;
+    }
+
+    public boolean isMaxGroupSize(int sizeIn) {
+        return false;
     }
 
     protected void onGrowingAdult() {
@@ -91,6 +124,18 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         if (!this.isChild() && this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
             this.entityDropItem(new ItemStack(AMItemRegistry.CROCODILE_SCUTE, rand.nextInt(1) + 1), 1);
         }
+    }
+
+    @Nullable
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        this.setDesert(this.isBiomeDesert(worldIn, this.getPosition()));
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    private boolean isBiomeDesert(IWorld worldIn, BlockPos position) {
+        RegistryKey<Biome> biomeKey = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, worldIn.getBiome(position).getRegistryName());
+        boolean sand = BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.SANDY);
+        return sand;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -109,19 +154,25 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("CrocodileSitting", this.isSitting());
+        compound.putBoolean("Desert", this.isDesert());
         compound.putBoolean("ForcedToSit", this.forcedSit);
         compound.putInt("BaskingStyle", this.baskingType);
         compound.putInt("BaskingTimer", this.baskingTimer);
         compound.putInt("SwimTimer", this.swimTimer);
+        compound.putInt("EggTime", this.timeUntilNextEgg);
     }
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setSitting(compound.getBoolean("CrocodileSitting"));
+        this.setDesert(compound.getBoolean("Desert"));
         this.forcedSit = compound.getBoolean("ForcedToSit");
         this.baskingType = compound.getInt("BaskingStyle");
         this.baskingTimer = compound.getInt("BaskingTimer");
         this.swimTimer = compound.getInt("SwimTimer");
+        if (compound.contains("FeatherTime")) {
+            this.timeUntilNextEgg = compound.getInt("EggTime");
+        }
     }
 
     private void switchNavigator(boolean onLand) {
@@ -141,6 +192,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     protected void registerData() {
         super.registerData();
         this.dataManager.register(SITTING, Boolean.valueOf(false));
+        this.dataManager.register(DESERT, Boolean.valueOf(false));
         this.dataManager.register(CLIMBING, (byte) 0);
     }
 
@@ -209,65 +261,71 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         if (!this.world.isRemote) {
             this.setBesideClimbableBlock(this.collidedHorizontally);
         }
-        if(baskingTimer < 0){
+        if (baskingTimer < 0) {
             baskingTimer++;
         }
-        if(passengerTimer > 0 && this.getPassengers().isEmpty()){
+        if (passengerTimer > 0 && this.getPassengers().isEmpty()) {
             passengerTimer = 0;
         }
-        if(!world.isRemote){
-            if(isInWater()){
+        if (!world.isRemote) {
+            if (isInWater()) {
                 swimTimer++;
                 ticksSinceInWater = 0;
-            }else{
+            } else {
                 ticksSinceInWater++;
                 swimTimer--;
             }
         }
-        if(!world.isRemote && !this.isInWater() && this.isOnGround()){
-            if(!this.isTamed()){
-                if(!this.isSitting() && baskingTimer == 0 && this.getAttackTarget() == null && this.getNavigator().noPath()){
+        if (!world.isRemote && !this.isInWater() && this.isOnGround()) {
+            if (!this.isTamed()) {
+                if (!this.isSitting() && baskingTimer == 0 && this.getAttackTarget() == null && this.getNavigator().noPath()) {
                     this.setSitting(true);
                     this.baskingTimer = 1000 + rand.nextInt(750);
                 }
-                if(this.isSitting() && (baskingTimer <= 0 || this.getAttackTarget() != null || swimTimer < -1000)){
+                if (this.isSitting() && (baskingTimer <= 0 || this.getAttackTarget() != null || swimTimer < -1000)) {
                     this.setSitting(false);
                     this.baskingTimer = -2000 - rand.nextInt(750);
                 }
-                if(this.isSitting() && baskingTimer > 0){
+                if (this.isSitting() && baskingTimer > 0) {
                     baskingTimer--;
                 }
             }
         }
-        if(!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_LUNGE && this.getAnimationTick() > 5 && this.getAnimationTick() < 9){
-            float f1 = this.rotationYaw * ((float)Math.PI / 180F);
-            this.setMotion(this.getMotion().add((double)(-MathHelper.sin(f1) * 0.02F), 0.0D, (double)(MathHelper.cos(f1) * 0.02F)));
-            if(this.getDistance(this.getAttackTarget()) < 3.5F && this.canEntityBeSeen(this.getAttackTarget())){
-                if(this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() ){
+        if (!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_LUNGE && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
+            float f1 = this.rotationYaw * ((float) Math.PI / 180F);
+            this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.02F, 0.0D, MathHelper.cos(f1) * 0.02F));
+            if (this.getDistance(this.getAttackTarget()) < 3.5F && this.canEntityBeSeen(this.getAttackTarget())) {
+                if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty()) {
                     this.getAttackTarget().startRiding(this, true);
                 }
                 this.playSound(AMSoundRegistry.CROCODILE_BITE, this.getSoundVolume(), this.getSoundPitch());
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
         }
-        if(!world.isRemote && this.getAttackTarget() != null && this.isInWater()){
-            if(this.getAttackTarget().getRidingEntity() != null && this.getAttackTarget().getRidingEntity() == this){
-                if(this.getAnimation() == NO_ANIMATION){
+        if (!world.isRemote && this.getAttackTarget() != null && this.isInWater()) {
+            if (this.getAttackTarget().getRidingEntity() != null && this.getAttackTarget().getRidingEntity() == this) {
+                if (this.getAnimation() == NO_ANIMATION) {
                     this.setAnimation(ANIMATION_DEATHROLL);
                 }
-                if(this.getAnimation() == ANIMATION_DEATHROLL && this.getAnimationTick() % 10 == 0){
+                if (this.getAnimation() == ANIMATION_DEATHROLL && this.getAnimationTick() % 10 == 0) {
                     this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 2);
                 }
             }
         }
-        if(this.getAnimation() == ANIMATION_DEATHROLL){
+        if (this.getAnimation() == ANIMATION_DEATHROLL) {
             this.getNavigator().clearPath();
+        }
+        if (!this.world.isRemote && this.isAlive() && !this.isChild() && --this.timeUntilNextEgg <= 0) {
+            if(!this.isInWater()){
+                this.entityDropItem(AMItemRegistry.CROCODILE_EGG);
+                this.timeUntilNextEgg = this.rand.nextInt(24000) + 24000;
+            }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
     public void updatePassenger(Entity passenger) {
-        if(!this.getPassengers().isEmpty()){
+        if (!this.getPassengers().isEmpty()) {
             this.renderYawOffset = MathHelper.wrapDegrees(this.rotationYaw - 180F);
         }
         if (this.isPassenger(passenger)) {
@@ -277,7 +335,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             double extraZ = radius * MathHelper.cos(angle);
             passenger.setPosition(this.getPosX() + extraX, this.getPosY() + 0.1F, this.getPosZ() + extraZ);
             passengerTimer++;
-            if(passengerTimer > 0 && passengerTimer % 40 == 0){
+            if (passengerTimer > 0 && passengerTimer % 40 == 0) {
                 passenger.attackEntityFrom(DamageSource.causeMobDamage(this), 2);
             }
         }
@@ -296,7 +354,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        if(this.getAnimation() == NO_ANIMATION && this.getPassengers().isEmpty()){
+        if (this.getAnimation() == NO_ANIMATION && this.getPassengers().isEmpty()) {
             this.setAnimation(ANIMATION_LUNGE);
         }
         return true;
@@ -330,11 +388,11 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
 
     }
 
-    public boolean shouldLeaveWater(){
-        if(!this.getPassengers().isEmpty()){
+    public boolean shouldLeaveWater() {
+        if (!this.getPassengers().isEmpty()) {
             return false;
         }
-        if(this.getAttackTarget() != null && !this.getAttackTarget().isInWater()){
+        if (this.getAttackTarget() != null && !this.getAttackTarget().isInWater()) {
             return true;
         }
         return swimTimer > 600;
@@ -358,6 +416,14 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.dataManager.set(SITTING, Boolean.valueOf(sit));
     }
 
+    public boolean isDesert() {
+        return this.dataManager.get(DESERT).booleanValue();
+    }
+
+    public void setDesert(boolean desert) {
+        this.dataManager.set(DESERT, Boolean.valueOf(desert));
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SitGoal(this));
         this.goalSelector.addGoal(1, new BreatheAirGoal(this));
@@ -368,8 +434,36 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CROCODILE_TARGETS))));
+        this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, PlayerEntity.class, true){
+            public boolean shouldExecute(){
+                return !isChild() && !isTamed() && super.shouldExecute();
+            }
+        });
+        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CROCODILE_TARGETS))){
+            public boolean shouldExecute(){
+                return !isChild() && !isTamed() && super.shouldExecute();
+            }
+        });
+        this.targetSelector.addGoal(6, new EntityAINearestTarget3D(this, MonsterEntity.class, 180, false, true, NOT_CREEPER){
+            public boolean shouldExecute(){
+                return !isChild() && isTamed() && super.shouldExecute();
+            }
+        });
+    }
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            Entity entity = source.getTrueSource();
+            this.func_233687_w_(false);
+            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+                amount = (amount + 1.0F) / 3.0F;
+            }
+            return super.attackEntityFrom(source, amount);
+        }
     }
 
     @Nullable
@@ -378,9 +472,40 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         return AMEntityRegistry.CROCODILE.create(p_241840_1_);
     }
 
+    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+        ItemStack itemstack = player.getHeldItem(hand);
+        Item item = itemstack.getItem();
+        if(itemstack.getItem() == Items.NAME_TAG){
+            return super.func_230254_b_(player, hand);
+        }
+        if(isTamed() && item.isFood() && item.getFood() != null && item.getFood().isMeat() && this.getHealth() < this.getMaxHealth()){
+            this.consumeItemFromStack(player, itemstack);
+            this.heal(10);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
+            return ActionResultType.SUCCESS;
+        }
+        ActionResultType type = super.func_230254_b_(player, hand);
+        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack) ){
+            if(this.isSitting()){
+                this.forcedSit = false;
+                this.setSitting(false);
+                return ActionResultType.SUCCESS;
+            }else{
+                this.forcedSit = true;
+                this.setSitting(true);
+                return ActionResultType.SUCCESS;
+            }
+        }
+        return type;
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        return false;
+    }
+
     @Override
     public boolean shouldEnterWater() {
-        if(!this.getPassengers().isEmpty()){
+        if (!this.getPassengers().isEmpty()) {
             return true;
         }
         return this.getAttackTarget() == null && !this.isSitting() && this.baskingTimer <= 0 && !shouldLeaveWater() && swimTimer <= -1000;

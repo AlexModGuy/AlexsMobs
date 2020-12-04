@@ -80,8 +80,8 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (this.isChild) {
             matrixStackIn.push();
-            matrixStackIn.scale(0.35F, 0.35F, 0.35F);
-            matrixStackIn.translate(0.0D, 2.75D, 0.125D);
+            matrixStackIn.scale(0.65F, 0.65F, 0.65F);
+            matrixStackIn.translate(0.0D, 0.95D, 0.125D);
             getParts().forEach((p_228292_8_) -> {
                 p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });

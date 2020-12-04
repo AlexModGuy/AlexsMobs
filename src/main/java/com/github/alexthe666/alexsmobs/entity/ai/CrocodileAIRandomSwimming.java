@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -17,7 +18,7 @@ public class CrocodileAIRandomSwimming extends RandomWalkingGoal {
     }
 
     public boolean shouldExecute() {
-        if (this.creature.isBeingRidden() || creature.getAttackTarget() != null || !this.creature.isInWater() && this.creature instanceof ISemiAquatic && !((ISemiAquatic) this.creature).shouldEnterWater()) {
+        if (this.creature.isBeingRidden() || ((EntityCrocodile)creature).isSitting() || creature.getAttackTarget() != null || !this.creature.isInWater() && this.creature instanceof ISemiAquatic && !((ISemiAquatic) this.creature).shouldEnterWater()) {
             return false;
         } else {
             if (!this.mustUpdate) {
@@ -64,7 +65,6 @@ public class CrocodileAIRandomSwimming extends RandomWalkingGoal {
     }
 
     private Vector3d findSurfaceTarget(CreatureEntity creature, int i, int i1) {
-        Vector3d creaturePos = creature.getPositionVec();
         BlockPos upPos = creature.getPosition();
         while(creature.world.getFluidState(upPos).isTagged(FluidTags.WATER)){
             upPos = upPos.up();

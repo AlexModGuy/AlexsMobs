@@ -37,6 +37,9 @@ public class ItemModArmor extends ArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        if (this.material == AMItemRegistry.CENTIPEDE_ARMOR_MATERIAL) {
+            tooltip.add(new TranslationTextComponent("item.alexsmobs.centipede_leggings.desc").mergeStyle(TextFormatting.GRAY));
+        }
         super.addInformation(stack, worldIn, tooltip, flagIn);
         if (this.material == AMItemRegistry.ROADRUNNER_ARMOR_MATERIAL) {
             tooltip.add(new TranslationTextComponent("item.alexsmobs.roadrunner_boots.desc").mergeStyle(TextFormatting.BLUE));
@@ -71,6 +74,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/crocodile_chestplate.png";
         } else if (this.material == AMItemRegistry.ROADRUNNER_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/roadrunner_boots.png";
+        } else if (this.material == AMItemRegistry.CENTIPEDE_ARMOR_MATERIAL) {
+            return "alexsmobs:textures/armor/centipede_leggings.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }

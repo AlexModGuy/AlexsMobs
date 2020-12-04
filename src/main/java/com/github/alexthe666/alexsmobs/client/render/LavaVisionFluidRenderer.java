@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -56,7 +57,7 @@ public class LavaVisionFluidRenderer extends FluidBlockRenderer {
             TextureAtlasSprite[] atextureatlassprite = getFluidSprites(lightReaderIn, posIn, fluidStateIn);
             BlockState blockstate = lightReaderIn.getBlockState(posIn);
             int i = fluidStateIn.getFluid().getAttributes().getColor(lightReaderIn, posIn);
-            float alpha = 0.65F;
+            float alpha = (float) AMConfig.lavaOpacity;
             float f = (float) 1;
             float f1 = (float) 0.7F;
             float f2 = (float) 0.7F;

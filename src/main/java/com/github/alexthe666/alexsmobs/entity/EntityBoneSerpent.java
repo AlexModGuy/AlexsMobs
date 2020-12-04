@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.entity.*;
@@ -13,6 +14,7 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.passive.StriderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -25,11 +27,13 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -37,6 +41,7 @@ import net.minecraft.world.server.ServerWorld;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 public class EntityBoneSerpent extends MonsterEntity {
@@ -51,6 +56,19 @@ public class EntityBoneSerpent extends MonsterEntity {
         this.setPathPriority(PathNodeType.LAVA, 0.0F);
         switchNavigator(false);
     }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.boneSeprentSpawnRolls, this.getRNG(), spawnReasonIn) && super.canSpawn(worldIn, spawnReasonIn);
+    }
+
+    public int getMaxSpawnedInChunk() {
+        return 1;
+    }
+
+    public boolean isMaxGroupSize(int sizeIn) {
+        return false;
+    }
+
 
     protected SoundEvent getAmbientSound() {
         return AMSoundRegistry.BONE_SERPENT_IDLE;
@@ -101,6 +119,16 @@ public class EntityBoneSerpent extends MonsterEntity {
 
     public boolean isNotColliding(IWorldReader worldIn) {
         return worldIn.checkNoEntityCollision(this);
+    }
+
+    public static boolean canBoneSerpentSpawn(EntityType<EntityBoneSerpent> p_234314_0_, IWorld p_234314_1_, SpawnReason p_234314_2_, BlockPos p_234314_3_, Random p_234314_4_) {
+        BlockPos.Mutable blockpos$mutable = p_234314_3_.toMutable();
+
+        do {
+            blockpos$mutable.move(Direction.UP);
+        } while(p_234314_1_.getFluidState(blockpos$mutable).isTagged(FluidTags.LAVA));
+
+        return p_234314_1_.getBlockState(blockpos$mutable).isAir();
     }
 
     protected void registerGoals() {

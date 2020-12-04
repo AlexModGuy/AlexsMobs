@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIJump;
 import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIMeleeJump;
@@ -43,20 +44,24 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 
 public class EntityOrca extends TameableEntity implements IAnimatedEntity {
 
@@ -73,6 +78,10 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.moveController = new MoveHelperController(this);
         this.lookController = new DolphinLookController(this, 10);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.orcaSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
@@ -349,6 +358,14 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
         }
     }
 
+    public static boolean canOrcaSpawn(EntityType<EntityOrca> p_223364_0_, IWorld p_223364_1_, SpawnReason reason, BlockPos p_223364_3_, Random p_223364_4_) {
+        if (p_223364_3_.getY() > 45 && p_223364_3_.getY() < p_223364_1_.getSeaLevel()) {
+            Optional<RegistryKey<Biome>> optional = p_223364_1_.func_242406_i(p_223364_3_);
+            return (!Objects.equals(optional, Optional.of(Biomes.OCEAN)) || !Objects.equals(optional, Optional.of(Biomes.DEEP_OCEAN))) && p_223364_1_.getFluidState(p_223364_3_).isTagged(FluidTags.WATER);
+        } else {
+            return false;
+        }
+    }
 
     static class SwimWithPlayerGoal extends Goal {
         private final EntityOrca dolphin;

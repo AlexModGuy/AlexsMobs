@@ -1,8 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHerdPanic;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -20,15 +22,20 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Predicate;
 
 public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
@@ -76,6 +83,9 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
         return AMSoundRegistry.RATTLESNAKE_HURT;
     }
 
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.rattlesnakeSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
 
     public boolean attackEntityAsMob(Entity entityIn) {
         this.setAnimation(ANIMATION_BITE);
@@ -213,6 +223,11 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
     public Animation[] getAnimations() {
         return new Animation[]{ANIMATION_BITE};
     }
+
+    public static boolean canRattlesnakeSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.RATTLESNAKE_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock && worldIn.getLightSubtracted(pos, 0) > 8;
+}
 
     class WarnPredatorsGoal extends Goal {
         int executionChance = 20;
