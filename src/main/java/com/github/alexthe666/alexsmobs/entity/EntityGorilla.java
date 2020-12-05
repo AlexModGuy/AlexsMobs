@@ -79,7 +79,6 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     @Nullable
     private UUID bananaThrowerID = null;
     public boolean forcedSit = false;
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(AMItemRegistry.BANANA);
     private boolean hasSilverbackAttributes = false;
 
     protected EntityGorilla(EntityType type, World worldIn) {
@@ -93,7 +92,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
     public boolean isBreedingItem(ItemStack stack) {
         Item item = stack.getItem();
-        return isTamed() && item == AMItemRegistry.BANANA;
+        return isTamed() && isBanana(stack);
     }
 
     public int getMaxSpawnedInChunk() {
@@ -123,7 +122,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         this.goalSelector.addGoal(1, new SitGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(2, new GorillaAIFollowCaravan(this, 0.8D));
-        this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, TEMPTATION_ITEMS, false));
+        this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.BANANAS)), false));
         this.goalSelector.addGoal(4, new GorillaAIRideParent(this, 1.25D));
         this.goalSelector.addGoal(6, new AIWalkIdle(this, 0.8D));
         this.goalSelector.addGoal(5, new GorillaAIForageLeaves(this));
@@ -292,7 +291,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         if(itemstack.getItem() == Items.NAME_TAG){
             return super.func_230254_b_(player, hand);
         }
-        if(isTamed() && item == AMItemRegistry.BANANA && this.getHealth() < this.getMaxHealth()){
+        if(isTamed() && isBanana(itemstack) && this.getHealth() < this.getMaxHealth()){
             this.heal(5);
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
@@ -362,7 +361,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
                 ItemStack stack = this.getHeldItem(Hand.MAIN_HAND);
                 if(!stack.isEmpty()){
                     this.heal(4);
-                    if(stack.getItem() == AMItemRegistry.BANANA && bananaThrowerID != null){
+                    if(isBanana(stack) && bananaThrowerID != null){
                         if(getRNG().nextFloat() < 0.3F){
                             this.setTamed(true);
                             this.setOwnerId(this.bananaThrowerID);
@@ -456,6 +455,10 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         return ItemTags.getCollection().get(AMTagRegistry.GORILLA_FOODSTUFFS).contains(stack.getItem());
     }
 
+    public static boolean isBanana(ItemStack stack){
+        return ItemTags.getCollection().get(AMTagRegistry.BANANAS).contains(stack.getItem());
+    }
+
     @Override
     public void onGetItem(ItemEntity targetEntity) {
         ItemStack duplicate = targetEntity.getItem().copy();
@@ -464,7 +467,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
         }
         this.setHeldItem(Hand.MAIN_HAND, duplicate);
-        if(targetEntity.getItem().getItem() == AMItemRegistry.BANANA && !this.isTamed()){
+        if(EntityGorilla.isBanana(targetEntity.getItem()) && !this.isTamed()){
             bananaThrowerID = targetEntity.getThrowerId();
         }
     }

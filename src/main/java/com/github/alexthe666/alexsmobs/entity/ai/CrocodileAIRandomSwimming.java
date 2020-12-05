@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class CrocodileAIRandomSwimming extends RandomWalkingGoal {
     public CrocodileAIRandomSwimming(CreatureEntity creature, double speed, int chance) {
@@ -41,6 +42,9 @@ public class CrocodileAIRandomSwimming extends RandomWalkingGoal {
 
     @Nullable
     protected Vector3d getPosition() {
+        if(this.creature.detachHome() && this.creature.getDistanceSq(Vector3d.copyCentered(this.creature.getHomePosition())) > this.creature.getMaximumHomeDistance() * this.creature.getMaximumHomeDistance()){
+            return RandomPositionGenerator.findRandomTargetBlockTowards(this.creature, 7, 3, Vector3d.copyCenteredHorizontally(this.creature.getHomePosition()));
+        }
         if(this.creature.getRNG().nextFloat() < 0.3F){
             Vector3d vector3d = findSurfaceTarget(this.creature, 15, 7);
             if(vector3d != null){

@@ -3,4 +3,6 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Orca
+The Orca is a large, dolphin-like cetacean found in the cold oceans of the Overworld. It can be often seen bobbing up and
+ down out of the water, and launching attacks on the native salmon and polar bear populations. Unlike their dolphin cousins,
+ these whales are not so friendly - hurting one of them could make the entire pod attack you.

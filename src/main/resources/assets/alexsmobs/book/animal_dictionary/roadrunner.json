@@ -9,6 +9,14 @@
   "item_renders": [
   ],
   "recipes": [
+    {
+      "recipe": "alexsmobs:roadrunner_boots",
+      "shapeless": false,
+      "x": 210,
+      "y": 130,
+      "page": 0,
+      "scale": 1.3
+    }
   ],
   "tabula_renders": [
   ],

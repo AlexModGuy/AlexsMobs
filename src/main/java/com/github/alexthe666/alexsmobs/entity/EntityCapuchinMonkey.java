@@ -4,9 +4,11 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -35,6 +37,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -62,7 +65,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public boolean forcedSit = false;
     private int sittingTime = 0;
     private int maxSitTime = 75;
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(AMItemRegistry.BANANA, AMItemRegistry.MAGGOT);
+    private static Ingredient temptationItems = Ingredient.fromItems(Items.EGG, AMItemRegistry.MAGGOT);
     public boolean attackDecision = false;//true for ranged, false for melee
     private boolean hasSlowed = false;
     private int rideCooldown = 0;
@@ -104,7 +107,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         this.goalSelector.addGoal(3, new CapuchinAIMelee(this, 1, true));
         this.goalSelector.addGoal(3, new CapuchinAIRangedAttack(this, 1, 20, 15));
         this.goalSelector.addGoal(6, new TameableAIFollowOwner(this, 1.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, TEMPTATION_ITEMS, true){
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, temptationItems.merge(ImmutableList.of(Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.BANANAS)))), true){
             public void tick() {
                 super.tick();
                 if (this.creature.getDistanceSq(this.closestPlayer) < 6.25D && this.creature.getRNG().nextInt(14) == 0) {
@@ -119,7 +122,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, (new HurtByTargetGoal(this, EntityCapuchinMonkey.class)).setCallsForHelp());
+        this.targetSelector.addGoal(4, (new HurtByTargetGoal(this, EntityCapuchinMonkey.class, EntityTossedItem.class)).setCallsForHelp());
     }
 
     protected SoundEvent getAmbientSound() {
@@ -198,7 +201,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
             this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             this.setAttackDecision(this.getAttackTarget());
         }
-        if(!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_THROW && this.getAnimationTick() == 5) {
+        if(!world.isRemote && this.getAttackTarget() != null && this.getAttackTarget().isAlive() && this.getAnimation() == ANIMATION_THROW && this.getAnimationTick() == 5) {
             Vector3d vector3d = this.getAttackTarget().getMotion();
             double d0 = this.getAttackTarget().getPosX() + vector3d.x - this.getPosX();
             double d1 = this.getAttackTarget().getPosYEye() - (double)1.1F - this.getPosY();
@@ -345,7 +348,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.func_230254_b_(player, hand);
-        if(!isTamed() && item == AMItemRegistry.BANANA){
+        if(!isTamed() && EntityGorilla.isBanana(itemstack)){
             this.consumeItemFromStack(player, itemstack);
             if(getRNG().nextInt(5) == 0){
                 this.setTamedBy(player);
@@ -355,7 +358,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
             }
             return ActionResultType.SUCCESS;
         }
-        if(isTamed() && item == AMItemRegistry.BANANA && this.getHealth() < this.getMaxHealth()){
+        if(isTamed() && (EntityGorilla.isBanana(itemstack) || temptationItems.test(itemstack) && !isBreedingItem(itemstack)) && this.getHealth() < this.getMaxHealth()){
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
             this.heal(5);
@@ -399,7 +402,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return TEMPTATION_ITEMS.test(stack);
+        return temptationItems.test(stack) || EntityGorilla.isBanana(stack);
     }
 
     public boolean isBreedingItem(ItemStack stack) {
@@ -411,14 +414,14 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public void onGetItem(ItemEntity e) {
         this.heal(5);
         this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
-        if(e.getItem().getItem() == AMItemRegistry.BANANA){
+        if(EntityGorilla.isBanana(e.getItem())){
             if(getRNG().nextInt(4) == 0){
                 this.entityDropItem(new ItemStack(AMItemRegistry.BANANA_PEEL));
             }
             if(e.getThrowerId() != null && !this.isTamed()){
                 if(getRNG().nextInt(5) == 0){
                     this.setTamed(true);
-                    this.setOwnerId(e.getOwnerId());
+                    this.setOwnerId(e.getThrowerId());
                     this.world.setEntityState(this, (byte)7);
                 }else{
                     this.world.setEntityState(this, (byte)6);

@@ -190,6 +190,6 @@ public class EntityCentipedeHead extends MonsterEntity {
 
 
     public static <T extends MobEntity> boolean canCentipedeSpawn(EntityType<EntityCentipedeHead> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
-        return reason == SpawnReason.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() < 32 && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
+        return reason == SpawnReason.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= AMConfig.caveCentipedeSpawnHeight && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
     }
 }

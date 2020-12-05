@@ -79,7 +79,7 @@ public class EntityCrocodileEgg extends ProjectileItemEntity {
                         croc.setTamedBy((PlayerEntity)func_234616_v_());
                     }
                     croc.onInitialSpawn((ServerWorld)world, world.getDifficultyForLocation(this.getPosition()), SpawnReason.TRIGGERED, (ILivingEntityData)null, (CompoundNBT)null);
-                    croc.setHomePosAndDistance(this.getPosition(), 32);
+                    croc.setHomePosAndDistance(this.getPosition(), 20);
                     this.world.addEntity(croc);
                 }
             }

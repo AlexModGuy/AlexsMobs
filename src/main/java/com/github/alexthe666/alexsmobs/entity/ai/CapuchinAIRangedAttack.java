@@ -42,7 +42,7 @@ public class CapuchinAIRangedAttack extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return (this.shouldExecute() || !this.entity.getNavigator().noPath()) && this.shouldRange();
+        return this.entity.getAttackTarget() != null && this.entity.getAttackTarget().isAlive() &&(this.shouldExecute() || !this.entity.getNavigator().noPath()) && this.shouldRange();
     }
 
     public void startExecuting() {
@@ -55,12 +55,13 @@ public class CapuchinAIRangedAttack extends Goal {
         this.entity.setAggroed(false);
         this.seeTime = 0;
         this.attackTime = -1;
+        this.entity.setAnimation(EntityCapuchinMonkey.NO_ANIMATION);
         this.entity.resetActiveHand();
     }
 
     public void tick() {
         LivingEntity livingentity = this.entity.getAttackTarget();
-        if (livingentity != null) {
+        if (livingentity != null && livingentity.isAlive()) {
             double d0 = this.entity.getDistanceSq(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ());
             boolean flag = this.entity.getEntitySenses().canSee(livingentity);
             boolean flag1 = this.seeTime > 0;

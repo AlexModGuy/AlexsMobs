@@ -40,11 +40,57 @@ public class AMConfig {
     public static int capuchinMonkeySpawnRolls = 0;
     public static int caveCentipedeSpawnWeight = 8;
     public static int caveCentipedeSpawnRolls = 1;
+    public static int caveCentipedeSpawnHeight = 30;
     public static double lavaOpacity = 0.65F;
+    public static boolean lavaBottleEnabled = true;
+    public static boolean bananasDropFromLeaves = true;
+    public static int bananaChance = 200;
+    public static boolean spidersAttackFlies = true;
 
     public static void bake(ModConfig config) {
         try {
             lavaOpacity = ConfigHolder.COMMON.lavaOpacity.get();
+            grizzlyBearSpawnWeight = ConfigHolder.COMMON.grizzlyBearSpawnWeight.get();
+            grizzlyBearSpawnRolls = ConfigHolder.COMMON.grizzlyBearSpawnRolls.get();
+            roadrunnerSpawnWeight = ConfigHolder.COMMON.roadrunnerSpawnWeight.get();
+            roadrunnerSpawnRolls = ConfigHolder.COMMON.roadrunnerSpawnRolls.get();
+            boneSerpentSpawnWeight = ConfigHolder.COMMON.boneSerpentSpawnWeight.get();
+            boneSeprentSpawnRolls = ConfigHolder.COMMON.boneSeprentSpawnRolls.get();
+            gazelleSpawnWeight = ConfigHolder.COMMON.gazelleSpawnWeight.get();
+            gazelleSpawnRolls = ConfigHolder.COMMON.gazelleSpawnRolls.get();
+            crocodileSpawnWeight = ConfigHolder.COMMON.crocodileSpawnWeight.get();
+            crocSpawnRolls = ConfigHolder.COMMON.crocSpawnRolls.get();
+            flySpawnWeight = ConfigHolder.COMMON.flySpawnWeight.get();
+            flySpawnRolls = ConfigHolder.COMMON.flySpawnRolls.get();
+            hummingbirdSpawnWeight = ConfigHolder.COMMON.hummingbirdSpawnWeight.get();
+            hummingbirdSpawnRolls = ConfigHolder.COMMON.hummingbirdSpawnRolls.get();
+            orcaSpawnWeight = ConfigHolder.COMMON.orcaSpawnWeight.get();
+            orcaSpawnRolls = ConfigHolder.COMMON.orcaSpawnRolls.get();
+            sunbirdSpawnWeight = ConfigHolder.COMMON.sunbirdSpawnWeight.get();
+            sunbirdSpawnRolls = ConfigHolder.COMMON.sunbirdSpawnRolls.get();
+            gorillaSpawnWeight = ConfigHolder.COMMON.gorillaSpawnWeight.get();
+            gorillaSpawnRolls = ConfigHolder.COMMON.gorillaSpawnRolls.get();
+            crimsonMosquitoSpawnWeight = ConfigHolder.COMMON.crimsonMosquitoSpawnWeight.get();
+            crimsonMosquitoSpawnRolls = ConfigHolder.COMMON.crimsonMosquitoSpawnRolls.get();
+            rattlesnakeSpawnWeight = ConfigHolder.COMMON.rattlesnakeSpawnWeight.get();
+            rattlesnakeSpawnRolls = ConfigHolder.COMMON.rattlesnakeSpawnRolls.get();
+            endergradeSpawnWeight = ConfigHolder.COMMON.endergradeSpawnWeight.get();
+            endergradeSpawnRolls = ConfigHolder.COMMON.endergradeSpawnRolls.get();
+            hammerheadSharkSpawnWeight = ConfigHolder.COMMON.hammerheadSharkSpawnWeight.get();
+            hammerheadSharkSpawnRolls = ConfigHolder.COMMON.hammerheadSharkSpawnRolls.get();
+            lobsterSpawnWeight = ConfigHolder.COMMON.lobsterSpawnWeight.get();
+            lobsterSpawnRolls = ConfigHolder.COMMON.lobsterSpawnRolls.get();
+            komodoDragonSpawnWeight = ConfigHolder.COMMON.komodoDragonSpawnWeight.get();
+            komodoDragonSpawnRolls = ConfigHolder.COMMON.komodoDragonSpawnRolls.get();
+            capuchinMonkeySpawnWeight = ConfigHolder.COMMON.capuchinMonkeySpawnWeight.get();
+            capuchinMonkeySpawnRolls = ConfigHolder.COMMON.capuchinMonkeySpawnRolls.get();
+            caveCentipedeSpawnWeight = ConfigHolder.COMMON.caveCentipedeSpawnWeight.get();
+            caveCentipedeSpawnRolls = ConfigHolder.COMMON.caveCentipedeSpawnRolls.get();
+            caveCentipedeSpawnHeight = ConfigHolder.COMMON.caveCentipedeSpawnHeight.get();
+            lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
+            bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
+            spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
+            bananaChance = ConfigHolder.COMMON.bananaChance.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();
