@@ -6,10 +6,9 @@ issueTrackerURL="https://github.com/Alex-the-666/Rats/issues" #optional
 modId="alexsmobs" #mandatory
 version="1.0.0" #mandatory
 displayName="Alex's Mobs" #mandatory
-displayURL="https://www.curseforge.com/minecraft/mc-mods/rats" #optional
-logoFile="spidering.png" #optional
+displayURL="https://www.curseforge.com/minecraft/mc-mods/alexsmobs" #optional
 authors="Alexthe666" #optional
-description='''What are we going to do today Pinky?'''
+description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
 [[dependencies.alexsmobs]] #optional
                    # the modid of the dependency
                    modId="citadel" #mandatory

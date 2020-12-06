@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.config;
 
 import com.google.common.collect.Lists;
+import cpw.mods.modlauncher.LaunchPluginHandler;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -50,9 +51,12 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue caveCentipedeSpawnWeight;
     public final ForgeConfigSpec.IntValue caveCentipedeSpawnRolls;
     public final ForgeConfigSpec.IntValue caveCentipedeSpawnHeight;
+    public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
+
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
-        lavaOpacity = buildDouble(builder, "Lava Vision Opacity", "all", 0.65D, 0.01D, 1D, "Lava Opacity for the Lava Vision Potion.");
+        giveBookOnStartup = buildBoolean(builder, "giveBookOnStartup", "all", true, "Whether all players should get an Animal Dictionary when joining the world for the first time.");
+        lavaOpacity = buildDouble(builder, "lavaVisionOpacity", "all", 0.65D, 0.01D, 1D, "Lava Opacity for the Lava Vision Potion.");
         bananasDropFromLeaves = buildBoolean(builder, "bananasDropFromLeaves", "all", true, "Whether bananas should drop from blocks tagged with #alexsmobs:drops_bananas");
         bananaChance = buildInt(builder, "bananaChance", "all", AMConfig.bananaChance, 0, Integer.MAX_VALUE, "1 out of this number chance for leaves to drop a banana when broken. Fortune is automatically factored in");
         spidersAttackFlies = buildBoolean(builder, "spidersAttackFlies", "all", true, "Whether spiders should target fly mobs.");

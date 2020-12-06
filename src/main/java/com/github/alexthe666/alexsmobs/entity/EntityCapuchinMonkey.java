@@ -272,8 +272,10 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
                     double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
                     double extraZ = radius * MathHelper.cos(angle);
                     this.setPosition(mount.getPosX() + extraX, Math.max(mount.getPosY() + mount.getHeight() + 0.1, mount.getPosY()), mount.getPosZ() + extraZ);
+                    attackDecision = true;
                     if (!mount.isAlive() || rideCooldown == 0 && mount.isSneaking()) {
                         this.dismount();
+                        attackDecision = false;
                     }
                 }
 
@@ -360,11 +362,11 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         }
         if(isTamed() && (EntityGorilla.isBanana(itemstack) || temptationItems.test(itemstack) && !isBreedingItem(itemstack)) && this.getHealth() < this.getMaxHealth()){
             this.consumeItemFromStack(player, itemstack);
-            this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
+            this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
             this.heal(5);
             return ActionResultType.SUCCESS;
         }
-        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)){
+        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack) && !EntityGorilla.isBanana(itemstack) && !temptationItems.test(itemstack)){
             if(player.isSneaking() && player.getPassengers().isEmpty()){
                 this.startRiding(player);
                 rideCooldown = 20;

@@ -13,8 +13,8 @@
       "recipe": "alexsmobs:blood_sprayer",
       "shapeless": false,
       "x": 210,
-      "y": 130,
-      "page": 0,
+      "y": 30,
+      "page": 1,
       "scale": 1.3
     }
   ],

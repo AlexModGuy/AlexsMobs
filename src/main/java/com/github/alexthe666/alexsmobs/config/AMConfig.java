@@ -46,6 +46,7 @@ public class AMConfig {
     public static boolean bananasDropFromLeaves = true;
     public static int bananaChance = 200;
     public static boolean spidersAttackFlies = true;
+    public static boolean giveBookOnStartup = true;
 
     public static void bake(ModConfig config) {
         try {
@@ -91,6 +92,7 @@ public class AMConfig {
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
             bananaChance = ConfigHolder.COMMON.bananaChance.get();
+            giveBookOnStartup = ConfigHolder.COMMON.giveBookOnStartup.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

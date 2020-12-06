@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.stats.Stats;
@@ -36,10 +37,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.Random;
 import java.util.UUID;
@@ -102,6 +105,20 @@ public class ServerEvents {
             AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
         }
     }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (AMConfig.giveBookOnStartup) {
+            CompoundNBT playerData = event.getPlayer().getPersistentData();
+            CompoundNBT data = playerData.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+            if (data != null && !data.getBoolean("alexsmobs_has_book")) {
+                ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY));
+                data.putBoolean("alexsmobs_has_book", true);
+                playerData.put(PlayerEntity.PERSISTED_NBT_TAG, data);
+            }
+        }
+    }
+
 
     @SubscribeEvent
     public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
