@@ -9,6 +9,6 @@ O Mosquito Carmesim é um inseto voador horrível e mutante encontrado nas Flore
 <NEWLINE>
 Se morto enquanto inflado com sangue, o Mosquito Carmesim pode derrubar uma bolsa de sangue. Ele também pode
 deixar cair sua tromba. Ambos os materiais podem ser usados para criar o Pulverizador de Sangue, uma arma única
-que usa Saliva de Mosquito para causar dano de efeito em área. O Pulverizador de sangue usa Bolsa de Sangue como munição.
+que usa Sangue de Mosquito para causar dano de efeito em área. O Pulverizador de sangue usa Bolsa de Sangue como munição.
 <NEWLINE>
 Se uma mosca do Overworld, variedade de jardim, se encontrar no Nether, pode se transformar em um mosquito carmesim.
