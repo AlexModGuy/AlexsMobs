@@ -324,6 +324,23 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
+    public boolean isOnSameTeam(Entity entityIn) {
+        if (this.isTamed()) {
+            LivingEntity livingentity = this.getOwner();
+            if (entityIn == livingentity) {
+                return true;
+            }
+            if (entityIn instanceof TameableEntity) {
+                return ((TameableEntity) entityIn).isOwner(livingentity);
+            }
+            if (livingentity != null) {
+                return livingentity.isOnSameTeam(entityIn);
+            }
+        }
+
+        return super.isOnSameTeam(entityIn);
+    }
+
     public void updatePassenger(Entity passenger) {
         if (!this.getPassengers().isEmpty()) {
             this.renderYawOffset = MathHelper.wrapDegrees(this.rotationYaw - 180F);

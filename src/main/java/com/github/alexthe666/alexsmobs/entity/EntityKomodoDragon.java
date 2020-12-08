@@ -38,6 +38,7 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppedItems {
@@ -45,7 +46,7 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(Items.ROTTEN_FLESH);
     public int slaughterCooldown = 0;
     public int timeUntilSpit = this.rand.nextInt(12000) + 24000;
-
+    private int riderAttackCooldown = 0;
     public static final Predicate<EntityKomodoDragon> HURT_OR_BABY = (p_213616_0_) -> {
         return p_213616_0_.isChild() || p_213616_0_.getHealth() <= 0.7F * p_213616_0_.getMaxHealth();
     };
@@ -134,7 +135,38 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
             this.entityDropItem(AMItemRegistry.KOMODO_SPIT);
             this.timeUntilSpit = this.rand.nextInt(12000) + 24000;
         }
+        if(riderAttackCooldown > 0){
+            riderAttackCooldown--;
+        }
+        if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity){
+            PlayerEntity rider = (PlayerEntity)this.getControllingPassenger();
+            if(rider.getLastAttackedEntity() != null && this.getDistance(rider.getLastAttackedEntity()) < this.getWidth() + 3F && !this.isOnSameTeam(rider.getLastAttackedEntity())){
+                UUID preyUUID = rider.getLastAttackedEntity().getUniqueID();
+                if (!this.getUniqueID().equals(preyUUID) && riderAttackCooldown == 0) {
+                    attackEntityAsMob(rider.getLastAttackedEntity());
+                    riderAttackCooldown = 20;
+                }
+            }
+        }
     }
+
+    public boolean isOnSameTeam(Entity entityIn) {
+        if (this.isTamed()) {
+            LivingEntity livingentity = this.getOwner();
+            if (entityIn == livingentity) {
+                return true;
+            }
+            if (entityIn instanceof TameableEntity) {
+                return ((TameableEntity) entityIn).isOwner(livingentity);
+            }
+            if (livingentity != null) {
+                return livingentity.isOnSameTeam(entityIn);
+            }
+        }
+
+        return super.isOnSameTeam(entityIn);
+    }
+
     public boolean attackEntityAsMob(Entity entityIn) {
         if (super.attackEntityAsMob(entityIn)) {
             if (entityIn instanceof LivingEntity) {

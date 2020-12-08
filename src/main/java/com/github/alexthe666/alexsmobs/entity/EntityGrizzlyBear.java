@@ -402,6 +402,23 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
+    public boolean isOnSameTeam(Entity entityIn) {
+        if (this.isTamed()) {
+            LivingEntity livingentity = this.getOwner();
+            if (entityIn == livingentity) {
+                return true;
+            }
+            if (entityIn instanceof TameableEntity) {
+                return ((TameableEntity) entityIn).isOwner(livingentity);
+            }
+            if (livingentity != null) {
+                return livingentity.isOnSameTeam(entityIn);
+            }
+        }
+
+        return super.isOnSameTeam(entityIn);
+    }
+
     public void setSitting(boolean sit) {
         this.dataManager.set(SITTING, Boolean.valueOf(sit));
     }
