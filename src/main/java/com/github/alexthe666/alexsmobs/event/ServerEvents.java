@@ -5,6 +5,8 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityFly;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureEntity;
@@ -21,12 +23,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.*;
+import net.minecraft.loot.conditions.RandomChance;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -34,6 +39,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -118,28 +124,6 @@ public class ServerEvents {
             }
         }
     }
-
-
-    @SubscribeEvent
-    public void onBlockBreakEvent(BlockEvent.BreakEvent event) {
-        if (AMConfig.bananasDropFromLeaves && BlockTags.getCollection().get(AMTagRegistry.DROPS_BANANAS).contains(event.getWorld().getBlockState(event.getPos()).getBlock()) && event.getWorld() instanceof World) {
-            if (event.getPlayer() == null || !event.getPlayer().isCreative()) {
-                Random rand = new Random();
-                int bonusLevel = 0;
-                if (event.getPlayer() != null) {
-                    bonusLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, event.getPlayer().getHeldItemMainhand());
-                }
-                int bananaStep = (int)Math.min(AMConfig.bananaChance * 0.1F, 0);
-                int bananaRarity = AMConfig.bananaChance - (bonusLevel * bananaStep);
-                if (bananaRarity < 1 || rand.nextInt(bananaRarity) == 0) {
-                    ItemEntity itemEntity = new ItemEntity((World) event.getWorld(), event.getPos().getX() + 0.5D, event.getPos().getY() + 0.5D, event.getPos().getZ() + 0.5D, new ItemStack(AMItemRegistry.BANANA));
-                    itemEntity.setDefaultPickupDelay();
-                    event.getWorld().addEntity(itemEntity);
-                }
-            }
-        }
-    }
-
 
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {

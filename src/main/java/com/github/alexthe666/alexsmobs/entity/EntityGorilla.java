@@ -415,7 +415,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         if(this.forcedSit && !this.isBeingRidden() && this.isTamed()){
             this.setSitting(true);
         }
-        if(this.isSilverback() && rand.nextInt(600) == 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && this.getHeldItemMainhand().isEmpty()){
+        if(this.isSilverback() && rand.nextInt(600) == 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && sitProgress == 0 && !this.isAIDisabled() && this.getHeldItemMainhand().isEmpty()){
             this.setAnimation(ANIMATION_POUNDCHEST);
         }
         if(!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
