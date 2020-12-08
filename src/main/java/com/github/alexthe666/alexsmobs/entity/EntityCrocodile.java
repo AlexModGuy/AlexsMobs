@@ -450,7 +450,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.goalSelector.addGoal(3, new CrocodileAIRandomSwimming(this, 1.0D, 7));
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)).setCallsForHelp());
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, PlayerEntity.class, true){
@@ -514,6 +514,12 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             }
         }
         return type;
+    }
+
+    public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
+        if(!this.isChild()){
+            super.setAttackTarget(entitylivingbaseIn);
+        }
     }
 
     public boolean isBreedingItem(ItemStack stack) {
