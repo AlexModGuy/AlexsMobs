@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.message.MessageDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -64,6 +65,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
     private boolean prevFlying = false;
     private int spitCooldown = 0;
     private int loopSoundTick = 0;
+    private int drinkTime = 0;
 
     protected EntityCrimsonMosquito(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -168,17 +170,24 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                     if (!mount.isAlive() || mount instanceof PlayerEntity && ((PlayerEntity) mount).isCreative()) {
                         this.dismount();
                     }
-                    if (mount.ticksExisted % 20 == 0 && !world.isRemote) {
+                    if (drinkTime % 20 == 0 && !world.isRemote) {
                         if(mount.attackEntityFrom(DamageSource.causeMobDamage(this), 2.0F)){
                             this.playSound(SoundEvents.ITEM_HONEY_BOTTLE_DRINK, this.getSoundVolume(), this.getSoundPitch());
                             this.setBloodLevel(this.getBloodLevel() + 1);
                             if (this.getBloodLevel() > 3) {
                                 this.dismount();
+                                AlexsMobs.sendMSGToAll(new MessageDismount(this.getEntityId(), mount.getEntityId()));
                                 this.setFlying(false);
                                 this.flightTicks = -15;
                             }
                         }
-
+                    }
+                    if(drinkTime > 81 && !world.isRemote){
+                        drinkTime = -500;
+                        this.dismount();
+                        AlexsMobs.sendMSGToAll(new MessageDismount(this.getEntityId(), mount.getEntityId()));
+                        this.setFlying(false);
+                        this.flightTicks = -15;
                     }
                 }
 
@@ -289,6 +298,9 @@ public class EntityCrimsonMosquito extends MonsterEntity {
             if(loopSoundTick > 100){
                 loopSoundTick = 0;
             }
+        }
+        if(isPassenger() || drinkTime < 0){
+            drinkTime++;
         }
         prevFlyProgress = flyProgress;
         prevShootProgress = shootProgress;
