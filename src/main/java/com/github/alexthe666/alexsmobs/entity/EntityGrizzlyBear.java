@@ -351,9 +351,12 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity){
             PlayerEntity rider = (PlayerEntity)this.getControllingPassenger();
             if(rider.getLastAttackedEntity() != null && this.getDistance(rider.getLastAttackedEntity()) < this.getWidth() + 3F && !this.isOnSameTeam(rider.getLastAttackedEntity())){
-                attackTarget = rider.getLastAttackedEntity();
-                if (getAnimation() == NO_ANIMATION || getAnimation() == ANIMATION_SNIFF) {
-                    EntityGrizzlyBear.this.setAnimation(rand.nextBoolean() ? ANIMATION_MAUL : rand.nextBoolean() ? ANIMATION_SWIPE_L : ANIMATION_SWIPE_R);
+                UUID preyUUID = rider.getLastAttackedEntity().getUniqueID();
+                if (!this.getUniqueID().equals(preyUUID)) {
+                    attackTarget = rider.getLastAttackedEntity();
+                    if (getAnimation() == NO_ANIMATION || getAnimation() == ANIMATION_SNIFF) {
+                        EntityGrizzlyBear.this.setAnimation(rand.nextBoolean() ? ANIMATION_MAUL : rand.nextBoolean() ? ANIMATION_SWIPE_L : ANIMATION_SWIPE_R);
+                    }
                 }
             }
         }
