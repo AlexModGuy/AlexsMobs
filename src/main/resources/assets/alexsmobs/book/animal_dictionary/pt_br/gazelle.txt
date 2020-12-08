@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+A gazela é um pequeno mamífero endêmico das savanas do Overworld. Uma criatura delicada, a Gazela é bastante tímida, 
+e podem ser observados forrageando em grandes rebanhos. Quando uma gazela é atacada, todos os membros de seu grupo tentarão 
+fugir do perigo, correndo extremamente rápido de qualquer ameaça percebida.
+<NEWLINE>
+As gazelas ocasionalmente deixam cair seus chifres raros quando mortas. Esses chifres podem ser fermentados com uma poção Velocidade II 
+ para criar a incomum Poção de Velocidade III. Eles também podem derrubar carne de ovelha.
