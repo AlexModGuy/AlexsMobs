@@ -402,7 +402,6 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
          * Execute a one shot task or start executing a continuous task
          */
         public void startExecuting() {
-            this.targetPlayer.addPotionEffect(new EffectInstance(Effects.DOLPHINS_GRACE, 100));
         }
 
         /**
