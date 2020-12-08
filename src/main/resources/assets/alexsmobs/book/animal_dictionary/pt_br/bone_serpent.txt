@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+A Serpente de Ossos é uma criatura morta-viva gigante, semelhante a uma cobra, que mora nos lagos de lava profunda no Nether. Pode ocasionalmente
+ ser visto pulando da lava apenas para desaparecer dentro dela novamente pouco depois. A serpente de ossos não é apenas hostil a
+ exploradores, pois também é o inimigo mortal dos Esqueletos Wither. Sempre que a Serpente de Osso tem como alvo uma criatura, ela salta
+ fora da lava e tenta esmagar sua presa debaixo dela.
+
+Se morta, a Serpente de Osso explode em pilhas de seus ossos, mas também pode deixar cair um de seus dentes. Quando fermentado com um
+frasco de lava, uma Poção de Visão de Lava pode ser criada, o que permite ver através da lava como se fosse água.

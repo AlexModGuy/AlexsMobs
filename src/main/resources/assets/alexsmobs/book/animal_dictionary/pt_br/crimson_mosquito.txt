@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+O Mosquito Carmesim é um inseto voador horrível e mutante encontrado nas Florestas Carmesins do Nether. Esta fera vorácea procura
+ quase qualquer animal de sangue quente como lanche, incluindo pessoas. Ele primeiro ataca sua presa e a pega, sugando-a
+ até secar. Depois de se saciar, ele começará a voar e usar o sangue de sua presa contra ela - cuspindo-o de
+ volta no alvo.
+<NEWLINE>
+Se morto enquanto inflado com sangue, o Mosquito Carmesim pode derrubar uma bolsa de sangue. Ele também pode
+deixar cair sua tromba. Ambos os materiais podem ser usados para criar o Pulverizador de Sangue, uma arma única
+que usa Sangue de Mosquito para causar dano de efeito em área. O Pulverizador de sangue usa Bolsa de Sangue como munição.
+<NEWLINE>
+Se uma mosca do Overworld, variedade de jardim, se encontrar no Nether, pode se transformar em um mosquito carmesim.
