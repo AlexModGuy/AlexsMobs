@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EntityBoneSerpentPart extends LivingEntity {
+public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMultipart {
 
     private static final DataParameter<Boolean> TAIL = EntityDataManager.createKey(EntityBoneSerpentPart.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BODYINDEX = EntityDataManager.createKey(EntityBoneSerpentPart.class, DataSerializers.VARINT);
@@ -36,7 +38,7 @@ public class EntityBoneSerpentPart extends LivingEntity {
     protected float radius;
     protected float angleYaw;
     protected float offsetY;
-    protected float damageMultiplier;
+    protected float damageMultiplier = 1;
 
 
     public EntityBoneSerpentPart(EntityType t, World world) {
@@ -122,13 +124,14 @@ public class EntityBoneSerpentPart extends LivingEntity {
                 this.rotationYaw = parent.prevRotationYaw;
                 this.rotationYawHead = this.rotationYaw;
                 this.renderYawOffset = this.prevRotationYaw;
-                if(parent instanceof LivingEntity){
-                    this.hurtTime = ((LivingEntity)parent).hurtTime;
-                    this.deathTime = ((LivingEntity)parent).deathTime;
+                if (parent instanceof LivingEntity) {
+                    if(!world.isRemote && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)){
+                        AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getEntityId(), parent.getEntityId(), 0));
+                        this.hurtTime = ((LivingEntity) parent).hurtTime;
+                        this.deathTime = ((LivingEntity) parent).deathTime;
+                    }
                 }
-                if (!this.world.isRemote) {
-                    this.collideWithNearbyEntities();
-                }
+                this.collideWithNearbyEntities();
                 if (parent.removed && !world.isRemote) {
                     this.remove();
                 }
@@ -213,13 +216,9 @@ public class EntityBoneSerpentPart extends LivingEntity {
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
         Entity parent = getParent();
-        boolean prev =  parent != null && parent.attackEntityFrom(source, damage * this.damageMultiplier);
-        if(prev){
-            this.lastDamage = damage;
-            this.hurtResistantTime = 20;
-            this.recentlyHit = 100;
-            this.maxHurtTime = 10;
-            this.hurtTime = this.maxHurtTime;
+        boolean prev = parent != null && parent.attackEntityFrom(source, damage * this.damageMultiplier);
+        if (prev && !world.isRemote) {
+            AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getEntityId(), parent.getEntityId(), damage * this.damageMultiplier));
         }
         return prev;
     }
@@ -258,6 +257,16 @@ public class EntityBoneSerpentPart extends LivingEntity {
     public boolean shouldNotExist() {
         Entity parent = getParent();
         return !parent.isAlive();
+    }
+
+    @Override
+    public void onAttackedFromServer(LivingEntity parent, float damage) {
+        if (parent.deathTime > 0) {
+            this.deathTime = parent.deathTime;
+        }
+        if (parent.hurtTime > 0) {
+            this.hurtTime = parent.hurtTime;
+        }
     }
 
     public boolean shouldContinuePersisting() {

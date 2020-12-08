@@ -1,5 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.message.MessageDismount;
+import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -25,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EntityCentipedeBody extends MobEntity {
+public class EntityCentipedeBody extends MobEntity implements IHurtableMultipart {
 
     private static final DataParameter<Integer> BODYINDEX = EntityDataManager.createKey(EntityCentipedeBody.class, DataSerializers.VARINT);
     private static final DataParameter<Optional<UUID>> PARENT_UUID = EntityDataManager.createKey(EntityCentipedeBody.class, DataSerializers.OPTIONAL_UNIQUE_ID);
@@ -33,7 +36,7 @@ public class EntityCentipedeBody extends MobEntity {
     protected float radius;
     protected float angleYaw;
     protected float offsetY;
-    protected float damageMultiplier;
+    protected float damageMultiplier = 1;
     private float parentYaw = 0;
     protected EntityCentipedeBody(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -82,13 +85,14 @@ public class EntityCentipedeBody extends MobEntity {
             this.rotationYawHead = this.rotationYaw;
             this.renderYawOffset = this.prevRotationYaw;
             if (parent instanceof LivingEntity) {
-                this.hurtTime = ((LivingEntity) parent).hurtTime;
-                this.deathTime = ((LivingEntity) parent).deathTime;
+                if(!world.isRemote && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)){
+                    AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getEntityId(), parent.getEntityId(), 0));
+                    this.hurtTime = ((LivingEntity) parent).hurtTime;
+                    this.deathTime = ((LivingEntity) parent).deathTime;
+                }
             }
-            if (!this.world.isRemote) {
-                this.collideWithNearbyEntities();
-            }
-            if ((parent.removed || !parent.isAlive()) && !world.isRemote) {
+            this.collideWithNearbyEntities();
+            if ((parent.removed) && !world.isRemote) {
                 this.remove();
             }
         }
@@ -179,13 +183,9 @@ public class EntityCentipedeBody extends MobEntity {
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
         Entity parent = getParent();
-        boolean prev =  parent != null && parent.attackEntityFrom(source, damage * this.damageMultiplier);
-        if(prev){
-            this.lastDamage = damage;
-            this.hurtResistantTime = 20;
-            this.recentlyHit = 100;
-            this.maxHurtTime = 10;
-            this.hurtTime = this.maxHurtTime;
+        boolean prev = parent != null && parent.attackEntityFrom(source, damage * this.damageMultiplier);
+        if (prev && !world.isRemote) {
+            AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getEntityId(), parent.getEntityId(), damage * this.damageMultiplier));
         }
         return prev;
     }
@@ -223,5 +223,15 @@ public class EntityCentipedeBody extends MobEntity {
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 12.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    @Override
+    public void onAttackedFromServer(LivingEntity parent, float damage) {
+        if(parent.deathTime > 0){
+            this.deathTime = parent.deathTime;
+        }
+        if(parent.hurtTime > 0){
+            this.hurtTime = parent.hurtTime;
+        }
     }
 }

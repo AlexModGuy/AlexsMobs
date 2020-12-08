@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
 import com.github.alexthe666.alexsmobs.message.MessageDismount;
+import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.github.alexthe666.alexsmobs.message.MessageMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
@@ -86,6 +87,7 @@ public class AlexsMobs {
     private void setup(final FMLCommonSetupEvent event) {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMountPlayer.class, MessageMountPlayer::write, MessageMountPlayer::read, MessageMountPlayer.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageDismount.class, MessageDismount::write, MessageDismount::read, MessageDismount.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageHurtMultipart.class, MessageHurtMultipart::write, MessageHurtMultipart::read, MessageHurtMultipart.Handler::handle);
 
     }
 
