@@ -12,6 +12,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
@@ -58,6 +59,12 @@ public class AMItemRegistry {
     public static final Item CENTIPEDE_LEG = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:centipede_leg");
     public static final Item CENTIPEDE_LEGGINGS = new ItemModArmor(CENTIPEDE_ARMOR_MATERIAL, EquipmentSlotType.LEGS).setRegistryName("alexsmobs:centipede_leggings");
 
+    public static final BannerPattern PATTERN_BEAR = addBanner("bear");
+
+    private static BannerPattern addBanner(String name) {
+        return BannerPattern.create(name.toUpperCase(), name, "alexsmobs." + name, true);
+    }
+
     @SubscribeEvent
     public static void registerItem(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.GRIZZLY_BEAR, 0X693A2C, 0X976144, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_grizzly_bear"));
@@ -88,6 +95,7 @@ public class AMItemRegistry {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        event.getRegistry().register(new BannerPatternItem(PATTERN_BEAR, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_bear"));
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CROCODILE_SCUTE));
         ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(ROADRUNNER_FEATHER));
         CENTIPEDE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CENTIPEDE_LEG));
@@ -101,5 +109,6 @@ public class AMItemRegistry {
                 return entityarrow;
             }
         });
+
     }
 }
