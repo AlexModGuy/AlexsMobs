@@ -169,14 +169,16 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                         this.dismount();
                     }
                     if (mount.ticksExisted % 20 == 0 && !world.isRemote) {
-                        mount.attackEntityFrom(DamageSource.causeMobDamage(this), 2.0F);
-                        this.playSound(SoundEvents.ITEM_HONEY_BOTTLE_DRINK, this.getSoundVolume(), this.getSoundPitch());
-                        this.setBloodLevel(this.getBloodLevel() + 1);
-                        if (this.getBloodLevel() > 3) {
-                            this.dismount();
-                            this.setFlying(false);
-                            this.flightTicks = -15;
+                        if(mount.attackEntityFrom(DamageSource.causeMobDamage(this), 2.0F)){
+                            this.playSound(SoundEvents.ITEM_HONEY_BOTTLE_DRINK, this.getSoundVolume(), this.getSoundPitch());
+                            this.setBloodLevel(this.getBloodLevel() + 1);
+                            if (this.getBloodLevel() > 3) {
+                                this.dismount();
+                                this.setFlying(false);
+                                this.flightTicks = -15;
+                            }
                         }
+
                     }
                 }
 
