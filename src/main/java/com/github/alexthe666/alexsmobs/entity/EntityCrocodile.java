@@ -291,7 +291,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
                 }
             }
         }
-        if (!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_LUNGE && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
+        if (!world.isRemote && this.isAlive() && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_LUNGE && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
             float f1 = this.rotationYaw * ((float) Math.PI / 180F);
             this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.02F, 0.0D, MathHelper.cos(f1) * 0.02F));
             if (this.getDistance(this.getAttackTarget()) < 3.5F && this.canEntityBeSeen(this.getAttackTarget())) {
@@ -302,7 +302,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
         }
-        if (!world.isRemote && this.getAttackTarget() != null && this.isInWater()) {
+        if (!world.isRemote && this.isAlive() && this.getAttackTarget() != null && this.isInWater()) {
             if (this.getAttackTarget().getRidingEntity() != null && this.getAttackTarget().getRidingEntity() == this) {
                 if (this.getAnimation() == NO_ANIMATION) {
                     this.setAnimation(ANIMATION_DEATHROLL);
@@ -352,7 +352,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             double extraZ = radius * MathHelper.cos(angle);
             passenger.setPosition(this.getPosX() + extraX, this.getPosY() + 0.1F, this.getPosZ() + extraZ);
             passengerTimer++;
-            if (passengerTimer > 0 && passengerTimer % 40 == 0) {
+            if (this.isAlive() && passengerTimer > 0 && passengerTimer % 40 == 0) {
                 passenger.attackEntityFrom(DamageSource.causeMobDamage(this), 2);
             }
         }
