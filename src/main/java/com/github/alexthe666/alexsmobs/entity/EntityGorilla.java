@@ -429,13 +429,14 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             recalculateSize();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100F);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(20F);
+            this.heal(100F);
         }
         if(!isSilverback() && !isChild() && hasSilverbackAttributes){
             hasSilverbackAttributes = false;
             recalculateSize();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40F);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8F);
-
+            this.heal(40F);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
