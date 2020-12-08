@@ -36,7 +36,7 @@ public class AMConfig {
     public static int lobsterSpawnRolls = 0;
     public static int komodoDragonSpawnWeight = 4;
     public static int komodoDragonSpawnRolls = 1;
-    public static int capuchinMonkeySpawnWeight = 50;
+    public static int capuchinMonkeySpawnWeight = 55;
     public static int capuchinMonkeySpawnRolls = 0;
     public static int caveCentipedeSpawnWeight = 8;
     public static int caveCentipedeSpawnRolls = 1;
