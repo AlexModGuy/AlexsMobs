@@ -26,6 +26,7 @@ public class AMItemRegistry {
     public static CustomArmorMaterial ROADRUNNER_ARMOR_MATERIAL = new AMArmorMaterial("roadrunner", 18, new int[]{3, 3, 3, 3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0);
     public static CustomArmorMaterial CROCODILE_ARMOR_MATERIAL = new AMArmorMaterial("crocodile", 22, new int[]{2, 5, 7, 3}, 25, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 1);
     public static CustomArmorMaterial CENTIPEDE_ARMOR_MATERIAL = new AMArmorMaterial("centipede", 20, new int[]{6, 6, 6, 6}, 22, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0.5F);
+    public static CustomArmorMaterial MOOSE_ARMOR_MATERIAL = new AMArmorMaterial("moose", 19, new int[]{7, 7, 7, 7}, 21, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0.5F);
 
     public static final Item TAB_ICON = new Item(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:animal_dictionary");
@@ -58,6 +59,9 @@ public class AMItemRegistry {
     public static final Item SOPA_DE_MACACO = new SoupItem(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(5).saturation(0.4F).meat().build())).setRegistryName("alexsmobs:sopa_de_macaco");
     public static final Item CENTIPEDE_LEG = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:centipede_leg");
     public static final Item CENTIPEDE_LEGGINGS = new ItemModArmor(CENTIPEDE_ARMOR_MATERIAL, EquipmentSlotType.LEGS).setRegistryName("alexsmobs:centipede_leggings");
+    public static final Item MOSQUITO_LARVA = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mosquito_larva");
+    public static final Item MOOSE_ANTLER = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:moose_antler");
+    public static final Item MOOSE_HEADGEAR = new ItemModArmor(MOOSE_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:moose_headgear");
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
 
@@ -86,6 +90,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.CAPUCHIN_MONKEY, 0X25211F,0XF1DAB3, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_capuchin_monkey"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.CENTIPEDE_HEAD, 0X342B2E,0X733449, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_centipede"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.WARPED_TOAD, 0X1F968E,0XFEAC6D, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_warped_toad"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MOOSE, 0X36302A,0XD4B183, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_moose"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

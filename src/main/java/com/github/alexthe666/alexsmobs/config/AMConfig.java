@@ -41,6 +41,10 @@ public class AMConfig {
     public static int caveCentipedeSpawnWeight = 8;
     public static int caveCentipedeSpawnRolls = 1;
     public static int caveCentipedeSpawnHeight = 30;
+    public static int warpedToadSpawnWeight = 19;
+    public static int warpedToadSpawnRolls = 0;
+    public static int mooseSpawnWeight = 15;
+    public static int mooseSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean bananasDropFromLeaves = true;
@@ -88,6 +92,10 @@ public class AMConfig {
             caveCentipedeSpawnWeight = ConfigHolder.COMMON.caveCentipedeSpawnWeight.get();
             caveCentipedeSpawnRolls = ConfigHolder.COMMON.caveCentipedeSpawnRolls.get();
             caveCentipedeSpawnHeight = ConfigHolder.COMMON.caveCentipedeSpawnHeight.get();
+            warpedToadSpawnWeight = ConfigHolder.COMMON.warpedToadSpawnWeight.get();
+            warpedToadSpawnRolls = ConfigHolder.COMMON.warpedToadSpawnRolls.get();
+            mooseSpawnWeight = ConfigHolder.COMMON.mooseSpawnWeight.get();
+            mooseSpawnRolls = ConfigHolder.COMMON.mooseSpawnRolls.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

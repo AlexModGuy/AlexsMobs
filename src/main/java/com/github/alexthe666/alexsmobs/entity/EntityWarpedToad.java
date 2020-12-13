@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -18,6 +19,7 @@ import net.minecraft.entity.passive.RabbitEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -35,6 +37,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -73,14 +76,36 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         switchNavigator(false);
     }
 
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.warpedToadSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
     public static boolean canWarpedToadSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.CRIMSON_MOSQUITO_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.WARPED_TOAD_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
+        System.out.println(worldIn.getBlockState(blockpos));
         return reason == SpawnReason.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn) && canSpawnOn(AMEntityRegistry.WARPED_TOAD, worldIn, reason, pos, randomIn);
     }
 
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            Entity entity = source.getTrueSource();
+            this.func_233687_w_(false);
+            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+                amount = (amount + 1.0F) / 3.0F;
+            }
+            return super.attackEntityFrom(source, amount);
+        }
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.25F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.25F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
     public void writeAdditional(CompoundNBT compound) {
@@ -102,7 +127,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
         this.goalSelector.addGoal(3, new BreedGoal(this, 0.8D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.MAGGOT), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.MAGGOT, AMItemRegistry.MOSQUITO_LARVA), false));
         this.goalSelector.addGoal(5, new WarpedToadAIRandomSwimming(this, 1.0D, 7));
         this.goalSelector.addGoal(6, new AnimalAIWanderRanged(this, 60, 1.0D, 5, 4));
         this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 10.0F));
@@ -217,11 +242,16 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         this.wasOnGround = this.onGround;
     }
 
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem() == AMItemRegistry.MOSQUITO_LARVA && isTamed();
+    }
+
+
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.func_230254_b_(player, hand);
-        if (!isTamed() && item == AMItemRegistry.MAGGOT) {
+        if (!isTamed() && item == AMItemRegistry.MOSQUITO_LARVA) {
             this.consumeItemFromStack(player, itemstack);
             if (getRNG().nextInt(3) == 0) {
                 this.setTamedBy(player);
@@ -458,7 +488,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return null;
+        return AMEntityRegistry.WARPED_TOAD.create(serverWorld);
     }
 
     public float getTongueLength() {

@@ -44,6 +44,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityCentipedeTail> CENTIPEDE_TAIL = registerEntity(EntityType.Builder.create(EntityCentipedeTail::new, EntityClassification.CREATURE).size(0.9F, 0.9F).immuneToFire(), "centipede_tail");
     public static final EntityType<EntityCrocodileEgg> CROCODILE_EGG = registerEntity(EntityType.Builder.create(EntityCrocodileEgg::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityCrocodileEgg::new).immuneToFire(), "crocodile_egg");
     public static final EntityType<EntityWarpedToad> WARPED_TOAD = registerEntity(EntityType.Builder.create(EntityWarpedToad::new, EntityClassification.CREATURE).size(0.9F, 1.4F).immuneToFire().setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "warped_toad");
+    public static final EntityType<EntityMoose> MOOSE = registerEntity(EntityType.Builder.create(EntityMoose::new, EntityClassification.CREATURE).size(1.7F, 2.4F), "moose");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -70,6 +71,7 @@ public class AMEntityRegistry {
         EntitySpawnPlacementRegistry.register(CAPUCHIN_MONKEY, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, EntityCapuchinMonkey::canCapuchinSpawn);
         EntitySpawnPlacementRegistry.register(CENTIPEDE_HEAD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityCentipedeHead::canCentipedeSpawn);
         EntitySpawnPlacementRegistry.register(WARPED_TOAD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityWarpedToad::canWarpedToadSpawn);
+        EntitySpawnPlacementRegistry.register(MOOSE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityMoose::canMooseSpawn);
     }
 
         @SubscribeEvent
@@ -114,6 +116,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(CENTIPEDE_BODY, EntityCentipedeBody.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(CENTIPEDE_TAIL, EntityCentipedeTail.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(WARPED_TOAD, EntityWarpedToad.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(MOOSE, EntityMoose.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

@@ -51,6 +51,10 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue caveCentipedeSpawnWeight;
     public final ForgeConfigSpec.IntValue caveCentipedeSpawnRolls;
     public final ForgeConfigSpec.IntValue caveCentipedeSpawnHeight;
+    public final ForgeConfigSpec.IntValue warpedToadSpawnWeight;
+    public final ForgeConfigSpec.IntValue warpedToadSpawnRolls;
+    public final ForgeConfigSpec.IntValue mooseSpawnWeight;
+    public final ForgeConfigSpec.IntValue mooseSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
@@ -99,6 +103,10 @@ public class CommonConfig {
         capuchinMonkeySpawnRolls = buildInt(builder, "capuchinMonkeySpawnRolls", "spawns", AMConfig.capuchinMonkeySpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         caveCentipedeSpawnWeight = buildInt(builder, "caveCentipedeSpawnWeight", "spawns", AMConfig.caveCentipedeSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         caveCentipedeSpawnRolls = buildInt(builder, "caveCentipedeSpawnRolls", "spawns", AMConfig.caveCentipedeSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        warpedToadSpawnWeight = buildInt(builder, "warpedToadSpawnWeight", "spawns", AMConfig.warpedToadSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        warpedToadSpawnRolls = buildInt(builder, "warpedToadSpawnRolls", "spawns", AMConfig.warpedToadSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        mooseSpawnWeight = buildInt(builder, "mooseSpawnWeight", "spawns", AMConfig.mooseSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        mooseSpawnRolls = buildInt(builder, "mooseSpawnRolls", "spawns", AMConfig.mooseSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

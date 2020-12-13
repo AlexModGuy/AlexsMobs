@@ -11,7 +11,7 @@ public class DefaultBiomes {
     public static final String[] ORCA = new String[] { "&#overworld+|#ocean+&#cold" };
     public static final String[] SUNBIRD = new String[] { "&#overworld+|#mountain" };
     public static final String[] GORILLA = new String[] {"&#overworld+|#jungle+!minecraft:bamboo_jungle+!minecraft:bamboo_jungle_hills" };
-    public static final String[] CRIMSON_MOSQUITO = new String[] {"minecraft:crimson_forest"};
+    public static final String[] CRIMSON_MOSQUITO = new String[] {"|minecraft:crimson_forest"};
     public static final String[] RATTLESNAKE = new String[] { "&#overworld+|#mesa", "&#overworld+|@desert" };
     public static final String[] ENDERGRADE = new String[] {"&#end+!minecraft:the_end" };
     public static final String[] HAMMERHEAD = new String[] { "&#overworld+|#ocean+&#hot" };
@@ -19,4 +19,6 @@ public class DefaultBiomes {
     public static final String[] KOMODO_DRAGON = new String[] { "&#overworld+|#mesa" };
     public static final String[] CAPUCHIN_MONKEY = new String[] {"&#overworld+|#jungle+!minecraft:bamboo_jungle+!minecraft:bamboo_jungle_hills" };
     public static final String[] CENTIPEDE = new String[] { "&#overworld+!#ocean+!#mushroom" };
+    public static final String[] WARPED_TOAD = new String[] {"|minecraft:warped_forest"};
+    public static final String[] MOOSE = new String[] { "&#overworld+|#snowy+&#wasteland", "&#overworld+|#snowy+&#forest"};
 }

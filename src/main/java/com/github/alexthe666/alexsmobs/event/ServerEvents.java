@@ -40,9 +40,11 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -122,6 +124,14 @@ public class ServerEvents {
                 data.putBoolean("alexsmobs_has_book", true);
                 playerData.put(PlayerEntity.PERSISTED_NBT_TAG, data);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
+        if(event.getPlayer().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR && event.getTarget() instanceof LivingEntity){
+            float f1 = 2;
+           ((LivingEntity)event.getTarget()).applyKnockback(f1 * 0.5F, (double)MathHelper.sin(event.getPlayer().rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(event.getPlayer().rotationYaw * ((float)Math.PI / 180F))));
         }
     }
 

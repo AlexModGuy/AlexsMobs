@@ -105,7 +105,6 @@ public class ModelGazelle extends AdvancedEntityModel<EntityGazelle> {
     }
 
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
-        this.resetToDefaultPose();
         animator.update(entity);
         animator.setAnimation(EntityGazelle.ANIMATION_FLICK_TAIL);
         animator.startKeyframe(2);

@@ -201,8 +201,8 @@ public class ModelWarpedToad extends AdvancedEntityModel<EntityWarpedToad> {
             this.leg_right.rotateAngleX += (jumpRotation * 50.0F) * 0.017453292F;
             this.foot_right.rotateAngleX += jumpRotation * 25.0F * 0.017453292F;
             this.foot_left.rotateAngleX += jumpRotation * 25.0F * 0.017453292F;
-            this.arm_right.rotateAngleX += (jumpRotation * -50.0F) * 0.017453292F;
-            this.arm_left.rotateAngleX += (jumpRotation * -50.0F) * 0.017453292F;
+            this.arm_right.rotateAngleX += (jumpRotation * -70.0F) * 0.017453292F;
+            this.arm_left.rotateAngleX += (jumpRotation * -70.0F) * 0.017453292F;
             this.body.rotateAngleX += (jumpRotation * 30.0F) * 0.017453292F;
             this.head.rotateAngleX += (jumpRotation * -10.0F) * 0.017453292F;
         }
@@ -211,6 +211,30 @@ public class ModelWarpedToad extends AdvancedEntityModel<EntityWarpedToad> {
         }
 
     }
+
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.isChild) {
+            float f = 1.6F;
+            head.setScale(f, f, f);
+            head.setShouldScaleChildren(true);
+            matrixStackIn.push();
+            matrixStackIn.scale(0.35F, 0.35F, 0.35F);
+            matrixStackIn.translate(0.0D, 2.75D, 0.125D);
+            getParts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+            head.setScale(1, 1, 1);
+        } else {
+            matrixStackIn.push();
+            getParts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+        }
+
+    }
+
 
     public void setRotationAngle(AdvancedModelBox modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;

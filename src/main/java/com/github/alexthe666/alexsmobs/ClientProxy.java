@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs;
 
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
+import com.github.alexthe666.alexsmobs.client.model.ModelMooseHeadgear;
 import com.github.alexthe666.alexsmobs.client.model.ModelRoadrunnerBoots;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
@@ -34,6 +35,7 @@ import java.util.concurrent.Callable;
 public class ClientProxy extends CommonProxy {
 
     private static final ModelRoadrunnerBoots ROADRUNNER_BOOTS_MODEL = new ModelRoadrunnerBoots(0.7F);
+    private static final ModelMooseHeadgear MOOSE_HEADGEAR_MODEL = new ModelMooseHeadgear(0.3F);
 
     public void clientInit() {
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
@@ -63,6 +65,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CENTIPEDE_TAIL, manager -> new RenderCentipedeTail(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CROCODILE_EGG, manager -> new SpriteRenderer(manager, itemRendererIn));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.WARPED_TOAD, manager -> new RenderWarpedToad(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MOOSE, manager -> new RenderMoose(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderType lavaType = RenderType.getTranslucent();
         RenderTypeLookup.setRenderLayer(Fluids.LAVA, lavaType);
@@ -92,8 +95,12 @@ public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     public Object getArmorModel(int armorId) {
         switch (armorId) {
-            default:
+            case 0:
                 return ROADRUNNER_BOOTS_MODEL;
+            case 1:
+                return MOOSE_HEADGEAR_MODEL;
+            default:
+                return null;
         }
     }
 }

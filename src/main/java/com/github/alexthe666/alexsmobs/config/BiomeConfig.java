@@ -29,6 +29,8 @@ public class BiomeConfig {
 	public static List<? extends String> komodoDragon = Lists.newArrayList(DefaultBiomes.KOMODO_DRAGON);
 	public static List<? extends String> capuchinMonkey = Lists.newArrayList(DefaultBiomes.CAPUCHIN_MONKEY);
 	public static List<? extends String> caveCentipede = Lists.newArrayList(DefaultBiomes.CENTIPEDE);
+	public static List<? extends String> warpedToad = Lists.newArrayList(DefaultBiomes.WARPED_TOAD);
+	public static List<? extends String> moose = Lists.newArrayList(DefaultBiomes.MOOSE);
 
      public static Map<String, ForgeConfigSpec.ConfigValue<List<? extends String>>> biomeConfigValues = new HashMap<>();
 
