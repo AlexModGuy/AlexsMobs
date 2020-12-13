@@ -15,6 +15,7 @@ public class AMTagRegistry {
     public static final ResourceLocation GORILLA_FOODSTUFFS = new ResourceLocation("alexsmobs","gorilla_foodstuffs");
     public static final ResourceLocation ORCA_TARGETS = new ResourceLocation("alexsmobs", "orca_targets");
     public static final ResourceLocation CRIMSON_MOSQUITO_TARGETS = new ResourceLocation("alexsmobs", "crimson_mosquito_targets");
+    public static final ResourceLocation WARPED_TOAD_TARGETS = new ResourceLocation("alexsmobs", "warped_toad_targets");
     public static final ResourceLocation CROCODILE_TARGETS = new ResourceLocation("alexsmobs", "crocodile_targets");
     public static final ResourceLocation KOMODO_DRAGON_TARGETS = new ResourceLocation("alexsmobs", "komodo_dragon_targets");
     public static final ResourceLocation BANANAS = new ResourceLocation("alexsmobs", "bananas");

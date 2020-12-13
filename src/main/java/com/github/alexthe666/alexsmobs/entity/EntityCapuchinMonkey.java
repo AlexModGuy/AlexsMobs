@@ -376,7 +376,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
                 if(this.getCommand() == 3){
                     this.setCommand(0);
                 }
-                player.sendStatusMessage(new TranslationTextComponent("entity.alexsmobs.capuchin_monkey.command_" + this.getCommand(), this.getName()), true);
+                player.sendStatusMessage(new TranslationTextComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if(sit){
                     this.forcedSit = true;

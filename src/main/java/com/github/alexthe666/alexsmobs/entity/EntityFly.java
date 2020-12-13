@@ -57,6 +57,7 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
         return this.world.getDimensionKey() == World.THE_NETHER && !this.isAIDisabled();
     }
 
+
     protected SoundEvent getAmbientSound() {
         return AMSoundRegistry.FLY_IDLE;
     }
@@ -127,13 +128,14 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
         if(isInNether()){
             conversionTime++;
             if(conversionTime > 300){
-                this.remove();
                 EntityCrimsonMosquito mosquito = AMEntityRegistry.CRIMSON_MOSQUITO.create(world);
                 mosquito.copyLocationAndAnglesFrom(this);
                 if(!world.isRemote){
                     mosquito.onInitialSpawn((IServerWorld)world, world.getDifficultyForLocation(this.getPosition()), SpawnReason.CONVERSION, null, null);
                 }
                 world.addEntity(mosquito);
+                mosquito.onSpawnFromFly();
+                this.remove();
             }
         }
     }

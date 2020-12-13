@@ -1,0 +1,8 @@
+{
+  "__comment": "all non-player targets of the crimson mosquito mob.",
+  "replace": false,
+  "values": [
+    "alexsmobs:crimson_mosquito",
+    "alexsmobs:fly"
+  ]
+}

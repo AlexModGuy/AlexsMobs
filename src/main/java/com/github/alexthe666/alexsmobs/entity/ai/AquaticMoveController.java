@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.entity.EntityWarpedToad;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -18,7 +19,7 @@ public class AquaticMoveController extends MovementController {
     }
 
     public void tick() {
-        if (this.entity.isInWater()) {
+        if (this.entity.isInWater() || entity instanceof EntityWarpedToad && entity.isInLava()) {
             this.entity.setMotion(this.entity.getMotion().add(0.0D, 0.005D, 0.0D));
         }
         if(entity instanceof ISemiAquatic && ((ISemiAquatic) entity).shouldStopMoving()){

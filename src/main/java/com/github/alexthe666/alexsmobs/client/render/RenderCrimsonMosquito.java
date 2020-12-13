@@ -20,7 +20,8 @@ public class RenderCrimsonMosquito extends MobRenderer<EntityCrimsonMosquito, Mo
     }
 
     protected void preRenderCallback(EntityCrimsonMosquito entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.scale(1.2F, 1.2F, 1.2F);
+        float mosScale = entitylivingbaseIn.prevMosquitoScale + (entitylivingbaseIn.getMosquitoScale() - entitylivingbaseIn.prevMosquitoScale) * partialTickTime;
+        matrixStackIn.scale(mosScale * 1.2F, mosScale * 1.2F, mosScale * 1.2F);
     }
 
 

@@ -26,6 +26,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.BlockTags;
@@ -52,6 +53,8 @@ public class EntityCrimsonMosquito extends MonsterEntity {
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHOOTING = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BLOOD_LEVEL = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> SHRINKING = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> MOSQUITO_SCALE = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.FLOAT);
     private static final Predicate<AnimalEntity> WARM_BLOODED = (mob) -> {
         return !(mob instanceof StriderEntity);
     };
@@ -66,6 +69,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
     private int spitCooldown = 0;
     private int loopSoundTick = 0;
     private int drinkTime = 0;
+    public float prevMosquitoScale = 1F;
 
     protected EntityCrimsonMosquito(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -74,6 +78,15 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         this.setPathPriority(PathNodeType.LAVA, 0.0F);
         this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
         this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
+    }
+
+    public void onSpawnFromFly(){
+        prevMosquitoScale = 0.2F;
+        this.setShrink(false);
+        this.setMosquitoScale(0.2F);
+        for(int j = 0; j < 4; ++j) {
+            this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getPosX() + this.rand.nextDouble() / 2.0D, this.getPosYHeight(0.5D), this.getPosZ() + this.rand.nextDouble() / 2.0D, this.rand.nextDouble() * 0.5F + 0.5F, 0, 0.0D);
+        }
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -118,13 +131,17 @@ public class EntityCrimsonMosquito extends MonsterEntity {
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putInt("FlightTicks", this.flightTicks);
+        compound.putFloat("MosquitoScale", this.getMosquitoScale());
         compound.putBoolean("Flying", this.isFlying());
+        compound.putBoolean("Shrinking", this.isShrinking());
     }
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.flightTicks = compound.getInt("FlightTicks");
+        this.setMosquitoScale(compound.getFloat("MosquitoScale"));
         this.setFlying(compound.getBoolean("Flying"));
+        this.setShrink(compound.getBoolean("Shrinking"));
     }
 
     private void spit(LivingEntity target) {
@@ -202,6 +219,8 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         this.dataManager.register(FLYING, Boolean.valueOf(false));
         this.dataManager.register(SHOOTING, Boolean.valueOf(false));
         this.dataManager.register(BLOOD_LEVEL, 0);
+        this.dataManager.register(SHRINKING, Boolean.valueOf(false));
+        this.dataManager.register(MOSQUITO_SCALE, 1F);
     }
 
     public boolean isFlying() {
@@ -223,6 +242,22 @@ public class EntityCrimsonMosquito extends MonsterEntity {
 
     public void setBloodLevel(int bloodLevel) {
         this.dataManager.set(BLOOD_LEVEL, bloodLevel);
+    }
+
+    public boolean isShrinking() {
+        return this.dataManager.get(SHRINKING).booleanValue();
+    }
+
+    public void setShrink(boolean shrink) {
+        this.dataManager.set(SHRINKING, shrink);
+    }
+
+    public float getMosquitoScale() {
+        return this.dataManager.get(MOSQUITO_SCALE);
+    }
+
+    public void setMosquitoScale(float scale) {
+        this.dataManager.set(MOSQUITO_SCALE, scale);
     }
 
     public void tick() {
@@ -279,6 +314,16 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                         flightTicks = -150 - rand.nextInt(200);
                     }
                 }
+            }
+        }
+        prevMosquitoScale = this.getMosquitoScale();
+        if(isShrinking()){
+            if(this.getMosquitoScale() > 0.4F){
+                this.setMosquitoScale(this.getMosquitoScale() - 0.1F);
+            }
+        }else{
+            if(this.getMosquitoScale() < 1F){
+                this.setMosquitoScale(this.getMosquitoScale() + 0.05F);
             }
         }
         if (!world.isRemote && shootingTicks > 0) {
