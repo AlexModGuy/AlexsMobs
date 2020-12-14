@@ -197,7 +197,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                         }
                     }
                     if(drinkTime > 81 && !world.isRemote){
-                        drinkTime = -500;
+                        drinkTime = -100;
                         this.dismount();
                         AlexsMobs.sendMSGToAll(new MessageMosquitoDismount(this.getEntityId(), mount.getEntityId()));
                         this.setFlying(false);
@@ -326,7 +326,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         if (!world.isRemote && shootingTicks > 0) {
             shootingTicks--;
             if (shootingTicks == 0) {
-                if (this.getAttackTarget() != null) {
+                if (this.getAttackTarget() != null && this.getBloodLevel() > 0) {
                     this.spit(this.getAttackTarget());
                 }
                 this.dataManager.set(SHOOTING, false);
@@ -541,14 +541,14 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         }
 
         public boolean shouldExecute() {
-            if (!parentEntity.isFlying() || parentEntity.getBloodLevel() > 0) {
+            if (!parentEntity.isFlying() || parentEntity.getBloodLevel() > 0 || parentEntity.drinkTime < 0) {
                 return false;
             }
             return !parentEntity.isPassenger() && parentEntity.getAttackTarget() != null && !isBittenByMosquito(parentEntity.getAttackTarget());
         }
 
         public boolean shouldContinueExecuting() {
-            return parentEntity.getAttackTarget() != null && !isBittenByMosquito(parentEntity.getAttackTarget()) && !parentEntity.collidedHorizontally && parentEntity.getBloodLevel() == 0 && parentEntity.isFlying() && parentEntity.getMoveHelper().isUpdating();
+            return parentEntity.drinkTime >= 0 && parentEntity.getAttackTarget() != null && !isBittenByMosquito(parentEntity.getAttackTarget()) && !parentEntity.collidedHorizontally && parentEntity.getBloodLevel() == 0 && parentEntity.isFlying() && parentEntity.getMoveHelper().isUpdating();
         }
 
         public boolean isBittenByMosquito(Entity entity) {
@@ -587,7 +587,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         }
 
         public boolean shouldExecute() {
-            if (!parentEntity.isFlying() || parentEntity.getBloodLevel() <= 0) {
+            if (!parentEntity.isFlying() || parentEntity.getBloodLevel() <= 0 && parentEntity.drinkTime >= 0) {
                 return false;
             }
             if (!parentEntity.isPassenger() && parentEntity.getAttackTarget() != null) {
@@ -598,7 +598,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         }
 
         public boolean shouldContinueExecuting() {
-            return parentEntity.getAttackTarget() != null && parentEntity.getBloodLevel() > 0 && parentEntity.isFlying() && !parentEntity.collidedHorizontally;
+            return parentEntity.getAttackTarget() != null &&( parentEntity.getBloodLevel() > 0 || parentEntity.drinkTime < 0) && parentEntity.isFlying() && !parentEntity.collidedHorizontally;
         }
 
         public void resetTask() {
@@ -616,7 +616,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                     this.parentEntity.getMoveHelper().setMoveTo(shootPos.getX() + 0.5D, shootPos.getY() + 0.5D, shootPos.getZ() + 0.5D, 1.0D);
                     this.parentEntity.faceEntity(parentEntity.getAttackTarget(), 30.0F, 30.0F);
                     if (parentEntity.getDistanceSq(Vector3d.copyCentered(shootPos)) < 2.5F) {
-                        if (spitCooldown == 0) {
+                        if (spitCooldown == 0 && parentEntity.getBloodLevel() > 0) {
                             parentEntity.setupShooting();
                             spitCooldown = 20;
                         }
