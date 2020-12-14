@@ -41,7 +41,7 @@ public class AMConfig {
     public static int caveCentipedeSpawnWeight = 8;
     public static int caveCentipedeSpawnRolls = 1;
     public static int caveCentipedeSpawnHeight = 30;
-    public static int warpedToadSpawnWeight = 40;
+    public static int warpedToadSpawnWeight = 80;
     public static int warpedToadSpawnRolls = 0;
     public static int mooseSpawnWeight = 15;
     public static int mooseSpawnRolls = 0;
@@ -50,6 +50,7 @@ public class AMConfig {
     public static boolean bananasDropFromLeaves = true;
     public static int bananaChance = 200;
     public static boolean spidersAttackFlies = true;
+    public static boolean wolvesAttackMoose = true;
     public static boolean giveBookOnStartup = true;
 
     public static void bake(ModConfig config) {
@@ -99,6 +100,7 @@ public class AMConfig {
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
+            wolvesAttackMoose = ConfigHolder.COMMON.wolvesAttackMoose.get();
             bananaChance = ConfigHolder.COMMON.bananaChance.get();
             giveBookOnStartup = ConfigHolder.COMMON.giveBookOnStartup.get();
         } catch (Exception e) {

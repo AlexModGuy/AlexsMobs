@@ -77,6 +77,16 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         switchNavigator(false);
     }
 
+    public static boolean canWarpedToadSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        BlockPos blockpos = pos.down();
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.WARPED_TOAD_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
+        return reason == SpawnReason.SPAWNER || spawnBlock;
+    }
+
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.25F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+    }
+
     protected SoundEvent getAmbientSound() {
         return AMSoundRegistry.WARPED_TOAD_IDLE;
     }
@@ -95,12 +105,6 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.warpedToadSpawnRolls, this.getRNG(), spawnReasonIn);
-    }
-
-    public static boolean canWarpedToadSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        BlockPos blockpos = pos.down();
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.WARPED_TOAD_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
-        return reason == SpawnReason.SPAWNER || spawnBlock;
     }
 
     public int getMaxSpawnedInChunk() {
@@ -126,10 +130,6 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
             }
             return super.attackEntityFrom(source, amount);
         }
-    }
-
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.25F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
     public void writeAdditional(CompoundNBT compound) {
@@ -160,6 +160,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 50, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.WARPED_TOAD_TARGETS))));
+        this.targetSelector.addGoal(5, new HurtByTargetGoal(this));
     }
 
     public void travel(Vector3d travelVector) {
@@ -211,7 +212,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
     public void setJumping(boolean jumping) {
         super.setJumping(jumping);
         if (jumping) {
-        //    this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+            //    this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
         }
     }
 
@@ -284,11 +285,15 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
             }
             return ActionResultType.SUCCESS;
         }
-        if (isTamed() && (item == AMItemRegistry.MAGGOT) && this.getHealth() < this.getMaxHealth()) {
-            this.consumeItemFromStack(player, itemstack);
-            this.playSound(SoundEvents.ENTITY_STRIDER_EAT, this.getSoundVolume(), this.getSoundPitch());
-            this.heal(5);
-            return ActionResultType.SUCCESS;
+        if (isTamed() && (item == AMItemRegistry.MAGGOT)) {
+            if (this.getHealth() < this.getMaxHealth()) {
+                this.consumeItemFromStack(player, itemstack);
+                this.playSound(SoundEvents.ENTITY_STRIDER_EAT, this.getSoundVolume(), this.getSoundPitch());
+                this.heal(5);
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+
         }
         if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
             this.setCommand(this.getCommand() + 1);
@@ -308,6 +313,23 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         return type;
     }
 
+
+    public boolean isOnSameTeam(Entity entityIn) {
+        if (this.isTamed()) {
+            LivingEntity livingentity = this.getOwner();
+            if (entityIn == livingentity) {
+                return true;
+            }
+            if (entityIn instanceof TameableEntity) {
+                return ((TameableEntity) entityIn).isOwner(livingentity);
+            }
+            if (livingentity != null) {
+                return livingentity.isOnSameTeam(entityIn);
+            }
+        }
+
+        return super.isOnSameTeam(entityIn);
+    }
 
     public boolean shouldSpawnRunningEffects() {
         return false;
@@ -685,16 +707,17 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
             }
         }
     }
+
     public class FollowOwner extends Goal {
         private final EntityWarpedToad tameable;
-        private LivingEntity owner;
         private final IWorldReader world;
         private final double followSpeed;
-        private int timeToRecalcPath;
         private final float maxDist;
         private final float minDist;
-        private float oldWaterCost;
         private final boolean teleportToLeaves;
+        private LivingEntity owner;
+        private int timeToRecalcPath;
+        private float oldWaterCost;
 
         public FollowOwner(EntityWarpedToad p_i225711_1_, double p_i225711_2_, float p_i225711_4_, float p_i225711_5_, boolean p_i225711_6_) {
             this.tameable = p_i225711_1_;
@@ -717,7 +740,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
                 return false;
             } else if (this.tameable.isSitting() || tameable.getCommand() != 1) {
                 return false;
-            } else if (this.tameable.getDistanceSq(lvt_1_1_) < (double)(this.minDist * this.minDist)) {
+            } else if (this.tameable.getDistanceSq(lvt_1_1_) < (double) (this.minDist * this.minDist)) {
                 return false;
             } else {
                 this.owner = lvt_1_1_;
@@ -731,7 +754,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
             } else if (this.tameable.isSitting() || tameable.getCommand() != 1) {
                 return false;
             } else {
-                return this.tameable.getDistanceSq(this.owner) > (double)(this.maxDist * this.maxDist);
+                return this.tameable.getDistanceSq(this.owner) > (double) (this.maxDist * this.maxDist);
             }
         }
 
@@ -748,7 +771,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         }
 
         public void tick() {
-            this.tameable.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float)this.tameable.getVerticalFaceSpeed());
+            this.tameable.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float) this.tameable.getVerticalFaceSpeed());
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
                 if (!this.tameable.getLeashed() && !this.tameable.isPassenger()) {
@@ -765,7 +788,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         private void tryToTeleportNearEntity() {
             BlockPos lvt_1_1_ = this.owner.getPosition();
 
-            for(int lvt_2_1_ = 0; lvt_2_1_ < 10; ++lvt_2_1_) {
+            for (int lvt_2_1_ = 0; lvt_2_1_ < 10; ++lvt_2_1_) {
                 int lvt_3_1_ = this.getRandomNumber(-3, 3);
                 int lvt_4_1_ = this.getRandomNumber(-1, 1);
                 int lvt_5_1_ = this.getRandomNumber(-3, 3);
@@ -778,12 +801,12 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         }
 
         private boolean tryToTeleportToLocation(int p_226328_1_, int p_226328_2_, int p_226328_3_) {
-            if (Math.abs((double)p_226328_1_ - this.owner.getPosX()) < 2.0D && Math.abs((double)p_226328_3_ - this.owner.getPosZ()) < 2.0D) {
+            if (Math.abs((double) p_226328_1_ - this.owner.getPosX()) < 2.0D && Math.abs((double) p_226328_3_ - this.owner.getPosZ()) < 2.0D) {
                 return false;
             } else if (!this.isTeleportFriendlyBlock(new BlockPos(p_226328_1_, p_226328_2_, p_226328_3_))) {
                 return false;
             } else {
-                this.tameable.setLocationAndAngles((double)p_226328_1_ + 0.5D, (double)p_226328_2_, (double)p_226328_3_ + 0.5D, this.tameable.rotationYaw, this.tameable.rotationPitch);
+                this.tameable.setLocationAndAngles((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.rotationYaw, this.tameable.rotationPitch);
                 this.tameable.getNavigator().clearPath();
                 return true;
             }

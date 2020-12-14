@@ -16,7 +16,9 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -203,15 +205,30 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
                 this.setJostling(false);
             }
             if (!world.isRemote && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 8) {
-                float dmg =  (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
+                float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                 if(!isAntlered()){
                     dmg = 3;
+                }
+                if(this.getAttackTarget() instanceof WolfEntity || this.getAttackTarget() instanceof EntityOrca){
+                    dmg = 2;
                 }
                 getAttackTarget().applyKnockback(1F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), dmg);
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            Entity entity = source.getTrueSource();
+            if (entity instanceof EntityOrca || entity instanceof WolfEntity) {
+                amount = (amount + 1.0F) * 3.0F;
+            }
+            return super.attackEntityFrom(source, amount);
+        }
     }
 
     protected SoundEvent getAmbientSound() {

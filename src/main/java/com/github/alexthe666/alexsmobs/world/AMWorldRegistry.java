@@ -71,7 +71,7 @@ public class AMWorldRegistry {
             event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.CENTIPEDE_HEAD, AMConfig.caveCentipedeSpawnWeight, 1, 1));
         }
         if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.warpedToad, biome) && AMConfig.warpedToadSpawnWeight > 0) {
-            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.WARPED_TOAD, AMConfig.warpedToadSpawnWeight, 3, 3));
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.WARPED_TOAD, AMConfig.warpedToadSpawnWeight, 5, 5));
         }
         if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.moose, biome) && AMConfig.mooseSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.MOOSE, AMConfig.mooseSpawnWeight, 3, 4));

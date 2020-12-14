@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.event;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityFly;
+import com.github.alexthe666.alexsmobs.entity.EntityMoose;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.Block;
@@ -16,9 +17,13 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
+import net.minecraft.entity.ai.goal.ToggleableNearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.TurtleEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -108,7 +113,10 @@ public class ServerEvents {
                 SpiderEntity spider = (SpiderEntity) event.getEntity();
                 spider.targetSelector.addGoal(4, new NearestAttackableTargetGoal(spider, EntityFly.class, 1, true, false, null));
             }
-
+            if (event.getEntity() != null && event.getEntity() instanceof WolfEntity && AMConfig.spidersAttackFlies) {
+                WolfEntity wolf = (WolfEntity) event.getEntity();
+                wolf.targetSelector.addGoal(6, new NonTamedTargetGoal(wolf, EntityMoose.class, false, null));
+            }
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
         }

@@ -128,6 +128,20 @@
       "x": 290,
       "y": 85,
       "page": 1
+    },
+    {
+      "linked_page": "warped_toad.json",
+      "text": "Warped Toad",
+      "x": 290,
+      "y": 110,
+      "page": 1
+    },
+    {
+      "linked_page": "moose.json",
+      "text": "Moose",
+      "x": 290,
+      "y": 135,
+      "page": 1
     }
   ],
   "images": [
