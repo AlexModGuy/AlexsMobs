@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "crimson_mosquito.txt",
+  "title": "Mosquito Carmesí",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:blood_sprayer",
+      "shapeless": false,
+      "x": 210,
+      "y": 30,
+      "page": 1,
+      "scale": 1.3
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:crimson_mosquito",
+      "x": 90,
+      "y": 80,
+      "page" : 0,
+      "scale": 1.2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
