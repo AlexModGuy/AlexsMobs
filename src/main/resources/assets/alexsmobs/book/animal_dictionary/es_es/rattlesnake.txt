@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+La Serpiente de Cascabel es un reptil de tamaño mediano que se encuentra en Desiertos y en los biomas de Meseta. La mayor parte del tiempo, 
+se escucha la Serpiente de Cascabel, no vista, ya que produce un fuerte Traqueteo de advertencia cuando un depredador potencial está cerca. Si uno se
+acerca lo suficiente a una Serpiente de Cascabel mientras está traqueteando, la criatura se volverá hostil y usará su mordisco venenoso para defenderse.
+Las Serpientes de Cascabel son el enemigo jurado de los Correcaminos, su depredador más común. 
+<NEWLINE>
+Si una Serpiente de Cascabel es asesinada, tiene la oportunidad de soltar su Traqueteo de Cascabel. Estos Traqueteos se pueden fermentar con Saliva de 
+Dragón Komodo enfrascado para crear una tóxica, Esencia Venenosa. Elaborar esta Esencia con una Pata de Ciempiés de Cueva puede resultar en la codiciada
+Poción de resistencia al veneno.
