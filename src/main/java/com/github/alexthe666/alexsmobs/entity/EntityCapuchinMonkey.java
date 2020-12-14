@@ -257,7 +257,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         Entity entity = this.getRidingEntity();
         if (this.isPassenger() && !entity.isAlive()) {
             this.stopRiding();
-        } else {
+        } else if(isTamed() && entity instanceof LivingEntity && isOwner((LivingEntity) entity)){
             this.setMotion(0, 0, 0);
             this.tick();
             if (this.isPassenger()) {
@@ -280,6 +280,8 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
                 }
 
             }
+        }else{
+            super.updateRidden();
         }
 
     }

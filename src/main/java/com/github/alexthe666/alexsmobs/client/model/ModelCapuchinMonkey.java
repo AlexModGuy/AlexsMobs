@@ -11,6 +11,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.swing.text.html.parser.Entity;
@@ -215,7 +217,7 @@ public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonke
 		float stillProgress = 5F * (1F - limbSwingAmount);
 		float partialTick = Minecraft.getInstance().getRenderPartialTicks();
 		float sitProgress = entity.isPassenger() ? 0 :entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
-		float rideProgress = entity.isPassenger() ? 10 : 0;
+		float rideProgress = entity.isPassenger() && entity.getRidingEntity() instanceof LivingEntity && entity.isOwner((LivingEntity) entity.getRidingEntity()) ? 10 : 0;
 		progressPositionPrev(body, rideProgress, 3, 12F, 0, 10F);
 		progressRotationPrev(body, rideProgress, 0,  (float)Math.toRadians(90), 0, 10F);
 		progressRotationPrev(head, rideProgress, 0,  (float)Math.toRadians(-90), 0, 10F);
