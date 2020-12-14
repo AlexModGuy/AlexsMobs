@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "hammerhead_shark.txt",
+  "title": "Tiburón Martillo",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:shark_tooth_arrow",
+      "shapeless": false,
+      "x": 210,
+      "y": 120,
+      "page": 0,
+      "scale": 1.3
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:hammerhead_shark",
+      "x": 110,
+      "y": 85,
+      "page" : 0,
+      "scale": 0.9,
+      "rot_x": 30,
+      "rot_y": 235,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
