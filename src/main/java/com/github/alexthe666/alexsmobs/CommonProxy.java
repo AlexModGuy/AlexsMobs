@@ -36,17 +36,6 @@ public class CommonProxy {
     public static final LootConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.Serializer());
 
     @SubscribeEvent
-    public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
-        final ModConfig config = event.getConfig();
-        // Rebake the configs when they change
-        if (config.getSpec() == ConfigHolder.COMMON_SPEC) {
-            AMConfig.bake(config);
-        } else if (config.getSpec() == ConfigHolder.BIOME_SPEC) {
-            BiomeConfig.bake(config);
-        }
-    }
-
-    @SubscribeEvent
     public static void registerModifierSerializers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
         if (AMConfig.bananasDropFromLeaves) {
             event.getRegistry().register(new BananaLootModifier.Serializer().setRegistryName(new ResourceLocation("alexsmobs:banana_drop")));

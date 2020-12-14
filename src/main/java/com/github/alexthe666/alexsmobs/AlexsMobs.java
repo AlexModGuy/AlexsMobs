@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
@@ -53,6 +55,7 @@ public class AlexsMobs {
     public AlexsMobs() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModConfigEvent);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.BIOME_SPEC, "alexsmobs-biomes.toml");
@@ -62,6 +65,16 @@ public class AlexsMobs {
         MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoadFromJSON);
     }
 
+    @SubscribeEvent
+    public void onModConfigEvent(final ModConfig.ModConfigEvent event) {
+        final ModConfig config = event.getConfig();
+        // Rebake the configs when they change
+        if (config.getSpec() == ConfigHolder.COMMON_SPEC) {
+            AMConfig.bake(config);
+        } else if (config.getSpec() == ConfigHolder.BIOME_SPEC) {
+            BiomeConfig.bake(config);
+        }
+    }
     @SubscribeEvent
     public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
         AMWorldRegistry.onBiomesLoad(event);
