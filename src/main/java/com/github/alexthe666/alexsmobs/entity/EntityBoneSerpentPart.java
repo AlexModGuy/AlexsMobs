@@ -6,6 +6,8 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.item.BoatEntity;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -54,6 +56,13 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         this.offsetY = offsetY;
     }
 
+    public boolean startRiding(Entity entityIn) {
+        if(!(entityIn instanceof AbstractMinecartEntity || entityIn instanceof BoatEntity)){
+            return super.startRiding(entityIn);
+        }
+        return false;
+    }
+    
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
     }

@@ -7,6 +7,8 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.item.BoatEntity;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -202,6 +204,13 @@ public class EntityCentipedeBody extends MobEntity implements IHurtableMultipart
             entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityCentipedeBody) && entity.canBePushed()).forEach(entity -> entity.applyEntityCollision(parent));
 
         }
+    }
+
+    public boolean startRiding(Entity entityIn) {
+        if(!(entityIn instanceof AbstractMinecartEntity || entityIn instanceof BoatEntity)){
+            return super.startRiding(entityIn);
+        }
+        return false;
     }
 
     public int getBodyIndex() {
