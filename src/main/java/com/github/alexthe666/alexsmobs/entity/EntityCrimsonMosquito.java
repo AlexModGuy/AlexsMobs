@@ -3,8 +3,8 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
-import com.github.alexthe666.alexsmobs.message.MessageDismount;
-import com.github.alexthe666.alexsmobs.message.MessageMountPlayer;
+import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
+import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
@@ -16,18 +16,15 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.StriderEntity;
-import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
@@ -193,7 +190,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                             this.setBloodLevel(this.getBloodLevel() + 1);
                             if (this.getBloodLevel() > 3) {
                                 this.dismount();
-                                AlexsMobs.sendMSGToAll(new MessageDismount(this.getEntityId(), mount.getEntityId()));
+                                AlexsMobs.sendMSGToAll(new MessageMosquitoDismount(this.getEntityId(), mount.getEntityId()));
                                 this.setFlying(false);
                                 this.flightTicks = -15;
                             }
@@ -202,7 +199,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                     if(drinkTime > 81 && !world.isRemote){
                         drinkTime = -500;
                         this.dismount();
-                        AlexsMobs.sendMSGToAll(new MessageDismount(this.getEntityId(), mount.getEntityId()));
+                        AlexsMobs.sendMSGToAll(new MessageMosquitoDismount(this.getEntityId(), mount.getEntityId()));
                         this.setFlying(false);
                         this.flightTicks = -15;
                     }
@@ -345,6 +342,9 @@ public class EntityCrimsonMosquito extends MonsterEntity {
             }
         }
         if(isPassenger() || drinkTime < 0){
+            if(isPassenger() && drinkTime < 0){
+                drinkTime = 0;
+            }
             drinkTime++;
         }
         prevFlyProgress = flyProgress;
@@ -566,10 +566,10 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         public void tick() {
             if (parentEntity.getAttackTarget() != null) {
                 this.parentEntity.getMoveHelper().setMoveTo(parentEntity.getAttackTarget().getPosX(), parentEntity.getAttackTarget().getPosY(), parentEntity.getAttackTarget().getPosZ(), 1.0D);
-                if (parentEntity.getBoundingBox().grow(0.3F, 0.3F, 0.3F).intersects(parentEntity.getAttackTarget().getBoundingBox()) && !isBittenByMosquito(parentEntity.getAttackTarget())) {
+                if (parentEntity.getBoundingBox().grow(0.3F, 0.3F, 0.3F).intersects(parentEntity.getAttackTarget().getBoundingBox()) && !isBittenByMosquito(parentEntity.getAttackTarget()) && parentEntity.drinkTime == 0) {
                     parentEntity.startRiding(parentEntity.getAttackTarget(), true);
                     if (!parentEntity.world.isRemote) {
-                        AlexsMobs.sendMSGToAll(new MessageMountPlayer(parentEntity.getEntityId(), parentEntity.getAttackTarget().getEntityId()));
+                        AlexsMobs.sendMSGToAll(new MessageMosquitoMountPlayer(parentEntity.getEntityId(), parentEntity.getAttackTarget().getEntityId()));
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,24 +11,24 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MessageMountPlayer {
+public class MessageMosquitoDismount {
 
     public int rider;
     public int mount;
 
-    public MessageMountPlayer(int rider, int mount) {
+    public MessageMosquitoDismount(int rider, int mount) {
         this.rider = rider;
         this.mount = mount;
     }
 
-    public MessageMountPlayer() {
+    public MessageMosquitoDismount() {
     }
 
-    public static MessageMountPlayer read(PacketBuffer buf) {
-        return new MessageMountPlayer(buf.readInt(), buf.readInt());
+    public static MessageMosquitoDismount read(PacketBuffer buf) {
+        return new MessageMosquitoDismount(buf.readInt(), buf.readInt());
     }
 
-    public static void write(MessageMountPlayer message, PacketBuffer buf) {
+    public static void write(MessageMosquitoDismount message, PacketBuffer buf) {
         buf.writeInt(message.rider);
         buf.writeInt(message.mount);
     }
@@ -36,7 +37,7 @@ public class MessageMountPlayer {
         public Handler() {
         }
 
-        public static void handle(MessageMountPlayer message, Supplier<NetworkEvent.Context> context) {
+        public static void handle(MessageMosquitoDismount message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
             PlayerEntity player = context.get().getSender();
             if(context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT){
@@ -47,8 +48,8 @@ public class MessageMountPlayer {
                 if (player.world != null) {
                     Entity entity = player.world.getEntityByID(message.rider);
                     Entity mountEntity = player.world.getEntityByID(message.mount);
-                    if (entity instanceof CreatureEntity && mountEntity != null) {
-                        entity.startRiding(mountEntity, true);
+                    if (entity instanceof EntityCrimsonMosquito && mountEntity != null) {
+                        entity.stopRiding();
                     }
                 }
             }

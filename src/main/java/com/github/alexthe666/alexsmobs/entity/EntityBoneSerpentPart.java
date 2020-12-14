@@ -62,7 +62,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         }
         return false;
     }
-    
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
     }

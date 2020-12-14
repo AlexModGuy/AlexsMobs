@@ -2,15 +2,14 @@ package com.github.alexthe666.alexsmobs;
 
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
-import com.github.alexthe666.alexsmobs.message.MessageDismount;
+import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
-import com.github.alexthe666.alexsmobs.message.MessageMountPlayer;
+import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeInternalHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,7 +19,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -86,8 +84,8 @@ public class AlexsMobs {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMountPlayer.class, MessageMountPlayer::write, MessageMountPlayer::read, MessageMountPlayer.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageDismount.class, MessageDismount::write, MessageDismount::read, MessageDismount.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMosquitoMountPlayer.class, MessageMosquitoMountPlayer::write, MessageMosquitoMountPlayer::read, MessageMosquitoMountPlayer.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMosquitoDismount.class, MessageMosquitoDismount::write, MessageMosquitoDismount::read, MessageMosquitoDismount.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageHurtMultipart.class, MessageHurtMultipart::write, MessageHurtMultipart::read, MessageHurtMultipart.Handler::handle);
 
     }
