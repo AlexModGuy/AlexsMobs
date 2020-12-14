@@ -367,6 +367,9 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
 
     public void livingTick() {
         super.livingTick();
+        if(this.isChild() && this.getEyeHeight() > this.getHeight()){
+            this.recalculateSize();
+        }
         if (this.jumpTicks != this.jumpDuration) {
             ++this.jumpTicks;
         } else if (this.jumpDuration != 0) {
@@ -436,6 +439,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         prevSitProgress = sitProgress;
         prevSwimProgress = swimProgress;
         this.stepHeight = 1;
+
         boolean isTechnicalBlinking = this.ticksExisted % 50 > 42;
         if (isTechnicalBlinking && blinkProgress < 5F) {
             blinkProgress++;
