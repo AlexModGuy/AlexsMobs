@@ -551,5 +551,77 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.centipede_attack"
+  },
+  "warped_toad_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:warped_toad_idle_0"
+      },
+      {
+        "name": "alexsmobs:warped_toad_idle_1"
+      },
+      {
+        "name": "alexsmobs:warped_toad_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.warped_toad_idle"
+  },
+  "warped_toad_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:warped_toad_hurt_0"
+      },
+      {
+        "name": "alexsmobs:warped_toad_hurt_1"
+      },
+      {
+        "name": "alexsmobs:warped_toad_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.warped_toad_hurt"
+  },
+  "moose_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:moose_idle_0"
+      },
+      {
+        "name": "alexsmobs:moose_idle_1"
+      },
+      {
+        "name": "alexsmobs:moose_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.moose_idle"
+  },
+  "moose_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:moose_hurt_0"
+      },
+      {
+        "name": "alexsmobs:moose_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.moose_hurt"
+  },
+  "moose_jostle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:moose_jostle_0"
+      },
+      {
+        "name": "alexsmobs:moose_jostle_1"
+      },
+      {
+        "name": "alexsmobs:moose_jostle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.moose_jostle"
   }
 }

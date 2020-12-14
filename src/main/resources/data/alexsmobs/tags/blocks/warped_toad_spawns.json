@@ -3,6 +3,10 @@
   "values": [
     "minecraft:netherrack",
     "minecraft:warped_nylium",
-    "minecraft:warped_wart_block"
+    "minecraft:warped_wart_block",
+    "minecraft:lava",
+    "minecraft:warped_roots",
+    "minecraft:nether_sprouts",
+    "minecraft:shroomlight"
   ]
 }

@@ -94,6 +94,16 @@ public class AMSoundRegistry {
 
     public static final SoundEvent CENTIPEDE_ATTACK = createSoundEvent("centipede_attack");
 
+    public static final SoundEvent WARPED_TOAD_IDLE = createSoundEvent("warped_toad_idle");
+
+    public static final SoundEvent WARPED_TOAD_HURT = createSoundEvent("warped_toad_hurt");
+
+    public static final SoundEvent MOOSE_IDLE = createSoundEvent("moose_idle");
+
+    public static final SoundEvent MOOSE_HURT = createSoundEvent("moose_hurt");
+
+    public static final SoundEvent MOOSE_JOSTLE = createSoundEvent("moose_jostle");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);
