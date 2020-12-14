@@ -56,7 +56,7 @@ public class AMItemRegistry {
     public static final Item KOMODO_SPIT = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:komodo_spit");
     public static final Item KOMODO_SPIT_BOTTLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:komodo_spit_bottle");
     public static final Item POISON_BOTTLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:poison_bottle");
-    public static final Item SOPA_DE_MACACO = new SoupItem(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(5).saturation(0.4F).meat().build())).setRegistryName("alexsmobs:sopa_de_macaco");
+    public static final Item SOPA_DE_MACACO = new SoupItem(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(5).saturation(0.4F).meat().build()).maxStackSize(1)).setRegistryName("alexsmobs:sopa_de_macaco");
     public static final Item CENTIPEDE_LEG = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:centipede_leg");
     public static final Item CENTIPEDE_LEGGINGS = new ItemModArmor(CENTIPEDE_ARMOR_MATERIAL, EquipmentSlotType.LEGS).setRegistryName("alexsmobs:centipede_leggings");
     public static final Item MOSQUITO_LARVA = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mosquito_larva");

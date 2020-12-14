@@ -43,14 +43,10 @@ public class TameableAIRide extends Goal {
         double x = tameableEntity.getPosX();
         double y = tameableEntity.getPosY();
         double z = tameableEntity.getPosZ();
-        if (player.moveStrafing != 0 || player.moveForward != 0) {
+        if (player.moveForward != 0) {
             Vector3d lookVec = player.getLookVec();
             if (player.moveForward < 0) {
                 lookVec = lookVec.rotateYaw((float) Math.PI);
-            } else if (player.moveStrafing > 0) {
-                lookVec = lookVec.rotateYaw((float) Math.PI * 0.85f);
-            } else if (player.moveStrafing < 0) {
-                lookVec = lookVec.rotateYaw((float) Math.PI * -0.85f);
             }
             x += lookVec.x * 10;
             z += lookVec.z * 10;
@@ -58,6 +54,7 @@ public class TameableAIRide extends Goal {
                 y += lookVec.y * 10;
             }
         }
+        tameableEntity.moveStrafing = player.moveStrafing * 0.35F;
         tameableEntity.stepHeight = 1;
         tameableEntity.getMoveHelper().setMoveTo(x, y, z, speed);
     }
