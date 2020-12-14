@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "komodo_dragon.txt",
+  "title": "Dragão de Komodo",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:komodo_spit_bottle",
+      "shapeless": true,
+      "x": 210,
+      "y": 60,
+      "page": 1,
+      "scale": 1.3
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:komodo_dragon",
+      "x": 110,
+      "y": 78,
+      "page" : 0,
+      "scale": 1.2,
+      "rot_x": 30,
+      "rot_y": 235,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

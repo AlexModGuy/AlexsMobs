@@ -1,0 +1,154 @@
+{
+  "parent": "",
+  "text": "root.txt",
+  "title": "Dicionário Animal",
+  "linked_page_buttons": [
+    {
+      "linked_page": "grizzly_bear.json",
+      "text": "Oso Pardo",
+      "x": 290,
+      "y": 10,
+      "page": 0
+    },
+    {
+      "linked_page": "roadrunner.json",
+      "text": "Correcaminos",
+      "x": 290,
+      "y": 35,
+      "page": 0
+    },
+    {
+      "linked_page": "bone_serpent.json",
+      "text": "Serpiente Ósea",
+      "x": 290,
+      "y": 60,
+      "page": 0
+    },
+    {
+      "linked_page": "gazelle.json",
+      "text": "Gacela",
+      "x": 290,
+      "y": 85,
+      "page": 0
+    },
+    {
+      "linked_page": "crocodile.json",
+      "text": "Cocodrilo",
+      "x": 290,
+      "y": 110,
+      "page": 0
+    },
+    {
+      "linked_page": "fly.json",
+      "text": "Mosca",
+      "x": 290,
+      "y": 135,
+      "page": 0
+    },
+    {
+      "linked_page": "hummingbird.json",
+      "text": "Colibrí",
+      "x": 290,
+      "y": 160,
+      "page": 0
+    },
+    {
+      "linked_page": "orca.json",
+      "text": "Orca",
+      "x": 90,
+      "y": 10,
+      "page": 1
+    },
+    {
+      "linked_page": "sunbird.json",
+      "text": "Ave Solar",
+      "x": 90,
+      "y": 35,
+      "page": 1
+    },
+    {
+      "linked_page": "gorilla.json",
+      "text": "Gorila",
+      "x": 90,
+      "y": 60,
+      "page": 1
+    },
+    {
+      "linked_page": "crimson_mosquito.json",
+      "text": "Mosquito Carmesí",
+      "x": 90,
+      "y": 85,
+      "page": 1
+    },
+    {
+      "linked_page": "rattlesnake.json",
+      "text": "Serpiente de Cascabel",
+      "x": 90,
+      "y": 110,
+      "page": 1
+    },
+    {
+      "linked_page": "endergrade.json",
+      "text": "Endergrado",
+      "x": 90,
+      "y": 135,
+      "page": 1
+    },
+    {
+      "linked_page": "hammerhead_shark.json",
+      "text": "Tiburón Martillo",
+      "x": 90,
+      "y": 160,
+      "page": 1
+    },
+    {
+      "linked_page": "lobster.json",
+      "text": "Langosta",
+      "x": 290,
+      "y": 10,
+      "page": 1
+    },
+    {
+      "linked_page": "komodo_dragon.json",
+      "text": "Dragón Komodo",
+      "x": 290,
+      "y": 35,
+      "page": 1
+    },
+    {
+      "linked_page": "capuchin_monkey.json",
+      "text": "Mono Capuchino",
+      "x": 290,
+      "y": 60,
+      "page": 1
+    },
+    {
+      "linked_page": "cave_centipede.json",
+      "text": "Ciempiés de Cueva",
+      "x": 290,
+      "y": 85,
+      "page": 1
+    }
+  ],
+  "images": [
+
+  ],
+  "item_renders": [
+    {
+      "item" : "alexsmobs:tab_icon",
+      "x": 25,
+      "y": 14,
+      "page" : 0,
+      "scale": 2.75
+    }
+  ],
+  "recipes": [
+
+  ],
+  "tabula_renders": [
+
+  ],
+  "entity_renders": [
+
+  ]
+}
