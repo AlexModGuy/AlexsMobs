@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMoose;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -108,7 +109,9 @@ public class MooseAIJostle extends Goal {
                 if(this.moose.getRNG().nextInt(55) == 0 && this.moose.isOnGround()){
                     moose.pushBackJostling(targetMoose, 0.2F);
                 }
-
+                if(this.moose.getRNG().nextInt(25) == 0 && this.moose.isOnGround()) {
+                    moose.playJostleSound();
+                }
                 moose.setJostleAngle(angle);
                 if(this.moose.jostleTimer % 60 == 0 || this.moose.getRNG().nextInt(80) == 0){
                     this.setJostleDirection(!moose.jostleDirection);

@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -26,6 +27,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -201,13 +203,29 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
                 this.setJostling(false);
             }
             if (!world.isRemote && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 8) {
-                float f1 = this.rotationYaw * ((float) Math.PI / 180F);
+                float dmg =  (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
+                if(!isAntlered()){
+                    dmg = 3;
+                }
                 getAttackTarget().applyKnockback(1F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), dmg);
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.MOOSE_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.MOOSE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.MOOSE_HURT;
+    }
+
 
     public boolean isAntlered() {
         return this.dataManager.get(ANTLERED).booleanValue();
@@ -311,5 +329,9 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
 
     public boolean canJostleWith(EntityMoose moose) {
         return !moose.isJostling() && moose.isAntlered() && moose.getAnimation() == NO_ANIMATION && !moose.isChild() && moose.getJostlingPartnerUUID() == null && moose.jostleCooldown == 0;
+    }
+
+    public void playJostleSound() {
+        this.playSound(AMSoundRegistry.MOOSE_JOSTLE, this.getSoundPitch(), this.getSoundVolume());
     }
 }

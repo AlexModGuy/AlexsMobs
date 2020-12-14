@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -76,6 +77,18 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         switchNavigator(false);
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.WARPED_TOAD_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.WARPED_TOAD_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.WARPED_TOAD_HURT;
+    }
+
     public boolean canBreatheUnderwater() {
         return true;
     }
@@ -87,8 +100,19 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
     public static boolean canWarpedToadSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
         boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.WARPED_TOAD_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
-        System.out.println(worldIn.getBlockState(blockpos));
-        return reason == SpawnReason.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn) && canSpawnOn(AMEntityRegistry.WARPED_TOAD, worldIn, reason, pos, randomIn);
+        return reason == SpawnReason.SPAWNER || spawnBlock;
+    }
+
+    public int getMaxSpawnedInChunk() {
+        return 5;
+    }
+
+    public boolean isMaxGroupSize(int sizeIn) {
+        return false;
+    }
+
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return worldIn.checkNoEntityCollision(this);
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -187,9 +211,8 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
     public void setJumping(boolean jumping) {
         super.setJumping(jumping);
         if (jumping) {
-            this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+        //    this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
         }
-
     }
 
     public void startJumping() {
@@ -344,9 +367,6 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         }
     }
 
-    protected SoundEvent getJumpSound() {
-        return SoundEvents.ENTITY_RABBIT_JUMP;
-    }
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {

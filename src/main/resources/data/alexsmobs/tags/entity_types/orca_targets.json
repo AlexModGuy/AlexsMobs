@@ -2,6 +2,7 @@
   "__comment": "all non-player targets of the orca mob.",
   "replace": false,
   "values": [
+    "alexsmobs:moose",
     "minecraft:polar_bear",
     "minecraft:salmon",
     "minecraft:cod",
