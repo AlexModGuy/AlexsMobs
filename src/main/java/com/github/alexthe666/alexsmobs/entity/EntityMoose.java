@@ -116,7 +116,7 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        if (stack.getItem() == Items.DANDELION && !this.isInLove()) {
+        if (stack.getItem() == Items.DANDELION && !this.isInLove() && this.getGrowingAge() == 0) {
             if (this.getRNG().nextInt(5) == 0) {
             return true;
             }else{
