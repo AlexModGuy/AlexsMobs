@@ -16,6 +16,7 @@ import java.util.Random;
 public class AnimalAILeaveWater extends Goal {
     private final CreatureEntity creature;
     private BlockPos targetPos;
+    private int executionChance = 30;
 
     public AnimalAILeaveWater(CreatureEntity creature) {
         this.creature = creature;
@@ -23,7 +24,7 @@ public class AnimalAILeaveWater extends Goal {
     }
 
     public boolean shouldExecute() {
-        if (this.creature.world.getFluidState(this.creature.getPosition()).isTagged(FluidTags.WATER)){
+        if (this.creature.world.getFluidState(this.creature.getPosition()).isTagged(FluidTags.WATER) && (this.creature.getAttackTarget() != null || this.creature.getRNG().nextInt(executionChance) == 0)){
             if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldLeaveWater()){
                 targetPos = generateTarget();
                 return targetPos != null;

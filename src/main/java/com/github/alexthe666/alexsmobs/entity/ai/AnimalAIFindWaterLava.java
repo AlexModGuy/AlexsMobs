@@ -12,6 +12,7 @@ import java.util.Random;
 public class AnimalAIFindWaterLava extends Goal {
     private final CreatureEntity creature;
     private BlockPos targetPos;
+    private int executionChance = 30;
 
     public AnimalAIFindWaterLava(CreatureEntity creature) {
         this.creature = creature;
@@ -20,7 +21,7 @@ public class AnimalAIFindWaterLava extends Goal {
 
     public boolean shouldExecute() {
         if (this.creature.isOnGround() && !this.creature.world.getFluidState(this.creature.getPosition()).isTagged(FluidTags.WATER) && !this.creature.world.getFluidState(this.creature.getPosition()).isTagged(FluidTags.LAVA)){
-            if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldEnterWater()){
+            if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldEnterWater() && (this.creature.getAttackTarget() != null || this.creature.getRNG().nextInt(executionChance) == 0)){
                 targetPos = generateTarget();
                 return targetPos != null;
             }

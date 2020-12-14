@@ -74,12 +74,12 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
         return (blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(Blocks.SNOW)) && worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.mooseSpawnRolls, this.getRNG(), spawnReasonIn);
-    }
-
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 70D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 9.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.mooseSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     protected float getWaterSlowDown() {
@@ -116,15 +116,12 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem() == Items.DANDELION;
-    }
-
-    public boolean canFallInLove() {
-        if (super.canFallInLove()) {
+        if (stack.getItem() == Items.DANDELION) {
             if (this.getRNG().nextInt(5) == 0) {
-                return true;
-            } else {
+            return true;
+            }else{
                 this.world.setEntityState(this, (byte) 6);
+                return false;
             }
         }
         return false;
@@ -206,10 +203,10 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
             }
             if (!world.isRemote && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 8) {
                 float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-                if(!isAntlered()){
+                if (!isAntlered()) {
                     dmg = 3;
                 }
-                if(this.getAttackTarget() instanceof WolfEntity || this.getAttackTarget() instanceof EntityOrca){
+                if (this.getAttackTarget() instanceof WolfEntity || this.getAttackTarget() instanceof EntityOrca) {
                     dmg = 2;
                 }
                 getAttackTarget().applyKnockback(1F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
