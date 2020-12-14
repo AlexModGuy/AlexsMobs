@@ -56,6 +56,10 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         this.offsetY = offsetY;
     }
 
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.UNDEAD;
+    }
+
     public boolean startRiding(Entity entityIn) {
         if(!(entityIn instanceof AbstractMinecartEntity || entityIn instanceof BoatEntity)){
             return super.startRiding(entityIn);
