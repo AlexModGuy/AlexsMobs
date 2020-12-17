@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
-  "text": "sunbird.txt",
-  "title": "Ave solar",
+  "text": "warped_toad.txt",
+  "title": "Sapo distorsionado",
   "linked_page_buttons": [
   ],
   "images": [
@@ -14,11 +14,11 @@
   ],
   "entity_renders": [
     {
-      "entity": "alexsmobs:sunbird",
+      "entity": "alexsmobs:warped_toad",
       "x": 90,
-      "y": 62,
+      "y": 90,
       "page" : 0,
-      "scale": 1.0,
+      "scale": 1.4,
       "rot_x": 30,
       "rot_y": 225,
       "rot_z": 0,

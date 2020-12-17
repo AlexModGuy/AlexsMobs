@@ -1,11 +1,11 @@
 {
   "parent": "",
   "text": "root.txt",
-  "title": "Diccionario de Animal",
+  "title": "Diccionario de animales",
   "linked_page_buttons": [
     {
       "linked_page": "grizzly_bear.json",
-      "text": "Oso Pardo",
+      "text": "Oso pardo",
       "x": 290,
       "y": 10,
       "page": 0
@@ -19,7 +19,7 @@
     },
     {
       "linked_page": "bone_serpent.json",
-      "text": "Serpiente Ósea",
+      "text": "Serpiente ósea",
       "x": 290,
       "y": 60,
       "page": 0
@@ -61,7 +61,7 @@
     },
     {
       "linked_page": "sunbird.json",
-      "text": "Ave Solar",
+      "text": "Ave solar",
       "x": 90,
       "y": 35,
       "page": 1
@@ -75,14 +75,14 @@
     },
     {
       "linked_page": "crimson_mosquito.json",
-      "text": "Mosquito Carmesí",
+      "text": "Mosquito carmesí",
       "x": 90,
       "y": 85,
       "page": 1
     },
     {
       "linked_page": "rattlesnake.json",
-      "text": "Serpiente de Cascabel",
+      "text": "Serpiente de cascabel",
       "x": 90,
       "y": 110,
       "page": 1
@@ -96,7 +96,7 @@
     },
     {
       "linked_page": "hammerhead_shark.json",
-      "text": "Tiburón Martillo",
+      "text": "Tiburón martillo",
       "x": 90,
       "y": 160,
       "page": 1
@@ -110,21 +110,21 @@
     },
     {
       "linked_page": "komodo_dragon.json",
-      "text": "Dragón Komodo",
+      "text": "Dragón de komodo",
       "x": 290,
       "y": 35,
       "page": 1
     },
     {
       "linked_page": "capuchin_monkey.json",
-      "text": "Mono Capuchino",
+      "text": "Mono capuchino",
       "x": 290,
       "y": 60,
       "page": 1
     },
     {
       "linked_page": "cave_centipede.json",
-      "text": "Ciempiés de Cueva",
+      "text": "Ciempiés de cueva",
       "x": 290,
       "y": 85,
       "page": 1
