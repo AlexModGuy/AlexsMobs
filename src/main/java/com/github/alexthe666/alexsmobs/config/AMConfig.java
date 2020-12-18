@@ -52,6 +52,8 @@ public class AMConfig {
     public static boolean spidersAttackFlies = true;
     public static boolean wolvesAttackMoose = true;
     public static boolean giveBookOnStartup = true;
+    public static boolean mimicubeSpawnInEndCity = true;
+    public static boolean mimicreamRepair = true;
 
     public static void bake(ModConfig config) {
         try {
@@ -103,6 +105,8 @@ public class AMConfig {
             wolvesAttackMoose = ConfigHolder.COMMON.wolvesAttackMoose.get();
             bananaChance = ConfigHolder.COMMON.bananaChance.get();
             giveBookOnStartup = ConfigHolder.COMMON.giveBookOnStartup.get();
+            mimicubeSpawnInEndCity = ConfigHolder.COMMON.mimicubeSpawnInEndCity.get();
+            mimicreamRepair = ConfigHolder.COMMON.mimicreamRepair.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

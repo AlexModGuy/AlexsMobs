@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.event;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityFly;
 import com.github.alexthe666.alexsmobs.entity.EntityMoose;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -11,6 +12,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -44,6 +46,8 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -53,6 +57,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -66,22 +71,50 @@ public class ServerEvents {
     private static final UUID SAND_SPEED_MODIFIER = UUID.fromString("7E0292F2-9434-48D5-A29F-9583AF7DF28E");
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
 
+    protected static BlockRayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode) {
+        float f = player.rotationPitch;
+        float f1 = player.rotationYaw;
+        Vector3d vector3d = player.getEyePosition(1.0F);
+        float f2 = MathHelper.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
+        float f3 = MathHelper.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
+        float f4 = -MathHelper.cos(-f * ((float) Math.PI / 180F));
+        float f5 = MathHelper.sin(-f * ((float) Math.PI / 180F));
+        float f6 = f3 * f4;
+        float f7 = f2 * f4;
+        double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
+        Vector3d vector3d1 = vector3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
+        return worldIn.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (AMConfig.giveBookOnStartup) {
+            CompoundNBT playerData = event.getPlayer().getPersistentData();
+            CompoundNBT data = playerData.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+            if (data != null && !data.getBoolean("alexsmobs_has_book")) {
+                ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY));
+                data.putBoolean("alexsmobs_has_book", true);
+                playerData.put(PlayerEntity.PERSISTED_NBT_TAG, data);
+            }
+        }
+    }
+
     @SubscribeEvent
     public void onUseItem(PlayerInteractEvent.RightClickItem event) {
-        if(event.getItemStack().getItem() == Items.GLASS_BOTTLE && AMConfig.lavaBottleEnabled){
+        if (event.getItemStack().getItem() == Items.GLASS_BOTTLE && AMConfig.lavaBottleEnabled) {
             RayTraceResult raytraceresult = rayTrace(event.getWorld(), event.getPlayer(), RayTraceContext.FluidMode.SOURCE_ONLY);
             if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
-                BlockPos blockpos = ((BlockRayTraceResult)raytraceresult).getPos();
+                BlockPos blockpos = ((BlockRayTraceResult) raytraceresult).getPos();
                 if (event.getWorld().isBlockModifiable(event.getPlayer(), blockpos)) {
                     if (event.getWorld().getFluidState(blockpos).isTagged(FluidTags.LAVA)) {
                         event.getWorld().playSound(event.getPlayer(), event.getPlayer().getPosX(), event.getPlayer().getPosY(), event.getPlayer().getPosZ(), SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.NEUTRAL, 1.0F, 1.0F);
                         event.getPlayer().addStat(Stats.ITEM_USED.get(Items.GLASS_BOTTLE));
                         event.getPlayer().setFire(6);
-                        if(!event.getPlayer().addItemStackToInventory(new ItemStack(AMItemRegistry.LAVA_BOTTLE))){
+                        if (!event.getPlayer().addItemStackToInventory(new ItemStack(AMItemRegistry.LAVA_BOTTLE))) {
                             event.getPlayer().entityDropItem(new ItemStack(AMItemRegistry.LAVA_BOTTLE));
                         }
                         event.getPlayer().swingArm(event.getHand());
-                        if(!event.getPlayer().isCreative()){
+                        if (!event.getPlayer().isCreative()) {
                             event.getItemStack().shrink(1);
                         }
                     }
@@ -89,21 +122,6 @@ public class ServerEvents {
             }
         }
 
-    }
-
-    protected static BlockRayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode) {
-        float f = player.rotationPitch;
-        float f1 = player.rotationYaw;
-        Vector3d vector3d = player.getEyePosition(1.0F);
-        float f2 = MathHelper.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f3 = MathHelper.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
-        float f4 = -MathHelper.cos(-f * ((float)Math.PI / 180F));
-        float f5 = MathHelper.sin(-f * ((float)Math.PI / 180F));
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();;
-        Vector3d vector3d1 = vector3d.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
-        return worldIn.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
     }
 
     @SubscribeEvent
@@ -123,29 +141,25 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (AMConfig.giveBookOnStartup) {
-            CompoundNBT playerData = event.getPlayer().getPersistentData();
-            CompoundNBT data = playerData.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
-            if (data != null && !data.getBoolean("alexsmobs_has_book")) {
-                ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY));
-                data.putBoolean("alexsmobs_has_book", true);
-                playerData.put(PlayerEntity.PERSISTED_NBT_TAG, data);
+    public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
+        if (event.getPlayer().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR && event.getTarget() instanceof LivingEntity) {
+            float f1 = 2;
+            ((LivingEntity) event.getTarget()).applyKnockback(f1 * 0.5F, MathHelper.sin(event.getPlayer().rotationYaw * ((float) Math.PI / 180F)), -MathHelper.cos(event.getPlayer().rotationYaw * ((float) Math.PI / 180F)));
+        }
+    }
+
+    @SubscribeEvent
+    public void onStructureGetSpawnLists(StructureSpawnListGatherEvent event) {
+        if(AMConfig.mimicubeSpawnInEndCity){
+            if(event.getStructure() == Structure.END_CITY){
+                event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.MIMICUBE, 20, 1, 3));
             }
         }
     }
 
     @SubscribeEvent
-    public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
-        if(event.getPlayer().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR && event.getTarget() instanceof LivingEntity){
-            float f1 = 2;
-           ((LivingEntity)event.getTarget()).applyKnockback(f1 * 0.5F, (double)MathHelper.sin(event.getPlayer().rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(event.getPlayer().rotationYaw * ((float)Math.PI / 180F))));
-        }
-    }
-
-    @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
-        if(event.getEntityLiving() instanceof PlayerEntity){
+        if (event.getEntityLiving() instanceof PlayerEntity) {
             ModifiableAttributeInstance modifiableattributeinstance = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);
             if (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS || modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
                 boolean sand = event.getEntityLiving().world.getBlockState(getDownPos(event.getEntityLiving().getPosition(), event.getEntityLiving().world)).getBlock().isIn(BlockTags.SAND);
@@ -159,11 +173,11 @@ public class ServerEvents {
         }
 
         if (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS) {
-            if(event.getEntityLiving().collidedHorizontally && !event.getEntityLiving().isInWater()){
+            if (event.getEntityLiving().collidedHorizontally && !event.getEntityLiving().isInWater()) {
                 event.getEntityLiving().fallDistance = 0.0F;
                 Vector3d motion = event.getEntityLiving().getMotion();
-                double d0 = MathHelper.clamp(motion.x, (double)-0.15F, (double)0.15F);
-                double d1 = MathHelper.clamp(motion.z, (double)-0.15F, (double)0.15F);
+                double d0 = MathHelper.clamp(motion.x, -0.15F, 0.15F);
+                double d1 = MathHelper.clamp(motion.z, -0.15F, 0.15F);
                 double d2 = 0.1D;
                 if (d2 < 0.0D && !event.getEntityLiving().getBlockState().isScaffolding(event.getEntityLiving()) && event.getEntityLiving().hasStoppedClimbing()) {
                     d2 = 0.0D;
@@ -176,9 +190,9 @@ public class ServerEvents {
         }
     }
 
-    private BlockPos getDownPos(BlockPos entered, IWorld world){
+    private BlockPos getDownPos(BlockPos entered, IWorld world) {
         int i = 0;
-        while (world.isAirBlock(entered) && i < 3){
+        while (world.isAirBlock(entered) && i < 3) {
             entered = entered.down();
             i++;
         }

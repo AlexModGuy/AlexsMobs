@@ -62,6 +62,7 @@ public class AMItemRegistry {
     public static final Item MOSQUITO_LARVA = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mosquito_larva");
     public static final Item MOOSE_ANTLER = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:moose_antler");
     public static final Item MOOSE_HEADGEAR = new ItemModArmor(MOOSE_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:moose_headgear");
+    public static final Item MIMICREAM = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mimicream");
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
 
@@ -91,6 +92,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.CENTIPEDE_HEAD, 0X342B2E,0X733449, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_centipede"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.WARPED_TOAD, 0X1F968E,0XFEAC6D, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_warped_toad"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MOOSE, 0X36302A,0XD4B183, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_moose"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MIMICUBE, 0X8A80C1,0X5E4F6F, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_mimicube"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
