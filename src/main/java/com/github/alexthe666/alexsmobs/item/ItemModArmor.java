@@ -45,6 +45,9 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.ROADRUNNER_ARMOR_MATERIAL) {
             tooltip.add(new TranslationTextComponent("item.alexsmobs.roadrunner_boots.desc").mergeStyle(TextFormatting.BLUE));
         }
+        if (this.material == AMItemRegistry.RACCOON_ARMOR_MATERIAL) {
+            tooltip.add(new TranslationTextComponent("item.alexsmobs.frontier_cap.desc").mergeStyle(TextFormatting.BLUE));
+        }
     }
 
     private void buildCrocAttributes(CustomArmorMaterial materialIn) {
@@ -98,19 +101,23 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/centipede_leggings.png";
         } else if (this.material == AMItemRegistry.MOOSE_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/moose_headgear.png";
+        } else if (this.material == AMItemRegistry.RACCOON_ARMOR_MATERIAL) {
+            return "alexsmobs:textures/armor/frontier_cap.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Nullable
-    public <A extends BipedModel<?>> A getArmorModel(LivingEntity LivingEntity, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
+    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlotType armorSlot, A _default) {
         if (this.material == AMItemRegistry.ROADRUNNER_ARMOR_MATERIAL) {
-            return (A) AlexsMobs.PROXY.getArmorModel(0);
+            return (A) AlexsMobs.PROXY.getArmorModel(0, entity);
         } else if (this.material == AMItemRegistry.MOOSE_ARMOR_MATERIAL) {
-            return (A) AlexsMobs.PROXY.getArmorModel(1);
+            return (A) AlexsMobs.PROXY.getArmorModel(1, entity);
+        } else if (this.material == AMItemRegistry.RACCOON_ARMOR_MATERIAL) {
+            return (A) AlexsMobs.PROXY.getArmorModel(2, entity);
         } else {
-            return super.getArmorModel(LivingEntity, itemStack, armorSlot, _default);
+            return super.getArmorModel(entity, itemStack, armorSlot, _default);
         }
     }
 }

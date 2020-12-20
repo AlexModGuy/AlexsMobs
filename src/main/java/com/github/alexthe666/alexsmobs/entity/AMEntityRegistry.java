@@ -46,7 +46,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityWarpedToad> WARPED_TOAD = registerEntity(EntityType.Builder.create(EntityWarpedToad::new, EntityClassification.CREATURE).size(0.9F, 1.4F).immuneToFire().setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "warped_toad");
     public static final EntityType<EntityMoose> MOOSE = registerEntity(EntityType.Builder.create(EntityMoose::new, EntityClassification.CREATURE).size(1.7F, 2.4F), "moose");
     public static final EntityType<EntityMimicube> MIMICUBE = registerEntity(EntityType.Builder.create(EntityMimicube::new, EntityClassification.MONSTER).size(0.9F, 0.9F), "mimicube");
-    public static final EntityType<EntityRaccoon> RACCOON = registerEntity(EntityType.Builder.create(EntityRaccoon::new, EntityClassification.CREATURE).size(0.9F, 0.9F), "raccoon");
+    public static final EntityType<EntityRaccoon> RACCOON = registerEntity(EntityType.Builder.create(EntityRaccoon::new, EntityClassification.CREATURE).size(0.8F, 0.9F), "raccoon");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);

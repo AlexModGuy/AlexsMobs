@@ -12,6 +12,7 @@ import com.github.alexthe666.alexsmobs.misc.RecipeMimicreamRepair;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,7 +72,7 @@ public class CommonProxy {
     public void openBookGUI(ItemStack itemStackIn) {
     }
 
-    public Object getArmorModel(int armorId) {
+    public Object getArmorModel(int armorId, LivingEntity entity) {
         return null;
     }
 

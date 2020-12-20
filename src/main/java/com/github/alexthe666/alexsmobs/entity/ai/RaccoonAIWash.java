@@ -4,8 +4,13 @@ import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.item.Items;
+import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -69,10 +74,16 @@ public class RaccoonAIWash extends Goal {
                 this.raccoon.setWashing(true);
                 this.raccoon.setWashPos(waterPos);
                 this.raccoon.lookForWaterBeforeEatingTimer = 0;
-                this.raccoon.world.setBlockState(waterPos.down(), Blocks.GRAVEL.getDefaultState());
+                if(washTime % 10 == 0){
+                    this.raccoon.playSound(SoundEvents.ENTITY_GENERIC_SWIM, 0.7F, 0.5F + raccoon.getRNG().nextFloat());
+                }
                 washTime++;
-                if(washTime > 100){
+                if(washTime > 100 || raccoon.getHeldItemMainhand().getItem() == Items.SUGAR && washTime > 20){
                     this.resetTask();
+                    if(raccoon.getHeldItemMainhand().getItem() != Items.SUGAR){
+                        raccoon.onEatItem();
+                    }
+                    this.raccoon.postWashItem(raccoon.getHeldItemMainhand());
                     this.raccoon.getHeldItemMainhand().shrink(1);
                 }
             }else{
@@ -83,7 +94,7 @@ public class RaccoonAIWash extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return targetPos != null && !this.raccoon.isInWater() && this.raccoon.getHeldItemMainhand().isFood();
+        return targetPos != null && !this.raccoon.isInWater() && EntityRaccoon.isFood(this.raccoon.getHeldItemMainhand());
     }
 
     public BlockPos generateTarget() {

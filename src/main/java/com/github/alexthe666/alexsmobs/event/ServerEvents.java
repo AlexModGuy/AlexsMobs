@@ -69,7 +69,9 @@ import java.util.UUID;
 public class ServerEvents {
 
     private static final UUID SAND_SPEED_MODIFIER = UUID.fromString("7E0292F2-9434-48D5-A29F-9583AF7DF28E");
+    private static final UUID SNEAK_SPEED_MODIFIER = UUID.fromString("7E0292F2-9434-48D5-A29F-9583AF7DF28F");
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
+    private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER, "frontier cap speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
 
     protected static BlockRayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode) {
         float f = player.rotationPitch;
@@ -168,6 +170,14 @@ public class ServerEvents {
                 }
                 if (event.getEntityLiving().ticksExisted % 25 == 0 && (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS || !sand) && modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
                     modifiableattributeinstance.removeModifier(SAND_SPEED_BONUS);
+                }
+            }
+            if (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == AMItemRegistry.FRONTIER_CAP || modifiableattributeinstance.hasModifier(SNEAK_SPEED_BONUS)) {
+                if (event.getEntityLiving().isSneaking() && !modifiableattributeinstance.hasModifier(SNEAK_SPEED_BONUS)) {
+                    modifiableattributeinstance.applyPersistentModifier(SNEAK_SPEED_BONUS);
+                }
+                if ((!event.getEntityLiving().isSneaking() || event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() != AMItemRegistry.FRONTIER_CAP) && modifiableattributeinstance.hasModifier(SNEAK_SPEED_BONUS)) {
+                    modifiableattributeinstance.removeModifier(SNEAK_SPEED_BONUS);
                 }
             }
         }

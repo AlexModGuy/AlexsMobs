@@ -1,12 +1,15 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
+import com.github.alexthe666.alexsmobs.entity.EntityMoose;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
@@ -99,6 +102,24 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();
         animator.update(entity);
+        animator.setAnimation(EntityRaccoon.ANIMATION_ATTACK);
+        animator.startKeyframe(3);
+        animator.rotate(head, (float)Math.toRadians(-20), 0, 0);
+        animator.rotate(arm_right, (float)Math.toRadians(-120), 0, (float)Math.toRadians(30));
+        animator.rotate(arm_left, (float)Math.toRadians(-40), 0, (float)Math.toRadians(-20));
+        animator.endKeyframe();
+        animator.startKeyframe(3);
+        animator.rotate(head, (float)Math.toRadians(-20), 0, 0);
+        animator.rotate(arm_right, (float)Math.toRadians(-40), 0, (float)Math.toRadians(20));
+        animator.rotate(arm_left, (float)Math.toRadians(-120), 0, (float)Math.toRadians(-30));
+        animator.endKeyframe();
+        animator.startKeyframe(3);
+        animator.rotate(head, (float)Math.toRadians(-20), 0, 0);
+        animator.rotate(arm_right, (float)Math.toRadians(-120), 0, (float)Math.toRadians(30));
+        animator.rotate(arm_left, (float)Math.toRadians(-40), 0, (float)Math.toRadians(-20));
+        animator.endKeyframe();
+        animator.resetKeyframe(3);
+
     }
 
     @Override
@@ -113,7 +134,8 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
         float runProgress = 5F * limbSwingAmount;
         float begProgress = entityRaccoon.prevBegProgress + (entityRaccoon.begProgress - entityRaccoon.prevBegProgress) * partialTicks;
         float standProgress0 = entityRaccoon.prevStandProgress + (entityRaccoon.standProgress - entityRaccoon.prevStandProgress) * partialTicks;
-        float standProgress = Math.max(begProgress, standProgress0);
+        float sitProgress = entityRaccoon.prevSitProgress + (entityRaccoon.sitProgress - entityRaccoon.prevSitProgress) * partialTicks;
+        float standProgress = Math.max(Math.max(begProgress, standProgress0) - sitProgress, 0);
         float washProgress = entityRaccoon.prevWashProgress + (entityRaccoon.washProgress - entityRaccoon.prevWashProgress) * partialTicks;
         progressRotationPrev(body, standProgress, (float) Math.toRadians(-70), 0, 0, 5f);
         progressRotationPrev(arm_left, standProgress, (float) Math.toRadians(70), 0, 0, 5f);
@@ -121,6 +143,20 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
         progressRotationPrev(leg_left, standProgress, (float) Math.toRadians(70), 0, 0, 5f);
         progressRotationPrev(leg_right, standProgress, (float) Math.toRadians(70), 0, 0, 5f);
         progressRotationPrev(head, standProgress, (float) Math.toRadians(70), 0, 0, 5f);
+
+        progressRotationPrev(body, sitProgress, (float) Math.toRadians(-10), 0, 0, 5f);
+        progressRotationPrev(head, sitProgress, (float) Math.toRadians(10), 0, 0, 5f);
+        progressRotationPrev(tail, sitProgress, (float) Math.toRadians(10), 0, 0, 5f);
+        progressRotationPrev(arm_left, sitProgress, (float) Math.toRadians(-75), 0, 0, 5f);
+        progressRotationPrev(arm_right, sitProgress, (float) Math.toRadians(-75), 0, 0, 5f);
+        progressRotationPrev(leg_left, sitProgress, (float) Math.toRadians(-80), (float) Math.toRadians(-20), 0, 5f);
+        progressRotationPrev(leg_right, sitProgress, (float) Math.toRadians(-80), (float) Math.toRadians(20), 0, 5f);
+        progressPositionPrev(body, sitProgress, 0, 4, 0, 5f);
+        progressPositionPrev(leg_left, sitProgress, 1.5F, 1, 0, 5f);
+        progressPositionPrev(leg_right, sitProgress, -1.5F, 1, 0, 5f);
+        progressPositionPrev(arm_left, sitProgress, 0, 2.5F, 1, 5f);
+        progressPositionPrev(arm_right, sitProgress, 0, 2.5F, 1, 5f);
+
         progressPositionPrev(head, standProgress, 0, -2F, 0, 5f);
         progressPositionPrev(body, standProgress, 0, -3F, 0, 5f);
         progressPositionPrev(leg_left, standProgress, 0, -2F, 0, 5f);
@@ -188,6 +224,29 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
         this.swing(tail, walkSpeed, walkDegree * 1, false, 4F, 0F, limbSwing, limbSwingAmount);
         this.walk(leg_right, walkSpeed, walkDegree * 1.1F, false, 0F, 0F, limbSwing, limbSwingAmount);
         this.walk(leg_left, walkSpeed, walkDegree * 1.1F, true, 0F, 0F, limbSwing, limbSwingAmount);
+
+    }
+
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.isChild) {
+            float f = 1.5F;
+            head.setScale(f, f, f);
+            head.setShouldScaleChildren(true);
+            matrixStackIn.push();
+            matrixStackIn.scale(0.35F, 0.35F, 0.35F);
+            matrixStackIn.translate(0.0D, 2.75D, 0.125D);
+            getParts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+            head.setScale(1, 1, 1);
+        } else {
+            matrixStackIn.push();
+            getParts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+        }
 
     }
 }

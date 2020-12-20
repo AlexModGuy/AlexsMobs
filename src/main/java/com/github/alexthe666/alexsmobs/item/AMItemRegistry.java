@@ -26,7 +26,8 @@ public class AMItemRegistry {
     public static CustomArmorMaterial ROADRUNNER_ARMOR_MATERIAL = new AMArmorMaterial("roadrunner", 18, new int[]{3, 3, 3, 3}, 20, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0);
     public static CustomArmorMaterial CROCODILE_ARMOR_MATERIAL = new AMArmorMaterial("crocodile", 22, new int[]{2, 5, 7, 3}, 25, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 1);
     public static CustomArmorMaterial CENTIPEDE_ARMOR_MATERIAL = new AMArmorMaterial("centipede", 20, new int[]{6, 6, 6, 6}, 22, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0.5F);
-    public static CustomArmorMaterial MOOSE_ARMOR_MATERIAL = new AMArmorMaterial("moose", 19, new int[]{7, 7, 7, 7}, 21, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0.5F);
+    public static CustomArmorMaterial MOOSE_ARMOR_MATERIAL = new AMArmorMaterial("moose", 19, new int[]{5, 5, 5, 5}, 21, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0.5F);
+    public static CustomArmorMaterial RACCOON_ARMOR_MATERIAL = new AMArmorMaterial("raccoon", 17, new int[]{3, 3, 3, 3}, 21, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2.5F);
 
     public static final Item TAB_ICON = new Item(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:animal_dictionary");
@@ -63,6 +64,8 @@ public class AMItemRegistry {
     public static final Item MOOSE_ANTLER = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:moose_antler");
     public static final Item MOOSE_HEADGEAR = new ItemModArmor(MOOSE_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:moose_headgear");
     public static final Item MIMICREAM = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mimicream");
+    public static final Item RACCOON_TAIL = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:raccoon_tail");
+    public static final Item FRONTIER_CAP = new ItemModArmor(RACCOON_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:frontier_cap");
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
 
