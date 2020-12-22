@@ -1,7 +1,10 @@
 package com.github.alexthe666.alexsmobs.config;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.google.common.collect.Lists;
 import net.minecraftforge.fml.config.ModConfig;
+
+import java.util.List;
 
 public class AMConfig {
     public static int grizzlyBearSpawnWeight = 8;
@@ -45,6 +48,13 @@ public class AMConfig {
     public static int warpedToadSpawnRolls = 0;
     public static int mooseSpawnWeight = 15;
     public static int mooseSpawnRolls = 0;
+    public static int mimicubeSpawnWeight = 30;
+    public static int mimicubeSpawnRolls = 0;
+    public static int raccoonSpawnWeight = 10;
+    public static int raccoonSpawnRolls = 0;
+    public static int blobfishSpawnWeight = 30;
+    public static int blobfishSpawnRolls = 0;
+    public static int blobfishSpawnHeight = 38;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean bananasDropFromLeaves = true;
@@ -52,6 +62,9 @@ public class AMConfig {
     public static boolean spidersAttackFlies = true;
     public static boolean wolvesAttackMoose = true;
     public static boolean giveBookOnStartup = true;
+    public static boolean mimicubeSpawnInEndCity = true;
+    public static boolean mimicreamRepair = true;
+    public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer");
 
     public static void bake(ModConfig config) {
         try {
@@ -97,12 +110,22 @@ public class AMConfig {
             warpedToadSpawnRolls = ConfigHolder.COMMON.warpedToadSpawnRolls.get();
             mooseSpawnWeight = ConfigHolder.COMMON.mooseSpawnWeight.get();
             mooseSpawnRolls = ConfigHolder.COMMON.mooseSpawnRolls.get();
+            mimicubeSpawnWeight = ConfigHolder.COMMON.mimicubeSpawnWeight.get();
+            mimicubeSpawnRolls = ConfigHolder.COMMON.mimicubeSpawnRolls.get();
+            raccoonSpawnWeight = ConfigHolder.COMMON.raccoonSpawnWeight.get();
+            raccoonSpawnRolls = ConfigHolder.COMMON.raccoonSpawnRolls.get();
+            blobfishSpawnWeight = ConfigHolder.COMMON.blobfishSpawnWeight.get();
+            blobfishSpawnRolls = ConfigHolder.COMMON.blobfishSpawnRolls.get();
+            blobfishSpawnHeight = ConfigHolder.COMMON.blobfishSpawnHeight.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
             wolvesAttackMoose = ConfigHolder.COMMON.wolvesAttackMoose.get();
             bananaChance = ConfigHolder.COMMON.bananaChance.get();
             giveBookOnStartup = ConfigHolder.COMMON.giveBookOnStartup.get();
+            mimicubeSpawnInEndCity = ConfigHolder.COMMON.mimicubeSpawnInEndCity.get();
+            mimicreamRepair = ConfigHolder.COMMON.mimicreamRepair.get();
+            mimicreamBlacklist = (List<? extends String>) ConfigHolder.COMMON.mimicreamBlacklist.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

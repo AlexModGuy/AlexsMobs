@@ -104,6 +104,14 @@ public class AMSoundRegistry {
 
     public static final SoundEvent MOOSE_JOSTLE = createSoundEvent("moose_jostle");
 
+    public static final SoundEvent MIMICUBE_JUMP = createSoundEvent("mimicube_jump");
+
+    public static final SoundEvent MIMICUBE_HURT = createSoundEvent("mimicube_hurt");
+
+    public static final SoundEvent RACCOON_IDLE = createSoundEvent("raccoon_idle");
+
+    public static final SoundEvent RACCOON_HURT = createSoundEvent("raccoon_hurt");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

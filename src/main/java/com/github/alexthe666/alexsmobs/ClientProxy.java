@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs;
 
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
+import com.github.alexthe666.alexsmobs.client.model.ModelFrontierCap;
 import com.github.alexthe666.alexsmobs.client.model.ModelMooseHeadgear;
 import com.github.alexthe666.alexsmobs.client.model.ModelRoadrunnerBoots;
 import com.github.alexthe666.alexsmobs.client.render.*;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.fluid.Fluids;
@@ -36,6 +38,7 @@ public class ClientProxy extends CommonProxy {
 
     private static final ModelRoadrunnerBoots ROADRUNNER_BOOTS_MODEL = new ModelRoadrunnerBoots(0.7F);
     private static final ModelMooseHeadgear MOOSE_HEADGEAR_MODEL = new ModelMooseHeadgear(0.3F);
+    private static final ModelFrontierCap FRONTIER_CAP_MODEL = new ModelFrontierCap(0.3F);
 
     public void clientInit() {
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
@@ -66,6 +69,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CROCODILE_EGG, manager -> new SpriteRenderer(manager, itemRendererIn));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.WARPED_TOAD, manager -> new RenderWarpedToad(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MOOSE, manager -> new RenderMoose(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MIMICUBE, manager -> new RenderMimicube(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.RACCOON, manager -> new RenderRaccoon(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BLOBFISH, manager -> new RenderBlobfish(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderType lavaType = RenderType.getTranslucent();
         RenderTypeLookup.setRenderLayer(Fluids.LAVA, lavaType);
@@ -93,12 +99,14 @@ public class ClientProxy extends CommonProxy {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public Object getArmorModel(int armorId) {
+    public Object getArmorModel(int armorId, LivingEntity entity) {
         switch (armorId) {
             case 0:
                 return ROADRUNNER_BOOTS_MODEL;
             case 1:
                 return MOOSE_HEADGEAR_MODEL;
+            case 2:
+                return FRONTIER_CAP_MODEL.withAnimations(entity);
             default:
                 return null;
         }

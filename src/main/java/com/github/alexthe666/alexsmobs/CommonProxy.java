@@ -8,12 +8,15 @@ import com.github.alexthe666.alexsmobs.config.CommonConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
 import com.github.alexthe666.alexsmobs.misc.BananaLootModifier;
 import com.github.alexthe666.alexsmobs.misc.MatchesBananaTagCondition;
+import com.github.alexthe666.alexsmobs.misc.RecipeMimicreamRepair;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.*;
 import net.minecraft.loot.ILootSerializer;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.conditions.ILootCondition;
@@ -34,11 +37,17 @@ import static com.github.alexthe666.alexsmobs.AlexsMobs.MODID;
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
     public static final LootConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.Serializer());
-
     @SubscribeEvent
     public static void registerModifierSerializers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
         if (AMConfig.bananasDropFromLeaves) {
             event.getRegistry().register(new BananaLootModifier.Serializer().setRegistryName(new ResourceLocation("alexsmobs:banana_drop")));
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event) {
+        if(AMConfig.mimicreamRepair){
+            event.getRegistry().register(new SpecialRecipeSerializer<>(RecipeMimicreamRepair::new).setRegistryName(new ResourceLocation("alexsmobs:mimicream_repair_recipe")));
         }
     }
 
@@ -63,7 +72,7 @@ public class CommonProxy {
     public void openBookGUI(ItemStack itemStackIn) {
     }
 
-    public Object getArmorModel(int armorId) {
+    public Object getArmorModel(int armorId, LivingEntity entity) {
         return null;
     }
 

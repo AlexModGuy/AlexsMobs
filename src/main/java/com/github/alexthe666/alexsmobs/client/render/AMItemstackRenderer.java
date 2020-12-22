@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -53,6 +54,9 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.CENTIPEDE_HEAD, 0.65F));
         list.add(new Pair<>(AMEntityRegistry.WARPED_TOAD, 0.6F));
         list.add(new Pair<>(AMEntityRegistry.MOOSE, 0.5F));
+        list.add(new Pair<>(AMEntityRegistry.MIMICUBE, 0.95F));
+        list.add(new Pair<>(AMEntityRegistry.RACCOON, 0.8F));
+        list.add(new Pair<>(AMEntityRegistry.BLOBFISH, 1F));
     });
 
     private Map<String, Entity> renderedEntites = new HashMap();
@@ -66,8 +70,11 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
             EntityType type = MOB_ICONS.get(entityIndex).getFirst();
             if (type != null) {
                 if(this.renderedEntites.get(type.getTranslationKey()) == null){
-                    fakeEntity = (Entity)this.renderedEntites.putIfAbsent(type.getTranslationKey(), type.create(Minecraft.getInstance().world));
-
+                    Entity entity = type.create(Minecraft.getInstance().world);
+                    if(entity instanceof EntityBlobfish){
+                        ((EntityBlobfish) entity).setDepressurized(true);
+                    }
+                    fakeEntity = (Entity)this.renderedEntites.putIfAbsent(type.getTranslationKey(), entity);
                 }else{
                     fakeEntity = this.renderedEntites.get(type.getTranslationKey());
                 }

@@ -46,7 +46,6 @@ public class AMWorldRegistry {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.GORILLA, AMConfig.gorillaSpawnWeight, 7, 7));
         }
         if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.crimsonMosquito, biome) && AMConfig.crimsonMosquitoSpawnWeight > 0) {
-            System.out.println("mosco: " + biome);
             event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.CRIMSON_MOSQUITO, AMConfig.crimsonMosquitoSpawnWeight, 4, 4));
         }
         if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.rattlesnake, biome) && AMConfig.rattlesnakeSpawnWeight > 0) {
@@ -75,6 +74,15 @@ public class AMWorldRegistry {
         }
         if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.moose, biome) && AMConfig.mooseSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.MOOSE, AMConfig.mooseSpawnWeight, 3, 4));
+        }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.mimicube, biome) && AMConfig.mimicubeSpawnWeight > 0 && !AMConfig.mimicubeSpawnInEndCity) {
+            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.MIMICUBE, AMConfig.mimicubeSpawnWeight, 1, 3));
+        }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.raccoon, biome) && AMConfig.raccoonSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.RACCOON, AMConfig.raccoonSpawnWeight, 2, 4));
+        }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.blobfish, biome) && AMConfig.blobfishSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(AMEntityRegistry.BLOBFISH, AMConfig.blobfishSpawnWeight, 2, 4));
         }
     }
 }

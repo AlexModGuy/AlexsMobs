@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "name": "blobfish",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1
+            }
+          ],
+          "name": "alexsmobs:blobfish"
+        }
+      ]
+    },
+    {
+      "name": "blobfish_bm",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bone_meal"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.05
+        }
+      ]
+    }
+  ]
+}
