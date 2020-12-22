@@ -239,6 +239,10 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 			});
 			matrixStackIn.pop();
 			head.setScale(1, 1, 1);
+			frontleg_right.setScale(1, 1, 1);
+			frontleg_left.setScale(1, 1, 1);
+			backleg_right.setScale(1, 1, 1);
+			backleg_left.setScale(1, 1, 1);
 		} else {
 			matrixStackIn.push();
 			getParts().forEach((p_228290_8_) -> {
