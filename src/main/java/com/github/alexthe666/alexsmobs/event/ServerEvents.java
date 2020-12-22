@@ -154,7 +154,7 @@ public class ServerEvents {
     public void onStructureGetSpawnLists(StructureSpawnListGatherEvent event) {
         if(AMConfig.mimicubeSpawnInEndCity){
             if(event.getStructure() == Structure.END_CITY){
-                event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.MIMICUBE, 20, 1, 3));
+                event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.MIMICUBE, AMConfig.mimicubeSpawnWeight, 1, 3));
             }
         }
     }

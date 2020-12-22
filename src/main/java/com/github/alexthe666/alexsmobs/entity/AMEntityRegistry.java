@@ -47,6 +47,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityMoose> MOOSE = registerEntity(EntityType.Builder.create(EntityMoose::new, EntityClassification.CREATURE).size(1.7F, 2.4F), "moose");
     public static final EntityType<EntityMimicube> MIMICUBE = registerEntity(EntityType.Builder.create(EntityMimicube::new, EntityClassification.MONSTER).size(0.9F, 0.9F), "mimicube");
     public static final EntityType<EntityRaccoon> RACCOON = registerEntity(EntityType.Builder.create(EntityRaccoon::new, EntityClassification.CREATURE).size(0.8F, 0.9F), "raccoon");
+    public static final EntityType<EntityBlobfish> BLOBFISH = registerEntity(EntityType.Builder.create(EntityBlobfish::new, EntityClassification.WATER_AMBIENT).size(0.7F, 0.45F), "blobfish");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -75,6 +76,8 @@ public class AMEntityRegistry {
         EntitySpawnPlacementRegistry.register(WARPED_TOAD, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, EntityWarpedToad::canWarpedToadSpawn);
         EntitySpawnPlacementRegistry.register(MOOSE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityMoose::canMooseSpawn);
         EntitySpawnPlacementRegistry.register(MIMICUBE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
+        EntitySpawnPlacementRegistry.register(RACCOON, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(BLOBFISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityBlobfish::canBlobfishSpawn);
     }
 
         @SubscribeEvent
@@ -122,6 +125,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(MOOSE, EntityMoose.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(MIMICUBE, EntityMimicube.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(RACCOON, EntityRaccoon.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(BLOBFISH, EntityBlobfish.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

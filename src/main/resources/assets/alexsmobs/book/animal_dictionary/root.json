@@ -142,6 +142,27 @@
       "x": 290,
       "y": 135,
       "page": 1
+    },
+    {
+      "linked_page": "mimicube.json",
+      "text": "Mimicube",
+      "x": 290,
+      "y": 160,
+      "page": 1
+    },
+    {
+      "linked_page": "raccoon.json",
+      "text": "Raccoon",
+      "x": 90,
+      "y": 10,
+      "page": 2
+    },
+    {
+      "linked_page": "blobfish.json",
+      "text": "Blobfish",
+      "x": 90,
+      "y": 35,
+      "page": 2
     }
   ],
   "images": [

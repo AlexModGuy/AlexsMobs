@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelRaccoon;
+import com.github.alexthe666.alexsmobs.client.render.layer.LayerRaccoonEyes;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerRaccoonItem;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -13,6 +14,7 @@ public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
 
     public RenderRaccoon(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelRaccoon(), 0.4F);
+        this.addLayer(new LayerRaccoonEyes(this));
         this.addLayer(new LayerRaccoonItem(this));
     }
 

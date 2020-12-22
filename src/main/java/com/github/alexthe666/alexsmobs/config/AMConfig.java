@@ -45,6 +45,13 @@ public class AMConfig {
     public static int warpedToadSpawnRolls = 0;
     public static int mooseSpawnWeight = 15;
     public static int mooseSpawnRolls = 0;
+    public static int mimicubeSpawnWeight = 30;
+    public static int mimicubeSpawnRolls = 0;
+    public static int raccoonSpawnWeight = 10;
+    public static int raccoonSpawnRolls = 0;
+    public static int blobfishSpawnWeight = 15;
+    public static int blobfishSpawnRolls = 0;
+    public static int blobfishSpawnHeight = 38;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean bananasDropFromLeaves = true;
@@ -99,6 +106,13 @@ public class AMConfig {
             warpedToadSpawnRolls = ConfigHolder.COMMON.warpedToadSpawnRolls.get();
             mooseSpawnWeight = ConfigHolder.COMMON.mooseSpawnWeight.get();
             mooseSpawnRolls = ConfigHolder.COMMON.mooseSpawnRolls.get();
+            mimicubeSpawnWeight = ConfigHolder.COMMON.mimicubeSpawnWeight.get();
+            mimicubeSpawnRolls = ConfigHolder.COMMON.mimicubeSpawnRolls.get();
+            raccoonSpawnWeight = ConfigHolder.COMMON.raccoonSpawnWeight.get();
+            raccoonSpawnRolls = ConfigHolder.COMMON.raccoonSpawnRolls.get();
+            blobfishSpawnWeight = ConfigHolder.COMMON.blobfishSpawnWeight.get();
+            blobfishSpawnRolls = ConfigHolder.COMMON.blobfishSpawnRolls.get();
+            blobfishSpawnHeight = ConfigHolder.COMMON.blobfishSpawnHeight.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

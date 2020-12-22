@@ -27,7 +27,10 @@ public class LayerRaccoonItem extends LayerRenderer<EntityRaccoon, ModelRaccoon>
         ItemStack itemstack = entitylivingbaseIn.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
         matrixStackIn.push();
         boolean inHand = entitylivingbaseIn.begProgress > 0 || entitylivingbaseIn.standProgress > 0 || entitylivingbaseIn.washProgress > 0;
-
+        if(entitylivingbaseIn.isChild()){
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0D, 1.5D, 0D);
+        }
         matrixStackIn.push();
         translateToHand(inHand, matrixStackIn);
         if(inHand){

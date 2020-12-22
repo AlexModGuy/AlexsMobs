@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
 import com.github.alexthe666.alexsmobs.entity.EntityLobster;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
@@ -59,12 +60,22 @@ public class ItemModFishBucket extends BucketItem {
         Entity entity = this.fishType.spawn(worldIn, stack, (PlayerEntity)null, pos, SpawnReason.BUCKET, true, false);
         if (entity != null && entity instanceof EntityLobster) {
             ((EntityLobster)entity).setFromBucket(true);
-            CompoundNBT compoundnbt = stack.getTag();
+            CompoundNBT compoundnbt = stack.getOrCreateTag();
             if(compoundnbt.contains("BucketVariantTag", 3)){
                 int i = compoundnbt.getInt("BucketVariantTag");
                 ((EntityLobster) entity).setVariant(i);
             }
 
+        }
+        if (entity != null && entity instanceof EntityBlobfish) {
+            ((EntityBlobfish)entity).setFromBucket(true);
+            CompoundNBT compoundnbt = stack.getOrCreateTag();
+            if(compoundnbt.contains("BucketScale")){
+                ((EntityBlobfish) entity).setBlobfishScale(compoundnbt.getFloat("BucketScale"));
+            }
+            if(compoundnbt.contains("Slimed")){
+                ((EntityBlobfish) entity).setSlimed(compoundnbt.getBoolean("Slimed"));
+            }
         }
 
     }
@@ -79,7 +90,6 @@ public class ItemModFishBucket extends BucketItem {
                 tooltip.add((new TranslationTextComponent(s)).mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.ITALIC));
             }
         }
-
     }
 
 

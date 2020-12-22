@@ -229,12 +229,12 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
 
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         if (this.isChild) {
-            float f = 1.5F;
+            float f = 1.65F;
             head.setScale(f, f, f);
             head.setShouldScaleChildren(true);
             matrixStackIn.push();
-            matrixStackIn.scale(0.35F, 0.35F, 0.35F);
-            matrixStackIn.translate(0.0D, 2.75D, 0.125D);
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0D, 1.5D, 0D);
             getParts().forEach((p_228292_8_) -> {
                 p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });

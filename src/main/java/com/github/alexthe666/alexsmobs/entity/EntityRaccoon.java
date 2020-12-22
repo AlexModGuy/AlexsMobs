@@ -1,20 +1,19 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,6 +40,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -88,6 +88,11 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         return 0.98F;
     }
 
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.raccoonSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SitGoal(this));
         this.goalSelector.addGoal(1, new RaccoonAIWash(this));
@@ -100,6 +105,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         this.goalSelector.addGoal(7, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(8, new RaccoonAIBeg(this, 0.65D));
         this.goalSelector.addGoal(9, new AnimalAIPanicBaby(this, 1.25D));
+        this.goalSelector.addGoal(9, new StrollGoal(200));
         this.goalSelector.addGoal(10, new TameableAIDestroyTurtleEggs(this, 1.0D, 3));
         this.goalSelector.addGoal(11, new AnimalAIWanderRanged(this, 120, 1.0D, 14, 7));
         this.goalSelector.addGoal(12, new LookAtGoal(this, PlayerEntity.class, 15.0F));
@@ -457,4 +463,45 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
     public boolean shouldLootItem(ItemStack stack) {
         return isFood(stack);
     }
+
+    class StrollGoal extends MoveThroughVillageAtNightGoal {
+        public StrollGoal(int p_i50726_3_) {
+            super(EntityRaccoon.this, p_i50726_3_);
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void startExecuting() {
+            super.startExecuting();
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean shouldExecute() {
+            return super.shouldExecute() && this.func_220759_g();
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean shouldContinueExecuting() {
+            return super.shouldContinueExecuting() && this.func_220759_g();
+        }
+
+        private boolean func_220759_g() {
+            return !EntityRaccoon.this.isWashing() && !EntityRaccoon.this.isSitting() && EntityRaccoon.this.getAttackTarget() == null;
+        }
+    }
+
+    public BlockPos getLightPosition() {
+        BlockPos pos = new BlockPos(this.getPositionVec());
+        if (!world.getBlockState(pos).isSolid()) {
+            return pos.up();
+        }
+        return pos;
+    }
+
 }

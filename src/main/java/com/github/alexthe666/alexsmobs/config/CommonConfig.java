@@ -56,6 +56,13 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue warpedToadSpawnRolls;
     public final ForgeConfigSpec.IntValue mooseSpawnWeight;
     public final ForgeConfigSpec.IntValue mooseSpawnRolls;
+    public final ForgeConfigSpec.IntValue mimicubeSpawnWeight;
+    public final ForgeConfigSpec.IntValue mimicubeSpawnRolls;
+    public final ForgeConfigSpec.IntValue raccoonSpawnWeight;
+    public final ForgeConfigSpec.IntValue raccoonSpawnRolls;
+    public final ForgeConfigSpec.IntValue blobfishSpawnWeight;
+    public final ForgeConfigSpec.IntValue blobfishSpawnRolls;
+    public final ForgeConfigSpec.IntValue blobfishSpawnHeight;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -70,6 +77,7 @@ public class CommonConfig {
         wolvesAttackMoose = buildBoolean(builder, "wolvesAttackMoose", "all", true, "Whether wolves should target moose mobs.");
         lavaBottleEnabled = buildBoolean(builder, "lavaBottleEnabled", "all", true, "Whether lava can be bottled with a right click of a glass bottle.");
         caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, 0, 256, "Maximum world y-level that cave centipedes can spawn at");
+        blobfishSpawnHeight = buildInt(builder, "blobfishSpawnHeight", "all", AMConfig.blobfishSpawnHeight, 0, 256, "Maximum world y-level that blobfish can spawn at");
         mimicubeSpawnInEndCity = buildBoolean(builder, "mimicubeSpawnInEndCity", "all", true, "Whether mimicubes spawns should be restricted solely to the end city structure or to whatever biome is specified in their respective biome config.");
         mimicreamRepair = buildBoolean(builder, "mimicreamRepair", "all", true, "Whether mimicream can be used to duplicate items.");
         builder.push("spawning");
@@ -113,6 +121,12 @@ public class CommonConfig {
         warpedToadSpawnRolls = buildInt(builder, "warpedToadSpawnRolls", "spawns", AMConfig.warpedToadSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         mooseSpawnWeight = buildInt(builder, "mooseSpawnWeight", "spawns", AMConfig.mooseSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         mooseSpawnRolls = buildInt(builder, "mooseSpawnRolls", "spawns", AMConfig.mooseSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        mimicubeSpawnWeight = buildInt(builder, "mimicubeSpawnWeight", "spawns", AMConfig.mimicubeSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        mimicubeSpawnRolls = buildInt(builder, "mimicubeSpawnRolls", "spawns", AMConfig.mimicubeSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        raccoonSpawnWeight = buildInt(builder, "raccoonSpawnWeight", "spawns", AMConfig.raccoonSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        raccoonSpawnRolls = buildInt(builder, "raccoonSpawnRolls", "spawns", AMConfig.raccoonSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        blobfishSpawnWeight = buildInt(builder, "blobfishSpawnWeight", "spawns", AMConfig.blobfishSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        blobfishSpawnRolls = buildInt(builder, "blobfishSpawnRolls", "spawns", AMConfig.blobfishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){
