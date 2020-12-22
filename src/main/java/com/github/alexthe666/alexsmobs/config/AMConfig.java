@@ -57,6 +57,7 @@ public class AMConfig {
     public static int blobfishSpawnHeight = 38;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
+    public static boolean shadersCompat = false;
     public static boolean bananasDropFromLeaves = true;
     public static int bananaChance = 200;
     public static boolean spidersAttackFlies = true;
@@ -69,6 +70,7 @@ public class AMConfig {
     public static void bake(ModConfig config) {
         try {
             lavaOpacity = ConfigHolder.COMMON.lavaOpacity.get();
+            shadersCompat = ConfigHolder.COMMON.shadersCompat.get();
             grizzlyBearSpawnWeight = ConfigHolder.COMMON.grizzlyBearSpawnWeight.get();
             grizzlyBearSpawnRolls = ConfigHolder.COMMON.grizzlyBearSpawnRolls.get();
             roadrunnerSpawnWeight = ConfigHolder.COMMON.roadrunnerSpawnWeight.get();

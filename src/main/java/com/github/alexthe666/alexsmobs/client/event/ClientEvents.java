@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.event;
 
 import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FluidBlockRenderer;
@@ -35,18 +36,20 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onRenderWorldLastEvent(RenderWorldLastEvent event) {
-        if (Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION)) {
-            if (!previousLavaVision) {
-                Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = new LavaVisionFluidRenderer();
-                updateAllChunks();
+        if(AMConfig.shadersCompat){
+            if (Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION)) {
+                if (!previousLavaVision) {
+                    Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = new LavaVisionFluidRenderer();
+                    updateAllChunks();
+                }
+            }else{
+                if (previousLavaVision) {
+                    Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = new FluidBlockRenderer();
+                    updateAllChunks();
+                }
             }
-        }else{
-            if (previousLavaVision) {
-                Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = new FluidBlockRenderer();
-                updateAllChunks();
-            }
+            previousLavaVision = Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION);
         }
-        previousLavaVision = Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION);
     }
 
     private void updateAllChunks(){

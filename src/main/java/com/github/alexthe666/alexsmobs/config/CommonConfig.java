@@ -11,6 +11,7 @@ import java.util.List;
 public class CommonConfig {
 
     public final ForgeConfigSpec.DoubleValue lavaOpacity;
+    public final ForgeConfigSpec.BooleanValue shadersCompat;
     public final ForgeConfigSpec.BooleanValue lavaBottleEnabled;
     public final ForgeConfigSpec.BooleanValue spidersAttackFlies;
     public final ForgeConfigSpec.BooleanValue wolvesAttackMoose;
@@ -73,6 +74,7 @@ public class CommonConfig {
         builder.push("general");
         giveBookOnStartup = buildBoolean(builder, "giveBookOnStartup", "all", true, "Whether all players should get an Animal Dictionary when joining the world for the first time.");
         lavaOpacity = buildDouble(builder, "lavaVisionOpacity", "all", 0.65D, 0.01D, 1D, "Lava Opacity for the Lava Vision Potion.");
+        shadersCompat = buildBoolean(builder, "shadersCompat", "all", false, "Whether to disable certain aspects of the Lava Vision Potion. Enable if issues with shaders persist.");
         bananasDropFromLeaves = buildBoolean(builder, "bananasDropFromLeaves", "all", true, "Whether bananas should drop from blocks tagged with #alexsmobs:drops_bananas");
         bananaChance = buildInt(builder, "bananaChance", "all", AMConfig.bananaChance, 0, Integer.MAX_VALUE, "1 out of this number chance for leaves to drop a banana when broken. Fortune is automatically factored in");
         spidersAttackFlies = buildBoolean(builder, "spidersAttackFlies", "all", true, "Whether spiders should target fly mobs.");
