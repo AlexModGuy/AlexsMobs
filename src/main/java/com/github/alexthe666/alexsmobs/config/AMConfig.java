@@ -48,7 +48,7 @@ public class AMConfig {
     public static int warpedToadSpawnRolls = 0;
     public static int mooseSpawnWeight = 15;
     public static int mooseSpawnRolls = 0;
-    public static int mimicubeSpawnWeight = 30;
+    public static int mimicubeSpawnWeight = 40;
     public static int mimicubeSpawnRolls = 0;
     public static int raccoonSpawnWeight = 10;
     public static int raccoonSpawnRolls = 0;

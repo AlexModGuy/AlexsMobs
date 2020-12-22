@@ -384,10 +384,6 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
             this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
         public boolean shouldExecute() {
             this.targetPlayer = this.dolphin.world.getClosestPlayer(EntityOrca.PLAYER_PREDICATE, this.dolphin);
             if (this.targetPlayer == null) {
@@ -397,30 +393,18 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
             }
         }
 
-        /**
-         * Returns whether an in-progress EntityAIBase should continue executing
-         */
         public boolean shouldContinueExecuting() {
-            return this.targetPlayer != null && this.targetPlayer.isSwimming() && this.dolphin.getDistanceSq(this.targetPlayer) < 256.0D;
+            return this.targetPlayer != null  && this.dolphin.getAttackTarget() != this.targetPlayer && this.targetPlayer.isSwimming() && this.dolphin.getDistanceSq(this.targetPlayer) < 256.0D;
         }
 
-        /**
-         * Execute a one shot task or start executing a continuous task
-         */
         public void startExecuting() {
         }
 
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
         public void resetTask() {
             this.targetPlayer = null;
             this.dolphin.getNavigator().clearPath();
         }
 
-        /**
-         * Keep ticking a continuous task that has already been started
-         */
         public void tick() {
             this.dolphin.getLookController().setLookPositionWithEntity(this.targetPlayer, (float) (this.dolphin.getHorizontalFaceSpeed() + 20), (float) this.dolphin.getVerticalFaceSpeed());
             if (this.dolphin.getDistanceSq(this.targetPlayer) < 10D) {
@@ -432,7 +416,6 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
             if (this.targetPlayer.isSwimming() && this.targetPlayer.world.rand.nextInt(6) == 0) {
                 this.targetPlayer.addPotionEffect(new EffectInstance(AMEffectRegistry.ORCAS_MIGHT, 1000));
             }
-
         }
     }
 

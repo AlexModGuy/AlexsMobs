@@ -108,7 +108,7 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
     }
 
     public int getMaxSpawnedInChunk() {
-        return 8;
+        return 4;
     }
 
     protected void registerData() {
