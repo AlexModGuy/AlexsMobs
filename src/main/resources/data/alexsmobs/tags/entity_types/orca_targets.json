@@ -4,10 +4,9 @@
   "values": [
     "alexsmobs:moose",
     "minecraft:polar_bear",
-    "minecraft:salmon",
-    "minecraft:cod",
-    "minecraft:tropical_fish",
     "minecraft:turtle",
-    "minecraft:pufferfish"
+    "minecraft:drowned",
+    "minecraft:guardian",
+    "minecraft:elder_guardian"
   ]
 }

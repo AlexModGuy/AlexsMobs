@@ -22,6 +22,7 @@ public class AMEffectRegistry {
     public static final Effect SUNBIRD_CURSE = new EffectSunbird(true);
     public static final Effect POISON_RESISTANCE = new EffectPoisonResistance();
     public static final Effect OILED = new EffectOiled();
+    public static final Effect ORCAS_MIGHT = new EffectOrcaMight();
     public static final Potion KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 3600)).setRegistryName("alexsmobs:knockback_resistance");
     public static final Potion LONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 9600)).setRegistryName("alexsmobs:long_knockback_resistance");
     public static final Potion STRONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 1800, 1)).setRegistryName("alexsmobs:strong_knockback_resistance");

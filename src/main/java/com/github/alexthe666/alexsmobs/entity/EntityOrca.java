@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIJump;
 import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIMeleeJump;
@@ -20,6 +21,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.DolphinLookController;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.DrownedEntity;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.DolphinEntity;
@@ -67,7 +69,7 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
 
     public static final Animation ANIMATION_BITE = Animation.create(8);
     private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(DolphinEntity.class, DataSerializers.VARINT);
-    private static final EntityPredicate PLAYER_PREDICATE = (new EntityPredicate()).setDistance(10.0D).allowFriendlyFire().allowInvulnerable().setLineOfSiteRequired();
+    private static final EntityPredicate PLAYER_PREDICATE = (new EntityPredicate()).setDistance(24.0D).allowFriendlyFire().allowInvulnerable().setLineOfSiteRequired();
     public int jumpCooldown;
     private int animationTick;
     private Animation currentAnimation;
@@ -243,7 +245,11 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
         LivingEntity attackTarget = this.getAttackTarget();
         if (attackTarget != null && getDistance(attackTarget) < attackTarget.getWidth() + this.getWidth() + 2) {
             if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 4) {
-                boolean flag = attackTarget.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+                float damage =(float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                if(attackTarget instanceof DrownedEntity || attackTarget instanceof GuardianEntity){
+                    damage *= 2F;
+                }
+                boolean flag = attackTarget.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
                 if (flag) {
                     this.applyEnchantments(this, attackTarget);
                     this.playSound(SoundEvents.ENTITY_DOLPHIN_ATTACK, 1.0F, 1.0F);
@@ -417,14 +423,14 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
          */
         public void tick() {
             this.dolphin.getLookController().setLookPositionWithEntity(this.targetPlayer, (float) (this.dolphin.getHorizontalFaceSpeed() + 20), (float) this.dolphin.getVerticalFaceSpeed());
-            if (this.dolphin.getDistanceSq(this.targetPlayer) < 6.25D) {
+            if (this.dolphin.getDistanceSq(this.targetPlayer) < 10D) {
                 this.dolphin.getNavigator().clearPath();
             } else {
                 this.dolphin.getNavigator().tryMoveToEntityLiving(this.targetPlayer, this.speed);
             }
 
             if (this.targetPlayer.isSwimming() && this.targetPlayer.world.rand.nextInt(6) == 0) {
-                this.targetPlayer.addPotionEffect(new EffectInstance(Effects.DOLPHINS_GRACE, 100));
+                this.targetPlayer.addPotionEffect(new EffectInstance(AMEffectRegistry.ORCAS_MIGHT, 1000));
             }
 
         }
