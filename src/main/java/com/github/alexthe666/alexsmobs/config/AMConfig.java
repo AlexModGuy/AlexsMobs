@@ -1,7 +1,10 @@
 package com.github.alexthe666.alexsmobs.config;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.google.common.collect.Lists;
 import net.minecraftforge.fml.config.ModConfig;
+
+import java.util.List;
 
 public class AMConfig {
     public static int grizzlyBearSpawnWeight = 8;
@@ -49,7 +52,7 @@ public class AMConfig {
     public static int mimicubeSpawnRolls = 0;
     public static int raccoonSpawnWeight = 10;
     public static int raccoonSpawnRolls = 0;
-    public static int blobfishSpawnWeight = 15;
+    public static int blobfishSpawnWeight = 30;
     public static int blobfishSpawnRolls = 0;
     public static int blobfishSpawnHeight = 38;
     public static double lavaOpacity = 0.65F;
@@ -61,6 +64,7 @@ public class AMConfig {
     public static boolean giveBookOnStartup = true;
     public static boolean mimicubeSpawnInEndCity = true;
     public static boolean mimicreamRepair = true;
+    public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer");
 
     public static void bake(ModConfig config) {
         try {
@@ -121,6 +125,7 @@ public class AMConfig {
             giveBookOnStartup = ConfigHolder.COMMON.giveBookOnStartup.get();
             mimicubeSpawnInEndCity = ConfigHolder.COMMON.mimicubeSpawnInEndCity.get();
             mimicreamRepair = ConfigHolder.COMMON.mimicreamRepair.get();
+            mimicreamBlacklist = (List<? extends String>) ConfigHolder.COMMON.mimicreamBlacklist.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

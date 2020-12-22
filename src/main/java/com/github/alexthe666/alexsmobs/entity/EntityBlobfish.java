@@ -298,11 +298,6 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
         this.squishAmount *= 0.6F;
     }
 
-
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_COD_AMBIENT;
-    }
-
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_COD_DEATH;
     }
@@ -311,47 +306,7 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
         return SoundEvents.ENTITY_COD_HURT;
     }
 
-    protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_COD_FLOP;
-    }
-
     public static boolean canBlobfishSpawn(EntityType<EntityBlobfish> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
-        return reason == SpawnReason.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnWeight && iServerWorld.getBlockState(pos).isIn(Blocks.WATER) && iServerWorld.getBlockState(pos.up()).isIn(Blocks.WATER);
-    }
-
-    static class MoveHelperController extends MovementController {
-        private final EntityBlobfish fish;
-
-        MoveHelperController(EntityBlobfish p_i48857_1_) {
-            super(p_i48857_1_);
-            this.fish = p_i48857_1_;
-        }
-
-        public void tick() {
-            if (this.fish.areEyesInFluid(FluidTags.WATER)) {
-                this.fish.setMotion(this.fish.getMotion().add(0.0D, 0.005D, 0.0D));
-            }
-
-            if (this.action == Action.MOVE_TO && !this.fish.getNavigator().noPath()) {
-                float lvt_1_1_ = (float) (this.speed * this.fish.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                this.fish.setAIMoveSpeed(MathHelper.lerp(0.125F, this.fish.getAIMoveSpeed(), lvt_1_1_));
-                double lvt_2_1_ = this.posX - this.fish.getPosX();
-                double lvt_4_1_ = this.posY - this.fish.getPosY();
-                double lvt_6_1_ = this.posZ - this.fish.getPosZ();
-                if (lvt_4_1_ != 0.0D) {
-                    double lvt_8_1_ = MathHelper.sqrt(lvt_2_1_ * lvt_2_1_ + lvt_4_1_ * lvt_4_1_ + lvt_6_1_ * lvt_6_1_);
-                    this.fish.setMotion(this.fish.getMotion().add(0.0D, (double) this.fish.getAIMoveSpeed() * (lvt_4_1_ / lvt_8_1_) * 0.1D, 0.0D));
-                }
-
-                if (lvt_2_1_ != 0.0D || lvt_6_1_ != 0.0D) {
-                    float lvt_8_2_ = (float) (MathHelper.atan2(lvt_6_1_, lvt_2_1_) * 57.2957763671875D) - 90.0F;
-                    this.fish.rotationYaw = this.limitAngle(this.fish.rotationYaw, lvt_8_2_, 90.0F);
-                    this.fish.renderYawOffset = this.fish.rotationYaw;
-                }
-
-            } else {
-                this.fish.setAIMoveSpeed(0.0F);
-            }
-        }
+        return reason == SpawnReason.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnHeight && iServerWorld.getBlockState(pos).isIn(Blocks.WATER) && iServerWorld.getBlockState(pos.up()).isIn(Blocks.WATER);
     }
 }

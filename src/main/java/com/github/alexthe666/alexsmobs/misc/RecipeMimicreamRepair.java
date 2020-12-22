@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.CommonProxy;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -34,7 +35,7 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
         for (int j = 0; j < inv.getSizeInventory(); ++j) {
             ItemStack itemstack1 = inv.getStackInSlot(j);
             if (!itemstack1.isEmpty()) {
-                if (itemstack1.isDamageable()) {
+                if (itemstack1.isDamageable() && !isBlacklisted(itemstack1)) {
                     damageableStack = itemstack1;
                 } else {
                     if (itemstack1.getItem() == AMItemRegistry.MIMICREAM) {
@@ -47,6 +48,11 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
         return !damageableStack.isEmpty() && mimicreamCount >= 8;
     }
 
+    public boolean isBlacklisted(ItemStack stack){
+        String name = stack.getItem().getRegistryName().toString();
+        return AMConfig.mimicreamBlacklist.contains(name);
+    }
+
     /**
      * Returns an Item that is the result of this recipe
      */
@@ -57,7 +63,7 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
         for (int j = 0; j < inv.getSizeInventory(); ++j) {
             ItemStack itemstack1 = inv.getStackInSlot(j);
             if (!itemstack1.isEmpty()) {
-                if (itemstack1.isDamageable()) {
+                if (itemstack1.isDamageable() && !isBlacklisted(itemstack1)) {
                     damageableStack = itemstack1;
                 } else {
                     if (itemstack1.getItem() == AMItemRegistry.MIMICREAM) {

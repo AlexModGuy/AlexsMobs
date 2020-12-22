@@ -71,7 +71,7 @@ public class AMItemRegistry {
     public static final Item FRONTIER_CAP = new ItemModArmor(RACCOON_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:frontier_cap");
     public static final Item BLOBFISH = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(3).saturation(0.4F).meat().effect(new EffectInstance(Effects.POISON, 120, 0), 1F).build())).setRegistryName("alexsmobs:blobfish");
     public static final Item BLOBFISH_BUCKET = new ItemModFishBucket(AMEntityRegistry.BLOBFISH, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:blobfish_bucket");
-    public static final Item FISH_OIL = new ItemFishOil(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(0).saturation(0.2F).effect(new EffectInstance(AMEffectRegistry.OILED, 1200, 0), 1F).build())).setRegistryName("alexsmobs:fish_oil");
+    public static final Item FISH_OIL = new ItemFishOil(new Item.Properties().group(AlexsMobs.TAB).containerItem(Items.GLASS_BOTTLE).food(new Food.Builder().hunger(0).saturation(0.2F).effect(new EffectInstance(AMEffectRegistry.OILED, 1200, 0), 1F).build())).setRegistryName("alexsmobs:fish_oil");
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
 

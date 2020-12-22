@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.MimiCubeAIRangedAttack;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -130,7 +131,7 @@ public class EntityMimicube extends MonsterEntity implements IRangedAttackMob {
             attackEntityWithRangedAttackTrident(target, distanceFactor);
             return;
         }
-        ItemStack itemstack = this.findAmmo(this.getHeldItem(ProjectileHelper.getHandWith(this, Items.BOW)));
+        ItemStack itemstack = this.findAmmo(this.getHeldItemMainhand());
         AbstractArrowEntity abstractarrowentity = this.fireArrow(itemstack, distanceFactor);
         if (this.getHeldItemMainhand().getItem() instanceof net.minecraft.item.BowItem)
             abstractarrowentity = ((net.minecraft.item.BowItem) this.getHeldItemMainhand().getItem()).customArrow(abstractarrowentity);
@@ -239,6 +240,9 @@ public class EntityMimicube extends MonsterEntity implements IRangedAttackMob {
         } else if (!this.onGround && this.wasOnGround) {
             this.squishAmount = 2F;
         }
+        if(this.isInWater()){
+            this.setMotion(this.getMotion().add(0, 0.05D, 0));
+        }
         if (this.getHeldItemOffhand().getItem().isFood() && this.getHealth() < this.getMaxHealth()) {
             if (eatingTicks < 100) {
                 for (int i = 0; i < 3; i++) {
@@ -308,11 +312,11 @@ public class EntityMimicube extends MonsterEntity implements IRangedAttackMob {
     }
 
     private SoundEvent getSquishSound() {
-        return SoundEvents.ENTITY_SLIME_SQUISH;
+        return AMSoundRegistry.MIMICUBE_JUMP;
     }
 
     private SoundEvent getJumpSound() {
-        return SoundEvents.ENTITY_SLIME_SQUISH;
+        return AMSoundRegistry.MIMICUBE_JUMP;
     }
 
     protected void jump() {
@@ -375,5 +379,14 @@ public class EntityMimicube extends MonsterEntity implements IRangedAttackMob {
             super.tick();
         }
     }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.MIMICUBE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.MIMICUBE_HURT;
+    }
+
 }
 

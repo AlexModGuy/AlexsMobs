@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -32,10 +33,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -74,7 +72,6 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
     public boolean postponeEating = false;
     private int animationTick;
     private Animation currentAnimation;
-    private int washTime = 0;
     @Nullable
     private UUID eggThrowerUUID = null;
     public boolean forcedSit = false;
@@ -88,6 +85,18 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         return 0.98F;
     }
 
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.RACCOON_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.RACCOON_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.RACCOON_HURT;
+    }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.raccoonSpawnRolls, this.getRNG(), spawnReasonIn);
@@ -149,8 +158,16 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
 
         if(isTamed() && isFood(itemstack) && !isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()){
             if(this.getHeldItemMainhand().isEmpty()){
-                this.setHeldItem(Hand.MAIN_HAND, itemstack);
+                ItemStack copy = itemstack.copy();
+                copy.setCount(1);
+                this.setHeldItem(Hand.MAIN_HAND, copy);
                 this.onEatItem();
+                if(itemstack.hasContainerItem()){
+                    this.entityDropItem(itemstack.getContainerItem());
+                }
+                if(!player.isCreative()){
+                    itemstack.shrink(1);
+                }
                 this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
             }else{
                 this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
@@ -273,6 +290,9 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
                 lookForWaterBeforeEatingTimer--;
             }else if(!postponeEating && !isWashing() && this.getHeldItemMainhand().isFood()) {
                 onEatItem();
+                if(this.getHeldItemMainhand().hasContainerItem()){
+                    this.entityDropItem(this.getHeldItemMainhand().getContainerItem());
+                }
                 this.getHeldItemMainhand().shrink(1);
             }
         }

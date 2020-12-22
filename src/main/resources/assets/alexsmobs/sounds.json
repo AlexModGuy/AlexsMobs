@@ -623,5 +623,59 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.moose_jostle"
+  },
+  "raccoon_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:raccoon_idle_0"
+      },
+      {
+        "name": "alexsmobs:raccoon_idle_1"
+      },
+      {
+        "name": "alexsmobs:raccoon_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.raccoon_idle"
+  },
+  "raccoon_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:raccoon_hurt_0"
+      },
+      {
+        "name": "alexsmobs:raccoon_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.raccoon_hurt"
+  },
+  "mimicube_jump": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "alexsmobs:mimicube_jump_0"
+      },
+      {
+        "name": "alexsmobs:mimicube_jump_1"
+      },
+      {
+        "name": "alexsmobs:mimicube_jump_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mimicube_jump"
+  },
+  "mimicube_hurt": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "alexsmobs:mimicube_hurt_0"
+      },
+      {
+        "name": "alexsmobs:mimicube_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mimicube_hurt"
   }
 }

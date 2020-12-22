@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.item.BowItem;
+import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Items;
 
 import java.util.EnumSet;
@@ -19,6 +20,7 @@ public class MimiCubeAIRangedAttack extends Goal {
     private boolean strafingClockwise;
     private boolean strafingBackwards;
     private int strafingTime = -1;
+    private int crossbowCooldown = 0;
 
     public MimiCubeAIRangedAttack(EntityMimicube mob, double moveSpeedAmpIn, int attackCooldownIn, float maxAttackDistanceIn) {
         this.entity = mob;
@@ -75,6 +77,9 @@ public class MimiCubeAIRangedAttack extends Goal {
      */
     public void tick() {
         LivingEntity livingentity = this.entity.getAttackTarget();
+        if(crossbowCooldown > 0){
+            crossbowCooldown--;
+        }
         if (livingentity != null) {
             double d0 = this.entity.getDistanceSq(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ());
             boolean flag = this.entity.canEntityBeSeen(livingentity);
@@ -121,16 +126,17 @@ public class MimiCubeAIRangedAttack extends Goal {
             } else {
                 this.entity.getLookController().setLookPositionWithEntity(livingentity, 30.0F, 30.0F);
             }
-
-            if (this.entity.isHandActive()) {
+            boolean crossbow = this.entity.getHeldItemMainhand().getItem() instanceof CrossbowItem;
+            if (this.entity.isHandActive() || crossbow) {
                 if (!flag && this.seeTime < -60) {
                     this.entity.resetActiveHand();
                 } else if (flag) {
                     int i = this.entity.getItemInUseMaxCount();
-                    if (i >= 20) {
+                    if (i >= 20 || crossbow && crossbowCooldown == 0) {
                         this.entity.resetActiveHand();
                         this.entity.attackEntityWithRangedAttack(livingentity, BowItem.getArrowVelocity(i));
                         this.attackTime = this.attackCooldown;
+                        crossbowCooldown = 20;
                     }
                 }
             } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
