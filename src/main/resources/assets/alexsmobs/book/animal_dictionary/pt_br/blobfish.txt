@@ -1,4 +1,5 @@
 <NEWLINE>
 <NEWLINE>
-<NEWLINE>Os Peixes-Bolha são peixes gelatinosos encontrados nos oceanos mais profundos. Embora naturalmente cinza e comprimido, o Peixes-Bolha torna-se uma pilha rosa de lama se estiver sob menos de 10 blocos de pressão de água.
+<NEWLINE>
+Os Peixes-Bolha são peixes gelatinosos encontrados nos oceanos mais profundos. Embora naturalmente cinza e comprimido, o Peixes-Bolha torna-se uma pilha rosa de lama se estiver sob menos de 10 blocos de pressão de água.
 Quando abatidos, quatro peixes-bolha e uma garrafa podem ser usados para fabricar óleo de peixe que, quando molhado, pode permitir levitação limitada na água ou na chuva. Eles também podem ser colocados em baldes como qualquer outro peixe. Interagir com um Peixe-Bolha com uma Bola de Slime pode permitir que ele sobreviva em terra, geralmente para fins de exibição, uma vez que a criatura é bastante curiosa.
