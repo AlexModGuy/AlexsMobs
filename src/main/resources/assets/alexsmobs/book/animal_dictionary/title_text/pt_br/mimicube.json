@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "mimicube.txt",
+  "title": "Mimicubo",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:mimicube",
+      "x": 90,
+      "y": 90,
+      "page" : 0,
+      "scale": 2.2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
