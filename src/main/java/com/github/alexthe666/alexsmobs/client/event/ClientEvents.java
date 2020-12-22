@@ -36,7 +36,7 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onRenderWorldLastEvent(RenderWorldLastEvent event) {
-        if(AMConfig.shadersCompat){
+        if(!AMConfig.shadersCompat){
             if (Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION)) {
                 if (!previousLavaVision) {
                     Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = new LavaVisionFluidRenderer();
