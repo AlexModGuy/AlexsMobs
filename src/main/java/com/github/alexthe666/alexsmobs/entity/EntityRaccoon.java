@@ -150,6 +150,9 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         return true;
     }
 
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem() == Items.BREAD;
+    }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
