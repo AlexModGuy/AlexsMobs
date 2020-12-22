@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "capuchin_monkey.txt",
+  "title": "Macaco-Prego",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:sopa_de_macaco",
+      "shapeless": true,
+      "x": 210,
+      "y": 10,
+      "page": 1,
+      "scale": 1.3
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:capuchin_monkey",
+      "x": 92,
+      "y": 78,
+      "page" : 0,
+      "scale": 1.8,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
