@@ -3,20 +3,15 @@ package com.github.alexthe666.alexsmobs.misc;
 import com.github.alexthe666.alexsmobs.CommonProxy;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.WrittenBookItem;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -48,7 +43,7 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
         return !damageableStack.isEmpty() && mimicreamCount >= 8;
     }
 
-    public boolean isBlacklisted(ItemStack stack){
+    public boolean isBlacklisted(ItemStack stack) {
         String name = stack.getItem().getRegistryName().toString();
         return AMConfig.mimicreamBlacklist.contains(name);
     }
@@ -114,7 +109,7 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
     }
 
     public IRecipeSerializer<?> getSerializer() {
-        return new SpecialRecipeSerializer<>(RecipeMimicreamRepair::new);
+        return CommonProxy.MIMICREAM_RECIPE;
     }
 
     /**

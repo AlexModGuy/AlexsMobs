@@ -68,7 +68,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
-    public final ForgeConfigSpec.ConfigValue mimicreamBlacklist;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> mimicreamBlacklist;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");

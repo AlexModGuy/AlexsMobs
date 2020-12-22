@@ -44,7 +44,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-import java.util.function.Predicate;
 
 public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
 

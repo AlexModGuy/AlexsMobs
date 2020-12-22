@@ -37,6 +37,8 @@ import static com.github.alexthe666.alexsmobs.AlexsMobs.MODID;
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
     public static final LootConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.Serializer());
+    public static SpecialRecipeSerializer MIMICREAM_RECIPE;
+
     @SubscribeEvent
     public static void registerModifierSerializers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
         if (AMConfig.bananasDropFromLeaves) {
@@ -47,7 +49,9 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event) {
         if(AMConfig.mimicreamRepair){
-            event.getRegistry().register(new SpecialRecipeSerializer<>(RecipeMimicreamRepair::new).setRegistryName(new ResourceLocation("alexsmobs:mimicream_repair_recipe")));
+            MIMICREAM_RECIPE = new SpecialRecipeSerializer<>(RecipeMimicreamRepair::new);
+            MIMICREAM_RECIPE.setRegistryName(new ResourceLocation("alexsmobs:mimicream_repair_recipe"));
+            event.getRegistry().register(MIMICREAM_RECIPE);
         }
     }
 
