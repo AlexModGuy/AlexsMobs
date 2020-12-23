@@ -196,16 +196,24 @@ public class EntityMimicube extends MonsterEntity implements IRangedAttackMob {
         if (trueSource != null && trueSource instanceof LivingEntity) {
             LivingEntity attacker = (LivingEntity) trueSource;
             if (!attacker.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty()) {
-                this.setItemStackToSlot(EquipmentSlotType.HEAD, attacker.getItemStackFromSlot(EquipmentSlotType.HEAD).copy());
+                this.setItemStackToSlot(EquipmentSlotType.HEAD, mimicStack(attacker.getItemStackFromSlot(EquipmentSlotType.HEAD)));
             }
             if (!attacker.getItemStackFromSlot(EquipmentSlotType.OFFHAND).isEmpty()) {
-                this.setItemStackToSlot(EquipmentSlotType.OFFHAND, attacker.getItemStackFromSlot(EquipmentSlotType.OFFHAND).copy());
+                this.setItemStackToSlot(EquipmentSlotType.OFFHAND, mimicStack(attacker.getItemStackFromSlot(EquipmentSlotType.OFFHAND)));
             }
             if (!attacker.getItemStackFromSlot(EquipmentSlotType.MAINHAND).isEmpty()) {
-                this.setItemStackToSlot(EquipmentSlotType.MAINHAND, attacker.getItemStackFromSlot(EquipmentSlotType.MAINHAND).copy());
+                this.setItemStackToSlot(EquipmentSlotType.MAINHAND, mimicStack(attacker.getItemStackFromSlot(EquipmentSlotType.MAINHAND)));
             }
         }
         return super.attackEntityFrom(source, amount);
+    }
+
+    private ItemStack mimicStack(ItemStack stack){
+        ItemStack copy = stack.copy();
+        if(copy.isDamageable()){
+            copy.setDamage(copy.getMaxDamage());
+        }
+        return copy;
     }
 
     public void tick() {
