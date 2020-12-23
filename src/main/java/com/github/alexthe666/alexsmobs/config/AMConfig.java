@@ -66,6 +66,7 @@ public class AMConfig {
     public static boolean mimicubeSpawnInEndCity = true;
     public static boolean mimicreamRepair = true;
     public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer");
+    public static boolean raccoonsStealFromChests = true;
 
     public static void bake(ModConfig config) {
         try {
@@ -128,6 +129,7 @@ public class AMConfig {
             mimicubeSpawnInEndCity = ConfigHolder.COMMON.mimicubeSpawnInEndCity.get();
             mimicreamRepair = ConfigHolder.COMMON.mimicreamRepair.get();
             mimicreamBlacklist = (List<? extends String>) ConfigHolder.COMMON.mimicreamBlacklist.get();
+            raccoonsStealFromChests = ConfigHolder.COMMON.raccoonStealFromChests.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

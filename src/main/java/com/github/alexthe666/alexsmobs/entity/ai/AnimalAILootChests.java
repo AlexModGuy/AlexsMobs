@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import net.minecraft.block.Block;
 import net.minecraft.block.ContainerBlock;
@@ -58,6 +59,9 @@ public class AnimalAILootChests extends MoveToBlockGoal {
     @Override
     public boolean shouldExecute() {
         if (this.entity instanceof TameableEntity && ((TameableEntity)entity).isTamed()) {
+            return false;
+        }
+        if(!AMConfig.raccoonsStealFromChests){
             return false;
         }
         if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
