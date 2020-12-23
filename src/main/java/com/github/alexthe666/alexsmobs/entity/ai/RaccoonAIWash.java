@@ -58,7 +58,6 @@ public class RaccoonAIWash extends Goal {
 
     public void tick() {
         if (targetPos != null && waterPos != null) {
-            this.raccoon.world.setBlockState(targetPos, Blocks.GRAVEL.getDefaultState());
             double dist = this.raccoon.getDistanceSq(Vector3d.copyCentered(waterPos));
             if (dist > 2 && this.raccoon.isWashing()) {
                 this.raccoon.setWashing(false);
