@@ -20,6 +20,8 @@ public class AMTagRegistry {
     public static final ResourceLocation KOMODO_DRAGON_TARGETS = new ResourceLocation("alexsmobs", "komodo_dragon_targets");
     public static final ResourceLocation BANANAS = new ResourceLocation("alexsmobs", "bananas");
     public static final ResourceLocation RACCOON_FOODSTUFFS = new ResourceLocation("alexsmobs", "raccoon_foodstuffs");
+    public static final ResourceLocation SEAL_FOODSTUFFS = new ResourceLocation("alexsmobs", "seal_foodstuffs");
+    public static final ResourceLocation SEAL_DIGABLES = new ResourceLocation("alexsmobs", "seal_digables");
 
     public static final ResourceLocation CRIMSON_MOSQUITO_SPAWNS = new ResourceLocation("alexsmobs","crimson_mosquito_spawns");
     public static final ResourceLocation ROADRUNNER_SPAWNS = new ResourceLocation("alexsmobs","roadrunner_spawns");
@@ -29,5 +31,6 @@ public class AMTagRegistry {
     public static final ResourceLocation KOMODO_DRAGON_SPAWNS = new ResourceLocation("alexsmobs","komodo_dragon_spawns");
     public static final ResourceLocation CROCODILE_SPAWNS = new ResourceLocation("alexsmobs","crocodile_spawns");
     public static final ResourceLocation WARPED_TOAD_SPAWNS = new ResourceLocation("alexsmobs","warped_toad_spawns");
+    public static final ResourceLocation SEAL_SPAWNS = new ResourceLocation("alexsmobs","seal_spawns");
 
 }
