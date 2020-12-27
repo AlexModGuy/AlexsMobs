@@ -15,6 +15,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue lavaBottleEnabled;
     public final ForgeConfigSpec.BooleanValue spidersAttackFlies;
     public final ForgeConfigSpec.BooleanValue wolvesAttackMoose;
+    public final ForgeConfigSpec.BooleanValue polarBearsAttackSeals;
     public final ForgeConfigSpec.BooleanValue bananasDropFromLeaves;
     public final ForgeConfigSpec.IntValue bananaChance;
     public final ForgeConfigSpec.IntValue grizzlyBearSpawnWeight;
@@ -80,6 +81,7 @@ public class CommonConfig {
         bananaChance = buildInt(builder, "bananaChance", "all", AMConfig.bananaChance, 0, Integer.MAX_VALUE, "1 out of this number chance for leaves to drop a banana when broken. Fortune is automatically factored in");
         spidersAttackFlies = buildBoolean(builder, "spidersAttackFlies", "all", true, "Whether spiders should target fly mobs.");
         wolvesAttackMoose = buildBoolean(builder, "wolvesAttackMoose", "all", true, "Whether wolves should target moose mobs.");
+        polarBearsAttackSeals = buildBoolean(builder, "polarBearsAttackSeals", "all", true, "Whether polar bears should target seal mobs.");
         lavaBottleEnabled = buildBoolean(builder, "lavaBottleEnabled", "all", true, "Whether lava can be bottled with a right click of a glass bottle.");
         caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, 0, 256, "Maximum world y-level that cave centipedes can spawn at");
         blobfishSpawnHeight = buildInt(builder, "blobfishSpawnHeight", "all", AMConfig.blobfishSpawnHeight, 0, 256, "Maximum world y-level that blobfish can spawn at");

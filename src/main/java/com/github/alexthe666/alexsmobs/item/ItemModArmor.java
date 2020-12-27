@@ -103,6 +103,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/moose_headgear.png";
         } else if (this.material == AMItemRegistry.RACCOON_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/frontier_cap.png";
+        }else if (this.material == AMItemRegistry.SOMBRERO_ARMOR_MATERIAL) {
+            return "alexsmobs:textures/armor/sombrero.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }
@@ -116,6 +118,8 @@ public class ItemModArmor extends ArmorItem {
             return (A) AlexsMobs.PROXY.getArmorModel(1, entity);
         } else if (this.material == AMItemRegistry.RACCOON_ARMOR_MATERIAL) {
             return (A) AlexsMobs.PROXY.getArmorModel(2, entity);
+        }  else if (this.material == AMItemRegistry.SOMBRERO_ARMOR_MATERIAL) {
+            return (A) AlexsMobs.PROXY.getArmorModel(3, entity);
         } else {
             return super.getArmorModel(entity, itemStack, armorSlot, _default);
         }

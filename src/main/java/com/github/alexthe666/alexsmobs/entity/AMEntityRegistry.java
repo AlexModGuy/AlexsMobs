@@ -49,6 +49,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityRaccoon> RACCOON = registerEntity(EntityType.Builder.create(EntityRaccoon::new, EntityClassification.CREATURE).size(0.8F, 0.9F), "raccoon");
     public static final EntityType<EntityBlobfish> BLOBFISH = registerEntity(EntityType.Builder.create(EntityBlobfish::new, EntityClassification.WATER_AMBIENT).size(0.7F, 0.45F), "blobfish");
     public static final EntityType<EntitySeal> SEAL = registerEntity(EntityType.Builder.create(EntitySeal::new, EntityClassification.CREATURE).size(1.3F, 0.7F), "seal");
+    public static final EntityType<EntityCockroach> COCKROACH = registerEntity(EntityType.Builder.create(EntityCockroach::new, EntityClassification.CREATURE).size(0.7F, 0.3F), "cockroach");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -128,6 +129,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(RACCOON, EntityRaccoon.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(BLOBFISH, EntityBlobfish.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(SEAL, EntitySeal.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(COCKROACH, EntityCockroach.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

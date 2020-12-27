@@ -112,6 +112,10 @@ public class AMSoundRegistry {
 
     public static final SoundEvent RACCOON_HURT = createSoundEvent("raccoon_hurt");
 
+    public static final SoundEvent MARACA = createSoundEvent("maraca");
+
+    public static final SoundEvent LA_CUCARACHA = createSoundEvent("la_cucaracha");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

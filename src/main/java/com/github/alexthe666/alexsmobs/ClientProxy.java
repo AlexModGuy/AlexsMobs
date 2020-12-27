@@ -5,18 +5,28 @@ import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.model.ModelFrontierCap;
 import com.github.alexthe666.alexsmobs.client.model.ModelMooseHeadgear;
 import com.github.alexthe666.alexsmobs.client.model.ModelRoadrunnerBoots;
+import com.github.alexthe666.alexsmobs.client.model.ModelSombrero;
 import com.github.alexthe666.alexsmobs.client.render.*;
+import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
+import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.GuardianSound;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.audio.TickableSound;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.fluid.Fluids;
@@ -24,12 +34,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 @OnlyIn(Dist.CLIENT)
@@ -39,6 +53,8 @@ public class ClientProxy extends CommonProxy {
     private static final ModelRoadrunnerBoots ROADRUNNER_BOOTS_MODEL = new ModelRoadrunnerBoots(0.7F);
     private static final ModelMooseHeadgear MOOSE_HEADGEAR_MODEL = new ModelMooseHeadgear(0.3F);
     private static final ModelFrontierCap FRONTIER_CAP_MODEL = new ModelFrontierCap(0.3F);
+    private static final ModelSombrero SOMBRERO_MODEL = new ModelSombrero(0.3F);
+    public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
 
     public void clientInit() {
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
@@ -73,6 +89,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.RACCOON, manager -> new RenderRaccoon(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BLOBFISH, manager -> new RenderBlobfish(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SEAL, manager -> new RenderSeal(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.COCKROACH, manager -> new RenderCockroach(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         RenderType lavaType = RenderType.getTranslucent();
         RenderTypeLookup.setRenderLayer(Fluids.LAVA, lavaType);
@@ -108,8 +125,27 @@ public class ClientProxy extends CommonProxy {
                 return MOOSE_HEADGEAR_MODEL;
             case 2:
                 return FRONTIER_CAP_MODEL.withAnimations(entity);
+            case 3:
+                return SOMBRERO_MODEL;
             default:
                 return null;
         }
     }
+
+    @OnlyIn(Dist.CLIENT)
+    public void onEntityStatus(Entity entity, byte updateKind) {
+        if(entity instanceof EntityCockroach && entity.isAlive() && updateKind == 67){
+            SoundLaCucaracha sound;
+            if(COCKROACH_SOUND_MAP.get(entity.getEntityId()) == null){
+                sound = new SoundLaCucaracha((EntityCockroach)entity);
+                COCKROACH_SOUND_MAP.put(entity.getEntityId(), sound);
+            }else{
+                sound = COCKROACH_SOUND_MAP.get(entity.getEntityId());
+            }
+            if(!Minecraft.getInstance().getSoundHandler().isPlaying(sound) && sound.shouldPlaySound() && sound.isOnlyCockroach()){
+                Minecraft.getInstance().getSoundHandler().play(sound);
+            }
+        }
+    }
+
 }

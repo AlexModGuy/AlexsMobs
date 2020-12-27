@@ -677,5 +677,33 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.mimicube_hurt"
+  },
+  "la_cucaracha": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "alexsmobs:la_cucaracha",
+        "preload": true
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.la_cucaracha"
+  },
+  "maraca": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "alexsmobs:maraca_0"
+      },
+      {
+        "name": "alexsmobs:maraca_1"
+      },
+      {
+        "name": "alexsmobs:maraca_2"
+      },
+      {
+        "name": "alexsmobs:maraca_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.maraca"
   }
 }

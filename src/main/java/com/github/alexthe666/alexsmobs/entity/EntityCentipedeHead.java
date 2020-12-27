@@ -56,6 +56,7 @@ public class EntityCentipedeHead extends MonsterEntity {
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 20, true, true, null));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractVillagerEntity.class, 20, true, true, null));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, EntityCockroach.class, 45, true, true, null));
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {

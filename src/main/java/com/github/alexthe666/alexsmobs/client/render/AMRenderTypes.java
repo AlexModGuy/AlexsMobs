@@ -7,8 +7,19 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 
 public class AMRenderTypes extends RenderType {
+
+    protected static final RenderState.TexturingState RAINBOW_GLINT_TEXTURING = new RenderState.TexturingState("rainbow_glint_texturing", () -> {
+        setupRainbowRendering(0F);
+    }, () -> {
+        RenderSystem.matrixMode(5890);
+        RenderSystem.popMatrix();
+        RenderSystem.matrixMode(5888);
+    });
+
+    public static final RenderType RAINBOW_GLINT = makeType("rainbow_glint", DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, 7, 256, RenderType.State.getBuilder().texture(new RenderState.TextureState(new ResourceLocation("alexsmobs:textures/entity/rainbow_glint.png"), true, false)).writeMask(COLOR_WRITE).cull(CULL_DISABLED).depthTest(DEPTH_EQUAL).transparency(GLINT_TRANSPARENCY).texturing(RAINBOW_GLINT_TEXTURING).diffuseLighting(DIFFUSE_LIGHTING_ENABLED).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).shadeModel(SHADE_ENABLED).build(false));
 
     protected static final RenderState.TransparencyState MIMICUBE_TRANSPARANCY = new RenderState.TransparencyState("mimicube_transparency", () -> {
         RenderSystem.enableBlend();
@@ -32,4 +43,16 @@ public class AMRenderTypes extends RenderType {
         return makeType("eye_flickering", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).transparency(TRANSLUCENT_TRANSPARENCY).alpha(DEFAULT_ALPHA).cull(CULL_DISABLED).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).build(false));
     }
 
+    private static void setupRainbowRendering(float scaleIn) {
+        RenderSystem.matrixMode(5890);
+        RenderSystem.pushMatrix();
+        RenderSystem.loadIdentity();
+        long i = Util.milliTime() * 8L;
+        float f = (float)(i % 110000L) / 110000.0F;
+        float f1 = (float)(i % 10000L) / 10000.0F;
+        RenderSystem.translatef(0, f1, 0.0F);
+        RenderSystem.rotatef(10.0F, 0.0F, 0.0F, 1.0F);
+        RenderSystem.scalef(scaleIn, scaleIn, scaleIn);
+        RenderSystem.matrixMode(5888);
+    }
 }

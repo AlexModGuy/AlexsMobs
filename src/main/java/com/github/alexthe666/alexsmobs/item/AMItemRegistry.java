@@ -31,6 +31,7 @@ public class AMItemRegistry {
     public static CustomArmorMaterial CENTIPEDE_ARMOR_MATERIAL = new AMArmorMaterial("centipede", 20, new int[]{6, 6, 6, 6}, 22, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0.5F);
     public static CustomArmorMaterial MOOSE_ARMOR_MATERIAL = new AMArmorMaterial("moose", 19, new int[]{5, 5, 5, 5}, 21, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 0.5F);
     public static CustomArmorMaterial RACCOON_ARMOR_MATERIAL = new AMArmorMaterial("raccoon", 17, new int[]{3, 3, 3, 3}, 21, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2.5F);
+    public static CustomArmorMaterial SOMBRERO_ARMOR_MATERIAL = new AMArmorMaterial("sombrero", 14, new int[]{2, 2, 2, 2}, 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
 
     public static final Item TAB_ICON = new Item(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:animal_dictionary");
@@ -72,6 +73,9 @@ public class AMItemRegistry {
     public static final Item BLOBFISH = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(3).saturation(0.4F).meat().effect(new EffectInstance(Effects.POISON, 120, 0), 1F).build())).setRegistryName("alexsmobs:blobfish");
     public static final Item BLOBFISH_BUCKET = new ItemModFishBucket(AMEntityRegistry.BLOBFISH, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:blobfish_bucket");
     public static final Item FISH_OIL = new ItemFishOil(new Item.Properties().group(AlexsMobs.TAB).containerItem(Items.GLASS_BOTTLE).food(new Food.Builder().hunger(0).saturation(0.2F).effect(new EffectInstance(AMEffectRegistry.OILED, 1200, 0), 1F).build())).setRegistryName("alexsmobs:fish_oil");
+    public static final Item MARACA = new ItemMaraca(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:maraca");
+    public static final Item SOMBRERO = new ItemModArmor(SOMBRERO_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:sombrero");
+
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
 
@@ -105,6 +109,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.RACCOON, 0X85827E,0X2A2726, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_raccoon"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.BLOBFISH, 0XDBC6BD,0X9E7A7F, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_blobfish"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SEAL, 0X483C32,0X66594C, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_seal"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.COCKROACH, 0X0D0909,0X42241E, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_cockroach"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

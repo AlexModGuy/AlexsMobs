@@ -12,6 +12,7 @@ import com.github.alexthe666.alexsmobs.misc.RecipeMimicreamRepair;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -80,8 +81,6 @@ public class CommonProxy {
         return null;
     }
 
-    public void addBananaLoot() {
-        //   Blocks.JUNGLE_LEAVES.lootTable;
-
+    public void onEntityStatus(Entity entity, byte updateKind) {
     }
 }
