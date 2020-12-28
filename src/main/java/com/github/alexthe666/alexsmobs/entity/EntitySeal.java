@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -29,6 +30,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.RegistryKey;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -63,7 +65,7 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
     private int swimTimer = -1000;
     private int ticksSinceInWater = 0;
     private boolean isLandNavigator;
-    private int fishFeedings = 0;
+    public int fishFeedings = 0;
 
     protected EntitySeal(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -79,16 +81,17 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SealAIBask(this));
         this.goalSelector.addGoal(1, new BreatheAirGoal(this));
-        this.goalSelector.addGoal(1, new AnimalAIFindWater(this));
-        this.goalSelector.addGoal(1, new AnimalAILeaveWater(this));
-        this.goalSelector.addGoal(2, new AnimalAIHerdPanic(this, 1.6D));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1, true));
-        this.goalSelector.addGoal(4, new SealAIDiveForItems(this));
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 7));
-        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(6, new AvoidEntityGoal(this, EntityOrca.class, 20F, 1.3D, 1.0D));
-        this.goalSelector.addGoal(7, new TemptGoal(this, 1.1D, Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.SEAL_FOODSTUFFS)), false));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
+        this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
+        this.goalSelector.addGoal(4, new AnimalAIHerdPanic(this, 1.6D));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1, true));
+        this.goalSelector.addGoal(6, new SealAIDiveForItems(this));
+        this.goalSelector.addGoal(7, new RandomSwimmingGoal(this, 1.0D, 7));
+        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(9, new AvoidEntityGoal(this, EntityOrca.class, 20F, 1.3D, 1.0D));
+        this.goalSelector.addGoal(10, new TemptGoal(this, 1.1D, Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.SEAL_FOODSTUFFS)), false));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
     }
 
@@ -181,11 +184,11 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
         }
         if (!this.world.isRemote) {
             if (isBasking()) {
-                if (this.getRevengeTarget() != null || revengeCooldown > 0 || this.isInWaterOrBubbleColumn() || this.getAttackTarget() != null || baskingTimer > 1000 && this.getRNG().nextInt(100) == 0) {
+                if (this.getRevengeTarget() != null || isInLove() || revengeCooldown > 0 || this.isInWaterOrBubbleColumn() || this.getAttackTarget() != null || baskingTimer > 1000 && this.getRNG().nextInt(100) == 0) {
                     this.setBasking(false);
                 }
             } else {
-                if (this.getAttackTarget() == null && this.getRevengeTarget() == null && revengeCooldown == 0 && !isBasking() && baskingTimer == 0 && this.getRNG().nextInt(15) == 0) {
+                if (this.getAttackTarget() == null && !isInLove() && this.getRevengeTarget() == null && revengeCooldown == 0 && !isBasking() && baskingTimer == 0 && this.getRNG().nextInt(15) == 0) {
                     if (!isInWaterOrBubbleColumn()) {
                         this.setBasking(true);
                     }
@@ -319,6 +322,10 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
 
     }
 
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem() == AMItemRegistry.LOBSTER_TAIL;
+    }
+
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
@@ -360,6 +367,7 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
     public void onGetItem(ItemEntity e) {
         if (ItemTags.getCollection().get(AMTagRegistry.SEAL_FOODSTUFFS).contains(e.getItem().getItem())) {
             fishFeedings++;
+            this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
             if (fishFeedings >= 3) {
                 feederUUID = e.getThrowerId();
                 fishFeedings = 0;

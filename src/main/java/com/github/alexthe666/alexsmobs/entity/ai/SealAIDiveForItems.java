@@ -70,7 +70,7 @@ public class SealAIDiveForItems extends Goal {
                 ItemEntity item = seal.entityDropItem(stack);
                 if (item != null) {
                     double d0 = thrower.getPosX() - this.seal.getPosX();
-                    double d1 = thrower.getPosY() - this.seal.getPosYEye();
+                    double d1 = thrower.getPosYEye() - this.seal.getPosYEye();
                     double d2 = thrower.getPosZ() - this.seal.getPosZ();
                     double lvt_7_1_ = MathHelper.sqrt(d0 * d0 + d2 * d2);
                     float pitch = (float) (-(MathHelper.atan2(d1, lvt_7_1_) * 57.2957763671875D));
@@ -81,7 +81,7 @@ public class SealAIDiveForItems extends Goal {
                     float f4 = MathHelper.cos(yaw * ((float) Math.PI / 180F));
                     float f5 = seal.getRNG().nextFloat() * ((float) Math.PI * 2F);
                     float f6 = 0.02F * seal.getRNG().nextFloat();
-                    item.setMotion((double) (-f3 * f2 * 0.3F) + Math.cos(f5) * (double) f6, -f8 * 0.3F + 0.1F + (seal.getRNG().nextFloat() - seal.getRNG().nextFloat()) * 0.1F, (double) (f4 * f2 * 0.3F) + Math.sin(f5) * (double) f6);
+                    item.setMotion((double) (-f3 * f2 * 0.5F) + Math.cos(f5) * (double) f6, -f8 * 0.2F + 0.1F + (seal.getRNG().nextFloat() - seal.getRNG().nextFloat()) * 0.1F, (double) (f4 * f2 * 0.5F) + Math.sin(f5) * (double) f6);
                 }
                 seal.feederUUID = null;
                 resetTask();
@@ -130,6 +130,7 @@ public class SealAIDiveForItems extends Goal {
         thrower = null;
         digTime = 0;
         returnToPlayer = false;
+        seal.fishFeedings = 0;
         if(!seal.getHeldItemMainhand().isEmpty()){
             seal.entityDropItem(seal.getHeldItemMainhand().copy());
             seal.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);

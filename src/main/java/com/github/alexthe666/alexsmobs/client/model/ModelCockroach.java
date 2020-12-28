@@ -128,8 +128,8 @@ public class ModelCockroach extends AdvancedEntityModel<EntityCockroach> {
         float idleDegree = 0.25F;
         float flySpeed = 0.5F;
         float flyDegree = 0.5F;
-        float walkSpeed = 1F;
-        float walkDegree = 0.45F;
+        float walkSpeed = 1.25F;
+        float walkDegree = 0.5F;
         float partialTick = Minecraft.getInstance().getRenderPartialTicks();
         float danceProgress = entity.prevDanceProgress + (entity.danceProgress - entity.prevDanceProgress) * partialTick;
         progressRotationPrev(body, danceProgress, (float) Math.toRadians(-70), 0, 0, 5F);
@@ -179,6 +179,13 @@ public class ModelCockroach extends AdvancedEntityModel<EntityCockroach> {
             head.showModel = true;
             antenna_left.showModel = true;
             antenna_right.showModel = true;
+        }
+        if(entity.isChild()){
+            wing_left.showModel = false;
+            wing_right.showModel = false;
+        }else{
+            wing_left.showModel = true;
+            wing_right.showModel = true;
         }
     }
 

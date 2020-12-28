@@ -3,6 +3,8 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.entity.EntityCockroachEgg;
+import com.github.alexthe666.alexsmobs.entity.EntityCrocodileEgg;
 import com.github.alexthe666.alexsmobs.entity.EntitySharkToothArrow;
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
 import net.minecraft.block.DispenserBlock;
@@ -43,7 +45,7 @@ public class AMItemRegistry {
     public static final Item GAZELLE_HORN = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:gazelle_horn");
     public static final Item CROCODILE_SCUTE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:crocodile_scute");
     public static final Item CROCODILE_CHESTPLATE = new ItemModArmor(CROCODILE_ARMOR_MATERIAL, EquipmentSlotType.CHEST).setRegistryName("alexsmobs:crocodile_chestplate");
-    public static final Item CROCODILE_EGG = new ItemCrocodileEgg(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:crocodile_egg");
+    public static final Item CROCODILE_EGG = new ItemAnimalEgg(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:crocodile_egg");
     public static final Item MAGGOT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(1).saturation(0.2F).build())).setRegistryName("alexsmobs:maggot");
     public static final Item BANANA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(0.3F).build())).setRegistryName("alexsmobs:banana");
     public static final Item BANANA_PEEL = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banana_peel");
@@ -75,6 +77,9 @@ public class AMItemRegistry {
     public static final Item FISH_OIL = new ItemFishOil(new Item.Properties().group(AlexsMobs.TAB).containerItem(Items.GLASS_BOTTLE).food(new Food.Builder().hunger(0).saturation(0.2F).effect(new EffectInstance(AMEffectRegistry.OILED, 1200, 0), 1F).build())).setRegistryName("alexsmobs:fish_oil");
     public static final Item MARACA = new ItemMaraca(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:maraca");
     public static final Item SOMBRERO = new ItemModArmor(SOMBRERO_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:sombrero");
+    public static final Item COCKROACH_WING_FRAGMENT = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cockroach_wing_fragment");
+    public static final Item COCKROACH_WING = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cockroach_wing");
+    public static final Item COCKROACH_OOTHECA = new ItemAnimalEgg(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cockroach_ootheca");
 
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
@@ -126,6 +131,7 @@ public class AMItemRegistry {
         CENTIPEDE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CENTIPEDE_LEG));
         MOOSE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(MOOSE_ANTLER));
         RACCOON_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(RACCOON_TAIL));
+        SOMBRERO_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(Items.HAY_BLOCK));
         DispenserBlock.registerDispenseBehavior(SHARK_TOOTH_ARROW, new ProjectileDispenseBehavior() {
             /**
              * Return the projectile entity spawned by this dispense behavior.
@@ -136,6 +142,20 @@ public class AMItemRegistry {
                 return entityarrow;
             }
         });
-
+        DispenserBlock.registerDispenseBehavior(CROCODILE_EGG, new ProjectileDispenseBehavior() {
+            /**
+             * Return the projectile entity spawned by this dispense behavior.
+             */
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                EntityCrocodileEgg entityarrow = new EntityCrocodileEgg(worldIn, position.getX(), position.getY(), position.getZ());
+                return entityarrow;
+            }
+        });
+        DispenserBlock.registerDispenseBehavior(COCKROACH_OOTHECA, new ProjectileDispenseBehavior() {
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                EntityCockroachEgg entityarrow = new EntityCockroachEgg(worldIn, position.getX(), position.getY(), position.getZ());
+                return entityarrow;
+            }
+        });
     }
 }

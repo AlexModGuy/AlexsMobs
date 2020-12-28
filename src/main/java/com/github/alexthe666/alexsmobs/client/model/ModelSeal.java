@@ -77,7 +77,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
     @Override
     public void setRotationAngles(EntitySeal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        float walkSpeed = 1.5F;
+        float walkSpeed = isChild ? 0.9F : 1.5F;
         float walkDegree = 1F;
         float swimSpeed = 0.5F;
         float swimDegree = 0.5F;

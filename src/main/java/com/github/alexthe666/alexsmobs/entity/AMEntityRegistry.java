@@ -50,6 +50,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityBlobfish> BLOBFISH = registerEntity(EntityType.Builder.create(EntityBlobfish::new, EntityClassification.WATER_AMBIENT).size(0.7F, 0.45F), "blobfish");
     public static final EntityType<EntitySeal> SEAL = registerEntity(EntityType.Builder.create(EntitySeal::new, EntityClassification.CREATURE).size(1.3F, 0.7F), "seal");
     public static final EntityType<EntityCockroach> COCKROACH = registerEntity(EntityType.Builder.create(EntityCockroach::new, EntityClassification.CREATURE).size(0.7F, 0.3F), "cockroach");
+    public static final EntityType<EntityCockroachEgg> COCKROACH_EGG = registerEntity(EntityType.Builder.create(EntityCockroachEgg::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityCockroachEgg::new).immuneToFire(), "cockroach_egg");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);

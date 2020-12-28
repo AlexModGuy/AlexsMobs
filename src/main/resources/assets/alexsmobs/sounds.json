@@ -683,7 +683,7 @@
     "sounds": [
       {
         "name": "alexsmobs:la_cucaracha",
-        "preload": true
+        "stream": true
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.la_cucaracha"

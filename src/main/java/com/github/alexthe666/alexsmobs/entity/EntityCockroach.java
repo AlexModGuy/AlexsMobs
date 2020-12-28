@@ -19,6 +19,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -41,8 +42,9 @@ import java.util.UUID;
 
 public class EntityCockroach extends AnimalEntity implements IShearable, net.minecraftforge.common.IForgeShearable, ITargetsDroppedItems {
 
+    public static final ResourceLocation MARACA_LOOT = new ResourceLocation("alexsmobs", "entities/cockroach_maracas");
+    public static final ResourceLocation MARACA_HEADLESS_LOOT = new ResourceLocation("alexsmobs", "entities/cockroach_maracas_headless");
     protected static final EntitySize STAND_SIZE = EntitySize.fixed(0.7F, 0.9F);
-    private static final int LA_CUCARACHA_LENGTH = 67 * 20;
     private static final DataParameter<Boolean> DANCING = EntityDataManager.createKey(EntityCockroach.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HEADLESS = EntityDataManager.createKey(EntityCockroach.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MARACAS = EntityDataManager.createKey(EntityCockroach.class, DataSerializers.BOOLEAN);
@@ -56,24 +58,29 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
     private boolean isJukeboxing;
     private BlockPos jukeboxPosition;
     private int laCucarachaTimer = 0;
+    public int timeUntilNextEgg = this.rand.nextInt(24000) + 24000;
 
     public EntityCockroach(EntityType type, World world) {
         super(type, world);
+    }
+
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 6.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.1D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, false, Ingredient.fromItems(AMItemRegistry.MARACA)));
-        this.goalSelector.addGoal(4, new AnimalAIFleeLight(this, 1.0D){
-            public boolean shouldExecute(){
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, false, Ingredient.fromItems(AMItemRegistry.MARACA, Items.SUGAR)));
+        this.goalSelector.addGoal(4, new AvoidEntityGoal(this, EntityCentipedeHead.class, 16, 1.3D, 1.0D));
+        this.goalSelector.addGoal(4, new AvoidEntityGoal(this, PlayerEntity.class, 8, 1.3D, 1.0D) {
+            public boolean shouldExecute() {
                 return !EntityCockroach.this.isBreaded() && super.shouldExecute();
             }
         });
-        this.goalSelector.addGoal(5, new AvoidEntityGoal(this, EntityCentipedeHead.class, 16, 1.3D, 1.0D));
-        this.goalSelector.addGoal(5, new AvoidEntityGoal(this, PlayerEntity.class, 8, 1.3D, 1.0D){
-            public boolean shouldExecute(){
+        this.goalSelector.addGoal(5, new AnimalAIFleeLight(this, 1.0D) {
+            public boolean shouldExecute() {
                 return !EntityCockroach.this.isBreaded() && super.shouldExecute();
             }
         });
@@ -83,12 +90,50 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
     }
 
-    public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
-        return 0.5F - worldIn.getBrightness(pos);
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        boolean prev = super.attackEntityFrom(source, amount);
+        if (prev && this.getHealth() <= 1.0F && amount > 0 && !this.isHeadless() && this.getRNG().nextInt(3) == 0) {
+            this.setHeadless(true);
+            if (!world.isRemote) {
+                for (int i = 0; i < 3; i++) {
+                    ((ServerWorld) this.world).spawnParticle(ParticleTypes.SNEEZE, this.getPosXRandom(0.52F), this.getPosYHeight(1D), this.getPosZRandom(0.52F), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                }
+            }
+        }
+        return prev;
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 6.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem() == Items.SUGAR;
+    }
+
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean("Maracas", this.hasMaracas());
+        compound.putBoolean("Rainbow", this.isRainbow());
+        compound.putBoolean("Dancing", this.isDancing());
+        compound.putBoolean("Breaded", this.isBreaded());
+        compound.putInt("EggTime", this.timeUntilNextEgg);
+    }
+
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setMaracas(compound.getBoolean("Maracas"));
+        this.setRainbow(compound.getBoolean("Rainbow"));
+        this.setDancing(compound.getBoolean("Dancing"));
+        this.setBreaded(compound.getBoolean("Breaded"));
+        if (compound.contains("EggTime")) {
+            this.timeUntilNextEgg = compound.getInt("EggTime");
+        }
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return this.hasMaracas() ? this.isHeadless() ? MARACA_HEADLESS_LOOT : MARACA_LOOT : super.getLootTable();
+    }
+
+    public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
+        return 0.5F - worldIn.getBrightness(pos);
     }
 
     public CreatureAttribute getCreatureAttribute() {
@@ -247,6 +292,11 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
         } else {
             laCucarachaTimer = 0;
         }
+        if (!this.world.isRemote && this.isAlive() && !this.isChild() && --this.timeUntilNextEgg <= 0) {
+            this.entityDropItem(AMItemRegistry.COCKROACH_OOTHECA);
+            this.timeUntilNextEgg = this.rand.nextInt(24000) + 24000;
+
+        }
         prevStand = dance;
     }
 
@@ -328,7 +378,7 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem().isFood();
+        return stack.getItem().isFood() || stack.getItem() == Items.SUGAR;
     }
 
     public void travel(Vector3d vec3d) {
@@ -344,9 +394,16 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
 
     @Override
     public void onGetItem(ItemEntity e) {
-        this.heal(5);
-        if(e.getItem().getItem() == Items.BREAD){
-            this.setBreaded(true);
+        if (e.getItem().getItem() == AMItemRegistry.MARACA) {
+            this.setMaracas(true);
+        } else {
+            if (e.getItem().hasContainerItem()) {
+                this.entityDropItem(e.getItem().getContainerItem().copy());
+            }
+            this.heal(5);
+            if (e.getItem().getItem() == Items.BREAD || e.getItem().getItem() == Items.SUGAR) {
+                this.setBreaded(true);
+            }
         }
     }
 }

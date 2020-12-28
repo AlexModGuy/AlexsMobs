@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.event;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityFly;
 import com.github.alexthe666.alexsmobs.entity.EntityMoose;
@@ -12,10 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
@@ -51,10 +49,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -161,6 +156,17 @@ public class ServerEvents {
         if(AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0){
             if(event.getStructure() == Structure.END_CITY){
                 event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.MIMICUBE, AMConfig.mimicubeSpawnWeight, 1, 3));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingSetTargetEvent(LivingSetAttackTargetEvent event) {
+        if(event.getTarget() != null && event.getEntityLiving() instanceof MobEntity){
+            if(event.getEntityLiving().getCreatureAttribute() == CreatureAttribute.ARTHROPOD){
+                if(event.getTarget().isPotionActive(AMEffectRegistry.BUG_PHEROMONES) && event.getEntityLiving().getRevengeTarget() != event.getTarget()){
+                    ((MobEntity)event.getEntityLiving()).setAttackTarget(null);
+                }
             }
         }
     }
