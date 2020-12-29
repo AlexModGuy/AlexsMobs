@@ -26,26 +26,39 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
     protected boolean mustUpdate;
     protected ItemEntity targetEntity;
     private ITargetsDroppedItems hunter;
+    private int tickThreshold;
 
     public CreatureAITargetItems(CreatureEntity creature, boolean checkSight) {
         this(creature, checkSight, false);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
-    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
-        this(creature, 10, checkSight, onlyNearby, null);
+    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, int tickThreshold) {
+        this(creature, checkSight, false, tickThreshold);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
-    public CreatureAITargetItems(CreatureEntity creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
+
+    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
+        this(creature, 10, checkSight, onlyNearby, null, 0);
+    }
+
+    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby, int tickThreshold) {
+        this(creature, 10, checkSight, onlyNearby, null, tickThreshold);
+    }
+
+
+    public CreatureAITargetItems(CreatureEntity creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector, int ticksExisted) {
         super(creature, checkSight, onlyNearby);
         this.executionChance = chance;
+        this.tickThreshold = ticksExisted;
         this.hunter = (ITargetsDroppedItems) creature;
         this.theNearestAttackableTargetSorter = new CreatureAITargetItems.Sorter(creature);
         this.targetEntitySelector = new Predicate<ItemEntity>() {
             @Override
             public boolean apply(@Nullable ItemEntity item) {
                 ItemStack stack = item.getItem();
-                return !stack.isEmpty()  && hunter.canTargetItem(stack);
+                return !stack.isEmpty()  && hunter.canTargetItem(stack) && item.ticksExisted > tickThreshold;
             }
         };
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));

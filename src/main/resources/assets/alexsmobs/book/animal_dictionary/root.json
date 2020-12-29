@@ -163,6 +163,27 @@
       "x": 90,
       "y": 35,
       "page": 2
+    },
+    {
+      "linked_page": "seal.json",
+      "text": "Seal",
+      "x": 90,
+      "y": 60,
+      "page": 2
+    },
+    {
+      "linked_page": "cockroach.json",
+      "text": "Cockroach",
+      "x": 90,
+      "y": 85,
+      "page": 2
+    },
+    {
+      "linked_page": "shoebill.json",
+      "text": "Shoebill",
+      "x": 90,
+      "y": 110,
+      "page": 2
     }
   ],
   "images": [

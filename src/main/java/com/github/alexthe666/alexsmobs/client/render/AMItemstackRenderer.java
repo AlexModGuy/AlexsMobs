@@ -57,6 +57,9 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.MIMICUBE, 0.95F));
         list.add(new Pair<>(AMEntityRegistry.RACCOON, 0.8F));
         list.add(new Pair<>(AMEntityRegistry.BLOBFISH, 1F));
+        list.add(new Pair<>(AMEntityRegistry.SEAL, 0.7F));
+        list.add(new Pair<>(AMEntityRegistry.COCKROACH, 1F));
+        list.add(new Pair<>(AMEntityRegistry.SHOEBILL, 0.8F));
     });
 
     private Map<String, Entity> renderedEntites = new HashMap();

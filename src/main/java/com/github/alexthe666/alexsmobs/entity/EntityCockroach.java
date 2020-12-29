@@ -84,7 +84,7 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
                 return !EntityCockroach.this.isBreaded() && super.shouldExecute();
             }
         });
-        this.goalSelector.addGoal(6, new RandomWalkingGoal(this, 1.0D, 60));
+        this.goalSelector.addGoal(6, new RandomWalkingGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
