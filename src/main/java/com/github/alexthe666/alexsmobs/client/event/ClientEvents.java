@@ -20,6 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class ClientEvents {
 
     private boolean previousLavaVision = false;
+    private FluidBlockRenderer previousFluidRenderer;
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
@@ -37,14 +38,18 @@ public class ClientEvents {
     @OnlyIn(Dist.CLIENT)
     public void onRenderWorldLastEvent(RenderWorldLastEvent event) {
         if(!AMConfig.shadersCompat){
+
             if (Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION)) {
                 if (!previousLavaVision) {
+                    previousFluidRenderer = Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer;
                     Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = new LavaVisionFluidRenderer();
                     updateAllChunks();
                 }
             }else{
                 if (previousLavaVision) {
-                    Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = new FluidBlockRenderer();
+                    if(previousFluidRenderer != null){
+                        Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = previousFluidRenderer;
+                    }
                     updateAllChunks();
                 }
             }
