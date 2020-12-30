@@ -171,6 +171,7 @@ public class ModelCockroach extends AdvancedEntityModel<EntityCockroach> {
         this.swing(leg1_left, walkSpeed, walkDegree, true, 1, 0F, limbSwing, limbSwingAmount);
         this.swing(leg3_left, walkSpeed, walkDegree, true, -1, 0F, limbSwing, limbSwingAmount);
         this.swing(leg2_right, walkSpeed, walkDegree, true, 0, 0F, limbSwing, limbSwingAmount);
+        this.faceTarget(netHeadYaw, headPitch, 1, head);
         if(entity.isHeadless()){
             head.showModel = false;
             antenna_left.showModel = false;

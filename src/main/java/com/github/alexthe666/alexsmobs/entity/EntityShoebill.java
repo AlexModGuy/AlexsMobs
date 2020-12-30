@@ -1,16 +1,15 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -33,15 +32,13 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -75,8 +72,24 @@ public class EntityShoebill extends AnimalEntity implements IAnimatedEntity, ITa
         switchNavigator(false);
     }
 
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.shoebillSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.SHOEBILL_HURT;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.SHOEBILL_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.SHOEBILL_HURT;
     }
 
     public boolean isBreedingItem(ItemStack stack) {
@@ -92,9 +105,7 @@ public class EntityShoebill extends AnimalEntity implements IAnimatedEntity, ITa
             List<EntityShoebill> list = this.world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(range, range / 2, range));
             for (EntityShoebill gaz : list) {
                 gaz.revengeCooldown = fleeTime;
-                //    gaz.setFlying(true);
             }
-            //this.setFlying(true);
         }
         return prev;
     }

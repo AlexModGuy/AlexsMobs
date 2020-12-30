@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFleeLight;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -29,8 +30,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,6 +38,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 public class EntityCockroach extends AnimalEntity implements IShearable, net.minecraftforge.common.IForgeShearable, ITargetsDroppedItems {
@@ -68,6 +69,35 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 6.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
+    public static boolean isValidLightLevel(IServerWorld p_223323_0_, BlockPos p_223323_1_, Random p_223323_2_) {
+        if (p_223323_0_.getLightFor(LightType.SKY, p_223323_1_) > p_223323_2_.nextInt(32)) {
+            return false;
+        } else {
+            int lvt_3_1_ = p_223323_0_.getWorld().isThundering() ? p_223323_0_.getNeighborAwareLightSubtracted(p_223323_1_, 10) : p_223323_0_.getLight(p_223323_1_);
+            return lvt_3_1_ <= p_223323_2_.nextInt(8);
+        }
+    }
+
+    public static boolean canMonsterSpawnInLight(EntityType<? extends EntityCockroach> p_223325_0_, IServerWorld p_223325_1_, SpawnReason p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_) {
+        return isValidLightLevel(p_223325_1_, p_223325_3_, p_223325_4_) && canSpawnOn(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
+    }
+
+    public static <T extends MobEntity> boolean canCockroachSpawn(EntityType<EntityCockroach> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
+        return reason == SpawnReason.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 64 && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
+    }
+
+    public boolean preventDespawn() {
+        return super.preventDespawn() || this.isBreaded() || this.isRainbow() || this.isDancing() || this.hasMaracas() || this.isHeadless();
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.COCKROACH_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.COCKROACH_HURT;
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.1D));
@@ -92,11 +122,14 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
         boolean prev = super.attackEntityFrom(source, amount);
-        if (prev && this.getHealth() <= 1.0F && amount > 0 && !this.isHeadless() && this.getRNG().nextInt(3) == 0) {
-            this.setHeadless(true);
-            if (!world.isRemote) {
-                for (int i = 0; i < 3; i++) {
-                    ((ServerWorld) this.world).spawnParticle(ParticleTypes.SNEEZE, this.getPosXRandom(0.52F), this.getPosYHeight(1D), this.getPosZRandom(0.52F), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+        if(prev){
+            randomWingFlapTick = 5 + rand.nextInt(15);
+            if (this.getHealth() <= 1.0F && amount > 0 && !this.isHeadless() && this.getRNG().nextInt(3) == 0) {
+                this.setHeadless(true);
+                if (!world.isRemote) {
+                    for (int i = 0; i < 3; i++) {
+                        ((ServerWorld) this.world).spawnParticle(ParticleTypes.SNEEZE, this.getPosXRandom(0.52F), this.getPosYHeight(1D), this.getPosZRandom(0.52F), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                    }
                 }
             }
         }
@@ -257,7 +290,7 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
         if (!dance && danceProgress > 0F) {
             danceProgress--;
         }
-        if (this.onGround && rand.nextInt(200) == 0) {
+        if (!this.onGround || rand.nextInt(200) == 0) {
             randomWingFlapTick = 5 + rand.nextInt(15);
         }
         if (randomWingFlapTick > 0) {
@@ -343,7 +376,9 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return AMEntityRegistry.COCKROACH.create(serverWorld);
+        EntityCockroach roach = AMEntityRegistry.COCKROACH.create(serverWorld);
+        roach.setBreaded(true);
+        return roach;
     }
 
     public boolean isShearable() {

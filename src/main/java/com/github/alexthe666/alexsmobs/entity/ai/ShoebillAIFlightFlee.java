@@ -71,8 +71,8 @@ public class ShoebillAIFlightFlee extends Goal {
         BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, 0, fleePos.getZ() + extraZ);
         BlockPos ground = bird.world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, radialPos);
         int distFromGround = (int) bird.getPosY() - ground.getY();
-        int flightHeight = 6 + bird.getRNG().nextInt(10);
-        BlockPos newPos = radialPos.up(distFromGround > 16 ? flightHeight : (int) bird.getPosY() + bird.getRNG().nextInt(16) + 1);
+        int flightHeight = 4 + bird.getRNG().nextInt(10);
+        BlockPos newPos = radialPos.up(distFromGround > 8 ? flightHeight : (int) bird.getPosY() + bird.getRNG().nextInt(6) + 1);
         if (!bird.isTargetBlocked(Vector3d.copyCentered(newPos)) && bird.getDistanceSq(Vector3d.copyCentered(newPos)) > 6) {
             return newPos;
         }

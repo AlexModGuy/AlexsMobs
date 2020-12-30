@@ -55,6 +55,12 @@ public class AMConfig {
     public static int blobfishSpawnWeight = 30;
     public static int blobfishSpawnRolls = 0;
     public static int blobfishSpawnHeight = 38;
+    public static int sealSpawnWeight = 30;
+    public static int sealSpawnRolls = 0;
+    public static int cockroachSpawnWeight = 4;
+    public static int cockroachSpawnRolls = 0;
+    public static int shoebillSpawnWeight = 10;
+    public static int shoebillSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -121,6 +127,13 @@ public class AMConfig {
             blobfishSpawnWeight = ConfigHolder.COMMON.blobfishSpawnWeight.get();
             blobfishSpawnRolls = ConfigHolder.COMMON.blobfishSpawnRolls.get();
             blobfishSpawnHeight = ConfigHolder.COMMON.blobfishSpawnHeight.get();
+            sealSpawnWeight = ConfigHolder.COMMON.sealSpawnWeight.get();
+            sealSpawnRolls = ConfigHolder.COMMON.sealSpawnRolls.get();
+            cockroachSpawnWeight = ConfigHolder.COMMON.cockroachSpawnWeight.get();
+            cockroachSpawnRolls = ConfigHolder.COMMON.cockroachSpawnRolls.get();
+            shoebillSpawnWeight = ConfigHolder.COMMON.shoebillSpawnWeight.get();
+            shoebillSpawnRolls = ConfigHolder.COMMON.shoebillSpawnRolls.get();
+
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

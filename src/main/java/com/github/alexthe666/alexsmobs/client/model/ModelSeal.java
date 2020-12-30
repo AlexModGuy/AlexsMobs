@@ -172,6 +172,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
             this.flap(arm_right, swimSpeed * 0.5F, swimDegree * 4.5F, true, 3F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_left, swimSpeed * 0.5F, swimDegree * 4.5F, false, 3F, 0, limbSwing, limbSwingAmount);
         }
+        this.faceTarget(netHeadYaw, headPitch, 1, head);
         float yawAmount = swimAngle / 57.295776F * 0.5F;
         body.rotateAngleZ += yawAmount;
 

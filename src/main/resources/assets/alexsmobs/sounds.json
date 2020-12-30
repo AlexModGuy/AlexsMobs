@@ -705,5 +705,65 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.maraca"
+  },
+  "seal_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:seal_idle_0"
+      },
+      {
+        "name": "alexsmobs:seal_idle_1"
+      },
+      {
+        "name": "alexsmobs:seal_idle_2"
+      },
+      {
+        "name": "alexsmobs:seal_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.seal_idle"
+  },
+  "seal_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:seal_hurt_0"
+      },
+      {
+        "name": "alexsmobs:seal_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.seal_hurt"
+  },
+  "cockroach_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:cockroach_hurt_0"
+      },
+      {
+        "name": "alexsmobs:cockroach_hurt_1"
+      },
+      {
+        "name": "alexsmobs:cockroach_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.cockroach_hurt"
+  },
+  "shoebill_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:shoebill_hurt_0"
+      },
+      {
+        "name": "alexsmobs:shoebill_hurt_1"
+      },
+      {
+        "name": "alexsmobs:shoebill_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.shoebill_hurt"
   }
 }

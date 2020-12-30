@@ -24,5 +24,8 @@ public class DefaultBiomes {
     public static final String[] MIMICUBE = new String[] {"&#end+!minecraft:the_end" };
     public static final String[] RACCOON = new String[] { "&#overworld+!#savanna+!#@savanna+|@forest+|#forest+|@plains+|#plains" };
     public static final String[] BLOBFISH = new String[] { "&#overworld+|minecraft:deep_ocean+|minecraft:deep_cold_ocean+|minecraft:deep_frozen_ocean+|minecraft:deep_lukewarm_ocean" };
+    public static final String[] SEAL = new String[] { "&#overworld+|#beach+", "&#overworld+|#ocean+&#snowy"};
+    public static final String[] COCKROACH = new String[] { "&#overworld+!#ocean+!#mushroom" };
+    public static final String[] SHOEBILL = new String[] { "&#overworld+|#swamp+"};
 
 }

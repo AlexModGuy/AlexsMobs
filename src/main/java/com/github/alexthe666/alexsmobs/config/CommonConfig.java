@@ -66,6 +66,12 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue blobfishSpawnWeight;
     public final ForgeConfigSpec.IntValue blobfishSpawnRolls;
     public final ForgeConfigSpec.IntValue blobfishSpawnHeight;
+    public final ForgeConfigSpec.IntValue sealSpawnWeight;
+    public final ForgeConfigSpec.IntValue sealSpawnRolls;
+    public final ForgeConfigSpec.IntValue cockroachSpawnWeight;
+    public final ForgeConfigSpec.IntValue cockroachSpawnRolls;
+    public final ForgeConfigSpec.IntValue shoebillSpawnWeight;
+    public final ForgeConfigSpec.IntValue shoebillSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -136,6 +142,12 @@ public class CommonConfig {
         raccoonSpawnRolls = buildInt(builder, "raccoonSpawnRolls", "spawns", AMConfig.raccoonSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         blobfishSpawnWeight = buildInt(builder, "blobfishSpawnWeight", "spawns", AMConfig.blobfishSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         blobfishSpawnRolls = buildInt(builder, "blobfishSpawnRolls", "spawns", AMConfig.blobfishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        sealSpawnWeight = buildInt(builder, "sealSpawnWeight", "spawns", AMConfig.sealSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        sealSpawnRolls = buildInt(builder, "sealSpawnRolls", "spawns", AMConfig.sealSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        cockroachSpawnWeight = buildInt(builder, "cockroachSpawnWeight", "spawns", AMConfig.cockroachSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        cockroachSpawnRolls = buildInt(builder, "cockroachSpawnRolls", "spawns", AMConfig.cockroachSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        shoebillSpawnWeight = buildInt(builder, "shoebillSpawnWeight", "spawns", AMConfig.shoebillSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        shoebillSpawnRolls = buildInt(builder, "shoebillSpawnRolls", "spawns", AMConfig.shoebillSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

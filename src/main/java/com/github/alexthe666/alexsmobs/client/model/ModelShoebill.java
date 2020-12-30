@@ -199,7 +199,8 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
         float flapDegree = 0.2F;
         float partialTick = Minecraft.getInstance().getRenderPartialTicks();
         float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
-        float runProgress = Math.max(5F * limbSwingAmount - flyProgress, 0);
+        float scaledLimbSwing = Math.min(1.0F, limbSwingAmount * 1.6F);
+        float runProgress = Math.max(5F * scaledLimbSwing - flyProgress, 0);
         progressRotationPrev(body, runProgress, (float) Math.toRadians(25), 0, 0, 5F);
         progressRotationPrev(leg_right, runProgress, (float) Math.toRadians(-25), 0, 0, 5F);
         progressRotationPrev(leg_left, runProgress, (float) Math.toRadians(-25), 0, 0, 5F);
@@ -230,6 +231,7 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
             this.swing(wing_left_pivot, flapSpeed, flapDegree * 5, false, 0F, 0F, ageInTicks, 1);
             this.walk(neck, flapSpeed, flapDegree * 0.85F, false, 0F, 0.2F, ageInTicks, 1);
             this.walk(head, flapSpeed, flapDegree * 0.85F, true, 0F, 0F, ageInTicks, 1);
+            this.bob(body, flapSpeed * 0.3F, flapDegree * 4, true, ageInTicks, 1);
         }else{
             this.walk(leg_right, walkSpeed, walkDegree * 1.85F, false, 0F, 0F, limbSwing, limbSwingAmount);
             this.walk(leg_left, walkSpeed, walkDegree * 1.85F, true, 0F, 0F, limbSwing, limbSwingAmount);
@@ -237,6 +239,8 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
             this.walk(head, walkSpeed, walkDegree * 0.85F, true, 2F, 0F, limbSwing, limbSwingAmount);
             this.walk(tail, walkSpeed * 0.5F, walkDegree * 0.15F, true, -2F, 0.2F, limbSwing, limbSwingAmount);
         }
+        this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);
+
     }
 
 }

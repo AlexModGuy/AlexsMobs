@@ -84,5 +84,14 @@ public class AMWorldRegistry {
         if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.blobfish, biome) && AMConfig.blobfishSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(AMEntityRegistry.BLOBFISH, AMConfig.blobfishSpawnWeight, 2, 2));
         }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.seal, biome) && AMConfig.sealSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.SEAL, AMConfig.sealSpawnWeight, 3, 4));
+        }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.cockroach, biome) && AMConfig.cockroachSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.AMBIENT).add(new MobSpawnInfo.Spawners(AMEntityRegistry.COCKROACH, AMConfig.cockroachSpawnWeight, 5, 5));
+        }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.shoebill, biome) && AMConfig.shoebillSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.SHOEBILL, AMConfig.shoebillSpawnWeight, 1, 2));
+        }
     }
 }
