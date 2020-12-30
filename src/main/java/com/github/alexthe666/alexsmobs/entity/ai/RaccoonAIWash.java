@@ -43,7 +43,7 @@ public class RaccoonAIWash extends Goal {
     }
 
     public void startExecuting() {
-        this.raccoon.postponeEating = true;
+        this.raccoon.lookForWaterBeforeEatingTimer = 1800;
     }
 
     public void resetTask() {
