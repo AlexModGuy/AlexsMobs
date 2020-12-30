@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
-import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
-import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
-import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
+import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -13,10 +10,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -31,6 +25,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
@@ -60,6 +55,10 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
         this.moveController = new EntityEndergrade.MoveHelperController(this);
     }
 
+    protected PathNavigator createNavigator(World worldIn) {
+        return new DirectPathNavigator(this, worldIn);
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30D).createMutableAttribute(Attributes.ARMOR, 4.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
     }
@@ -84,10 +83,31 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new TameableAIRide(this, 1.2D));
         this.goalSelector.addGoal(1, new EndergradeAIBreakFlowers(this));
-        this.goalSelector.addGoal(2, new RandomFlyGoal(this));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.CHORUS_FRUIT), false));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 10));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.2D){
+            public void startExecuting(){
+                super.startExecuting();
+                EntityEndergrade.this.stopWandering = true;
+            }
+
+            public void resetTask(){
+                super.resetTask();
+                EntityEndergrade.this.stopWandering = false;
+            }
+        });
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.CHORUS_FRUIT), false){
+            public void startExecuting(){
+                super.startExecuting();
+                EntityEndergrade.this.stopWandering = true;
+            }
+
+            public void resetTask(){
+                super.resetTask();
+                EntityEndergrade.this.stopWandering = false;
+            }
+        });
+        this.goalSelector.addGoal(4, new RandomFlyGoal(this));
+        this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 10));
+        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new EndergradeAITargetItems(this, true));
     }
 
