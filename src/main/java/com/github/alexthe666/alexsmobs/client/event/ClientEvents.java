@@ -5,8 +5,11 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FluidBlockRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -38,9 +41,11 @@ public class ClientEvents {
     @OnlyIn(Dist.CLIENT)
     public void onRenderWorldLastEvent(RenderWorldLastEvent event) {
         if(!AMConfig.shadersCompat){
-
             if (Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION)) {
                 if (!previousLavaVision) {
+                    RenderType lavaType = RenderType.getTranslucent();
+                    RenderTypeLookup.setRenderLayer(Fluids.LAVA, lavaType);
+                    RenderTypeLookup.setRenderLayer(Fluids.FLOWING_LAVA, lavaType);
                     previousFluidRenderer = Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer;
                     Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = new LavaVisionFluidRenderer();
                     updateAllChunks();
@@ -48,6 +53,9 @@ public class ClientEvents {
             }else{
                 if (previousLavaVision) {
                     if(previousFluidRenderer != null){
+                        RenderType lavaType = RenderType.getSolid();
+                        RenderTypeLookup.setRenderLayer(Fluids.LAVA, lavaType);
+                        RenderTypeLookup.setRenderLayer(Fluids.FLOWING_LAVA, lavaType);
                         Minecraft.getInstance().getBlockRendererDispatcher().fluidRenderer = previousFluidRenderer;
                     }
                     updateAllChunks();

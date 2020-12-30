@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelRoadrunnerBoots;
 import com.github.alexthe666.alexsmobs.client.model.ModelSombrero;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -93,9 +94,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.COCKROACH_EGG, manager -> new SpriteRenderer(manager, itemRendererIn));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SHOEBILL, manager -> new RenderShoebill(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
-        RenderType lavaType = RenderType.getTranslucent();
-        RenderTypeLookup.setRenderLayer(Fluids.LAVA, lavaType);
-        RenderTypeLookup.setRenderLayer(Fluids.FLOWING_LAVA, lavaType);
+
         ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
             return !ItemBloodSprayer.isUsable(stack) || p_239428_2_ instanceof PlayerEntity && ((PlayerEntity) p_239428_2_).getCooldownTracker().hasCooldown(AMItemRegistry.BLOOD_SPRAYER) ? 1.0F : 0.0F;
         });
