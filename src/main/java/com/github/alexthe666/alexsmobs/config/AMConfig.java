@@ -27,7 +27,7 @@ public class AMConfig {
     public static int sunbirdSpawnRolls = 15;
     public static int gorillaSpawnWeight = 50;
     public static int gorillaSpawnRolls = 0;
-    public static int crimsonMosquitoSpawnWeight = 30;
+    public static int crimsonMosquitoSpawnWeight = 15;
     public static int crimsonMosquitoSpawnRolls = 0;
     public static int rattlesnakeSpawnWeight = 12;
     public static int rattlesnakeSpawnRolls = 0;
