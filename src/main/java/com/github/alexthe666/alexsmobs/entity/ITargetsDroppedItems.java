@@ -8,4 +8,8 @@ public interface ITargetsDroppedItems {
     boolean canTargetItem(ItemStack stack);
 
     void onGetItem(ItemEntity e);
+
+    default void onFindTarget(ItemEntity e){}
+
+    default double getMaxDistToItem(){return 2.0D; }
 }

@@ -29,6 +29,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -348,4 +349,5 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
     public void playJostleSound() {
         this.playSound(AMSoundRegistry.MOOSE_JOSTLE, this.getSoundPitch(), this.getSoundVolume());
     }
+
 }

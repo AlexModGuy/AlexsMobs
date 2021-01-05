@@ -88,6 +88,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
             Collections.sort(list, this.theNearestAttackableTargetSorter);
             this.targetEntity = list.get(0);
             this.mustUpdate = false;
+            this.hunter.onFindTarget(targetEntity);
             return true;
         }
     }
@@ -123,7 +124,10 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
             this.resetTask();
             this.goalOwner.getNavigator().clearPath();
         }
-        if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < 2.0D && goalOwner.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
+        if(targetEntity != null && this.goalOwner.canEntityBeSeen(targetEntity) && this.goalOwner.getWidth() > 2D && this.goalOwner.isOnGround()){
+            this.goalOwner.getMoveHelper().setMoveTo(targetEntity.getPosX(), targetEntity.getPosY(), targetEntity.getPosZ(), 1);
+        }
+        if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < this.hunter.getMaxDistToItem() && goalOwner.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             hunter.onGetItem(targetEntity);
             this.targetEntity.getItem().shrink(1);
             resetTask();
@@ -136,7 +140,8 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.goalOwner.getNavigator().noPath() && targetEntity != null && targetEntity.isAlive();
+        boolean path = this.goalOwner.getWidth() > 2D ||  !this.goalOwner.getNavigator().noPath();
+        return path && targetEntity != null && targetEntity.isAlive();
     }
 
     public static class Sorter implements Comparator<Entity> {

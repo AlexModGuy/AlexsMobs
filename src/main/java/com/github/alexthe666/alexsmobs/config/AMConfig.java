@@ -65,7 +65,9 @@ public class AMConfig {
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
     public static boolean bananasDropFromLeaves = true;
+    public static boolean acaciaBlossomsDropFromLeaves = true;
     public static int bananaChance = 200;
+    public static int blossomChance = 130;
     public static boolean spidersAttackFlies = true;
     public static boolean wolvesAttackMoose = true;
     public static boolean polarBearsAttackSeals = true;

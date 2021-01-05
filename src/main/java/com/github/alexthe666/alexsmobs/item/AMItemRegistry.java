@@ -80,6 +80,7 @@ public class AMItemRegistry {
     public static final Item COCKROACH_WING_FRAGMENT = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cockroach_wing_fragment");
     public static final Item COCKROACH_WING = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cockroach_wing");
     public static final Item COCKROACH_OOTHECA = new ItemAnimalEgg(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cockroach_ootheca");
+    public static final Item ACACIA_BLOSSOM = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:acacia_blossom");
 
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
@@ -116,6 +117,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SEAL, 0X483C32,0X66594C, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_seal"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.COCKROACH, 0X0D0909,0X42241E, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_cockroach"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SHOEBILL, 0X828282,0XD5B48A, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_shoebill"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ELEPHANT, 0X8D8987,0XEDE5D1, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_elephant"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

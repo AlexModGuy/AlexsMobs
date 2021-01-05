@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:leaves",
+    "#minecraft:saplings",
+    "minecraft:sugar_cane",
+    "minecraft:apple",
+    "minecraft:hay_block",
+    "minecraft:bamboo",
+    "#alexsmobs:bananas",
+    "alexsmobs:acacia_blossom"
+  ]
+}

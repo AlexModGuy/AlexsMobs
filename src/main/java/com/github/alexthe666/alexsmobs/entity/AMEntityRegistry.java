@@ -52,6 +52,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityCockroach> COCKROACH = registerEntity(EntityType.Builder.create(EntityCockroach::new, EntityClassification.AMBIENT).size(0.7F, 0.3F), "cockroach");
     public static final EntityType<EntityCockroachEgg> COCKROACH_EGG = registerEntity(EntityType.Builder.create(EntityCockroachEgg::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityCockroachEgg::new).immuneToFire(), "cockroach_egg");
     public static final EntityType<EntityShoebill> SHOEBILL = registerEntity(EntityType.Builder.create(EntityShoebill::new, EntityClassification.CREATURE).size(0.8F, 1.5F).setUpdateInterval(1), "shoebill");
+    public static final EntityType<EntityElephant> ELEPHANT = registerEntity(EntityType.Builder.create(EntityElephant::new, EntityClassification.CREATURE).size(2.1F, 2.5F).setUpdateInterval(1), "elephant");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -136,6 +137,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(SEAL, EntitySeal.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(COCKROACH, EntityCockroach.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(SHOEBILL, EntityShoebill.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(ELEPHANT, EntityElephant.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

@@ -9,6 +9,7 @@ public class AMTagRegistry {
     public static final ResourceLocation FLY_TARGETS = new ResourceLocation("alexsmobs", "fly_hurt_targets");
     public static final ResourceLocation FLY_ANNOY_TARGETS = new ResourceLocation("alexsmobs", "fly_annoy_targets");
     public static final ResourceLocation DROPS_BANANAS = new ResourceLocation("alexsmobs","drops_bananas");
+    public static final ResourceLocation DROPS_ACACIA_BLOSSOMS = new ResourceLocation("alexsmobs","drops_acacia_blossoms");
     public static final ResourceLocation ORCA_BREAKABLES = new ResourceLocation("alexsmobs","orca_breakables");
     public static final ResourceLocation SUNBIRD_SCORCH_TARGETS = new ResourceLocation("alexsmobs", "sunbird_scorch_targets");
     public static final ResourceLocation GORILLA_BREAKABLES = new ResourceLocation("alexsmobs","gorilla_breakables");
@@ -23,6 +24,8 @@ public class AMTagRegistry {
     public static final ResourceLocation SEAL_FOODSTUFFS = new ResourceLocation("alexsmobs", "seal_foodstuffs");
     public static final ResourceLocation SEAL_DIGABLES = new ResourceLocation("alexsmobs", "seal_digables");
     public static final ResourceLocation SHOEBILL_FOODSTUFFS = new ResourceLocation("alexsmobs", "shoebill_foodstuffs");
+    public static final ResourceLocation ELEPHANT_FOODBLOCKS = new ResourceLocation("alexsmobs", "elephant_foodblocks");
+    public static final ResourceLocation ELEPHANT_FOODSTUFFS = new ResourceLocation("alexsmobs", "elephant_foodstuffs");
 
     public static final ResourceLocation CRIMSON_MOSQUITO_SPAWNS = new ResourceLocation("alexsmobs","crimson_mosquito_spawns");
     public static final ResourceLocation ROADRUNNER_SPAWNS = new ResourceLocation("alexsmobs","roadrunner_spawns");

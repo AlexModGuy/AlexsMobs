@@ -3,10 +3,7 @@ package com.github.alexthe666.alexsmobs.event;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityFly;
-import com.github.alexthe666.alexsmobs.entity.EntityMoose;
-import com.github.alexthe666.alexsmobs.entity.EntitySeal;
+import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.Block;
@@ -100,6 +97,14 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onUseItem(PlayerInteractEvent.RightClickItem event) {
+        if(event.getItemStack().getItem() == Items.WHEAT && event.getPlayer().getRidingEntity() instanceof EntityElephant){
+            if(((EntityElephant)event.getPlayer().getRidingEntity()).triggerCharge(event.getItemStack())){
+                event.getPlayer().swingArm(event.getHand());
+                if(!event.getPlayer().isCreative()){
+                    event.getItemStack().shrink(1);
+                }
+            }
+        }
         if (event.getItemStack().getItem() == Items.GLASS_BOTTLE && AMConfig.lavaBottleEnabled) {
             RayTraceResult raytraceresult = rayTrace(event.getWorld(), event.getPlayer(), RayTraceContext.FluidMode.SOURCE_ONLY);
             if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
