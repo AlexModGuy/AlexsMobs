@@ -349,7 +349,7 @@ public class ModelElephant extends AdvancedEntityModel<EntityElephant> {
         this.swing(ear_right, walkSpeed, walkDegree * 0.34F, false, 1F, 0.01F, limbSwing, limbSwingAmount);
         this.swing(ear_left, walkSpeed, walkDegree * 0.34F, true, 1F, 0.01F, limbSwing, limbSwingAmount);
         this.bob(body, walkSpeed * 2F, walkDegree * 2F, false, limbSwing, limbSwingAmount);
-
+        this.faceTarget(netHeadYaw, headPitch, 2, head);
     }
 
     @Override

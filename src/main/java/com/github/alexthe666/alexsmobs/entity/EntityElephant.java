@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CarpetBlock;
@@ -19,6 +20,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.AbstractIllagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.RavagerEntity;
@@ -33,7 +35,7 @@ import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.*;
-import net.minecraft.loot.LootTables;
+import net.minecraft.loot.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -95,6 +97,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         map.put(DyeColor.RED, Items.RED_CARPET);
         map.put(DyeColor.BLACK, Items.BLACK_CARPET);
     });
+    private static final ResourceLocation TRADER_LOOT = new ResourceLocation("alexsmobs","gameplay/trader_elephant_chest");
     public boolean forcedSit = false;
     public float prevSitProgress;
     public float sitProgress;
@@ -118,6 +121,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     private int chargingTicks = 0;
     @Nullable
     private UUID blossomThrowerUUID = null;
+    private int despawnDelay = 47999;
 
     protected EntityElephant(EntityType type, World world) {
         super(type, world);
@@ -125,7 +129,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 100.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.9F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 15.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 80.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.9F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
     @Nullable
@@ -153,7 +157,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     public int getHorizontalFaceSpeed() {
-        return 45;
+        return super.getHorizontalFaceSpeed();
     }
 
     protected boolean isMovementBlocked() {
@@ -167,13 +171,16 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1D, true));
         this.goalSelector.addGoal(2, new EntityElephant.PanicGoal());
         this.goalSelector.addGoal(2, new TameableAIRide(this, 1D));
+        this.goalSelector.addGoal(2, new ElephantAIVillagerRide(this, 1D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new ElephantAIForageLeaves(this));
         this.goalSelector.addGoal(5, new FollowParentGoal(this, 1D));
         this.goalSelector.addGoal(6, new ElephantAIFollowCaravan(this, 0.5D));
         this.goalSelector.addGoal(7, new EntityElephant.AIWalkIdle(this, 0.5D));
         this.targetSelector.addGoal(1, new EntityElephant.HurtByTargetGoal().setCallsForHelp());
-        this.targetSelector.addGoal(2, new CreatureAITargetItems(this, false));
+        this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(4, new CreatureAITargetItems(this, false));
     }
 
     public boolean isBreedingItem(ItemStack stack) {
@@ -184,8 +191,18 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     @Nullable
     public Entity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
-            if (passenger instanceof PlayerEntity || passenger instanceof AbstractVillagerEntity) {
+            if (passenger instanceof PlayerEntity ) {
                 return passenger;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public AbstractVillagerEntity getControllingVillager() {
+        for (Entity passenger : this.getPassengers()) {
+            if (passenger instanceof AbstractVillagerEntity ) {
+                return (AbstractVillagerEntity) passenger;
             }
         }
         return null;
@@ -243,7 +260,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         if (!isTusked() && !isChild() && hasTuskedAttributes) {
             recalculateSize();
         }
-        if(charging){
+        if (charging) {
             chargingTicks++;
         }
         if (!this.getHeldItemMainhand().isEmpty() && this.canTargetItem(this.getHeldItemMainhand())) {
@@ -252,38 +269,41 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             if (this.getAnimation() == ANIMATION_EAT && this.getAnimationTick() == 17) {
                 this.eatItemEffect(this.getHeldItemMainhand());
-                if(this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && !this.isTamed() && blossomThrowerUUID != null){
+                if (this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && !this.isTamed() && blossomThrowerUUID != null) {
                     this.setTamed(true);
                     this.setOwnerId(blossomThrowerUUID);
-                    this.world.setEntityState(this, (byte)7);
+                    for(Entity passenger : this.getPassengers()){
+                        passenger.dismount();
+                    }
+                    this.world.setEntityState(this, (byte) 7);
                 }
                 this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
                 this.heal(10);
             }
         }
-        if(chargeCooldown > 0){
+        if (chargeCooldown > 0) {
             chargeCooldown--;
         }
-        if(charging){
+        if (charging) {
             chargingTicks++;
-        }else{
+        } else {
             chargingTicks = 0;
         }
-        if(this.getAnimation() == ANIMATION_CHARGE_PREPARE){
+        if (this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
             this.renderYawOffset = rotationYaw;
             if (this.getAnimationTick() == 20) {
                 this.charging = true;
             }
         }
-        if(this.getControllingPassenger() != null && charging && chargingTicks > 100){
+        if (this.getControllingPassenger() != null && charging && chargingTicks > 100) {
             this.charging = false;
             this.chargeCooldown = 200;
         }
         LivingEntity target = this.getAttackTarget();
         double maxAttackMod = 0.0F;
-        if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity){
-            PlayerEntity rider = (PlayerEntity)this.getControllingPassenger();
-            if(rider.getLastAttackedEntity() != null && !this.isOnSameTeam(rider.getLastAttackedEntity())){
+        if (this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity) {
+            PlayerEntity rider = (PlayerEntity) this.getControllingPassenger();
+            if (rider.getLastAttackedEntity() != null && !this.isOnSameTeam(rider.getLastAttackedEntity())) {
                 UUID preyUUID = rider.getLastAttackedEntity().getUniqueID();
                 if (!this.getUniqueID().equals(preyUUID)) {
                     target = rider.getLastAttackedEntity();
@@ -295,21 +315,21 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             if (this.getDistance(target) > 8 && this.getControllingPassenger() == null && this.isTusked() && this.canEntityBeSeen(target) && this.getAnimation() == NO_ANIMATION && !charging && chargeCooldown == 0) {
                 this.setAnimation(ANIMATION_CHARGE_PREPARE);
             }
-            if(this.getAnimation() == ANIMATION_CHARGE_PREPARE && this.getControllingPassenger() == null){
+            if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && this.getControllingPassenger() == null) {
                 this.faceEntity(target, 360, 30);
                 this.renderYawOffset = rotationYaw;
                 if (this.getAnimationTick() == 20) {
                     this.charging = true;
                 }
             }
-            if(this.getDistance(target) < 10D && charging){
+            if (this.getDistance(target) < 10D && charging) {
                 this.setAnimation(ANIMATION_FLING);
             }
             if (this.getDistance(target) < 2.1D && charging) {
                 target.applyKnockback(1F, target.getPosX() - this.getPosX(), target.getPosZ() - this.getPosZ());
                 target.isAirBorne = true;
                 target.setMotion(target.getMotion().add(0, 0.7F, 0));
-                target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                target.attackEntityFrom(DamageSource.causeMobDamage(this), 2 * (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 launch(target, true);
                 this.charging = false;
                 this.chargeCooldown = 400;
@@ -337,7 +357,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
             hasChargedSpeed = false;
         }
-        if(!world.isRemote && this.getRNG().nextInt(400) == 0 && this.getAnimation() == NO_ANIMATION){
+        if (!world.isRemote && this.getRNG().nextInt(400) == 0 && this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_TRUMPET_0 : ANIMATION_TRUMPET_1);
         }
         if (this.isAlive() && charging) {
@@ -349,17 +369,37 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             stepHeight = 2;
         }
+        if(!isTamed() && isTrader()){
+            if (!this.world.isRemote) {
+                this.tryDespawn();
+            }
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
+    private boolean canDespawn() {
+        return !this.isTamed() && this.isTrader() && !this.isOnePlayerRiding();
+    }
+
+    private void tryDespawn() {
+        if (this.canDespawn()) {
+            this.despawnDelay = this.getControllingVillager() instanceof WanderingTraderEntity ? ((WanderingTraderEntity)this.getControllingVillager()).getDespawnDelay() - 1 : this.despawnDelay - 1;
+            if (this.despawnDelay <= 0) {
+                this.clearLeashed(true, false);
+                this.elephantInventory.clear();
+                this.remove();
+            }
+        }
+    }
+
     private void launch(Entity e, boolean huge) {
-       if(e.isOnGround()){
-           double d0 = e.getPosX() - this.getPosX();
-           double d1 = e.getPosZ() - this.getPosZ();
-           double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
-           float f = huge ? 2F : 0.5F;
-           e.addVelocity(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
-       }
+        if (e.isOnGround()) {
+            double d0 = e.getPosX() - this.getPosX();
+            double d1 = e.getPosZ() - this.getPosZ();
+            double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+            float f = huge ? 2F : 0.5F;
+            e.addVelocity(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
+        }
     }
 
     private void eatItemEffect(ItemStack heldItemMainhand) {
@@ -395,12 +435,15 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         boolean owner = this.isTamed() && isOwner(player);
-        if (canTargetItem(stack) && this.getHeldItemMainhand().isEmpty()) {
+        if (isChested() && player.isSneaking()) {
+            this.openGUI(player);
+            return ActionResultType.SUCCESS;
+        } else if (canTargetItem(stack) && this.getHeldItemMainhand().isEmpty()) {
             ItemStack rippedStack = stack.copy();
             rippedStack.setCount(1);
             stack.shrink(1);
             this.setHeldItem(Hand.MAIN_HAND, rippedStack);
-            if(rippedStack.getItem() == AMItemRegistry.ACACIA_BLOSSOM){
+            if (rippedStack.getItem() == AMItemRegistry.ACACIA_BLOSSOM) {
                 blossomThrowerUUID = player.getUniqueID();
             }
             return ActionResultType.SUCCESS;
@@ -438,9 +481,6 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             elephantInventory.clear();
             this.setChested(false);
-            return ActionResultType.SUCCESS;
-        } else if (owner && isChested() && player.isSneaking()) {
-            this.openGUI(player);
             return ActionResultType.SUCCESS;
         } else if (owner && super.func_230254_b_(player, hand) != ActionResultType.CONSUME) {
             player.startRiding(this);
@@ -523,6 +563,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         compound.putBoolean("ForcedToSit", this.forcedSit);
         compound.putInt("ChargeCooldown", this.chargeCooldown);
         compound.putInt("Carpet", this.dataManager.get(CARPET_COLOR));
+        compound.putInt("DespawnDelay", this.despawnDelay);
         if (elephantInventory != null) {
             ListNBT nbttaglist = new ListNBT();
             for (int i = 0; i < this.elephantInventory.getSizeInventory(); ++i) {
@@ -566,6 +607,10 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
                 this.elephantInventory.setInventorySlotContents(j, ItemStack.read(CompoundNBT));
             }
         }
+        if (compound.contains("DespawnDelay", 99)) {
+            this.despawnDelay = compound.getInt("DespawnDelay");
+        }
+
     }
 
     public boolean isChested() {
@@ -659,6 +704,15 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     public void setTusked(boolean tusked) {
+        boolean prev = isTusked();
+        if (!prev && prev) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(150.0D);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(15.0D);
+            this.setHealth(150.0F);
+        } else {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80.0D);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
+        }
         this.dataManager.set(TUSKED, tusked);
     }
 
@@ -674,9 +728,9 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.world.isRemote) {
             this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
         }
-        if(duplicate.getItem() == AMItemRegistry.ACACIA_BLOSSOM){
+        if (duplicate.getItem() == AMItemRegistry.ACACIA_BLOSSOM) {
             blossomThrowerUUID = e.getThrowerId();
-        }else{
+        } else {
             blossomThrowerUUID = null;
         }
         this.setHeldItem(Hand.MAIN_HAND, duplicate);
@@ -688,6 +742,16 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         this.aiItemFlag = true;
     }
 
+    public void addElephantLoot(@Nullable PlayerEntity player, int seed) {
+        if (this.world.getServer() != null) {
+            LootTable loottable = this.world.getServer().getLootTableManager().getLootTableFromLocation(TRADER_LOOT);
+
+            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld)this.world)).withSeed(seed);
+
+            loottable.fillInventory(this.elephantInventory, lootcontext$builder.build(LootParameterSets.EMPTY));
+        }
+
+    }
     public void leaveCaravan() {
         if (this.caravanHead != null) {
             this.caravanHead.caravanTail = null;
@@ -720,12 +784,16 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
 
     public void updatePassenger(Entity passenger) {
         if (this.isPassenger(passenger)) {
-            float sitAdd = -0.065F * sitProgress;
             float standAdd = -0.3F * standProgress;
             float scale = this.isChild() ? 0.5F : this.isTusked() ? 1.1F : 1.0F;
+            float sitAdd = -0.065F * sitProgress;
+            float scaleY = scale * (2.4F * sitAdd - 0.4F * standAdd);
+            if (passenger instanceof AbstractVillagerEntity) {
+                AbstractVillagerEntity villager = (AbstractVillagerEntity) passenger;
+                scaleY -= 0.3F;
+            }
             float radius = scale * (0.5F + standAdd);
             float angle = (0.01745329251F * this.renderYawOffset);
-            float scaleY = scale * (2.4F * sitAdd - 0.4F * standAdd);
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
                 float sinWave = MathHelper.sin((float) (Math.PI * (this.getAnimationTick() / 25F)));
                 radius += sinWave * 0.2F * scale;
@@ -737,8 +805,18 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
             double extraZ = radius * MathHelper.cos(angle);
+
             passenger.setPosition(this.getPosX() + extraX, this.getPosY() + this.getMountedYOffset() + scaleY + passenger.getYOffset(), this.getPosZ() + extraZ);
         }
+    }
+
+    public boolean canBeSteered() {
+        return false;
+    }
+
+
+    public boolean canPassengerSteer() {
+        return false;
     }
 
     public double getMountedYOffset() {
@@ -778,7 +856,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     public void openGUI(PlayerEntity playerEntity) {
-        if (!this.world.isRemote && (!this.isBeingRidden() || this.isPassenger(playerEntity))) {
+        if (!this.world.isRemote && (!this.isPassenger(playerEntity))) {
             NetworkHooks.openGui((ServerPlayerEntity) playerEntity, new INamedContainerProvider() {
                 @Override
                 public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
@@ -802,13 +880,17 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     public boolean triggerCharge(ItemStack stack) {
-        if(this.getControllingPassenger() != null && chargeCooldown == 0 && !charging && this.getAnimation() == NO_ANIMATION && this.isTusked()){
+        if (this.getControllingPassenger() != null && chargeCooldown == 0 && !charging && this.getAnimation() == NO_ANIMATION && this.isTusked()) {
             this.setAnimation(ANIMATION_CHARGE_PREPARE);
             this.eatItemEffect(stack);
             this.heal(2);
             return true;
         }
         return false;
+    }
+
+    public boolean canSpawnWithTraderHere() {
+        return this.isNotColliding(world) && world.isAirBlock(this.getPosition().up(4));
     }
 
 

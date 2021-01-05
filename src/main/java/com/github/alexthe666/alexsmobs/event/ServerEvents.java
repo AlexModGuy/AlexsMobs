@@ -18,6 +18,7 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.ToggleableNearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
@@ -130,6 +131,23 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
+        if(event.getEntity() instanceof WanderingTraderEntity){
+            Random rand = new Random();
+            if(rand.nextFloat() < 0.6F){
+                WanderingTraderEntity traderEntity = (WanderingTraderEntity) event.getEntity();
+                EntityElephant elephant = AMEntityRegistry.ELEPHANT.create(traderEntity.world);
+                elephant.copyLocationAndAnglesFrom(traderEntity);
+                if(elephant.canSpawnWithTraderHere()){
+                    elephant.setTrader(true);
+                    elephant.setChested(true);
+                    if(!event.getWorld().isRemote()){
+                        traderEntity.world.addEntity(elephant);
+                        traderEntity.startRiding(elephant, true);
+                    }
+                    elephant.addElephantLoot(null, rand.nextInt());
+                }
+            }
+        }
         try {
             if (event.getEntity() != null && event.getEntity() instanceof SpiderEntity && AMConfig.spidersAttackFlies) {
                 SpiderEntity spider = (SpiderEntity) event.getEntity();

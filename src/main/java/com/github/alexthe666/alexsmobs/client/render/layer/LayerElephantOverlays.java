@@ -35,15 +35,12 @@ public class LayerElephantOverlays extends LayerRenderer<EntityElephant, ModelEl
         DyeColor lvt_11_1_ = elephant.getColor();
         if(lvt_11_1_ != null || elephant.isTrader()) {
             ResourceLocation lvt_12_3_;
-            if (lvt_11_1_ != null) {
+            if (!elephant.isTrader()) {
                 lvt_12_3_ = ELEPHANT_DECOR_TEXTURES[lvt_11_1_.getId()];
-            } else {
-                if (!elephant.isTrader()) {
-                    return;
-                }
-
+            }else{
                 lvt_12_3_ = TRADER_TEXTURE;
             }
+
             ((ModelElephant) this.getEntityModel()).copyModelAttributesTo(this.model);
             this.model.setRotationAngles(elephant, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             IVertexBuilder lvt_13_1_ = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(lvt_12_3_));
