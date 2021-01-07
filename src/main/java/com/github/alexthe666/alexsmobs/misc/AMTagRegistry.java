@@ -26,6 +26,7 @@ public class AMTagRegistry {
     public static final ResourceLocation SHOEBILL_FOODSTUFFS = new ResourceLocation("alexsmobs", "shoebill_foodstuffs");
     public static final ResourceLocation ELEPHANT_FOODBLOCKS = new ResourceLocation("alexsmobs", "elephant_foodblocks");
     public static final ResourceLocation ELEPHANT_FOODSTUFFS = new ResourceLocation("alexsmobs", "elephant_foodstuffs");
+    public static final ResourceLocation SOUL_VULTURE_PERCHES = new ResourceLocation("alexsmobs","soul_vulture_perches");
 
     public static final ResourceLocation CRIMSON_MOSQUITO_SPAWNS = new ResourceLocation("alexsmobs","crimson_mosquito_spawns");
     public static final ResourceLocation ROADRUNNER_SPAWNS = new ResourceLocation("alexsmobs","roadrunner_spawns");

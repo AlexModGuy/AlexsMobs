@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.event;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
-import com.github.alexthe666.alexsmobs.client.model.misc.ModelRendererVillagerLeg;
 import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;

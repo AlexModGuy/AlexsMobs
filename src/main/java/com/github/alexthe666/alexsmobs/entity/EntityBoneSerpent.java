@@ -142,6 +142,7 @@ public class EntityBoneSerpent extends MonsterEntity {
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, WitherSkeletonEntity.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EntitySoulVulture.class, true));
         this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
     }
 

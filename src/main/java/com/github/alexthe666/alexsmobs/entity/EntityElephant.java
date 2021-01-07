@@ -46,6 +46,8 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.*;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -378,7 +380,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     private boolean canDespawn() {
-        return !this.isTamed() && this.isTrader() && !this.isOnePlayerRiding();
+        return !this.isTamed() && this.isTrader();
     }
 
     private void tryDespawn() {
@@ -579,6 +581,17 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         }
     }
 
+    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
+        if (potioneffectIn.getPotion() == Effects.WITHER) {
+            return false;
+        }
+        return super.isPotionApplicable(potioneffectIn);
+    }
+
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.UNDEAD;
+    }
+
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setTusked(compound.getBoolean("Tusked"));
@@ -588,7 +601,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         this.setTrader(compound.getBoolean("Trader"));
         this.forcedSit = compound.getBoolean("ForcedToSit");
         this.chargeCooldown = compound.getInt("ChargeCooldown");
-        this.dataManager.set(CARPET_COLOR, compound.getInt("CarpetColor"));
+        this.dataManager.set(CARPET_COLOR, compound.getInt("Carpet"));
         if (elephantInventory != null) {
             ListNBT nbttaglist = compound.getList("Items", 10);
             this.initElephantInventory();

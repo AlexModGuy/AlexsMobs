@@ -44,6 +44,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.event.LootTableLoadEvent;
@@ -131,9 +132,10 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
-        if(event.getEntity() instanceof WanderingTraderEntity){
+        if(event.getEntity() instanceof WanderingTraderEntity && AMConfig.elephantTraderSpawnChance > 0){
             Random rand = new Random();
-            if(rand.nextFloat() < 0.6F){
+            Biome biome = event.getWorld().getBiome(event.getEntity().getPosition());
+            if(rand.nextFloat() <= AMConfig.elephantTraderSpawnChance && (!AMConfig.limitElephantTraderBiomes || biome.getTemperature() >= 1.0F)){
                 WanderingTraderEntity traderEntity = (WanderingTraderEntity) event.getEntity();
                 EntityElephant elephant = AMEntityRegistry.ELEPHANT.create(traderEntity.world);
                 elephant.copyLocationAndAnglesFrom(traderEntity);

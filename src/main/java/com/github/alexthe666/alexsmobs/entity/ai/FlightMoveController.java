@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySunbird;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -8,10 +9,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class FlightMoveController extends MovementController {
-    private final AnimalEntity parentEntity;
+    private final MobEntity parentEntity;
     private float speedGeneral;
 
-    public FlightMoveController(AnimalEntity bird, float speedGeneral) {
+    public FlightMoveController(MobEntity bird, float speedGeneral) {
         super(bird);
         this.parentEntity = bird;
         this.speedGeneral = speedGeneral;

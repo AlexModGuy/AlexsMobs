@@ -76,6 +76,8 @@ public class AMConfig {
     public static boolean mimicreamRepair = true;
     public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer");
     public static boolean raccoonsStealFromChests = true;
+    public static double elephantTraderSpawnChance = 0.6F;
+    public static boolean limitElephantTraderBiomes = true;
 
     public static void bake(ModConfig config) {
         try {

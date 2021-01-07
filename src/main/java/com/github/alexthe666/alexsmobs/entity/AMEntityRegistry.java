@@ -53,6 +53,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityCockroachEgg> COCKROACH_EGG = registerEntity(EntityType.Builder.create(EntityCockroachEgg::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityCockroachEgg::new).immuneToFire(), "cockroach_egg");
     public static final EntityType<EntityShoebill> SHOEBILL = registerEntity(EntityType.Builder.create(EntityShoebill::new, EntityClassification.CREATURE).size(0.8F, 1.5F).setUpdateInterval(1), "shoebill");
     public static final EntityType<EntityElephant> ELEPHANT = registerEntity(EntityType.Builder.create(EntityElephant::new, EntityClassification.CREATURE).size(2.1F, 2.5F).setUpdateInterval(1), "elephant");
+    public static final EntityType<EntitySoulVulture> SOUL_VULTURE = registerEntity(EntityType.Builder.create(EntitySoulVulture::new, EntityClassification.CREATURE).size(0.9F, 1.3F).setUpdateInterval(1).immuneToFire(), "soul_vulture");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -86,6 +87,7 @@ public class AMEntityRegistry {
         EntitySpawnPlacementRegistry.register(SEAL, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntitySeal::canSealSpawn);
         EntitySpawnPlacementRegistry.register(COCKROACH, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityCockroach::canCockroachSpawn);
         EntitySpawnPlacementRegistry.register(SHOEBILL, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(ELEPHANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
     }
 
         @SubscribeEvent
@@ -138,6 +140,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(COCKROACH, EntityCockroach.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(SHOEBILL, EntityShoebill.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(ELEPHANT, EntityElephant.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(SOUL_VULTURE, EntitySoulVulture.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){
