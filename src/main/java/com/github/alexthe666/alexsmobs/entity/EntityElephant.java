@@ -1,7 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -9,6 +11,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CarpetBlock;
 import net.minecraft.entity.*;
@@ -35,6 +38,7 @@ import net.minecraft.inventory.container.ChestContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.*;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.loot.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -130,8 +134,25 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         initElephantInventory();
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.ELEPHANT_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.ELEPHANT_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.ELEPHANT_DIE;
+    }
+
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 80.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.9F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.elephantSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     @Nullable
@@ -169,16 +190,17 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new TameableAIRide(this, 1D));
         this.goalSelector.addGoal(1, new SitGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1D, true));
         this.goalSelector.addGoal(2, new EntityElephant.PanicGoal());
-        this.goalSelector.addGoal(2, new TameableAIRide(this, 1D));
         this.goalSelector.addGoal(2, new ElephantAIVillagerRide(this, 1D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new ElephantAIForageLeaves(this));
-        this.goalSelector.addGoal(5, new FollowParentGoal(this, 1D));
-        this.goalSelector.addGoal(6, new ElephantAIFollowCaravan(this, 0.5D));
-        this.goalSelector.addGoal(7, new EntityElephant.AIWalkIdle(this, 0.5D));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.ACACIA_BLOSSOM), false));
+        this.goalSelector.addGoal(5, new ElephantAIForageLeaves(this));
+        this.goalSelector.addGoal(6, new FollowParentGoal(this, 1D));
+        this.goalSelector.addGoal(7, new ElephantAIFollowCaravan(this, 0.5D));
+        this.goalSelector.addGoal(8, new EntityElephant.AIWalkIdle(this, 0.5D));
         this.targetSelector.addGoal(1, new EntityElephant.HurtByTargetGoal().setCallsForHelp());
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
@@ -188,6 +210,14 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     public boolean isBreedingItem(ItemStack stack) {
         Item item = stack.getItem();
         return isTamed() && item == AMItemRegistry.ACACIA_BLOSSOM;
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        if(!isChild()){
+            this.playSound(AMSoundRegistry.ELEPHANT_WALK, 0.2F, 1.0F);
+        }else{
+            super.playStepSound(pos, state);
+        }
     }
 
     @Nullable
@@ -271,7 +301,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             if (this.getAnimation() == ANIMATION_EAT && this.getAnimationTick() == 17) {
                 this.eatItemEffect(this.getHeldItemMainhand());
-                if (this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && !this.isTamed() && blossomThrowerUUID != null) {
+                if (this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && rand.nextInt(2) == 0 && !this.isTamed() && !isTusked() && blossomThrowerUUID != null) {
                     this.setTamed(true);
                     this.setOwnerId(blossomThrowerUUID);
                     for(Entity passenger : this.getPassengers()){
@@ -337,13 +367,13 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
                 this.chargeCooldown = 400;
             }
             double dist = this.getDistanceSq(target);
-            if (dist < 7.5D + maxAttackMod && this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 17) {
+            if (dist < 8.5D + maxAttackMod && this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 17) {
                 target.applyKnockback(1F, target.getPosX() - this.getPosX(), target.getPosZ() - this.getPosZ());
                 target.setMotion(target.getMotion().add(0, 0.3F, 0));
                 launch(target, false);
                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
-            if (dist < 7.5D + maxAttackMod && this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() == 17) {
+            if (dist < 8.5D + maxAttackMod && this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() == 17) {
                 target.applyKnockback(0.3F, target.getPosX() - this.getPosX(), target.getPosZ() - this.getPosZ());
                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
@@ -362,6 +392,9 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         if (!world.isRemote && this.getRNG().nextInt(400) == 0 && this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_TRUMPET_0 : ANIMATION_TRUMPET_1);
         }
+        if(this.getAnimation() == ANIMATION_TRUMPET_0 && this.getAnimationTick() == 8 || this.getAnimation() == ANIMATION_TRUMPET_1 && this.getAnimationTick() == 4){
+            this.playSound(AMSoundRegistry.ELEPHANT_TRUMPET, this.getSoundVolume(), this.getSoundPitch());
+        }
         if (this.isAlive() && charging) {
             for (Entity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(1.0D), null)) {
                 if (!(this.isTamed() && isOnSameTeam(entity)) && !(!this.isTamed() && entity instanceof EntityElephant) && entity != this) {
@@ -376,6 +409,9 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
                 this.tryDespawn();
             }
         }
+        if(this.getAttackTarget() != null && !this.getAttackTarget().isAlive()){
+            this.setAttackTarget(null);
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
@@ -385,7 +421,13 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
 
     private void tryDespawn() {
         if (this.canDespawn()) {
-            this.despawnDelay = this.getControllingVillager() instanceof WanderingTraderEntity ? ((WanderingTraderEntity)this.getControllingVillager()).getDespawnDelay() - 1 : this.despawnDelay - 1;
+            if(this.getControllingVillager() instanceof WanderingTraderEntity){
+                int riderDelay = ((WanderingTraderEntity)this.getControllingVillager()).getDespawnDelay();
+                if(riderDelay > 0){
+                    this.despawnDelay = riderDelay;
+                }
+            }
+            this.despawnDelay = this.despawnDelay - 1;
             if (this.despawnDelay <= 0) {
                 this.clearLeashed(true, false);
                 this.elephantInventory.clear();
@@ -552,7 +594,9 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return AMEntityRegistry.ELEPHANT.create(serverWorld);
+        EntityElephant baby = AMEntityRegistry.ELEPHANT.create(serverWorld);
+        baby.setTusked(this.getNearestTusked(world, 15) == null || rand.nextInt(2) == 0);
+        return baby;
     }
 
     public void writeAdditional(CompoundNBT compound) {
@@ -686,7 +730,11 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
 
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if (this.getNearestTusked(worldIn, 16D) == null) {
+        if (spawnDataIn == null) {
+            spawnDataIn = new AgeableEntity.AgeableData(true);
+        }
+        AgeableEntity.AgeableData lvt_6_1_ = (AgeableEntity.AgeableData)spawnDataIn;
+        if(lvt_6_1_.getIndexInGroup() == 0 && this.getNearestTusked(world, 15) == null){
             this.setTusked(true);
         }
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
@@ -906,27 +954,6 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         return this.isNotColliding(world) && world.isAirBlock(this.getPosition().up(4));
     }
 
-
-    static class Navigator extends GroundPathNavigator {
-        public Navigator(EntityElephant elephant, World world) {
-            super(elephant, world);
-        }
-
-        protected PathFinder getPathFinder(int i) {
-            this.nodeProcessor = new EntityElephant.Processor();
-            return new PathFinder(this.nodeProcessor, i);
-        }
-    }
-
-    static class Processor extends WalkNodeProcessor {
-        private Processor() {
-        }
-
-        protected PathNodeType func_215744_a(IBlockReader p_215744_1_, boolean p_215744_2_, boolean p_215744_3_, BlockPos p_215744_4_, PathNodeType p_215744_5_) {
-            return p_215744_5_ == PathNodeType.LEAVES ? PathNodeType.OPEN : super.func_215744_a(p_215744_1_, p_215744_2_, p_215744_3_, p_215744_4_, p_215744_5_);
-        }
-    }
-
     private class AIWalkIdle extends RandomWalkingGoal {
         public AIWalkIdle(EntityElephant e, double v) {
             super(e, v);
@@ -950,12 +977,12 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         }
 
         public void startExecuting() {
-            super.startExecuting();
             if (EntityElephant.this.isChild() || !EntityElephant.this.isTusked()) {
                 this.alertOthers();
                 this.resetTask();
+            }else{
+                super.startExecuting();
             }
-
         }
 
         protected void setAttackTarget(MobEntity mobIn, LivingEntity targetIn) {

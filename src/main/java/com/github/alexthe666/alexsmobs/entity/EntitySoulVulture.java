@@ -1,14 +1,18 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -33,8 +37,11 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
@@ -64,8 +71,30 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
         switchNavigator(true);
     }
 
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.soulVultureSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    public static boolean canVultureSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        BlockPos blockpos = pos.down();
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.SOUL_VULTURE_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
+        return reason == SpawnReason.SPAWNER || spawnBlock && canSpawnOn(AMEntityRegistry.SOUL_VULTURE, worldIn, reason, pos, randomIn);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.SOUL_VULTURE_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.SOUL_VULTURE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.SOUL_VULTURE_HURT;
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 25.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public boolean isPerchBlock(BlockPos pos, BlockState state) {

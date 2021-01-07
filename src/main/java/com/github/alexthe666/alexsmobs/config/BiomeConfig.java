@@ -37,6 +37,8 @@ public class BiomeConfig {
 	public static List<? extends String> seal = Lists.newArrayList(DefaultBiomes.SEAL);
 	public static List<? extends String> cockroach = Lists.newArrayList(DefaultBiomes.COCKROACH);
 	public static List<? extends String> shoebill = Lists.newArrayList(DefaultBiomes.SHOEBILL);
+	public static List<? extends String> elephant = Lists.newArrayList(DefaultBiomes.ELEPHANT);
+	public static List<? extends String> soulVulture = Lists.newArrayList(DefaultBiomes.SOUL_VULTURE);
 
      public static Map<String, ForgeConfigSpec.ConfigValue<List<? extends String>>> biomeConfigValues = new HashMap<>();
 

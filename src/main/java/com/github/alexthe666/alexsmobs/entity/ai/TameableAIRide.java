@@ -24,10 +24,9 @@ public class TameableAIRide extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (tameableEntity.getControllingPassenger() instanceof LivingEntity) {
-            player = (LivingEntity) tameableEntity.getControllingPassenger();
-
-            return player instanceof PlayerEntity;
+        if (tameableEntity.getControllingPassenger() instanceof PlayerEntity) {
+            player = (PlayerEntity) tameableEntity.getControllingPassenger();
+            return true;
         }
         return false;
     }

@@ -27,5 +27,7 @@ public class DefaultBiomes {
     public static final String[] SEAL = new String[] { "&#overworld+|#beach+", "&#overworld+|#ocean+&#snowy"};
     public static final String[] COCKROACH = new String[] { "&#overworld+!#ocean+!#mushroom" };
     public static final String[] SHOEBILL = new String[] { "&#overworld+|#swamp+"};
+    public static final String[] ELEPHANT = new String[] { "&#overworld+|@savanna+|#savanna" };
+    public static final String[] SOUL_VULTURE = new String[] {"|minecraft:soul_sand_valley"};
 
 }

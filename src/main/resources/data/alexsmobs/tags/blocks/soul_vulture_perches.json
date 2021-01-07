@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:bone_block"
+    "minecraft:bone_block",
+    "#minecraft:logs"
   ]
 }

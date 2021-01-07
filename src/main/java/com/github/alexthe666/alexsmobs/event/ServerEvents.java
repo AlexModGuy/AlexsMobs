@@ -183,6 +183,11 @@ public class ServerEvents {
                 event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.MIMICUBE, AMConfig.mimicubeSpawnWeight, 1, 3));
             }
         }
+        if(AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
+            if (event.getStructure() == Structure.NETHER_FOSSIL) {
+                event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 6, 8));
+            }
+        }
     }
 
     @SubscribeEvent

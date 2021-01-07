@@ -93,5 +93,11 @@ public class AMWorldRegistry {
         if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.shoebill, biome) && AMConfig.shoebillSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.SHOEBILL, AMConfig.shoebillSpawnWeight, 1, 2));
         }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.elephant, biome) && AMConfig.elephantSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.ELEPHANT, AMConfig.elephantSpawnWeight, 3, 5));
+        }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.soulVulture, biome) && AMConfig.soulVultureSpawnWeight > 0 && !AMConfig.soulVultureSpawnOnFossil) {
+            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 3, 8));
+        }
     }
 }

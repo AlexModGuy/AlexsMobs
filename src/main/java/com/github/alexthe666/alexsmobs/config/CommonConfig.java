@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.config;
 
+import com.github.alexthe666.citadel.math.Tuple2f;
 import com.google.common.collect.Lists;
 import cpw.mods.modlauncher.LaunchPluginHandler;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -72,11 +73,16 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue cockroachSpawnRolls;
     public final ForgeConfigSpec.IntValue shoebillSpawnWeight;
     public final ForgeConfigSpec.IntValue shoebillSpawnRolls;
+    public final ForgeConfigSpec.IntValue elephantSpawnWeight;
+    public final ForgeConfigSpec.IntValue elephantSpawnRolls;
+    public final ForgeConfigSpec.IntValue soulVultureSpawnWeight;
+    public final ForgeConfigSpec.IntValue soulVultureSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> mimicreamBlacklist;
     public final ForgeConfigSpec.BooleanValue raccoonStealFromChests;
+    public final ForgeConfigSpec.BooleanValue soulVultureSpawnOnFossil;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -95,6 +101,7 @@ public class CommonConfig {
         mimicreamRepair = buildBoolean(builder, "mimicreamRepair", "all", true, "Whether mimicream can be used to duplicate items.");
         mimicreamBlacklist = builder.comment("Blacklist for items that mimicream cannot make a copy of. Ex: \"minecraft:stone_sword\", \"alexsmobs:blood_sprayer\"").defineList("mimicreamBlacklist", Lists.newArrayList("alexsmobs:blood_sprayer"), o -> o instanceof String);
         raccoonStealFromChests = buildBoolean(builder, "raccoonStealFromChests", "all", true, "Whether wild raccoons steal food from chests.");
+        soulVultureSpawnOnFossil = buildBoolean(builder, "soulVultureSpawnOnFossil", "all", true, "Whether soul vulture spawns should be restricted solely to the nether fossil structure or to whatever biome is specified in their respective biome config.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
@@ -148,6 +155,10 @@ public class CommonConfig {
         cockroachSpawnRolls = buildInt(builder, "cockroachSpawnRolls", "spawns", AMConfig.cockroachSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         shoebillSpawnWeight = buildInt(builder, "shoebillSpawnWeight", "spawns", AMConfig.shoebillSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         shoebillSpawnRolls = buildInt(builder, "shoebillSpawnRolls", "spawns", AMConfig.shoebillSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        elephantSpawnWeight = buildInt(builder, "elephantSpawnWeight", "spawns", AMConfig.elephantSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        elephantSpawnRolls = buildInt(builder, "elephantSpawnRolls", "spawns", AMConfig.elephantSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        soulVultureSpawnWeight = buildInt(builder, "soulVultureSpawnWeight", "spawns", AMConfig.soulVultureSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        soulVultureSpawnRolls = buildInt(builder, "soulVultureSpawnRolls", "spawns", AMConfig.soulVultureSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

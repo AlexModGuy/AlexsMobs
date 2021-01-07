@@ -1,5 +1,5 @@
 {
-  "type": "alexsmobs:banana_drop",
+  "type": "alexsmobs:blossom_drop",
   "conditions": [
     {
       "condition": "alexsmobs:matches_blossom_tag"
