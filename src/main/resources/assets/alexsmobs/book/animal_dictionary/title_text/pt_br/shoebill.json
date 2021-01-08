@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "shoebill.txt",
+  "title": "Bico-de-Sapato",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:shoebill",
+      "x": 90,
+      "y": 100,
+      "page" : 0,
+      "scale": 1.7,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
