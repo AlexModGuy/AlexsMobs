@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "weight": 2,
+          "weight": 4,
           "quality": -2,
           "name": "minecraft:gameplay/fishing/junk"
         },
@@ -43,7 +43,21 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 10,
+          "weight": 19,
+          "functions": [
+          ],
+          "name": "minecraft:ink_sac"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 21,
+          "functions": [
+          ],
+          "name": "alexsmobs:shark_tooth"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 60,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -58,7 +72,7 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 80,
+          "weight": 60,
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -78,8 +92,8 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 3.0,
-                "max": 9.0,
+                "min": 2.0,
+                "max": 5.0,
                 "type": "minecraft:uniform"
               }
             }
@@ -123,57 +137,62 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 2,
           "name": "minecraft:tube_coral"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 2,
           "name": "minecraft:brain_coral"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 2,
           "name": "minecraft:bubble_coral"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 2,
           "name": "minecraft:fire_coral"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 2,
           "name": "minecraft:horn_coral"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 1,
           "name": "minecraft:tube_coral_block"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 1,
           "name": "minecraft:brain_coral_block"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 1,
           "name": "minecraft:bubble_coral_block"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 1,
           "name": "minecraft:fire_coral_block"
         },
         {
           "type": "minecraft:item",
-          "weight": 3,
+          "weight": 1,
           "name": "minecraft:horn_coral_block"
         },
         {
           "type": "minecraft:item",
-          "weight": 40,
+          "weight": 1,
+          "name": "alexsmobs:lobster_bucket"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
           "functions": [
             {
               "function": "minecraft:set_count",

@@ -27,7 +27,7 @@ public class AMConfig {
     public static int sunbirdSpawnRolls = 15;
     public static int gorillaSpawnWeight = 50;
     public static int gorillaSpawnRolls = 0;
-    public static int crimsonMosquitoSpawnWeight = 30;
+    public static int crimsonMosquitoSpawnWeight = 15;
     public static int crimsonMosquitoSpawnRolls = 0;
     public static int rattlesnakeSpawnWeight = 12;
     public static int rattlesnakeSpawnRolls = 0;
@@ -55,11 +55,23 @@ public class AMConfig {
     public static int blobfishSpawnWeight = 30;
     public static int blobfishSpawnRolls = 0;
     public static int blobfishSpawnHeight = 38;
+    public static int sealSpawnWeight = 30;
+    public static int sealSpawnRolls = 0;
+    public static int cockroachSpawnWeight = 4;
+    public static int cockroachSpawnRolls = 0;
+    public static int shoebillSpawnWeight = 10;
+    public static int shoebillSpawnRolls = 0;
+    public static int elephantSpawnWeight = 30;
+    public static int elephantSpawnRolls = 0;
+    public static int soulVultureSpawnWeight = 30;
+    public static int soulVultureSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
     public static boolean bananasDropFromLeaves = true;
+    public static boolean acaciaBlossomsDropFromLeaves = true;
     public static int bananaChance = 200;
+    public static int blossomChance = 130;
     public static boolean spidersAttackFlies = true;
     public static boolean wolvesAttackMoose = true;
     public static boolean polarBearsAttackSeals = true;
@@ -68,6 +80,9 @@ public class AMConfig {
     public static boolean mimicreamRepair = true;
     public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer");
     public static boolean raccoonsStealFromChests = true;
+    public static double elephantTraderSpawnChance = 0.6F;
+    public static boolean limitElephantTraderBiomes = true;
+    public static boolean soulVultureSpawnOnFossil = true;
 
     public static void bake(ModConfig config) {
         try {
@@ -121,6 +136,17 @@ public class AMConfig {
             blobfishSpawnWeight = ConfigHolder.COMMON.blobfishSpawnWeight.get();
             blobfishSpawnRolls = ConfigHolder.COMMON.blobfishSpawnRolls.get();
             blobfishSpawnHeight = ConfigHolder.COMMON.blobfishSpawnHeight.get();
+            sealSpawnWeight = ConfigHolder.COMMON.sealSpawnWeight.get();
+            sealSpawnRolls = ConfigHolder.COMMON.sealSpawnRolls.get();
+            cockroachSpawnWeight = ConfigHolder.COMMON.cockroachSpawnWeight.get();
+            cockroachSpawnRolls = ConfigHolder.COMMON.cockroachSpawnRolls.get();
+            shoebillSpawnWeight = ConfigHolder.COMMON.shoebillSpawnWeight.get();
+            shoebillSpawnRolls = ConfigHolder.COMMON.shoebillSpawnRolls.get();
+            elephantSpawnWeight = ConfigHolder.COMMON.elephantSpawnWeight.get();
+            elephantSpawnRolls = ConfigHolder.COMMON.elephantSpawnRolls.get();
+            soulVultureSpawnWeight = ConfigHolder.COMMON.soulVultureSpawnWeight.get();
+            soulVultureSpawnRolls = ConfigHolder.COMMON.soulVultureSpawnRolls.get();
+
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
@@ -132,6 +158,8 @@ public class AMConfig {
             mimicreamRepair = ConfigHolder.COMMON.mimicreamRepair.get();
             mimicreamBlacklist = (List<? extends String>) ConfigHolder.COMMON.mimicreamBlacklist.get();
             raccoonsStealFromChests = ConfigHolder.COMMON.raccoonStealFromChests.get();
+            acaciaBlossomsDropFromLeaves = ConfigHolder.COMMON.acaciaBlossomsDropFromLeaves.get();
+            soulVultureSpawnOnFossil = ConfigHolder.COMMON.soulVultureSpawnOnFossil.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#alexsmobs:soul_vulture_perches",
+    "minecraft:soul_sand",
+    "minecraft:soul_soil"
+  ]
+}

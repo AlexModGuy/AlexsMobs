@@ -77,7 +77,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
     @Override
     public void setRotationAngles(EntitySeal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        float walkSpeed = 1.5F;
+        float walkSpeed = isChild ? 0.9F : 1.5F;
         float walkDegree = 1F;
         float swimSpeed = 0.5F;
         float swimDegree = 0.5F;
@@ -172,6 +172,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
             this.flap(arm_right, swimSpeed * 0.5F, swimDegree * 4.5F, true, 3F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_left, swimSpeed * 0.5F, swimDegree * 4.5F, false, 3F, 0, limbSwing, limbSwingAmount);
         }
+        this.faceTarget(netHeadYaw, headPitch, 1, head);
         float yawAmount = swimAngle / 57.295776F * 0.5F;
         body.rotateAngleZ += yawAmount;
 

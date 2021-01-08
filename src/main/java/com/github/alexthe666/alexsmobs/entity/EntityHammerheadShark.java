@@ -189,6 +189,6 @@ public class EntityHammerheadShark extends WaterMobEntity {
 
             }
             return null;
-        }
+    }
     }
 }

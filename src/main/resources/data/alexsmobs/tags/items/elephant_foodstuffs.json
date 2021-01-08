@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:leaves",
+    "#minecraft:saplings",
+    "minecraft:sugar_cane",
+    "minecraft:apple",
+    "minecraft:beetroot",
+    "minecraft:potato",
+    "minecraft:carrot",
+    "minecraft:golden_carrot",
+    "minecraft:baked_potato",
+    "minecraft:hay_block",
+    "minecraft:bamboo",
+    "#alexsmobs:bananas",
+    "alexsmobs:acacia_blossom",
+    "minecraft:melon_slice",
+    "minecraft:sweet_berries"
+  ]
+}

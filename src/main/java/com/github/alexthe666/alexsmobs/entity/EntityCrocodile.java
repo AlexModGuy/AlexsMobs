@@ -170,7 +170,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.baskingType = compound.getInt("BaskingStyle");
         this.baskingTimer = compound.getInt("BaskingTimer");
         this.swimTimer = compound.getInt("SwimTimer");
-        if (compound.contains("FeatherTime")) {
+        if (compound.contains("EggTime")) {
             this.timeUntilNextEgg = compound.getInt("EggTime");
         }
     }

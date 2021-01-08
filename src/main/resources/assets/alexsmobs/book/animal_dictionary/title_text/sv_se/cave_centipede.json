@@ -1,0 +1,72 @@
+{
+  "parent": "root.json",
+  "text": "cave_centipede.txt",
+  "title": "Grott tusenfoting",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:centipede_tail",
+      "x": 60,
+      "y": 70,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_body",
+      "x": 80,
+      "y": 70,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_body",
+      "x": 102,
+      "y": 70,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_body",
+      "x": 124,
+      "y": 70,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_head",
+      "x": 145,
+      "y": 70,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

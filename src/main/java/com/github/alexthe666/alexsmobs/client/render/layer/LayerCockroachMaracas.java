@@ -73,15 +73,17 @@ public class LayerCockroachMaracas extends LayerRenderer<EntityCockroach, ModelC
             matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(-90F));
             Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entitylivingbaseIn, stack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.pop();
-            matrixStackIn.push();
-            translateToHand(4, matrixStackIn);
-            matrixStackIn.translate(0F, -0.45F, -0F);
-            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(40F * entitylivingbaseIn.danceProgress * 0.2F));
-            matrixStackIn.translate(0F, entitylivingbaseIn.danceProgress * -0.015F, entitylivingbaseIn.danceProgress * -0.08F);
-            matrixStackIn.scale(0.8F, 0.8F, 0.8F);
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(SOMBRERO_TEX));
-            sombrero.render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-            matrixStackIn.pop();
+            if(!entitylivingbaseIn.isHeadless()){
+                matrixStackIn.push();
+                translateToHand(4, matrixStackIn);
+                matrixStackIn.translate(0F, -0.45F, -0F);
+                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(40F * entitylivingbaseIn.danceProgress * 0.2F));
+                matrixStackIn.translate(0F, entitylivingbaseIn.danceProgress * -0.015F, entitylivingbaseIn.danceProgress * -0.08F);
+                matrixStackIn.scale(0.8F, 0.8F, 0.8F);
+                IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(SOMBRERO_TEX));
+                sombrero.render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+                matrixStackIn.pop();
+            }
             matrixStackIn.pop();
         }
     }

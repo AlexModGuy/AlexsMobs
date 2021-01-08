@@ -116,6 +116,28 @@ public class AMSoundRegistry {
 
     public static final SoundEvent LA_CUCARACHA = createSoundEvent("la_cucaracha");
 
+    public static final SoundEvent SEAL_IDLE = createSoundEvent("seal_idle");
+
+    public static final SoundEvent SEAL_HURT = createSoundEvent("seal_hurt");
+
+    public static final SoundEvent COCKROACH_HURT = createSoundEvent("cockroach_hurt");
+
+    public static final SoundEvent SHOEBILL_HURT = createSoundEvent("shoebill_hurt");
+
+    public static final SoundEvent ELEPHANT_IDLE = createSoundEvent("elephant_idle");
+
+    public static final SoundEvent ELEPHANT_HURT = createSoundEvent("elephant_hurt");
+
+    public static final SoundEvent ELEPHANT_DIE = createSoundEvent("elephant_die");
+
+    public static final SoundEvent ELEPHANT_TRUMPET = createSoundEvent("elephant_trumpet");
+
+    public static final SoundEvent ELEPHANT_WALK = createSoundEvent("elephant_walk");
+
+    public static final SoundEvent SOUL_VULTURE_IDLE = createSoundEvent("soul_vulture_idle");
+
+    public static final SoundEvent SOUL_VULTURE_HURT = createSoundEvent("soul_vulture_hurt");
+    
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

@@ -2,20 +2,15 @@ package com.github.alexthe666.alexsmobs.event;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityFly;
-import com.github.alexthe666.alexsmobs.entity.EntityMoose;
-import com.github.alexthe666.alexsmobs.entity.EntitySeal;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
@@ -23,6 +18,7 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.ToggleableNearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
@@ -48,13 +44,11 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -105,6 +99,14 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onUseItem(PlayerInteractEvent.RightClickItem event) {
+        if(event.getItemStack().getItem() == Items.WHEAT && event.getPlayer().getRidingEntity() instanceof EntityElephant){
+            if(((EntityElephant)event.getPlayer().getRidingEntity()).triggerCharge(event.getItemStack())){
+                event.getPlayer().swingArm(event.getHand());
+                if(!event.getPlayer().isCreative()){
+                    event.getItemStack().shrink(1);
+                }
+            }
+        }
         if (event.getItemStack().getItem() == Items.GLASS_BOTTLE && AMConfig.lavaBottleEnabled) {
             RayTraceResult raytraceresult = rayTrace(event.getWorld(), event.getPlayer(), RayTraceContext.FluidMode.SOURCE_ONLY);
             if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
@@ -130,6 +132,24 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
+        if(event.getEntity() instanceof WanderingTraderEntity && AMConfig.elephantTraderSpawnChance > 0){
+            Random rand = new Random();
+            Biome biome = event.getWorld().getBiome(event.getEntity().getPosition());
+            if(rand.nextFloat() <= AMConfig.elephantTraderSpawnChance && (!AMConfig.limitElephantTraderBiomes || biome.getTemperature() >= 1.0F)){
+                WanderingTraderEntity traderEntity = (WanderingTraderEntity) event.getEntity();
+                EntityElephant elephant = AMEntityRegistry.ELEPHANT.create(traderEntity.world);
+                elephant.copyLocationAndAnglesFrom(traderEntity);
+                if(elephant.canSpawnWithTraderHere()){
+                    elephant.setTrader(true);
+                    elephant.setChested(true);
+                    if(!event.getWorld().isRemote()){
+                        traderEntity.world.addEntity(elephant);
+                        traderEntity.startRiding(elephant, true);
+                    }
+                    elephant.addElephantLoot(null, rand.nextInt());
+                }
+            }
+        }
         try {
             if (event.getEntity() != null && event.getEntity() instanceof SpiderEntity && AMConfig.spidersAttackFlies) {
                 SpiderEntity spider = (SpiderEntity) event.getEntity();
@@ -157,10 +177,40 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public void onLivingDamageEvent(LivingDamageEvent event) {
+        if(event.getSource().getTrueSource() instanceof PlayerEntity){
+           LivingEntity attacker = (LivingEntity) event.getSource().getTrueSource();
+           if(event.getAmount() > 0 && attacker.isPotionActive(AMEffectRegistry.SOULSTEAL) && attacker.getActivePotionEffect(AMEffectRegistry.SOULSTEAL) != null){
+               int level = attacker.getActivePotionEffect(AMEffectRegistry.SOULSTEAL).getAmplifier() + 1;
+               Random rand = new Random();
+               if(attacker.getHealth() < attacker.getMaxHealth() && rand.nextFloat() < (0.25F + (level * 0.25F))){
+                   attacker.heal(Math.min(event.getAmount() / 2F * level, 2 + 2 * level));
+               }
+           }
+        }
+    }
+
+        @SubscribeEvent
     public void onStructureGetSpawnLists(StructureSpawnListGatherEvent event) {
         if(AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0){
             if(event.getStructure() == Structure.END_CITY){
                 event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.MIMICUBE, AMConfig.mimicubeSpawnWeight, 1, 3));
+            }
+        }
+        if(AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
+            if (event.getStructure() == Structure.NETHER_FOSSIL) {
+                event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 2, 3));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingSetTargetEvent(LivingSetAttackTargetEvent event) {
+        if(event.getTarget() != null && event.getEntityLiving() instanceof MobEntity){
+            if(event.getEntityLiving().getCreatureAttribute() == CreatureAttribute.ARTHROPOD){
+                if(event.getTarget().isPotionActive(AMEffectRegistry.BUG_PHEROMONES) && event.getEntityLiving().getRevengeTarget() != event.getTarget()){
+                    ((MobEntity)event.getEntityLiving()).setAttackTarget(null);
+                }
             }
         }
     }

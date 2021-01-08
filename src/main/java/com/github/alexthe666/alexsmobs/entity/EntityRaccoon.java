@@ -69,7 +69,6 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
     public int maxStandTime = 75;
     private int standingTime = 0;
     public int lookForWaterBeforeEatingTimer = 0;
-    public boolean postponeEating = false;
     private int animationTick;
     private Animation currentAnimation;
     @Nullable
@@ -291,7 +290,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         if(!world.isRemote){
             if(lookForWaterBeforeEatingTimer > 0){
                 lookForWaterBeforeEatingTimer--;
-            }else if(!postponeEating && !isWashing() && this.getHeldItemMainhand().isFood()) {
+            }else if(!isWashing() && this.getHeldItemMainhand().isFood()) {
                 onEatItem();
                 if(this.getHeldItemMainhand().hasContainerItem()){
                     this.entityDropItem(this.getHeldItemMainhand().getContainerItem());
@@ -464,7 +463,6 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
             this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
         }
         this.setHeldItem(Hand.MAIN_HAND, duplicate);
-        postponeEating = false;
         if(e.getItem().getItem() == Items.EGG){
             eggThrowerUUID = e.getThrowerId();
         }else{

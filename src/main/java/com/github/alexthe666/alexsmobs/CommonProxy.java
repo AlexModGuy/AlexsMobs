@@ -6,9 +6,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.config.CommonConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
-import com.github.alexthe666.alexsmobs.misc.BananaLootModifier;
-import com.github.alexthe666.alexsmobs.misc.MatchesBananaTagCondition;
-import com.github.alexthe666.alexsmobs.misc.RecipeMimicreamRepair;
+import com.github.alexthe666.alexsmobs.misc.*;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
@@ -38,12 +36,16 @@ import static com.github.alexthe666.alexsmobs.AlexsMobs.MODID;
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
     public static final LootConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.Serializer());
+    public static final LootConditionType MATCHES_BLOSSOM_CONDTN = registerLootCondition("alexsmobs:matches_blossom_tag", new MatchesBlossomTagCondition.Serializer());
     public static SpecialRecipeSerializer MIMICREAM_RECIPE;
 
     @SubscribeEvent
     public static void registerModifierSerializers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
         if (AMConfig.bananasDropFromLeaves) {
             event.getRegistry().register(new BananaLootModifier.Serializer().setRegistryName(new ResourceLocation("alexsmobs:banana_drop")));
+        }
+        if (AMConfig.acaciaBlossomsDropFromLeaves) {
+            event.getRegistry().register(new BlossomLootModifier.Serializer().setRegistryName(new ResourceLocation("alexsmobs:blossom_drop")));
         }
     }
 

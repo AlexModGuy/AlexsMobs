@@ -128,8 +128,8 @@ public class ModelCockroach extends AdvancedEntityModel<EntityCockroach> {
         float idleDegree = 0.25F;
         float flySpeed = 0.5F;
         float flyDegree = 0.5F;
-        float walkSpeed = 1F;
-        float walkDegree = 0.45F;
+        float walkSpeed = 1.25F;
+        float walkDegree = 0.5F;
         float partialTick = Minecraft.getInstance().getRenderPartialTicks();
         float danceProgress = entity.prevDanceProgress + (entity.danceProgress - entity.prevDanceProgress) * partialTick;
         progressRotationPrev(body, danceProgress, (float) Math.toRadians(-70), 0, 0, 5F);
@@ -171,6 +171,7 @@ public class ModelCockroach extends AdvancedEntityModel<EntityCockroach> {
         this.swing(leg1_left, walkSpeed, walkDegree, true, 1, 0F, limbSwing, limbSwingAmount);
         this.swing(leg3_left, walkSpeed, walkDegree, true, -1, 0F, limbSwing, limbSwingAmount);
         this.swing(leg2_right, walkSpeed, walkDegree, true, 0, 0F, limbSwing, limbSwingAmount);
+        this.faceTarget(netHeadYaw, headPitch, 1, head);
         if(entity.isHeadless()){
             head.showModel = false;
             antenna_left.showModel = false;
@@ -179,6 +180,13 @@ public class ModelCockroach extends AdvancedEntityModel<EntityCockroach> {
             head.showModel = true;
             antenna_left.showModel = true;
             antenna_right.showModel = true;
+        }
+        if(entity.isChild()){
+            wing_left.showModel = false;
+            wing_right.showModel = false;
+        }else{
+            wing_left.showModel = true;
+            wing_right.showModel = true;
         }
     }
 

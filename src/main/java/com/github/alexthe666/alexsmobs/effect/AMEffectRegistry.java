@@ -23,6 +23,8 @@ public class AMEffectRegistry {
     public static final Effect POISON_RESISTANCE = new EffectPoisonResistance();
     public static final Effect OILED = new EffectOiled();
     public static final Effect ORCAS_MIGHT = new EffectOrcaMight();
+    public static final Effect BUG_PHEROMONES = new EffectBugPheromones();
+    public static final Effect SOULSTEAL = new EffectSoulsteal();
     public static final Potion KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 3600)).setRegistryName("alexsmobs:knockback_resistance");
     public static final Potion LONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 9600)).setRegistryName("alexsmobs:long_knockback_resistance");
     public static final Potion STRONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 1800, 1)).setRegistryName("alexsmobs:strong_knockback_resistance");
@@ -31,6 +33,11 @@ public class AMEffectRegistry {
     public static final Potion SPEED_III_POTION = new Potion(new EffectInstance(Effects.SPEED, 2200, 2)).setRegistryName("alexsmobs:speed_iii");
     public static final Potion POISON_RESISTANCE_POTION = new Potion(new EffectInstance(POISON_RESISTANCE, 3600)).setRegistryName("alexsmobs:poison_resistance");
     public static final Potion LONG_POISON_RESISTANCE_POTION = new Potion(new EffectInstance(POISON_RESISTANCE, 9600)).setRegistryName("alexsmobs:long_poison_resistance");
+    public static final Potion BUG_PHEROMONES_POTION = new Potion(new EffectInstance(BUG_PHEROMONES, 3600)).setRegistryName("alexsmobs:bug_pheromones");
+    public static final Potion LONG_BUG_PHEROMONES_POTION = new Potion(new EffectInstance(BUG_PHEROMONES, 9600)).setRegistryName("alexsmobs:long_bug_pheromones");
+    public static final Potion SOULSTEAL_POTION = new Potion(new EffectInstance(SOULSTEAL, 3600)).setRegistryName("alexsmobs:soulsteal");
+    public static final Potion LONG_SOULSTEAL_POTION = new Potion(new EffectInstance(SOULSTEAL, 9600)).setRegistryName("alexsmobs:long_soulsteal");
+    public static final Potion STRONG_SOULSTEAL_POTION = new Potion(new EffectInstance(SOULSTEAL, 1800, 1)).setRegistryName("alexsmobs:strong_soulsteal");
 
     @SubscribeEvent
     public static void registerEffects(RegistryEvent.Register<Effect> event) {
@@ -75,5 +82,12 @@ public class AMEffectRegistry {
         BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(AMItemRegistry.POISON_BOTTLE), Ingredient.fromItems(AMItemRegistry.RATTLESNAKE_RATTLE), createPotion(POISON_RESISTANCE_POTION));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(POISON_RESISTANCE_POTION)), Ingredient.fromItems(Items.REDSTONE), createPotion(LONG_POISON_RESISTANCE_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(Potions.STRONG_SWIFTNESS)), Ingredient.fromItems(AMItemRegistry.GAZELLE_HORN), createPotion(SPEED_III_POTION)));
+        BrewingRecipeRegistry.addRecipe(Ingredient.fromStacks(createPotion(Potions.AWKWARD)), Ingredient.fromItems(AMItemRegistry.COCKROACH_WING), createPotion(BUG_PHEROMONES_POTION));
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(BUG_PHEROMONES_POTION)), Ingredient.fromItems(Items.REDSTONE), createPotion(LONG_BUG_PHEROMONES_POTION)));
+        BrewingRecipeRegistry.addRecipe(Ingredient.fromStacks(createPotion(Potions.AWKWARD)), Ingredient.fromItems(AMItemRegistry.SOUL_HEART), createPotion(SOULSTEAL_POTION));
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(SOULSTEAL_POTION)), Ingredient.fromItems(Items.REDSTONE), createPotion(LONG_SOULSTEAL_POTION)));
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(SOULSTEAL_POTION)), Ingredient.fromItems(Items.GLOWSTONE_DUST), createPotion(STRONG_SOULSTEAL_POTION)));
+
+
     }
 }

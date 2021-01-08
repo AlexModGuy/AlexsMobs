@@ -26,26 +26,39 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
     protected boolean mustUpdate;
     protected ItemEntity targetEntity;
     private ITargetsDroppedItems hunter;
+    private int tickThreshold;
 
     public CreatureAITargetItems(CreatureEntity creature, boolean checkSight) {
         this(creature, checkSight, false);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
-    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
-        this(creature, 10, checkSight, onlyNearby, null);
+    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, int tickThreshold) {
+        this(creature, checkSight, false, tickThreshold);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
-    public CreatureAITargetItems(CreatureEntity creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
+
+    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby) {
+        this(creature, 10, checkSight, onlyNearby, null, 0);
+    }
+
+    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby, int tickThreshold) {
+        this(creature, 10, checkSight, onlyNearby, null, tickThreshold);
+    }
+
+
+    public CreatureAITargetItems(CreatureEntity creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector, int ticksExisted) {
         super(creature, checkSight, onlyNearby);
         this.executionChance = chance;
+        this.tickThreshold = ticksExisted;
         this.hunter = (ITargetsDroppedItems) creature;
         this.theNearestAttackableTargetSorter = new CreatureAITargetItems.Sorter(creature);
         this.targetEntitySelector = new Predicate<ItemEntity>() {
             @Override
             public boolean apply(@Nullable ItemEntity item) {
                 ItemStack stack = item.getItem();
-                return !stack.isEmpty()  && hunter.canTargetItem(stack);
+                return !stack.isEmpty()  && hunter.canTargetItem(stack) && item.ticksExisted > tickThreshold;
             }
         };
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
@@ -75,6 +88,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
             Collections.sort(list, this.theNearestAttackableTargetSorter);
             this.targetEntity = list.get(0);
             this.mustUpdate = false;
+            this.hunter.onFindTarget(targetEntity);
             return true;
         }
     }
@@ -110,7 +124,10 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
             this.resetTask();
             this.goalOwner.getNavigator().clearPath();
         }
-        if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < 2.0D && goalOwner.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
+        if(targetEntity != null && this.goalOwner.canEntityBeSeen(targetEntity) && this.goalOwner.getWidth() > 2D && this.goalOwner.isOnGround()){
+            this.goalOwner.getMoveHelper().setMoveTo(targetEntity.getPosX(), targetEntity.getPosY(), targetEntity.getPosZ(), 1);
+        }
+        if (this.targetEntity != null && this.targetEntity.isAlive() && this.goalOwner.getDistanceSq(this.targetEntity) < this.hunter.getMaxDistToItem() && goalOwner.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
             hunter.onGetItem(targetEntity);
             this.targetEntity.getItem().shrink(1);
             resetTask();
@@ -123,7 +140,8 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.goalOwner.getNavigator().noPath() && targetEntity != null && targetEntity.isAlive();
+        boolean path = this.goalOwner.getWidth() > 2D ||  !this.goalOwner.getNavigator().noPath();
+        return path && targetEntity != null && targetEntity.isAlive();
     }
 
     public static class Sorter implements Comparator<Entity> {
