@@ -634,10 +634,6 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         return super.isPotionApplicable(potioneffectIn);
     }
 
-    public CreatureAttribute getCreatureAttribute() {
-        return CreatureAttribute.UNDEAD;
-    }
-
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setTusked(compound.getBoolean("Tusked"));

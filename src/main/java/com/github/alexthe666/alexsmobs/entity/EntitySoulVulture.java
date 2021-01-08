@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
@@ -63,6 +64,10 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
     protected EntitySoulVulture(EntityType type, World worldIn) {
         super(type, worldIn);
         switchNavigator(true);
+    }
+    
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.UNDEAD;
     }
 
     @Nullable
