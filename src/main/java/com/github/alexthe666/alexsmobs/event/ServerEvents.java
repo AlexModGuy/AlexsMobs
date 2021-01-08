@@ -177,6 +177,20 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public void onLivingDamageEvent(LivingDamageEvent event) {
+        if(event.getSource().getTrueSource() instanceof PlayerEntity){
+           LivingEntity attacker = (LivingEntity) event.getSource().getTrueSource();
+           if(event.getAmount() > 0 && attacker.isPotionActive(AMEffectRegistry.SOULSTEAL) && attacker.getActivePotionEffect(AMEffectRegistry.SOULSTEAL) != null){
+               int level = attacker.getActivePotionEffect(AMEffectRegistry.SOULSTEAL).getAmplifier() + 1;
+               Random rand = new Random();
+               if(attacker.getHealth() < attacker.getMaxHealth() && rand.nextFloat() < (0.25F + (level * 0.25F))){
+                   attacker.heal(Math.min(event.getAmount() / 2F * level, 2 + 2 * level));
+               }
+           }
+        }
+    }
+
+        @SubscribeEvent
     public void onStructureGetSpawnLists(StructureSpawnListGatherEvent event) {
         if(AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0){
             if(event.getStructure() == Structure.END_CITY){
@@ -185,7 +199,7 @@ public class ServerEvents {
         }
         if(AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
             if (event.getStructure() == Structure.NETHER_FOSSIL) {
-                event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 6, 8));
+                event.addEntitySpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 2, 3));
             }
         }
     }

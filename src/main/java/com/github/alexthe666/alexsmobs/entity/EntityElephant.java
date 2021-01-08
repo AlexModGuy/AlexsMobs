@@ -103,7 +103,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         map.put(DyeColor.RED, Items.RED_CARPET);
         map.put(DyeColor.BLACK, Items.BLACK_CARPET);
     });
-    private static final ResourceLocation TRADER_LOOT = new ResourceLocation("alexsmobs","gameplay/trader_elephant_chest");
+    private static final ResourceLocation TRADER_LOOT = new ResourceLocation("alexsmobs", "gameplay/trader_elephant_chest");
     public boolean forcedSit = false;
     public float prevSitProgress;
     public float sitProgress;
@@ -134,6 +134,16 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         initElephantInventory();
     }
 
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 80.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.9F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+    }
+
+    @Nullable
+    private static DyeColor getCarpetColor(ItemStack stack) {
+        Block lvt_1_1_ = Block.getBlockFromItem(stack.getItem());
+        return lvt_1_1_ instanceof CarpetBlock ? ((CarpetBlock) lvt_1_1_).getColor() : null;
+    }
+
     protected SoundEvent getAmbientSound() {
         return AMSoundRegistry.ELEPHANT_IDLE;
     }
@@ -146,19 +156,8 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         return AMSoundRegistry.ELEPHANT_DIE;
     }
 
-
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 80.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.9F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
-    }
-
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.elephantSpawnRolls, this.getRNG(), spawnReasonIn);
-    }
-
-    @Nullable
-    private static DyeColor getCarpetColor(ItemStack stack) {
-        Block lvt_1_1_ = Block.getBlockFromItem(stack.getItem());
-        return lvt_1_1_ instanceof CarpetBlock ? ((CarpetBlock) lvt_1_1_).getColor() : null;
     }
 
     private void initElephantInventory() {
@@ -213,9 +212,9 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     protected void playStepSound(BlockPos pos, BlockState state) {
-        if(!isChild()){
+        if (!isChild()) {
             this.playSound(AMSoundRegistry.ELEPHANT_WALK, 0.2F, 1.0F);
-        }else{
+        } else {
             super.playStepSound(pos, state);
         }
     }
@@ -223,7 +222,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     @Nullable
     public Entity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
-            if (passenger instanceof PlayerEntity ) {
+            if (passenger instanceof PlayerEntity) {
                 return passenger;
             }
         }
@@ -233,7 +232,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     @Nullable
     public AbstractVillagerEntity getControllingVillager() {
         for (Entity passenger : this.getPassengers()) {
-            if (passenger instanceof AbstractVillagerEntity ) {
+            if (passenger instanceof AbstractVillagerEntity) {
                 return (AbstractVillagerEntity) passenger;
             }
         }
@@ -301,10 +300,10 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             if (this.getAnimation() == ANIMATION_EAT && this.getAnimationTick() == 17) {
                 this.eatItemEffect(this.getHeldItemMainhand());
-                if (this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && rand.nextInt(2) == 0 && !this.isTamed() && !isTusked() && blossomThrowerUUID != null) {
+                if (this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && rand.nextInt(3) == 0 && !this.isTamed() && (!isTusked() || isChild()) && blossomThrowerUUID != null) {
                     this.setTamed(true);
                     this.setOwnerId(blossomThrowerUUID);
-                    for(Entity passenger : this.getPassengers()){
+                    for (Entity passenger : this.getPassengers()) {
                         passenger.dismount();
                     }
                     this.world.setEntityState(this, (byte) 7);
@@ -392,7 +391,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         if (!world.isRemote && this.getRNG().nextInt(400) == 0 && this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(this.getRNG().nextBoolean() ? ANIMATION_TRUMPET_0 : ANIMATION_TRUMPET_1);
         }
-        if(this.getAnimation() == ANIMATION_TRUMPET_0 && this.getAnimationTick() == 8 || this.getAnimation() == ANIMATION_TRUMPET_1 && this.getAnimationTick() == 4){
+        if (this.getAnimation() == ANIMATION_TRUMPET_0 && this.getAnimationTick() == 8 || this.getAnimation() == ANIMATION_TRUMPET_1 && this.getAnimationTick() == 4) {
             this.playSound(AMSoundRegistry.ELEPHANT_TRUMPET, this.getSoundVolume(), this.getSoundPitch());
         }
         if (this.isAlive() && charging) {
@@ -404,12 +403,12 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             stepHeight = 2;
         }
-        if(!isTamed() && isTrader()){
+        if (!isTamed() && isTrader()) {
             if (!this.world.isRemote) {
                 this.tryDespawn();
             }
         }
-        if(this.getAttackTarget() != null && !this.getAttackTarget().isAlive()){
+        if (this.getAttackTarget() != null && !this.getAttackTarget().isAlive()) {
             this.setAttackTarget(null);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -421,9 +420,9 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
 
     private void tryDespawn() {
         if (this.canDespawn()) {
-            if(this.getControllingVillager() instanceof WanderingTraderEntity){
-                int riderDelay = ((WanderingTraderEntity)this.getControllingVillager()).getDespawnDelay();
-                if(riderDelay > 0){
+            if (this.getControllingVillager() instanceof WanderingTraderEntity) {
+                int riderDelay = ((WanderingTraderEntity) this.getControllingVillager()).getDespawnDelay();
+                if (riderDelay > 0) {
                     this.despawnDelay = riderDelay;
                 }
             }
@@ -431,6 +430,9 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             if (this.despawnDelay <= 0) {
                 this.clearLeashed(true, false);
                 this.elephantInventory.clear();
+                if(this.getControllingVillager() != null){
+                    this.getControllingVillager().remove();
+                }
                 this.remove();
             }
         }
@@ -733,8 +735,8 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         if (spawnDataIn == null) {
             spawnDataIn = new AgeableEntity.AgeableData(true);
         }
-        AgeableEntity.AgeableData lvt_6_1_ = (AgeableEntity.AgeableData)spawnDataIn;
-        if(lvt_6_1_.getIndexInGroup() == 0 && this.getNearestTusked(world, 15) == null){
+        AgeableEntity.AgeableData lvt_6_1_ = (AgeableEntity.AgeableData) spawnDataIn;
+        if (lvt_6_1_.getIndexInGroup() == 0 && this.getNearestTusked(world, 15) == null) {
             this.setTusked(true);
         }
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
@@ -807,12 +809,13 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         if (this.world.getServer() != null) {
             LootTable loottable = this.world.getServer().getLootTableManager().getLootTableFromLocation(TRADER_LOOT);
 
-            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld)this.world)).withSeed(seed);
+            LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld) this.world)).withSeed(seed);
 
             loottable.fillInventory(this.elephantInventory, lootcontext$builder.build(LootParameterSets.EMPTY));
         }
 
     }
+
     public void leaveCaravan() {
         if (this.caravanHead != null) {
             this.caravanHead.caravanTail = null;
@@ -980,7 +983,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             if (EntityElephant.this.isChild() || !EntityElephant.this.isTusked()) {
                 this.alertOthers();
                 this.resetTask();
-            }else{
+            } else {
                 super.startExecuting();
             }
         }

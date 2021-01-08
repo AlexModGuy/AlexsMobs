@@ -158,6 +158,7 @@ public class AMConfig {
             mimicreamRepair = ConfigHolder.COMMON.mimicreamRepair.get();
             mimicreamBlacklist = (List<? extends String>) ConfigHolder.COMMON.mimicreamBlacklist.get();
             raccoonsStealFromChests = ConfigHolder.COMMON.raccoonStealFromChests.get();
+            acaciaBlossomsDropFromLeaves = ConfigHolder.COMMON.acaciaBlossomsDropFromLeaves.get();
             soulVultureSpawnOnFossil = ConfigHolder.COMMON.soulVultureSpawnOnFossil.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");

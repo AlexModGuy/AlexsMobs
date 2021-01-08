@@ -1,16 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
-import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -22,37 +19,34 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
-import net.minecraft.entity.monster.piglin.PiglinEntity;
 import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Random;
 
 public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
 
+    public static final ResourceLocation SOUL_LOOT = new ResourceLocation("alexsmobs", "entities/soul_vulture_heart");
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntitySoulVulture.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> TACKLING = EntityDataManager.createKey(EntitySoulVulture.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Optional<BlockPos>> PERCH_POS = EntityDataManager.createKey(EntitySoulVulture.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -69,6 +63,11 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
     protected EntitySoulVulture(EntityType type, World worldIn) {
         super(type, worldIn);
         switchNavigator(true);
+    }
+
+    @Nullable
+    protected ResourceLocation getLootTable() {
+        return this.getSoulLevel() > 2 ? SOUL_LOOT : super.getLootTable();
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -94,7 +93,7 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 25.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 18.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public boolean isPerchBlock(BlockPos pos, BlockState state) {
@@ -105,7 +104,7 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
         this.goalSelector.addGoal(1, new AICirclePerch(this));
         this.goalSelector.addGoal(2, new AIFlyRandom(this));
         this.goalSelector.addGoal(3, new AITackleMelee(this));
-        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 32F));
+        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 20F));
         this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntitySoulVulture.class));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));

@@ -81,6 +81,7 @@ public class AMItemRegistry {
     public static final Item COCKROACH_WING = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cockroach_wing");
     public static final Item COCKROACH_OOTHECA = new ItemAnimalEgg(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cockroach_ootheca");
     public static final Item ACACIA_BLOSSOM = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:acacia_blossom");
+    public static final Item SOUL_HEART = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:soul_heart");
 
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
