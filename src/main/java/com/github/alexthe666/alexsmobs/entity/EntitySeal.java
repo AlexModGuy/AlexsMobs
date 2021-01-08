@@ -351,7 +351,9 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return AMEntityRegistry.SEAL.create(serverWorld);
+        EntitySeal seal = AMEntityRegistry.SEAL.create(serverWorld);
+        seal.setArctic(this.isBiomeArctic(serverWorld, this.getPosition()));
+        return seal;
     }
 
     @Override
