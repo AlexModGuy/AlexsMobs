@@ -167,9 +167,15 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if(this.getNearestSilverback(worldIn, 16D) == null){
-            this.setSilverback(true);
+        if (spawnDataIn instanceof AgeableEntity.AgeableData) {
+            AgeableEntity.AgeableData lvt_6_1_ = (AgeableEntity.AgeableData) spawnDataIn;
+            if (lvt_6_1_.getIndexInGroup() == 0) {
+                this.setSilverback(true);
+            }
+        }else{
+            this.setSilverback(this.getRNG().nextBoolean());
         }
+
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 

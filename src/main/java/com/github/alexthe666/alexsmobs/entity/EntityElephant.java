@@ -732,13 +732,15 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
 
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if (spawnDataIn == null) {
-            spawnDataIn = new AgeableEntity.AgeableData(true);
+        if (spawnDataIn instanceof AgeableEntity.AgeableData) {
+            AgeableEntity.AgeableData lvt_6_1_ = (AgeableEntity.AgeableData) spawnDataIn;
+            if (lvt_6_1_.getIndexInGroup() == 0) {
+                this.setTusked(true);
+            }
+        }else{
+            this.setTusked(this.getRNG().nextBoolean());
         }
-        AgeableEntity.AgeableData lvt_6_1_ = (AgeableEntity.AgeableData) spawnDataIn;
-        if (lvt_6_1_.getIndexInGroup() == 0 && this.getNearestTusked(world, 15) == null) {
-            this.setTusked(true);
-        }
+
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
