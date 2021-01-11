@@ -360,19 +360,19 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
                 target.applyKnockback(1F, target.getPosX() - this.getPosX(), target.getPosZ() - this.getPosZ());
                 target.isAirBorne = true;
                 target.setMotion(target.getMotion().add(0, 0.7F, 0));
-                target.attackEntityFrom(DamageSource.causeMobDamage(this), 2 * (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                target.attackEntityFrom(DamageSource.causeMobDamage(this), 2.4F * (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 launch(target, true);
                 this.charging = false;
                 this.chargeCooldown = 400;
             }
-            double dist = this.getDistanceSq(target);
-            if (dist < 8.5D + maxAttackMod && this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 17) {
+            double dist = this.getDistance(target);
+            if (dist < 4.5D + maxAttackMod && this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 15) {
                 target.applyKnockback(1F, target.getPosX() - this.getPosX(), target.getPosZ() - this.getPosZ());
                 target.setMotion(target.getMotion().add(0, 0.3F, 0));
                 launch(target, false);
                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
-            if (dist < 8.5D + maxAttackMod && this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() == 17) {
+            if (dist < 4.5D + maxAttackMod && this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() == 17) {
                 target.applyKnockback(0.3F, target.getPosX() - this.getPosX(), target.getPosZ() - this.getPosZ());
                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
