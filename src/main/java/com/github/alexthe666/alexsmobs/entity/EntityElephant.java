@@ -414,6 +414,13 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
+    public void livingTick() {
+        super.livingTick();
+        if (this.isChild() && this.getEyeHeight() > this.getHeight()) {
+            this.recalculateSize();
+        }
+    }
+
     private boolean canDespawn() {
         return !this.isTamed() && this.isTrader();
     }

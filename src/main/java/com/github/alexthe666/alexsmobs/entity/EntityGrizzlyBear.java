@@ -254,6 +254,9 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
 
     public void tick() {
         super.tick();
+        if (this.isChild() && this.getEyeHeight() > this.getHeight()) {
+            this.recalculateSize();
+        }
         this.prevStandProgress = this.standProgress;
         this.prevSitProgress = this.sitProgress;
         if (this.isSitting() && sitProgress < 10) {
