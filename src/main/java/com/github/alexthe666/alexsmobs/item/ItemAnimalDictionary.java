@@ -2,10 +2,13 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.citadel.Citadel;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -24,6 +27,11 @@ public class ItemAnimalDictionary extends Item {
 
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemStackIn = playerIn.getHeldItem(handIn);
+        if (playerIn instanceof ServerPlayerEntity) {
+            ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)playerIn;
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, itemStackIn);
+            serverplayerentity.addStat(Stats.ITEM_USED.get(this));
+        }
         if (worldIn.isRemote) {
             AlexsMobs.PROXY.openBookGUI(itemStackIn);
         }

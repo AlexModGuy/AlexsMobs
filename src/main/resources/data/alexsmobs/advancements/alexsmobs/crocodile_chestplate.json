@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:crocodile_chestplate"
+        },
+        "title": {
+            "translate": "advancements.crocodile_chestplate.maraca.title"
+        },
+        "description": {
+            "translate": "advancements.crocodile_chestplate.maraca.desc"
+        },
+        "frame": "challenge"
+
+    },
+    "parent": "alexsmobs:alexsmobs/crocodile",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "alexsmobs:crocodile_chestplate"
+                    }
+                ]
+            }
+        }
+    }
+}

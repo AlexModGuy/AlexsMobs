@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:animal_dictionary"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.root.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.root.desc"
+        },
+        "background": "alexsmobs:textures/advancement_background.png",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden" : false
+    },
+    "criteria": {
+        "useitem": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "item": "alexsmobs:animal_dictionary"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:banana"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.banana.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.banana.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/root",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "tag": "alexsmobs:bananas"
+                    }
+                ]
+            }
+        }
+    }
+}

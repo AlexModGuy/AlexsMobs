@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:sopa_de_macaco"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.sopa_de_macaco.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.sopa_de_macaco.desc"
+        },
+        "frame": "challenge"
+    },
+    "parent": "alexsmobs:alexsmobs/tame_capuchin",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "alexsmobs:maraca"
+                    }
+                ]
+            }
+        }
+    }
+}

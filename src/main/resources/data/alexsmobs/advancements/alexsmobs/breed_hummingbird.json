@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:hummingbird\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.breed_hummingbird.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.breed_hummingbird.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:bred_animals",
+      "conditions": {
+        "child": {
+          "type": "alexsmobs:hummingbird"
+        }
+      }
+    }
+  }
+}

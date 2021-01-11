@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:capuchin_monkey\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tame_capuchin_monkey.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.tame_capuchin_monkey.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/banana",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:capuchin_monkey"
+        }
+      }
+    }
+  }
+}
