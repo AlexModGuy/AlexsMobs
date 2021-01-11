@@ -65,7 +65,7 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
         super(type, worldIn);
         switchNavigator(true);
     }
-    
+
     public CreatureAttribute getCreatureAttribute() {
         return CreatureAttribute.UNDEAD;
     }

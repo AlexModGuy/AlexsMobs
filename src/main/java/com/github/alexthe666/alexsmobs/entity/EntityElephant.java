@@ -528,7 +528,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             elephantInventory.clear();
             this.setChested(false);
             return ActionResultType.SUCCESS;
-        } else if (owner && super.func_230254_b_(player, hand) != ActionResultType.CONSUME) {
+        } else if (owner && !this.isChild() && super.func_230254_b_(player, hand) != ActionResultType.CONSUME) {
             player.startRiding(this);
             return ActionResultType.SUCCESS;
         }
