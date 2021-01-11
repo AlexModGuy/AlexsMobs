@@ -324,6 +324,11 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
+    @Override
+    public boolean canRiderInteract(){
+        return true;
+    }
+
     public boolean isOnSameTeam(Entity entityIn) {
         if (this.isTamed()) {
             LivingEntity livingentity = this.getOwner();

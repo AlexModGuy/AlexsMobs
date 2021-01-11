@@ -107,6 +107,11 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         return this.getBloodLevel() > 0 ? FULL_LOOT : super.getLootTable();
     }
 
+    @Override
+    public boolean canRiderInteract(){
+        return true;
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new EntityCrimsonMosquito.FlyTowardsTarget(this));
         this.goalSelector.addGoal(2, new EntityCrimsonMosquito.FlyAwayFromTarget(this));
@@ -161,6 +166,14 @@ public class EntityCrimsonMosquito extends MonsterEntity {
     public boolean isInvulnerableTo(DamageSource source) {
         return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source.isFireDamage() || super.isInvulnerableTo(source);
     }
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if(source.getTrueSource() != null && this.getLowestRidingEntity() == source.getTrueSource().getLowestRidingEntity()){
+            return super.attackEntityFrom(source, amount * 0.333F);
+        }
+        return super.attackEntityFrom(source, amount);
+    }
+
 
     public void updateRidden() {
         Entity entity = this.getRidingEntity();
