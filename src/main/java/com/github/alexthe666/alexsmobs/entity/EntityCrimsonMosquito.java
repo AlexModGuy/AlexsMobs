@@ -174,7 +174,6 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         return super.attackEntityFrom(source, amount);
     }
 
-
     public void updateRidden() {
         Entity entity = this.getRidingEntity();
         if (this.isPassenger() && !entity.isAlive()) {
