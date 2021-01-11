@@ -773,7 +773,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
 
     public void setTusked(boolean tusked) {
         boolean prev = isTusked();
-        if (!prev && prev) {
+        if (!prev && tusked) {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(150.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(15.0D);
             this.setHealth(150.0F);
