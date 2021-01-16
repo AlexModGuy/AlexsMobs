@@ -98,6 +98,13 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public void onLootLevelEvent(LootingLevelEvent event) {
+        if(event.getDamageSource().getTrueSource() instanceof EntitySnowLeopard){
+            event.setLootingLevel(event.getLootingLevel() + 2);
+        }
+    }
+
+    @SubscribeEvent
     public void onUseItem(PlayerInteractEvent.RightClickItem event) {
         if(event.getItemStack().getItem() == Items.WHEAT && event.getPlayer().getRidingEntity() instanceof EntityElephant){
             if(((EntityElephant)event.getPlayer().getRidingEntity()).triggerCharge(event.getItemStack())){
