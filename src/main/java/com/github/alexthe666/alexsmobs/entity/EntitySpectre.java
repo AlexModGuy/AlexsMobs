@@ -310,14 +310,9 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
     }
 
     class TemptHeartGoal extends Goal {
-        private final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(34.0D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks().setLineOfSiteRequired();
+        private final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(64D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks().setLineOfSiteRequired();
         protected final EntitySpectre creature;
         private final double speed;
-        private double targetX;
-        private double targetY;
-        private double targetZ;
-        private double pitch;
-        private double yaw;
         protected PlayerEntity closestPlayer;
         private int delayTemptCounter;
         private final Ingredient temptItem;
@@ -355,9 +350,6 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
         }
 
         public void startExecuting() {
-            this.targetX = this.closestPlayer.getPosX();
-            this.targetY = this.closestPlayer.getPosY();
-            this.targetZ = this.closestPlayer.getPosZ();
             creature.lurePos = this.closestPlayer.getPositionVec();
         }
 
@@ -372,7 +364,7 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
             if (this.creature.getDistanceSq(this.closestPlayer) < 6.25D) {
                 this.creature.getNavigator().clearPath();
             } else {
-                this.creature.getMoveHelper().setMoveTo(this.closestPlayer.getPosX(), closestPlayer.getPosY(), closestPlayer.getPosZ(), this.speed);
+                this.creature.getMoveHelper().setMoveTo(this.closestPlayer.getPosX(), closestPlayer.getPosY() + closestPlayer.getEyeHeight(), closestPlayer.getPosZ(), this.speed);
             }
 
         }

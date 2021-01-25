@@ -69,6 +69,8 @@ public class AMItemRegistry {
     public static final Item MOSQUITO_LARVA = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mosquito_larva");
     public static final Item MOOSE_ANTLER = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:moose_antler");
     public static final Item MOOSE_HEADGEAR = new ItemModArmor(MOOSE_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:moose_headgear");
+    public static final Item MOOSE_RIBS = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(3).saturation(0.6F).meat().build())).setRegistryName("alexsmobs:moose_ribs");
+    public static final Item COOKED_MOOSE_RIBS = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(7).saturation(0.85F).meat().build())).setRegistryName("alexsmobs:cooked_moose_ribs");
     public static final Item MIMICREAM = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mimicream");
     public static final Item RACCOON_TAIL = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:raccoon_tail");
     public static final Item FRONTIER_CAP = new ItemModArmor(RACCOON_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:frontier_cap");
@@ -121,7 +123,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ELEPHANT, 0X8D8987,0XEDE5D1, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_elephant"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SOUL_VULTURE, 0X23262D,0X57F4FF, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_soul_vulture"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SNOW_LEOPARD, 0XACA293,0X26201D, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_snow_leopard"));
-        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SPECTRE, 0X6D72B9,0X8AFFA1, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_spectre"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SPECTRE, 0X948FF3,0X5A7183, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_spectre"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

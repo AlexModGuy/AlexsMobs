@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -53,6 +54,10 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
     protected EntitySnowLeopard(EntityType type, World worldIn) {
         super(type, worldIn);
         this.stepHeight = 2F;
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.getItem() == AMItemRegistry.MOOSE_RIBS || stack.getItem() == AMItemRegistry.COOKED_MOOSE_RIBS;
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
