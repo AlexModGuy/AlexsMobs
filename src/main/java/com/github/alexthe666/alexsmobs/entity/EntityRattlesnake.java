@@ -156,11 +156,12 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
         if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 4){
              this.playSound(AMSoundRegistry.RATTLESNAKE_ATTACK, getSoundVolume(), getSoundPitch());
         }
-        if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 8 && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 2D){
-            boolean meepMeep = this.getAttackTarget() instanceof EntityRoadrunner;
-            this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), meepMeep ? 1.0F : (float)getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+        LivingEntity target = this.getAttackTarget();
+        if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 8 && target != null && this.getDistance(target) < 2D){
+            boolean meepMeep = target instanceof EntityRoadrunner;
+            target.attackEntityFrom(DamageSource.causeMobDamage(this), meepMeep ? 1.0F : (float)getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             if(!meepMeep){
-                this.getAttackTarget().addPotionEffect(new EffectInstance(Effects.POISON, 300, 2));
+                target.addPotionEffect(new EffectInstance(Effects.POISON, 300, 2));
             }
         }
         if(isRattling()){
