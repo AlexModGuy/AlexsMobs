@@ -222,26 +222,3 @@
 
   ]
 }
-  ],
-  "images": [
-
-  ],
-  "item_renders": [
-    {
-      "item" : "alexsmobs:tab_icon",
-      "x": 25,
-      "y": 14,
-      "page" : 0,
-      "scale": 2.75
-    }
-  ],
-  "recipes": [
-
-  ],
-  "tabula_renders": [
-
-  ],
-  "entity_renders": [
-
-  ]
-}
