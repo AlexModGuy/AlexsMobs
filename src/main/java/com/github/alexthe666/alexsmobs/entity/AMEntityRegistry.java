@@ -57,6 +57,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntitySoulVulture> SOUL_VULTURE = registerEntity(EntityType.Builder.create(EntitySoulVulture::new, EntityClassification.MONSTER).size(0.9F, 1.3F).setUpdateInterval(1).immuneToFire(), "soul_vulture");
     public static final EntityType<EntitySnowLeopard> SNOW_LEOPARD = registerEntity(EntityType.Builder.create(EntitySnowLeopard::new, EntityClassification.CREATURE).size(1.2F, 1.3F), "snow_leopard");
     public static final EntityType<EntitySpectre> SPECTRE = registerEntity(EntityType.Builder.create(EntitySpectre::new, EntityClassification.CREATURE).size(3.15F, 0.8F).immuneToFire().setTrackingRange(10).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "spectre");
+    public static final EntityType<EntityCrow> CROW = registerEntity(EntityType.Builder.create(EntityCrow::new, EntityClassification.CREATURE).size(0.45F, 0.45F), "crow");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -147,6 +148,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(SOUL_VULTURE, EntitySoulVulture.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(SNOW_LEOPARD, EntitySnowLeopard.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(SPECTRE, EntitySpectre.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(CROW, EntityCrow.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

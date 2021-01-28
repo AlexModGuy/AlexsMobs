@@ -11,11 +11,17 @@ import net.minecraft.util.math.vector.Vector3d;
 public class FlightMoveController extends MovementController {
     private final MobEntity parentEntity;
     private float speedGeneral;
+    private boolean shouldLookAtTarget;
 
-    public FlightMoveController(MobEntity bird, float speedGeneral) {
+    public FlightMoveController(MobEntity bird, float speedGeneral, boolean shouldLookAtTarget) {
         super(bird);
         this.parentEntity = bird;
+        this.shouldLookAtTarget = shouldLookAtTarget;
         this.speedGeneral = speedGeneral;
+    }
+
+    public FlightMoveController(MobEntity bird, float speedGeneral) {
+        this(bird, speedGeneral, true);
     }
 
     public void tick() {
@@ -27,11 +33,11 @@ public class FlightMoveController extends MovementController {
                 parentEntity.setMotion(parentEntity.getMotion().scale(0.5D));
             } else {
                 parentEntity.setMotion(parentEntity.getMotion().add(vector3d.scale(this.speed * speedGeneral * 0.05D / d0)));
-                if (parentEntity.getAttackTarget() == null) {
+                if (parentEntity.getAttackTarget() == null || !shouldLookAtTarget) {
                     Vector3d vector3d1 = parentEntity.getMotion();
                     parentEntity.rotationYaw = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
                     parentEntity.renderYawOffset = parentEntity.rotationYaw;
-                } else {
+                } else{
                     double d2 = parentEntity.getAttackTarget().getPosX() - parentEntity.getPosX();
                     double d1 = parentEntity.getAttackTarget().getPosZ() - parentEntity.getPosZ();
                     parentEntity.rotationYaw = -((float) MathHelper.atan2(d2, d1)) * (180F / (float) Math.PI);

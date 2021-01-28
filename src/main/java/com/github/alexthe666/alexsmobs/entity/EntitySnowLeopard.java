@@ -1,15 +1,16 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -25,12 +26,17 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, ITargetsDroppedItems {
 
@@ -54,6 +60,16 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
     protected EntitySnowLeopard(EntityType type, World worldIn) {
         super(type, worldIn);
         this.stepHeight = 2F;
+    }
+
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.snowLeopardSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    public static <T extends MobEntity> boolean canSnowLeopardSpawn(EntityType<EntitySnowLeopard> snowleperd, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
+        return (blockstate.isIn(BlockTags.BASE_STONE_OVERWORLD) || blockstate.isIn(Blocks.DIRT) || blockstate.isIn(Blocks.GRASS_BLOCK)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     public boolean isBreedingItem(ItemStack stack) {
@@ -83,6 +99,18 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 36D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F).createMutableAttribute(Attributes.FOLLOW_RANGE, 64F);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.SNOW_LEOPARD_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.SNOW_LEOPARD_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.SNOW_LEOPARD_HURT;
     }
 
     @Override

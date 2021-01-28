@@ -137,7 +137,19 @@ public class AMSoundRegistry {
     public static final SoundEvent SOUL_VULTURE_IDLE = createSoundEvent("soul_vulture_idle");
 
     public static final SoundEvent SOUL_VULTURE_HURT = createSoundEvent("soul_vulture_hurt");
-    
+
+    public static final SoundEvent SNOW_LEOPARD_IDLE = createSoundEvent("snow_leopard_idle");
+
+    public static final SoundEvent SNOW_LEOPARD_HURT = createSoundEvent("snow_leopard_hurt");
+
+    public static final SoundEvent SPECTRE_IDLE = createSoundEvent("spectre_idle");
+
+    public static final SoundEvent SPECTRE_HURT = createSoundEvent("spectre_hurt");
+
+    public static final SoundEvent CROW_IDLE = createSoundEvent("crow_idle");
+
+    public static final SoundEvent CROW_HURT = createSoundEvent("crow_hurt");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

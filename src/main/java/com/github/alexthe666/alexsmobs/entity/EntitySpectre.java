@@ -1,7 +1,11 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -22,20 +26,24 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Random;
 
 public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
 
@@ -47,6 +55,28 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
     protected EntitySpectre(EntityType type, World world) {
         super(type, world);
         this.moveController = new MoveHelperController(this);
+    }
+
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.spectreSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    public static boolean canSpectreSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+        BlockState blockstate = worldIn.getBlockState(pos.down());
+        return true;
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.SPECTRE_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.SPECTRE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.SPECTRE_HURT;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
@@ -144,6 +174,19 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
     }
 
     protected void updateLeashedState() {
+        if (this.getLeashHolder() != null) {
+            if (this.getLeashHolder().isPassenger() || this.getLeashHolder() instanceof LeashKnotEntity) {
+                super.updateLeashedState();
+                return;
+            }
+            float f = this.getDistance(this.getLeashHolder());
+            if (f > 30) {
+                double lvt_3_1_ = (this.getLeashHolder().getPosX() - this.getPosX()) / (double) f;
+                double lvt_5_1_ = (this.getLeashHolder().getPosY() - this.getPosY()) / (double) f;
+                double lvt_7_1_ = (this.getLeashHolder().getPosZ() - this.getPosZ()) / (double) f;
+                this.setMotion(this.getMotion().add(Math.copySign(lvt_3_1_ * lvt_3_1_ * 0.4D, lvt_3_1_), Math.copySign(lvt_5_1_ * lvt_5_1_ * 0.4D, lvt_5_1_), Math.copySign(lvt_7_1_ * lvt_7_1_ * 0.4D, lvt_7_1_)));
+            }
+        }
         if (this.leashNBTTag != null) {
             this.recreateLeash();
         }
@@ -220,7 +263,7 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
         }
 
         public boolean shouldExecute() {
-            if(parentEntity.lurePos != null){
+            if (parentEntity.lurePos != null) {
                 return false;
             }
             MovementController movementcontroller = this.parentEntity.getMoveHelper();
@@ -310,12 +353,12 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
     }
 
     class TemptHeartGoal extends Goal {
-        private final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(64D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks().setLineOfSiteRequired();
         protected final EntitySpectre creature;
+        private final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(64D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks().setLineOfSiteRequired();
         private final double speed;
+        private final Ingredient temptItem;
         protected PlayerEntity closestPlayer;
         private int delayTemptCounter;
-        private final Ingredient temptItem;
 
         public TemptHeartGoal(EntitySpectre p_i47822_1_, double p_i47822_2_, Ingredient p_i47822_4_, boolean p_i47822_5_) {
             this(p_i47822_1_, p_i47822_2_, p_i47822_5_, p_i47822_4_);
@@ -360,7 +403,7 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
         }
 
         public void tick() {
-            this.creature.getLookController().setLookPositionWithEntity(this.closestPlayer, (float)(this.creature.getHorizontalFaceSpeed() + 20), (float)this.creature.getVerticalFaceSpeed());
+            this.creature.getLookController().setLookPositionWithEntity(this.closestPlayer, (float) (this.creature.getHorizontalFaceSpeed() + 20), (float) this.creature.getVerticalFaceSpeed());
             if (this.creature.getDistanceSq(this.closestPlayer) < 6.25D) {
                 this.creature.getNavigator().clearPath();
             } else {

@@ -65,6 +65,12 @@ public class AMConfig {
     public static int elephantSpawnRolls = 0;
     public static int soulVultureSpawnWeight = 30;
     public static int soulVultureSpawnRolls = 0;
+    public static int snowLeopardSpawnWeight = 20;
+    public static int snowLeopardSpawnRolls = 0;
+    public static int spectreSpawnWeight = 20;
+    public static int spectreSpawnRolls = 0;
+    public static int crowSpawnWeight = 10;
+    public static int crowSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -146,6 +152,12 @@ public class AMConfig {
             elephantSpawnRolls = ConfigHolder.COMMON.elephantSpawnRolls.get();
             soulVultureSpawnWeight = ConfigHolder.COMMON.soulVultureSpawnWeight.get();
             soulVultureSpawnRolls = ConfigHolder.COMMON.soulVultureSpawnRolls.get();
+            snowLeopardSpawnWeight = ConfigHolder.COMMON.snowLeopardSpawnWeight.get();
+            snowLeopardSpawnRolls = ConfigHolder.COMMON.snowLeopardSpawnRolls.get();
+            spectreSpawnWeight = ConfigHolder.COMMON.spectreSpawnWeight.get();
+            spectreSpawnRolls = ConfigHolder.COMMON.spectreSpawnRolls.get();
+            crowSpawnWeight = ConfigHolder.COMMON.crowSpawnWeight.get();
+            crowSpawnRolls = ConfigHolder.COMMON.crowSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();

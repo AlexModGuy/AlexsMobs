@@ -77,6 +77,13 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue elephantSpawnRolls;
     public final ForgeConfigSpec.IntValue soulVultureSpawnWeight;
     public final ForgeConfigSpec.IntValue soulVultureSpawnRolls;
+    public final ForgeConfigSpec.IntValue snowLeopardSpawnWeight;
+    public final ForgeConfigSpec.IntValue snowLeopardSpawnRolls;
+    public final ForgeConfigSpec.IntValue spectreSpawnWeight;
+    public final ForgeConfigSpec.IntValue spectreSpawnRolls;
+    public final ForgeConfigSpec.IntValue crowSpawnWeight;
+    public final ForgeConfigSpec.IntValue crowSpawnRolls;
+
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -161,6 +168,12 @@ public class CommonConfig {
         elephantSpawnRolls = buildInt(builder, "elephantSpawnRolls", "spawns", AMConfig.elephantSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         soulVultureSpawnWeight = buildInt(builder, "soulVultureSpawnWeight", "spawns", AMConfig.soulVultureSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         soulVultureSpawnRolls = buildInt(builder, "soulVultureSpawnRolls", "spawns", AMConfig.soulVultureSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        snowLeopardSpawnWeight = buildInt(builder, "snowLeopardSpawnWeight", "spawns", AMConfig.snowLeopardSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        snowLeopardSpawnRolls = buildInt(builder, "snowLeopardSpawnRolls", "spawns", AMConfig.snowLeopardSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        spectreSpawnWeight = buildInt(builder, "spectreSpawnWeight", "spawns", AMConfig.spectreSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        spectreSpawnRolls = buildInt(builder, "spectreSpawnRolls", "spawns", AMConfig.spectreSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        crowSpawnWeight = buildInt(builder, "crowSpawnWeight", "spawns", AMConfig.crowSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        crowSpawnRolls = buildInt(builder, "crowSpawnRolls", "spawns", AMConfig.crowSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

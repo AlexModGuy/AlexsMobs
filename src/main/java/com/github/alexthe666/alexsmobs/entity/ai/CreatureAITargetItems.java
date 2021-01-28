@@ -27,6 +27,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
     protected ItemEntity targetEntity;
     private ITargetsDroppedItems hunter;
     private int tickThreshold;
+    private float radius = 9F;
 
     public CreatureAITargetItems(CreatureEntity creature, boolean checkSight) {
         this(creature, checkSight, false);
@@ -34,7 +35,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
     }
 
     public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, int tickThreshold) {
-        this(creature, checkSight, false, tickThreshold);
+        this(creature, checkSight, false, tickThreshold, 9);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
@@ -43,8 +44,9 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
         this(creature, 10, checkSight, onlyNearby, null, 0);
     }
 
-    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby, int tickThreshold) {
+    public CreatureAITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
         this(creature, 10, checkSight, onlyNearby, null, tickThreshold);
+        this.radius = radius;
     }
 
 
@@ -100,15 +102,18 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {
         Vector3d renderCenter = new Vector3d(this.goalOwner.getPosX() + 0.5, this.goalOwner.getPosY()+ 0.5, this.goalOwner.getPosZ() + 0.5D);
-        double renderRadius = 9;
-        AxisAlignedBB aabb = new AxisAlignedBB(-renderRadius, -renderRadius, -renderRadius, renderRadius, renderRadius, renderRadius);
+        AxisAlignedBB aabb = new AxisAlignedBB(-radius, -radius, -radius, radius, radius, radius);
         return aabb.offset(renderCenter);
     }
 
     @Override
     public void startExecuting() {
-        this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+        moveTo();
         super.startExecuting();
+    }
+
+    protected void moveTo(){
+        this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
     }
 
     public void resetTask() {
