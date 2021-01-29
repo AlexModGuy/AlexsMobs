@@ -42,7 +42,6 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     protected float offsetY;
     protected float damageMultiplier = 1;
 
-
     public EntityBoneSerpentPart(EntityType t, World world) {
         super(t, world);
         multipartSize = t.getSize();

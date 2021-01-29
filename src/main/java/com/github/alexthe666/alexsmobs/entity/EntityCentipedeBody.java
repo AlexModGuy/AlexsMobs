@@ -38,6 +38,11 @@ public class EntityCentipedeBody extends MobEntity implements IHurtableMultipart
         multipartSize = type.getSize();
     }
 
+    public boolean preventDespawn() {
+        return super.preventDespawn() || this.getParent() != null;
+    }
+
+
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return  source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
