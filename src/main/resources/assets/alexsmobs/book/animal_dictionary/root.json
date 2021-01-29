@@ -198,6 +198,27 @@
       "x": 90,
       "y": 160,
       "page": 2
+    },
+    {
+      "linked_page": "snow_leopard.json",
+      "text": "Snow Leopard",
+      "x": 290,
+      "y": 10,
+      "page": 2
+    },
+    {
+      "linked_page": "spectre.json",
+      "text": "Spectre",
+      "x": 290,
+      "y": 35,
+      "page": 2
+    },
+    {
+      "linked_page": "crow.json",
+      "text": "Crow",
+      "x": 290,
+      "y": 60,
+      "page": 2
     }
   ],
   "images": [

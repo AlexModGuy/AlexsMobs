@@ -99,5 +99,14 @@ public class AMWorldRegistry {
         if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.soulVulture, biome) && AMConfig.soulVultureSpawnWeight > 0 && !AMConfig.soulVultureSpawnOnFossil) {
             event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 2, 3));
         }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.snowLeopard, biome) && AMConfig.snowLeopardSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.SNOW_LEOPARD, AMConfig.snowLeopardSpawnWeight, 1, 2));
+        }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.spectre, biome) && AMConfig.spectreSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.SPECTRE, AMConfig.spectreSpawnWeight, 1, 2));
+        }
+        if (AMBiomeUtil.parseListForBiomeCheck(BiomeConfig.crow, biome) && AMConfig.crowSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.CROW, AMConfig.crowSpawnWeight, 3, 5));
+        }
     }
 }

@@ -67,8 +67,8 @@ public class AMConfig {
     public static int soulVultureSpawnRolls = 0;
     public static int snowLeopardSpawnWeight = 20;
     public static int snowLeopardSpawnRolls = 0;
-    public static int spectreSpawnWeight = 20;
-    public static int spectreSpawnRolls = 0;
+    public static int spectreSpawnWeight = 10;
+    public static int spectreSpawnRolls = 5;
     public static int crowSpawnWeight = 10;
     public static int crowSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;

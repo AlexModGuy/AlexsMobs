@@ -31,6 +31,6 @@ public class DefaultBiomes {
     public static final String[] SOUL_VULTURE = new String[] {"|minecraft:soul_sand_valley"};
     public static final String[] SPECTRE = new String[] {"|minecraft:small_end_islands"};
     public static final String[] SNOW_LEOPARD = new String[] { "&#overworld+|#snowy+&#mountain"};
-    public static final String[] CROW = new String[] { "&#overworld+!#savanna+!#@savanna+|@plains+|#plains" };
+    public static final String[] CROW = new String[] { "&#overworld+!#savanna+!#@savanna+|@forest+|#forest+|@plains+|#plains" };
 
 }
