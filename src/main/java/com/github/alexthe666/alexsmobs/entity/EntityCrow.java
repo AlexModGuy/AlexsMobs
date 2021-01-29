@@ -68,6 +68,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
     public float attackProgress;
     public int fleePumpkinFlag = 0;
     public boolean aiItemFlag = false;
+    public boolean aiItemFrameFlag = false;
     public float prevSitProgress;
     public float sitProgress;
     private boolean isLandNavigator;
@@ -609,7 +610,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                     this.flightTarget = rand.nextInt(5) > 0 && crow.timeFlying < 200;
                 }
                 if(crow.getCommand() == 3){
-                    if(!crow.getHeldItemMainhand().isEmpty()){
+                    if(crow.aiItemFrameFlag){
                         return false;
                     }
                     this.flightTarget = true;
@@ -1009,6 +1010,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                 Collections.sort(list, this.theNearestAttackableTargetSorter);
                 this.targetEntity = list.get(0);
                 this.mustUpdate = false;
+                EntityCrow.this.aiItemFrameFlag = true;
                 return true;
             }
         }
@@ -1021,6 +1023,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         public void resetTask() {
             flightTarget = null;
             this.targetEntity = null;
+            EntityCrow.this.aiItemFrameFlag = false;
         }
 
         @Override
