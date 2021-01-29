@@ -42,7 +42,7 @@ public class MatchesBananaTagCondition implements ILootCondition {
             match = BlockTags.getCollection().get(AMTagRegistry.DROPS_BANANAS);
         }
         BlockState block = p_test_1_.get(LootParameters.BLOCK_STATE);
-        return block != null && match.contains(block.getBlock());
+        return block != null && match != null && match.contains(block.getBlock());
     }
 
     public static class Serializer implements ILootSerializer<MatchesBananaTagCondition> {
