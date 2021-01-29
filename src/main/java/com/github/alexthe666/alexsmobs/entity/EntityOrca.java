@@ -82,6 +82,10 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
         this.lookController = new DolphinLookController(this, 10);
     }
 
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !this.isTamed();
+    }
+
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.orcaSpawnRolls, this.getRNG(), spawnReasonIn);
     }
