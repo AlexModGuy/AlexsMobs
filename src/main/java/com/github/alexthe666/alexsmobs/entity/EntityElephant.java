@@ -397,7 +397,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         if (this.isAlive() && charging) {
             for (Entity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(1.0D), null)) {
                 if (!(this.isTamed() && isOnSameTeam(entity)) && !(!this.isTamed() && entity instanceof EntityElephant) && entity != this) {
-                    entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
+                    entity.attackEntityFrom(DamageSource.causeMobDamage(this), 8.0F + rand.nextFloat() * 8.0F);
                     launch(entity, true);
                 }
             }
