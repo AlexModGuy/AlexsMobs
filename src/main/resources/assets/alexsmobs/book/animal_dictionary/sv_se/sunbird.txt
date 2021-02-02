@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Solfågeln är en mytisk kran som kan hittas högt över de högsta bergen. Helt passivt kan solfågeln
+ge sin välsignelse till alla spelare som kan nå den. Om välsignad av en solfågel kan man hitta det lättare att flyga med en elytra,
+och kan lugnt flyta upp och ner i accelererad hastighet, precis som solfåglar gör. Men om Sunbird attackeras, en
+ förbannelse kommer att vara allierad, vilket gör att angriparen faller snabbt och ofta dödligt till marken.
+ <NEWLINE>
+Som heliga varelser får solfåglar att de oheliga odöda omedelbart antänds i lågor när de är i närheten, precis som om de vore
+ under själva den kraftfulla solen. Solfåglar kan inte skadas av någon form av låga, värme eller lava på grund av att de är naturligt flaminkarnationer 
+själva.
