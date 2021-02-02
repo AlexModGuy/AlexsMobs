@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "snow_leopard.txt",
+  "title": "Leopardo-das-Neves",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:snow_leopard",
+      "x": 105,
+      "y": 87,
+      "page" : 0,
+      "scale": 1.5,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
