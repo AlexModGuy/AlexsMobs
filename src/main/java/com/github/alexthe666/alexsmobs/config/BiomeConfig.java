@@ -1,9 +1,14 @@
 package com.github.alexthe666.alexsmobs.config;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.citadel.config.biome.SpawnBiomeConfig;
+import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
 import com.google.common.collect.Lists;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -11,116 +16,62 @@ import java.util.List;
 import java.util.Map;
 
 public class BiomeConfig {
-	public static List<? extends String> grizzlyBear = Lists.newArrayList(DefaultBiomes.GRIZZLY_BEAR);
-	public static List<? extends String> roadrunner = Lists.newArrayList(DefaultBiomes.ROADRUNNER);
-	public static List<? extends String> boneSerpent = Lists.newArrayList(DefaultBiomes.BONE_SERPENT);
-	public static List<? extends String> gazelle = Lists.newArrayList(DefaultBiomes.GAZELLE);
-	public static List<? extends String> crocodile = Lists.newArrayList(DefaultBiomes.CROCODILE);
-	public static List<? extends String> fly = Lists.newArrayList(DefaultBiomes.FLY);
-	public static List<? extends String> hummingbird = Lists.newArrayList(DefaultBiomes.HUMMINGBIRD);
-	public static List<? extends String> orca = Lists.newArrayList(DefaultBiomes.ORCA);
-	public static List<? extends String> sunbird = Lists.newArrayList(DefaultBiomes.SUNBIRD);
-	public static List<? extends String> gorilla = Lists.newArrayList(DefaultBiomes.GORILLA);
-	public static List<? extends String> crimsonMosquito = Lists.newArrayList(DefaultBiomes.CRIMSON_MOSQUITO);
-	public static List<? extends String> rattlesnake = Lists.newArrayList(DefaultBiomes.RATTLESNAKE);
-	public static List<? extends String> endergrade = Lists.newArrayList(DefaultBiomes.ENDERGRADE);
-	public static List<? extends String> hammerheadShark = Lists.newArrayList(DefaultBiomes.HAMMERHEAD);
-	public static List<? extends String> lobster = Lists.newArrayList(DefaultBiomes.LOBSTER);
-	public static List<? extends String> komodoDragon = Lists.newArrayList(DefaultBiomes.KOMODO_DRAGON);
-	public static List<? extends String> capuchinMonkey = Lists.newArrayList(DefaultBiomes.CAPUCHIN_MONKEY);
-	public static List<? extends String> caveCentipede = Lists.newArrayList(DefaultBiomes.CENTIPEDE);
-	public static List<? extends String> warpedToad = Lists.newArrayList(DefaultBiomes.WARPED_TOAD);
-	public static List<? extends String> moose = Lists.newArrayList(DefaultBiomes.MOOSE);
-	public static List<? extends String> mimicube = Lists.newArrayList(DefaultBiomes.MIMICUBE);
-	public static List<? extends String> raccoon = Lists.newArrayList(DefaultBiomes.RACCOON);
-	public static List<? extends String> blobfish = Lists.newArrayList(DefaultBiomes.BLOBFISH);
-	public static List<? extends String> seal = Lists.newArrayList(DefaultBiomes.SEAL);
-	public static List<? extends String> cockroach = Lists.newArrayList(DefaultBiomes.COCKROACH);
-	public static List<? extends String> shoebill = Lists.newArrayList(DefaultBiomes.SHOEBILL);
-	public static List<? extends String> elephant = Lists.newArrayList(DefaultBiomes.ELEPHANT);
-	public static List<? extends String> soulVulture = Lists.newArrayList(DefaultBiomes.SOUL_VULTURE);
-	public static List<? extends String> snowLeopard = Lists.newArrayList(DefaultBiomes.SNOW_LEOPARD);
-	public static List<? extends String> spectre = Lists.newArrayList(DefaultBiomes.SPECTRE);
-	public static List<? extends String> crow = Lists.newArrayList(DefaultBiomes.CROW);
+	public static Pair<String, SpawnBiomeData> grizzlyBear = Pair.of("alexsmobs:grizzly_bear_spawns", DefaultBiomes.GRIZZLY_BEAR);
+	public static Pair<String, SpawnBiomeData> roadrunner = Pair.of("alexsmobs:roadrunner_spawns", DefaultBiomes.ROADRUNNER);
+	public static Pair<String, SpawnBiomeData> boneSerpent = Pair.of("alexsmobs:bone_serpent_spawns", DefaultBiomes.BONE_SERPENT);
+	public static Pair<String, SpawnBiomeData> gazelle = Pair.of("alexsmobs:gazelle_spawns", DefaultBiomes.GAZELLE);
+	public static Pair<String, SpawnBiomeData> crocodile = Pair.of("alexsmobs:crocodile_spawns", DefaultBiomes.CROCODILE);
+	public static Pair<String, SpawnBiomeData> fly = Pair.of("alexsmobs:fly_spawns", DefaultBiomes.FLY);
+	public static Pair<String, SpawnBiomeData> hummingbird = Pair.of("alexsmobs:hummingbird_spawns", DefaultBiomes.HUMMINGBIRD);
+	public static Pair<String, SpawnBiomeData> orca = Pair.of("alexsmobs:orca_spawns", DefaultBiomes.ORCA);
+	public static Pair<String, SpawnBiomeData> sunbird = Pair.of("alexsmobs:sunbird_spawns", DefaultBiomes.SUNBIRD);
+	public static Pair<String, SpawnBiomeData> gorilla = Pair.of("alexsmobs:gorilla_spawns", DefaultBiomes.GORILLA);
+	public static Pair<String, SpawnBiomeData> crimsonMosquito = Pair.of("alexsmobs:crimson_mosquito_spawns", DefaultBiomes.CRIMSON_MOSQUITO);
+	public static Pair<String, SpawnBiomeData> rattlesnake = Pair.of("alexsmobs:rattlesnake_spawns", DefaultBiomes.RATTLESNAKE);
+	public static Pair<String, SpawnBiomeData> endergrade = Pair.of("alexsmobs:endergrade_spawns", DefaultBiomes.ENDERGRADE);
+	public static Pair<String, SpawnBiomeData> hammerheadShark = Pair.of("alexsmobs:hammerhead_shark_spawns", DefaultBiomes.HAMMERHEAD);
+	public static Pair<String, SpawnBiomeData> lobster = Pair.of("alexsmobs:lobster_spawns", DefaultBiomes.LOBSTER);
+	public static Pair<String, SpawnBiomeData> komodoDragon = Pair.of("alexsmobs:komodo_dragon_spawns", DefaultBiomes.KOMODO_DRAGON);
+	public static Pair<String, SpawnBiomeData> capuchinMonkey = Pair.of("alexsmobs:capuchin_monkey_spawns", DefaultBiomes.CAPUCHIN_MONKEY);
+	public static Pair<String, SpawnBiomeData> caveCentipede = Pair.of("alexsmobs:cave_centipede_spawns", DefaultBiomes.CENTIPEDE);
+	public static Pair<String, SpawnBiomeData> warpedToad = Pair.of("alexsmobs:warped_toad_spawns", DefaultBiomes.WARPED_TOAD);
+	public static Pair<String, SpawnBiomeData> moose = Pair.of("alexsmobs:moose_spawns", DefaultBiomes.MOOSE);
+	public static Pair<String, SpawnBiomeData> mimicube = Pair.of("alexsmobs:mimicubes_spawns", DefaultBiomes.MIMICUBE);
+	public static Pair<String, SpawnBiomeData> raccoon = Pair.of("alexsmobs:raccoon_spawns", DefaultBiomes.RACCOON);
+	public static Pair<String, SpawnBiomeData> blobfish = Pair.of("alexsmobs:blobfish_spawns", DefaultBiomes.BLOBFISH);
+	public static Pair<String, SpawnBiomeData> seal = Pair.of("alexsmobs:seal_spawns", DefaultBiomes.SEAL);
+	public static Pair<String, SpawnBiomeData> cockroach = Pair.of("alexsmobs:cockroach_spawns", DefaultBiomes.COCKROACH);
+	public static Pair<String, SpawnBiomeData> shoebill = Pair.of("alexsmobs:shoebill_spawns", DefaultBiomes.SHOEBILL);
+	public static Pair<String, SpawnBiomeData> elephant = Pair.of("alexsmobs:elephant_spawns", DefaultBiomes.ELEPHANT);
+	public static Pair<String, SpawnBiomeData> soulVulture = Pair.of("alexsmobs:soul_vulture_spawns", DefaultBiomes.SOUL_VULTURE);
+	public static Pair<String, SpawnBiomeData> snowLeopard = Pair.of("alexsmobs:snow_leopard_spawns", DefaultBiomes.SNOW_LEOPARD);
+	public static Pair<String, SpawnBiomeData> spectre = Pair.of("alexsmobs:spectre_spawns", DefaultBiomes.SPECTRE);
+	public static Pair<String, SpawnBiomeData> crow = Pair.of("alexsmobs:crow_spawns", DefaultBiomes.CROW);
 
-	public static Map<String, ForgeConfigSpec.ConfigValue<List<? extends String>>> biomeConfigValues = new HashMap<>();
+	private static boolean init = false;
+	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();
 
-    public BiomeConfig(final ForgeConfigSpec.Builder builder) {
-        builder.comment(
-    		"Biome config",
-    		"To filter biomes by registry name \"mod_id:biome_id\"",
-    		"To filter biomes by category \"@category\"",
-    		"To filter biomes by tags \"#tag\"",
-    		"\tExamples:",
-                "\t\t\"minecraft:plains\"",
-    		"\t\t\"@desert\"",
-    		"\t\t\"#overworld\"",
-    		"",
-    		"If you want to exclude biomes put a ! before the biome identifier",
-    		"\tExamples:",
-    		"\t\t\"!minecraft:plains\"",
-    		"\t\t\"!@desert\"",
-    		"\t\t\"!#nether\"",
-    		"",
-    		"If you want to include biomes that would be satisfied by any in a set use |",
-    		"\tExamples:",
-    		"\t\t\"|minecraft:plains\"",
-    		"\t\t\"|@desert\"",
-    		"\t\t\"|#nether\"",
-    		"",
-    		"If you want a condition that MUST be satisfied use an & before the biome identifier",
-    		"Please note using this on a registry name wouldn't be that useful",
-    		"\tExamples:",
-    		"\t\t\"&minecraft:plains\"",
-    		"\t\t\"&@forest\"",
-    		"\t\t\"&#overworld\"",
-    		"",
-    		"NOTE: Any entry without a !, |, or & symbol has a higher precedence",
-    		"A list like [\"!minecraft:plains\", \"#overworld\"] would still see the plains as a viable biome",
-    		"",
-    		"Finally, you can create a expression that can be evaluated by itself using a + to combine identifiers",
-    		"\tExamples:",
-    		"\t\t\"!#hot+!#dry+!#mountain\"",
-    		"",
-    		"These expressions can be used to filter biomes in a lot of ways",
-    		"Lets say we don't want anything to spawn in any place dry and sandy",
-    		"\t\"!#dry+!#sandy\"",
-    		"",
-    		"But there is a hot place we want them to spawn that's also wet",
-    		"\t\"#hot+#wet\"",
-    		"",
-    		"We just put them as separate values in the list and that'll work out",
-    		"\t[\"!#dry+!#sandy\",\"#hot+#wet\"]",
-    		"",
-    		"NOTE: Any entry that's an expression will not be affected by anything else in the list")
-        	.push("biome_configs");
+    public static void init() {
         try {
             for (Field f : BiomeConfig.class.getDeclaredFields()) {
                 Object obj = f.get(null);
-               if(obj instanceof List){
-                   biomeConfigValues.putIfAbsent(f.getName(), builder.defineList(f.getName(), (List)obj, o -> o instanceof String));
+               if(obj instanceof Pair){
+				   String id = (String)((Pair) obj).getLeft();
+				   SpawnBiomeData data = (SpawnBiomeData)((Pair) obj).getRight();
+				   biomeConfigValues.put(id, SpawnBiomeConfig.create(new ResourceLocation(id), data));
                }
             }
         }catch (Exception e){
-            AlexsMobs.LOGGER.warn("Encountered error building alexsmobs-biomes.toml");
+            AlexsMobs.LOGGER.warn("Encountered error building alexsmobs biome config .json files");
             e.printStackTrace();
         }
+		init = true;
     }
 
-    public static void bake(ModConfig config) {
-        try {
-            for (Field f : BiomeConfig.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if(obj instanceof List){
-                    ForgeConfigSpec.ConfigValue<List<? extends String>> configValue = ConfigHolder.BIOME.biomeConfigValues.get(f.getName());
-                    if(config != null){
-                        f.set(null, configValue.get());
-                    }
-                }
-            }
-        }catch (Exception e){
-            AlexsMobs.LOGGER.warn("Encountered error building alexsmobs-biomes.toml");
-            e.printStackTrace();
-        }
-    }
+    public static boolean test(Pair<String, SpawnBiomeData> entry, Biome biome){
+    	if(!init){
+    		return false;
+		}
+		return biomeConfigValues.get(entry.getKey()).matches(biome);
+	}
 }

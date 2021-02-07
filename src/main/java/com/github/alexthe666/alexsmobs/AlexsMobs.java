@@ -56,7 +56,6 @@ public class AlexsMobs {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModConfigEvent);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
-        modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.BIOME_SPEC, "alexsmobs-biomes.toml");
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
@@ -69,9 +68,8 @@ public class AlexsMobs {
         // Rebake the configs when they change
         if (config.getSpec() == ConfigHolder.COMMON_SPEC) {
             AMConfig.bake(config);
-        } else if (config.getSpec() == ConfigHolder.BIOME_SPEC) {
-            BiomeConfig.bake(config);
         }
+        BiomeConfig.init();
     }
     @SubscribeEvent
     public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
