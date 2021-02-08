@@ -140,10 +140,12 @@ public class EntityBoneSerpent extends MonsterEntity {
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, WitherSkeletonEntity.class, true));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EntitySoulVulture.class, true));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
+        if(AMConfig.neutralBoneSerpents){
+            this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
+            this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
+        }
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, WitherSkeletonEntity.class, true));
+        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, EntitySoulVulture.class, true));
     }
 
     public void travel(Vector3d travelVector) {

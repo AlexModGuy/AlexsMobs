@@ -13,6 +13,7 @@ public class CommonConfig {
 
     public final ForgeConfigSpec.DoubleValue lavaOpacity;
     public final ForgeConfigSpec.BooleanValue shadersCompat;
+    public final ForgeConfigSpec.BooleanValue neutralBoneSerpents;
     public final ForgeConfigSpec.BooleanValue lavaBottleEnabled;
     public final ForgeConfigSpec.BooleanValue spidersAttackFlies;
     public final ForgeConfigSpec.BooleanValue wolvesAttackMoose;
@@ -103,6 +104,7 @@ public class CommonConfig {
         wolvesAttackMoose = buildBoolean(builder, "wolvesAttackMoose", "all", true, "Whether wolves should target moose mobs.");
         polarBearsAttackSeals = buildBoolean(builder, "polarBearsAttackSeals", "all", true, "Whether polar bears should target seal mobs.");
         lavaBottleEnabled = buildBoolean(builder, "lavaBottleEnabled", "all", true, "Whether lava can be bottled with a right click of a glass bottle.");
+        neutralBoneSerpents = buildBoolean(builder, "neutralBoneSerpents", "all", false, "Whether bone serpents are neutral or hostile.");
         caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, 0, 256, "Maximum world y-level that cave centipedes can spawn at");
         blobfishSpawnHeight = buildInt(builder, "blobfishSpawnHeight", "all", AMConfig.blobfishSpawnHeight, 0, 256, "Maximum world y-level that blobfish can spawn at");
         mimicubeSpawnInEndCity = buildBoolean(builder, "mimicubeSpawnInEndCity", "all", true, "Whether mimicubes spawns should be restricted solely to the end city structure or to whatever biome is specified in their respective biome config.");

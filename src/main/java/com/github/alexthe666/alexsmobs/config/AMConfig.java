@@ -78,6 +78,7 @@ public class AMConfig {
     public static boolean acaciaBlossomsDropFromLeaves = true;
     public static int bananaChance = 200;
     public static int blossomChance = 130;
+    public static boolean neutralBoneSerpents = true;
     public static boolean spidersAttackFlies = true;
     public static boolean wolvesAttackMoose = true;
     public static boolean polarBearsAttackSeals = true;
@@ -94,6 +95,7 @@ public class AMConfig {
         try {
             lavaOpacity = ConfigHolder.COMMON.lavaOpacity.get();
             shadersCompat = ConfigHolder.COMMON.shadersCompat.get();
+            neutralBoneSerpents = ConfigHolder.COMMON.neutralBoneSerpents.get();
             grizzlyBearSpawnWeight = ConfigHolder.COMMON.grizzlyBearSpawnWeight.get();
             grizzlyBearSpawnRolls = ConfigHolder.COMMON.grizzlyBearSpawnRolls.get();
             roadrunnerSpawnWeight = ConfigHolder.COMMON.roadrunnerSpawnWeight.get();
