@@ -106,6 +106,7 @@ public class ServerEvents {
         if(AMConfig.wanderingTraderOffers){
             List<VillagerTrades.ITrade> genericTrades = event.getGenericTrades();
             List<VillagerTrades.ITrade> rareTrades = event.getRareTrades();
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ANIMAL_DICTIONARY, 4, 1, 2, 1));
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ACACIA_BLOSSOM, 3, 2, 2, 1));
             if(AMConfig.cockroachSpawnWeight > 0){
                 genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.COCKROACH_OOTHECA, 2, 1, 2, 1));
@@ -121,7 +122,7 @@ public class ServerEvents {
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.MOSQUITO_LARVA, 1, 3, 5, 1));
             rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.SOMBRERO, 20, 1, 1, 1));
             rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BANANA_PEEL, 1, 2, 1, 1));
-            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC, 4, 2, 3, 1));
+            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC, 5, 2, 3, 1));
         }
     }
 
