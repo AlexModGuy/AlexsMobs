@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityCockroachEgg;
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodileEgg;
 import com.github.alexthe666.alexsmobs.entity.EntitySharkToothArrow;
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
+import net.minecraft.block.ComposterBlock;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.dispenser.ProjectileDispenseBehavior;
@@ -167,5 +168,8 @@ public class AMItemRegistry {
                 return entityarrow;
             }
         });
+        ComposterBlock.CHANCES.put(BANANA, 0.65F);
+        ComposterBlock.CHANCES.put(BANANA_PEEL, 0.85F);
+        ComposterBlock.CHANCES.put(ACACIA_BLOSSOM, 0.65F);
     }
 }
