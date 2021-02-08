@@ -99,7 +99,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLootLevelEvent(LootingLevelEvent event) {
-        if(event.getDamageSource().getTrueSource() instanceof EntitySnowLeopard){
+        if(event.getDamageSource() != null && event.getDamageSource().getTrueSource() != null && event.getDamageSource().getTrueSource() instanceof EntitySnowLeopard){
             event.setLootingLevel(event.getLootingLevel() + 2);
         }
     }

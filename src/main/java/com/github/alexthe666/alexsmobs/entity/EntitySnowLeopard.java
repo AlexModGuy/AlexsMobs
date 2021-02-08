@@ -157,10 +157,10 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         this.prevSneakProgress = sneakProgress;
         this.prevTackleProgress = tackleProgress;
         if (this.isSitting() && sitProgress < 5F) {
-            sitProgress++;
+            sitProgress += 0.5F;
         }
         if (!isSitting() && sitProgress > 0F) {
-            sitProgress--;
+            sitProgress -= 0.5F;
         }
         if (this.isSLSneaking() && sneakProgress < 5F) {
             sneakProgress++;
