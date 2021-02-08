@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
@@ -81,12 +82,16 @@ public class SnowLeopardAIMelee extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        return leopard.getAttackTarget() != null && leopard.getAttackTarget().isAlive() && !leopard.isChild();
+        return leopard.getAttackTarget() != null && (leopard.getAttackTarget().isAlive() || leopard.getAttackTarget() instanceof PlayerEntity)&& !leopard.isChild();
     }
 
     public void startExecuting() {
         target = leopard.getAttackTarget();
-        stalk = this.leopard.getDistance(target) > 4F;
+        if(target instanceof PlayerEntity && leopard.getRevengeTarget() != null && leopard.getRevengeTarget() == target){
+            stalk = false;
+        }else{
+            stalk = this.leopard.getDistance(target) > 4F;
+        }
         secondPartOfLeap = false;
     }
 

@@ -193,7 +193,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
             this.setSitting(false);
         }
         if (!world.isRemote && this.getAnimation() == NO_ANIMATION && this.getAttackTarget() == null && !this.isSitting() && rand.nextInt(200) == 0) {
-            maxSitTime = 1200 + rand.nextInt(650);
+            maxSitTime = 2600 + rand.nextInt(2600);
             this.setSitting(true);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
