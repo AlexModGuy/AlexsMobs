@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "roadrunner.txt",
+  "title": "길달리기새",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:roadrunner_boots",
+      "shapeless": false,
+      "x": 210,
+      "y": 110,
+      "page": 0,
+      "scale": 1.3
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:roadrunner",
+      "x": 90,
+      "y": 95,
+      "page" : 0,
+      "scale": 2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
