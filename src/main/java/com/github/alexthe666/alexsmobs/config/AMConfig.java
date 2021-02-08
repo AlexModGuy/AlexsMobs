@@ -87,8 +87,10 @@ public class AMConfig {
     public static boolean mimicreamRepair = true;
     public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer");
     public static boolean raccoonsStealFromChests = true;
+    public static boolean fishOilMeme = true;
     public static double elephantTraderSpawnChance = 0.6F;
     public static boolean limitElephantTraderBiomes = true;
+    public static boolean wanderingTraderOffers = true;
     public static boolean soulVultureSpawnOnFossil = true;
 
     public static void bake(ModConfig config) {
@@ -171,9 +173,11 @@ public class AMConfig {
             mimicubeSpawnInEndCity = ConfigHolder.COMMON.mimicubeSpawnInEndCity.get();
             mimicreamRepair = ConfigHolder.COMMON.mimicreamRepair.get();
             mimicreamBlacklist = (List<? extends String>) ConfigHolder.COMMON.mimicreamBlacklist.get();
+            fishOilMeme = ConfigHolder.COMMON.fishOilMeme.get();
             raccoonsStealFromChests = ConfigHolder.COMMON.raccoonStealFromChests.get();
             acaciaBlossomsDropFromLeaves = ConfigHolder.COMMON.acaciaBlossomsDropFromLeaves.get();
             soulVultureSpawnOnFossil = ConfigHolder.COMMON.soulVultureSpawnOnFossil.get();
+            wanderingTraderOffers = ConfigHolder.COMMON.wanderingTraderOffers.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

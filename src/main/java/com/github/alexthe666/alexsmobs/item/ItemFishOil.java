@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs.item;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
@@ -20,6 +23,9 @@ public class ItemFishOil extends Item {
 
     public ItemStack onItemUseFinish(ItemStack p_77654_1_, World p_77654_2_, LivingEntity p_77654_3_) {
         super.onItemUseFinish(p_77654_1_, p_77654_2_, p_77654_3_);
+        if(AMConfig.fishOilMeme){
+            p_77654_3_.addPotionEffect(new EffectInstance(AMEffectRegistry.OILED, 1200, 0));
+        }
         if (p_77654_3_ instanceof ServerPlayerEntity) {
             ServerPlayerEntity lvt_4_1_ = (ServerPlayerEntity)p_77654_3_;
             CriteriaTriggers.CONSUME_ITEM.trigger(lvt_4_1_, p_77654_1_);

@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,6 +19,7 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.ToggleableNearestAttackableTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -52,12 +54,14 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -96,6 +100,31 @@ public class ServerEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public void onTradeSetup(WandererTradesEvent event) {
+        if(AMConfig.wanderingTraderOffers){
+            List<VillagerTrades.ITrade> genericTrades = event.getGenericTrades();
+            List<VillagerTrades.ITrade> rareTrades = event.getRareTrades();
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ACACIA_BLOSSOM, 3, 2, 2, 1));
+            if(AMConfig.cockroachSpawnWeight > 0){
+                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.COCKROACH_OOTHECA, 2, 1, 2, 1));
+            }
+            if(AMConfig.blobfishSpawnWeight > 0) {
+                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOBFISH_BUCKET, 4, 1, 3, 1));
+            }
+            if(AMConfig.crocodileSpawnWeight > 0) {
+                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_EGG, 6, 2, 2, 1));
+            }
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BEAR_FUR, 1, 1, 2, 1));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_SCUTE, 5, 1, 2, 1));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.MOSQUITO_LARVA, 1, 3, 5, 1));
+            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.SOMBRERO, 20, 1, 1, 1));
+            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BANANA_PEEL, 1, 2, 1, 1));
+            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC, 4, 2, 3, 1));
+        }
+    }
+
 
     @SubscribeEvent
     public void onLootLevelEvent(LootingLevelEvent event) {
