@@ -22,7 +22,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityGrizzlyBear> GRIZZLY_BEAR = registerEntity(EntityType.Builder.create(EntityGrizzlyBear::new, EntityClassification.CREATURE).size(1.45F, 1.75F), "grizzly_bear");
     public static final EntityType<EntityRoadrunner> ROADRUNNER = registerEntity(EntityType.Builder.create(EntityRoadrunner::new, EntityClassification.CREATURE).size(0.45F, 0.75F), "roadrunner");
     public static final EntityType<EntityBoneSerpent> BONE_SERPENT = registerEntity(EntityType.Builder.create(EntityBoneSerpent::new, EntityClassification.MONSTER).size(1.2F, 1.15F).immuneToFire(), "bone_serpent");
-    public static final EntityType<EntityBoneSerpentPart> BONE_SERPENT_PART = registerEntity(EntityType.Builder.create(EntityBoneSerpentPart::new, EntityClassification.MISC).size(1F, 1F).immuneToFire(), "bone_serpent_part");
+    public static final EntityType<EntityBoneSerpentPart> BONE_SERPENT_PART = registerEntity(EntityType.Builder.create(EntityBoneSerpentPart::new, EntityClassification.MONSTER).size(1F, 1F).immuneToFire(), "bone_serpent_part");
     public static final EntityType<EntityGazelle> GAZELLE = registerEntity(EntityType.Builder.create(EntityGazelle::new, EntityClassification.CREATURE).size(0.85F, 1.25F), "gazelle");
     public static final EntityType<EntityCrocodile> CROCODILE = registerEntity(EntityType.Builder.create(EntityCrocodile::new, EntityClassification.WATER_CREATURE).size(2.15F, 0.75F), "crocodile");
     public static final EntityType<EntityFly> FLY = registerEntity(EntityType.Builder.create(EntityFly::new, EntityClassification.CREATURE).size(0.35F, 0.35F), "fly");

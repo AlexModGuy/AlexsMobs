@@ -13,7 +13,7 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData ROADRUNNER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "desert", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
 
     public static final SpawnBiomeData BONE_SERPENT = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "nether", 0);
@@ -64,7 +64,7 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "desert", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 1);
 
     public static final SpawnBiomeData ENDERGRADE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
