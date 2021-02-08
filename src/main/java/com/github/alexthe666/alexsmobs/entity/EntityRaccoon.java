@@ -290,7 +290,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         if(!world.isRemote){
             if(lookForWaterBeforeEatingTimer > 0){
                 lookForWaterBeforeEatingTimer--;
-            }else if(!isWashing() && this.getHeldItemMainhand().isFood()) {
+            }else if(!isWashing() && canTargetItem(this.getHeldItemMainhand())) {
                 onEatItem();
                 if(this.getHeldItemMainhand().hasContainerItem()){
                     this.entityDropItem(this.getHeldItemMainhand().getContainerItem());
