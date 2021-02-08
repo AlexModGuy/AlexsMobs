@@ -88,7 +88,7 @@ public class SnowLeopardAIMelee extends Goal {
     public void startExecuting() {
         target = leopard.getAttackTarget();
         if(target instanceof PlayerEntity && leopard.getRevengeTarget() != null && leopard.getRevengeTarget() == target){
-            stalk = false;
+            stalk = this.leopard.getDistance(target) > 10F;
         }else{
             stalk = this.leopard.getDistance(target) > 4F;
         }

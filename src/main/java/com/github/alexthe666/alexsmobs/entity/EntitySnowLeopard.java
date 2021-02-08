@@ -31,6 +31,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -199,8 +200,14 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
-    protected boolean isMovementBlocked() {
-        return super.isMovementBlocked() || this.isSitting();
+    public void travel(Vector3d vec3d) {
+        if (this.isSitting()) {
+            if (this.getNavigator().getPath() != null) {
+                this.getNavigator().clearPath();
+            }
+            vec3d = Vector3d.ZERO;
+        }
+        super.travel(vec3d);
     }
 
     @Override
