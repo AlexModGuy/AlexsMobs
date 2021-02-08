@@ -32,6 +32,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
@@ -81,6 +82,11 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
     protected EntityCrow(EntityType type, World worldIn) {
         super(type, worldIn);
+        this.setPathPriority(PathNodeType.DANGER_FIRE, -1.0F);
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
+        this.setPathPriority(PathNodeType.WATER_BORDER, 16.0F);
+        this.setPathPriority(PathNodeType.COCOA, -1.0F);
+        this.setPathPriority(PathNodeType.FENCE, -1.0F);
         switchNavigator(false);
     }
 

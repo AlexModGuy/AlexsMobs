@@ -78,7 +78,7 @@ public class AMConfig {
     public static boolean acaciaBlossomsDropFromLeaves = true;
     public static int bananaChance = 200;
     public static int blossomChance = 130;
-    public static boolean neutralBoneSerpents = true;
+    public static boolean neutralBoneSerpents = false;
     public static boolean spidersAttackFlies = true;
     public static boolean wolvesAttackMoose = true;
     public static boolean polarBearsAttackSeals = true;
