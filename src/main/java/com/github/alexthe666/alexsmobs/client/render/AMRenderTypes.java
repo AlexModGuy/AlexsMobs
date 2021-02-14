@@ -63,6 +63,11 @@ public class AMRenderTypes extends RenderType {
         return makeType("ghost_am", DefaultVertexFormats.ENTITY, 7, 262144, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).writeMask(COLOR_DEPTH_WRITE).depthTest(DEPTH_LEQUAL).alpha(DEFAULT_ALPHA).diffuseLighting(RenderState.DIFFUSE_LIGHTING_DISABLED).lightmap(LIGHTMAP_DISABLED).overlay(OVERLAY_ENABLED).transparency(GHOST_TRANSPARANCY).fog(FOG).cull(RenderState.CULL_DISABLED).build(true));
     }
 
+    public static RenderType getSnappingTurtleMoss(ResourceLocation LocationIn, float alphaIn) {
+        RenderType.State rendertype$state = RenderType.State.getBuilder().texture(new RenderState.TextureState(LocationIn, false, false)).transparency(TRANSLUCENT_TRANSPARENCY).diffuseLighting(DIFFUSE_LIGHTING_ENABLED).alpha(new RenderState.AlphaState(alphaIn)).cull(CULL_DISABLED).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).build(true);
+        return makeType("snapping_turtle_moss", DefaultVertexFormats.ENTITY, 7, 256, true, true, rendertype$state);
+    }
+
 
     private static void setupRainbowRendering(float scaleIn) {
         RenderSystem.matrixMode(5890);

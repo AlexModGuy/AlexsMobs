@@ -18,6 +18,7 @@ import java.util.Random;
 public class BottomFeederAIWander extends RandomWalkingGoal {
     private int waterChance = 0;
     private int landChance = 0;
+    private int range = 5;
 
     public BottomFeederAIWander(CreatureEntity creature, double speed, int waterChance, int landChance) {
         super(creature, speed, waterChance);
@@ -25,9 +26,26 @@ public class BottomFeederAIWander extends RandomWalkingGoal {
         this.landChance = landChance;
     }
 
+    public BottomFeederAIWander(CreatureEntity creature, double speed, int waterChance, int landChance, int range) {
+        super(creature, speed, waterChance);
+        this.waterChance = waterChance;
+        this.landChance = landChance;
+        this.range = range;
+    }
+
     public boolean shouldExecute(){
+        if(creature instanceof ISemiAquatic && ((ISemiAquatic) creature).shouldStopMoving()){
+            return false;
+        }
         executionChance = creature.isInWater() ? waterChance : landChance;
         return super.shouldExecute();
+    }
+
+    public boolean shouldContinueExecuting() {
+        if(creature instanceof ISemiAquatic && ((ISemiAquatic) creature).shouldStopMoving()){
+            return false;
+        }
+        return super.shouldContinueExecuting();
     }
 
     @Nullable
@@ -35,7 +53,6 @@ public class BottomFeederAIWander extends RandomWalkingGoal {
         if(this.creature.isInWater()) {
             BlockPos blockpos = null;
             Random random = new Random();
-            int range = 5;
             for (int i = 0; i < 15; i++) {
                 BlockPos blockpos1 = this.creature.getPosition().add(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
                 while ((this.creature.world.isAirBlock(blockpos1) || this.creature.world.getFluidState(blockpos1).isTagged(FluidTags.WATER)) && blockpos1.getY() > 1) {
