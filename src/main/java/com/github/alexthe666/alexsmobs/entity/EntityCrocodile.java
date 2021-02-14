@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.block.BlockCrocodileEgg;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -8,24 +10,21 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.TurtleEggBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.monster.WitherSkeletonEntity;
-import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.TurtleEntity;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,17 +33,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.*;
@@ -66,6 +62,8 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     private static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BYTE);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DESERT = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> HAS_EGG = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_DIGGING = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
     public float groundProgress = 0;
     public float prevGroundProgress = 0;
     public float swimProgress = 0;
@@ -84,7 +82,6 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     private boolean hasSpedUp = false;
     private int animationTick;
     private Animation currentAnimation;
-    public int timeUntilNextEgg = this.rand.nextInt(24000) + 24000;
 
     public static final Predicate<Entity> NOT_CREEPER = (entity) -> {
         return entity.isAlive() && !(entity instanceof CreeperEntity);
@@ -159,7 +156,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         compound.putInt("BaskingStyle", this.baskingType);
         compound.putInt("BaskingTimer", this.baskingTimer);
         compound.putInt("SwimTimer", this.swimTimer);
-        compound.putInt("EggTime", this.timeUntilNextEgg);
+        compound.putBoolean("HasEgg", this.hasEgg());
     }
 
     public void readAdditional(CompoundNBT compound) {
@@ -170,9 +167,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.baskingType = compound.getInt("BaskingStyle");
         this.baskingTimer = compound.getInt("BaskingTimer");
         this.swimTimer = compound.getInt("SwimTimer");
-        if (compound.contains("EggTime")) {
-            this.timeUntilNextEgg = compound.getInt("EggTime");
-        }
+        this.setHasEgg(compound.getBoolean("HasEgg"));
     }
 
     private void switchNavigator(boolean onLand) {
@@ -193,6 +188,8 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         super.registerData();
         this.dataManager.register(SITTING, Boolean.valueOf(false));
         this.dataManager.register(DESERT, Boolean.valueOf(false));
+        this.dataManager.register(HAS_EGG, Boolean.valueOf(false));
+        this.dataManager.register(IS_DIGGING, Boolean.valueOf(false));
         this.dataManager.register(CLIMBING, (byte) 0);
     }
 
@@ -315,11 +312,8 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         if (this.getAnimation() == ANIMATION_DEATHROLL) {
             this.getNavigator().clearPath();
         }
-        if (!this.world.isRemote && this.isAlive() && !this.isChild() && --this.timeUntilNextEgg <= 0) {
-            if(!this.isInWater()){
-                this.entityDropItem(AMItemRegistry.CROCODILE_EGG);
-                this.timeUntilNextEgg = this.rand.nextInt(24000) + 24000;
-            }
+        if(this.isInLove() && this.getAttackTarget() != null){
+            this.setAttackTarget(null);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -446,15 +440,34 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.dataManager.set(DESERT, Boolean.valueOf(desert));
     }
 
+    public boolean hasEgg() {
+        return this.dataManager.get(HAS_EGG);
+    }
+
+    private void setHasEgg(boolean hasEgg) {
+        this.dataManager.set(HAS_EGG, hasEgg);
+    }
+
+    public boolean isDigging() {
+        return this.dataManager.get(IS_DIGGING);
+    }
+
+    private void setDigging(boolean isDigging) {
+        this.dataManager.set(IS_DIGGING, isDigging);
+    }
+
+
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SitGoal(this));
-        this.goalSelector.addGoal(1, new BreatheAirGoal(this));
-        this.goalSelector.addGoal(1, new AnimalAIFindWater(this));
-        this.goalSelector.addGoal(1, new AnimalAILeaveWater(this));
-        this.goalSelector.addGoal(2, new CrocodileAIMelee(this, 1, true));
-        this.goalSelector.addGoal(3, new CrocodileAIRandomSwimming(this, 1.0D, 7));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(1, new MateGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new LayEggGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new BreatheAirGoal(this));
+        this.goalSelector.addGoal(2, new AnimalAIFindWater(this));
+        this.goalSelector.addGoal(2, new AnimalAILeaveWater(this));
+        this.goalSelector.addGoal(4, new CrocodileAIMelee(this, 1, true));
+        this.goalSelector.addGoal(5, new CrocodileAIRandomSwimming(this, 1.0D, 7));
+        this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)).setCallsForHelp());
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
@@ -528,7 +541,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        return false;
+        return stack.getItem() == Items.ROTTEN_FLESH;
     }
 
     @Override
@@ -562,5 +575,81 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     @Override
     public Animation[] getAnimations() {
         return new Animation[]{ANIMATION_LUNGE, ANIMATION_DEATHROLL};
+    }
+
+    static class MateGoal extends BreedGoal {
+        private final EntityCrocodile turtle;
+
+        MateGoal(EntityCrocodile turtle, double speedIn) {
+            super(turtle, speedIn);
+            this.turtle = turtle;
+        }
+
+        public boolean shouldExecute() {
+            return super.shouldExecute() && !this.turtle.hasEgg();
+        }
+
+        protected void spawnBaby() {
+            ServerPlayerEntity serverplayerentity = this.animal.getLoveCause();
+            if (serverplayerentity == null && this.targetMate.getLoveCause() != null) {
+                serverplayerentity = this.targetMate.getLoveCause();
+            }
+
+            if (serverplayerentity != null) {
+                serverplayerentity.addStat(Stats.ANIMALS_BRED);
+                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.targetMate, (AgeableEntity)null);
+            }
+
+            this.turtle.setHasEgg(true);
+            this.animal.resetInLove();
+            this.targetMate.resetInLove();
+            Random random = this.animal.getRNG();
+            if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
+                this.world.addEntity(new ExperienceOrbEntity(this.world, this.animal.getPosX(), this.animal.getPosY(), this.animal.getPosZ(), random.nextInt(7) + 1));
+            }
+
+        }
+    }
+    
+    static class LayEggGoal extends MoveToBlockGoal {
+        private final EntityCrocodile turtle;
+        private int digTime;
+
+        LayEggGoal(EntityCrocodile turtle, double speedIn) {
+            super(turtle, speedIn, 16);
+            this.turtle = turtle;
+        }
+
+        public void resetTask(){
+            digTime = 0;
+        }
+
+        public boolean shouldExecute() {
+            return this.turtle.hasEgg() && super.shouldExecute();
+        }
+
+        public boolean shouldContinueExecuting() {
+            return super.shouldContinueExecuting() && this.turtle.hasEgg();
+        }
+
+        public void tick() {
+            super.tick();
+            BlockPos blockpos = this.turtle.getPosition();
+            turtle.setSitting(false);
+            turtle.baskingTimer = -100;
+            if (!this.turtle.isInWater() && this.getIsAboveDestination()) {
+                World world = this.turtle.world;
+                world.playSound((PlayerEntity)null, blockpos, SoundEvents.ENTITY_TURTLE_LAY_EGG, SoundCategory.BLOCKS, 0.3F, 0.9F + world.rand.nextFloat() * 0.2F);
+                world.setBlockState(this.destinationBlock.up(), AMBlockRegistry.CROCODILE_EGG.getDefaultState().with(BlockCrocodileEgg.EGGS, Integer.valueOf(this.turtle.rand.nextInt(1) + 1)), 3);
+                this.turtle.setHasEgg(false);
+                this.turtle.setDigging(false);
+                this.turtle.setInLove(600);
+            }
+
+        }
+
+        protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
+            return !worldIn.isAirBlock(pos.up()) ? false : BlockCrocodileEgg.isProperHabitat(worldIn, pos);
+        }
     }
 }

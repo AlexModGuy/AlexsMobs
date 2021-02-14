@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -294,7 +295,7 @@ public class EntityShoebill extends AnimalEntity implements IAnimatedEntity, ITa
                  }
                  return ActionResultType.SUCCESS;
              }
-         } else if (lvt_3_1_.getItem() == AMItemRegistry.CROCODILE_EGG && this.isAlive()) {
+         } else if (lvt_3_1_.getItem() == AMBlockRegistry.CROCODILE_EGG.asItem() && this.isAlive()) {
              if(this.lureLevel < 10){
                  lureLevel = MathHelper.clamp(lureLevel + 1, 0, 10);
                  fishingCooldown = MathHelper.clamp(fishingCooldown - 200, 200, 2400);
@@ -328,7 +329,7 @@ public class EntityShoebill extends AnimalEntity implements IAnimatedEntity, ITa
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getCollection().get(AMTagRegistry.SHOEBILL_FOODSTUFFS).contains(stack.getItem()) || stack.getItem() == AMItemRegistry.BLOBFISH && luckLevel < 10 || stack.getItem() ==  AMItemRegistry.CROCODILE_EGG && lureLevel < 10;
+        return ItemTags.getCollection().get(AMTagRegistry.SHOEBILL_FOODSTUFFS).contains(stack.getItem()) || stack.getItem() == AMItemRegistry.BLOBFISH && luckLevel < 10 || stack.getItem() == AMBlockRegistry.CROCODILE_EGG.asItem() && lureLevel < 10;
     }
 
     public void resetFishingCooldown(){
@@ -340,7 +341,7 @@ public class EntityShoebill extends AnimalEntity implements IAnimatedEntity, ITa
         if(e.getItem().getItem() == AMItemRegistry.BLOBFISH){
             luckLevel = MathHelper.clamp(luckLevel + 1, 0, 10);
         }
-        if(e.getItem().getItem() == AMItemRegistry.CROCODILE_EGG){
+        if(e.getItem().getItem() == AMBlockRegistry.CROCODILE_EGG.asItem()){
             lureLevel = MathHelper.clamp(lureLevel + 1, 0, 10);
         }
         this.heal(5);

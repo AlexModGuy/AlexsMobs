@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.event;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
@@ -115,7 +116,7 @@ public class ServerEvents {
                 genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOBFISH_BUCKET, 4, 1, 3, 1));
             }
             if(AMConfig.crocodileSpawnWeight > 0) {
-                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_EGG, 6, 2, 2, 1));
+                genericTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.CROCODILE_EGG.asItem(), 6, 1, 2, 1));
             }
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BEAR_FUR, 1, 1, 2, 1));
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_SCUTE, 5, 1, 2, 1));

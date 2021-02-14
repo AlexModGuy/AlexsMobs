@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_three_turtle_eggs",
+  "textures": {
+    "all": "alexsmobs:block/crocodile_egg_very_cracked"
+  }
+}

@@ -4,6 +4,10 @@
     "#minecraft:sand",
     "minecraft:gravel",
     "minecraft:grass_block",
-    "minecraft:dirt"
+    "minecraft:dirt",
+    "minecraft:coarse_dirt",
+    "minecraft:podzol",
+    "minecraft:mycelium",
+    "minecraft:hay_block"
   ]
 }

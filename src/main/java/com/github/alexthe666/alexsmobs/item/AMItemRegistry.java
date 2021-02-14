@@ -1,12 +1,12 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroachEgg;
-import com.github.alexthe666.alexsmobs.entity.EntityCrocodileEgg;
 import com.github.alexthe666.alexsmobs.entity.EntitySharkToothArrow;
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
+import net.minecraft.block.Block;
 import net.minecraft.block.ComposterBlock;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.IPosition;
@@ -46,7 +46,6 @@ public class AMItemRegistry {
     public static final Item GAZELLE_HORN = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:gazelle_horn");
     public static final Item CROCODILE_SCUTE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:crocodile_scute");
     public static final Item CROCODILE_CHESTPLATE = new ItemModArmor(CROCODILE_ARMOR_MATERIAL, EquipmentSlotType.CHEST).setRegistryName("alexsmobs:crocodile_chestplate");
-    public static final Item CROCODILE_EGG = new ItemAnimalEgg(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:crocodile_egg");
     public static final Item MAGGOT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(1).saturation(0.2F).build())).setRegistryName("alexsmobs:maggot");
     public static final Item BANANA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(0.3F).build())).setRegistryName("alexsmobs:banana");
     public static final Item BANANA_PEEL = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banana_peel");
@@ -137,6 +136,20 @@ public class AMItemRegistry {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+        try {
+            for (Field f : AMBlockRegistry.class.getDeclaredFields()) {
+                Object obj = f.get(null);
+                if (obj instanceof Block) {
+                    Item.Properties props = new Item.Properties();
+                    props.group(AlexsMobs.TAB);
+                    BlockItem blockItem = new BlockItem((Block) obj, props);
+                    blockItem.setRegistryName(((Block) obj).getRegistryName());
+                    event.getRegistry().register(blockItem);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
         event.getRegistry().register(new BannerPatternItem(PATTERN_BEAR, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_bear"));
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CROCODILE_SCUTE));
         ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(ROADRUNNER_FEATHER));
@@ -151,15 +164,6 @@ public class AMItemRegistry {
             protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
                 EntitySharkToothArrow entityarrow = new EntitySharkToothArrow(AMEntityRegistry.SHARK_TOOTH_ARROW, position.getX(), position.getY(), position.getZ(), worldIn);
                 entityarrow.pickupStatus = EntitySharkToothArrow.PickupStatus.ALLOWED;
-                return entityarrow;
-            }
-        });
-        DispenserBlock.registerDispenseBehavior(CROCODILE_EGG, new ProjectileDispenseBehavior() {
-            /**
-             * Return the projectile entity spawned by this dispense behavior.
-             */
-            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
-                EntityCrocodileEgg entityarrow = new EntityCrocodileEgg(worldIn, position.getX(), position.getY(), position.getZ());
                 return entityarrow;
             }
         });
