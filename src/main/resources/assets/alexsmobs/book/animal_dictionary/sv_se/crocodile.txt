@@ -6,9 +6,8 @@ Krokodilen är en massiv reptil som uppstår i floder och träsk sällan genom �
  dess byte, tar tag i dem och drar dem sedan under vattnet, där det fortsätter att hantera en förödande dödsrulle. Det är naturligt fientligt
  mot både människan och andra odjur.
 <NEWLINE>
-Krokodilen kommer ofta åt land för att sola under dagen. Vid den här tiden kan den också lägga sina ägg. Krokodilägg kan kastas som
- deras avlägsna släkting hönan och kan eventuellt föda en babykrokodil. Det unga monsteret kommer att präglas av det närmaste,
- och kommer att försvara området för dess födelse från monster. Att interagera med det kan också få det att stanna och värma sig.
+Även om det är fientligt kan krokodiler födas upp med ruttet kött. Efter avel kommer krokodiler iland för att lägga sina ägg. Om dessa ägg skadas kommer alla krokodilföräldrar att bli aggressiva.
+Efter en tid kommer krokodilägg att kläckas, och babykrokodilen kan prägla närmaste spelare. Den kommer att försvara området för dess födelse från monster. Att interagera med det kan också få det att stanna och värma sig.
  <NEWLINE>
 Krokodilskott tappas när varelserna blir vuxna eller vid döden. Dessa skott kan användas för att skapa en skyddande
  rustning som ökar bärarens simhastighet. De kan också användas för att göra en kopia av den här boken.
