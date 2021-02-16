@@ -84,6 +84,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue spectreSpawnRolls;
     public final ForgeConfigSpec.IntValue crowSpawnWeight;
     public final ForgeConfigSpec.IntValue crowSpawnRolls;
+    public final ForgeConfigSpec.IntValue alligatorSnappingTurtleSpawnWeight;
+    public final ForgeConfigSpec.IntValue alligatorSnappingTurtleSpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -180,6 +182,8 @@ public class CommonConfig {
         spectreSpawnRolls = buildInt(builder, "spectreSpawnRolls", "spawns", AMConfig.spectreSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         crowSpawnWeight = buildInt(builder, "crowSpawnWeight", "spawns", AMConfig.crowSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         crowSpawnRolls = buildInt(builder, "crowSpawnRolls", "spawns", AMConfig.crowSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        alligatorSnappingTurtleSpawnWeight = buildInt(builder, "alligatorSnappingTurtleSpawnWeight", "spawns", AMConfig.alligatorSnappingTurtleSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        alligatorSnappingTurtleSpawnRolls = buildInt(builder, "alligatorSnappingTurtleSpawnRolls", "spawns", AMConfig.alligatorSnappingTurtleSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

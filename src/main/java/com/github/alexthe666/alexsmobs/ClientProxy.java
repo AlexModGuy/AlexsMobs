@@ -2,10 +2,7 @@ package com.github.alexthe666.alexsmobs;
 
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
-import com.github.alexthe666.alexsmobs.client.model.ModelFrontierCap;
-import com.github.alexthe666.alexsmobs.client.model.ModelMooseHeadgear;
-import com.github.alexthe666.alexsmobs.client.model.ModelRoadrunnerBoots;
-import com.github.alexthe666.alexsmobs.client.model.ModelSombrero;
+import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
@@ -55,6 +52,7 @@ public class ClientProxy extends CommonProxy {
     private static final ModelMooseHeadgear MOOSE_HEADGEAR_MODEL = new ModelMooseHeadgear(0.3F);
     private static final ModelFrontierCap FRONTIER_CAP_MODEL = new ModelFrontierCap(0.3F);
     private static final ModelSombrero SOMBRERO_MODEL = new ModelSombrero(0.3F);
+    private static final ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(1.0F);
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
 
     public void clientInit() {
@@ -133,6 +131,8 @@ public class ClientProxy extends CommonProxy {
                 return FRONTIER_CAP_MODEL.withAnimations(entity);
             case 3:
                 return SOMBRERO_MODEL;
+            case 4:
+                return SPIKED_TURTLE_SHELL_MODEL;
             default:
                 return null;
         }

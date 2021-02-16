@@ -71,6 +71,9 @@ public class AMConfig {
     public static int spectreSpawnRolls = 5;
     public static int crowSpawnWeight = 10;
     public static int crowSpawnRolls = 0;
+    public static int alligatorSnappingTurtleSpawnWeight = 20;
+    public static int alligatorSnappingTurtleSpawnRolls = 1;
+
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -162,6 +165,8 @@ public class AMConfig {
             spectreSpawnRolls = ConfigHolder.COMMON.spectreSpawnRolls.get();
             crowSpawnWeight = ConfigHolder.COMMON.crowSpawnWeight.get();
             crowSpawnRolls = ConfigHolder.COMMON.crowSpawnRolls.get();
+            alligatorSnappingTurtleSpawnWeight = ConfigHolder.COMMON.alligatorSnappingTurtleSpawnWeight.get();
+            alligatorSnappingTurtleSpawnRolls = ConfigHolder.COMMON.alligatorSnappingTurtleSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();

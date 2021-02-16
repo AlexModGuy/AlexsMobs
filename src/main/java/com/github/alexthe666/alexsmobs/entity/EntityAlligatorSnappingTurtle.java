@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -7,6 +8,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -22,28 +24,28 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
+import java.util.Random;
 import java.util.function.Predicate;
 
 public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemiAquatic, IShearable, net.minecraftforge.common.IForgeShearable {
 
     public static final Predicate<LivingEntity> TARGET_PRED = (animal) -> {
-        return !(animal instanceof EntityAlligatorSnappingTurtle);
+        return !(animal instanceof EntityAlligatorSnappingTurtle) && EntityPredicates.CAN_AI_TARGET.test(animal)  && !(animal instanceof ArmorStandEntity) && animal.isAlive();
     };
     private static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityAlligatorSnappingTurtle.class, DataSerializers.BYTE);
     private static final DataParameter<Integer> MOSS = EntityDataManager.createKey(EntityAlligatorSnappingTurtle.class, DataSerializers.VARINT);
@@ -68,12 +70,21 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
         stepHeight = 1F;
     }
 
-    public float getRenderScale() {
-        return this.isChild() ? 0.3F : 1.0F;
+    public static boolean canTurtleSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.ALLIGATOR_SNAPPING_TURTLE_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.alligatorSnappingTurtleSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7D).createMutableAttribute(Attributes.ARMOR, 8D).createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+    }
+
+    public float getRenderScale() {
+        return this.isChild() ? 0.3F : 1.0F;
     }
 
     protected void registerGoals() {
@@ -84,9 +95,9 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this){
-            public boolean shouldContinueExecuting(){
-                return chaseTime < 0 ? false : super.shouldContinueExecuting();
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this) {
+            public boolean shouldContinueExecuting() {
+                return chaseTime >= 0 && super.shouldContinueExecuting();
             }
         }));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 2, false, true, TARGET_PRED) {
@@ -138,7 +149,7 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
         if (!open && openMouthProgress > 0) {
             openMouthProgress--;
         }
-        if (this.attackProgress == 4 && this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget()) && this.getDistance(this.getAttackTarget()) < 2.3F) {
+        if (this.attackProgress == 4 && this.isAlive() && this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget()) && this.getDistance(this.getAttackTarget()) < 2.3F) {
             this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }
         if (this.attackProgress > 4) {
@@ -147,7 +158,7 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
         if (biteTick > 0) {
             biteTick--;
         }
-        if(chaseTime < 0){
+        if (chaseTime < 0) {
             chaseTime++;
         }
         if (!this.world.isRemote) {
@@ -169,9 +180,10 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
                 this.setWaiting(false);
                 chaseTime++;
                 this.dataManager.set(ATTACK_TARGET_FLAG, true);
+                this.faceEntity(this.getAttackTarget(), 360, 40);
+                this.renderYawOffset = this.rotationYaw;
                 if (this.canEntityBeSeen(this.getAttackTarget()) && this.getDistance(this.getAttackTarget()) < 2.3F && openMouthProgress > 4) {
                     this.dataManager.set(LUNGE_FLAG, true);
-
                 }
                 if (this.getDistance(this.getAttackTarget()) > (this.getAttackTarget() instanceof PlayerEntity ? 5 : 10) && chaseTime > 40) {
                     chaseTime = -50;
@@ -197,6 +209,14 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
         return this.chaseTime < 0 ? null : super.getAttackTarget();
     }
 
+    public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
+        if (this.chaseTime >= 0) {
+            super.setAttackTarget(entitylivingbaseIn);
+        } else {
+            super.setAttackTarget(null);
+        }
+    }
+
     @Nullable
     public LivingEntity getRevengeTarget() {
         return this.chaseTime < 0 ? null : super.getRevengeTarget();
@@ -205,16 +225,8 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
     public void setRevengeTarget(@Nullable LivingEntity entitylivingbaseIn) {
         if (this.chaseTime >= 0) {
             super.setRevengeTarget(entitylivingbaseIn);
-        }else{
+        } else {
             super.setRevengeTarget(null);
-        }
-    }
-
-    public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
-        if (this.chaseTime >= 0) {
-            super.setAttackTarget(entitylivingbaseIn);
-        }else{
-            super.setAttackTarget(null);
         }
     }
 
@@ -361,25 +373,30 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
     @Override
     public void shear(SoundCategory category) {
         world.playMovingSound(null, this, SoundEvents.ENTITY_SHEEP_SHEAR, category, 1.0F, 1.0F);
-        if(rand.nextFloat() < this.getMoss() * 0.1F){
-            this.entityDropItem(Items.SCUTE);
-        }else{
-            this.entityDropItem(Items.SEAGRASS);
+        if (!world.isRemote()) {
+            if (rand.nextFloat() < this.getMoss() * 0.05F) {
+                this.entityDropItem(AMItemRegistry.SPIKED_SCUTE);
+            } else {
+                this.entityDropItem(Items.SEAGRASS);
+            }
+            this.setMoss(0);
         }
-        this.setMoss(0);
     }
 
     @javax.annotation.Nonnull
     @Override
     public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable PlayerEntity player, @javax.annotation.Nonnull ItemStack item, World world, BlockPos pos, int fortune) {
         world.playMovingSound(null, this, SoundEvents.ENTITY_SHEEP_SHEAR, player == null ? SoundCategory.BLOCKS : SoundCategory.PLAYERS, 1.0F, 1.0F);
-        if(rand.nextFloat() < this.getMoss() * 0.1F){
-            this.setMoss(0);
-            return Collections.singletonList(new ItemStack(Items.SCUTE));
-        }else{
-            this.setMoss(0);
-            return Collections.singletonList(new ItemStack(Items.SEAGRASS));
+        if (!world.isRemote()) {
+            if (rand.nextFloat() < this.getMoss() * 0.05F) {
+                this.setMoss(0);
+                return Collections.singletonList(new ItemStack(AMItemRegistry.SPIKED_SCUTE));
+            } else {
+                this.setMoss(0);
+                return Collections.singletonList(new ItemStack(Items.SEAGRASS));
+            }
         }
+        return java.util.Collections.emptyList();
     }
 
     @Nullable

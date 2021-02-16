@@ -34,6 +34,7 @@ public class ItemModArmor extends ArmorItem {
 
     public ItemModArmor(CustomArmorMaterial armorMaterial, EquipmentSlotType slot) {
         super(armorMaterial, slot, new Item.Properties().group(AlexsMobs.TAB));
+
     }
 
     @Override
@@ -105,6 +106,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/frontier_cap.png";
         }else if (this.material == AMItemRegistry.SOMBRERO_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/sombrero.png";
+        }else if (this.material == AMItemRegistry.SPIKED_TURTLE_SHELL_ARMOR_MATERIAL) {
+            return "alexsmobs:textures/armor/spiked_turtle_shell.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }
@@ -120,8 +123,9 @@ public class ItemModArmor extends ArmorItem {
             return (A) AlexsMobs.PROXY.getArmorModel(2, entity);
         }  else if (this.material == AMItemRegistry.SOMBRERO_ARMOR_MATERIAL) {
             return (A) AlexsMobs.PROXY.getArmorModel(3, entity);
-        } else {
-            return super.getArmorModel(entity, itemStack, armorSlot, _default);
+        }  else if (this.material == AMItemRegistry.SPIKED_TURTLE_SHELL_ARMOR_MATERIAL) {
+            return (A) AlexsMobs.PROXY.getArmorModel(4, entity);
+        } else {            return super.getArmorModel(entity, itemStack, armorSlot, _default);
         }
     }
 }
