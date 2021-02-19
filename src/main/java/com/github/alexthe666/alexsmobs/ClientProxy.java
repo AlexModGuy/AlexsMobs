@@ -96,6 +96,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SPECTRE, manager -> new RenderSpectre(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CROW, manager -> new RenderCrow(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE, manager -> new RenderAlligatorSnappingTurtle(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MUNGUS, manager -> new RenderMungus(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
 
         ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
@@ -152,6 +153,10 @@ public class ClientProxy extends CommonProxy {
                 Minecraft.getInstance().getSoundHandler().play(sound);
             }
         }
+    }
+
+    public void updateBiomeVisuals(int x, int z) {
+        Minecraft.getInstance().worldRenderer.markBlockRangeForRenderUpdate(x- 32, 0, x - 32, z + 32, 255, z + 32);
     }
 
 }

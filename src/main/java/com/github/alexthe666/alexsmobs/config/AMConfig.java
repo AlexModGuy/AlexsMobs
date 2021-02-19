@@ -95,6 +95,7 @@ public class AMConfig {
     public static boolean limitElephantTraderBiomes = true;
     public static boolean wanderingTraderOffers = true;
     public static boolean soulVultureSpawnOnFossil = true;
+    public static int mungusBiomeTransformationType = 2;
 
     public static void bake(ModConfig config) {
         try {
@@ -183,6 +184,7 @@ public class AMConfig {
             acaciaBlossomsDropFromLeaves = ConfigHolder.COMMON.acaciaBlossomsDropFromLeaves.get();
             soulVultureSpawnOnFossil = ConfigHolder.COMMON.soulVultureSpawnOnFossil.get();
             wanderingTraderOffers = ConfigHolder.COMMON.wanderingTraderOffers.get();
+            mungusBiomeTransformationType = ConfigHolder.COMMON.mungusBiomeTransformationType.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

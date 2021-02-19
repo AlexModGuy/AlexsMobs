@@ -85,4 +85,7 @@ public class CommonProxy {
 
     public void onEntityStatus(Entity entity, byte updateKind) {
     }
+
+    public void updateBiomeVisuals(int x, int z) {
+    }
 }
