@@ -96,6 +96,11 @@ public class AMConfig {
     public static boolean wanderingTraderOffers = true;
     public static boolean soulVultureSpawnOnFossil = true;
     public static int mungusBiomeTransformationType = 2;
+    public static List<? extends String> mungusBiomeMatches = Lists.newArrayList(
+            "minecraft:red_mushroom|minecraft:mushroom_fields|minecraft:mycelium",
+            "minecraft:brown_mushroom|minecraft:mushroom_fields|minecraft:mycelium",
+            "minecraft:crimson_fungus|minecraft:crimson_forest|minecraft:crimson_nylium",
+            "minecraft:warped_fungus|minecraft:warped_forest|minecraft:warped_nylium");
 
     public static void bake(ModConfig config) {
         try {
@@ -185,6 +190,7 @@ public class AMConfig {
             soulVultureSpawnOnFossil = ConfigHolder.COMMON.soulVultureSpawnOnFossil.get();
             wanderingTraderOffers = ConfigHolder.COMMON.wanderingTraderOffers.get();
             mungusBiomeTransformationType = ConfigHolder.COMMON.mungusBiomeTransformationType.get();
+            mungusBiomeMatches = (List<? extends String>) ConfigHolder.COMMON.mungusBiomeMatches.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

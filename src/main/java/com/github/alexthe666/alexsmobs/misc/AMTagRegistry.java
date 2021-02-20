@@ -32,7 +32,6 @@ public class AMTagRegistry {
     public static final ResourceLocation SCATTERS_CROWS = new ResourceLocation("alexsmobs", "scatters_crows");
     public static final ResourceLocation CROW_FOODBLOCKS = new ResourceLocation("alexsmobs", "crow_foodblocks");
     public static final ResourceLocation CROW_FOODSTUFFS = new ResourceLocation("alexsmobs", "crow_foodstuffs");
-    public static final ResourceLocation MUNGUS_MUSHROOMS = new ResourceLocation("alexsmobs", "mungus_mushrooms");
     public static final ResourceLocation MUNGUS_REPLACE_MUSHROOM = new ResourceLocation("alexsmobs", "mungus_replace_mushroom");
     public static final ResourceLocation MUNGUS_REPLACE_NETHER = new ResourceLocation("alexsmobs", "mungus_replace_nether");
 

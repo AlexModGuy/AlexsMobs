@@ -97,6 +97,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue acaciaBlossomsDropFromLeaves;
     public final ForgeConfigSpec.BooleanValue wanderingTraderOffers;
     public final ForgeConfigSpec.IntValue mungusBiomeTransformationType;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> mungusBiomeMatches;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -121,6 +122,7 @@ public class CommonConfig {
         acaciaBlossomsDropFromLeaves = buildBoolean(builder, "acaciaBlossomsDropFromLeaves", "all", true, "Whether acacia blossoms should drop from blocks tagged with #alexsmobs:drops_acacia_blossoms");
         wanderingTraderOffers = buildBoolean(builder, "wanderingTraderOffers", "all", true, "Whether wandering traders offer items like acacia blossoms, mosquito larva, crocodile egg, etc.");
         mungusBiomeTransformationType = buildInt(builder, "mungusBiomeTransformationType", "all", AMConfig.mungusBiomeTransformationType, 0, 2, "0 = no mungus biome transformation. 1 = mungus changes blocks, but not chunk's biome. 2 = mungus transforms blocks and biome of chunk.");
+        mungusBiomeMatches = builder.comment("List of all mungus mushrooms, biome transformations and surface blocks. Each is seperated by a |. Add an entry with a block registry name, biome registry name, and block registry name(for the ground).").defineList("mungusBiomeMatches", AMConfig.mungusBiomeMatches, o -> o instanceof String);
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
