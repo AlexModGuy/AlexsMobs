@@ -90,17 +90,17 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     }
 
     private static void initBiomeData(){
-        if(!initBiomeData){
+        if(!initBiomeData || MUSHROOM_TO_BIOME.isEmpty()){
             initBiomeData = true;
-
-        }
-        for(String str : AMConfig.mungusBiomeMatches){
-            String[] split = str.split("\\|");
-            if(split.length >= 2){
-                MUSHROOM_TO_BIOME.put(split[0], split[1]);
-                MUSHROOM_TO_BLOCK.put(split[0], split[2]);
+            for(String str : AMConfig.mungusBiomeMatches){
+                String[] split = str.split("\\|");
+                if(split.length >= 2){
+                    MUSHROOM_TO_BIOME.put(split[0], split[1]);
+                    MUSHROOM_TO_BLOCK.put(split[0], split[2]);
+                }
             }
         }
+
     }
 
     protected void registerGoals() {

@@ -13,9 +13,9 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import javax.annotation.Nullable;
 
-public class AnimalAIAIRandomSwimming extends RandomWalkingGoal {
+public class AnimalAIRandomSwimming extends RandomWalkingGoal {
 
-    public AnimalAIAIRandomSwimming(AnimalEntity creature, double speed, int chance) {
+    public AnimalAIRandomSwimming(AnimalEntity creature, double speed, int chance) {
         super(creature, speed, chance, false);
     }
 

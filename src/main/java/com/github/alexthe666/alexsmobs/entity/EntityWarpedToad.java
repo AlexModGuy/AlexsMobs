@@ -277,6 +277,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         ActionResultType type = super.func_230254_b_(player, hand);
         if (!isTamed() && item == AMItemRegistry.MOSQUITO_LARVA) {
             this.consumeItemFromStack(player, itemstack);
+            this.playSound(SoundEvents.ENTITY_STRIDER_EAT, this.getSoundVolume(), this.getSoundPitch());
             if (getRNG().nextInt(3) == 0) {
                 this.setTamedBy(player);
                 this.world.setEntityState(this, (byte) 7);

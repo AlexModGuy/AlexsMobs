@@ -59,6 +59,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityCrow> CROW = registerEntity(EntityType.Builder.create(EntityCrow::new, EntityClassification.CREATURE).size(0.45F, 0.45F), "crow");
     public static final EntityType<EntityAlligatorSnappingTurtle> ALLIGATOR_SNAPPING_TURTLE = registerEntity(EntityType.Builder.create(EntityAlligatorSnappingTurtle::new, EntityClassification.CREATURE).size(1.25F, 0.65F), "alligator_snapping_turtle");
     public static final EntityType<EntityMungus> MUNGUS = registerEntity(EntityType.Builder.create(EntityMungus::new, EntityClassification.CREATURE).size(0.75F, 1.45F), "mungus");
+    public static final EntityType<EntityMantisShrimp> MANTIS_SHRIMP = registerEntity(EntityType.Builder.create(EntityMantisShrimp::new, EntityClassification.CREATURE).size(1.25F, 1.2F), "mantis_shrimp");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -153,6 +154,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(CROW, EntityCrow.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(ALLIGATOR_SNAPPING_TURTLE, EntityAlligatorSnappingTurtle.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(MUNGUS, EntityMungus.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(MANTIS_SHRIMP, EntityMantisShrimp.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){
