@@ -15,8 +15,8 @@
   "entity_renders": [
     {
       "entity": "alexsmobs:mungus",
-      "x": 77,
-      "y": 145,
+      "x": 95,
+      "y": 120,
       "page" : 0,
       "scale": 2.2,
       "rot_x": 30,

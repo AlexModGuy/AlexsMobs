@@ -27,7 +27,7 @@ repositories{
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.5.1'
+version = '1.6.0'
 group = 'com.github.alexthe667' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alexsmobs'
 
@@ -112,7 +112,7 @@ jar {
         attributes([
             "Specification-Title": "alexsmobs",
             "Specification-Vendor": "alexthe667",
-            "Specification-Version": "1.5.0", // We are version 1 of ourselves
+            "Specification-Version": "1.6.0", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"alexthe667",

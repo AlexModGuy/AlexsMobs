@@ -498,7 +498,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
     @Override
     public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         EntityMantisShrimp shrimp = AMEntityRegistry.MANTIS_SHRIMP.create(serverWorld);
-        shrimp.setVariant(getRNG().nextInt(2));
+        shrimp.setVariant(getRNG().nextInt(3));
         return shrimp;
     }
 
