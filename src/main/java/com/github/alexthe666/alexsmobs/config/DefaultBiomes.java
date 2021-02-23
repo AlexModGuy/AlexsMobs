@@ -58,8 +58,10 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle_hills", 0);
 
     public static final SpawnBiomeData CRIMSON_MOSQUITO = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:crimson_forest", 0);
-
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:crimson_forest", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_garden", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:visceral_heap", 2);
+    
     public static final SpawnBiomeData RATTLESNAKE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
@@ -95,8 +97,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mushroom", 0);
 
     public static final SpawnBiomeData WARPED_TOAD = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:warped_forest", 0);
-
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:warped_forest", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_garden", 1);
+                
     public static final SpawnBiomeData MOOSE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 0)
@@ -146,8 +149,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
 
     public static final SpawnBiomeData SOUL_VULTURE = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:soul_sand_valley", 0);
-
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:soul_sand_valley", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:warped_desert", 1);
+    
     public static final SpawnBiomeData SPECTRE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:small_end_islands", 0);
 
