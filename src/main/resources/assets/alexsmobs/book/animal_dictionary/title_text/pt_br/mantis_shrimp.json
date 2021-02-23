@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "mantis_shrimp.txt",
+  "title": "Camarão Mantis",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:mantis_shrimp",
+      "x": 90,
+      "y": 98,
+      "page" : 0,
+      "scale": 2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
