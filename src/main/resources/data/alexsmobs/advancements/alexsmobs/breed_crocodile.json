@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:crocodile_egg"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.breed_crocodile.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.breed_crocodile.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/crocodile",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:bred_animals",
+      "conditions": {
+        "child": {
+          "type": "alexsmobs:crocodile"
+        }
+      }
+    }
+  }
+}

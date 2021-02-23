@@ -150,6 +150,22 @@ public class AMSoundRegistry {
 
     public static final SoundEvent CROW_HURT = createSoundEvent("crow_hurt");
 
+    public static final SoundEvent ALLIGATOR_SNAPPING_TURTLE_IDLE = createSoundEvent("alligator_snapping_turtle_idle");
+
+    public static final SoundEvent ALLIGATOR_SNAPPING_TURTLE_HURT = createSoundEvent("alligator_snapping_turtle_hurt");
+
+    public static final SoundEvent MUNGUS_IDLE = createSoundEvent("mungus_idle");
+
+    public static final SoundEvent MUNGUS_HURT = createSoundEvent("mungus_hurt");
+
+    public static final SoundEvent MUNGUS_LASER_END = createSoundEvent("mungus_laser_end");
+
+    public static final SoundEvent MUNGUS_LASER_LOOP = createSoundEvent("mungus_laser_loop");
+
+    public static final SoundEvent MANTIS_SHRIMP_SNAP = createSoundEvent("mantis_shrimp_snap");
+
+    public static final SoundEvent MANTIS_SHRIMP_HURT = createSoundEvent("mantis_shrimp_hurt");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

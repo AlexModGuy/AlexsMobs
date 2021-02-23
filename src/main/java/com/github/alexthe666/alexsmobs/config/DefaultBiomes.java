@@ -168,4 +168,13 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0);
 
+    public static final SpawnBiomeData MUNGUS = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mushroom", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "rare", 0);
+
+    public static final SpawnBiomeData MANTIS_SHRIMP = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0);
 }

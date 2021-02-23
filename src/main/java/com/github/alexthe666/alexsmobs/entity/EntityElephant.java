@@ -303,6 +303,10 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
                 if (this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && rand.nextInt(3) == 0 && !this.isTamed() && (!isTusked() || isChild()) && blossomThrowerUUID != null) {
                     this.setTamed(true);
                     this.setOwnerId(blossomThrowerUUID);
+                    PlayerEntity player = this.world.getPlayerByUuid(blossomThrowerUUID);
+                    if(player != null){
+                        this.setTamedBy(player);
+                    }
                     for (Entity passenger : this.getPassengers()) {
                         passenger.dismount();
                     }
@@ -616,6 +620,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         compound.putBoolean("Chested", this.isChested());
         compound.putBoolean("Trader", this.isTrader());
         compound.putBoolean("ForcedToSit", this.forcedSit);
+        compound.putBoolean("Tamed", this.isTamed());
         compound.putInt("ChargeCooldown", this.chargeCooldown);
         compound.putInt("Carpet", this.dataManager.get(CARPET_COLOR));
         compound.putInt("DespawnDelay", this.despawnDelay);
@@ -643,6 +648,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
+        this.setTamed(compound.getBoolean("Tamed"));
         this.setTusked(compound.getBoolean("Tusked"));
         this.setStanding(compound.getBoolean("Standing"));
         this.setSitting(compound.getBoolean("ElephantSitting"));
@@ -729,7 +735,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         return lvt_1_1_ == -1 ? null : DyeColor.byId(lvt_1_1_);
     }
 
-    private void setColor(@Nullable DyeColor color) {
+    public void setColor(@Nullable DyeColor color) {
         this.dataManager.set(CARPET_COLOR, color == null ? -1 : color.getId());
     }
 

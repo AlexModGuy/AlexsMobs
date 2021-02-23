@@ -86,6 +86,10 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue crowSpawnRolls;
     public final ForgeConfigSpec.IntValue alligatorSnappingTurtleSpawnWeight;
     public final ForgeConfigSpec.IntValue alligatorSnappingTurtleSpawnRolls;
+    public final ForgeConfigSpec.IntValue mungusSpawnWeight;
+    public final ForgeConfigSpec.IntValue mungusSpawnRolls;
+    public final ForgeConfigSpec.IntValue mantisShrimpSpawnWeight;
+    public final ForgeConfigSpec.IntValue mantisShrimpSpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -188,6 +192,10 @@ public class CommonConfig {
         crowSpawnRolls = buildInt(builder, "crowSpawnRolls", "spawns", AMConfig.crowSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         alligatorSnappingTurtleSpawnWeight = buildInt(builder, "alligatorSnappingTurtleSpawnWeight", "spawns", AMConfig.alligatorSnappingTurtleSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         alligatorSnappingTurtleSpawnRolls = buildInt(builder, "alligatorSnappingTurtleSpawnRolls", "spawns", AMConfig.alligatorSnappingTurtleSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        mungusSpawnWeight = buildInt(builder, "mungusSpawnWeight", "spawns", AMConfig.mungusSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        mungusSpawnRolls = buildInt(builder, "mungusSpawnRolls", "spawns", AMConfig.mungusSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        mantisShrimpSpawnWeight = buildInt(builder, "mantisShrimpSpawnWeight", "spawns", AMConfig.mantisShrimpSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        mantisShrimpSpawnRolls = buildInt(builder, "mantisShrimpSpawnRolls", "spawns", AMConfig.mantisShrimpSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){

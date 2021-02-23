@@ -1,0 +1,48 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:alligator_snapping_turtle\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.alligator_snapping_turtle.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.alligator_snapping_turtle.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/crocodile",
+  "criteria": {
+    "killed": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:alligator_snapping_turtle"
+        }
+      }
+    },
+    "killed_by": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:alligator_snapping_turtle"
+        }
+      }
+    },
+    "interact": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:alligator_snapping_turtle"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "killed",
+      "killed_by",
+      "interact"
+    ]
+  ]
+}

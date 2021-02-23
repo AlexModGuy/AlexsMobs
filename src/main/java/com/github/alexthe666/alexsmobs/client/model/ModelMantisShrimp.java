@@ -4,6 +4,8 @@ import com.github.alexthe666.alexsmobs.entity.EntityMantisShrimp;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
@@ -125,6 +127,30 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 	public Iterable<AdvancedModelBox> getAllParts() {
 		return ImmutableList.of(root, body, head, eye_left, eye_right, fist_left, fist_right, arm_left, arm_right, whisker_left, whisker_right, flapper_left, flapper_right, tail, legs_back, legs_front);
 	}
+
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		if (this.isChild) {
+			this.eye_left.setScale(1.15F, 1.15F, 1.15F);
+			this.eye_right.setScale(1.15F, 1.15F, 1.15F);
+			matrixStackIn.push();
+			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+			matrixStackIn.translate(0.0D, 1.5D, 0.125D);
+			getParts().forEach((p_228292_8_) -> {
+				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			});
+			matrixStackIn.pop();
+		} else {
+			this.eye_left.setScale(1F, 1F, 1F);
+			this.eye_right.setScale(1F, 1F, 1F);
+			matrixStackIn.push();
+			getParts().forEach((p_228290_8_) -> {
+				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			});
+			matrixStackIn.pop();
+		}
+
+	}
+
 
 	@Override
 	public void setRotationAngles(EntityMantisShrimp entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){

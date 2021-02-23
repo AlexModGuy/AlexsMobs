@@ -940,7 +940,6 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.spectre_hurt"
   },
-
   "crow_idle": {
     "category": "neutral",
     "sounds": [
@@ -970,5 +969,104 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.crow_hurt"
+  },
+  "alligator_snapping_turtle_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:alligator_snapping_turtle_idle_0"
+      },
+      {
+        "name": "alexsmobs:alligator_snapping_turtle_idle_1"
+      },
+      {
+        "name": "alexsmobs:alligator_snapping_turtle_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.alligator_snapping_turtle_idle"
+  },
+  "alligator_snapping_turtle_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:alligator_snapping_turtle_hurt_0"
+      },
+      {
+        "name": "alexsmobs:alligator_snapping_turtle_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.alligator_snapping_turtle_hurt"
+  },
+  "mungus_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mungus_idle_0"
+      },
+      {
+        "name": "alexsmobs:mungus_idle_1"
+      },
+      {
+        "name": "alexsmobs:mungus_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mungus_idle"
+  },
+  "mungus_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mungus_hurt_0"
+      },
+      {
+        "name": "alexsmobs:mungus_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mungus_hurt"
+  },
+  "mungus_laser_end": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mungus_laser_end"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mungus_laser_end"
+  },
+  "mungus_laser_loop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mungus_laser_loop"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mungus_laser_loop"
+  },
+  "mantis_shrimp_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mantis_shrimp_hurt_0"
+      },
+      {
+        "name": "alexsmobs:mantis_shrimp_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mantis_shrimp_hurt"
+  },
+  "mantis_shrimp_snap": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mantis_shrimp_snap_0"
+      },
+      {
+        "name": "alexsmobs:mantis_shrimp_snap_1"
+      },
+      {
+        "name": "alexsmobs:mantis_shrimp_snap_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mantis_shrimp_hurt"
   }
 }

@@ -59,7 +59,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityCrow> CROW = registerEntity(EntityType.Builder.create(EntityCrow::new, EntityClassification.CREATURE).size(0.45F, 0.45F), "crow");
     public static final EntityType<EntityAlligatorSnappingTurtle> ALLIGATOR_SNAPPING_TURTLE = registerEntity(EntityType.Builder.create(EntityAlligatorSnappingTurtle::new, EntityClassification.CREATURE).size(1.25F, 0.65F), "alligator_snapping_turtle");
     public static final EntityType<EntityMungus> MUNGUS = registerEntity(EntityType.Builder.create(EntityMungus::new, EntityClassification.CREATURE).size(0.75F, 1.45F), "mungus");
-    public static final EntityType<EntityMantisShrimp> MANTIS_SHRIMP = registerEntity(EntityType.Builder.create(EntityMantisShrimp::new, EntityClassification.CREATURE).size(1.25F, 1.2F), "mantis_shrimp");
+    public static final EntityType<EntityMantisShrimp> MANTIS_SHRIMP = registerEntity(EntityType.Builder.create(EntityMantisShrimp::new, EntityClassification.WATER_CREATURE).size(1.25F, 1.2F), "mantis_shrimp");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -96,6 +96,8 @@ public class AMEntityRegistry {
         EntitySpawnPlacementRegistry.register(ELEPHANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
         EntitySpawnPlacementRegistry.register(SOUL_VULTURE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntitySoulVulture::canVultureSpawn);
         EntitySpawnPlacementRegistry.register(ALLIGATOR_SNAPPING_TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityAlligatorSnappingTurtle::canTurtleSpawn);
+        EntitySpawnPlacementRegistry.register(MUNGUS, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityMungus::canMungusSpawn);
+        EntitySpawnPlacementRegistry.register(MANTIS_SHRIMP, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityMantisShrimp::canMantisShrimpSpawn);
     }
 
         @SubscribeEvent

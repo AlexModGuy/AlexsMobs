@@ -1,25 +1,24 @@
 {
     "display": {
         "icon": {
-            "item": "alexsmobs:crocodile_chestplate"
+            "item": "alexsmobs:spiked_turtle_shell"
         },
         "title": {
-            "translate": "advancements.alexsmobs.crocodile_chestplate.title"
+            "translate": "advancements.alexsmobs.spiked_turtle_shell.title"
         },
         "description": {
-            "translate": "advancements.alexsmobs.crocodile_chestplate.desc"
+            "translate": "advancements.alexsmobs.spiked_turtle_shell.desc"
         },
         "frame": "challenge"
-
     },
-    "parent": "alexsmobs:alexsmobs/breed_crocodile",
+    "parent": "alexsmobs:alexsmobs/spiked_scute",
     "criteria": {
         "rat_upgrade_basic": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:crocodile_chestplate"
+                        "item": "alexsmobs:spiked_turtle_shell"
                     }
                 ]
             }

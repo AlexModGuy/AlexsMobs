@@ -1,6 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMantisShrimp;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CropsBlock;
 import net.minecraft.command.arguments.EntityAnchorArgument;
@@ -78,7 +80,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
         BlockPos blockpos = destinationBlock;
         float yDist = (float) Math.abs(blockpos.getY() - mantisShrimp.getPosY() - mantisShrimp.getHeight()/2);
         this.mantisShrimp.getNavigator().tryMoveToXYZ((double) ((float) blockpos.getX()) + 0.5D, blockpos.getY() + 0.5D, (double) ((float) blockpos.getZ()) + 0.5D, 1);
-        if (!isWithinXZDist(blockpos, mantisShrimp.getPositionVec(), this.getTargetDistanceSq()) && yDist < 2.4F) {
+        if (!isWithinXZDist(blockpos, mantisShrimp.getPositionVec(), this.getTargetDistanceSq()) || yDist > 2F) {
             this.isAboveDestinationBear = false;
             ++this.timeoutCounter;
         } else {
@@ -113,8 +115,14 @@ public class MantisShrimpAIBreakBlocks extends Goal {
         }
         if (!allBlocks.isEmpty()) {
             allBlocks.sort(this.targetSorter);
-            this.destinationBlock = allBlocks.get(0);
+            for(BlockPos pos : allBlocks){
+                if(canSeeBlock(pos)){
+                    this.destinationBlock = pos;
+                    return;
+                }
+            }
         }
+        destinationBlock = null;
     }
 
     private boolean isBlockTouchingWater(BlockPos pos) {
@@ -136,9 +144,20 @@ public class MantisShrimpAIBreakBlocks extends Goal {
 
     private void breakBlock() {
         if (shouldMoveTo(mantisShrimp.world, destinationBlock)) {
-            mantisShrimp.world.destroyBlock(destinationBlock, true);
+            BlockState state = mantisShrimp.world.getBlockState(destinationBlock);
+            if(!mantisShrimp.world.isAirBlock(destinationBlock) && net.minecraftforge.common.ForgeHooks.canEntityDestroy(mantisShrimp.world, destinationBlock, mantisShrimp) && state.getBlockHardness(mantisShrimp.world, destinationBlock) >= 0){
+                mantisShrimp.world.destroyBlock(destinationBlock, true);
+            }
         }
     }
+
+    private boolean canSeeBlock(BlockPos destinationBlock) {
+        Vector3d Vector3d = new Vector3d(mantisShrimp.getPosX(), mantisShrimp.getPosYEye(), mantisShrimp.getPosZ());
+        Vector3d blockVec = net.minecraft.util.math.vector.Vector3d.copyCentered(destinationBlock);
+        BlockRayTraceResult result = mantisShrimp.world.rayTraceBlocks(new RayTraceContext(Vector3d, blockVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, mantisShrimp));
+        return result.getPos().equals(destinationBlock);
+    }
+
 
     protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
         Item blockItem = worldIn.getBlockState(pos).getBlock().asItem();
@@ -156,24 +175,8 @@ public class MantisShrimpAIBreakBlocks extends Goal {
         public int compare(BlockPos pos1, BlockPos pos2) {
             double distance1 = this.getDistance(pos1);
             double distance2 = this.getDistance(pos2);
-            boolean canSee1 = canSeeBlock(pos1);
-            boolean canSee2 = canSeeBlock(pos2);
-            if(canSee1 && !canSee2){
-                return 1;
-            }
-            if(!canSee1 && canSee2){
-                return 2;
-            }
             return Double.compare(distance1, distance2);
         }
-
-        private boolean canSeeBlock(BlockPos destinationBlock) {
-            Vector3d Vector3d = new Vector3d(entity.getPosX(), entity.getPosYEye(), entity.getPosZ());
-            Vector3d blockVec = net.minecraft.util.math.vector.Vector3d.copyCentered(destinationBlock);
-            BlockRayTraceResult result = entity.world.rayTraceBlocks(new RayTraceContext(Vector3d, blockVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
-            return result.getPos().equals(destinationBlock);
-        }
-
 
         private double getDistance(BlockPos pos) {
             double deltaX = this.entity.getPosX() - (pos.getX() + 0.5);

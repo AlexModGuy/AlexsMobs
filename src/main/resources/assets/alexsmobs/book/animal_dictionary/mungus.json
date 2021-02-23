@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "mungus.txt",
+  "title": "Mungus",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:mungus",
+      "x": 77,
+      "y": 145,
+      "page" : 0,
+      "scale": 2.2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

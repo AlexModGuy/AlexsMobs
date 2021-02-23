@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMungusBiomeChange;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -39,6 +40,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeContainer;
@@ -75,9 +77,32 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         initBiomeData();
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.MUNGUS_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.MUNGUS_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.MUNGUS_HURT;
+    }
+
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
+
+    public static boolean canMungusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.MUNGUS_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock;
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.mungusSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
 
     public static BlockState getMushroomBlockstate(Item item) {
         if(item instanceof BlockItem){
@@ -356,7 +381,11 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
                 this.getLookController().tick();
                 double d5 = 1.0F;
                 double eyeHeight = this.getPosY() + 1.0F;
+                if(beamCounter % 20 == 0){
+                    this.playSound(AMSoundRegistry.MUNGUS_LASER_LOOP, this.getSoundPitch(), this.getSoundVolume());
+                }
                 beamCounter++;
+
                 double d0 = t.getX() + 0.5F - this.getPosX();
                 double d1 = t.getY() + 0.5F - eyeHeight;
                 double d2 = t.getZ() + 0.5F - this.getPosZ();
@@ -406,6 +435,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
                                 }
                             }
                         }
+                        this.playSound(AMSoundRegistry.MUNGUS_LASER_END, this.getSoundPitch(), this.getSoundVolume());
                         this.setBeamTarget(null);
                         beamCounter = -1200;
                         if (this.getMushroomCount() > 0) {

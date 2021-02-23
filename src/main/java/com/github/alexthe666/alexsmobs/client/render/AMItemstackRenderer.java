@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
+import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
 import com.google.common.collect.ImmutableMap;
@@ -21,6 +22,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTables;
 import net.minecraft.util.ResourceLocation;
@@ -67,6 +69,9 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.SNOW_LEOPARD, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.SPECTRE, 0.3F));
         list.add(new Pair<>(AMEntityRegistry.CROW, 1.3F));
+        list.add(new Pair<>(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE, 0.65F));
+        list.add(new Pair<>(AMEntityRegistry.MUNGUS, 0.7F));
+        list.add(new Pair<>(AMEntityRegistry.MANTIS_SHRIMP, 0.7F));
     });
     private static int ticksExisted = 0;
 
@@ -173,6 +178,18 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                     ((EntityCockroach) fakeEntity).setMaracas(true);
                 } else {
                     ((EntityCockroach) fakeEntity).setMaracas(false);
+                }
+            }
+            if (fakeEntity instanceof EntityElephant) {
+                if (flags == 99) {
+                    ((EntityElephant) fakeEntity).setTusked(true);
+                    ((EntityElephant) fakeEntity).setColor(null);
+                } else if (flags == 98) {
+                    ((EntityElephant) fakeEntity).setTusked(false);
+                    ((EntityElephant) fakeEntity).setColor(DyeColor.BROWN);
+                } else {
+                    ((EntityElephant) fakeEntity).setTusked(false);
+                    ((EntityElephant) fakeEntity).setColor(null);
                 }
             }
             if (fakeEntity != null) {

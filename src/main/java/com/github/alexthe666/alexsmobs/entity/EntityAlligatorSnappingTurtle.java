@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -27,10 +28,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -69,6 +67,19 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
         this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
         stepHeight = 1F;
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_HURT;
+    }
+
 
     public static boolean canTurtleSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.ALLIGATOR_SNAPPING_TURTLE_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());

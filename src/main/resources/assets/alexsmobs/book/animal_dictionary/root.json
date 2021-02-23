@@ -219,6 +219,27 @@
       "x": 290,
       "y": 60,
       "page": 2
+    },
+    {
+      "linked_page": "alligator_snapping_turtle.json",
+      "text": "Alligator Snapping Turtle",
+      "x": 290,
+      "y": 85,
+      "page": 2
+    },
+    {
+      "linked_page": "mungus.json",
+      "text": "Mungus",
+      "x": 290,
+      "y": 110,
+      "page": 2
+    },
+    {
+      "linked_page": "mantis_shrimp.json",
+      "text": "Mantis Shrimp",
+      "x": 290,
+      "y": 135,
+      "page": 2
     }
   ],
   "images": [

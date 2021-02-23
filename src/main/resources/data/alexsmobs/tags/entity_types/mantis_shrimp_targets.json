@@ -1,9 +1,10 @@
 {
-  "__comment": "all non-player targets of the orca mob.",
+  "__comment": "all non-player targets of the mantis shrimp mob.",
   "replace": false,
   "values": [
     "alexsmobs:lobster",
     "minecraft:shulker",
+    "minecraft:squid",
     "minecraft:guardian",
     "minecraft:elder_guardian",
     "minecraft:tropical_fish"

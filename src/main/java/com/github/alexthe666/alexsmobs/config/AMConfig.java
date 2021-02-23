@@ -73,6 +73,10 @@ public class AMConfig {
     public static int crowSpawnRolls = 0;
     public static int alligatorSnappingTurtleSpawnWeight = 20;
     public static int alligatorSnappingTurtleSpawnRolls = 1;
+    public static int mungusSpawnWeight = 4;
+    public static int mungusSpawnRolls = 1;
+    public static int mantisShrimpSpawnWeight = 15;
+    public static int mantisShrimpSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -173,6 +177,10 @@ public class AMConfig {
             crowSpawnRolls = ConfigHolder.COMMON.crowSpawnRolls.get();
             alligatorSnappingTurtleSpawnWeight = ConfigHolder.COMMON.alligatorSnappingTurtleSpawnWeight.get();
             alligatorSnappingTurtleSpawnRolls = ConfigHolder.COMMON.alligatorSnappingTurtleSpawnRolls.get();
+            mungusSpawnWeight = ConfigHolder.COMMON.mungusSpawnWeight.get();
+            mungusSpawnRolls = ConfigHolder.COMMON.mungusSpawnRolls.get();
+            mantisShrimpSpawnWeight = ConfigHolder.COMMON.mantisShrimpSpawnWeight.get();
+            mantisShrimpSpawnRolls = ConfigHolder.COMMON.mantisShrimpSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
