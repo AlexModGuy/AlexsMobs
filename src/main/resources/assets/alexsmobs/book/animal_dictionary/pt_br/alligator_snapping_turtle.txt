@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+A Tartaruga-Aligator é um enorme réptil semi-aquático encontrado em pântanos por todo o Overworld.
+Ao contrário de seus primos Tartarugas Marinhas que são pacíficos, a Tartaruga-Aligátor é uma fera feroz que ataca qualquer coisa
+ que pise perto de sua boca afiada e pontuda. Capaz de morder e mover-se surpreendentemente rápido para uma tartaruga, é melhor deixar essas
+ criaturas em paz quando encontradas. As Tartarugas-Aligátoras raramente se movem e é comum que
+ o musgo cresça em suas cascas depois de vários dias embaixo da agua.
+<NEWLINE>
+Se estiverem cheios de musgo, eles podem ser cortados para uma chance de derrubar uma Escama Pontiaguda. Elas podem ser usados para atualizar o capacete de escamas  de tartaruga marinha.
+O Casco de Tartaruga Pontiagudo foi construído com resistência ao repulsão e permite aos jogadores respirar debaixo da água por 15 segundos extras. Isso também pode ocasionalmente
+repelir ataques corpo a corpo. As Tartarugas-Aligatoras podem ser cruzadas com bacalhau cru.
