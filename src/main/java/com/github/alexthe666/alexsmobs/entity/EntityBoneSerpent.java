@@ -140,7 +140,7 @@ public class EntityBoneSerpent extends MonsterEntity {
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        if(AMConfig.neutralBoneSerpents){
+        if(!AMConfig.neutralBoneSerpents){
             this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
             this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
         }
