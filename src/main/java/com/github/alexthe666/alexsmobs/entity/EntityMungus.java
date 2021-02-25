@@ -44,6 +44,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeContainer;
+import net.minecraft.world.biome.BiomeRegistry;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -51,6 +52,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
@@ -93,6 +95,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
+
 
     public static boolean canMungusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.MUNGUS_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
@@ -261,12 +264,15 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
             int lvt_4_1_ = chunk.getPos().getXStart() >> 2;
             int lvt_5_1_ = chunk.getPos().getZStart() >> 2;
             ChunkGenerator chunkgenerator = ((ServerWorld)world).getChunkProvider().getChunkGenerator();
+            Biome b = null;
             for(int lvt_6_1_ = 0; lvt_6_1_ < container.biomes.length; ++lvt_6_1_) {
                 int lvt_7_1_ = lvt_6_1_ & BiomeContainer.HORIZONTAL_MASK;
                 int lvt_8_1_ = lvt_6_1_ >> WIDTH_BITS + WIDTH_BITS & BiomeContainer.VERTICAL_MASK;
                 int lvt_9_1_ = lvt_6_1_ >> WIDTH_BITS & BiomeContainer.HORIZONTAL_MASK;
-                Biome b = chunkgenerator.getBiomeProvider().getNoiseBiome(lvt_4_1_ + lvt_7_1_, lvt_8_1_, lvt_5_1_ + lvt_9_1_);
+                b = chunkgenerator.getBiomeProvider().getNoiseBiome(lvt_4_1_ + lvt_7_1_, lvt_8_1_, lvt_5_1_ + lvt_9_1_);
                 container.biomes[lvt_6_1_] = b;
+            }
+            if(b != null && !world.isRemote){
                 AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getEntityId(), pos.getX(), pos.getZ(), b.getRegistryName().toString()));
             }
         }else{
