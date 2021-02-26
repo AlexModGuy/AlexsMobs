@@ -59,7 +59,7 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData CRIMSON_MOSQUITO = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:crimson_forest", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_garden", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_gardens", 1)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:visceral_heap", 2);
     
     public static final SpawnBiomeData RATTLESNAKE = new SpawnBiomeData()
@@ -98,7 +98,8 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData WARPED_TOAD = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:warped_forest", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_garden", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_gardens", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:warped_desert", 2);
                 
     public static final SpawnBiomeData MOOSE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
