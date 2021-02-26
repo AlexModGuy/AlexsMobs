@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:crimson_nylium",
-    "minecraft:nether_wart_block"
+    "minecraft:nether_wart_block",
+    "byg:overgrown_crimson_blackstone"
   ]
 }
