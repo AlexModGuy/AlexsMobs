@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:bone_block",
-    "#minecraft:logs"
+    "#minecraft:logs",
+    "byg:warped_cactus"
   ]
 }
