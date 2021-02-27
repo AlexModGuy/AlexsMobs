@@ -1,8 +1,9 @@
 {
   "replace": false,
   "values": [
+    "#forge:netherrack",
     "minecraft:crimson_nylium",
     "minecraft:nether_wart_block",
-    "byg:overgrown_crimson_blackstone"
+    "biomesoplenty:flesh"
   ]
 }
