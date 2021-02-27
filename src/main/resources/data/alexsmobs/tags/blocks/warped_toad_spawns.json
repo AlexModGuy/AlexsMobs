@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#forge:netherrack",
-    "minecraft:warped_nylium",
+    "#minecraft:nylium",
     "minecraft:warped_wart_block",
     "minecraft:lava",
     "minecraft:warped_roots",
