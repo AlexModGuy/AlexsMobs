@@ -2,9 +2,6 @@
   "replace": false,
   "values": [
     "#alexsmobs:soul_vulture_perches",
-    "minecraft:soul_sand",
-    "minecraft:soul_soil",
-    "byg:nylium_soul_sand",
-    "byg:nylium_soul_soil"
+    "#minecraft:soul_fire_base_blocks"
   ]
 }
