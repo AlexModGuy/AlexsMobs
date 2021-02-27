@@ -7,6 +7,8 @@
     "minecraft:lava",
     "minecraft:warped_roots",
     "minecraft:nether_sprouts",
-    "minecraft:shroomlight"
+    "minecraft:shroomlight",
+    "byg:nylium_soul_sand",
+    "byg:nylium_soul_soil"
   ]
 }
