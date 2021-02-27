@@ -33,7 +33,8 @@
   "item.alexsmobs.spawn_egg_crow": "Skapelseägg för kråka",
   "item.alexsmobs.spawn_egg_alligator_snapping_turtle": "Skapelseägg för alligatorsköldpadda",
   "item.alexsmobs.spawn_egg_mungus": "Skapelseägg för blandos",
-  "item.alexsmobs.spawn_egg_mantis_shrimp": "Skapelseägg för mantisräka",  
+  "item.alexsmobs.spawn_egg_mantis_shrimp": "Skapelseägg för mantisräka",
+  "item.alexsmobs.spawn_egg_guster": "Skapelseägg för vindunder",
   "item.alexsmobs.tab_icon": "Alexs varelser",
   "item.alexsmobs.animal_dictionary": "Djurlexikon",
   "item.alexsmobs.animal_dictionary.desc": "Av Alex",
@@ -359,4 +360,10 @@
   "advancements.alexsmobs.soul_heart.desc": "Skaffa ett själhärta från att dräpa en uppsvälld själgam",
   "advancements.alexsmobs.spectre.title": "Järnridån",
   "advancements.alexsmobs.spectre.desc": "Locka en spectre i End med ett själhärta. Använd ett koppel på dem för att ta en tur!"
+    "advancements.alexsmobs.guster.title": "Ögat av stormen",
+  "advancements.alexsmobs.guster.desc": "Möt på en vindunder under en stormig dag i öknen",
+  "advancements.alexsmobs.gustmaker.title": "Jag har blivit vindunder",
+  "advancements.alexsmobs.gustmaker.desc": "Tillverka en vindskapare. Nu kan du skapa dina egna mini-stormar!",
+  "advancements.alexsmobs.pocket_sand.title": "Ficksand!",
+  "advancements.alexsmobs.pocket_sand.desc": "Tillverka en ficka av sand. Sha-sha!"
 }
