@@ -52,6 +52,12 @@ public class AMRenderTypes extends RenderType {
         return makeType("eye_flickering", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).transparency(TRANSLUCENT_TRANSPARENCY).alpha(DEFAULT_ALPHA).cull(CULL_DISABLED).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).build(false));
     }
 
+
+    public static RenderType getEyesNoCull(ResourceLocation p_228652_0_) {
+        TextureState lvt_1_1_ = new TextureState(p_228652_0_, false, false);
+        return makeType("eyes_no_cull", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).transparency(ADDITIVE_TRANSPARENCY).writeMask(COLOR_WRITE).cull(CULL_DISABLED).fog(BLACK_FOG).build(false));
+    }
+
     public static RenderType getSpectreBones(ResourceLocation p_228652_0_) {
         TextureState lvt_1_1_ = new TextureState(p_228652_0_, false, false);
         return makeType("spectre_bones", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).transparency(ADDITIVE_TRANSPARENCY).writeMask(COLOR_WRITE).diffuseLighting(RenderState.DIFFUSE_LIGHTING_DISABLED).fog(BLACK_FOG).cull(CULL_DISABLED).build(false));

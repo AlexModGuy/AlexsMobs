@@ -72,6 +72,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE, 0.65F));
         list.add(new Pair<>(AMEntityRegistry.MUNGUS, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.MANTIS_SHRIMP, 0.7F));
+        list.add(new Pair<>(AMEntityRegistry.GUSTER, 0.55F));
     });
     private static int ticksExisted = 0;
 
@@ -99,6 +100,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
+        float partialTicksForRender = Minecraft.getInstance().isGamePaused() ? 0 : partialTicks;
         if (follow) {
             float yaw = f * 45.0F;
             entity.rotationYaw = yaw;
@@ -124,7 +126,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         entityrenderermanager.setRenderShadow(false);
         IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
         RenderSystem.runAsFancy(() -> {
-            entityrenderermanager.renderEntityStatic(entity, 0.0D, 0.0D, 0.0D, f, partialTicks, matrixstack, irendertypebuffer$impl, 15728880);
+            entityrenderermanager.renderEntityStatic(entity, 0.0D, 0.0D, 0.0D, f, partialTicksForRender, matrixstack, irendertypebuffer$impl, 15728880);
         });
         irendertypebuffer$impl.finish();
         entityrenderermanager.setRenderShadow(true);

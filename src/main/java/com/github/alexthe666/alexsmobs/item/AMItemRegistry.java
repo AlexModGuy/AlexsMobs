@@ -87,6 +87,8 @@ public class AMItemRegistry {
     public static final Item SOUL_HEART = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:soul_heart");
     public static final Item SPIKED_SCUTE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spiked_scute");
     public static final Item SPIKED_TURTLE_SHELL = new ItemModArmor(SPIKED_TURTLE_SHELL_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:spiked_turtle_shell");
+    public static final Item GUSTER_EYE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:guster_eye");
+    public static final Item POCKET_SAND = new ItemPocketSand(new Item.Properties().group(AlexsMobs.TAB).maxDamage(220)).setRegistryName("alexsmobs:pocket_sand");
 
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
@@ -131,6 +133,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE, 0X6C5C52,0X456926, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_alligator_snapping_turtle"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MUNGUS, 0X836A8D,0X45454C, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_mungus"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MANTIS_SHRIMP, 0XDB4858,0X15991E, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_mantis_shrimp"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.GUSTER, 0XF8D49A,0XFF720A, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_guster"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

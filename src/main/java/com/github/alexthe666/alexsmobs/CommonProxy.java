@@ -88,4 +88,7 @@ public class CommonProxy {
 
     public void updateBiomeVisuals(int x, int z) {
     }
+
+    public void setupParticles() {
+    }
 }

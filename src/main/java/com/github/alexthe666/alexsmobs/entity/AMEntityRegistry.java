@@ -60,6 +60,9 @@ public class AMEntityRegistry {
     public static final EntityType<EntityAlligatorSnappingTurtle> ALLIGATOR_SNAPPING_TURTLE = registerEntity(EntityType.Builder.create(EntityAlligatorSnappingTurtle::new, EntityClassification.CREATURE).size(1.25F, 0.65F), "alligator_snapping_turtle");
     public static final EntityType<EntityMungus> MUNGUS = registerEntity(EntityType.Builder.create(EntityMungus::new, EntityClassification.CREATURE).size(0.75F, 1.45F), "mungus");
     public static final EntityType<EntityMantisShrimp> MANTIS_SHRIMP = registerEntity(EntityType.Builder.create(EntityMantisShrimp::new, EntityClassification.WATER_CREATURE).size(1.25F, 1.2F), "mantis_shrimp");
+    public static final EntityType<EntityGuster> GUSTER = registerEntity(EntityType.Builder.create(EntityGuster::new, EntityClassification.MONSTER).size(1.42F, 2.35F).immuneToFire(), "guster");
+    public static final EntityType<EntitySandShot> SAND_SHOT = registerEntity(EntityType.Builder.create(EntitySandShot::new, EntityClassification.MISC).size(0.95F, 0.65F).setCustomClientFactory(EntitySandShot::new).immuneToFire(), "sand_shot");
+    public static final EntityType<EntityGust> GUST = registerEntity(EntityType.Builder.create(EntityGust::new, EntityClassification.MISC).size(0.8F, 0.8F).setCustomClientFactory(EntityGust::new).immuneToFire(), "gust");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -157,6 +160,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(ALLIGATOR_SNAPPING_TURTLE, EntityAlligatorSnappingTurtle.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(MUNGUS, EntityMungus.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(MANTIS_SHRIMP, EntityMantisShrimp.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(GUSTER, EntityGuster.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=down,triggered=false": {
+      "model": "alexsmobs:block/gustmaker_vertical",
+      "x": 180
+    },
+    "facing=east,triggered=false": {
+      "model": "alexsmobs:block/gustmaker",
+      "y": 90
+    },
+    "facing=north,triggered=false": {
+      "model": "alexsmobs:block/gustmaker"
+    },
+    "facing=south,triggered=false": {
+      "model": "alexsmobs:block/gustmaker",
+      "y": 180
+    },
+    "facing=up,triggered=false": {
+      "model": "alexsmobs:block/gustmaker_vertical"
+    },
+    "facing=west,triggered=false": {
+      "model": "alexsmobs:block/gustmaker",
+      "y": 270
+    },
+
+    "facing=down,triggered=true": {
+      "model": "alexsmobs:block/gustmaker_vertical_on",
+      "x": 180
+    },
+    "facing=east,triggered=true": {
+      "model": "alexsmobs:block/gustmaker_on",
+      "y": 90
+    },
+    "facing=north,triggered=true": {
+      "model": "alexsmobs:block/gustmaker_on"
+    },
+    "facing=south,triggered=true": {
+      "model": "alexsmobs:block/gustmaker_on",
+      "y": 180
+    },
+    "facing=up,triggered=true": {
+      "model": "alexsmobs:block/gustmaker_vertical_on"
+    },
+    "facing=west,triggered=true": {
+      "model": "alexsmobs:block/gustmaker_on",
+      "y": 270
+    }
+  }
+}

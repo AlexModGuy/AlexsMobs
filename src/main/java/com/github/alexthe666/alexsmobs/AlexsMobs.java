@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -54,6 +55,7 @@ public class AlexsMobs {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModConfigEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticleEvent);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
         PROXY.init();
@@ -74,6 +76,10 @@ public class AlexsMobs {
     @SubscribeEvent
     public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
         AMWorldRegistry.onBiomesLoad(event);
+    }
+
+    private void setupParticleEvent(ParticleFactoryRegisterEvent event) {
+        PROXY.setupParticles();
     }
 
     public static <MSG> void sendMSGToServer(MSG message) {

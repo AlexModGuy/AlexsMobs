@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 public class AMBlockRegistry {
 
     public static final Block CROCODILE_EGG = new BlockCrocodileEgg();
+    public static final Block GUSTMAKER = new BlockGustmaker();
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

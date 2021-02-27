@@ -3,6 +3,9 @@ package com.github.alexthe666.alexsmobs;
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.model.*;
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.client.particle.ParticleGusterSandShot;
+import com.github.alexthe666.alexsmobs.client.particle.ParticleGusterSandSpin;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
@@ -98,6 +101,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE, manager -> new RenderAlligatorSnappingTurtle(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MUNGUS, manager -> new RenderMungus(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MANTIS_SHRIMP, manager -> new RenderMantisShrimp(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GUSTER, manager -> new RenderGuster(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SAND_SHOT, manager -> new RenderSandShot(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GUST, manager -> new RenderGust(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
 
         ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
@@ -158,6 +164,13 @@ public class ClientProxy extends CommonProxy {
 
     public void updateBiomeVisuals(int x, int z) {
         Minecraft.getInstance().worldRenderer.markBlockRangeForRenderUpdate(x- 32, 0, x - 32, z + 32, 255, z + 32);
+    }
+
+    public void setupParticles() {
+        AlexsMobs.LOGGER.debug("Registered particle factories");
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SPIN, ParticleGusterSandSpin.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SHOT, ParticleGusterSandShot.Factory::new);
+
     }
 
 }
