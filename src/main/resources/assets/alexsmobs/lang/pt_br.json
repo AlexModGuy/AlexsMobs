@@ -202,7 +202,7 @@
   "entity.alexsmobs.snow_leopard": "Leopardo-das-Neves",
   "entity.alexsmobs.spectre": "Espectro",
   "entity.alexsmobs.crow": "Corvo",
-  "entity.alexsmobs.crow.command_3": "%s está coletando itens",,
+  "entity.alexsmobs.crow.command_3": "%s está coletando itens",
   "entity.alexsmobs.alligator_snapping_turtle": "Tartaruga-Aligátor",
   "entity.alexsmobs.mungus": "Mungi",
   "entity.alexsmobs.mantis_shrimp": "Lagosta-Boxeadora",
@@ -335,7 +335,7 @@
   "advancements.alexsmobs.crocodile.title": "Carnudo",
   "advancements.alexsmobs.crocodile.desc": "Encontre um Crocodilo",
   "advancements.alexsmobs.crocodile_chestplate.title": "Cubra-me com ... escudos?",
-  "advancements.alexsmobs.crocodile_chestplate.desc": "Crie um Peitoral de Crocodilo com muitas Escamas de Crocodilo"
+  "advancements.alexsmobs.crocodile_chestplate.desc": "Crie um Peitoral de Crocodilo com muitas Escamas de Crocodilo",
   "advancements.alexsmobs.tame_mantis_shrimp.title": "Amigo Camarão",
   "advancements.alexsmobs.tame_mantis_shrimp.desc": "Dome um Camarão Mantis ao alimenta-lo com peixes tropicais",
   "advancements.alexsmobs.breed_crocodile.title": "Caramba!",
