@@ -34,6 +34,7 @@
   "item.alexsmobs.spawn_egg_alligator_snapping_turtle": "Ovo Gerador de Tartaruga-Aligator",
   "item.alexsmobs.spawn_egg_mungus": "Ovo Gerador de Mungi",
   "item.alexsmobs.spawn_egg_mantis_shrimp": "Ovo Gerador de Camarão Mantis",
+  "item.alexsmobs.spawn_egg_guster": "Ovo Gerador de Redemoinho",
   "item.alexsmobs.tab_icon": "Alex's Mobs",
   "item.alexsmobs.animal_dictionary": "Dicionário Animal",
   "item.alexsmobs.animal_dictionary.desc": "Por Alex - Traduzido por Mikeliro",
@@ -88,7 +89,10 @@
   "item.alexsmobs.soul_heart": "Coração de Alma",
   "item.alexsmobs.spiked_scute": "Escama Pontiaguda",
   "item.alexsmobs.spiked_turtle_shell": "Casco de Tartaruga Pontiagudo",
+  "item.alexsmobs.guster_eye": "Olho de Redemoinho",
+  "item.alexsmobs.pocket_sand": "Bolsa de Areia",
   "block.alexsmobs.crocodile_egg": "Ovo de Crocodilo",
+  "block.alexsmobs.gustmaker": "Criador de Redemoinho",
   "alexsmobs.potion.knockback_resistance": "Resistência a Repulsão",
   "alexsmobs.potion.lava_vision": "Visão de Lava",
   "alexsmobs.potion.sunbird_curse": "Maldição Solar",
@@ -203,6 +207,7 @@
   "entity.alexsmobs.mungus": "Mungi",
   "entity.alexsmobs.mantis_shrimp": "Lagosta-Boxeadora",
   "entity.alexsmobs.mantis_shrimp.command_3": "%s está quebrando blocos",
+  "entity.alexsmobs.guster": "Redemoinho",
   "alexsmobs.sound.subtitle.grizzly_bear_idle": "Urso Pardo rosna",
   "alexsmobs.sound.subtitle.grizzly_bear_hurt": "Urso Pardo ruge",
   "alexsmobs.sound.subtitle.roadrunner_idle": "Papa-Léguas gorjeia",
@@ -359,4 +364,10 @@
   "advancements.alexsmobs.soul_heart.desc": "Obtenha um coração de alma matando um Abutre de Almas inchado",
   "advancements.alexsmobs.spectre.title": "A Cortina de Ferro",
   "advancements.alexsmobs.spectre.desc": "No End, atraia um Espectro com um Coração de Alma. Use um laço neles para pegar uma carona!"
+  "advancements.alexsmobs.guster.title": "Olho da Tempestade",
+  "advancements.alexsmobs.guster.desc": "Encontre um Redemoinho durante um dia de tempestade no deserto",
+  "advancements.alexsmobs.gustmaker.title": "Eu Sou Um Redemoinho",
+  "advancements.alexsmobs.gustmaker.desc": "Crie um 'Criador de Redemoinhos'. Agora você pode fazer suas próprias mini-tempestades!",
+  "advancements.alexsmobs.pocket_sand.title": "Areia de Bolso!",
+  "advancements.alexsmobs.pocket_sand.desc": "Crie um bolsa de areia. Sha-sha!"
 }
