@@ -99,7 +99,7 @@
   "item.alexsmobs.hemolymph_blaster": "Bláster de Hemolinfa",
   "item.alexsmobs.straddlite": "Basaltita",
   "item.alexsmobs.stradpole_bucket": "Balde de Basaltrino",
-  "item.alexsmobs.straddleboard": "Prancha Basaltica",
+  "item.alexsmobs.straddleboard": "Prancha de Basaltita",
   "block.alexsmobs.crocodile_egg": "Ovo de Crocodilo",
   "block.alexsmobs.gustmaker": "Soprador de Rajadas",
   "alexsmobs.potion.knockback_resistance": "Resistência a Repulsão",
@@ -223,7 +223,7 @@
   "entity.alexsmobs.hemolymph": "Hemolinfa",
   "entity.alexsmobs.straddler": "Basaltilho",
   "entity.alexsmobs.stradpole": "Basaltrino",
-  "entity.alexsmobs.straddleboard": "Prancha Basaltica",  
+  "entity.alexsmobs.straddleboard": "Prancha de Basaltita",  
   "alexsmobs.sound.subtitle.grizzly_bear_idle": "Urso Pardo rosna",
   "alexsmobs.sound.subtitle.grizzly_bear_hurt": "Urso Pardo ruge",
   "alexsmobs.sound.subtitle.roadrunner_idle": "Papa-Léguas gorjeia",
@@ -290,8 +290,8 @@
   "alexsmobs.sound.subtitle.spectre_hurt": "Espectro guincha",
   "alexsmobs.sound.subtitle.crow_idle": "Corvo grasna",
   "alexsmobs.sound.subtitle.crow_hurt": "Corvo guincha",
-  "alexsmobs.sound.subtitle.alligator_snapping_turtle_idle": "Alligator Snapping Turtle hisses",
-  "alexsmobs.sound.subtitle.alligator_snapping_turtle_hurt": "Alligator Snapping Turtle winces",
+  "alexsmobs.sound.subtitle.alligator_snapping_turtle_idle": "Tartaruga-Aligator sibilo",
+  "alexsmobs.sound.subtitle.alligator_snapping_turtle_hurt": "Tartaruga-Aligator estremece",
   "alexsmobs.sound.subtitle.mungus_idle": "Mungide gargalha",
   "alexsmobs.sound.subtitle.mungus_hurt": "Mungide chia",
   "alexsmobs.sound.subtitle.mungus_laser_loop": "Feixe do Mungide",
@@ -403,5 +403,5 @@
   "advancements.alexsmobs.stradpole_feed.title": "Igual o Pai",
   "advancements.alexsmobs.stradpole_feed.desc": "Alimente um Basaltrino com uma Larva de Mosquito, na esperança de transformá-lo em um Basaltilho.",
   "advancements.alexsmobs.straddleboard.title": "Cera de Surfe da America",
-  "advancements.alexsmobs.straddleboard.desc": "Crie um Prancha Basaltica com Netherita e Basaltita."
+  "advancements.alexsmobs.straddleboard.desc": "Crie uma Prancha de Basaltita com Netherita e Basaltita."
 }
