@@ -1,0 +1,13 @@
+  
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mungi são estranhas criaturas fúngicas encontradas nos Campos de Cogumelo. Essas criaturas estranhas são parentes do Guardião e do Lavagante e são visualmente semelhantes a eles.
+Ao contrário de seus ancestrais Guardiões, os Mungi são completamente passivos. Ocasionalmente, eles podem ser vistos com um cogumelo crescendo fora da camada de micélio que os cobre.
+Se alimentado com mais do mesmo tipo de cogumelo, mais cogumelos criarão raízes no Mungi. Com um ou mais cogumelos, Mungidisparará um raio semelhante ao de um Guardião nos
+ cogumelos próximos do mesmo tipo. Eles usarão isso para cultivar mais daquele tipo de cogumelo, e se o cogumelo estiver em um Micélio, ele pode se tornar um cogumelo gigante. Isso irá
+ exaurir o Mungi e diminuir a quantidade de cogumelos nele. Se mortos com cinco cogumelos nas costas, os Mungi explodirão  violentamente e converterão a
+ área local no bioma pertencente a seus cogumelos: Para cogumelos vermelhos e marrons, os Campos de Cogumelos; e Para Fungo carmesim e distorcido, as florestas carmesim e distorcida, respectivamente.
+ A conversão de um bioma pode ser desfeita alimentando um Mungi com uma batata venenosa. Mungi pode ser procriado com Sopa de Cogumelhos.
