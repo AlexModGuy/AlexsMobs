@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class LayerCrimsonMosquitoBlood extends LayerRenderer<EntityCrimsonMosquito, ModelCrimsonMosquito> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito_blood.png");
+    private static final ResourceLocation TEXTURE_SICK = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito_blood_blue.png");
 
     public LayerCrimsonMosquitoBlood(RenderCrimsonMosquito renderCrimsonMosquito) {
         super(renderCrimsonMosquito);
@@ -23,7 +24,7 @@ public class LayerCrimsonMosquitoBlood extends LayerRenderer<EntityCrimsonMosqui
 
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityCrimsonMosquito entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(entitylivingbaseIn.getBloodLevel() > 0){
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(TEXTURE));
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(entitylivingbaseIn.isSick() ? TEXTURE_SICK : TEXTURE));
             this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }

@@ -73,6 +73,9 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.MUNGUS, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.MANTIS_SHRIMP, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.GUSTER, 0.55F));
+        list.add(new Pair<>(AMEntityRegistry.WARPED_MOSCO, 0.45F));
+        list.add(new Pair<>(AMEntityRegistry.STRADDLER, 0.38F));
+        list.add(new Pair<>(AMEntityRegistry.STRADPOLE, 0.9F));
     });
     private static int ticksExisted = 0;
 
@@ -94,7 +97,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
     public static void drawEntityOnScreen(MatrixStack matrixstack, int posX, int posY, float scale, boolean follow, double xRot, double yRot, double zRot, float mouseX, float mouseY, Entity entity) {
         float f = (float) Math.atan(-mouseX / 40.0F);
         float f1 = (float) Math.atan(mouseY / 40.0F);
-        matrixstack.translate(0.0D, 0.0D, 0);
+
         matrixstack.scale(scale, scale, scale);
         entity.setOnGround(false);
         float partialTicks = Minecraft.getInstance().getRenderPartialTicks();

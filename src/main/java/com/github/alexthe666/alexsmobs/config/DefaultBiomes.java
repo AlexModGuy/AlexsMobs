@@ -5,6 +5,8 @@ import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
 
 public class DefaultBiomes {
 
+    public static final SpawnBiomeData EMPTY = new SpawnBiomeData();
+
     public static final SpawnBiomeData GRIZZLY_BEAR = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "forest", 0)
@@ -13,7 +15,9 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData ROADRUNNER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 1);
 
     public static final SpawnBiomeData BONE_SERPENT = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "nether", 0);
@@ -181,4 +185,11 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0);
+
+    public static final SpawnBiomeData GUSTER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
+
+    public static final SpawnBiomeData STRADDLER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:basalt_deltas", 0);
 }

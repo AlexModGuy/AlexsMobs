@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.client.particle.ParticleGusterSandShot;
 import com.github.alexthe666.alexsmobs.client.particle.ParticleGusterSandSpin;
+import com.github.alexthe666.alexsmobs.client.particle.ParticleHemolymph;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
@@ -13,6 +14,7 @@ import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
+import com.github.alexthe666.alexsmobs.item.ItemHemolymphBlaster;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.GuardianSound;
@@ -31,17 +33,19 @@ import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.world.GrassColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +61,10 @@ public class ClientProxy extends CommonProxy {
     private static final ModelSombrero SOMBRERO_MODEL = new ModelSombrero(0.3F);
     private static final ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(1.0F);
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
+
+    public void init(){
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
+    }
 
     public void clientInit() {
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
@@ -104,11 +112,26 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GUSTER, manager -> new RenderGuster(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SAND_SHOT, manager -> new RenderSandShot(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GUST, manager -> new RenderGust(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.WARPED_MOSCO, manager -> new RenderWarpedMosco(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.HEMOLYMPH, manager -> new RenderHemolymph(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.STRADDLER, manager -> new RenderStraddler(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.STRADPOLE, manager -> new RenderStradpole(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.STRADDLEBOARD, manager -> new RenderStraddleboard(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
 
         ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
             return !ItemBloodSprayer.isUsable(stack) || p_239428_2_ instanceof PlayerEntity && ((PlayerEntity) p_239428_2_).getCooldownTracker().hasCooldown(AMItemRegistry.BLOOD_SPRAYER) ? 1.0F : 0.0F;
         });
+        ItemModelsProperties.registerProperty(AMItemRegistry.HEMOLYMPH_BLASTER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
+            return !ItemHemolymphBlaster.isUsable(stack) || p_239428_2_ instanceof PlayerEntity && ((PlayerEntity) p_239428_2_).getCooldownTracker().hasCooldown(AMItemRegistry.HEMOLYMPH_BLASTER) ? 1.0F : 0.0F;
+        });
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void onItemColors(ColorHandlerEvent.Item event) {
+        AlexsMobs.LOGGER.info("loaded in item colorizer");
+        event.getItemColors().register((stack, colorIn) -> colorIn < 1 ? -1 : ((IDyeableArmorItem)stack.getItem()).getColor(stack), AMItemRegistry.STRADDLEBOARD);
     }
 
     public void openBookGUI(ItemStack itemStackIn) {
@@ -170,6 +193,7 @@ public class ClientProxy extends CommonProxy {
         AlexsMobs.LOGGER.debug("Registered particle factories");
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SPIN, ParticleGusterSandSpin.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SHOT, ParticleGusterSandShot.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.HEMOLYMPH, ParticleHemolymph.Factory::new);
 
     }
 

@@ -103,21 +103,21 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SitGoal(this));
-        this.goalSelector.addGoal(1, new RaccoonAIWash(this));
-        this.goalSelector.addGoal(2, new TameableAIFollowOwner(this, 1.3D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(3, new SwimGoal(this));
-        this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.1D, true));
-        this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new AnimalAILootChests(this, 16));
-        this.goalSelector.addGoal(7, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(8, new RaccoonAIBeg(this, 0.65D));
-        this.goalSelector.addGoal(9, new AnimalAIPanicBaby(this, 1.25D));
-        this.goalSelector.addGoal(9, new StrollGoal(200));
-        this.goalSelector.addGoal(10, new TameableAIDestroyTurtleEggs(this, 1.0D, 3));
-        this.goalSelector.addGoal(11, new AnimalAIWanderRanged(this, 120, 1.0D, 14, 7));
-        this.goalSelector.addGoal(12, new LookAtGoal(this, PlayerEntity.class, 15.0F));
-        this.goalSelector.addGoal(12, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new RaccoonAIWash(this));
+        this.goalSelector.addGoal(3, new TameableAIFollowOwner(this, 1.3D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(4, new SwimGoal(this));
+        this.goalSelector.addGoal(5, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.1D, true));
+        this.goalSelector.addGoal(7, new AnimalAILootChests(this, 16));
+        this.goalSelector.addGoal(8, new FollowParentGoal(this, 1.1D));
+        this.goalSelector.addGoal(9, new RaccoonAIBeg(this, 0.65D));
+        this.goalSelector.addGoal(10, new AnimalAIPanicBaby(this, 1.25D));
+        this.goalSelector.addGoal(11, new StrollGoal(200));
+        this.goalSelector.addGoal(12, new TameableAIDestroyTurtleEggs(this, 1.0D, 3));
+        this.goalSelector.addGoal(13, new AnimalAIWanderRanged(this, 120, 1.0D, 14, 7));
+        this.goalSelector.addGoal(14, new LookAtGoal(this, PlayerEntity.class, 15.0F));
+        this.goalSelector.addGoal(14, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(3, new OwnerHurtByTargetGoal(this));

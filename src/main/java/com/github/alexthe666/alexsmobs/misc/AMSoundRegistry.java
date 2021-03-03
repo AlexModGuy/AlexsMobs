@@ -166,6 +166,18 @@ public class AMSoundRegistry {
 
     public static final SoundEvent MANTIS_SHRIMP_HURT = createSoundEvent("mantis_shrimp_hurt");
 
+    public static final SoundEvent GUSTER_IDLE = createSoundEvent("guster_idle");
+
+    public static final SoundEvent GUSTER_HURT = createSoundEvent("guster_hurt");
+    
+    public static final SoundEvent WARPED_MOSCO_IDLE = createSoundEvent("warped_mosco_idle");
+
+    public static final SoundEvent WARPED_MOSCO_HURT = createSoundEvent("warped_mosco_hurt");
+
+    public static final SoundEvent STRADDLER_IDLE = createSoundEvent("straddler_idle");
+
+    public static final SoundEvent STRADDLER_HURT = createSoundEvent("straddler_hurt");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

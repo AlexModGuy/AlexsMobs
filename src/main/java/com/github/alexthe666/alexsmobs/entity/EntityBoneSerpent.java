@@ -224,6 +224,7 @@ public class EntityBoneSerpent extends MonsterEntity {
 
     public void tick() {
         super.tick();
+        inPortal = false;
         boolean ground = !this.isInLava() && !this.isInWater() && this.isOnGround();
         if (jumpCooldown > 0) {
             jumpCooldown--;

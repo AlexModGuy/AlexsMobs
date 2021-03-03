@@ -89,6 +89,12 @@ public class AMItemRegistry {
     public static final Item SPIKED_TURTLE_SHELL = new ItemModArmor(SPIKED_TURTLE_SHELL_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:spiked_turtle_shell");
     public static final Item GUSTER_EYE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:guster_eye");
     public static final Item POCKET_SAND = new ItemPocketSand(new Item.Properties().group(AlexsMobs.TAB).maxDamage(220)).setRegistryName("alexsmobs:pocket_sand");
+    public static final Item WARPED_MUSCLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:warped_muscle");
+    public static final Item HEMOLYMPH_SAC = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:hemolymph_sac");
+    public static final Item HEMOLYMPH_BLASTER = new ItemHemolymphBlaster(new Item.Properties().group(AlexsMobs.TAB).maxDamage(150)).setRegistryName("alexsmobs:hemolymph_blaster");
+    public static final Item STRADDLITE = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:straddlite");
+    public static final Item STRADPOLE_BUCKET = new ItemModFishBucket(AMEntityRegistry.STRADPOLE, Fluids.LAVA, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:stradpole_bucket");
+    public static final Item STRADDLEBOARD = new ItemStraddleboard(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire().maxDamage(220)).setRegistryName("alexsmobs:straddleboard");
 
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
@@ -134,6 +140,9 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MUNGUS, 0X836A8D,0X45454C, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_mungus"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MANTIS_SHRIMP, 0XDB4858,0X15991E, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_mantis_shrimp"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.GUSTER, 0XF8D49A,0XFF720A, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_guster"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.WARPED_MOSCO, 0X322F58,0X5B5EF1, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_warped_mosco"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.STRADDLER, 0X5D5F6E,0XCDA886, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_straddler"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.STRADPOLE, 0X5D5F6E,0X576A8B, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_stradpole"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:warped_fungus"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.crimson_mosquito_sick.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.crimson_mosquito_sick.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/crimson_mosquito",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:mosquito_sick"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ]
+}

@@ -106,13 +106,16 @@ public class BlockCrocodileEgg  extends Block {
                     EntityCrocodile turtleentity = AMEntityRegistry.CROCODILE.create(worldIn);
                     turtleentity.setGrowingAge(-24000);
                     turtleentity.setHomePosAndDistance(pos, 20);
-                    PlayerEntity closest = worldIn.getClosestPlayer(turtleentity, 15);
                     turtleentity.setLocationAndAngles((double)pos.getX() + 0.3D + (double)j * 0.2D, (double)pos.getY(), (double)pos.getZ() + 0.3D, 0.0F, 0.0F);
-                    if(closest != null){
-                        turtleentity.setTamed(true);
-                        turtleentity.setTamedBy(closest);
+                    if(!worldIn.isRemote){
+                        PlayerEntity closest = worldIn.getClosestPlayer(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 20, EntityPredicates.NOT_SPECTATING);
+                        if(closest != null){
+                            turtleentity.setTamed(true);
+                            turtleentity.setSitting(true);
+                            turtleentity.setTamedBy(closest);
+                        }
+                        worldIn.addEntity(turtleentity);
                     }
-                    worldIn.addEntity(turtleentity);
                 }
             }
         }

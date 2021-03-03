@@ -77,7 +77,14 @@ public class AMConfig {
     public static int mungusSpawnRolls = 1;
     public static int mantisShrimpSpawnWeight = 15;
     public static int mantisShrimpSpawnRolls = 0;
-
+    public static int gusterSpawnWeight = 35;
+    public static int gusterSpawnRolls = 0;
+    public static int warpedMoscoSpawnWeight = 1;
+    public static int warpedMoscoSpawnRolls = 1000;
+    public static int straddlerSpawnWeight = 85;
+    public static int straddlerSpawnRolls = 0;
+    public static int stradpoleSpawnWeight = 10;
+    public static int stradpoleSpawnRolls = 3;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -92,7 +99,7 @@ public class AMConfig {
     public static boolean giveBookOnStartup = true;
     public static boolean mimicubeSpawnInEndCity = true;
     public static boolean mimicreamRepair = true;
-    public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer");
+    public static List<? extends String> mimicreamBlacklist = Lists.newArrayList("alexsmobs:blood_sprayer", "alexsmobs:hemolymph_blaster");
     public static boolean raccoonsStealFromChests = true;
     public static boolean fishOilMeme = true;
     public static double elephantTraderSpawnChance = 0.6F;
@@ -105,6 +112,9 @@ public class AMConfig {
             "minecraft:brown_mushroom|minecraft:mushroom_fields|minecraft:mycelium",
             "minecraft:crimson_fungus|minecraft:crimson_forest|minecraft:crimson_nylium",
             "minecraft:warped_fungus|minecraft:warped_forest|minecraft:warped_nylium");
+    public static boolean limitGusterSpawnsToWeather = true;
+    public static boolean warpedMoscoTransformation = true;
+    public static List<? extends String> warpedMoscoMobTriggers = Lists.newArrayList();
 
     public static void bake(ModConfig config) {
         try {
@@ -181,7 +191,14 @@ public class AMConfig {
             mungusSpawnRolls = ConfigHolder.COMMON.mungusSpawnRolls.get();
             mantisShrimpSpawnWeight = ConfigHolder.COMMON.mantisShrimpSpawnWeight.get();
             mantisShrimpSpawnRolls = ConfigHolder.COMMON.mantisShrimpSpawnRolls.get();
-
+            gusterSpawnWeight = ConfigHolder.COMMON.gusterSpawnWeight.get();
+            gusterSpawnRolls = ConfigHolder.COMMON.gusterSpawnRolls.get();
+            warpedMoscoSpawnWeight = ConfigHolder.COMMON.warpedMoscoSpawnWeight.get();
+            warpedMoscoSpawnRolls = ConfigHolder.COMMON.warpedMoscoSpawnRolls.get();
+            straddlerSpawnWeight = ConfigHolder.COMMON.straddlerSpawnWeight.get();
+            straddlerSpawnRolls = ConfigHolder.COMMON.straddlerSpawnRolls.get();
+            stradpoleSpawnWeight = ConfigHolder.COMMON.stradpoleSpawnWeight.get();
+            stradpoleSpawnRolls = ConfigHolder.COMMON.stradpoleSpawnRolls.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
@@ -199,6 +216,9 @@ public class AMConfig {
             wanderingTraderOffers = ConfigHolder.COMMON.wanderingTraderOffers.get();
             mungusBiomeTransformationType = ConfigHolder.COMMON.mungusBiomeTransformationType.get();
             mungusBiomeMatches = (List<? extends String>) ConfigHolder.COMMON.mungusBiomeMatches.get();
+            limitGusterSpawnsToWeather = ConfigHolder.COMMON.limitGusterSpawnsToWeather.get();
+            warpedMoscoTransformation = ConfigHolder.COMMON.warpedMoscoTransformation.get();
+            warpedMoscoMobTriggers = (List<? extends String>) ConfigHolder.COMMON.warpedMoscoMobTriggers.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

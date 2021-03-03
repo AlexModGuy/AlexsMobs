@@ -27,7 +27,7 @@ repositories{
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.6.0'
+version = '1.7.0'
 group = 'com.github.alexthe667' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alexsmobs'
 
@@ -103,7 +103,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.4-35.1.10'
     compileOnly fg.deobf("mezz.jei:jei-1.16.2:7.1.3.19:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:7.1.3.19")
-    compile 'citadel:citadel:1.6.0:deobf'
+    compile 'citadel:citadel:1.6.2:deobf'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -112,7 +112,7 @@ jar {
         attributes([
             "Specification-Title": "alexsmobs",
             "Specification-Vendor": "alexthe667",
-            "Specification-Version": "1.6.0", // We are version 1 of ourselves
+            "Specification-Version": "1.7.0", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"alexthe667",

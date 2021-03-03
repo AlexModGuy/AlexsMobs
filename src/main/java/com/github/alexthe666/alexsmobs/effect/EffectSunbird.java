@@ -34,6 +34,7 @@ public class EffectSunbird extends Effect {
                 entity.setMotion(entity.getMotion().add(0, -0.2F, 0));
             }
         } else {
+            entity.fallDistance = 0.0F;
             if (entity.isElytraFlying()) {
                 if (entity.rotationPitch < -10) {
                     float pitchMulti = Math.abs(entity.rotationPitch) / 90F;

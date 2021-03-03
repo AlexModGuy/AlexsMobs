@@ -240,6 +240,34 @@
       "x": 290,
       "y": 135,
       "page": 2
+    },
+    {
+      "linked_page": "guster.json",
+      "text": "Guster",
+      "x": 290,
+      "y": 160,
+      "page": 2
+    },
+    {
+      "linked_page": "warped_mosco.json",
+      "text": "Warped Mosco",
+      "x": 90,
+      "y": 10,
+      "page": 3
+    },
+    {
+      "linked_page": "straddler.json",
+      "text": "Straddler",
+      "x": 90,
+      "y": 35,
+      "page": 3
+    },
+    {
+      "linked_page": "stradpole.json",
+      "text": "Stradpole",
+      "x": 90,
+      "y": 60,
+      "page": 3
     }
   ],
   "images": [

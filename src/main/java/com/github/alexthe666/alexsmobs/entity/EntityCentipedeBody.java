@@ -55,6 +55,7 @@ public class EntityCentipedeBody extends MobEntity implements IHurtableMultipart
     @Override
     public void tick() {
         super.tick();
+        inPortal = false;
         Entity parent = getParent();
         recalculateSize();
         if (parent != null && !world.isRemote) {

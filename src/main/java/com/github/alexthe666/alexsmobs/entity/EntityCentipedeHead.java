@@ -161,6 +161,7 @@ public class EntityCentipedeHead extends MonsterEntity {
 
     public void tick(){
         super.tick();
+        inPortal = false;
         rotationYaw = renderYawOffset;
         if (!world.isRemote) {
             Entity child = getChild();

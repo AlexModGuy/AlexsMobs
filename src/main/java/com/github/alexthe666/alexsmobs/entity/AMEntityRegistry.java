@@ -63,6 +63,11 @@ public class AMEntityRegistry {
     public static final EntityType<EntityGuster> GUSTER = registerEntity(EntityType.Builder.create(EntityGuster::new, EntityClassification.MONSTER).size(1.42F, 2.35F).immuneToFire(), "guster");
     public static final EntityType<EntitySandShot> SAND_SHOT = registerEntity(EntityType.Builder.create(EntitySandShot::new, EntityClassification.MISC).size(0.95F, 0.65F).setCustomClientFactory(EntitySandShot::new).immuneToFire(), "sand_shot");
     public static final EntityType<EntityGust> GUST = registerEntity(EntityType.Builder.create(EntityGust::new, EntityClassification.MISC).size(0.8F, 0.8F).setCustomClientFactory(EntityGust::new).immuneToFire(), "gust");
+    public static final EntityType<EntityWarpedMosco> WARPED_MOSCO = registerEntity(EntityType.Builder.create(EntityWarpedMosco::new, EntityClassification.MONSTER).size(1.99F, 3.25F).immuneToFire(), "warped_mosco");
+    public static final EntityType<EntityHemolymph> HEMOLYMPH = registerEntity(EntityType.Builder.create(EntityHemolymph::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityHemolymph::new).immuneToFire(), "hemolymph");
+    public static final EntityType<EntityStraddler> STRADDLER = registerEntity(EntityType.Builder.create(EntityStraddler::new, EntityClassification.MONSTER).size(1.65F, 3F).immuneToFire(), "straddler");
+    public static final EntityType<EntityStradpole> STRADPOLE = registerEntity(EntityType.Builder.create(EntityStradpole::new, EntityClassification.WATER_AMBIENT).size(0.5F, 0.5F).immuneToFire(), "stradpole");
+    public static final EntityType<EntityStraddleboard> STRADDLEBOARD = registerEntity(EntityType.Builder.create(EntityStraddleboard::new, EntityClassification.MISC).size(1.5F, 0.35F).setCustomClientFactory(EntityStraddleboard::new).immuneToFire(), "straddleboard");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -101,6 +106,10 @@ public class AMEntityRegistry {
         EntitySpawnPlacementRegistry.register(ALLIGATOR_SNAPPING_TURTLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityAlligatorSnappingTurtle::canTurtleSpawn);
         EntitySpawnPlacementRegistry.register(MUNGUS, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityMungus::canMungusSpawn);
         EntitySpawnPlacementRegistry.register(MANTIS_SHRIMP, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityMantisShrimp::canMantisShrimpSpawn);
+        EntitySpawnPlacementRegistry.register(GUSTER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityGuster::canGusterSpawn);
+        EntitySpawnPlacementRegistry.register(WARPED_MOSCO, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
+        EntitySpawnPlacementRegistry.register(STRADDLER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityStraddler::canStraddlerSpawn);
+        EntitySpawnPlacementRegistry.register(STRADPOLE, EntitySpawnPlacementRegistry.PlacementType.IN_LAVA, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityStradpole::canStradpoleSpawn);
     }
 
         @SubscribeEvent
@@ -161,6 +170,9 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(MUNGUS, EntityMungus.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(MANTIS_SHRIMP, EntityMantisShrimp.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(GUSTER, EntityGuster.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(WARPED_MOSCO, EntityWarpedMosco.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(STRADDLER, EntityStraddler.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(STRADPOLE, EntityStradpole.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

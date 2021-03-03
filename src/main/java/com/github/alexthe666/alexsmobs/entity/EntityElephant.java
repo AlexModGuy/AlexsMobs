@@ -523,7 +523,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             this.setColor(null);
             return ActionResultType.SUCCESS;
-        } else if (owner && !this.isChested() && stack.getItem() == Blocks.CHEST.asItem()) {
+        } else if (owner && !this.isChested() && ItemTags.getCollection().get(AMTagRegistry.FORGE_WOODEN_CHESTS).contains(stack.getItem())) {
             this.setChested(true);
             this.playSound(SoundEvents.ENTITY_DONKEY_CHEST, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             if (!player.abilities.isCreativeMode) {

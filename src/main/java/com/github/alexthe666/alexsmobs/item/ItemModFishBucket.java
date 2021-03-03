@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
 import com.github.alexthe666.alexsmobs.entity.EntityLobster;
+import com.github.alexthe666.alexsmobs.entity.EntityStradpole;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -77,7 +78,9 @@ public class ItemModFishBucket extends BucketItem {
                 ((EntityBlobfish) entity).setSlimed(compoundnbt.getBoolean("Slimed"));
             }
         }
-
+        if (entity != null && entity instanceof EntityStradpole) {
+            ((EntityStradpole) entity).setFromBucket(true);
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

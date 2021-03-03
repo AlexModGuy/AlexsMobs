@@ -59,6 +59,9 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
 
     public static final Animation ANIMATION_LUNGE = Animation.create(23);
     public static final Animation ANIMATION_DEATHROLL = Animation.create(40);
+    public static final Predicate<Entity> NOT_CREEPER = (entity) -> {
+        return entity.isAlive() && !(entity instanceof CreeperEntity);
+    };
     private static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BYTE);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DESERT = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
@@ -82,10 +85,6 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     private boolean hasSpedUp = false;
     private int animationTick;
     private Animation currentAnimation;
-
-    public static final Predicate<Entity> NOT_CREEPER = (entity) -> {
-        return entity.isAlive() && !(entity instanceof CreeperEntity);
-    };
 
     protected EntityCrocodile(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -312,15 +311,19 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         if (this.getAnimation() == ANIMATION_DEATHROLL) {
             this.getNavigator().clearPath();
         }
-        if(this.isInLove() && this.getAttackTarget() != null){
+        if (this.isInLove() && this.getAttackTarget() != null) {
             this.setAttackTarget(null);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
     @Override
-    public boolean canRiderInteract(){
+    public boolean canRiderInteract() {
         return true;
+    }
+
+    public boolean shouldRiderSit() {
+        return false;
     }
 
     public boolean isOnSameTeam(Entity entityIn) {
@@ -471,18 +474,18 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)).setCallsForHelp());
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, PlayerEntity.class, true){
-            public boolean shouldExecute(){
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, PlayerEntity.class, true) {
+            public boolean shouldExecute() {
                 return !isChild() && !isTamed() && super.shouldExecute();
             }
         });
-        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CROCODILE_TARGETS))){
-            public boolean shouldExecute(){
+        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CROCODILE_TARGETS))) {
+            public boolean shouldExecute() {
                 return !isChild() && !isTamed() && super.shouldExecute();
             }
         });
-        this.targetSelector.addGoal(6, new EntityAINearestTarget3D(this, MonsterEntity.class, 180, false, true, NOT_CREEPER){
-            public boolean shouldExecute(){
+        this.targetSelector.addGoal(6, new EntityAINearestTarget3D(this, MonsterEntity.class, 180, false, true, NOT_CREEPER) {
+            public boolean shouldExecute() {
                 return !isChild() && isTamed() && super.shouldExecute();
             }
         });
@@ -510,22 +513,22 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        if(itemstack.getItem() == Items.NAME_TAG){
+        if (itemstack.getItem() == Items.NAME_TAG) {
             return super.func_230254_b_(player, hand);
         }
-        if(isTamed() && item.isFood() && item.getFood() != null && item.getFood().isMeat() && this.getHealth() < this.getMaxHealth()){
+        if (isTamed() && item.isFood() && item.getFood() != null && item.getFood().isMeat() && this.getHealth() < this.getMaxHealth()) {
             this.consumeItemFromStack(player, itemstack);
             this.heal(10);
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
             return ActionResultType.SUCCESS;
         }
         ActionResultType type = super.func_230254_b_(player, hand);
-        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack) ){
-            if(this.isSitting()){
+        if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
+            if (this.isSitting()) {
                 this.forcedSit = false;
                 this.setSitting(false);
                 return ActionResultType.SUCCESS;
-            }else{
+            } else {
                 this.forcedSit = true;
                 this.setSitting(true);
                 return ActionResultType.SUCCESS;
@@ -535,7 +538,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     }
 
     public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
-        if(!this.isChild()){
+        if (!this.isChild()) {
             super.setAttackTarget(entitylivingbaseIn);
         }
     }
@@ -597,7 +600,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
 
             if (serverplayerentity != null) {
                 serverplayerentity.addStat(Stats.ANIMALS_BRED);
-                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.targetMate, (AgeableEntity)null);
+                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.targetMate, null);
             }
 
             this.turtle.setHasEgg(true);
@@ -610,7 +613,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
 
         }
     }
-    
+
     static class LayEggGoal extends MoveToBlockGoal {
         private final EntityCrocodile turtle;
         private int digTime;
@@ -620,7 +623,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             this.turtle = turtle;
         }
 
-        public void resetTask(){
+        public void resetTask() {
             digTime = 0;
         }
 
@@ -639,7 +642,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             turtle.baskingTimer = -100;
             if (!this.turtle.isInWater() && this.getIsAboveDestination()) {
                 World world = this.turtle.world;
-                world.playSound((PlayerEntity)null, blockpos, SoundEvents.ENTITY_TURTLE_LAY_EGG, SoundCategory.BLOCKS, 0.3F, 0.9F + world.rand.nextFloat() * 0.2F);
+                world.playSound(null, blockpos, SoundEvents.ENTITY_TURTLE_LAY_EGG, SoundCategory.BLOCKS, 0.3F, 0.9F + world.rand.nextFloat() * 0.2F);
                 world.setBlockState(this.destinationBlock.up(), AMBlockRegistry.CROCODILE_EGG.getDefaultState().with(BlockCrocodileEgg.EGGS, Integer.valueOf(this.turtle.rand.nextInt(1) + 1)), 3);
                 this.turtle.setHasEgg(false);
                 this.turtle.setDigging(false);
@@ -649,7 +652,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         }
 
         protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
-            return !worldIn.isAirBlock(pos.up()) ? false : BlockCrocodileEgg.isProperHabitat(worldIn, pos);
+            return worldIn.isAirBlock(pos.up()) && BlockCrocodileEgg.isProperHabitat(worldIn, pos);
         }
     }
 }

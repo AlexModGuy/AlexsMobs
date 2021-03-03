@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.config;
 import com.github.alexthe666.citadel.math.Tuple2f;
 import com.google.common.collect.Lists;
 import cpw.mods.modlauncher.LaunchPluginHandler;
+import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -90,7 +91,14 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue mungusSpawnRolls;
     public final ForgeConfigSpec.IntValue mantisShrimpSpawnWeight;
     public final ForgeConfigSpec.IntValue mantisShrimpSpawnRolls;
-
+    public final ForgeConfigSpec.IntValue gusterSpawnWeight;
+    public final ForgeConfigSpec.IntValue gusterSpawnRolls;
+    public final ForgeConfigSpec.IntValue warpedMoscoSpawnWeight;
+    public final ForgeConfigSpec.IntValue warpedMoscoSpawnRolls;
+    public final ForgeConfigSpec.IntValue straddlerSpawnWeight;
+    public final ForgeConfigSpec.IntValue straddlerSpawnRolls;
+    public final ForgeConfigSpec.IntValue stradpoleSpawnWeight;
+    public final ForgeConfigSpec.IntValue stradpoleSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -102,6 +110,9 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue wanderingTraderOffers;
     public final ForgeConfigSpec.IntValue mungusBiomeTransformationType;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> mungusBiomeMatches;
+    public ForgeConfigSpec.BooleanValue limitGusterSpawnsToWeather;
+    public ForgeConfigSpec.BooleanValue warpedMoscoTransformation;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> warpedMoscoMobTriggers;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -119,7 +130,7 @@ public class CommonConfig {
         blobfishSpawnHeight = buildInt(builder, "blobfishSpawnHeight", "all", AMConfig.blobfishSpawnHeight, 0, 256, "Maximum world y-level that blobfish can spawn at");
         mimicubeSpawnInEndCity = buildBoolean(builder, "mimicubeSpawnInEndCity", "all", true, "Whether mimicubes spawns should be restricted solely to the end city structure or to whatever biome is specified in their respective biome config.");
         mimicreamRepair = buildBoolean(builder, "mimicreamRepair", "all", true, "Whether mimicream can be used to duplicate items.");
-        mimicreamBlacklist = builder.comment("Blacklist for items that mimicream cannot make a copy of. Ex: \"minecraft:stone_sword\", \"alexsmobs:blood_sprayer\"").defineList("mimicreamBlacklist", Lists.newArrayList("alexsmobs:blood_sprayer"), o -> o instanceof String);
+        mimicreamBlacklist = builder.comment("Blacklist for items that mimicream cannot make a copy of. Ex: \"minecraft:stone_sword\", \"alexsmobs:blood_sprayer\"").defineList("mimicreamBlacklist", Lists.newArrayList("alexsmobs:blood_sprayer", "alexsmobs:hemolymph_blaster"), o -> o instanceof String);
         raccoonStealFromChests = buildBoolean(builder, "raccoonStealFromChests", "all", true, "Whether wild raccoons steal food from chests.");
         fishOilMeme = buildBoolean(builder, "fishOilMeme", "all", true, "Whether fish oil gives players a special levitation effect.");
         soulVultureSpawnOnFossil = buildBoolean(builder, "soulVultureSpawnOnFossil", "all", true, "Whether soul vulture spawns should be restricted solely to the nether fossil structure or to whatever biome is specified in their respective biome config.");
@@ -127,6 +138,9 @@ public class CommonConfig {
         wanderingTraderOffers = buildBoolean(builder, "wanderingTraderOffers", "all", true, "Whether wandering traders offer items like acacia blossoms, mosquito larva, crocodile egg, etc.");
         mungusBiomeTransformationType = buildInt(builder, "mungusBiomeTransformationType", "all", AMConfig.mungusBiomeTransformationType, 0, 2, "0 = no mungus biome transformation. 1 = mungus changes blocks, but not chunk's biome. 2 = mungus transforms blocks and biome of chunk.");
         mungusBiomeMatches = builder.comment("List of all mungus mushrooms, biome transformations and surface blocks. Each is seperated by a |. Add an entry with a block registry name, biome registry name, and block registry name(for the ground).").defineList("mungusBiomeMatches", AMConfig.mungusBiomeMatches, o -> o instanceof String);
+        limitGusterSpawnsToWeather = buildBoolean(builder, "limitGusterSpawnsToWeather", "all", true, "Whether guster spawns are limited to when it is raining/thundering.");
+        warpedMoscoTransformation = buildBoolean(builder, "warpedMoscoTransformation", "all", true, "Whether Crimson Mosquitoes can transform into Warped Moscos if attacking a Mungus or any listed creature.");
+        warpedMoscoMobTriggers = builder.comment("List of extra(non mungus) mobs that will trigger a crimson mosquito to become a warped mosquito. Ex: \"minecraft:mooshroom\", \"alexsmobs:warped_toad\"").defineList("warpedMoscoMobTriggers", Lists.newArrayList(""), o -> o instanceof String);
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
@@ -145,9 +159,9 @@ public class CommonConfig {
         orcaSpawnWeight = buildInt(builder, "orcaSpawnWeight", "spawns", AMConfig.orcaSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         orcaSpawnRolls = buildInt(builder, "orcaSpawnRolls", "spawns", AMConfig.orcaSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         sunbirdSpawnWeight = buildInt(builder, "sunbirdSpawnWeight", "spawns", AMConfig.sunbirdSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
-        sunbirdSpawnRolls= buildInt(builder, "sunbirdSpawnRolls", "spawns", AMConfig.sunbirdSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        sunbirdSpawnRolls = buildInt(builder, "sunbirdSpawnRolls", "spawns", AMConfig.sunbirdSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         gorillaSpawnWeight = buildInt(builder, "gorillaSpawnWeight", "spawns", AMConfig.gorillaSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
-        gorillaSpawnRolls= buildInt(builder, "gorillaSpawnRolls", "spawns", AMConfig.gorillaSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        gorillaSpawnRolls = buildInt(builder, "gorillaSpawnRolls", "spawns", AMConfig.gorillaSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         crimsonMosquitoSpawnWeight = buildInt(builder, "crimsonMosquitoSpawnWeight", "spawns", AMConfig.crimsonMosquitoSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         crimsonMosquitoSpawnRolls = buildInt(builder, "crimsonMosquitoSpawnRolls", "spawns", AMConfig.crimsonMosquitoSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         rattlesnakeSpawnWeight = buildInt(builder, "rattlesnakeSpawnWeight", "spawns", AMConfig.rattlesnakeSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
@@ -196,17 +210,25 @@ public class CommonConfig {
         mungusSpawnRolls = buildInt(builder, "mungusSpawnRolls", "spawns", AMConfig.mungusSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         mantisShrimpSpawnWeight = buildInt(builder, "mantisShrimpSpawnWeight", "spawns", AMConfig.mantisShrimpSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         mantisShrimpSpawnRolls = buildInt(builder, "mantisShrimpSpawnRolls", "spawns", AMConfig.mantisShrimpSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        gusterSpawnWeight = buildInt(builder, "gusterSpawnWeight", "spawns", AMConfig.gusterSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        gusterSpawnRolls = buildInt(builder, "gusterSpawnRolls", "spawns", AMConfig.gusterSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        warpedMoscoSpawnWeight = buildInt(builder, "warpedMoscoSpawnWeight", "spawns", AMConfig.warpedMoscoSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn. NOTE: By default the warped mosco doesn't spawn in any biomes.");
+        warpedMoscoSpawnRolls = buildInt(builder, "warpedMoscoSpawnRolls", "spawns", AMConfig.warpedMoscoSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        straddlerSpawnWeight = buildInt(builder, "straddlerSpawnWeight", "spawns", AMConfig.straddlerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        straddlerSpawnRolls = buildInt(builder, "straddlerSpawnRolls", "spawns", AMConfig.straddlerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        stradpoleSpawnWeight = buildInt(builder, "stradpoleSpawnWeight", "spawns", AMConfig.stradpoleSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        stradpoleSpawnRolls = buildInt(builder, "stradpoleSpawnRolls", "spawns", AMConfig.stradpoleSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
     }
 
-    private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment){
+    private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment) {
         return builder.comment(comment).translation(name).define(name, defaultValue);
     }
 
-    private static ForgeConfigSpec.IntValue buildInt(ForgeConfigSpec.Builder builder, String name, String catagory, int defaultValue, int min, int max, String comment){
+    private static ForgeConfigSpec.IntValue buildInt(ForgeConfigSpec.Builder builder, String name, String catagory, int defaultValue, int min, int max, String comment) {
         return builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
     }
 
-    private static ForgeConfigSpec.DoubleValue buildDouble(ForgeConfigSpec.Builder builder, String name, String catagory, double defaultValue, double min, double max, String comment){
+    private static ForgeConfigSpec.DoubleValue buildDouble(ForgeConfigSpec.Builder builder, String name, String catagory, double defaultValue, double min, double max, String comment) {
         return builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
     }
 }

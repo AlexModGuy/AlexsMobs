@@ -40,6 +40,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
@@ -52,23 +53,24 @@ import java.util.Random;
 import java.util.UUID;
 
 public class EntityGorilla extends TameableEntity implements IAnimatedEntity, ITargetsDroppedItems {
-    private int animationTick;
-    private Animation currentAnimation;
+    public static final Animation ANIMATION_BREAKBLOCK_R = Animation.create(20);
+    public static final Animation ANIMATION_BREAKBLOCK_L = Animation.create(20);
+    public static final Animation ANIMATION_POUNDCHEST = Animation.create(40);
+    public static final Animation ANIMATION_ATTACK = Animation.create(20);
     protected static final EntitySize SILVERBACK_SIZE = EntitySize.fixed(1.15F, 1.85F);
     private static final DataParameter<Boolean> SILVERBACK = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> STANDING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> EATING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
-    public static final Animation ANIMATION_BREAKBLOCK_R = Animation.create(20);
-    public static final Animation ANIMATION_BREAKBLOCK_L = Animation.create(20);
-    public static final Animation ANIMATION_POUNDCHEST = Animation.create(40);
-    public static final Animation ANIMATION_ATTACK = Animation.create(20);
     public int maxStandTime = 75;
-    private int standingTime = 0;
     public float prevStandProgress;
     public float prevSitProgress;
     public float standProgress;
     public float sitProgress;
+    public boolean forcedSit = false;
+    private int animationTick;
+    private Animation currentAnimation;
+    private int standingTime = 0;
     private int eatingTime;
     @Nullable
     private EntityGorilla caravanHead;
@@ -78,7 +80,6 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     private int maxSitTime = 75;
     @Nullable
     private UUID bananaThrowerID = null;
-    public boolean forcedSit = false;
     private boolean hasSilverbackAttributes = false;
 
     protected EntityGorilla(EntityType type, World worldIn) {
@@ -87,9 +88,23 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         this.setPathPriority(PathNodeType.LEAVES, 0.0F);
     }
 
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 40.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 12.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    public static boolean isBanana(ItemStack stack) {
+        return ItemTags.getCollection().get(AMTagRegistry.BANANAS).contains(stack.getItem());
+    }
+
+    public static boolean canGorillaSpawn(EntityType<EntityGorilla> gorilla, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+    }
+
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.gorillaSpawnRolls, this.getRNG(), spawnReasonIn);
     }
+
     public boolean isBreedingItem(ItemStack stack) {
         Item item = stack.getItem();
         return isTamed() && isBanana(stack);
@@ -148,7 +163,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        if(this.getAnimation() == NO_ANIMATION){
+        if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_ATTACK);
         }
         return true;
@@ -164,7 +179,6 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         super.travel(vec3d);
     }
 
-
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (spawnDataIn instanceof AgeableEntity.AgeableData) {
@@ -172,7 +186,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             if (lvt_6_1_.getIndexInGroup() == 0) {
                 this.setSilverback(true);
             }
-        }else{
+        } else {
             this.setSilverback(this.getRNG().nextBoolean());
         }
 
@@ -180,14 +194,14 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     @Nullable
-    public EntityGorilla getNearestSilverback(IWorld world, double dist){
-        List<EntityGorilla> list = world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(dist, dist/2, dist));
-        if(list.isEmpty()){
+    public EntityGorilla getNearestSilverback(IWorld world, double dist) {
+        List<EntityGorilla> list = world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(dist, dist / 2, dist));
+        if (list.isEmpty()) {
             return null;
         }
         EntityGorilla gorilla = null;
         double d0 = Double.MAX_VALUE;
-        for(EntityGorilla gorrila2 : list) {
+        for (EntityGorilla gorrila2 : list) {
             if (gorrila2.isSilverback()) {
                 double d1 = this.getDistanceSq(gorrila2);
                 if (!(d1 > d0)) {
@@ -207,8 +221,8 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         if (this.isPassenger(passenger)) {
             this.setSitting(false);
             passenger.rotationYaw = this.rotationYaw;
-            if(passenger instanceof EntityGorilla){
-                EntityGorilla babyGorilla = (EntityGorilla)passenger;
+            if (passenger instanceof EntityGorilla) {
+                EntityGorilla babyGorilla = (EntityGorilla) passenger;
                 babyGorilla.setStanding(this.isStanding());
                 babyGorilla.setSitting(this.isSitting());
             }
@@ -227,7 +241,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     public double getMountedYOffset() {
-        return (double)this.getHeight() * 0.55F * getGorillaScale() *(isSilverback() ? 0.75F : 1.0F);
+        return (double) this.getHeight() * 0.55F * getGorillaScale() * (isSilverback() ? 0.75F : 1.0F);
     }
 
     @Override
@@ -255,12 +269,12 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         this.dataManager.set(STANDING, Boolean.valueOf(standing));
     }
 
-    public void setSitting(boolean sit) {
-        this.dataManager.set(SITTING, Boolean.valueOf(sit));
-    }
-
     public boolean isSitting() {
         return this.dataManager.get(SITTING).booleanValue();
+    }
+
+    public void setSitting(boolean sit) {
+        this.dataManager.set(SITTING, Boolean.valueOf(sit));
     }
 
     public boolean isEating() {
@@ -287,29 +301,25 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         this.forcedSit = compound.getBoolean("ForcedToSit");
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 40.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 12.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
-    }
-
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        if(itemstack.getItem() == Items.NAME_TAG){
+        if (itemstack.getItem() == Items.NAME_TAG) {
             return super.func_230254_b_(player, hand);
         }
-        if(isTamed() && isBanana(itemstack) && this.getHealth() < this.getMaxHealth()){
+        if (isTamed() && isBanana(itemstack) && this.getHealth() < this.getMaxHealth()) {
             this.heal(5);
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
             return ActionResultType.SUCCESS;
         }
         ActionResultType type = super.func_230254_b_(player, hand);
-        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack) ){
-            if(this.isSitting()){
+        if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
+            if (this.isSitting()) {
                 this.forcedSit = false;
                 this.setSitting(false);
                 return ActionResultType.SUCCESS;
-            }else{
+            } else {
                 this.forcedSit = true;
                 this.setSitting(true);
                 return ActionResultType.SUCCESS;
@@ -326,11 +336,11 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     @Override
     public void setAnimation(Animation animation) {
         currentAnimation = animation;
-        if(animation == ANIMATION_POUNDCHEST){
+        if (animation == ANIMATION_POUNDCHEST) {
             this.maxStandTime = 45;
             this.setStanding(true);
         }
-        if(animation == ANIMATION_ATTACK){
+        if (animation == ANIMATION_ATTACK) {
             this.maxStandTime = 10;
             this.setStanding(true);
         }
@@ -338,45 +348,45 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     public void tick() {
         super.tick();
-        if(!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && this.canTargetItem(this.getHeldItem(Hand.MAIN_HAND))){
+        if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && this.canTargetItem(this.getHeldItem(Hand.MAIN_HAND))) {
             this.setEating(true);
             this.setSitting(true);
             this.setStanding(false);
         }
-        if(isEating() && !this.canTargetItem(this.getHeldItem(Hand.MAIN_HAND))){
+        if (isEating() && !this.canTargetItem(this.getHeldItem(Hand.MAIN_HAND))) {
             this.setEating(false);
             eatingTime = 0;
-            if(!forcedSit){
+            if (!forcedSit) {
                 this.setSitting(true);
             }
         }
-        if(isEating()){
+        if (isEating()) {
             eatingTime++;
-            if(!ItemTags.LEAVES.contains(this.getHeldItemMainhand().getItem())){
-                for(int i = 0; i < 3; i++){
+            if (!ItemTags.LEAVES.contains(this.getHeldItemMainhand().getItem())) {
+                for (int i = 0; i < 3; i++) {
                     double d2 = this.rand.nextGaussian() * 0.02D;
                     double d0 = this.rand.nextGaussian() * 0.02D;
                     double d1 = this.rand.nextGaussian() * 0.02D;
                     this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, this.getHeldItem(Hand.MAIN_HAND)), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, this.getPosY() + this.getHeight() * 0.5F + (double) (this.rand.nextFloat() * this.getHeight() * 0.5F), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, d0, d1, d2);
                 }
             }
-            if(eatingTime % 5 == 0){
+            if (eatingTime % 5 == 0) {
                 this.playSound(SoundEvents.ENTITY_PANDA_EAT, this.getSoundVolume(), this.getSoundPitch());
             }
-            if(eatingTime > 100){
+            if (eatingTime > 100) {
                 ItemStack stack = this.getHeldItem(Hand.MAIN_HAND);
-                if(!stack.isEmpty()){
+                if (!stack.isEmpty()) {
                     this.heal(4);
-                    if(isBanana(stack) && bananaThrowerID != null){
-                        if(getRNG().nextFloat() < 0.3F){
+                    if (isBanana(stack) && bananaThrowerID != null) {
+                        if (getRNG().nextFloat() < 0.3F) {
                             this.setTamed(true);
                             this.setOwnerId(this.bananaThrowerID);
-                            this.world.setEntityState(this, (byte)7);
-                        }else{
-                            this.world.setEntityState(this, (byte)6);
+                            this.world.setEntityState(this, (byte) 7);
+                        } else {
+                            this.world.setEntityState(this, (byte) 6);
                         }
                     }
-                    if(stack.hasContainerItem()){
+                    if (stack.hasContainerItem()) {
                         this.entityDropItem(stack.getContainerItem());
                     }
                     stack.shrink(1);
@@ -398,7 +408,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         if (!this.isStanding() && standProgress > 0) {
             standProgress -= 1;
         }
-        if(this.isPassenger() && this.getRidingEntity() instanceof EntityGorilla && !this.isChild()){
+        if (this.isPassenger() && this.getRidingEntity() instanceof EntityGorilla && !this.isChild()) {
             this.dismount();
         }
         if (isStanding() && ++standingTime > maxStandTime) {
@@ -406,7 +416,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             standingTime = 0;
             maxStandTime = 75 + rand.nextInt(50);
         }
-        if (isSitting()  && !forcedSit && ++sittingTime > maxSitTime) {
+        if (isSitting() && !forcedSit && ++sittingTime > maxSitTime) {
             this.setSitting(false);
             sittingTime = 0;
             maxSitTime = 75 + rand.nextInt(50);
@@ -418,26 +428,26 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             maxSitTime = 300 + rand.nextInt(250);
             this.setSitting(true);
         }
-        if(this.forcedSit && !this.isBeingRidden() && this.isTamed()){
+        if (this.forcedSit && !this.isBeingRidden() && this.isTamed()) {
             this.setSitting(true);
         }
-        if(this.isSilverback() && rand.nextInt(600) == 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && sitProgress == 0 && !this.isAIDisabled() && this.getHeldItemMainhand().isEmpty()){
+        if (this.isSilverback() && rand.nextInt(600) == 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && sitProgress == 0 && !this.isAIDisabled() && this.getHeldItemMainhand().isEmpty()) {
             this.setAnimation(ANIMATION_POUNDCHEST);
         }
-        if(!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
-            float f1 = this.rotationYaw * ((float)Math.PI / 180F);
-            this.setMotion(this.getMotion().add((double)(-MathHelper.sin(f1) * 0.02F), 0.0D, (double)(MathHelper.cos(f1) * 0.02F)));
+        if (!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
+            float f1 = this.rotationYaw * ((float) Math.PI / 180F);
+            this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.02F, 0.0D, MathHelper.cos(f1) * 0.02F));
             getAttackTarget().applyKnockback(1F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
             this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }
-        if(isSilverback() && !isChild() && !hasSilverbackAttributes){
+        if (isSilverback() && !isChild() && !hasSilverbackAttributes) {
             hasSilverbackAttributes = true;
             recalculateSize();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100F);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(20F);
             this.heal(100F);
         }
-        if(!isSilverback() && !isChild() && hasSilverbackAttributes){
+        if (!isSilverback() && !isChild() && hasSilverbackAttributes) {
             hasSilverbackAttributes = false;
             recalculateSize();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40F);
@@ -452,7 +462,6 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         return animationTick;
     }
 
-
     @Override
     public void setAnimationTick(int i) {
         animationTick = i;
@@ -460,10 +469,6 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     public boolean canTargetItem(ItemStack stack) {
         return ItemTags.getCollection().get(AMTagRegistry.GORILLA_FOODSTUFFS).contains(stack.getItem());
-    }
-
-    public static boolean isBanana(ItemStack stack){
-        return ItemTags.getCollection().get(AMTagRegistry.BANANAS).contains(stack.getItem());
     }
 
     @Override
@@ -474,11 +479,10 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
         }
         this.setHeldItem(Hand.MAIN_HAND, duplicate);
-        if(EntityGorilla.isBanana(targetEntity.getItem()) && !this.isTamed()){
+        if (EntityGorilla.isBanana(targetEntity.getItem()) && !this.isTamed()) {
             bananaThrowerID = targetEntity.getThrowerId();
         }
     }
-
 
     @Override
     public Animation[] getAnimations() {
@@ -517,14 +521,13 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         return this.caravanHead;
     }
 
-
     public float getGorillaScale() {
         return isChild() ? 0.5F : isSilverback() ? 1.3F : 1.0F;
     }
 
-    public static boolean canGorillaSpawn(EntityType<EntityGorilla> gorilla, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
-        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+    public boolean isDonkeyKong() {
+        String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
+        return s != null && (s.toLowerCase().contains("donkey") && s.toLowerCase().contains("kong") || s.toLowerCase().equals("dk"));
     }
 
     private class AIWalkIdle extends RandomWalkingGoal {

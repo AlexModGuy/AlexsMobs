@@ -117,5 +117,17 @@ public class AMWorldRegistry {
         if (BiomeConfig.test(BiomeConfig.mantisShrimp, biome) && AMConfig.mantisShrimpSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.MANTIS_SHRIMP, AMConfig.mantisShrimpSpawnWeight, 1, 4));
         }
+        if (BiomeConfig.test(BiomeConfig.guster, biome) && AMConfig.gusterSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.GUSTER, AMConfig.gusterSpawnWeight, 1, 2));
+        }
+        if (BiomeConfig.test(BiomeConfig.warpedMosco, biome) && AMConfig.warpedMoscoSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.WARPED_MOSCO, AMConfig.warpedMoscoSpawnWeight, 1, 1));
+        }
+        if (BiomeConfig.test(BiomeConfig.straddler, biome) && AMConfig.straddlerSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.STRADDLER, AMConfig.straddlerSpawnWeight, 1, 3));
+        }
+        if (BiomeConfig.test(BiomeConfig.stradpole, biome) && AMConfig.stradpoleSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.STRADPOLE, AMConfig.stradpoleSpawnWeight, 1, 1));
+        }
     }
 }

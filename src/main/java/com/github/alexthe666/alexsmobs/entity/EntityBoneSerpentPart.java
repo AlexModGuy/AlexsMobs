@@ -120,6 +120,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
 
     @Override
     public void tick() {
+        inPortal = false;
         if (this.ticksExisted > 10) {
             Entity parent = getParent();
             recalculateSize();

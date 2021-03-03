@@ -14,6 +14,7 @@ public class AMParticleRegistry {
 
     public static final BasicParticleType GUSTER_SAND_SPIN = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_spin");
     public static final BasicParticleType GUSTER_SAND_SHOT = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_shot");
+    public static final BasicParticleType HEMOLYMPH = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:hemolymph");
 
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

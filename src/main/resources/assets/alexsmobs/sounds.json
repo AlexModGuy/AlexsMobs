@@ -203,7 +203,6 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.hummingbird_loop"
   },
-
   "orca_idle": {
     "category": "neutral",
     "sounds": [
@@ -1068,5 +1067,93 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.mantis_shrimp_hurt"
+  },
+  "guster_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:guster_idle_0"
+      },
+      {
+        "name": "alexsmobs:guster_idle_1"
+      },
+      {
+        "name": "alexsmobs:guster_idle_2"
+      },
+      {
+        "name": "alexsmobs:guster_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.guster_idle"
+  },
+  "guster_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:guster_hurt_0"
+      },
+      {
+        "name": "alexsmobs:guster_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.guster_hurt"
+
+  },
+  "warped_mosco_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:warped_mosco_idle_0"
+      },
+      {
+        "name": "alexsmobs:warped_mosco_idle_1"
+      },
+      {
+        "name": "alexsmobs:warped_mosco_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.warped_mosco_idle"
+  },
+  "warped_mosco_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:warped_mosco_hurt_0"
+      },
+      {
+        "name": "alexsmobs:warped_mosco_hurt_1"
+      },
+      {
+        "name": "alexsmobs:warped_mosco_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.warped_mosco_hurt"
+  },
+  "straddler_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:straddler_idle_0"
+      },
+      {
+        "name": "alexsmobs:straddler_idle_1"
+      },
+      {
+        "name": "alexsmobs:straddler_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.straddler_idle"
+  },
+  "straddler_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:straddler_hurt_0"
+      },
+      {
+        "name": "alexsmobs:straddler_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.straddler_hurt"
   }
 }

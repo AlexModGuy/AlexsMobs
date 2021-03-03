@@ -64,6 +64,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     private static final DataParameter<Boolean> REVERTING = EntityDataManager.createKey(EntityMungus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> MUSHROOM_COUNT = EntityDataManager.createKey(EntityMungus.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> SACK_SWELL = EntityDataManager.createKey(EntityMungus.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> EXPLOSION_DISABLED = EntityDataManager.createKey(EntityMungus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Optional<BlockState>> MUSHROOM_STATE = EntityDataManager.createKey(EntityMungus.class, DataSerializers.OPTIONAL_BLOCK_STATE);
     private static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
     private static HashMap<String, String> MUSHROOM_TO_BIOME = new HashMap<>();
@@ -72,11 +73,45 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     public float prevSwellProgress = 0;
     public float swellProgress = 0;
     private int beamCounter = 0;
+    private int mosquitoAttackCooldown = 0;
     private boolean hasExploded;
 
     protected EntityMungus(EntityType<? extends AnimalEntity> type, World worldIn) {
         super(type, worldIn);
         initBiomeData();
+    }
+
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    public static boolean canMungusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.MUNGUS_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock;
+    }
+
+    public static BlockState getMushroomBlockstate(Item item) {
+        if (item instanceof BlockItem) {
+            if (MUSHROOM_TO_BIOME.containsKey(item.getRegistryName().toString())) {
+                return ((BlockItem) item).getBlock().getDefaultState();
+
+            }
+        }
+        return null;
+    }
+
+    private static void initBiomeData() {
+        if (!initBiomeData || MUSHROOM_TO_BIOME.isEmpty()) {
+            initBiomeData = true;
+            for (String str : AMConfig.mungusBiomeMatches) {
+                String[] split = str.split("\\|");
+                if (split.length >= 2) {
+                    MUSHROOM_TO_BIOME.put(split[0], split[1]);
+                    MUSHROOM_TO_BLOCK.put(split[0], split[2]);
+                }
+            }
+        }
+
     }
 
     protected SoundEvent getAmbientSound() {
@@ -91,47 +126,12 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         return AMSoundRegistry.MUNGUS_HURT;
     }
 
-
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
-    }
-
-
-    public static boolean canMungusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.MUNGUS_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
-        return spawnBlock;
-    }
-
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.mungusSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
-
-    public static BlockState getMushroomBlockstate(Item item) {
-        if(item instanceof BlockItem){
-            if(MUSHROOM_TO_BIOME.containsKey(item.getRegistryName().toString())){
-                return ((BlockItem) item).getBlock().getDefaultState();
-
-            }
-        }
-        return null;
-    }
-
-    private static void initBiomeData(){
-        if(!initBiomeData || MUSHROOM_TO_BIOME.isEmpty()){
-            initBiomeData = true;
-            for(String str : AMConfig.mungusBiomeMatches){
-                String[] split = str.split("\\|");
-                if(split.length >= 2){
-                    MUSHROOM_TO_BIOME.put(split[0], split[1]);
-                    MUSHROOM_TO_BLOCK.put(split[0], split[2]);
-                }
-            }
-        }
-
-    }
-
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, new PanicGoal(this, 1.25D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1, Ingredient.fromItems(), false) {
@@ -140,7 +140,6 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
             }
         });
         this.goalSelector.addGoal(5, new AITargetMushrooms());
-        this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 60, 1.0D, 14, 7));
         this.goalSelector.addGoal(8, new LookAtGoal(this, LivingEntity.class, 15.0F));
@@ -151,21 +150,30 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     public void baseTick() {
         super.baseTick();
         this.prevSwellProgress = swellProgress;
-        if(this.isReverting() && AMConfig.mungusBiomeTransformationType == 2){
+        if (this.isReverting() && AMConfig.mungusBiomeTransformationType == 2) {
             swellProgress += 0.5F;
-            if(swellProgress >= 10){
+            if (swellProgress >= 10) {
                 explode();
                 swellProgress = 0;
                 this.dataManager.set(REVERTING, false);
             }
-        }else if(isAlive() && swellProgress > 0F){
+        } else if (isAlive() && swellProgress > 0F) {
             swellProgress -= 1F;
+        }
+        if(dataManager.get(EXPLOSION_DISABLED)){
+            if(mosquitoAttackCooldown < 0){
+                mosquitoAttackCooldown++;
+            }
+            if(mosquitoAttackCooldown > 200){
+                mosquitoAttackCooldown = 0;
+                dataManager.set(EXPLOSION_DISABLED, false);
+            }
         }
     }
 
     protected void onDeathUpdate() {
         super.onDeathUpdate();
-        if (this.getMushroomCount() >= 5 && AMConfig.mungusBiomeTransformationType > 0 && !this.isChild()) {
+        if (this.getMushroomCount() >= 5 && AMConfig.mungusBiomeTransformationType > 0 && !this.isChild() && !this.dataManager.get(EXPLOSION_DISABLED)) {
             this.swellProgress++;
             if (this.deathTime == 20 && !hasExploded) {
                 hasExploded = true;
@@ -174,8 +182,8 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         }
     }
 
-    private void explode(){
-        for (int i = 0; i < 14; i++) {
+    private void explode() {
+        for (int i = 0; i < 5; i++) {
             float r1 = 6F * (rand.nextFloat() - 0.5F);
             float r2 = 2F * (rand.nextFloat() - 0.5F);
             float r3 = 6F * (rand.nextFloat() - 0.5F);
@@ -192,7 +200,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         BlockState transformState = Blocks.MYCELIUM.getDefaultState();
         Biome biome = world.func_241828_r().getRegistry(Registry.BIOME_KEY).getValueForKey(Biomes.MUSHROOM_FIELDS);
         ITag<Block> transformMatches = BlockTags.getCollection().get(AMTagRegistry.MUNGUS_REPLACE_MUSHROOM);
-        if(this.getMushroomState() != null) {
+        if (this.getMushroomState() != null) {
             String mushroomKey = this.getMushroomState().getBlock().getRegistryName().toString();
             if (MUSHROOM_TO_BLOCK.containsKey(mushroomKey)) {
                 Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MUSHROOM_TO_BLOCK.get(mushroomKey)));
@@ -217,7 +225,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
             transformBiome(center, biome);
         }
         this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, this.getSoundVolume(), this.getSoundPitch());
-        if(!isReverting()){
+        if (!isReverting()) {
             BlockPos.getAllInBox(center.add(-j, -k, -l), center.add(j, k, l)).forEach(blockpos -> {
                 if (blockpos.distanceSq(center) <= ffDouble) {
                     if (world.rand.nextFloat() > (float) blockpos.distanceSq(center) / ff) {
@@ -233,49 +241,43 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         }
     }
 
+    public void disableExplosion(){
+        this.dataManager.set(EXPLOSION_DISABLED, true);
+    }
+
     private Biome getBiomeKeyFromShroom() {
         Registry<Biome> registry = this.world.func_241828_r().getRegistry(Registry.BIOME_KEY);
         BlockState state = this.getMushroomState();
-        if(state == null){
+        if (state == null) {
             return null;
         }
         String blockRegName = state.getBlock().getRegistryName().toString();
         String str = MUSHROOM_TO_BIOME.get(blockRegName);
-        if(str != null){
+        if (str != null) {
             return registry.getOptional(new ResourceLocation(str)).orElse(null);
         }
         return null;
     }
 
-    private int getBiomeOptionFromMushroom() {
-        if (this.getMushroomState() != null && this.getMushroomState().getBlock() == Blocks.CRIMSON_FUNGUS) {
-            return 1;
-        }
-        if (this.getMushroomState() != null && this.getMushroomState().getBlock() == Blocks.WARPED_FUNGUS) {
-            return 2;
-        }
-        return 0;
-    }
-
     private void transformBiome(BlockPos pos, Biome biome) {
         Chunk chunk = world.getChunkAt(pos);
         BiomeContainer container = chunk.getBiomes();
-        if(this.dataManager.get(REVERTING)){
+        if (this.dataManager.get(REVERTING)) {
             int lvt_4_1_ = chunk.getPos().getXStart() >> 2;
             int lvt_5_1_ = chunk.getPos().getZStart() >> 2;
-            ChunkGenerator chunkgenerator = ((ServerWorld)world).getChunkProvider().getChunkGenerator();
+            ChunkGenerator chunkgenerator = ((ServerWorld) world).getChunkProvider().getChunkGenerator();
             Biome b = null;
-            for(int lvt_6_1_ = 0; lvt_6_1_ < container.biomes.length; ++lvt_6_1_) {
+            for (int lvt_6_1_ = 0; lvt_6_1_ < container.biomes.length; ++lvt_6_1_) {
                 int lvt_7_1_ = lvt_6_1_ & BiomeContainer.HORIZONTAL_MASK;
                 int lvt_8_1_ = lvt_6_1_ >> WIDTH_BITS + WIDTH_BITS & BiomeContainer.VERTICAL_MASK;
                 int lvt_9_1_ = lvt_6_1_ >> WIDTH_BITS & BiomeContainer.HORIZONTAL_MASK;
                 b = chunkgenerator.getBiomeProvider().getNoiseBiome(lvt_4_1_ + lvt_7_1_, lvt_8_1_, lvt_5_1_ + lvt_9_1_);
                 container.biomes[lvt_6_1_] = b;
             }
-            if(b != null && !world.isRemote){
+            if (b != null && !world.isRemote) {
                 AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getEntityId(), pos.getX(), pos.getZ(), b.getRegistryName().toString()));
             }
-        }else{
+        } else {
             if (biome == null) {
                 return;
             }
@@ -304,7 +306,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         ActionResultType type = super.func_230254_b_(player, hand);
-        if(itemstack.getItem() == Items.POISONOUS_POTATO && !this.isChild()){
+        if (itemstack.getItem() == Items.POISONOUS_POTATO && !this.isChild()) {
             this.dataManager.set(REVERTING, true);
             consumeItemFromStack(player, itemstack);
             return ActionResultType.SUCCESS;
@@ -340,6 +342,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         this.getDataManager().register(TARGETED_BLOCK_POS, Optional.empty());
         this.dataManager.register(ALT_ORDER_MUSHROOMS, Boolean.valueOf(false));
         this.dataManager.register(REVERTING, Boolean.valueOf(false));
+        this.dataManager.register(EXPLOSION_DISABLED, Boolean.valueOf(false));
         this.dataManager.register(MUSHROOM_COUNT, 0);
         this.dataManager.register(SACK_SWELL, 0);
     }
@@ -387,7 +390,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
                 this.getLookController().tick();
                 double d5 = 1.0F;
                 double eyeHeight = this.getPosY() + 1.0F;
-                if(beamCounter % 20 == 0){
+                if (beamCounter % 20 == 0) {
                     this.playSound(AMSoundRegistry.MUNGUS_LASER_LOOP, this.getSoundPitch(), this.getSoundVolume());
                 }
                 beamCounter++;
@@ -561,7 +564,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         world.playMovingSound(null, this, SoundEvents.ENTITY_SHEEP_SHEAR, category, 1.0F, 1.0F);
         if (!world.isRemote() && this.getMushroomState() != null && this.getMushroomCount() > 0) {
             this.setMushroomCount(this.getMushroomCount() - 1);
-            if(this.getMushroomCount() <= 0){
+            if (this.getMushroomCount() <= 0) {
                 this.setMushroomState(null);
                 this.setBeamTarget(null);
                 beamCounter = Math.min(-1200, beamCounter);
@@ -576,7 +579,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         world.playMovingSound(null, this, SoundEvents.ENTITY_SHEEP_SHEAR, player == null ? SoundCategory.BLOCKS : SoundCategory.PLAYERS, 1.0F, 1.0F);
         if (!world.isRemote() && this.getMushroomState() != null && this.getMushroomCount() > 0) {
             this.setMushroomCount(this.getMushroomCount() - 1);
-            if(this.getMushroomCount() <= 0){
+            if (this.getMushroomCount() <= 0) {
                 this.setMushroomState(null);
                 this.setBeamTarget(null);
                 beamCounter = Math.min(-1200, beamCounter);
@@ -589,6 +592,11 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     public boolean isReverting() {
         return dataManager.get(REVERTING);
     }
+
+    public boolean isWarpedMoscoReady() {
+        return this.getMushroomState() == Blocks.WARPED_FUNGUS.getDefaultState() && this.getMushroomCount() >= 5;
+    }
+
 
     class AITargetMushrooms extends Goal {
         private final int searchLength;
