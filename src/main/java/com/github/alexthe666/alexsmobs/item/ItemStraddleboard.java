@@ -1,8 +1,9 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntityStraddleboard;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
@@ -34,6 +35,14 @@ public class ItemStraddleboard extends Item implements IDyeableArmorItem {
         return lvt_2_1_ != null && lvt_2_1_.contains("color", 99) ? lvt_2_1_.getInt("color") : 0XADC3D7;
     }
 
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return super.canApplyAtEnchantingTable(stack, enchantment) && enchantment != Enchantments.UNBREAKING && enchantment != Enchantments.MENDING;
+    }
+
+    public int getItemEnchantability() {
+        return 1;
+    }
+
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.ANY);
@@ -46,8 +55,8 @@ public class ItemStraddleboard extends Item implements IDyeableArmorItem {
             if (!list.isEmpty()) {
                 Vector3d vector3d1 = playerIn.getEyePosition(1.0F);
 
-                for(Entity entity : list) {
-                    AxisAlignedBB axisalignedbb = entity.getBoundingBox().grow((double)entity.getCollisionBorderSize());
+                for (Entity entity : list) {
+                    AxisAlignedBB axisalignedbb = entity.getBoundingBox().grow(entity.getCollisionBorderSize());
                     if (axisalignedbb.contains(vector3d1)) {
                         return ActionResult.resultPass(itemstack);
                     }
@@ -57,6 +66,7 @@ public class ItemStraddleboard extends Item implements IDyeableArmorItem {
             if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
                 EntityStraddleboard boatentity = new EntityStraddleboard(worldIn, raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z);
                 boatentity.setDefaultColor(!this.hasColor(itemstack));
+                boatentity.setItemStack(itemstack.copy());
                 boatentity.setColor(this.getColor(itemstack));
                 boatentity.rotationYaw = playerIn.rotationYaw;
                 if (!worldIn.hasNoCollisions(boatentity, boatentity.getBoundingBox().grow(-0.1D))) {

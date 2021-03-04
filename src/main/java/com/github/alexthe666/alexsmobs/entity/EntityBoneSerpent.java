@@ -43,12 +43,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class EntityBoneSerpent extends MonsterEntity {
 
     private static final DataParameter<Optional<UUID>> CHILD_UUID = EntityDataManager.createKey(EntityBoneSerpent.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    private static final Predicate<LivingEntity> NOT_RIDING_STRADDLEBOARD_FRIENDLY = (entity) -> {
+        return entity.isAlive() && (entity.getRidingEntity() == null || !(entity.getRidingEntity() instanceof EntityStraddleboard) || !((EntityStraddleboard)entity.getRidingEntity()).shouldSerpentFriend());
+    };;
+    private static final Predicate<EntityStraddleboard> STRADDLEBOARD_FRIENDLY = (entity) -> {
+        return entity.isBeingRidden() && entity.shouldSerpentFriend();
+    };;
+
     public int jumpCooldown = 0;
     private boolean isLandNavigator;
+    private int boardCheckCooldown = 0;
+    private EntityStraddleboard boardToBoast = null;
 
     protected EntityBoneSerpent(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -141,11 +151,11 @@ public class EntityBoneSerpent extends MonsterEntity {
         this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
         if(!AMConfig.neutralBoneSerpents){
-            this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
-            this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
+            this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, 10, true, false, NOT_RIDING_STRADDLEBOARD_FRIENDLY));
+            this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, 10, true, false, NOT_RIDING_STRADDLEBOARD_FRIENDLY));
         }
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, WitherSkeletonEntity.class, true));
-        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, EntitySoulVulture.class, true));
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, WitherSkeletonEntity.class, 10, true, false, NOT_RIDING_STRADDLEBOARD_FRIENDLY));
+        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, EntitySoulVulture.class, 10, true, false, NOT_RIDING_STRADDLEBOARD_FRIENDLY));
     }
 
     public void travel(Vector3d travelVector) {
@@ -257,8 +267,40 @@ public class EntityBoneSerpent extends MonsterEntity {
                     }
                     world.addEntity(part);
                 }
-            } else {
+            }
+        }
+        if(!world.isRemote){
+            if(boardCheckCooldown <= 0){
+                boardCheckCooldown = 100 + rand.nextInt(150);
+                List<EntityStraddleboard> list = this.world.getEntitiesWithinAABB(EntityStraddleboard.class, this.getBoundingBox().grow(100, 15, 100), STRADDLEBOARD_FRIENDLY);
+                EntityStraddleboard closestBoard = null;
+                for(EntityStraddleboard board : list){
+                    if(closestBoard == null || this.getDistance(closestBoard) > this.getDistance(board)){
+                        closestBoard = board;
+                    }
+                }
+                boardToBoast = closestBoard;
+            }else{
+                boardCheckCooldown--;
+            }
+            if(boardToBoast != null){
+                if(this.getDistance(boardToBoast) > 200){
+                    boardToBoast = null;
+                }else{
+                    if((this.isInLava() || this.isInWater()) && this.getDistance(boardToBoast) < 15 && jumpCooldown == 0){
+                        float up = 0.7F + this.getRNG().nextFloat() * 0.8F;
+                        Vector3d vector3d1 = this.getLookVec();
+                        this.setMotion(this.getMotion().add((double) vector3d1.getX() * 0.6D, up, (double) vector3d1.getY() * 0.6D));
+                        this.getNavigator().clearPath();
+                        this.jumpCooldown = this.getRNG().nextInt(32) + 32;
+                    }
+                    if(this.getDistance(boardToBoast) > 5){
+                        this.getNavigator().tryMoveToEntityLiving(boardToBoast, 1.5F);
 
+                    }else{
+                        this.getNavigator().clearPath();
+                    }
+                }
             }
         }
     }

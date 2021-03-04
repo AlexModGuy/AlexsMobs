@@ -1,9 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.LilyPadBlock;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +18,8 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -35,8 +40,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 
 public class EntityStraddleboard extends Entity implements IJumpingMount {
+    private static final DataParameter<ItemStack> ITEMSTACK = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.ITEMSTACK);
     private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.VARINT);
     private static final DataParameter<Float> DAMAGE_TAKEN = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> ROCKING_TICKS = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.VARINT);
@@ -90,6 +95,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
 
     protected void registerData() {
         this.dataManager.register(TIME_SINCE_HIT, 0);
+        this.dataManager.register(ITEMSTACK, new ItemStack(AMItemRegistry.STRADDLEBOARD));
         this.dataManager.register(ROCKING_TICKS, 0);
         this.dataManager.register(DEFAULT_COLOR, true);
         this.dataManager.register(COLOR, 0);
@@ -130,8 +136,26 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
             this.setRockingTicks(25);
             boolean flag = source.getTrueSource() instanceof PlayerEntity && ((PlayerEntity) source.getTrueSource()).abilities.isCreativeMode;
             if (flag || this.getDamageTaken() > 40.0F) {
-                if (!flag && this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-                    this.entityDropItem(this.getItemBoard());
+                if (!flag) {
+                    PlayerEntity p = null;
+                    if(source.getTrueSource() instanceof PlayerEntity){
+                        p = (PlayerEntity)source.getTrueSource();
+                    }
+                    if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity){
+                        p = (PlayerEntity)this.getControllingPassenger();
+                    }
+                    boolean dropItem = true;
+                    if(p != null && this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN) > 0){
+                        if(p.addItemStackToInventory(this.getItemBoard())){
+                            dropItem = false;
+                        }
+                    }
+                    if(dropItem){
+                        if(this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)){
+                            this.entityDropItem(this.getItemBoard());
+                        }
+                    }
+
                 }
 
                 this.remove();
@@ -144,11 +168,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     }
 
     private ItemStack getItemBoard() {
-        ItemStack itemstack = new ItemStack(AMItemRegistry.STRADDLEBOARD);
-        if(!this.isDefaultColor()){
-            itemstack.getOrCreateChildTag("display").putInt("color", this.getColor());
-        }
-        return itemstack;
+        return this.getItemStack();
     }
 
 
@@ -354,7 +374,6 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         super.tick();
         this.previousStatus = this.status;
         this.status = this.getBoatStatus();
-
         this.func_234318_eL_();
         this.doBlockCollisions();
         if (this.isEntityInsideOpaqueBlock()) {
@@ -380,6 +399,11 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         Entity controller = getControllingPassenger();
         if (controller instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) controller;
+            if(this.ticksExisted % 50 == 0){
+                if(getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX) > 0){
+                    player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 100, 0, true, false));
+                }
+            }
             if(player.getFireTimer() > 0 && extinguishTimer == 0){
                 player.extinguish();
             }
@@ -606,13 +630,29 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     public void handleStartJump(int i) {
         jumpOutOfLava = true;
         this.isAirBorne=true;
-        float scaled = i * 0.01F;
+        float scaled = i * 0.01F + 0.1F * getEnchant(AMEnchantmentRegistry.STRADDLE_JUMP);
         this.setMotion(this.getMotion().add(0, scaled * 1.5F, 0));
+    }
+
+    private int getEnchant(Enchantment enchantment){
+        return EnchantmentHelper.getEnchantmentLevel(enchantment, this.getItemBoard());
+    }
+
+    public boolean shouldSerpentFriend(){
+        return getEnchant(AMEnchantmentRegistry.STRADDLE_SERPENTFRIEND) > 0;
     }
 
     @Override
     public void handleStopJump() {
 
+    }
+
+    public void setItemStack(ItemStack item){
+        this.dataManager.set(ITEMSTACK, item);
+    }
+
+    public ItemStack getItemStack(){
+       return this.dataManager.get(ITEMSTACK);
     }
 
     public enum Status {
