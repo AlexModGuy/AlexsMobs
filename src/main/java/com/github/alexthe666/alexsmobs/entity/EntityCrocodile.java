@@ -100,7 +100,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.ARMOR, 10.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.4F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.20F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.ARMOR, 10.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.4F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -248,7 +248,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         }
         if (this.getAttackTarget() != null && !hasSpedUp) {
             hasSpedUp = true;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28F);
         }
         if (this.getAttackTarget() == null && hasSpedUp) {
             hasSpedUp = false;
