@@ -91,7 +91,7 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7D).createMutableAttribute(Attributes.ARMOR, 8D).createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 18.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7D).createMutableAttribute(Attributes.ARMOR, 8D).createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
     public float getRenderScale() {

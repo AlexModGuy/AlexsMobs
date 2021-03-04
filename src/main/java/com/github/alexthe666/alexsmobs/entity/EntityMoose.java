@@ -76,7 +76,7 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 70D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 9.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 55D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.5D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F);
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {

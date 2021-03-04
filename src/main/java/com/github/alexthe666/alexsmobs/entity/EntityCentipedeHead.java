@@ -72,7 +72,7 @@ public class EntityCentipedeHead extends MonsterEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 60.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 12.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 6.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.22F);
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {

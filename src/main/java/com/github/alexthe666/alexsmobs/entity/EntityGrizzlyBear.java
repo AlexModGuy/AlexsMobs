@@ -78,7 +78,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 50.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.6F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 35.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.6F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {

@@ -89,7 +89,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 40.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 12.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.5F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public static boolean isBanana(ItemStack stack) {
@@ -443,16 +443,16 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         if (isSilverback() && !isChild() && !hasSilverbackAttributes) {
             hasSilverbackAttributes = true;
             recalculateSize();
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100F);
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(20F);
-            this.heal(100F);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40F);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10F);
+            this.heal(40F);
         }
         if (!isSilverback() && !isChild() && hasSilverbackAttributes) {
             hasSilverbackAttributes = false;
             recalculateSize();
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40F);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20F);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8F);
-            this.heal(40F);
+            this.heal(20F);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }

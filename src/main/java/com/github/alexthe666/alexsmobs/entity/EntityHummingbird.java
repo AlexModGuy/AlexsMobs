@@ -82,7 +82,7 @@ public class EntityHummingbird extends AnimalEntity {
 
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 8.0D).createMutableAttribute(Attributes.FLYING_SPEED, 7F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 4.0D).createMutableAttribute(Attributes.FLYING_SPEED, 7F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45F);
     }
 
     public boolean isBreedingItem(ItemStack stack) {

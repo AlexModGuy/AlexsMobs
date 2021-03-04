@@ -82,7 +82,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 15D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public static boolean canMungusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
