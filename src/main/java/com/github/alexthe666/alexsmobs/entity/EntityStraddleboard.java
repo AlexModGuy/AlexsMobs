@@ -354,15 +354,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         super.tick();
         this.previousStatus = this.status;
         this.status = this.getBoatStatus();
-        if (this.status != BoatEntity.Status.UNDER_WATER && this.status != BoatEntity.Status.UNDER_FLOWING_WATER) {
-            this.outOfControlTicks = 0.0F;
-        } else {
-            ++this.outOfControlTicks;
-        }
-        if (!this.world.isRemote && this.outOfControlTicks >= 150.0F) {
-            this.removePassengers();
-            this.attackEntityFrom(DamageSource.GENERIC, 100);
-        }
+
         this.func_234318_eL_();
         this.doBlockCollisions();
         if (this.isEntityInsideOpaqueBlock()) {
