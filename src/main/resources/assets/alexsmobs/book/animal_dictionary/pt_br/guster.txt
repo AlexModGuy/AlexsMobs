@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Rajadantes são espíritos vingativos do deserto que só se manifestam durante tempestades nos desertos.
+Essas criaturas são inerentemente hostis e procuram lançar seus alvos para o alto ou atirar neles uma corrente de areia.
+Rajadantes também pode levantar qualquer item caiu e lançá-lo, fazendo coleta de gotas de monstros difícil.
+Embora poderosos, Rajadantes não são criaturas muito fortificadas. No entanto, sua presença quase etérea os torna mais resistentes a ataques de projéteis do que a maioria dos monstros.
+Quando morto, Rajadantes dropam areia e, ocasionalmente, um de seus olhos. Esses olhos podem ser usados para criar um Soprador de Rajadas, um bloco que, quando alimentado com redstone, libera uma pequena tempestade de rajadas.
+Esta pequena rajada pode empurrar criaturas e itens ao redor. O olho também pode ser usado para criar um Receptáculo de Areia, que pode ser usado como uma arma.

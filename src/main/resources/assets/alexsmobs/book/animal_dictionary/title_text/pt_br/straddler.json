@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
-  "text": "mungus.txt",
-  "title": "Mungide",
+  "text": "straddler.txt",
+  "title": "Basaltilho",
   "linked_page_buttons": [
   ],
   "images": [
@@ -9,16 +9,24 @@
   "item_renders": [
   ],
   "recipes": [
+    {
+      "recipe": "alexsmobs:straddleboard",
+      "shapeless": false,
+      "x": 210,
+      "y": 105,
+      "page": 1,
+      "scale": 1.3
+    }
   ],
   "tabula_renders": [
   ],
   "entity_renders": [
     {
-      "entity": "alexsmobs:mungus",
-      "x": 95,
+      "entity": "alexsmobs:straddler",
+      "x": 90,
       "y": 120,
       "page" : 0,
-      "scale": 2.2,
+      "scale": 0.9,
       "rot_x": 30,
       "rot_y": 225,
       "rot_z": 0,
