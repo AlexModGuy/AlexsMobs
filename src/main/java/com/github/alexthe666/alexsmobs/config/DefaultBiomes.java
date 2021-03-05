@@ -191,5 +191,6 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
 
     public static final SpawnBiomeData STRADDLER = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:basalt_deltas", 0);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:basalt_deltas", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:withered_abyss", 1);
 }
