@@ -12,7 +12,6 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -30,7 +29,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
@@ -38,6 +36,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
@@ -53,6 +52,7 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
     public static final Animation ANIMATION_PUNCH_L = Animation.create(25);
     public static final Animation ANIMATION_SLAM = Animation.create(35);
     public static final Animation ANIMATION_SUCK = Animation.create(60);
+    public static final Animation ANIMATION_SPIT = Animation.create(60);
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntityWarpedMosco.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HAND_SIDE = EntityDataManager.createKey(EntityWarpedMosco.class, DataSerializers.BOOLEAN);
     public float flyLeftProgress;
@@ -69,19 +69,6 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
         super(entityType, world);
         this.experienceValue = 30;
         switchNavigator(false);
-    }
-
-
-    protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.WARPED_MOSCO_IDLE;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.WARPED_MOSCO_HURT;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.WARPED_MOSCO_HURT;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
@@ -102,10 +89,22 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
         return ANIMATION_SUCK;
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.WARPED_MOSCO_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.WARPED_MOSCO_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.WARPED_MOSCO_HURT;
+    }
+
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(0, new MeleeGoal());
+        this.goalSelector.addGoal(0, new AttackGoal());
         this.goalSelector.addGoal(4, new AIWalkIdle());
         this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 32F));
         this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
@@ -181,12 +180,12 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
                 switchNavigator(true);
             }
         }
-        if(isFlying()){
-            if(loopSoundTick == 0){
-                this.playSound(AMSoundRegistry.MOSQUITO_LOOP, this.getSoundVolume(), this.getSoundPitch()  * 0.3F);
+        if (isFlying()) {
+            if (loopSoundTick == 0) {
+                this.playSound(AMSoundRegistry.MOSQUITO_LOOP, this.getSoundVolume(), this.getSoundPitch() * 0.3F);
             }
             loopSoundTick++;
-            if(loopSoundTick > 100){
+            if (loopSoundTick > 100) {
                 loopSoundTick = 0;
             }
         }
@@ -204,7 +203,7 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
         if (this.collidedHorizontally && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this)) {
             boolean flag = false;
             AxisAlignedBB axisalignedbb = this.getBoundingBox().grow(0.2D);
-            for(BlockPos blockpos : BlockPos.getAllInBoxMutable(MathHelper.floor(axisalignedbb.minX), MathHelper.floor(axisalignedbb.minY), MathHelper.floor(axisalignedbb.minZ), MathHelper.floor(axisalignedbb.maxX), MathHelper.floor(axisalignedbb.maxY), MathHelper.floor(axisalignedbb.maxZ))) {
+            for (BlockPos blockpos : BlockPos.getAllInBoxMutable(MathHelper.floor(axisalignedbb.minX), MathHelper.floor(axisalignedbb.minY), MathHelper.floor(axisalignedbb.minZ), MathHelper.floor(axisalignedbb.maxX), MathHelper.floor(axisalignedbb.maxY), MathHelper.floor(axisalignedbb.maxZ))) {
                 BlockState blockstate = this.world.getBlockState(blockpos);
                 Block block = blockstate.getBlock();
                 if (transformMatches.contains(block)) {
@@ -222,7 +221,7 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
                 target.startRiding(this, true);
             }
             if (this.getAnimation() == ANIMATION_SLAM) {
-                if(this.getAnimationTick() == 19){
+                if (this.getAnimationTick() == 19) {
                     for (Entity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(5.0D), null)) {
                         if (!isOnSameTeam(entity) && !(entity instanceof EntityWarpedMosco) && entity != this) {
                             entity.attackEntityFrom(DamageSource.causeMobDamage(this), 10.0F + rand.nextFloat() * 8.0F);
@@ -233,8 +232,8 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
                 }
             }
             if ((this.getAnimation() == ANIMATION_PUNCH_R || this.getAnimation() == ANIMATION_PUNCH_L) && this.getAnimationTick() == 13) {
-                if(this.getDistance(target) < 4.7F){
-                    target.attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                if (this.getDistance(target) < 4.7F) {
+                    target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     knockbackRidiculous(target, 0.9F);
                 }
             }
@@ -248,7 +247,7 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
 
     public void spawnGroundEffects() {
         float radius = 2.3F;
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             for (int i1 = 0; i1 < 20 + rand.nextInt(12); i1++) {
                 double motionX = getRNG().nextGaussian() * 0.07D;
                 double motionY = getRNG().nextGaussian() * 0.07D;
@@ -300,7 +299,7 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{ANIMATION_PUNCH_L, ANIMATION_PUNCH_R, ANIMATION_SLAM, ANIMATION_SUCK};
+        return new Animation[]{ANIMATION_PUNCH_L, ANIMATION_PUNCH_R, ANIMATION_SLAM, ANIMATION_SUCK, ANIMATION_SPIT};
     }
 
     private BlockPos getMoscoGround(BlockPos in) {
@@ -399,9 +398,9 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
             double extraZ = radius * MathHelper.cos(angle);
             double extraY = tick < 10 ? 0 : 0.15F * MathHelper.clamp(tick - 10, 0, 15);
             passenger.setPosition(this.getPosX() + extraX, this.getPosY() + extraY + 0.1F, this.getPosZ() + extraZ);
-            if((tick - 10) % 4 == 0){
+            if ((tick - 10) % 4 == 0) {
                 this.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 1));
-                passenger.attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                passenger.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
         }
     }
@@ -417,6 +416,26 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.warpedMoscoSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    private void spit(LivingEntity target) {
+        if (this.getAnimation() != ANIMATION_SPIT) {
+            return;
+        }
+        this.faceEntity(target, 100, 100);
+        this.renderYawOffset = rotationYawHead;
+        for (int i = 0; i < 2 + rand.nextInt(2); i++) {
+            EntityHemolymph llamaspitentity = new EntityHemolymph(this.world, this);
+            double d0 = target.getPosX() - this.getPosX();
+            double d1 = target.getPosYHeight(0.3333333333333333D) - llamaspitentity.getPosY();
+            double d2 = target.getPosZ() - this.getPosZ();
+            float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
+            llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 5.0F);
+            if (!this.isSilent()) {
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_LLAMA_SPIT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+            }
+            this.world.addEntity(llamaspitentity);
+        }
     }
 
     private class AIWalkIdle extends Goal {
@@ -513,11 +532,13 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
         }
     }
 
-    private class MeleeGoal extends Goal {
+    private class AttackGoal extends Goal {
         private int upTicks = 0;
         private int dashCooldown = 0;
+        private boolean ranged = false;
+        private BlockPos farTarget = null;
 
-        public MeleeGoal() {
+        public AttackGoal() {
         }
 
         public boolean shouldExecute() {
@@ -525,27 +546,44 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
         }
 
         public void tick() {
-            if(dashCooldown > 0){
+            if (dashCooldown > 0) {
                 dashCooldown--;
             }
             if (EntityWarpedMosco.this.getAttackTarget() != null) {
                 LivingEntity target = EntityWarpedMosco.this.getAttackTarget();
-                if (EntityWarpedMosco.this.isFlying() || EntityWarpedMosco.this.getDistance(target) > 12 && !EntityWarpedMosco.this.isTargetBlocked(target.getPositionVec().add(0, target.getHeight() * 0.6F, 0))) {
+                ranged = EntityWarpedMosco.this.shouldRangeAttack(target);
+                if (EntityWarpedMosco.this.isFlying() || ranged || EntityWarpedMosco.this.getDistance(target) > 12 && !EntityWarpedMosco.this.isTargetBlocked(target.getPositionVec().add(0, target.getHeight() * 0.6F, 0))) {
                     float speedRush = 5F;
                     upTicks++;
                     EntityWarpedMosco.this.setFlying(true);
-                    if (upTicks > 20 || EntityWarpedMosco.this.getDistance(target) < 6) {
-                        EntityWarpedMosco.this.getMoveHelper().setMoveTo(target.getPosX(), target.getPosY() + target.getEyeHeight() * 0.6F, target.getPosZ(), speedRush);
+                    if (ranged) {
+                        if (farTarget == null || EntityWarpedMosco.this.getDistanceSq(Vector3d.copyCentered(farTarget)) < 9) {
+                            farTarget = this.getAvoidTarget(target);
+                        }
+                        if (farTarget != null) {
+                            EntityWarpedMosco.this.getMoveHelper().setMoveTo(farTarget.getX(), farTarget.getY() + target.getEyeHeight() * 0.6F, farTarget.getZ(), 3D);
+                        }
+                        EntityWarpedMosco.this.setAnimation(ANIMATION_SPIT);
+                        if(upTicks % 20 == 0){
+                            EntityWarpedMosco.this.heal(1);
+                        }
+                        int tick = EntityWarpedMosco.this.getAnimationTick();
+                        if (tick == 10 || tick == 20 || tick == 30 || tick == 40) {
+                            EntityWarpedMosco.this.spit(target);
+                        }
                     } else {
-                        EntityWarpedMosco.this.getMoveHelper().setMoveTo(EntityWarpedMosco.this.getPosX(), EntityWarpedMosco.this.getPosY() + 3, EntityWarpedMosco.this.getPosZ(), 0.5F);
+                        if (upTicks > 20 || EntityWarpedMosco.this.getDistance(target) < 6) {
+                            EntityWarpedMosco.this.getMoveHelper().setMoveTo(target.getPosX(), target.getPosY() + target.getEyeHeight() * 0.6F, target.getPosZ(), speedRush);
+                        } else {
+                            EntityWarpedMosco.this.getMoveHelper().setMoveTo(EntityWarpedMosco.this.getPosX(), EntityWarpedMosco.this.getPosY() + 3, EntityWarpedMosco.this.getPosZ(), 0.5F);
+                        }
                     }
-
                 } else {
                     EntityWarpedMosco.this.getNavigator().tryMoveToEntityLiving(EntityWarpedMosco.this.getAttackTarget(), 1.25F);
                 }
                 if (EntityWarpedMosco.this.isFlying()) {
                     if (EntityWarpedMosco.this.getDistance(target) < 4.3F) {
-                        if(dashCooldown == 0  || target.isOnGround() || target.isInLava() || target.isInWater()){
+                        if (dashCooldown == 0 || target.isOnGround() || target.isInLava() || target.isInWater()) {
                             target.attackEntityFrom(DamageSource.causeMobDamage(EntityWarpedMosco.this), 5F);
                             EntityWarpedMosco.this.knockbackRidiculous(target, 1.0F);
                             dashCooldown = 30;
@@ -568,9 +606,33 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
             }
         }
 
+        public BlockPos getAvoidTarget(LivingEntity target) {
+            float radius = 10 + EntityWarpedMosco.this.getRNG().nextInt(8);
+            float neg = EntityWarpedMosco.this.getRNG().nextBoolean() ? 1 : -1;
+            float angle = (0.01745329251F * (target.rotationYawHead + 90F + EntityWarpedMosco.this.getRNG().nextInt(180)));
+            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+            double extraZ = radius * MathHelper.cos(angle);
+            BlockPos radialPos = new BlockPos(target.getPosX() + extraX, target.getPosY() + 1, target.getPosZ() + extraZ);
+            BlockPos ground = radialPos;
+            if (EntityWarpedMosco.this.getDistanceSq(Vector3d.copyCentered(ground)) > 30) {
+                if (!EntityWarpedMosco.this.isTargetBlocked(Vector3d.copyCentered(ground)) && EntityWarpedMosco.this.getDistanceSq(Vector3d.copyCentered(ground)) > 6) {
+                    return ground;
+                }
+            }
+            return EntityWarpedMosco.this.getPosition();
+        }
+
         public void resetTask() {
             upTicks = 0;
             dashCooldown = 0;
+            ranged = false;
         }
+    }
+
+    private boolean shouldRangeAttack(LivingEntity target) {
+        if(this.getHealth() < Math.floor(this.getMaxHealth() * 0.25F)){
+            return true;
+        }
+        return this.getHealth() < this.getHealth() * 0.5F && this.getDistance(target) > 10;
     }
 }

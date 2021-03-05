@@ -321,6 +321,41 @@ public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
             animator.endKeyframe();
         }
         animator.resetKeyframe(10);
+        animator.setAnimation(EntityWarpedMosco.ANIMATION_SPIT);
+        animator.startKeyframe(5);
+        animator.rotate(chest, (float)Math.toRadians(-25F), 0, 0);
+        animator.rotate(head, (float)Math.toRadians(-25F), 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        animator.rotate(chest, (float)Math.toRadians(20F), 0, 0);
+        animator.rotate(head, (float)Math.toRadians(-30F), 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        animator.rotate(chest, (float)Math.toRadians(-25F), 0, 0);
+        animator.rotate(head, (float)Math.toRadians(-25F), 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        animator.rotate(chest, (float)Math.toRadians(20F), 0, 0);
+        animator.rotate(head, (float)Math.toRadians(-30F), 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        animator.rotate(chest, (float)Math.toRadians(-25F), 0, 0);
+        animator.rotate(head, (float)Math.toRadians(-25F), 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        animator.rotate(chest, (float)Math.toRadians(20F), 0, 0);
+        animator.rotate(head, (float)Math.toRadians(-30F), 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        animator.rotate(chest, (float)Math.toRadians(-25F), 0, 0);
+        animator.rotate(head, (float)Math.toRadians(-25F), 0, 0);
+        animator.endKeyframe();
+        animator.startKeyframe(5);
+        animator.rotate(chest, (float)Math.toRadians(20F), 0, 0);
+        animator.rotate(head, (float)Math.toRadians(-30F), 0, 0);
+        animator.endKeyframe();
+
+        animator.resetKeyframe(10);
 
     }
 

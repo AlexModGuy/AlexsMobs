@@ -35,6 +35,12 @@ public class EntityHemolymph extends Entity {
         super(p_i50162_1_, p_i50162_2_);
     }
 
+    public EntityHemolymph(World worldIn, EntityWarpedMosco p_i47273_2_) {
+        this(AMEntityRegistry.HEMOLYMPH, worldIn);
+        this.setShooter(p_i47273_2_);
+        this.setPosition(p_i47273_2_.getPosX() - (double)(p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double) MathHelper.sin(p_i47273_2_.renderYawOffset * ((float)Math.PI / 180F)), p_i47273_2_.getPosYEye() + (double)0.2F, p_i47273_2_.getPosZ() + (double)(p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double)MathHelper.cos(p_i47273_2_.renderYawOffset * ((float)Math.PI / 180F)));
+    }
+
     public EntityHemolymph(World worldIn, LivingEntity p_i47273_2_, boolean right) {
         this(AMEntityRegistry.HEMOLYMPH, worldIn);
         this.setShooter(p_i47273_2_);
