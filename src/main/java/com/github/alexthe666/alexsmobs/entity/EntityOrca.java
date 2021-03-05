@@ -91,7 +91,7 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 60.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D).createMutableAttribute(Attributes.ARMOR, 4.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.35F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 60.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.35F);
     }
 
     protected PathNavigator createNavigator(World worldIn) {

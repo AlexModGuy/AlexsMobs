@@ -85,7 +85,7 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 100D).createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 9.0D).createMutableAttribute(Attributes.ARMOR, 10D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D).createMutableAttribute(Attributes.ARMOR_TOUGHNESS, 2D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3D);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 100D).createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.ARMOR, 10D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D).createMutableAttribute(Attributes.ARMOR_TOUGHNESS, 2D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3D);
     }
 
     private static Animation getRandomAttack(Random rand) {

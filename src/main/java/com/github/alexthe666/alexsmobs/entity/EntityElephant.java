@@ -135,7 +135,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 80.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.9F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 65.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.9F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
     @Nullable
@@ -780,11 +780,11 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     public void setTusked(boolean tusked) {
         boolean prev = isTusked();
         if (!prev && tusked) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(150.0D);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(15.0D);
             this.setHealth(150.0F);
         } else {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80.0D);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(65.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
         }
         this.dataManager.set(TUSKED, tusked);

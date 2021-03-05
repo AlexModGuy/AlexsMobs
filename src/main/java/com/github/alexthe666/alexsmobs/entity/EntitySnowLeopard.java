@@ -99,7 +99,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 36D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F).createMutableAttribute(Attributes.FOLLOW_RANGE, 64F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F).createMutableAttribute(Attributes.FOLLOW_RANGE, 64F);
     }
 
     protected SoundEvent getAmbientSound() {

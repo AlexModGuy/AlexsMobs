@@ -73,7 +73,7 @@ public class EntityStraddler extends MonsterEntity implements IAnimatedEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 28.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.8D).createMutableAttribute(Attributes.ARMOR, 15.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 28.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.8D).createMutableAttribute(Attributes.ARMOR, 10.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F);
     }
 
     @Override
