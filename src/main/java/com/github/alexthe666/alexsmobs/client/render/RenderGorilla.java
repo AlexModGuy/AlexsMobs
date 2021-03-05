@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderGorilla extends MobRenderer<EntityGorilla, ModelGorilla> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/gorilla.png");
+    private static final ResourceLocation TEXTURE_SILVERBACK = new ResourceLocation("alexsmobs:textures/entity/gorilla_silverback.png");
     private static final ResourceLocation TEXTURE_DK = new ResourceLocation("alexsmobs:textures/entity/gorilla_dk.png");
 
     public RenderGorilla(EntityRendererManager renderManagerIn) {
@@ -25,6 +26,6 @@ public class RenderGorilla extends MobRenderer<EntityGorilla, ModelGorilla> {
     }
 
     public ResourceLocation getEntityTexture(EntityGorilla entity) {
-        return entity.isDonkeyKong() ? TEXTURE_DK : TEXTURE;
+        return entity.isDonkeyKong() ? TEXTURE_DK : entity.isSilverback() ? TEXTURE_SILVERBACK : TEXTURE;
     }
 }

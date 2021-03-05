@@ -292,7 +292,7 @@ public class EntityBoneSerpent extends MonsterEntity {
                         Vector3d vector3d1 = this.getLookVec();
                         this.setMotion(this.getMotion().add((double) vector3d1.getX() * 0.6D, up, (double) vector3d1.getY() * 0.6D));
                         this.getNavigator().clearPath();
-                        this.jumpCooldown = this.getRNG().nextInt(32) + 32;
+                        this.jumpCooldown = this.getRNG().nextInt(300) + 100;
                     }
                     if(this.getDistance(boardToBoast) > 5){
                         this.getNavigator().tryMoveToEntityLiving(boardToBoast, 1.5F);
