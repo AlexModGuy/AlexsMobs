@@ -27,6 +27,6 @@ public class RenderGorilla extends MobRenderer<EntityGorilla, ModelGorilla> {
     }
 
     public ResourceLocation getEntityTexture(EntityGorilla entity) {
-        return entity.isFunkyKong() ? TEXTURE_DK : entity.isDonkeyKong() ? TEXTURE_DK : entity.isSilverback() ? TEXTURE_SILVERBACK : TEXTURE;
+        return entity.isFunkyKong() ? TEXTURE_FUNKY : entity.isDonkeyKong() ? TEXTURE_DK : entity.isSilverback() ? TEXTURE_SILVERBACK : TEXTURE;
     }
 }

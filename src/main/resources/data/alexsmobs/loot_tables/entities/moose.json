@@ -17,6 +17,13 @@
               }
             },
             {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },
+            {
               "function": "minecraft:furnace_smelt",
               "conditions": [
                 {
@@ -29,13 +36,6 @@
                   "entity": "this"
                 }
               ]
-            },
-            {
-              "function": "looting_enchant",
-              "count": {
-                "min": 0,
-                "max": 1
-              }
             }
           ]
         }
