@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:end_stone",
+    "#forge:end_stones",
     "minecraft:chorus_plant",
     "minecraft:chorus_flower"
   ]
