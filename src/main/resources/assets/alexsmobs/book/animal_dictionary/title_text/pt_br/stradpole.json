@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
-  "text": "mungus.txt",
-  "title": "Mungide",
+  "text": "stradpole.txt",
+  "title": "Basaltrino",
   "linked_page_buttons": [
   ],
   "images": [
@@ -14,11 +14,11 @@
   ],
   "entity_renders": [
     {
-      "entity": "alexsmobs:mungus",
-      "x": 95,
-      "y": 120,
+      "entity": "alexsmobs:stradpole",
+      "x": 90,
+      "y": 75,
       "page" : 0,
-      "scale": 2.2,
+      "scale": 2.0,
       "rot_x": 30,
       "rot_y": 225,
       "rot_z": 0,

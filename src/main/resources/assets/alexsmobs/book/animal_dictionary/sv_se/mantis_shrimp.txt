@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mantisräkor är jätte kräftdjur som finns i de varma havens rev. Dessa jätte räkor är utrustade med två kraftfulla nävar, som kan röra sig tillräckligt snabbt för att bränna sitt byte.
+Dessa nävar kan också röra sig tillräckligt snabbt för att starta fiender tillbaka och bryta igenom block. Även om det är neutralt skulle det inte vara klokt att ilska dem. Mantis räkor är smart rovdjur av tropisk fisk, bläckfisk, väktare och framför allt shulkers, deras favorit delikatess.
+<NEWLINE>
+Mantisräkor kan tämjas genom att mata dem 10 till 30 tropiska fiskar. Om en mantisräka är ur vattnet i mer än 5 minuter börjar den torka ut.
+Detta kan förhindras genom att ge tama mantisräkor vattenskopor när de smyger sig, så att de kan leva ur vattnet på obestämd tid. Tämjda mantisräkor kan göras för att följa, sitta, vandra och bryta block.
+När man smyger sig medan man håller ett block kan man ge detta block till mantisräkorna. Räken kommer sedan att söka efter och bryta alla block som matchar den som hålls i näven, om den beordras att göra det.
+Mantisräkor kan läkas med alla typer av fisk när de skadas, och kan uppfödas med hummer svansar.
