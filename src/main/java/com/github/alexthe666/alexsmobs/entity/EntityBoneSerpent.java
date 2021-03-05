@@ -159,7 +159,8 @@ public class EntityBoneSerpent extends MonsterEntity {
     }
 
     public void travel(Vector3d travelVector) {
-        if (this.isServerWorld() && (this.isInWater() || this.isInLava())) {
+        boolean liquid = this.isInLava() || this.isInWater();
+        if (this.isServerWorld() && liquid) {
             this.moveRelative(this.getAIMoveSpeed(), travelVector);
             this.move(MoverType.SELF, this.getMotion());
             this.setMotion(this.getMotion().scale(0.9D));

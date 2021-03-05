@@ -530,6 +530,11 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         return s != null && (s.toLowerCase().contains("donkey") && s.toLowerCase().contains("kong") || s.toLowerCase().equals("dk"));
     }
 
+    public boolean isFunkyKong() {
+        String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
+        return s != null && (s.toLowerCase().contains("funky") && s.toLowerCase().contains("kong") || s.toLowerCase().equals("dk"));
+    }
+
     private class AIWalkIdle extends RandomWalkingGoal {
         public AIWalkIdle(EntityGorilla entityGorilla, double v) {
             super(entityGorilla, v);
