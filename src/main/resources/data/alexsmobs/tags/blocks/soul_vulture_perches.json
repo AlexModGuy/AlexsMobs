@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "minecraft:bone_block",
-    "#minecraft:logs",
-    "#minecraft:coral_blocks"
+    "#minecraft:logs"
   ]
 }
