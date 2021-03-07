@@ -121,10 +121,14 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
     }
 
     protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+        fallDistance = 0;
     }
 
     public void tick(){
         super.tick();
+        if(this.isChild() && this.getEyeHeight() > this.getHeight()){
+            this.recalculateSize();
+        }
         if(isInNether()){
             conversionTime++;
             if(conversionTime > 300){
