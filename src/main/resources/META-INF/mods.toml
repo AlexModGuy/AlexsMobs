@@ -4,7 +4,7 @@ license="GNU LESSER GENERAL PUBLIC LICENSE"
 issueTrackerURL="https://github.com/Alex-the-666/AlexsMobs/issues" #optional
 [[mods]] #mandatory
 modId="alexsmobs" #mandatory
-version="1.7.0" #mandatory
+version="1.7.1" #mandatory
 displayName="Alex's Mobs" #mandatory
 displayURL="https://www.curseforge.com/minecraft/mc-mods/alexsmobs" #optional
 authors="Alexthe666" #optional
