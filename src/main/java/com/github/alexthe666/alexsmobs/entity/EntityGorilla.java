@@ -532,7 +532,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     public boolean isFunkyKong() {
         String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
-        return s != null && (s.toLowerCase().contains("funky") && s.toLowerCase().contains("kong") || s.toLowerCase().equals("dk"));
+        return s != null && (s.toLowerCase().contains("funky") && s.toLowerCase().contains("kong"));
     }
 
     private class AIWalkIdle extends RandomWalkingGoal {
