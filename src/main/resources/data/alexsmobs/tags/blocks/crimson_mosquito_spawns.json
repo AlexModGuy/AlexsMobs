@@ -1,7 +1,8 @@
 {
   "replace": false,
   "values": [
-    "minecraft:crimson_nylium",
-    "minecraft:nether_wart_block"
+    "#forge:netherrack",
+    "#minecraft:nylium",
+    "#minecraft:wart_blocks"
   ]
 }
