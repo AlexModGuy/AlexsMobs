@@ -2,8 +2,8 @@
   "replace": false,
   "values": [
     "#minecraft:sand",
-    "#forge:gravel",
-    "#minecraft:ice",
+    "minecraft:gravel",
+    "minecraft:ice",
     "minecraft:snow_block"
   ]
 }

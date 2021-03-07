@@ -1,8 +1,10 @@
 {
   "replace": false,
   "values": [
-    "#minecraft:mushroom_grow_block",
-    "#minecraft:nylium",
-    "#forge:mushroom_caps"
+    "minecraft:mycelium",
+    "minecraft:warped_nylium",
+    "minecraft:crimson_nylium",
+    "minecraft:brown_mushroom_block",
+    "minecraft:red_mushroom_block"
   ]
 }

@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#minecraft:sand",
-    "#forge:dirt",
+    "minecraft:grass_block",
     "minecraft:terracotta",
     "minecraft:white_terracotta",
     "minecraft:orange_terracotta",

@@ -2,8 +2,12 @@
   "replace": false,
   "values": [
     "#minecraft:sand",
-    "#forge:gravel",
-    "#forge:dirt",
+    "minecraft:gravel",
+    "minecraft:grass_block",
+    "minecraft:dirt",
+    "minecraft:coarse_dirt",
+    "minecraft:podzol",
+    "minecraft:mycelium",
     "minecraft:hay_block"
   ]
 }
