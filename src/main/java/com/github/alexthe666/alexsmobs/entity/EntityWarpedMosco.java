@@ -564,7 +564,7 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
                             EntityWarpedMosco.this.getMoveHelper().setMoveTo(farTarget.getX(), farTarget.getY() + target.getEyeHeight() * 0.6F, farTarget.getZ(), 3D);
                         }
                         EntityWarpedMosco.this.setAnimation(ANIMATION_SPIT);
-                        if(upTicks % 20 == 0){
+                        if(upTicks % 30 == 0){
                             EntityWarpedMosco.this.heal(1);
                         }
                         int tick = EntityWarpedMosco.this.getAnimationTick();

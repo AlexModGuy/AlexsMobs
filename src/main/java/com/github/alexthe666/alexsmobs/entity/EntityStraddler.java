@@ -214,6 +214,11 @@ public class EntityStraddler extends MonsterEntity implements IAnimatedEntity {
         super.tick();
         this.func_234318_eL_();
         this.doBlockCollisions();
+        if (this.getAnimation() == ANIMATION_LAUNCH && this.isAlive()){
+            if(this.getAnimationTick() == 2){
+                this.playSound(SoundEvents.ITEM_CROSSBOW_LOADING_MIDDLE, 2F, 1F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            }
+        }
         if (this.getAnimation() == ANIMATION_LAUNCH && this.isAlive() && this.getAnimationTick() == 20 && this.getAttackTarget() != null) {
             EntityStradpole pole = AMEntityRegistry.STRADPOLE.create(world);
             pole.setParentId(this.getUniqueID());
@@ -224,7 +229,7 @@ public class EntityStraddler extends MonsterEntity implements IAnimatedEntity {
             double d3 = this.getAttackTarget().getPosZ() - this.getPosZ();
             float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.4F;
             float f3 = MathHelper.sqrt(d1 * d1 + d2 * d2 + d3 * d3) * 0.2F;
-            this.playSound(SoundEvents.ENTITY_SNOW_GOLEM_SHOOT, 2F, 0.4F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+            this.playSound(SoundEvents.ITEM_CROSSBOW_LOADING_END, 2F, 1F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             pole.shoot(d1, d2 + (double)f3, d3, 2F, 0F);
             pole.rotationYaw = this.rotationYaw % 360.0F;
             pole.rotationPitch = MathHelper.clamp(this.rotationYaw, -90.0F, 90.0F) % 360.0F;

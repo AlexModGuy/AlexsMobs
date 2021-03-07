@@ -92,6 +92,7 @@ public class AMItemRegistry {
     public static final Item WARPED_MUSCLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:warped_muscle");
     public static final Item HEMOLYMPH_SAC = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:hemolymph_sac");
     public static final Item HEMOLYMPH_BLASTER = new ItemHemolymphBlaster(new Item.Properties().group(AlexsMobs.TAB).maxDamage(150)).setRegistryName("alexsmobs:hemolymph_blaster");
+    public static final Item WARPED_MIXTURE = new Item(new Item.Properties().group(AlexsMobs.TAB).rarity(Rarity.RARE).maxStackSize(1).containerItem(Items.GLASS_BOTTLE)).setRegistryName("alexsmobs:warped_mixture");
     public static final Item STRADDLITE = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:straddlite");
     public static final Item STRADPOLE_BUCKET = new ItemModFishBucket(AMEntityRegistry.STRADPOLE, Fluids.LAVA, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:stradpole_bucket");
     public static final Item STRADDLEBOARD = new ItemStraddleboard(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire().maxDamage(220)).setRegistryName("alexsmobs:straddleboard");
