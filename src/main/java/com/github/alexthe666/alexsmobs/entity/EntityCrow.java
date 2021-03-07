@@ -905,7 +905,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         }
 
         private boolean isPumpkin(World world, BlockPos.Mutable lvt_4_1_) {
-            return world.getBlockState(lvt_4_1_).getBlock() == Blocks.CARVED_PUMPKIN;
+            return BlockTags.getCollection().get(AMTagRegistry.CROW_FEARS).contains(world.getBlockState(lvt_4_1_).getBlock());
         }
 
     }
