@@ -945,10 +945,15 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                     float f1 = 1.8F;
                     float f2 = (float) (crow.getPosZ() - targetEntity.getPosZ());
                     float xzDist = MathHelper.sqrt(f * f + f2 * f2);
-                    if (xzDist < 5) {
-                        f1 = 0;
+
+                    if(!crow.canEntityBeSeen(targetEntity)){
+                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), 1 + crow.getPosY(), this.targetEntity.getPosZ(), 1);
+                    }else{
+                        if (xzDist < 5) {
+                            f1 = 0;
+                        }
+                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), f1 + this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
                     }
-                    crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), f1 + this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
                 } else {
                     this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
                 }
@@ -1039,7 +1044,12 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             }
             if (flightTarget != null) {
                 EntityCrow.this.setFlying(true);
-                EntityCrow.this.getMoveHelper().setMoveTo(flightTarget.x, flightTarget.y, flightTarget.z, 1F);
+                if(EntityCrow.this.collidedHorizontally){
+                    EntityCrow.this.getMoveHelper().setMoveTo(flightTarget.x, EntityCrow.this.getPosY() + 1F, flightTarget.z, 1F);
+
+                }else{
+                    EntityCrow.this.getMoveHelper().setMoveTo(flightTarget.x, flightTarget.y, flightTarget.z, 1F);
+                }
             }
             if (targetEntity != null) {
                 flightTarget = targetEntity.getPositionVec();
