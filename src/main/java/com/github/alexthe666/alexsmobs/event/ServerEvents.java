@@ -6,43 +6,32 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
-import net.minecraft.entity.ai.goal.ToggleableNearestAttackableTargetGoal;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.SpiderEntity;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
-import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.*;
-import net.minecraft.loot.conditions.RandomChance;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.potion.Potions;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -53,13 +42,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -101,6 +89,55 @@ public class ServerEvents {
                 ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY));
                 data.putBoolean("alexsmobs_has_book", true);
                 playerData.put(PlayerEntity.PERSISTED_NBT_TAG, data);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onProjectileHit(ProjectileImpactEvent event) {
+        if (event.getRayTraceResult() instanceof EntityRayTraceResult && ((EntityRayTraceResult) event.getRayTraceResult()).getEntity() instanceof EntityEmu) {
+            EntityEmu emu = ((EntityEmu) ((EntityRayTraceResult) event.getRayTraceResult()).getEntity());
+            if ((emu.getAnimation() == EntityEmu.ANIMATION_DODGE_RIGHT || emu.getAnimation() == EntityEmu.ANIMATION_DODGE_LEFT) && emu.getAnimationTick() < 7) {
+                event.setCanceled(true);
+            }
+            if (emu.getAnimation() != EntityEmu.ANIMATION_DODGE_RIGHT && emu.getAnimation() != EntityEmu.ANIMATION_DODGE_LEFT) {
+                boolean left = true;
+                Vector3d arrowPos = event.getEntity().getPositionVec();
+                Vector3d rightVector = emu.getLookVec().rotateYaw(0.5F * (float) Math.PI).add(emu.getPositionVec());
+                Vector3d leftVector = emu.getLookVec().rotateYaw(-0.5F * (float) Math.PI).add(emu.getPositionVec());
+                if (arrowPos.distanceTo(rightVector) < arrowPos.distanceTo(leftVector)) {
+                    left = false;
+                } else if (arrowPos.distanceTo(rightVector) > arrowPos.distanceTo(leftVector)) {
+                    left = true;
+                } else {
+                    left = emu.getRNG().nextBoolean();
+                }
+                Vector3d vector3d2 = event.getEntity().getMotion().rotateYaw((float) ((left ? -0.5F : 0.5F) * Math.PI)).normalize();
+                emu.setAnimation(left ? EntityEmu.ANIMATION_DODGE_LEFT : EntityEmu.ANIMATION_DODGE_RIGHT);
+                emu.isAirBorne = true;
+                if (!emu.collidedHorizontally) {
+                    emu.move(MoverType.SELF, new Vector3d(vector3d2.getX() * 0.25F, 0.1F, vector3d2.getZ() * 0.25F));
+                }
+                if (!event.getEntity().world.isRemote) {
+                    ServerPlayerEntity serverPlayerEntity = null;
+                    if (event.getEntity() instanceof ArrowEntity) {
+                        Entity thrower = ((ArrowEntity) event.getEntity()).func_234616_v_();
+                        if (thrower instanceof ServerPlayerEntity) {
+                            serverPlayerEntity = (ServerPlayerEntity) thrower;
+                        }
+                    }
+                    if (event.getEntity() instanceof ThrowableEntity) {
+                        Entity thrower = ((ThrowableEntity) event.getEntity()).func_234616_v_();
+                        if (thrower instanceof ServerPlayerEntity) {
+                            serverPlayerEntity = (ServerPlayerEntity) thrower;
+                        }
+                    }
+                    if (serverPlayerEntity != null) {
+                        AMAdvancementTriggerRegistry.EMU_DODGE.trigger(serverPlayerEntity);
+                    }
+                }
+                emu.setMotion(emu.getMotion().add(vector3d2.getX() * 0.5F, 0.32F, vector3d2.getZ() * 0.5F));
+                event.setCanceled(true);
             }
         }
     }
@@ -234,7 +271,7 @@ public class ServerEvents {
             if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL) {
                 float f1 = 1F;
                 LivingEntity attacker = ((LivingEntity) event.getSource().getTrueSource());
-                if(attacker.getDistance(player) < attacker.getWidth() + player.getWidth() + 0.5F){
+                if (attacker.getDistance(player) < attacker.getWidth() + player.getWidth() + 0.5F) {
                     attacker.attackEntityFrom(DamageSource.causeThornsDamage(player), 1F);
                     attacker.applyKnockback(f1 * 0.5F, MathHelper.sin((attacker.rotationYaw + 180) * ((float) Math.PI / 180F)), -MathHelper.cos((attacker.rotationYaw + 180) * ((float) Math.PI / 180F)));
                 }

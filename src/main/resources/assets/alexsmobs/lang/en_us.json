@@ -38,6 +38,7 @@
   "item.alexsmobs.spawn_egg_warped_mosco": "Warped Mosco Spawn Egg",
   "item.alexsmobs.spawn_egg_straddler": "Straddler Spawn Egg",
   "item.alexsmobs.spawn_egg_stradpole": "Stradpole Spawn Egg",
+  "item.alexsmobs.spawn_egg_emu": "Emu Spawn Egg",
   "item.alexsmobs.tab_icon": "Alex's Mobs",
   "item.alexsmobs.animal_dictionary": "Animal Dictionary",
   "item.alexsmobs.animal_dictionary.desc": "By Professor Alex Khaan",
@@ -101,6 +102,9 @@
   "item.alexsmobs.straddlite": "Straddlite",
   "item.alexsmobs.stradpole_bucket": "Bucket of Stradpole",
   "item.alexsmobs.straddleboard": "Straddleboard",
+  "item.alexsmobs.emu_egg": "Emu Egg",
+  "item.alexsmobs.boiled_emu_egg": "Boiled Emu Egg",
+  "item.alexsmobs.emu_feather": "Emu Feather",
   "block.alexsmobs.crocodile_egg": "Crocodile Egg",
   "block.alexsmobs.gustmaker": "Gustmaker",
   "alexsmobs.potion.knockback_resistance": "Knockback Resistance",
@@ -225,6 +229,7 @@
   "entity.alexsmobs.straddler": "Straddler",
   "entity.alexsmobs.stradpole": "Stradpole",
   "entity.alexsmobs.straddleboard": "Straddleboard",
+  "entity.alexsmobs.emu": "Emu",
   "alexsmobs.sound.subtitle.grizzly_bear_idle": "Grizzly Bear growls",
   "alexsmobs.sound.subtitle.grizzly_bear_hurt": "Grizzly Bear roars",
   "alexsmobs.sound.subtitle.roadrunner_idle": "Roadrunner chirps",
@@ -412,5 +417,9 @@
   "advancements.alexsmobs.stradpole_feed.title": "Like Father",
   "advancements.alexsmobs.stradpole_feed.desc": "Feed a Stradpole some Mosquito Larva, in hopes of turning it into a Straddler.",
   "advancements.alexsmobs.straddleboard.title": "Surf Wax America",
-  "advancements.alexsmobs.straddleboard.desc": "Craft a Straddleboard from some Netherite and Straddlerite."
+  "advancements.alexsmobs.straddleboard.desc": "Craft a Straddleboard from some Netherite and Straddlerite.",
+  "advancements.alexsmobs.emu.title": "It's an Emu!!!",
+  "advancements.alexsmobs.emu.desc": "Encounter an Emu. Exercise caution.",
+  "advancements.alexsmobs.emu_dodge.title": "Begun, The Emu War Has",
+  "advancements.alexsmobs.emu_dodge.desc": "See an emu dodge a launched projectile."
 }

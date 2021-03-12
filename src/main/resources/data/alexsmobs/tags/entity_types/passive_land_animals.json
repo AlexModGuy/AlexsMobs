@@ -8,6 +8,8 @@
     "minecraft:chicken",
     "minecraft:fox",
     "minecraft:horse",
+    "minecraft:donkey",
+    "minecraft:mule",
     "minecraft:mooshroom",
     "minecraft:ocelot",
     "minecraft:llama",
@@ -23,6 +25,7 @@
     "alexsmobs:capuchin_monkey",
     "alexsmobs:seal",
     "alexsmobs:shoebill",
-    "alexsmobs:mungus"
+    "alexsmobs:mungus",
+    "alexsmobs:emu"
   ]
 }

@@ -7,8 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -19,14 +17,14 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-public class AnimalAIHerdPanic  extends Goal {
+public class AnimalAIHerdPanic extends Goal {
     protected final CreatureEntity creature;
     protected final double speed;
+    protected final Predicate<? super CreatureEntity> targetEntitySelector;
     protected double randPosX;
     protected double randPosY;
     protected double randPosZ;
     protected boolean running;
-    protected final Predicate<? super CreatureEntity> targetEntitySelector;
 
     public AnimalAIHerdPanic(CreatureEntity creature, double speedIn) {
         this.creature = creature;
@@ -35,8 +33,8 @@ public class AnimalAIHerdPanic  extends Goal {
         this.targetEntitySelector = new Predicate<CreatureEntity>() {
             @Override
             public boolean apply(@Nullable CreatureEntity animal) {
-                if(animal instanceof IHerdPanic && animal.getType() == creature.getType()){
-                    return ((IHerdPanic)animal).canPanic();
+                if (animal instanceof IHerdPanic && animal.getType() == creature.getType()) {
+                    return ((IHerdPanic) animal).canPanic();
                 }
                 return false;
             }
@@ -50,16 +48,16 @@ public class AnimalAIHerdPanic  extends Goal {
             if (this.creature.isBurning()) {
                 BlockPos blockpos = this.getRandPos(this.creature.world, this.creature, 5, 4);
                 if (blockpos != null) {
-                    this.randPosX = (double)blockpos.getX();
-                    this.randPosY = (double)blockpos.getY();
-                    this.randPosZ = (double)blockpos.getZ();
+                    this.randPosX = blockpos.getX();
+                    this.randPosY = blockpos.getY();
+                    this.randPosZ = blockpos.getZ();
                     return true;
                 }
             }
-            if(this.creature.getRevengeTarget() != null && this.creature instanceof IHerdPanic && ((IHerdPanic) this.creature).canPanic()){
+            if (this.creature.getRevengeTarget() != null && this.creature instanceof IHerdPanic && ((IHerdPanic) this.creature).canPanic()) {
 
                 List<CreatureEntity> list = this.creature.world.getEntitiesWithinAABB(this.creature.getClass(), this.getTargetableArea(), this.targetEntitySelector);
-                for(CreatureEntity creatureEntity : list){
+                for (CreatureEntity creatureEntity : list) {
                     creatureEntity.setRevengeTarget(this.creature.getRevengeTarget());
                 }
                 return this.findRandomPositionFrom(this.creature.getRevengeTarget());
@@ -81,7 +79,7 @@ public class AnimalAIHerdPanic  extends Goal {
     }
 
     protected AxisAlignedBB getTargetableArea() {
-        Vector3d renderCenter = new Vector3d(this.creature.getPosX() + 0.5, this.creature.getPosY()+ 0.5D, this.creature.getPosZ() + 0.5D);
+        Vector3d renderCenter = new Vector3d(this.creature.getPosX() + 0.5, this.creature.getPosY() + 0.5D, this.creature.getPosZ() + 0.5D);
         double searchRadius = 15;
         AxisAlignedBB aabb = new AxisAlignedBB(-searchRadius, -searchRadius, -searchRadius, searchRadius, searchRadius, searchRadius);
         return aabb.offset(renderCenter);
@@ -107,7 +105,7 @@ public class AnimalAIHerdPanic  extends Goal {
      * Execute a one shot task or start executing a continuous task
      */
     public void startExecuting() {
-        if(this.creature instanceof IHerdPanic){
+        if (this.creature instanceof IHerdPanic) {
             ((IHerdPanic) this.creature).onPanic();
         }
         this.creature.getNavigator().tryMoveToXYZ(this.randPosX, this.randPosY, this.randPosZ, this.speed);
@@ -134,16 +132,16 @@ public class AnimalAIHerdPanic  extends Goal {
         int i = blockpos.getX();
         int j = blockpos.getY();
         int k = blockpos.getZ();
-        float f = (float)(horizontalRange * horizontalRange * verticalRange * 2);
+        float f = (float) (horizontalRange * horizontalRange * verticalRange * 2);
         BlockPos blockpos1 = null;
         BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
 
-        for(int l = i - horizontalRange; l <= i + horizontalRange; ++l) {
-            for(int i1 = j - verticalRange; i1 <= j + verticalRange; ++i1) {
-                for(int j1 = k - horizontalRange; j1 <= k + horizontalRange; ++j1) {
+        for (int l = i - horizontalRange; l <= i + horizontalRange; ++l) {
+            for (int i1 = j - verticalRange; i1 <= j + verticalRange; ++i1) {
+                for (int j1 = k - horizontalRange; j1 <= k + horizontalRange; ++j1) {
                     blockpos$mutable.setPos(l, i1, j1);
                     if (worldIn.getFluidState(blockpos$mutable).isTagged(FluidTags.WATER)) {
-                        float f1 = (float)((l - i) * (l - i) + (i1 - j) * (i1 - j) + (j1 - k) * (j1 - k));
+                        float f1 = (float) ((l - i) * (l - i) + (i1 - j) * (i1 - j) + (j1 - k) * (j1 - k));
                         if (f1 < f) {
                             f = f1;
                             blockpos1 = new BlockPos(blockpos$mutable);

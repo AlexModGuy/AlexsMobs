@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:arrow"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.emu_dodge.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.emu_dodge.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/emu",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:emu_dodge"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ]
+}

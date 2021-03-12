@@ -68,6 +68,8 @@ public class AMEntityRegistry {
     public static final EntityType<EntityStraddler> STRADDLER = registerEntity(EntityType.Builder.create(EntityStraddler::new, EntityClassification.MONSTER).size(1.65F, 3F).immuneToFire(), "straddler");
     public static final EntityType<EntityStradpole> STRADPOLE = registerEntity(EntityType.Builder.create(EntityStradpole::new, EntityClassification.WATER_AMBIENT).size(0.5F, 0.5F).immuneToFire(), "stradpole");
     public static final EntityType<EntityStraddleboard> STRADDLEBOARD = registerEntity(EntityType.Builder.create(EntityStraddleboard::new, EntityClassification.MISC).size(1.5F, 0.35F).setCustomClientFactory(EntityStraddleboard::new).immuneToFire(), "straddleboard");
+    public static final EntityType<EntityEmu> EMU = registerEntity(EntityType.Builder.create(EntityEmu::new, EntityClassification.CREATURE).size(1.1F, 1.8F), "emu");
+    public static final EntityType<EntityEmuEgg> EMU_EGG = registerEntity(EntityType.Builder.create(EntityEmuEgg::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityEmuEgg::new).immuneToFire(), "emu_egg");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -173,6 +175,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(WARPED_MOSCO, EntityWarpedMosco.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(STRADDLER, EntityStraddler.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(STRADPOLE, EntityStradpole.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(EMU, EntityEmu.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCockroachEgg;
+import com.github.alexthe666.alexsmobs.entity.EntityEmuEgg;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.*;
@@ -19,8 +20,11 @@ public class ItemAnimalEgg extends Item {
         worldIn.playSound((PlayerEntity)null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         if (!worldIn.isRemote) {
             ProjectileItemEntity eggentity;
-            eggentity = new EntityCockroachEgg(worldIn, playerIn);
-
+            if(this == AMItemRegistry.EMU_EGG){
+                eggentity = new EntityEmuEgg(worldIn, playerIn);
+            }else{
+                eggentity = new EntityCockroachEgg(worldIn, playerIn);
+            }
             eggentity.setItem(itemstack);
             eggentity.func_234612_a_(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
             worldIn.addEntity(eggentity);

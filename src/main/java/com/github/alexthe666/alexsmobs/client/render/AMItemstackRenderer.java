@@ -76,6 +76,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.WARPED_MOSCO, 0.45F));
         list.add(new Pair<>(AMEntityRegistry.STRADDLER, 0.38F));
         list.add(new Pair<>(AMEntityRegistry.STRADPOLE, 0.9F));
+        list.add(new Pair<>(AMEntityRegistry.EMU, 0.7F));
     });
     private static int ticksExisted = 0;
 

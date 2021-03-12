@@ -3,6 +3,8 @@
   "replace": false,
   "values": [
     "alexsmobs:crimson_mosquito",
-    "alexsmobs:fly"
+    "alexsmobs:fly",
+    "alexsmobs:cockroach",
+    "alexsmobs:warped_mosco"
   ]
 }

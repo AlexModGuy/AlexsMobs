@@ -96,6 +96,9 @@ public class AMItemRegistry {
     public static final Item STRADDLITE = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:straddlite");
     public static final Item STRADPOLE_BUCKET = new ItemModFishBucket(AMEntityRegistry.STRADPOLE, Fluids.LAVA, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:stradpole_bucket");
     public static final Item STRADDLEBOARD = new ItemStraddleboard(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire().maxDamage(220)).setRegistryName("alexsmobs:straddleboard");
+    public static final Item EMU_EGG = new ItemAnimalEgg(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(8)).setRegistryName("alexsmobs:emu_egg");
+    public static final Item BOILED_EMU_EGG = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(1F).meat().build())).setRegistryName("alexsmobs:boiled_emu_egg");
+    public static final Item EMU_FEATHER = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:emu_feather");
 
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
@@ -144,6 +147,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.WARPED_MOSCO, 0X322F58,0X5B5EF1, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_warped_mosco"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.STRADDLER, 0X5D5F6E,0XCDA886, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_straddler"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.STRADPOLE, 0X5D5F6E,0X576A8B, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_stradpole"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.EMU, 0X665346,0X3B3938, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_emu"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
