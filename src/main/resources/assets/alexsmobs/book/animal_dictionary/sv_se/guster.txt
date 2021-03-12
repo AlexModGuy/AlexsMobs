@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Vindunder är hämndlystna ökenandar som bara manifesterar sig under stormar i öknar.
+Dessa väsen är i sig fientliga och kommer att försöka kasta sina mål högt upp i luften eller skjuta en sandström mot dem.
+Vindunder kan också lyfta upp alla tappade föremål och kasta det, vilket gör det svårt att samla monster.
+Trots att de är kraftfulla, är vindunder inte särskilt befästa väsen. Men deras nästan eteriska närvaro gör dem mer motståndskraftiga, mot projektilattacker än de flesta monster.
+När de dödas, kommer vindunder släppa sand, och ibland en av deras ögon. Dessa ögon kan användas för att skapa en vindil, ett block som, när det drivs med redstone, släpper ut en liten vindstorm.
+Dessa små vindar kan driva varelser och föremål runt. Ögat kan också användas för att skapa ficksand, som kan användas som ett 
+ vapen.
