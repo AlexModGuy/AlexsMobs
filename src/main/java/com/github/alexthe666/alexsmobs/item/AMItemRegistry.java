@@ -49,7 +49,6 @@ public class AMItemRegistry {
     public static final Item CROCODILE_CHESTPLATE = new ItemModArmor(CROCODILE_ARMOR_MATERIAL, EquipmentSlotType.CHEST).setRegistryName("alexsmobs:crocodile_chestplate");
     public static final Item MAGGOT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(1).saturation(0.2F).build())).setRegistryName("alexsmobs:maggot");
     public static final Item BANANA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(0.3F).build())).setRegistryName("alexsmobs:banana");
-    public static final Item BANANA_PEEL = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banana_peel");
     public static final Item HALO = new Item(new Item.Properties()).setRegistryName("alexsmobs:halo");
     public static final Item BLOOD_SAC = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:blood_sac");
     public static final Item MOSQUITO_PROBOSCIS = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mosquito_proboscis");
@@ -102,6 +101,8 @@ public class AMItemRegistry {
 
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
+    public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
+    public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
 
     private static BannerPattern addBanner(String name) {
         return BannerPattern.create(name.toUpperCase(), name, "alexsmobs." + name, true);
@@ -173,6 +174,8 @@ public class AMItemRegistry {
             throw new RuntimeException(e);
         }
         event.getRegistry().register(new BannerPatternItem(PATTERN_BEAR, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_bear"));
+        event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_0, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_0"));
+        event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_1, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_1"));
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CROCODILE_SCUTE));
         ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(ROADRUNNER_FEATHER));
         CENTIPEDE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CENTIPEDE_LEG));
@@ -196,7 +199,7 @@ public class AMItemRegistry {
             }
         });
         ComposterBlock.CHANCES.put(BANANA, 0.65F);
-        ComposterBlock.CHANCES.put(BANANA_PEEL, 0.85F);
+        ComposterBlock.CHANCES.put(AMBlockRegistry.BANANA_PEEL, 1F);
         ComposterBlock.CHANCES.put(ACACIA_BLOSSOM, 0.65F);
     }
 }

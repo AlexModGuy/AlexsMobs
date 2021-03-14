@@ -162,7 +162,7 @@ public class ServerEvents {
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_SCUTE, 5, 1, 2, 1));
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.MOSQUITO_LARVA, 1, 3, 5, 1));
             rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.SOMBRERO, 20, 1, 1, 1));
-            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BANANA_PEEL, 1, 2, 1, 1));
+            rareTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.BANANA_PEEL, 1, 2, 1, 1));
             rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC, 5, 2, 3, 1));
         }
     }

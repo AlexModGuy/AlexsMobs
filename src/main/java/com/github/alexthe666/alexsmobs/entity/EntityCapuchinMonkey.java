@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -420,7 +421,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
         if(EntityGorilla.isBanana(e.getItem())){
             if(getRNG().nextInt(4) == 0){
-                this.entityDropItem(new ItemStack(AMItemRegistry.BANANA_PEEL));
+                this.entityDropItem(new ItemStack(AMBlockRegistry.BANANA_PEEL));
             }
             if(e.getThrowerId() != null && !this.isTamed()){
                 if(getRNG().nextInt(5) == 0){

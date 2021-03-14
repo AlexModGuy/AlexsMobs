@@ -1,7 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:arrow"
+      "item": "minecraft:blue_banner",
+      "nbt": "{BlockEntityTag:{Patterns:[{Color:0,Pattern:\"alexsmobs.australia_0\"},{Color:14,Pattern:\"alexsmobs.australia_1\"}]},HideFlags:32}"
     },
     "title": {
       "translate": "advancements.alexsmobs.emu_dodge.title"
