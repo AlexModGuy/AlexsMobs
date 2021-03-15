@@ -27,12 +27,11 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -156,6 +155,15 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
                 return super.shouldContinueExecuting() && !EntityPlatypus.this.isSensing();
             }
         });
+    }
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        boolean prev = attackEntityFrom(source, amount);
+        if(prev && source.getImmediateSource() instanceof LivingEntity){
+            LivingEntity entity = (LivingEntity)source.getImmediateSource();
+            entity.addPotionEffect(new EffectInstance(Effects.POISON, 100));
+        }
+        return prev;
     }
 
     public boolean isPerry() {
