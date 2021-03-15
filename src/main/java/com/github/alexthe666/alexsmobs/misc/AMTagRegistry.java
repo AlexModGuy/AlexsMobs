@@ -38,6 +38,7 @@ public class AMTagRegistry {
     public static final ResourceLocation MUNGUS_REPLACE_NETHER = new ResourceLocation("alexsmobs", "mungus_replace_nether");
     public static final ResourceLocation WARPED_MOSCO_BREAKABLES = new ResourceLocation("alexsmobs", "warped_mosco_breakables");
     public static final ResourceLocation CROW_FEARS = new ResourceLocation("alexsmobs", "crow_fears");
+    public static final ResourceLocation PLATYPUS_FOODSTUFFS = new ResourceLocation("alexsmobs", "platypus_foodstuffs");
 
     public static final ResourceLocation CRIMSON_MOSQUITO_SPAWNS = new ResourceLocation("alexsmobs","crimson_mosquito_spawns");
     public static final ResourceLocation ROADRUNNER_SPAWNS = new ResourceLocation("alexsmobs","roadrunner_spawns");

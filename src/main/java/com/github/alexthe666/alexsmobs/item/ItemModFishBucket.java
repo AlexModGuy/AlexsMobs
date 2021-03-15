@@ -1,9 +1,6 @@
 package com.github.alexthe666.alexsmobs.item;
 
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
-import com.github.alexthe666.alexsmobs.entity.EntityLobster;
-import com.github.alexthe666.alexsmobs.entity.EntityStradpole;
+import com.github.alexthe666.alexsmobs.entity.*;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -80,6 +77,13 @@ public class ItemModFishBucket extends BucketItem {
         }
         if (entity != null && entity instanceof EntityStradpole) {
             ((EntityStradpole) entity).setFromBucket(true);
+        }
+        if (entity != null && entity instanceof EntityPlatypus) {
+            CompoundNBT compoundnbt = stack.getOrCreateTag();
+            if(compoundnbt.contains("PlatypusData")){
+                ((EntityPlatypus)entity).readAdditional(compoundnbt.getCompound("PlatypusData"));
+            }
+
         }
     }
 

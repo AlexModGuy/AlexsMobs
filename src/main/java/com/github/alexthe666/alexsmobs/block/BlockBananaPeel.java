@@ -25,9 +25,6 @@ public class BlockBananaPeel extends BushBlock {
     }
 
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        if(entityIn instanceof LivingEntity ){
-            LivingEntity living = (LivingEntity)entityIn;
-        }
     }
 
     protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {

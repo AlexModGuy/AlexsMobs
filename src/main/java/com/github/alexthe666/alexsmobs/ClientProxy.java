@@ -4,10 +4,7 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.model.*;
-import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
-import com.github.alexthe666.alexsmobs.client.particle.ParticleGusterSandShot;
-import com.github.alexthe666.alexsmobs.client.particle.ParticleGusterSandSpin;
-import com.github.alexthe666.alexsmobs.client.particle.ParticleHemolymph;
+import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
@@ -61,6 +58,7 @@ public class ClientProxy extends CommonProxy {
     private static final ModelFrontierCap FRONTIER_CAP_MODEL = new ModelFrontierCap(0.3F);
     private static final ModelSombrero SOMBRERO_MODEL = new ModelSombrero(0.3F);
     private static final ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(1.0F);
+    private static final ModelFedora FEDORA_MODEL = new ModelFedora(0.3F);
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
 
     public void init(){
@@ -120,6 +118,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.STRADDLEBOARD, manager -> new RenderStraddleboard(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.EMU, manager -> new RenderEmu(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.EMU_EGG, manager -> new SpriteRenderer(manager, itemRendererIn));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.PLATYPUS, manager -> new RenderPlatypus(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
 
         ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
@@ -169,6 +168,8 @@ public class ClientProxy extends CommonProxy {
                 return SOMBRERO_MODEL;
             case 4:
                 return SPIKED_TURTLE_SHELL_MODEL;
+            case 5:
+                return FEDORA_MODEL;
             default:
                 return null;
         }
@@ -199,6 +200,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SPIN, ParticleGusterSandSpin.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SHOT, ParticleGusterSandShot.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.HEMOLYMPH, ParticleHemolymph.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.PLATYPUS_SENSE, ParticlePlatypus.Factory::new);
 
     }
 
