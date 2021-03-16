@@ -32,6 +32,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -44,11 +45,13 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
     public static final Animation ANIMATION_BITE = Animation.create(9);
     public static final Animation ANIMATION_SWIPE_R = Animation.create(15);
     public static final Animation ANIMATION_SWIPE_L = Animation.create(15);
+    public static final Animation ANIMATION_JUMPUP = Animation.create(20);
     private static final DataParameter<Boolean> UPSIDE_DOWN = EntityDataManager.createKey(EntityDropBear.class, DataSerializers.BOOLEAN);
     public float prevUpsideDownProgress;
     public float upsideDownProgress;
     public boolean fallRotation = rand.nextBoolean();
     private int animationTick;
+    private boolean jumpingUp = false;
     private Animation currentAnimation;
     private int upwardsFallingTicks = 0;
     private boolean isUpsideDownNavigator;
@@ -83,7 +86,7 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(1, new AIDropMelee());
         this.goalSelector.addGoal(2, new AIUpsideDownWander());
         this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(7, new LookAtGoal(this, LivingEntity.class, 30F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityDropBear.class));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
@@ -124,12 +127,13 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
         if (!this.isUpsideDown() && upsideDownProgress > 0F) {
             upsideDownProgress--;
         }
-        BlockPos abovePos = this.getPositionAbove();
-        BlockState aboveState = world.getBlockState(abovePos);
-        BlockState belowState = world.getBlockState(this.getPositionUnderneath());
-        boolean validAboveState = aboveState.isSolidSide(world, abovePos, Direction.DOWN);
-        boolean validBelowState = belowState.isSolidSide(world, this.getPositionUnderneath(), Direction.UP);
         if (!world.isRemote) {
+            BlockPos abovePos = this.getPositionAbove();
+            BlockState aboveState = world.getBlockState(abovePos);
+            BlockState belowState = world.getBlockState(this.getPositionUnderneath());
+            BlockPos worldHeight = world.getHeight(Heightmap.Type.MOTION_BLOCKING, this.getPosition());
+            boolean validAboveState = aboveState.isSolidSide(world, abovePos, Direction.DOWN);
+            boolean validBelowState = belowState.isSolidSide(world, this.getPositionUnderneath(), Direction.UP);
             LivingEntity attackTarget = this.getAttackTarget();
             if (attackTarget != null && getDistance(attackTarget) < attackTarget.getWidth() + this.getWidth() + 1 && this.canEntityBeSeen(attackTarget)) {
                 if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 6) {
@@ -146,9 +150,21 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
                     attackTarget.applyKnockback(0.5F, MathHelper.sin(rot * ((float) Math.PI / 180F)), -MathHelper.cos(rot * ((float) Math.PI / 180F)));
                     this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
-
+            }
+            if((attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && rand.nextInt(300) == 0 && this.onGround && !this.isUpsideDown() && this.getPosY() + 2 < worldHeight.getY()){
+                if(this.getAnimation() == NO_ANIMATION){
+                    this.setAnimation(ANIMATION_JUMPUP);
+                }
+            }
+            if(jumpingUp && this.getPosY() > worldHeight.getY()){
+                jumpingUp = false;
+            }
+            if( (this.onGround && this.getAnimation() == ANIMATION_JUMPUP && this.getAnimationTick() > 10 || jumpingUp && this.getAnimation() == NO_ANIMATION)){
+                this.setMotion(this.getMotion().add(0, 2F, 0));
+                jumpingUp = true;
             }
             if (this.isUpsideDown()) {
+                jumpingUp = false;
                 this.setNoGravity(!this.onGround);
                 float f = 0.91F;
                 this.setMotion(this.getMotion().mul(f, 1F, f));
@@ -157,7 +173,9 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
                         this.setUpsideDown(false);
                         upwardsFallingTicks = 0;
                     } else {
-                        upwardsFallingTicks++;
+                        if(!validAboveState){
+                            upwardsFallingTicks++;
+                        }
                         this.setMotion(this.getMotion().add(0, 0.2F, 0));
                     }
                 } else {
@@ -224,7 +242,7 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{ANIMATION_BITE, ANIMATION_SWIPE_L, ANIMATION_SWIPE_R};
+        return new Animation[]{ANIMATION_BITE, ANIMATION_SWIPE_L, ANIMATION_SWIPE_R, ANIMATION_JUMPUP};
     }
 
     private boolean canSeeBlock(BlockPos destinationBlock) {

@@ -149,6 +149,16 @@ public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
         animator.move(arm_right, 0, 0, -6F);
         animator.endKeyframe();
         animator.resetKeyframe(3);
+        animator.setAnimation(EntityDropBear.ANIMATION_JUMPUP);
+        animator.startKeyframe(10);
+        animator.move(body, 0, 5, 0);
+        animator.rotate(arm_right, 0, 0, (float)Math.toRadians(40F));
+        animator.rotate(arm_left, 0, 0, (float)Math.toRadians(-40F));
+        animator.rotate(leg_right, 0, 0, (float)Math.toRadians(40F));
+        animator.rotate(leg_left, 0, 0, (float)Math.toRadians(-40F));
+        animator.endKeyframe();
+        animator.setStaticKeyframe(5);
+        animator.resetKeyframe(5);
 
     }
 
