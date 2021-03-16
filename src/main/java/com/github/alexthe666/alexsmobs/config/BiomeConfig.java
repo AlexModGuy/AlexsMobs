@@ -3,16 +3,12 @@ package com.github.alexthe666.alexsmobs.config;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeConfig;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
-import com.google.common.collect.Lists;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BiomeConfig {

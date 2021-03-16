@@ -1,7 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
+import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -9,10 +11,9 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.tags.FluidTags;
@@ -25,14 +26,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.server.ServerWorld;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Optional;

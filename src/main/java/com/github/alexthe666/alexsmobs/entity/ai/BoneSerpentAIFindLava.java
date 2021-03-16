@@ -1,13 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.FindWaterGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 
 import java.util.EnumSet;
 import java.util.Random;

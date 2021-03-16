@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 
 public class OrcaAIMelee extends MeleeAttackGoal {

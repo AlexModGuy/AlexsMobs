@@ -1,16 +1,11 @@
 package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.entity.EntityGust;
-import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
-import net.minecraft.dispenser.Position;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;

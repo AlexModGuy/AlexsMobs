@@ -1,15 +1,11 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.alexsmobs.entity.EntityShoebill;
-import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSet;
-import net.minecraft.loot.LootParameters;
 import net.minecraft.loot.LootTables;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;

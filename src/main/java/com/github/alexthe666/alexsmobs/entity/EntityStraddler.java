@@ -36,10 +36,8 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 
 public class EntityStraddler extends MonsterEntity implements IAnimatedEntity {
 

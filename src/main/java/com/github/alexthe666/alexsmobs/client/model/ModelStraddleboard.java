@@ -4,8 +4,6 @@ import com.github.alexthe666.alexsmobs.entity.EntityStraddleboard;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class ModelStraddleboard extends AdvancedEntityModel<EntityStraddleboard> {

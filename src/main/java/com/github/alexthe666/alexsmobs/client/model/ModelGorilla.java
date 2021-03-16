@@ -4,8 +4,6 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7
 
 
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
-import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
-import com.github.alexthe666.alexsmobs.entity.EntityOrca;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;

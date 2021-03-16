@@ -1,10 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 

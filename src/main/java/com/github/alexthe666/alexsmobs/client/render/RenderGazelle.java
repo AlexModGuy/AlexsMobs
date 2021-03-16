@@ -1,9 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelGazelle;
-import com.github.alexthe666.alexsmobs.client.model.ModelRoadrunner;
 import com.github.alexthe666.alexsmobs.entity.EntityGazelle;
-import com.github.alexthe666.alexsmobs.entity.EntityRoadrunner;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

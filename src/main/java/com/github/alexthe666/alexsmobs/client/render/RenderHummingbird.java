@@ -1,8 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelFly;
 import com.github.alexthe666.alexsmobs.client.model.ModelHummingbird;
-import com.github.alexthe666.alexsmobs.entity.EntityFly;
 import com.github.alexthe666.alexsmobs.entity.EntityHummingbird;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;

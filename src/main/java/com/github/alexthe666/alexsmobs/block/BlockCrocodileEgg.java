@@ -2,13 +2,14 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
-import com.github.alexthe666.alexsmobs.entity.EntityFly;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.BatEntity;

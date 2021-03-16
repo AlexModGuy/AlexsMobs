@@ -1,9 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelStraddler;
-import com.github.alexthe666.alexsmobs.client.model.ModelStraddler;
 import com.github.alexthe666.alexsmobs.client.model.ModelStradpole;
-import com.github.alexthe666.alexsmobs.entity.EntityStraddler;
 import com.github.alexthe666.alexsmobs.entity.EntityStraddler;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

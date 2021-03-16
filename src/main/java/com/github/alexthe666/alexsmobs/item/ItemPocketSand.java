@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.item;
 
-import com.github.alexthe666.alexsmobs.entity.EntityCockroachEgg;
-import com.github.alexthe666.alexsmobs.entity.EntityMosquitoSpit;
 import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -15,7 +12,6 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 public class ItemPocketSand extends Item {

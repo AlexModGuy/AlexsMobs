@@ -1,12 +1,10 @@
 package com.github.alexthe666.alexsmobs.effect;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
-import net.minecraft.util.math.vector.Vector3d;
 
 public class EffectOrcaMight extends Effect {
 

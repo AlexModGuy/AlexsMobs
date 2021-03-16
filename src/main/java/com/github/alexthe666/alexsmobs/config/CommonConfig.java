@@ -1,13 +1,8 @@
 package com.github.alexthe666.alexsmobs.config;
 
-import com.github.alexthe666.citadel.math.Tuple2f;
 import com.google.common.collect.Lists;
-import cpw.mods.modlauncher.LaunchPluginHandler;
-import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommonConfig {

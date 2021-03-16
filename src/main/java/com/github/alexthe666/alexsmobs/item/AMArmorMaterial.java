@@ -1,15 +1,8 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
 
 public class AMArmorMaterial extends CustomArmorMaterial {
 

@@ -1,14 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMoose;
-import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;

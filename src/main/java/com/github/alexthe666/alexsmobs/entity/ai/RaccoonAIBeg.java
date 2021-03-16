@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
+
 import java.util.EnumSet;
 
 public class RaccoonAIBeg extends Goal {

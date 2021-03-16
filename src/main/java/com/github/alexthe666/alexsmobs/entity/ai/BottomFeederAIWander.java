@@ -1,12 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityLobster;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
-import net.minecraft.pathfinding.PathType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;

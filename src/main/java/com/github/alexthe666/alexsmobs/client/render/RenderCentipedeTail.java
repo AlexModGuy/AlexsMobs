@@ -1,8 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelCentipedeBody;
 import com.github.alexthe666.alexsmobs.client.model.ModelCentipedeTail;
-import com.github.alexthe666.alexsmobs.entity.EntityCentipedeBody;
 import com.github.alexthe666.alexsmobs.entity.EntityCentipedeTail;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

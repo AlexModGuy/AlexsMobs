@@ -1,8 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
-import com.github.alexthe666.alexsmobs.message.MessageCrowMountPlayer;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;

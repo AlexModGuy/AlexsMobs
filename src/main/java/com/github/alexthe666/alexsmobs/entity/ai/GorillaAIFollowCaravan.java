@@ -2,10 +2,9 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.LeashKnotEntity;
 import net.minecraft.util.math.vector.Vector3d;
+
 import java.util.EnumSet;
 import java.util.List;
 

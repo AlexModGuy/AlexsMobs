@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
-import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;

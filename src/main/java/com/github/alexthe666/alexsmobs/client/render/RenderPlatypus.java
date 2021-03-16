@@ -1,8 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelPlatypus;
-import com.github.alexthe666.alexsmobs.client.model.ModelPlatypus;
-import com.github.alexthe666.alexsmobs.entity.EntityPlatypus;
 import com.github.alexthe666.alexsmobs.entity.EntityPlatypus;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

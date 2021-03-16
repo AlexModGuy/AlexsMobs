@@ -1,15 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
-import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;

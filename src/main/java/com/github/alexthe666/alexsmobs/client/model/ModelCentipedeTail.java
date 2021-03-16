@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityCentipedeHead;
 import com.github.alexthe666.alexsmobs.entity.EntityCentipedeTail;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;

@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.JumpGoal;
-import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;

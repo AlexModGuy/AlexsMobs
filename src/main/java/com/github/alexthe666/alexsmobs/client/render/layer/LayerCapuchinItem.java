@@ -1,19 +1,13 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCapuchinMonkey;
-import com.github.alexthe666.alexsmobs.client.model.ModelGorilla;
 import com.github.alexthe666.alexsmobs.client.render.RenderCapuchinMonkey;
-import com.github.alexthe666.alexsmobs.client.render.RenderGorilla;
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
-import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.vector.Vector3f;

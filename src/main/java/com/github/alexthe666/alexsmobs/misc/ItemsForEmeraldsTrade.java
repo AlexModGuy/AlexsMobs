@@ -3,10 +3,11 @@ package com.github.alexthe666.alexsmobs.misc;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.*;
-import net.minecraft.potion.Effect;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.MerchantOffer;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class ItemsForEmeraldsTrade  implements VillagerTrades.ITrade {

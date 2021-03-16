@@ -9,9 +9,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.HandSide;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class LayerMantisShrimpItem extends LayerRenderer<EntityMantisShrimp, ModelMantisShrimp> {

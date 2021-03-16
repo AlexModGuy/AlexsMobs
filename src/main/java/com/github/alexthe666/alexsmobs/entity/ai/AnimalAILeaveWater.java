@@ -4,14 +4,12 @@ import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class AnimalAILeaveWater extends Goal {
     private final CreatureEntity creature;

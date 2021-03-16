@@ -19,7 +19,6 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;

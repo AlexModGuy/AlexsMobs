@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.entity.EntityOrca;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

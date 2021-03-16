@@ -1,7 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityEndergrade;
-import net.minecraft.block.*;
+import net.minecraft.block.Blocks;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.util.math.BlockPos;

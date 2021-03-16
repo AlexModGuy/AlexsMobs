@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.item.crafting.Ingredient;

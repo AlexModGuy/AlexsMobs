@@ -2,20 +2,15 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelWarpedMosco;
 import com.github.alexthe666.alexsmobs.entity.EntityWarpedMosco;
-import com.github.alexthe666.alexsmobs.entity.EntityWarpedToad;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.AbstractEyesLayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-
-import javax.annotation.Nullable;
 
 public class RenderWarpedMosco extends MobRenderer<EntityWarpedMosco, ModelWarpedMosco> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/warped_mosco.png");

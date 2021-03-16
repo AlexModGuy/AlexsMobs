@@ -1,26 +1,15 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.CropsBlock;
 import net.minecraft.command.arguments.EntityAnchorArgument;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorldReader;
-
-import java.util.Random;
 
 public class CrowAICircleCrops extends MoveToBlockGoal {
 

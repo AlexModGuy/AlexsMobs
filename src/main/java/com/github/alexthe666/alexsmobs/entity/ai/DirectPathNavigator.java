@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.world.World;
 
 public class DirectPathNavigator extends GroundPathNavigator {

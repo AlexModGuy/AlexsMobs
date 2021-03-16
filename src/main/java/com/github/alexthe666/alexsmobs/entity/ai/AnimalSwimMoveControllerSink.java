@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityMantisShrimp;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.attributes.Attributes;

@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
-import net.minecraft.util.math.vector.Vector3d;
 
 public class EffectBugPheromones extends Effect {
 

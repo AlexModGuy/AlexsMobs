@@ -9,9 +9,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.entity.model.LlamaModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.passive.horse.LlamaEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;
 

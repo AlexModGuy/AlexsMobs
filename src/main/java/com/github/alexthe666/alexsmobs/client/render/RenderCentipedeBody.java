@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCentipedeBody;
-import com.github.alexthe666.alexsmobs.client.model.ModelCentipedeHead;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerCentipedeHeadEyes;
 import com.github.alexthe666.alexsmobs.entity.EntityCentipedeBody;
-import com.github.alexthe666.alexsmobs.entity.EntityCentipedeHead;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;

@@ -2,16 +2,11 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelBlobfish;
 import com.github.alexthe666.alexsmobs.client.model.ModelBlobfishDepressurized;
-import com.github.alexthe666.alexsmobs.client.model.ModelOrca;
 import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
-import com.github.alexthe666.alexsmobs.entity.EntityOrca;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.PufferFishMediumModel;
-import net.minecraft.client.renderer.entity.model.PufferFishSmallModel;
-import net.minecraft.entity.passive.fish.PufferfishEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderBlobfish extends MobRenderer<EntityBlobfish, EntityModel<EntityBlobfish>> {

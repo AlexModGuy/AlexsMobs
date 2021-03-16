@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCapuchinMonkey;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerCapuchinItem;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerGrizzlyItem;
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;

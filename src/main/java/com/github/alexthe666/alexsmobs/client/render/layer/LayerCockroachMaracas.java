@@ -1,11 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelCapuchinMonkey;
 import com.github.alexthe666.alexsmobs.client.model.ModelCockroach;
 import com.github.alexthe666.alexsmobs.client.model.ModelSombrero;
-import com.github.alexthe666.alexsmobs.client.render.RenderCapuchinMonkey;
 import com.github.alexthe666.alexsmobs.client.render.RenderCockroach;
-import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -17,7 +14,6 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 

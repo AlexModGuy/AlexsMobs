@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import com.github.alexthe666.alexsmobs.entity.EntityWarpedMosco;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;

@@ -1,16 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.passive.DolphinEntity;
-import net.minecraft.network.DebugPacketSender;
-import net.minecraft.pathfinding.*;
-import net.minecraft.util.Util;
+import net.minecraft.pathfinding.PathFinder;
+import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.pathfinding.WalkAndSwimNodeProcessor;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 
 public class SemiAquaticPathNavigator extends SwimmerPathNavigator {

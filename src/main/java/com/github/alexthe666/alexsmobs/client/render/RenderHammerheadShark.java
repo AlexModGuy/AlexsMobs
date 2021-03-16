@@ -1,9 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelEndergrade;
 import com.github.alexthe666.alexsmobs.client.model.ModelHammerheadShark;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerEndergradeSaddle;
-import com.github.alexthe666.alexsmobs.entity.EntityEndergrade;
 import com.github.alexthe666.alexsmobs.entity.EntityHammerheadShark;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;

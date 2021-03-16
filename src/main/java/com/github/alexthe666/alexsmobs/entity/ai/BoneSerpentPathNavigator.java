@@ -1,11 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.network.DebugPacketSender;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.SwimNodeProcessor;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;

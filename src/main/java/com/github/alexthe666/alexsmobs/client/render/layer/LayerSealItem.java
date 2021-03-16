@@ -1,19 +1,14 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelRaccoon;
 import com.github.alexthe666.alexsmobs.client.model.ModelSeal;
-import com.github.alexthe666.alexsmobs.client.render.RenderRaccoon;
 import com.github.alexthe666.alexsmobs.client.render.RenderSeal;
-import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class LayerSealItem extends LayerRenderer<EntitySeal, ModelSeal> {

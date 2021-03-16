@@ -6,9 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
@@ -21,15 +19,11 @@ import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootTables;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +71,8 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.STRADDLER, 0.38F));
         list.add(new Pair<>(AMEntityRegistry.STRADPOLE, 0.9F));
         list.add(new Pair<>(AMEntityRegistry.EMU, 0.7F));
+        list.add(new Pair<>(AMEntityRegistry.PLATYPUS, 0.85F));
+        list.add(new Pair<>(AMEntityRegistry.DROPBEAR, 0.65F));
     });
     private static int ticksExisted = 0;
 

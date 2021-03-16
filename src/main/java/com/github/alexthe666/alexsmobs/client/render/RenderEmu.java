@@ -1,9 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelEmu;
-import com.github.alexthe666.alexsmobs.client.model.ModelLobster;
 import com.github.alexthe666.alexsmobs.entity.EntityEmu;
-import com.github.alexthe666.alexsmobs.entity.EntityLobster;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

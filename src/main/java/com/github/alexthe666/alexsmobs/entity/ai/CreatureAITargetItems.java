@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.entity.ITargetsDroppedItems;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.item.ItemEntity;

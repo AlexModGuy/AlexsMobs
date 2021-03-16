@@ -1,14 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityKomodoDragon;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.server.ServerWorld;
 
 public class KomodoDragonAIBreed extends BreedGoal {

@@ -1,27 +1,19 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityHummingbird;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.block.BeehiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropsBlock;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.ai.goal.MoveToBlockGoal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tileentity.BeehiveTileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
-
-import java.util.Random;
 
 public class HummingbirdAIPollinate  extends MoveToBlockGoal {
 

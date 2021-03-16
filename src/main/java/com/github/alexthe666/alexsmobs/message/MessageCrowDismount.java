@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

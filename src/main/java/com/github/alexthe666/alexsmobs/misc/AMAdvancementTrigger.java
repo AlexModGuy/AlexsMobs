@@ -1,14 +1,10 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.criterion.*;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.loot.ConditionArraySerializer;
-import net.minecraft.tileentity.BeaconTileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class AMAdvancementTrigger extends AbstractCriterionTrigger<AMAdvancementTrigger.Instance> {

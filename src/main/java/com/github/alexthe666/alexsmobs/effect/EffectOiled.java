@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.effect;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.math.vector.Vector3d;

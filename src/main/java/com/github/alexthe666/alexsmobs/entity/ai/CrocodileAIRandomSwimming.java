@@ -11,7 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class CrocodileAIRandomSwimming extends RandomWalkingGoal {
     public CrocodileAIRandomSwimming(CreatureEntity creature, double speed, int chance) {

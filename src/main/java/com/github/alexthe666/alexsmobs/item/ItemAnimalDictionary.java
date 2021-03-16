@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.citadel.Citadel;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;

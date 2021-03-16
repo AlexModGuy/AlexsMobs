@@ -1,5 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.model;
-import com.github.alexthe666.alexsmobs.entity.EntityOrca;
+
 import com.github.alexthe666.alexsmobs.entity.EntityRattlesnake;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;

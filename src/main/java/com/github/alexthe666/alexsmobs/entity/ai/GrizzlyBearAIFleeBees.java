@@ -2,17 +2,10 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.passive.BeeEntity;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.OcelotEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 

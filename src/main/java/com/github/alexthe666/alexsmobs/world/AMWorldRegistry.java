@@ -9,8 +9,6 @@ import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.HashMap;
-
 public class AMWorldRegistry {
 
     public static void onBiomesLoad(BiomeLoadingEvent event) {

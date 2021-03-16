@@ -4,11 +4,8 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
-
-import java.util.ArrayList;
 
 public class EffectKnockbackResistance extends Effect {
 

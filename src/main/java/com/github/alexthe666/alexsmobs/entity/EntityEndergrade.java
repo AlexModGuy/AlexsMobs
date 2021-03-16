@@ -1,7 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
+import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
+import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
+import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -30,7 +33,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;

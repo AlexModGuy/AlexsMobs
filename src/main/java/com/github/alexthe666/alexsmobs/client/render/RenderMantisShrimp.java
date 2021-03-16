@@ -1,16 +1,12 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelCrow;
 import com.github.alexthe666.alexsmobs.client.model.ModelMantisShrimp;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerCrowItem;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerMantisShrimpItem;
-import com.github.alexthe666.alexsmobs.entity.EntityCrow;
 import com.github.alexthe666.alexsmobs.entity.EntityMantisShrimp;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.layer.Layer;
 
 public class RenderMantisShrimp extends MobRenderer<EntityMantisShrimp, ModelMantisShrimp> {
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_0.png");

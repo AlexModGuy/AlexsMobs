@@ -1,13 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelBoneSerpentHead;
 import com.github.alexthe666.alexsmobs.client.model.ModelCrimsonMosquito;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerCrimsonMosquitoBlood;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerGrizzlyHoney;
-import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
-import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
-import com.github.alexthe666.alexsmobs.entity.EntityFly;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

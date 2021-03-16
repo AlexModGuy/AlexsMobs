@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntityHemolymph;
-import com.github.alexthe666.alexsmobs.entity.EntityMosquitoSpit;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.entity.EntityMosquitoSpit;
 import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

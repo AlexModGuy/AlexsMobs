@@ -6,10 +6,11 @@ import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.item.*;
+import net.minecraft.item.EnchantedBookItem;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

@@ -3,12 +3,8 @@ package com.github.alexthe666.alexsmobs.client.sound;
 import com.github.alexthe666.alexsmobs.ClientProxy;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.TickableSound;
-import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 
 import java.util.Map;
 

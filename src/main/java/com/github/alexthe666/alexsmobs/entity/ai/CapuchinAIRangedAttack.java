@@ -3,10 +3,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.Items;
-import net.minecraft.util.Hand;
 
 import java.util.EnumSet;
 

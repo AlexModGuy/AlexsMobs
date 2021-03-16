@@ -1,9 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelCrocodile;
 import com.github.alexthe666.alexsmobs.client.model.ModelSeal;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerSealItem;
-import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;

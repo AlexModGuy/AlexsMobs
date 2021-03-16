@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;

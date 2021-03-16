@@ -1,11 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCentipedeHead;
-import com.github.alexthe666.alexsmobs.client.model.ModelCrimsonMosquito;
 import com.github.alexthe666.alexsmobs.client.render.RenderCentipedeHead;
-import com.github.alexthe666.alexsmobs.client.render.RenderCrimsonMosquito;
 import com.github.alexthe666.alexsmobs.entity.EntityCentipedeHead;
-import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

@@ -2,9 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySnowLeopard;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,11 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.goal.BreakBlockGoal;
-import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;

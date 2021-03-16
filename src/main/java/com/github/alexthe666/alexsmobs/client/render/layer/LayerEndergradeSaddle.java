@@ -1,11 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelEndergrade;
-import com.github.alexthe666.alexsmobs.client.model.ModelGrizzlyBear;
 import com.github.alexthe666.alexsmobs.client.render.RenderEndergrade;
-import com.github.alexthe666.alexsmobs.client.render.RenderGrizzlyBear;
 import com.github.alexthe666.alexsmobs.entity.EntityEndergrade;
-import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

@@ -1,11 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelGorilla;
-import com.github.alexthe666.alexsmobs.client.model.ModelGrizzlyBear;
 import com.github.alexthe666.alexsmobs.client.render.RenderGorilla;
-import com.github.alexthe666.alexsmobs.client.render.RenderGrizzlyBear;
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
-import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;

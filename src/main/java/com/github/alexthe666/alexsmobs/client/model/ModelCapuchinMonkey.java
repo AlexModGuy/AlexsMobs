@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
-import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -12,10 +11,6 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.fml.common.Mod;
-
-import javax.swing.text.html.parser.Entity;
 
 public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonkey> {
 	public final AdvancedModelBox root;
