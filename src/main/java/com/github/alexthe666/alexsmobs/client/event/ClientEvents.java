@@ -6,7 +6,9 @@ import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
+import com.github.alexthe666.alexsmobs.entity.EntityFocalPoint;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.FluidBlockRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -16,6 +18,9 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -51,12 +56,34 @@ public class ClientEvents {
                 }
             }
         }
+        if(event.getEntity().isPotionActive(AMEffectRegistry.CLINGING) && event.getEntity().getEyeHeight() < event.getEntity().getHeight() * 0.45F){
+            event.getMatrixStack().push();
+            event.getMatrixStack().translate(0.0D, (double)(event.getEntity().getHeight() + 0.1F), 0.0D);
+            event.getMatrixStack().rotate(Vector3f.ZP.rotationDegrees(180.0F));
+            event.getEntity().prevRenderYawOffset = - event.getEntity().prevRenderYawOffset;
+            event.getEntity().renderYawOffset = - event.getEntity().renderYawOffset;
+            event.getEntity().prevRotationYawHead = - event.getEntity().prevRotationYawHead;
+            event.getEntity().rotationYawHead = - event.getEntity().rotationYawHead;
 
+        }
     }
 
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onPostRenderEntity(RenderLivingEvent.Post event) {
+        if(event.getEntity().isPotionActive(AMEffectRegistry.CLINGING) && event.getEntity().getEyeHeight() < event.getEntity().getHeight() * 0.45F) {
+            event.getMatrixStack().pop();
+            event.getEntity().prevRenderYawOffset = - event.getEntity().prevRenderYawOffset;
+            event.getEntity().renderYawOffset = - event.getEntity().renderYawOffset;
+            event.getEntity().prevRotationYawHead = - event.getEntity().prevRotationYawHead;
+            event.getEntity().rotationYawHead = - event.getEntity().rotationYawHead;
+        }
+    }
 
-    private static BlockPos getPositionUnderneath(Entity e) {
-        return new BlockPos(e.getPositionVec().x, e.getBoundingBox().minY - 0.5000001D, e.getPositionVec().z);
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onCameraSetup(EntityViewRenderEvent.CameraSetup event){
+        ClientPlayerEntity player = Minecraft.getInstance().player;
     }
 
     @SubscribeEvent
@@ -96,4 +123,6 @@ public class ClientEvents {
             }
         }
     }
+
+
 }

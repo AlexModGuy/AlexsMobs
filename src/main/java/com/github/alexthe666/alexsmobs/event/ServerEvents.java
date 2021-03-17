@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
@@ -42,6 +43,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -78,6 +80,29 @@ public class ServerEvents {
         double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
         Vector3d vector3d1 = vector3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
         return worldIn.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
+    }
+
+
+    @SubscribeEvent
+    public static void onEntityJump(LivingEvent.LivingJumpEvent event) {
+        if(event.getEntityLiving().isPotionActive(AMEffectRegistry.CLINGING) && EffectClinging.isUpsideDown(event.getEntityLiving())){
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityResize(EntityEvent.Size event) {
+        if (event.getEntity() instanceof PlayerEntity) {
+            PlayerEntity entity = (PlayerEntity) event.getEntity();
+            try{
+                if (!entity.getActivePotionMap().isEmpty() && entity.isPotionActive(AMEffectRegistry.CLINGING) && EffectClinging.isUpsideDown(entity)) {
+                    float minus = event.getOldSize().height - event.getOldEyeHeight();
+                    event.setNewEyeHeight(minus);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @SubscribeEvent
@@ -307,6 +332,9 @@ public class ServerEvents {
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
+            if(event.getEntityLiving().getEyeHeight() < event.getEntityLiving().getHeight() * 0.5D){
+                event.getEntityLiving().recalculateSize();
+            }
             ModifiableAttributeInstance modifiableattributeinstance = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);
             if (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS || modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
                 boolean sand = event.getEntityLiving().world.getBlockState(getDownPos(event.getEntityLiving().getPosition(), event.getEntityLiving().world)).getBlock().isIn(BlockTags.SAND);

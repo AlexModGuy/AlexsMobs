@@ -24,6 +24,7 @@ public class AMEffectRegistry {
     public static final Effect ORCAS_MIGHT = new EffectOrcaMight();
     public static final Effect BUG_PHEROMONES = new EffectBugPheromones();
     public static final Effect SOULSTEAL = new EffectSoulsteal();
+    public static final Effect CLINGING = new EffectClinging();
     public static final Potion KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 3600)).setRegistryName("alexsmobs:knockback_resistance");
     public static final Potion LONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 9600)).setRegistryName("alexsmobs:long_knockback_resistance");
     public static final Potion STRONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new EffectInstance(KNOCKBACK_RESISTANCE, 1800, 1)).setRegistryName("alexsmobs:strong_knockback_resistance");
@@ -37,6 +38,8 @@ public class AMEffectRegistry {
     public static final Potion SOULSTEAL_POTION = new Potion(new EffectInstance(SOULSTEAL, 3600)).setRegistryName("alexsmobs:soulsteal");
     public static final Potion LONG_SOULSTEAL_POTION = new Potion(new EffectInstance(SOULSTEAL, 9600)).setRegistryName("alexsmobs:long_soulsteal");
     public static final Potion STRONG_SOULSTEAL_POTION = new Potion(new EffectInstance(SOULSTEAL, 1800, 1)).setRegistryName("alexsmobs:strong_soulsteal");
+    public static final Potion CLINGING_POTION = new Potion(new EffectInstance(CLINGING, 3600)).setRegistryName("alexsmobs:clinging");
+    public static final Potion LONG_CLINGING_POTION = new Potion(new EffectInstance(CLINGING, 9600)).setRegistryName("alexsmobs:long_clinging");
 
     @SubscribeEvent
     public static void registerEffects(RegistryEvent.Register<Effect> event) {
@@ -86,6 +89,8 @@ public class AMEffectRegistry {
         BrewingRecipeRegistry.addRecipe(Ingredient.fromStacks(createPotion(Potions.AWKWARD)), Ingredient.fromItems(AMItemRegistry.SOUL_HEART), createPotion(SOULSTEAL_POTION));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(SOULSTEAL_POTION)), Ingredient.fromItems(Items.REDSTONE), createPotion(LONG_SOULSTEAL_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(SOULSTEAL_POTION)), Ingredient.fromItems(Items.GLOWSTONE_DUST), createPotion(STRONG_SOULSTEAL_POTION)));
+        BrewingRecipeRegistry.addRecipe(Ingredient.fromStacks(createPotion(Potions.AWKWARD)), Ingredient.fromItems(AMItemRegistry.DROPBEAR_CLAW), createPotion(CLINGING_POTION));
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(CLINGING_POTION)), Ingredient.fromItems(Items.REDSTONE), createPotion(LONG_CLINGING_POTION)));
 
 
     }

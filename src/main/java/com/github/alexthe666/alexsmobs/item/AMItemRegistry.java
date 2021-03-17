@@ -101,6 +101,7 @@ public class AMItemRegistry {
     public static final Item EMU_FEATHER = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:emu_feather");
     public static final Item PLATYPUS_BUCKET = new ItemModFishBucket(AMEntityRegistry.PLATYPUS, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:platypus_bucket");
     public static final Item FEDORA = new ItemModArmor(FEDORA_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:fedora");
+    public static final Item DROPBEAR_CLAW = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:dropbear_claw");
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
     public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
