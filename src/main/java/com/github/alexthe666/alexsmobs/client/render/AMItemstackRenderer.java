@@ -73,6 +73,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.EMU, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.PLATYPUS, 0.85F));
         list.add(new Pair<>(AMEntityRegistry.DROPBEAR, 0.65F));
+        list.add(new Pair<>(AMEntityRegistry.TASMANIAN_DEVIL, 0.8F));
     });
     private static int ticksExisted = 0;
 

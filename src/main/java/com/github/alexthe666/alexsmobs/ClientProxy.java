@@ -110,6 +110,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.EMU_EGG, manager -> new SpriteRenderer(manager, itemRendererIn));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.PLATYPUS, manager -> new RenderPlatypus(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.DROPBEAR, manager -> new RenderDropBear(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TASMANIAN_DEVIL, manager -> new RenderTasmanianDevil(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
 
         ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {

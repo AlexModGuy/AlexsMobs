@@ -83,7 +83,7 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onCameraSetup(EntityViewRenderEvent.CameraSetup event){
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+
     }
 
     @SubscribeEvent

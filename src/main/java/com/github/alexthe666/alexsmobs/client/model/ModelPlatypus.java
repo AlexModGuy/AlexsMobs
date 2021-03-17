@@ -85,8 +85,8 @@ public class ModelPlatypus extends AdvancedEntityModel<EntityPlatypus> {
     @Override
     public void setRotationAngles(EntityPlatypus entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
         this.resetToDefaultPose();
-        float walkSpeed = 0.85F;
-        float walkDegree = 1F;
+        float walkSpeed = 1F;
+        float walkDegree = 1.3F;
         float idleSpeed = 0.3F;
         float idleDegree = 0.2F;
         float swimSpeed = 1.3F;
@@ -151,9 +151,28 @@ public class ModelPlatypus extends AdvancedEntityModel<EntityPlatypus> {
     }
 
     @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-        root.render(matrixStack, buffer, packedLight, packedOverlay);
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.isChild) {
+            float f = 1.65F;
+            head.setScale(f, f, f);
+            head.setShouldScaleChildren(true);
+            matrixStackIn.push();
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0D, 1.5D, 0D);
+            getParts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+            head.setScale(1, 1, 1);
+        } else {
+            matrixStackIn.push();
+            getParts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+        }
     }
+
 
     @Override
     public Iterable<ModelRenderer> getParts() {
