@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Grenslare är jätte släktingar till den vanliga vandraren från Nether. Till skillnad av vandrare, kan grenslare bara hittas i basaltdeltor.
+De är mycket hårdare än sina kusiner med, kapabla på land och i vatten, liksom i lava. Men, grenslare är också aggressiva.
+Alla upptäcktsresande som kommer för nära anses vara en inkräktare och attackeras omedelbart. Grenslaren använder sitt långa, nätade hår för att lansera grenslayngel mot sina mål, vilket kan hantera en anständig mängd skador.
+Om de dödas, kommer grenslare att släppa basalt och sällan grensle. Detta mineral är ovanligt och kan användas för att tillverka en grenslabräda.
+<NEWLINE>
+Grenslabrädor är färgbara brädor som flyter i lava, fast ändå sjunker i vatten. De kan lätt användas för att korsa de stora lavahaven. Till skillnad från den relativt säkra vandraren är grenslabrädan dock benägen att snappa och tumla, vilket resulterar i en riskfylld men snabbare resa.
+Om någon som använder en grenslabräda träffar ett tak eller en vägg för hårt kan de hamna i en lava-nde grav.
