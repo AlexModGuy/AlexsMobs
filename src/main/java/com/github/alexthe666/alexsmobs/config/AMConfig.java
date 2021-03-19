@@ -9,7 +9,7 @@ import java.util.List;
 public class AMConfig {
     public static int grizzlyBearSpawnWeight = 8;
     public static int grizzlyBearSpawnRolls = 0;
-    public static int roadrunnerSpawnWeight = 15;
+    public static int roadrunnerSpawnWeight = 9;
     public static int roadrunnerSpawnRolls = 1;
     public static int boneSerpentSpawnWeight = 8;
     public static int boneSeprentSpawnRolls = 40;
