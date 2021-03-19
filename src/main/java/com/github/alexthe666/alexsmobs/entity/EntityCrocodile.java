@@ -285,11 +285,12 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             float f1 = this.rotationYaw * ((float) Math.PI / 180F);
             this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.02F, 0.0D, MathHelper.cos(f1) * 0.02F));
             if (this.getDistance(this.getAttackTarget()) < 3.5F && this.canEntityBeSeen(this.getAttackTarget())) {
-                if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty()) {
+                if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() && !this.getAttackTarget().isActiveItemStackBlocking()) {
                     this.getAttackTarget().startRiding(this, true);
                 }
-                this.playSound(AMSoundRegistry.CROCODILE_BITE, this.getSoundVolume(), this.getSoundPitch());
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                this.playSound(AMSoundRegistry.CROCODILE_BITE, this.getSoundVolume(), this.getSoundPitch());
+
             }
         }
         if (!world.isRemote && this.isAlive() && this.getAttackTarget() != null && this.isInWater()) {
@@ -468,7 +469,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)).setCallsForHelp());
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, PlayerEntity.class, true) {
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, PlayerEntity.class, 80, false,true, null) {
             public boolean shouldExecute() {
                 return !isChild() && !isTamed() && super.shouldExecute();
             }
