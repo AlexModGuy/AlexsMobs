@@ -46,7 +46,7 @@ public class AMConfig {
     public static int caveCentipedeSpawnHeight = 30;
     public static int warpedToadSpawnWeight = 80;
     public static int warpedToadSpawnRolls = 0;
-    public static int mooseSpawnWeight = 15;
+    public static int mooseSpawnWeight = 9;
     public static int mooseSpawnRolls = 0;
     public static int mimicubeSpawnWeight = 40;
     public static int mimicubeSpawnRolls = 0;
