@@ -42,6 +42,7 @@
   "item.alexsmobs.spawn_egg_platypus": "Platypus Spawn Egg",
   "item.alexsmobs.spawn_egg_dropbear": "Dropbear Spawn Egg",
   "item.alexsmobs.spawn_egg_tasmanian_devil": "Tasmanian Devil Spawn Egg",
+  "item.alexsmobs.spawn_egg_kangaroo": "Kangaroo Spawn Egg",
   "item.alexsmobs.tab_icon": "Alex's Mobs",
   "item.alexsmobs.animal_dictionary": "Animal Dictionary",
   "item.alexsmobs.animal_dictionary.desc": "By Professor Alex Khaan",
@@ -110,6 +111,10 @@
   "item.alexsmobs.platypus_bucket": "Bucket of Platypus",
   "item.alexsmobs.fedora": "Fedora",
   "item.alexsmobs.dropbear_claw": "Dropbear Claw",
+  "item.alexsmobs.kangaroo_meat": "Kangaroo Meat",
+  "item.alexsmobs.cooked_kangaroo_meat": "Cooked Kangaroo Meat",
+  "item.alexsmobs.kangaroo_burger": "Kangaroo Burger",
+  "item.alexsmobs.kangaroo_hide": "Kangaroo Hide",
   "block.alexsmobs.banana_peel": "Banana Peel",
   "block.alexsmobs.crocodile_egg": "Crocodile Egg",
   "block.alexsmobs.gustmaker": "Gustmaker",
@@ -248,6 +253,8 @@
   "entity.alexsmobs.platypus": "Platypus",
   "entity.alexsmobs.dropbear": "Dropbear",
   "entity.alexsmobs.tasmanian_devil": "Tasmanian Devil",
+  "entity.alexsmobs.kangaroo": "Kangaroo",
+  "entity.alexsmobs.kangaroo.pouch": "Kangaroo's Pouch",
   "alexsmobs.sound.subtitle.grizzly_bear_idle": "Grizzly Bear growls",
   "alexsmobs.sound.subtitle.grizzly_bear_hurt": "Grizzly Bear roars",
   "alexsmobs.sound.subtitle.roadrunner_idle": "Roadrunner chirps",
@@ -475,5 +482,7 @@
   "advancements.alexsmobs.emu.title": "It's an Emu!!!",
   "advancements.alexsmobs.emu.desc": "Encounter an Emu. Exercise caution.",
   "advancements.alexsmobs.emu_dodge.title": "Begun, The Emu War Has",
-  "advancements.alexsmobs.emu_dodge.desc": "See an emu dodge a launched projectile."
+  "advancements.alexsmobs.emu_dodge.desc": "See an emu dodge a launched projectile.",
+  "advancements.alexsmobs.kangaroo.title": "We do a little trolling...",
+  "advancements.alexsmobs.kangaroo.desc": "Encounter a Kangaroo"
 }

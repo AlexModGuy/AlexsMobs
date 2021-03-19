@@ -102,6 +102,10 @@ public class AMItemRegistry {
     public static final Item PLATYPUS_BUCKET = new ItemModFishBucket(AMEntityRegistry.PLATYPUS, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:platypus_bucket");
     public static final Item FEDORA = new ItemModArmor(FEDORA_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:fedora");
     public static final Item DROPBEAR_CLAW = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:dropbear_claw");
+    public static final Item KANGAROO_MEAT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(0.6F).meat().build())).setRegistryName("alexsmobs:kangaroo_meat");
+    public static final Item COOKED_KANGAROO_MEAT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(8).saturation(0.85F).meat().build())).setRegistryName("alexsmobs:cooked_kangaroo_meat");
+    public static final Item KANGAROO_HIDE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:kangaroo_hide");
+    public static final Item KANGAROO_BURGER = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(12).saturation(1F).meat().build())).setRegistryName("alexsmobs:kangaroo_burger");
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
     public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
@@ -154,6 +158,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.PLATYPUS, 0X7D503E,0X363B43, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_platypus"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.DROPBEAR, 0X8A2D35,0X60A3A3, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_dropbear"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TASMANIAN_DEVIL, 0X252426,0XA8B4BF, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_tasmanian_devil"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.KANGAROO, 0XCE9D65,0XDEBDA0, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_kangaroo"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

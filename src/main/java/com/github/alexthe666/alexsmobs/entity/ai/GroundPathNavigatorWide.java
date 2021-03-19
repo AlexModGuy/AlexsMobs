@@ -7,14 +7,20 @@ import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 
 public class GroundPathNavigatorWide extends GroundPathNavigator {
+    private float distancemodifier = 0.75F;
 
     public GroundPathNavigatorWide(MobEntity entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
     }
 
+    public GroundPathNavigatorWide(MobEntity entitylivingIn, World worldIn, float distancemodifier) {
+        super(entitylivingIn, worldIn);
+        this.distancemodifier = distancemodifier;
+    }
+
     protected void pathFollow() {
         Vector3d vector3d = this.getEntityPosition();
-        this.maxDistanceToWaypoint = this.entity.getWidth() * 0.75F;
+        this.maxDistanceToWaypoint = this.entity.getWidth() * distancemodifier;
         Vector3i vector3i = this.currentPath.func_242948_g();
         double d0 = Math.abs(this.entity.getPosX() - ((double)vector3i.getX() + 0.5D));
         double d1 = Math.abs(this.entity.getPosY() - (double)vector3i.getY());

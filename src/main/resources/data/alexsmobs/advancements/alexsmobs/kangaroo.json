@@ -2,22 +2,22 @@
   "display": {
     "icon": {
       "item": "alexsmobs:tab_icon",
-      "nbt": "{DisplayEntityType:\"alexsmobs:emu\"}"
+      "nbt": "{DisplayEntityType:\"alexsmobs:kangaroo\"}"
     },
     "title": {
-      "translate": "advancements.alexsmobs.emu.title"
+      "translate": "advancements.alexsmobs.kangaroo.title"
     },
     "description": {
-      "translate": "advancements.alexsmobs.emu.desc"
+      "translate": "advancements.alexsmobs.kangaroo.desc"
     }
   },
-  "parent": "alexsmobs:alexsmobs/kangaroo",
+  "parent": "alexsmobs:alexsmobs/root",
   "criteria": {
     "killed": {
       "trigger": "minecraft:player_killed_entity",
       "conditions": {
         "entity": {
-          "type": "alexsmobs:emu"
+          "type": "alexsmobs:kangaroo"
         }
       }
     },
@@ -25,7 +25,7 @@
       "trigger": "minecraft:player_hurt_entity",
       "conditions": {
         "entity": {
-          "type": "alexsmobs:emu"
+          "type": "alexsmobs:kangaroo"
         }
       }
     },
@@ -33,7 +33,7 @@
       "trigger": "minecraft:player_interacted_with_entity",
       "conditions": {
         "entity": {
-          "type": "alexsmobs:emu"
+          "type": "alexsmobs:kangaroo"
         }
       }
     }

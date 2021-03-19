@@ -82,12 +82,6 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onCameraSetup(EntityViewRenderEvent.CameraSetup event){
-
-    }
-
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
     public void onRenderWorldLastEvent(RenderWorldLastEvent event) {
         AMItemstackRenderer.incrementTick();
         if(!AMConfig.shadersCompat){

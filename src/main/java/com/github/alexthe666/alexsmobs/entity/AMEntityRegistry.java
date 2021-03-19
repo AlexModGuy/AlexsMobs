@@ -70,10 +70,11 @@ public class AMEntityRegistry {
     public static final EntityType<EntityStraddleboard> STRADDLEBOARD = registerEntity(EntityType.Builder.create(EntityStraddleboard::new, EntityClassification.MISC).size(1.5F, 0.35F).setCustomClientFactory(EntityStraddleboard::new).immuneToFire(), "straddleboard");
     public static final EntityType<EntityEmu> EMU = registerEntity(EntityType.Builder.create(EntityEmu::new, EntityClassification.CREATURE).size(1.1F, 1.8F), "emu");
     public static final EntityType<EntityEmuEgg> EMU_EGG = registerEntity(EntityType.Builder.create(EntityEmuEgg::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityEmuEgg::new).immuneToFire(), "emu_egg");
-    public static final EntityType<EntityPlatypus> PLATYPUS = registerEntity(EntityType.Builder.create(EntityPlatypus::new, EntityClassification.WATER_CREATURE).size(0.8F, 0.5F), "platypus");
+    public static final EntityType<EntityPlatypus> PLATYPUS = registerEntity(EntityType.Builder.create(EntityPlatypus::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "platypus");
     public static final EntityType<EntityDropBear> DROPBEAR = registerEntity(EntityType.Builder.create(EntityDropBear::new, EntityClassification.MONSTER).size(1.65F, 1.5F).immuneToFire(), "dropbear");
     public static final EntityType<EntityFocalPoint> FOCAL_POINT = registerEntity(EntityType.Builder.create(EntityFocalPoint::new, EntityClassification.MISC).size(0.1F, 0.1F).setCustomClientFactory(EntityFocalPoint::new).immuneToFire(), "focal_point");
     public static final EntityType<EntityTasmanianDevil> TASMANIAN_DEVIL = registerEntity(EntityType.Builder.create(EntityTasmanianDevil::new, EntityClassification.CREATURE).size(0.7F, 0.8F), "tasmanian_devil");
+    public static final EntityType<EntityKangaroo> KANGAROO = registerEntity(EntityType.Builder.create(EntityKangaroo::new, EntityClassification.CREATURE).size(1.65F, 1.5F), "kangaroo");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -183,6 +184,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(PLATYPUS, EntityPlatypus.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(DROPBEAR, EntityDropBear.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(TASMANIAN_DEVIL, EntityTasmanianDevil.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(KANGAROO, EntityKangaroo.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

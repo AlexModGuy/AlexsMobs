@@ -2,16 +2,17 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.passive.AnimalEntity;
 
 import java.util.List;
 
-public class GorillaAIRideParent extends Goal {
-    private final EntityGorilla childAnimal;
-    private EntityGorilla parentAnimal;
+public class AnimalAIRideParent extends Goal {
+    private final AnimalEntity childAnimal;
+    private AnimalEntity parentAnimal;
     private final double moveSpeed;
     private int delayCounter;
 
-    public GorillaAIRideParent(EntityGorilla animal, double speed) {
+    public AnimalAIRideParent(AnimalEntity animal, double speed) {
         this.childAnimal = animal;
         this.moveSpeed = speed;
     }
@@ -20,11 +21,11 @@ public class GorillaAIRideParent extends Goal {
         if (this.childAnimal.getGrowingAge() >= 0 || this.childAnimal.isPassenger()) {
             return false;
         } else {
-            List<EntityGorilla> list = this.childAnimal.world.getEntitiesWithinAABB(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().grow(8.0D, 4.0D, 8.0D));
-            EntityGorilla animalentity = null;
+            List<AnimalEntity> list = this.childAnimal.world.getEntitiesWithinAABB(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().grow(8.0D, 4.0D, 8.0D));
+            AnimalEntity animalentity = null;
             double d0 = Double.MAX_VALUE;
 
-            for(EntityGorilla animalentity1 : list) {
+            for(AnimalEntity animalentity1 : list) {
                 if (animalentity1.getGrowingAge() >= 0 && animalentity1.getPassengers().isEmpty()) {
                     double d1 = this.childAnimal.getDistanceSq(animalentity1);
                     if (!(d1 > d0)) {

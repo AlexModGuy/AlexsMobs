@@ -35,8 +35,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 @OnlyIn(Dist.CLIENT)
@@ -50,6 +49,7 @@ public class ClientProxy extends CommonProxy {
     private static final ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(1.0F);
     private static final ModelFedora FEDORA_MODEL = new ModelFedora(0.3F);
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
+    public static List<UUID> currentSquidRiders = new ArrayList<UUID>();
 
     public void init(){
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
@@ -111,6 +111,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.PLATYPUS, manager -> new RenderPlatypus(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.DROPBEAR, manager -> new RenderDropBear(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TASMANIAN_DEVIL, manager -> new RenderTasmanianDevil(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.KANGAROO, manager -> new RenderKangaroo(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
 
         ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
