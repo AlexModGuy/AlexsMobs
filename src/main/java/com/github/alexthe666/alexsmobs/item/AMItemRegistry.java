@@ -37,6 +37,7 @@ public class AMItemRegistry {
     public static CustomArmorMaterial SOMBRERO_ARMOR_MATERIAL = new AMArmorMaterial("sombrero", 14, new int[]{2, 2, 2, 2}, 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
     public static CustomArmorMaterial SPIKED_TURTLE_SHELL_ARMOR_MATERIAL = new AMArmorMaterial("spiked_turtle_shell", 35, new int[]{3, 3, 3, 3}, 30, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 1F, 0.2F);
     public static CustomArmorMaterial FEDORA_ARMOR_MATERIAL = new AMArmorMaterial("fedora", 10, new int[]{2, 2, 2, 2}, 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
+    public static CustomArmorMaterial EMU_ARMOR_MATERIAL = new AMArmorMaterial("emu", 10, new int[]{5, 5, 5, 5}, 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
 
     public static final Item TAB_ICON = new ItemTabIcon(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:animal_dictionary");
@@ -99,6 +100,7 @@ public class AMItemRegistry {
     public static final Item EMU_EGG = new ItemAnimalEgg(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(8)).setRegistryName("alexsmobs:emu_egg");
     public static final Item BOILED_EMU_EGG = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(4).saturation(1F).meat().build())).setRegistryName("alexsmobs:boiled_emu_egg");
     public static final Item EMU_FEATHER = new Item(new Item.Properties().group(AlexsMobs.TAB).isImmuneToFire()).setRegistryName("alexsmobs:emu_feather");
+    public static final Item EMU_LEGGINGS = new ItemModArmor(EMU_ARMOR_MATERIAL, EquipmentSlotType.LEGS).setRegistryName("alexsmobs:emu_leggings");
     public static final Item PLATYPUS_BUCKET = new ItemModFishBucket(AMEntityRegistry.PLATYPUS, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:platypus_bucket");
     public static final Item FEDORA = new ItemModArmor(FEDORA_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:fedora");
     public static final Item DROPBEAR_CLAW = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:dropbear_claw");

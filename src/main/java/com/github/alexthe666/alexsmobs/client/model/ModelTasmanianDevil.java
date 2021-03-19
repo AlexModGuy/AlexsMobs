@@ -115,13 +115,13 @@ public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevi
 		animator.resetKeyframe(3);
 		animator.endKeyframe();
 		animator.setAnimation(EntityTasmanianDevil.ANIMATION_HOWL);
-		animator.startKeyframe(5);
+		animator.startKeyframe(10);
 		animator.move(lower_jaw, 0, 0, 1F);
 		animator.rotate(upper_jaw, (float)Math.toRadians(-5F), 0, 0);
 		animator.rotate(lower_jaw, (float)Math.toRadians(45F), 0, 0);
 		animator.rotate(head, (float)Math.toRadians(-45F),  (float)Math.toRadians(45F), 0);
 		animator.endKeyframe();
-		animator.startKeyframe(10);
+		animator.startKeyframe(20);
 		animator.move(lower_jaw, 0, 0, 1F);
 		animator.rotate(upper_jaw, (float)Math.toRadians(-5F), 0, 0);
 		animator.rotate(lower_jaw, (float)Math.toRadians(45F), 0, 0);

@@ -52,6 +52,7 @@ public class KangarooAIMelee extends MeleeAttackGoal {
                     }
                     if(waterTimeout < 1400){
                         dontSuper = true;
+                        checkAndPerformAttack(target, kangaroo.getDistanceSq(target));
                     }
                     if (kangaroo.isInWater() || kangaroo.getDistanceSq(Vector3d.copyCentered(waterPos)) < 10) {
                         kangaroo.totalMovingProgress = 0;

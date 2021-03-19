@@ -302,6 +302,11 @@ public class ServerEvents {
                 }
             }
         }
+        if(!event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).isEmpty() && event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS){
+            if(event.getSource().isProjectile() && event.getEntityLiving().getRNG().nextFloat() < 0.7F){
+                event.setCanceled(true);
+            }
+        }
     }
 
     @SubscribeEvent

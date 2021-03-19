@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -25,10 +26,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -42,7 +40,7 @@ public class EntityTasmanianDevil extends AnimalEntity implements IAnimatedEntit
 
     private int animationTick;
     private Animation currentAnimation;
-    public static final Animation ANIMATION_HOWL = Animation.create(25);
+    public static final Animation ANIMATION_HOWL = Animation.create(40);
     public static final Animation ANIMATION_ATTACK = Animation.create(8);
     private static final DataParameter<Boolean> BASKING = EntityDataManager.createKey(EntityTasmanianDevil.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityTasmanianDevil.class, DataSerializers.BOOLEAN);
@@ -62,6 +60,19 @@ public class EntityTasmanianDevil extends AnimalEntity implements IAnimatedEntit
         return !isSitting() && !isBasking();
     }
 
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.TASMANIAN_DEVIL_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.TASMANIAN_DEVIL_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.TASMANIAN_DEVIL_HURT;
+    }
+    
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
@@ -176,8 +187,12 @@ public class EntityTasmanianDevil extends AnimalEntity implements IAnimatedEntit
                 this.setBasking(true);
             }
         }
+        if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() == 1){
+            this.playSound(AMSoundRegistry.TASMANIAN_DEVIL_ROAR, this.getSoundVolume(), this.getSoundPitch());
+        }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() > 3){
             scareMobsTime = 40;
+
         }
         if(scareMobsTime > 0) {
             List<MonsterEntity> list = this.world.getEntitiesWithinAABB(MonsterEntity.class, this.getBoundingBox().grow(16, 8, 16));

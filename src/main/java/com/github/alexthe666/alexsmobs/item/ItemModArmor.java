@@ -42,6 +42,9 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.CENTIPEDE_ARMOR_MATERIAL) {
             tooltip.add(new TranslationTextComponent("item.alexsmobs.centipede_leggings.desc").mergeStyle(TextFormatting.GRAY));
         }
+        if (this.material == AMItemRegistry.EMU_ARMOR_MATERIAL) {
+            tooltip.add(new TranslationTextComponent("item.alexsmobs.emu_leggings.desc").mergeStyle(TextFormatting.GRAY));
+        }
         super.addInformation(stack, worldIn, tooltip, flagIn);
         if (this.material == AMItemRegistry.ROADRUNNER_ARMOR_MATERIAL) {
             tooltip.add(new TranslationTextComponent("item.alexsmobs.roadrunner_boots.desc").mergeStyle(TextFormatting.BLUE));
@@ -110,6 +113,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/spiked_turtle_shell.png";
         } else if (this.material == AMItemRegistry.FEDORA_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/fedora.png";
+        } else if (this.material == AMItemRegistry.EMU_ARMOR_MATERIAL) {
+            return "alexsmobs:textures/armor/emu_leggings.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }

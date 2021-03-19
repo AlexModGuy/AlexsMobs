@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.render.layer;
 import com.github.alexthe666.alexsmobs.client.model.ModelKangaroo;
 import com.github.alexthe666.alexsmobs.client.render.RenderKangaroo;
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -70,7 +71,11 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
                         boolean notAVanillaModel = a != defaultBipedModel;
                         this.setModelSlotVisible(a, EquipmentSlotType.HEAD);
                         translateToHead(matrixStackIn);
-                        matrixStackIn.translate(0, 0.25F, 0F);
+                        matrixStackIn.translate(0, 0.015F, -0.05F);
+                        if(itemstack.getItem() == AMItemRegistry.FEDORA){
+                            matrixStackIn.translate(0, 0.075F, 0F);
+
+                        }
                         matrixStackIn.scale(0.7F, 0.7F, 0.7F);
                         boolean flag1 = itemstack.hasEffect();
                         int clampedLight = packedLightIn;
@@ -171,10 +176,18 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
     private void renderHelmet(EntityKangaroo entity, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, boolean glintIn, BipedModel modelIn, float red, float green, float blue, ResourceLocation armorResource, boolean notAVanillaModel) {
         IVertexBuilder ivertexbuilder = ItemRenderer.getBuffer(bufferIn, RenderType.getEntityCutoutNoCull(armorResource), false, glintIn);
         renderer.getEntityModel().copyModelAttributesTo(modelIn);
-        modelIn.bipedHead.copyModelAngles(renderer.getEntityModel().head);
         modelIn.bipedHead.rotateAngleX = 0F;
         modelIn.bipedHead.rotateAngleY = 0F;
         modelIn.bipedHead.rotateAngleZ = 0F;
+        modelIn.bipedHeadwear.rotateAngleX = 0F;
+        modelIn.bipedHeadwear.rotateAngleY = 0F;
+        modelIn.bipedHeadwear.rotateAngleZ = 0F;
+        modelIn.bipedHead.rotationPointX = 0F;
+        modelIn.bipedHead.rotationPointY = 0F;
+        modelIn.bipedHead.rotationPointZ = 0F;
+        modelIn.bipedHeadwear.rotationPointX = 0F;
+        modelIn.bipedHeadwear.rotationPointY = 0F;
+        modelIn.bipedHeadwear.rotationPointZ = 0F;
         modelIn.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
 
     }

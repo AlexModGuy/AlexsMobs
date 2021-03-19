@@ -2,8 +2,10 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageKangarooEat;
 import com.github.alexthe666.alexsmobs.message.MessageKangarooInventorySync;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -43,10 +45,7 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -108,8 +107,21 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
 
     }
 
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.KANGAROO_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.KANGAROO_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.KANGAROO_HURT;
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 24.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 24.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4F);
     }
 
     private void initKangarooInventory() {
@@ -396,11 +408,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
             if(ticksExisted == 1){
                 updateClientInventory();
             }
-            if (this.isSitting()) {
-                this.disableJumpControl();
-            } else {
-                this.enableJumpControl();
-            }
+
             if (!moving && this.getAnimation() == NO_ANIMATION && !this.isSitting() && !this.isStanding()) {
                 if ((getRNG().nextInt(180) == 0 || this.getHealth() < this.getMaxHealth() && getRNG().nextInt(40) == 0) && world.getBlockState(this.getPosition().down()).isIn(Blocks.GRASS_BLOCK)) {
                     this.setAnimation(ANIMATION_EAT_GRASS);
@@ -668,7 +676,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     }
 
     protected float getJumpUpwardsMotion() {
-        return 0.42F;
+        return 0.5F;
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
@@ -676,6 +684,11 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     }
 
     protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        Item item = stack.getItem();
+        return item == Items.DEAD_BUSH || item == Items.GRASS;
     }
 
     public void resetKangarooSlots() {

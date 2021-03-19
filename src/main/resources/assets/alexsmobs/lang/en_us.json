@@ -108,6 +108,8 @@
   "item.alexsmobs.emu_egg": "Emu Egg",
   "item.alexsmobs.boiled_emu_egg": "Boiled Emu Egg",
   "item.alexsmobs.emu_feather": "Emu Feather",
+  "item.alexsmobs.emu_leggings": "Outback Leggings",
+  "item.alexsmobs.emu_leggings.desc": "Chance to avoid projectile damage",
   "item.alexsmobs.platypus_bucket": "Bucket of Platypus",
   "item.alexsmobs.fedora": "Fedora",
   "item.alexsmobs.dropbear_claw": "Dropbear Claw",

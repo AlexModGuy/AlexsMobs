@@ -1155,5 +1155,156 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.straddler_hurt"
+  },
+  "emu_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:emu_idle_0"
+      },
+      {
+        "name": "alexsmobs:emu_idle_1"
+      },
+      {
+        "name": "alexsmobs:emu_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.emu_idle"
+  },
+  "emu_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:emu_hurt_0"
+      },
+      {
+        "name": "alexsmobs:emu_hurt_1"
+      },
+      {
+        "name": "alexsmobs:emu_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.emu_hurt"
+  },
+  "platypus_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:platypus_idle_0"
+      },
+      {
+        "name": "alexsmobs:platypus_idle_1"
+      },
+      {
+        "name": "alexsmobs:platypus_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.platypus_idle"
+  },
+  "platypus_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:platypus_hurt_0"
+      },
+      {
+        "name": "alexsmobs:platypus_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.platypus_hurt"
+  },
+  "dropbear_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:dropbear_idle_0"
+      },
+      {
+        "name": "alexsmobs:dropbear_idle_1"
+      },
+      {
+        "name": "alexsmobs:dropbear_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.dropbear_idle"
+  },
+  "dropbear_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:dropbear_hurt_0"
+      },
+      {
+        "name": "alexsmobs:dropbear_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.dropbear_hurt"
+  },
+
+  "tasmanian_devil_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tasmanian_devil_idle_0"
+      },
+      {
+        "name": "alexsmobs:tasmanian_devil_idle_1"
+      },
+      {
+        "name": "alexsmobs:tasmanian_devil_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tasmanian_devil_idle"
+  },
+  "tasmanian_devil_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tasmanian_devil_hurt_0"
+      },
+      {
+        "name": "alexsmobs:tasmanian_devil_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tasmanian_devil_hurt"
+  },
+  "tasmanian_devil_roar": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tasmanian_devil_roar_0"
+      },
+      {
+        "name": "alexsmobs:tasmanian_devil_roar_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tasmanian_devil_roar"
+  },
+  "kangaroo_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:kangaroo_idle_0"
+      },
+      {
+        "name": "alexsmobs:kangaroo_idle_1"
+      },
+      {
+        "name": "alexsmobs:kangaroo_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.kangaroo_idle"
+  },
+  "kangaroo_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:kangaroo_hurt_0"
+      },
+      {
+        "name": "alexsmobs:kangaroo_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.kangaroo_hurt"
   }
 }
