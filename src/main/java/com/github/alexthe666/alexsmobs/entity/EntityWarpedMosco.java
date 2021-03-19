@@ -13,10 +13,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -73,6 +70,10 @@ public class EntityWarpedMosco extends MonsterEntity implements IAnimatedEntity 
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 100D).createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.ARMOR, 10D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1D).createMutableAttribute(Attributes.ARMOR_TOUGHNESS, 2D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3D);
+    }
+
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.ARTHROPOD;
     }
 
     private static Animation getRandomAttack(Random rand) {
