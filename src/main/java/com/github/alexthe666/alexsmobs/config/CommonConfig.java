@@ -119,6 +119,7 @@ public class CommonConfig {
     public ForgeConfigSpec.BooleanValue limitGusterSpawnsToWeather;
     public ForgeConfigSpec.BooleanValue warpedMoscoTransformation;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> warpedMoscoMobTriggers;
+    public final ForgeConfigSpec.BooleanValue straddleboardEnchants;
     public final ForgeConfigSpec.BooleanValue emuTargetSkeletons;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
@@ -148,6 +149,7 @@ public class CommonConfig {
         limitGusterSpawnsToWeather = buildBoolean(builder, "limitGusterSpawnsToWeather", "all", true, "Whether guster spawns are limited to when it is raining/thundering.");
         warpedMoscoTransformation = buildBoolean(builder, "warpedMoscoTransformation", "all", true, "Whether Crimson Mosquitoes can transform into Warped Moscos if attacking a Mungus or any listed creature.");
         warpedMoscoMobTriggers = builder.comment("List of extra(non mungus) mobs that will trigger a crimson mosquito to become a warped mosquito. Ex: \"minecraft:mooshroom\", \"alexsmobs:warped_toad\"").defineList("warpedMoscoMobTriggers", Lists.newArrayList(""), o -> o instanceof String);
+        straddleboardEnchants = buildBoolean(builder, "straddleboardEnchants", "all", true, "True if straddleboard enchants are enabled.");
         emuTargetSkeletons = buildBoolean(builder, "emuTargetSkeletons", "all", true, "Whether emu should target skeletons.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");

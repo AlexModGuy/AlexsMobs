@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.enchantment;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.ItemStraddleboard;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
@@ -22,15 +23,17 @@ public class AMEnchantmentRegistry {
 
     @SubscribeEvent
     public static void registerEnchantments(final RegistryEvent.Register<Enchantment> event) {
-        try {
-            for (Field f : AMEnchantmentRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Enchantment) {
-                    event.getRegistry().register((Enchantment) obj);
+        if(AMConfig.straddleboardEnchants){
+            try {
+                for (Field f : AMEnchantmentRegistry.class.getDeclaredFields()) {
+                    Object obj = f.get(null);
+                    if (obj instanceof Enchantment) {
+                        event.getRegistry().register((Enchantment) obj);
+                    }
                 }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 }
