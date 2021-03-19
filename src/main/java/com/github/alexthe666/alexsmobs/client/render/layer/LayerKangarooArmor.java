@@ -65,7 +65,7 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
             matrixStackIn.push();
             translateToHead(matrixStackIn);
             float f = 0.1F * (float) Math.sin((roo.ticksExisted + partialTicks) * 0.1F) + (roo.isChild() ? 0.2F : 0F);
-            matrixStackIn.translate(0.0F, -0.5F - f, -0.2F);
+            matrixStackIn.translate(0.0F, -0.75F - f, -0.2F);
             matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90F));
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
             Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(roo, haloStack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
