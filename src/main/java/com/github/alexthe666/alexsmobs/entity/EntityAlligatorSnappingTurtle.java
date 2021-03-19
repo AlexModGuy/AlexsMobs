@@ -157,7 +157,8 @@ public class EntityAlligatorSnappingTurtle extends AnimalEntity implements ISemi
             openMouthProgress--;
         }
         if (this.attackProgress == 4 && this.isAlive() && this.getAttackTarget() != null && this.canEntityBeSeen(this.getAttackTarget()) && this.getDistance(this.getAttackTarget()) < 2.3F) {
-            this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+            float dmg = this.isChild() ? 1F : (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
+            this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), dmg);
         }
         if (this.attackProgress > 4) {
             biteTick = 5;
