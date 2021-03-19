@@ -188,7 +188,7 @@ public class EntityTasmanianDevil extends AnimalEntity implements IAnimatedEntit
             }
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() == 1){
-            this.playSound(AMSoundRegistry.TASMANIAN_DEVIL_ROAR, this.getSoundVolume(), this.getSoundPitch());
+            this.playSound(AMSoundRegistry.TASMANIAN_DEVIL_ROAR, this.getSoundVolume() * 2F, this.getSoundPitch());
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() > 3){
             scareMobsTime = 40;

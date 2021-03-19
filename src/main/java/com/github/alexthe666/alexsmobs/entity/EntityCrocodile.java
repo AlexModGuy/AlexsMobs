@@ -93,13 +93,15 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.crocSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 40.0D).createMutableAttribute(Attributes.ARMOR, 8.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.4F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.crocSpawnRolls, this.getRNG(), spawnReasonIn);
-    }
+
 
     public int getMaxSpawnedInChunk() {
         return 2;

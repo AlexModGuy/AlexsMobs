@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -57,17 +58,28 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
         return resourcelocation;
     }
 
-    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityKangaroo cube, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityKangaroo roo, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         matrixStackIn.push();
-        if(!cube.isChild()) {
+        if(roo.isRoger()){
+            ItemStack haloStack = new ItemStack(AMItemRegistry.HALO);
+            matrixStackIn.push();
+            translateToHead(matrixStackIn);
+            float f = 0.1F * (float) Math.sin((roo.ticksExisted + partialTicks) * 0.1F) + (roo.isChild() ? 0.2F : 0F);
+            matrixStackIn.translate(0.0F, -0.5F - f, -0.2F);
+            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90F));
+            matrixStackIn.scale(1.3F, 1.3F, 1.3F);
+            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(roo, haloStack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            matrixStackIn.pop();
+        }
+        if(!roo.isChild()) {
             {
                 matrixStackIn.push();
-                ItemStack itemstack = cube.getItemStackFromSlot(EquipmentSlotType.HEAD);
+                ItemStack itemstack = roo.getItemStackFromSlot(EquipmentSlotType.HEAD);
                 if (itemstack.getItem() instanceof ArmorItem) {
                     ArmorItem armoritem = (ArmorItem) itemstack.getItem();
                     if (armoritem.getEquipmentSlot() == EquipmentSlotType.HEAD) {
                         BipedModel a = defaultBipedModel;
-                        a = getArmorModelHook(cube, itemstack, EquipmentSlotType.HEAD, a);
+                        a = getArmorModelHook(roo, itemstack, EquipmentSlotType.HEAD, a);
                         boolean notAVanillaModel = a != defaultBipedModel;
                         this.setModelSlotVisible(a, EquipmentSlotType.HEAD);
                         translateToHead(matrixStackIn);
@@ -84,10 +96,10 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
                             float f = (float) (i >> 16 & 255) / 255.0F;
                             float f1 = (float) (i >> 8 & 255) / 255.0F;
                             float f2 = (float) (i & 255) / 255.0F;
-                            renderHelmet(cube, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(cube, itemstack, EquipmentSlotType.HEAD, null), notAVanillaModel);
-                            renderHelmet(cube, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(cube, itemstack, EquipmentSlotType.HEAD, "overlay"), notAVanillaModel);
+                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(roo, itemstack, EquipmentSlotType.HEAD, null), notAVanillaModel);
+                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlotType.HEAD, "overlay"), notAVanillaModel);
                         } else {
-                            renderHelmet(cube, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(cube, itemstack, EquipmentSlotType.HEAD, null), notAVanillaModel);
+                            renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlotType.HEAD, null), notAVanillaModel);
                         }
 
                     }
@@ -97,12 +109,12 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
 
             {
                 matrixStackIn.push();
-                ItemStack itemstack = cube.getItemStackFromSlot(EquipmentSlotType.CHEST);
+                ItemStack itemstack = roo.getItemStackFromSlot(EquipmentSlotType.CHEST);
                 if (itemstack.getItem() instanceof ArmorItem) {
                     ArmorItem armoritem = (ArmorItem) itemstack.getItem();
                     if (armoritem.getEquipmentSlot() == EquipmentSlotType.CHEST) {
                         BipedModel a = defaultBipedModel;
-                        a = getArmorModelHook(cube, itemstack, EquipmentSlotType.CHEST, a);
+                        a = getArmorModelHook(roo, itemstack, EquipmentSlotType.CHEST, a);
                         boolean notAVanillaModel = a != defaultBipedModel;
                         this.setModelSlotVisible(a, EquipmentSlotType.CHEST);
                         translateToChest(matrixStackIn);
@@ -115,10 +127,10 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
                             float f = (float) (i >> 16 & 255) / 255.0F;
                             float f1 = (float) (i >> 8 & 255) / 255.0F;
                             float f2 = (float) (i & 255) / 255.0F;
-                            renderChestplate(cube, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(cube, itemstack, EquipmentSlotType.CHEST, null), notAVanillaModel);
-                            renderChestplate(cube, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(cube, itemstack, EquipmentSlotType.CHEST, "overlay"), notAVanillaModel);
+                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, f, f1, f2, getArmorResource(roo, itemstack, EquipmentSlotType.CHEST, null), notAVanillaModel);
+                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlotType.CHEST, "overlay"), notAVanillaModel);
                         } else {
-                            renderChestplate(cube, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(cube, itemstack, EquipmentSlotType.CHEST, null), notAVanillaModel);
+                            renderChestplate(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlotType.CHEST, null), notAVanillaModel);
                         }
 
                     }

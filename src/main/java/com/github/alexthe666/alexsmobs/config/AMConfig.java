@@ -85,6 +85,16 @@ public class AMConfig {
     public static int straddlerSpawnRolls = 0;
     public static int stradpoleSpawnWeight = 10;
     public static int stradpoleSpawnRolls = 3;
+    public static int emuSpawnWeight = 20;
+    public static int emuSpawnRolls = 0;
+    public static int platypusSpawnWeight = 30;
+    public static int platypusSpawnRolls = 0;
+    public static int dropbearSpawnWeight = 19;
+    public static int dropbearSpawnRolls = 1;
+    public static int tasmanianDevilSpawnWeight = 10;
+    public static int tasmanianDevilSpawnRolls = 0;
+    public static int kangarooSpawnWeight = 25;
+    public static int kangarooSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -200,6 +210,18 @@ public class AMConfig {
             straddlerSpawnRolls = ConfigHolder.COMMON.straddlerSpawnRolls.get();
             stradpoleSpawnWeight = ConfigHolder.COMMON.stradpoleSpawnWeight.get();
             stradpoleSpawnRolls = ConfigHolder.COMMON.stradpoleSpawnRolls.get();
+            emuSpawnWeight = ConfigHolder.COMMON.emuSpawnWeight.get();
+            emuSpawnRolls = ConfigHolder.COMMON.emuSpawnRolls.get();
+            platypusSpawnWeight = ConfigHolder.COMMON.platypusSpawnWeight.get();
+            platypusSpawnRolls = ConfigHolder.COMMON.platypusSpawnRolls.get();
+            dropbearSpawnWeight = ConfigHolder.COMMON.dropbearSpawnWeight.get();
+            dropbearSpawnRolls = ConfigHolder.COMMON.dropbearSpawnRolls.get();
+            tasmanianDevilSpawnWeight = ConfigHolder.COMMON.tasmanianDevilSpawnWeight.get();
+            tasmanianDevilSpawnRolls = ConfigHolder.COMMON.tasmanianDevilSpawnRolls.get();
+            kangarooSpawnWeight = ConfigHolder.COMMON.kangarooSpawnWeight.get();
+            kangarooSpawnRolls = ConfigHolder.COMMON.kangarooSpawnRolls.get();
+
+
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

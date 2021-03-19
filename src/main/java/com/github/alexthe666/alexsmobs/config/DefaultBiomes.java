@@ -192,4 +192,24 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData STRADDLER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:basalt_deltas", 0);
+
+    public static final SpawnBiomeData SAVANNA_AND_MESA = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
+
+    public static final SpawnBiomeData PLATYPUS = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0);
+
+    public static final SpawnBiomeData DROPBEAR = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:nether_wastes", 0);
+
+    public static final SpawnBiomeData TASMANIAN_DEVIL = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0);
 }

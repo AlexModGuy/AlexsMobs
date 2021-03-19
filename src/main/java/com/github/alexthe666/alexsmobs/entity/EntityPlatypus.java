@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -31,6 +32,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -39,10 +41,12 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITargetsDroppedItems {
 
@@ -63,6 +67,16 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
         switchNavigator(false);
+    }
+
+
+    public static boolean canPlatypusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.PLATYPUS_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.platypusSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {

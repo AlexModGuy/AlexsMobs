@@ -94,6 +94,17 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue straddlerSpawnRolls;
     public final ForgeConfigSpec.IntValue stradpoleSpawnWeight;
     public final ForgeConfigSpec.IntValue stradpoleSpawnRolls;
+    public final ForgeConfigSpec.IntValue emuSpawnWeight;
+    public final ForgeConfigSpec.IntValue emuSpawnRolls;
+    public final ForgeConfigSpec.IntValue platypusSpawnWeight;
+    public final ForgeConfigSpec.IntValue platypusSpawnRolls;
+    public final ForgeConfigSpec.IntValue dropbearSpawnWeight;
+    public final ForgeConfigSpec.IntValue dropbearSpawnRolls;
+    public final ForgeConfigSpec.IntValue tasmanianDevilSpawnWeight;
+    public final ForgeConfigSpec.IntValue tasmanianDevilSpawnRolls;
+    public final ForgeConfigSpec.IntValue kangarooSpawnWeight;
+    public final ForgeConfigSpec.IntValue kangarooSpawnRolls;
+    
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -205,6 +216,16 @@ public class CommonConfig {
         alligatorSnappingTurtleSpawnRolls = buildInt(builder, "alligatorSnappingTurtleSpawnRolls", "spawns", AMConfig.alligatorSnappingTurtleSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         mungusSpawnWeight = buildInt(builder, "mungusSpawnWeight", "spawns", AMConfig.mungusSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         mungusSpawnRolls = buildInt(builder, "mungusSpawnRolls", "spawns", AMConfig.mungusSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        emuSpawnWeight = buildInt(builder, "emuSpawnWeight", "spawns", AMConfig.emuSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        emuSpawnRolls = buildInt(builder, "emuSpawnRolls", "spawns", AMConfig.emuSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        platypusSpawnWeight = buildInt(builder, "platypusSpawnWeight", "spawns", AMConfig.platypusSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        platypusSpawnRolls = buildInt(builder, "platypusSpawnRolls", "spawns", AMConfig.platypusSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        dropbearSpawnWeight = buildInt(builder, "dropbearSpawnWeight", "spawns", AMConfig.dropbearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        dropbearSpawnRolls = buildInt(builder, "dropbearSpawnRolls", "spawns", AMConfig.dropbearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        tasmanianDevilSpawnWeight = buildInt(builder, "tasmanianDevilSpawnWeight", "spawns", AMConfig.tasmanianDevilSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        tasmanianDevilSpawnRolls = buildInt(builder, "tasmanianDevilSpawnRolls", "spawns", AMConfig.tasmanianDevilSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        kangarooSpawnWeight = buildInt(builder, "kangarooSpawnWeight", "spawns", AMConfig.kangarooSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        kangarooSpawnRolls = buildInt(builder, "kangarooSpawnRolls", "spawns", AMConfig.kangarooSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         mantisShrimpSpawnWeight = buildInt(builder, "mantisShrimpSpawnWeight", "spawns", AMConfig.mantisShrimpSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         mantisShrimpSpawnRolls = buildInt(builder, "mantisShrimpSpawnRolls", "spawns", AMConfig.mantisShrimpSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         gusterSpawnWeight = buildInt(builder, "gusterSpawnWeight", "spawns", AMConfig.gusterSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");

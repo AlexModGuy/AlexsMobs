@@ -52,5 +52,8 @@ public class AMTagRegistry {
     public static final ResourceLocation ALLIGATOR_SNAPPING_TURTLE_SPAWNS = new ResourceLocation("alexsmobs","alligator_snapping_turtle_spawns");
     public static final ResourceLocation MUNGUS_SPAWNS = new ResourceLocation("alexsmobs","mungus_spawns");
     public static final ResourceLocation MANTIS_SHRIMP_SPAWNS = new ResourceLocation("alexsmobs","mantis_shrimp_spawns");
+    public static final ResourceLocation EMU_SPAWNS = new ResourceLocation("alexsmobs","emu_spawns");
+    public static final ResourceLocation KANGAROO_SPAWNS = new ResourceLocation("alexsmobs","kangaroo_spawns");
+    public static final ResourceLocation PLATYPUS_SPAWNS = new ResourceLocation("alexsmobs","platypus_spawns");
 
 }

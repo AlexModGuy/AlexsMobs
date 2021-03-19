@@ -28,6 +28,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
@@ -56,6 +57,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -94,12 +96,14 @@ public class ServerEvents {
         if (event.getEntity() instanceof PlayerEntity) {
             PlayerEntity entity = (PlayerEntity) event.getEntity();
             try{
-                if (!entity.getActivePotionMap().isEmpty() && entity.isPotionActive(AMEffectRegistry.CLINGING) && EffectClinging.isUpsideDown(entity)) {
-                    float minus = event.getOldSize().height - event.getOldEyeHeight();
-                    event.setNewEyeHeight(minus);
+                Map<Effect, EffectInstance> potions = entity.getActivePotionMap();
+                if (event.getEntity().world != null && potions != null && !potions.isEmpty() && potions.containsKey(AMEffectRegistry.CLINGING)) {
+                    if( EffectClinging.isUpsideDown(entity)){
+                        float minus = event.getOldSize().height - event.getOldEyeHeight();
+                        event.setNewEyeHeight(minus);
+                    }
                 }
             }catch (Exception e){
-                e.printStackTrace();
             }
         }
 

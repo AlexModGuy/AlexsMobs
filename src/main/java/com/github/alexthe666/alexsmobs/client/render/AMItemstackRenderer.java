@@ -200,7 +200,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                 MouseHelper mouseHelper = Minecraft.getInstance().mouseHelper;
                 double mouseX = (mouseHelper.getMouseX() * (double) Minecraft.getInstance().getMainWindow().getScaledWidth()) / (double) Minecraft.getInstance().getMainWindow().getWidth();
                 double mouseY = mouseHelper.getMouseY() * (double) Minecraft.getInstance().getMainWindow().getScaledHeight() / (double) Minecraft.getInstance().getMainWindow().getHeight();
-                matrixStackIn.translate(0.5F, 0.2F, 0);
+                matrixStackIn.translate(0.5F, 0F, 0);
                 matrixStackIn.rotate(Vector3f.XP.rotationDegrees(180F));
                 matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180F));
                 if (p_239207_2_ != ItemCameraTransforms.TransformType.GUI) {

@@ -1,11 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageKangarooEat;
 import com.github.alexthe666.alexsmobs.message.MessageKangarooInventorySync;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -23,6 +25,7 @@ import net.minecraft.entity.ai.controller.JumpController;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -45,12 +48,15 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -59,6 +65,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 public class EntityKangaroo extends TameableEntity implements IInventoryChangedListener, IAnimatedEntity, IFollower {
@@ -107,17 +114,26 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
 
     }
 
+    public boolean isRoger() {
+        String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
+        return s != null && s.toLowerCase().equals("roger");
+    }
 
-    protected SoundEvent getAmbientSound() {
+    public static <T extends MobEntity> boolean canKangarooSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.KANGAROO_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock && worldIn.getLightSubtracted(pos, 0) > 8;
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.emuSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+    
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return AMSoundRegistry.KANGAROO_IDLE;
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.KANGAROO_HURT;
-    }
-
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.KANGAROO_HURT;
+        return AMSoundRegistry.KANGAROO_IDLE;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {

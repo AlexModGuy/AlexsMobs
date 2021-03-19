@@ -50,6 +50,11 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> warpedMosco = Pair.of("alexsmobs:warped_mosco_spawns", DefaultBiomes.EMPTY);
 	public static Pair<String, SpawnBiomeData> straddler = Pair.of("alexsmobs:straddler_spawns", DefaultBiomes.STRADDLER);
 	public static Pair<String, SpawnBiomeData> stradpole = Pair.of("alexsmobs:stradpole_spawns", DefaultBiomes.STRADDLER);
+	public static Pair<String, SpawnBiomeData> emu = Pair.of("alexsmobs:emu_spawns", DefaultBiomes.SAVANNA_AND_MESA);
+	public static Pair<String, SpawnBiomeData> platypus = Pair.of("alexsmobs:platypus_spawns", DefaultBiomes.PLATYPUS);
+	public static Pair<String, SpawnBiomeData> dropbear = Pair.of("alexsmobs:dropbear_spawns", DefaultBiomes.DROPBEAR);
+	public static Pair<String, SpawnBiomeData> tasmanianDevil = Pair.of("alexsmobs:tasmanian_devil_spawns", DefaultBiomes.TASMANIAN_DEVIL);
+	public static Pair<String, SpawnBiomeData> kangaroo = Pair.of("alexsmobs:kangaroo_spawns", DefaultBiomes.SAVANNA_AND_MESA);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

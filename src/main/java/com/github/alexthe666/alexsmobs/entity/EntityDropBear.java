@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -25,10 +26,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -64,6 +62,20 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
         switchNavigator(true);
     }
 
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+    }
+
+    public static BlockPos getLowestPos(IWorld world, BlockPos pos) {
+        while (!world.getBlockState(pos).isSolidSide(world, pos, Direction.DOWN) && pos.getY() < 255) {
+            pos = pos.up();
+        }
+        return pos;
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.dropbearSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
 
     protected SoundEvent getAmbientSound() {
         return AMSoundRegistry.DROPBEAR_IDLE;
@@ -75,17 +87,6 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
 
     protected SoundEvent getDeathSound() {
         return AMSoundRegistry.DROPBEAR_HURT;
-    }
-    
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
-    }
-
-    public static BlockPos getLowestPos(IWorld world, BlockPos pos) {
-        while (!world.getBlockState(pos).isSolidSide(world, pos, Direction.DOWN) && pos.getY() < 255) {
-            pos = pos.up();
-        }
-        return pos;
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -103,8 +104,18 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(7, new LookAtGoal(this, LivingEntity.class, 30F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityDropBear.class));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true) {
+            protected AxisAlignedBB getTargetableArea(double targetDistance) {
+                AxisAlignedBB bb = this.goalOwner.getBoundingBox().grow(targetDistance, targetDistance, targetDistance);
+                return new AxisAlignedBB(bb.minX, 0, bb.minZ, bb.maxX, 256, bb.maxZ);
+            }
+        });
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true) {
+            protected AxisAlignedBB getTargetableArea(double targetDistance) {
+                AxisAlignedBB bb = this.goalOwner.getBoundingBox().grow(targetDistance, targetDistance, targetDistance);
+                return new AxisAlignedBB(bb.minX, 0, bb.minZ, bb.maxX, 256, bb.maxZ);
+            }
+        });
     }
 
     public boolean isInvulnerableTo(DamageSource source) {
@@ -152,7 +163,7 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
             LivingEntity attackTarget = this.getAttackTarget();
             if (attackTarget != null && getDistance(attackTarget) < attackTarget.getWidth() + this.getWidth() + 1 && this.canEntityBeSeen(attackTarget)) {
                 if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 6) {
-                    attackTarget.applyKnockback(0.5F, (double)MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F)), (double)(-MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F))));
+                    attackTarget.applyKnockback(0.5F, MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180F)), -MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180F)));
                     this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
                 if ((this.getAnimation() == ANIMATION_SWIPE_L) && this.getAnimationTick() == 9) {
@@ -166,15 +177,15 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
                     this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
             }
-            if((attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && rand.nextInt(300) == 0 && this.onGround && !this.isUpsideDown() && this.getPosY() + 2 < worldHeight.getY()){
-                if(this.getAnimation() == NO_ANIMATION){
+            if ((attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && rand.nextInt(300) == 0 && this.onGround && !this.isUpsideDown() && this.getPosY() + 2 < worldHeight.getY()) {
+                if (this.getAnimation() == NO_ANIMATION) {
                     this.setAnimation(ANIMATION_JUMPUP);
                 }
             }
-            if(jumpingUp && this.getPosY() > worldHeight.getY()){
+            if (jumpingUp && this.getPosY() > worldHeight.getY()) {
                 jumpingUp = false;
             }
-            if( (this.onGround && this.getAnimation() == ANIMATION_JUMPUP && this.getAnimationTick() > 10 || jumpingUp && this.getAnimation() == NO_ANIMATION)){
+            if ((this.onGround && this.getAnimation() == ANIMATION_JUMPUP && this.getAnimationTick() > 10 || jumpingUp && this.getAnimation() == NO_ANIMATION)) {
                 this.setMotion(this.getMotion().add(0, 2F, 0));
                 jumpingUp = true;
             }
@@ -188,7 +199,7 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
                         this.setUpsideDown(false);
                         upwardsFallingTicks = 0;
                     } else {
-                        if(!validAboveState){
+                        if (!validAboveState) {
                             upwardsFallingTicks++;
                         }
                         this.setMotion(this.getMotion().add(0, 0.2F, 0));

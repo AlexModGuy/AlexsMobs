@@ -127,5 +127,20 @@ public class AMWorldRegistry {
         if (BiomeConfig.test(BiomeConfig.stradpole, biome) && AMConfig.stradpoleSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.STRADPOLE, AMConfig.stradpoleSpawnWeight, 1, 1));
         }
+        if (BiomeConfig.test(BiomeConfig.emu, biome) && AMConfig.emuSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.EMU, AMConfig.emuSpawnWeight, 2, 5));
+        }
+        if (BiomeConfig.test(BiomeConfig.platypus, biome) && AMConfig.platypusSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.PLATYPUS, AMConfig.platypusSpawnWeight, 1, 2));
+        }
+        if (BiomeConfig.test(BiomeConfig.dropbear, biome) && AMConfig.dropbearSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.DROPBEAR, AMConfig.dropbearSpawnWeight, 1, 1));
+        }
+        if (BiomeConfig.test(BiomeConfig.tasmanianDevil, biome) && AMConfig.tasmanianDevilSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.TASMANIAN_DEVIL, AMConfig.tasmanianDevilSpawnWeight, 1, 2));
+        }
+        if (BiomeConfig.test(BiomeConfig.kangaroo, biome) && AMConfig.kangarooSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.KANGAROO, AMConfig.kangarooSpawnWeight, 3, 5));
+        }
     }
 }
