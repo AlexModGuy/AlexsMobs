@@ -920,11 +920,11 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         }
 
         public boolean shouldExecute() {
-            return super.shouldExecute() && (goalOwner.getAttackTarget() == null || !goalOwner.getAttackTarget().isAlive());
+            return super.shouldExecute()  &&  !((EntityCrow) goalOwner).isSitting() && (goalOwner.getAttackTarget() == null || !goalOwner.getAttackTarget().isAlive());
         }
 
         public boolean shouldContinueExecuting() {
-            return super.shouldContinueExecuting() && (goalOwner.getAttackTarget() == null || !goalOwner.getAttackTarget().isAlive());
+            return super.shouldContinueExecuting() && !((EntityCrow) goalOwner).isSitting() &&  (goalOwner.getAttackTarget() == null || !goalOwner.getAttackTarget().isAlive());
         }
 
         @Override
@@ -996,7 +996,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
         @Override
         public boolean shouldExecute() {
-            if (EntityCrow.this.isPassenger() || EntityCrow.this.aiItemFlag || EntityCrow.this.isBeingRidden() || EntityCrow.this.getCommand() != 3) {
+            if (EntityCrow.this.isPassenger() || EntityCrow.this.aiItemFlag || EntityCrow.this.isBeingRidden() || EntityCrow.this.isSitting() || EntityCrow.this.getCommand() != 3) {
                 return false;
             }
             if(EntityCrow.this.getHeldItemMainhand().isEmpty()){
