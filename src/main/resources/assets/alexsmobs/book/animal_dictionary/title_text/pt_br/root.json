@@ -5,14 +5,14 @@
   "linked_page_buttons": [
     {
       "linked_page": "grizzly_bear.json",
-      "text": "Grizzly Bear",
+      "text": "Urso Pardo",
       "x": 290,
       "y": 10,
       "page": 0
     },
     {
       "linked_page": "roadrunner.json",
-      "text": "Roadrunner",
+      "text": "Papa-Léguas",
       "x": 290,
       "y": 35,
       "page": 0
