@@ -27,6 +27,9 @@ public class RaccoonAIWash extends Goal {
     }
 
     public boolean shouldExecute() {
+        if(raccoon.getHeldItemMainhand().isEmpty()){
+            return false;
+        }
         if (raccoon.lookForWaterBeforeEatingTimer > 0) {
             waterPos = generateTarget();
             if (waterPos != null) {
@@ -91,6 +94,9 @@ public class RaccoonAIWash extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
+        if(raccoon.getHeldItemMainhand().isEmpty()){
+            return false;
+        }
         return targetPos != null && !this.raccoon.isInWater() && EntityRaccoon.isFood(this.raccoon.getHeldItemMainhand());
     }
 
