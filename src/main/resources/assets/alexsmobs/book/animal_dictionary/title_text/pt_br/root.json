@@ -5,14 +5,14 @@
   "linked_page_buttons": [
     {
       "linked_page": "grizzly_bear.json",
-      "text": "Urso Pardo",
+      "text": "Grizzly Bear",
       "x": 290,
       "y": 10,
       "page": 0
     },
     {
       "linked_page": "roadrunner.json",
-      "text": "Papa-Léguas",
+      "text": "Roadrunner",
       "x": 290,
       "y": 35,
       "page": 0
@@ -267,6 +267,41 @@
       "text": "Stradpole",
       "x": 90,
       "y": 60,
+      "page": 3
+    },
+    {
+      "linked_page": "emu.json",
+      "text": "Emu",
+      "x": 90,
+      "y": 85,
+      "page": 3
+    },
+    {
+      "linked_page": "platypus.json",
+      "text": "Platypus",
+      "x": 90,
+      "y": 110,
+      "page": 3
+    },
+    {
+      "linked_page": "dropbear.json",
+      "text": "Dropbear",
+      "x": 90,
+      "y": 135,
+      "page": 3
+    },
+    {
+      "linked_page": "tasmanian_devil.json",
+      "text": "Tasmanian Devil",
+      "x": 90,
+      "y": 160,
+      "page": 3
+    },
+    {
+      "linked_page": "kangaroo.json",
+      "text": "Kangaroo",
+      "x": 290,
+      "y": 10,
       "page": 3
     }
   ],
