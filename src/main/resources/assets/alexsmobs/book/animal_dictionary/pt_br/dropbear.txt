@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+O Urso Caído é um marsupial hostil e de aparência demoníaca, nativo das Ruínas do Nether. Esta criatura pode ser freqüentemente encontrada pendurada de cabeça para baixo no teto do Nether, esperando que uma presa desavisada passe por baixo dela.
+Quando a presa está abaixo, o Urso Caído pulará de sua posição e tentará esmagar seu alvo embaixo dele. Depois de pousar, ele usará suas enormes mandíbulas e garras afiadas para atacar. Se tiver sucesso em eliminar sua presa, o urso pode pular de volta para o teto do Nether.
+Se abatido, o Urso Caído dropara uma Garra de Urso Caído, pode ser usada para criar Pederneira sem a necessidade de uma Barra de Ferro. Também pode ser usado para preparar uma poção pegajosa, que permitirá ao usuario andar no teto, assim como o  Urso Caído faz.
