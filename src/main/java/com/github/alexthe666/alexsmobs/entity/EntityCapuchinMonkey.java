@@ -89,8 +89,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
             return false;
         } else {
             Entity entity = source.getTrueSource();
-            this.func_233687_w_(false);
-            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 4.0F;
             }
             return super.attackEntityFrom(source, amount);

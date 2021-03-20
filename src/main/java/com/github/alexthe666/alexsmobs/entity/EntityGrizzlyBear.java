@@ -93,7 +93,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         } else {
             Entity entity = source.getTrueSource();
             this.func_233687_w_(false);
-            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 3.0F;
             }
             return super.attackEntityFrom(source, amount);
