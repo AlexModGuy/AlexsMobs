@@ -188,7 +188,9 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData GUSTER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 0);
 
     public static final SpawnBiomeData STRADDLER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:basalt_deltas", 0);
