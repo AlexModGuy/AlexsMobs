@@ -326,7 +326,8 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
             laCucarachaTimer = 0;
         }
         if (!this.world.isRemote && this.isAlive() && !this.isChild() && --this.timeUntilNextEgg <= 0) {
-            this.entityDropItem(AMItemRegistry.COCKROACH_OOTHECA);
+           ItemEntity dropped = this.entityDropItem(AMItemRegistry.COCKROACH_OOTHECA);
+            dropped.setDefaultPickupDelay();
             this.timeUntilNextEgg = this.rand.nextInt(24000) + 24000;
 
         }
