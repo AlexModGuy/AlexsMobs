@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -18,6 +19,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -377,6 +379,10 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
                         if (getRNG().nextFloat() < 0.3F) {
                             this.setTamed(true);
                             this.setOwnerId(this.bananaThrowerID);
+                            PlayerEntity player = world.getPlayerByUuid(bananaThrowerID);
+                            if (player instanceof ServerPlayerEntity) {
+                                CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayerEntity)player, this);
+                            }
                             this.world.setEntityState(this, (byte) 7);
                         } else {
                             this.world.setEntityState(this, (byte) 6);

@@ -74,7 +74,6 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     public static final Animation ANIMATION_KICK = Animation.create(15);
     public static final Animation ANIMATION_PUNCH_R = Animation.create(13);
     public static final Animation ANIMATION_PUNCH_L = Animation.create(13);
-    protected static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
     private static final DataParameter<Boolean> STANDING = EntityDataManager.createKey(EntityKangaroo.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityKangaroo.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityKangaroo.class, DataSerializers.VARINT);

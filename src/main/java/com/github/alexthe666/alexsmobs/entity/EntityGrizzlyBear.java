@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -17,6 +18,7 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -308,6 +310,10 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
                        if(getRNG().nextFloat() < 0.3F){
                            this.setTamed(true);
                            this.setOwnerId(this.salmonThrowerID);
+                           PlayerEntity player = world.getPlayerByUuid(salmonThrowerID);
+                           if (player instanceof ServerPlayerEntity) {
+                               CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayerEntity)player, this);
+                           }
                            this.world.setEntityState(this, (byte)7);
                        }else{
                            this.world.setEntityState(this, (byte)6);
