@@ -126,6 +126,7 @@ public class AMConfig {
     public static boolean warpedMoscoTransformation = true;
     public static List<? extends String> warpedMoscoMobTriggers = Lists.newArrayList();
     public static boolean emuTargetSkeletons = true;
+    public static double emuPantsDodgeChance = 0.45F;
     public static boolean straddleboardEnchants = true;
 
     public static void bake(ModConfig config) {
@@ -245,6 +246,7 @@ public class AMConfig {
             warpedMoscoMobTriggers = (List<? extends String>) ConfigHolder.COMMON.warpedMoscoMobTriggers.get();
             straddleboardEnchants = ConfigHolder.COMMON.straddleboardEnchants.get();
             emuTargetSkeletons = ConfigHolder.COMMON.emuTargetSkeletons.get();
+            emuPantsDodgeChance = ConfigHolder.COMMON.emuPantsDodgeChance.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

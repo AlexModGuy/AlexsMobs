@@ -307,7 +307,7 @@ public class ServerEvents {
             }
         }
         if(!event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).isEmpty() && event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS){
-            if(event.getSource().isProjectile() && event.getEntityLiving().getRNG().nextFloat() < 0.7F){
+            if(event.getSource().isProjectile() && event.getEntityLiving().getRNG().nextFloat() < AMConfig.emuPantsDodgeChance){
                 event.setCanceled(true);
             }
         }

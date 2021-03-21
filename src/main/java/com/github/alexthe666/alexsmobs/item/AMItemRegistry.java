@@ -37,7 +37,7 @@ public class AMItemRegistry {
     public static CustomArmorMaterial SOMBRERO_ARMOR_MATERIAL = new AMArmorMaterial("sombrero", 14, new int[]{2, 2, 2, 2}, 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
     public static CustomArmorMaterial SPIKED_TURTLE_SHELL_ARMOR_MATERIAL = new AMArmorMaterial("spiked_turtle_shell", 35, new int[]{3, 3, 3, 3}, 30, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 1F, 0.2F);
     public static CustomArmorMaterial FEDORA_ARMOR_MATERIAL = new AMArmorMaterial("fedora", 10, new int[]{2, 2, 2, 2}, 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
-    public static CustomArmorMaterial EMU_ARMOR_MATERIAL = new AMArmorMaterial("emu", 10, new int[]{5, 5, 5, 5}, 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
+    public static CustomArmorMaterial EMU_ARMOR_MATERIAL = new AMArmorMaterial("emu", 9, new int[]{4, 4, 4, 4}, 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
 
     public static final Item TAB_ICON = new ItemTabIcon(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:animal_dictionary");
@@ -194,6 +194,9 @@ public class AMItemRegistry {
         MOOSE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(MOOSE_ANTLER));
         RACCOON_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(RACCOON_TAIL));
         SOMBRERO_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(Items.HAY_BLOCK));
+        SPIKED_TURTLE_SHELL_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(SPIKED_SCUTE));
+        FEDORA_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(Items.LEATHER));
+        EMU_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(EMU_FEATHER));
         DispenserBlock.registerDispenseBehavior(SHARK_TOOTH_ARROW, new ProjectileDispenseBehavior() {
             /**
              * Return the projectile entity spawned by this dispense behavior.
