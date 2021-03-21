@@ -102,6 +102,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     private int standingTime = 0;
     private int sittingTime = 0;
     private int maxSitTime = 75;
+    private int eatCooldown = 0;
     private int carrotFeedings = 0;
 
 
@@ -136,7 +137,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 24.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 22.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4F);
     }
 
     private void initKangarooInventory() {
@@ -371,6 +372,9 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         if (this.isSitting() && sitProgress < 5) {
             sitProgress += 1;
         }
+        if(eatCooldown > 0){
+            eatCooldown--;
+        }
         if (!this.isSitting() && sitProgress > 0) {
             sitProgress -= 1;
         }
@@ -434,7 +438,8 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
                 this.world.playEvent(2001, getPosition().down(), Block.getStateId(Blocks.GRASS_BLOCK.getDefaultState()));
                 this.world.setBlockState(getPosition().down(), Blocks.DIRT.getDefaultState(), 2);
             }
-            if(this.getHealth() < this.getMaxHealth() && this.isTamed() && this.getRNG().nextInt(20) == 0){
+            if(this.getHealth() < this.getMaxHealth() && this.isTamed() && eatCooldown == 0){
+                eatCooldown = 20 + rand.nextInt(40);
                 if(!this.kangarooInventory.isEmpty()){
                     ItemStack foodStack = ItemStack.EMPTY;
                     for(int i = 0; i < this.kangarooInventory.getSizeInventory(); i++){
