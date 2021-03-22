@@ -490,7 +490,9 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
                 }
             }
             this.faceEntity(attackTarget, 360, 360);
-
+        }
+        if(this.isChild() && attackTarget != null){
+            this.setAttackTarget(null);
         }
         if (this.isBeingRidden()) {
             this.dataManager.set(POUCH_TICK, 10);
@@ -531,6 +533,11 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
             }
         }
         return prev;
+    }
+
+
+    public boolean isInvulnerableTo(DamageSource source) {
+        return super.isInvulnerableTo(source) || source == DamageSource.IN_WALL;
     }
 
 
