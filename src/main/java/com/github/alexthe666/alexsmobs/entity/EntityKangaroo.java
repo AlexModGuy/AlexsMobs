@@ -367,6 +367,12 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         return (double) this.getHeight() * 0.35F;
     }
 
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        updateClientInventory();
+    }
+
     public void tick() {
         super.tick();
         boolean moving = this.getMotion().lengthSquared() > 0.03D;
