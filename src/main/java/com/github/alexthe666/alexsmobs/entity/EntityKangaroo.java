@@ -187,6 +187,12 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
             }
             return ActionResultType.SUCCESS;
         }
+        if (isTamed() && this.getHealth() < this.getMaxHealth() && item.isFood() && item.getFood() != null && !item.getFood().isMeat()) {
+            this.consumeItemFromStack(player, itemstack);
+            this.playSound(SoundEvents.ENTITY_HORSE_EAT, this.getSoundVolume(), this.getSoundPitch());
+            this.heal(item.getFood().getHealing());
+            return ActionResultType.SUCCESS;
+        }
         if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
             if (player.isSneaking()) {
                 this.openGUI(player);
