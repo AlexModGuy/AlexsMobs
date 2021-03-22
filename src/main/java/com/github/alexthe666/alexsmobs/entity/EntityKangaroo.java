@@ -879,7 +879,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     }
 
     public void startJumping() {
-        if(!this.isSitting()){
+        if(!this.isSitting() || this.isInWater()){
             this.setJumping(true);
             this.jumpDuration = 16;
             this.jumpTicks = 0;
