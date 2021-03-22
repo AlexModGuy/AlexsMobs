@@ -86,6 +86,10 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
         return reason == SpawnReason.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 64 && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
     }
 
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !preventDespawn();
+    }
+
     public boolean preventDespawn() {
         return super.preventDespawn() || this.isBreaded() || this.isRainbow() || this.isDancing() || this.hasMaracas() || this.isHeadless();
     }

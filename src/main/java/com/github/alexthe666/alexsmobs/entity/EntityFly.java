@@ -15,26 +15,33 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.IFlyingAnimal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ForgeBlockTagsProvider;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -42,14 +49,48 @@ import java.util.*;
 public class EntityFly extends AnimalEntity implements IFlyingAnimal {
 
     private int conversionTime = 0;
+    private static final DataParameter<Boolean> NO_DESPAWN = EntityDataManager.createKey(EntityFly.class, DataSerializers.BOOLEAN);
 
     protected EntityFly(EntityType type, World worldIn) {
         super(type, worldIn);
         this.moveController = new FlyingMovementController(this, 20, true);
     }
 
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean("NoFlyDespawn", this.isNoDespawn());
+    }
+
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setNoDespawn(compound.getBoolean("NoFlyDespawn"));
+    }
+
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(NO_DESPAWN, Boolean.valueOf(false));
+    }
+
+        public boolean isNoDespawn() {
+        return this.dataManager.get(NO_DESPAWN).booleanValue();
+    }
+
+    public void setNoDespawn(boolean despawn) {
+        this.dataManager.set(NO_DESPAWN, despawn);
+    }
+
+
     public static boolean canFlySpawn(EntityType<EntityFly> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        return worldIn.getLightSubtracted(pos, 0) > 8;
+        return reason == SpawnReason.SPAWNER || pos.getY() > 63 && random.nextInt(4) == 0 && worldIn.getLightSubtracted(pos, 0) > 8 && worldIn.getLightFor(LightType.BLOCK, pos) == 0 && (BlockTags.SAND.contains(worldIn.getBlockState(pos.down()).getBlock()) || Tags.Blocks.DIRT.contains(worldIn.getBlockState(pos.down()).getBlock()));
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !preventDespawn();
+    }
+
+    public boolean preventDespawn() {
+        return this.isNoDespawn() || super.preventDespawn();
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -95,7 +136,7 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new TemptGoal(this, 1.25D, Ingredient.fromItems(Items.ROTTEN_FLESH), false));
+        this.goalSelector.addGoal(2, new TemptGoal(this, 1.25D, Ingredient.fromItems(Items.ROTTEN_FLESH, Items.SUGAR), false));
         this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, SpiderEntity.class, 6.0F, 1.0D, 1.2D));
         this.goalSelector.addGoal(4, new AnnoyZombieGoal());
@@ -129,10 +170,15 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
 
     public void tick(){
         super.tick();
+
         if(this.isChild() && this.getEyeHeight() > this.getHeight()){
             this.recalculateSize();
         }
+        if(this.isInLove() && !this.isNoDespawn()){
+            this.setNoDespawn(true);
+        }
         if(isInNether()){
+            this.setNoDespawn(true);
             conversionTime++;
             if(conversionTime > 300){
                 EntityCrimsonMosquito mosquito = AMEntityRegistry.CRIMSON_MOSQUITO.create(world);
@@ -145,6 +191,20 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
                 this.remove();
             }
         }
+    }
+
+    public ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+        ItemStack lvt_3_1_ = p_230254_1_.getHeldItem(p_230254_2_);
+        if(lvt_3_1_.getItem() == Items.SUGAR){
+            if(!p_230254_1_.isCreative()){
+                lvt_3_1_.shrink(1);
+            }
+            this.setNoDespawn(true);
+            this.heal(2);
+            return ActionResultType.SUCCESS;
+        }
+        return super.func_230254_b_(p_230254_1_, p_230254_2_);
+
     }
 
     protected boolean makeFlySound() {
