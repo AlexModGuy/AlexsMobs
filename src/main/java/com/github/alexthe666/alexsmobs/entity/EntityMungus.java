@@ -317,6 +317,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
                 this.setMushroomCount(0);
             }
             this.setMushroomState(state);
+            this.consumeItemFromStack(player, itemstack);
             this.setMushroomCount(this.getMushroomCount() + 1);
             return ActionResultType.SUCCESS;
         } else {
