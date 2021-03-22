@@ -349,7 +349,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
-
+        this.targetSelector.addGoal(4, (new AnimalAIHurtByTargetNotBaby(this)));
     }
 
     protected boolean canFitPassenger(Entity passenger) {
