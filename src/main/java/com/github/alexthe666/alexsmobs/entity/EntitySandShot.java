@@ -6,9 +6,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -37,14 +40,14 @@ public class EntitySandShot extends Entity {
     public EntitySandShot(World worldIn, EntityGuster p_i47273_2_) {
         this(AMEntityRegistry.SAND_SHOT, worldIn);
         this.setShooter(p_i47273_2_);
-        this.setPosition(p_i47273_2_.getPosX() - (double)(p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double) MathHelper.sin(p_i47273_2_.renderYawOffset * ((float)Math.PI / 180F)), p_i47273_2_.getPosYEye() + (double)0.2F, p_i47273_2_.getPosZ() + (double)(p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double)MathHelper.cos(p_i47273_2_.renderYawOffset * ((float)Math.PI / 180F)));
+        this.setPosition(p_i47273_2_.getPosX() - (double) (p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double) MathHelper.sin(p_i47273_2_.renderYawOffset * ((float) Math.PI / 180F)), p_i47273_2_.getPosYEye() + (double) 0.2F, p_i47273_2_.getPosZ() + (double) (p_i47273_2_.getWidth() + 1.0F) * 0.35D * (double) MathHelper.cos(p_i47273_2_.renderYawOffset * ((float) Math.PI / 180F)));
     }
 
     public EntitySandShot(World worldIn, LivingEntity p_i47273_2_, boolean right) {
         this(AMEntityRegistry.SAND_SHOT, worldIn);
         this.setShooter(p_i47273_2_);
         float rot = p_i47273_2_.rotationYawHead + (right ? 60 : -60);
-        this.setPosition(p_i47273_2_.getPosX() - (double)(p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.sin(rot * ((float)Math.PI / 180F)), p_i47273_2_.getPosYEye() - (double)0.2F, p_i47273_2_.getPosZ() + (double)(p_i47273_2_.getWidth()) * 0.5D * (double)MathHelper.cos(rot * ((float)Math.PI / 180F)));
+        this.setPosition(p_i47273_2_.getPosX() - (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getPosYEye() - (double) 0.2F, p_i47273_2_.getPosZ() + (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.cos(rot * ((float) Math.PI / 180F)));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -58,6 +61,18 @@ public class EntitySandShot extends Entity {
         this(AMEntityRegistry.SAND_SHOT, world);
     }
 
+    protected static float func_234614_e_(float p_234614_0_, float p_234614_1_) {
+        while (p_234614_1_ - p_234614_0_ < -180.0F) {
+            p_234614_0_ -= 360.0F;
+        }
+
+        while (p_234614_1_ - p_234614_0_ >= 180.0F) {
+            p_234614_0_ += 360.0F;
+        }
+
+        return MathHelper.lerp(0.2F, p_234614_0_, p_234614_1_);
+    }
+
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
@@ -67,9 +82,9 @@ public class EntitySandShot extends Entity {
         if (!this.field_234611_d_) {
             this.field_234611_d_ = this.func_234615_h_();
         }
-        for(int i = 0; i < 3 + rand.nextInt(6); ++i) {
-            double d0 = 0.1D + 0.3D * (double)i;
-            world.addParticle(AMParticleRegistry.GUSTER_SAND_SHOT, this.getPosX() + 0.25F * (rand.nextFloat() - 0.5F), this.getPosY()  + 0.25F * (rand.nextFloat() - 0.5F), this.getPosZ()  + 0.25F * (rand.nextFloat() - 0.5F), this.getMotion().x * d0, this.getMotion().y, this.getMotion().z * d0);
+        for (int i = 0; i < 3 + rand.nextInt(6); ++i) {
+            double d0 = 0.1D + 0.3D * (double) i;
+            world.addParticle(AMParticleRegistry.GUSTER_SAND_SHOT, this.getPosX() + 0.25F * (rand.nextFloat() - 0.5F), this.getPosY() + 0.25F * (rand.nextFloat() - 0.5F), this.getPosZ() + 0.25F * (rand.nextFloat() - 0.5F), this.getMotion().x * d0, this.getMotion().y, this.getMotion().z * d0);
         }
         super.tick();
         Vector3d vector3d = this.getMotion();
@@ -90,10 +105,10 @@ public class EntitySandShot extends Entity {
         } else if (this.isInWaterOrBubbleColumn()) {
             this.remove();
         } else {
-            this.setMotion(vector3d.scale((double)0.99F));
-            this.setMotion(this.getMotion().add(0.0D, (double)-0.03F, 0.0D));
+            this.setMotion(vector3d.scale(0.99F));
+            this.setMotion(this.getMotion().add(0.0D, -0.03F, 0.0D));
             if (!this.hasNoGravity()) {
-                this.setMotion(this.getMotion().add(0.0D, (double)-0.03F, 0.0D));
+                this.setMotion(this.getMotion().add(0.0D, -0.03F, 0.0D));
             }
 
             this.setPosition(d0, d1, d2);
@@ -101,9 +116,12 @@ public class EntitySandShot extends Entity {
     }
 
     protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
-        Entity entity = this.func_234616_v_();
+        Entity entity = this.getSandShooter();
         if (entity instanceof LivingEntity) {
-            p_213868_1_.getEntity().attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity)entity).setProjectile(), 2.5F);
+            p_213868_1_.getEntity().attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity) entity).setProjectile(), 2.5F);
+        }
+        if (entity instanceof PlayerEntity && p_213868_1_.getEntity() instanceof LivingEntity) {
+            ((LivingEntity)p_213868_1_.getEntity()).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0, true, false));
         }
     }
 
@@ -126,9 +144,9 @@ public class EntitySandShot extends Entity {
     }
 
     @Nullable
-    public Entity func_234616_v_() {
+    public Entity getSandShooter() {
         if (this.field_234609_b_ != null && this.world instanceof ServerWorld) {
-            return ((ServerWorld)this.world).getEntityByUuid(this.field_234609_b_);
+            return ((ServerWorld) this.world).getEntityByUuid(this.field_234609_b_);
         } else {
             return this.field_234610_c_ != 0 ? this.world.getEntityByID(this.field_234610_c_) : null;
         }
@@ -157,9 +175,9 @@ public class EntitySandShot extends Entity {
     }
 
     private boolean func_234615_h_() {
-        Entity entity = this.func_234616_v_();
+        Entity entity = this.getSandShooter();
         if (entity != null) {
-            for(Entity entity1 : this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().expand(this.getMotion()).grow(1.0D), (p_234613_0_) -> {
+            for (Entity entity1 : this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().expand(this.getMotion()).grow(1.0D), (p_234613_0_) -> {
                 return !p_234613_0_.isSpectator() && p_234613_0_.canBeCollidedWith();
             })) {
                 if (entity1.getLowestRidingEntity() == entity.getLowestRidingEntity()) {
@@ -172,20 +190,20 @@ public class EntitySandShot extends Entity {
     }
 
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        Vector3d vector3d = (new Vector3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy).scale((double)velocity);
+        Vector3d vector3d = (new Vector3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
         this.setMotion(vector3d);
         float f = MathHelper.sqrt(horizontalMag(vector3d));
-        this.rotationYaw = (float)(MathHelper.atan2(vector3d.x, vector3d.z) * (double)(180F / (float)Math.PI));
-        this.rotationPitch = (float)(MathHelper.atan2(vector3d.y, (double)f) * (double)(180F / (float)Math.PI));
+        this.rotationYaw = (float) (MathHelper.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI));
+        this.rotationPitch = (float) (MathHelper.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI));
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
     }
 
     public void func_234612_a_(Entity p_234612_1_, float p_234612_2_, float p_234612_3_, float p_234612_4_, float p_234612_5_, float p_234612_6_) {
-        float f = -MathHelper.sin(p_234612_3_ * ((float)Math.PI / 180F)) * MathHelper.cos(p_234612_2_ * ((float)Math.PI / 180F));
-        float f1 = -MathHelper.sin((p_234612_2_ + p_234612_4_) * ((float)Math.PI / 180F));
-        float f2 = MathHelper.cos(p_234612_3_ * ((float)Math.PI / 180F)) * MathHelper.cos(p_234612_2_ * ((float)Math.PI / 180F));
-        this.shoot((double)f, (double)f1, (double)f2, p_234612_5_, p_234612_6_);
+        float f = -MathHelper.sin(p_234612_3_ * ((float) Math.PI / 180F)) * MathHelper.cos(p_234612_2_ * ((float) Math.PI / 180F));
+        float f1 = -MathHelper.sin((p_234612_2_ + p_234612_4_) * ((float) Math.PI / 180F));
+        float f2 = MathHelper.cos(p_234612_3_ * ((float) Math.PI / 180F)) * MathHelper.cos(p_234612_2_ * ((float) Math.PI / 180F));
+        this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
         Vector3d vector3d = p_234612_1_.getMotion();
         this.setMotion(this.getMotion().add(vector3d.x, p_234612_1_.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
     }
@@ -196,9 +214,9 @@ public class EntitySandShot extends Entity {
     protected void onImpact(RayTraceResult result) {
         RayTraceResult.Type raytraceresult$type = result.getType();
         if (raytraceresult$type == RayTraceResult.Type.ENTITY) {
-            this.onEntityHit((EntityRayTraceResult)result);
+            this.onEntityHit((EntityRayTraceResult) result);
         } else if (raytraceresult$type == RayTraceResult.Type.BLOCK) {
-            this.func_230299_a_((BlockRayTraceResult)result);
+            this.func_230299_a_((BlockRayTraceResult) result);
         }
 
     }
@@ -208,8 +226,8 @@ public class EntitySandShot extends Entity {
         this.setMotion(x, y, z);
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(x * x + z * z);
-            this.rotationPitch = (float)(MathHelper.atan2(y, (double)f) * (double)(180F / (float)Math.PI));
-            this.rotationYaw = (float)(MathHelper.atan2(x, z) * (double)(180F / (float)Math.PI));
+            this.rotationPitch = (float) (MathHelper.atan2(y, f) * (double) (180F / (float) Math.PI));
+            this.rotationYaw = (float) (MathHelper.atan2(x, z) * (double) (180F / (float) Math.PI));
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
             this.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
@@ -219,7 +237,7 @@ public class EntitySandShot extends Entity {
 
     protected boolean func_230298_a_(Entity p_230298_1_) {
         if (!p_230298_1_.isSpectator() && p_230298_1_.isAlive() && p_230298_1_.canBeCollidedWith()) {
-            Entity entity = this.func_234616_v_();
+            Entity entity = this.getSandShooter();
             return entity == null || this.field_234611_d_ || !entity.isRidingSameEntity(p_230298_1_);
         } else {
             return false;
@@ -229,19 +247,7 @@ public class EntitySandShot extends Entity {
     protected void func_234617_x_() {
         Vector3d vector3d = this.getMotion();
         float f = MathHelper.sqrt(horizontalMag(vector3d));
-        this.rotationPitch = func_234614_e_(this.prevRotationPitch, (float)(MathHelper.atan2(vector3d.y, (double)f) * (double)(180F / (float)Math.PI)));
-        this.rotationYaw = func_234614_e_(this.prevRotationYaw, (float)(MathHelper.atan2(vector3d.x, vector3d.z) * (double)(180F / (float)Math.PI)));
-    }
-
-    protected static float func_234614_e_(float p_234614_0_, float p_234614_1_) {
-        while(p_234614_1_ - p_234614_0_ < -180.0F) {
-            p_234614_0_ -= 360.0F;
-        }
-
-        while(p_234614_1_ - p_234614_0_ >= 180.0F) {
-            p_234614_0_ += 360.0F;
-        }
-
-        return MathHelper.lerp(0.2F, p_234614_0_, p_234614_1_);
+        this.rotationPitch = func_234614_e_(this.prevRotationPitch, (float) (MathHelper.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
+        this.rotationYaw = func_234614_e_(this.prevRotationYaw, (float) (MathHelper.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
     }
 }
