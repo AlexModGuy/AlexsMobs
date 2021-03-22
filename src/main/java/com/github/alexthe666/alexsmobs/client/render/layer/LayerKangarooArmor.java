@@ -85,7 +85,7 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
                         translateToHead(matrixStackIn);
                         matrixStackIn.translate(0, 0.015F, -0.05F);
                         if(itemstack.getItem() == AMItemRegistry.FEDORA){
-                            matrixStackIn.translate(0, 0.075F, 0F);
+                            matrixStackIn.translate(0, 0.05F, 0F);
 
                         }
                         matrixStackIn.scale(0.7F, 0.7F, 0.7F);
@@ -163,7 +163,7 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
         modelIn.bipedBody.rotateAngleY = 0;
         modelIn.bipedBody.rotateAngleZ = 0;
         modelIn.bipedBody.rotationPointX = 0;
-        modelIn.bipedBody.rotationPointY = 0.5F;
+        modelIn.bipedBody.rotationPointY = 0.25F;
         modelIn.bipedBody.rotationPointZ = -7.6F;
         modelIn.bipedRightArm.copyModelAngles(renderer.getEntityModel().arm_right);
         modelIn.bipedLeftArm.copyModelAngles(renderer.getEntityModel().arm_left);

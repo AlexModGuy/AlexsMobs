@@ -641,7 +641,9 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
                     EntityMungus.this.getNavigator().tryMoveToXYZ(this.destinationBlock.getX(), this.destinationBlock.getY(), this.destinationBlock.getZ(), 1D);
                 } else {
                     EntityMungus.this.setBeamTarget(this.destinationBlock);
-                    EntityMungus.this.getNavigator().clearPath();
+                    if(!EntityMungus.this.isInLove()){
+                        EntityMungus.this.getNavigator().clearPath();
+                    }
                 }
             }
         }

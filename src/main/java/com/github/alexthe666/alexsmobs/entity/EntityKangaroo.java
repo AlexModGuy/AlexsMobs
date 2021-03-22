@@ -104,7 +104,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     private int maxSitTime = 75;
     private int eatCooldown = 0;
     private int carrotFeedings = 0;
-
+    private int clientArmorCooldown = 0;
 
     protected EntityKangaroo(EntityType type, World world) {
         super(type, world);
@@ -514,6 +514,12 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         if (this.isPassenger() && this.getRidingEntity() instanceof EntityKangaroo && !this.isChild()) {
             this.dismount();
         }
+        if(clientArmorCooldown > 0){
+            clientArmorCooldown--;
+        }
+        if(clientArmorCooldown == 0 && this.isTamed()){
+            this.updateClientInventory();
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
@@ -778,6 +784,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
                 AlexsMobs.sendMSGToAll(new MessageKangarooInventorySync(this.getEntityId(), i, kangarooInventory.getStackInSlot(i)));
             }
         }
+        clientArmorCooldown = (600 + rand.nextInt(600)) * 20;
     }
 
     @Nullable
