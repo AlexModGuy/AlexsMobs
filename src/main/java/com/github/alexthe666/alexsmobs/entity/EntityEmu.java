@@ -15,6 +15,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.PillagerEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -126,6 +127,7 @@ public class EntityEmu extends AnimalEntity implements IAnimatedEntity, IHerdPan
         this.targetSelector.addGoal(1, new EntityEmu.HurtByTargetGoal());
         if(AMConfig.emuTargetSkeletons){
             this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
+            this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PillagerEntity.class, false));
         }
     }
 
