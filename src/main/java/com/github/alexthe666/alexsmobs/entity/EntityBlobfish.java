@@ -243,7 +243,11 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
     }
 
     protected ItemStack getFishBucket(){
-        return new ItemStack(AMItemRegistry.BLOBFISH_BUCKET);
+        ItemStack stack = new ItemStack(AMItemRegistry.BLOBFISH_BUCKET);
+        if (this.hasCustomName()) {
+            stack.setDisplayName(this.getCustomName());
+        }
+        return stack;
     }
 
     protected void setBucketData(ItemStack bucket) {

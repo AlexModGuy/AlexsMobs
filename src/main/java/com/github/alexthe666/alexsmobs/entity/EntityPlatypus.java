@@ -106,6 +106,9 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
         CompoundNBT platTag = new CompoundNBT();
         this.writeAdditional(platTag);
         stack.getOrCreateTag().put("PlatypusData", platTag);
+        if (this.hasCustomName()) {
+            stack.setDisplayName(this.getCustomName());
+        }
         return stack;
     }
 

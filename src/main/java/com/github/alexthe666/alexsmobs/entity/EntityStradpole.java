@@ -72,7 +72,11 @@ public class EntityStradpole extends WaterMobEntity {
     }
 
     protected ItemStack getFishBucket(){
-        return new ItemStack(AMItemRegistry.STRADPOLE_BUCKET);
+        ItemStack stack = new ItemStack(AMItemRegistry.STRADPOLE_BUCKET);
+        if (this.hasCustomName()) {
+            stack.setDisplayName(this.getCustomName());
+        }
+        return stack;
     }
 
     protected ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
