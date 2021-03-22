@@ -599,13 +599,11 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
 
     class AITargetMushrooms extends Goal {
         private final int searchLength;
-        private final int field_203113_j;
         protected BlockPos destinationBlock;
         protected int runDelay = 70;
 
         private AITargetMushrooms() {
             searchLength = 20;
-            field_203113_j = 1;
         }
 
         public boolean shouldContinueExecuting() {

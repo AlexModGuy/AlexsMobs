@@ -517,8 +517,9 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         if(clientArmorCooldown > 0){
             clientArmorCooldown--;
         }
-        if(clientArmorCooldown == 0 && this.isTamed()){
+        if(ticksExisted > 5 && !world.isRemote && clientArmorCooldown == 0 && this.isTamed()){
             this.updateClientInventory();
+            clientArmorCooldown = (600 + rand.nextInt(600)) * 20;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -784,7 +785,6 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
                 AlexsMobs.sendMSGToAll(new MessageKangarooInventorySync(this.getEntityId(), i, kangarooInventory.getStackInSlot(i)));
             }
         }
-        clientArmorCooldown = (600 + rand.nextInt(600)) * 20;
     }
 
     @Nullable
