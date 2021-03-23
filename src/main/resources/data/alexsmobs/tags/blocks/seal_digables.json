@@ -4,6 +4,7 @@
     "#minecraft:sand",
     "minecraft:gravel",
     "minecraft:grass_block",
-    "minecraft:dirt"
+    "minecraft:dirt",
+    "minecraft:clay",
   ]
 }
