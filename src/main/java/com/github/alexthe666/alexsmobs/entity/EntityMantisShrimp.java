@@ -125,7 +125,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
         this.goalSelector.addGoal(4, new AnimalAILeaveWater(this));
         this.goalSelector.addGoal(5, new BreedGoal(this, 0.8D));
         this.goalSelector.addGoal(6, new TemptGoal(this, 1.0D, Ingredient.fromItems(Items.TROPICAL_FISH, AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL), false));
-        this.goalSelector.addGoal(7, new AnimalAIRandomSwimming(this, 1.0D, 30));
+        this.goalSelector.addGoal(7, new SemiAquaticAIRandomSwimming(this, 1.0D, 30));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
