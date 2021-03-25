@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -88,9 +89,41 @@ public class EntityCachalotWhale extends AnimalEntity {
 
     }
 
+    private void spawnSpoutParticles(){
+        if (this.isAlive()) {
+            for (int j = 0; j < 5 + rand.nextInt(4); ++j) {
+                float radius = this.headPart.getWidth() * 0.5F;
+                float angle = (0.01745329251F * this.renderYawOffset);
+                double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
+                double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
+                double motX = rand.nextFloat() - 0.5F;
+                double motZ = rand.nextFloat() - 0.5F;
+                this.world.addParticle(AMParticleRegistry.WHALE_SPLASH, this.headPart.getPosX() + extraX,  this.headPart.getPosY() + this.headPart.getHeight(), this.headPart.getPosZ() + extraZ, motX * 0.1F, 2F, motZ * 0.1F);
+            }
+        }
+    }
+
+    private void spawnEchoParticles(){
+        if (this.isAlive()) {
+            float radius = this.headPart.getWidth() * 0.5F;
+            float angle = (0.01745329251F * this.renderYawOffset);
+            double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
+            double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
+            EntityCachalotEcho echo = new EntityCachalotEcho(world, this);
+            echo.setPosition(this.headPart.getPosX() + extraX, this.headPart.getPosY() + this.headPart.getHeight() + 1, this.headPart.getPosZ() + extraZ);
+            echo.shoot(0, 0, 0, 1, 1);
+            if(!world.isRemote){
+                world.addEntity(echo);
+            }
+        }
+    }
+
+
     public void livingTick() {
-        this.rotationYaw = (this.prevRotationYaw + MathHelper.clamp(this.rotationYaw - prevRotationYaw, -2, 2));
         super.livingTick();
+        spawnEchoParticles();
+        this.rotationYaw = (this.prevRotationYaw + MathHelper.clamp(this.rotationYaw - prevRotationYaw, -2, 2));
+        this.rotationYawHead = this.rotationYaw;
         this.renderYawOffset = this.rotationYaw;
         this.rotationPitch = (float) -((float) this.getMotion().y * (double) (180F / (float) Math.PI));
         if (!this.isAIDisabled()) {

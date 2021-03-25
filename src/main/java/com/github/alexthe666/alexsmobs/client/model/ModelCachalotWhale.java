@@ -100,7 +100,7 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 	public void setRotationAngles(EntityCachalotWhale entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 		this.resetToDefaultPose();
 		float partialTicks = ageInTicks - entity.ticksExisted;
-		float renderYaw = entity.prevRenderYawOffset + (entity.renderYawOffset - entity.prevRenderYawOffset) * partialTicks;
+		float renderYaw = (float)entity.getMovementOffsets(0, partialTicks)[0] ;
 		float properPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
 		float f = MathHelper.clamp((float)entity.getMovementOffsets(7, partialTicks)[0] - renderYaw, -50, 50);
 		this.tail1.rotateAngleY += (float) MathHelper.clamp((float)entity.getMovementOffsets(15, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
