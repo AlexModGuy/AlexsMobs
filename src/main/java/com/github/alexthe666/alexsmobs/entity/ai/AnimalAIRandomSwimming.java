@@ -13,10 +13,18 @@ import javax.annotation.Nullable;
 
 public class AnimalAIRandomSwimming extends RandomWalkingGoal {
     private int xzSpread;
+    private boolean submerged;
 
     public AnimalAIRandomSwimming(AnimalEntity creature, double speed, int chance, int xzSpread) {
         super(creature, speed, chance, false);
         this.xzSpread = xzSpread;
+        this.submerged = false;
+    }
+
+    public AnimalAIRandomSwimming(AnimalEntity creature, double speed, int chance, int xzSpread, boolean submerged) {
+        super(creature, speed, chance, false);
+        this.xzSpread = xzSpread;
+        this.submerged = submerged;
     }
 
     public boolean shouldExecute() {
@@ -54,9 +62,15 @@ public class AnimalAIRandomSwimming extends RandomWalkingGoal {
         }
         Vector3d vector3d = RandomPositionGenerator.findRandomTarget(this.creature, xzSpread, 3);
 
-        for(int i = 0; vector3d != null && !this.creature.world.getFluidState(new BlockPos(vector3d)).isTagged(FluidTags.LAVA) && !this.creature.world.getBlockState(new BlockPos(vector3d)).allowsMovement(this.creature.world, new BlockPos(vector3d), PathType.WATER) && i++ < 15; vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
+        for(int i = 0; vector3d != null && !this.creature.world.getBlockState(new BlockPos(vector3d)).allowsMovement(this.creature.world, new BlockPos(vector3d), PathType.WATER) && i++ < 15; vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
         }
-
+        if(submerged){
+            if(!this.creature.world.getFluidState(new BlockPos(vector3d).up()).isTagged(FluidTags.WATER)){
+                vector3d = vector3d.add(0, -2, 0);
+            }else if(!this.creature.world.getFluidState(new BlockPos(vector3d).up(2)).isTagged(FluidTags.WATER)){
+                vector3d = vector3d.add(0, -3, 0);
+            }
+        }
         return vector3d;
     }
 

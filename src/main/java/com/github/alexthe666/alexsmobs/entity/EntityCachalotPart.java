@@ -3,12 +3,9 @@ package com.github.alexthe666.alexsmobs.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.world.GameRules;
 import net.minecraftforge.entity.PartEntity;
 
 import java.util.List;
@@ -21,6 +18,11 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
         super(parent);
         this.size = EntitySize.flexible(sizeX, sizeY);
         this.recalculateSize();
+    }
+
+    public EntityCachalotPart(EntityCachalotWhale entityCachalotWhale, float sizeX, float sizeY, EntitySize size) {
+        super(entityCachalotWhale);
+        this.size = size;
     }
 
     protected void collideWithNearbyEntities() {

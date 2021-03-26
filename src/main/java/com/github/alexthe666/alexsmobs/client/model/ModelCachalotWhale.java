@@ -102,6 +102,7 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		float partialTicks = ageInTicks - entity.ticksExisted;
 		float renderYaw = (float)entity.getMovementOffsets(0, partialTicks)[0] ;
 		float properPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+		float chargeProgress = entity.prevChargingProgress + (entity.chargeProgress - entity.prevChargingProgress) * partialTicks;
 		float f = MathHelper.clamp((float)entity.getMovementOffsets(7, partialTicks)[0] - renderYaw, -50, 50);
 		this.tail1.rotateAngleY += (float) MathHelper.clamp((float)entity.getMovementOffsets(15, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
 		this.tail2.rotateAngleY += (float) MathHelper.clamp((float)entity.getMovementOffsets(17, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
@@ -119,6 +120,7 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		this.walk(head, swimSpeed, swimDegree * 0.1F, false, 2F, 0, limbSwing, limbSwingAmount);
 		this.tail1.rotationPointZ -= 4 * limbSwingAmount;
 		this.tail2.rotationPointZ -= 2 * limbSwingAmount;
+		progressRotationPrev(jaw, chargeProgress, (float)Math.toRadians(30), 0, 0, 10F);
 
 	}
 

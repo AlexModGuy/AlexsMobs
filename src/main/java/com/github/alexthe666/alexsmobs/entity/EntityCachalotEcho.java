@@ -1,13 +1,19 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.sun.org.apache.bcel.internal.generic.RET;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -25,6 +31,7 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class EntityCachalotEcho extends Entity {
+    private static final DataParameter<Boolean> RETURNING = EntityDataManager.createKey(EntityCachalotEcho.class, DataSerializers.BOOLEAN);
     private UUID field_234609_b_;
     private int field_234610_c_;
     private boolean field_234611_d_;
@@ -56,12 +63,34 @@ public class EntityCachalotEcho extends Entity {
         this(AMEntityRegistry.CACHALOT_ECHO, world);
     }
 
+    protected static float func_234614_e_(float p_234614_0_, float p_234614_1_) {
+        while (p_234614_1_ - p_234614_0_ < -180.0F) {
+            p_234614_0_ -= 360.0F;
+        }
+
+        while (p_234614_1_ - p_234614_0_ >= 180.0F) {
+            p_234614_0_ += 360.0F;
+        }
+
+        return MathHelper.lerp(0.2F, p_234614_0_, p_234614_1_);
+    }
+
+    public boolean isReturning() {
+        return this.dataManager.get(RETURNING).booleanValue();
+    }
+
+    public void setReturning(boolean returning) {
+        this.dataManager.set(RETURNING, returning);
+    }
+
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public void tick() {
+        double yMot = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
+        this.rotationPitch = (float) (MathHelper.atan2(this.getMotion().y, yMot) * (double) (180F / (float) Math.PI));
         if (!this.field_234611_d_) {
             this.field_234611_d_ = this.func_234615_h_();
         }
@@ -71,6 +100,18 @@ public class EntityCachalotEcho extends Entity {
         if (raytraceresult != null && raytraceresult.getType() != RayTraceResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
             this.onImpact(raytraceresult);
         }
+        Entity shooter = this.func_234616_v_();
+        if(this.isReturning() && shooter instanceof EntityCachalotWhale){
+            EntityCachalotWhale whale = (EntityCachalotWhale)shooter;
+            if(whale.headPart.getDistance(this) < whale.headPart.getWidth()){
+                this.remove();
+                whale.recieveEcho();
+            }
+
+        }
+        if (this.ticksExisted > 100 || !this.isInWaterOrBubbleColumn()) {
+            remove();
+        }
 
         double d0 = this.getPosX() + vector3d.x;
         double d1 = this.getPosY() + vector3d.y;
@@ -79,19 +120,42 @@ public class EntityCachalotEcho extends Entity {
         this.func_234617_x_();
         float f = 0.99F;
         float f1 = 0.06F;
-        if (!this.isInWaterOrBubbleColumn()) {
-            this.remove();
-        } else {
-            this.setMotion(vector3d.scale((double) 0.99F));
-            this.setMotion(this.getMotion().add(0.0D, (double) -0.06F, 0.0D));
-            this.setPosition(d0, d1, d2);
-        }
+
+        this.setMotion(vector3d.scale(0.99F));
+        this.setNoGravity(true);
+        this.setPosition(d0, d1, d2);
+        this.rotationYaw = (float) (MathHelper.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)) - 90;
+
     }
 
-    protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
+    protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = this.func_234616_v_();
-        if (entity instanceof LivingEntity) {
-            p_213868_1_.getEntity().attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity) entity).setProjectile(), 4.0F);
+        if (isReturning()) {
+            EntityCachalotWhale whale = null;
+            if (entity instanceof EntityCachalotWhale) {
+                whale = (EntityCachalotWhale) entity;
+                if (result.getEntity() instanceof EntityCachalotWhale || result.getEntity() instanceof EntityCachalotPart) {
+                    whale.recieveEcho();
+                    this.remove();
+                }
+            }
+        } else if (result.getEntity() != entity && !result.getEntity().isEntityEqual(entity)) {
+            this.setReturning(true);
+            if (entity instanceof EntityCachalotWhale) {
+                Vector3d vec = ((EntityCachalotWhale) entity).getReturnEchoVector();
+                double d0 = vec.getX() - this.getPosX();
+                double d1 = vec.getY() - this.getPosY();
+                double d2 = vec.getZ() - this.getPosZ();
+                this.setMotion(Vector3d.ZERO);
+                EntityCachalotEcho echo = new EntityCachalotEcho(this.world, ((EntityCachalotWhale) entity));
+                echo.copyLocationAndAnglesFrom(this);
+                this.remove();
+                echo.setReturning(true);
+                echo.shoot(d0, d1, d2, 1, 0);
+                if (!world.isRemote) {
+                    world.addEntity(echo);
+                }
+            }
         }
     }
 
@@ -103,6 +167,7 @@ public class EntityCachalotEcho extends Entity {
     }
 
     protected void registerData() {
+        this.dataManager.register(RETURNING, false);
     }
 
     public void setShooter(@Nullable Entity entityIn) {
@@ -160,11 +225,11 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        Vector3d vector3d = (new Vector3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale((double) velocity);
+        Vector3d vector3d = (new Vector3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.rand.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
         this.setMotion(vector3d);
         float f = MathHelper.sqrt(horizontalMag(vector3d));
         this.rotationYaw = (float) (MathHelper.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI));
-        this.rotationPitch = (float) (MathHelper.atan2(vector3d.y, (double) f) * (double) (180F / (float) Math.PI));
+        this.rotationPitch = (float) (MathHelper.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI));
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
     }
@@ -173,7 +238,7 @@ public class EntityCachalotEcho extends Entity {
         float f = -MathHelper.sin(p_234612_3_ * ((float) Math.PI / 180F)) * MathHelper.cos(p_234612_2_ * ((float) Math.PI / 180F));
         float f1 = -MathHelper.sin((p_234612_2_ + p_234612_4_) * ((float) Math.PI / 180F));
         float f2 = MathHelper.cos(p_234612_3_ * ((float) Math.PI / 180F)) * MathHelper.cos(p_234612_2_ * ((float) Math.PI / 180F));
-        this.shoot((double) f, (double) f1, (double) f2, p_234612_5_, p_234612_6_);
+        this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
         Vector3d vector3d = p_234612_1_.getMotion();
         this.setMotion(this.getMotion().add(vector3d.x, p_234612_1_.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
     }
@@ -196,7 +261,7 @@ public class EntityCachalotEcho extends Entity {
         this.setMotion(x, y, z);
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(x * x + z * z);
-            this.rotationPitch = (float) (MathHelper.atan2(y, (double) f) * (double) (180F / (float) Math.PI));
+            this.rotationPitch = (float) (MathHelper.atan2(y, f) * (double) (180F / (float) Math.PI));
             this.rotationYaw = (float) (MathHelper.atan2(x, z) * (double) (180F / (float) Math.PI));
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
@@ -206,9 +271,14 @@ public class EntityCachalotEcho extends Entity {
     }
 
     protected boolean func_230298_a_(Entity p_230298_1_) {
+        if (this.isReturning()) {
+            return p_230298_1_ instanceof EntityCachalotPart || p_230298_1_ instanceof EntityCachalotWhale;
+        } else if (p_230298_1_ instanceof EntityCachalotPart) {
+            return false;
+        }
         if (!p_230298_1_.isSpectator() && p_230298_1_.isAlive() && p_230298_1_.canBeCollidedWith()) {
             Entity entity = this.func_234616_v_();
-            return (entity == null || this.field_234611_d_ || !entity.isRidingSameEntity(p_230298_1_)) && !(entity instanceof EntityCachalotPart);
+            return (entity == null || this.field_234611_d_ || !entity.isRidingSameEntity(p_230298_1_));
         } else {
             return false;
         }
@@ -217,19 +287,7 @@ public class EntityCachalotEcho extends Entity {
     protected void func_234617_x_() {
         Vector3d vector3d = this.getMotion();
         float f = MathHelper.sqrt(horizontalMag(vector3d));
-        this.rotationPitch = func_234614_e_(this.prevRotationPitch, (float) (MathHelper.atan2(vector3d.y, (double) f) * (double) (180F / (float) Math.PI)));
+        this.rotationPitch = func_234614_e_(this.prevRotationPitch, (float) (MathHelper.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
         this.rotationYaw = func_234614_e_(this.prevRotationYaw, (float) (MathHelper.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
-    }
-
-    protected static float func_234614_e_(float p_234614_0_, float p_234614_1_) {
-        while (p_234614_1_ - p_234614_0_ < -180.0F) {
-            p_234614_0_ -= 360.0F;
-        }
-
-        while (p_234614_1_ - p_234614_0_ >= 180.0F) {
-            p_234614_0_ += 360.0F;
-        }
-
-        return MathHelper.lerp(0.2F, p_234614_0_, p_234614_1_);
     }
 }

@@ -2,6 +2,9 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -11,11 +14,21 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.pathfinding.PathType;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -23,11 +36,16 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
+import java.util.Iterator;
 
 public class EntityCachalotWhale extends AnimalEntity {
 
+    private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityCachalotWhale.class, DataSerializers.BOOLEAN);
     public final double[][] ringBuffer = new double[64][3];
     public final EntityCachalotPart headPart;
     public final EntityCachalotPart bodyFrontPart;
@@ -37,6 +55,15 @@ public class EntityCachalotWhale extends AnimalEntity {
     public final EntityCachalotPart tail3Part;
     public final EntityCachalotPart[] whaleParts;
     public int ringBufferIndex = -1;
+    private boolean receivedEcho = false;
+    private boolean waitForEchoFlag = true;
+    private int echoTimer = 0;
+    private boolean prevEyesInWater = false;
+    private int spoutTimer = 0;
+    public float prevChargingProgress;
+    public float chargeProgress;
+    private int chargeCooldown = 0;
+    private float whaleSpeedMod = 1F;
 
     protected EntityCachalotWhale(EntityType type, World world) {
         super(type, world);
@@ -63,14 +90,22 @@ public class EntityCachalotWhale extends AnimalEntity {
     public void collideWithNearbyEntities() {
     }
 
+
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(CHARGING, Boolean.valueOf(false));
+    }
+
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new BreatheAirGoal(this));
+        this.goalSelector.addGoal(0, new AIBreathe());
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
-        this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 1.0D, 10, 24));
+        this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 1.0D, 10, 24, true));
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(8, new FollowBoatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 1, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CACHALOT_WHALE_TARGETS))));
     }
 
     protected PathNavigator createNavigator(World worldIn) {
@@ -86,46 +121,44 @@ public class EntityCachalotWhale extends AnimalEntity {
         } else {
             super.travel(travelVector);
         }
-
     }
 
-    private void spawnSpoutParticles(){
+
+    private void spawnSpoutParticles() {
         if (this.isAlive()) {
             for (int j = 0; j < 5 + rand.nextInt(4); ++j) {
                 float radius = this.headPart.getWidth() * 0.5F;
                 float angle = (0.01745329251F * this.renderYawOffset);
                 double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
                 double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
-                double motX = rand.nextFloat() - 0.5F;
-                double motZ = rand.nextFloat() - 0.5F;
-                this.world.addParticle(AMParticleRegistry.WHALE_SPLASH, this.headPart.getPosX() + extraX,  this.headPart.getPosY() + this.headPart.getHeight(), this.headPart.getPosZ() + extraZ, motX * 0.1F, 2F, motZ * 0.1F);
+                double motX = this.rand.nextGaussian();
+                double motZ = this.rand.nextGaussian();
+                this.world.addParticle(AMParticleRegistry.WHALE_SPLASH, this.headPart.getPosX() + extraX, this.headPart.getPosY() + this.headPart.getHeight(), this.headPart.getPosZ() + extraZ, motX * 0.1F + this.getMotion().x, 2F, motZ * 0.1F + this.getMotion().z);
             }
         }
     }
 
-    private void spawnEchoParticles(){
-        if (this.isAlive()) {
-            float radius = this.headPart.getWidth() * 0.5F;
-            float angle = (0.01745329251F * this.renderYawOffset);
-            double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
-            double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
-            EntityCachalotEcho echo = new EntityCachalotEcho(world, this);
-            echo.setPosition(this.headPart.getPosX() + extraX, this.headPart.getPosY() + this.headPart.getHeight() + 1, this.headPart.getPosZ() + extraZ);
-            echo.shoot(0, 0, 0, 1, 1);
-            if(!world.isRemote){
-                world.addEntity(echo);
-            }
-        }
+    public boolean isCharging() {
+        return this.dataManager.get(CHARGING).booleanValue();
     }
 
+    public void setCharging(boolean charging) {
+        this.dataManager.set(CHARGING, Boolean.valueOf(charging));
+    }
 
     public void livingTick() {
         super.livingTick();
-        spawnEchoParticles();
-        this.rotationYaw = (this.prevRotationYaw + MathHelper.clamp(this.rotationYaw - prevRotationYaw, -2, 2));
+        prevChargingProgress = chargeProgress;
+        if (isCharging() && this.chargeProgress < 10F) {
+            this.chargeProgress++;
+        }
+        if (!isCharging() && this.chargeProgress > 0F) {
+            this.chargeProgress--;
+        }
         this.rotationYawHead = this.rotationYaw;
         this.renderYawOffset = this.rotationYaw;
-        this.rotationPitch = (float) -((float) this.getMotion().y * (double) (180F / (float) Math.PI));
+        double yMot = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
+        this.rotationPitch = (float) (MathHelper.atan2(this.getMotion().y, yMot) * 0.2F * (double) (180F / (float) Math.PI));
         if (!this.isAIDisabled()) {
             if (this.ringBufferIndex < 0) {
                 for (int i = 0; i < this.ringBuffer.length; ++i) {
@@ -190,12 +223,113 @@ public class EntityCachalotWhale extends AnimalEntity {
                 this.whaleParts[l].lastTickPosZ = avector3d[l].z;
             }
         }
+        if (!world.isRemote) {
+            LivingEntity target = this.getAttackTarget();
+            if(target == null || !target.isAlive()){
+                whaleSpeedMod = 1F;
+                this.setCharging(false);
+            }else {
+                this.faceEntity(target, 360, 360);
+                waitForEchoFlag = this.getRevengeTarget() == null || !this.getRevengeTarget().isEntityEqual(target);
+                if (waitForEchoFlag && !receivedEcho) {
+                    this.setCharging(false);
+                    whaleSpeedMod = 0.25F;
+                    if (echoTimer % 10 == 0) {
+                        EntityCachalotEcho echo = new EntityCachalotEcho(this.world, this);
+                        float radius = this.headPart.getWidth() * 0.5F;
+                        float angle = (0.01745329251F * this.renderYawOffset);
+                        double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
+                        double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
+                        double x = this.headPart.getPosX() + extraX;
+                        double y = this.headPart.getPosY() + this.headPart.getHeight() * 0.5D;
+                        double z = this.headPart.getPosZ() + extraZ;
+                        double d0 = target.getPosX() - x;
+                        double d1 = target.getPosYHeight(0.1D) - y;
+                        double d2 = target.getPosZ() - z;
+                        echo.setPosition(x, y, z);
+                        echo.shoot(d0, d1, d2, 1F, 0.0F);
+                        this.world.addEntity(echo);
+                    }
+                    echoTimer++;
+                }
+                if(!waitForEchoFlag || receivedEcho){
+                    double d0 = target.getPosX() - this.getPosX();
+                    double d1 = target.getPosYEye() - this.getPosYEye();
+                    double d2 = target.getPosZ() - this.getPosZ();
+                    double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+                    float targetYaw = (float)(MathHelper.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                    float targetPitch = (float)(-(MathHelper.atan2(d1, d3) * (double)(180F / (float)Math.PI)));
+                    this.rotationYaw = (this.rotationYaw + MathHelper.clamp(targetYaw - this.rotationYaw, -2, 2));
+                    this.rotationPitch = (this.rotationPitch + MathHelper.clamp(targetPitch - this.rotationPitch, -2, 2));
+                    this.renderYawOffset = rotationYaw;
+                    float dif = Math.abs(MathHelper.wrapDegrees(targetYaw) - MathHelper.wrapDegrees(this.rotationYaw));
+                    if(chargeCooldown <= 0 && dif < 4){
+                        this.setCharging(true);
+                        whaleSpeedMod = 1.5F;
+                        this.getNavigator().tryMoveToEntityLiving(target, 1.0D);
+                        if(this.isCharging()){
+                            if(this.getDistance(target) < this.getWidth()){
+                                target.attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                                this.setCharging(false);
+                                chargeCooldown = 100;
+                            }
+                        }
+                    }
+                }
+            }
+            if(chargeCooldown > 0){
+                chargeCooldown--;
+            }
+            if (spoutTimer > 0) {
+                world.setEntityState(this, (byte) 67);
+                spoutTimer--;
+                this.rotationPitch = 0;
+                this.setMotion(this.getMotion().mul(0, 0, 0));
+            }
+        }
+
+        if (this.isAlive() && isCharging()) {
+            for (Entity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.headPart.getBoundingBox().grow(1.0D), null)) {
+                if (!isOnSameTeam(entity) && !(entity instanceof EntityCachalotPart) && entity != this) {
+                    entity.attackEntityFrom(DamageSource.causeMobDamage(this), 8.0F + rand.nextFloat() * 8.0F);
+                    launch(entity, true);
+                }
+            }
+            stepHeight = 2;
+        }
+        if (this.isInWater() && !this.areEyesInFluid(FluidTags.WATER) && this.getAir() > 140) {
+            this.setMotion(this.getMotion().add(0, -0.05, 0));
+        }
+        prevEyesInWater = this.areEyesInFluid(FluidTags.WATER);
     }
 
-    private float getHeadAndNeckYOffset() {
-        double[] adouble = this.getMovementOffsets(5, 1.0F);
-        double[] adouble1 = this.getMovementOffsets(0, 1.0F);
-        return (float) (adouble[1] - adouble1[1]);
+    private void launch(Entity e, boolean huge) {
+        if (e.isOnGround() || e.isInWater()) {
+            double d0 = e.getPosX() - this.getPosX();
+            double d1 = e.getPosZ() - this.getPosZ();
+            double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+            float f = huge ? 2F : 0.5F;
+            e.addVelocity(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
+        }
+    }
+
+    public Vector3d getReturnEchoVector() {
+        float radius = this.headPart.getWidth() * 0.5F;
+        float angle = (0.01745329251F * this.renderYawOffset);
+        double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
+        double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
+        double x = this.headPart.getPosX() + extraX;
+        double y = this.headPart.getPosY() + this.headPart.getHeight() * 0.5D;
+        double z = this.headPart.getPosZ() + extraZ;
+        return new Vector3d(x, y, z);
+    }
+
+    public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
+        LivingEntity prev = this.getAttackTarget();
+        if (prev != entitylivingbaseIn && entitylivingbaseIn != null) {
+            receivedEcho = false;
+        }
+        super.setAttackTarget(entitylivingbaseIn);
     }
 
     public double[] getMovementOffsets(int p_70974_1_, float partialTicks) {
@@ -314,10 +448,22 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     public int getMaxAir() {
-        return 4800;
+        return 4000;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if (id == 67) {
+            spawnSpoutParticles();
+        } else {
+            super.handleStatusUpdate(id);
+        }
     }
 
     protected int determineNextAir(int currentAir) {
+        if (!this.areEyesInFluid(FluidTags.WATER) && prevEyesInWater && !world.isRemote && spoutTimer <= 0 && currentAir < this.getMaxAir() / 2) {
+            spoutTimer = 20 + rand.nextInt(10);
+        }
         return this.getMaxAir();
     }
 
@@ -329,6 +475,9 @@ public class EntityCachalotWhale extends AnimalEntity {
         return 1;
     }
 
+    public void recieveEcho() {
+        this.receivedEcho = true;
+    }
 
     static class MoveHelperController extends MovementController {
         private final EntityCachalotWhale dolphin;
@@ -345,25 +494,81 @@ public class EntityCachalotWhale extends AnimalEntity {
                 double lvt_5_1_ = this.posZ - dolphin.getPosZ();
                 double lvt_7_1_ = lvt_1_1_ * lvt_1_1_ + lvt_3_1_ * lvt_3_1_ + lvt_5_1_ * lvt_5_1_;
 
-                    float lvt_9_1_ = (float) (MathHelper.atan2(lvt_5_1_, lvt_1_1_) * 57.2957763671875D) - 90.0F;
-                    dolphin.rotationYaw = this.limitAngle(dolphin.rotationYaw, lvt_9_1_, 10.0F);
-                    float lvt_10_1_ = (float) (this.speed * 2 * dolphin.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                    if (dolphin.isInWater()) {
-                        dolphin.setAIMoveSpeed(lvt_10_1_ * 0.02F);
-                        float lvt_11_1_ = -((float) (MathHelper.atan2(lvt_3_1_, MathHelper.sqrt(lvt_1_1_ * lvt_1_1_ + lvt_5_1_ * lvt_5_1_)) * 57.2957763671875D));
-                        dolphin.setMotion(dolphin.getMotion().add(0.0D, (double) dolphin.getAIMoveSpeed() * lvt_3_1_ * 0.6D, 0.0D));
-                        lvt_11_1_ = MathHelper.clamp(MathHelper.wrapDegrees(lvt_11_1_), -85.0F, 85.0F);
-                        dolphin.rotationPitch = this.limitAngle(dolphin.rotationPitch, lvt_11_1_, 5.0F);
-                        float lvt_12_1_ = MathHelper.cos(dolphin.rotationPitch * 0.017453292F);
-                        float lvt_13_1_ = MathHelper.sin(dolphin.rotationPitch * 0.017453292F);
-                        dolphin.moveForward = lvt_12_1_ * lvt_10_1_;
-                        dolphin.moveVertical = -lvt_13_1_ * lvt_10_1_;
-                    } else {
-                        dolphin.setAIMoveSpeed(lvt_10_1_ * 0.1F);
-                    }
-
+                float lvt_9_1_ = (float) (MathHelper.atan2(lvt_5_1_, lvt_1_1_) * 57.2957763671875D) - 90.0F;
+                dolphin.rotationYaw = this.limitAngle(dolphin.rotationYaw, lvt_9_1_, 10.0F);
+                float lvt_10_1_ = (float) (this.speed * dolphin.whaleSpeedMod * 2 * dolphin.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                if (dolphin.isInWater()) {
+                    dolphin.setAIMoveSpeed(lvt_10_1_ * 0.02F);
+                    float lvt_11_1_ = -((float) (MathHelper.atan2(lvt_3_1_, MathHelper.sqrt(lvt_1_1_ * lvt_1_1_ + lvt_5_1_ * lvt_5_1_)) * 57.2957763671875D));
+                    dolphin.setMotion(dolphin.getMotion().add(0.0D, (double) dolphin.getAIMoveSpeed() * lvt_3_1_ * 0.6D, 0.0D));
+                    lvt_11_1_ = MathHelper.clamp(MathHelper.wrapDegrees(lvt_11_1_), -85.0F, 85.0F);
+                    dolphin.rotationPitch = this.limitAngle(dolphin.rotationPitch, lvt_11_1_, 5.0F);
+                    float lvt_12_1_ = MathHelper.cos(dolphin.rotationPitch * 0.017453292F);
+                    float lvt_13_1_ = MathHelper.sin(dolphin.rotationPitch * 0.017453292F);
+                    dolphin.moveForward = lvt_12_1_ * lvt_10_1_;
+                    dolphin.moveVertical = -lvt_13_1_ * lvt_10_1_;
+                } else {
+                    dolphin.setMotion(dolphin.getMotion().add(0.0D, -0.6D, 0.0D));
+                    dolphin.setAIMoveSpeed(lvt_10_1_ * 0.1F);
                 }
+
+            }
         }
     }
+    class AIBreathe extends Goal {
+
+        public AIBreathe() {
+            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        public boolean shouldExecute() {
+            return EntityCachalotWhale.this.getAir() < 140;
+        }
+
+        public boolean shouldContinueExecuting() {
+            return this.shouldExecute();
+        }
+
+        public boolean isPreemptible() {
+            return false;
+        }
+
+        public void startExecuting() {
+            this.navigate();
+        }
+
+        private void navigate() {
+            Iterable<BlockPos> lvt_1_1_ = BlockPos.getAllInBoxMutable(MathHelper.floor(EntityCachalotWhale.this.getPosX() - 1.0D), MathHelper.floor(EntityCachalotWhale.this.getPosY()), MathHelper.floor(EntityCachalotWhale.this.getPosZ() - 1.0D), MathHelper.floor(EntityCachalotWhale.this.getPosX() + 1.0D), MathHelper.floor(EntityCachalotWhale.this.getPosY() + 8.0D), MathHelper.floor(EntityCachalotWhale.this.getPosZ() + 1.0D));
+            BlockPos lvt_2_1_ = null;
+            Iterator var3 = lvt_1_1_.iterator();
+
+            while (var3.hasNext()) {
+                BlockPos lvt_4_1_ = (BlockPos) var3.next();
+                if (this.canBreatheAt(EntityCachalotWhale.this.world, lvt_4_1_)) {
+                    lvt_2_1_ = lvt_4_1_.down((int) (EntityCachalotWhale.this.getHeight() * 0.25d));
+                    break;
+                }
+            }
+
+            if (lvt_2_1_ == null) {
+                lvt_2_1_ = new BlockPos(EntityCachalotWhale.this.getPosX(), EntityCachalotWhale.this.getPosY() + 4.0D, EntityCachalotWhale.this.getPosZ());
+            }
+            if (EntityCachalotWhale.this.areEyesInFluid(FluidTags.WATER)) {
+                EntityCachalotWhale.this.setMotion(EntityCachalotWhale.this.getMotion().add(0, 0.05F, 0));
+            }
+
+            EntityCachalotWhale.this.getNavigator().tryMoveToXYZ(lvt_2_1_.getX(), lvt_2_1_.getY(), lvt_2_1_.getZ(), 0.7D);
+        }
+
+        public void tick() {
+            this.navigate();
+        }
+
+        private boolean canBreatheAt(IWorldReader p_205140_1_, BlockPos p_205140_2_) {
+            BlockState lvt_3_1_ = p_205140_1_.getBlockState(p_205140_2_);
+            return (p_205140_1_.getFluidState(p_205140_2_).isEmpty() || lvt_3_1_.isIn(Blocks.BUBBLE_COLUMN)) && lvt_3_1_.allowsMovement(p_205140_1_, p_205140_2_, PathType.LAND);
+        }
+    }
+
 
 }
