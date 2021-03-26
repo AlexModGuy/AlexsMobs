@@ -12,8 +12,8 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "forest", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:jungle_egde", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:modified_jungle_edge", 0);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:jungle_egde", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:modified_jungle_edge", 2);
 
     public static final SpawnBiomeData ROADRUNNER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
