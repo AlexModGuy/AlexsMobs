@@ -103,33 +103,77 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		float renderYaw = (float)entity.getMovementOffsets(0, partialTicks)[0] ;
 		float properPitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
 		float chargeProgress = entity.prevChargingProgress + (entity.chargeProgress - entity.prevChargingProgress) * partialTicks;
+		float sleepProgress = entity.prevSleepProgress + (entity.sleepProgress - entity.prevSleepProgress) * partialTicks;
+		float beachedProgress = entity.prevBeachedProgress + (entity.beachedProgress - entity.prevBeachedProgress) * partialTicks;
 		float f = MathHelper.clamp((float)entity.getMovementOffsets(7, partialTicks)[0] - renderYaw, -50, 50);
 		this.tail1.rotateAngleY += (float) MathHelper.clamp((float)entity.getMovementOffsets(15, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
 		this.tail2.rotateAngleY += (float) MathHelper.clamp((float)entity.getMovementOffsets(17, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
-		this.body.rotateAngleX += properPitch * ((float)Math.PI / 180F);
+		this.body.rotateAngleX += Math.min(properPitch, sleepProgress * -9) * ((float)Math.PI / 180F);
 		this.body.rotateAngleZ += f * 0.017453292F;
 		AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{tail1, tail2, tail3};
-		float swimSpeed = 0.2F;
+		float swimSpeed = 0.2F + 0;
 		float swimDegree = 0.4F;
-		this.swing(arm_left, swimSpeed, swimDegree * 0.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
-		this.swing(arm_right, swimSpeed, swimDegree * 0.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
-		this.flap(arm_left, swimSpeed, swimDegree * 1.4F, true, 2.5F, 0F, limbSwing, limbSwingAmount);
-		this.flap(arm_right, swimSpeed, swimDegree * 1.4F, false, 2.5F, 0F, limbSwing, limbSwingAmount);
-		this.bob(body, swimSpeed, swimDegree * 8F, false, limbSwing, limbSwingAmount);
-		this.chainWave(tailBoxes, swimSpeed, swimDegree * 0.8F, -2F, limbSwing, limbSwingAmount);
-		this.walk(head, swimSpeed, swimDegree * 0.1F, false, 2F, 0, limbSwing, limbSwingAmount);
-		this.tail1.rotationPointZ -= 4 * limbSwingAmount;
-		this.tail2.rotationPointZ -= 2 * limbSwingAmount;
+		float beachedSpeed = 0.05F;
+		float beachedIdle = 0.4F;
 		progressRotationPrev(jaw, chargeProgress, (float)Math.toRadians(30), 0, 0, 10F);
-
+		progressRotationPrev(jaw, beachedProgress, (float)Math.toRadians(20), (float)Math.toRadians(5), 0, 10F);
+		progressRotationPrev(body, beachedProgress, 0, 0,  (float)Math.toRadians(80), 10F);
+		progressRotationPrev(tail1, beachedProgress, (float)Math.toRadians(-30), (float)Math.toRadians(10),  0, 10F);
+		progressRotationPrev(tail2, beachedProgress, (float)Math.toRadians(-30), (float)Math.toRadians(-30),  (float)Math.toRadians(-30), 10F);
+		progressRotationPrev(tail3, beachedProgress, 0, (float)Math.toRadians(-10),  (float)Math.toRadians(-60), 10F);
+		progressRotationPrev(head, beachedProgress, 0, (float)Math.toRadians(-10), 0, 10F);
+		progressRotationPrev(arm_right, beachedProgress, 0, 0,  (float)Math.toRadians(-110), 10F);
+		progressRotationPrev(arm_left, beachedProgress, 0, 0,  (float)Math.toRadians(110), 10F);
+		progressPositionPrev(tail1, beachedProgress, -2F, -1F, -10F, 10F);
+		progressPositionPrev(tail2, beachedProgress, 0F, -1F, -4F, 10F);
+		progressPositionPrev(tail3, beachedProgress, 0F, 2F, 0F, 10F);
+		progressPositionPrev(body, beachedProgress, 0F, 5F, 0F, 10F);
+		progressPositionPrev(head, beachedProgress, 0F, 0F, 3F, 10F);
+		if(beachedProgress > 0){
+			this.swing(arm_left, beachedSpeed, beachedIdle * 0.2F, true, 1F, 0F, ageInTicks, 1);
+			this.flap(arm_right, beachedSpeed, beachedIdle * 0.2F, true, 3F, 0.06F, ageInTicks, 1);
+			this.walk(jaw, beachedSpeed, beachedIdle * 0.2F, true, 2F, 0.06F, ageInTicks, 1);
+			this.walk(tail1, beachedSpeed, beachedIdle * 0.2F, false, 4F, 0.06F, ageInTicks, 1);
+			this.walk(tail2, beachedSpeed, beachedIdle * 0.2F, false, 4F, 0.06F, ageInTicks, 1);
+		}else{
+			this.walk(jaw, swimSpeed * 0.4F, swimDegree * 0.15F, true, 1F, -0.01F, ageInTicks, 1);
+			this.flap(arm_left, swimSpeed * 0.4F, swimDegree * 0.5F, true, 2.5F, -0.4F, ageInTicks, 1);
+			this.flap(arm_right, swimSpeed * 0.4F, swimDegree * 0.5F, false, 2.5F, -0.4F, ageInTicks, 1);
+			this.swing(arm_left, swimSpeed, swimDegree * 0.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
+			this.swing(arm_right, swimSpeed, swimDegree * 0.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
+			this.flap(arm_left, swimSpeed, swimDegree * 1.4F, true, 2.5F, 0F, limbSwing, limbSwingAmount);
+			this.flap(arm_right, swimSpeed, swimDegree * 1.4F, false, 2.5F, 0F, limbSwing, limbSwingAmount);
+			this.bob(body, swimSpeed, swimDegree * 20, false, limbSwing, limbSwingAmount);
+			this.chainWave(tailBoxes, swimSpeed, swimDegree * 0.8F, -2F, limbSwing, limbSwingAmount);
+			this.walk(head, swimSpeed, swimDegree * 0.1F, false, 2F, 0, limbSwing, limbSwingAmount);
+			this.tail1.rotationPointZ -= 4 * limbSwingAmount;
+			this.tail2.rotationPointZ -= 2 * limbSwingAmount;
+		}
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-		root.render(matrixStack, buffer, packedLight, packedOverlay);
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		if (this.isChild) {
+			float f = 1.25F;
+			head.setScale(f, f, f);
+			head.setShouldScaleChildren(true);
+			matrixStackIn.push();
+			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+			matrixStackIn.translate(0.0D, 1.5D, 0.125D);
+			getParts().forEach((p_228292_8_) -> {
+				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			});
+			matrixStackIn.pop();
+			head.setScale(1, 1, 1);
+		} else {
+			matrixStackIn.push();
+			getParts().forEach((p_228290_8_) -> {
+				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			});
+			matrixStackIn.pop();
+		}
 
 	}
-
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
 		AdvancedModelBox.rotateAngleX = x;
 		AdvancedModelBox.rotateAngleY = y;

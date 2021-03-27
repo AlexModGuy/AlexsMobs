@@ -214,4 +214,16 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0);
+
+    public static final SpawnBiomeData CACHALOT_WHALE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "cold", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:lukewarm_ocean", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_ocean", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_lukewarm_ocean", 3);
+
+    public static final SpawnBiomeData BEACHED_CACHALOT_WHALE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
 }

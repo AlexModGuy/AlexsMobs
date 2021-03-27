@@ -13,6 +13,7 @@ import java.util.List;
 public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
 
     private final EntitySize size;
+    public float scale = 1;
 
     public EntityCachalotPart(EntityCachalotWhale parent, float sizeX, float sizeY) {
         super(parent);
@@ -57,7 +58,7 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
     }
 
     public EntitySize getSize(Pose poseIn) {
-        return this.size;
+        return this.size.scale(scale);
     }
 
     @Override

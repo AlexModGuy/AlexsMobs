@@ -108,6 +108,8 @@ public class AMItemRegistry {
     public static final Item COOKED_KANGAROO_MEAT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(8).saturation(0.85F).meat().build())).setRegistryName("alexsmobs:cooked_kangaroo_meat");
     public static final Item KANGAROO_HIDE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:kangaroo_hide");
     public static final Item KANGAROO_BURGER = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(12).saturation(1F).meat().build())).setRegistryName("alexsmobs:kangaroo_burger");
+    public static final Item AMBERGRIS = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:ambergris");
+    public static final Item CACHALOT_WHALE_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cachalot_whale_tooth");
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
     public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");

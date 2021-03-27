@@ -64,7 +64,7 @@ public class AnimalAIRandomSwimming extends RandomWalkingGoal {
 
         for(int i = 0; vector3d != null && !this.creature.world.getBlockState(new BlockPos(vector3d)).allowsMovement(this.creature.world, new BlockPos(vector3d), PathType.WATER) && i++ < 15; vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
         }
-        if(submerged){
+        if(submerged && vector3d != null){
             if(!this.creature.world.getFluidState(new BlockPos(vector3d).up()).isTagged(FluidTags.WATER)){
                 vector3d = vector3d.add(0, -2, 0);
             }else if(!this.creature.world.getFluidState(new BlockPos(vector3d).up(2)).isTagged(FluidTags.WATER)){
