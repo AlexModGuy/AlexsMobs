@@ -95,6 +95,8 @@ public class AMConfig {
     public static int tasmanianDevilSpawnRolls = 0;
     public static int kangarooSpawnWeight = 25;
     public static int kangarooSpawnRolls = 0;
+    public static int cachalotWhaleSpawnWeight = 2;
+    public static int cachalotWhaleSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -128,6 +130,9 @@ public class AMConfig {
     public static boolean emuTargetSkeletons = true;
     public static double emuPantsDodgeChance = 0.45F;
     public static boolean straddleboardEnchants = true;
+    public static boolean beachedCachalotWhales = true;
+    public static int beachedCachalotWhaleSpawnChance = 5;
+    public static int beachedCachalotWhaleSpawnDelay = 24000;
 
     public static void bake(ModConfig config) {
         try {
@@ -222,7 +227,8 @@ public class AMConfig {
             tasmanianDevilSpawnRolls = ConfigHolder.COMMON.tasmanianDevilSpawnRolls.get();
             kangarooSpawnWeight = ConfigHolder.COMMON.kangarooSpawnWeight.get();
             kangarooSpawnRolls = ConfigHolder.COMMON.kangarooSpawnRolls.get();
-
+            cachalotWhaleSpawnWeight = ConfigHolder.COMMON.cachalotWhaleSpawnWeight.get();
+            cachalotWhaleSpawnRolls = ConfigHolder.COMMON.cachalotWhaleSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -247,6 +253,9 @@ public class AMConfig {
             straddleboardEnchants = ConfigHolder.COMMON.straddleboardEnchants.get();
             emuTargetSkeletons = ConfigHolder.COMMON.emuTargetSkeletons.get();
             emuPantsDodgeChance = ConfigHolder.COMMON.emuPantsDodgeChance.get();
+            beachedCachalotWhales = ConfigHolder.COMMON.beachedCachalotWhales.get();
+            beachedCachalotWhaleSpawnChance = ConfigHolder.COMMON.beachedCachalotWhaleSpawnChance.get();
+            beachedCachalotWhaleSpawnDelay = ConfigHolder.COMMON.beachedCachalotWhaleSpawnDelay.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

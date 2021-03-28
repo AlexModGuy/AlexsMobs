@@ -61,7 +61,7 @@ import java.util.Random;
 public class EntityOrca extends TameableEntity implements IAnimatedEntity {
 
     public static final Animation ANIMATION_BITE = Animation.create(8);
-    private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(DolphinEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(EntityOrca.class, DataSerializers.VARINT);
     private static final EntityPredicate PLAYER_PREDICATE = (new EntityPredicate()).setDistance(24.0D).allowFriendlyFire().allowInvulnerable().setLineOfSiteRequired();
     public int jumpCooldown;
     private int animationTick;

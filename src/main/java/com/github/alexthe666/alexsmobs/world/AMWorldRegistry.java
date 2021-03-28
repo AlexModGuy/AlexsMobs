@@ -142,5 +142,9 @@ public class AMWorldRegistry {
         if (BiomeConfig.test(BiomeConfig.kangaroo, biome) && AMConfig.kangarooSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.KANGAROO, AMConfig.kangarooSpawnWeight, 3, 5));
         }
+        if (BiomeConfig.test(BiomeConfig.cachalot_whale_spawns, biome) && AMConfig.cachalotWhaleSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.CACHALOT_WHALE, AMConfig.cachalotWhaleSpawnWeight, 1, 3));
+        }
+
     }
 }
