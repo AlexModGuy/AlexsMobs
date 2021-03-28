@@ -2,7 +2,10 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFollowParentRanged;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIRandomSwimming;
+import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.Block;
@@ -16,20 +19,16 @@ import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathType;
@@ -38,21 +37,20 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.*;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class EntityCachalotWhale extends AnimalEntity {
 
@@ -88,6 +86,8 @@ public class EntityCachalotWhale extends AnimalEntity {
     private PlayerEntity rewardPlayer;
     private int blockBreakCounter;
     private int despawnDelay = 47999;
+    private int ambergrisDrops = 0;
+    private boolean hasAlbinoAttribute = false;
 
     public EntityCachalotWhale(EntityType type, World world) {
         super(type, world);
@@ -101,6 +101,18 @@ public class EntityCachalotWhale extends AnimalEntity {
         this.tail2Part = new EntityCachalotPart(this, 3.0F, 2.0F);
         this.tail3Part = new EntityCachalotPart(this, 3.0F, 0.7F);
         this.whaleParts = new EntityCachalotPart[]{this.headPart, this.bodyFrontPart, this.bodyPart, this.tail1Part, this.tail2Part, this.tail3Part};
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !this.isSleeping() && !this.isCharging() && !this.isDespawnBeach() && !isAlbino();
+    }
+
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 160.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.2F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 30F);
+    }
+
+    public static <T extends MobEntity> boolean canCachalotWhaleSpawn(EntityType<T> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
+        return iServerWorld.getFluidState(pos).isTagged(FluidTags.WATER);
     }
 
     private boolean canDespawn() {
@@ -117,18 +129,14 @@ public class EntityCachalotWhale extends AnimalEntity {
         }
     }
 
-    public void scaleParts(){
-        for(EntityCachalotPart parts : whaleParts){
+    public void scaleParts() {
+        for (EntityCachalotPart parts : whaleParts) {
             float prev = parts.scale;
             parts.scale = this.isChild() ? 0.5F : 1F;
-            if(prev != parts.scale){
+            if (prev != parts.scale) {
                 parts.recalculateSize();
             }
         }
-    }
-
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 160.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.2F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 30F);
     }
 
     public boolean canBeCollidedWith() {
@@ -170,19 +178,19 @@ public class EntityCachalotWhale extends AnimalEntity {
         this.goalSelector.addGoal(0, new AIBreathe());
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new FollowParentGoal(this, 1));
-        this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 1.0D, 20, 24, true) {
+        this.goalSelector.addGoal(3, new AnimalAIFollowParentRanged(this, 1.1F, 32, 10));
+        this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 0.6D, 35, 24, true) {
             public boolean shouldExecute() {
                 return !EntityCachalotWhale.this.isSleeping() && !EntityCachalotWhale.this.isBeached() && super.shouldExecute();
             }
         });
-        this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 20.0F));
-        this.goalSelector.addGoal(8, new FollowBoatGoal(this));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 1, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CACHALOT_WHALE_TARGETS))) {
+        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 20.0F));
+        this.goalSelector.addGoal(7, new FollowBoatGoal(this));
+        this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this).setCallsForHelp()));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 30, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CACHALOT_WHALE_TARGETS))) {
             public boolean shouldExecute() {
-                return !EntityCachalotWhale.this.isSleeping()  && !EntityCachalotWhale.this.isBeached()  && super.shouldExecute();
+                return !EntityCachalotWhale.this.isSleeping() && !EntityCachalotWhale.this.isBeached() && super.shouldExecute();
             }
         });
     }
@@ -241,7 +249,6 @@ public class EntityCachalotWhale extends AnimalEntity {
         }
     }
 
-
     private void spawnSpoutParticles() {
         if (this.isAlive()) {
             for (int j = 0; j < 5 + rand.nextInt(4); ++j) {
@@ -285,6 +292,15 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     public void setAlbino(boolean albino) {
+        boolean prev = isAlbino();
+        if (!prev && albino) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(230.0D);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(45.0D);
+            this.setHealth(160.0F);
+        } else {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(160.0D);
+            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(30.0D);
+        }
         this.dataManager.set(ALBINO, Boolean.valueOf(albino));
     }
 
@@ -339,12 +355,10 @@ public class EntityCachalotWhale extends AnimalEntity {
                     rewardPlayer = entity;
                 }
                 this.despawnDelay = 47999;
-                this.setDespawnBeach(false);
                 this.setBeached(false);
             }
         }
         if (!this.isBeached() && rewardTime > 0) {
-
             float dif = 0;
             if (rewardPlayer != null) {
                 double d0 = rewardPlayer.getPosX() - this.getPosX();
@@ -358,8 +372,9 @@ public class EntityCachalotWhale extends AnimalEntity {
                 this.renderYawOffset = rotationYaw;
                 dif = Math.abs(MathHelper.wrapDegrees(targetYaw) - MathHelper.wrapDegrees(this.rotationYaw));
             }
-            if(dif < 5){
-                if (rewardTime % 5 == 0) {
+            if (dif < 5) {
+                if (rewardTime % 5 == 0 && ambergrisDrops < 2 + rand.nextInt(1) && this.isDespawnBeach()) {
+                    ambergrisDrops++;
                     if (!world.isRemote) {
                         Vector3d vec = this.getMouthVec();
                         ItemEntity itementity = new ItemEntity(this.world, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS));
@@ -370,6 +385,7 @@ public class EntityCachalotWhale extends AnimalEntity {
                 this.rewardTime--;
             }
             if (rewardTime <= 2) {
+                this.setDespawnBeach(false);
                 this.setCharging(false);
                 this.whaleSpeedMod = 1F;
             } else {
@@ -511,15 +527,15 @@ public class EntityCachalotWhale extends AnimalEntity {
                         whaleSpeedMod = 1.5F;
                         this.getNavigator().tryMoveToEntityLiving(target, 1.0D);
                         if (this.isCharging()) {
-                            if (this.getDistance(target) < this.getWidth()) {
+                            if (this.getDistance(target) < this.getWidth() && chargeProgress > 4) {
                                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                                 this.setCharging(false);
-                                if(target.getRidingEntity() instanceof BoatEntity){
-                                    BoatEntity boat = (BoatEntity)target.getRidingEntity();
-                                    for(int i = 0; i < 3; ++i) {
+                                if (target.getRidingEntity() instanceof BoatEntity) {
+                                    BoatEntity boat = (BoatEntity) target.getRidingEntity();
+                                    for (int i = 0; i < 3; ++i) {
                                         this.entityDropItem(boat.getBoatType().asPlank());
                                     }
-                                    for(int j = 0; j < 2; ++j) {
+                                    for (int j = 0; j < 2; ++j) {
                                         this.entityDropItem(Items.STICK);
                                     }
                                     target.dismount();
@@ -563,7 +579,6 @@ public class EntityCachalotWhale extends AnimalEntity {
                     launch(entity, true);
                 }
             }
-            stepHeight = 2;
         }
         if (this.isInWater() && !this.areEyesInFluid(FluidTags.WATER) && this.getAir() > 140) {
             this.setMotion(this.getMotion().add(0, -0.06, 0));
@@ -638,7 +653,6 @@ public class EntityCachalotWhale extends AnimalEntity {
         return adouble;
     }
 
-
     public void applyEntityCollision(Entity entityIn) {
 
     }
@@ -670,10 +684,13 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason
-            reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setAir(this.getMaxAir());
         this.rotationPitch = 0.0F;
+        if (spawnDataIn == null) {
+            spawnDataIn = new AgeableEntity.AgeableData(0.75F);
+        }
+        this.setAlbino(rand.nextInt(100) == 0);
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
@@ -736,10 +753,6 @@ public class EntityCachalotWhale extends AnimalEntity {
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.cachalotWhaleSpawnRolls, this.getRNG(), spawnReasonIn);
-    }
-
-    public static <T extends MobEntity> boolean canCachalotWhaleSpawn(EntityType<T> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
-        return iServerWorld.getFluidState(pos).isTagged(FluidTags.WATER);
     }
 
     static class MoveHelperController extends MovementController {
@@ -834,5 +847,73 @@ public class EntityCachalotWhale extends AnimalEntity {
         }
     }
 
+    class FollowParentGoal extends Goal {
+        private final AnimalEntity childAnimal;
+        private final double moveSpeed;
+        private AnimalEntity parentAnimal;
+        private int delayCounter;
+
+        public FollowParentGoal(AnimalEntity p_i1626_1_, double p_i1626_2_) {
+            this.childAnimal = p_i1626_1_;
+            this.moveSpeed = p_i1626_2_;
+        }
+
+        public boolean shouldExecute() {
+            if (this.childAnimal.getGrowingAge() >= 0) {
+                return false;
+            } else {
+                List<AnimalEntity> lvt_1_1_ = this.childAnimal.world.getEntitiesWithinAABB(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().grow(8.0D, 4.0D, 8.0D));
+                AnimalEntity lvt_2_1_ = null;
+                double lvt_3_1_ = 1.7976931348623157E308D;
+                Iterator var5 = lvt_1_1_.iterator();
+
+                while (var5.hasNext()) {
+                    AnimalEntity lvt_6_1_ = (AnimalEntity) var5.next();
+                    if (lvt_6_1_.getGrowingAge() >= 0) {
+                        double lvt_7_1_ = this.childAnimal.getDistanceSq(lvt_6_1_);
+                        if (lvt_7_1_ <= lvt_3_1_) {
+                            lvt_3_1_ = lvt_7_1_;
+                            lvt_2_1_ = lvt_6_1_;
+                        }
+                    }
+                }
+
+                if (lvt_2_1_ == null) {
+                    return false;
+                } else if (lvt_3_1_ < 9.0D) {
+                    return false;
+                } else {
+                    this.parentAnimal = lvt_2_1_;
+                    return true;
+                }
+            }
+        }
+
+        public boolean shouldContinueExecuting() {
+            if (this.childAnimal.getGrowingAge() >= 0) {
+                return false;
+            } else if (!this.parentAnimal.isAlive()) {
+                return false;
+            } else {
+                double lvt_1_1_ = this.childAnimal.getDistanceSq(this.parentAnimal);
+                return lvt_1_1_ >= 9.0D && lvt_1_1_ <= 256.0D;
+            }
+        }
+
+        public void startExecuting() {
+            this.delayCounter = 0;
+        }
+
+        public void resetTask() {
+            this.parentAnimal = null;
+        }
+
+        public void tick() {
+            if (--this.delayCounter <= 0) {
+                this.delayCounter = 10;
+                this.childAnimal.getNavigator().tryMoveToEntityLiving(this.parentAnimal, this.moveSpeed);
+            }
+        }
+    }
 
 }

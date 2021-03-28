@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
 import net.minecraft.entity.*;
@@ -16,6 +17,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
+import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.SpiderEntity;
@@ -36,6 +38,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
@@ -53,6 +56,7 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -194,7 +198,17 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onTradeSetup(WandererTradesEvent event) {
+    public void onTradeSetup(VillagerTradesEvent event) {
+        if(event.getType() == VillagerProfession.FISHERMAN){
+            VillagerTrades.ITrade ambergrisTrade = new EmeraldsForItemsTrade(AMItemRegistry.AMBERGRIS, 20, 3, 4);
+            List l = event.getTrades().get(2);
+            l.add(ambergrisTrade);
+            event.getTrades().put(2, l);
+        }
+    }
+
+    @SubscribeEvent
+    public void onWanderingTradeSetup(WandererTradesEvent event) {
         if (AMConfig.wanderingTraderOffers) {
             List<VillagerTrades.ITrade> genericTrades = event.getGenericTrades();
             List<VillagerTrades.ITrade> rareTrades = event.getRareTrades();

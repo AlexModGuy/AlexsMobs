@@ -36,16 +36,22 @@ public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
         for(int i = 0; i < arcs; i++){
             matrixStackIn.push();
             matrixStackIn.translate(0, 0, -0.5F * i);
-            renderArc(matrixStackIn, bufferIn, (i + 1) * 5);
+            renderArc(matrixStackIn, bufferIn, (i + 1) * 5, entityIn.isFasterAnimation());
             matrixStackIn.pop();
         }
         matrixStackIn.pop();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    private void renderArc(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int age) {
+    private void renderArc(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int age, boolean fast) {
         matrixStackIn.push();
-        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(getEntityTexture(age)));
+        ResourceLocation res;
+        if(fast){
+            res = getEntityTextureFaster(age);
+        }else{
+            res = getEntityTexture(age);
+        }
+        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(res));
         MatrixStack.Entry lvt_19_1_ = matrixStackIn.getLast();
         Matrix4f lvt_20_1_ = lvt_19_1_.getMatrix();
         Matrix3f lvt_21_1_ = lvt_19_1_.getNormal();
@@ -75,6 +81,18 @@ public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
         } else if (age < 10) {
             return TEXTURE_1;
         } else if (age < 15) {
+            return TEXTURE_2;
+        } else {
+            return TEXTURE_3;
+        }
+    }
+
+    public ResourceLocation getEntityTextureFaster(int age) {
+        if (age < 3) {
+            return TEXTURE_0;
+        } else if (age < 6) {
+            return TEXTURE_1;
+        } else if (age < 9) {
             return TEXTURE_2;
         } else {
             return TEXTURE_3;

@@ -32,9 +32,11 @@ import java.util.UUID;
 
 public class EntityCachalotEcho extends Entity {
     private static final DataParameter<Boolean> RETURNING = EntityDataManager.createKey(EntityCachalotEcho.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FASTER_ANIM = EntityDataManager.createKey(EntityCachalotEcho.class, DataSerializers.BOOLEAN);
     private UUID field_234609_b_;
     private int field_234610_c_;
     private boolean field_234611_d_;
+    private boolean playerLaunched = false;
 
     public EntityCachalotEcho(EntityType p_i50162_1_, World p_i50162_2_) {
         super(p_i50162_1_, p_i50162_2_);
@@ -48,8 +50,10 @@ public class EntityCachalotEcho extends Entity {
     public EntityCachalotEcho(World worldIn, LivingEntity p_i47273_2_, boolean right) {
         this(AMEntityRegistry.CACHALOT_ECHO, worldIn);
         this.setShooter(p_i47273_2_);
-        float rot = p_i47273_2_.rotationYawHead + (right ? 60 : -60);
-        this.setPosition(p_i47273_2_.getPosX() - (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getPosYEye() - (double) 0.2F, p_i47273_2_.getPosZ() + (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.cos(rot * ((float) Math.PI / 180F)));
+        float rot = p_i47273_2_.rotationYawHead + (right ? 90 : -90);
+        playerLaunched = true;
+        this.setFasterAnimation(true);
+        this.setPosition(p_i47273_2_.getPosX() - (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getPosY(), p_i47273_2_.getPosZ() + (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.cos(rot * ((float) Math.PI / 180F)));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -83,6 +87,14 @@ public class EntityCachalotEcho extends Entity {
         this.dataManager.set(RETURNING, returning);
     }
 
+    public boolean isFasterAnimation() {
+        return this.dataManager.get(FASTER_ANIM).booleanValue();
+    }
+
+    public void setFasterAnimation(boolean anim) {
+        this.dataManager.set(FASTER_ANIM, anim);
+    }
+
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
@@ -109,7 +121,10 @@ public class EntityCachalotEcho extends Entity {
             }
 
         }
-        if (this.ticksExisted > 100 || !this.isInWaterOrBubbleColumn()) {
+        if(!playerLaunched && !world.isRemote && !this.isInWaterOrBubbleColumn()){
+            remove();
+        }
+        if (this.ticksExisted > 100) {
             remove();
         }
 
@@ -120,7 +135,9 @@ public class EntityCachalotEcho extends Entity {
         this.func_234617_x_();
         float f = 0.99F;
         float f1 = 0.06F;
-
+        if(playerLaunched){
+            this.noClip = true;
+        }
         this.setMotion(vector3d.scale(0.99F));
         this.setNoGravity(true);
         this.setPosition(d0, d1, d2);
@@ -161,13 +178,14 @@ public class EntityCachalotEcho extends Entity {
 
     protected void func_230299_a_(BlockRayTraceResult p_230299_1_) {
         BlockState blockstate = this.world.getBlockState(p_230299_1_.getPos());
-        if (!this.world.isRemote) {
+        if (!this.world.isRemote && !playerLaunched) {
             this.remove();
         }
     }
 
     protected void registerData() {
         this.dataManager.register(RETURNING, false);
+        this.dataManager.register(FASTER_ANIM, false);
     }
 
     public void setShooter(@Nullable Entity entityIn) {
@@ -248,6 +266,9 @@ public class EntityCachalotEcho extends Entity {
      */
     protected void onImpact(RayTraceResult result) {
         RayTraceResult.Type raytraceresult$type = result.getType();
+        if(playerLaunched){
+            return;
+        }
         if (raytraceresult$type == RayTraceResult.Type.ENTITY) {
             this.onEntityHit((EntityRayTraceResult) result);
         } else if (raytraceresult$type == RayTraceResult.Type.BLOCK) {
@@ -271,6 +292,9 @@ public class EntityCachalotEcho extends Entity {
     }
 
     protected boolean func_230298_a_(Entity p_230298_1_) {
+        if(playerLaunched){
+            return false;
+        }
         if (this.isReturning()) {
             return p_230298_1_ instanceof EntityCachalotPart || p_230298_1_ instanceof EntityCachalotWhale;
         } else if (p_230298_1_ instanceof EntityCachalotPart) {

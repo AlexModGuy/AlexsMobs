@@ -1,9 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
-import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
-import com.github.alexthe666.alexsmobs.entity.EntityElephant;
+import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
 import com.google.common.collect.Lists;
@@ -195,6 +192,15 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                 } else {
                     ((EntityElephant) fakeEntity).setTusked(false);
                     ((EntityElephant) fakeEntity).setColor(null);
+                }
+            }
+            if (fakeEntity instanceof EntityCachalotWhale) {
+                if (flags == 99) {
+                    ((EntityCachalotWhale) fakeEntity).beachedProgress = 10;
+                    ((EntityCachalotWhale) fakeEntity).setBeached(true);
+                } else {
+                    ((EntityCachalotWhale) fakeEntity).beachedProgress = 0;
+                    ((EntityCachalotWhale) fakeEntity).setBeached(false);
                 }
             }
             if (fakeEntity != null) {

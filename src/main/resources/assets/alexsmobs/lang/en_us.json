@@ -120,6 +120,8 @@
   "item.alexsmobs.kangaroo_hide": "Kangaroo Hide",
   "item.alexsmobs.ambergris": "Ambergris",
   "item.alexsmobs.cachalot_whale_tooth": "Cachalot Whale Tooth",
+  "item.alexsmobs.echolocator": "Echolocator",
+  "item.alexsmobs.endolocator": "Endolocator",
   "block.alexsmobs.banana_peel": "Banana Peel",
   "block.alexsmobs.crocodile_egg": "Crocodile Egg",
   "block.alexsmobs.gustmaker": "Gustmaker",
@@ -504,5 +506,11 @@
   "advancements.alexsmobs.emu_dodge.title": "Begun, The Emu War Has",
   "advancements.alexsmobs.emu_dodge.desc": "See an emu dodge a launched projectile.",
   "advancements.alexsmobs.kangaroo.title": "We do a little trolling...",
-  "advancements.alexsmobs.kangaroo.desc": "Encounter a Kangaroo"
+  "advancements.alexsmobs.kangaroo.desc": "Encounter a Kangaroo",
+  "advancements.alexsmobs.save_cachalot_whale.title": "Save the Whales!",
+  "advancements.alexsmobs.save_cachalot_whale.desc": "Save a beached Cachalot Whale by pushing it into the water, and then have it reward you by coughing up some Ambergris.",
+  "advancements.alexsmobs.echolocator.title": "Echo-muh-cation!",
+  "advancements.alexsmobs.echolocator.desc": "Craft an Echolocator, which can reveal nearby caves",
+  "advancements.alexsmobs.endolocator.title": "No End In Signt",
+  "advancements.alexsmobs.endolocator.desc": "Craft an Endolocator, which can reveal nearby End Portal Frames"
 }

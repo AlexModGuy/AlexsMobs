@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PAP",
+    " P "
+  ],
+  "key": {
+    "A": {
+      "item": "alexsmobs:echolocator"
+    },
+    "C": {
+      "item": "alexsmobs:cachalot_whale_tooth"
+    },
+    "P": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:endolocator",
+    "count": 1
+  }
+}
