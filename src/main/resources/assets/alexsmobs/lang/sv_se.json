@@ -120,6 +120,8 @@
   "item.alexsmobs.kangaroo_hide": "Känguruskinn",
   "item.alexsmobs.ambergris": "Ambra",
   "item.alexsmobs.cachalot_whale_tooth": "Kaskelotval tand",
+  "item.alexsmobs.echolocator": "Ekolokalisator",
+  "item.alexsmobs.endolocator": "Endlokalisator",
   "block.alexsmobs.banana_peel": "Bananskal",
   "block.alexsmobs.crocodile_egg": "Krokodilägg",
   "block.alexsmobs.gustmaker": "Vindil",
@@ -504,5 +506,11 @@
   "advancements.alexsmobs.emu_dodge.title": "Börjat, Emukriget har",
   "advancements.alexsmobs.emu_dodge.desc": "Se en emu undvika en lanserad projektil.",
   "advancements.alexsmobs.kangaroo.title": "Vi trollar runt lite grann...",
-  "advancements.alexsmobs.kangaroo.desc": "Möt på en känguru"
+  "advancements.alexsmobs.kangaroo.desc": "Möt på en känguru",
+  "advancements.alexsmobs.save_cachalot_whale.title": "Rädda valarna!",
+  "advancements.alexsmobs.save_cachalot_whale.desc": "Rädda en strandad kaskelotval genom att trycka den åt vattnet, och låt den sedan belöna dig genom att hosta upp lite ambra.",
+  "advancements.alexsmobs.echolocator.title": "Eko-log-isator!",
+  "advancements.alexsmobs.echolocator.desc": "Tillverka en ekolokalisator, som kan avslöja närliggande grottor",
+  "advancements.alexsmobs.endolocator.title": "Inget slut i sikte",
+  "advancements.alexsmobs.endolocator.desc": "Tillverka en endlokalisator, som kan avslöja närliggande Endportalsramar"
 }
