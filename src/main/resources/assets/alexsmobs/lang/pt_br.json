@@ -120,6 +120,8 @@
   "item.alexsmobs.kangaroo_hide": "Pele de Canguru",
   "item.alexsmobs.ambergris": "Âmbar Cinzento",
   "item.alexsmobs.cachalot_whale_tooth": "Dente de Baleia Cachalote",
+  "item.alexsmobs.echolocator": "Ecolocalizador",
+  "item.alexsmobs.endolocator": "Endolocalizador",
   "block.alexsmobs.banana_peel": "Casca de Banana",
   "block.alexsmobs.crocodile_egg": "Ovo de Crocodilo",
   "block.alexsmobs.gustmaker": "Soprador de Rajadas",
@@ -504,5 +506,11 @@
   "advancements.alexsmobs.emu_dodge.title": "Começou, a guerra do Emu",
   "advancements.alexsmobs.emu_dodge.desc": "Veja um emu esquivar-se de um projétil lançado.",
   "advancements.alexsmobs.kangaroo.title": "Nós fazemos um pouco de trollagem...",
-  "advancements.alexsmobs.kangaroo.desc": "Encontre um Canguru"
+  "advancements.alexsmobs.kangaroo.desc": "Encontre um Canguru",
+  "advancements.alexsmobs.save_cachalot_whale.title": "Salve as Baleias!",
+  "advancements.alexsmobs.save_cachalot_whale.desc": "Salve uma baleia cachalot encalhada empurrando-a na água e depois receba como recompensa um pouco de Âmbar Cinzento.",
+  "advancements.alexsmobs.echolocator.title": "Ecolocalização!",
+  "advancements.alexsmobs.echolocator.desc": "Crie um Ecolocalizador, que pode revelar cavernas próximas",
+  "advancements.alexsmobs.endolocator.title": "Sem Portal do End à vista",
+  "advancements.alexsmobs.endolocator.desc": "Crie um Endoolocalizador, que pode revelar Molduras do Portal do End próximas"
 }
