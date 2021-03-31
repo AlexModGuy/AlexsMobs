@@ -133,6 +133,7 @@ public class AMConfig {
     public static boolean beachedCachalotWhales = true;
     public static int beachedCachalotWhaleSpawnChance = 5;
     public static int beachedCachalotWhaleSpawnDelay = 24000;
+    public static double leafcutterAnthillSpawnChance = 0.005F;
 
     public static void bake(ModConfig config) {
         try {
@@ -256,6 +257,7 @@ public class AMConfig {
             beachedCachalotWhales = ConfigHolder.COMMON.beachedCachalotWhales.get();
             beachedCachalotWhaleSpawnChance = ConfigHolder.COMMON.beachedCachalotWhaleSpawnChance.get();
             beachedCachalotWhaleSpawnDelay = ConfigHolder.COMMON.beachedCachalotWhaleSpawnDelay.get();
+            leafcutterAnthillSpawnChance = ConfigHolder.COMMON.leafcutterAnthillSpawnChance.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

@@ -77,6 +77,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityKangaroo> KANGAROO = registerEntity(EntityType.Builder.create(EntityKangaroo::new, EntityClassification.CREATURE).size(1.65F, 1.5F), "kangaroo");
     public static final EntityType<EntityCachalotWhale> CACHALOT_WHALE = registerEntity(EntityType.Builder.create(EntityCachalotWhale::new, EntityClassification.WATER_CREATURE).size(9F, 4.0F), "cachalot_whale");
     public static final EntityType<EntityCachalotEcho> CACHALOT_ECHO = registerEntity(EntityType.Builder.create(EntityCachalotEcho::new, EntityClassification.MISC).size(2F, 2F).setCustomClientFactory(EntityCachalotEcho::new).immuneToFire(), "cachalot_echo");
+    public static final EntityType<EntityLeafcutterAnt> LEAFCUTTER_ANT = registerEntity(EntityType.Builder.create(EntityLeafcutterAnt::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "leafuctter_ant");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -194,6 +195,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(TASMANIAN_DEVIL, EntityTasmanianDevil.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(KANGAROO, EntityKangaroo.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(CACHALOT_WHALE, EntityCachalotWhale.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(LEAFCUTTER_ANT, EntityLeafcutterAnt.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

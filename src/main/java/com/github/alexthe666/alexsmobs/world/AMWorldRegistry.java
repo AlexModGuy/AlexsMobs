@@ -1,15 +1,32 @@
 package com.github.alexthe666.alexsmobs.world;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+@Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
+
+    public static Feature<NoFeatureConfig> LEAFCUTTER_ANTHILL =  new FeatureLeafcutterAnthill(NoFeatureConfig.field_236558_a_);
+
+    @SubscribeEvent
+    public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {
+        event.getRegistry().register(LEAFCUTTER_ANTHILL.setRegistryName("alexsmobs:leafcutter_hill"));
+    }
 
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         Biome biome = ForgeRegistries.BIOMES.getValue(event.getName());
@@ -145,6 +162,8 @@ public class AMWorldRegistry {
         if (BiomeConfig.test(BiomeConfig.cachalot_whale_spawns, biome) && AMConfig.cachalotWhaleSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.CACHALOT_WHALE, AMConfig.cachalotWhaleSpawnWeight, 1, 3));
         }
-
+        if(BiomeConfig.test(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0){
+            event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, LEAFCUTTER_ANTHILL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+        }
     }
 }

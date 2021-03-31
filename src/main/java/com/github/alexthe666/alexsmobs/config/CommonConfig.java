@@ -127,6 +127,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue beachedCachalotWhales;
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnChance;
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnDelay;
+    public final ForgeConfigSpec.DoubleValue leafcutterAnthillSpawnChance;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -251,7 +252,8 @@ public class CommonConfig {
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "spawns", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
         beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "spawns", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");
         beachedCachalotWhaleSpawnDelay = buildInt(builder, "beachedCachalotWhaleSpawnDelay", "spawns", AMConfig.beachedCachalotWhaleSpawnDelay, 0, Integer.MAX_VALUE, "Delay (in ticks) between attempts to spawn beached cachalot whales. Default is a single day. Works like wandering traders.");
-    }
+        leafcutterAnthillSpawnChance = buildDouble(builder, "leafcutterAnthillSpawnChance", "all", AMConfig.leafcutterAnthillSpawnChance, 0D, 1D, "Percent chance for leafcutter anthills to spawn as world gen in each chunk.");
+   }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment) {
         return builder.comment(comment).translation(name).define(name, defaultValue);

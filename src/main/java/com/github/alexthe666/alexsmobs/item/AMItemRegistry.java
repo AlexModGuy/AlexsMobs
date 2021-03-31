@@ -116,6 +116,8 @@ public class AMItemRegistry {
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
     public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
+    public static final Item GONGYLIDIA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(2).saturation(0.79F).build())).setRegistryName("alexsmobs:gongylidia");
+    public static final Item LEAFCUTTER_ANT_PUPA = new ItemLeafcutterPupa(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:leafcutter_ant_pupa");
 
     private static BannerPattern addBanner(String name) {
         return BannerPattern.create(name.toUpperCase(), name, "alexsmobs." + name, true);
@@ -167,6 +169,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TASMANIAN_DEVIL, 0X252426,0XA8B4BF, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_tasmanian_devil"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.KANGAROO, 0XCE9D65,0XDEBDA0, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_kangaroo"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.CACHALOT_WHALE, 0X949899,0X5F666E, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_cachalot_whale"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.LEAFCUTTER_ANT, 0X964023,0XA65930, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_leafcutter_ant"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -222,5 +225,6 @@ public class AMItemRegistry {
         ComposterBlock.CHANCES.put(BANANA, 0.65F);
         ComposterBlock.CHANCES.put(AMBlockRegistry.BANANA_PEEL, 1F);
         ComposterBlock.CHANCES.put(ACACIA_BLOSSOM, 0.65F);
+        ComposterBlock.CHANCES.put(GONGYLIDIA, 0.9F);
     }
 }
