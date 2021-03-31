@@ -46,7 +46,15 @@ public class BlockLeafcutterAntChamber extends Block {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         int fungalLevel = state.get(FUNGUS);
         if (fungalLevel == 5) {
-            this.angerNearbyAnts(worldIn, pos);
+            boolean shroomlight = false;
+            for (BlockPos blockpos : BlockPos.getAllInBoxMutable(pos.add(-1, -1, -1), pos.add(1, 1, 1))) {
+                if(worldIn.getBlockState(blockpos).getBlock() == Blocks.SHROOMLIGHT){
+                    shroomlight = true;
+                }
+            }
+            if(!shroomlight){
+                this.angerNearbyAnts(worldIn, pos);
+            }
             worldIn.setBlockState(pos, state.with(FUNGUS, 0));
             if(!worldIn.isRemote){
                 if(worldIn.rand.nextInt(2) == 0){
@@ -69,7 +77,7 @@ public class BlockLeafcutterAntChamber extends Block {
     public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
             if (!worldIn.isAreaLoaded(pos, 3))
                 return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
-        if(worldIn.canSeeSky(pos)){
+        if(worldIn.canSeeSky(pos.up())){
             worldIn.setBlockState(pos, Blocks.DIRT.getDefaultState());
         }
     }

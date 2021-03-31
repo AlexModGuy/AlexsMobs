@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.tileentity;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.block.BlockLeafcutterAntChamber;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
@@ -19,11 +20,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Function;
 
 public class TileEntityLeafcutterAnthill extends TileEntity implements ITickableTileEntity {
     private static final Direction[] DIRECTIONS_UP = new Direction[]{Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
@@ -77,7 +81,7 @@ public class TileEntityLeafcutterAnthill extends TileEntity implements ITickable
         if (flag && p_235651_4_ != BeehiveTileEntity.State.EMERGENCY) {
             return false;
         } else {
-            Entity entity = EntityType.loadEntityAndExecute(compoundnbt, this.world, (p_226960_0_) -> {
+            Entity entity = loadEntityAndExecute(compoundnbt, this.world, (p_226960_0_) -> {
                 return p_226960_0_;
             });
             if (entity != null) {
@@ -111,6 +115,8 @@ public class TileEntityLeafcutterAnthill extends TileEntity implements ITickable
         }
 
     }
+
+
 
     public void tryEnterHive(EntityLeafcutterAnt p_226962_1_, boolean p_226962_2_, int p_226962_3_) {
         if (this.ants.size() < 30) {
@@ -298,4 +304,38 @@ public class TileEntityLeafcutterAnthill extends TileEntity implements ITickable
             this.queen = queen;
         }
     }
+
+    /* To avoid ants not being mapped to vanilla, we have to handle this seperately than the default entitytype implementation.*/
+    @Nullable
+    public static Entity loadEntityAndExecute(CompoundNBT compound, World worldIn, Function<Entity, Entity> p_220335_2_) {
+        return loadEntity(compound, worldIn).map(p_220335_2_).map((p_220346_3_) -> {
+            if (compound.contains("Passengers", 9)) {
+                ListNBT listnbt = compound.getList("Passengers", 10);
+
+                for(int i = 0; i < listnbt.size(); ++i) {
+                    Entity entity = loadEntityAndExecute(listnbt.getCompound(i), worldIn, p_220335_2_);
+                    if (entity != null) {
+                        entity.startRiding(p_220346_3_, true);
+                    }
+                }
+            }
+
+            return p_220346_3_;
+        }).orElse((Entity)null);
+    }
+
+    private static Optional<Entity> loadEntity(CompoundNBT compound, World worldIn) {
+        try {
+            return loadEntityUnchecked(compound, worldIn);
+        } catch (RuntimeException runtimeexception) {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<Entity> loadEntityUnchecked(CompoundNBT compound, World worldIn) {
+        EntityLeafcutterAnt leafcutterAnt = AMEntityRegistry.LEAFCUTTER_ANT.create(worldIn);
+        leafcutterAnt.read(compound);
+        return Optional.of(leafcutterAnt);
+    }
+
 }

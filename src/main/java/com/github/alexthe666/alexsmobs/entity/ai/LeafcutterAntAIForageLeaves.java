@@ -88,6 +88,11 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
                 if (Math.abs(xDif) < 0.6 && Math.abs(zDif) < 0.6) {
                     ant.setMotion(ant.getMotion().mul(0D, 1D, 0D));
                     this.ant.getMoveHelper().setMoveTo(logStartPos.getX() + 0.5D, ant.getPosY() + 2, logStartPos.getZ() + 0.5D, 1);
+                    BlockPos test = new BlockPos(logStartPos.getX(), ant.getPosY(), logStartPos.getZ());
+                    if (!BlockTags.LOGS.contains(ant.world.getBlockState(test).getBlock()) && ant.getAttachmentFacing() == Direction.DOWN) {
+                        this.resetTask();
+                        return;
+                    }
                 }
             }else {
                 for (int i = 0; i < 15; i++) {

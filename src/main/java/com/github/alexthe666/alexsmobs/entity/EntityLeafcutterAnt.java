@@ -173,23 +173,21 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
         Item item = itemstack.getItem();
         ActionResultType type = super.func_230254_b_(player, hand);
         if(type != ActionResultType.SUCCESS && item == AMItemRegistry.GONGYLIDIA){
-            if(isQueen()){
-                if(this.getGrowingAge() == 0){
-                    int babies = 1 + rand.nextInt(1);
-                    for(int i = 0; i < babies; i++){
-                        EntityLeafcutterAnt leafcutterAnt = AMEntityRegistry.LEAFCUTTER_ANT.create(world);
-                        leafcutterAnt.copyLocationAndAnglesFrom(this);
-                        leafcutterAnt.setGrowingAge(-24000);
-                        if(!world.isRemote){
-                            world.setEntityState(this, (byte)18);
-                            world.addEntity(leafcutterAnt);
-                        }
+            if(isQueen() && this.getGrowingAge() == 0){
+                int babies = 1 + rand.nextInt(1);
+                for(int i = 0; i < babies; i++){
+                    EntityLeafcutterAnt leafcutterAnt = AMEntityRegistry.LEAFCUTTER_ANT.create(world);
+                    leafcutterAnt.copyLocationAndAnglesFrom(this);
+                    leafcutterAnt.setGrowingAge(-24000);
+                    if(!world.isRemote){
+                        world.setEntityState(this, (byte)18);
+                        world.addEntity(leafcutterAnt);
                     }
-                    if(!player.isCreative()){
-                        itemstack.shrink(1);
-                    }
-                    this.setGrowingAge(24000);
                 }
+                if(!player.isCreative()){
+                    itemstack.shrink(1);
+                }
+                this.setGrowingAge(24000);
             }else{
                 if(!player.isCreative()){
                     itemstack.shrink(1);
@@ -653,7 +651,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
 
         public void tick() {
             double dist = EntityLeafcutterAnt.this.getDistanceSq(Vector3d.copyCenteredWithVerticalOffset(hivePos, 1));
-            if (dist < 1F && EntityLeafcutterAnt.this.getPositionUnderneath().equals(hivePos)) {
+            if (dist < 1.2F && EntityLeafcutterAnt.this.getPositionUnderneath().equals(hivePos)) {
                 TileEntity tileentity = EntityLeafcutterAnt.this.world.getTileEntity(hivePos);
                 if (tileentity instanceof TileEntityLeafcutterAnthill) {
                     TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill) tileentity;
@@ -661,8 +659,14 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
                 }
             }
             if (dist < 16) {
+                if(dist < 2 && EntityLeafcutterAnt.this.getPosY() >= hivePos.getY()){
+                    if(EntityLeafcutterAnt.this.getAttachmentFacing() != Direction.DOWN){
+                        EntityLeafcutterAnt.this.setMotion(EntityLeafcutterAnt.this.getMotion().add(0, 0.1, 0));
+                    }
+                   EntityLeafcutterAnt.this.getMoveHelper().setMoveTo((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.5F, (double) hivePos.getZ() + 0.5F, 1.0D);
+                }
                 EntityLeafcutterAnt.this.navigator.resetRangeMultiplier();
-                EntityLeafcutterAnt.this.navigator.tryMoveToXYZ((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1, (double) hivePos.getZ() + 0.5F, 1.0D);
+                EntityLeafcutterAnt.this.navigator.tryMoveToXYZ((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.6F, (double) hivePos.getZ() + 0.5F, 1.0D);
             } else {
                 startMovingToFar(this.hivePos);
             }

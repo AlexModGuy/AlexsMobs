@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.misc;
 import net.minecraft.util.ResourceLocation;
 
 public class AMTagRegistry {
+    public static final ResourceLocation INSECT_ITEMS = new ResourceLocation("alexsmobs", "insect_items");
     public static final ResourceLocation FORGE_WOODEN_CHESTS = new ResourceLocation("forge","chests/wooden");
     public static final ResourceLocation GRIZZLY_BEEHIVE = new ResourceLocation("alexsmobs","grizzly_beehive");
     public static final ResourceLocation GRIZZLY_FOODSTUFFS = new ResourceLocation("alexsmobs", "grizzly_foodstuffs");
