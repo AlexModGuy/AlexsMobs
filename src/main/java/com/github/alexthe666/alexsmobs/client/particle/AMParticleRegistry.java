@@ -17,6 +17,7 @@ public class AMParticleRegistry {
     public static final BasicParticleType HEMOLYMPH = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:hemolymph");
     public static final BasicParticleType PLATYPUS_SENSE = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:platypus_sense");
     public static final BasicParticleType WHALE_SPLASH = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:whale_splash");
+    public static final BasicParticleType DNA = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:dna");
 
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

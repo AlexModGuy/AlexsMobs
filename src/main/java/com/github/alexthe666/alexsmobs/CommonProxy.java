@@ -83,5 +83,7 @@ public class CommonProxy {
     public void setupParticles() {
     }
 
-
+    public boolean isFarFromCamera(double x, double y, double z) {
+        return true;
+    }
 }

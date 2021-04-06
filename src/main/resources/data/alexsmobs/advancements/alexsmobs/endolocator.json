@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "alexsmobs:echolocator"
+            "item": "alexsmobs:endolocator"
         },
         "title": {
             "translate": "advancements.alexsmobs.endolocator.title"

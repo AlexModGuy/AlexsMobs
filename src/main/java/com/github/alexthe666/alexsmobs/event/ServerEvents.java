@@ -20,6 +20,7 @@ import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
+import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -38,7 +39,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
@@ -73,7 +73,6 @@ public class ServerEvents {
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER, "frontier cap speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final Map<ServerWorld, BeachedCachalotWhaleSpawner> BEACHED_CACHALOT_WHALE_SPAWNER_MAP = new HashMap<ServerWorld, BeachedCachalotWhaleSpawner>();
-
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.WorldTickEvent tick) {
@@ -112,8 +111,9 @@ public class ServerEvents {
 
 
     @SubscribeEvent
-    public static void onEntityJump(LivingEvent.LivingJumpEvent event) {
-        if(event.getEntityLiving().isPotionActive(AMEffectRegistry.CLINGING) && EffectClinging.isUpsideDown(event.getEntityLiving())){
+    public static void onItemUseLast(LivingEntityUseItemEvent.Finish event) {
+        if (event.getItem().getItem() == Items.CHORUS_FRUIT && new Random().nextInt(3) == 0 && event.getEntityLiving().isPotionActive(AMEffectRegistry.ENDER_FLU)) {
+            event.getEntityLiving().removePotionEffect(AMEffectRegistry.ENDER_FLU);
         }
     }
 
@@ -121,15 +121,15 @@ public class ServerEvents {
     public static void onEntityResize(EntityEvent.Size event) {
         if (event.getEntity() instanceof PlayerEntity) {
             PlayerEntity entity = (PlayerEntity) event.getEntity();
-            try{
+            try {
                 Map<Effect, EffectInstance> potions = entity.getActivePotionMap();
                 if (event.getEntity().world != null && potions != null && !potions.isEmpty() && potions.containsKey(AMEffectRegistry.CLINGING)) {
-                    if( EffectClinging.isUpsideDown(entity)){
+                    if (EffectClinging.isUpsideDown(entity)) {
                         float minus = event.getOldSize().height - event.getOldEyeHeight();
                         event.setNewEyeHeight(minus);
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
             }
         }
 
@@ -199,7 +199,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onTradeSetup(VillagerTradesEvent event) {
-        if(event.getType() == VillagerProfession.FISHERMAN){
+        if (event.getType() == VillagerProfession.FISHERMAN) {
             VillagerTrades.ITrade ambergrisTrade = new EmeraldsForItemsTrade(AMItemRegistry.AMBERGRIS, 20, 3, 4);
             List l = event.getTrades().get(2);
             l.add(ambergrisTrade);
@@ -231,7 +231,6 @@ public class ServerEvents {
             rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC, 5, 2, 3, 1));
         }
     }
-
 
     @SubscribeEvent
     public void onLootLevelEvent(LootingLevelEvent event) {
@@ -342,8 +341,8 @@ public class ServerEvents {
                 }
             }
         }
-        if(!event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).isEmpty() && event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS){
-            if(event.getSource().isProjectile() && event.getEntityLiving().getRNG().nextFloat() < AMConfig.emuPantsDodgeChance){
+        if (!event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).isEmpty() && event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS) {
+            if (event.getSource().isProjectile() && event.getEntityLiving().getRNG().nextFloat() < AMConfig.emuPantsDodgeChance) {
                 event.setCanceled(true);
             }
         }
@@ -377,7 +376,7 @@ public class ServerEvents {
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
-            if(event.getEntityLiving().getEyeHeight() < event.getEntityLiving().getHeight() * 0.5D){
+            if (event.getEntityLiving().getEyeHeight() < event.getEntityLiving().getHeight() * 0.5D) {
                 event.getEntityLiving().recalculateSize();
             }
             ModifiableAttributeInstance modifiableattributeinstance = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);

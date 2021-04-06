@@ -111,6 +111,10 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
         return this.isQueen() ? QUEEN_LOOT : super.getLootTable();
     }
 
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.ARTHROPOD;
+    }
+
     private void switchNavigator(boolean rightsideUp) {
         if (rightsideUp) {
             this.moveController = new MovementController(this);

@@ -6,12 +6,14 @@ import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
 import com.github.alexthe666.alexsmobs.item.ItemHemolymphBlaster;
+import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -115,6 +118,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CACHALOT_WHALE, manager -> new RenderCachalotWhale(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CACHALOT_ECHO, manager -> new RenderCachalotEcho(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.LEAFCUTTER_ANT, manager -> new RenderLeafcutterAnt(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERIOPHAGE, manager -> new RenderEnderiophage(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERIOPHAGE_ROCKET, manager -> new SpriteRenderer(manager, itemRendererIn));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
@@ -127,6 +132,8 @@ public class ClientProxy extends CommonProxy {
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");
         }
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.BANANA_PEEL, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AMBlockRegistry.CAPSID, RenderType.getTranslucent());
+        ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.CAPSID, manager -> new RenderCapsid(manager));
 
     }
 
@@ -201,7 +208,12 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.HEMOLYMPH, ParticleHemolymph.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.PLATYPUS_SENSE, ParticlePlatypus.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.WHALE_SPLASH, ParticleWhaleSplash.Factory::new);
-
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.DNA, ParticleDna.Factory::new);
     }
 
+
+    public boolean isFarFromCamera(double x, double y, double z) {
+        Minecraft lvt_1_1_ = Minecraft.getInstance();
+        return lvt_1_1_.gameRenderer.getActiveRenderInfo().getProjectedView().squareDistanceTo(x, y, z) >= 256.0D;
+    }
 }

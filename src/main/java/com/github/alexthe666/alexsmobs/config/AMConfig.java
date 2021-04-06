@@ -97,6 +97,8 @@ public class AMConfig {
     public static int kangarooSpawnRolls = 0;
     public static int cachalotWhaleSpawnWeight = 2;
     public static int cachalotWhaleSpawnRolls = 0;
+    public static int enderiophageSpawnWeight = 4;
+    public static int enderiophageSpawnRolls = 3;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -230,6 +232,8 @@ public class AMConfig {
             kangarooSpawnRolls = ConfigHolder.COMMON.kangarooSpawnRolls.get();
             cachalotWhaleSpawnWeight = ConfigHolder.COMMON.cachalotWhaleSpawnWeight.get();
             cachalotWhaleSpawnRolls = ConfigHolder.COMMON.cachalotWhaleSpawnRolls.get();
+            enderiophageSpawnWeight = ConfigHolder.COMMON.enderiophageSpawnWeight.get();
+            enderiophageSpawnRolls = ConfigHolder.COMMON.enderiophageSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();

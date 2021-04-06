@@ -21,6 +21,5 @@ public class LayerMimicubeTexture extends LayerRenderer<EntityMimicube, ModelMim
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityMimicube entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         IVertexBuilder ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getTransparentMimicube(TEXTURE));
         this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-
     }
 }

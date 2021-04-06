@@ -165,5 +165,8 @@ public class AMWorldRegistry {
         if(BiomeConfig.test(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0){
             event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, LEAFCUTTER_ANTHILL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
         }
+        if (BiomeConfig.test(BiomeConfig.enderiophage_spawns, biome) && AMConfig.enderiophageSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.ENDERIOPHAGE, AMConfig.enderiophageSpawnWeight, 1, 2));
+        }
     }
 }

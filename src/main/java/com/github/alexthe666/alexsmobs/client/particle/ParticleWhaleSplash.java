@@ -14,6 +14,7 @@ public class ParticleWhaleSplash  extends RainParticle {
         this.motionY = 1D;
         this.maxAge = (int)(16.0D / (Math.random() * 0.4D + 0.1D));
         this.particleScale = 0.2F * (this.rand.nextFloat() * 0.5F + 0.5F) * 2.0F;
+
     }
 
     public void tick() {

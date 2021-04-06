@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
+import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -47,7 +48,7 @@ public class MessageMosquitoDismount {
                 if (player.world != null) {
                     Entity entity = player.world.getEntityByID(message.rider);
                     Entity mountEntity = player.world.getEntityByID(message.mount);
-                    if (entity instanceof EntityCrimsonMosquito && mountEntity != null) {
+                    if ((entity instanceof EntityCrimsonMosquito || entity instanceof EntityEnderiophage) && mountEntity != null) {
                         entity.stopRiding();
                     }
                 }
