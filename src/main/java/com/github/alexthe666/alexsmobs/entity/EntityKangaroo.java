@@ -82,6 +82,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     private static final DataParameter<Integer> HELMET_INDEX = EntityDataManager.createKey(EntityKangaroo.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> SWORD_INDEX = EntityDataManager.createKey(EntityKangaroo.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> CHEST_INDEX = EntityDataManager.createKey(EntityKangaroo.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> FORCED_SIT = EntityDataManager.createKey(EntityKangaroo.class, DataSerializers.BOOLEAN);
     public float prevPouchProgress;
     public float pouchProgress;
     public float sitProgress;
@@ -91,7 +92,6 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     public float totalMovingProgress;
     public float prevTotalMovingProgress;
     public int maxStandTime = 75;
-    public boolean forcedSit = false;
     public Inventory kangarooInventory;
     private int animationTick;
     private Animation currentAnimation;
@@ -112,6 +112,10 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         this.jumpController = new EntityKangaroo.JumpHelperController(this);
         this.moveController = new EntityKangaroo.MoveHelperController(this);
 
+    }
+
+    public boolean forcedSit(){
+        return dataManager.get(FORCED_SIT);
     }
 
     public boolean isRoger() {
@@ -207,11 +211,11 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
                 player.sendStatusMessage(new TranslationTextComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
-                    this.forcedSit = true;
+                    this.dataManager.set(FORCED_SIT, true);
                     this.setSitting(true);
                     return ActionResultType.SUCCESS;
                 } else {
-                    this.forcedSit = false;
+                    this.dataManager.set(FORCED_SIT, false);
                     maxSitTime = 0;
                     this.setSitting(false);
                     return ActionResultType.SUCCESS;
@@ -225,6 +229,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("KangarooSitting", this.isSitting());
+        compound.putBoolean("KangarooSittingForced", this.forcedSit());
         compound.putBoolean("Standing", this.isStanding());
         compound.putInt("Command", this.getCommand());
         compound.putInt("HelmetInvIndex", this.dataManager.get(HELMET_INDEX));
@@ -248,7 +253,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setSitting(compound.getBoolean("KangarooSitting"));
-        this.forcedSit = this.isSitting();
+        this.dataManager.set(FORCED_SIT, compound.getBoolean("KangarooSittingForced"));
         this.setStanding(compound.getBoolean("Standing"));
         this.setCommand(compound.getInt("Command"));
         this.dataManager.set(HELMET_INDEX, compound.getInt("HelmetInvIndex"));
@@ -416,7 +421,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
             standingTime = 0;
             maxStandTime = 75 + rand.nextInt(50);
         }
-        if (isSitting() && !forcedSit && ++sittingTime > maxSitTime) {
+        if (isSitting() && !forcedSit() && ++sittingTime > maxSitTime) {
             this.setSitting(false);
             sittingTime = 0;
             maxSitTime = 75 + rand.nextInt(50);
@@ -425,14 +430,14 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
             maxSitTime = 500 + rand.nextInt(350);
             this.setSitting(true);
         }
-        if (!forcedSit && this.isSitting() && (this.getAttackTarget() != null || this.isStanding())) {
+        if (!forcedSit() && this.isSitting() && (this.getAttackTarget() != null || this.isStanding())) {
             this.setSitting(false);
         }
         if (this.getAnimation() == NO_ANIMATION && !this.isStanding() && !this.isSitting() && rand.nextInt(1500) == 0) {
             maxStandTime = 75 + rand.nextInt(50);
             this.setStanding(true);
         }
-        if (this.forcedSit && !this.isBeingRidden() && this.isTamed()) {
+        if (this.forcedSit() && !this.isBeingRidden() && this.isTamed()) {
             this.setSitting(true);
         }
         if (!world.isRemote) {
