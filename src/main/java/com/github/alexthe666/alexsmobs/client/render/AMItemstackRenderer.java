@@ -199,15 +199,6 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                     ((EntityElephant) fakeEntity).setColor(null);
                 }
             }
-            if (fakeEntity instanceof EntityCachalotWhale) {
-                if (flags == 99) {
-                    ((EntityCachalotWhale) fakeEntity).beachedProgress = 10;
-                    ((EntityCachalotWhale) fakeEntity).setBeached(true);
-                } else {
-                    ((EntityCachalotWhale) fakeEntity).beachedProgress = 0;
-                    ((EntityCachalotWhale) fakeEntity).setBeached(false);
-                }
-            }
             if (fakeEntity != null) {
                 MouseHelper mouseHelper = Minecraft.getInstance().mouseHelper;
                 double mouseX = (mouseHelper.getMouseX() * (double) Minecraft.getInstance().getMainWindow().getScaledWidth()) / (double) Minecraft.getInstance().getMainWindow().getWidth();

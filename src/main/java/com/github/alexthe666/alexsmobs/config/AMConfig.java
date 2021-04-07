@@ -97,8 +97,8 @@ public class AMConfig {
     public static int kangarooSpawnRolls = 0;
     public static int cachalotWhaleSpawnWeight = 2;
     public static int cachalotWhaleSpawnRolls = 0;
-    public static int enderiophageSpawnWeight = 3;
-    public static int enderiophageSpawnRolls = 6;
+    public static int enderiophageSpawnWeight = 4;
+    public static int enderiophageSpawnRolls = 3;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
