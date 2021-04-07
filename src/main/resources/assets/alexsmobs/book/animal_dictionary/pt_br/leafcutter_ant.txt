@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+As Formigas-Cortadeiras são pequenos insetos diminutos que muitas vezes podem ser vistos arrancando folhas de árvores em biomas de selva. Eles formam colônias massivas de até vinte formigas. Existem duas formas de formigas cortadeiras, que colhem folhas e podem ser vistas fora do formigueiro, e rainhas, que só podem ser convocadas pisando em um formigueiro.
+As rainhas são muito maiores e mais fortes do que uma operária e geralmente há apenas uma por colônia. Com uma rainha presente em um formigueiro, há uma chance para cada 5 folhas colhidas de criar outra formiga operária, enquanto o formigueiro tem menos de 10 formigas.
+<NEWLINE>
+Sem uma rainha, os formigueiros não conseguem repovoar. Essas colônias são muito maiores do que parecem - sob o monte há uma rede de câmaras de formigas cortadeiras, grandes blocos que são usados pelas formigas para converter suas folhas em fungos.
+Esses blocos de câmara serão convertidos em terra se estiverem sob a luz do sol, no entanto, eles podem se espalhar para blocos de terra adjacentes quando colhidos.
+<NEWLINE>
+Esse fungo é chamado de Gongylidia e é a única coisa que as formigas são capazes de cultivar e comer.
+Além do uso para as formigas, também pode ser comido, embora possa não ter muito valor nutritivo, tem grande saturação.
+Gongylidia pode ser obtida interagindo com um bloco subterrâneo coberto por fungos, mas cuidado: a menos que haja um Cogubrilho próximo, as formigas da colônia se tornarão hostis.
+Os fungos podem ser dados às formigas para curá-las e à rainha para aumentar o número de formigas na colônia. Gongylidia também pode ser dada como alimento a uma formiga para pacificar todas as formigas nas proximidades. Se um bloco de câmara for quebrado, há uma rara chance de ele derrubar uma Pupa de Formiga-Cortadeira, que pode ser usada na terra ou grama para criar uma nova colônia.
