@@ -57,7 +57,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return destinationBlock != null && (mantisShrimp.getAttackTarget() == null || !mantisShrimp.getAttackTarget().isAlive()) && mantisShrimp.getCommand() == 3 && !mantisShrimp.getHeldItemMainhand().isEmpty();
+        return destinationBlock != null && timeoutCounter < 1200 && (mantisShrimp.getAttackTarget() == null || !mantisShrimp.getAttackTarget().isAlive()) && mantisShrimp.getCommand() == 3 && !mantisShrimp.getHeldItemMainhand().isEmpty();
     }
 
     public void resetTask() {
