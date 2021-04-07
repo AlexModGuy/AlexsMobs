@@ -108,10 +108,12 @@ public class GorillaAIFollowCaravan extends Goal {
             if (llamaentity != null) {
                 double d0 = this.gorilla.getDistance(llamaentity);
                 Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.gorilla.getPosX(), llamaentity.getPosY() - this.gorilla.getPosY(), llamaentity.getPosZ() - this.gorilla.getPosZ())).normalize().scale(Math.max(d0 - 2.0D, 0.0D));
-                try{
-                    this.gorilla.getNavigator().tryMoveToXYZ(this.gorilla.getPosX() + vector3d.x, this.gorilla.getPosY() + vector3d.y, this.gorilla.getPosZ() + vector3d.z, this.speedModifier);
-                }catch (NullPointerException e){
-                    AlexsMobs.LOGGER.warn("gorilla encountered issue following caravan head");
+                if(gorilla.getNavigator().noPath()) {
+                    try {
+                        this.gorilla.getNavigator().tryMoveToXYZ(this.gorilla.getPosX() + vector3d.x, this.gorilla.getPosY() + vector3d.y, this.gorilla.getPosZ() + vector3d.z, this.speedModifier);
+                    } catch (NullPointerException e) {
+                        AlexsMobs.LOGGER.warn("gorilla encountered issue following caravan head");
+                    }
                 }
             }
         }

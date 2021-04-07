@@ -111,10 +111,12 @@ public class ElephantAIFollowCaravan extends Goal {
             if (llamaentity != null) {
                 double d0 = this.elephant.getDistance(llamaentity);
                 Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.elephant.getPosX(), llamaentity.getPosY() - this.elephant.getPosY(), llamaentity.getPosZ() - this.elephant.getPosZ())).normalize().scale(Math.max(d0 - 4.0D, 0.0D));
-                try {
-                    this.elephant.getNavigator().tryMoveToXYZ(this.elephant.getPosX() + vector3d.x, this.elephant.getPosY() + vector3d.y, this.elephant.getPosZ() + vector3d.z, this.speedModifier);
-                } catch (NullPointerException e) {
-                    AlexsMobs.LOGGER.warn("elephant encountered issue following caravan head");
+                if(elephant.getNavigator().noPath()){
+                    try {
+                        this.elephant.getNavigator().tryMoveToXYZ(this.elephant.getPosX() + vector3d.x, this.elephant.getPosY() + vector3d.y, this.elephant.getPosZ() + vector3d.z, this.speedModifier);
+                    } catch (NullPointerException e) {
+                        AlexsMobs.LOGGER.warn("elephant encountered issue following caravan head");
+                    }
                 }
 
             }

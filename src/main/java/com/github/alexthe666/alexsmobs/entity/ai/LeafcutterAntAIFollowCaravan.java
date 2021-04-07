@@ -106,10 +106,12 @@ public class LeafcutterAntAIFollowCaravan extends Goal {
             if (llamaentity != null) {
                 double d0 = (double) this.LeafcutterAnt.getDistance(llamaentity);
                 Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.LeafcutterAnt.getPosX(), llamaentity.getPosY() - this.LeafcutterAnt.getPosY(), llamaentity.getPosZ() - this.LeafcutterAnt.getPosZ())).normalize().scale(Math.max(d0 - 2.0D, 0.0D));
-                try {
-                    this.LeafcutterAnt.getNavigator().tryMoveToXYZ(this.LeafcutterAnt.getPosX() + vector3d.x, this.LeafcutterAnt.getPosY() + vector3d.y, this.LeafcutterAnt.getPosZ() + vector3d.z, this.speedModifier);
-                } catch (NullPointerException e) {
-                    AlexsMobs.LOGGER.warn("leafcutter ant encountered issue following caravan head");
+                if(LeafcutterAnt.getNavigator().noPath()) {
+                    try {
+                        this.LeafcutterAnt.getNavigator().tryMoveToXYZ(this.LeafcutterAnt.getPosX() + vector3d.x, this.LeafcutterAnt.getPosY() + vector3d.y, this.LeafcutterAnt.getPosZ() + vector3d.z, this.speedModifier);
+                    } catch (NullPointerException e) {
+                        AlexsMobs.LOGGER.warn("leafcutter ant encountered issue following caravan head");
+                    }
                 }
             }
         }
