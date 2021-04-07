@@ -97,7 +97,7 @@ public class EntityCachalotWhale extends AnimalEntity {
         super(type, world);
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.moveController = new MoveHelperController(this);
-        this.lookController = new DolphinLookController(this, 10);
+        this.lookController = new DolphinLookController(this, 4);
         this.headPart = new EntityCachalotPart(this, 3.0F, 3.5F);
         this.bodyFrontPart = new EntityCachalotPart(this, 4.0F, 4.0F);
         this.bodyPart = new EntityCachalotPart(this, 5.0F, 4.0F);
@@ -513,6 +513,9 @@ public class EntityCachalotWhale extends AnimalEntity {
             } else if (!isBeached() && !isSleeping()) {
                 this.faceEntity(target, 360, 360);
                 waitForEchoFlag = this.getRevengeTarget() == null || !this.getRevengeTarget().isEntityEqual(target);
+                if(target instanceof PlayerEntity){
+                    waitForEchoFlag = false;
+                }
                 if (waitForEchoFlag && !receivedEcho) {
                     this.setCharging(false);
                     whaleSpeedMod = 0.25F;
@@ -544,14 +547,21 @@ public class EntityCachalotWhale extends AnimalEntity {
                     double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
                     float targetYaw = (float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
                     float targetPitch = (float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
-                    this.rotationYaw = (this.rotationYaw + MathHelper.clamp(targetYaw - this.rotationYaw, -2, 2));
                     this.rotationPitch = (this.rotationPitch + MathHelper.clamp(targetPitch - this.rotationPitch, -2, 2));
-                    this.renderYawOffset = rotationYaw;
+                    if(d0 * d0 + d2 * d2 >= 4){
+                        this.rotationYaw = (this.rotationYaw + MathHelper.clamp(targetYaw - this.rotationYaw, -2, 2));
+                        this.renderYawOffset = rotationYaw;
+                    }
                     float dif = Math.abs(MathHelper.wrapDegrees(targetYaw) - MathHelper.wrapDegrees(this.rotationYaw));
                     if (chargeCooldown <= 0 && dif < 4) {
                         this.setCharging(true);
                         whaleSpeedMod = 1.5F;
                         this.getNavigator().tryMoveToEntityLiving(target, 1.0D);
+                        if(d0 * d0 + d2 * d2 < 4){
+                             this.rotationYaw = prevRotationYaw;
+                            this.renderYawOffset = prevRotationYaw;
+                            this.getNavigator().clearPath();
+                        }
                         if (this.isCharging()) {
                             if (this.getDistance(target) < this.getWidth() && chargeProgress > 4) {
                                 target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
@@ -568,7 +578,7 @@ public class EntityCachalotWhale extends AnimalEntity {
                                     boat.attackEntityFrom(DamageSource.causeMobDamage(this), 1000);
                                     boat.remove();
                                 }
-                                chargeCooldown = 100;
+                                chargeCooldown = target instanceof PlayerEntity ? 30 : 100;
                                 if (rand.nextInt(10) == 0) {
                                     if (!world.isRemote) {
                                         Vector3d vec = this.getMouthVec();

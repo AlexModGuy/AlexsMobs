@@ -66,13 +66,15 @@ public class FeatureLeafcutterAnthill extends Feature<NoFeatureConfig> {
             TileEntity tileentity = worldIn.getTileEntity(heightPos.up(outOfGround));
             if (tileentity instanceof TileEntityLeafcutterAnthill) {
                 TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill)tileentity;
-                int j = 5 + chunkSeedRandom.nextInt(5);
-
-                for(int k = 0; k < j; ++k) {
-                    EntityLeafcutterAnt beeentity = new EntityLeafcutterAnt(AMEntityRegistry.LEAFCUTTER_ANT, worldIn.getWorld());
-                    beeentity.setQueen(k == 0);
-                    beehivetileentity.tryEnterHive(beeentity, false, rand.nextInt(599));
+                int j = 3 + chunkSeedRandom.nextInt(3);
+                if(beehivetileentity.hasNoAnts()){
+                    for(int k = 0; k < j; ++k) {
+                        EntityLeafcutterAnt beeentity = new EntityLeafcutterAnt(AMEntityRegistry.LEAFCUTTER_ANT, worldIn.getWorld());
+                        beeentity.setQueen(k == 0);
+                        beehivetileentity.tryEnterHive(beeentity, false, rand.nextInt(599));
+                    }
                 }
+
             }
 
             if(rand.nextBoolean()){

@@ -11,7 +11,6 @@ import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -33,7 +32,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -90,12 +88,12 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2F);
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.enderiophageSpawnRolls, this.getRNG(), spawnReasonIn);
-    }
-
     public static boolean canEnderiophageSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
         return worldIn.getBlockState(pos.down()).isSolid();
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.enderiophageSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     public int getMaxSpawnedInChunk() {
@@ -213,22 +211,31 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
                                 this.angryEnderman = (CreatureEntity) mount;
                             } else {
                                 if (rand.nextInt(3) == 0) {
-                                    if (target.getActivePotionEffect(AMEffectRegistry.ENDER_FLU) == null) {
-                                        target.addPotionEffect(new EffectInstance(AMEffectRegistry.ENDER_FLU, 12000));
-                                    } else {
-                                        EffectInstance inst = target.getActivePotionEffect(AMEffectRegistry.ENDER_FLU);
-                                        int duration = 12000;
-                                        int level = 0;
-                                        if (inst != null) {
-                                            duration = inst.getDuration();
-                                            level = inst.getAmplifier();
+                                    if (!this.isMissingEye()) {
+                                        if (target.getActivePotionEffect(AMEffectRegistry.ENDER_FLU) == null) {
+                                            target.addPotionEffect(new EffectInstance(AMEffectRegistry.ENDER_FLU, 12000));
+                                        } else {
+                                            EffectInstance inst = target.getActivePotionEffect(AMEffectRegistry.ENDER_FLU);
+                                            int duration = 12000;
+                                            int level = 0;
+                                            if (inst != null) {
+                                                duration = inst.getDuration();
+                                                level = inst.getAmplifier();
+                                            }
+                                            target.removePotionEffect(AMEffectRegistry.ENDER_FLU);
+                                            target.addPotionEffect(new EffectInstance(AMEffectRegistry.ENDER_FLU, duration, Math.min(level + 1, 4)));
                                         }
-                                        target.removePotionEffect(AMEffectRegistry.ENDER_FLU);
-                                        target.addPotionEffect(new EffectInstance(AMEffectRegistry.ENDER_FLU, duration, Math.min(level + 1, 4)));
+                                        this.heal(5);
+                                        this.playSound(SoundEvents.ENTITY_ITEM_BREAK, this.getSoundVolume(), this.getSoundPitch());
+                                        this.setMissingEye(true);
                                     }
-                                    this.heal(5);
-                                    this.playSound(SoundEvents.ENTITY_ITEM_BREAK, this.getSoundVolume(), this.getSoundPitch());
-                                    this.setMissingEye(true);
+                                    if (!world.isRemote) {
+                                        this.setAttackTarget(null);
+                                        this.setLastAttackedEntity(null);
+                                        this.setRevengeTarget(null);
+                                        this.goalSelector.getRunningGoals().forEach(Goal::resetTask);
+                                        this.targetSelector.getRunningGoals().forEach(Goal::resetTask);
+                                    }
                                 }
                             }
                         }
@@ -283,10 +290,10 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
             extraMotionSlow = 0.33F;
             extraMotionSlowY = 0.1F;
         }
-        if(dismountCooldown > 0){
+        if (dismountCooldown > 0) {
             dismountCooldown--;
         }
-        if(squishCooldown > 0){
+        if (squishCooldown > 0) {
             squishCooldown--;
         }
         if (!world.isRemote) {
@@ -320,7 +327,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         this.rotationYawHead = this.rotationYaw;
         this.setPhagePitch(-90F);
         if (this.isAlive() && this.isFlying() && randomMotionSpeed > 0.75F && this.getMotion().lengthSquared() > 0.02D) {
-            if(world.isRemote){
+            if (world.isRemote) {
                 float pitch = -this.getPhagePitch() / 90F;
                 float radius = this.getWidth() * 0.2F * -pitch;
                 float angle = (0.01745329251F * this.rotationYaw);
@@ -358,7 +365,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
             float f = this.phageRotation / (float) Math.PI;
             this.tentacleAngle = MathHelper.sin(f * f * (float) Math.PI) * 4.275F;
             if ((double) f > 0.75D) {
-                if(squishCooldown == 0 && this.isFlying()){
+                if (squishCooldown == 0 && this.isFlying()) {
                     squishCooldown = 20;
                     this.playSound(AMSoundRegistry.ENDERIOPHAGE_SQUISH, 3F, this.getSoundPitch());
                 }
@@ -671,7 +678,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         }
 
         public boolean shouldContinueExecuting() {
-            return parentEntity.getAttackTarget() != null && !isBittenByPhage(parentEntity.getAttackTarget()) && !parentEntity.collidedHorizontally && !parentEntity.isPassenger() && parentEntity.isFlying() && parentEntity.getMoveHelper().isUpdating() && parentEntity.fleeAfterStealTime == 0;
+            return parentEntity.getAttackTarget() != null && !isBittenByPhage(parentEntity.getAttackTarget()) && !parentEntity.collidedHorizontally && !parentEntity.isPassenger() && parentEntity.isFlying() && parentEntity.getMoveHelper().isUpdating() && parentEntity.fleeAfterStealTime == 0 && (parentEntity.getAttackTarget() instanceof EndermanEntity || !parentEntity.isMissingEye());
         }
 
         public boolean isBittenByPhage(Entity entity) {
@@ -689,15 +696,17 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
 
         public void tick() {
             if (parentEntity.getAttackTarget() != null) {
-                if (parentEntity.isFlying()) {
-                    this.parentEntity.getMoveHelper().setMoveTo(parentEntity.getAttackTarget().getPosX(), parentEntity.getAttackTarget().getPosY(), parentEntity.getAttackTarget().getPosZ(), 1.0D);
+                float width =  parentEntity.getAttackTarget().getWidth() + parentEntity.getWidth() + 2;
+                boolean isWithinReach = parentEntity.getDistanceSq(parentEntity.getAttackTarget()) < width * width;
+                if (parentEntity.isFlying() || isWithinReach) {
+                    this.parentEntity.getMoveHelper().setMoveTo(parentEntity.getAttackTarget().getPosX(), parentEntity.getAttackTarget().getPosY(), parentEntity.getAttackTarget().getPosZ(), isWithinReach ? 1.6D : 1.0D);
                 } else {
                     this.parentEntity.getNavigator().tryMoveToXYZ(parentEntity.getAttackTarget().getPosX(), parentEntity.getAttackTarget().getPosY(), parentEntity.getAttackTarget().getPosZ(), 1.2D);
                 }
                 if (parentEntity.getAttackTarget().getPosY() > this.parentEntity.getPosY() + 1.2F) {
                     parentEntity.setFlying(true);
                 }
-                if (parentEntity.dismountCooldown == 0 && parentEntity.getBoundingBox().grow(1F, 1F, 1F).intersects(parentEntity.getAttackTarget().getBoundingBox()) && !isBittenByPhage(parentEntity.getAttackTarget())) {
+                if (parentEntity.dismountCooldown == 0 && parentEntity.getBoundingBox().grow(0.3, 0.3, 0.3).intersects(parentEntity.getAttackTarget().getBoundingBox()) && !isBittenByPhage(parentEntity.getAttackTarget())) {
                     parentEntity.startRiding(parentEntity.getAttackTarget(), true);
                     if (!parentEntity.world.isRemote) {
                         AlexsMobs.sendMSGToAll(new MessageMosquitoMountPlayer(parentEntity.getEntityId(), parentEntity.getAttackTarget().getEntityId()));

@@ -126,6 +126,10 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue straddleboardEnchants;
     public final ForgeConfigSpec.BooleanValue emuTargetSkeletons;
     public final ForgeConfigSpec.DoubleValue emuPantsDodgeChance;
+    public final ForgeConfigSpec.DoubleValue leafcutterAntFungusGrowChance;
+    public final ForgeConfigSpec.IntValue leafcutterAntRepopulateFeedings;
+    public final ForgeConfigSpec.IntValue leafcutterAntColonySize;
+
     public final ForgeConfigSpec.BooleanValue beachedCachalotWhales;
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnChance;
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnDelay;
@@ -161,6 +165,9 @@ public class CommonConfig {
         straddleboardEnchants = buildBoolean(builder, "straddleboardEnchants", "all", true, "True if straddleboard enchants are enabled.");
         emuTargetSkeletons = buildBoolean(builder, "emuTargetSkeletons", "all", true, "Whether emu should target skeletons.");
         emuPantsDodgeChance = buildDouble(builder, "emuPantsDodgeChance", "all", 0.45D, 0D, 1D, "Percent chance for emu leggings to dodge projectile attacks.");
+        leafcutterAntFungusGrowChance = buildDouble(builder, "leafcutterAntFungusGrowChance", "all", 0.3D, 0D, 1D, "Percent chance for fungus to grow per each leaf a leafcutter ant returns to the colony.");
+        leafcutterAntRepopulateFeedings = buildInt(builder, "leafcutterAntRepopulateFeedings", "all", AMConfig.leafcutterAntRepopulateFeedings, 2, 100000,"How many feedings of leaves does a leafcutter colony need in order to regain a worker ant, if below half the max members.");
+        leafcutterAntColonySize = buildInt(builder, "leafcutterAntColonySize", "all", AMConfig.leafcutterAntColonySize, 2, 100000,"Max number of ant entities allowed inside a leafcutter anthill.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");

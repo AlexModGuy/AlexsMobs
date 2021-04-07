@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.tileentity;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.block.BlockLeafcutterAntChamber;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.google.common.collect.Lists;
@@ -43,7 +44,7 @@ public class TileEntityLeafcutterAnthill extends TileEntity implements ITickable
     }
 
     public boolean isFullOfAnts() {
-        return this.ants.size() == 30;
+        return this.ants.size() == AMConfig.leafcutterAntColonySize;
     }
 
     public void angerAnts(@Nullable LivingEntity p_226963_1_, BlockState p_226963_2_, BeehiveTileEntity.State p_226963_3_) {
@@ -119,17 +120,18 @@ public class TileEntityLeafcutterAnthill extends TileEntity implements ITickable
 
 
     public void tryEnterHive(EntityLeafcutterAnt p_226962_1_, boolean p_226962_2_, int p_226962_3_) {
-        if (this.ants.size() < 30) {
+        if (this.ants.size() < AMConfig.leafcutterAntColonySize) {
             p_226962_1_.stopRiding();
             p_226962_1_.removePassengers();
             CompoundNBT compoundnbt = new CompoundNBT();
             p_226962_1_.writeUnlessPassenger(compoundnbt);
             if (p_226962_2_) {
-                if(!world.isRemote){
+                if(!world.isRemote && p_226962_1_.getRNG().nextFloat() < AMConfig.leafcutterAntFungusGrowChance){
                     growFungus();
                 }
                 leafFeedings++;
-                if(leafFeedings % 15 == 0 && this.ants.size() < 15 && hasQueen()){
+                if(leafFeedings >= AMConfig.leafcutterAntRepopulateFeedings && this.ants.size() < MathHelper.ceil(AMConfig.leafcutterAntColonySize * 0.5F) && hasQueen()){
+                    leafFeedings = 0;
                     this.ants.add(new Ant(new CompoundNBT(), 0, 100, false));
                 }
             }

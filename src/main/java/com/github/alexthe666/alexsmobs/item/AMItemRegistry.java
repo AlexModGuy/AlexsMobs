@@ -2,9 +2,7 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityCockroachEgg;
-import com.github.alexthe666.alexsmobs.entity.EntitySharkToothArrow;
+import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.ComposterBlock;
@@ -221,6 +219,18 @@ public class AMItemRegistry {
         DispenserBlock.registerDispenseBehavior(COCKROACH_OOTHECA, new ProjectileDispenseBehavior() {
             protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
                 EntityCockroachEgg entityarrow = new EntityCockroachEgg(worldIn, position.getX(), position.getY(), position.getZ());
+                return entityarrow;
+            }
+        });
+        DispenserBlock.registerDispenseBehavior(EMU_EGG, new ProjectileDispenseBehavior() {
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                EntityEmuEgg entityarrow = new EntityEmuEgg(worldIn, position.getX(), position.getY(), position.getZ());
+                return entityarrow;
+            }
+        });
+        DispenserBlock.registerDispenseBehavior(ENDERIOPHAGE_ROCKET, new ProjectileDispenseBehavior() {
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                EntityEnderiophageRocket entityarrow = new EntityEnderiophageRocket(worldIn, position.getX(), position.getY(), position.getZ(), stackIn);
                 return entityarrow;
             }
         });

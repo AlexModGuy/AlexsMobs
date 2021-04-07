@@ -42,6 +42,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -76,7 +77,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
     private static final DataParameter<Boolean> QUEEN = EntityDataManager.createKey(EntityLeafcutterAnt.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> ANGER_TIME = EntityDataManager.createKey(EntityLeafcutterAnt.class, DataSerializers.VARINT);
     private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
-    private static final RangedInteger ANGRY_TIMER = TickRangeConverter.convertRange(20, 39);
+    private static final RangedInteger ANGRY_TIMER = TickRangeConverter.convertRange(10, 20);
     public float attachChangeProgress = 0F;
     public float prevAttachChangeProgress = 0F;
     private Direction prevAttachDir = Direction.DOWN;
@@ -92,7 +93,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
     private Animation currentAnimation;
     private boolean isUpsideDownNavigator;
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(AMItemRegistry.GONGYLIDIA);
-
+    private int haveBabyCooldown = 0;
     public EntityLeafcutterAnt(EntityType type, World world) {
         super(type, world);
         this.setPathPriority(PathNodeType.WATER, -1.0F);
@@ -185,13 +186,22 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
 
     }
 
+    private void pacifyAllNearby(){
+        func_241356_K__();
+        List<EntityLeafcutterAnt> list = world.getEntitiesWithinAABB(EntityLeafcutterAnt.class, this.getBoundingBox().grow(20D, 6.0D, 20D));
+        for(EntityLeafcutterAnt ant : list){
+            ant.func_241356_K__();
+        }
+    }
+
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.func_230254_b_(player, hand);
         if(type != ActionResultType.SUCCESS && item == AMItemRegistry.GONGYLIDIA){
-            if(isQueen() && this.getGrowingAge() == 0){
+            if(isQueen() && haveBabyCooldown == 0){
                 int babies = 1 + rand.nextInt(1);
+                pacifyAllNearby();
                 for(int i = 0; i < babies; i++){
                     EntityLeafcutterAnt leafcutterAnt = AMEntityRegistry.LEAFCUTTER_ANT.create(world);
                     leafcutterAnt.copyLocationAndAnglesFrom(this);
@@ -204,8 +214,10 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
                 if(!player.isCreative()){
                     itemstack.shrink(1);
                 }
-                this.setGrowingAge(24000);
+                haveBabyCooldown = 24000;
+                this.setChild(false);
             }else{
+                pacifyAllNearby();
                 if(!player.isCreative()){
                     itemstack.shrink(1);
                 }
@@ -467,6 +479,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
             }
         }
         this.stayOutOfHiveCountdown = compound.getInt("CannotEnterHiveTicks");
+        this.haveBabyCooldown = compound.getInt("BabyCooldown");
         this.hivePos = null;
         if (compound.contains("HivePos")) {
             this.hivePos = NBTUtil.readBlockPos(compound.getCompound("HivePos"));
@@ -496,6 +509,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
             compound.put("HivePos", NBTUtil.writeBlockPos(this.getHivePos()));
         }
         compound.putInt("CannotEnterHiveTicks", this.stayOutOfHiveCountdown);
+        compound.putInt("BabyCooldown", this.haveBabyCooldown);
         BlockPos blockpos = this.getHarvestedPos();
         if (blockpos != null) {
             compound.putInt("HLPX", blockpos.getX());
