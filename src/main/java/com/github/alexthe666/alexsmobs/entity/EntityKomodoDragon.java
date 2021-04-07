@@ -240,7 +240,7 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
                 this.consumeItemFromStack(player, itemstack);
                 return ActionResultType.SUCCESS;
             }
-            if(!player.isSneaking() && !isBreedingItem(itemstack)){
+            if(!player.isSneaking() && !isBreedingItem(itemstack) && !this.isChild()){
                 player.startRiding(this);
                 return ActionResultType.SUCCESS;
             }
