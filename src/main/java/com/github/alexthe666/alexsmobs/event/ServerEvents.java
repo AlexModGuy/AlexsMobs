@@ -240,9 +240,14 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLootLevelEvent(LootingLevelEvent event) {
-        if (event.getDamageSource() != null && event.getDamageSource().getTrueSource() != null && event.getDamageSource().getTrueSource() instanceof EntitySnowLeopard) {
-            event.setLootingLevel(event.getLootingLevel() + 2);
+        DamageSource src = event.getDamageSource();
+        if(src != null){
+            Entity dmgSrc = src.getTrueSource();
+            if (dmgSrc != null && dmgSrc instanceof EntitySnowLeopard) {
+                event.setLootingLevel(event.getLootingLevel() + 2);
+            }
         }
+
     }
 
     @SubscribeEvent
