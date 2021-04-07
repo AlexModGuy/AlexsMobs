@@ -131,7 +131,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
     private void breakLeaves() {
         BlockState blockstate = ant.world.getBlockState(this.destinationBlock);
         if (BlockTags.getCollection().get(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES).contains(blockstate.getBlock())) {
-            if(!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ant.world, ant)){
+            if(net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ant.world, ant)){
                 ant.world.destroyBlock(destinationBlock, false);
                 if (ant.getRNG().nextFloat() > AMConfig.leafcutterAntBreakLeavesChance) {
                     ant.world.setBlockState(destinationBlock, blockstate);

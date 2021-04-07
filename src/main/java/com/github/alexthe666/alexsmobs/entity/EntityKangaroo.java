@@ -372,6 +372,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         super.registerData();
         this.dataManager.register(STANDING, Boolean.valueOf(false));
         this.dataManager.register(SITTING, Boolean.valueOf(false));
+        this.dataManager.register(FORCED_SIT, Boolean.valueOf(false));
         this.dataManager.register(COMMAND, Integer.valueOf(0));
         this.dataManager.register(VISUAL_FLAG, Integer.valueOf(0));
         this.dataManager.register(POUCH_TICK, Integer.valueOf(0));

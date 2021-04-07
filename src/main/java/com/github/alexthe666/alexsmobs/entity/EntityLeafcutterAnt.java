@@ -255,7 +255,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
         if (attachChangeProgress > 0F) {
             attachChangeProgress -= 0.25F;
         }
-        this.stepHeight = isQueen() ? 1F : 0F;
+        this.stepHeight = isQueen() ? 1F : 0.5F;
         Vector3d vector3d = this.getMotion();
         if (!this.world.isRemote && !this.isQueen()) {
             this.setBesideClimbableBlock(this.collidedHorizontally || this.collidedVertically && !this.isOnGround());
