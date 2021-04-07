@@ -4,6 +4,7 @@
     "#minecraft:sand",
     "minecraft:gravel",
     "minecraft:ice",
-    "minecraft:snow_block"
+    "minecraft:snow_block",
+    "minecraft:stone"
   ]
 }
