@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIRandomSwimming;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -38,6 +39,8 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -88,6 +91,7 @@ public class EntityCachalotWhale extends AnimalEntity {
     private int despawnDelay = 47999;
     private int ambergrisDrops = 0;
     private boolean hasAlbinoAttribute = false;
+    private int echoSoundCooldown = 0;
 
     public EntityCachalotWhale(EntityType type, World world) {
         super(type, world);
@@ -127,6 +131,18 @@ public class EntityCachalotWhale extends AnimalEntity {
                 this.remove();
             }
         }
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.CACHALOT_WHALE_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.CACHALOT_WHALE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.CACHALOT_WHALE_HURT;
     }
 
     public void scaleParts() {
@@ -312,9 +328,16 @@ public class EntityCachalotWhale extends AnimalEntity {
         this.dataManager.set(DESPAWN_BEACH, Boolean.valueOf(despawn));
     }
 
+    protected float getSoundVolume() {
+        return 2.3F;
+    }
+
     public void livingTick() {
         super.livingTick();
         scaleParts();
+        if(echoSoundCooldown > 0){
+            echoSoundCooldown--;
+        }
         if (this.isSleeping()) {
             this.getNavigator().clearPath();
             this.rotationPitch = -90;
@@ -494,6 +517,9 @@ public class EntityCachalotWhale extends AnimalEntity {
                     this.setCharging(false);
                     whaleSpeedMod = 0.25F;
                     if (echoTimer % 10 == 0) {
+                        if (echoTimer % 40 == 0) {
+                            this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK, 6, this.getSoundPitch());
+                        }
                         EntityCachalotEcho echo = new EntityCachalotEcho(this.world, this);
                         float radius = this.headPart.getWidth() * 0.5F;
                         float angle = (0.01745329251F * this.renderYawOffset);

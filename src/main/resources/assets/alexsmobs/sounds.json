@@ -1306,5 +1306,116 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.kangaroo_hurt"
+  },
+  "cachalot_whale_click": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:cachalot_whale_click_0"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_click_1"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_click_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.cachalot_whale_click"
+  },
+  "cachalot_whale_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:cachalot_whale_hurt_0"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_hurt_1"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.cachalot_whale_hurt"
+  },
+  "cachalot_whale_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:cachalot_whale_idle_0"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_idle_1"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.cachalot_whale_idle"
+  },
+  "leafcutter_ant_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:leafcutter_ant_hurt_0"
+      },
+      {
+        "name": "alexsmobs:leafcutter_ant_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.leafcutter_ant_hurt"
+  },
+  "leafcutter_ant_queen_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:leafcutter_ant_queen_hurt_0"
+      },
+      {
+        "name": "alexsmobs:leafcutter_ant_queen_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.leafcutter_ant_queen_hurt"
+  },
+  "enderiophage_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:enderiophage_hurt_0"
+      },
+      {
+        "name": "alexsmobs:enderiophage_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.enderiophage_hurt"
+  },
+  "enderiophage_squish": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:enderiophage_squish_0"
+      },
+      {
+        "name": "alexsmobs:enderiophage_squish_1"
+      },
+      {
+        "name": "alexsmobs:enderiophage_squish_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.enderiophage_squish"
+  },
+  "enderiophage_walk": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:enderiophage_walk_0"
+      },
+      {
+        "name": "alexsmobs:enderiophage_walk_1"
+      },
+      {
+        "name": "alexsmobs:enderiophage_walk_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.enderiophage_walk"
   }
 }

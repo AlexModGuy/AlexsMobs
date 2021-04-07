@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotEcho;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.google.common.base.Predicates;
 import jdk.nashorn.internal.ir.Block;
 import net.minecraft.block.Blocks;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.village.PointOfInterestManager;
 import net.minecraft.world.World;
@@ -75,7 +77,7 @@ public class ItemEcholocator extends Item {
                 CompoundNBT nbt = stack.getOrCreateTag();
                 if(nbt.contains("CavePos") && nbt.getBoolean("ValidCavePos")){
                     pos = BlockPos.fromLong(nbt.getLong("CavePos"));
-                    if(worldIn.getBlockState(pos).getBlock() != Blocks.CAVE_AIR ||worldIn.getLight(pos) >= 4){
+                    if(worldIn.getBlockState(pos).getBlock() != Blocks.CAVE_AIR ||worldIn.getLight(pos) >= 4 || 1000000 < pos.distanceSq(playerPos)){
                         nbt.putBoolean("ValidCavePos", false);
                     }
                 }else{
@@ -99,6 +101,7 @@ public class ItemEcholocator extends Item {
                 whaleEcho.ticksExisted = 15;
                 whaleEcho.shoot(d0, d1, d2, 0.4F, 0.3F);
                 worldIn.addEntity(whaleEcho);
+                worldIn.playSound((PlayerEntity)null, whaleEcho.getPosX(), whaleEcho.getPosY(), whaleEcho.getPosZ(), AMSoundRegistry.CACHALOT_WHALE_CLICK, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 stack.damageItem(1, livingEntityIn, (player) -> {
                     player.sendBreakAnimation(livingEntityIn.getActiveHand());
                 });

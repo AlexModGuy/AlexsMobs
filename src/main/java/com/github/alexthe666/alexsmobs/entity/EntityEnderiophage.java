@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -34,6 +35,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -74,6 +76,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
     private int fleeAfterStealTime = 0;
     private int attachTime = 0;
     private int dismountCooldown = 0;
+    private int squishCooldown = 0;
     private CreatureEntity angryEnderman = null;
 
     protected EntityEnderiophage(EntityType type, World world) {
@@ -200,7 +203,6 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
                         }
                         if ((target.getHealth() < 1.5D || mount.attackEntityFrom(DamageSource.causeMobDamage(this), dmg)) && mount instanceof LivingEntity) {
                             dismountCooldown = 100;
-                            this.playSound(SoundEvents.ITEM_HONEY_BOTTLE_DRINK, this.getSoundVolume(), this.getSoundPitch());
                             if (mount instanceof EndermanEntity) {
                                 this.setMissingEye(false);
                                 this.playSound(SoundEvents.ENTITY_ENDER_EYE_DEATH, this.getSoundVolume(), this.getSoundPitch());
@@ -255,6 +257,22 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         this.setPhageScale(0.2F);
     }
 
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.ENDERIOPHAGE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.ENDERIOPHAGE_HURT;
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(AMSoundRegistry.ENDERIOPHAGE_WALK, 0.4F, 1.0F);
+    }
+
+    protected float determineNextStepDistance() {
+        return this.distanceWalkedOnStepModified + 0.3F;
+    }
+
     public void tick() {
         super.tick();
         prevEnderiophageScale = this.getPhageScale();
@@ -267,6 +285,9 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         }
         if(dismountCooldown > 0){
             dismountCooldown--;
+        }
+        if(squishCooldown > 0){
+            squishCooldown--;
         }
         if (!world.isRemote) {
             if (!this.isPassenger() && attachTime != 0) {
@@ -299,17 +320,18 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         this.rotationYawHead = this.rotationYaw;
         this.setPhagePitch(-90F);
         if (this.isAlive() && this.isFlying() && randomMotionSpeed > 0.75F && this.getMotion().lengthSquared() > 0.02D) {
-            float pitch = -this.getPhagePitch() / 90F;
-            float radius = this.getWidth() * 0.2F * -pitch;
-            float angle = (0.01745329251F * this.rotationYaw);
-            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-            double extraY = 0.2F - (1 - pitch) * 0.15F;
-            double extraZ = radius * MathHelper.cos(angle);
-            double motX = extraX * 8 + rand.nextGaussian() * 0.05F;
-            double motY = -0.1F;
-            double motZ = extraZ + rand.nextGaussian() * 0.05F;
-            this.world.addParticle(AMParticleRegistry.DNA, this.getPosX() + extraX, this.getPosY() + extraY, this.getPosZ() + extraZ, motX, motY, motZ);
-
+            if(world.isRemote){
+                float pitch = -this.getPhagePitch() / 90F;
+                float radius = this.getWidth() * 0.2F * -pitch;
+                float angle = (0.01745329251F * this.rotationYaw);
+                double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+                double extraY = 0.2F - (1 - pitch) * 0.15F;
+                double extraZ = radius * MathHelper.cos(angle);
+                double motX = extraX * 8 + rand.nextGaussian() * 0.05F;
+                double motY = -0.1F;
+                double motZ = extraZ + rand.nextGaussian() * 0.05F;
+                this.world.addParticle(AMParticleRegistry.DNA, this.getPosX() + extraX, this.getPosY() + extraY, this.getPosZ() + extraZ, motX, motY, motZ);
+            }
         }
         prevPhagePitch = this.getPhagePitch();
         prevFlyProgress = flyProgress;
@@ -336,6 +358,10 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
             float f = this.phageRotation / (float) Math.PI;
             this.tentacleAngle = MathHelper.sin(f * f * (float) Math.PI) * 4.275F;
             if ((double) f > 0.75D) {
+                if(squishCooldown == 0 && this.isFlying()){
+                    squishCooldown = 20;
+                    this.playSound(AMSoundRegistry.ENDERIOPHAGE_SQUISH, 3F, this.getSoundPitch());
+                }
                 this.randomMotionSpeed = 1.0F;
             } else {
                 randomMotionSpeed = 0.01F;

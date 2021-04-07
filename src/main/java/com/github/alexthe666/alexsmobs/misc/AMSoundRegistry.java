@@ -200,6 +200,22 @@ public class AMSoundRegistry {
 
     public static final SoundEvent KANGAROO_HURT = createSoundEvent("kangaroo_hurt");
 
+    public static final SoundEvent CACHALOT_WHALE_IDLE = createSoundEvent("cachalot_whale_idle");
+
+    public static final SoundEvent CACHALOT_WHALE_HURT = createSoundEvent("cachalot_whale_hurt");
+
+    public static final SoundEvent CACHALOT_WHALE_CLICK = createSoundEvent("cachalot_whale_click");
+
+    public static final SoundEvent LEAFCUTTER_ANT_HURT = createSoundEvent("leafcutter_ant_hurt");
+
+    public static final SoundEvent LEAFCUTTER_ANT_QUEEN_HURT = createSoundEvent("leafcutter_ant_queen_hurt");
+
+    public static final SoundEvent ENDERIOPHAGE_HURT = createSoundEvent("enderiophage_hurt");
+
+    public static final SoundEvent ENDERIOPHAGE_SQUISH = createSoundEvent("enderiophage_squish");
+
+    public static final SoundEvent ENDERIOPHAGE_WALK = createSoundEvent("enderiophage_walk");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

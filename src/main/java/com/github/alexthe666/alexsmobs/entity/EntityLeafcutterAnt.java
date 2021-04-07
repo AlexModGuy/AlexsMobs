@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -170,6 +171,18 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
 
     protected PathNavigator createNavigator(World worldIn) {
         return new ClimberPathNavigator(this, worldIn);
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return isQueen() ? AMSoundRegistry.LEAFCUTTER_ANT_QUEEN_HURT : AMSoundRegistry.LEAFCUTTER_ANT_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return isQueen() ? AMSoundRegistry.LEAFCUTTER_ANT_QUEEN_HURT : AMSoundRegistry.LEAFCUTTER_ANT_HURT;
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState state) {
+
     }
 
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
