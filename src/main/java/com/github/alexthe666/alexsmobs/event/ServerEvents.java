@@ -26,6 +26,7 @@ import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -151,8 +152,12 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onProjectileHit(ProjectileImpactEvent event) {
-        if (event.getRayTraceResult() instanceof EntityRayTraceResult && ((EntityRayTraceResult) event.getRayTraceResult()).getEntity() instanceof EntityEmu) {
+        if (event.getRayTraceResult() instanceof EntityRayTraceResult && ((EntityRayTraceResult) event.getRayTraceResult()).getEntity() instanceof EntityEmu && !event.getEntity().world.isRemote) {
             EntityEmu emu = ((EntityEmu) ((EntityRayTraceResult) event.getRayTraceResult()).getEntity());
+            if(event.getEntity() instanceof AbstractArrowEntity){
+                //fixes soft crash with vanilla
+                ((AbstractArrowEntity) event.getEntity()).setPierceLevel((byte)0);
+            }
             if ((emu.getAnimation() == EntityEmu.ANIMATION_DODGE_RIGHT || emu.getAnimation() == EntityEmu.ANIMATION_DODGE_LEFT) && emu.getAnimationTick() < 7) {
                 event.setCanceled(true);
             }
