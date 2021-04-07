@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -8,7 +9,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import java.util.EnumSet;
 import java.util.List;
 
-public class ElephantAIFollowCaravan  extends Goal {
+public class ElephantAIFollowCaravan extends Goal {
     public final EntityElephant elephant;
     private double speedModifier;
     private int distCheckCounter;
@@ -20,17 +21,17 @@ public class ElephantAIFollowCaravan  extends Goal {
     }
 
     public boolean shouldExecute() {
-        if(elephant.aiItemFlag || elephant.getControllingPassenger() != null){
+        if (elephant.aiItemFlag || elephant.getControllingPassenger() != null) {
             return false;
         }
         if (!this.elephant.isTusked() && !this.elephant.inCaravan() && !elephant.isSitting()) {
             double dist = 32D;
-            List<EntityElephant> list = elephant.world.getEntitiesWithinAABB(EntityElephant.class, elephant.getBoundingBox().grow(dist, dist/2, dist));
+            List<EntityElephant> list = elephant.world.getEntitiesWithinAABB(EntityElephant.class, elephant.getBoundingBox().grow(dist, dist / 2, dist));
             EntityElephant elephant = null;
             double d0 = Double.MAX_VALUE;
 
-            for(Entity entity : list) {
-                EntityElephant elephant1 = (EntityElephant)entity;
+            for (Entity entity : list) {
+                EntityElephant elephant1 = (EntityElephant) entity;
                 if (elephant1.inCaravan() && !elephant1.hasCaravanTrail()) {
                     double d1 = this.elephant.getDistanceSq(elephant1);
                     if (!(d1 > d0)) {
@@ -41,8 +42,8 @@ public class ElephantAIFollowCaravan  extends Goal {
             }
 
             if (elephant == null) {
-                for(Entity entity1 : list) {
-                    EntityElephant llamaentity2 = (EntityElephant)entity1;
+                for (Entity entity1 : list) {
+                    EntityElephant llamaentity2 = (EntityElephant) entity1;
                     if (llamaentity2.isTusked() && !llamaentity2.isChild() && !llamaentity2.hasCaravanTrail()) {
                         double d2 = this.elephant.getDistanceSq(llamaentity2);
                         if (!(d2 > d0)) {
@@ -72,7 +73,7 @@ public class ElephantAIFollowCaravan  extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     public boolean shouldContinueExecuting() {
-        if(elephant.isSitting() || elephant.aiItemFlag){
+        if (elephant.isSitting() || elephant.aiItemFlag) {
             return false;
         }
         if (this.elephant.inCaravan() && this.elephant.getCaravanHead().isAlive() && this.firstIsTusk(this.elephant, 0)) {
@@ -107,10 +108,16 @@ public class ElephantAIFollowCaravan  extends Goal {
     public void tick() {
         if (this.elephant.inCaravan() && !this.elephant.isSitting()) {
             EntityElephant llamaentity = this.elephant.getCaravanHead();
-            double d0 = (double)this.elephant.getDistance(llamaentity);
-            float f = 2.0F;
-            Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.elephant.getPosX(), llamaentity.getPosY() - this.elephant.getPosY(), llamaentity.getPosZ() - this.elephant.getPosZ())).normalize().scale(Math.max(d0 - 4.0D, 0.0D));
-            this.elephant.getNavigator().tryMoveToXYZ(this.elephant.getPosX() + vector3d.x, this.elephant.getPosY() + vector3d.y, this.elephant.getPosZ() + vector3d.z, this.speedModifier);
+            if (llamaentity != null) {
+                double d0 = this.elephant.getDistance(llamaentity);
+                Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.elephant.getPosX(), llamaentity.getPosY() - this.elephant.getPosY(), llamaentity.getPosZ() - this.elephant.getPosZ())).normalize().scale(Math.max(d0 - 4.0D, 0.0D));
+                try {
+                    this.elephant.getNavigator().tryMoveToXYZ(this.elephant.getPosX() + vector3d.x, this.elephant.getPosY() + vector3d.y, this.elephant.getPosZ() + vector3d.z, this.speedModifier);
+                } catch (NullPointerException e) {
+                    AlexsMobs.LOGGER.warn("elephant encountered issue following caravan head");
+                }
+
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -102,10 +103,15 @@ public class LeafcutterAntAIFollowCaravan extends Goal {
     public void tick() {
         if (this.LeafcutterAnt.inCaravan() && !this.LeafcutterAnt.shouldLeadCaravan()) {
             EntityLeafcutterAnt llamaentity = this.LeafcutterAnt.getCaravanHead();
-            double d0 = (double)this.LeafcutterAnt.getDistance(llamaentity);
-            float f = 2.0F;
-            Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.LeafcutterAnt.getPosX(), llamaentity.getPosY() - this.LeafcutterAnt.getPosY(), llamaentity.getPosZ() - this.LeafcutterAnt.getPosZ())).normalize().scale(Math.max(d0 - 2.0D, 0.0D));
-            this.LeafcutterAnt.getNavigator().tryMoveToXYZ(this.LeafcutterAnt.getPosX() + vector3d.x, this.LeafcutterAnt.getPosY() + vector3d.y, this.LeafcutterAnt.getPosZ() + vector3d.z, this.speedModifier);
+            if (llamaentity != null) {
+                double d0 = (double) this.LeafcutterAnt.getDistance(llamaentity);
+                Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.LeafcutterAnt.getPosX(), llamaentity.getPosY() - this.LeafcutterAnt.getPosY(), llamaentity.getPosZ() - this.LeafcutterAnt.getPosZ())).normalize().scale(Math.max(d0 - 2.0D, 0.0D));
+                try {
+                    this.LeafcutterAnt.getNavigator().tryMoveToXYZ(this.LeafcutterAnt.getPosX() + vector3d.x, this.LeafcutterAnt.getPosY() + vector3d.y, this.LeafcutterAnt.getPosZ() + vector3d.z, this.speedModifier);
+                } catch (NullPointerException e) {
+                    AlexsMobs.LOGGER.warn("leafcutter ant encountered issue following caravan head");
+                }
+            }
         }
     }
 
