@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
@@ -130,12 +131,13 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
     private void breakLeaves() {
         BlockState blockstate = ant.world.getBlockState(this.destinationBlock);
         if (BlockTags.getCollection().get(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES).contains(blockstate.getBlock())) {
-            ant.world.destroyBlock(destinationBlock, false);
-            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ant.world, ant) || ant.getRNG().nextInt(3) != 0) {
-                ant.world.setBlockState(destinationBlock, blockstate);
+            if(!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ant.world, ant)){
+                ant.world.destroyBlock(destinationBlock, false);
+                if (ant.getRNG().nextFloat() > AMConfig.leafcutterAntBreakLeavesChance) {
+                    ant.world.setBlockState(destinationBlock, blockstate);
+                }
             }
         }
-
     }
 
     @Override

@@ -40,7 +40,7 @@ public class DefaultBiomes {
     public static final SpawnBiomeData FLY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, true, "ocean", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0);
 
     public static final SpawnBiomeData HUMMINGBIRD = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:flower_forest", 0)

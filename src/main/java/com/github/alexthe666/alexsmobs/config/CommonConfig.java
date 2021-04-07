@@ -129,6 +129,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue leafcutterAntFungusGrowChance;
     public final ForgeConfigSpec.IntValue leafcutterAntRepopulateFeedings;
     public final ForgeConfigSpec.IntValue leafcutterAntColonySize;
+    public final ForgeConfigSpec.DoubleValue leafcutterAntBreakLeavesChance;
 
     public final ForgeConfigSpec.BooleanValue beachedCachalotWhales;
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnChance;
@@ -168,6 +169,7 @@ public class CommonConfig {
         leafcutterAntFungusGrowChance = buildDouble(builder, "leafcutterAntFungusGrowChance", "all", 0.3D, 0D, 1D, "Percent chance for fungus to grow per each leaf a leafcutter ant returns to the colony.");
         leafcutterAntRepopulateFeedings = buildInt(builder, "leafcutterAntRepopulateFeedings", "all", AMConfig.leafcutterAntRepopulateFeedings, 2, 100000,"How many feedings of leaves does a leafcutter colony need in order to regain a worker ant, if below half the max members.");
         leafcutterAntColonySize = buildInt(builder, "leafcutterAntColonySize", "all", AMConfig.leafcutterAntColonySize, 2, 100000,"Max number of ant entities allowed inside a leafcutter anthill.");
+        leafcutterAntBreakLeavesChance = buildDouble(builder, "leafcutterAntBreakLeavesChance", "all", 0.2D, 0D, 1D, "Percent chance for leafcutter ants to break leaves blocks when harvesting. Set to zero so that they can not break any blocks.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");

@@ -38,6 +38,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -270,6 +271,24 @@ public class ServerEvents {
             }
         }
 
+    }
+
+    @SubscribeEvent
+    public void onInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
+        if(event.getTarget() instanceof LivingEntity && !(event.getTarget() instanceof PlayerEntity) && !(event.getTarget() instanceof EntityEndergrade) && ((LivingEntity) event.getTarget()).isPotionActive(AMEffectRegistry.ENDER_FLU)){
+            if(event.getItemStack().getItem() == Items.CHORUS_FRUIT){
+                if(!event.getPlayer().isCreative()){
+                    event.getItemStack().shrink(1);
+                }
+                event.getTarget().playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 0.5F + event.getPlayer().getRNG().nextFloat());
+                if(event.getPlayer().getRNG().nextFloat() < 0.4F){
+                    ((LivingEntity) event.getTarget()).removePotionEffect(AMEffectRegistry.ENDER_FLU);
+                    Items.CHORUS_FRUIT.onItemUseFinish(event.getItemStack().copy(), event.getWorld(), ((LivingEntity) event.getTarget()));
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(ActionResultType.SUCCESS);
+            }
+        }
     }
 
     @SubscribeEvent

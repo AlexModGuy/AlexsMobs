@@ -4,7 +4,7 @@
 <NEWLINE>
 The Enderiophage is a monstrous biochemical automaton uncommonly found in the End Midlands. This unnatural creature seems to have been created with one purpose in mind - eliminating the End's native Endergrades.
 However, due to their sparse population, it is unlikely their creators were successful in their Endeavor. The Enderiophage's attack depends on it inflicting an effect known as the Ender Flu on its prey. Although it lasts ten minutes, by the time the effect passes the host will erupt with new, smaller phages, and promptly die from the massive damage.
-This effect can be removed by consuming chorus fruit or milk. Inflicted Endergrade can also be given the fruit to be healed.
+This effect can be removed by consuming chorus fruit or milk. Other inflicted creatures can also be given the fruit to be healed.
 <NEWLINE>
 The Enderiophage, although neutral to most, is also hostile towards Endermen. After inflicting its prey with Ender Flu, the Eye of Ender inside the phage will shatter, leaving them to seek out the sight of an Endermen.
 To restore this ability, it will latch onto an Enderman and afflict it with blindness, while it tries to sneak off with its eye regained. A Enderiophage is unable to attack without an eye.

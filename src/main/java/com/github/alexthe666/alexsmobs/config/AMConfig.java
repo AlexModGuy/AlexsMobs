@@ -136,6 +136,7 @@ public class AMConfig {
     public static double leafcutterAntFungusGrowChance = 0.3F;
     public static int leafcutterAntRepopulateFeedings = 25;
     public static int leafcutterAntColonySize = 20;
+    public static double leafcutterAntBreakLeavesChance = 0.2F;
     public static int beachedCachalotWhaleSpawnChance = 5;
     public static int beachedCachalotWhaleSpawnDelay = 24000;
     public static double leafcutterAnthillSpawnChance = 0.005F;
@@ -264,6 +265,7 @@ public class AMConfig {
             leafcutterAntFungusGrowChance = ConfigHolder.COMMON.leafcutterAntFungusGrowChance.get();
             leafcutterAntRepopulateFeedings = ConfigHolder.COMMON.leafcutterAntRepopulateFeedings.get();
             leafcutterAntColonySize = ConfigHolder.COMMON.leafcutterAntColonySize.get();
+            leafcutterAntBreakLeavesChance = ConfigHolder.COMMON.leafcutterAntBreakLeavesChance.get();
             beachedCachalotWhales = ConfigHolder.COMMON.beachedCachalotWhales.get();
             beachedCachalotWhaleSpawnChance = ConfigHolder.COMMON.beachedCachalotWhaleSpawnChance.get();
             beachedCachalotWhaleSpawnDelay = ConfigHolder.COMMON.beachedCachalotWhaleSpawnDelay.get();
