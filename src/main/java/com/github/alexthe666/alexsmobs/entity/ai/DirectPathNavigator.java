@@ -14,6 +14,10 @@ public class DirectPathNavigator extends GroundPathNavigator {
         this.mob = mob;
     }
 
+    public void tick() {
+        ++this.totalTicks;
+    }
+
     public boolean tryMoveToXYZ(double x, double y, double z, double speedIn) {
         mob.getMoveHelper().setMoveTo(x, y, z, speedIn);
         return true;
