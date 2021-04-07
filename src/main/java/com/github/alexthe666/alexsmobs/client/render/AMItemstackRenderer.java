@@ -153,6 +153,9 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                 String index = ItemTabIcon.getCustomDisplayEntityString(itemStackIn);
                 EntityType local = ItemTabIcon.getEntityType(itemStackIn.getTag());
                 scale = getScaleFor(local);
+                if(itemStackIn.getTag().getFloat("DisplayMobScale") > 0){
+                    scale = itemStackIn.getTag().getFloat("DisplayMobScale");
+                }
                 if (this.renderedEntites.get(index) == null) {
                     Entity entity = local.create(Minecraft.getInstance().world);
                     if (entity instanceof EntityBlobfish) {
