@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -11,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.BeehiveTileEntity;
@@ -87,6 +89,9 @@ public class BlockLeafcutterAnthill extends ContainerBlock {
             if (!worldIn.isRemote && worldIn.getTileEntity(pos) instanceof TileEntityLeafcutterAnthill) {
                 TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill) worldIn.getTileEntity(pos);
                 beehivetileentity.angerAnts((LivingEntity) entityIn, worldIn.getBlockState(pos), BeehiveTileEntity.State.EMERGENCY);
+                if(entityIn instanceof ServerPlayerEntity){
+                    AMAdvancementTriggerRegistry.STOMP_LEAFCUTTER_ANTHILL.trigger((ServerPlayerEntity)entityIn);
+                }
             }
         }
         super.onFallenUpon(worldIn, pos, entityIn, fallDistance);

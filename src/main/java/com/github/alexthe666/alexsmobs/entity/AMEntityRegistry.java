@@ -77,7 +77,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityKangaroo> KANGAROO = registerEntity(EntityType.Builder.create(EntityKangaroo::new, EntityClassification.CREATURE).size(1.65F, 1.5F), "kangaroo");
     public static final EntityType<EntityCachalotWhale> CACHALOT_WHALE = registerEntity(EntityType.Builder.create(EntityCachalotWhale::new, EntityClassification.WATER_CREATURE).size(9F, 4.0F), "cachalot_whale");
     public static final EntityType<EntityCachalotEcho> CACHALOT_ECHO = registerEntity(EntityType.Builder.create(EntityCachalotEcho::new, EntityClassification.MISC).size(2F, 2F).setCustomClientFactory(EntityCachalotEcho::new).immuneToFire(), "cachalot_echo");
-    public static final EntityType<EntityLeafcutterAnt> LEAFCUTTER_ANT = registerEntity(EntityType.Builder.create(EntityLeafcutterAnt::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "leafuctter_ant");
+    public static final EntityType<EntityLeafcutterAnt> LEAFCUTTER_ANT = registerEntity(EntityType.Builder.create(EntityLeafcutterAnt::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "leafcutter_ant");
     public static final EntityType<EntityEnderiophage> ENDERIOPHAGE = registerEntity(EntityType.Builder.create(EntityEnderiophage::new, EntityClassification.CREATURE).size(0.85F, 1.95F).setUpdateInterval(1), "enderiophage");
     public static final EntityType<EntityEnderiophageRocket> ENDERIOPHAGE_ROCKET = registerEntity(EntityType.Builder.create(EntityEnderiophageRocket::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityEnderiophageRocket::new).immuneToFire(), "enderiophage_rocket");
 

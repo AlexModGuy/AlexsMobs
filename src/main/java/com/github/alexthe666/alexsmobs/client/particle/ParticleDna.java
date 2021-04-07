@@ -42,11 +42,11 @@ public class ParticleDna extends SimpleAnimatedParticle {
 
         float subAlpha = 1F;
         if(this.age > 5){
-            subAlpha = 1 - (float)(this.age ) / (this.getMaxAge());
+            subAlpha = 1 - (float)(this.age - 5) / (this.getMaxAge() - 5);
         }
         this.particleAlpha = subAlpha;
         this.selectSpriteWithAge(this.spriteWithAge);
-        this.particleAngle += (float)Math.random() * ((float)Math.PI * 1F * particleAlpha);
+        this.particleAngle += (float)Math.random() * ((float)Math.PI * 0.3F * particleAlpha);
     }
 
     @Override

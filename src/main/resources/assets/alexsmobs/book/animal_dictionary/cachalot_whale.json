@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "cachalot_whale.txt",
+  "title": "Cachalot Whale",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:cachalot_whale",
+      "x": 103,
+      "y": 83,
+      "page" : 0,
+      "scale": 0.22,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

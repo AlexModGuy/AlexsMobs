@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:enderiophage_rocket"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.enderiophage_rocket.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.enderiophage_rocket.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/capsid",
+    "criteria": {
+        "trig": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "alexsmobs:enderiophage_rocket"
+                    }
+                ]
+            }
+        }
+    }
+}
