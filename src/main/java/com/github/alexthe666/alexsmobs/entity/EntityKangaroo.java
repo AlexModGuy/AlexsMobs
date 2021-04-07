@@ -114,6 +114,44 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
 
     }
 
+    protected void updateLeashedState() {
+        super.updateLeashedState();
+        Entity lvt_1_1_ = this.getLeashHolder();
+        if (lvt_1_1_ != null && lvt_1_1_.world == this.world) {
+            this.setHomePosAndDistance(lvt_1_1_.getPosition(), 5);
+            float lvt_2_1_ = this.getDistance(lvt_1_1_);
+            if (this.isSitting()) {
+                if (lvt_2_1_ > 10.0F) {
+                    this.clearLeashed(true, true);
+                }
+
+                return;
+            }
+
+            this.onLeashDistance(lvt_2_1_);
+            if (lvt_2_1_ > 10.0F) {
+                this.clearLeashed(true, true);
+                this.goalSelector.disableFlag(Goal.Flag.MOVE);
+            } else if (lvt_2_1_ > 6.0F) {
+                double lvt_3_1_ = (lvt_1_1_.getPosX() - this.getPosX()) / (double)lvt_2_1_;
+                double lvt_5_1_ = (lvt_1_1_.getPosY() - this.getPosY()) / (double)lvt_2_1_;
+                double lvt_7_1_ = (lvt_1_1_.getPosZ() - this.getPosZ()) / (double)lvt_2_1_;
+                this.setMotion(this.getMotion().add(Math.copySign(lvt_3_1_ * lvt_3_1_ * 0.4D, lvt_3_1_), Math.copySign(lvt_5_1_ * lvt_5_1_ * 0.4D, lvt_5_1_), Math.copySign(lvt_7_1_ * lvt_7_1_ * 0.4D, lvt_7_1_)));
+            } else {
+                this.goalSelector.enableFlag(Goal.Flag.MOVE);
+                float lvt_3_2_ = 2.0F;
+                try{
+                    Vector3d lvt_4_1_ = (new Vector3d(lvt_1_1_.getPosX() - this.getPosX(), lvt_1_1_.getPosY() - this.getPosY(), lvt_1_1_.getPosZ() - this.getPosZ())).normalize().scale((double)Math.max(lvt_2_1_ - 2.0F, 0.0F));
+                    this.getNavigator().tryMoveToXYZ(this.getPosX() + lvt_4_1_.x, this.getPosY() + lvt_4_1_.y, this.getPosZ() + lvt_4_1_.z, this.followLeashSpeed());
+                }catch (Exception e){
+
+                }
+            }
+        }
+
+    }
+
+
     public boolean forcedSit(){
         return dataManager.get(FORCED_SIT);
     }
