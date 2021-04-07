@@ -248,6 +248,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setSitting(compound.getBoolean("KangarooSitting"));
+        this.forcedSit = this.isSitting();
         this.setStanding(compound.getBoolean("Standing"));
         this.setCommand(compound.getInt("Command"));
         this.dataManager.set(HELMET_INDEX, compound.getInt("HelmetInvIndex"));
