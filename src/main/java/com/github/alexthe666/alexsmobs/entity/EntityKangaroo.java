@@ -523,7 +523,6 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         LivingEntity attackTarget = this.getAttackTarget();
         if (attackTarget != null && this.canEntityBeSeen(attackTarget)) {
             if (getDistance(attackTarget) < attackTarget.getWidth() + this.getWidth() + 1) {
-                System.out.println(this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 if (this.getAnimation() == ANIMATION_KICK && this.getAnimationTick() == 8) {
                     attackTarget.applyKnockback(1.3F, MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180F)), -MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180F)));
                     this.attackEntityAsMob(this.getAttackTarget());
