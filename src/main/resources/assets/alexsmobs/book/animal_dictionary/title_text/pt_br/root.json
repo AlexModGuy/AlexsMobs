@@ -303,6 +303,27 @@
       "x": 290,
       "y": 10,
       "page": 3
+    },
+    {
+      "linked_page": "cachalot_whale.json",
+      "text": "Cachalot Whale",
+      "x": 290,
+      "y": 35,
+      "page": 3
+    },
+    {
+      "linked_page": "leafcutter_ant.json",
+      "text": "Leafcutter Ant",
+      "x": 290,
+      "y": 60,
+      "page": 3
+    },
+    {
+      "linked_page": "enderiophage.json",
+      "text": "Enderiophage",
+      "x": 290,
+      "y": 85,
+      "page": 3
     }
   ],
   "images": [

@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+O Enderiófago é um monstruoso autômato bioquímico incomummente encontrado na Zona média do End. Esta criatura não natural parece ter sido criada com um propósito em mente - eliminar os Endigrado nativos do Fim.
+No entanto, devido à sua população escassa, é improvável que seus criadores tenham tido sucesso em seu esforço. O ataque do Enderiófago depende de infligir um efeito conhecido como Gripe Ender em sua presa. Embora dure dez minutos, quando o efeito passar, o hospedeiro entrará em erupção com novos Enderiófagos menores e morrerá imediatamente devido ao grande dano.
+Este efeito pode ser eliminado consumindo Fruta do Coro ou Leite. Outras criaturas infligidas também podem receber o fruto para serem curadas.
+<NEWLINE>
+O Enderiófago, embora neutro para a maioria, também é hostil aos Endermen. Após infligir sua presa com a Gripe Ender, o Olho de Ender dentro do Enderiófago se estilhaçará, deixando-os à procura de um Endermen.
+Para restaurar essa habilidade, ele se agarrará a um Enderman e ficará com a cegueira, enquanto tenta escapar com o olho recuperado. Um enderiófago é incapaz de atacar sem um olho.
+<NEWLINE>
+Para restaurar essa habilidade, ele se agarrará a um Enderman e ficará com a cegueira, enquanto tenta escapar com o olho recuperado. Um Enderiófago é incapaz de atacar sem um olho.
+Desta forma, o capsídeo pode ser usado para transportar itens para cima. O Capsídeo também pode ser trabalhado com pepitas de ferro e endstone para criar um foguete de enderiófago, que pode ser usado no lugar do foguete de fogos de artifício durante o vôo com o Elytra.
+Se um Olho de Ender for colocado em um Capsídeo acima de uma 'Lâmpada do End vertical, ele se transformará em um Enderiófago! Talvez seja assim que esses seres surgiram...

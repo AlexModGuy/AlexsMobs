@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "enderiophage.txt",
+  "title": "Enderiófago",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:enderiophage_rocket",
+      "shapeless": false,
+      "x": 210,
+      "y": 20,
+      "page": 2,
+      "scale": 1.3
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:enderiophage",
+      "x": 100,
+      "y": 95,
+      "page" : 0,
+      "scale": 1.2,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
