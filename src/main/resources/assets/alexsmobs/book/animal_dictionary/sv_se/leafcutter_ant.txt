@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Bladskärarmyror är väldigt små insekter som ofta kan ses riva blad från träd i djungelbiomer. De bildar massiva kolonier på upp till tjugo myror. Det finns två former av bladskärarmyra - arbetare, som skördar bladen och kan ses utanför myrstacken, och drottningar, som bara kan kallas genom att stampa på en myrstack.
+Drottningar är mycket större och starkare än en arbetare, och det finns vanligtvis bara en per koloni. Med en drottning närvarande i en myrstack, finns det en chans för varje 5 blad som skördas att skapa ytterligare en arbetarmyr, medan kullen har mindre än 10 myror.
+<NEWLINE>
+Utan en drottning, kan myrstackar inte återbefolka. Dessa kolonier är mycket större än de verkar - under högen finns ett nätverk av bladskärarmyrkammare, stora block som används av myrorna för att omvandla sina blad till svampar.
+Dessa kammarblock omvandlas till jord om de är i solljus, men de kan spridas till närliggande jordblock när de skördas.
+<NEWLINE>
+Denna svamp kallas för pärlkroppar, och det är det enda som myrorna kan odla och äta.
+Bortsett från dess användning till myrorna, kan den också ätas, även om den kanske inte har mycket näringsvärde, har den en hel del mättnad.
+Pärlkroppar kan erhållas genom att interagera med ett svamptäckt kammarblock under jord, men se upp: Om det inte finns ett svampljus i närheten, blir kolonin myror fientliga.
+Svamparna kan matas till myror för att läka dem, och till drottningen för att stärka antalet myror i kolonin. Pärlkroppar kan också matas till en myra för att lugna alla myror i närområdet. Om ett kammarblock bryts till, är det en sällsynt chans att det kan tappa en bladskärarmyrpuppa, som kan användas på smuts eller gräs för att skapa en ny koloni.
