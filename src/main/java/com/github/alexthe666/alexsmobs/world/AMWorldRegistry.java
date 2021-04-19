@@ -6,12 +6,13 @@ import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.feature.*;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,9 +23,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class AMWorldRegistry {
 
     public static Feature<NoFeatureConfig> LEAFCUTTER_ANTHILL =  new FeatureLeafcutterAnthill(NoFeatureConfig.field_236558_a_);
-
+    public static ConfiguredFeature<NoFeatureConfig, ?> LEAFCUTTER_ANTHILL_CF;
     @SubscribeEvent
     public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {
+         Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "alexsmobs:leafcutter_hill", LEAFCUTTER_ANTHILL_CF = LEAFCUTTER_ANTHILL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
         event.getRegistry().register(LEAFCUTTER_ANTHILL.setRegistryName("alexsmobs:leafcutter_hill"));
     }
 
@@ -163,7 +165,7 @@ public class AMWorldRegistry {
             event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.CACHALOT_WHALE, AMConfig.cachalotWhaleSpawnWeight, 1, 3));
         }
         if(BiomeConfig.test(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0){
-            event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, LEAFCUTTER_ANTHILL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+            event.getGeneration().withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, LEAFCUTTER_ANTHILL_CF);
         }
         if (BiomeConfig.test(BiomeConfig.enderiophage_spawns, biome) && AMConfig.enderiophageSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.ENDERIOPHAGE, AMConfig.enderiophageSpawnWeight, 1, 2));
