@@ -37,10 +37,7 @@ import net.minecraft.pathfinding.SwimmerPathNavigator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
@@ -160,6 +157,10 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     public void collideWithNearbyEntities() {
+    }
+
+    public ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+        return super.func_230254_b_(p_230254_1_, p_230254_2_);
     }
 
     public void writeAdditional(CompoundNBT compound) {

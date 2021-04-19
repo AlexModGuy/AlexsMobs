@@ -3,9 +3,12 @@ package com.github.alexthe666.alexsmobs.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.Pose;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraftforge.entity.PartEntity;
 
 import java.util.List;
@@ -35,11 +38,13 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
         }
     }
 
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
+        return this.getParent() == null ? ActionResultType.PASS : this.getParent().processInitialInteract(player, hand);
+    }
+
     protected void collideWithEntity(Entity entityIn) {
         entityIn.applyEntityCollision(this);
     }
-
-
 
     public boolean canBeCollidedWith() {
         return true;
