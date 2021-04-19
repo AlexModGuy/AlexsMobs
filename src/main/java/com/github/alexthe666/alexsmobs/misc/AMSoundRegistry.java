@@ -216,6 +216,8 @@ public class AMSoundRegistry {
 
     public static final SoundEvent ENDERIOPHAGE_WALK = createSoundEvent("enderiophage_walk");
 
+    public static final SoundEvent MUSIC_DISC_THIME = createSoundEvent("music_disc_thime");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

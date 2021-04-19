@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.ComposterBlock;
@@ -12,7 +13,6 @@ import net.minecraft.dispenser.ProjectileDispenseBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.FurnaceFuelSlot;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.EffectInstance;
@@ -117,6 +117,7 @@ public class AMItemRegistry {
     public static final Item GONGYLIDIA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(2).saturation(0.79F).build())).setRegistryName("alexsmobs:gongylidia");
     public static final Item LEAFCUTTER_ANT_PUPA = new ItemLeafcutterPupa(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:leafcutter_ant_pupa");
     public static final Item ENDERIOPHAGE_ROCKET = new ItemEnderiophageRocket(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:enderiophage_rocket");
+    public static final Item MUSIC_DISC_THIME = new MusicDiscItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
 
     private static BannerPattern addBanner(String name) {
         return BannerPattern.create(name.toUpperCase(), name, "alexsmobs." + name, true);

@@ -103,7 +103,6 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
                         } else {
                             renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlotType.HEAD, null), notAVanillaModel);
                         }
-
                     }
                 }else{
                     translateToHead(matrixStackIn);
@@ -115,7 +114,6 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
                 }
                 matrixStackIn.pop();
             }
-
             {
                 matrixStackIn.push();
                 ItemStack itemstack = roo.getItemStackFromSlot(EquipmentSlotType.CHEST);

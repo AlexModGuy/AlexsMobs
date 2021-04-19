@@ -1417,5 +1417,17 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.enderiophage_walk"
+  },
+  "music_disc_thime": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "alexsmobs:music_disc/thime",
+        "stream": true
+      }
+    ],
+    "stream": true,
+    "subtitle": "alexsmobs.sound.subtitle.music_disc.thime"
   }
+
 }
