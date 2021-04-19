@@ -197,7 +197,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
                         LivingEntity target = (LivingEntity) mount;
                         float dmg = 1F;
                         if (target.getHealth() > target.getMaxHealth() * 0.2F) {
-                            dmg = 3F;
+                            dmg = 6F;
                         }
                         if ((target.getHealth() < 1.5D || mount.attackEntityFrom(DamageSource.causeMobDamage(this), dmg)) && mount instanceof LivingEntity) {
                             dismountCooldown = 100;
