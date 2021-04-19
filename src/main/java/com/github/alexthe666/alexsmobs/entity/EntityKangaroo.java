@@ -571,24 +571,32 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         boolean prev = super.attackEntityAsMob(entityIn);
         if(prev){
             if(!this.getHeldItemMainhand().isEmpty()){
-                this.getHeldItemMainhand().attemptDamageItem(1, this.getRNG(), null);
+                damageItem(this.getHeldItemMainhand());
             }
         }
         return prev;
     }
 
-
     public boolean attackEntityFrom(DamageSource src, float amount) {
         boolean prev = super.attackEntityFrom(src, amount);
         if(prev){
             if(!this.getItemStackFromSlot(EquipmentSlotType.HEAD).isEmpty()){
-                this.getItemStackFromSlot(EquipmentSlotType.HEAD).attemptDamageItem(1, this.getRNG(), null);
+                damageItem(this.getItemStackFromSlot(EquipmentSlotType.HEAD));
             }
             if(!this.getItemStackFromSlot(EquipmentSlotType.CHEST).isEmpty()){
-                this.getItemStackFromSlot(EquipmentSlotType.CHEST).attemptDamageItem(1, this.getRNG(), null);
+                damageItem(this.getItemStackFromSlot(EquipmentSlotType.CHEST));
             }
         }
         return prev;
+    }
+
+    private void damageItem(ItemStack stack){
+        if(stack != null){
+            stack.attemptDamageItem(1, this.getRNG(), null);
+            if(stack.getDamage() < 0){
+                stack.shrink(1);
+            }
+        }
     }
 
 
