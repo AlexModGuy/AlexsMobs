@@ -13,9 +13,12 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -29,6 +32,7 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
@@ -90,6 +94,18 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
         return AMSoundRegistry.MANTIS_SHRIMP_HURT;
     }
 
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            Entity entity = source.getTrueSource();
+            if (entity instanceof ShulkerEntity || entity instanceof ShulkerBulletEntity) {
+                amount = (amount + 1.0F) * 0.33F;
+            }
+            return super.attackEntityFrom(source, amount);
+        }
+    }
 
     public static boolean canMantisShrimpSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos downPos = pos;
@@ -268,6 +284,9 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
                     moistureAttackTime = 20;
                 }
             }
+        }
+        if(this.isPotionActive(Effects.LEVITATION)){
+            this.setMotion(this.getMotion().mul(1F, 0.5F, 1F));
         }
     }
 
