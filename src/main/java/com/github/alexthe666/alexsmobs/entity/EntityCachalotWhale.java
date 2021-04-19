@@ -514,7 +514,7 @@ public class EntityCachalotWhale extends AnimalEntity {
             } else if (!isBeached() && !isSleeping()) {
                 this.faceEntity(target, 360, 360);
                 waitForEchoFlag = this.getRevengeTarget() == null || !this.getRevengeTarget().isEntityEqual(target);
-                if(target instanceof PlayerEntity){
+                if(target instanceof PlayerEntity || !target.isInWaterOrBubbleColumn()){
                     waitForEchoFlag = false;
                 }
                 if (waitForEchoFlag && !receivedEcho) {
