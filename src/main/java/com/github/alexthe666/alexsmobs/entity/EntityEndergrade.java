@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -268,6 +269,15 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
 
     public static boolean canEndergradeSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
         return BlockTags.getCollection().get(AMTagRegistry.ENDERGRADE_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+    }
+
+    protected void dropInventory() {
+        super.dropInventory();
+        if (this.isSaddled()) {
+            if (!this.world.isRemote) {
+                this.entityDropItem(Items.SADDLE);
+            }
+        }
     }
 
     static class RandomFlyGoal extends Goal {
