@@ -292,9 +292,10 @@ public class EntityStradpole extends WaterMobEntity {
 
     private void onEntityHit(EntityRayTraceResult raytraceresult) {
         Entity entity = this.getParent();
-        if (entity instanceof LivingEntity && !world.isRemote) {
-            raytraceresult.getEntity().attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity)entity).setProjectile(), 3.0F);
-            ((LivingEntity)raytraceresult.getEntity()).applyKnockback(0.7F, entity.getPosX() - this.getPosX(), entity.getPosZ() - this.getPosZ());
+        if (entity instanceof LivingEntity && !world.isRemote && raytraceresult.getEntity() instanceof LivingEntity) {
+            LivingEntity target = (LivingEntity)raytraceresult.getEntity();
+            target.attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity)entity).setProjectile(), 3.0F);
+            target.applyKnockback(0.7F, entity.getPosX() - this.getPosX(), entity.getPosZ() - this.getPosZ());
             this.dataManager.set(LAUNCHED, false);
         }
     }
