@@ -107,6 +107,18 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
         }
     }
 
+    //killEntity
+    public void func_241847_a(ServerWorld world, LivingEntity entity) {
+        if(entity.getType() == EntityType.SHULKER){
+            CompoundNBT fishNbt = new CompoundNBT();
+            entity.writeAdditional(fishNbt);
+            fishNbt.putString("DeathLootTable", LootTables.EMPTY.toString());
+            entity.readAdditional(fishNbt);
+            entity.entityDropItem(Items.SHULKER_SHELL);
+        }
+        super.func_241847_a(world, entity);
+    }
+
     public static boolean canMantisShrimpSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos downPos = pos;
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
