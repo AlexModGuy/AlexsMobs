@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:falconry_glove"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.falconry_glove.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.falconry_glove.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/tame_bald_eagle",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "alexsmobs:falconry_glove"
+                    }
+                ]
+            }
+        }
+    }
+}

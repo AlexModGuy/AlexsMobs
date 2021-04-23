@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:bald_eagle\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tame_bald_eagle.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.tame_bald_eagle.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:bald_eagle"
+        }
+      }
+    }
+  }
+}

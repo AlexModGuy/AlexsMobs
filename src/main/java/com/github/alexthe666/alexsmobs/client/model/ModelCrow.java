@@ -1,7 +1,4 @@
-package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7.5
-// Exported for Minecraft version 1.15
-// Paste this class into your mod and generate all required imports
-
+package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;

@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,7 +53,8 @@ public class ClientProxy extends CommonProxy {
     private static final ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(1.0F);
     private static final ModelFedora FEDORA_MODEL = new ModelFedora(0.3F);
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
-    public static List<UUID> currentSquidRiders = new ArrayList<UUID>();
+    public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
+    public PointOfView prevPOV = PointOfView.FIRST_PERSON;
 
     public void init(){
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
@@ -120,6 +122,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.LEAFCUTTER_ANT, manager -> new RenderLeafcutterAnt(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERIOPHAGE, manager -> new RenderEnderiophage(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERIOPHAGE_ROCKET, manager -> new SpriteRenderer(manager, itemRendererIn));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BALD_EAGLE, manager -> new RenderBaldEagle(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
@@ -128,6 +131,7 @@ public class ClientProxy extends CommonProxy {
             ItemModelsProperties.registerProperty(AMItemRegistry.HEMOLYMPH_BLASTER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
                 return !ItemHemolymphBlaster.isUsable(stack) || p_239428_2_ instanceof PlayerEntity && ((PlayerEntity) p_239428_2_).getCooldownTracker().hasCooldown(AMItemRegistry.HEMOLYMPH_BLASTER) ? 1.0F : 0.0F;
             });
+
         }catch (Exception e){
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");
         }
@@ -211,6 +215,20 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.DNA, ParticleDna.Factory::new);
     }
 
+
+    public void setRenderViewEntity(Entity entity){
+        prevPOV = Minecraft.getInstance().gameSettings.getPointOfView();
+        Minecraft.getInstance().setRenderViewEntity(entity);
+        Minecraft.getInstance().gameSettings.setPointOfView(PointOfView.THIRD_PERSON_BACK);
+    }
+
+    public void resetRenderViewEntity(){
+        Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().player);
+    }
+
+    public int getPreviousPOV(){
+        return prevPOV.ordinal();
+    }
 
     public boolean isFarFromCamera(double x, double y, double z) {
         Minecraft lvt_1_1_ = Minecraft.getInstance();

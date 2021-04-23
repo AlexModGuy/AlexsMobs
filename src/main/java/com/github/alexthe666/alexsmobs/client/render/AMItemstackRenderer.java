@@ -10,8 +10,10 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHelper;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -75,6 +77,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.CACHALOT_WHALE, 0.1F));
         list.add(new Pair<>(AMEntityRegistry.LEAFCUTTER_ANT, 1.2F));
         list.add(new Pair<>(AMEntityRegistry.ENDERIOPHAGE, 0.65F));
+        list.add(new Pair<>(AMEntityRegistry.BALD_EAGLE, 0.85F));
     });
     private static int ticksExisted = 0;
 
@@ -143,6 +146,14 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
 
     @Override
     public void func_239207_a_(ItemStack itemStackIn, ItemCameraTransforms.TransformType p_239207_2_, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE){
+            matrixStackIn.translate(0.5F, 0.5f, 0.5f);
+            if(p_239207_2_ == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND || p_239207_2_ == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || p_239207_2_ == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || p_239207_2_ == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+                Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+            }else{
+                Minecraft.getInstance().getItemRenderer().renderItem(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY), p_239207_2_, 240, combinedOverlayIn, matrixStackIn, bufferIn);
+            }
+        }
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON) {
             Entity fakeEntity = null;
             int entityIndex = (Minecraft.getInstance().player.ticksExisted / 40) % (MOB_ICONS.size());
@@ -197,6 +208,13 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                 } else {
                     ((EntityElephant) fakeEntity).setTusked(false);
                     ((EntityElephant) fakeEntity).setColor(null);
+                }
+            }
+            if (fakeEntity instanceof EntityBaldEagle) {
+                if (flags == 98) {
+                    ((EntityBaldEagle) fakeEntity).setCap(true);
+                } else {
+                    ((EntityBaldEagle) fakeEntity).setCap(false);
                 }
             }
             if (fakeEntity != null) {

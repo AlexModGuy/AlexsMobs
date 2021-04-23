@@ -83,6 +83,18 @@ public class CommonProxy {
     public void setupParticles() {
     }
 
+    public void setRenderViewEntity(Entity entity) {
+
+    }
+
+    public void resetRenderViewEntity() {
+
+    }
+
+    public int getPreviousPOV(){
+        return 0;
+    }
+
     public boolean isFarFromCamera(double x, double y, double z) {
         return true;
     }

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
 import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
 import net.minecraft.entity.Entity;
@@ -48,7 +49,7 @@ public class MessageMosquitoMountPlayer {
                 if (player.world != null) {
                     Entity entity = player.world.getEntityByID(message.rider);
                     Entity mountEntity = player.world.getEntityByID(message.mount);
-                    if ((entity instanceof EntityCrimsonMosquito || entity instanceof EntityEnderiophage) && mountEntity instanceof PlayerEntity && entity.getDistance(mountEntity) < 16D) {
+                    if ((entity instanceof EntityCrimsonMosquito || entity instanceof EntityEnderiophage || entity instanceof EntityBaldEagle) && mountEntity instanceof PlayerEntity && entity.getDistance(mountEntity) < 16D) {
                         entity.startRiding(mountEntity, true);
                     }
                 }

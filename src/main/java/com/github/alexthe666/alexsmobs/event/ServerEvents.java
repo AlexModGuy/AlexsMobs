@@ -7,6 +7,8 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
+import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
@@ -20,7 +22,6 @@ import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
-import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -154,9 +155,9 @@ public class ServerEvents {
     public void onProjectileHit(ProjectileImpactEvent event) {
         if (event.getRayTraceResult() instanceof EntityRayTraceResult && ((EntityRayTraceResult) event.getRayTraceResult()).getEntity() instanceof EntityEmu && !event.getEntity().world.isRemote) {
             EntityEmu emu = ((EntityEmu) ((EntityRayTraceResult) event.getRayTraceResult()).getEntity());
-            if(event.getEntity() instanceof AbstractArrowEntity){
+            if (event.getEntity() instanceof AbstractArrowEntity) {
                 //fixes soft crash with vanilla
-                ((AbstractArrowEntity) event.getEntity()).setPierceLevel((byte)0);
+                ((AbstractArrowEntity) event.getEntity()).setPierceLevel((byte) 0);
             }
             if ((emu.getAnimation() == EntityEmu.ANIMATION_DODGE_RIGHT || emu.getAnimation() == EntityEmu.ANIMATION_DODGE_LEFT) && emu.getAnimationTick() < 7) {
                 event.setCanceled(true);
@@ -241,13 +242,22 @@ public class ServerEvents {
     @SubscribeEvent
     public void onLootLevelEvent(LootingLevelEvent event) {
         DamageSource src = event.getDamageSource();
-        if(src != null){
+        if (src != null) {
             Entity dmgSrc = src.getTrueSource();
             if (dmgSrc != null && dmgSrc instanceof EntitySnowLeopard) {
                 event.setLootingLevel(event.getLootingLevel() + 2);
             }
         }
 
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+        ItemFalconryGlove.onLeftClick(event.getPlayer(), event.getPlayer().getHeldItemOffhand());
+        ItemFalconryGlove.onLeftClick(event.getPlayer(), event.getPlayer().getHeldItemMainhand());
+        if (event.getWorld().isRemote) {
+            AlexsMobs.sendMSGToServer(new MessageSwingArm());
+        }
     }
 
     @SubscribeEvent
@@ -285,13 +295,13 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
-        if(event.getTarget() instanceof LivingEntity && !(event.getTarget() instanceof PlayerEntity) && !(event.getTarget() instanceof EntityEndergrade) && ((LivingEntity) event.getTarget()).isPotionActive(AMEffectRegistry.ENDER_FLU)){
-            if(event.getItemStack().getItem() == Items.CHORUS_FRUIT){
-                if(!event.getPlayer().isCreative()){
+        if (event.getTarget() instanceof LivingEntity && !(event.getTarget() instanceof PlayerEntity) && !(event.getTarget() instanceof EntityEndergrade) && ((LivingEntity) event.getTarget()).isPotionActive(AMEffectRegistry.ENDER_FLU)) {
+            if (event.getItemStack().getItem() == Items.CHORUS_FRUIT) {
+                if (!event.getPlayer().isCreative()) {
                     event.getItemStack().shrink(1);
                 }
                 event.getTarget().playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 0.5F + event.getPlayer().getRNG().nextFloat());
-                if(event.getPlayer().getRNG().nextFloat() < 0.4F){
+                if (event.getPlayer().getRNG().nextFloat() < 0.4F) {
                     ((LivingEntity) event.getTarget()).removePotionEffect(AMEffectRegistry.ENDER_FLU);
                     Items.CHORUS_FRUIT.onItemUseFinish(event.getItemStack().copy(), event.getWorld(), ((LivingEntity) event.getTarget()));
                 }
