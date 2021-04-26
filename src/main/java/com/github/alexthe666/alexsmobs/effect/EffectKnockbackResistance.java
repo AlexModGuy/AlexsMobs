@@ -13,7 +13,6 @@ public class EffectKnockbackResistance extends Effect {
         super(EffectType.BENEFICIAL, 0X865337);
         this.setRegistryName(AlexsMobs.MODID, "knockback_resistance");
         this.addAttributesModifier(Attributes.KNOCKBACK_RESISTANCE, "03C3C89D-7037-4B42-869F-B146BCB64D2F", 0.5D, AttributeModifier.Operation.ADDITION);
-
     }
 
     public void performEffect(LivingEntity LivingEntityIn, int amplifier) {

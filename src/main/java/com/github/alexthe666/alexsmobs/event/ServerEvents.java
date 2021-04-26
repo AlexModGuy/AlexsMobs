@@ -13,6 +13,7 @@ import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
+import com.google.common.base.Predicates;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -40,10 +41,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
@@ -52,6 +50,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -355,6 +354,16 @@ public class ServerEvents {
             float f1 = 2;
             ((LivingEntity) event.getTarget()).applyKnockback(f1 * 0.5F, MathHelper.sin(event.getPlayer().rotationYaw * ((float) Math.PI / 180F)), -MathHelper.cos(event.getPlayer().rotationYaw * ((float) Math.PI / 180F)));
         }
+        if(event.getPlayer().isPotionActive(AMEffectRegistry.TIGERS_BLESSING) && event.getTarget() instanceof LivingEntity && !event.getTarget().isOnSameTeam(event.getPlayer()) && !(event.getTarget() instanceof EntityTiger)){
+            AxisAlignedBB bb = new AxisAlignedBB(event.getPlayer().getPosX() - 32, event.getPlayer().getPosY() - 32, event.getPlayer().getPosZ() - 32, event.getPlayer().getPosZ() + 32, event.getPlayer().getPosY() + 32, event.getPlayer().getPosZ() + 32);
+            List<EntityTiger> tigers = event.getPlayer().world.getEntitiesWithinAABB(EntityTiger.class, bb, EntityPredicates.IS_ALIVE);
+            for(EntityTiger tiger : tigers){
+                if(!tiger.isChild()){
+                    tiger.setAttackTarget((LivingEntity)event.getTarget());
+                }
+            }
+
+        }
     }
 
     @SubscribeEvent
@@ -469,5 +478,12 @@ public class ServerEvents {
             i++;
         }
         return entered;
+    }
+
+    @SubscribeEvent
+    public void onFOVUpdate(FOVUpdateEvent event){
+        if(event.getEntity().isPotionActive(AMEffectRegistry.FEAR)){
+            event.setNewfov(1.0F);
+        }
     }
 }

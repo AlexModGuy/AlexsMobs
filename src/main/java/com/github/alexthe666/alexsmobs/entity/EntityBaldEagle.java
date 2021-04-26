@@ -200,7 +200,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        if (this.dataManager.get(ATTACK_TICK) == 0 && entityIn.isAlive() && this.getDistance(entityIn) < entityIn.getWidth() + 5) {
+        if (this.dataManager.get(ATTACK_TICK) == 0 && this.attackProgress == 0 && entityIn.isAlive() && this.getDistance(entityIn) < entityIn.getWidth() + 5) {
             this.dataManager.set(ATTACK_TICK, 5);
         }
         return true;
