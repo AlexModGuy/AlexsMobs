@@ -139,7 +139,7 @@ public class ModelSunbird extends AdvancedEntityModel<EntitySunbird> {
         this.faceTarget(netHeadYaw, headPitch, 2, neck, head);
         float partialTick = Minecraft.getInstance().getRenderPartialTicks();
         float birdPitch = entityIn.prevBirdPitch + (entityIn.birdPitch - entityIn.prevBirdPitch) * partialTick;
-        this.body.rotateAngleX += birdPitch * ((float)Math.PI / 180F);
+        this.body.rotateAngleX = birdPitch * ((float)Math.PI / 180F);
 
     }
 
