@@ -213,7 +213,7 @@ public class EntitySunbird extends AnimalEntity implements IFlyingAnimal {
                 }
                 if (beaconPos != null) {
 
-                    if (!isValidBeacon(beaconPos)) {
+                    if (!isValidBeacon(beaconPos) && ticksExisted > 40) {
                         this.beaconPos = null;
                     }
                 }
