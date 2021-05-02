@@ -61,6 +61,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -200,6 +201,13 @@ public class ServerEvents {
                 emu.setMotion(emu.getMotion().add(vector3d2.getX() * 0.5F, 0.32F, vector3d2.getZ() * 0.5F));
                 event.setCanceled(true);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityDespawnAttempt(LivingSpawnEvent.AllowDespawn event){
+        if(event.getEntityLiving().isPotionActive(AMEffectRegistry.DEBILITATING_STING) && event.getEntityLiving().getActivePotionEffect(AMEffectRegistry.DEBILITATING_STING) != null && event.getEntityLiving().getActivePotionEffect(AMEffectRegistry.DEBILITATING_STING).getAmplifier() > 0){
+            event.setResult(Event.Result.DENY);
         }
     }
 

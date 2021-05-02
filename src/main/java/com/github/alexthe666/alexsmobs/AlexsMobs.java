@@ -112,6 +112,7 @@ public class AlexsMobs {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSwingArm.class, MessageSwingArm::write, MessageSwingArm::read, MessageSwingArm.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateEagleControls.class, MessageUpdateEagleControls::write, MessageUpdateEagleControls::read, MessageUpdateEagleControls.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSyncEaglePos.class, MessageSyncEaglePos::write, MessageSyncEaglePos::read, MessageSyncEaglePos.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageTarantulaHawkSting.class, MessageTarantulaHawkSting::write, MessageTarantulaHawkSting::read, MessageTarantulaHawkSting.Handler::handle);
         AMAdvancementTriggerRegistry.init();
     }
 

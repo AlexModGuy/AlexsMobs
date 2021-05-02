@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FFF",
+    "FFF",
+    "FFF"
+  ],
+  "key": {
+    "F": {
+      "item": "alexsmobs:tarantula_hawk_wing_fragment"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:tarantula_hawk_wing",
+    "count": 1
+  }
+}

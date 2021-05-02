@@ -36,9 +36,6 @@ public class FlyingAIFollowOwner extends Goal {
         this.teleportToLeaves = teleportToLeaves;
         follower = (IFollower)tameable;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        if (!(tameable.getNavigator() instanceof GroundPathNavigator) && !(tameable.getNavigator() instanceof FlyingPathNavigator)) {
-            throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
-        }
     }
 
     /**
@@ -68,7 +65,7 @@ public class FlyingAIFollowOwner extends Goal {
         if (this.tameable.isSitting()) {
             return false;
         } else {
-            return !(this.tameable.getDistanceSq(this.owner) <= (double)(this.maxDist * this.maxDist));
+            return this.tameable.getDistanceSq(this.owner) > (double)(this.maxDist * this.maxDist);
         }
     }
 
