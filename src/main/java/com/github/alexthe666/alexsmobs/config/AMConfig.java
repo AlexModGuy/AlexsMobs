@@ -99,6 +99,12 @@ public class AMConfig {
     public static int cachalotWhaleSpawnRolls = 0;
     public static int enderiophageSpawnWeight = 4;
     public static int enderiophageSpawnRolls = 3;
+    public static int baldEagleSpawnWeight = 15;
+    public static int baldEagleSpawnRolls = 0;
+    public static int tigerSpawnWeight = 100;
+    public static int tigerSpawnRolls = 0;
+    public static int tarantulaHawkSpawnWeight = 6;
+    public static int tarantulaHawkSpawnRolls = 1;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -238,7 +244,12 @@ public class AMConfig {
             cachalotWhaleSpawnRolls = ConfigHolder.COMMON.cachalotWhaleSpawnRolls.get();
             enderiophageSpawnWeight = ConfigHolder.COMMON.enderiophageSpawnWeight.get();
             enderiophageSpawnRolls = ConfigHolder.COMMON.enderiophageSpawnRolls.get();
-
+            baldEagleSpawnWeight = ConfigHolder.COMMON.baldEagleSpawnWeight.get();
+            baldEagleSpawnRolls = ConfigHolder.COMMON.baldEagleSpawnRolls.get();
+            tigerSpawnWeight = ConfigHolder.COMMON.tigerSpawnWeight.get();
+            tigerSpawnRolls = ConfigHolder.COMMON.tigerSpawnRolls.get();
+            tarantulaHawkSpawnWeight = ConfigHolder.COMMON.tarantulaHawkSpawnWeight.get();
+            tarantulaHawkSpawnRolls = ConfigHolder.COMMON.tarantulaHawkSpawnRolls.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

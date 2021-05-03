@@ -1,10 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -127,6 +129,23 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         });
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.BALD_EAGLE_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.BALD_EAGLE_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.BALD_EAGLE_HURT;
+    }
+
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.baldEagleSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
     public boolean isOnSameTeam(Entity entityIn) {
         if (this.isTamed()) {
             LivingEntity livingentity = this.getOwner();
@@ -183,7 +202,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         compound.putBoolean("BirdSitting", this.isSitting());
         compound.putBoolean("Launched", this.isLaunched());
         compound.putBoolean("HasCap", this.hasCap());
-        compound.putInt("Command", this.getCommand());
+        compound.putInt("EagleCommand", this.getCommand());
         compound.putInt("LaunchTime", this.launchTime);
     }
 
@@ -192,7 +211,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         this.setSitting(compound.getBoolean("BirdSitting"));
         this.setLaunched(compound.getBoolean("Launched"));
         this.setCap(compound.getBoolean("HasCap"));
-        this.setCommand(compound.getInt("Command"));
+        this.setCommand(compound.getInt("EagleCommand"));
         this.launchTime = compound.getInt("LaunchTime");
     }
 
@@ -354,7 +373,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
                 }
                 return ActionResultType.SUCCESS;
             } else {
-                this.setCommand(this.getCommand() + 1);
+                this.setCommand((this.getCommand() + 1) % 3);
                 if (this.getCommand() == 3) {
                     this.setCommand(0);
                 }
@@ -429,6 +448,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
 
     public void tick() {
         super.tick();
+
         this.prevAttackProgress = attackProgress;
         this.prevBirdPitch = birdPitch;
         this.prevTackleProgress = tackleProgress;

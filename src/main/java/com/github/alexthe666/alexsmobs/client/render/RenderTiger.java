@@ -113,7 +113,7 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
             this.shadowSize = 0.6F * (1 - stealthLevel * 0.1F);
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(rendertype);
             int i = getPackedOverlay(entityIn, this.getOverlayProgress(entityIn, partialTicks));
-            this.entityModel.render(matrixStackIn, ivertexbuilder, packedLightIn, i, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : (1 - stealthLevel * 0.1F));
+            this.entityModel.render(matrixStackIn, ivertexbuilder, packedLightIn, i, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : MathHelper.clamp(1 - stealthLevel * 0.1F, 0, 1));
         }
 
         if (!entityIn.isSpectator()) {

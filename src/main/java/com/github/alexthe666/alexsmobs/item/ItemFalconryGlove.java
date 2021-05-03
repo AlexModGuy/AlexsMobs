@@ -96,13 +96,17 @@ public class ItemFalconryGlove extends Item {
                             }
                             AlexsMobs.PROXY.setRenderViewEntity(eagle);
                         }else{
-                            eagle.setFlying(true);
                             eagle.getNavigator().clearPath();
                             eagle.getMoveHelper().setMoveTo(eagle.getPosX(), eagle.getPosY(), eagle.getPosZ(), 0.1F);
                             if(pointedEntity != null && !eagle.isOnSameTeam(pointedEntity)){
+                                eagle.setFlying(true);
                                 if(pointedEntity instanceof LivingEntity){
                                     eagle.setAttackTarget((LivingEntity) pointedEntity);
                                 }
+                            }else{
+                                eagle.setFlying(false);
+                                eagle.setCommand(2);
+                                eagle.setSitting(true);
                             }
                         }
                     }

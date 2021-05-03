@@ -59,6 +59,9 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> cachalot_whale_beached_spawns = Pair.of("alexsmobs:cachalot_whale_beached_spawns", DefaultBiomes.BEACHED_CACHALOT_WHALE);
 	public static Pair<String, SpawnBiomeData> leafcutter_anthill_spawns = Pair.of("alexsmobs:leafcutter_anthill_spawns", DefaultBiomes.LEAFCUTTER_ANTHILL);
 	public static Pair<String, SpawnBiomeData> enderiophage_spawns = Pair.of("alexsmobs:enderiophage_spawns", DefaultBiomes.ENDERIOPHAGE);
+	public static Pair<String, SpawnBiomeData> baldEagle = Pair.of("alexsmobs:bald_eagle_spawns", DefaultBiomes.BALD_EAGLE);
+	public static Pair<String, SpawnBiomeData> tiger = Pair.of("alexsmobs:tiger_spawns", DefaultBiomes.TIGER);
+	public static Pair<String, SpawnBiomeData> tarantula_hawk = Pair.of("alexsmobs:tarantula_hawk_spawns", DefaultBiomes.TARANTULA_HAWK);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

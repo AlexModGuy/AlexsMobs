@@ -1,9 +1,11 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -23,8 +25,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.LootTables;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -96,7 +96,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
         this.setPathPriority(PathNodeType.WATER_BORDER, 0);
         this.moveController = new MovementControllerCustomCollisions(this);
     }
-    
+
     public static boolean canTigerSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
         return worldIn.getLightSubtracted(pos, 0) > 8;
     }
@@ -105,9 +105,18 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 50D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 12.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F).createMutableAttribute(Attributes.FOLLOW_RANGE, 86);
     }
 
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.tigerSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
     public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
         return worldIn.getFluidState(pos.down()).isEmpty() && worldIn.getFluidState(pos).isTagged(FluidTags.WATER) ? 0.0F : super.getBlockPathWeight(pos, worldIn);
     }
+
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return !worldIn.containsAnyLiquid(this.getBoundingBox());
+    }
+
 
     protected void registerData() {
         super.registerData();
@@ -140,6 +149,24 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
         });
         this.targetSelector.addGoal(5, new ResetAngerGoal<>(this, true));
     }
+
+    protected SoundEvent getAmbientSound() {
+        return isStealth() ? super.getAmbientSound() : getAngerTime() > 0 ? AMSoundRegistry.TIGER_ANGRY : AMSoundRegistry.TIGER_IDLE;
+    }
+
+    public int getTalkInterval() {
+        return getAngerTime() > 0 ? 40 : 80;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.TIGER_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.TIGER_HURT;
+    }
+
+
 
     protected float getWaterSlowDown() {
         return 0.99F;
@@ -256,7 +283,6 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
     }
 
 
-
     public void tick() {
         super.tick();
         prevSitProgress = sitProgress;
@@ -335,7 +361,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
                 Vector3d minus = new Vector3d(this.getPosX() + extraX - this.getAttackTarget().getPosX(), this.getPosY() + extraY - this.getAttackTarget().getPosY(), this.getPosZ() + extraZ - this.getAttackTarget().getPosZ());
                 this.getAttackTarget().setMotion(minus);
                 if (holdTime % 20 == 0) {
-                    this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 3 + this.getRNG().nextInt(2));
+                    this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), 5 + this.getRNG().nextInt(2));
                 }
             }
             holdTime++;
@@ -396,10 +422,10 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
         boolean whiteOther = p_241840_2_ instanceof EntityTiger && ((EntityTiger) p_241840_2_).isWhite();
         EntityTiger baby = AMEntityRegistry.TIGER.create(p_241840_1_);
         double whiteChance = 0.1D;
-        if(this.isWhite() && whiteOther){
+        if (this.isWhite() && whiteOther) {
             whiteChance = 0.8D;
         }
-        if(this.isWhite() != whiteOther){
+        if (this.isWhite() != whiteOther) {
             whiteChance = 0.4D;
         }
         baby.setWhite(rand.nextDouble() < whiteChance);
@@ -500,6 +526,8 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
             if (e.getThrowerId() != null && rand.nextFloat() < getChanceForEffect(stack) && world.getPlayerByUuid(e.getThrowerId()) != null) {
                 PlayerEntity player = world.getPlayerByUuid(e.getThrowerId());
                 player.addPotionEffect(new EffectInstance(AMEffectRegistry.TIGERS_BLESSING, 12000));
+                this.setAttackTarget(null);
+                this.setRevengeTarget(null);
             }
         }
     }
@@ -521,7 +549,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
     }
 
     protected void jump() {
-        if(!this.isSleeping() && !this.isSitting()){
+        if (!this.isSleeping() && !this.isSitting()) {
             super.jump();
         }
     }

@@ -43,7 +43,7 @@ public class EffectDebilitatingSting extends Effect {
     public void performEffect(LivingEntity entity, int amplifier) {
         if (entity.getCreatureAttribute() != CreatureAttribute.ARTHROPOD) {
             if (entity.getHealth() > entity.getMaxHealth() * 0.5F) {
-                entity.attackEntityFrom(DamageSource.MAGIC, 2.0F);
+                entity.attackEntityFrom(DamageSource.MAGIC, 1.0F);
             }
         } else {
             boolean suf = isEntityInsideOpaqueBlock(entity);

@@ -218,6 +218,20 @@ public class AMSoundRegistry {
 
     public static final SoundEvent MUSIC_DISC_THIME = createSoundEvent("music_disc_thime");
 
+    public static final SoundEvent BALD_EAGLE_IDLE = createSoundEvent("bald_eagle_idle");
+
+    public static final SoundEvent BALD_EAGLE_HURT = createSoundEvent("bald_eagle_hurt");
+
+    public static final SoundEvent TIGER_IDLE = createSoundEvent("tiger_idle");
+
+    public static final SoundEvent TIGER_HURT = createSoundEvent("tiger_hurt");
+
+    public static final SoundEvent TIGER_ANGRY = createSoundEvent("tiger_angry");
+
+    public static final SoundEvent TARANTULA_HAWK_WING = createSoundEvent("tarantula_hawk_wing");
+
+    public static final SoundEvent TARANTULA_HAWK_HURT = createSoundEvent("tarantula_hawk_hurt");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

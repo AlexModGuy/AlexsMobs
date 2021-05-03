@@ -1,12 +1,14 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlyingAIFollowOwner;
 import com.github.alexthe666.alexsmobs.message.MessageTarantulaHawkSting;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
@@ -38,10 +40,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
@@ -87,6 +86,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
     private int timeFlying = 0;
     private boolean bredBuryFlag = false;
     private int spiderFeedings = 0;
+    private int dragTime = 0;
 
     protected EntityTarantulaHawk(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -99,7 +99,11 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 18.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 18.0D).createMutableAttribute(Attributes.ARMOR, 4.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.tarantulaHawkSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     protected void registerGoals() {
@@ -124,6 +128,15 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
             }
         });
     }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.TARANTULA_HAWK_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.TARANTULA_HAWK_HURT;
+    }
+
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {
@@ -309,6 +322,9 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
                 switchNavigator(true);
             }
             if (isFlying()) {
+                if(timeFlying % 25 == 0){
+                    this.playSound(AMSoundRegistry.TARANTULA_HAWK_WING, this.getSoundVolume(), this.getSoundPitch());
+                }
                 timeFlying++;
                 this.setNoGravity(true);
                 if (this.isSitting() || this.isPassenger() || this.isInLove()) {
@@ -345,6 +361,20 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
                 double motY = 0.1F + rand.nextFloat() * 0.2F;
                 double motZ = this.rand.nextGaussian() * 0.02D;
                 world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
+            }
+        }
+        if(this.ticksExisted > 0 && ticksExisted % 300 == 0 && this.getHealth() < this.getMaxHealth()){
+            this.heal(1);
+        }
+        if(!world.isRemote && this.isDragging() && this.getPassengers().isEmpty() && !this.isDigging()){
+            dragTime++;
+            if(dragTime > 5000){
+                dragTime = 0;
+                for(Entity e : this.getPassengers()){
+                    e.attackEntityFrom(DamageSource.causeMobDamage(this), 10);
+                }
+                this.removePassengers();
+                this.setDragging(false);
             }
         }
     }
