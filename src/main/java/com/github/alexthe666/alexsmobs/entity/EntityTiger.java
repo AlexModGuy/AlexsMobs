@@ -43,11 +43,13 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -93,6 +95,10 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
         this.setPathPriority(PathNodeType.WATER, 0);
         this.setPathPriority(PathNodeType.WATER_BORDER, 0);
         this.moveController = new MovementControllerCustomCollisions(this);
+    }
+    
+    public static boolean canEagleSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+        return worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {

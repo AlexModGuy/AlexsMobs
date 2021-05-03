@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlyingAIFollowOwner;
 import com.github.alexthe666.alexsmobs.message.MessageTarantulaHawkSting;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -90,6 +91,11 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
     protected EntityTarantulaHawk(EntityType type, World worldIn) {
         super(type, worldIn);
         switchNavigator(false);
+    }
+
+    public static boolean canTarantulaHawkSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+        boolean spawnBlock = BlockTags.SAND.contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock && worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
@@ -188,7 +194,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
 
         return super.isOnSameTeam(entityIn);
     }
-    
+
     public float getFlyAngle() {
         return this.dataManager.get(FLY_ANGLE);
     }
