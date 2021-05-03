@@ -694,6 +694,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
                 }
                 if (hawk.getDistance(target) < target.getWidth() + 1.5F && !target.isPassenger()) {
                     hawk.setDragging(true);
+                    hawk.setFlying(false);
                     target.startRiding(hawk, true);
                 }
             } else {
@@ -733,6 +734,9 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
             hawk.bredBuryFlag = false;
             clockwise = rand.nextBoolean();
             orbitVec = null;
+            if(hawk.getPassengers().isEmpty()){
+                hawk.setAttackTarget(null);
+            }
         }
     }
 

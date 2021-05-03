@@ -112,9 +112,6 @@ public class AMItemRegistry {
     public static final Item CACHALOT_WHALE_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cachalot_whale_tooth");
     public static final Item ECHOLOCATOR = new ItemEcholocator(new Item.Properties().group(AlexsMobs.TAB).maxDamage(100), false).setRegistryName("alexsmobs:echolocator");
     public static final Item ENDOLOCATOR = new ItemEcholocator(new Item.Properties().group(AlexsMobs.TAB).maxDamage(25), true).setRegistryName("alexsmobs:endolocator");
-    public static final BannerPattern PATTERN_BEAR = addBanner("bear");
-    public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
-    public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
     public static final Item GONGYLIDIA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(2).saturation(0.79F).build())).setRegistryName("alexsmobs:gongylidia");
     public static final Item LEAFCUTTER_ANT_PUPA = new ItemLeafcutterPupa(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:leafcutter_ant_pupa");
     public static final Item ENDERIOPHAGE_ROCKET = new ItemEnderiophageRocket(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:enderiophage_rocket");
@@ -126,6 +123,11 @@ public class AMItemRegistry {
     public static final Item TARANTULA_HAWK_WING_FRAGMENT = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing_fragment");
     public static final Item TARANTULA_HAWK_WING = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing");
     public static final Item TARANTULA_HAWK_ELYTRA = new ItemTarantulaHawkElytra(new Item.Properties().group(AlexsMobs.TAB).maxDamage(800).rarity(Rarity.UNCOMMON), TARANTULA_HAWK_ELYTRA_MATERIAL).setRegistryName("alexsmobs:tarantula_hawk_elytra");
+
+    public static final BannerPattern PATTERN_BEAR = addBanner("bear");
+    public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
+    public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
+    public static final BannerPattern PATTERN_NEW_MEXICO = addBanner("new_mexico");
 
     private static BannerPattern addBanner(String name) {
         return BannerPattern.create(name.toUpperCase(), name, "alexsmobs." + name, true);
@@ -209,6 +211,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new BannerPatternItem(PATTERN_BEAR, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_bear"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_0, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_0"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_1, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_1"));
+        event.getRegistry().register(new BannerPatternItem(PATTERN_NEW_MEXICO, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_new_mexico"));
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CROCODILE_SCUTE));
         ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(ROADRUNNER_FEATHER));
         CENTIPEDE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CENTIPEDE_LEG));
