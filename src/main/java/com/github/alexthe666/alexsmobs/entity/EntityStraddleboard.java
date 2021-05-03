@@ -1,7 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.message.MessageSyncEntityPos;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LilyPadBlock;
 import net.minecraft.enchantment.Enchantment;
@@ -10,6 +12,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -280,7 +283,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         if (this.previousStatus == BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.ON_LAND) {
             this.waterLevel = this.getPosYHeight(1.0D);
             this.setPosition(this.getPosX(), (double) (this.getWaterLevelAbove() - this.getHeight()) + 0.25, this.getPosZ());
-            this.setMotion(this.getMotion().mul(1.0D, 0.0D, 1.0D));
+            this.setMotion(this.getMotion().mul(1.0D, 1D, 1.0D));
             this.lastYd = 0.0D;
             this.status = BoatEntity.Status.IN_WATER;
         } else {
@@ -382,9 +385,13 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         if (this.getDamageTaken() > 0.0F) {
             this.setDamageTaken(this.getDamageTaken() - 1.0F);
         }
-        if (!onGround && !this.isInLava() && !this.isEntityInsideOpaqueBlock()) {
-            this.setMotion(this.getMotion().add(0, -0.08, 0));
-
+        if (isInLava()) {
+            this.setNoGravity(true);
+            if(this.eyesFluidLevel.getDouble(FluidTags.LAVA) >= this.getHeight()){
+                this.setMotion(0, 0.1, 0);
+            }
+        }else{
+            this.setNoGravity(false);
         }
         float f2 = (float) -((float) this.getMotion().y * 0.5F * (double) (180F / (float) Math.PI));
         this.rotationPitch = f2;
@@ -451,8 +458,25 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         this.move(MoverType.SELF, this.getMotion());
     }
 
+    public double getPosYEye() {
+        return this.getPosY() + 0.3F;
+    }
+
+
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
+        double x = passenger.getPosX();
+        double y = passenger.getPosY();
+        double z = passenger.getPosZ();
+        if(!world.isRemote){
+            EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.create(world);
+            CompoundNBT tag = new CompoundNBT();
+            this.writeAdditional(tag);
+            copy.readAdditional(tag);
+            copy.copyLocationAndAnglesFrom(passenger);
+            world.addEntity(copy);
+        }
+        this.remove();
     }
 
     private void func_234318_eL_() {
@@ -620,7 +644,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
 
     @Override
     public boolean canJump() {
-        return this.isInLava();
+        return this.world.getBlockState(this.getPositionUnderneath()).getFluidState().isTagged(FluidTags.LAVA);
     }
 
     @Override

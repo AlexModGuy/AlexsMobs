@@ -777,7 +777,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
     //killEntity
     public void func_241847_a(ServerWorld world, LivingEntity entity) {
         if (this.isLaunched() && this.hasCap() && this.isTamed() && this.getOwner() != null) {
-            if (this.getOwner() instanceof ServerPlayerEntity) {
+            if (this.getOwner() instanceof ServerPlayerEntity && this.getDistance(this.getOwner()) >= 100) {
                 AMAdvancementTriggerRegistry.BALD_EAGLE_CHALLENGE.trigger((ServerPlayerEntity) this.getOwner());
             }
         }

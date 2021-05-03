@@ -3,24 +3,15 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
-import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
-import com.github.alexthe666.alexsmobs.message.MessageSyncEaglePos;
+import com.github.alexthe666.alexsmobs.message.MessageSyncEntityPos;
 import com.google.common.base.Predicate;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effects;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -84,9 +75,9 @@ public class ItemFalconryGlove extends Item {
                         eagle.setCommand(0);
                         eagle.setLocationAndAngles(playerIn.getPosX(), playerIn.getPosYEye(), playerIn.getPosZ(), eagle.rotationYaw, eagle.rotationPitch);
                         if(eagle.world.isRemote){
-                            AlexsMobs.sendMSGToServer(new MessageSyncEaglePos(eagle.getEntityId(), playerIn.getPosX(), playerIn.getPosYEye(), playerIn.getPosZ()));
+                            AlexsMobs.sendMSGToServer(new MessageSyncEntityPos(eagle.getEntityId(), playerIn.getPosX(), playerIn.getPosYEye(), playerIn.getPosZ()));
                         }else{
-                            AlexsMobs.sendMSGToAll(new MessageSyncEaglePos(eagle.getEntityId(), playerIn.getPosX(), playerIn.getPosYEye(), playerIn.getPosZ()));
+                            AlexsMobs.sendMSGToAll(new MessageSyncEntityPos(eagle.getEntityId(), playerIn.getPosX(), playerIn.getPosYEye(), playerIn.getPosZ()));
                         }
                         if(eagle.hasCap()){
                             eagle.setFlying(true);
