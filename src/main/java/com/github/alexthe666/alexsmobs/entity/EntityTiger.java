@@ -97,7 +97,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
         this.moveController = new MovementControllerCustomCollisions(this);
     }
     
-    public static boolean canEagleSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+    public static boolean canTigerSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
         return worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
