@@ -184,6 +184,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         this.targetSelector.addGoal(5, new EntityGrizzlyBear.AttackPlayerGoal());
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, this::func_233680_b_));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, FoxEntity.class, 10, true, true, null));
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, WolfEntity.class, 10, true, true, null));
         this.targetSelector.addGoal(7, new ResetAngerGoal<>(this, false));
     }
 
