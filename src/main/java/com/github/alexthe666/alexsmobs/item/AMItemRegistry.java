@@ -112,7 +112,7 @@ public class AMItemRegistry {
     public static final Item CACHALOT_WHALE_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cachalot_whale_tooth");
     public static final Item ECHOLOCATOR = new ItemEcholocator(new Item.Properties().group(AlexsMobs.TAB).maxDamage(100), false).setRegistryName("alexsmobs:echolocator");
     public static final Item ENDOLOCATOR = new ItemEcholocator(new Item.Properties().group(AlexsMobs.TAB).maxDamage(25), true).setRegistryName("alexsmobs:endolocator");
-    public static final Item GONGYLIDIA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(2).saturation(0.79F).build())).setRegistryName("alexsmobs:gongylidia");
+    public static final Item GONGYLIDIA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(3).saturation(1.2F).build())).setRegistryName("alexsmobs:gongylidia");
     public static final Item LEAFCUTTER_ANT_PUPA = new ItemLeafcutterPupa(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:leafcutter_ant_pupa");
     public static final Item ENDERIOPHAGE_ROCKET = new ItemEnderiophageRocket(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:enderiophage_rocket");
     public static final Item MUSIC_DISC_THIME = new MusicDiscItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
