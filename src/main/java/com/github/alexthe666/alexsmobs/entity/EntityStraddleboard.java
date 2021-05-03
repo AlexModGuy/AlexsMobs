@@ -620,7 +620,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
 
     @Override
     public boolean canJump() {
-        return true;
+        return this.isInLava();
     }
 
     @Override
