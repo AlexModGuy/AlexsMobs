@@ -25,6 +25,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -117,6 +118,19 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
         return !worldIn.containsAnyLiquid(this.getBoundingBox());
     }
 
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean("TigerSitting", this.isSitting());
+        compound.putBoolean("TigerSleeping", this.isSleeping());
+        compound.putBoolean("White", this.isWhite());
+    }
+
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setSitting(compound.getBoolean("TigerSitting"));
+        this.setSleeping(compound.getBoolean("TigerSleeping"));
+        this.setWhite(compound.getBoolean("White"));
+    }
 
     protected void registerData() {
         super.registerData();
