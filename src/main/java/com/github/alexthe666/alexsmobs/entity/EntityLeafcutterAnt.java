@@ -636,6 +636,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
 
         private int searchCooldown = 1;
         private BlockPos hivePos;
+        private int approachTime = 0;
 
         public ReturnToHiveGoal() {
         }
@@ -678,6 +679,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
         public void resetTask() {
             this.hivePos = null;
             this.searchCooldown = 20;
+            this.approachTime = 0;
         }
 
         public void tick() {
@@ -690,7 +692,8 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
                 }
             }
             if (dist < 16) {
-                if(dist < 2 && EntityLeafcutterAnt.this.getPosY() >= hivePos.getY()){
+                approachTime++;
+                if(dist < (approachTime < 200 ? 2 : 10) && EntityLeafcutterAnt.this.getPosY() >= hivePos.getY()){
                     if(EntityLeafcutterAnt.this.getAttachmentFacing() != Direction.DOWN){
                         EntityLeafcutterAnt.this.setMotion(EntityLeafcutterAnt.this.getMotion().add(0, 0.1, 0));
                     }

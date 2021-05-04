@@ -465,9 +465,6 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
 
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
-        double x = passenger.getPosX();
-        double y = passenger.getPosY();
-        double z = passenger.getPosZ();
         if(!world.isRemote){
             EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.create(world);
             CompoundNBT tag = new CompoundNBT();
