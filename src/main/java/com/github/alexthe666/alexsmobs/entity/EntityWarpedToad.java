@@ -471,7 +471,8 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
                 double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
                 double extraZ = radius * MathHelper.cos(angle);
                 double yHelp = entityIn.getHeight();
-                entityIn.setPosition(this.getPosX() + extraX, this.getPosY() + this.getEyeHeight() - yHelp, this.getPosZ() + extraZ);
+                Vector3d minus = new Vector3d(this.getPosX() + extraX - this.getAttackTarget().getPosX(), this.getEyeHeight() - yHelp - this.getAttackTarget().getPosY(), this.getPosZ() + extraZ - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().setMotion(minus);
                 if (attackProgress == 0.5F) {
                     float damage = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
                     if (entityIn instanceof EntityCrimsonMosquito) {

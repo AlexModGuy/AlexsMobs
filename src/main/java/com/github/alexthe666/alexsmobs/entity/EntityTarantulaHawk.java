@@ -95,7 +95,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
 
     public static boolean canTarantulaHawkSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
         boolean spawnBlock = BlockTags.SAND.contains(worldIn.getBlockState(pos.down()).getBlock());
-        return spawnBlock && worldIn.getLightSubtracted(pos, 0) > 8;
+        return (spawnBlock) && worldIn.getLightSubtracted(pos, 0) > 8 || AMConfig.fireproofTarantulaHawk;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
@@ -137,6 +137,9 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         return AMSoundRegistry.TARANTULA_HAWK_HURT;
     }
 
+    public boolean isImmuneToFire() {
+        return AMConfig.fireproofTarantulaHawk;
+    }
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {

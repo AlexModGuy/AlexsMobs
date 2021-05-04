@@ -57,7 +57,7 @@ public class EffectDebilitatingSting extends Effect {
                 entity.setMotion(new Vector3d(0, -1, 0));
             }
             if (lastDuration == 1) {
-                entity.attackEntityFrom(DamageSource.MAGIC, 1000 + entity.getMaxHealth());
+                entity.attackEntityFrom(DamageSource.MAGIC, (amplifier + 1) * 30);
                 if (amplifier > 0) {
                     BlockPos surface = entity.getPosition();
                     while (!entity.world.isAirBlock(surface) && surface.getY() < 256) {
