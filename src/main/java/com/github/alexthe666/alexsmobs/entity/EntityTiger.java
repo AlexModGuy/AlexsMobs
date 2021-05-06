@@ -776,8 +776,9 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
             if (jumpAttemptCooldown > 0) {
                 jumpAttemptCooldown--;
             }
-            if (tiger.getAttackTarget() != null && tiger.getAttackTarget().isAlive()) {
-                double dist = tiger.getDistance(tiger.getAttackTarget());
+            LivingEntity target = tiger.getAttackTarget();
+            if (target != null && target.isAlive()) {
+                double dist = tiger.getDistance(target);
                 if (tiger.getRevengeTarget() != null && tiger.getRevengeTarget().isAlive() && dist < 10) {
                     tiger.setStealth(false);
                 } else {
@@ -789,36 +790,36 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
                 if (dist <= 20) {
                     tiger.setStealth(false);
                     tiger.setRunning(true);
-                    if (tiger.dataManager.get(LAST_SCARED_MOB_ID) != tiger.getAttackTarget().getEntityId()) {
-                        tiger.dataManager.set(LAST_SCARED_MOB_ID, tiger.getAttackTarget().getEntityId());
-                        tiger.getAttackTarget().addPotionEffect(new EffectInstance(AMEffectRegistry.FEAR, 100, 0, true, false));
+                    if (tiger.dataManager.get(LAST_SCARED_MOB_ID) != target.getEntityId()) {
+                        tiger.dataManager.set(LAST_SCARED_MOB_ID, target.getEntityId());
+                        target.addPotionEffect(new EffectInstance(AMEffectRegistry.FEAR, 100, 0, true, false));
                     }
                 }
                 if (dist < 12 && tiger.getAnimation() == NO_ANIMATION && tiger.isOnGround() && jumpAttemptCooldown == 0 && !tiger.isHolding()) {
                     tiger.setAnimation(ANIMATION_LEAP);
                     jumpAttemptCooldown = 70;
                 }
-                if ((jumpAttemptCooldown > 0 || tiger.isInWaterOrBubbleColumn()) && !tiger.isHolding() && tiger.getAnimation() == NO_ANIMATION && dist < 4 + tiger.getAttackTarget().getWidth()) {
+                if ((jumpAttemptCooldown > 0 || tiger.isInWaterOrBubbleColumn()) && !tiger.isHolding() && tiger.getAnimation() == NO_ANIMATION && dist < 4 + target.getWidth()) {
                     tiger.setAnimation(tiger.getRNG().nextBoolean() ? ANIMATION_PAW_L : ANIMATION_PAW_R);
                 }
-                if (dist < 4 + tiger.getAttackTarget().getWidth() && (tiger.getAnimation() == ANIMATION_PAW_L || tiger.getAnimation() == ANIMATION_PAW_R) && tiger.getAnimationTick() == 8) {
-                    tiger.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(tiger), 7 + tiger.getRNG().nextInt(5));
+                if (dist < 4 + target.getWidth() && (tiger.getAnimation() == ANIMATION_PAW_L || tiger.getAnimation() == ANIMATION_PAW_R) && tiger.getAnimationTick() == 8) {
+                    target.attackEntityFrom(DamageSource.causeMobDamage(tiger), 7 + tiger.getRNG().nextInt(5));
                 }
                 if (tiger.getAnimation() == ANIMATION_LEAP) {
                     tiger.getNavigator().clearPath();
-                    Vector3d vec = tiger.getAttackTarget().getPositionVec().subtract(tiger.getPositionVec());
+                    Vector3d vec = target.getPositionVec().subtract(tiger.getPositionVec());
                     tiger.rotationYaw = -((float) MathHelper.atan2(vec.x, vec.z)) * (180F / (float) Math.PI);
                     tiger.renderYawOffset = tiger.rotationYaw;
 
                     if (tiger.getAnimationTick() == 5 && tiger.onGround) {
-                        Vector3d vector3d1 = new Vector3d(this.tiger.getAttackTarget().getPosX() - this.tiger.getPosX(), 0.0D, this.tiger.getAttackTarget().getPosZ() - this.tiger.getPosZ());
+                        Vector3d vector3d1 = new Vector3d(target.getPosX() - this.tiger.getPosX(), 0.0D, this.target.getPosZ() - this.tiger.getPosZ());
                         if (vector3d1.lengthSquared() > 1.0E-7D) {
                             vector3d1 = vector3d1.normalize().scale(Math.min(dist, 15) * 0.2F);
                         }
-                        this.tiger.setMotion(vector3d1.x, vector3d1.y + 0.3F + 0.1F * MathHelper.clamp(this.tiger.getAttackTarget().getPosYEye() - this.tiger.getPosY(), 0, 2), vector3d1.z);
+                        this.tiger.setMotion(vector3d1.x, vector3d1.y + 0.3F + 0.1F * MathHelper.clamp(target.getPosYEye() - this.tiger.getPosY(), 0, 2), vector3d1.z);
                     }
-                    if (dist < tiger.getAttackTarget().getWidth() + 3 && tiger.getAnimationTick() >= 15) {
-                        tiger.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(tiger), 2);
+                    if (dist < target.getWidth() + 3 && tiger.getAnimationTick() >= 15) {
+                        target.attackEntityFrom(DamageSource.causeMobDamage(tiger), 2);
                         tiger.setRunning(false);
                         tiger.setStealth(false);
                         tiger.setHolding(true);
@@ -827,7 +828,11 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
                     if (tiger.isHolding()) {
                         tiger.getNavigator().clearPath();
                     } else {
-                        tiger.getNavigator().tryMoveToEntityLiving(tiger.getAttackTarget(), tiger.isStealth() ? 0.75F : 1.0F);
+                        try{
+                            tiger.getNavigator().tryMoveToEntityLiving(target, tiger.isStealth() ? 0.75F : 1.0F);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
