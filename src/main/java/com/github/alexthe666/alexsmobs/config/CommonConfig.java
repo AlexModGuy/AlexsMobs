@@ -270,8 +270,8 @@ public class CommonConfig {
         enderiophageSpawnRolls = buildInt(builder, "enderiophageSpawnRolls", "spawns", AMConfig.enderiophageSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         baldEagleSpawnWeight = buildInt(builder, "baldEagleSpawnWeight", "spawns", AMConfig.baldEagleSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         baldEagleSpawnRolls = buildInt(builder, "baldEagleSpawnRolls", "spawns", AMConfig.baldEagleSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
-        tigerSpawnWeight = buildInt(builder, "baldEagleSpawnWeight", "spawns", AMConfig.tigerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
-        tigerSpawnRolls = buildInt(builder, "baldEagleSpawnRolls", "spawns", AMConfig.tigerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        tigerSpawnWeight = buildInt(builder, "tigerSpawnWeight", "spawns", AMConfig.tigerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        tigerSpawnRolls = buildInt(builder, "tigerSpawnRolls", "spawns", AMConfig.tigerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         tarantulaHawkSpawnWeight = buildInt(builder, "tarantulaHawkSpawnWeight", "spawns", AMConfig.tarantulaHawkSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         tarantulaHawkSpawnRolls = buildInt(builder, "tarantulaHawkSpawnRolls", "spawns", AMConfig.tarantulaHawkSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         builder.push("uniqueSpawning");

@@ -812,7 +812,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
                     tiger.renderYawOffset = tiger.rotationYaw;
 
                     if (tiger.getAnimationTick() == 5 && tiger.onGround) {
-                        Vector3d vector3d1 = new Vector3d(target.getPosX() - this.tiger.getPosX(), 0.0D, this.target.getPosZ() - this.tiger.getPosZ());
+                        Vector3d vector3d1 = new Vector3d(target.getPosX() - this.tiger.getPosX(), 0.0D, target.getPosZ() - this.tiger.getPosZ());
                         if (vector3d1.lengthSquared() > 1.0E-7D) {
                             vector3d1 = vector3d1.normalize().scale(Math.min(dist, 15) * 0.2F);
                         }
