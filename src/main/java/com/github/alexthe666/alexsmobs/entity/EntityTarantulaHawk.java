@@ -174,6 +174,10 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         return super.attackEntityFrom(source, amount);
     }
 
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.ARTHROPOD;
+    }
+
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("HawkSitting", this.isSitting());

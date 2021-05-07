@@ -395,6 +395,10 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
                 this.world.addParticle(AMParticleRegistry.SHOCKED, e.getPosX(), e.getPosYEye() + e.getHeight() * 0.15F + (double) (this.rand.nextFloat() * e.getHeight() * 0.15F), e.getPosZ(), d0, d1, d2);
             }
         }
+        if(this.getAttackTarget() != null && this.getAttackTarget().isPotionActive(AMEffectRegistry.TIGERS_BLESSING)){
+            this.setAttackTarget(null);
+            this.setRevengeTarget(null);
+        }
         prevScaredMobId = this.dataManager.get(LAST_SCARED_MOB_ID);
         AnimationHandler.INSTANCE.updateAnimations(this);
     }

@@ -330,7 +330,7 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     protected float getSoundVolume() {
-        return this.isSilent() ? 0 : 2.3F;
+        return this.isSilent() ? 0 : (float)AMConfig.cachalotVolume;
     }
 
     public void livingTick() {
@@ -522,7 +522,7 @@ public class EntityCachalotWhale extends AnimalEntity {
                     whaleSpeedMod = 0.25F;
                     if (echoTimer % 10 == 0) {
                         if (echoTimer % 40 == 0) {
-                            this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK, 3 * this.getSoundVolume(), this.getSoundPitch());
+                            this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK, this.getSoundVolume(), this.getSoundPitch());
                         }
                         EntityCachalotEcho echo = new EntityCachalotEcho(this.world, this);
                         float radius = this.headPart.getWidth() * 0.5F;
