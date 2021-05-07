@@ -408,7 +408,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
 
     public void updateRidden() {
         Entity entity = this.getRidingEntity();
-        if (this.isPassenger() && !entity.isAlive()) {
+        if (this.isPassenger() && (!entity.isAlive() || !this.isAlive())) {
             this.stopRiding();
         } else if (isTamed() && entity instanceof LivingEntity && isOwner((LivingEntity) entity)) {
             this.setMotion(0, 0, 0);
