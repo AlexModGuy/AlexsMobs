@@ -104,16 +104,16 @@ public class EntityCachalotWhale extends AnimalEntity {
         this.whaleParts = new EntityCachalotPart[]{this.headPart, this.bodyFrontPart, this.bodyPart, this.tail1Part, this.tail2Part, this.tail3Part};
     }
 
-    public boolean canDespawn(double distanceToClosestPlayer) {
-        return !this.isSleeping() && !this.isCharging() && !this.isDespawnBeach() && !isAlbino();
-    }
-
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 160.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.2F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 30F);
     }
 
     public static <T extends MobEntity> boolean canCachalotWhaleSpawn(EntityType<T> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
         return iServerWorld.getFluidState(pos).isTagged(FluidTags.WATER);
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !this.isSleeping() && !this.isCharging() && !this.isDespawnBeach() && !isAlbino();
     }
 
     private boolean canDespawn() {
@@ -330,13 +330,13 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     protected float getSoundVolume() {
-        return this.isSilent() ? 0 : (float)AMConfig.cachalotVolume;
+        return this.isSilent() ? 0 : (float) AMConfig.cachalotVolume;
     }
 
     public void livingTick() {
         super.livingTick();
         scaleParts();
-        if(echoSoundCooldown > 0){
+        if (echoSoundCooldown > 0) {
             echoSoundCooldown--;
         }
         if (this.isSleeping()) {
@@ -514,7 +514,7 @@ public class EntityCachalotWhale extends AnimalEntity {
             } else if (!isBeached() && !isSleeping()) {
                 this.faceEntity(target, 360, 360);
                 waitForEchoFlag = this.getRevengeTarget() == null || !this.getRevengeTarget().isEntityEqual(target);
-                if(target instanceof PlayerEntity || !target.isInWaterOrBubbleColumn()){
+                if (target instanceof PlayerEntity || !target.isInWaterOrBubbleColumn()) {
                     waitForEchoFlag = false;
                 }
                 if (waitForEchoFlag && !receivedEcho) {
@@ -549,7 +549,7 @@ public class EntityCachalotWhale extends AnimalEntity {
                     float targetYaw = (float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
                     float targetPitch = (float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
                     this.rotationPitch = (this.rotationPitch + MathHelper.clamp(targetPitch - this.rotationPitch, -2, 2));
-                    if(d0 * d0 + d2 * d2 >= 4){
+                    if (d0 * d0 + d2 * d2 >= 4) {
                         this.rotationYaw = (this.rotationYaw + MathHelper.clamp(targetYaw - this.rotationYaw, -2, 2));
                         this.renderYawOffset = rotationYaw;
                     }
@@ -557,11 +557,12 @@ public class EntityCachalotWhale extends AnimalEntity {
                     if (chargeCooldown <= 0 && dif < 4) {
                         this.setCharging(true);
                         whaleSpeedMod = 1.5F;
-                        this.getNavigator().tryMoveToEntityLiving(target, 1.0D);
-                        if(d0 * d0 + d2 * d2 < 4){
-                             this.rotationYaw = prevRotationYaw;
+                        if (d0 * d0 + d2 * d2 < 4) {
+                            this.rotationYaw = prevRotationYaw;
                             this.renderYawOffset = prevRotationYaw;
-                            this.getNavigator().clearPath();
+                            this.setMotion(this.getMotion().mul(0.8, 1, 0.8));
+                        } else {
+                            this.getMoveHelper().setMoveTo(target.getPosX(), target.getPosY(), target.getPosZ(), 1.0D);
                         }
                         if (this.isCharging()) {
                             if (this.getDistance(target) < this.getWidth() && chargeProgress > 4) {
@@ -801,7 +802,7 @@ public class EntityCachalotWhale extends AnimalEntity {
         }
 
         public void tick() {
-            if (this.action == Action.MOVE_TO && !dolphin.getNavigator().noPath()) {
+            if (this.action == Action.MOVE_TO) {
                 double lvt_1_1_ = this.posX - dolphin.getPosX();
                 double lvt_3_1_ = this.posY - dolphin.getPosY();
                 double lvt_5_1_ = this.posZ - dolphin.getPosZ();
@@ -883,74 +884,4 @@ public class EntityCachalotWhale extends AnimalEntity {
             return (p_205140_1_.getFluidState(p_205140_2_).isEmpty() || lvt_3_1_.isIn(Blocks.BUBBLE_COLUMN)) && lvt_3_1_.allowsMovement(p_205140_1_, p_205140_2_, PathType.LAND);
         }
     }
-
-    class FollowParentGoal extends Goal {
-        private final AnimalEntity childAnimal;
-        private final double moveSpeed;
-        private AnimalEntity parentAnimal;
-        private int delayCounter;
-
-        public FollowParentGoal(AnimalEntity p_i1626_1_, double p_i1626_2_) {
-            this.childAnimal = p_i1626_1_;
-            this.moveSpeed = p_i1626_2_;
-        }
-
-        public boolean shouldExecute() {
-            if (this.childAnimal.getGrowingAge() >= 0) {
-                return false;
-            } else {
-                List<AnimalEntity> lvt_1_1_ = this.childAnimal.world.getEntitiesWithinAABB(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().grow(8.0D, 4.0D, 8.0D));
-                AnimalEntity lvt_2_1_ = null;
-                double lvt_3_1_ = 1.7976931348623157E308D;
-                Iterator var5 = lvt_1_1_.iterator();
-
-                while (var5.hasNext()) {
-                    AnimalEntity lvt_6_1_ = (AnimalEntity) var5.next();
-                    if (lvt_6_1_.getGrowingAge() >= 0) {
-                        double lvt_7_1_ = this.childAnimal.getDistanceSq(lvt_6_1_);
-                        if (lvt_7_1_ <= lvt_3_1_) {
-                            lvt_3_1_ = lvt_7_1_;
-                            lvt_2_1_ = lvt_6_1_;
-                        }
-                    }
-                }
-
-                if (lvt_2_1_ == null) {
-                    return false;
-                } else if (lvt_3_1_ < 9.0D) {
-                    return false;
-                } else {
-                    this.parentAnimal = lvt_2_1_;
-                    return true;
-                }
-            }
-        }
-
-        public boolean shouldContinueExecuting() {
-            if (this.childAnimal.getGrowingAge() >= 0) {
-                return false;
-            } else if (!this.parentAnimal.isAlive()) {
-                return false;
-            } else {
-                double lvt_1_1_ = this.childAnimal.getDistanceSq(this.parentAnimal);
-                return lvt_1_1_ >= 9.0D && lvt_1_1_ <= 256.0D;
-            }
-        }
-
-        public void startExecuting() {
-            this.delayCounter = 0;
-        }
-
-        public void resetTask() {
-            this.parentAnimal = null;
-        }
-
-        public void tick() {
-            if (--this.delayCounter <= 0) {
-                this.delayCounter = 10;
-                this.childAnimal.getNavigator().tryMoveToEntityLiving(this.parentAnimal, this.moveSpeed);
-            }
-        }
-    }
-
 }
