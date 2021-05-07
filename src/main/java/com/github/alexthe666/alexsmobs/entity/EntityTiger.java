@@ -340,13 +340,13 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
                 this.setSprinting(false);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
             }
-            if ((isSitting() || isSleeping()) && (++sittingTime > maxSitTime || this.getAttackTarget() != null || this.isInLove() || dontSitFlag)) {
+            if ((isSitting() || isSleeping()) && (++sittingTime > maxSitTime || this.getAttackTarget() != null || this.isInLove() || dontSitFlag || this.isInWaterOrBubbleColumn())) {
                 this.setSitting(false);
                 this.setSleeping(false);
                 sittingTime = 0;
                 maxSitTime = 100 + rand.nextInt(50);
             }
-            if (this.getAttackTarget() == null && !dontSitFlag && this.getMotion().lengthSquared() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSleeping() && !this.isSitting() && rand.nextInt(100) == 0) {
+            if (this.getAttackTarget() == null && !dontSitFlag && this.getMotion().lengthSquared() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSleeping() && !this.isSitting() && !this.isInWaterOrBubbleColumn() && rand.nextInt(100) == 0) {
                 sittingTime = 0;
                 if (this.getRNG().nextBoolean()) {
                     maxSitTime = 100 + rand.nextInt(550);
