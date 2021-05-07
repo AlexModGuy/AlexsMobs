@@ -127,6 +127,8 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
         if (this.targetEntity == null || this.targetEntity != null && !this.targetEntity.isAlive()) {
             this.resetTask();
             this.goalOwner.getNavigator().clearPath();
+        }else{
+            moveTo();
         }
         if(targetEntity != null && this.goalOwner.canEntityBeSeen(targetEntity) && this.goalOwner.getWidth() > 2D && this.goalOwner.isOnGround()){
             this.goalOwner.getMoveHelper().setMoveTo(targetEntity.getPosX(), targetEntity.getPosY(), targetEntity.getPosZ(), 1);

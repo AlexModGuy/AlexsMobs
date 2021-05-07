@@ -17,6 +17,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -184,6 +185,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         this.targetSelector.addGoal(5, new EntityGrizzlyBear.AttackPlayerGoal());
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, this::func_233680_b_));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, FoxEntity.class, 10, true, true, null));
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, WolfEntity.class, 10, true, true, null));
         this.targetSelector.addGoal(7, new ResetAngerGoal<>(this, false));
     }
 

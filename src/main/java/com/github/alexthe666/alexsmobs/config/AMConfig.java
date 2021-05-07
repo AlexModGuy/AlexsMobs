@@ -95,6 +95,16 @@ public class AMConfig {
     public static int tasmanianDevilSpawnRolls = 0;
     public static int kangarooSpawnWeight = 25;
     public static int kangarooSpawnRolls = 0;
+    public static int cachalotWhaleSpawnWeight = 2;
+    public static int cachalotWhaleSpawnRolls = 0;
+    public static int enderiophageSpawnWeight = 4;
+    public static int enderiophageSpawnRolls = 3;
+    public static int baldEagleSpawnWeight = 15;
+    public static int baldEagleSpawnRolls = 0;
+    public static int tigerSpawnWeight = 100;
+    public static int tigerSpawnRolls = 0;
+    public static int tarantulaHawkSpawnWeight = 6;
+    public static int tarantulaHawkSpawnRolls = 1;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -128,6 +138,15 @@ public class AMConfig {
     public static boolean emuTargetSkeletons = true;
     public static double emuPantsDodgeChance = 0.45F;
     public static boolean straddleboardEnchants = true;
+    public static boolean beachedCachalotWhales = true;
+    public static double leafcutterAntFungusGrowChance = 0.3F;
+    public static int leafcutterAntRepopulateFeedings = 25;
+    public static int leafcutterAntColonySize = 20;
+    public static double leafcutterAntBreakLeavesChance = 0.2F;
+    public static int beachedCachalotWhaleSpawnChance = 5;
+    public static int beachedCachalotWhaleSpawnDelay = 24000;
+    public static double leafcutterAnthillSpawnChance = 0.005F;
+    public static boolean fireproofTarantulaHawk = false;
 
     public static void bake(ModConfig config) {
         try {
@@ -222,8 +241,16 @@ public class AMConfig {
             tasmanianDevilSpawnRolls = ConfigHolder.COMMON.tasmanianDevilSpawnRolls.get();
             kangarooSpawnWeight = ConfigHolder.COMMON.kangarooSpawnWeight.get();
             kangarooSpawnRolls = ConfigHolder.COMMON.kangarooSpawnRolls.get();
-
-
+            cachalotWhaleSpawnWeight = ConfigHolder.COMMON.cachalotWhaleSpawnWeight.get();
+            cachalotWhaleSpawnRolls = ConfigHolder.COMMON.cachalotWhaleSpawnRolls.get();
+            enderiophageSpawnWeight = ConfigHolder.COMMON.enderiophageSpawnWeight.get();
+            enderiophageSpawnRolls = ConfigHolder.COMMON.enderiophageSpawnRolls.get();
+            baldEagleSpawnWeight = ConfigHolder.COMMON.baldEagleSpawnWeight.get();
+            baldEagleSpawnRolls = ConfigHolder.COMMON.baldEagleSpawnRolls.get();
+            tigerSpawnWeight = ConfigHolder.COMMON.tigerSpawnWeight.get();
+            tigerSpawnRolls = ConfigHolder.COMMON.tigerSpawnRolls.get();
+            tarantulaHawkSpawnWeight = ConfigHolder.COMMON.tarantulaHawkSpawnWeight.get();
+            tarantulaHawkSpawnRolls = ConfigHolder.COMMON.tarantulaHawkSpawnRolls.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
@@ -247,6 +274,15 @@ public class AMConfig {
             straddleboardEnchants = ConfigHolder.COMMON.straddleboardEnchants.get();
             emuTargetSkeletons = ConfigHolder.COMMON.emuTargetSkeletons.get();
             emuPantsDodgeChance = ConfigHolder.COMMON.emuPantsDodgeChance.get();
+            leafcutterAntFungusGrowChance = ConfigHolder.COMMON.leafcutterAntFungusGrowChance.get();
+            leafcutterAntRepopulateFeedings = ConfigHolder.COMMON.leafcutterAntRepopulateFeedings.get();
+            leafcutterAntColonySize = ConfigHolder.COMMON.leafcutterAntColonySize.get();
+            leafcutterAntBreakLeavesChance = ConfigHolder.COMMON.leafcutterAntBreakLeavesChance.get();
+            beachedCachalotWhales = ConfigHolder.COMMON.beachedCachalotWhales.get();
+            beachedCachalotWhaleSpawnChance = ConfigHolder.COMMON.beachedCachalotWhaleSpawnChance.get();
+            beachedCachalotWhaleSpawnDelay = ConfigHolder.COMMON.beachedCachalotWhaleSpawnDelay.get();
+            leafcutterAnthillSpawnChance = ConfigHolder.COMMON.leafcutterAnthillSpawnChance.get();
+            fireproofTarantulaHawk = ConfigHolder.COMMON.fireproofTarantulaHawk.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

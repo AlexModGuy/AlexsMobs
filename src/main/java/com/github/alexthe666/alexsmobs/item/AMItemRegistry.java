@@ -2,9 +2,8 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityCockroachEgg;
-import com.github.alexthe666.alexsmobs.entity.EntitySharkToothArrow;
+import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.ComposterBlock;
@@ -38,6 +37,7 @@ public class AMItemRegistry {
     public static CustomArmorMaterial SPIKED_TURTLE_SHELL_ARMOR_MATERIAL = new AMArmorMaterial("spiked_turtle_shell", 35, new int[]{3, 3, 3, 3}, 30, SoundEvents.ITEM_ARMOR_EQUIP_TURTLE, 1F, 0.2F);
     public static CustomArmorMaterial FEDORA_ARMOR_MATERIAL = new AMArmorMaterial("fedora", 10, new int[]{2, 2, 2, 2}, 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
     public static CustomArmorMaterial EMU_ARMOR_MATERIAL = new AMArmorMaterial("emu", 9, new int[]{4, 4, 4, 4}, 20, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.5F);
+    public static CustomArmorMaterial TARANTULA_HAWK_ELYTRA_MATERIAL = new AMArmorMaterial("tarantula_hawk_elytra", 9, new int[]{3, 3, 3, 3}, 5, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0);
 
     public static final Item TAB_ICON = new ItemTabIcon(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1)).setRegistryName("alexsmobs:animal_dictionary");
@@ -108,9 +108,26 @@ public class AMItemRegistry {
     public static final Item COOKED_KANGAROO_MEAT = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(8).saturation(0.85F).meat().build())).setRegistryName("alexsmobs:cooked_kangaroo_meat");
     public static final Item KANGAROO_HIDE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:kangaroo_hide");
     public static final Item KANGAROO_BURGER = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(12).saturation(1F).meat().build())).setRegistryName("alexsmobs:kangaroo_burger");
+    public static final Item AMBERGRIS = new ItemFuel(new Item.Properties().group(AlexsMobs.TAB), 12800).setRegistryName("alexsmobs:ambergris");
+    public static final Item CACHALOT_WHALE_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:cachalot_whale_tooth");
+    public static final Item ECHOLOCATOR = new ItemEcholocator(new Item.Properties().group(AlexsMobs.TAB).maxDamage(100), false).setRegistryName("alexsmobs:echolocator");
+    public static final Item ENDOLOCATOR = new ItemEcholocator(new Item.Properties().group(AlexsMobs.TAB).maxDamage(25), true).setRegistryName("alexsmobs:endolocator");
+    public static final Item GONGYLIDIA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(3).saturation(1.2F).build())).setRegistryName("alexsmobs:gongylidia");
+    public static final Item LEAFCUTTER_ANT_PUPA = new ItemLeafcutterPupa(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:leafcutter_ant_pupa");
+    public static final Item ENDERIOPHAGE_ROCKET = new ItemEnderiophageRocket(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:enderiophage_rocket");
+    public static final Item MUSIC_DISC_THIME = new MusicDiscItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
+    public static final Item FALCONRY_GLOVE_INVENTORY = new Item(new Item.Properties()).setRegistryName("alexsmobs:falconry_glove_inventory");
+    public static final Item FALCONRY_GLOVE_HAND = new Item(new Item.Properties()).setRegistryName("alexsmobs:falconry_glove_hand");
+    public static final Item FALCONRY_GLOVE = new ItemFalconryGlove(AlexsMobs.PROXY.setupISTER(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1))).setRegistryName("alexsmobs:falconry_glove");
+    public static final Item FALCONRY_HOOD = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:falconry_hood");
+    public static final Item TARANTULA_HAWK_WING_FRAGMENT = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing_fragment");
+    public static final Item TARANTULA_HAWK_WING = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing");
+    public static final Item TARANTULA_HAWK_ELYTRA = new ItemTarantulaHawkElytra(new Item.Properties().group(AlexsMobs.TAB).maxDamage(800).rarity(Rarity.UNCOMMON), TARANTULA_HAWK_ELYTRA_MATERIAL).setRegistryName("alexsmobs:tarantula_hawk_elytra");
+
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
     public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
+    public static final BannerPattern PATTERN_NEW_MEXICO = addBanner("new_mexico");
 
     private static BannerPattern addBanner(String name) {
         return BannerPattern.create(name.toUpperCase(), name, "alexsmobs." + name, true);
@@ -161,6 +178,12 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.DROPBEAR, 0X8A2D35,0X60A3A3, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_dropbear"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TASMANIAN_DEVIL, 0X252426,0XA8B4BF, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_tasmanian_devil"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.KANGAROO, 0XCE9D65,0XDEBDA0, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_kangaroo"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.CACHALOT_WHALE, 0X949899,0X5F666E, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_cachalot_whale"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.LEAFCUTTER_ANT, 0X964023,0XA65930, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_leafcutter_ant"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ENDERIOPHAGE, 0X872D83,0XF6E2CD, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_enderiophage"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.BALD_EAGLE, 0X321F18,0XF4F4F4, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_bald_eagle"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TIGER, 0XC7612E,0X2A3233, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_tiger"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TARANTULA_HAWK, 0X234763,0XE37B38, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_tarantula_hawk"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -188,6 +211,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new BannerPatternItem(PATTERN_BEAR, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_bear"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_0, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_0"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_1, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_1"));
+        event.getRegistry().register(new BannerPatternItem(PATTERN_NEW_MEXICO, (new Item.Properties()).maxStackSize(1).group(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_new_mexico"));
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CROCODILE_SCUTE));
         ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(ROADRUNNER_FEATHER));
         CENTIPEDE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.fromItems(CENTIPEDE_LEG));
@@ -213,8 +237,21 @@ public class AMItemRegistry {
                 return entityarrow;
             }
         });
+        DispenserBlock.registerDispenseBehavior(EMU_EGG, new ProjectileDispenseBehavior() {
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                EntityEmuEgg entityarrow = new EntityEmuEgg(worldIn, position.getX(), position.getY(), position.getZ());
+                return entityarrow;
+            }
+        });
+        DispenserBlock.registerDispenseBehavior(ENDERIOPHAGE_ROCKET, new ProjectileDispenseBehavior() {
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                EntityEnderiophageRocket entityarrow = new EntityEnderiophageRocket(worldIn, position.getX(), position.getY(), position.getZ(), stackIn);
+                return entityarrow;
+            }
+        });
         ComposterBlock.CHANCES.put(BANANA, 0.65F);
         ComposterBlock.CHANCES.put(AMBlockRegistry.BANANA_PEEL, 1F);
         ComposterBlock.CHANCES.put(ACACIA_BLOSSOM, 0.65F);
+        ComposterBlock.CHANCES.put(GONGYLIDIA, 0.9F);
     }
 }

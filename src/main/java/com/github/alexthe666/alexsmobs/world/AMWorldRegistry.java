@@ -1,15 +1,34 @@
 package com.github.alexthe666.alexsmobs.world;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import net.minecraft.entity.EntityClassification;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.feature.*;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+@Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
+
+    public static Feature<NoFeatureConfig> LEAFCUTTER_ANTHILL =  new FeatureLeafcutterAnthill(NoFeatureConfig.field_236558_a_);
+    public static ConfiguredFeature<NoFeatureConfig, ?> LEAFCUTTER_ANTHILL_CF;
+    @SubscribeEvent
+    public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {
+         Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "alexsmobs:leafcutter_hill", LEAFCUTTER_ANTHILL_CF = LEAFCUTTER_ANTHILL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+        event.getRegistry().register(LEAFCUTTER_ANTHILL.setRegistryName("alexsmobs:leafcutter_hill"));
+    }
 
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         Biome biome = ForgeRegistries.BIOMES.getValue(event.getName());
@@ -141,6 +160,24 @@ public class AMWorldRegistry {
         }
         if (BiomeConfig.test(BiomeConfig.kangaroo, biome) && AMConfig.kangarooSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.KANGAROO, AMConfig.kangarooSpawnWeight, 3, 5));
+        }
+        if (BiomeConfig.test(BiomeConfig.cachalot_whale_spawns, biome) && AMConfig.cachalotWhaleSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.CACHALOT_WHALE, AMConfig.cachalotWhaleSpawnWeight, 1, 3));
+        }
+        if(BiomeConfig.test(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0){
+            event.getGeneration().withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, LEAFCUTTER_ANTHILL_CF);
+        }
+        if (BiomeConfig.test(BiomeConfig.enderiophage_spawns, biome) && AMConfig.enderiophageSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.ENDERIOPHAGE, AMConfig.enderiophageSpawnWeight, 2, 2));
+        }
+        if (BiomeConfig.test(BiomeConfig.baldEagle, biome) && AMConfig.baldEagleSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.BALD_EAGLE, AMConfig.baldEagleSpawnWeight, 2, 4));
+        }
+        if (BiomeConfig.test(BiomeConfig.tiger, biome) && AMConfig.tigerSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.TIGER, AMConfig.tigerSpawnWeight, 1, 3));
+        }
+        if (BiomeConfig.test(BiomeConfig.tarantula_hawk, biome) && AMConfig.tarantulaHawkSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.TARANTULA_HAWK, AMConfig.tarantulaHawkSpawnWeight, 1, 1));
         }
     }
 }

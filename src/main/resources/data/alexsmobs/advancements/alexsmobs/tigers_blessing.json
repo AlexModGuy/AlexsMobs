@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:tiger\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tigers_blessing.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.tigers_blessing.desc"
+    },
+    "frame": "challenge"
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "all_effects": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alexsmobs:tigers_blessing": {}
+        }
+      }
+    }
+  }
+}

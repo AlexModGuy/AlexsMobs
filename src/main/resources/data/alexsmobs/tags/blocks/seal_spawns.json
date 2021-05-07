@@ -4,6 +4,7 @@
     "#minecraft:sand",
     "#forge:gravel",
     "#minecraft:ice",
+    "#minecraft:base_stone_overworld",
     "minecraft:snow_block"
   ]
 }

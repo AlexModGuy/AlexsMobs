@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CPC",
+    "PAP",
+    " P "
+  ],
+  "key": {
+    "A": {
+      "item": "alexsmobs:ambergris"
+    },
+    "C": {
+      "item": "alexsmobs:cachalot_whale_tooth"
+    },
+    "P": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:echolocator",
+    "count": 1
+  }
+}

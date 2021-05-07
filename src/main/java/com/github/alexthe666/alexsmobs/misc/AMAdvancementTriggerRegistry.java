@@ -7,10 +7,14 @@ public class AMAdvancementTriggerRegistry {
 
     public static AMAdvancementTrigger MOSQUITO_SICK = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:mosquito_sick"));
     public static AMAdvancementTrigger EMU_DODGE = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:emu_dodge"));
+    public static AMAdvancementTrigger STOMP_LEAFCUTTER_ANTHILL = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:stomp_leafcutter_anthill"));
+    public static AMAdvancementTrigger BALD_EAGLE_CHALLENGE = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:bald_eagle_challenge"));
 
     public static void init(){
         CriteriaTriggers.register(MOSQUITO_SICK);
         CriteriaTriggers.register(EMU_DODGE);
+        CriteriaTriggers.register(STOMP_LEAFCUTTER_ANTHILL);
+        CriteriaTriggers.register(BALD_EAGLE_CHALLENGE);
     }
 
 }

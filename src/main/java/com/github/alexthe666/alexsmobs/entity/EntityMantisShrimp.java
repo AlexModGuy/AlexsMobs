@@ -13,9 +13,12 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -29,6 +32,7 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
@@ -91,6 +95,30 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
     }
 
 
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            Entity entity = source.getTrueSource();
+            if (entity instanceof ShulkerEntity || entity instanceof ShulkerBulletEntity) {
+                amount = (amount + 1.0F) * 0.33F;
+            }
+            return super.attackEntityFrom(source, amount);
+        }
+    }
+
+    //killEntity
+    public void func_241847_a(ServerWorld world, LivingEntity entity) {
+        if(entity.getType() == EntityType.SHULKER){
+            CompoundNBT fishNbt = new CompoundNBT();
+            entity.writeAdditional(fishNbt);
+            fishNbt.putString("DeathLootTable", LootTables.EMPTY.toString());
+            entity.readAdditional(fishNbt);
+            entity.entityDropItem(Items.SHULKER_SHELL);
+        }
+        super.func_241847_a(world, entity);
+    }
+
     public static boolean canMantisShrimpSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos downPos = pos;
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
@@ -125,7 +153,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
         this.goalSelector.addGoal(4, new AnimalAILeaveWater(this));
         this.goalSelector.addGoal(5, new BreedGoal(this, 0.8D));
         this.goalSelector.addGoal(6, new TemptGoal(this, 1.0D, Ingredient.fromItems(Items.TROPICAL_FISH, AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL), false));
-        this.goalSelector.addGoal(7, new AnimalAIRandomSwimming(this, 1.0D, 30));
+        this.goalSelector.addGoal(7, new SemiAquaticAIRandomSwimming(this, 1.0D, 30));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
@@ -268,6 +296,9 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
                     moistureAttackTime = 20;
                 }
             }
+        }
+        if(this.isPotionActive(Effects.LEVITATION)){
+            this.setMotion(this.getMotion().mul(1F, 0.5F, 1F));
         }
     }
 

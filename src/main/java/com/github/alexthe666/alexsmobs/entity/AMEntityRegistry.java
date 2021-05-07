@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.google.common.base.Predicates;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -72,9 +73,16 @@ public class AMEntityRegistry {
     public static final EntityType<EntityEmuEgg> EMU_EGG = registerEntity(EntityType.Builder.create(EntityEmuEgg::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityEmuEgg::new).immuneToFire(), "emu_egg");
     public static final EntityType<EntityPlatypus> PLATYPUS = registerEntity(EntityType.Builder.create(EntityPlatypus::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "platypus");
     public static final EntityType<EntityDropBear> DROPBEAR = registerEntity(EntityType.Builder.create(EntityDropBear::new, EntityClassification.MONSTER).size(1.65F, 1.5F).immuneToFire(), "dropbear");
-    public static final EntityType<EntityFocalPoint> FOCAL_POINT = registerEntity(EntityType.Builder.create(EntityFocalPoint::new, EntityClassification.MISC).size(0.1F, 0.1F).setCustomClientFactory(EntityFocalPoint::new).immuneToFire(), "focal_point");
     public static final EntityType<EntityTasmanianDevil> TASMANIAN_DEVIL = registerEntity(EntityType.Builder.create(EntityTasmanianDevil::new, EntityClassification.CREATURE).size(0.7F, 0.8F), "tasmanian_devil");
     public static final EntityType<EntityKangaroo> KANGAROO = registerEntity(EntityType.Builder.create(EntityKangaroo::new, EntityClassification.CREATURE).size(1.65F, 1.5F), "kangaroo");
+    public static final EntityType<EntityCachalotWhale> CACHALOT_WHALE = registerEntity(EntityType.Builder.create(EntityCachalotWhale::new, EntityClassification.WATER_CREATURE).size(9F, 4.0F), "cachalot_whale");
+    public static final EntityType<EntityCachalotEcho> CACHALOT_ECHO = registerEntity(EntityType.Builder.create(EntityCachalotEcho::new, EntityClassification.MISC).size(2F, 2F).setCustomClientFactory(EntityCachalotEcho::new).immuneToFire(), "cachalot_echo");
+    public static final EntityType<EntityLeafcutterAnt> LEAFCUTTER_ANT = registerEntity(EntityType.Builder.create(EntityLeafcutterAnt::new, EntityClassification.CREATURE).size(0.8F, 0.5F), "leafcutter_ant");
+    public static final EntityType<EntityEnderiophage> ENDERIOPHAGE = registerEntity(EntityType.Builder.create(EntityEnderiophage::new, EntityClassification.CREATURE).size(0.85F, 1.95F).setUpdateInterval(1), "enderiophage");
+    public static final EntityType<EntityEnderiophageRocket> ENDERIOPHAGE_ROCKET = registerEntity(EntityType.Builder.create(EntityEnderiophageRocket::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityEnderiophageRocket::new).immuneToFire(), "enderiophage_rocket");
+    public static final EntityType<EntityBaldEagle> BALD_EAGLE = registerEntity(EntityType.Builder.create(EntityBaldEagle::new, EntityClassification.CREATURE).size(0.5F, 0.95F).setUpdateInterval(1).setTrackingRange(14), "bald_eagle");
+    public static final EntityType<EntityTiger> TIGER = registerEntity(EntityType.Builder.create(EntityTiger::new, EntityClassification.CREATURE).size(1.45F, 1.2F), "tiger");
+    public static final EntityType<EntityTarantulaHawk> TARANTULA_HAWK = registerEntity(EntityType.Builder.create(EntityTarantulaHawk::new, EntityClassification.CREATURE).size(1.2F, 0.9F), "tarantula_hawk");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -122,6 +130,12 @@ public class AMEntityRegistry {
         EntitySpawnPlacementRegistry.register(DROPBEAR, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
         EntitySpawnPlacementRegistry.register(TASMANIAN_DEVIL, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
         EntitySpawnPlacementRegistry.register(KANGAROO, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityKangaroo::canKangarooSpawn);
+        EntitySpawnPlacementRegistry.register(CACHALOT_WHALE, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityCachalotWhale::canCachalotWhaleSpawn);
+        EntitySpawnPlacementRegistry.register(LEAFCUTTER_ANT, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(ENDERIOPHAGE, EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityEnderiophage::canEnderiophageSpawn);
+        EntitySpawnPlacementRegistry.register(BALD_EAGLE, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, EntityBaldEagle::canEagleSpawn);
+        EntitySpawnPlacementRegistry.register(TIGER, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTiger::canTigerSpawn);
+        EntitySpawnPlacementRegistry.register(TARANTULA_HAWK, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTarantulaHawk::canTarantulaHawkSpawn);
     }
 
         @SubscribeEvent
@@ -190,10 +204,20 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(DROPBEAR, EntityDropBear.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(TASMANIAN_DEVIL, EntityTasmanianDevil.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(KANGAROO, EntityKangaroo.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(CACHALOT_WHALE, EntityCachalotWhale.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(LEAFCUTTER_ANT, EntityLeafcutterAnt.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(ENDERIOPHAGE, EntityEnderiophage.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(BALD_EAGLE, EntityBaldEagle.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(TIGER, EntityTiger.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(TARANTULA_HAWK, EntityTarantulaHawk.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){
-        return (com.google.common.base.Predicate<LivingEntity>) e -> e.isAlive() && e.getType().isContained(entityTag);
+        if(entityTag == null){
+            return Predicates.alwaysFalse();
+        }else{
+            return (com.google.common.base.Predicate<LivingEntity>) e -> e.isAlive() && e.getType().isContained(entityTag);
+        }
     }
 
     public static boolean rollSpawn(int rolls, Random random, SpawnReason reason){

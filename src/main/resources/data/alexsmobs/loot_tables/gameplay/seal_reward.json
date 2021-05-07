@@ -187,8 +187,13 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 2,
           "name": "alexsmobs:lobster_bucket"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "alexsmobs:music_disc_thime"
         },
         {
           "type": "minecraft:item",

@@ -178,7 +178,7 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
             }
         });
         this.goalSelector.addGoal(5, new PlatypusAIDigForItems(this));
-        this.goalSelector.addGoal(6, new AnimalAIRandomSwimming(this, 1.0D, 30));
+        this.goalSelector.addGoal(6, new SemiAquaticAIRandomSwimming(this, 1.0D, 30));
         this.goalSelector.addGoal(7, new RandomWalkingGoal(this, 1.0D, 60));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 6.0F));

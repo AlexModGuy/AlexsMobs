@@ -14,6 +14,9 @@ public class AMBlockRegistry {
     public static final Block BANANA_PEEL = new BlockBananaPeel();
     public static final Block CROCODILE_EGG = new BlockCrocodileEgg();
     public static final Block GUSTMAKER = new BlockGustmaker();
+    public static final Block LEAFCUTTER_ANTHILL = new BlockLeafcutterAnthill();
+    public static final Block LEAFCUTTER_ANT_CHAMBER = new BlockLeafcutterAntChamber();
+    public static final Block CAPSID = new BlockCapsid();
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

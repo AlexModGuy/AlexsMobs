@@ -303,6 +303,48 @@
       "x": 290,
       "y": 10,
       "page": 3
+    },
+    {
+      "linked_page": "cachalot_whale.json",
+      "text": "Cachalot Whale",
+      "x": 290,
+      "y": 35,
+      "page": 3
+    },
+    {
+      "linked_page": "leafcutter_ant.json",
+      "text": "Leafcutter Ant",
+      "x": 290,
+      "y": 60,
+      "page": 3
+    },
+    {
+      "linked_page": "enderiophage.json",
+      "text": "Enderiophage",
+      "x": 290,
+      "y": 85,
+      "page": 3
+    },
+    {
+      "linked_page": "bald_eagle.json",
+      "text": "Bald Eagle",
+      "x": 290,
+      "y": 110,
+      "page": 3
+    },
+    {
+      "linked_page": "tiger.json",
+      "text": "Tiger",
+      "x": 290,
+      "y": 135,
+      "page": 3
+    },
+    {
+      "linked_page": "tarantula_hawk.json",
+      "text": "Tarantula Hawk",
+      "x": 290,
+      "y": 160,
+      "page": 3
     }
   ],
   "images": [

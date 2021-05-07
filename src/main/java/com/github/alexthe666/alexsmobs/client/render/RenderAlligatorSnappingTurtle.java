@@ -22,7 +22,8 @@ public class RenderAlligatorSnappingTurtle extends MobRenderer<EntityAlligatorSn
     }
 
     protected void preRenderCallback(EntityAlligatorSnappingTurtle entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.scale(entitylivingbaseIn.getTurtleScale(), entitylivingbaseIn.getTurtleScale(), entitylivingbaseIn.getTurtleScale());
+        float d = entitylivingbaseIn.getTurtleScale() < 0.01F ? 1F : entitylivingbaseIn.getTurtleScale();
+        matrixStackIn.scale(d, d, d);
     }
 
     public ResourceLocation getEntityTexture(EntityAlligatorSnappingTurtle entity) {

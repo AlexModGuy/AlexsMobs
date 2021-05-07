@@ -6,19 +6,25 @@ import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
 import com.github.alexthe666.alexsmobs.item.ItemHemolymphBlaster;
+import com.github.alexthe666.alexsmobs.item.ItemTarantulaHawkElytra;
+import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.model.ElytraModel;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.IDyeableArmorItem;
@@ -31,10 +37,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
 
@@ -48,8 +58,10 @@ public class ClientProxy extends CommonProxy {
     private static final ModelSombrero SOMBRERO_MODEL = new ModelSombrero(0.3F);
     private static final ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(1.0F);
     private static final ModelFedora FEDORA_MODEL = new ModelFedora(0.3F);
+    private static final ModelAMElytra ELYTRA_MODEL = new ModelAMElytra();
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
-    public static List<UUID> currentSquidRiders = new ArrayList<UUID>();
+    public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
+    public PointOfView prevPOV = PointOfView.FIRST_PERSON;
 
     public void init(){
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
@@ -112,6 +124,14 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.DROPBEAR, manager -> new RenderDropBear(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TASMANIAN_DEVIL, manager -> new RenderTasmanianDevil(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.KANGAROO, manager -> new RenderKangaroo(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CACHALOT_WHALE, manager -> new RenderCachalotWhale(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CACHALOT_ECHO, manager -> new RenderCachalotEcho(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.LEAFCUTTER_ANT, manager -> new RenderLeafcutterAnt(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERIOPHAGE, manager -> new RenderEnderiophage(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERIOPHAGE_ROCKET, manager -> new SpriteRenderer(manager, itemRendererIn));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BALD_EAGLE, manager -> new RenderBaldEagle(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TIGER, manager -> new RenderTiger(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TARANTULA_HAWK, manager -> new RenderTarantulaHawk(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
@@ -120,10 +140,16 @@ public class ClientProxy extends CommonProxy {
             ItemModelsProperties.registerProperty(AMItemRegistry.HEMOLYMPH_BLASTER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
                 return !ItemHemolymphBlaster.isUsable(stack) || p_239428_2_ instanceof PlayerEntity && ((PlayerEntity) p_239428_2_).getCooldownTracker().hasCooldown(AMItemRegistry.HEMOLYMPH_BLASTER) ? 1.0F : 0.0F;
             });
+            ItemModelsProperties.registerProperty(AMItemRegistry.TARANTULA_HAWK_ELYTRA, new ResourceLocation("broken"), (stack, p_239428_1_, p_239428_2_) -> {
+                return ItemTarantulaHawkElytra.isUsable(stack) ? 0.0F : 1.0F;
+            });
+
         }catch (Exception e){
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");
         }
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.BANANA_PEEL, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AMBlockRegistry.CAPSID, RenderType.getTranslucent());
+        ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.CAPSID, manager -> new RenderCapsid(manager));
 
     }
 
@@ -166,6 +192,8 @@ public class ClientProxy extends CommonProxy {
                 return SPIKED_TURTLE_SHELL_MODEL;
             case 5:
                 return FEDORA_MODEL;
+            case 6:
+                return ELYTRA_MODEL.withAnimations(entity);
             default:
                 return null;
         }
@@ -197,7 +225,28 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SHOT, ParticleGusterSandShot.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.HEMOLYMPH, ParticleHemolymph.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.PLATYPUS_SENSE, ParticlePlatypus.Factory::new);
-
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.WHALE_SPLASH, ParticleWhaleSplash.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.DNA, ParticleDna.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.SHOCKED, ParticleShocked.Factory::new);
     }
 
+
+    public void setRenderViewEntity(Entity entity){
+        prevPOV = Minecraft.getInstance().gameSettings.getPointOfView();
+        Minecraft.getInstance().setRenderViewEntity(entity);
+        Minecraft.getInstance().gameSettings.setPointOfView(PointOfView.THIRD_PERSON_BACK);
+    }
+
+    public void resetRenderViewEntity(){
+        Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().player);
+    }
+
+    public int getPreviousPOV(){
+        return prevPOV.ordinal();
+    }
+
+    public boolean isFarFromCamera(double x, double y, double z) {
+        Minecraft lvt_1_1_ = Minecraft.getInstance();
+        return lvt_1_1_.gameRenderer.getActiveRenderInfo().getProjectedView().squareDistanceTo(x, y, z) >= 256.0D;
+    }
 }

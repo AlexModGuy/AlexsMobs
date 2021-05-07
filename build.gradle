@@ -27,7 +27,7 @@ repositories{
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.8.1'
+version = '1.10.0'
 group = 'com.github.alexthe667' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alexsmobs'
 
@@ -35,7 +35,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
- mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: 'snapshot', version: '20201028-1.16.3'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -100,7 +100,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.4-35.1.10'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.0.46'
     compileOnly fg.deobf("mezz.jei:jei-1.16.2:7.1.3.19:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:7.1.3.19")
     compile 'citadel:citadel:1.6.2:deobf'
@@ -112,7 +112,7 @@ jar {
         attributes([
             "Specification-Title": "alexsmobs",
             "Specification-Vendor": "alexthe667",
-            "Specification-Version": "1.7.1", // We are version 1 of ourselves
+            "Specification-Version": "1.9.1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"alexthe667",

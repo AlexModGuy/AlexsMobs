@@ -63,7 +63,7 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 50.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 22.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 20.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.7F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public static BlockPos getLowestPos(IWorld world, BlockPos pos) {
@@ -137,7 +137,7 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
             this.navigator = new GroundPathNavigatorWide(this, world);
             this.isUpsideDownNavigator = false;
         } else {
-            this.moveController = new FlightMoveController(this, 1F, false);
+            this.moveController = new FlightMoveController(this, 1.1F, false);
             this.navigator = new DirectPathNavigator(this, world);
             this.isUpsideDownNavigator = true;
         }

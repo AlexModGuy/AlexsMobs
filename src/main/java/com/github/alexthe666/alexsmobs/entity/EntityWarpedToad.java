@@ -28,6 +28,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.*;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -147,7 +148,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
         this.goalSelector.addGoal(3, new BreedGoal(this, 0.8D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.MAGGOT, AMItemRegistry.MOSQUITO_LARVA), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.INSECT_ITEMS)), false));
         this.goalSelector.addGoal(5, new WarpedToadAIRandomSwimming(this, 1.0D, 7));
         this.goalSelector.addGoal(6, new AnimalAIWanderRanged(this, 60, 1.0D, 5, 4));
         this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 10.0F));
@@ -282,7 +283,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
             }
             return ActionResultType.SUCCESS;
         }
-        if (isTamed() && (item == AMItemRegistry.MAGGOT)) {
+        if (isTamed() && (ItemTags.getCollection().get(AMTagRegistry.INSECT_ITEMS).contains(itemstack.getItem()))) {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.consumeItemFromStack(player, itemstack);
                 this.playSound(SoundEvents.ENTITY_STRIDER_EAT, this.getSoundVolume(), this.getSoundPitch());
@@ -470,7 +471,8 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
                 double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
                 double extraZ = radius * MathHelper.cos(angle);
                 double yHelp = entityIn.getHeight();
-                entityIn.setPosition(this.getPosX() + extraX, this.getPosY() + this.getEyeHeight() - yHelp, this.getPosZ() + extraZ);
+                Vector3d minus = new Vector3d(this.getPosX() + extraX - this.getAttackTarget().getPosX(), this.getEyeHeight() - yHelp - this.getAttackTarget().getPosY(), this.getPosZ() + extraZ - this.getAttackTarget().getPosZ());
+                this.getAttackTarget().setMotion(minus);
                 if (attackProgress == 0.5F) {
                     float damage = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
                     if (entityIn instanceof EntityCrimsonMosquito) {
@@ -516,7 +518,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem() == AMItemRegistry.MAGGOT;
+        return ItemTags.getCollection().get(AMTagRegistry.INSECT_ITEMS).contains(stack.getItem());
     }
 
     @Override

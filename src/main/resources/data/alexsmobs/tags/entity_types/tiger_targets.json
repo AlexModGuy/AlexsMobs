@@ -1,0 +1,10 @@
+{
+  "__comment": "all non-player targets of the tiger mob.",
+  "replace": false,
+  "values": [
+    "#alexsmobs:passive_land_animals",
+    "alexsmobs:endergrade",
+    "alexsmobs:moose",
+    "alexsmobs:kangaroo"
+  ]
+}

@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.RandomWalkingGoal;
@@ -13,13 +12,23 @@ import net.minecraft.util.math.vector.Vector3d;
 import javax.annotation.Nullable;
 
 public class AnimalAIRandomSwimming extends RandomWalkingGoal {
+    private int xzSpread;
+    private boolean submerged;
 
-    public AnimalAIRandomSwimming(AnimalEntity creature, double speed, int chance) {
+    public AnimalAIRandomSwimming(AnimalEntity creature, double speed, int chance, int xzSpread) {
         super(creature, speed, chance, false);
+        this.xzSpread = xzSpread;
+        this.submerged = false;
+    }
+
+    public AnimalAIRandomSwimming(AnimalEntity creature, double speed, int chance, int xzSpread, boolean submerged) {
+        super(creature, speed, chance, false);
+        this.xzSpread = xzSpread;
+        this.submerged = submerged;
     }
 
     public boolean shouldExecute() {
-        if (this.creature.isBeingRidden() || ((ISemiAquatic)creature).shouldStopMoving() || creature.getAttackTarget() != null || !this.creature.isInWater() && !this.creature.isInLava() && this.creature instanceof ISemiAquatic && !((ISemiAquatic) this.creature).shouldEnterWater()) {
+        if (this.creature.isBeingRidden()|| creature.getAttackTarget() != null || !this.creature.isInWater() && !this.creature.isInLava()) {
             return false;
         } else {
             if (!this.mustUpdate) {
@@ -43,19 +52,25 @@ public class AnimalAIRandomSwimming extends RandomWalkingGoal {
     @Nullable
     protected Vector3d getPosition() {
         if(this.creature.detachHome() && this.creature.getDistanceSq(Vector3d.copyCentered(this.creature.getHomePosition())) > this.creature.getMaximumHomeDistance() * this.creature.getMaximumHomeDistance()){
-            return RandomPositionGenerator.findRandomTargetBlockTowards(this.creature, 7, 3, Vector3d.copyCenteredHorizontally(this.creature.getHomePosition()));
+            return RandomPositionGenerator.findRandomTargetBlockTowards(this.creature, xzSpread, 3, Vector3d.copyCenteredHorizontally(this.creature.getHomePosition()));
         }
         if(this.creature.getRNG().nextFloat() < 0.3F){
-            Vector3d vector3d = findSurfaceTarget(this.creature, 15, 7);
+            Vector3d vector3d = findSurfaceTarget(this.creature, xzSpread, 7);
             if(vector3d != null){
                 return vector3d;
             }
         }
-        Vector3d vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 7, 3);
+        Vector3d vector3d = RandomPositionGenerator.findRandomTarget(this.creature, xzSpread, 3);
 
-        for(int i = 0; vector3d != null && !this.creature.world.getFluidState(new BlockPos(vector3d)).isTagged(FluidTags.LAVA) && !this.creature.world.getBlockState(new BlockPos(vector3d)).allowsMovement(this.creature.world, new BlockPos(vector3d), PathType.WATER) && i++ < 15; vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
+        for(int i = 0; vector3d != null && !this.creature.world.getBlockState(new BlockPos(vector3d)).allowsMovement(this.creature.world, new BlockPos(vector3d), PathType.WATER) && i++ < 15; vector3d = RandomPositionGenerator.findRandomTarget(this.creature, 10, 7)) {
         }
-
+        if(submerged && vector3d != null){
+            if(!this.creature.world.getFluidState(new BlockPos(vector3d).up()).isTagged(FluidTags.WATER)){
+                vector3d = vector3d.add(0, -2, 0);
+            }else if(!this.creature.world.getFluidState(new BlockPos(vector3d).up(2)).isTagged(FluidTags.WATER)){
+                vector3d = vector3d.add(0, -3, 0);
+            }
+        }
         return vector3d;
     }
 

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
@@ -9,6 +10,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -138,7 +140,6 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
         if (item == Items.SADDLE && !this.isSaddled()) {
             if (!player.isCreative()) {
                 itemstack.shrink(1);
@@ -146,6 +147,15 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
             this.setSaddled(true);
             return ActionResultType.SUCCESS;
         }
+        if (item == Items.CHORUS_FRUIT && this.isPotionActive(AMEffectRegistry.ENDER_FLU)) {
+            if (!player.isCreative()) {
+                itemstack.shrink(1);
+            }
+            this.heal(8);
+            this.removePotionEffect(AMEffectRegistry.ENDER_FLU);
+            return ActionResultType.SUCCESS;
+        }
+        ActionResultType type = super.func_230254_b_(player, hand);
         if (type != ActionResultType.SUCCESS && !isBreedingItem(itemstack)) {
             if (!player.isSneaking() && this.isSaddled()) {
                 player.startRiding(this);
@@ -259,6 +269,15 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
 
     public static boolean canEndergradeSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
         return BlockTags.getCollection().get(AMTagRegistry.ENDERGRADE_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+    }
+
+    protected void dropInventory() {
+        super.dropInventory();
+        if (this.isSaddled()) {
+            if (!this.world.isRemote) {
+                this.entityDropItem(Items.SADDLE);
+            }
+        }
     }
 
     static class RandomFlyGoal extends Goal {

@@ -7,14 +7,20 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
+import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
+import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
+import com.google.common.base.Predicates;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
+import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.SpiderEntity;
@@ -22,6 +28,7 @@ import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -34,9 +41,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
@@ -44,22 +49,24 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
@@ -68,6 +75,27 @@ public class ServerEvents {
     private static final UUID SNEAK_SPEED_MODIFIER = UUID.fromString("7E0292F2-9434-48D5-A29F-9583AF7DF28F");
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER, "frontier cap speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
+    private static final Map<ServerWorld, BeachedCachalotWhaleSpawner> BEACHED_CACHALOT_WHALE_SPAWNER_MAP = new HashMap<ServerWorld, BeachedCachalotWhaleSpawner>();
+
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.WorldTickEvent tick) {
+        if (!tick.world.isRemote && tick.world instanceof ServerWorld) {
+            ServerWorld serverWorld = (ServerWorld) tick.world;
+            if (BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld) == null) {
+                BEACHED_CACHALOT_WHALE_SPAWNER_MAP.put(serverWorld, new BeachedCachalotWhaleSpawner(serverWorld));
+            }
+            BeachedCachalotWhaleSpawner spawner = BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld);
+            spawner.tick();
+        }
+        if (!tick.world.isRemote && tick.world instanceof ServerWorld) {
+            ServerWorld serverWorld = (ServerWorld) tick.world;
+            if (BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld) == null) {
+                BEACHED_CACHALOT_WHALE_SPAWNER_MAP.put(serverWorld, new BeachedCachalotWhaleSpawner(serverWorld));
+            }
+            BeachedCachalotWhaleSpawner spawner = BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld);
+            spawner.tick();
+        }
+    }
 
     protected static BlockRayTraceResult rayTrace(World worldIn, PlayerEntity player, RayTraceContext.FluidMode fluidMode) {
         float f = player.rotationPitch;
@@ -86,8 +114,9 @@ public class ServerEvents {
 
 
     @SubscribeEvent
-    public static void onEntityJump(LivingEvent.LivingJumpEvent event) {
-        if(event.getEntityLiving().isPotionActive(AMEffectRegistry.CLINGING) && EffectClinging.isUpsideDown(event.getEntityLiving())){
+    public static void onItemUseLast(LivingEntityUseItemEvent.Finish event) {
+        if (event.getItem().getItem() == Items.CHORUS_FRUIT && new Random().nextInt(3) == 0 && event.getEntityLiving().isPotionActive(AMEffectRegistry.ENDER_FLU)) {
+            event.getEntityLiving().removePotionEffect(AMEffectRegistry.ENDER_FLU);
         }
     }
 
@@ -95,15 +124,15 @@ public class ServerEvents {
     public static void onEntityResize(EntityEvent.Size event) {
         if (event.getEntity() instanceof PlayerEntity) {
             PlayerEntity entity = (PlayerEntity) event.getEntity();
-            try{
+            try {
                 Map<Effect, EffectInstance> potions = entity.getActivePotionMap();
                 if (event.getEntity().world != null && potions != null && !potions.isEmpty() && potions.containsKey(AMEffectRegistry.CLINGING)) {
-                    if( EffectClinging.isUpsideDown(entity)){
+                    if (EffectClinging.isUpsideDown(entity)) {
                         float minus = event.getOldSize().height - event.getOldEyeHeight();
                         event.setNewEyeHeight(minus);
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
             }
         }
 
@@ -124,8 +153,12 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onProjectileHit(ProjectileImpactEvent event) {
-        if (event.getRayTraceResult() instanceof EntityRayTraceResult && ((EntityRayTraceResult) event.getRayTraceResult()).getEntity() instanceof EntityEmu) {
+        if (event.getRayTraceResult() instanceof EntityRayTraceResult && ((EntityRayTraceResult) event.getRayTraceResult()).getEntity() instanceof EntityEmu && !event.getEntity().world.isRemote) {
             EntityEmu emu = ((EntityEmu) ((EntityRayTraceResult) event.getRayTraceResult()).getEntity());
+            if (event.getEntity() instanceof AbstractArrowEntity) {
+                //fixes soft crash with vanilla
+                ((AbstractArrowEntity) event.getEntity()).setPierceLevel((byte) 0);
+            }
             if ((emu.getAnimation() == EntityEmu.ANIMATION_DODGE_RIGHT || emu.getAnimation() == EntityEmu.ANIMATION_DODGE_LEFT) && emu.getAnimationTick() < 7) {
                 event.setCanceled(true);
             }
@@ -172,7 +205,24 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onTradeSetup(WandererTradesEvent event) {
+    public void onEntityDespawnAttempt(LivingSpawnEvent.AllowDespawn event){
+        if(event.getEntityLiving().isPotionActive(AMEffectRegistry.DEBILITATING_STING) && event.getEntityLiving().getActivePotionEffect(AMEffectRegistry.DEBILITATING_STING) != null && event.getEntityLiving().getActivePotionEffect(AMEffectRegistry.DEBILITATING_STING).getAmplifier() > 0){
+            event.setResult(Event.Result.DENY);
+        }
+    }
+
+    @SubscribeEvent
+    public void onTradeSetup(VillagerTradesEvent event) {
+        if (event.getType() == VillagerProfession.FISHERMAN) {
+            VillagerTrades.ITrade ambergrisTrade = new EmeraldsForItemsTrade(AMItemRegistry.AMBERGRIS, 20, 3, 4);
+            List l = event.getTrades().get(2);
+            l.add(ambergrisTrade);
+            event.getTrades().put(2, l);
+        }
+    }
+
+    @SubscribeEvent
+    public void onWanderingTradeSetup(WandererTradesEvent event) {
         if (AMConfig.wanderingTraderOffers) {
             List<VillagerTrades.ITrade> genericTrades = event.getGenericTrades();
             List<VillagerTrades.ITrade> rareTrades = event.getRareTrades();
@@ -196,11 +246,24 @@ public class ServerEvents {
         }
     }
 
-
     @SubscribeEvent
     public void onLootLevelEvent(LootingLevelEvent event) {
-        if (event.getDamageSource() != null && event.getDamageSource().getTrueSource() != null && event.getDamageSource().getTrueSource() instanceof EntitySnowLeopard) {
-            event.setLootingLevel(event.getLootingLevel() + 2);
+        DamageSource src = event.getDamageSource();
+        if (src != null) {
+            Entity dmgSrc = src.getTrueSource();
+            if (dmgSrc != null && dmgSrc instanceof EntitySnowLeopard) {
+                event.setLootingLevel(event.getLootingLevel() + 2);
+            }
+        }
+
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+        ItemFalconryGlove.onLeftClick(event.getPlayer(), event.getPlayer().getHeldItemOffhand());
+        ItemFalconryGlove.onLeftClick(event.getPlayer(), event.getPlayer().getHeldItemMainhand());
+        if (event.getWorld().isRemote) {
+            AlexsMobs.sendMSGToServer(new MessageSwingArm());
         }
     }
 
@@ -235,6 +298,24 @@ public class ServerEvents {
             }
         }
 
+    }
+
+    @SubscribeEvent
+    public void onInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
+        if (event.getTarget() instanceof LivingEntity && !(event.getTarget() instanceof PlayerEntity) && !(event.getTarget() instanceof EntityEndergrade) && ((LivingEntity) event.getTarget()).isPotionActive(AMEffectRegistry.ENDER_FLU)) {
+            if (event.getItemStack().getItem() == Items.CHORUS_FRUIT) {
+                if (!event.getPlayer().isCreative()) {
+                    event.getItemStack().shrink(1);
+                }
+                event.getTarget().playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0F, 0.5F + event.getPlayer().getRNG().nextFloat());
+                if (event.getPlayer().getRNG().nextFloat() < 0.4F) {
+                    ((LivingEntity) event.getTarget()).removePotionEffect(AMEffectRegistry.ENDER_FLU);
+                    Items.CHORUS_FRUIT.onItemUseFinish(event.getItemStack().copy(), event.getWorld(), ((LivingEntity) event.getTarget()));
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(ActionResultType.SUCCESS);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -281,6 +362,16 @@ public class ServerEvents {
             float f1 = 2;
             ((LivingEntity) event.getTarget()).applyKnockback(f1 * 0.5F, MathHelper.sin(event.getPlayer().rotationYaw * ((float) Math.PI / 180F)), -MathHelper.cos(event.getPlayer().rotationYaw * ((float) Math.PI / 180F)));
         }
+        if(event.getPlayer().isPotionActive(AMEffectRegistry.TIGERS_BLESSING) && event.getTarget() instanceof LivingEntity && !event.getTarget().isOnSameTeam(event.getPlayer()) && !(event.getTarget() instanceof EntityTiger)){
+            AxisAlignedBB bb = new AxisAlignedBB(event.getPlayer().getPosX() - 32, event.getPlayer().getPosY() - 32, event.getPlayer().getPosZ() - 32, event.getPlayer().getPosZ() + 32, event.getPlayer().getPosY() + 32, event.getPlayer().getPosZ() + 32);
+            List<EntityTiger> tigers = event.getPlayer().world.getEntitiesWithinAABB(EntityTiger.class, bb, EntityPredicates.IS_ALIVE);
+            for(EntityTiger tiger : tigers){
+                if(!tiger.isChild()){
+                    tiger.setAttackTarget((LivingEntity)event.getTarget());
+                }
+            }
+
+        }
     }
 
     @SubscribeEvent
@@ -306,8 +397,8 @@ public class ServerEvents {
                 }
             }
         }
-        if(!event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).isEmpty() && event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS){
-            if(event.getSource().isProjectile() && event.getEntityLiving().getRNG().nextFloat() < AMConfig.emuPantsDodgeChance){
+        if (!event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).isEmpty() && event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS) {
+            if (event.getSource().isProjectile() && event.getEntityLiving().getRNG().nextFloat() < AMConfig.emuPantsDodgeChance) {
                 event.setCanceled(true);
             }
         }
@@ -341,7 +432,7 @@ public class ServerEvents {
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
-            if(event.getEntityLiving().getEyeHeight() < event.getEntityLiving().getHeight() * 0.5D){
+            if (event.getEntityLiving().getEyeHeight() < event.getEntityLiving().getHeight() * 0.5D) {
                 event.getEntityLiving().recalculateSize();
             }
             ModifiableAttributeInstance modifiableattributeinstance = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);
@@ -395,5 +486,12 @@ public class ServerEvents {
             i++;
         }
         return entered;
+    }
+
+    @SubscribeEvent
+    public void onFOVUpdate(FOVUpdateEvent event){
+        if(event.getEntity().isPotionActive(AMEffectRegistry.FEAR)){
+            event.setNewfov(1.0F);
+        }
     }
 }

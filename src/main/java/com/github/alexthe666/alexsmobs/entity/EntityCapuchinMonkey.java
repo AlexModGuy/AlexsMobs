@@ -46,6 +46,7 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEntity, IFollower, ITargetsDroppedItems {
 
@@ -61,7 +62,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public boolean forcedSit = false;
     private int sittingTime = 0;
     private int maxSitTime = 75;
-    private static Ingredient temptationItems = Ingredient.fromItems(Items.EGG, AMItemRegistry.MAGGOT);
+    private Ingredient temptationItems = Ingredient.fromItemListStream(Stream.of(new Ingredient.TagList(ItemTags.getCollection().get(AMTagRegistry.INSECT_ITEMS)), new Ingredient.SingleItemList(new ItemStack(Items.EGG))));
     public boolean attackDecision = false;//true for ranged, false for melee
     private boolean hasSlowed = false;
     private int rideCooldown = 0;
@@ -406,7 +407,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
 
     public boolean isBreedingItem(ItemStack stack) {
         Item item = stack.getItem();
-        return isTamed() && item == AMItemRegistry.MAGGOT;
+        return isTamed() && ItemTags.getCollection().get(AMTagRegistry.INSECT_ITEMS).contains(stack.getItem());
     }
 
     @Override

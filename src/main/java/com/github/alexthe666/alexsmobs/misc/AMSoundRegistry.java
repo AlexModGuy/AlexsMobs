@@ -200,6 +200,38 @@ public class AMSoundRegistry {
 
     public static final SoundEvent KANGAROO_HURT = createSoundEvent("kangaroo_hurt");
 
+    public static final SoundEvent CACHALOT_WHALE_IDLE = createSoundEvent("cachalot_whale_idle");
+
+    public static final SoundEvent CACHALOT_WHALE_HURT = createSoundEvent("cachalot_whale_hurt");
+
+    public static final SoundEvent CACHALOT_WHALE_CLICK = createSoundEvent("cachalot_whale_click");
+
+    public static final SoundEvent LEAFCUTTER_ANT_HURT = createSoundEvent("leafcutter_ant_hurt");
+
+    public static final SoundEvent LEAFCUTTER_ANT_QUEEN_HURT = createSoundEvent("leafcutter_ant_queen_hurt");
+
+    public static final SoundEvent ENDERIOPHAGE_HURT = createSoundEvent("enderiophage_hurt");
+
+    public static final SoundEvent ENDERIOPHAGE_SQUISH = createSoundEvent("enderiophage_squish");
+
+    public static final SoundEvent ENDERIOPHAGE_WALK = createSoundEvent("enderiophage_walk");
+
+    public static final SoundEvent MUSIC_DISC_THIME = createSoundEvent("music_disc_thime");
+
+    public static final SoundEvent BALD_EAGLE_IDLE = createSoundEvent("bald_eagle_idle");
+
+    public static final SoundEvent BALD_EAGLE_HURT = createSoundEvent("bald_eagle_hurt");
+
+    public static final SoundEvent TIGER_IDLE = createSoundEvent("tiger_idle");
+
+    public static final SoundEvent TIGER_HURT = createSoundEvent("tiger_hurt");
+
+    public static final SoundEvent TIGER_ANGRY = createSoundEvent("tiger_angry");
+
+    public static final SoundEvent TARANTULA_HAWK_WING = createSoundEvent("tarantula_hawk_wing");
+
+    public static final SoundEvent TARANTULA_HAWK_HURT = createSoundEvent("tarantula_hawk_hurt");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

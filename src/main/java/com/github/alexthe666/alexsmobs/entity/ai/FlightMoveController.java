@@ -10,12 +10,19 @@ public class FlightMoveController extends MovementController {
     private final MobEntity parentEntity;
     private float speedGeneral;
     private boolean shouldLookAtTarget;
+    private boolean needsYSupport;
 
-    public FlightMoveController(MobEntity bird, float speedGeneral, boolean shouldLookAtTarget) {
+
+    public FlightMoveController(MobEntity bird, float speedGeneral, boolean shouldLookAtTarget, boolean needsYSupport) {
         super(bird);
         this.parentEntity = bird;
         this.shouldLookAtTarget = shouldLookAtTarget;
         this.speedGeneral = speedGeneral;
+        this.needsYSupport = needsYSupport;
+    }
+
+    public FlightMoveController(MobEntity bird, float speedGeneral, boolean shouldLookAtTarget) {
+        this(bird, speedGeneral, shouldLookAtTarget, false);
     }
 
     public FlightMoveController(MobEntity bird, float speedGeneral) {
@@ -31,6 +38,10 @@ public class FlightMoveController extends MovementController {
                 parentEntity.setMotion(parentEntity.getMotion().scale(0.5D));
             } else {
                 parentEntity.setMotion(parentEntity.getMotion().add(vector3d.scale(this.speed * speedGeneral * 0.05D / d0)));
+                if(needsYSupport){
+                    double d1 = this.posY - parentEntity.getPosY();
+                    parentEntity.setMotion(parentEntity.getMotion().add(0.0D, (double)parentEntity.getAIMoveSpeed() * speedGeneral * MathHelper.clamp(d1, -1, 1) * 0.6F, 0.0D));
+                }
                 if (parentEntity.getAttackTarget() == null || !shouldLookAtTarget) {
                     Vector3d vector3d1 = parentEntity.getMotion();
                     parentEntity.rotationYaw = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);

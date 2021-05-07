@@ -21,6 +21,8 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.Map;
@@ -77,7 +79,7 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
                 ItemStack itemstack = roo.getItemStackFromSlot(EquipmentSlotType.HEAD);
                 if (itemstack.getItem() instanceof ArmorItem) {
                     ArmorItem armoritem = (ArmorItem) itemstack.getItem();
-                    if (armoritem.getEquipmentSlot() == EquipmentSlotType.HEAD) {
+                    if (itemstack.canEquip(EquipmentSlotType.HEAD, roo)) {
                         BipedModel a = defaultBipedModel;
                         a = getArmorModelHook(roo, itemstack, EquipmentSlotType.HEAD, a);
                         boolean notAVanillaModel = a != defaultBipedModel;
@@ -101,12 +103,17 @@ public class LayerKangarooArmor extends LayerRenderer<EntityKangaroo, ModelKanga
                         } else {
                             renderHelmet(roo, matrixStackIn, bufferIn, clampedLight, flag1, a, 1.0F, 1.0F, 1.0F, getArmorResource(roo, itemstack, EquipmentSlotType.HEAD, null), notAVanillaModel);
                         }
-
                     }
+                }else{
+                    translateToHead(matrixStackIn);
+                    matrixStackIn.translate(0, -0.2, -0.1F);
+                    matrixStackIn.rotate(new Quaternion(Vector3f.XP, 180, true));
+                    matrixStackIn.rotate(new Quaternion(Vector3f.YP, 180, true));
+                    matrixStackIn.scale(1.0F, 1.0F, 1.0F);
+                    Minecraft.getInstance().getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
                 }
                 matrixStackIn.pop();
             }
-
             {
                 matrixStackIn.push();
                 ItemStack itemstack = roo.getItemStackFromSlot(EquipmentSlotType.CHEST);

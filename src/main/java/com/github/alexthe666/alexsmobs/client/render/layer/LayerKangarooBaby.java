@@ -12,13 +12,10 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ReportedException;
 import net.minecraft.entity.Entity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class LayerKangarooBaby extends LayerRenderer<EntityKangaroo, ModelKangaroo> {
@@ -37,7 +34,7 @@ public class LayerKangarooBaby extends LayerRenderer<EntityKangaroo, ModelKangar
                     modelBase = ((LivingRenderer) render).getEntityModel();
                 }
                 if(modelBase != null){
-                    ClientProxy.currentSquidRiders.remove(passenger.getUniqueID());
+                    ClientProxy.currentUnrenderedEntities.remove(passenger.getUniqueID());
                     matrixStackIn.push();
                     translateToPouch(matrixStackIn);
                     matrixStackIn.translate(0, 1.12F, -0.3F);
@@ -47,7 +44,7 @@ public class LayerKangarooBaby extends LayerRenderer<EntityKangaroo, ModelKangar
                     renderEntity(passenger, 0, 0, 0, 0, partialTicks, matrixStackIn, bufferIn, packedLightIn);
                     ModelKangaroo.renderOnlyHead = false;
                     matrixStackIn.pop();
-                    ClientProxy.currentSquidRiders.add(passenger.getUniqueID());
+                    ClientProxy.currentUnrenderedEntities.add(passenger.getUniqueID());
                 }
 
             }

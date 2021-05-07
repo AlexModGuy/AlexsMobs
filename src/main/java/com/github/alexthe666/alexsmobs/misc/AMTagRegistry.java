@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.misc;
 import net.minecraft.util.ResourceLocation;
 
 public class AMTagRegistry {
+    public static final ResourceLocation INSECT_ITEMS = new ResourceLocation("alexsmobs", "insect_items");
     public static final ResourceLocation FORGE_WOODEN_CHESTS = new ResourceLocation("forge","chests/wooden");
     public static final ResourceLocation GRIZZLY_BEEHIVE = new ResourceLocation("alexsmobs","grizzly_beehive");
     public static final ResourceLocation GRIZZLY_FOODSTUFFS = new ResourceLocation("alexsmobs", "grizzly_foodstuffs");
@@ -39,6 +40,10 @@ public class AMTagRegistry {
     public static final ResourceLocation WARPED_MOSCO_BREAKABLES = new ResourceLocation("alexsmobs", "warped_mosco_breakables");
     public static final ResourceLocation CROW_FEARS = new ResourceLocation("alexsmobs", "crow_fears");
     public static final ResourceLocation PLATYPUS_FOODSTUFFS = new ResourceLocation("alexsmobs", "platypus_foodstuffs");
+    public static final ResourceLocation CACHALOT_WHALE_TARGETS = new ResourceLocation("alexsmobs", "cachalot_whale_targets");
+    public static final ResourceLocation CACHALOT_WHALE_BREAKABLES = new ResourceLocation("alexsmobs","cachalot_whale_breakables");
+    public static final ResourceLocation LEAFCUTTER_ANT_BREAKABLES = new ResourceLocation("alexsmobs","leafcutter_ant_breakables");
+    public static final ResourceLocation TIGER_TARGETS = new ResourceLocation("alexsmobs", "tiger_targets");
 
     public static final ResourceLocation CRIMSON_MOSQUITO_SPAWNS = new ResourceLocation("alexsmobs","crimson_mosquito_spawns");
     public static final ResourceLocation ROADRUNNER_SPAWNS = new ResourceLocation("alexsmobs","roadrunner_spawns");

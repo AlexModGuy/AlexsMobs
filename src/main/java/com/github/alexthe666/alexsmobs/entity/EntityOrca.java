@@ -57,16 +57,20 @@ import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class EntityOrca extends TameableEntity implements IAnimatedEntity {
 
     public static final Animation ANIMATION_BITE = Animation.create(8);
-    private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(DolphinEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(EntityOrca.class, DataSerializers.VARINT);
     private static final EntityPredicate PLAYER_PREDICATE = (new EntityPredicate()).setDistance(24.0D).allowFriendlyFire().allowInvulnerable().setLineOfSiteRequired();
     public int jumpCooldown;
     private int animationTick;
     private Animation currentAnimation;
     private int blockBreakCounter;
+    public static final Predicate<LivingEntity> TARGET_BABY  = (animal) -> {
+        return animal.isChild();
+    };
 
     protected EntityOrca(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -128,7 +132,8 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(6, new OrcaAIMelee(this, 1.2F, true));
         this.goalSelector.addGoal(8, new FollowBoatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setCallsForHelp());
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 200, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.ORCA_TARGETS))));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EntityCachalotWhale.class, 5, false, false, TARGET_BABY));
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 200, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.ORCA_TARGETS))));
     }
 
     @Override

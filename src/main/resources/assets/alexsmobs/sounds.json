@@ -1306,5 +1306,230 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.kangaroo_hurt"
+  },
+  "cachalot_whale_click": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:cachalot_whale_click_0"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_click_1"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_click_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.cachalot_whale_click"
+  },
+  "cachalot_whale_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:cachalot_whale_hurt_0"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_hurt_1"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.cachalot_whale_hurt"
+  },
+  "cachalot_whale_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:cachalot_whale_idle_0"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_idle_1"
+      },
+      {
+        "name": "alexsmobs:cachalot_whale_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.cachalot_whale_idle"
+  },
+  "leafcutter_ant_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:leafcutter_ant_hurt_0"
+      },
+      {
+        "name": "alexsmobs:leafcutter_ant_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.leafcutter_ant_hurt"
+  },
+  "leafcutter_ant_queen_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:leafcutter_ant_queen_hurt_0"
+      },
+      {
+        "name": "alexsmobs:leafcutter_ant_queen_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.leafcutter_ant_queen_hurt"
+  },
+  "enderiophage_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:enderiophage_hurt_0"
+      },
+      {
+        "name": "alexsmobs:enderiophage_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.enderiophage_hurt"
+  },
+  "enderiophage_squish": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:enderiophage_squish_0"
+      },
+      {
+        "name": "alexsmobs:enderiophage_squish_1"
+      },
+      {
+        "name": "alexsmobs:enderiophage_squish_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.enderiophage_squish"
+  },
+  "enderiophage_walk": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:enderiophage_walk_0"
+      },
+      {
+        "name": "alexsmobs:enderiophage_walk_1"
+      },
+      {
+        "name": "alexsmobs:enderiophage_walk_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.enderiophage_walk"
+  },
+  "music_disc_thime": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "alexsmobs:music_disc/thime",
+        "stream": true
+      }
+    ],
+    "stream": true,
+    "subtitle": "alexsmobs.sound.subtitle.music_disc.thime"
+  },
+  "bald_eagle_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bald_eagle_idle_0"
+      },
+      {
+        "name": "alexsmobs:bald_eagle_idle_1"
+      },
+      {
+        "name": "alexsmobs:bald_eagle_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bald_eagle_idle"
+  },
+  "bald_eagle_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bald_eagle_hurt_0"
+      },
+      {
+        "name": "alexsmobs:bald_eagle_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bald_eagle_hurt"
+  },
+
+  "tiger_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tiger_idle_0"
+      },
+      {
+        "name": "alexsmobs:tiger_idle_1"
+      },
+      {
+        "name": "alexsmobs:tiger_idle_2"
+      },
+      {
+        "name": "alexsmobs:tiger_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tiger_idle"
+  },
+  "tiger_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tiger_hurt_0"
+      },
+      {
+        "name": "alexsmobs:tiger_hurt_1"
+      },
+      {
+        "name": "alexsmobs:tiger_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tiger_hurt"
+  },
+  "tiger_angry": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tiger_angry_0"
+      },
+      {
+        "name": "alexsmobs:tiger_angry_1"
+      },
+      {
+        "name": "alexsmobs:tiger_angry_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tiger_angry"
+  },
+  "tarantula_hawk_wing": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tarantula_hawk_wing_0"
+      },
+      {
+        "name": "alexsmobs:tarantula_hawk_wing_1"
+      },
+      {
+        "name": "alexsmobs:tarantula_hawk_wing_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tarantula_hawk_wing"
+  },
+  "tarantula_hawk_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tarantula_hawk_hurt_0"
+      },
+      {
+        "name": "alexsmobs:tarantula_hawk_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tarantula_hawk_hurt"
   }
 }

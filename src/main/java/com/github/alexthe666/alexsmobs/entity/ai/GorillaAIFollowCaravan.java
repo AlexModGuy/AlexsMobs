@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -8,7 +9,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import java.util.EnumSet;
 import java.util.List;
 
-public class GorillaAIFollowCaravan  extends Goal {
+public class GorillaAIFollowCaravan extends Goal {
     public final EntityGorilla gorilla;
     private double speedModifier;
     private int distCheckCounter;
@@ -22,12 +23,12 @@ public class GorillaAIFollowCaravan  extends Goal {
     public boolean shouldExecute() {
         if (!this.gorilla.isSilverback() && !this.gorilla.inCaravan() && !gorilla.isSitting()) {
             double dist = 15D;
-            List<EntityGorilla> list = gorilla.world.getEntitiesWithinAABB(EntityGorilla.class, gorilla.getBoundingBox().grow(dist, dist/2, dist));
+            List<EntityGorilla> list = gorilla.world.getEntitiesWithinAABB(EntityGorilla.class, gorilla.getBoundingBox().grow(dist, dist / 2, dist));
             EntityGorilla gorilla = null;
             double d0 = Double.MAX_VALUE;
 
-            for(Entity entity : list) {
-                EntityGorilla gorilla1 = (EntityGorilla)entity;
+            for (Entity entity : list) {
+                EntityGorilla gorilla1 = (EntityGorilla) entity;
                 if (gorilla1.inCaravan() && !gorilla1.hasCaravanTrail()) {
                     double d1 = this.gorilla.getDistanceSq(gorilla1);
                     if (!(d1 > d0)) {
@@ -38,8 +39,8 @@ public class GorillaAIFollowCaravan  extends Goal {
             }
 
             if (gorilla == null) {
-                for(Entity entity1 : list) {
-                    EntityGorilla llamaentity2 = (EntityGorilla)entity1;
+                for (Entity entity1 : list) {
+                    EntityGorilla llamaentity2 = (EntityGorilla) entity1;
                     if (llamaentity2.isSilverback() && !llamaentity2.hasCaravanTrail()) {
                         double d2 = this.gorilla.getDistanceSq(llamaentity2);
                         if (!(d2 > d0)) {
@@ -69,7 +70,7 @@ public class GorillaAIFollowCaravan  extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     public boolean shouldContinueExecuting() {
-        if(gorilla.isSitting()){
+        if (gorilla.isSitting()) {
             return false;
         }
         if (this.gorilla.inCaravan() && this.gorilla.getCaravanHead().isAlive() && this.firstIsSilverback(this.gorilla, 0)) {
@@ -104,10 +105,17 @@ public class GorillaAIFollowCaravan  extends Goal {
     public void tick() {
         if (this.gorilla.inCaravan() && !this.gorilla.isSitting()) {
             EntityGorilla llamaentity = this.gorilla.getCaravanHead();
-            double d0 = (double)this.gorilla.getDistance(llamaentity);
-            float f = 2.0F;
-            Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.gorilla.getPosX(), llamaentity.getPosY() - this.gorilla.getPosY(), llamaentity.getPosZ() - this.gorilla.getPosZ())).normalize().scale(Math.max(d0 - 2.0D, 0.0D));
-            this.gorilla.getNavigator().tryMoveToXYZ(this.gorilla.getPosX() + vector3d.x, this.gorilla.getPosY() + vector3d.y, this.gorilla.getPosZ() + vector3d.z, this.speedModifier);
+            if (llamaentity != null) {
+                double d0 = this.gorilla.getDistance(llamaentity);
+                Vector3d vector3d = (new Vector3d(llamaentity.getPosX() - this.gorilla.getPosX(), llamaentity.getPosY() - this.gorilla.getPosY(), llamaentity.getPosZ() - this.gorilla.getPosZ())).normalize().scale(Math.max(d0 - 2.0D, 0.0D));
+                if(gorilla.getNavigator().noPath()) {
+                    try {
+                        this.gorilla.getNavigator().tryMoveToXYZ(this.gorilla.getPosX() + vector3d.x, this.gorilla.getPosY() + vector3d.y, this.gorilla.getPosZ() + vector3d.z, this.speedModifier);
+                    } catch (NullPointerException e) {
+                        AlexsMobs.LOGGER.warn("gorilla encountered issue following caravan head");
+                    }
+                }
+            }
         }
     }
 
