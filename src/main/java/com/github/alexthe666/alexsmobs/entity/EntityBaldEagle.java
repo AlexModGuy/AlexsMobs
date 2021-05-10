@@ -112,8 +112,18 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, TEMPT_ITEMS, false));
         this.goalSelector.addGoal(7, new TemptGoal(this, 1.1D, Ingredient.fromTag(ItemTags.FISHES), false));
         this.goalSelector.addGoal(8, new AIWanderIdle());
-        this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 6.0F){
+            @Override
+            public boolean shouldExecute() {
+                return EntityBaldEagle.this.returnControlTime == 0 && super.shouldExecute();
+            }
+        });
+        this.goalSelector.addGoal(10, new LookRandomlyGoal(this){
+            @Override
+            public boolean shouldExecute() {
+                return EntityBaldEagle.this.returnControlTime == 0 && super.shouldExecute();
+            }
+        });
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new AnimalAIHurtByTargetNotBaby(this)));
@@ -698,7 +708,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
 
     public boolean shouldHoodedReturn() {
         if (this.getOwner() != null) {
-            if (!this.getOwner().isAlive() || this.getOwner().isSneaking()) {
+            if (!this.getOwner().isAlive() || this.getOwner().isSneaking() ) {
                 return true;
             }
         }
@@ -717,22 +727,19 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
             returnControlTime = 100;
         }
         this.setSitting(false);
-        if (returnControlTime > 0 && owner != null) {
-            double d0 = this.getPosX() - owner.getPosX();
-            double d2 = this.getPosZ() - owner.getPosZ();
-            float f = (float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) + 90.0F;
-            this.renderYawOffset = f;
-            this.rotationYaw = f;
-            this.rotationYawHead = f;
-            this.rotationPitch = rotationPitch;
-        } else {
-            this.renderYawOffset = rotationYaw;
-            this.rotationYaw = rotationYaw;
-            this.rotationYawHead = rotationYaw;
-            this.rotationPitch = rotationPitch;
-        }
         this.setLaunched(true);
         if (!world.isRemote) {
+            if (returnControlTime > 0 && owner != null) {
+                double d0 = this.getPosX() - owner.getPosX();
+                double d2 = this.getPosZ() - owner.getPosZ();
+                float f = (float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) + 90.0F;
+                this.getLookController().setLookPositionWithEntity(owner, 30, 30);
+            } else {
+                this.renderYawOffset = rotationYaw;
+                this.rotationYaw = rotationYaw;
+                this.rotationYawHead = rotationYaw;
+                this.rotationPitch = rotationPitch;
+            }
             if (rotationPitch < 10 && this.isOnGround()) {
                 this.setFlying(true);
             }

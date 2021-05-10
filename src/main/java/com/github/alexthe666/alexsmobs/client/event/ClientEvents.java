@@ -12,15 +12,16 @@ import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.FluidBlockRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
@@ -34,9 +35,9 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
@@ -52,6 +53,7 @@ public class ClientEvents {
 
     private boolean previousLavaVision = false;
     private FluidBlockRenderer previousFluidRenderer;
+    private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("alexsmobs:textures/falconry_radius.png");
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
@@ -199,7 +201,9 @@ public class ClientEvents {
             previousLavaVision = Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION);
         }
         if(Minecraft.getInstance().getRenderViewEntity() instanceof EntityBaldEagle){
+            EntityBaldEagle eagle = (EntityBaldEagle)Minecraft.getInstance().getRenderViewEntity();
             ClientPlayerEntity playerEntity = Minecraft.getInstance().player;
+
             if(((EntityBaldEagle)Minecraft.getInstance().getRenderViewEntity()).shouldHoodedReturn()){
                 Minecraft.getInstance().setRenderViewEntity(playerEntity);
                 Minecraft.getInstance().gameSettings.setPointOfView(PointOfView.values()[AlexsMobs.PROXY.getPreviousPOV()]);
@@ -227,5 +231,4 @@ public class ClientEvents {
             }
         }
     }
-
 }
