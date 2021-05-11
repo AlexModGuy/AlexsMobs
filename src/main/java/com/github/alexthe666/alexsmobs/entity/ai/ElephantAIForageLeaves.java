@@ -29,7 +29,7 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
     }
 
     public boolean shouldExecute() {
-        return !elephant.isChild() && elephant.getControllingPassenger() == null && elephant.getHeldItemMainhand().isEmpty() && !elephant.aiItemFlag && super.shouldExecute();
+        return !elephant.isChild() && elephant.getControllingPassenger() == null && elephant.getControllingVillager() == null && elephant.getHeldItemMainhand().isEmpty() && !elephant.aiItemFlag && super.shouldExecute();
     }
 
     public void resetTask() {
