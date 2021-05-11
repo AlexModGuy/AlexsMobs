@@ -625,6 +625,9 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     @Override
     protected void readAdditional(CompoundNBT compound) {
         this.setDefaultColor(compound.getBoolean("IsDefColor"));
+        if(compound.contains("BoardStack")){
+            this.setItemStack(ItemStack.read(compound.getCompound("BoardStack")));
+        }
         this.setColor(compound.getInt("Color"));
     }
 
@@ -632,6 +635,12 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     protected void writeAdditional(CompoundNBT compound) {
         compound.putBoolean("IsDefColor", this.isDefaultColor());
         compound.putInt("Color", this.getColor());
+        if(!this.getItemStack().isEmpty()){
+            CompoundNBT stackTag = new CompoundNBT();
+            this.getItemStack().write(stackTag);
+            compound.put("BoardStack", stackTag);
+        }
+
     }
 
     @Override
