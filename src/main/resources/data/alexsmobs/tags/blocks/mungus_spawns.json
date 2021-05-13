@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#minecraft:mushroom_grow_block",
-    "#minecraft:nylium",
-    "#forge:mushroom_caps"
-  ]
-}

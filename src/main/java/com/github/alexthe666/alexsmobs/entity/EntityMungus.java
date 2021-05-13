@@ -84,8 +84,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
     }
 
     public static boolean canMungusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.MUNGUS_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
-        return spawnBlock;
+        return worldIn.getBlockState(pos.down()).isSolid();
     }
 
     public static BlockState getMushroomBlockstate(Item item) {
