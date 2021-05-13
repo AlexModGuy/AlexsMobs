@@ -28,6 +28,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.*;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -76,7 +77,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
 
     public static boolean canWarpedToadSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.WARPED_TOAD_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
+        boolean spawnBlock = worldIn.getFluidState(blockpos).isTagged(FluidTags.LAVA) || worldIn.getBlockState(blockpos).isSolid();
         return reason == SpawnReason.SPAWNER || spawnBlock;
     }
 
