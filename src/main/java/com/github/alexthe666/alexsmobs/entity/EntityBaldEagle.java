@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -32,6 +33,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
@@ -127,12 +129,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new AnimalAIHurtByTargetNotBaby(this)));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, SalmonEntity.class, 5, true, true, null) {
-            public boolean shouldExecute() {
-                return super.shouldExecute() && !EntityBaldEagle.this.isLaunched() && EntityBaldEagle.this.getCommand() == 0;
-            }
-        });
-        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, RabbitEntity.class, 5, true, true, null) {
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 5, true, true,  AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.BALD_EAGLE_TARGETS))) {
             public boolean shouldExecute() {
                 return super.shouldExecute() && !EntityBaldEagle.this.isLaunched() && EntityBaldEagle.this.getCommand() == 0;
             }
