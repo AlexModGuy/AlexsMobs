@@ -268,7 +268,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
     }
 
     public static boolean canEndergradeSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        return BlockTags.getCollection().get(AMTagRegistry.ENDERGRADE_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
+        return !worldIn.getBlockState(pos.down()).isAir();
     }
 
     protected void dropInventory() {
