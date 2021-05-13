@@ -141,6 +141,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnChance;
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnDelay;
     public final ForgeConfigSpec.DoubleValue leafcutterAnthillSpawnChance;
+    public final ForgeConfigSpec.BooleanValue falconryTeleportsBack;
     public final ForgeConfigSpec.BooleanValue fireproofTarantulaHawk;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
@@ -178,6 +179,7 @@ public class CommonConfig {
         leafcutterAntRepopulateFeedings = buildInt(builder, "leafcutterAntRepopulateFeedings", "all", AMConfig.leafcutterAntRepopulateFeedings, 2, 100000,"How many feedings of leaves does a leafcutter colony need in order to regain a worker ant, if below half the max members.");
         leafcutterAntColonySize = buildInt(builder, "leafcutterAntColonySize", "all", AMConfig.leafcutterAntColonySize, 2, 100000,"Max number of ant entities allowed inside a leafcutter anthill.");
         leafcutterAntBreakLeavesChance = buildDouble(builder, "leafcutterAntBreakLeavesChance", "all", 0.2D, 0D, 1D, "Percent chance for leafcutter ants to break leaves blocks when harvesting. Set to zero so that they can not break any blocks.");
+        falconryTeleportsBack = buildBoolean(builder, "falconryTeleportsBack", "all", false, "Makes eagles teleport back to their owner if they get stuck during controlled flight. Useful for when playing with the Optifine mod, since this mod is the fault of many issues with the falconry system.");
         fireproofTarantulaHawk = buildBoolean(builder, "fireproofTarantulaHawk", "all", false, "Makes Tarantula Hawks fireproof, perfect if you also want these guys to spawn in the nether.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");

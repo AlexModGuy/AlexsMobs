@@ -204,7 +204,7 @@ public class ClientEvents {
             EntityBaldEagle eagle = (EntityBaldEagle)Minecraft.getInstance().getRenderViewEntity();
             ClientPlayerEntity playerEntity = Minecraft.getInstance().player;
 
-            if(((EntityBaldEagle)Minecraft.getInstance().getRenderViewEntity()).shouldHoodedReturn()){
+            if(((EntityBaldEagle)Minecraft.getInstance().getRenderViewEntity()).shouldHoodedReturn() || eagle.removed){
                 Minecraft.getInstance().setRenderViewEntity(playerEntity);
                 Minecraft.getInstance().gameSettings.setPointOfView(PointOfView.values()[AlexsMobs.PROXY.getPreviousPOV()]);
             }else{

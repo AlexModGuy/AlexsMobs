@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
+import com.github.alexthe666.alexsmobs.message.MessageSyncEntityPos;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -85,6 +86,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
     private int tackleCapCooldown = 0;
     private boolean controlledFlag = false;
     private int chunkLoadCooldown;
+    private int stillTicksCounter = 0;
 
     protected EntityBaldEagle(EntityType<? extends TameableEntity> type, World worldIn) {
         super(type, worldIn);
@@ -709,7 +711,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
                 return true;
             }
         }
-        return !this.isAlive() || launchTime > 12000;
+        return !this.isAlive() || launchTime > 12000 || this.inPortal || this.portalCounter > 0 || removed;
     }
 
     public void remove(boolean keepData) {
@@ -723,8 +725,20 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         if (owner != null && this.getDistance(owner) > 150) {
             returnControlTime = 100;
         }
+        if(Math.abs(prevPosX - this.getPosX()) > 0.1F || Math.abs(prevPosY - this.getPosY()) > 0.1F || Math.abs(prevPosZ - this.getPosZ()) > 0.1F){
+            stillTicksCounter = 0;
+        }else{
+            stillTicksCounter++;
+        }
+        int stillTPthreshold = AMConfig.falconryTeleportsBack ? 200 : 6000;
         this.setSitting(false);
         this.setLaunched(true);
+        if((returnControlTime > 0 && AMConfig.falconryTeleportsBack || stillTicksCounter > stillTPthreshold && this.getDistance(owner) > 30) && owner != null){
+            this.copyLocationAndAnglesFrom(owner);
+            returnControlTime = 0;
+            stillTicksCounter = 0;
+            launchTime = Math.max(launchTime, 12000);
+        }
         if (!world.isRemote) {
             if (returnControlTime > 0 && owner != null) {
                 double d0 = this.getPosX() - owner.getPosX();
