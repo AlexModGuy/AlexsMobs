@@ -89,7 +89,6 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
     }
 
     public static boolean canEnderiophageSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        System.out.println(worldIn.getBlockState(pos.down()));
         return true;
     }
 
