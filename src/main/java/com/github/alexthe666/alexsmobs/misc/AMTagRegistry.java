@@ -46,7 +46,6 @@ public class AMTagRegistry {
     public static final ResourceLocation TIGER_TARGETS = new ResourceLocation("alexsmobs", "tiger_targets");
     public static final ResourceLocation BALD_EAGLE_TARGETS = new ResourceLocation("alexsmobs", "bald_eagle_targets");
 
-    public static final ResourceLocation CRIMSON_MOSQUITO_SPAWNS = new ResourceLocation("alexsmobs","crimson_mosquito_spawns");
     public static final ResourceLocation ROADRUNNER_SPAWNS = new ResourceLocation("alexsmobs","roadrunner_spawns");
     public static final ResourceLocation LOBSTER_SPAWNS = new ResourceLocation("alexsmobs","lobster_spawns");
     public static final ResourceLocation RATTLESNAKE_SPAWNS = new ResourceLocation("alexsmobs","rattlesnake_spawns");

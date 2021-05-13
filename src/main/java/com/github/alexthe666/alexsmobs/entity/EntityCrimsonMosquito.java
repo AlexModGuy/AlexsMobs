@@ -131,7 +131,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
 
     public static boolean canMosquitoSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.down();
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.CRIMSON_MOSQUITO_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(blockpos).isSolid();
         return reason == SpawnReason.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).canEntitySpawn(worldIn, blockpos, typeIn)  && isValidLightLevel(worldIn, pos, randomIn) && canSpawnOn(AMEntityRegistry.CRIMSON_MOSQUITO, worldIn, reason, pos, randomIn);
     }
 
