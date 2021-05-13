@@ -227,7 +227,8 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         progressPositionPrev(bodyfront, sitProgress, 0, 2, -10, 10F);
         progressPositionPrev(head, sitProgress, 0, -2, 1, 10F);
         progressPositionPrev(root, sitProgress, 0, 0, -10, 10F);
-        this.faceTarget(netHeadYaw, headPitch, 1, head);
+        this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);
+        this.head.rotateAngleX -= headPitch * ((float)Math.PI / 180F);
 
         progressRotationPrev(backlegL, standProgress, (float)Math.toRadians(-80), 0, 0, 10F);
         progressRotationPrev(backlegR, standProgress, (float)Math.toRadians(-80), 0, 0, 10F);
