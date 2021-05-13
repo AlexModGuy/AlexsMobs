@@ -98,7 +98,7 @@ public class AMConfig {
     public static int cachalotWhaleSpawnWeight = 2;
     public static int cachalotWhaleSpawnRolls = 0;
     public static int enderiophageSpawnWeight = 4;
-    public static int enderiophageSpawnRolls = 3;
+    public static int enderiophageSpawnRolls = 2;
     public static int baldEagleSpawnWeight = 15;
     public static int baldEagleSpawnRolls = 0;
     public static int tigerSpawnWeight = 100;

@@ -97,7 +97,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
     }
 
     public int getMaxSpawnedInChunk() {
-        return 1;
+        return 2;
     }
 
     public float getPhageScale() {
