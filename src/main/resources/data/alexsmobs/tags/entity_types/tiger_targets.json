@@ -4,7 +4,8 @@
   "values": [
     "#alexsmobs:passive_land_animals",
     "alexsmobs:endergrade",
+    "alexsmobs:kangaroo",
     "alexsmobs:moose",
-    "alexsmobs:kangaroo"
+    "rats:rat"
   ]
 }
