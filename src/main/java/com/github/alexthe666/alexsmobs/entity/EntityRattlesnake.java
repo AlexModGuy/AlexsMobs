@@ -48,7 +48,7 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
         return mob instanceof PlayerEntity || mob instanceof EntityRoadrunner; || mob instanceof EntityRat;
     };
     private static final Predicate<LivingEntity> TARGETABLE_PREDICATE = (mob) -> {
-        return mob instanceof PlayerEntity && !((PlayerEntity) mob).isCreative() || mob instanceof EntityRoadrunner; || mob instanceof EntityRat;
+        return mob instanceof PlayerEntity && !((PlayerEntity) mob).isCreative() || mob instanceof EntityRoadrunner || mob instanceof EntityRat;
     };
     private int animationTick;
     private Animation currentAnimation;
