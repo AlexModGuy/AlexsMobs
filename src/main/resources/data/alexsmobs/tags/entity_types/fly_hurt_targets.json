@@ -3,6 +3,8 @@
   "values": [
     "minecraft:zombie",
     "minecraft:drowned",
-    "minecraft:husk"
+    "minecraft:husk",
+    "rats:plague_beast",
+    "rats:plague_rat"
   ]
 }
