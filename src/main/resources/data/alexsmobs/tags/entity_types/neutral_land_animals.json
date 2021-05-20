@@ -2,16 +2,17 @@
   "__comment": "all land animal (non villager, non player) mobs that neutral AND somewhat strong. For big predators to target.",
   "replace": false,
   "values": [
+    "minecraft:polar_bear",
+    "alexsmobs:bald_eagle",
+    "alexsmobs:elephant",
+    "alexsmobs:endergrade",
     "alexsmobs:grizzly_bear",
     "alexsmobs:gorilla",
-    "minecraft:polar_bear",
-    "alexsmobs:endergrade",
-    "alexsmobs:rattlesnake",
-    "alexsmobs:moose",
-    "alexsmobs:elephant",
-    "alexsmobs:snow_leopard",
     "alexsmobs:kangaroo",
-    "alexsmobs:bald_eagle",
+    "alexsmobs:moose",
+    "alexsmobs:raccoon",
+    "alexsmobs:rattlesnake",
+    "alexsmobs:snow_leopard",
     "alexsmobs:tiger"
   ]
 }
