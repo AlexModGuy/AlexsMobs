@@ -3,17 +3,18 @@
   "replace": false,
   "values": [
     "minecraft:cow",
-    "minecraft:sheep",
-    "minecraft:pig",
     "minecraft:chicken",
-    "minecraft:horse",
     "minecraft:donkey",
-    "minecraft:mule",
+    "minecraft:horse",
     "minecraft:llama",
+    "minecraft:mule",
     "minecraft:parrot",
+    "minecraft:pig",
     "minecraft:rabbit",
+    "minecraft:sheep",
     "minecraft:trader_llama",
     "alexsmobs:capuchin_monkey",
+    "alexsmobs:crow",
     "rats:rat"
   ]
 }
