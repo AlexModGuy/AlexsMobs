@@ -1,7 +1,8 @@
 {
-  "__comment": "all land animal (non villager, non player) mobs that neutral AND somewhat strong. For big predators to target.",
+  "__comment": "all land animal (non humanoid, non player) mobs that are neutral or hostile, AND somewhat strong. For big predators to target.",
   "replace": false,
   "values": [
+    "minecraft:hoglin",
     "alexsmobs:grizzly_bear",
     "alexsmobs:gorilla",
     "minecraft:polar_bear",
@@ -11,6 +12,7 @@
     "alexsmobs:snow_leopard",
     "alexsmobs:kangaroo",
     "alexsmobs:bald_eagle",
-    "alexsmobs:tiger"
+    "alexsmobs:tiger",
+    "alexsmobs:tasmanian_devil"
   ]
 }
