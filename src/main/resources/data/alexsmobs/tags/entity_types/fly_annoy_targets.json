@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "minecraft:player"
+    "minecraft:player",
+    "#alexsmobs:villagers",
+    "#minecraft:raiders",
+    "#alexsmobs:piglins"
   ]
 }
