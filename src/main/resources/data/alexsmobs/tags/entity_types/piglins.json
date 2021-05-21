@@ -1,0 +1,8 @@
+{
+  "__comment": "all piglin mobs.",
+  "replace": false,
+  "values": [
+    "minecraft:piglin",
+    "minecraft:piglin_brute"
+  ]
+}
