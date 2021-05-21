@@ -3,7 +3,7 @@
   "replace": false,
   "values": [
     "#alexsmobs:villagers",
-    "#alexsmobs:illagers",
+    "#minecraft:raiders",
     "#alexsmobs:piglins"
   ]
 }
