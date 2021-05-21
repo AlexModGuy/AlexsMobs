@@ -1,0 +1,11 @@
+{
+  "__comment": "all illager mobs.",
+  "replace": false,
+  "values": [
+    "minecraft:vindicator",
+    "minecraft:pillager",
+    "minecraft:evoker",
+    "minecraft:illusioner",
+    "minecraft:witch"
+  ]
+}
