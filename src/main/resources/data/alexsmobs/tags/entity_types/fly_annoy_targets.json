@@ -4,6 +4,7 @@
     "minecraft:player",
     "#alexsmobs:villagers",
     "#minecraft:raiders",
-    "#alexsmobs:piglins"
+    "#alexsmobs:piglins",
+    "minecraft:hoglin"
   ]
 }
