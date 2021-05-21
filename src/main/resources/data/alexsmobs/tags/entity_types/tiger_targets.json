@@ -5,6 +5,7 @@
     "#alexsmobs:passive_land_animals",
     "#alexsmobs:villagers",
     "alexsmobs:moose",
-    "alexsmobs:kangaroo"
+    "alexsmobs:kangaroo",
+    "minecraft:hoglin"
   ]
 }
