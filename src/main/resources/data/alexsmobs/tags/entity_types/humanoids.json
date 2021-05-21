@@ -1,0 +1,9 @@
+{
+  "__comment": "all humanoid mobs.",
+  "replace": false,
+  "values": [
+    "#alexsmobs:villagers",
+    "#alexsmobs:illagers",
+    "#alexsmobs:piglins"
+  ]
+}
