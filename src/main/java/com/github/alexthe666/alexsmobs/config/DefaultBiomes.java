@@ -36,7 +36,8 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "biomesoplenty:tundra_bog", 2);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "biomesoplenty:tundra_bog", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tropic_beach", 3);
 
     public static final SpawnBiomeData FLY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -92,7 +93,8 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData KOMODO_DRAGON = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tropic_plains", 1);
 
     public static final SpawnBiomeData CAPUCHIN_MONKEY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
