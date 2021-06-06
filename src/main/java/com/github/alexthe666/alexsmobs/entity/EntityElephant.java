@@ -199,6 +199,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1D));
         this.goalSelector.addGoal(7, new ElephantAIFollowCaravan(this, 0.5D));
         this.goalSelector.addGoal(8, new AvoidEntityGoal<>(this, BeeEntity.class, 6.0F, 1.0D, 1.2D));
+        this.goalSelector.addGoal(8, new AvoidEntityGoal<>(this, EntityFly.class, 6.0F, 1.0D, 1.2D));
         this.goalSelector.addGoal(9, new EntityElephant.AIWalkIdle(this, 0.5D));
         this.targetSelector.addGoal(1, new EntityElephant.HurtByTargetGoal().setCallsForHelp());
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
