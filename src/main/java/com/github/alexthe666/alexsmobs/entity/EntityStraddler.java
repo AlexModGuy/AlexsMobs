@@ -154,8 +154,8 @@ public class EntityStraddler extends MonsterEntity implements IAnimatedEntity {
         }
     }
 
-    public Vector3d func_230268_c_(LivingEntity livingEntity) {
-        Vector3d[] avector3d = new Vector3d[]{func_233559_a_(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw), func_233559_a_(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw - 22.5F), func_233559_a_(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw + 22.5F), func_233559_a_(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw - 45.0F), func_233559_a_(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw + 45.0F)};
+    public Vector3d getDismountPosition(LivingEntity livingEntity) {
+        Vector3d[] avector3d = new Vector3d[]{getRiderDismountPlacementOffset(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw), getRiderDismountPlacementOffset(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw - 22.5F), getRiderDismountPlacementOffset(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw + 22.5F), getRiderDismountPlacementOffset(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw - 45.0F), getRiderDismountPlacementOffset(this.getWidth(), livingEntity.getWidth(), livingEntity.rotationYaw + 45.0F)};
         Set<BlockPos> set = Sets.newLinkedHashSet();
         double d0 = this.getBoundingBox().maxY;
         double d1 = this.getBoundingBox().minY - 0.5D;
@@ -286,7 +286,7 @@ public class EntityStraddler extends MonsterEntity implements IAnimatedEntity {
         }
 
         public boolean canEntityStandOnPos(BlockPos pos) {
-            return this.world.getBlockState(pos).isIn(Blocks.LAVA) || super.canEntityStandOnPos(pos);
+            return this.world.getBlockState(pos).matchesBlock(Blocks.LAVA) || super.canEntityStandOnPos(pos);
         }
     }
 }

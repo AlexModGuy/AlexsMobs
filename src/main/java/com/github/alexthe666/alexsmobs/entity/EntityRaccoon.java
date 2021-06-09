@@ -148,10 +148,10 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         return stack.getItem() == Items.BREAD;
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
 
         if(isTamed() && isFood(itemstack) && !isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()){
             if(this.getHeldItemMainhand().isEmpty()){
@@ -239,7 +239,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
             return false;
         } else {
             Entity entity = source.getTrueSource();
-            this.func_233687_w_(false);
+            this.setSitting(false);
             if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 4.0F;
             }
@@ -429,7 +429,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.RACCOON.create(serverWorld);
     }
 

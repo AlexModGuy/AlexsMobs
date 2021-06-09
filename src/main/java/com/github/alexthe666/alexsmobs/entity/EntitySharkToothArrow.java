@@ -66,7 +66,7 @@ public class EntitySharkToothArrow extends ArrowEntity {
         if (living instanceof PlayerEntity) {
             this.damageShield((PlayerEntity) living, (float) this.getDamage());
         }
-        Entity entity1 = this.func_234616_v_();
+        Entity entity1 = this.getShooter();
         if(living.getCreatureAttribute() == CreatureAttribute.WATER || living instanceof DrownedEntity || living.getCreatureAttribute() != CreatureAttribute.UNDEAD && living.canBreatheUnderwater()){
             DamageSource damagesource;
             if (entity1 == null) {

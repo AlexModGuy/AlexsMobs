@@ -236,7 +236,7 @@ public class EntityHummingbird extends AnimalEntity {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.HUMMINGBIRD.create(serverWorld);
     }
 
@@ -281,6 +281,6 @@ public class EntityHummingbird extends AnimalEntity {
 
     public static <T extends MobEntity> boolean canHummingbirdSpawn(EntityType<EntityHummingbird> hummingbird, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.matchesBlock(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 }

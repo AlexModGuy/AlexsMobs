@@ -48,7 +48,7 @@ public class FlyingAIFollowOwner extends Goal {
             return false;
         } else if (livingentity.isSpectator()) {
             return false;
-        } else if (this.tameable.isSitting()) {
+        } else if (this.tameable.isQueuedToSit()) {
             return false;
         } else if (this.tameable.getDistanceSq(livingentity) < (double)(this.minDist * this.minDist)) {
             return false;
@@ -62,7 +62,7 @@ public class FlyingAIFollowOwner extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     public boolean shouldContinueExecuting() {
-        if (this.tameable.isSitting()) {
+        if (this.tameable.isQueuedToSit()) {
             return false;
         } else {
             return this.tameable.getDistanceSq(this.owner) > (double)(this.maxDist * this.maxDist);
@@ -131,7 +131,7 @@ public class FlyingAIFollowOwner extends Goal {
     }
 
     private boolean isTeleportFriendlyBlock(BlockPos pos) {
-        PathNodeType pathnodetype = WalkNodeProcessor.func_237231_a_(this.world, pos.toMutable());
+        PathNodeType pathnodetype = WalkNodeProcessor.getFloorNodeType(this.world, pos.toMutable());
         if (pathnodetype != PathNodeType.WALKABLE) {
             return false;
         } else {

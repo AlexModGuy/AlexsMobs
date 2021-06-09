@@ -193,7 +193,7 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
         }
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
         ItemStack lvt_3_1_ = p_230254_1_.getHeldItem(p_230254_2_);
         if(lvt_3_1_.getItem() == Items.SUGAR){
             if(!p_230254_1_.isCreative()){
@@ -203,7 +203,7 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
             this.heal(2);
             return ActionResultType.SUCCESS;
         }
-        return super.func_230254_b_(p_230254_1_, p_230254_2_);
+        return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
 
     }
 
@@ -230,7 +230,7 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.FLY.create(p_241840_1_);
     }
 

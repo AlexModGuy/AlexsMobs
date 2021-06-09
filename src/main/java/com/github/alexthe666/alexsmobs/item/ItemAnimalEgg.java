@@ -30,7 +30,7 @@ public class ItemAnimalEgg extends Item {
                 eggentity = new EntityCockroachEgg(worldIn, playerIn);
             }
             eggentity.setItem(itemstack);
-            eggentity.func_234612_a_(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
+            eggentity.setDirectionAndMovement(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
             worldIn.addEntity(eggentity);
         }
 

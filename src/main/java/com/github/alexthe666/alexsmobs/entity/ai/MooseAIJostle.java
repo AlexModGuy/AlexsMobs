@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MooseAIJostle extends Goal {
 
-    private static final EntityPredicate JOSTLE_PREDICATE = (new EntityPredicate()).setDistance(16D).allowInvulnerable().allowFriendlyFire().setLineOfSiteRequired();
+    private static final EntityPredicate JOSTLE_PREDICATE = (new EntityPredicate()).setDistance(16D).allowInvulnerable().allowFriendlyFire();
     protected EntityMoose targetMoose;
     private EntityMoose moose;
     private World world;

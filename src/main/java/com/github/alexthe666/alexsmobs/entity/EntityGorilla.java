@@ -96,7 +96,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     public static boolean canGorillaSpawn(EntityType<EntityGorilla> gorilla, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.matchesBlock(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -121,7 +121,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             return false;
         } else {
             Entity entity = source.getTrueSource();
-            this.func_233687_w_(false);
+            this.setSitting(false);
             if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
@@ -299,11 +299,11 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
         this.forcedSit = compound.getBoolean("ForcedToSit");
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         if (itemstack.getItem() == Items.NAME_TAG) {
-            return super.func_230254_b_(player, hand);
+            return super.getEntityInteractionResult(player, hand);
         }
         if (isTamed() && isBanana(itemstack) && this.getHealth() < this.getMaxHealth()) {
             this.heal(5);
@@ -311,7 +311,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
             return ActionResultType.SUCCESS;
         }
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
             if (this.isSitting()) {
                 this.forcedSit = false;
@@ -493,7 +493,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.GORILLA.create(p_241840_1_);
     }
 

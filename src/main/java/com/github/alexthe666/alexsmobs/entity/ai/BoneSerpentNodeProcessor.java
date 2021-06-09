@@ -38,11 +38,11 @@ public class BoneSerpentNodeProcessor extends NodeProcessor {
         return i;
     }
 
-    public PathNodeType getPathNodeType(IBlockReader blockaccessIn, int x, int y, int z, MobEntity entitylivingIn, int xSize, int ySize, int zSize, boolean canBreakDoorsIn, boolean canEnterDoorsIn) {
-        return this.getPathNodeType(blockaccessIn, x, y, z);
+    public PathNodeType determineNodeType(IBlockReader blockaccessIn, int x, int y, int z, MobEntity entitylivingIn, int xSize, int ySize, int zSize, boolean canBreakDoorsIn, boolean canEnterDoorsIn) {
+        return this.getFloorNodeType(blockaccessIn, x, y, z);
     }
 
-    public PathNodeType getPathNodeType(IBlockReader blockaccessIn, int x, int y, int z) {
+    public PathNodeType getFloorNodeType(IBlockReader blockaccessIn, int x, int y, int z) {
         BlockPos blockpos = new BlockPos(x, y, z);
         FluidState fluidstate = blockaccessIn.getFluidState(blockpos);
         BlockState blockstate = blockaccessIn.getBlockState(blockpos);
@@ -65,7 +65,7 @@ public class BoneSerpentNodeProcessor extends NodeProcessor {
     @Nullable
     protected PathPoint openPoint(int x, int y, int z) {
         PathPoint pathpoint = null;
-        PathNodeType pathnodetype = this.getPathNodeType(this.entity.world, x, y, z);
+        PathNodeType pathnodetype = this.getFloorNodeType(this.entity.world, x, y, z);
         float f = this.entity.getPathPriority(pathnodetype);
         if (f >= 0.0F) {
             pathpoint = super.openPoint(x, y, z);

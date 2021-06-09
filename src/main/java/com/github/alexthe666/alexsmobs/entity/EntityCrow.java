@@ -120,7 +120,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
     public static <T extends MobEntity> boolean canCrowSpawn(EntityType<EntityCrow> crow, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.matchesBlock(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     public boolean isOnSameTeam(Entity entityIn) {
@@ -168,7 +168,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             return false;
         } else {
             Entity entity = source.getTrueSource();
-            this.func_233687_w_(false);
+            this.setSitting(false);
             if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 4.0F;
             }
@@ -226,10 +226,10 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         return stack.getItem() == Items.PUMPKIN_SEEDS && this.isTamed();
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (!this.getHeldItemMainhand().isEmpty() && type != ActionResultType.SUCCESS) {
             this.entityDropItem(this.getHeldItemMainhand().copy());
             this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
@@ -260,7 +260,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                     return ActionResultType.SUCCESS;
                 }
             }
-            return super.func_230254_b_(player, hand);
+            return super.getEntityInteractionResult(player, hand);
         }
     }
 
@@ -462,7 +462,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.CROW.create(serverWorld);
     }
 

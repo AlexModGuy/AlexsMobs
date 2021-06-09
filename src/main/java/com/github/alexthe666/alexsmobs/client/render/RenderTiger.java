@@ -139,7 +139,7 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
         matrixStackIn.push();
         Vector3d vector3d = leashHolder.getLeashPosition(partialTicks);
         double d0 = (double) (MathHelper.lerp(partialTicks, entityLivingIn.renderYawOffset, entityLivingIn.prevRenderYawOffset) * ((float) Math.PI / 180F)) + (Math.PI / 2D);
-        Vector3d vector3d1 = entityLivingIn.func_241205_ce_();
+        Vector3d vector3d1 = entityLivingIn.getLeashStartPosition();
         double d1 = Math.cos(d0) * vector3d1.z + Math.sin(d0) * vector3d1.x;
         double d2 = Math.sin(d0) * vector3d1.z - Math.cos(d0) * vector3d1.x;
         double d3 = MathHelper.lerp(partialTicks, entityLivingIn.prevPosX, entityLivingIn.getPosX()) + d1;

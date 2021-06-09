@@ -54,8 +54,8 @@ public class EntityTossedItem extends ProjectileItemEntity {
 
     protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
         super.onEntityHit(p_213868_1_);
-        if(this.func_234616_v_() instanceof EntityCapuchinMonkey){
-            EntityCapuchinMonkey boss = (EntityCapuchinMonkey) this.func_234616_v_();
+        if(this.getShooter() instanceof EntityCapuchinMonkey){
+            EntityCapuchinMonkey boss = (EntityCapuchinMonkey) this.getShooter();
             if(!boss.isOnSameTeam(p_213868_1_.getEntity()) || !boss.isTamed() && !(p_213868_1_.getEntity() instanceof EntityCapuchinMonkey)){
                 p_213868_1_.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, boss), 5.0F);
             }

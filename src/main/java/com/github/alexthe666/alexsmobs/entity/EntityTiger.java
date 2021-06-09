@@ -203,9 +203,9 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
     }
 
     //killEntity
-    public void func_241847_a(ServerWorld world, LivingEntity entity) {
+    public void onKillEntity(ServerWorld world, LivingEntity entity) {
         this.heal(5);
-        super.func_241847_a(world, entity);
+        super.onKillEntity(world, entity);
     }
 
     public void travel(Vector3d vec3d) {
@@ -436,7 +436,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         boolean whiteOther = p_241840_2_ instanceof EntityTiger && ((EntityTiger) p_241840_2_).isWhite();
         EntityTiger baby = AMEntityRegistry.TIGER.create(p_241840_1_);
         double whiteChance = 0.1D;
@@ -603,7 +603,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
             }
 
             if (pathnodetype == PathNodeType.WALKABLE) {
-                pathnodetype = func_237232_a_(p_237231_0_, p_237231_1_.setPos(i, j, k), pathnodetype);
+                pathnodetype = getSurroundingDanger(p_237231_0_, p_237231_1_.setPos(i, j, k), pathnodetype);
             }
 
             return pathnodetype;
@@ -624,12 +624,12 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
             }
         }
 
-        public PathNodeType getPathNodeType(IBlockReader blockaccessIn, int x, int y, int z) {
+        public PathNodeType getFloorNodeType(IBlockReader blockaccessIn, int x, int y, int z) {
             return func_237231_a_(blockaccessIn, new BlockPos.Mutable(x, y, z));
         }
 
-        protected PathNodeType func_215744_a(IBlockReader world, boolean b1, boolean b2, BlockPos pos, PathNodeType nodeType) {
-            return nodeType == PathNodeType.LEAVES || world.getBlockState(pos).getBlock() == Blocks.BAMBOO ? PathNodeType.OPEN : super.func_215744_a(world, b1, b2, pos, nodeType);
+        protected PathNodeType refineNodeType(IBlockReader world, boolean b1, boolean b2, BlockPos pos, PathNodeType nodeType) {
+            return nodeType == PathNodeType.LEAVES || world.getBlockState(pos).getBlock() == Blocks.BAMBOO ? PathNodeType.OPEN : super.refineNodeType(world, b1, b2, pos, nodeType);
         }
     }
 
@@ -729,13 +729,13 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
                         double d0 = (double) k + 0.5D - vec31.x;
                         double d1 = (double) l + 0.5D - vec31.z;
                         if (!(d0 * p_179683_8_ + d1 * p_179683_10_ < 0.0D)) {
-                            PathNodeType pathnodetype = this.nodeProcessor.getPathNodeType(this.world, k, y - 1, l, this.entity, sizeX, sizeY, sizeZ, true, true);
+                            PathNodeType pathnodetype = this.nodeProcessor.determineNodeType(this.world, k, y - 1, l, this.entity, sizeX, sizeY, sizeZ, true, true);
                             mutable.setPos(k, y - 1, l);
                             if (!this.func_230287_a_(pathnodetype) || EntityTiger.this.canPassThrough(mutable, world.getBlockState(mutable), null)) {
                                 return false;
                             }
 
-                            pathnodetype = this.nodeProcessor.getPathNodeType(this.world, k, y, l, this.entity, sizeX, sizeY, sizeZ, true, true);
+                            pathnodetype = this.nodeProcessor.determineNodeType(this.world, k, y, l, this.entity, sizeX, sizeY, sizeZ, true, true);
                             float f = this.entity.getPathPriority(pathnodetype);
                             if (f < 0.0F || f >= 8.0F) {
                                 return false;
@@ -874,7 +874,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
         }
 
         public boolean shouldContinueExecuting() {
-            return EntityTiger.this.func_233678_J__() && super.shouldContinueExecuting();
+            return EntityTiger.this.isAngry() && super.shouldContinueExecuting();
         }
 
         public void startExecuting() {

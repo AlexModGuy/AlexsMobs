@@ -162,7 +162,7 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return null;
     }
 
@@ -347,7 +347,7 @@ public class EntitySpectre extends AnimalEntity implements IFlyingAnimal {
 
     class TemptHeartGoal extends Goal {
         protected final EntitySpectre creature;
-        private final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(64D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks().setLineOfSiteRequired();
+        private final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(64D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks();
         private final double speed;
         private final Ingredient temptItem;
         protected PlayerEntity closestPlayer;

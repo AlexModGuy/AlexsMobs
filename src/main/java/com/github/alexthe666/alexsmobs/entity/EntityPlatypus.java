@@ -112,7 +112,7 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
         return stack;
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
         ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
         boolean redstone = itemstack.getItem() == Items.REDSTONE || itemstack.getItem() == Items.REDSTONE_BLOCK;
         if(itemstack.getItem() == AMItemRegistry.FEDORA && !this.hasFedora()){
@@ -147,7 +147,7 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
             this.remove();
             return ActionResultType.func_233537_a_(this.world.isRemote);
         } else {
-            return super.func_230254_b_(p_230254_1_, p_230254_2_);
+            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
         }
     }
 
@@ -404,7 +404,7 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.PLATYPUS.create(serverWorld);
     }
 

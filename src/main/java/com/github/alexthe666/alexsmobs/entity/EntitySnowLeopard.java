@@ -66,7 +66,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
 
     public static <T extends MobEntity> boolean canSnowLeopardSpawn(EntityType<EntitySnowLeopard> snowleperd, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.BASE_STONE_OVERWORLD) || blockstate.isIn(Blocks.DIRT) || blockstate.isIn(Blocks.GRASS_BLOCK)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+        return (blockstate.isIn(BlockTags.BASE_STONE_OVERWORLD) || blockstate.matchesBlock(Blocks.DIRT) || blockstate.matchesBlock(Blocks.GRASS_BLOCK)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     public boolean isBreedingItem(ItemStack stack) {
@@ -144,7 +144,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.SNOW_LEOPARD.create(serverWorld);
     }
 

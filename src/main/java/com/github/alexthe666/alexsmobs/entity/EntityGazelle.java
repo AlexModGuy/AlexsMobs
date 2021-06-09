@@ -125,7 +125,7 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
     public void tick() {
         super.tick();
         if(!world.isRemote && this.getAnimation() == NO_ANIMATION && getRNG().nextInt(70) == 0 && (this.getRevengeTarget() == null || this.getDistance(this.getRevengeTarget()) > 30)){
-            if(world.getBlockState(this.getPosition().down()).isIn(Blocks.GRASS_BLOCK) && getRNG().nextInt(3) == 0){
+            if(world.getBlockState(this.getPosition().down()).matchesBlock(Blocks.GRASS_BLOCK) && getRNG().nextInt(3) == 0){
                 this.setAnimation(ANIMATION_EAT_GRASS);
             }else{
                 this.setAnimation(getRNG().nextBoolean()  ? ANIMATION_FLICK_EARS : ANIMATION_FLICK_TAIL);
@@ -184,7 +184,7 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.GAZELLE.create(p_241840_1_);
     }
 

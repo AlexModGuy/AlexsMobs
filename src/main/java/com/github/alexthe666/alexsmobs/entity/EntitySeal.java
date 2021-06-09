@@ -95,7 +95,7 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
             boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.SEAL_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
             return spawnBlock && worldIn.getLightSubtracted(pos, 0) > 8;
         } else {
-            return worldIn.getLightSubtracted(pos, 0) > 8 && worldIn.getBlockState(pos.down()).isIn(Blocks.ICE);
+            return worldIn.getLightSubtracted(pos, 0) > 8 && worldIn.getBlockState(pos.down()).matchesBlock(Blocks.ICE);
         }
     }
 
@@ -349,7 +349,7 @@ public class EntitySeal extends AnimalEntity implements ISemiAquatic, IHerdPanic
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         EntitySeal seal = AMEntityRegistry.SEAL.create(serverWorld);
         seal.setArctic(this.isBiomeArctic(serverWorld, this.getPosition()));
         return seal;

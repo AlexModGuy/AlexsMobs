@@ -40,7 +40,7 @@ public class SealAIDiveForItems extends Goal {
 
     private static List<ItemStack> getItemStacks(EntitySeal seal) {
         LootTable loottable = seal.world.getServer().getLootTableManager().getLootTableFromLocation(SEAL_REWARD);
-        return loottable.generate((new LootContext.Builder((ServerWorld) seal.world)).withParameter(LootParameters.THIS_ENTITY, seal).withRandom(seal.world.rand).build(LootParameterSets.field_237453_h_));
+        return loottable.generate((new LootContext.Builder((ServerWorld) seal.world)).withParameter(LootParameters.THIS_ENTITY, seal).withRandom(seal.world.rand).build(LootParameterSets.BARTER));
     }
 
     @Override

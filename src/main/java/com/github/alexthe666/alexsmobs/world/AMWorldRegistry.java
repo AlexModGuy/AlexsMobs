@@ -22,7 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
 
-    public static Feature<NoFeatureConfig> LEAFCUTTER_ANTHILL =  new FeatureLeafcutterAnthill(NoFeatureConfig.field_236558_a_);
+    public static Feature<NoFeatureConfig> LEAFCUTTER_ANTHILL =  new FeatureLeafcutterAnthill(NoFeatureConfig.CODEC);
     public static ConfiguredFeature<NoFeatureConfig, ?> LEAFCUTTER_ANTHILL_CF;
     @SubscribeEvent
     public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {

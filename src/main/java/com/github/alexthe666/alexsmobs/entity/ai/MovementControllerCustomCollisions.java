@@ -88,7 +88,7 @@ public class MovementControllerCustomCollisions extends MovementController {
         PathNavigator pathnavigator = this.mob.getNavigator();
         if (pathnavigator != null) {
             NodeProcessor nodeprocessor = pathnavigator.getNodeProcessor();
-            if (nodeprocessor != null && nodeprocessor.getPathNodeType(this.mob.world, MathHelper.floor(this.mob.getPosX() + (double)p_234024_1_), MathHelper.floor(this.mob.getPosY()), MathHelper.floor(this.mob.getPosZ() + (double)p_234024_2_)) != PathNodeType.WALKABLE) {
+            if (nodeprocessor != null && nodeprocessor.getFloorNodeType(this.mob.world, MathHelper.floor(this.mob.getPosX() + (double)p_234024_1_), MathHelper.floor(this.mob.getPosY()), MathHelper.floor(this.mob.getPosZ() + (double)p_234024_2_)) != PathNodeType.WALKABLE) {
                 return false;
             }
         }

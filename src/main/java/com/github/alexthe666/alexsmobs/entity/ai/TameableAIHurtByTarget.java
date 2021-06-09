@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class TameableAIHurtByTarget  extends TargetGoal {
-    private static final EntityPredicate field_220795_a = (new EntityPredicate()).setLineOfSiteRequired().setUseInvisibilityCheck();
+    private static final EntityPredicate field_220795_a = (new EntityPredicate()).setIgnoresLineOfSight().setUseInvisibilityCheck();
     private boolean entityCallsForHelp;
     /** Store the previous revengeTimer value */
     private int revengeTimerOld;

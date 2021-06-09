@@ -489,7 +489,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         boolean owner = this.isTamed() && isOwner(player);
         if (isChested() && player.isSneaking()) {
@@ -539,11 +539,11 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             elephantInventory.clear();
             this.setChested(false);
             return ActionResultType.SUCCESS;
-        } else if (owner && !this.isChild() && super.func_230254_b_(player, hand) != ActionResultType.CONSUME) {
+        } else if (owner && !this.isChild() && super.getEntityInteractionResult(player, hand) != ActionResultType.CONSUME) {
             player.startRiding(this);
             return ActionResultType.SUCCESS;
         }
-        return super.func_230254_b_(player, hand);
+        return super.getEntityInteractionResult(player, hand);
     }
 
     public EntitySize getSize(Pose poseIn) {
@@ -606,7 +606,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         EntityElephant baby = AMEntityRegistry.ELEPHANT.create(serverWorld);
         baby.setTusked(this.getNearestTusked(world, 15) == null || rand.nextInt(2) == 0);
         return baby;

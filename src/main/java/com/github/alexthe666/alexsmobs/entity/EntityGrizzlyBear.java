@@ -93,7 +93,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
             return false;
         } else {
             Entity entity = source.getTrueSource();
-            this.func_233687_w_(false);
+            this.setSitting(false);
             if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 3.0F;
             }
@@ -223,10 +223,10 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         return null;
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)){
             if(!player.isSneaking()){
                 player.startRiding(this);
@@ -473,7 +473,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld world, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld world, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.GRIZZLY_BEAR.create(world);
     }
 
@@ -584,14 +584,14 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
                     EntityGrizzlyBear.this.setAnimation(rand.nextBoolean() ? ANIMATION_MAUL : rand.nextBoolean() ? ANIMATION_SWIPE_L : ANIMATION_SWIPE_R);
                 }
             } else if (distToEnemySqr <= d0 * 2.0D) {
-                if (this.func_234040_h_()) {
-                    this.func_234039_g_();
+                if (this.isSwingOnCooldown()) {
+                    this.resetSwingCooldown();
                 }
-                if (this.func_234041_j_() <= 10) {
+                if (this.getSwingCooldown() <= 10) {
                     EntityGrizzlyBear.this.playWarningSound();
                 }
             } else {
-                this.func_234039_g_();
+                this.resetSwingCooldown();
             }
 
         }

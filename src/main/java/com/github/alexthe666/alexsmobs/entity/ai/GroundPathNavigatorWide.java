@@ -26,7 +26,7 @@ public class GroundPathNavigatorWide extends GroundPathNavigator {
         double d1 = Math.abs(this.entity.getPosY() - (double)vector3i.getY());
         double d2 = Math.abs(this.entity.getPosZ() - ((double)vector3i.getZ() + 0.5D));
         boolean flag = d0 < (double)this.maxDistanceToWaypoint && d2 < (double)this.maxDistanceToWaypoint && d1 < 1.0D;
-        if (flag || this.entity.func_233660_b_(this.currentPath.func_237225_h_().nodeType) && this.func_234112_b_(vector3d)) {
+        if (flag || this.entity.func_233660_b_(this.currentPath.getCurrentPoint().nodeType) && this.func_234112_b_(vector3d)) {
             this.currentPath.incrementPathIndex();
         }
 

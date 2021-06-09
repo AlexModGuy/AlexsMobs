@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -28,6 +29,7 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -66,7 +68,7 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
     }
 
     public static boolean func_223363_b(EntityType<? extends AbstractFishEntity> p_223363_0_, IWorld p_223363_1_, SpawnReason p_223363_2_, BlockPos p_223363_3_, Random p_223363_4_) {
-        return p_223363_1_.getBlockState(p_223363_3_).isIn(Blocks.WATER) && p_223363_1_.getBlockState(p_223363_3_.up()).isIn(Blocks.WATER);
+        return p_223363_1_.getBlockState(p_223363_3_).getMaterial() == Material.WATER && p_223363_1_.getBlockState(p_223363_3_.up()).getMaterial() == Material.WATER;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
@@ -200,7 +202,7 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
 
     }
 
-    protected ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+    protected ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
         ItemStack lvt_3_1_ = p_230254_1_.getHeldItem(p_230254_2_);
         if (lvt_3_1_.getItem() == Items.SLIME_BALL && this.isAlive() && !this.isSlimed()) {
             this.setSlimed(true);
@@ -231,7 +233,7 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
             this.remove();
             return ActionResultType.func_233537_a_(this.world.isRemote);
         } else {
-            return super.func_230254_b_(p_230254_1_, p_230254_2_);
+            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
         }
     }
 
@@ -305,6 +307,6 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
     }
 
     public static boolean canBlobfishSpawn(EntityType<EntityBlobfish> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
-        return reason == SpawnReason.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnHeight && iServerWorld.getBlockState(pos).isIn(Blocks.WATER) && iServerWorld.getBlockState(pos.up()).isIn(Blocks.WATER);
+        return reason == SpawnReason.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnHeight && iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.up()).getMaterial() == Material.WATER;
     }
 }

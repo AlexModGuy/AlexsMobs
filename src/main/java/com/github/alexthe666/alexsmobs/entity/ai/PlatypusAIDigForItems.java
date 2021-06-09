@@ -38,7 +38,7 @@ public class PlatypusAIDigForItems extends Goal {
 
     private static List<ItemStack> getItemStacks(EntityPlatypus platypus) {
         LootTable loottable = platypus.world.getServer().getLootTableManager().getLootTableFromLocation(platypus.superCharged ? PLATYPUS_REWARD_CHARGED : PLATYPUS_REWARD);
-        return loottable.generate((new LootContext.Builder((ServerWorld) platypus.world)).withParameter(LootParameters.THIS_ENTITY, platypus).withRandom(platypus.world.rand).build(LootParameterSets.field_237453_h_));
+        return loottable.generate((new LootContext.Builder((ServerWorld) platypus.world)).withParameter(LootParameters.THIS_ENTITY, platypus).withRandom(platypus.world.rand).build(LootParameterSets.BARTER));
     }
 
     @Override

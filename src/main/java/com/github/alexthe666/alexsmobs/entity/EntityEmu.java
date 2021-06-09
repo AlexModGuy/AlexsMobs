@@ -222,7 +222,7 @@ public class EntityEmu extends AnimalEntity implements IAnimatedEntity, IHerdPan
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         EntityEmu emu = AMEntityRegistry.EMU.create(serverWorld);
         emu.setVariant(this.getVariant());
         return emu;

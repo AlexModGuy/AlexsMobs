@@ -108,7 +108,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
     }
 
     //killEntity
-    public void func_241847_a(ServerWorld world, LivingEntity entity) {
+    public void onKillEntity(ServerWorld world, LivingEntity entity) {
         if(entity.getType() == EntityType.SHULKER){
             CompoundNBT fishNbt = new CompoundNBT();
             entity.writeAdditional(fishNbt);
@@ -116,7 +116,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
             entity.readAdditional(fishNbt);
             entity.entityDropItem(Items.SHULKER_SHELL);
         }
-        super.func_241847_a(world, entity);
+        super.onKillEntity(world, entity);
     }
 
     public static boolean canMantisShrimpSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
@@ -302,10 +302,10 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
         }
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (!isTamed() && item == Items.TROPICAL_FISH) {
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_STRIDER_EAT, this.getSoundVolume(), this.getSoundPitch());
@@ -527,7 +527,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         EntityMantisShrimp shrimp = AMEntityRegistry.MANTIS_SHRIMP.create(serverWorld);
         shrimp.setVariant(getRNG().nextInt(3));
         return shrimp;
@@ -674,7 +674,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
         }
 
         private boolean isTeleportFriendlyBlock(BlockPos p_226329_1_) {
-            PathNodeType lvt_2_1_ = WalkNodeProcessor.func_237231_a_(this.world, p_226329_1_.toMutable());
+            PathNodeType lvt_2_1_ = WalkNodeProcessor.getFloorNodeType(this.world, p_226329_1_.toMutable());
             if (world.getFluidState(p_226329_1_).isTagged(FluidTags.WATER) || !world.getFluidState(p_226329_1_).isTagged(FluidTags.WATER) && world.getFluidState(p_226329_1_.down()).isTagged(FluidTags.WATER)) {
                 return true;
             }

@@ -207,7 +207,7 @@ public class SnowLeopardAIMelee extends Goal {
                     }
 
                     if (p_226339_5_ || !creature.world.getFluidState(lvt_25_2_).isTagged(FluidTags.WATER)) {
-                        PathNodeType lvt_26_1_ = WalkNodeProcessor.func_237231_a_(creature.world, lvt_25_2_.toMutable());
+                        PathNodeType lvt_26_1_ = WalkNodeProcessor.getFloorNodeType(creature.world, lvt_25_2_.toMutable());
                         if (leopard.getPathPriority(lvt_26_1_) == 0.0F) {
                             double lvt_27_1_ = p_226339_8_.applyAsDouble(lvt_25_2_);
                             if (lvt_27_1_ > lvt_17_1_) {

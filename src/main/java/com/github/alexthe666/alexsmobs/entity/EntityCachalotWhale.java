@@ -159,8 +159,8 @@ public class EntityCachalotWhale extends AnimalEntity {
     public void collideWithNearbyEntities() {
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
-        return super.func_230254_b_(p_230254_1_, p_230254_2_);
+    public ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+        return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
     }
 
     public void writeAdditional(CompoundNBT compound) {
@@ -711,7 +711,7 @@ public class EntityCachalotWhale extends AnimalEntity {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         EntityCachalotWhale whale = AMEntityRegistry.CACHALOT_WHALE.create(serverWorld);
         whale.setAlbino(this.isAlbino());
         return whale;
@@ -881,7 +881,7 @@ public class EntityCachalotWhale extends AnimalEntity {
 
         private boolean canBreatheAt(IWorldReader p_205140_1_, BlockPos p_205140_2_) {
             BlockState lvt_3_1_ = p_205140_1_.getBlockState(p_205140_2_);
-            return (p_205140_1_.getFluidState(p_205140_2_).isEmpty() || lvt_3_1_.isIn(Blocks.BUBBLE_COLUMN)) && lvt_3_1_.allowsMovement(p_205140_1_, p_205140_2_, PathType.LAND);
+            return (p_205140_1_.getFluidState(p_205140_2_).isEmpty() || lvt_3_1_.matchesBlock(Blocks.BUBBLE_COLUMN)) && lvt_3_1_.allowsMovement(p_205140_1_, p_205140_2_, PathType.LAND);
         }
     }
 }

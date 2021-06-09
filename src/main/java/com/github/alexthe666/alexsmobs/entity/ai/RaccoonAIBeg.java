@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import java.util.EnumSet;
 
 public class RaccoonAIBeg extends Goal {
-    private static final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(32D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks().setLineOfSiteRequired();
+    private static final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(32D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks().setIgnoresLineOfSight();
     protected final EntityRaccoon raccoon;
     private final double speed;
     protected PlayerEntity closestPlayer;

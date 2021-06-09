@@ -183,13 +183,13 @@ public class ServerEvents {
                 if (!event.getEntity().world.isRemote) {
                     ServerPlayerEntity serverPlayerEntity = null;
                     if (event.getEntity() instanceof ArrowEntity) {
-                        Entity thrower = ((ArrowEntity) event.getEntity()).func_234616_v_();
+                        Entity thrower = ((ArrowEntity) event.getEntity()).getShooter();
                         if (thrower instanceof ServerPlayerEntity) {
                             serverPlayerEntity = (ServerPlayerEntity) thrower;
                         }
                     }
                     if (event.getEntity() instanceof ThrowableEntity) {
-                        Entity thrower = ((ThrowableEntity) event.getEntity()).func_234616_v_();
+                        Entity thrower = ((ThrowableEntity) event.getEntity()).getShooter();
                         if (thrower instanceof ServerPlayerEntity) {
                             serverPlayerEntity = (ServerPlayerEntity) thrower;
                         }

@@ -115,7 +115,7 @@ public class KangarooAIMelee extends MeleeAttackGoal {
                 enemy.applyKnockback(1F, enemy.getPosX() - kangaroo.getPosX(), enemy.getPosZ() - kangaroo.getPosZ());
 
             }
-            this.func_234039_g_();
+            this.resetSwingCooldown();
             if(kangaroo.getAnimation() == IAnimatedEntity.NO_ANIMATION){
                 if(kangaroo.getRNG().nextBoolean()){
                     kangaroo.setAnimation(EntityKangaroo.ANIMATION_KICK);

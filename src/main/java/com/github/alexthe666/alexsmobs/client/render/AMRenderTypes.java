@@ -43,7 +43,7 @@ public class AMRenderTypes extends RenderType {
     }
 
     public static RenderType getTransparentMimicube(ResourceLocation texture) {
-        RenderType.State lvt_1_1_ = RenderType.State.getBuilder().texture(new TextureState(texture, false, false)).transparency(TRANSLUCENT_TRANSPARENCY).target(field_241712_U_).diffuseLighting(DIFFUSE_LIGHTING_ENABLED).alpha(DEFAULT_ALPHA).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).writeMask(RenderState.COLOR_DEPTH_WRITE).cull(RenderState.CULL_DISABLED).build(true);
+        RenderType.State lvt_1_1_ = RenderType.State.getBuilder().texture(new TextureState(texture, false, false)).transparency(TRANSLUCENT_TRANSPARENCY).target(TRANSLUCENT_TARGET).diffuseLighting(DIFFUSE_LIGHTING_ENABLED).alpha(DEFAULT_ALPHA).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).writeMask(RenderState.COLOR_DEPTH_WRITE).cull(RenderState.CULL_DISABLED).build(true);
         return makeType("mimicube", DefaultVertexFormats.ENTITY, 7, 256, false, true, lvt_1_1_);
     }
 

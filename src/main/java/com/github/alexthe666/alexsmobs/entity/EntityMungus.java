@@ -300,9 +300,9 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
         return false;
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (itemstack.getItem() == Items.POISONOUS_POTATO && !this.isChild()) {
             this.dataManager.set(REVERTING, true);
             consumeItemFromStack(player, itemstack);
@@ -511,7 +511,7 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.MUNGUS.create(p_241840_1_);
     }
 

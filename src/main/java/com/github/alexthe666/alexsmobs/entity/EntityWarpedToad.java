@@ -122,7 +122,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
             return false;
         } else {
             Entity entity = source.getTrueSource();
-            this.func_233687_w_(false);
+            this.setSitting(false);
             if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 3.0F;
             }
@@ -269,10 +269,10 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
     }
 
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (!isTamed() && item == AMItemRegistry.MOSQUITO_LARVA) {
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_STRIDER_EAT, this.getSoundVolume(), this.getSoundPitch());
@@ -533,7 +533,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.WARPED_TOAD.create(serverWorld);
     }
 
@@ -817,7 +817,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
         }
 
         private boolean isTeleportFriendlyBlock(BlockPos p_226329_1_) {
-            PathNodeType lvt_2_1_ = WalkNodeProcessor.func_237231_a_(this.world, p_226329_1_.toMutable());
+            PathNodeType lvt_2_1_ = WalkNodeProcessor.getFloorNodeType(this.world, p_226329_1_.toMutable());
             if (lvt_2_1_ != PathNodeType.WALKABLE) {
                 return false;
             } else {

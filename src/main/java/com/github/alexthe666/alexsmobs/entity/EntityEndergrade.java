@@ -137,7 +137,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
     }
 
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         if (item == Items.SADDLE && !this.isSaddled()) {
@@ -155,7 +155,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
             this.removePotionEffect(AMEffectRegistry.ENDER_FLU);
             return ActionResultType.SUCCESS;
         }
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (type != ActionResultType.SUCCESS && !isBreedingItem(itemstack)) {
             if (!player.isSneaking() && this.isSaddled()) {
                 player.startRiding(this);
@@ -263,7 +263,7 @@ public class EntityEndergrade extends AnimalEntity implements IFlyingAnimal {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.ENDERGRADE.create(p_241840_1_);
     }
 

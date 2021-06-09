@@ -22,7 +22,7 @@ public class MatchesBlossomTagCondition implements ILootCondition {
         match = BlockTags.getCollection().get(AMTagRegistry.DROPS_ACACIA_BLOSSOMS);
     }
 
-    public LootConditionType func_230419_b_() {
+    public LootConditionType getConditionType() {
         return CommonProxy.MATCHES_BLOSSOM_CONDTN;
     }
 

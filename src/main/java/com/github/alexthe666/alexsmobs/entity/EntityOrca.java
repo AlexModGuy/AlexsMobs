@@ -63,7 +63,7 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
 
     public static final Animation ANIMATION_BITE = Animation.create(8);
     private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(EntityOrca.class, DataSerializers.VARINT);
-    private static final EntityPredicate PLAYER_PREDICATE = (new EntityPredicate()).setDistance(24.0D).allowFriendlyFire().allowInvulnerable().setLineOfSiteRequired();
+    private static final EntityPredicate PLAYER_PREDICATE = (new EntityPredicate()).setDistance(24.0D).allowFriendlyFire().allowInvulnerable().setIgnoresLineOfSight();
     public int jumpCooldown;
     private int animationTick;
     private Animation currentAnimation;
@@ -301,7 +301,7 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.ORCA.create(serverWorld);
     }
 

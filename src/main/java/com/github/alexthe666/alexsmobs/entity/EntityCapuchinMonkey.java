@@ -315,7 +315,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.CAPUCHIN_MONKEY.create(p_241840_1_);
     }
 
@@ -344,10 +344,10 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         animationTick = tick;
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if(!isTamed() && EntityGorilla.isBanana(itemstack)){
             this.consumeItemFromStack(player, itemstack);
             if(getRNG().nextInt(5) == 0){
@@ -432,6 +432,6 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
 
     public static <T extends MobEntity> boolean canCapuchinSpawn(EntityType<EntityCapuchinMonkey> gorilla, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.isIn(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.matchesBlock(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 }

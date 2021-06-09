@@ -491,7 +491,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             return false;
         } else {
             Entity entity = source.getTrueSource();
-            this.func_233687_w_(false);
+            this.setSitting(false);
             if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 3.0F;
             }
@@ -501,15 +501,15 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.CROCODILE.create(p_241840_1_);
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         if (itemstack.getItem() == Items.NAME_TAG) {
-            return super.func_230254_b_(player, hand);
+            return super.getEntityInteractionResult(player, hand);
         }
         if (isTamed() && item.isFood() && item.getFood() != null && item.getFood().isMeat() && this.getHealth() < this.getMaxHealth()) {
             this.consumeItemFromStack(player, itemstack);
@@ -517,7 +517,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
             return ActionResultType.SUCCESS;
         }
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
             if (this.isSitting()) {
                 this.forcedSit = false;

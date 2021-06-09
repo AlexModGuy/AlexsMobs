@@ -187,17 +187,17 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
     }
 
     private void pacifyAllNearby(){
-        func_241356_K__();
+        resetTargets();
         List<EntityLeafcutterAnt> list = world.getEntitiesWithinAABB(EntityLeafcutterAnt.class, this.getBoundingBox().grow(20D, 6.0D, 20D));
         for(EntityLeafcutterAnt ant : list){
-            ant.func_241356_K__();
+            ant.resetTargets();
         }
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if(type != ActionResultType.SUCCESS && item == AMItemRegistry.GONGYLIDIA){
             if(isQueen() && haveBabyCooldown == 0){
                 int babies = 1 + rand.nextInt(1);
@@ -579,7 +579,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return null;
     }
 
@@ -699,7 +699,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
                     }
                    EntityLeafcutterAnt.this.getMoveHelper().setMoveTo((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.5F, (double) hivePos.getZ() + 0.5F, 1.0D);
                 }
-                EntityLeafcutterAnt.this.navigator.resetRangeMultiplier();
+                EntityLeafcutterAnt.this.navigator.resetSearchDepthMultiplier();
                 EntityLeafcutterAnt.this.navigator.tryMoveToXYZ((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.6F, (double) hivePos.getZ() + 0.5F, 1.0D);
             } else {
                 startMovingToFar(this.hivePos);
@@ -707,7 +707,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
         }
 
         private boolean startMovingToFar(BlockPos pos) {
-            EntityLeafcutterAnt.this.navigator.setRangeMultiplier(10.0F);
+            EntityLeafcutterAnt.this.navigator.setSearchDepthMultiplier(10.0F);
             EntityLeafcutterAnt.this.navigator.tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), 1.0D);
             return EntityLeafcutterAnt.this.navigator.getPath() != null && EntityLeafcutterAnt.this.navigator.getPath().reachesTarget();
         }
@@ -723,7 +723,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean shouldContinueExecuting() {
-            return EntityLeafcutterAnt.this.func_233678_J__() && super.shouldContinueExecuting();
+            return EntityLeafcutterAnt.this.isAngry() && super.shouldContinueExecuting();
         }
 
         protected void setAttackTarget(MobEntity mobIn, LivingEntity targetIn) {

@@ -43,14 +43,14 @@ public class KomodoDragonAIBreed extends BreedGoal {
 
     protected void spawnBaby() {
         for(int i = 0; i < 2 + this.animal.getRNG().nextInt(2); i++){
-            this.animal.func_234177_a_((ServerWorld)this.world, this.targetMate);
+            this.animal.createChild((ServerWorld)this.world, this.targetMate);
         }
         komodo.slaughterCooldown = 200;
     }
 
     private void spawnParthogenicBaby() {
         for(int i = 0; i < 2 + this.animal.getRNG().nextInt(2); i++){
-            this.animal.func_234177_a_((ServerWorld)this.world, this.animal);
+            this.animal.createChild((ServerWorld)this.world, this.animal);
         }
         komodo.slaughterCooldown = 200;
     }

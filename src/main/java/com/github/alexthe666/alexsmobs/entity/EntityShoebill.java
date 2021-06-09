@@ -274,7 +274,7 @@ public class EntityShoebill extends AnimalEntity implements IAnimatedEntity, ITa
         return new Animation[]{ANIMATION_FISH, ANIMATION_BEAKSHAKE, ANIMATION_ATTACK};
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
         ItemStack lvt_3_1_ = p_230254_1_.getHeldItem(p_230254_2_);
          if (lvt_3_1_.getItem() == AMItemRegistry.BLOBFISH && this.isAlive()) {
              if(this.luckLevel < 10) {
@@ -315,14 +315,14 @@ public class EntityShoebill extends AnimalEntity implements IAnimatedEntity, ITa
              }
 
          } else {
-            return super.func_230254_b_(p_230254_1_, p_230254_2_);
+            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
         }
     }
 
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.SHOEBILL.create(serverWorld);
     }
 

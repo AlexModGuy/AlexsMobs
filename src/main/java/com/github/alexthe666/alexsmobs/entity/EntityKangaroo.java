@@ -211,10 +211,10 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         kangarooInventory.clear();
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (!isTamed() && item == Items.CARROT) {
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_HORSE_EAT, this.getSoundVolume(), this.getSoundPitch());
@@ -483,11 +483,11 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
             }
 
             if (!moving && this.getAnimation() == NO_ANIMATION && !this.isSitting() && !this.isStanding()) {
-                if ((getRNG().nextInt(180) == 0 || this.getHealth() < this.getMaxHealth() && getRNG().nextInt(40) == 0) && world.getBlockState(this.getPosition().down()).isIn(Blocks.GRASS_BLOCK)) {
+                if ((getRNG().nextInt(180) == 0 || this.getHealth() < this.getMaxHealth() && getRNG().nextInt(40) == 0) && world.getBlockState(this.getPosition().down()).matchesBlock(Blocks.GRASS_BLOCK)) {
                     this.setAnimation(ANIMATION_EAT_GRASS);
                 }
             }
-            if (this.getAnimation() == ANIMATION_EAT_GRASS && this.getAnimationTick() == 20 && this.getHealth() < this.getMaxHealth() && world.getBlockState(this.getPosition().down()).isIn(Blocks.GRASS_BLOCK)) {
+            if (this.getAnimation() == ANIMATION_EAT_GRASS && this.getAnimationTick() == 20 && this.getHealth() < this.getMaxHealth() && world.getBlockState(this.getPosition().down()).matchesBlock(Blocks.GRASS_BLOCK)) {
                 this.heal(6);
                 this.world.playEvent(2001, getPosition().down(), Block.getStateId(Blocks.GRASS_BLOCK.getDefaultState()));
                 this.world.setBlockState(getPosition().down(), Blocks.DIRT.getDefaultState(), 2);
@@ -759,7 +759,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.KANGAROO.create(serverWorld);
     }
 

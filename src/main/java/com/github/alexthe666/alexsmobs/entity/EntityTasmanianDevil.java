@@ -219,10 +219,10 @@ public class EntityTasmanianDevil extends AnimalEntity implements IAnimatedEntit
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (item == Items.ROTTEN_FLESH && this.getAnimation() != ANIMATION_HOWL) {
             this.playSound(SoundEvents.ENTITY_FOX_EAT, this.getSoundVolume(), this.getSoundPitch());
             this.entityDropItem(item.getContainerItem(itemstack));
@@ -275,7 +275,7 @@ public class EntityTasmanianDevil extends AnimalEntity implements IAnimatedEntit
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.TASMANIAN_DEVIL.create(serverWorld);
     }
 

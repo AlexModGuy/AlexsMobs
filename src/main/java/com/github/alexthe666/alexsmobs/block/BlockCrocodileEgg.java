@@ -159,7 +159,7 @@ public class BlockCrocodileEgg  extends Block {
     @Nullable
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         BlockState blockstate = context.getWorld().getBlockState(context.getPos());
-        return blockstate.isIn(this) ? blockstate.with(EGGS, Integer.valueOf(Math.min(4, blockstate.get(EGGS) + 1))) : super.getStateForPlacement(context);
+        return blockstate.getBlock() == this ? blockstate.with(EGGS, Integer.valueOf(Math.min(4, blockstate.get(EGGS) + 1))) : super.getStateForPlacement(context);
     }
 
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {

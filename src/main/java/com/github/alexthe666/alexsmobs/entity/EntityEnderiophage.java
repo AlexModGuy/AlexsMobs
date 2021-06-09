@@ -305,7 +305,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
                     Vector3d vec = this.getBlockInViewAway(angryEnderman.getPositionVec(), 10);
                     if (fleeAfterStealTime < 5) {
                         if (angryEnderman instanceof IAngerable) {
-                            ((IAngerable) angryEnderman).func_241356_K__();
+                            ((IAngerable) angryEnderman).resetTargets();
                         }
                         try {
                             angryEnderman.goalSelector.getRunningGoals().forEach(Goal::resetTask);
@@ -485,7 +485,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return null;
     }
 

@@ -470,10 +470,10 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         super.travel(vec3d);
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (item == AMItemRegistry.WARPED_MIXTURE && !this.isSick()) {
             this.entityDropItem(item.getContainerItem(itemstack));
             if (!player.isCreative()) {

@@ -79,7 +79,7 @@ public class EntityStradpole extends WaterMobEntity {
         return stack;
     }
 
-    protected ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+    protected ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
         ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
         if(itemstack.getItem() == AMItemRegistry.MOSQUITO_LARVA){
             if(!p_230254_1_.isCreative()){
@@ -112,7 +112,7 @@ public class EntityStradpole extends WaterMobEntity {
             this.remove();
             return ActionResultType.func_233537_a_(this.world.isRemote);
         } else {
-            return super.func_230254_b_(p_230254_1_, p_230254_2_);
+            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
         }
     }
 

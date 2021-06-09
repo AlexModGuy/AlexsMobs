@@ -386,10 +386,10 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         }
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (!isTamed() && item == Items.SPIDER_EYE) {
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_STRIDER_EAT, this.getSoundVolume(), this.getSoundPitch());
@@ -459,7 +459,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return null;
     }
 

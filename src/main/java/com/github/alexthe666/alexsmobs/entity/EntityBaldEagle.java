@@ -326,10 +326,10 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.func_230254_b_(player, hand);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (item.isIn(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
             this.heal(10);
             if (!player.isCreative()) {
@@ -584,7 +584,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         return AMEntityRegistry.BALD_EAGLE.create(p_241840_1_);
     }
 
@@ -793,13 +793,13 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
     }
 
     //killEntity
-    public void func_241847_a(ServerWorld world, LivingEntity entity) {
+    public void onKillEntity(ServerWorld world, LivingEntity entity) {
         if (this.isLaunched() && this.hasCap() && this.isTamed() && this.getOwner() != null) {
             if (this.getOwner() instanceof ServerPlayerEntity && this.getDistance(this.getOwner()) >= 100) {
                 AMAdvancementTriggerRegistry.BALD_EAGLE_CHALLENGE.trigger((ServerPlayerEntity) this.getOwner());
             }
         }
-        super.func_241847_a(world, entity);
+        super.onKillEntity(world, entity);
     }
 
 

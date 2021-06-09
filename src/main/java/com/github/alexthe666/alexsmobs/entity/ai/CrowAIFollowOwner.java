@@ -169,7 +169,7 @@ public class CrowAIFollowOwner extends Goal {
     }
 
     private boolean isTeleportFriendlyBlock(BlockPos p_226329_1_) {
-        PathNodeType lvt_2_1_ = WalkNodeProcessor.func_237231_a_(this.world, p_226329_1_.toMutable());
+        PathNodeType lvt_2_1_ = WalkNodeProcessor.getFloorNodeType(this.world, p_226329_1_.toMutable());
         if (lvt_2_1_ != PathNodeType.WALKABLE) {
             return false;
         } else {

@@ -22,7 +22,7 @@ public class MatchesBananaTagCondition implements ILootCondition {
         match = BlockTags.getCollection().get(AMTagRegistry.DROPS_BANANAS);
     }
 
-    public LootConditionType func_230419_b_() {
+    public LootConditionType getConditionType() {
         return CommonProxy.MATCHES_BANANA_CONDTN;
     }
 

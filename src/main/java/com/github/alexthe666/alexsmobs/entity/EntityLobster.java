@@ -152,7 +152,7 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
         return super.preventDespawn() || this.isFromBucket();
     }
 
-    protected ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+    protected ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
         ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
         if (itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
             this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
@@ -172,7 +172,7 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
             this.remove();
             return ActionResultType.func_233537_a_(this.world.isRemote);
         } else {
-            return super.func_230254_b_(p_230254_1_, p_230254_2_);
+            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
         }
     }
 

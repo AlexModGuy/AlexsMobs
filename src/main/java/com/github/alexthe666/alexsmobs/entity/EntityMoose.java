@@ -70,7 +70,7 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
 
     public static boolean canMooseSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockState blockstate = worldIn.getBlockState(pos.down());
-        return (blockstate.isIn(Blocks.GRASS_BLOCK) || blockstate.isIn(Blocks.SNOW)) && worldIn.getLightSubtracted(pos, 0) > 8;
+        return (blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.matchesBlock(Blocks.SNOW)) && worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
@@ -179,7 +179,7 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
             jostleCooldown--;
         }
         if (!world.isRemote && this.getAnimation() == NO_ANIMATION && getRNG().nextInt(120) == 0 && (this.getAttackTarget() == null || !this.getAttackTarget().isAlive()) && !this.isJostling() && this.getJostlingPartnerUUID() == null) {
-            if (world.getBlockState(this.getPosition().down()).isIn(Blocks.GRASS_BLOCK) && getRNG().nextInt(3) == 0) {
+            if (world.getBlockState(this.getPosition().down()).matchesBlock(Blocks.GRASS_BLOCK) && getRNG().nextInt(3) == 0) {
                 this.setAnimation(ANIMATION_EAT_GRASS);
             }
         }
@@ -336,7 +336,7 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return AMEntityRegistry.MOOSE.create(serverWorld);
     }
 

@@ -38,8 +38,8 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
         }
     }
 
-    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
-        return this.getParent() == null ? ActionResultType.PASS : this.getParent().processInitialInteract(player, hand);
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+        return this.getParent() == null ? ActionResultType.PASS : this.getParent().getEntityInteractionResult(player, hand);
     }
 
     protected void collideWithEntity(Entity entityIn) {

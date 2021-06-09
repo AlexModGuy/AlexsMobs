@@ -186,7 +186,7 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
         return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
         ItemStack lvt_3_1_ = p_230254_1_.getHeldItem(p_230254_2_);
         if ((lvt_3_1_.getItem() == Items.SPONGE || lvt_3_1_.getItem() == Items.WET_SPONGE) && this.isAlive() && this.isRainbow()) {
             this.setRainbow(false);
@@ -217,7 +217,7 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
             this.entityDropItem(new ItemStack(AMItemRegistry.MARACA));
             return ActionResultType.SUCCESS;
         } else {
-            return super.func_230254_b_(p_230254_1_, p_230254_2_);
+            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
         }
     }
 
@@ -281,7 +281,7 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
         super.tick();
         prevDanceProgress = danceProgress;
         boolean dance = this.isJukeboxing || isDancing();
-        if (this.jukeboxPosition == null || !this.jukeboxPosition.withinDistance(this.getPositionVec(), 3.46D) || !this.world.getBlockState(this.jukeboxPosition).isIn(Blocks.JUKEBOX)) {
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.withinDistance(this.getPositionVec(), 3.46D) || !this.world.getBlockState(this.jukeboxPosition).matchesBlock(Blocks.JUKEBOX)) {
             this.isJukeboxing = false;
             this.jukeboxPosition = null;
         }
@@ -380,7 +380,7 @@ public class EntityCockroach extends AnimalEntity implements IShearable, net.min
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         EntityCockroach roach = AMEntityRegistry.COCKROACH.create(serverWorld);
         roach.setBreaded(true);
         return roach;

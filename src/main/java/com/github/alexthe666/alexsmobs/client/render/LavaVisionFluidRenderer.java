@@ -32,7 +32,7 @@ public class LavaVisionFluidRenderer extends FluidBlockRenderer {
     private static boolean func_239284_a_(IBlockReader p_239284_0_, Direction p_239284_1_, float p_239284_2_, BlockPos p_239284_3_, BlockState p_239284_4_) {
         if (p_239284_4_.isSolid()) {
             VoxelShape voxelshape = VoxelShapes.create(0.0D, 0.0D, 0.0D, 1.0D, p_239284_2_, 1.0D);
-            VoxelShape voxelshape1 = p_239284_4_.getRenderShapeTrue(p_239284_0_, p_239284_3_);
+            VoxelShape voxelshape1 = p_239284_4_.getRenderShape(p_239284_0_, p_239284_3_);
             return VoxelShapes.isCubeSideCovered(voxelshape, voxelshape1, p_239284_1_);
         } else {
             return false;
