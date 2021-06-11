@@ -70,7 +70,7 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
 
     public static boolean canMooseSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         BlockState blockstate = worldIn.getBlockState(pos.down());
-        return (blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.matchesBlock(Blocks.SNOW)) && worldIn.getLightSubtracted(pos, 0) > 8;
+        return (blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.matchesBlock(Blocks.SNOW)) || blockstate.matchesBlock(Blocks.SNOW_BLOCK)) && worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
