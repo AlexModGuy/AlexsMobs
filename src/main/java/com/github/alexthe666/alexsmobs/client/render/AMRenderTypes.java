@@ -100,6 +100,11 @@ public class AMRenderTypes extends RenderType {
         RenderSystem.matrixMode(5888);
     }
 
+    public static RenderType getEyesAlphaEnabled(ResourceLocation locationIn) {
+        RenderState.TextureState renderstate$texturestate = new RenderState.TextureState(locationIn, false, false);
+        return makeType("eyes", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(renderstate$texturestate).transparency(LIGHTNING_TRANSPARENCY).writeMask(COLOR_WRITE).fog(BLACK_FOG).build(false));
+    }
+
     public static RenderType getMungusBeam(ResourceLocation guardianBeamTexture) {
         TextureState lvt_1_1_ = new TextureState(guardianBeamTexture, false, false);
         return makeType("mungus_beam", DefaultVertexFormats.ENTITY, 7, 262144, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).writeMask(COLOR_DEPTH_WRITE).depthTest(DEPTH_LEQUAL).alpha(DEFAULT_ALPHA).diffuseLighting(RenderState.DIFFUSE_LIGHTING_DISABLED).lightmap(LIGHTMAP_DISABLED).overlay(OVERLAY_ENABLED).transparency(GHOST_TRANSPARANCY).fog(FOG).cull(RenderState.CULL_DISABLED).build(true));

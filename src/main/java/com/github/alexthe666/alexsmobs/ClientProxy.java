@@ -132,6 +132,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BALD_EAGLE, manager -> new RenderBaldEagle(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TIGER, manager -> new RenderTiger(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TARANTULA_HAWK, manager -> new RenderTarantulaHawk(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.VOID_WORM, manager -> new RenderVoidWormHead(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.VOID_WORM_PART, manager -> new RenderVoidWormBody(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {

@@ -83,6 +83,8 @@ public class AMEntityRegistry {
     public static final EntityType<EntityBaldEagle> BALD_EAGLE = registerEntity(EntityType.Builder.create(EntityBaldEagle::new, EntityClassification.CREATURE).size(0.5F, 0.95F).setUpdateInterval(1).setTrackingRange(14), "bald_eagle");
     public static final EntityType<EntityTiger> TIGER = registerEntity(EntityType.Builder.create(EntityTiger::new, EntityClassification.CREATURE).size(1.45F, 1.2F), "tiger");
     public static final EntityType<EntityTarantulaHawk> TARANTULA_HAWK = registerEntity(EntityType.Builder.create(EntityTarantulaHawk::new, EntityClassification.CREATURE).size(1.2F, 0.9F), "tarantula_hawk");
+    public static final EntityType<EntityVoidWorm> VOID_WORM = registerEntity(EntityType.Builder.create(EntityVoidWorm::new, EntityClassification.MONSTER).size(3.4F, 3F).immuneToFire().setTrackingRange(20).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "void_worm");
+    public static final EntityType<EntityVoidWormPart> VOID_WORM_PART = registerEntity(EntityType.Builder.create(EntityVoidWormPart::new, EntityClassification.MONSTER).size(1.2F, 1.35F).immuneToFire().setTrackingRange(20).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "void_worm_part");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -210,6 +212,9 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(BALD_EAGLE, EntityBaldEagle.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(TIGER, EntityTiger.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(TARANTULA_HAWK, EntityTarantulaHawk.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(VOID_WORM, EntityVoidWorm.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(VOID_WORM_PART, EntityVoidWormPart.bakeAttributes().create());
+
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){
