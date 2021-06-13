@@ -1,10 +1,12 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
+import com.github.alexthe666.alexsmobs.entity.EntityVoidWormShot;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 
 public class ModelVoidWormShot extends AdvancedEntityModel<Entity> {
     private final AdvancedModelBox root;
@@ -51,5 +53,16 @@ public class ModelVoidWormShot extends AdvancedEntityModel<Entity> {
         AdvancedModelBox.rotateAngleX = x;
         AdvancedModelBox.rotateAngleY = y;
         AdvancedModelBox.rotateAngleZ = z;
+    }
+
+    public void animate(EntityVoidWormShot entityIn, float ageInTicks) {
+        this.resetToDefaultPose();
+        float innerScale = (float) (1.0F + 0.25F * Math.abs(Math.sin(ageInTicks * 0.6F)));
+        float outerScale = (float) (1.0F + 0.5F * Math.abs(Math.cos(ageInTicks * 0.2F)));
+        this.glass.setScale(innerScale, innerScale, innerScale);
+        this.glass.rotateAngleX += ageInTicks * 0.25F;
+        this.cube.rotateAngleX += ageInTicks * 0.5F;
+        this.glass.setShouldScaleChildren(false);
+        this.cube.setScale(outerScale, outerScale, outerScale);
     }
 }

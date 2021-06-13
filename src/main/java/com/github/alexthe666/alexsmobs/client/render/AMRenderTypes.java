@@ -52,6 +52,11 @@ public class AMRenderTypes extends RenderType {
         return makeType("eye_flickering", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).transparency(TRANSLUCENT_TRANSPARENCY).alpha(DEFAULT_ALPHA).cull(CULL_DISABLED).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).build(false));
     }
 
+    public static RenderType getFullBright(ResourceLocation p_228652_0_) {
+        RenderState.TextureState lvt_1_1_ = new RenderState.TextureState(p_228652_0_, false, false);
+        return makeType("full_bright", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(lvt_1_1_).diffuseLighting(DIFFUSE_LIGHTING_DISABLED).transparency(TRANSLUCENT_TRANSPARENCY).alpha(DEFAULT_ALPHA).cull(CULL_DISABLED).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).build(false));
+    }
+
 
     public static RenderType getEyesNoCull(ResourceLocation p_228652_0_) {
         TextureState lvt_1_1_ = new TextureState(p_228652_0_, false, false);
@@ -102,7 +107,7 @@ public class AMRenderTypes extends RenderType {
 
     public static RenderType getEyesAlphaEnabled(ResourceLocation locationIn) {
         RenderState.TextureState renderstate$texturestate = new RenderState.TextureState(locationIn, false, false);
-        return makeType("eyes", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(renderstate$texturestate).transparency(LIGHTNING_TRANSPARENCY).writeMask(COLOR_WRITE).fog(BLACK_FOG).build(false));
+        return makeType("eyes", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(renderstate$texturestate).transparency(TRANSLUCENT_TRANSPARENCY).writeMask(COLOR_WRITE).cull(RenderState.CULL_DISABLED).fog(BLACK_FOG).build(false));
     }
 
     public static RenderType getMungusBeam(ResourceLocation guardianBeamTexture) {

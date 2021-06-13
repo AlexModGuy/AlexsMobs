@@ -42,7 +42,10 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     private static final DataParameter<Float> WORM_ANGLE = EntityDataManager.createKey(EntityVoidWormPart.class, DataSerializers.FLOAT);
     private static final DataParameter<Optional<UUID>> PARENT_UUID = EntityDataManager.createKey(EntityVoidWormPart.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     private static final DataParameter<Optional<UUID>> CHILD_UUID = EntityDataManager.createKey(EntityVoidWormPart.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    private static final DataParameter<Integer> PORTAL_TICKS = EntityDataManager.createKey(EntityVoidWormPart.class, DataSerializers.VARINT);
     protected static final EntitySize TAIL_SIZE = EntitySize.flexible(1.6F, 2F);
+    private int teleportFlag = 0;
+    private boolean startTeleporting = false;
     public EntitySize multipartSize;
     protected float radius;
     protected float angleYaw;
@@ -50,6 +53,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     protected float damageMultiplier = 1;
     private float prevWormYaw = 0;
     public float prevWormAngle;
+    private Vector3d teleportPos = null;
 
     public EntityVoidWormPart(EntityType t, World world) {
         super(t, world);
@@ -65,7 +69,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
     public void applyEntityCollision(Entity entityIn) {
@@ -115,6 +119,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         }
         compound.putBoolean("TailPart", isTail());
         compound.putInt("BodyIndex", getBodyIndex());
+        compound.putInt("PortalTicks", getPortalTicks());
         compound.putFloat("PartAngle", angleYaw);
         compound.putFloat("WormScale", this.getWormScale());
         compound.putFloat("PartRadius", radius);
@@ -131,6 +136,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         }
         this.setTail(compound.getBoolean("TailPart"));
         this.setBodyIndex(compound.getInt("BodyIndex"));
+        this.setPortalTicks(compound.getInt("PortalTicks"));
         this.angleYaw = compound.getFloat("PartAngle");
         this.setWormScale(compound.getFloat("WormScale"));
         this.radius = compound.getFloat("PartRadius");
@@ -147,6 +153,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         this.dataManager.register(WORM_SCALE, 1F);
         this.dataManager.register(WORM_YAW, 0F);
         this.dataManager.register(WORM_ANGLE, 0F);
+        this.dataManager.register(PORTAL_TICKS, 0);
     }
 
     @Nullable
@@ -179,6 +186,14 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         this.dataManager.set(WORM_ANGLE, progress);
     }
 
+    public int getPortalTicks() {
+        return this.dataManager.get(PORTAL_TICKS).intValue();
+    }
+
+    public void setPortalTicks(int ticks) {
+        this.dataManager.set(PORTAL_TICKS, Integer.valueOf(ticks));
+    }
+
     @Override
     public void tick() {
         inPortal = false;
@@ -205,13 +220,17 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 double d2 = parent.prevPosZ  - this.getPosZ();
                 float yaw = (float)(MathHelper.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
                 float pitch = parent.rotationPitch;
-                this.setPosition(x, y, z);
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                float f2 = -((float) (MathHelper.atan2(d1, MathHelper.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
-                this.rotationPitch = this.limitAngle(this.rotationPitch, f2, 5.0F);
+                if(this.getPortalTicks() <= 1){
+                    double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                    float f2 = -((float) (MathHelper.atan2(d1, MathHelper.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
+                    this.setPosition(x, y, z);
+                    this.rotationPitch = this.limitAngle(this.rotationPitch, f2, 5.0F);
+                    this.rotationYaw = yaw;
+                    this.dataManager.set(WORM_YAW, rotationYaw);
+                }else{
+                    this.setPosition(this.prevPosX, this.prevPosY, this.prevPosZ);
+                }
                 this.markVelocityChanged();
-                this.rotationYaw = yaw;
-                this.dataManager.set(WORM_YAW, rotationYaw);
                 this.rotationYawHead = this.rotationYaw;
                 this.renderYawOffset = pitch;
                 if (parent instanceof LivingEntity) {
@@ -221,7 +240,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                         this.deathTime = ((LivingEntity) parent).deathTime;
                     }
                 }
-                //this.collideWithNearbyEntities();
+                this.collideWithNearbyEntities();
                 if (parent.removed && !world.isRemote) {
                     this.remove();
                 }
@@ -238,6 +257,20 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
             this.heal(1);
         }
         super.tick();
+        if(this.getPortalTicks() > 0){
+            this.setPortalTicks(this.getPortalTicks() - 1);
+            if(this.getPortalTicks() == 7 && teleportPos != null){
+                Vector3d vec = this.getParent() == null ? teleportPos : this.getParent().getPositionVec();
+                this.setPositionAndUpdate(vec.x, vec.y, vec.z);
+                lastTickPosX = vec.x;
+                lastTickPosY = vec.y;
+                lastTickPosZ = vec.z;
+                if(this.getChild() instanceof EntityVoidWormPart){
+                    ((EntityVoidWormPart) this.getChild()).teleportTo(teleportPos);
+                }
+                teleportPos = null;
+            }
+        }
     }
 
     protected float limitAngle(float sourceAngle, float targetAngle, float maximumChange) {
@@ -277,6 +310,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                     world.addEntity(worm2);
                 }
                 worm2.setSplitter(true);
+                worm2.setSplitFromUuid(worm.getUniqueID());
                 worm2.setWormSpeed((float)MathHelper.clamp(worm.getWormSpeed() * 0.8, 0.4F, 1F));
                 worm2.resetWormScales();
             }
@@ -286,6 +320,12 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     public void remove() {
         this.remove(false);
+    }
+
+
+    public boolean isOnSameTeam(Entity entityIn) {
+        EntityVoidWorm worm = this.getWorm();
+        return super.isOnSameTeam(entityIn) || worm != null && worm.isOnSameTeam(entityIn);
     }
 
     public EntityVoidWorm getWorm(){
@@ -343,7 +383,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         List<Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
         Entity parent = this.getParent();
         if (parent != null) {
-            entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityVoidWormPart) && entity.canBePushed()).forEach(entity -> entity.applyEntityCollision(parent));
+            entities.stream().filter(entity -> !entity.isEntityEqual(parent) && !(entity instanceof EntityVoidWormPart) && entity.canBePushed()).forEach(entity -> entity.applyEntityCollision(parent));
 
         }
     }
@@ -364,6 +404,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
+        System.out.println(source);
         return super.attackEntityFrom(source, damage);
     }
 
@@ -419,5 +460,10 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     public float getWormYaw(float partialTicks) {
         return partialTicks == 0 ? dataManager.get(WORM_YAW) : prevWormYaw + (dataManager.get(WORM_YAW) - prevWormYaw) * partialTicks;
+    }
+
+    public void teleportTo(Vector3d vec) {
+        this.setPortalTicks(10);
+        teleportPos = vec;
     }
 }

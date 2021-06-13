@@ -92,8 +92,8 @@ public class ModelVoidWorm extends AdvancedEntityModel<EntityVoidWorm> {
 	public void setRotationAngles(EntityVoidWorm entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		this.root.rotateAngleX += headPitch * ((float)Math.PI / 180F);
-		this.root.rotationPointY += MathHelper.clamp(headPitch * 0.25F, -10, 10);
-		this.root.rotationPointZ += -15 + MathHelper.clamp(Math.abs(headPitch * 0.3F), -10, 10);
+		this.root.rotationPointY += -3 - MathHelper.clamp(headPitch * -0.125F, -10, 10) * 0.3F;
+		this.root.rotationPointZ += -15 + (limbSwingAmount * 10);
 		float yawAmount = (entityIn.prevWormAngle + (entityIn.getWormAngle() - entityIn.prevWormAngle) * (ageInTicks - entityIn.ticksExisted)) / 57.295776F * 0.5F;
 		neck.rotateAngleZ += yawAmount;
 		float jawProgress = entityIn.prevJawProgress + (entityIn.jawProgress - entityIn.prevJawProgress) * (ageInTicks - entityIn.ticksExisted);

@@ -85,6 +85,8 @@ public class AMEntityRegistry {
     public static final EntityType<EntityTarantulaHawk> TARANTULA_HAWK = registerEntity(EntityType.Builder.create(EntityTarantulaHawk::new, EntityClassification.CREATURE).size(1.2F, 0.9F), "tarantula_hawk");
     public static final EntityType<EntityVoidWorm> VOID_WORM = registerEntity(EntityType.Builder.create(EntityVoidWorm::new, EntityClassification.MONSTER).size(3.4F, 3F).immuneToFire().setTrackingRange(20).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "void_worm");
     public static final EntityType<EntityVoidWormPart> VOID_WORM_PART = registerEntity(EntityType.Builder.create(EntityVoidWormPart::new, EntityClassification.MONSTER).size(1.2F, 1.35F).immuneToFire().setTrackingRange(20).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "void_worm_part");
+    public static final EntityType<EntityVoidWormShot> VOID_WORM_SHOT = registerEntity(EntityType.Builder.create(EntityVoidWormShot::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityVoidWormShot::new).immuneToFire(), "void_worm_shot");
+    public static final EntityType<EntityVoidPortal> VOID_PORTAL = registerEntity(EntityType.Builder.create(EntityVoidPortal::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityVoidPortal::new).immuneToFire(), "void_portal");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
