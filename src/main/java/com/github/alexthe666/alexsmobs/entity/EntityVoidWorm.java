@@ -15,11 +15,9 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -46,7 +44,7 @@ public class EntityVoidWorm extends MonsterEntity {
     public float prevJawProgress;
     public float jawProgress;
     public Vector3d teleportPos = null;
-    public Vector3d moveIntoPortalPos = null;
+    public EntityVoidPortal portalTarget = null;
 
     protected EntityVoidWorm(EntityType<? extends MonsterEntity> type, World worldIn) {
         super(type, worldIn);
@@ -64,8 +62,9 @@ public class EntityVoidWorm extends MonsterEntity {
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new EntityVoidWorm.AIAttack());
-        this.goalSelector.addGoal(2, new EntityVoidWorm.AIFlyIdle());
+        this.goalSelector.addGoal(1, new EntityVoidWorm.AIEnterPortal());
+        this.goalSelector.addGoal(2, new EntityVoidWorm.AIAttack());
+        this.goalSelector.addGoal(3, new EntityVoidWorm.AIFlyIdle());
         this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, EntityMungus.class, 10, false, true, null) {
             public boolean shouldExecute() {
                 return super.shouldExecute();
@@ -128,13 +127,6 @@ public class EntityVoidWorm extends MonsterEntity {
         super.tick();
         prevWormAngle = this.getWormAngle();
         prevJawProgress = this.jawProgress;
-       /*
-        if (this.ticksExisted % 720 > 360) {
-            rotationYaw++;
-        } else {
-            rotationYaw--;
-        }
-        */
         float threshold = 0.05F;
         if (this.prevRotationYaw - this.rotationYaw > threshold) {
             this.setWormAngle(this.getWormAngle() + 15);
@@ -169,7 +161,7 @@ public class EntityVoidWorm extends MonsterEntity {
         this.rotationPitch = f2;
         this.stepHeight = 2;
         if (!world.isRemote) {
-            if (ticksExisted % 10 == 0) {
+            if (ticksExisted % 200 == 0 && portalTarget == null) {
                 createStuckPortal();
             }
             Entity child = getChild();
@@ -205,18 +197,20 @@ public class EntityVoidWorm extends MonsterEntity {
             this.setPortalTicks(this.getPortalTicks() - 1);
             if (this.getPortalTicks() == 2 && teleportPos != null) {
                 this.setPosition(teleportPos.x, teleportPos.y, teleportPos.z);
-                if (this.getChild() instanceof EntityVoidWormPart) {
-                    ((EntityVoidWormPart) this.getChild()).teleportTo(teleportPos);
-                }
                 teleportPos = null;
             }
         }
-
+        if(this.portalTarget != null && this.portalTarget.getLifespan() < 5){
+            this.portalTarget = null;
+        }
     }
 
     public void teleportTo(Vector3d vec) {
-        this.setPortalTicks(25);
+        this.setPortalTicks(10);
         teleportPos = vec;
+        if (this.getChild() instanceof EntityVoidWormPart) {
+            ((EntityVoidWormPart) this.getChild()).teleportTo(this.getPositionVec(), teleportPos);
+        }
     }
 
     private void launch(Entity e, boolean huge) {
@@ -351,17 +345,28 @@ public class EntityVoidWorm extends MonsterEntity {
     }
 
     public void createStuckPortal() {
-        Vector3d Vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
-        RayTraceResult result = this.world.rayTraceBlocks(new RayTraceContext(Vector3d, this.getPositionVec().add(this.getLookVec().scale(20)), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-        Vector3d vec = result.getHitVec() != null ? result.getHitVec() : this.getPositionVec();
-        EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(world);
-        portal.setPosition(vec.x, vec.y, vec.z);
-        if (!world.isRemote) {
-            world.addEntity(portal);
+        if(!world.isRemote){
+            Vector3d Vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+            RayTraceResult result = this.world.rayTraceBlocks(new RayTraceContext(Vector3d, this.getPositionVec().add(this.getLookVec().scale(20)), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
+            Vector3d vec = result.getHitVec() != null ? result.getHitVec() : this.getPositionVec();
+            EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(world);
+            portal.setPosition(vec.x, vec.y, vec.z);
+
+            Vector3d dirVec = vec.subtract(this.getPositionVec());
+            Direction dir = Direction.getFacingFromVector(dirVec.x, dirVec.y, dirVec.z);
+            portal.setAttachmentFacing(dir);
+            portal.setLifespan(100);
+            if (!world.isRemote) {
+                world.addEntity(portal);
+            }
+            portalTarget = portal;
+            Vector3d destVec = new Vector3d(0, 50, 0);
+            portal.setDestination(new BlockPos(destVec.x, destVec.y, destVec.z));
         }
-        moveIntoPortalPos = vec;
-        Vector3d destVec = this.getPositionVec().add(this.getLookVec().scale(100));
-        portal.setDestination(new BlockPos(destVec.x, destVec.y, destVec.z));
+    }
+
+    public void resetPortalLogic(){
+        portalTarget = null;
     }
 
     public boolean canBePushed() {
@@ -470,7 +475,7 @@ public class EntityVoidWorm extends MonsterEntity {
 
         @Override
         public boolean shouldExecute() {
-            if (this.voidWorm.isBeingRidden() || (voidWorm.getAttackTarget() != null && voidWorm.getAttackTarget().isAlive()) || this.voidWorm.isPassenger()) {
+            if (this.voidWorm.isBeingRidden() || this.voidWorm.portalTarget != null || (voidWorm.getAttackTarget() != null && voidWorm.getAttackTarget().isAlive()) || this.voidWorm.isPassenger()) {
                 return false;
             } else {
                 Vector3d lvt_1_1_ = this.getPosition();
@@ -496,7 +501,7 @@ public class EntityVoidWorm extends MonsterEntity {
         }
 
         public boolean shouldContinueExecuting() {
-            return voidWorm.getDistanceSq(x, y, z) > 20F && !voidWorm.collidedHorizontally && (voidWorm.getAttackTarget() == null || !voidWorm.getAttackTarget().isAlive());
+            return voidWorm.getDistanceSq(x, y, z) > 20F && this.voidWorm.portalTarget == null && !voidWorm.collidedHorizontally && (voidWorm.getAttackTarget() == null || !voidWorm.getAttackTarget().isAlive());
         }
 
         public void startExecuting() {
@@ -593,8 +598,34 @@ public class EntityVoidWorm extends MonsterEntity {
                     }
                 }
             }
-            if (moveTo != null) {
+            if (moveTo != null && EntityVoidWorm.this.portalTarget == null) {
                 EntityVoidWorm.this.getMoveHelper().setMoveTo(moveTo.x, moveTo.y, moveTo.z, 1);
+            }
+        }
+    }
+
+    public class AIEnterPortal extends Goal {
+
+        public AIEnterPortal() {
+            super();
+            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            return EntityVoidWorm.this.portalTarget != null;
+        }
+
+        public void tick() {
+            if(EntityVoidWorm.this.portalTarget != null) {
+                AxisAlignedBB bb = EntityVoidWorm.this.portalTarget.getBoundingBox();
+                double centerX = bb.minX + ((bb.maxX - bb.minX) / 2F);
+                double centerY = bb.minY + ((bb.maxY - bb.minY) / 2F);
+                double centerZ = bb.minZ + ((bb.maxZ - bb.minZ) / 2F);
+                if(EntityVoidWorm.this.getDistanceSq(centerX, centerY, centerZ) < 9){
+                    EntityVoidWorm.this.setMotion(EntityVoidWorm.this.getMotion().add((centerX - EntityVoidWorm.this.getPosX()) * 0.4F, (centerY - EntityVoidWorm.this.getPosY()) * 0.4F, (centerZ - EntityVoidWorm.this.getPosZ()) * 0.4F));
+                }
+                EntityVoidWorm.this.getMoveHelper().setMoveTo(centerX, centerY, centerZ, 1);
             }
         }
     }

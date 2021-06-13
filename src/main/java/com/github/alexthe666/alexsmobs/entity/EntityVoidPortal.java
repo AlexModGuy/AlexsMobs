@@ -29,6 +29,7 @@ public class EntityVoidPortal extends Entity {
     protected static final DataParameter<Integer> LIFESPAN = EntityDataManager.createKey(EntityVoidPortal.class, DataSerializers.VARINT);
     private static final DataParameter<Optional<BlockPos>> DESTINATION = EntityDataManager.createKey(EntityVoidPortal.class, DataSerializers.OPTIONAL_BLOCK_POS);
     private static final DataParameter<Optional<UUID>> SISTER_UUID = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    private boolean isDummy = false;
 
     public EntityVoidPortal(EntityType<?> entityTypeIn, World worldIn) {
         super(entityTypeIn, worldIn);
@@ -46,11 +47,8 @@ public class EntityVoidPortal extends Entity {
 
     public void tick(){
         super.tick();
-        if(this.ticksExisted == 1){
-            this.setLifespan(200);
-        }
-        if(this.ticksExisted % 200 == 0){
-            this.setAttachmentFacing(Direction.getRandomDirection(new Random()));
+        if(this.ticksExisted == 1 && this.getLifespan() == 0){
+            this.setLifespan(100);
         }
         Direction direction2 = this.getAttachmentFacing().getOpposite();
         float minX = -0.15F;
@@ -88,10 +86,13 @@ public class EntityVoidPortal extends Entity {
         if(this.getDestination() != null && this.getLifespan() > 20 && ticksExisted > 20){
             for(Entity e : entities){
                 if(e instanceof EntityVoidWormPart || e.hasPortalCooldown()){
-                    continue;
+                    if(this.getLifespan() < 22){
+                        this.setLifespan(this.getLifespan() + 1);
+                    }
                 }else if(e instanceof EntityVoidWorm){
                     ((EntityVoidWorm) e).teleportTo(Vector3d.copyCentered(this.getDestination()));
                     e.setPortalCooldown();
+                    ((EntityVoidWorm) e).resetPortalLogic();
                 }else{
                     e.teleportKeepLoaded(this.getDestination().getX() + 0.5f, this.getDestination().getY() + 0.5f, this.getDestination().getZ() + 0.5f);
                     e.setPortalCooldown();
@@ -128,6 +129,7 @@ public class EntityVoidPortal extends Entity {
         this.dataManager.set(DESTINATION, Optional.ofNullable(destination));
         if(this.getSisterId() == null) {
             EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(world);
+            portal.setAttachmentFacing(this.getAttachmentFacing().getOpposite());
             portal.teleportKeepLoaded(this.getDestination().getX() + 0.5f, this.getDestination().getY() + 0.5f, this.getDestination().getZ() + 0.5f);
             portal.link(this);
             world.addEntity(portal);
@@ -137,6 +139,7 @@ public class EntityVoidPortal extends Entity {
     public void link(EntityVoidPortal portal){
         this.setSisterId(portal.getUniqueID());
         portal.setSisterId(this.getUniqueID());
+        portal.setLifespan(this.getLifespan());
         this.setDestination(portal.getPosition());
         portal.setDestination(this.getPosition());
     }
