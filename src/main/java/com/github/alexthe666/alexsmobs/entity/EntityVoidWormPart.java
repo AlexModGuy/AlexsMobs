@@ -50,8 +50,6 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     protected float angleYaw;
     protected float offsetY;
     protected float damageMultiplier = 1;
-    private int teleportFlag = 0;
-    private boolean startTeleporting = false;
     private float prevWormYaw = 0;
     private Vector3d teleportPos = null;
     private Vector3d enterPos = null;
@@ -76,6 +74,10 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     public void applyEntityCollision(Entity entityIn) {
 
+    }
+
+    public void onKillCommand() {
+        this.remove();
     }
 
     public EntitySize getSize(Pose poseIn) {
@@ -318,6 +320,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                     world.addEntity(worm2);
                 }
                 worm2.setSplitter(true);
+                worm2.setHealth(worm2.getMaxHealth() / 2F);
                 worm2.setSplitFromUuid(worm.getUniqueID());
                 worm2.setWormSpeed((float) MathHelper.clamp(worm.getWormSpeed() * 0.8, 0.4F, 1F));
                 worm2.resetWormScales();
@@ -412,7 +415,6 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        System.out.println(source);
         return super.attackEntityFrom(source, damage);
     }
 
@@ -474,5 +476,11 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         this.setPortalTicks(10);
         teleportPos = to;
         this.enterPos = enterPos;
+        EntityVoidWorm worm = this.getWorm();
+        if(worm != null){
+            if(this.getChild() == null){
+                worm.fullyThrough = true;
+            }
+        }
     }
 }

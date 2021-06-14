@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "alexsmobs:block/void_worm_beak",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "alexsmobs:block/void_worm_beak",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "alexsmobs:block/void_worm_beak"
+    },
+    "facing=south": {
+      "model": "alexsmobs:block/void_worm_beak",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "alexsmobs:block/void_worm_beak"
+    },
+    "facing=west": {
+      "model": "alexsmobs:block/void_worm_beak",
+      "y": 270
+    }
+  }
+}

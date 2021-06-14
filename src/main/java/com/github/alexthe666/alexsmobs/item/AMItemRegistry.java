@@ -123,6 +123,9 @@ public class AMItemRegistry {
     public static final Item TARANTULA_HAWK_WING_FRAGMENT = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing_fragment");
     public static final Item TARANTULA_HAWK_WING = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing");
     public static final Item TARANTULA_HAWK_ELYTRA = new ItemTarantulaHawkElytra(new Item.Properties().group(AlexsMobs.TAB).maxDamage(800).rarity(Rarity.UNCOMMON), TARANTULA_HAWK_ELYTRA_MATERIAL).setRegistryName("alexsmobs:tarantula_hawk_elytra");
+    public static final Item MYSTERIOUS_WORM = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mysterious_worm");
+    public static final Item VOID_WORM_MANDIBLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:void_worm_mandible");
+    public static final Item VOID_WORM_EYE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:void_worm_eye");
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");

@@ -15,6 +15,7 @@ public class AMTileEntityRegistry {
 
     public static TileEntityType<TileEntityLeafcutterAnthill> LEAFCUTTER_ANTHILL = registerTileEntity(TileEntityType.Builder.create(TileEntityLeafcutterAnthill::new, AMBlockRegistry.LEAFCUTTER_ANTHILL), "leafcutter_anthill");
     public static TileEntityType<TileEntityCapsid> CAPSID = registerTileEntity(TileEntityType.Builder.create(TileEntityCapsid::new, AMBlockRegistry.CAPSID), "capsid");
+    public static TileEntityType<TileEntityVoidWormBeak> VOID_WORM_BEAK = registerTileEntity(TileEntityType.Builder.create(TileEntityVoidWormBeak::new, AMBlockRegistry.VOID_WORM_BEAK), "void_worm_beak");
 
     public static TileEntityType registerTileEntity(TileEntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);

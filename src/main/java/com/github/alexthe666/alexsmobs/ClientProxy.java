@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderVoidWormBeak;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
@@ -153,7 +154,9 @@ public class ClientProxy extends CommonProxy {
         }
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.BANANA_PEEL, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.CAPSID, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(AMBlockRegistry.VOID_WORM_BEAK, RenderType.getCutout());
         ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.CAPSID, manager -> new RenderCapsid(manager));
+        ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.VOID_WORM_BEAK, manager -> new RenderVoidWormBeak(manager));
 
     }
 

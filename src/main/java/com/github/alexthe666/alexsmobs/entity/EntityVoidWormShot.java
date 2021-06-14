@@ -142,7 +142,9 @@ public class EntityVoidWormShot extends Entity {
             boolean b = p_213868_1_.getEntity().attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity) entity).setProjectile(), 4F);
             if(b && p_213868_1_.getEntity() instanceof PlayerEntity){
                 PlayerEntity player = ((PlayerEntity)p_213868_1_.getEntity());
-                player.disableShield(true);
+                if(player.getActiveItemStack().isShield(player)){
+                    player.disableShield(true);
+                }
             }
         }
 

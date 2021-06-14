@@ -136,6 +136,17 @@ public class EntityVoidPortal extends Entity {
         }
     }
 
+    public void setDestination(BlockPos destination, Direction dir) {
+        this.dataManager.set(DESTINATION, Optional.ofNullable(destination));
+        if(this.getSisterId() == null) {
+            EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(world);
+            portal.setAttachmentFacing(dir != null ? dir : this.getAttachmentFacing().getOpposite());
+            portal.teleportKeepLoaded(this.getDestination().getX() + 0.5f, this.getDestination().getY() + 0.5f, this.getDestination().getZ() + 0.5f);
+            portal.link(this);
+            world.addEntity(portal);
+        }
+    }
+
     public void link(EntityVoidPortal portal){
         this.setSisterId(portal.getUniqueID());
         portal.setSisterId(this.getUniqueID());
