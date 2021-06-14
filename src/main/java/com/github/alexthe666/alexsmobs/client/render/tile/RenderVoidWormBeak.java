@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
@@ -25,40 +26,29 @@ public class RenderVoidWormBeak<T extends TileEntityVoidWormBeak> extends TileEn
     @Override
     public void render(T tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.push();
-        matrixStackIn.translate(0.5F, -0.5F, 0.5F);
-        matrixStackIn.rotate(new Quaternion(Vector3f.XP, this.getRotationX(tileEntityIn), true));
-        matrixStackIn.rotate(new Quaternion(Vector3f.YP, this.getRotationY(tileEntityIn), true));
+        Direction dir = tileEntityIn.getBlockState().get(BlockVoidWormBeak.FACING);
+        if(dir == Direction.UP){
+            matrixStackIn.translate(0.5F, 1.5F, 0.5F);
+        }else if(dir == Direction.DOWN){
+            matrixStackIn.translate(0.5F, -0.5F, 0.5F);
+
+        }else if(dir == Direction.NORTH){
+            matrixStackIn.translate(0.5, 0.5F, -0.5F);
+        }else if(dir == Direction.EAST){
+            matrixStackIn.translate(1.5F, 0.5F, 0.5F);
+
+        }else if(dir == Direction.SOUTH){
+            matrixStackIn.translate(0.5, 0.5F, 1.5F);
+
+        }else if(dir == Direction.WEST){
+            matrixStackIn.translate(-0.5F, 0.5F, 0.5F);
+        }
+        matrixStackIn.rotate(dir.getOpposite().getRotation());
         matrixStackIn.push();
+        matrixStackIn.translate(0, -0.01F, 0.0F);
         HEAD_MODEL.renderBeak(tileEntityIn, partialTicks);
         HEAD_MODEL.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
         matrixStackIn.pop();
         matrixStackIn.pop();
-
-    }
-
-    private float getRotationY(TileEntityVoidWormBeak lectern) {
-        switch (lectern.getBlockState().get(BlockVoidWormBeak.FACING)) {
-            default:
-                return 180;
-            case EAST:
-                return 90;
-            case WEST:
-                return -90;
-            case SOUTH:
-                return 0;
-
-        }
-    }
-
-    private float getRotationX(TileEntityVoidWormBeak lectern) {
-        switch (lectern.getBlockState().get(BlockVoidWormBeak.FACING)) {
-            default:
-                return 0;
-            case UP:
-                return -180;
-            case DOWN:
-                return 180;
-
-        }
     }
 }

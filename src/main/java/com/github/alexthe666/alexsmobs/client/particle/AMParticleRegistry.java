@@ -19,6 +19,8 @@ public class AMParticleRegistry {
     public static final BasicParticleType WHALE_SPLASH = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:whale_splash");
     public static final BasicParticleType DNA = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:dna");
     public static final BasicParticleType SHOCKED = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:shocked");
+    public static final BasicParticleType WORM_PORTAL = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:worm_portal");
+    public static final BasicParticleType INVERT_DIG = (BasicParticleType) new BasicParticleType(true).setRegistryName("alexsmobs:invert_dig");
 
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

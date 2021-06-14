@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 
 public class ModelVoidWormBeak extends AdvancedEntityModel<Entity> {
     private final AdvancedModelBox root;
@@ -39,11 +40,18 @@ public class ModelVoidWormBeak extends AdvancedEntityModel<Entity> {
     }
 
     @Override
-    public void setRotationAngles(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+    public void setRotationAngles(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
-    public void renderBeak(TileEntityVoidWormBeak beak, float partialTick){
+    public void renderBeak(TileEntityVoidWormBeak beak, float partialTick) {
         this.resetToDefaultPose();
+        float amount = beak.getChompProgress(partialTick) * 0.2F;
+        float ageInTicks = beak.ticksExisted + partialTick;
+        this.flap(left, 0.5F, 0.5F, false, 0F, 0.3F, ageInTicks, amount);
+        this.flap(right, 0.5F, -0.5F, false, 0F, -0.3F, ageInTicks, amount);
+        float rotation = MathHelper.cos(ageInTicks * 0.5F) * 0.5F * amount + 0.3F * amount;
+        left.rotationPointY -= rotation * 4.5F;
+        right.rotationPointY -= rotation * 4.5F;
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

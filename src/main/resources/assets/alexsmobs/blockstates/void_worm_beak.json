@@ -1,24 +1,46 @@
 {
   "variants": {
-    "facing=down": {
+    "facing=down,powered=false": {
       "model": "alexsmobs:block/void_worm_beak",
       "x": 180
     },
-    "facing=east": {
+    "facing=east,powered=false": {
       "model": "alexsmobs:block/void_worm_beak",
       "y": 90
     },
-    "facing=north": {
+    "facing=north,powered=false": {
       "model": "alexsmobs:block/void_worm_beak"
     },
-    "facing=south": {
+    "facing=south,powered=false": {
       "model": "alexsmobs:block/void_worm_beak",
       "y": 180
     },
-    "facing=up": {
+    "facing=up,powered=false": {
       "model": "alexsmobs:block/void_worm_beak"
     },
-    "facing=west": {
+    "facing=west,powered=false": {
+      "model": "alexsmobs:block/void_worm_beak",
+      "y": 270
+    },
+    "facing=down,powered=true": {
+      "model": "alexsmobs:block/void_worm_beak",
+      "x": 180
+    },
+    "facing=east,powered=true": {
+      "model": "alexsmobs:block/void_worm_beak",
+      "y": 90
+    },
+    "facing=north,powered=true": {
+      "model": "alexsmobs:block/void_worm_beak"
+    },
+    "facing=south,powered=true": {
+      "model": "alexsmobs:block/void_worm_beak",
+      "y": 180
+    },
+    "facing=up,powered=true": {
+      "model": "alexsmobs:block/void_worm_beak"
+    },
+    "facing=west,powered=true": {
       "model": "alexsmobs:block/void_worm_beak",
       "y": 270
     }
