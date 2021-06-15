@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:dimensional_carver"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.dimensional_carver.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.dimensional_carver.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/void_worm_kill",
+    "criteria": {
+        "rat_upgrade_basic": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "alexsmobs:dimensional_carver"
+                    }
+                ]
+            }
+        }
+    }
+}

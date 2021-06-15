@@ -62,6 +62,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> baldEagle = Pair.of("alexsmobs:bald_eagle_spawns", DefaultBiomes.BALD_EAGLE);
 	public static Pair<String, SpawnBiomeData> tiger = Pair.of("alexsmobs:tiger_spawns", DefaultBiomes.TIGER);
 	public static Pair<String, SpawnBiomeData> tarantula_hawk = Pair.of("alexsmobs:tarantula_hawk_spawns", DefaultBiomes.TARANTULA_HAWK);
+	public static Pair<String, SpawnBiomeData> void_worm = Pair.of("alexsmobs:void_worm_spawns", DefaultBiomes.EMPTY);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

@@ -612,5 +612,15 @@
   "advancements.alexsmobs.tarantula_hawk.title": "Rigged from the Start",
   "advancements.alexsmobs.tarantula_hawk.desc": "Encounter a Tarantula Hawk in a desert.",
   "advancements.alexsmobs.tame_tarantula_hawk.title": "Big Iron",
-  "advancements.alexsmobs.tame_tarantula_hawk.desc": "Tame a Tarantula Hawk by feeding it Spider Eyes."
+  "advancements.alexsmobs.tame_tarantula_hawk.desc": "Tame a Tarantula Hawk by feeding it Spider Eyes.",
+  "advancements.alexsmobs.mysterious_worm.title": "Destroy The Child",
+  "advancements.alexsmobs.mysterious_worm.desc": "Create a Mysterious Worm by putting a Crimson Mosquito Larva in a Capsid.",
+  "advancements.alexsmobs.void_worm_summon.title": "A Soul for a Soul",
+  "advancements.alexsmobs.void_worm_summon.desc": "Toss the Mysterious Worm into the void of the End, and prepare to meet the Void Worm.",
+  "advancements.alexsmobs.void_worm_split.title": "Should've Gone for the Head",
+  "advancements.alexsmobs.void_worm_split.desc": "Split a void worm in half by attacking one of its body segments. More worms, more problems!",
+  "advancements.alexsmobs.void_worm_kill.title": "Wormy",
+  "advancements.alexsmobs.void_worm_kill.desc": "Destroy the End Worm.",
+  "advancements.alexsmobs.dimensional_carver.title": "Break On Through...",
+  "advancements.alexsmobs.dimensional_carver.desc": "Using the drops of the Void Worm, create the Dimensional Carver, which allows you to dig through the fabric of reality to return home at any given point."
 }

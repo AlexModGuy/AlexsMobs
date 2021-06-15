@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.monster.VexEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -138,8 +139,8 @@ public class EntityVoidWormShot extends Entity {
 
     protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
         Entity entity = this.getShooter();
-        if (entity instanceof LivingEntity) {
-            boolean b = p_213868_1_.getEntity().attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity) entity).setProjectile(), 4F);
+        if (entity instanceof LivingEntity && !(p_213868_1_.getEntity() instanceof EntityVoidWorm || p_213868_1_.getEntity() instanceof EntityVoidWormPart)) {
+            boolean b = wormAttack(p_213868_1_.getEntity(), DamageSource.causeIndirectDamage(this, (LivingEntity) entity).setProjectile(), 4F);
             if(b && p_213868_1_.getEntity() instanceof PlayerEntity){
                 PlayerEntity player = ((PlayerEntity)p_213868_1_.getEntity());
                 if(player.getActiveItemStack().isShield(player)){
@@ -150,6 +151,11 @@ public class EntityVoidWormShot extends Entity {
 
         this.remove();
     }
+
+    private boolean wormAttack(Entity entity, DamageSource source, float dmg){
+        return entity.attackEntityFrom(source, dmg);
+    }
+
 
     protected void func_230299_a_(BlockRayTraceResult p_230299_1_) {
         BlockState blockstate = this.world.getBlockState(p_230299_1_.getPos());

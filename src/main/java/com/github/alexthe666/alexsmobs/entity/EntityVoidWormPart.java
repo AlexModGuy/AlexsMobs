@@ -1,7 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -10,6 +12,7 @@ import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -17,6 +20,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -105,7 +109,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source.isFireDamage() || super.isInvulnerableTo(source);
+        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.OUT_OF_WORLD  || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source.isFireDamage() || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -303,6 +307,20 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         return f1;
     }
 
+    protected void onDeathUpdate() {
+        ++this.deathTime;
+        if (this.deathTime == 20) {
+            this.remove(false); //Forge keep data until we revive player
+            for(int i = 0; i < 30; ++i) {
+                double d0 = this.rand.nextGaussian() * 0.02D;
+                double d1 = this.rand.nextGaussian() * 0.02D;
+                double d2 = this.rand.nextGaussian() * 0.02D;
+                this.world.addParticle(AMParticleRegistry.WORM_PORTAL, this.getPosXRandom(1.0D), this.getPosYRandom(), this.getPosZRandom(1.0D), d0, d1, d2);
+            }
+        }
+
+    }
+
     public void onDeath(DamageSource cause) {
         EntityVoidWorm worm = this.getWorm();
         if (worm != null) {
@@ -324,6 +342,11 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 worm2.setSplitFromUuid(worm.getUniqueID());
                 worm2.setWormSpeed((float) MathHelper.clamp(worm.getWormSpeed() * 0.8, 0.4F, 1F));
                 worm2.resetWormScales();
+                if(!world.isRemote) {
+                    if (cause != null && cause.getTrueSource() instanceof ServerPlayerEntity) {
+                        AMAdvancementTriggerRegistry.VOID_WORM_SPLIT.trigger((ServerPlayerEntity) cause.getTrueSource());
+                    }
+                }
             }
             worm.resetWormScales();
         }
@@ -483,4 +506,5 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
             }
         }
     }
+
 }

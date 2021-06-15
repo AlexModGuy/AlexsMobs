@@ -231,7 +231,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.WHALE_SPLASH, ParticleWhaleSplash.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.DNA, ParticleDna.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.SHOCKED, ParticleSimpleHeart.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.WORM_PORTAL, ParticleSimpleHeart.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.WORM_PORTAL, ParticleWormPortal.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.INVERT_DIG, ParticleInvertDig.Factory::new);
     }
 

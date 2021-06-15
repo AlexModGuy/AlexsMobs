@@ -114,7 +114,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue tigerSpawnRolls;
     public final ForgeConfigSpec.IntValue tarantulaHawkSpawnWeight;
     public final ForgeConfigSpec.IntValue tarantulaHawkSpawnRolls;
-
+    public final ForgeConfigSpec.IntValue voidWormSpawnWeight;
+    public final ForgeConfigSpec.IntValue voidWormSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -143,6 +144,9 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue leafcutterAnthillSpawnChance;
     public final ForgeConfigSpec.BooleanValue falconryTeleportsBack;
     public final ForgeConfigSpec.BooleanValue fireproofTarantulaHawk;
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> voidWormSpawnDimensions;
+    public final ForgeConfigSpec.DoubleValue voidWormDamageModifier;
+    public final ForgeConfigSpec.DoubleValue voidWormMaxHealth;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -181,6 +185,9 @@ public class CommonConfig {
         leafcutterAntBreakLeavesChance = buildDouble(builder, "leafcutterAntBreakLeavesChance", "all", 0.2D, 0D, 1D, "Percent chance for leafcutter ants to break leaves blocks when harvesting. Set to zero so that they can not break any blocks.");
         falconryTeleportsBack = buildBoolean(builder, "falconryTeleportsBack", "all", false, "Makes eagles teleport back to their owner if they get stuck during controlled flight. Useful for when playing with the Optifine mod, since this mod is the fault of many issues with the falconry system.");
         fireproofTarantulaHawk = buildBoolean(builder, "fireproofTarantulaHawk", "all", false, "Makes Tarantula Hawks fireproof, perfect if you also want these guys to spawn in the nether.");
+        voidWormSpawnDimensions = builder.comment("List of dimensions in which spawning void worms via mysterious worm items is allowed.").defineList("voidWormSpawnDimensions", Lists.newArrayList("minecraft:the_end"), o -> o instanceof String);
+        voidWormDamageModifier = buildDouble(builder, "voidWormDamageModifier", "all", 1.0D, 0D, 100D, "All void worm damage is scaled to this.");
+        voidWormMaxHealth = buildDouble(builder, "voidWormMaxHealth", "all", 160.0D, 0D, 1000000D, "Max Health of the void worm boss.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
@@ -278,6 +285,8 @@ public class CommonConfig {
         tigerSpawnRolls = buildInt(builder, "tigerSpawnRolls", "spawns", AMConfig.tigerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         tarantulaHawkSpawnWeight = buildInt(builder, "tarantulaHawkSpawnWeight", "spawns", AMConfig.tarantulaHawkSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         tarantulaHawkSpawnRolls = buildInt(builder, "tarantulaHawkSpawnRolls", "spawns", AMConfig.tarantulaHawkSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        voidWormSpawnWeight = buildInt(builder, "voidWormSpawnWeight", "spawns", AMConfig.voidWormSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        voidWormSpawnRolls = buildInt(builder, "voidWormSpawnRolls", "spawns", AMConfig.voidWormSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "spawns", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
         beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "spawns", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");

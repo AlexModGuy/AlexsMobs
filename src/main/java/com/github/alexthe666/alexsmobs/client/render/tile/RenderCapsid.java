@@ -55,6 +55,10 @@ public class RenderCapsid<T extends TileEntityCapsid> extends TileEntityRenderer
             matrixStackIn.rotate(new Quaternion(Vector3f.YP, entity.getBlockAngle() + yaw, true));
             matrixStackIn.push();
             matrixStackIn.translate(0, -0.1F, 0);
+            if(entity.vibrating && entity.getWorld() != null){
+                float vibrate = 0.05F;
+                matrixStackIn.translate((entity.getWorld().rand.nextFloat() - 0.5F)* vibrate, (entity.getWorld().rand.nextFloat() - 0.5F) * vibrate, (entity.getWorld().rand.nextFloat() - 0.5F)* vibrate);
+            }
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
             IBakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, entity.getWorld(), (LivingEntity)null);
             boolean flag = ibakedmodel.isGui3d();
