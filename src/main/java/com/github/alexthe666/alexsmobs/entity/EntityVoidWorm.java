@@ -128,9 +128,8 @@ public class EntityVoidWorm extends MonsterEntity {
         this.goalSelector.addGoal(1, new EntityVoidWorm.AIEnterPortal());
         this.goalSelector.addGoal(2, new EntityVoidWorm.AIAttack());
         this.goalSelector.addGoal(3, new EntityVoidWorm.AIFlyIdle());
-        this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, EntityMungus.class, 10, false, true, null));
         this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, PlayerEntity.class, 10, false, true, null));
-        //     this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, EnderDragonEntity.class, 10, false, true, null));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EnderDragonEntity.class, 10, false, true, null));
     }
 
     protected PathNavigator createNavigator(World worldIn) {
