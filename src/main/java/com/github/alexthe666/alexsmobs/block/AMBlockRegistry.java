@@ -17,6 +17,7 @@ public class AMBlockRegistry {
     public static final Block LEAFCUTTER_ANTHILL = new BlockLeafcutterAnthill();
     public static final Block LEAFCUTTER_ANT_CHAMBER = new BlockLeafcutterAntChamber();
     public static final Block CAPSID = new BlockCapsid();
+    public static final Block VOID_WORM_BEAK = new BlockVoidWormBeak();
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

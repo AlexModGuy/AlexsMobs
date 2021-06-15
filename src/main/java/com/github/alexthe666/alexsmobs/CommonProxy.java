@@ -98,4 +98,6 @@ public class CommonProxy {
     public boolean isFarFromCamera(double x, double y, double z) {
         return true;
     }
+
+    public void resetVoidPortalCreation(PlayerEntity player){}
 }

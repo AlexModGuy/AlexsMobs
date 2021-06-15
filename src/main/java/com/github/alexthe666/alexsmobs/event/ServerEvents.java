@@ -7,12 +7,14 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.item.ItemDimensionalCarver;
 import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
 import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
+import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -458,7 +460,6 @@ public class ServerEvents {
                     event.getEntityLiving().addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, 210, 0, false, false, true));
                 }
             }
-
         }
 
         if (event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS) {

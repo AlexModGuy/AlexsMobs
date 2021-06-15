@@ -21,6 +21,13 @@ public class AMRenderTypes extends RenderType {
 
     public static final RenderType RAINBOW_GLINT = makeType("rainbow_glint", DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, 7, 256, RenderType.State.getBuilder().texture(new RenderState.TextureState(new ResourceLocation("alexsmobs:textures/entity/rainbow_glint.png"), true, false)).writeMask(COLOR_WRITE).cull(CULL_DISABLED).depthTest(DEPTH_EQUAL).transparency(GLINT_TRANSPARENCY).texturing(RAINBOW_GLINT_TEXTURING).diffuseLighting(DIFFUSE_LIGHTING_ENABLED).lightmap(LIGHTMAP_ENABLED).overlay(OVERLAY_ENABLED).shadeModel(SHADE_ENABLED).build(false));
 
+    protected static final RenderState.TransparencyState WORM_TRANSPARANCY = new RenderState.TransparencyState("translucent_transparency", () -> {
+        RenderSystem.enableBlend();
+        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+    }, () -> {
+        RenderSystem.disableBlend();
+        RenderSystem.defaultBlendFunc();
+    });
 
     protected static final RenderState.TransparencyState MIMICUBE_TRANSPARANCY = new RenderState.TransparencyState("mimicube_transparency", () -> {
         RenderSystem.enableBlend();
@@ -107,7 +114,7 @@ public class AMRenderTypes extends RenderType {
 
     public static RenderType getEyesAlphaEnabled(ResourceLocation locationIn) {
         RenderState.TextureState renderstate$texturestate = new RenderState.TextureState(locationIn, false, false);
-        return makeType("eyes", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(renderstate$texturestate).transparency(TRANSLUCENT_TRANSPARENCY).writeMask(COLOR_WRITE).cull(RenderState.CULL_DISABLED).fog(BLACK_FOG).build(false));
+        return makeType("eyes", DefaultVertexFormats.ENTITY, 7, 256, false, true, RenderType.State.getBuilder().texture(renderstate$texturestate).transparency(WORM_TRANSPARANCY).writeMask(COLOR_WRITE).cull(RenderState.CULL_DISABLED).fog(BLACK_FOG).build(false));
     }
 
     public static RenderType getMungusBeam(ResourceLocation guardianBeamTexture) {

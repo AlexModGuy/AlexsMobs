@@ -7,9 +7,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ParticleShocked extends SpriteTexturedParticle {
+public class ParticleSimpleHeart extends SpriteTexturedParticle {
 
-    protected ParticleShocked(ClientWorld world, double x, double y, double z) {
+    protected ParticleSimpleHeart(ClientWorld world, double x, double y, double z) {
         super(world, x, y, z);
         this.motionX *= (double)0.01F;
         this.motionY *= (double)0.01F;
@@ -62,7 +62,7 @@ public class ParticleShocked extends SpriteTexturedParticle {
         }
 
         public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ParticleShocked heartparticle = new ParticleShocked(worldIn, x, y, z);
+            ParticleSimpleHeart heartparticle = new ParticleSimpleHeart(worldIn, x, y, z);
             heartparticle.selectSpriteRandomly(this.spriteSet);
             return heartparticle;
         }

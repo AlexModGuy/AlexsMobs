@@ -79,7 +79,7 @@ public class RenderVoidWormBody extends LivingRenderer<EntityVoidWormPart, Entit
             if (!worm.isHurt()) {
                 IVertexBuilder ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getEyesAlphaEnabled(worm.isTail() ? TEXTURE_TAIL_GLOW : TEXTURE_BODY_GLOW));
                 float alpha = (float) MathHelper.clamp((worm.getHealth() - worm.getHealthThreshold()) / (worm.getMaxHealth() - worm.getHealthThreshold()), 0, 1F);
-                this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(worm, 0.0F), 1.0F, 1.0F, 1.0F, alpha);
+                this.getEntityModel().render(matrixStackIn, ivertexbuilder, 240, LivingRenderer.getPackedOverlay(worm, 0.0F), 1.0F, 1.0F, 1.0F, 1);
             }
         }
     }

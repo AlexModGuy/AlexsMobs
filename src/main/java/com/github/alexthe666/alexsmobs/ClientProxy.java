@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
+import com.github.alexthe666.alexsmobs.client.render.tile.RenderVoidWormBeak;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
@@ -20,11 +21,9 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.entity.model.ElytraModel;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.IDyeableArmorItem;
@@ -38,13 +37,10 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
 
@@ -62,6 +58,7 @@ public class ClientProxy extends CommonProxy {
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
     public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
     public PointOfView prevPOV = PointOfView.FIRST_PERSON;
+    public static int voidPortalCreationTime = 0;
 
     public void init(){
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
@@ -153,7 +150,9 @@ public class ClientProxy extends CommonProxy {
         }
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.BANANA_PEEL, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.CAPSID, RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(AMBlockRegistry.VOID_WORM_BEAK, RenderType.getCutout());
         ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.CAPSID, manager -> new RenderCapsid(manager));
+        ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.VOID_WORM_BEAK, manager -> new RenderVoidWormBeak(manager));
 
     }
 
@@ -231,7 +230,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.PLATYPUS_SENSE, ParticlePlatypus.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.WHALE_SPLASH, ParticleWhaleSplash.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.DNA, ParticleDna.Factory::new);
-        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.SHOCKED, ParticleShocked.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.SHOCKED, ParticleSimpleHeart.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.WORM_PORTAL, ParticleSimpleHeart.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.INVERT_DIG, ParticleInvertDig.Factory::new);
     }
 
 
@@ -253,4 +254,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft lvt_1_1_ = Minecraft.getInstance();
         return lvt_1_1_.gameRenderer.getActiveRenderInfo().getProjectedView().squareDistanceTo(x, y, z) >= 256.0D;
     }
+
+    public void resetVoidPortalCreation(PlayerEntity player){
+
+    }
+
 }
