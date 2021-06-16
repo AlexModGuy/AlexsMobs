@@ -1,8 +1,11 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFrilledShark;
+import com.github.alexthe666.alexsmobs.entity.EntityGazelle;
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
@@ -17,6 +20,7 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 	private final AdvancedModelBox pelvicfin_left;
 	private final AdvancedModelBox pelvicfin_right;
 	private final AdvancedModelBox tail2;
+	private ModelAnimator animator;
 
 	public ModelFrilledShark() {
 		textureWidth = 128;
@@ -78,30 +82,50 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 		tail1.addChild(tail2);
 		tail2.setTextureOffset(0, 25).addBox(0.0F, -6.0F, 0.0F, 0.0F, 11.0F, 20.0F, 0.0F, false);
 		this.updateDefaultPose();
+		animator = ModelAnimator.create();
+	}
+
+	public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
+		animator.update(entity);
+		animator.setAnimation(EntityFrilledShark.ANIMATION_ATTACK);
+		animator.startKeyframe(5);
+		animator.rotate(jaw, (float) Math.toRadians(-20), 0, 0);
+		animator.move(head, 0, 0.5F, 3);
+		animator.endKeyframe();
+		animator.startKeyframe(5);
+		animator.rotate(head, (float) Math.toRadians(-10), 0, 0);
+		animator.rotate(jaw, (float) Math.toRadians(40), 0, 0);
+		animator.endKeyframe();
+		animator.startKeyframe(5);
+		animator.rotate(head, (float) Math.toRadians(5), 0, 0);
+		animator.rotate(jaw, (float) Math.toRadians(-20), 0, 0);
+		animator.endKeyframe();
+		animator.resetKeyframe(2);
 	}
 
 	@Override
-	public void setRotationAngles(EntityFrilledShark entityFrilledShark, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityFrilledShark entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
+		animate(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{head,body, tail1, tail2};
 		float idleSpeed = 0.14F;
 		float idleDegree = 0.25F;
-		float swimSpeed = 0.4F;
-		float swimDegree = 0.25F;
+		float swimSpeed = 0.8F;
+		float swimDegree = 0.75F;
 		float landProgress = 0;
 		progressRotationPrev(body, landProgress, 0, 0, (float) Math.toRadians(-100), 5F);
 		progressRotationPrev(pectoralfin_right, landProgress, 0, 0, (float) Math.toRadians(-50), 5F);
 		progressRotationPrev(pectoralfin_left, landProgress, 0, 0, (float) Math.toRadians(50), 5F);
 		this.walk(this.jaw, idleSpeed, idleDegree, true, 1F, -0.1F, ageInTicks, 1);
 		if(landProgress >= 5F){
-			this.chainWave(tailBoxes, swimSpeed, swimDegree * 0.9F, -3, ageInTicks, 1);
-			this.flap(this.pectoralfin_right, swimSpeed, swimDegree * 2F, true, 3, 0.3F, ageInTicks, 1);
-			this.flap(this.pectoralfin_left, swimSpeed, swimDegree * -2F, true, 3, 0.1F, ageInTicks, 1);
+			this.chainWave(tailBoxes, idleSpeed, idleDegree * 0.9F, -3, ageInTicks, 1);
+			this.flap(this.pectoralfin_right, idleSpeed, idleDegree * 2F, true, 3, 0.3F, ageInTicks, 1);
+			this.flap(this.pectoralfin_left, idleSpeed, idleDegree * -2F, true, 3, 0.1F, ageInTicks, 1);
 
 		}else{
 			this.chainSwing(tailBoxes, swimSpeed, swimDegree * 0.9F, -3, limbSwing, limbSwingAmount);
-			this.swing(this.pectoralfin_right, swimSpeed, swimDegree, true, 1F, -0.1F, limbSwing, limbSwingAmount);
-			this.swing(this.pectoralfin_left, swimSpeed, -swimDegree, true, 1F, 0.1F, limbSwing, limbSwingAmount);
+			this.swing(this.pectoralfin_right, swimSpeed, swimDegree, true, 1F, -0.3F, limbSwing, limbSwingAmount);
+			this.swing(this.pectoralfin_left, swimSpeed, -swimDegree, true, 1F, 0.3F, limbSwing, limbSwingAmount);
 			this.flap(this.pelvicfin_right, swimSpeed, -swimDegree, true, 3, 0.1F, limbSwing, limbSwingAmount);
 			this.flap(this.pelvicfin_left, swimSpeed, -swimDegree, true, 3, 0.1F, limbSwing, limbSwingAmount);
 		}

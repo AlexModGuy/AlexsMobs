@@ -30,9 +30,8 @@ public class RenderFrilledShark extends MobRenderer<EntityFrilledShark, ModelFri
         matrixStackIn.scale(0.85F, 0.85F, 0.85F);
     }
 
-
     public ResourceLocation getEntityTexture(EntityFrilledShark entity) {
-        return TEXTURE;
+        return entity.isKaiju() ? (entity.isDepressurized() ? TEXTURE_KAIJU_DEPRESSURIZED : TEXTURE_KAIJU) : (entity.isDepressurized() ? TEXTURE_DEPRESSURIZED : TEXTURE);
     }
 
     class TeethLayer extends LayerRenderer<EntityFrilledShark, ModelFrilledShark> {
