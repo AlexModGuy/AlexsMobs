@@ -9,8 +9,10 @@ import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderVoidWormBeak;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
+import com.github.alexthe666.alexsmobs.client.sound.SoundWormBoss;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
+import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
 import com.github.alexthe666.alexsmobs.item.ItemHemolymphBlaster;
@@ -31,6 +33,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -56,6 +59,7 @@ public class ClientProxy extends CommonProxy {
     private static final ModelFedora FEDORA_MODEL = new ModelFedora(0.3F);
     private static final ModelAMElytra ELYTRA_MODEL = new ModelAMElytra();
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
+    public static final Map<Integer, SoundWormBoss> WORMBOSS_SOUND_MAP = new HashMap<>();
     public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
     public PointOfView prevPOV = PointOfView.FIRST_PERSON;
     public static int voidPortalCreationTime = 0;
@@ -216,6 +220,24 @@ public class ClientProxy extends CommonProxy {
             if(!Minecraft.getInstance().getSoundHandler().isPlaying(sound) && sound.shouldPlaySound() && sound.isOnlyCockroach()){
                 Minecraft.getInstance().getSoundHandler().play(sound);
             }
+        }
+        if(entity instanceof EntityVoidWorm && entity.isAlive() && updateKind == 67){
+            float f2 = Minecraft.getInstance().gameSettings.getSoundLevel(SoundCategory.MUSIC);
+            if(!WORMBOSS_SOUND_MAP.isEmpty() && f2 <= 0){
+                WORMBOSS_SOUND_MAP.clear();
+            }else{
+                SoundWormBoss sound;
+                if(WORMBOSS_SOUND_MAP.get(entity.getEntityId()) == null){
+                    sound = new SoundWormBoss((EntityVoidWorm)entity);
+                    WORMBOSS_SOUND_MAP.put(entity.getEntityId(), sound);
+                }else{
+                    sound = WORMBOSS_SOUND_MAP.get(entity.getEntityId());
+                }
+                if(!Minecraft.getInstance().getSoundHandler().isPlaying(sound) && sound.isNearest()){
+                    Minecraft.getInstance().getSoundHandler().play(sound);
+                }
+            }
+
         }
     }
 

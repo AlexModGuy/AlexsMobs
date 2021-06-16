@@ -232,6 +232,8 @@ public class AMSoundRegistry {
 
     public static final SoundEvent TARANTULA_HAWK_HURT = createSoundEvent("tarantula_hawk_hurt");
 
+    public static final SoundEvent MUSIC_WORMBOSS = createSoundEvent("music_wormboss");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

@@ -1531,5 +1531,16 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.tarantula_hawk_hurt"
+  },
+  "music_wormboss": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "alexsmobs:music_disc/wormboss",
+        "stream": true
+      }
+    ],
+    "stream": true,
+    "subtitle": "alexsmobs.sound.subtitle.music_disc.wormboss"
   }
 }

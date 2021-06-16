@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
@@ -38,6 +39,8 @@ import net.minecraft.world.*;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -298,6 +301,9 @@ public class EntityVoidWorm extends MonsterEntity {
         breakBlock();
         if (updatePostSummon) {
             updatePostSummon = false;
+        }
+        if (!this.isSilent() && !world.isRemote) {
+            this.world.setEntityState(this, (byte) 67);
         }
     }
 
@@ -815,6 +821,15 @@ public class EntityVoidWorm extends MonsterEntity {
                 }
                 EntityVoidWorm.this.getMoveHelper().setMoveTo(centerX, centerY, centerZ, 1);
             }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if (id == 67) {
+            AlexsMobs.PROXY.onEntityStatus(this, id);
+        } else {
+            super.handleStatusUpdate(id);
         }
     }
 }
