@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "alligator_snapping_turtle.txt",
+  "title": "악어거북",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:spiked_turtle_shell",
+      "shapeless": false,
+      "x": 210,
+      "y": 20,
+      "page": 1,
+      "scale": 1.3
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:alligator_snapping_turtle",
+      "x": 90,
+      "y": 75,
+      "page" : 0,
+      "scale": 1.7,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
