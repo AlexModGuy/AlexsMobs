@@ -14,13 +14,11 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemDimensionalCarver;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
+import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.FluidBlockRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.settings.PointOfView;
@@ -136,8 +134,20 @@ public class ClientEvents {
                 }
             }
         }
-        if (event.getItemStack().getItem() == AMItemRegistry.DIMENSIONAL_CARVER) {
-          //  Minecraft.getInstance().player.resetActiveHand();
+        if (Minecraft.getInstance().player.getActiveItemStack().getItem() == AMItemRegistry.DIMENSIONAL_CARVER && event.getItemStack().getItem() == AMItemRegistry.DIMENSIONAL_CARVER) {
+            MatrixStack matrixStackIn = event.getMatrixStack();
+            matrixStackIn.push();
+            FirstPersonRenderer renderer = Minecraft.getInstance().getFirstPersonRenderer();
+            Hand hand = MoreObjects.firstNonNull(Minecraft.getInstance().player.swingingHand, Hand.MAIN_HAND);
+            float f = Minecraft.getInstance().player.getSwingProgress(event.getPartialTicks());
+            float f1 = MathHelper.lerp(event.getPartialTicks(), Minecraft.getInstance().player.prevRotationPitch, Minecraft.getInstance().player.rotationPitch);
+            float f5 = -0.4F * MathHelper.sin(MathHelper.sqrt(f) * (float)Math.PI);
+            float f6 = 0.2F * MathHelper.sin(MathHelper.sqrt(f) * ((float)Math.PI * 2F));
+            float f10 = -0.2F * MathHelper.sin(f * (float)Math.PI);
+            HandSide handside = hand == Hand.MAIN_HAND ? Minecraft.getInstance().player.getPrimaryHand() : Minecraft.getInstance().player.getPrimaryHand().opposite();
+            boolean flag3 = handside == HandSide.RIGHT;
+            int l = flag3 ? 1 : -1;
+            matrixStackIn.translate((double)((float)l * f5), (double)f6, (double)f10);
         }
     }
 

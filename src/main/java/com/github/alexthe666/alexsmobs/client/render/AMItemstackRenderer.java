@@ -80,6 +80,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.BALD_EAGLE, 0.85F));
         list.add(new Pair<>(AMEntityRegistry.TIGER, 0.65F));
         list.add(new Pair<>(AMEntityRegistry.TARANTULA_HAWK, 0.7F));
+        list.add(new Pair<>(AMEntityRegistry.VOID_WORM, 0.3F));
     });
     private static int ticksExisted = 0;
 
@@ -218,6 +219,9 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                 } else {
                     ((EntityBaldEagle) fakeEntity).setCap(false);
                 }
+            }
+            if(fakeEntity instanceof EntityVoidWorm){
+                matrixStackIn.translate(0.15F, 0.5F, 0);
             }
             if (fakeEntity != null) {
                 MouseHelper mouseHelper = Minecraft.getInstance().mouseHelper;

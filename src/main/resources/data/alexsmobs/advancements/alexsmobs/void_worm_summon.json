@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:void_worm\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.void_worm_summon.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.void_worm_summon.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "alexsmobs:alexsmobs/mysterious_worm",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:void_worm_summon"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ]
+}

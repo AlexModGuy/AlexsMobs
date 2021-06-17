@@ -4,10 +4,12 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.BlockCapsid;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateCapsid;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.EndRodBlock;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -43,9 +45,11 @@ public class TileEntityCapsid extends LockableTileEntity implements ITickableTil
     public float floatUpProgress;
     public float prevYawSwitchProgress;
     public float yawSwitchProgress;
+    public boolean vibrating = false;
     net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
             net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private float yawTarget = 0;
+    private int transformProg = 0;
     private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityCapsid() {
@@ -57,7 +61,7 @@ public class TileEntityCapsid extends LockableTileEntity implements ITickableTil
         prevFloatUpProgress = floatUpProgress;
         prevYawSwitchProgress = yawSwitchProgress;
         ticksExisted++;
-
+        vibrating = false;
         if (!this.getStackInSlot(0).isEmpty()) {
             TileEntity up = world.getTileEntity(this.pos.up());
             if (up instanceof IInventory) {
@@ -87,21 +91,41 @@ public class TileEntityCapsid extends LockableTileEntity implements ITickableTil
             } else {
                 floatUpProgress = 0F;
             }
-            if(ticksExisted % 20 == 0 && this.getStackInSlot(0).getItem() == Items.ENDER_EYE && world.getBlockState(this.getPos().down()).getBlock() == Blocks.END_ROD && world.getBlockState(this.getPos().down()).get(EndRodBlock.FACING).getAxis() == Direction.Axis.Y){
-                this.setInventorySlotContents(0, ItemStack.EMPTY);
-                this.world.destroyBlock(this.getPos(), false);
-                this.world.destroyBlock(this.getPos().down(), false);
-                EntityEnderiophage phage = AMEntityRegistry.ENDERIOPHAGE.create(world);
-                phage.setPosition(this.getPos().getX() + 0.5F, this.getPos().getY() - 1.0F, this.getPos().getZ() + 0.5F);
-                if(!world.isRemote){
-                    world.addEntity(phage);
+            if(this.getStackInSlot(0).getItem() == Items.ENDER_EYE && world.getBlockState(this.getPos().down()).getBlock() == Blocks.END_ROD && world.getBlockState(this.getPos().down()).get(EndRodBlock.FACING).getAxis() == Direction.Axis.Y){
+                vibrating = true;
+                if(transformProg > 20){
+                    this.setInventorySlotContents(0, ItemStack.EMPTY);
+                    this.world.destroyBlock(this.getPos(), false);
+                    this.world.destroyBlock(this.getPos().down(), false);
+                    EntityEnderiophage phage = AMEntityRegistry.ENDERIOPHAGE.create(world);
+                    phage.setPosition(this.getPos().getX() + 0.5F, this.getPos().getY() - 1.0F, this.getPos().getZ() + 0.5F);
+                    if(!world.isRemote){
+                        world.addEntity(phage);
+                    }
                 }
-
             }
-        } else {
+            if(this.getStackInSlot(0).getItem() == AMItemRegistry.MOSQUITO_LARVA && world.getBlockState(this.getPos().up()).getBlock() != this.getBlockState().getBlock()) {
+                vibrating = true;
+                if(transformProg > 60) {
+                    ItemStack current = this.getStackInSlot(0).copy();
+                    current.shrink(1);
+                    if(!current.isEmpty()){
+                        ItemEntity itemEntity = new ItemEntity(this.world, this.getPos().getX() + 0.5F, this.getPos().getY() + 0.5F, this.getPos().getZ() + 0.5F, current);
+                        if(!world.isRemote){
+                            world.addEntity(itemEntity);
+                        }
+                    }
+                    this.setInventorySlotContents(0, new ItemStack(AMItemRegistry.MYSTERIOUS_WORM));
+                }
+            }
+            } else {
             floatUpProgress = 0F;
         }
-
+        if(!vibrating){
+            transformProg = 0;
+        }else{
+            transformProg++;
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

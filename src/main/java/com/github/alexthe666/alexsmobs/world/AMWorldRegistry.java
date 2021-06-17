@@ -179,5 +179,8 @@ public class AMWorldRegistry {
         if (BiomeConfig.test(BiomeConfig.tarantula_hawk, biome) && AMConfig.tarantulaHawkSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.TARANTULA_HAWK, AMConfig.tarantulaHawkSpawnWeight, 1, 1));
         }
+        if (BiomeConfig.test(BiomeConfig.void_worm, biome) && AMConfig.voidWormSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.VOID_WORM, AMConfig.voidWormSpawnWeight, 1, 1));
+        }
     }
 }

@@ -22,6 +22,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
@@ -55,6 +56,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -67,6 +69,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.antlr.v4.runtime.misc.Triple;
 
 import java.util.*;
 
@@ -78,7 +81,7 @@ public class ServerEvents {
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER, "frontier cap speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final Map<ServerWorld, BeachedCachalotWhaleSpawner> BEACHED_CACHALOT_WHALE_SPAWNER_MAP = new HashMap<ServerWorld, BeachedCachalotWhaleSpawner>();
-
+    public static List<Triple<ServerPlayerEntity, ServerWorld, BlockPos>> teleportPlayers = new ArrayList<>();
     @SubscribeEvent
     public static void onServerTick(TickEvent.WorldTickEvent tick) {
         if (!tick.world.isRemote && tick.world instanceof ServerWorld) {
@@ -96,6 +99,15 @@ public class ServerEvents {
             }
             BeachedCachalotWhaleSpawner spawner = BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld);
             spawner.tick();
+        }
+        if(!tick.world.isRemote && tick.world instanceof ServerWorld){
+            for(Triple trip : teleportPlayers){
+                ServerPlayerEntity player = (ServerPlayerEntity) trip.a;
+                ServerWorld endpointWorld = (ServerWorld) trip.b;
+                BlockPos endpoint = (BlockPos) trip.c;
+                player.teleport(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.rotationYaw, player.rotationPitch);
+            }
+            teleportPlayers.clear();
         }
     }
 
@@ -493,6 +505,29 @@ public class ServerEvents {
     public void onFOVUpdate(FOVUpdateEvent event){
         if(event.getEntity().isPotionActive(AMEffectRegistry.FEAR)){
             event.setNewfov(1.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public void onEntityLeaveWorld(EntityLeaveWorldEvent event){
+        if(event.getEntity() instanceof ItemEntity && ((ItemEntity) event.getEntity()).getItem().getItem() == AMItemRegistry.MYSTERIOUS_WORM){
+            System.out.println(event.getEntity().getPosY());
+            if(event.getEntity().getPosY() < -10){
+                EntityVoidWorm worm = AMEntityRegistry.VOID_WORM.create(event.getWorld());
+                worm.setPosition(event.getEntity().getPosX(), 0, event.getEntity().getPosZ());
+                worm.setSegmentCount(25 + new Random().nextInt(15));
+                worm.rotationPitch = -90.0F;
+                worm.updatePostSummon = true;
+                if(!event.getWorld().isRemote){
+                    if(((ItemEntity) event.getEntity()).getThrowerId() != null){
+                        UUID uuid = ((ItemEntity) event.getEntity()).getThrowerId();
+                        if(event.getWorld().getPlayerByUuid(uuid) instanceof ServerPlayerEntity){
+                            AMAdvancementTriggerRegistry.VOID_WORM_SUMMON.trigger((ServerPlayerEntity)event.getWorld().getPlayerByUuid(uuid));
+                        }
+                    }
+                    event.getWorld().addEntity(worm);
+                }
+            }
         }
     }
 }
