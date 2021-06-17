@@ -87,7 +87,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityVoidWormPart> VOID_WORM_PART = registerEntity(EntityType.Builder.create(EntityVoidWormPart::new, EntityClassification.MONSTER).size(1.2F, 1.35F).immuneToFire().setTrackingRange(20).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "void_worm_part");
     public static final EntityType<EntityVoidWormShot> VOID_WORM_SHOT = registerEntity(EntityType.Builder.create(EntityVoidWormShot::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityVoidWormShot::new).immuneToFire(), "void_worm_shot");
     public static final EntityType<EntityVoidPortal> VOID_PORTAL = registerEntity(EntityType.Builder.create(EntityVoidPortal::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityVoidPortal::new).immuneToFire(), "void_portal");
-    public static final EntityType<EntityFrilledShark> FRILLED_SHARK = registerEntity(EntityType.Builder.create(EntityFrilledShark::new, EntityClassification.WATER_CREATURE).size(1.2F, 0.9F), "frilled_shark");
+    public static final EntityType<EntityFrilledShark> FRILLED_SHARK = registerEntity(EntityType.Builder.create(EntityFrilledShark::new, EntityClassification.WATER_CREATURE).size(1.3F, 0.4F), "frilled_shark");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);

@@ -1,12 +1,15 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
-import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -15,39 +18,51 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.GuardianEntity;
+import net.minecraft.entity.monster.DrownedEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.EnumSet;
 
 public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntity {
 
     public static final Animation ANIMATION_ATTACK = Animation.create(17);
-    private int animationTick;
-    private Animation currentAnimation;
     private static final DataParameter<Boolean> DEPRESSURIZED = EntityDataManager.createKey(EntityFrilledShark.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(EntityFrilledShark.class, DataSerializers.BOOLEAN);
+    public float prevOnLandProgress;
+    public float onLandProgress;
+    private int animationTick;
+    private Animation currentAnimation;
 
     protected EntityFrilledShark(EntityType type, World worldIn) {
         super(type, worldIn);
         this.moveController = new AquaticMoveController(this, 1F);
+    }
+
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
     protected void registerData() {
@@ -58,13 +73,15 @@ public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntit
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
-        this.goalSelector.addGoal(2, new AnimalAISwimBottom(this, 0.8F, 7));
-        this.goalSelector.addGoal(3, new RandomSwimmingGoal(this, 0.8F, 1));
-        this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(4, new FollowBoatGoal(this));
+        this.goalSelector.addGoal(2, new AIMelee());
+        this.goalSelector.addGoal(3, new AnimalAISwimBottom(this, 0.8F, 7));
+        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 0.8F, 3));
+        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(6, new FollowBoatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, SquidEntity.class, 50, false, true, null));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractGroupFishEntity.class, 70, false, true, null));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, SquidEntity.class, 40, false, true, null));
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractGroupFishEntity.class, 100, false, true, null));
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, DrownedEntity.class, 4, false, true, null));
     }
 
     private boolean isFromBucket() {
@@ -107,6 +124,40 @@ public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntit
         return SoundEvents.ENTITY_COD_HURT;
     }
 
+    protected ItemStack getFishBucket() {
+        ItemStack stack = new ItemStack(AMItemRegistry.FRILLED_SHARK_BUCKET);
+        CompoundNBT platTag = new CompoundNBT();
+        this.writeAdditional(platTag);
+        stack.getOrCreateTag().put("FrilledSharkData", platTag);
+        if (this.hasCustomName()) {
+            stack.setDisplayName(this.getCustomName());
+        }
+        return stack;
+    }
+
+    public ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+        ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
+        if (itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
+            this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
+            itemstack.shrink(1);
+            ItemStack itemstack1 = this.getFishBucket();
+            if (!this.world.isRemote) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) p_230254_1_, itemstack1);
+            }
+
+            if (itemstack.isEmpty()) {
+                p_230254_1_.setHeldItem(p_230254_2_, itemstack1);
+            } else if (!p_230254_1_.inventory.addItemStackToInventory(itemstack1)) {
+                p_230254_1_.dropItem(itemstack1, false);
+            }
+
+            this.remove();
+            return ActionResultType.func_233537_a_(this.world.isRemote);
+        } else {
+            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
+        }
+    }
+
     public void travel(Vector3d travelVector) {
         if (this.isServerWorld() && this.isInWater()) {
             this.moveRelative(this.getAIMoveSpeed(), travelVector);
@@ -136,24 +187,44 @@ public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntit
         p_233629_1_.limbSwing += p_233629_1_.limbSwingAmount;
     }
 
-    public void tick(){
+    public void tick() {
         super.tick();
-        if(this.isInWater()){
+        this.prevOnLandProgress = onLandProgress;
+        if (!this.isInWater() && onLandProgress < 5F) {
+            onLandProgress++;
+        }
+        if (this.isInWater() && onLandProgress > 0F) {
+            onLandProgress--;
+        }
+        if (this.isInWater()) {
             this.setMotion(this.getMotion().mul(1.0D, 0.8D, 1.0D));
         }
         boolean clear = hasClearance();
         if (this.isDepressurized() && clear) {
             this.setDepressurized(false);
         }
-        if(!isDepressurized() && !clear){
+        if (!isDepressurized() && !clear) {
             this.setDepressurized(true);
         }
-        if (!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
+        if (!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 12) {
             float f1 = this.rotationYaw * ((float) Math.PI / 180F);
             this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.06F, 0.0D, MathHelper.cos(f1) * 0.06F));
-            this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+            if (this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
+                this.getAttackTarget().addPotionEffect(new EffectInstance(AMEffectRegistry.EXSANGUINATION, 60, 2));
+                if(rand.nextInt(15) == 0 && this.getAttackTarget() instanceof SquidEntity){
+                    this.entityDropItem(AMItemRegistry.SERRATED_SHARK_TOOTH);
+                }
+            }
+
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (source.getTrueSource() instanceof DrownedEntity) {
+            amount *= 0.5F;
+        }
+        return super.attackEntityFrom(source, amount);
     }
 
     private boolean hasClearance() {
@@ -198,10 +269,6 @@ public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntit
         animationTick = tick;
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 20D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
-    }
-
     public boolean attackEntityAsMob(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_ATTACK);
@@ -209,5 +276,59 @@ public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntit
         return true;
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if (id == 68) {
+            double d2 = this.rand.nextGaussian() * 0.1D;
+            double d0 = this.rand.nextGaussian() * 0.1D;
+            double d1 = this.rand.nextGaussian() * 0.1D;
+            float radius = this.getWidth() * 0.8F;
+            float angle = (0.01745329251F * this.renderYawOffset);
+            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+            double extraZ = radius * MathHelper.cos(angle);
+            double x = this.getPosX() + extraX + d0;
+            double y = this.getPosY() + this.getHeight() * 0.15F + d1;
+            double z = this.getPosZ() + extraZ + d2;
+            world.addParticle(AMParticleRegistry.TEETH_GLINT, x, y, z, this.getMotion().x, this.getMotion().y, this.getMotion().z);
+        } else {
+            super.handleStatusUpdate(id);
+        }
+    }
 
+    private class AIMelee extends Goal {
+
+        public AIMelee() {
+            this.setMutexFlags(EnumSet.of(Flag.MOVE));
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            return EntityFrilledShark.this.getAttackTarget() != null && EntityFrilledShark.this.getAttackTarget().isAlive();
+        }
+
+        public void tick() {
+            LivingEntity target = EntityFrilledShark.this.getAttackTarget();
+            double speed = 1.0F;
+            boolean move = true;
+            if (EntityFrilledShark.this.getDistance(target) < 10) {
+                if (EntityFrilledShark.this.getDistance(target) < 1.9D) {
+                    EntityFrilledShark.this.attackEntityAsMob(target);
+                    speed = 0.8F;
+                } else {
+                    speed = 0.6F;
+                    EntityFrilledShark.this.faceEntity(target, 70, 70);
+                    if (target instanceof SquidEntity) {
+                        Vector3d mouth = EntityFrilledShark.this.getPositionVec();
+                        float squidSpeed = 0.07F;
+                        ((SquidEntity) target).setMovementVector((float) (mouth.x - target.getPosX()) * squidSpeed, (float) (mouth.y - target.getPosYEye()) * squidSpeed, (float) (mouth.z - target.getPosZ()) * squidSpeed);
+                        EntityFrilledShark.this.world.setEntityState(EntityFrilledShark.this, (byte) 68);
+                    }
+                }
+            }
+            if (target instanceof DrownedEntity || target instanceof PlayerEntity) {
+                speed = 1.0F;
+            }
+            EntityFrilledShark.this.getNavigator().tryMoveToEntityLiving(target, speed);
+        }
+    }
 }

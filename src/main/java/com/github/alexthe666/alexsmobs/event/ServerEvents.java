@@ -530,4 +530,16 @@ public class ServerEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public void onLivingAttack(LivingAttackEvent event) {
+        if(!event.getEntityLiving().getActiveItemStack().isEmpty() && event.getSource() != null && event.getSource().getTrueSource() != null){
+            if(event.getEntityLiving().getActiveItemStack().getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP){
+               Entity attacker = event.getSource().getTrueSource();
+               if(attacker instanceof LivingEntity && attacker.getDistance(event.getEntityLiving()) <= 4){
+                   ((LivingEntity) attacker).addPotionEffect(new EffectInstance(AMEffectRegistry.EXSANGUINATION, 60, 2));
+               }
+            }
+        }
+    }
 }

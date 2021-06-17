@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -140,7 +141,7 @@ public class EntityVoidWormShot extends Entity {
     protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
         Entity entity = this.getShooter();
         if (entity instanceof LivingEntity && !(p_213868_1_.getEntity() instanceof EntityVoidWorm || p_213868_1_.getEntity() instanceof EntityVoidWormPart)) {
-            boolean b = wormAttack(p_213868_1_.getEntity(), DamageSource.causeIndirectDamage(this, (LivingEntity) entity).setProjectile(), 4F);
+            boolean b = wormAttack(p_213868_1_.getEntity(), DamageSource.causeIndirectDamage(this, (LivingEntity) entity).setProjectile(), (float) (AMConfig.voidWormDamageModifier * 4F));
             if(b && p_213868_1_.getEntity() instanceof PlayerEntity){
                 PlayerEntity player = ((PlayerEntity)p_213868_1_.getEntity());
                 if(player.getActiveItemStack().isShield(player)){

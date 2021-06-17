@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
+import com.github.alexthe666.alexsmobs.client.model.ModelShieldOfTheDeep;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
@@ -11,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHelper;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -20,13 +22,17 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.vector.Quaternion;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
 public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
 
@@ -83,7 +89,8 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.VOID_WORM, 0.3F));
     });
     private static int ticksExisted = 0;
-
+    private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
+    private static final ResourceLocation SHIELD_OF_THE_DEEP_TEXTURE = new ResourceLocation("alexsmobs:textures/armor/shield_of_the_deep.png");
     private Map<String, Entity> renderedEntites = new HashMap();
 
     public static void incrementTick() {
@@ -149,6 +156,14 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
 
     @Override
     public void func_239207_a_(ItemStack itemStackIn, ItemCameraTransforms.TransformType p_239207_2_, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        if(itemStackIn.getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP){
+            matrixStackIn.push();
+            matrixStackIn.translate(0.4F, -0.75F, 0.5F);
+            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-180));
+
+            SHIELD_OF_THE_DEEP_MODEL.render(matrixStackIn, bufferIn.getBuffer(RenderType.getArmorCutoutNoCull(SHIELD_OF_THE_DEEP_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.pop();
+        }
         if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE){
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             if(p_239207_2_ == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND || p_239207_2_ == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || p_239207_2_ == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || p_239207_2_ == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND){

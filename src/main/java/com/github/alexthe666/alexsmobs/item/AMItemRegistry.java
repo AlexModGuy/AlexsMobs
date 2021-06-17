@@ -127,6 +127,9 @@ public class AMItemRegistry {
     public static final Item VOID_WORM_MANDIBLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:void_worm_mandible");
     public static final Item VOID_WORM_EYE = new Item(new Item.Properties().group(AlexsMobs.TAB).rarity(Rarity.RARE)).setRegistryName("alexsmobs:void_worm_eye");
     public static final Item DIMENSIONAL_CARVER = new ItemDimensionalCarver(new Item.Properties().group(AlexsMobs.TAB).maxDamage(20).rarity(Rarity.EPIC)).setRegistryName("alexsmobs:dimensional_carver");
+    public static final Item SERRATED_SHARK_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:serrated_shark_tooth");
+    public static final Item FRILLED_SHARK_BUCKET = new ItemModFishBucket(AMEntityRegistry.FRILLED_SHARK, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:frilled_shark_bucket");
+    public static final Item SHIELD_OF_THE_DEEP = new ItemShieldOfTheDeep(AlexsMobs.PROXY.setupISTER(new Item.Properties().maxDamage(400).rarity(Rarity.UNCOMMON).group(AlexsMobs.TAB))).setRegistryName("alexsmobs:shield_of_the_deep");
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");

@@ -112,7 +112,7 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 		float idleDegree = 0.25F;
 		float swimSpeed = 0.8F;
 		float swimDegree = 0.75F;
-		float landProgress = 0;
+		float landProgress = entityIn.prevOnLandProgress + (entityIn.onLandProgress - entityIn.prevOnLandProgress) * (ageInTicks - entityIn.ticksExisted);
 		progressRotationPrev(body, landProgress, 0, 0, (float) Math.toRadians(-100), 5F);
 		progressRotationPrev(pectoralfin_right, landProgress, 0, 0, (float) Math.toRadians(-50), 5F);
 		progressRotationPrev(pectoralfin_left, landProgress, 0, 0, (float) Math.toRadians(50), 5F);
@@ -121,11 +121,10 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 			this.chainWave(tailBoxes, idleSpeed, idleDegree * 0.9F, -3, ageInTicks, 1);
 			this.flap(this.pectoralfin_right, idleSpeed, idleDegree * 2F, true, 3, 0.3F, ageInTicks, 1);
 			this.flap(this.pectoralfin_left, idleSpeed, idleDegree * -2F, true, 3, 0.1F, ageInTicks, 1);
-
 		}else{
 			this.chainSwing(tailBoxes, swimSpeed, swimDegree * 0.9F, -3, limbSwing, limbSwingAmount);
-			this.swing(this.pectoralfin_right, swimSpeed, swimDegree, true, 1F, -0.3F, limbSwing, limbSwingAmount);
-			this.swing(this.pectoralfin_left, swimSpeed, -swimDegree, true, 1F, 0.3F, limbSwing, limbSwingAmount);
+			this.flap(this.pectoralfin_right, swimSpeed, swimDegree, true, 1F, 0.3F, limbSwing, limbSwingAmount);
+			this.flap(this.pectoralfin_left, swimSpeed, swimDegree, true, 1F, 0.3F, limbSwing, limbSwingAmount);
 			this.flap(this.pelvicfin_right, swimSpeed, -swimDegree, true, 3, 0.1F, limbSwing, limbSwingAmount);
 			this.flap(this.pelvicfin_left, swimSpeed, -swimDegree, true, 3, 0.1F, limbSwing, limbSwingAmount);
 		}

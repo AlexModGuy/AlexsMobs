@@ -85,7 +85,7 @@ public class EntityVoidWorm extends MonsterEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 160.0D).createMutableAttribute(Attributes.ARMOR, 4.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 256.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5);
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, AMConfig.voidWormMaxHealth).createMutableAttribute(Attributes.ARMOR, 4.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 256.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5);
     }
 
     @Nullable
@@ -634,6 +634,7 @@ public class EntityVoidWorm extends MonsterEntity {
     }
 
     private boolean wormAttack(Entity entity, DamageSource source, float dmg) {
+        dmg *= AMConfig.voidWormDamageModifier;
         return entity instanceof EnderDragonEntity ? ((EnderDragonEntity) entity).attackDragonFrom(source, dmg * 0.5F) : entity.attackEntityFrom(source, dmg);
     }
 
