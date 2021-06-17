@@ -111,6 +111,7 @@ public class EntityVoidWorm extends MonsterEntity {
         ItemEntity itementity = this.entityDropItem(stack, 0.0F);
         if (itementity != null) {
             itementity.setNoGravity(true);
+            itementity.setGlowing(true);
             itementity.setNoDespawn();
         }
         return itementity;
