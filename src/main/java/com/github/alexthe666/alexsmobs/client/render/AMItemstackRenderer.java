@@ -160,8 +160,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
             matrixStackIn.push();
             matrixStackIn.translate(0.4F, -0.75F, 0.5F);
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-180));
-
-            SHIELD_OF_THE_DEEP_MODEL.render(matrixStackIn, bufferIn.getBuffer(RenderType.getArmorCutoutNoCull(SHIELD_OF_THE_DEEP_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            SHIELD_OF_THE_DEEP_MODEL.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(SHIELD_OF_THE_DEEP_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.pop();
         }
         if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE){

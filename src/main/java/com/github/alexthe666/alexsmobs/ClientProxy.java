@@ -28,10 +28,7 @@ import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IDyeableArmorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.api.distmarker.Dist;
@@ -138,6 +135,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.VOID_WORM_SHOT, manager -> new RenderVoidWormShot(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.VOID_PORTAL, manager -> new RenderVoidPortal(manager));
         RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.FRILLED_SHARK, manager -> new RenderFrilledShark(manager));
+        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MIMIC_OCTOPUS, manager -> new RenderMimicOctopus(manager));
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemModelsProperties.registerProperty(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
@@ -149,7 +147,9 @@ public class ClientProxy extends CommonProxy {
             ItemModelsProperties.registerProperty(AMItemRegistry.TARANTULA_HAWK_ELYTRA, new ResourceLocation("broken"), (stack, p_239428_1_, p_239428_2_) -> {
                 return ItemTarantulaHawkElytra.isUsable(stack) ? 0.0F : 1.0F;
             });
-
+            ItemModelsProperties.registerProperty(AMItemRegistry.SHIELD_OF_THE_DEEP, new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_) -> {
+                return p_239421_2_ != null && p_239421_2_.isHandActive() && p_239421_2_.getActiveItemStack() == stack ? 1.0F : 0.0F;
+            });
         }catch (Exception e){
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");
         }

@@ -537,11 +537,19 @@ public class ServerEvents {
             if(event.getEntityLiving().getActiveItemStack().getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP){
                Entity attacker = event.getSource().getTrueSource();
                if(attacker instanceof LivingEntity){
-                   if(attacker.getDistance(event.getEntityLiving()) <= 4){
+                   boolean flag = false;
+                   if(attacker.getDistance(event.getEntityLiving()) <= 4 && !((LivingEntity)attacker).isPotionActive(AMEffectRegistry.EXSANGUINATION)){
                        ((LivingEntity) attacker).addPotionEffect(new EffectInstance(AMEffectRegistry.EXSANGUINATION, 60, 2));
+                       flag = true;
                    }
-                   if(event.getEntityLiving().isWet()){
+                   if(event.getEntityLiving().isInWaterOrBubbleColumn()){
                        event.getEntityLiving().setAir(Math.min(event.getEntityLiving().getMaxAir(), event.getEntityLiving().getAir() + 150));
+                       flag = true;
+                   }
+                   if(flag){
+                       event.getEntityLiving().getActiveItemStack().damageItem(1, event.getEntityLiving(), (playerIn) -> {
+                           playerIn.sendBreakAnimation(event.getEntityLiving().getActiveHand());
+                       });
                    }
                }
             }

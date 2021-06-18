@@ -6,46 +6,44 @@
 	},
 	"display": {
 		"thirdperson_righthand": {
+			"rotation": [ 45, 55, 0 ],
 			"translation": [
-				2.5,
+				1.5,
 				0,
-				2.75
+				1
 			]
 		},
 		"thirdperson_lefthand": {
+			"rotation": [ 45, -135, 0 ],
+
 			"translation": [
-				2.5,
+				1.5,
 				0,
-				2.75
-			],
-			"rotation": [
-				0,
-				180,
-				0
+				1
 			]
 		},
 		"firstperson_righthand": {
 			"rotation": [
-				0,
+				20,
 				89,
 				0
 			],
 			"translation": [
 				2,
-				-1,
-				0
+				5,
+				2
 			]
 		},
 		"firstperson_lefthand": {
 			"rotation": [
-				0,
+				20,
 				-90,
 				0
 			],
 			"translation": [
 				0,
-				-1.25,
-				0.5
+				5,
+				2
 			]
 		},
 		"ground": {
@@ -101,13 +99,5 @@
 				0
 			]
 		}
-	},
-	"overrides": [
-		{
-			"predicate": {
-				"blocking": 1
-			},
-			"model": "alexsmobs:item/shield_of_the_deep_blocking"
-		}
-	]
+	}
 }
