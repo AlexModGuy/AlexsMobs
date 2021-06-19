@@ -40,16 +40,31 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
 
         public void render(MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLightIn, EntityMimicOctopus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             float transProgress = entitylivingbaseIn.prevTransProgress + (entitylivingbaseIn.transProgress - entitylivingbaseIn.prevTransProgress) * partialTicks;
+            float colorProgress = (entitylivingbaseIn.prevColorShiftProgress + (entitylivingbaseIn.colorShiftProgress - entitylivingbaseIn.prevColorShiftProgress) * partialTicks) * 0.2F;
             float r = 1F;
             float g = 1F;
             float b = 1F;
             float a = 1F;
-            if(entitylivingbaseIn.getMimicState() == EntityMimicOctopus.MimicState.OVERLAY){
-                int i = OctopusColorRegistry.getBlockColor(entitylivingbaseIn.getMimickingBlock());
-                r = (float)(i >> 16 & 255) / 255.0F;
-                g = (float)(i >> 8 & 255) / 255.0F;
-                b = (float)(i & 255) / 255.0F;
+            if((entitylivingbaseIn.getMimicState() == EntityMimicOctopus.MimicState.OVERLAY || entitylivingbaseIn.prevMimicState == EntityMimicOctopus.MimicState.OVERLAY) && entitylivingbaseIn.getMimickedBlock() != null){
+                int i = OctopusColorRegistry.getBlockColor(entitylivingbaseIn.getMimickedBlock());
+                float finR = (float)(i >> 16 & 255) / 255.0F;
+                float finG = (float)(i >> 8 & 255) / 255.0F;
+                float finB = (float)(i & 255) / 255.0F;
+                float startR = 1.0F;
+                float startG = 1.0F;
+                float startB = 1.0F;
+                if(entitylivingbaseIn.prevMimickedBlock != null){
+                    int j = OctopusColorRegistry.getBlockColor(entitylivingbaseIn.prevMimickedBlock);
+                    startR = (float)(j >> 16 & 255) / 255.0F;
+                    startG = (float)(j >> 8 & 255) / 255.0F;
+                    startB = (float)(j & 255) / 255.0F;
+
+                }
+                r = startR + (finR - startR) * colorProgress;
+                g = startG + (finG - startG) * colorProgress;
+                b = startB + (finB - startB) * colorProgress;
             }
+            a = 0.9F + 0.1F * (float)Math.sin(entitylivingbaseIn.ticksExisted * 0.1F);
             float alphaPrev = 0.0F;
             if(entitylivingbaseIn.prevMimicState != null){
                 alphaPrev = 1 - transProgress * 0.2F;

@@ -39,23 +39,22 @@ public class OctopusColorRegistry {
         float red = 0;
         float green = 0;
         float blue = 0;
-        float alphaDummy = 0;
         float count = 0;
         int uMax = image.getWidth();
         int vMax = image.getHeight();
         for (float i = 0; i < uMax; i++)
             for (float j = 0; j < vMax; j++) {
                 int alpha = image.getPixelRGBA(0, (int) i, (int) j) >> 24 & 0xFF;
-                if (alpha != 255) {
+                if (alpha == 0) {
                     continue;
                 }
-                red += image.getPixelRGBA(0, (int) i, (int) j) >> 0;
-                green += image.getPixelRGBA(0, (int) i, (int) j) >> 8;
-                blue += image.getPixelRGBA(0, (int) i, (int) j) >> 16;
+                red += image.getPixelRGBA(0, (int) i, (int) j) >> 0 & 0xFF;
+                green += image.getPixelRGBA(0, (int) i, (int) j) >> 8 & 0xFF;
+                blue += image.getPixelRGBA(0, (int) i, (int) j) >> 16 & 0xFF;
                 count++;
             }
         //Average color
-        return new Color((int) (red / count), (int) (green / count), (int) (blue / count), (int)(alphaDummy / count));
+        return new Color((int) (red / count), (int) (green / count), (int) (blue / count));
     }
 
     private static TextureAtlasSprite getTextureAtlas(BlockState state) {

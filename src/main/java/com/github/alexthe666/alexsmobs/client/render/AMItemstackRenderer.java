@@ -87,6 +87,8 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.TIGER, 0.65F));
         list.add(new Pair<>(AMEntityRegistry.TARANTULA_HAWK, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.VOID_WORM, 0.3F));
+        list.add(new Pair<>(AMEntityRegistry.FRILLED_SHARK, 0.65F));
+        list.add(new Pair<>(AMEntityRegistry.MIMIC_OCTOPUS, 0.7F));
     });
     private static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
@@ -235,7 +237,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                 }
             }
             if(fakeEntity instanceof EntityVoidWorm){
-                matrixStackIn.translate(0.15F, 0.5F, 0);
+                matrixStackIn.translate(0, 0.5F, 0);
             }
             if (fakeEntity != null) {
                 MouseHelper mouseHelper = Minecraft.getInstance().mouseHelper;
