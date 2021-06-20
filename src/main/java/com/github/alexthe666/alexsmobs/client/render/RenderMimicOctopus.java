@@ -45,26 +45,40 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
             float g = 1F;
             float b = 1F;
             float a = 1F;
-            if((entitylivingbaseIn.getMimicState() == EntityMimicOctopus.MimicState.OVERLAY || entitylivingbaseIn.prevMimicState == EntityMimicOctopus.MimicState.OVERLAY) && entitylivingbaseIn.getMimickedBlock() != null){
-                int i = OctopusColorRegistry.getBlockColor(entitylivingbaseIn.getMimickedBlock());
-                float finR = (float)(i >> 16 & 255) / 255.0F;
-                float finG = (float)(i >> 8 & 255) / 255.0F;
-                float finB = (float)(i & 255) / 255.0F;
-                float startR = 1.0F;
-                float startG = 1.0F;
-                float startB = 1.0F;
+            float startR = 1.0F;
+            float startG = 1.0F;
+            float startB = 1.0F;
+            float startA = 1.0F;
+            float finR = 1.0F;
+            float finG = 1.0F;
+            float finB = 1.0F;
+            float finA = 1.0F;
+            if(entitylivingbaseIn.prevMimicState == EntityMimicOctopus.MimicState.OVERLAY){
                 if(entitylivingbaseIn.prevMimickedBlock != null){
                     int j = OctopusColorRegistry.getBlockColor(entitylivingbaseIn.prevMimickedBlock);
                     startR = (float)(j >> 16 & 255) / 255.0F;
                     startG = (float)(j >> 8 & 255) / 255.0F;
                     startB = (float)(j & 255) / 255.0F;
+                }else{
+                    startA = 0.0F;
+                }
 
+            }
+            if((entitylivingbaseIn.getMimicState() == EntityMimicOctopus.MimicState.OVERLAY)){
+                if(entitylivingbaseIn.getMimickedBlock() != null){
+                    int i = OctopusColorRegistry.getBlockColor(entitylivingbaseIn.getMimickedBlock());
+                    finR = (float)(i >> 16 & 255) / 255.0F;
+                    finG = (float)(i >> 8 & 255) / 255.0F;
+                    finB = (float)(i & 255) / 255.0F;
+                }else{
+                    finA = 0.0F;
                 }
                 r = startR + (finR - startR) * colorProgress;
                 g = startG + (finG - startG) * colorProgress;
                 b = startB + (finB - startB) * colorProgress;
+                a = startA + (finA - startA) * colorProgress;
+                a *= 0.9F + 0.1F * (float)Math.sin(entitylivingbaseIn.ticksExisted * 0.1F);
             }
-            a = 0.9F + 0.1F * (float)Math.sin(entitylivingbaseIn.ticksExisted * 0.1F);
             float alphaPrev = 0.0F;
             if(entitylivingbaseIn.prevMimicState != null){
                 alphaPrev = 1 - transProgress * 0.2F;

@@ -223,7 +223,7 @@ public class ClientProxy extends CommonProxy {
         }
         if(entity instanceof EntityVoidWorm && entity.isAlive() && updateKind == 67){
             float f2 = Minecraft.getInstance().gameSettings.getSoundLevel(SoundCategory.MUSIC);
-            if(!WORMBOSS_SOUND_MAP.isEmpty() && f2 <= 0){
+            if(f2 <= 0){
                 WORMBOSS_SOUND_MAP.clear();
             }else{
                 SoundWormBoss sound;

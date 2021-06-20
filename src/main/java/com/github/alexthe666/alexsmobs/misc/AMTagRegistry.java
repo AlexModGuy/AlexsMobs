@@ -46,6 +46,10 @@ public class AMTagRegistry {
     public static final ResourceLocation TIGER_TARGETS = new ResourceLocation("alexsmobs", "tiger_targets");
     public static final ResourceLocation BALD_EAGLE_TARGETS = new ResourceLocation("alexsmobs", "bald_eagle_targets");
     public static final ResourceLocation VOID_WORM_BREAKABLES = new ResourceLocation("alexsmobs", "void_worm_breakables");
+    public static final ResourceLocation MIMIC_OCTOPUS_FEARS = new ResourceLocation("alexsmobs", "mimic_octopus_fears");
+    public static final ResourceLocation MIMIC_OCTOPUS_CREEPER_ITEMS = new ResourceLocation("alexsmobs", "mimic_octopus_creeper_items");
+    public static final ResourceLocation MIMIC_OCTOPUS_GUARDIAN_ITEMS = new ResourceLocation("alexsmobs", "mimic_octopus_guardian_items");
+    public static final ResourceLocation MIMIC_OCTOPUS_PUFFERFISH_ITEMS = new ResourceLocation("alexsmobs", "mimic_octopus_pufferfish_items");
 
     public static final ResourceLocation ROADRUNNER_SPAWNS = new ResourceLocation("alexsmobs","roadrunner_spawns");
     public static final ResourceLocation LOBSTER_SPAWNS = new ResourceLocation("alexsmobs","lobster_spawns");

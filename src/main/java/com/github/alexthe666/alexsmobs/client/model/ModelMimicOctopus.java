@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
 import com.github.alexthe666.alexsmobs.entity.EntityMimicOctopus;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -271,19 +270,54 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
         this.resetToDefaultPose();
         float partialTicks = ageInTicks - entity.ticksExisted;
         float transProgress = entity.prevTransProgress + (entity.transProgress - entity.prevTransProgress) * partialTicks;
-        float groundProgress = 5;
-        float swimProgress = 5F - groundProgress;
-        float groundProgressNorm = groundProgress * 0.2F;
-        limbSwing = ageInTicks;
-        limbSwingAmount = 1F;
-
+        float groundProgress = entity.prevGroundProgress + (entity.groundProgress - entity.prevGroundProgress) * partialTicks;
+        float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTicks;
+        float notSitProgress = 1 - sitProgress * 0.2F;
+        float swimProgress = (5F - groundProgress) * notSitProgress;
+        float groundProgressNorm = groundProgress * 0.2F * notSitProgress;
         if(entity.prevMimicState != null) {
-            float progress = 5 - transProgress;
-            animateForMimicWater(entity.prevMimicState, entity, limbSwing, limbSwingAmount, ageInTicks, progress * (1 - groundProgressNorm));
+            float progress = notSitProgress * (5 - transProgress);
             animateForMimicGround(entity.prevMimicState, entity, limbSwing, limbSwingAmount, ageInTicks, progress * groundProgressNorm);
+            if(sitProgress == 0){
+                animateForMimicWater(entity.prevMimicState, entity, limbSwing, limbSwingAmount, ageInTicks, progress * (1 - groundProgressNorm));
+            }
         }
-        animateForMimicWater(entity.getMimicState(), entity, limbSwing, limbSwingAmount, ageInTicks, transProgress * (1 - groundProgressNorm));
-        animateForMimicGround(entity.getMimicState(), entity, limbSwing, limbSwingAmount, ageInTicks, transProgress * groundProgressNorm);
+        animateForMimicGround(entity.getMimicState(), entity, limbSwing, limbSwingAmount, ageInTicks, notSitProgress * transProgress * groundProgressNorm);
+        animateForMimicWater(entity.getMimicState(), entity, limbSwing, limbSwingAmount, ageInTicks, notSitProgress * transProgress * (1 - groundProgressNorm));
+
+        if(swimProgress > 0.0F){
+            float rot = headPitch * ((float)Math.PI / 180F);
+            this.head.rotationPointY += Math.abs(rot) * -7;
+            this.head.rotateAngleX -= rot;
+        }
+        progressRotationPrev(mantle, sitProgress, (float) Math.toRadians(20), 0, 0, 5F);
+        progressPositionPrev(mantle, sitProgress, 0, -2, 0, 5F);
+        progressRotationPrev(armstart1_left, sitProgress,  (float)Math.toRadians(-10),  0,  0, 5F);
+        progressRotationPrev(armmid1_left, sitProgress,  (float)Math.toRadians(-20),  0,  0, 5F);
+        progressRotationPrev(armend1_left, sitProgress,  (float)Math.toRadians(-20),  0,  0, 5F);
+        progressRotationPrev(armstart2_left, sitProgress,  (float)Math.toRadians(5),  0,  0, 5F);
+        progressRotationPrev(armmid2_left, sitProgress,  (float)Math.toRadians(-20),  0,  0, 5F);
+        progressRotationPrev(armend2_left, sitProgress,  (float)Math.toRadians(-20),  0,  0, 5F);
+        progressRotationPrev(armstart3_left, sitProgress,  (float)Math.toRadians(-5),  0,  0, 5F);
+        progressRotationPrev(armmid3_left, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+        progressRotationPrev(armend3_left, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+        progressRotationPrev(armstart4_left, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+        progressRotationPrev(armmid4_left, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+        progressRotationPrev(armend4_left, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+
+        progressRotationPrev(armstart1_right, sitProgress,  (float)Math.toRadians(-10),  0,  0, 5F);
+        progressRotationPrev(armmid1_right, sitProgress,  (float)Math.toRadians(-20),  0,  0, 5F);
+        progressRotationPrev(armend1_right, sitProgress,  (float)Math.toRadians(-20),  0,  0, 5F);
+        progressRotationPrev(armstart_right2, sitProgress,  (float)Math.toRadians(5),  0,  0, 5F);
+        progressRotationPrev(armmid_right2, sitProgress,  (float)Math.toRadians(-20),  0,  0, 5F);
+        progressRotationPrev(armend_right2, sitProgress,  (float)Math.toRadians(-20),  0,  0, 5F);
+        progressRotationPrev(armstart3_right, sitProgress,  (float)Math.toRadians(-5),  0,  0, 5F);
+        progressRotationPrev(armmid3_right, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+        progressRotationPrev(armend3_right, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+        progressRotationPrev(armstart4_right, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+        progressRotationPrev(armmid4_right, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+        progressRotationPrev(armend4_right, sitProgress,  (float)Math.toRadians(20),  0,  0, 5F);
+
     }
 
     public void animateForMimicWater(EntityMimicOctopus.MimicState state, EntityMimicOctopus entity, float limbSwing, float limbSwingAmount, float ageInTicks, float swimProgress) {
@@ -313,6 +347,28 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
         progressRotation(armstart3_right, swimProgress, 0, 0, 0, 5F);
         progressRotation(armstart4_right, swimProgress, 0, 0, 0, 5F);
         if (state == EntityMimicOctopus.MimicState.GUARDIAN) {
+            float degree = 1.2F;
+            float speed = 0.65F;
+            progressPositionPrev(head, swimProgress, 0, -3, -2, 5F);
+            progressPositionPrev(mantle, swimProgress, 0, -2, 0, 5F);
+            if(swimProgress > 0){
+                this.mantle.setScale(1F + swimProgress * 0.1F, 1F + swimProgress * 0.1F, 1F + swimProgress * 0.1F);
+            }
+            progressRotationPrev(arm2_right_pivot, swimProgress, (float) Math.toRadians(-30), (float) Math.toRadians(0), (float) Math.toRadians(90), 5F);
+            progressRotationPrev(arm3_right_pivot, swimProgress, (float) Math.toRadians(0), (float) Math.toRadians(0), (float) Math.toRadians(80), 5F);
+            progressRotationPrev(arm4_right_pivot, swimProgress, (float) Math.toRadians(30), (float) Math.toRadians(0), (float) Math.toRadians(80), 5F);
+            progressRotationPrev(arm2_left_pivot, swimProgress, (float) Math.toRadians(-30), (float) Math.toRadians(0), (float) Math.toRadians(-90), 5F);
+            progressRotationPrev(arm3_left_pivot, swimProgress, (float) Math.toRadians(0), (float) Math.toRadians(0), (float) Math.toRadians(-80), 5F);
+            progressRotationPrev(arm4_left_pivot, swimProgress, (float) Math.toRadians(30), (float) Math.toRadians(0), (float) Math.toRadians(-80), 5F);
+            progressRotationPrev(arm1_right_pivot, swimProgress, (float) Math.toRadians(10), (float) Math.toRadians(30), (float) Math.toRadians(-23), 5F);
+            progressRotationPrev(arm1_left_pivot, swimProgress, (float) Math.toRadians(10), (float) Math.toRadians(-30), (float) Math.toRadians(23), 5F);
+            this.flap(armstart1_left, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.flap(armstart1_right, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.flap(armmid1_left, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.flap(armmid1_right, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.flap(armend1_left, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.flap(armend1_right, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
+
 
         } else {
             float f = 1.0F;
@@ -324,7 +380,17 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             }
             float degree = 1.2F;
             float speed = 0.35F;
-            this.mantle.setScale(1F, 1F, 1.5F + 0.5F * f * MathHelper.sin(speed * limbSwing - 2));
+            this.bob(head, speed, degree * 2, false, limbSwing, limbSwingAmount);
+            if(swimProgress > 0) {
+                if (state == EntityMimicOctopus.MimicState.PUFFERFISH) {
+                    float f2 = 1.4F + 0.5F * MathHelper.sin(speed * limbSwing - 2) * swimProgress * 0.2F;
+                    progressPositionPrev(mantle, swimProgress, 0, -2, 0, 5F);
+                    this.mantle.setScale(f2, f2, f2);
+                } else {
+                    float scale = 1.5F + 0.5F * f * MathHelper.sin(speed * limbSwing - 2);
+                    this.mantle.setScale(1F, 1F, (scale - 1F) * swimProgress * 0.2F + 1F);
+                }
+            }
             this.walk(eye_spike_left, speed, degree * 0.2F, true, -2, 0.1F, limbSwing, limbSwingAmount);
             this.walk(eye_spike_right, speed, degree * 0.2F, true, -2, 0.1F, limbSwing, limbSwingAmount);
             this.flap(armstart1_left, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
@@ -365,14 +431,14 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
     }
 
     public void animateForMimicGround(EntityMimicOctopus.MimicState state, EntityMimicOctopus entity, float limbSwing, float limbSwingAmount, float ageInTicks, float groundProgress){
+        this.mantle.setScale(1, 1, 1);
         limbSwingAmount = limbSwingAmount * groundProgress * 0.2F;
         float degree = 0.7F;
-        float speed = 0.5F;
+        float speed = 0.8F;
         if(state == EntityMimicOctopus.MimicState.CREEPER){
-            this.mantle.setScale(1, 1, 1);
             progressRotationPrev(head, groundProgress, 0, (float)Math.toRadians(-180), 0, 5F);
             progressRotationPrev(mantle, groundProgress, (float)Math.toRadians(-60), 0, 0, 5F);
-            progressPositionPrev(mantle, groundProgress, 0, -2, 3, 5F);
+            progressPositionPrev(mantle, groundProgress, 0, -4, 3, 5F);
             progressPositionPrev(head, groundProgress, 0, -15, -2, 5F);
             progressRotationPrev(arm1_left_pivot, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(45),  (float)Math.toRadians(-20), 5F);
             progressRotationPrev(arm2_left_pivot, groundProgress,  (float)Math.toRadians(-10),  (float)Math.toRadians(0),  (float)Math.toRadians(-10), 5F);
@@ -390,6 +456,7 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             progressRotation(armstart_right2, groundProgress,  0, 0,  0, 5F);
             progressRotation(armstart3_right, groundProgress,  0, 0,  0, 5F);
             progressRotation(armstart4_right, groundProgress,  0, 0,  0, 5F);
+            this.flap(mantle, speed, degree * 0.25F, true, 0, 0, limbSwing, limbSwingAmount);
             this.walk(armstart1_left, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
             this.walk(armstart2_left, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
             this.flap(armstart1_left, speed, degree * 0.1F, true, 0, 0.1F, limbSwing, limbSwingAmount);
@@ -398,20 +465,15 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             this.walk(armstart4_left, speed, degree * 0.25F, false, 0, -0.1F, limbSwing, limbSwingAmount);
             this.flap(armstart3_left, speed, degree * 0.1F, false, 0, -0.1F, limbSwing, limbSwingAmount);
             this.flap(armstart4_left, speed, degree * 0.1F, false, 0, -0.1F, limbSwing, limbSwingAmount);
-
-            this.walk(armstart1_right, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
-            this.walk(armstart_right2, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
-            this.flap(armstart1_right, speed, degree * 0.1F, true, 0, -0.1F, limbSwing, limbSwingAmount);
-            this.flap(armstart_right2, speed, degree * 0.1F, true, 0, -0.1F, limbSwing, limbSwingAmount);
-            this.walk(armstart3_right, speed, degree * 0.25F, false, 0, -0.1F, limbSwing, limbSwingAmount);
-            this.walk(armstart4_right, speed, degree * 0.25F, false, 0, -0.1F, limbSwing, limbSwingAmount);
-            this.flap(armstart3_right, speed, degree * 0.1F, false, 0, 0.1F, limbSwing, limbSwingAmount);
-            this.flap(armstart4_right, speed, degree * 0.1F, false, 0, 0.1F, limbSwing, limbSwingAmount);
-
-        }else if(state == EntityMimicOctopus.MimicState.GUARDIAN){
-
-        }else if(state == EntityMimicOctopus.MimicState.PUFFERFISH){
-
+            this.walk(armstart1_right, speed, degree * 0.25F, false, 0, -0.1F, limbSwing, limbSwingAmount);
+            this.walk(armstart_right2, speed, degree * 0.25F, false, 0, -0.1F, limbSwing, limbSwingAmount);
+            this.flap(armstart1_right, speed, degree * 0.1F, false, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.flap(armstart_right2, speed, degree * 0.1F, false, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.walk(armstart3_right, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.walk(armstart4_right, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
+            this.flap(armstart3_right, speed, degree * 0.1F, true, 0, -0.1F, limbSwing, limbSwingAmount);
+            this.flap(armstart4_right, speed, degree * 0.1F, true, 0, -0.1F, limbSwing, limbSwingAmount);
+            this.bob(head, speed, degree * 2, true, limbSwing, limbSwingAmount);
         }else{
             progressRotationPrev(mantle, groundProgress, (float)Math.toRadians(20), 0, 0, 5F);
             progressPositionPrev(mantle, groundProgress, 0, -2, 0, 5F);

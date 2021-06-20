@@ -1,0 +1,12 @@
+{
+  "__comment": "All mobs that mimic octopus flees, players included separately.",
+  "replace": false,
+  "values": [
+    "minecraft:drowned",
+    "minecraft:dolphin",
+    "alexsmobs:orca",
+    "alexsmobs:hammerhead_shark",
+    "alexsmobs:mantis_shrimp",
+    "alexsmobs:frilled_shark"
+  ]
+}

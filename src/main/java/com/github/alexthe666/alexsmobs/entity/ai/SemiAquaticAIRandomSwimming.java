@@ -68,7 +68,7 @@ public class SemiAquaticAIRandomSwimming extends RandomWalkingGoal {
         return this.creature.world.getBlockState(pos.add(dx * scale, 1, dz * scale)).isAir() && this.creature.world.getBlockState(pos.add(dx * scale, 2, dz * scale)).isAir();
     }
 
-    private Vector3d findSurfaceTarget(CreatureEntity creature, int i, int i1) {
+    protected Vector3d findSurfaceTarget(CreatureEntity creature, int i, int i1) {
         BlockPos upPos = creature.getPosition();
         while(creature.world.getFluidState(upPos).isTagged(FluidTags.WATER) || creature.world.getFluidState(upPos).isTagged(FluidTags.LAVA)){
             upPos = upPos.up();
