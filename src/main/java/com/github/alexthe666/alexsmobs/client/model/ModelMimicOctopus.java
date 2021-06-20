@@ -275,11 +275,11 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
         float notSitProgress = 1 - sitProgress * 0.2F;
         float swimProgress = (5F - groundProgress) * notSitProgress;
         float groundProgressNorm = groundProgress * 0.2F * notSitProgress;
-        if(entity.prevMimicState != null) {
+        if(entity.getPrevMimicState() != null) {
             float progress = notSitProgress * (5 - transProgress);
-            animateForMimicGround(entity.prevMimicState, entity, limbSwing, limbSwingAmount, ageInTicks, progress * groundProgressNorm);
+            animateForMimicGround(entity.getPrevMimicState(), entity, limbSwing, limbSwingAmount, ageInTicks, progress * groundProgressNorm);
             if(sitProgress == 0){
-                animateForMimicWater(entity.prevMimicState, entity, limbSwing, limbSwingAmount, ageInTicks, progress * (1 - groundProgressNorm));
+                animateForMimicWater(entity.getPrevMimicState(), entity, limbSwing, limbSwingAmount, ageInTicks, progress * (1 - groundProgressNorm));
             }
         }
         animateForMimicGround(entity.getMimicState(), entity, limbSwing, limbSwingAmount, ageInTicks, notSitProgress * transProgress * groundProgressNorm);
@@ -475,6 +475,35 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             this.flap(armstart4_right, speed, degree * 0.1F, true, 0, -0.1F, limbSwing, limbSwingAmount);
             this.bob(head, speed, degree * 2, true, limbSwing, limbSwingAmount);
         }else{
+            float idleDegree = 0.03F;
+            float idleSpeed = 0.07F;
+            this.walk(armstart1_left, idleSpeed, idleDegree, true, 0, 0.05F, ageInTicks, groundProgress);
+            this.walk(armmid1_left, idleSpeed, idleDegree * 0.5F, false, 2, 0, ageInTicks, groundProgress);
+            this.walk(armend1_left, idleSpeed, idleDegree * 0.75F, true, 0, 0, ageInTicks, groundProgress);
+            this.walk(armstart2_left,idleSpeed, idleDegree, true, 1, 0, ageInTicks, groundProgress);
+            this.walk(armmid2_left, idleSpeed, idleDegree * 0.5F, false, 3, 0, ageInTicks, groundProgress);
+            this.walk(armend2_left, idleSpeed, idleDegree * 0.75F, true, 1, 0, ageInTicks, groundProgress);
+            this.walk(armstart3_left,idleSpeed, idleDegree, true, 2, -0.02F, ageInTicks, groundProgress);
+            this.walk(armmid3_left, idleSpeed, idleDegree * 0.5F, false, 4, 0, ageInTicks, groundProgress);
+            this.walk(armend3_left, idleSpeed, idleDegree * 0.75F, true, 2, 0, ageInTicks, groundProgress);
+            this.walk(armstart4_left,idleSpeed, idleDegree, true, 3, -0.05F, ageInTicks, groundProgress);
+            this.walk(armmid4_left, idleSpeed, idleDegree * 0.5F, false, 5, 0, ageInTicks, groundProgress);
+            this.walk(armend4_left, idleSpeed, idleDegree * 0.75F, true, 3, 0, ageInTicks, groundProgress);
+
+            this.walk(armstart1_right, idleSpeed, idleDegree, true, 0, 0.05F, ageInTicks, groundProgress);
+            this.walk(armmid1_right, idleSpeed, idleDegree * 0.5F, false, 2, 0, ageInTicks, groundProgress);
+            this.walk(armend1_right, idleSpeed, idleDegree * 0.75F, true, 0, 0, ageInTicks, groundProgress);
+            this.walk(armstart_right2,idleSpeed, idleDegree, true, 1, 0, ageInTicks, groundProgress);
+            this.walk(armmid_right2, idleSpeed, idleDegree * 0.5F, false, 3, 0, ageInTicks, groundProgress);
+            this.walk(armend_right2, idleSpeed, idleDegree * 0.75F, true, 1, 0, ageInTicks, groundProgress);
+            this.walk(armstart3_right,idleSpeed, idleDegree, true, 2, -0.02F, ageInTicks, groundProgress);
+            this.walk(armmid3_right, idleSpeed, idleDegree * 0.5F, false, 4, 0, ageInTicks, groundProgress);
+            this.walk(armend3_right, idleSpeed, idleDegree * 0.75F, true, 2, 0, ageInTicks, groundProgress);
+            this.walk(armstart4_right,idleSpeed, idleDegree, true, 3, -0.05F, ageInTicks, groundProgress);
+            this.walk(armmid4_right, idleSpeed, idleDegree * 0.5F, false, 5, 0, ageInTicks, groundProgress);
+            this.walk(armend4_right, idleSpeed, idleDegree * 0.75F, true, 3, 0, ageInTicks, groundProgress);
+
+
             progressRotationPrev(mantle, groundProgress, (float)Math.toRadians(20), 0, 0, 5F);
             progressPositionPrev(mantle, groundProgress, 0, -2, 0, 5F);
             this.flap(eye_spike_left, speed, degree * 0.2F, false, -5, 0.2F, limbSwing, limbSwingAmount);

@@ -38,9 +38,13 @@ public class AnimalSwimMoveControllerSink extends MovementController {
                 this.entity.rotationYawHead = this.entity.rotationYaw;
                 float lvt_10_1_ = (float) (this.speed * speedMulti * 3 * this.entity.getAttributeValue(Attributes.MOVEMENT_SPEED));
                 if (this.entity.isInWater()) {
+                    if(lvt_3_1_ > 0 && entity.collidedHorizontally){
+                        this.entity.setMotion(this.entity.getMotion().add(0.0D, 0.08F, 0.0D));
+                    }else{
+                        this.entity.setMotion(this.entity.getMotion().add(0.0D, (double) this.entity.getAIMoveSpeed() * lvt_3_1_ * 0.6D * ySpeedMod, 0.0D));
+                    }
                     this.entity.setAIMoveSpeed(lvt_10_1_ * 0.02F);
                     float lvt_11_1_ = -((float) (MathHelper.atan2(lvt_3_1_, MathHelper.sqrt(lvt_1_1_ * lvt_1_1_ + lvt_5_1_ * lvt_5_1_)) * 57.2957763671875D));
-                    this.entity.setMotion(this.entity.getMotion().add(0.0D, (double) this.entity.getAIMoveSpeed() * lvt_3_1_ * 0.6D * ySpeedMod, 0.0D));
                     lvt_11_1_ = MathHelper.clamp(MathHelper.wrapDegrees(lvt_11_1_), -85.0F, 85.0F);
                     this.entity.rotationPitch = this.limitAngle(this.entity.rotationPitch, lvt_11_1_, 5.0F);
                     float lvt_12_1_ = MathHelper.cos(this.entity.rotationPitch * 0.017453292F);

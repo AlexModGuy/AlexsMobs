@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -14,10 +16,14 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.entity.passive.WaterMobEntity;
+import net.minecraft.entity.passive.fish.PufferfishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,6 +34,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag;
@@ -39,19 +46,27 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,IFollower {
+import static net.minecraft.entity.CreatureAttribute.WATER;
 
+public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, IFollower {
+
+    private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> UPGRADED = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> MIMIC_ORDINAL = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> PREV_MIMIC_ORDINAL = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
     private static final DataParameter<Optional<BlockState>> MIMICKED_BLOCK = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.OPTIONAL_BLOCK_STATE);
+    private static final DataParameter<Optional<BlockState>> PREV_MIMICKED_BLOCK = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.OPTIONAL_BLOCK_STATE);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
-    public MimicState prevMimicState = MimicState.OVERLAY;
-    public BlockState prevMimickedBlock;
+    private static final DataParameter<Integer> LAST_SCARED_MOB_ID = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
+    public MimicState localMimicState = MimicState.OVERLAY;
     public float transProgress = 0F;
     public float prevTransProgress = 0F;
     public float colorShiftProgress = 0F;
@@ -66,12 +81,35 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
     private int mimicCooldown = 0;
     private int stopMimicCooldown = -1;
     private int fishFeedings;
+    private int exclaimTime = 0;
+    private BlockState localMimic;
 
     protected EntityMimicOctopus(EntityType type, World worldIn) {
         super(type, worldIn);
         this.setPathPriority(PathNodeType.WATER, 0.0F);
         this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
         switchNavigator(false);
+    }
+
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+    }
+
+    public static MimicState getStateForItem(ItemStack stack) {
+        if (ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_CREEPER_ITEMS).contains(stack.getItem())) {
+            return MimicState.CREEPER;
+        }
+        if (ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_GUARDIAN_ITEMS).contains(stack.getItem())) {
+            return MimicState.GUARDIAN;
+        }
+        if (ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_PUFFERFISH_ITEMS).contains(stack.getItem())) {
+            return MimicState.PUFFERFISH;
+        }
+        return null;
+    }
+
+    protected float getJumpUpwardsMotion() {
+        return super.getJumpUpwardsMotion() * 1.3F;
     }
 
     @Override
@@ -95,28 +133,39 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         return super.isOnSameTeam(entityIn);
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
-    }
-
     public boolean isPushedByWater() {
         return false;
     }
 
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new AIAttack());
         this.goalSelector.addGoal(1, new SitGoal(this));
         this.goalSelector.addGoal(2, new FollowOwner(this, 1.3D, 4.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL), false) {
+            @Override
+            public void tick() {
+                EntityMimicOctopus.this.setMimickedBlock(null);
+                super.tick();
+                EntityMimicOctopus.this.idleMimicCooldown = 40;
+                EntityMimicOctopus.this.stopMimicCooldown = 40;
+            }
+        });
         this.goalSelector.addGoal(5, new AIFlee());
-        this.goalSelector.addGoal(6, new BreedGoal(this, 0.8D));
-        this.goalSelector.addGoal(7, new AISwim());
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(6, new AIMimicNearbyMobs());
+        this.goalSelector.addGoal(7, new BreedGoal(this, 0.8D));
+        this.goalSelector.addGoal(8, new AISwim());
+        this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this){
+            @Override
+            public boolean shouldExecute() {
+                return EntityMimicOctopus.this.isTamed() && super.shouldExecute();
+            }
+        });
     }
 
     public boolean isActiveCamo() {
@@ -136,8 +185,8 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         Item item = itemstack.getItem();
         MimicState readState = getStateForItem(itemstack);
         ActionResultType type = super.getEntityInteractionResult(player, hand);
-        if(readState != null && this.isTamed()){
-            if(mimicCooldown == 0){
+        if (readState != null && this.isTamed()) {
+            if (mimicCooldown == 0) {
                 this.setMimicState(readState);
                 mimicCooldown = 20;
                 stopMimicCooldown = 1000;
@@ -149,11 +198,13 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_DOLPHIN_EAT, this.getSoundVolume(), this.getSoundPitch());
             fishFeedings++;
-            if (fishFeedings > 5 && getRNG().nextInt(2) == 0 || fishFeedings > 8) {
-                this.setTamedBy(player);
-                this.world.setEntityState(this, (byte) 7);
-            } else {
-                this.world.setEntityState(this, (byte) 6);
+            if (this.getMimicState() == MimicState.OVERLAY && this.getMimickedBlock() == null) {
+                if (fishFeedings > 5 && getRNG().nextInt(2) == 0 || fishFeedings > 8) {
+                    this.setTamedBy(player);
+                    this.world.setEntityState(this, (byte) 7);
+                } else {
+                    this.world.setEntityState(this, (byte) 6);
+                }
             }
             return ActionResultType.SUCCESS;
         }
@@ -165,6 +216,11 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
                 return ActionResultType.SUCCESS;
             }
             return ActionResultType.PASS;
+        }
+        if (this.isTamed() && item == Items.SLIME_BALL && this.getMoistness() < 24000) {
+            this.setMoistness(48000);
+            this.consumeItemFromStack(player, itemstack);
+            return ActionResultType.SUCCESS;
         }
         if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player)) {
             if (player.isSneaking()) {
@@ -206,7 +262,6 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         this.dataManager.set(COMMAND, Integer.valueOf(command));
     }
 
-
     @Override
     public void func_233629_a_(LivingEntity p_233629_1_, boolean p_233629_2_) {
         p_233629_1_.prevLimbSwingAmount = p_233629_1_.limbSwingAmount;
@@ -240,6 +295,14 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
 
     public void tick() {
         super.tick();
+        if (localMimic != this.getPrevMimickedBlock()) {
+            localMimic = this.getPrevMimickedBlock();
+            colorShiftProgress = 0.0F;
+        }
+        if (localMimicState != this.getPrevMimicState()) {
+            localMimicState = this.getPrevMimicState();
+            transProgress = 0.0F;
+        }
         if (this.isInWater() && this.isLandNavigator) {
             switchNavigator(false);
         }
@@ -252,16 +315,16 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         this.prevColorShiftProgress = colorShiftProgress;
         this.prevGroundProgress = groundProgress;
         this.prevSitProgress = sitProgress;
-        if (prevMimicState != this.getMimicState() && transProgress < 5.0F) {
+        if (this.getPrevMimicState() != this.getMimicState() && transProgress < 5.0F) {
             transProgress += 0.25F;
         }
-        if (prevMimicState == this.getMimicState() && transProgress > 0F) {
+        if (this.getPrevMimicState() == this.getMimicState() && transProgress > 0F) {
             transProgress -= 0.25F;
         }
-        if (prevMimickedBlock != this.getMimickedBlock() && colorShiftProgress < 5.0F) {
+        if (getPrevMimickedBlock() != this.getMimickedBlock() && colorShiftProgress < 5.0F) {
             colorShiftProgress += 0.25F;
         }
-        if (prevMimickedBlock == this.getMimickedBlock() && colorShiftProgress > 0F) {
+        if (getPrevMimickedBlock() == this.getMimickedBlock() && colorShiftProgress > 0F) {
             colorShiftProgress -= 0.25F;
         }
         if (ground && groundProgress < 5F) {
@@ -280,13 +343,13 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
             float f2 = (float) -((float) this.getMotion().y * 3 * (double) (180F / (float) Math.PI));
             this.rotationPitch = f2;
         }
-        if(idleMimicCooldown > 0){
+        if (idleMimicCooldown > 0) {
             idleMimicCooldown--;
         }
-        if(mimicCooldown > 0){
+        if (mimicCooldown > 0) {
             mimicCooldown--;
         }
-        if(stopMimicCooldown > 0){
+        if (stopMimicCooldown > 0) {
             stopMimicCooldown--;
         }
         if (this.isAIDisabled()) {
@@ -303,18 +366,49 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
                 }
             }
         }
-        if(idleMimicCooldown <= 0 && stopMimicCooldown == 0){
+        if (idleMimicCooldown <= 0 && stopMimicCooldown == 0) {
             mimicEnvironment();
             idleMimicCooldown = this.getRNG().nextInt(2200) + 200;
         }
-        if((this.getMimicState() != MimicState.OVERLAY || this.getMimickedBlock() != null) && stopMimicCooldown == 0){
+        if ((this.getMimicState() != MimicState.OVERLAY || this.getMimickedBlock() != null) && stopMimicCooldown == 0) {
             this.setMimickedBlock(null);
             this.setMimicState(MimicState.OVERLAY);
             stopMimicCooldown = -1;
         }
+        if(world.isRemote && exclaimTime > 0){
+            exclaimTime--;
+            if(exclaimTime == 0){
+                Entity e = world.getEntityByID(this.dataManager.get(LAST_SCARED_MOB_ID));
+                if (e != null && transProgress >= 5.0F) {
+                    double d2 = this.rand.nextGaussian() * 0.1D;
+                    double d0 = this.rand.nextGaussian() * 0.1D;
+                    double d1 = this.rand.nextGaussian() * 0.1D;
+                    this.world.addParticle(AMParticleRegistry.SHOCKED, e.getPosX(), e.getPosYEye() + e.getHeight() * 0.15F + (double) (this.rand.nextFloat() * e.getHeight() * 0.15F), e.getPosZ(), d0, d1, d2);
+                }
+            }
+        }
+    /* if(!world.isRemote){
+            if(ticksExisted % 80 == 0){
+                this.mimicEnvironment();
+            }else if(ticksExisted % 40 == 0){
+                this.setMimicState(MimicState.PUFFERFISH);
+                this.setMimickedBlock(null);
+            }
+        }*/
     }
 
-    public void mimicEnvironment(){
+    @OnlyIn(Dist.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if (id == 68) {
+            if(exclaimTime == 0){
+                exclaimTime = 20;
+            }
+        } else {
+            super.handleStatusUpdate(id);
+        }
+    }
+
+    public void mimicEnvironment() {
         BlockPos down = getPositionDown();
         if (!world.isAirBlock(down)) {
             this.setMimicState(MimicState.OVERLAY);
@@ -357,13 +451,28 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         }
     }
 
-
     public boolean isSitting() {
         return this.dataManager.get(SITTING).booleanValue();
     }
 
     public void setSitting(boolean sit) {
         this.dataManager.set(SITTING, Boolean.valueOf(sit));
+    }
+
+    public boolean isFromBucket() {
+        return this.dataManager.get(FROM_BUCKET).booleanValue();
+    }
+
+    public void setFromBucket(boolean sit) {
+        this.dataManager.set(FROM_BUCKET, Boolean.valueOf(sit));
+    }
+
+    public boolean isUpgraded() {
+        return this.dataManager.get(FROM_BUCKET).booleanValue();
+    }
+
+    public void setUpgraded(boolean sit) {
+        this.dataManager.set(FROM_BUCKET, Boolean.valueOf(sit));
     }
 
     @Nullable
@@ -375,10 +484,15 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
     protected void registerData() {
         super.registerData();
         this.dataManager.register(MIMIC_ORDINAL, 0);
+        this.dataManager.register(PREV_MIMIC_ORDINAL, 0);
         this.dataManager.register(MOISTNESS, 60000);
         this.dataManager.register(MIMICKED_BLOCK, Optional.empty());
+        this.dataManager.register(PREV_MIMICKED_BLOCK, Optional.empty());
         this.dataManager.register(SITTING, false);
         this.dataManager.register(COMMAND, 0);
+        this.dataManager.register(LAST_SCARED_MOB_ID, -1);
+        this.dataManager.register(FROM_BUCKET, false);
+        this.dataManager.register(UPGRADED, false);
     }
 
     public MimicState getMimicState() {
@@ -387,11 +501,13 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
 
     public void setMimicState(MimicState state) {
         if (getMimicState() != state) {
-            prevMimicState = getMimicState();
-            prevTransProgress = 0.0F;
-            transProgress = 0.0F;
+            this.dataManager.set(PREV_MIMIC_ORDINAL, this.dataManager.get(MIMIC_ORDINAL));
         }
         this.dataManager.set(MIMIC_ORDINAL, state.ordinal());
+    }
+
+    public MimicState getPrevMimicState() {
+        return MimicState.values()[dataManager.get(PREV_MIMIC_ORDINAL)];
     }
 
     @Nullable
@@ -400,11 +516,15 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
     }
 
     public void setMimickedBlock(@Nullable BlockState state) {
-        if (getMimickedBlock() != state && colorShiftProgress >= 5.0F) {
-            prevMimickedBlock = getMimickedBlock();
-            colorShiftProgress = 0.0F;
+        if (getMimickedBlock() != state) {
+            this.dataManager.set(PREV_MIMICKED_BLOCK, Optional.ofNullable(getMimickedBlock()));
         }
         this.dataManager.set(MIMICKED_BLOCK, Optional.ofNullable(state));
+    }
+
+    @Nullable
+    public BlockState getPrevMimickedBlock() {
+        return this.dataManager.get(PREV_MIMICKED_BLOCK).orElse(null);
     }
 
     protected void updateAir(int p_209207_1_) {
@@ -421,12 +541,12 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
 
     @Override
     public boolean shouldEnterWater() {
-        return !this.isSitting();
+        return !this.isSitting() && (this.getAttackTarget() == null || this.getAttackTarget().isInWaterOrBubbleColumn());
     }
 
     @Override
     public boolean shouldLeaveWater() {
-        return false;
+        return this.getAttackTarget() != null && !this.getAttackTarget().isInWaterOrBubbleColumn();
     }
 
     @Override
@@ -445,26 +565,6 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         return this.world.rayTraceBlocks(new RayTraceContext(Vector3d, target, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() != RayTraceResult.Type.MISS;
     }
 
-    public static MimicState getStateForItem(ItemStack stack){
-        if(ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_CREEPER_ITEMS).contains(stack.getItem())){
-            return MimicState.CREEPER;
-        }
-        if(ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_GUARDIAN_ITEMS).contains(stack.getItem())){
-            return MimicState.GUARDIAN;
-        }
-        if(ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_PUFFERFISH_ITEMS).contains(stack.getItem())){
-            return MimicState.PUFFERFISH;
-        }
-        return null;
-    }
-
-    public enum MimicState {
-        OVERLAY,
-        CREEPER,
-        GUARDIAN,
-        PUFFERFISH
-    }
-
     public Vector3d getBlockInViewAway(Vector3d fleePos, float radiusAdd) {
         float radius = 0.75F * (0.7F * 6) * -3 - this.getRNG().nextInt(24) - radiusAdd;
         float neg = this.getRNG().nextBoolean() ? 1 : -1;
@@ -474,16 +574,11 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, 0, fleePos.getZ() + extraZ);
         BlockPos ground = getOctopusGround(radialPos);
-        int distFromGround = (int) this.getPosY() - ground.getY();
-        int flightHeight = 3 + this.getRNG().nextInt(5);
-        BlockPos newPos = ground.up(distFromGround > 6 ? flightHeight : (int)this.getRNG().nextInt(6) + 1);
-        if (!this.isTargetBlocked(Vector3d.copyCentered(newPos)) && this.getDistanceSq(Vector3d.copyCentered(newPos)) > 1 && world.getFluidState(newPos).isTagged(FluidTags.WATER)) {
-            return Vector3d.copyCentered(newPos);
-        }
-        return null;
+
+        return ground != null ? Vector3d.copyCentered(ground) : null;
     }
 
-    private BlockPos getOctopusGround(BlockPos in){
+    private BlockPos getOctopusGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), this.getPosY(), in.getZ());
         while (position.getY() > 2 && world.getFluidState(position).isTagged(FluidTags.WATER)) {
             position = position.down();
@@ -491,6 +586,12 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         return position;
     }
 
+    public enum MimicState {
+        OVERLAY,
+        CREEPER,
+        GUARDIAN,
+        PUFFERFISH
+    }
 
     private class AISwim extends SemiAquaticAIRandomSwimming {
 
@@ -516,7 +617,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
     }
 
     private class AIFlee extends Goal {
-        protected final AIFlee.Sorter theNearestAttackableTargetSorter;
+        protected final EntitySorter theNearestAttackableTargetSorter;
         protected final Predicate<? super Entity> targetEntitySelector;
         protected int executionChance = 8;
         protected boolean mustUpdate;
@@ -528,7 +629,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
         AIFlee() {
             this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
             tag = EntityTypeTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_FEARS);
-            this.theNearestAttackableTargetSorter = new AIFlee.Sorter(EntityMimicOctopus.this);
+            this.theNearestAttackableTargetSorter = new EntitySorter(EntityMimicOctopus.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
@@ -579,7 +680,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
             if (cooldown > 0) {
                 cooldown--;
             }
-            if(!EntityMimicOctopus.this.isActiveCamo()){
+            if (!EntityMimicOctopus.this.isActiveCamo()) {
                 EntityMimicOctopus.this.mimicEnvironment();
             }
             if (flightTarget != null) {
@@ -610,22 +711,22 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
 
         protected AxisAlignedBB getTargetableArea(double targetDistance) {
             Vector3d renderCenter = new Vector3d(EntityMimicOctopus.this.getPosX(), EntityMimicOctopus.this.getPosY() + 0.5, EntityMimicOctopus.this.getPosZ());
-            AxisAlignedBB aabb = new AxisAlignedBB(-getTargetDistance(), -getTargetDistance(), -getTargetDistance(), getTargetDistance(), getTargetDistance(), getTargetDistance());
+            AxisAlignedBB aabb = new AxisAlignedBB(-targetDistance, -targetDistance, -targetDistance, targetDistance, targetDistance, targetDistance);
             return aabb.offset(renderCenter);
         }
+    }
 
-        public class Sorter implements Comparator<Entity> {
-            private final Entity theEntity;
+    public class EntitySorter implements Comparator<Entity> {
+        private final Entity theEntity;
 
-            public Sorter(Entity theEntityIn) {
-                this.theEntity = theEntityIn;
-            }
+        public EntitySorter(Entity theEntityIn) {
+            this.theEntity = theEntityIn;
+        }
 
-            public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-                double d0 = this.theEntity.getDistanceSq(p_compare_1_);
-                double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-                return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
-            }
+        public int compare(Entity p_compare_1_, Entity p_compare_2_) {
+            double d0 = this.theEntity.getDistanceSq(p_compare_1_);
+            double d1 = this.theEntity.getDistanceSq(p_compare_2_);
+            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
         }
     }
 
@@ -755,6 +856,204 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic,I
 
         private int getRandomNumber(int p_226327_1_, int p_226327_2_) {
             return this.tameable.getRNG().nextInt(p_226327_2_ - p_226327_1_ + 1) + p_226327_1_;
+        }
+    }
+
+    private class AIMimicNearbyMobs extends Goal {
+        protected final EntitySorter theNearestAttackableTargetSorter;
+        protected final Predicate<? super Entity> targetEntitySelector;
+        protected int executionChance = 30;
+        protected boolean mustUpdate;
+        private Entity targetEntity;
+        private Vector3d flightTarget = null;
+        private int cooldown = 0;
+
+        AIMimicNearbyMobs() {
+            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+            this.theNearestAttackableTargetSorter = new EntitySorter(EntityMimicOctopus.this);
+            this.targetEntitySelector = new Predicate<Entity>() {
+                @Override
+                public boolean apply(@Nullable Entity e) {
+                    return e.isAlive() && (e instanceof CreeperEntity || e instanceof GuardianEntity || e instanceof PufferfishEntity);
+                }
+            };
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            if (EntityMimicOctopus.this.isPassenger() || EntityMimicOctopus.this.isBeingRidden() || EntityMimicOctopus.this.getMimicState() != MimicState.OVERLAY || mimicCooldown > 0) {
+                return false;
+            }
+            if (!this.mustUpdate) {
+                long worldTime = EntityMimicOctopus.this.world.getGameTime() % 10;
+                if (EntityMimicOctopus.this.getIdleTime() >= 100 && worldTime != 0) {
+                    return false;
+                }
+                if (EntityMimicOctopus.this.getRNG().nextInt(this.executionChance) != 0 && worldTime != 0) {
+                    return false;
+                }
+            }
+            List<Entity> list = EntityMimicOctopus.this.world.getEntitiesWithinAABB(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            if (list.isEmpty()) {
+                return false;
+            } else {
+                Collections.sort(list, this.theNearestAttackableTargetSorter);
+                this.targetEntity = list.get(0);
+                this.mustUpdate = false;
+                return true;
+            }
+        }
+
+        @Override
+        public boolean shouldContinueExecuting() {
+            return targetEntity != null && EntityMimicOctopus.this.getDistance(targetEntity) < 10 && EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY;
+        }
+
+        public void resetTask() {
+            EntityMimicOctopus.this.getNavigator().clearPath();
+            flightTarget = null;
+            this.targetEntity = null;
+        }
+
+        @Override
+        public void tick() {
+            if (cooldown > 0) {
+                cooldown--;
+            }
+            if (targetEntity != null) {
+                EntityMimicOctopus.this.getNavigator().tryMoveToEntityLiving(targetEntity, 1.2F);
+                if (EntityMimicOctopus.this.getDistance(targetEntity) > 20.0F) {
+                    this.resetTask();
+                    EntityMimicOctopus.this.setMimicState(MimicState.OVERLAY);
+                    EntityMimicOctopus.this.setMimickedBlock(null);
+                } else if (EntityMimicOctopus.this.getDistance(targetEntity) < 5.0F && EntityMimicOctopus.this.canEntityBeSeen(targetEntity)) {
+                    int i = 1200;
+                    EntityMimicOctopus.this.stopMimicCooldown = i;
+                    EntityMimicOctopus.this.idleMimicCooldown = i + 40;
+                    EntityMimicOctopus.this.mimicCooldown = 40;
+                    if (targetEntity instanceof CreeperEntity) {
+                        EntityMimicOctopus.this.setMimicState(MimicState.CREEPER);
+                    } else if (targetEntity instanceof GuardianEntity) {
+                        EntityMimicOctopus.this.setMimicState(MimicState.GUARDIAN);
+                    } else if (targetEntity instanceof PufferfishEntity) {
+                        EntityMimicOctopus.this.setMimicState(MimicState.PUFFERFISH);
+                    } else {
+                        EntityMimicOctopus.this.setMimicState(MimicState.OVERLAY);
+                        EntityMimicOctopus.this.setMimickedBlock(null);
+                    }
+                    resetTask();
+                }
+
+            }
+        }
+
+        protected double getTargetDistance() {
+            return 10;
+        }
+
+        protected AxisAlignedBB getTargetableArea(double targetDistance) {
+            Vector3d renderCenter = new Vector3d(EntityMimicOctopus.this.getPosX(), EntityMimicOctopus.this.getPosY() + 0.5, EntityMimicOctopus.this.getPosZ());
+            AxisAlignedBB aabb = new AxisAlignedBB(-targetDistance, -targetDistance, -targetDistance, targetDistance, targetDistance, targetDistance);
+            return aabb.offset(renderCenter);
+        }
+    }
+
+    private class AIAttack extends Goal {
+        private int executionCooldown = 0;
+        private int scareMobTime = 0;
+        private Vector3d fleePosition = null;
+        public AIAttack() {
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            if(executionCooldown > 0){
+                executionCooldown--;
+            }
+            return executionCooldown == 0 && EntityMimicOctopus.this.isTamed() && EntityMimicOctopus.this.getAttackTarget() != null && EntityMimicOctopus.this.getAttackTarget().isAlive();
+        }
+
+        public void resetTask(){
+            fleePosition = null;
+            scareMobTime = 0;
+            executionCooldown = 100 + rand.nextInt(200);
+            EntityMimicOctopus.this.mimicEnvironment();
+
+        }
+
+        public Vector3d generateFleePosition(LivingEntity fleer){
+            for(int i = 0; i < 15; i++){
+                BlockPos pos = fleer.getPosition().add(rand.nextInt(32) - 16, rand.nextInt(16), rand.nextInt(32) - 16);
+                while (fleer.world.isAirBlock(pos) && pos.getY() > 1){
+                    pos = pos.down();
+                }
+                if(fleer instanceof CreatureEntity){
+                    if(((CreatureEntity) fleer).getBlockPathWeight(pos) >= 0.0F){
+                        return Vector3d.copyCentered(pos);
+                    }
+                }else{
+                    return Vector3d.copyCentered(pos);
+                }
+            }
+            return null;
+        }
+        public void tick(){
+            LivingEntity target = EntityMimicOctopus.this.getAttackTarget();
+            if(target != null){
+                if(scareMobTime > 0){
+                    if(fleePosition == null || target.getDistanceSq(fleePosition) < target.getWidth() * target.getWidth() * 2){
+                        fleePosition = generateFleePosition(target);
+                    }
+                    if(target instanceof MobEntity){
+                        if(fleePosition != null){
+                            ((MobEntity)target).getNavigator().tryMoveToXYZ(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
+                            ((MobEntity)target).getMoveHelper().setMoveTo(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
+                        }
+                    }else{
+
+                    }
+                    scareMobTime--;
+                    if(scareMobTime == 0){
+                        resetTask();
+                        return;
+                    }
+                }
+                double dist = EntityMimicOctopus.this.getDistance(target);
+                boolean move = true;
+                if(dist < 3F){
+                    EntityMimicOctopus.this.dataManager.set(LAST_SCARED_MOB_ID, target.getEntityId());
+                    if(EntityMimicOctopus.this.isUpgraded()){
+
+                    }else{
+                        move = false;
+                        EntityMimicOctopus.this.getNavigator().clearPath();
+                        if(EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY && EntityMimicOctopus.this.mimicCooldown <= 0){
+                            EntityMimicOctopus.this.setMimickedBlock(null);
+                            if(EntityMimicOctopus.this.isInWaterOrBubbleColumn()){
+                                if(rand.nextBoolean()){
+                                    EntityMimicOctopus.this.setMimicState(MimicState.GUARDIAN);
+                                }else{
+                                    EntityMimicOctopus.this.setMimicState(MimicState.PUFFERFISH);
+                                }
+                            }else{
+                                EntityMimicOctopus.this.setMimicState(MimicState.CREEPER);
+                            }
+                        }
+                        if(EntityMimicOctopus.this.getMimicState() != MimicState.OVERLAY){
+                            EntityMimicOctopus.this.world.setEntityState(EntityMimicOctopus.this, (byte) 68);
+                            EntityMimicOctopus.this.mimicCooldown = 40;
+                            EntityMimicOctopus.this.stopMimicCooldown = 60;
+                        }
+                        if(scareMobTime == 0){
+                            scareMobTime = 60 + rand.nextInt(60);
+                        }
+                    }
+                }
+                if(move){
+                    EntityMimicOctopus.this.faceEntity(target, 30, 30);
+                    EntityMimicOctopus.this.getNavigator().tryMoveToEntityLiving(target, 1.2F);
+                }
+            }
         }
     }
 }
