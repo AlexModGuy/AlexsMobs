@@ -9,6 +9,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -29,6 +30,7 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -292,7 +294,8 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
     }
 
     public static <T extends MobEntity> boolean canLobsterSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.LOBSTER_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
-        return spawnBlock || worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
+        ITag<Block> tag = BlockTags.getCollection().get(AMTagRegistry.LOBSTER_SPAWNS);
+        boolean spawnBlock = tag != null && tag.contains(worldIn.getBlockState(pos.down()).getBlock());
+        return tag == null || spawnBlock || worldIn.getFluidState(pos).isTagged(FluidTags.WATER);
     }
 }
