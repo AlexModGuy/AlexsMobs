@@ -208,6 +208,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         prevWormAngle = this.getWormAngle();
         prevWormYaw = this.dataManager.get(WORM_YAW);
         this.setMotion(Vector3d.ZERO);
+        radius = 1.0F + (this.getWormScale() * (this.isTail() ? 0.65F : 0.3F)) + (this.getBodyIndex() == 0 ? 0.8F : 0);
         if (this.ticksExisted > 3) {
             Entity parent = getParent();
             recalculateSize();
