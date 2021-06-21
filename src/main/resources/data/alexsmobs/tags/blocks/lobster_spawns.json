@@ -3,7 +3,7 @@
   "values": [
     "#minecraft:sand",
     "#forge:gravel",
-    "#forge:stone",
+    "minecraft:stone",
     "minecraft:water"
   ]
 }
