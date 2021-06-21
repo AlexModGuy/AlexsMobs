@@ -7,7 +7,9 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -33,6 +35,7 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -71,8 +74,9 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
 
 
     public static boolean canPlatypusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.PLATYPUS_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
-        return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
+        ITag<Block> tag = BlockTags.getCollection().get(AMTagRegistry.PLATYPUS_SPAWNS);
+        boolean spawnBlock = tag != null && tag.contains(worldIn.getBlockState(pos.down()).getBlock());
+        return (tag == null && worldIn.getBlockState(pos.down()).getBlock() == Blocks.DIRT || spawnBlock) && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
