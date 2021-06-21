@@ -4,7 +4,7 @@
 <NEWLINE>
 The Alligator Snapping Turtle is a massive, semi-aquatic reptile found in swamps throughout the overworld.
 Unlike its passive Sea Turtle cousins, the Alligator Snapping Turtle is a fiesty beast that attacks anything
-that steps near its sharp, beaked mouth. Able to bite and move suprisingly fast for a turtle, it is best to
+that steps near its sharp, beaked mouth. Able to bite and move surprisingly fast for a turtle, it is best to
  leave these creatures alone when encountered. Alligator Snapping Turtles rarely move, and it is common for
  moss growth to build up on their shells over several days underwater.
 <NEWLINE>
