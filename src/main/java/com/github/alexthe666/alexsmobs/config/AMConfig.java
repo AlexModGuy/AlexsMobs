@@ -107,6 +107,10 @@ public class AMConfig {
     public static int tarantulaHawkSpawnRolls = 1;
     public static int voidWormSpawnWeight = 0;
     public static int voidWormSpawnRolls = 0;
+    public static int frilledSharkSpawnWeight = 11;
+    public static int frilledSharkSpawnRolls = 0;
+    public static int mimicOctopusSpawnWeight = 9;
+    public static int mimicOctopusSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -151,6 +155,7 @@ public class AMConfig {
     public static double leafcutterAnthillSpawnChance = 0.005F;
     public static boolean falconryTeleportsBack = false;
     public static boolean fireproofTarantulaHawk = false;
+    public static boolean voidWormSummonable = true;
     public static List<? extends String> voidWormSpawnDimensions = Lists.newArrayList("minecraft:the_end");
     public static double voidWormDamageModifier = 1.0F;
     public static double voidWormMaxHealth = 160D;
@@ -260,6 +265,10 @@ public class AMConfig {
             tarantulaHawkSpawnRolls = ConfigHolder.COMMON.tarantulaHawkSpawnRolls.get();
             voidWormSpawnWeight = ConfigHolder.COMMON.voidWormSpawnWeight.get();
             voidWormSpawnRolls = ConfigHolder.COMMON.voidWormSpawnRolls.get();
+            frilledSharkSpawnWeight = ConfigHolder.COMMON.frilledSharkSpawnWeight.get();
+            frilledSharkSpawnRolls = ConfigHolder.COMMON.frilledSharkSpawnRolls.get();
+            mimicOctopusSpawnWeight = ConfigHolder.COMMON.mimicOctopusSpawnWeight.get();
+            mimicOctopusSpawnRolls = ConfigHolder.COMMON.mimicOctopusSpawnRolls.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
@@ -294,6 +303,7 @@ public class AMConfig {
             leafcutterAnthillSpawnChance = ConfigHolder.COMMON.leafcutterAnthillSpawnChance.get();
             falconryTeleportsBack = ConfigHolder.COMMON.falconryTeleportsBack.get();
             fireproofTarantulaHawk = ConfigHolder.COMMON.fireproofTarantulaHawk.get();
+            voidWormSummonable = ConfigHolder.COMMON.voidWormSummonable.get();
             voidWormSpawnDimensions = (List<? extends String>) ConfigHolder.COMMON.voidWormSpawnDimensions.get();
             voidWormDamageModifier = ConfigHolder.COMMON.voidWormDamageModifier.get();
             voidWormMaxHealth = ConfigHolder.COMMON.voidWormMaxHealth.get();

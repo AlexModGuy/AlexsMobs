@@ -345,6 +345,27 @@
       "x": 290,
       "y": 160,
       "page": 3
+    },
+    {
+      "linked_page": "void_worm.json",
+      "text": "Void Worm",
+      "x": 90,
+      "y": 10,
+      "page": 4
+    },
+    {
+      "linked_page": "frilled_shark.json",
+      "text": "Frilled Shark",
+      "x": 90,
+      "y": 35,
+      "page": 4
+    },
+    {
+      "linked_page": "mimic_octopus.json",
+      "text": "Mimic Octopus",
+      "x": 90,
+      "y": 60,
+      "page": 4
     }
   ],
   "images": [

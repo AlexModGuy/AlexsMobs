@@ -510,9 +510,9 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onEntityLeaveWorld(EntityLeaveWorldEvent event){
-        if(event.getEntity() instanceof ItemEntity && ((ItemEntity) event.getEntity()).getItem().getItem() == AMItemRegistry.MYSTERIOUS_WORM){
-            System.out.println(event.getEntity().getPosY());
-            if(event.getEntity().getPosY() < -10){
+        if(event.getEntity() instanceof ItemEntity && ((ItemEntity) event.getEntity()).getItem().getItem() == AMItemRegistry.MYSTERIOUS_WORM && AMConfig.voidWormSummonable){
+            String dim = event.getEntity().world.getDimensionKey().getLocation().toString();
+            if(AMConfig.voidWormSpawnDimensions.contains(dim) && event.getEntity().getPosY() < -10){
                 EntityVoidWorm worm = AMEntityRegistry.VOID_WORM.create(event.getWorld());
                 worm.setPosition(event.getEntity().getPosX(), 0, event.getEntity().getPosZ());
                 worm.setSegmentCount(25 + new Random().nextInt(15));

@@ -34,7 +34,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> moose = Pair.of("alexsmobs:moose_spawns", DefaultBiomes.MOOSE);
 	public static Pair<String, SpawnBiomeData> mimicube = Pair.of("alexsmobs:mimicube_spawns", DefaultBiomes.MIMICUBE);
 	public static Pair<String, SpawnBiomeData> raccoon = Pair.of("alexsmobs:raccoon_spawns", DefaultBiomes.RACCOON);
-	public static Pair<String, SpawnBiomeData> blobfish = Pair.of("alexsmobs:blobfish_spawns", DefaultBiomes.BLOBFISH);
+	public static Pair<String, SpawnBiomeData> blobfish = Pair.of("alexsmobs:blobfish_spawns", DefaultBiomes.DEEP_SEA);
 	public static Pair<String, SpawnBiomeData> seal = Pair.of("alexsmobs:seal_spawns", DefaultBiomes.SEAL);
 	public static Pair<String, SpawnBiomeData> cockroach = Pair.of("alexsmobs:cockroach_spawns", DefaultBiomes.COCKROACH);
 	public static Pair<String, SpawnBiomeData> shoebill = Pair.of("alexsmobs:shoebill_spawns", DefaultBiomes.SHOEBILL);
@@ -63,6 +63,8 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> tiger = Pair.of("alexsmobs:tiger_spawns", DefaultBiomes.TIGER);
 	public static Pair<String, SpawnBiomeData> tarantula_hawk = Pair.of("alexsmobs:tarantula_hawk_spawns", DefaultBiomes.TARANTULA_HAWK);
 	public static Pair<String, SpawnBiomeData> void_worm = Pair.of("alexsmobs:void_worm_spawns", DefaultBiomes.EMPTY);
+	public static Pair<String, SpawnBiomeData> frilled_shark = Pair.of("alexsmobs:frilled_shark_spawns", DefaultBiomes.DEEP_SEA);
+	public static Pair<String, SpawnBiomeData> mimic_octopus = Pair.of("alexsmobs:mimic_octopus_spawns", DefaultBiomes.MIMIC_OCTOPUS);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

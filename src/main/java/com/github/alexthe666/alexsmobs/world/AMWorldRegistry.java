@@ -182,5 +182,11 @@ public class AMWorldRegistry {
         if (BiomeConfig.test(BiomeConfig.void_worm, biome) && AMConfig.voidWormSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.MONSTER).add(new MobSpawnInfo.Spawners(AMEntityRegistry.VOID_WORM, AMConfig.voidWormSpawnWeight, 1, 1));
         }
+        if (BiomeConfig.test(BiomeConfig.frilled_shark, biome) && AMConfig.frilledSharkSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.FRILLED_SHARK, AMConfig.frilledSharkSpawnWeight, 1, 1));
+        }
+        if (BiomeConfig.test(BiomeConfig.mimic_octopus, biome) && AMConfig.mimicOctopusSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.MIMIC_OCTOPUS, AMConfig.mimicOctopusSpawnWeight, 1, 2));
+        }
     }
 }

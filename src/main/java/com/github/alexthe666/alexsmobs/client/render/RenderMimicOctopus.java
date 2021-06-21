@@ -112,9 +112,9 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
 
     }
 
-    protected void preRenderCallback(EntityMimicOctopus entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void preRenderCallback(EntityMimicOctopus octo, MatrixStack matrixStackIn, float partialTickTime) {
         matrixStackIn.translate(0, -0.02F, 0);
-        matrixStackIn.scale(0.9F, 0.9F, 0.9F);
+        matrixStackIn.scale(0.9F * octo.getRenderScale(), 0.9F * octo.getRenderScale(), 0.9F * octo.getRenderScale());
     }
 
     public boolean shouldRender(EntityMimicOctopus livingEntityIn, ClippingHelper camera, double camX, double camY, double camZ) {

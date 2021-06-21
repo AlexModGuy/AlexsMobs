@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -19,6 +20,7 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.fish.PufferfishEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,15 +40,13 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -102,6 +102,19 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
+    public static boolean canMimicOctopusSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+        BlockPos downPos = pos;
+        while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
+            downPos = downPos.down();
+        }
+        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_SPAWNS).contains(worldIn.getBlockState(downPos).getBlock());
+        return spawnBlock && downPos.getY() < worldIn.getSeaLevel() + 1;
+    }
+
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return worldIn.checkNoEntityCollision(this);
+    }
+
     public static MimicState getStateForItem(ItemStack stack) {
         if (ItemTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_CREEPER_ITEMS).contains(stack.getItem())) {
             return MimicState.CREEPER;
@@ -113,6 +126,10 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             return MimicState.PUFFERFISH;
         }
         return null;
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.mimicOctopusSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     public void readAdditional(CompoundNBT compound) {
@@ -205,7 +222,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         this.goalSelector.addGoal(2, new FollowOwner(this, 1.3D, 4.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL), false) {
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL, Items.TROPICAL_FISH), false) {
             @Override
             public void tick() {
                 EntityMimicOctopus.this.setMimickedBlock(null);
@@ -215,11 +232,12 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             }
         });
         this.goalSelector.addGoal(5, new AIFlee());
-        this.goalSelector.addGoal(6, new AIMimicNearbyMobs());
         this.goalSelector.addGoal(7, new BreedGoal(this, 0.8D));
-        this.goalSelector.addGoal(8, new AISwim());
-        this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(8, new AIMimicNearbyMobs());
+        this.goalSelector.addGoal(9, new BreedGoal(this, 0.8D));
+        this.goalSelector.addGoal(10, new AISwim());
+        this.goalSelector.addGoal(11, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(11, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this) {
@@ -228,6 +246,11 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 return EntityMimicOctopus.this.isTamed() && super.shouldExecute();
             }
         });
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        Item item = stack.getItem();
+        return isTamed() && (item == Items.TROPICAL_FISH);
     }
 
     public boolean isActiveCamo() {
@@ -259,9 +282,9 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         }
         if (isTamed() && (item == Items.INK_SAC)) {
             this.setStopChange(!this.isStopChange());
-            if(this.isStopChange()){
+            if (this.isStopChange()) {
                 this.makeEatingParticles(itemstack);
-            }else{
+            } else {
                 this.world.setEntityState(this, (byte) 6);
                 this.mimicEnvironment();
             }
@@ -315,7 +338,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         }
         if (this.isTamed() && !this.isUpgraded() && item == AMItemRegistry.MIMICREAM) {
             mimicreamFeedings++;
-            if (mimicreamFeedings > 15 || mimicreamFeedings > 10 && rand.nextInt(2) == 0) {
+            if (mimicreamFeedings > 5 || mimicreamFeedings > 2 && rand.nextInt(2) == 0) {
                 this.world.setEntityState(this, (byte) 46);
                 this.setUpgraded(true);
                 this.setMimicState(MimicState.MIMICUBE);
@@ -530,7 +553,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 }
             }
         }
-        if(!world.isRemote && ticksExisted % 40 == 0){
+        if (!world.isRemote && ticksExisted % 40 == 0) {
             this.heal(2);
         }
     /* if(!world.isRemote){
@@ -561,7 +584,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     }
 
     public void mimicEnvironment() {
-        if(!this.isStopChange()){
+        if (!this.isStopChange()) {
             BlockPos down = getPositionDown();
             if (!world.isAirBlock(down)) {
                 this.setMimicState(MimicState.OVERLAY);
@@ -665,13 +688,17 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     @Nullable
     @Override
     public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return null;
+        return AMEntityRegistry.MIMIC_OCTOPUS.create(serverWorld);
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !this.isTamed() && !this.isFromBucket();
     }
 
     protected void registerData() {
         super.registerData();
         this.dataManager.register(MIMIC_ORDINAL, 0);
-        this.dataManager.register(PREV_MIMIC_ORDINAL, 0);
+        this.dataManager.register(PREV_MIMIC_ORDINAL, -1);
         this.dataManager.register(MOISTNESS, 60000);
         this.dataManager.register(MIMICKED_BLOCK, Optional.empty());
         this.dataManager.register(PREV_MIMICKED_BLOCK, Optional.empty());
@@ -696,6 +723,9 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     }
 
     public MimicState getPrevMimicState() {
+        if (dataManager.get(PREV_MIMIC_ORDINAL) == -1) {
+            return null;
+        }
         return MimicState.values()[MathHelper.clamp(dataManager.get(PREV_MIMIC_ORDINAL), 0, 4)];
     }
 
@@ -1178,7 +1208,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, -1);
                 executionCooldown--;
             }
-            if(EntityMimicOctopus.this.isStopChange() && EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY){
+            if (EntityMimicOctopus.this.isStopChange() && EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY) {
                 return false;
             }
             return executionCooldown == 0 && EntityMimicOctopus.this.isTamed() && EntityMimicOctopus.this.getAttackTarget() != null && EntityMimicOctopus.this.getAttackTarget().isAlive();
@@ -1190,7 +1220,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             executionCooldown = 100 + rand.nextInt(200);
             if (EntityMimicOctopus.this.isUpgraded()) {
                 executionCooldown = 30;
-            }else{
+            } else {
                 EntityMimicOctopus.this.setRevengeTarget(null);
                 EntityMimicOctopus.this.setAttackTarget(null);
             }
@@ -1254,8 +1284,8 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                     if (!EntityMimicOctopus.this.isStopChange()) {
                         EntityMimicOctopus.this.setMimickedBlock(null);
                         MimicState prev = EntityMimicOctopus.this.getMimicState();
-                        if (EntityMimicOctopus.this.isInWaterOrBubbleColumn() ) {
-                            if(prev != MimicState.GUARDIAN && prev != MimicState.PUFFERFISH){
+                        if (EntityMimicOctopus.this.isInWaterOrBubbleColumn()) {
+                            if (prev != MimicState.GUARDIAN && prev != MimicState.PUFFERFISH) {
                                 if (rand.nextBoolean()) {
                                     EntityMimicOctopus.this.setMimicState(MimicState.GUARDIAN);
                                 } else {

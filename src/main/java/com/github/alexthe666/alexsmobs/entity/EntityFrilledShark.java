@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
@@ -11,10 +12,8 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
@@ -40,11 +39,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Random;
 
 public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntity {
 
@@ -80,8 +81,17 @@ public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntit
         this.goalSelector.addGoal(6, new FollowBoatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, SquidEntity.class, 40, false, true, null));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EntityMimicOctopus.class, 70, false, true, null));
         this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractGroupFishEntity.class, 100, false, true, null));
         this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, DrownedEntity.class, 4, false, true, null));
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.frilledSharkSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    public static boolean canFrilledSharkSpawn(EntityType<EntityFrilledShark> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
+        return reason == SpawnReason.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.up()).getMaterial() == Material.WATER;
     }
 
     private boolean isFromBucket() {
@@ -102,6 +112,26 @@ public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntit
         super.readAdditional(compound);
         this.setFromBucket(compound.getBoolean("FromBucket"));
         this.setDepressurized(compound.getBoolean("Depressurized"));
+    }
+
+    private void doInitialPosing(IWorld world) {
+        BlockPos down = this.getPosition();
+        while(!world.getFluidState(down).isEmpty() && down.getY() > 1){
+            down = down.down();
+        }
+        this.setPosition(down.getX() + 0.5F, down.getY() + 1, down.getZ() + 0.5F);
+    }
+
+    @Nullable
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        if (reason == SpawnReason.NATURAL) {
+            doInitialPosing(worldIn);
+        }
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return worldIn.checkNoEntityCollision(this);
     }
 
     public boolean isDepressurized() {

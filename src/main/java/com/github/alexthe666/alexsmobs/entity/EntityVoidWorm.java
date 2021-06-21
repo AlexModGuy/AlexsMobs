@@ -77,7 +77,7 @@ public class EntityVoidWorm extends MonsterEntity {
 
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.tarantulaHawkSpawnRolls, this.getRNG(), spawnReasonIn);
+        return AMEntityRegistry.rollSpawn(AMConfig.voidWormSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     public static boolean canVoidWormSpawn(EntityType animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {

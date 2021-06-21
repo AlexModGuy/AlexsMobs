@@ -127,7 +127,7 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plains", 1);
 
-    public static final SpawnBiomeData BLOBFISH = new SpawnBiomeData()
+    public static final SpawnBiomeData DEEP_SEA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_ocean", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_lukewarm_ocean", 1)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_cold_ocean", 2)
@@ -263,4 +263,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
 
+    public static final SpawnBiomeData MIMIC_OCTOPUS = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:deep_warm_ocean", 0);
 }
