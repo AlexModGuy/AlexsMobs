@@ -159,7 +159,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 120, false, true, AMEntityRegistry.buildPredicateFromTagTameable(EntityTypeTags.getCollection().get(AMTagRegistry.MANTIS_SHRIMP_TARGETS), this)) {
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 120, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.MANTIS_SHRIMP_TARGETS))) {
             public boolean shouldExecute() {
                 return EntityMantisShrimp.this.getCommand() != 3 && !EntityMantisShrimp.this.isSitting() && super.shouldExecute();
             }
