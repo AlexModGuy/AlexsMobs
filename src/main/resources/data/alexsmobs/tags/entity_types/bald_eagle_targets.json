@@ -3,6 +3,8 @@
   "replace": false,
   "values": [
     "minecraft:rabbit",
-    "minecraft:salmon"
+    "minecraft:salmon",
+    "alexsmobs:raccoon",
+    "rats:rat"
   ]
 }

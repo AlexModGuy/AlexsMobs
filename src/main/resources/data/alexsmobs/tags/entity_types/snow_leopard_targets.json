@@ -2,16 +2,19 @@
   "__comment": "all non-player targets of the snow leopard mob.",
   "replace": false,
   "values": [
-    "minecraft:sheep",
-    "minecraft:pig",
+    "minecraft:cow",
     "minecraft:chicken",
+    "minecraft:donkey",
     "minecraft:horse",
     "minecraft:llama",
-    "minecraft:cow",
+    "minecraft:mule",
     "minecraft:parrot",
+    "minecraft:pig",
     "minecraft:rabbit",
+    "minecraft:sheep",
     "minecraft:trader_llama",
-    "alexsmobs:roadrunner",
-    "alexsmobs:gazelle"
+    "alexsmobs:capuchin_monkey",
+    "alexsmobs:crow",
+    "rats:rat"
   ]
 }
