@@ -234,6 +234,14 @@ public class AMEntityRegistry {
         }
     }
 
+    public static Predicate<LivingEntity> buildPredicateFromTagTameable(ITag entityTag, LivingEntity owner){
+        if(entityTag == null){
+            return Predicates.alwaysFalse();
+        }else{
+            return (com.google.common.base.Predicate<LivingEntity>) e -> e.isAlive() && e.getType().isContained(entityTag) && !owner.isOnSameTeam(e);
+        }
+    }
+
     public static boolean rollSpawn(int rolls, Random random, SpawnReason reason){
         if(reason == SpawnReason.SPAWNER){
             return true;
