@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,10 +29,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
@@ -75,6 +73,21 @@ public class EntityVoidWorm extends MonsterEntity {
         this.moveController = new FlightMoveController(this, 1F, false, true);
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.VOID_WORM_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.VOID_WORM_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.VOID_WORM_HURT;
+    }
+
+    protected float getSoundVolume() {
+        return isSilent() ? 0 : 8;
+    }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.voidWormSpawnRolls, this.getRNG(), spawnReasonIn);
@@ -637,6 +650,10 @@ public class EntityVoidWorm extends MonsterEntity {
     private boolean wormAttack(Entity entity, DamageSource source, float dmg) {
         dmg *= AMConfig.voidWormDamageModifier;
         return entity instanceof EnderDragonEntity ? ((EnderDragonEntity) entity).attackDragonFrom(source, dmg * 0.5F) : entity.attackEntityFrom(source, dmg);
+    }
+
+    public void playHurtSoundWorm(DamageSource source) {
+        this.playHurtSound(source);
     }
 
 

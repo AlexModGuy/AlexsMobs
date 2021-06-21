@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -36,6 +37,8 @@ public class EntityVoidPortal extends Entity {
     private static final DataParameter<Optional<BlockPos>> DESTINATION = EntityDataManager.createKey(EntityVoidPortal.class, DataSerializers.OPTIONAL_BLOCK_POS);
     private static final DataParameter<Optional<UUID>> SISTER_UUID = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     public RegistryKey<World> exitDimension;
+    private boolean madeOpenNoise = false;
+    private boolean madeCloseNoise = false;
     private boolean isDummy = false;
 
     public EntityVoidPortal(EntityType<?> entityTypeIn, World worldIn) {
@@ -53,8 +56,14 @@ public class EntityVoidPortal extends Entity {
 
     public void tick() {
         super.tick();
-        if (this.ticksExisted == 1 && this.getLifespan() == 0) {
-            this.setLifespan(100);
+        if (this.ticksExisted == 1) {
+            if(this.getLifespan() == 0){
+                this.setLifespan(100);
+            }
+        }
+        if(!madeOpenNoise){
+            this.playSound(AMSoundRegistry.VOID_PORTAL_OPEN, 1.0F, 1 + rand.nextFloat() * 0.2F);
+            madeOpenNoise = true;
         }
         Direction direction2 = this.getAttachmentFacing().getOpposite();
         float minX = -0.15F;
@@ -129,6 +138,12 @@ public class EntityVoidPortal extends Entity {
             }
         }
         this.setLifespan(this.getLifespan() - 1);
+        if(this.getLifespan() <= 20){
+            if(!madeCloseNoise){
+                this.playSound(AMSoundRegistry.VOID_PORTAL_CLOSE, 1.0F, 1 + rand.nextFloat() * 0.2F);
+                madeCloseNoise = true;
+            }
+        }
         if (this.getLifespan() <= 0) {
             this.remove();
         }

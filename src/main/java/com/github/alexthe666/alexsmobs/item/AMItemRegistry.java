@@ -115,7 +115,6 @@ public class AMItemRegistry {
     public static final Item GONGYLIDIA = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(3).saturation(1.2F).build())).setRegistryName("alexsmobs:gongylidia");
     public static final Item LEAFCUTTER_ANT_PUPA = new ItemLeafcutterPupa(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:leafcutter_ant_pupa");
     public static final Item ENDERIOPHAGE_ROCKET = new ItemEnderiophageRocket(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:enderiophage_rocket");
-    public static final Item MUSIC_DISC_THIME = new MusicDiscItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
     public static final Item FALCONRY_GLOVE_INVENTORY = new Item(new Item.Properties()).setRegistryName("alexsmobs:falconry_glove_inventory");
     public static final Item FALCONRY_GLOVE_HAND = new Item(new Item.Properties()).setRegistryName("alexsmobs:falconry_glove_hand");
     public static final Item FALCONRY_GLOVE = new ItemFalconryGlove(AlexsMobs.PROXY.setupISTER(new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1))).setRegistryName("alexsmobs:falconry_glove");
@@ -131,6 +130,9 @@ public class AMItemRegistry {
     public static final Item FRILLED_SHARK_BUCKET = new ItemModFishBucket(AMEntityRegistry.FRILLED_SHARK, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:frilled_shark_bucket");
     public static final Item SHIELD_OF_THE_DEEP = new ItemShieldOfTheDeep(AlexsMobs.PROXY.setupISTER(new Item.Properties().maxDamage(400).rarity(Rarity.UNCOMMON).group(AlexsMobs.TAB))).setRegistryName("alexsmobs:shield_of_the_deep");
     public static final Item MIMIC_OCTOPUS_BUCKET = new ItemModFishBucket(AMEntityRegistry.MIMIC_OCTOPUS, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mimic_octopus_bucket");
+
+    public static final Item MUSIC_DISC_THIME = new MusicDiscItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
+    public static final Item MUSIC_DISC_DAZE = new MusicDiscItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().group(AlexsMobs.TAB).maxStackSize(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_daze");
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");

@@ -234,6 +234,20 @@ public class AMSoundRegistry {
 
     public static final SoundEvent MUSIC_WORMBOSS = createSoundEvent("music_wormboss");
 
+    public static final SoundEvent VOID_WORM_IDLE = createSoundEvent("void_worm_idle");
+
+    public static final SoundEvent VOID_WORM_HURT = createSoundEvent("void_worm_hurt");
+
+    public static final SoundEvent VOID_PORTAL_CLOSE = createSoundEvent("void_portal_close");
+
+    public static final SoundEvent VOID_PORTAL_OPEN = createSoundEvent("void_portal_open");
+
+    public static final SoundEvent MIMIC_OCTOPUS_IDLE = createSoundEvent("mimic_octopus_idle");
+
+    public static final SoundEvent MIMIC_OCTOPUS_HURT = createSoundEvent("mimic_octopus_hurt");
+
+    public static final SoundEvent MUSIC_DISC_DAZE = createSoundEvent("music_disc_daze");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

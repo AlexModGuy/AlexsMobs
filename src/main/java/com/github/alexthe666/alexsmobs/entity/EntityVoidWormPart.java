@@ -438,7 +438,14 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        return super.attackEntityFrom(source, damage);
+        if(super.attackEntityFrom(source, damage)){
+            EntityVoidWorm worm = this.getWorm();
+            if(worm != null){
+                worm.playHurtSoundWorm(source);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

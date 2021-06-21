@@ -21,6 +21,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -116,6 +117,20 @@ public class TileEntityCapsid extends LockableTileEntity implements ITickableTil
                         }
                     }
                     this.setInventorySlotContents(0, new ItemStack(AMItemRegistry.MYSTERIOUS_WORM));
+                }
+            }
+            if(this.getStackInSlot(0).getItem().isIn(ItemTags.MUSIC_DISCS) && this.getStackInSlot(0).getItem() != AMItemRegistry.MUSIC_DISC_DAZE && world.getBlockState(this.getPos().up()).getBlock() != this.getBlockState().getBlock()) {
+                vibrating = true;
+                if(transformProg > 120) {
+                    ItemStack current = this.getStackInSlot(0).copy();
+                    current.shrink(1);
+                    if(!current.isEmpty()){
+                        ItemEntity itemEntity = new ItemEntity(this.world, this.getPos().getX() + 0.5F, this.getPos().getY() + 0.5F, this.getPos().getZ() + 0.5F, current);
+                        if(!world.isRemote){
+                            world.addEntity(itemEntity);
+                        }
+                    }
+                    this.setInventorySlotContents(0, new ItemStack(AMItemRegistry.MUSIC_DISC_DAZE));
                 }
             }
             } else {

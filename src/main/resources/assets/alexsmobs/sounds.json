@@ -1542,5 +1542,90 @@
     ],
     "stream": true,
     "subtitle": "alexsmobs.sound.subtitle.music_disc.wormboss"
+  },
+  "void_worm_idle": {
+    "category": "hostile",
+    "volume": 0.7,
+    "sounds": [
+      {
+        "name": "alexsmobs:void_worm_idle_0"
+      },
+      {
+        "name": "alexsmobs:void_worm_idle_1"
+      },
+      {
+        "name": "alexsmobs:void_worm_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.void_worm_idle"
+  },
+  "void_worm_hurt": {
+    "category": "hostile",
+    "volume": 0.7,
+    "sounds": [
+      {
+        "name": "alexsmobs:void_worm_hurt_0"
+      },
+      {
+        "name": "alexsmobs:void_worm_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.void_worm_hurt"
+  },
+  "void_portal_open": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:void_portal_open"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.void_portal_open"
+  },
+  "void_portal_close": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:void_portal_close"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.void_portal_close"
+  },
+  "mimic_octopus_idle": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "alexsmobs:mimic_octopus_idle_0"
+      },
+      {
+        "name": "alexsmobs:mimic_octopus_idle_1"
+      },
+      {
+        "name": "alexsmobs:mimic_octopus_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mimic_octopus_idle"
+  },
+  "mimic_octopus_hurt": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "alexsmobs:mimic_octopus_hurt_0"
+      },
+      {
+        "name": "alexsmobs:mimic_octopus_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mimic_octopus_hurt"
+  },
+  "music_disc_daze": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "alexsmobs:music_disc/daze",
+        "stream": true
+      }
+    ],
+    "stream": true,
+    "subtitle": "alexsmobs.sound.subtitle.music_disc.daze"
   }
 }
