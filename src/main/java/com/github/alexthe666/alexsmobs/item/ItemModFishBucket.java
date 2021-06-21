@@ -84,6 +84,14 @@ public class ItemModFishBucket extends BucketItem {
             }
 
         }
+        if (entity != null && entity instanceof EntityMimicOctopus) {
+            CompoundNBT compoundnbt = stack.getOrCreateTag();
+            if(compoundnbt.contains("MimicOctopusData")){
+                ((EntityMimicOctopus)entity).readAdditional(compoundnbt.getCompound("MimicOctopusData"));
+            }
+            ((EntityMimicOctopus)entity).setMoistness(60000);
+
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -475,6 +475,9 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             this.flap(armstart4_right, speed, degree * 0.1F, true, 0, -0.1F, limbSwing, limbSwingAmount);
             this.bob(head, speed, degree * 2, true, limbSwing, limbSwingAmount);
         }else{
+            if(entity.hasGuardianLaser()){
+                progressRotationPrev(head, groundProgress, 0, (float)Math.toRadians(180), 0, 5F);
+            }
             float idleDegree = 0.03F;
             float idleSpeed = 0.07F;
             this.walk(armstart1_left, idleSpeed, idleDegree, true, 0, 0.05F, ageInTicks, groundProgress);

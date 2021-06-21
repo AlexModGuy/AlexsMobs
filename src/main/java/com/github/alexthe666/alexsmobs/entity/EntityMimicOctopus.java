@@ -1,11 +1,11 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
-import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LeavesBlock;
@@ -19,22 +19,25 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.entity.passive.fish.PufferfishEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag;
@@ -43,6 +46,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -52,10 +56,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import static net.minecraft.entity.CreatureAttribute.WATER;
-
 public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, IFollower {
 
+    private static final DataParameter<Boolean> STOP_CHANGE = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> UPGRADED = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> MIMIC_ORDINAL = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
@@ -66,6 +69,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     private static final DataParameter<Optional<BlockState>> PREV_MIMICKED_BLOCK = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.OPTIONAL_BLOCK_STATE);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> LAST_SCARED_MOB_ID = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> UPGRADED_LASER_ENTITY_ID = EntityDataManager.createKey(EntityMimicOctopus.class, DataSerializers.VARINT);
     public MimicState localMimicState = MimicState.OVERLAY;
     public float transProgress = 0F;
     public float prevTransProgress = 0F;
@@ -77,12 +81,15 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     public float prevSitProgress = 0F;
     private boolean isLandNavigator;
     private int moistureAttackTime = 0;
-    private int idleMimicCooldown = 120 + rand.nextInt(1200);
+    private int camoCooldown = 120 + rand.nextInt(1200);
     private int mimicCooldown = 0;
     private int stopMimicCooldown = -1;
     private int fishFeedings;
+    private int mimicreamFeedings;
     private int exclaimTime = 0;
     private BlockState localMimic;
+    private LivingEntity laserTargetEntity;
+    private int guardianLaserTime;
 
     protected EntityMimicOctopus(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -108,8 +115,63 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         return null;
     }
 
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.dataManager.set(MIMIC_ORDINAL, compound.getInt("MimicState"));
+        this.setUpgraded(compound.getBoolean("Upgraded"));
+        this.setSitting(compound.getBoolean("Sitting"));
+        this.setStopChange(compound.getBoolean("StopChange"));
+        this.setCommand(compound.getInt("OctoCommand"));
+        this.setMoistness(compound.getInt("Moistness"));
+        this.setFromBucket(compound.getBoolean("FromBucket"));
+        BlockState blockstate = null;
+        if (compound.contains("MimickedBlockState", 10)) {
+            blockstate = NBTUtil.readBlockState(compound.getCompound("MimickedBlockState"));
+            if (blockstate.isAir()) {
+                blockstate = null;
+            }
+        }
+        this.setMimickedBlock(blockstate);
+        this.camoCooldown = compound.getInt("CamoCooldown");
+        this.mimicCooldown = compound.getInt("MimicCooldown");
+        this.stopMimicCooldown = compound.getInt("StopMimicCooldown");
+        this.fishFeedings = compound.getInt("FishFeedings");
+        this.mimicreamFeedings = compound.getInt("MimicreamFeedings");
+    }
+
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putInt("MimicState", this.getMimicState().ordinal());
+        compound.putBoolean("Upgraded", this.isUpgraded());
+        compound.putBoolean("Sitting", this.isSitting());
+        compound.putInt("OctoCommand", this.getCommand());
+        compound.putInt("Moistness", this.getMoistness());
+        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("StopChange", this.isStopChange());
+        BlockState blockstate = this.getMimickedBlock();
+        if (blockstate != null) {
+            compound.put("MimickedBlockState", NBTUtil.writeBlockState(blockstate));
+        }
+        compound.putInt("CamoCooldown", this.camoCooldown);
+        compound.putInt("MimicCooldown", this.mimicCooldown);
+        compound.putInt("StopMimicCooldown", this.stopMimicCooldown);
+        compound.putInt("FishFeedings", this.fishFeedings);
+        compound.putInt("MimicreamFeedings", this.mimicreamFeedings);
+    }
+
+    protected ItemStack getFishBucket() {
+        ItemStack stack = new ItemStack(AMItemRegistry.MIMIC_OCTOPUS_BUCKET);
+        CompoundNBT platTag = new CompoundNBT();
+        this.writeAdditional(platTag);
+        stack.getOrCreateTag().put("MimicOctopusData", platTag);
+        if (this.hasCustomName()) {
+            stack.setDisplayName(this.getCustomName());
+        }
+        return stack;
+    }
+
     protected float getJumpUpwardsMotion() {
-        return super.getJumpUpwardsMotion() * 1.3F;
+        return super.getJumpUpwardsMotion() * (this.isInWaterOrBubbleColumn() ? 1.3F : 1F);
     }
 
     @Override
@@ -148,7 +210,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             public void tick() {
                 EntityMimicOctopus.this.setMimickedBlock(null);
                 super.tick();
-                EntityMimicOctopus.this.idleMimicCooldown = 40;
+                EntityMimicOctopus.this.camoCooldown = 40;
                 EntityMimicOctopus.this.stopMimicCooldown = 40;
             }
         });
@@ -160,7 +222,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new HurtByTargetGoal(this){
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this) {
             @Override
             public boolean shouldExecute() {
                 return EntityMimicOctopus.this.isTamed() && super.shouldExecute();
@@ -189,8 +251,19 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             if (mimicCooldown == 0) {
                 this.setMimicState(readState);
                 mimicCooldown = 20;
-                stopMimicCooldown = 1000;
+                stopMimicCooldown = isUpgraded() ? 120 : 1200;
+                camoCooldown = stopMimicCooldown;
                 this.setMimickedBlock(null);
+            }
+            return ActionResultType.SUCCESS;
+        }
+        if (isTamed() && (item == Items.INK_SAC)) {
+            this.setStopChange(!this.isStopChange());
+            if(this.isStopChange()){
+                this.makeEatingParticles(itemstack);
+            }else{
+                this.world.setEntityState(this, (byte) 6);
+                this.mimicEnvironment();
             }
             return ActionResultType.SUCCESS;
         }
@@ -217,8 +290,40 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             }
             return ActionResultType.PASS;
         }
+        if (this.isTamed() && itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
+            this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
+            itemstack.shrink(1);
+            ItemStack itemstack1 = this.getFishBucket();
+            if (!this.world.isRemote) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) player, itemstack1);
+            }
+
+            if (itemstack.isEmpty()) {
+                player.setHeldItem(hand, itemstack1);
+            } else if (!player.inventory.addItemStackToInventory(itemstack1)) {
+                player.dropItem(itemstack1, false);
+            }
+
+            this.remove();
+            return ActionResultType.func_233537_a_(this.world.isRemote);
+        }
         if (this.isTamed() && item == Items.SLIME_BALL && this.getMoistness() < 24000) {
             this.setMoistness(48000);
+            this.makeEatingParticles(itemstack);
+            this.consumeItemFromStack(player, itemstack);
+            return ActionResultType.SUCCESS;
+        }
+        if (this.isTamed() && !this.isUpgraded() && item == AMItemRegistry.MIMICREAM) {
+            mimicreamFeedings++;
+            if (mimicreamFeedings > 15 || mimicreamFeedings > 10 && rand.nextInt(2) == 0) {
+                this.world.setEntityState(this, (byte) 46);
+                this.setUpgraded(true);
+                this.setMimicState(MimicState.MIMICUBE);
+                this.setStopChange(false);
+                this.setMimickedBlock(null);
+                this.stopMimicCooldown = 40;
+            }
+            this.makeEatingParticles(itemstack);
             this.consumeItemFromStack(player, itemstack);
             return ActionResultType.SUCCESS;
         }
@@ -262,13 +367,22 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         this.dataManager.set(COMMAND, Integer.valueOf(command));
     }
 
+    private void makeEatingParticles(ItemStack item) {
+        for (int i = 0; i < 6 + rand.nextInt(3); i++) {
+            double d2 = this.rand.nextGaussian() * 0.02D;
+            double d0 = this.rand.nextGaussian() * 0.02D;
+            double d1 = this.rand.nextGaussian() * 0.02D;
+            this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, item), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, this.getPosY() + this.getHeight() * 0.5F + (double) (this.rand.nextFloat() * this.getHeight() * 0.5F), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, d0, d1, d2);
+        }
+    }
+
     @Override
     public void func_233629_a_(LivingEntity p_233629_1_, boolean p_233629_2_) {
         p_233629_1_.prevLimbSwingAmount = p_233629_1_.limbSwingAmount;
         double d0 = p_233629_1_.getPosX() - p_233629_1_.prevPosX;
         double d1 = p_233629_1_.getPosY() - p_233629_1_.prevPosY;
         double d2 = p_233629_1_.getPosZ() - p_233629_1_.prevPosZ;
-        float f = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * (isInWaterOrBubbleColumn() ? 4.0F : 8.0F);
+        float f = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * (groundProgress < 2.5F ? 4.0F : 8.0F);
         if (f > 1.0F) {
             f = 1.0F;
         }
@@ -310,7 +424,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             switchNavigator(true);
         }
         BlockPos pos = new BlockPos(this.getPosX(), this.getPosYEye() - 1F, this.getPosZ());
-        boolean ground = world.getBlockState(pos).isSolidSide(world, pos, Direction.UP) || !this.isInWaterOrBubbleColumn() || this.isSitting();
+        boolean ground = world.getBlockState(pos).isSolidSide(world, pos, Direction.UP) && this.getMimicState() != MimicState.GUARDIAN || !this.isInWaterOrBubbleColumn() || this.isSitting();
         this.prevTransProgress = transProgress;
         this.prevColorShiftProgress = colorShiftProgress;
         this.prevGroundProgress = groundProgress;
@@ -343,8 +457,8 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
             float f2 = (float) -((float) this.getMotion().y * 3 * (double) (180F / (float) Math.PI));
             this.rotationPitch = f2;
         }
-        if (idleMimicCooldown > 0) {
-            idleMimicCooldown--;
+        if (camoCooldown > 0) {
+            camoCooldown--;
         }
         if (mimicCooldown > 0) {
             mimicCooldown--;
@@ -366,18 +480,18 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 }
             }
         }
-        if (idleMimicCooldown <= 0 && stopMimicCooldown == 0) {
+        if (camoCooldown <= 0 && rand.nextInt(300) == 0) {
             mimicEnvironment();
-            idleMimicCooldown = this.getRNG().nextInt(2200) + 200;
+            camoCooldown = this.getRNG().nextInt(2200) + 200;
         }
-        if ((this.getMimicState() != MimicState.OVERLAY || this.getMimickedBlock() != null) && stopMimicCooldown == 0) {
-            this.setMimickedBlock(null);
+        if ((this.getMimicState() != MimicState.OVERLAY || this.getMimickedBlock() != null) && stopMimicCooldown == 0 && !this.isStopChange()) {
             this.setMimicState(MimicState.OVERLAY);
+            this.setMimickedBlock(null);
             stopMimicCooldown = -1;
         }
-        if(world.isRemote && exclaimTime > 0){
+        if (world.isRemote && exclaimTime > 0) {
             exclaimTime--;
-            if(exclaimTime == 0){
+            if (exclaimTime == 0) {
                 Entity e = world.getEntityByID(this.dataManager.get(LAST_SCARED_MOB_ID));
                 if (e != null && transProgress >= 5.0F) {
                     double d2 = this.rand.nextGaussian() * 0.1D;
@@ -387,34 +501,74 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 }
             }
         }
+
+        if (this.hasGuardianLaser()) {
+            if (this.guardianLaserTime < 30) {
+                ++this.guardianLaserTime;
+            }
+            LivingEntity livingentity = this.getGuardianLaser();
+            if (livingentity != null && this.isInWaterOrBubbleColumn()) {
+                this.getLookController().setLookPositionWithEntity(livingentity, 90.0F, 90.0F);
+                this.getLookController().tick();
+                double d5 = this.getLaserAttackAnimationScale(0.0F);
+                double d0 = livingentity.getPosX() - this.getPosX();
+                double d1 = livingentity.getPosYHeight(0.5D) - this.getPosYEye();
+                double d2 = livingentity.getPosZ() - this.getPosZ();
+                double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                d0 = d0 / d3;
+                d1 = d1 / d3;
+                d2 = d2 / d3;
+                double d4 = this.rand.nextDouble();
+                while (d4 < d3) {
+                    d4 += 1.8D - d5 + this.rand.nextDouble() * (1.7D - d5);
+                    this.world.addParticle(ParticleTypes.BUBBLE, this.getPosX() + d0 * d4, this.getPosYEye() + d1 * d4, this.getPosZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
+                }
+                if (guardianLaserTime == 30) {
+                    livingentity.attackEntityFrom(DamageSource.causeMobDamage(this), 5);
+                    guardianLaserTime = 0;
+                    this.dataManager.set(UPGRADED_LASER_ENTITY_ID, -1);
+                }
+            }
+        }
+        if(!world.isRemote && ticksExisted % 40 == 0){
+            this.heal(2);
+        }
     /* if(!world.isRemote){
             if(ticksExisted % 80 == 0){
-                this.mimicEnvironment();
+                mimicEnvironment();
             }else if(ticksExisted % 40 == 0){
-                this.setMimicState(MimicState.PUFFERFISH);
+                this.setMimicState(MimicState.MIMICUBE);
                 this.setMimickedBlock(null);
             }
         }*/
     }
 
+    public float getLaserAttackAnimationScale(float p_175477_1_) {
+        return ((float) this.guardianLaserTime + p_175477_1_) / 30F;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 68) {
-            if(exclaimTime == 0){
+            if (exclaimTime == 0) {
                 exclaimTime = 20;
             }
+        } else if (id == 69) {
+            this.creeperExplode();
         } else {
             super.handleStatusUpdate(id);
         }
     }
 
     public void mimicEnvironment() {
-        BlockPos down = getPositionDown();
-        if (!world.isAirBlock(down)) {
-            this.setMimicState(MimicState.OVERLAY);
-            this.setMimickedBlock(world.getBlockState(down));
+        if(!this.isStopChange()){
+            BlockPos down = getPositionDown();
+            if (!world.isAirBlock(down)) {
+                this.setMimicState(MimicState.OVERLAY);
+                this.setMimickedBlock(world.getBlockState(down));
+            }
+            stopMimicCooldown = this.getRNG().nextInt(2200);
         }
-        stopMimicCooldown = this.getRNG().nextInt(2200);
     }
 
     public int getMoistness() {
@@ -475,6 +629,39 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         this.dataManager.set(FROM_BUCKET, Boolean.valueOf(sit));
     }
 
+    public boolean isStopChange() {
+        return this.dataManager.get(STOP_CHANGE).booleanValue();
+    }
+
+    public void setStopChange(boolean sit) {
+        this.dataManager.set(STOP_CHANGE, Boolean.valueOf(sit));
+    }
+
+    public boolean hasGuardianLaser() {
+        return this.dataManager.get(UPGRADED_LASER_ENTITY_ID) != -1 && this.isUpgraded() && this.isInWaterOrBubbleColumn();
+    }
+
+    @Nullable
+    public LivingEntity getGuardianLaser() {
+        if (!this.hasGuardianLaser()) {
+            return null;
+        } else if (this.world.isRemote) {
+            if (this.laserTargetEntity != null) {
+                return this.laserTargetEntity;
+            } else {
+                Entity lvt_1_1_ = this.world.getEntityByID(this.dataManager.get(UPGRADED_LASER_ENTITY_ID));
+                if (lvt_1_1_ instanceof LivingEntity) {
+                    this.laserTargetEntity = (LivingEntity) lvt_1_1_;
+                    return this.laserTargetEntity;
+                } else {
+                    return null;
+                }
+            }
+        } else {
+            return this.getAttackTarget();
+        }
+    }
+
     @Nullable
     @Override
     public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
@@ -493,10 +680,12 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         this.dataManager.register(LAST_SCARED_MOB_ID, -1);
         this.dataManager.register(FROM_BUCKET, false);
         this.dataManager.register(UPGRADED, false);
+        this.dataManager.register(STOP_CHANGE, false);
+        this.dataManager.register(UPGRADED_LASER_ENTITY_ID, -1);
     }
 
     public MimicState getMimicState() {
-        return MimicState.values()[dataManager.get(MIMIC_ORDINAL)];
+        return MimicState.values()[MathHelper.clamp(dataManager.get(MIMIC_ORDINAL), 0, 4)];
     }
 
     public void setMimicState(MimicState state) {
@@ -507,7 +696,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     }
 
     public MimicState getPrevMimicState() {
-        return MimicState.values()[dataManager.get(PREV_MIMIC_ORDINAL)];
+        return MimicState.values()[MathHelper.clamp(dataManager.get(PREV_MIMIC_ORDINAL), 0, 4)];
     }
 
     @Nullable
@@ -586,11 +775,27 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         return position;
     }
 
+    public void notifyDataManagerChange(DataParameter<?> key) {
+        super.notifyDataManagerChange(key);
+        if (UPGRADED_LASER_ENTITY_ID.equals(key)) {
+            this.guardianLaserTime = 0;
+            this.laserTargetEntity = null;
+        }
+
+    }
+
+    private void creeperExplode() {
+        Explosion explosion = new Explosion(world, this, this.getPosX(), this.getPosY(), this.getPosZ(), 1 + rand.nextFloat(), false, Explosion.Mode.NONE);
+        explosion.doExplosionA();
+        explosion.doExplosionB(true);
+    }
+
     public enum MimicState {
         OVERLAY,
         CREEPER,
         GUARDIAN,
-        PUFFERFISH
+        PUFFERFISH,
+        MIMICUBE
     }
 
     private class AISwim extends SemiAquaticAIRandomSwimming {
@@ -929,7 +1134,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
                 } else if (EntityMimicOctopus.this.getDistance(targetEntity) < 5.0F && EntityMimicOctopus.this.canEntityBeSeen(targetEntity)) {
                     int i = 1200;
                     EntityMimicOctopus.this.stopMimicCooldown = i;
-                    EntityMimicOctopus.this.idleMimicCooldown = i + 40;
+                    EntityMimicOctopus.this.camoCooldown = i + 40;
                     EntityMimicOctopus.this.mimicCooldown = 40;
                     if (targetEntity instanceof CreeperEntity) {
                         EntityMimicOctopus.this.setMimicState(MimicState.CREEPER);
@@ -962,94 +1167,134 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         private int executionCooldown = 0;
         private int scareMobTime = 0;
         private Vector3d fleePosition = null;
+
         public AIAttack() {
+            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         @Override
         public boolean shouldExecute() {
-            if(executionCooldown > 0){
+            if (executionCooldown > 0) {
+                EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, -1);
                 executionCooldown--;
+            }
+            if(EntityMimicOctopus.this.isStopChange() && EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY){
+                return false;
             }
             return executionCooldown == 0 && EntityMimicOctopus.this.isTamed() && EntityMimicOctopus.this.getAttackTarget() != null && EntityMimicOctopus.this.getAttackTarget().isAlive();
         }
 
-        public void resetTask(){
+        public void resetTask() {
             fleePosition = null;
             scareMobTime = 0;
             executionCooldown = 100 + rand.nextInt(200);
-            EntityMimicOctopus.this.mimicEnvironment();
-
+            if (EntityMimicOctopus.this.isUpgraded()) {
+                executionCooldown = 30;
+            }else{
+                EntityMimicOctopus.this.setRevengeTarget(null);
+                EntityMimicOctopus.this.setAttackTarget(null);
+            }
+            if (EntityMimicOctopus.this.stopMimicCooldown <= 0) {
+                EntityMimicOctopus.this.mimicEnvironment();
+            }
+            EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, -1);
         }
 
-        public Vector3d generateFleePosition(LivingEntity fleer){
-            for(int i = 0; i < 15; i++){
+        public Vector3d generateFleePosition(LivingEntity fleer) {
+            for (int i = 0; i < 15; i++) {
                 BlockPos pos = fleer.getPosition().add(rand.nextInt(32) - 16, rand.nextInt(16), rand.nextInt(32) - 16);
-                while (fleer.world.isAirBlock(pos) && pos.getY() > 1){
+                while (fleer.world.isAirBlock(pos) && pos.getY() > 1) {
                     pos = pos.down();
                 }
-                if(fleer instanceof CreatureEntity){
-                    if(((CreatureEntity) fleer).getBlockPathWeight(pos) >= 0.0F){
+                if (fleer instanceof CreatureEntity) {
+                    if (((CreatureEntity) fleer).getBlockPathWeight(pos) >= 0.0F) {
                         return Vector3d.copyCentered(pos);
                     }
-                }else{
+                } else {
                     return Vector3d.copyCentered(pos);
                 }
             }
             return null;
         }
-        public void tick(){
+
+        public void tick() {
             LivingEntity target = EntityMimicOctopus.this.getAttackTarget();
-            if(target != null){
-                if(scareMobTime > 0){
-                    if(fleePosition == null || target.getDistanceSq(fleePosition) < target.getWidth() * target.getWidth() * 2){
+            if (target != null) {
+                if (scareMobTime > 0) {
+                    if (fleePosition == null || target.getDistanceSq(fleePosition) < target.getWidth() * target.getWidth() * 2) {
                         fleePosition = generateFleePosition(target);
                     }
-                    if(target instanceof MobEntity){
-                        if(fleePosition != null){
-                            ((MobEntity)target).getNavigator().tryMoveToXYZ(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
-                            ((MobEntity)target).getMoveHelper().setMoveTo(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
+                    if (target instanceof MobEntity) {
+                        if (fleePosition != null) {
+                            ((MobEntity) target).getNavigator().tryMoveToXYZ(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
+                            ((MobEntity) target).getMoveHelper().setMoveTo(fleePosition.x, fleePosition.y, fleePosition.z, 1.5F);
+                            ((MobEntity) target).setAttackTarget(null);
                         }
-                    }else{
-
                     }
+                    camoCooldown = Math.max(camoCooldown, 20);
+                    stopMimicCooldown = Math.max(stopMimicCooldown, 20);
                     scareMobTime--;
-                    if(scareMobTime == 0){
+                    if (scareMobTime == 0) {
                         resetTask();
                         return;
                     }
                 }
                 double dist = EntityMimicOctopus.this.getDistance(target);
                 boolean move = true;
-                if(dist < 3F){
+                if (dist < 7F && EntityMimicOctopus.this.canEntityBeSeen(target) && EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN && EntityMimicOctopus.this.isUpgraded()) {
+                    EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, target.getEntityId());
+                    move = false;
+                }
+                if (dist < 3) {
                     EntityMimicOctopus.this.dataManager.set(LAST_SCARED_MOB_ID, target.getEntityId());
-                    if(EntityMimicOctopus.this.isUpgraded()){
-
-                    }else{
-                        move = false;
-                        EntityMimicOctopus.this.getNavigator().clearPath();
-                        if(EntityMimicOctopus.this.getMimicState() == MimicState.OVERLAY && EntityMimicOctopus.this.mimicCooldown <= 0){
-                            EntityMimicOctopus.this.setMimickedBlock(null);
-                            if(EntityMimicOctopus.this.isInWaterOrBubbleColumn()){
-                                if(rand.nextBoolean()){
+                    if (move) {
+                        move = EntityMimicOctopus.this.isUpgraded() && dist > 2;
+                    }
+                    EntityMimicOctopus.this.getNavigator().clearPath();
+                    if (!EntityMimicOctopus.this.isStopChange()) {
+                        EntityMimicOctopus.this.setMimickedBlock(null);
+                        MimicState prev = EntityMimicOctopus.this.getMimicState();
+                        if (EntityMimicOctopus.this.isInWaterOrBubbleColumn() ) {
+                            if(prev != MimicState.GUARDIAN && prev != MimicState.PUFFERFISH){
+                                if (rand.nextBoolean()) {
                                     EntityMimicOctopus.this.setMimicState(MimicState.GUARDIAN);
-                                }else{
+                                } else {
                                     EntityMimicOctopus.this.setMimicState(MimicState.PUFFERFISH);
                                 }
-                            }else{
-                                EntityMimicOctopus.this.setMimicState(MimicState.CREEPER);
                             }
-                        }
-                        if(EntityMimicOctopus.this.getMimicState() != MimicState.OVERLAY){
-                            EntityMimicOctopus.this.world.setEntityState(EntityMimicOctopus.this, (byte) 68);
-                            EntityMimicOctopus.this.mimicCooldown = 40;
-                            EntityMimicOctopus.this.stopMimicCooldown = 60;
-                        }
-                        if(scareMobTime == 0){
-                            scareMobTime = 60 + rand.nextInt(60);
+                        } else {
+                            EntityMimicOctopus.this.setMimicState(MimicState.CREEPER);
                         }
                     }
+                    if (EntityMimicOctopus.this.getMimicState() != MimicState.OVERLAY) {
+                        EntityMimicOctopus.this.mimicCooldown = 40;
+                        EntityMimicOctopus.this.stopMimicCooldown = Math.max(EntityMimicOctopus.this.stopMimicCooldown, 60);
+                    }
+                    if (EntityMimicOctopus.this.isUpgraded() && EntityMimicOctopus.this.transProgress >= 5.0F) {
+                        if (EntityMimicOctopus.this.getMimicState() == MimicState.PUFFERFISH) {
+                            if (EntityMimicOctopus.this.getBoundingBox().expand(2, 1.3, 2).intersects(target.getBoundingBox())) {
+                                target.attackEntityFrom(DamageSource.causeMobDamage(EntityMimicOctopus.this), 4);
+                                target.addPotionEffect(new EffectInstance(Effects.POISON, 400, 2));
+                            }
+                        }
+                        if (EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN) {
+                            if (EntityMimicOctopus.this.getBoundingBox().expand(1, 1, 1).intersects(target.getBoundingBox())) {
+                                target.attackEntityFrom(DamageSource.causeMobDamage(EntityMimicOctopus.this), 1);
+                            }
+                            EntityMimicOctopus.this.dataManager.set(UPGRADED_LASER_ENTITY_ID, target.getEntityId());
+                        }
+                        if (EntityMimicOctopus.this.getMimicState() == MimicState.CREEPER) {
+                            EntityMimicOctopus.this.creeperExplode();
+                            EntityMimicOctopus.this.world.setEntityState(EntityMimicOctopus.this, (byte) 69);
+                            executionCooldown = 300;
+                        }
+                    }
+                    if (scareMobTime == 0) {
+                        EntityMimicOctopus.this.world.setEntityState(EntityMimicOctopus.this, (byte) 68);
+                        scareMobTime = 60 + rand.nextInt(60);
+                    }
                 }
-                if(move){
+                if (move) {
                     EntityMimicOctopus.this.faceEntity(target, 30, 30);
                     EntityMimicOctopus.this.getNavigator().tryMoveToEntityLiving(target, 1.2F);
                 }

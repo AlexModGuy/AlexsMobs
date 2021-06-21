@@ -117,7 +117,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
-        float partialTicksForRender = Minecraft.getInstance().isGamePaused() ? 0 : partialTicks;
+        float partialTicksForRender = Minecraft.getInstance().isGamePaused() || entity instanceof EntityMimicOctopus ? 0 : partialTicks;
         if (follow) {
             float yaw = f * 45.0F;
             entity.rotationYaw = yaw;
@@ -237,6 +237,9 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
                 }
             }
             if(fakeEntity instanceof EntityVoidWorm){
+                matrixStackIn.translate(0, 0.5F, 0);
+            }
+            if(fakeEntity instanceof EntityMimicOctopus){
                 matrixStackIn.translate(0, 0.5F, 0);
             }
             if (fakeEntity != null) {

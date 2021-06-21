@@ -130,6 +130,7 @@ public class AMItemRegistry {
     public static final Item SERRATED_SHARK_TOOTH = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:serrated_shark_tooth");
     public static final Item FRILLED_SHARK_BUCKET = new ItemModFishBucket(AMEntityRegistry.FRILLED_SHARK, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:frilled_shark_bucket");
     public static final Item SHIELD_OF_THE_DEEP = new ItemShieldOfTheDeep(AlexsMobs.PROXY.setupISTER(new Item.Properties().maxDamage(400).rarity(Rarity.UNCOMMON).group(AlexsMobs.TAB))).setRegistryName("alexsmobs:shield_of_the_deep");
+    public static final Item MIMIC_OCTOPUS_BUCKET = new ItemModFishBucket(AMEntityRegistry.MIMIC_OCTOPUS, Fluids.WATER, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:mimic_octopus_bucket");
 
     public static final BannerPattern PATTERN_BEAR = addBanner("bear");
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
