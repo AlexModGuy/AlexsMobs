@@ -212,7 +212,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                     if (!mount.isAlive() || mount instanceof PlayerEntity && ((PlayerEntity) mount).isCreative()) {
                         this.dismount();
                     }
-                    if (drinkTime % 20 == 0 && !world.isRemote) {
+                    if (drinkTime % 20 == 0 && !world.isRemote && this.isAlive()) {
                         boolean mungus = AMConfig.warpedMoscoTransformation &&  mount instanceof EntityMungus && ((EntityMungus)mount).isWarpedMoscoReady();
                         boolean sick = this.isNonMungusWarpedTrigger(mount);
                         if(mount.attackEntityFrom(DamageSource.causeMobDamage(this), mungus ? 7F : 2.0F)){
