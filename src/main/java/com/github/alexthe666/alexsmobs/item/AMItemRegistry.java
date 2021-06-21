@@ -88,6 +88,7 @@ public class AMItemRegistry {
     public static final Item SOUL_HEART = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:soul_heart");
     public static final Item SPIKED_SCUTE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spiked_scute");
     public static final Item SPIKED_TURTLE_SHELL = new ItemModArmor(SPIKED_TURTLE_SHELL_ARMOR_MATERIAL, EquipmentSlotType.HEAD).setRegistryName("alexsmobs:spiked_turtle_shell");
+    public static final Item SHRIMP_FRIED_RICE = new Item(new Item.Properties().group(AlexsMobs.TAB).food(new Food.Builder().hunger(12).saturation(1F).build())).setRegistryName("alexsmobs:shrimp_fried_rice");
     public static final Item GUSTER_EYE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:guster_eye");
     public static final Item POCKET_SAND = new ItemPocketSand(new Item.Properties().group(AlexsMobs.TAB).maxDamage(220)).setRegistryName("alexsmobs:pocket_sand");
     public static final Item WARPED_MUSCLE = new Item(new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:warped_muscle");

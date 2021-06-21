@@ -145,6 +145,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
     }
 
     protected void registerGoals() {
+        this.goalSelector.addGoal(0, new MantisShrimpAIFryRice(this));
         this.goalSelector.addGoal(0, new MantisShrimpAIBreakBlocks(this));
         this.goalSelector.addGoal(1, new SitGoal(this));
         this.goalSelector.addGoal(2, new FollowOwner(this, 1.3D, 4.0F, 2.0F, false));
@@ -329,7 +330,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
 
         }
         if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player)) {
-            if (player.isSneaking()) {
+            if (player.isSneaking() || ItemTags.getCollection().get(AMTagRegistry.SHRIMP_RICE_FRYABLES).contains(itemstack.getItem())) {
                 if (this.getHeldItemMainhand().isEmpty()) {
                     ItemStack cop = itemstack.copy();
                     cop.setCount(1);
