@@ -40,6 +40,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -94,6 +96,19 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.enderiophageSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    private void doInitialPosing(IWorld world) {
+        BlockPos down = this.getPhageGround(this.getPosition());
+        this.setPosition(down.getX() + 0.5F, down.getY() + 1, down.getZ() + 0.5F);
+    }
+
+    @Nullable
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        if (reason == SpawnReason.NATURAL) {
+            doInitialPosing(worldIn);
+        }
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public int getMaxSpawnedInChunk() {
