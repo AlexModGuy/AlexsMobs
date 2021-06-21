@@ -14,7 +14,6 @@
     "minecraft:sheep",
     "minecraft:trader_llama",
     "alexsmobs:capuchin_monkey",
-    "alexsmobs:crow",
-    "rats:rat"
+    "alexsmobs:crow"
   ]
 }

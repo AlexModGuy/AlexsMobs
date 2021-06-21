@@ -290,7 +290,7 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && e.getType().isContained(tag) && (!(e instanceof LivingEntity) || ((LivingEntity) e).getHealth() >= 2D);
+                    return e.isAlive() && tag != null && e.getType().isContained(tag) && (!(e instanceof LivingEntity) || ((LivingEntity) e).getHealth() >= 2D);
                 }
             };
         }

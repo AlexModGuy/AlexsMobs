@@ -92,7 +92,7 @@ public class EntityTasmanianDevil extends AnimalEntity implements IAnimatedEntit
         this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, EntityTasmanianDevil.class)).setCallsForHelp());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AnimalEntity.class, 120, false, false, (p_213487_0_) -> {
-            return p_213487_0_ instanceof ChickenEntity || p_213487_0_ instanceof RabbitEntity || p_213487_0_ instanceof EntityRat;
+            return p_213487_0_ instanceof ChickenEntity || p_213487_0_ instanceof RabbitEntity;
         }));
         this.targetSelector.addGoal(3, new CreatureAITargetItems(this, false, 30));
     }

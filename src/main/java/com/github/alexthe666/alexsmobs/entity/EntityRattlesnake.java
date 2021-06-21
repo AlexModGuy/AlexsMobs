@@ -45,10 +45,10 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
     private static final DataParameter<Boolean> RATTLING = EntityDataManager.createKey(EntityRattlesnake.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> CURLED = EntityDataManager.createKey(EntityRattlesnake.class, DataSerializers.BOOLEAN);
     private static final Predicate<LivingEntity> WARNABLE_PREDICATE = (mob) -> {
-        return mob instanceof PlayerEntity || mob instanceof EntityRoadrunner || mob instanceof EntityRat;
+        return mob instanceof PlayerEntity || mob instanceof EntityRoadrunner;
     };
     private static final Predicate<LivingEntity> TARGETABLE_PREDICATE = (mob) -> {
-        return mob instanceof PlayerEntity && !((PlayerEntity) mob).isCreative() || mob instanceof EntityRoadrunner || mob instanceof EntityRat;
+        return mob instanceof PlayerEntity && !((PlayerEntity) mob).isCreative() || mob instanceof EntityRoadrunner;
     };
     private int animationTick;
     private Animation currentAnimation;

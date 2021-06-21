@@ -72,7 +72,6 @@ public class EntityPlatypus extends AnimalEntity implements ISemiAquatic, ITarge
         switchNavigator(false);
     }
 
-
     public static boolean canPlatypusSpawn(EntityType type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
         ITag<Block> tag = BlockTags.getCollection().get(AMTagRegistry.PLATYPUS_SPAWNS);
         boolean spawnBlock = tag != null && tag.contains(worldIn.getBlockState(pos.down()).getBlock());

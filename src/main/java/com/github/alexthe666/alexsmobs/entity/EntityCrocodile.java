@@ -595,7 +595,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
 
             if (serverplayerentity != null) {
                 serverplayerentity.addStat(Stats.ANIMALS_BRED);
-                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.targetMate, null);
+                CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.targetMate, this.animal);
             }
 
             this.turtle.setHasEgg(true);

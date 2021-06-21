@@ -3,7 +3,6 @@
   "replace": false,
   "values": [
     "minecraft:villager",
-    "minecraft:wandering_trader",
-    "rats:plague_doctor"
+    "minecraft:wandering_trader"
   ]
 }
