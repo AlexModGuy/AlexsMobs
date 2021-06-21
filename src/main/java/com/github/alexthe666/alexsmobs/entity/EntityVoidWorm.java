@@ -86,7 +86,7 @@ public class EntityVoidWorm extends MonsterEntity {
     }
 
     protected float getSoundVolume() {
-        return isSilent() ? 0 : 8;
+        return isSilent() ? 0 : 5;
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -282,7 +282,7 @@ public class EntityVoidWorm extends MonsterEntity {
                         tail = true;
                         scale = scale * 0.85F;
                     }
-                    EntityVoidWormPart part = new EntityVoidWormPart(AMEntityRegistry.VOID_WORM_PART, partParent, 1.0F + (scale * (tail ? 0.65F : 0.3F)), 180, i == 0 ? -0.0F : i == segments - tailstart ? -0.3F : 0);
+                    EntityVoidWormPart part = new EntityVoidWormPart(AMEntityRegistry.VOID_WORM_PART, partParent,  1.0F + (scale * (tail ? 0.65F : 0.3F)) + (i == 0 ? 0.8F : 0), 180, i == 0 ? -0.0F : i == segments - tailstart ? -0.3F : 0);
                     part.setParent(partParent);
                     if (updatePostSummon) {
                         part.setPortalTicks(i * 2);
@@ -365,7 +365,7 @@ public class EntityVoidWorm extends MonsterEntity {
                     boolean tail = i >= segments - tailstart;
                     part.setTail(tail);
                     part.setWormScale(scale);
-                    part.radius = 1.0F + (scale * (tail ? 0.65F : 0.3F));
+                    part.radius = 1.0F + (scale * (tail ? 0.65F : 0.3F)) + (i == 0 ? 0.8F : 0F);
                     part.offsetY = i == 0 ? -0.0F : i == segments - tailstart ? -0.3F : 0;
                     nextPart = part;
                 }
@@ -835,9 +835,8 @@ public class EntityVoidWorm extends MonsterEntity {
                 double centerX = bb.minX + ((bb.maxX - bb.minX) / 2F);
                 double centerY = bb.minY + ((bb.maxY - bb.minY) / 2F);
                 double centerZ = bb.minZ + ((bb.maxZ - bb.minZ) / 2F);
-                if (EntityVoidWorm.this.getDistanceSq(centerX, centerY, centerZ) < 9) {
-                    EntityVoidWorm.this.setMotion(EntityVoidWorm.this.getMotion().add((centerX - EntityVoidWorm.this.getPosX()) * 0.4F, (centerY - EntityVoidWorm.this.getPosY()) * 0.4F, (centerZ - EntityVoidWorm.this.getPosZ()) * 0.4F));
-                }
+                float sped = 0.08F;
+                EntityVoidWorm.this.setMotion(EntityVoidWorm.this.getMotion().add(Math.signum(centerX - EntityVoidWorm.this.getPosX()) * sped, Math.signum(centerY - EntityVoidWorm.this.getPosY()) * sped, Math.signum(centerZ - EntityVoidWorm.this.getPosZ()) * sped));
                 EntityVoidWorm.this.getMoveHelper().setMoveTo(centerX, centerY, centerZ, 1);
             }
         }
