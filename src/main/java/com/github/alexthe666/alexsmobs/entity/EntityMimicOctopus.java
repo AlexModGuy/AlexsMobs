@@ -46,10 +46,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -103,18 +100,6 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
-    protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.MIMIC_OCTOPUS_IDLE;
-    }
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.MIMIC_OCTOPUS_HURT;
-    }
-
-    protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.MIMIC_OCTOPUS_HURT;
-    }
-
     public static boolean canMimicOctopusSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
         BlockPos downPos = pos;
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
@@ -122,10 +107,6 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         }
         boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.MIMIC_OCTOPUS_SPAWNS).contains(worldIn.getBlockState(downPos).getBlock());
         return spawnBlock && downPos.getY() < worldIn.getSeaLevel() + 1;
-    }
-
-    public boolean isNotColliding(IWorldReader worldIn) {
-        return worldIn.checkNoEntityCollision(this);
     }
 
     public static MimicState getStateForItem(ItemStack stack) {
@@ -141,8 +122,32 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         return null;
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.MIMIC_OCTOPUS_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.MIMIC_OCTOPUS_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.MIMIC_OCTOPUS_HURT;
+    }
+
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return worldIn.checkNoEntityCollision(this);
+    }
+
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.mimicOctopusSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    @Nullable
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        this.dataManager.set(PREV_MIMIC_ORDINAL, 0);
+        this.setMimickedBlock(null);
+        this.setMimicState(MimicState.OVERLAY);
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public void readAdditional(CompoundNBT compound) {
@@ -569,11 +574,11 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
         if (!world.isRemote && ticksExisted % 40 == 0) {
             this.heal(2);
         }
-    /* if(!world.isRemote){
+    /*if(!world.isRemote){
             if(ticksExisted % 80 == 0){
                 mimicEnvironment();
             }else if(ticksExisted % 40 == 0){
-                this.setMimicState(MimicState.MIMICUBE);
+                this.setMimicState(MimicState.OVERLAY);
                 this.setMimickedBlock(null);
             }
         }*/

@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -22,13 +23,24 @@ public class OctopusColorRegistry {
         String blockName = stack.toString();
         if (TEXTURES_TO_COLOR.get(blockName) != null) {
             return TEXTURES_TO_COLOR.get(blockName).intValue();
-        } else { BufferedImage texture = null;
+        } else {
+            int colorizer = -1;
+            try{
+                colorizer = Minecraft.getInstance().getBlockColors().getColor(stack, null, null, 0);
+            }catch (Exception e){
+                AlexsMobs.LOGGER.warn("Another mod did not use block colorizers correctly.");
+            }
             int color = 0XFFFFFF;
-            try {
-                Color texColour = getAverageColour(getTextureAtlas(stack));
-                color = texColour.getRGB();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
+            if(colorizer == -1){
+                BufferedImage texture = null;
+                try {
+                    Color texColour = getAverageColour(getTextureAtlas(stack));
+                    color = texColour.getRGB();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                color = colorizer;
             }
             TEXTURES_TO_COLOR.put(blockName, color);
             return color;
