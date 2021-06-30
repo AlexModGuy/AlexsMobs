@@ -37,6 +37,10 @@ public class ItemDimensionalCarver extends Item {
         return worldIn.rayTraceBlocks(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.OUTLINE, fluidMode, player));
     }
 
+    public int getItemStackLimit(ItemStack stack) {
+        return 1; // fix for incompatibility with other mods
+    }
+
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
         if (itemstack.getDamage() >= itemstack.getMaxDamage() - 1) {
