@@ -154,7 +154,7 @@ public class DefaultBiomes {
     public static final SpawnBiomeData SHOEBILL = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "biomesoplenty:tundra_bog", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1);
 
     public static final SpawnBiomeData ELEPHANT = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -186,7 +186,7 @@ public class DefaultBiomes {
     public static final SpawnBiomeData ALLIGATOR_SNAPPING_TURTLE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "biomesoplenty:tundra_bog", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1);
 
     public static final SpawnBiomeData MUNGUS = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -218,7 +218,7 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "biomesoplenty:tundra_bog", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1);
 
     public static final SpawnBiomeData DROPBEAR = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:nether_wastes", 0)

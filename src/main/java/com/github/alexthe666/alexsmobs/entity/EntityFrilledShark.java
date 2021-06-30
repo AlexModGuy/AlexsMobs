@@ -115,7 +115,7 @@ public class EntityFrilledShark extends WaterMobEntity implements IAnimatedEntit
     public boolean canDespawn(double p_213397_1_) {
         return !this.isFromBucket() && !this.hasCustomName();
     }
-    
+
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setFromBucket(compound.getBoolean("FromBucket"));
