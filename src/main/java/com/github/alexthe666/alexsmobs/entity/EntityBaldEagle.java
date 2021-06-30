@@ -16,6 +16,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.RabbitEntity;
@@ -778,7 +779,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
                 over = closest;
             }
         }
-        if (over != null && !this.isOnSameTeam(over) && over != owner) {
+        if (over != null && !this.isOnSameTeam(over) && over != owner && canFalconryAttack(over)) {
             if (tackleCapCooldown == 0 && this.getDistance(over) <= over.getWidth() + 4D) {
                 this.setTackling(true);
                 if (this.getDistance(over) <= over.getWidth() + 2D) {
@@ -790,6 +791,10 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         }
         this.lastPlayerControlTime = 10;
         this.controlledFlag = true;
+    }
+
+    private boolean canFalconryAttack(Entity over) {
+        return !(over instanceof ItemEntity) && (!(over instanceof LivingEntity) || !this.isOwner((LivingEntity)over));
     }
 
     //killEntity
