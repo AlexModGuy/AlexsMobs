@@ -34,6 +34,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -198,8 +199,7 @@ public class EntityTiger extends AnimalEntity implements ICustomCollisions, IAni
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        Item item = stack.getItem();
-        return item == AMItemRegistry.ACACIA_BLOSSOM;
+        return ItemTags.getCollection().get(AMTagRegistry.TIGER_BREEDABLES).contains(stack.getItem());
     }
 
     //killEntity

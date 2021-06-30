@@ -5,10 +5,10 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
-import com.github.alexthe666.alexsmobs.message.MessageSyncEntityPos;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -19,10 +19,8 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.RabbitEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.entity.passive.fish.SalmonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -34,7 +32,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
@@ -44,7 +41,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import org.apache.logging.log4j.core.jmx.Server;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -114,7 +110,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
         this.goalSelector.addGoal(3, new AITackle());
         this.goalSelector.addGoal(4, new AILandOnGlove());
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, TEMPT_ITEMS, false));
+        this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, TEMPT_ITEMS.merge(ImmutableList.of(Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.BALD_EAGLE_TAMEABLES)))), true));
         this.goalSelector.addGoal(7, new TemptGoal(this, 1.1D, Ingredient.fromTag(ItemTags.FISHES), false));
         this.goalSelector.addGoal(8, new AIWanderIdle());
         this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 6.0F){
@@ -338,7 +334,7 @@ public class EntityBaldEagle extends TameableEntity implements IFollower {
             }
             this.world.setEntityState(this, (byte) 7);
             return ActionResultType.CONSUME;
-        } else if (item == AMItemRegistry.FISH_OIL && !this.isTamed()) {
+        } else if (ItemTags.getCollection().get(AMTagRegistry.BALD_EAGLE_TAMEABLES).contains(itemstack.getItem()) && !this.isTamed()) {
             if (itemstack.hasContainerItem()) {
                 this.entityDropItem(itemstack.getContainerItem());
             }
