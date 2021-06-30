@@ -208,6 +208,8 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                     }
                 }
             }
+        }else{
+            super.updateRidden();
         }
     }
 
