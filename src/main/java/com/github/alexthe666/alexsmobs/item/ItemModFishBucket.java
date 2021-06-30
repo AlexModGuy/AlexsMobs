@@ -30,7 +30,7 @@ public class ItemModFishBucket extends BucketItem {
     private final EntityType<?> fishType;
 
     public ItemModFishBucket(EntityType<?> fishTypeIn, Fluid fluid, Item.Properties builder) {
-        super(fluid, builder);
+        super(fluid, builder.maxStackSize(1));
         this.fishType = fishTypeIn;
         this.fishTypeSupplier = () -> fishTypeIn;
     }
