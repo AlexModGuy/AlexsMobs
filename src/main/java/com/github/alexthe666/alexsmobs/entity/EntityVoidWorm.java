@@ -491,7 +491,7 @@ public class EntityVoidWorm extends MonsterEntity {
     public void createPortalRandomDestination() {
         Vector3d vec = null;
         for (int i = 0; i < 15; i++) {
-            BlockPos pos = new BlockPos(this.getPosX() + rand.nextInt(60) - 30, rand.nextInt((int)this.getPosY() + 30), this.getPosZ() + rand.nextInt(60) - 30);
+            BlockPos pos = new BlockPos(this.getPosX() + rand.nextInt(60) - 30, rand.nextInt(Math.max((int)this.getPosY(), 0) + 30), this.getPosZ() + rand.nextInt(60) - 30);
             if (world.isAirBlock(pos)) {
                 vec = Vector3d.copyCenteredHorizontally(pos);
             }
