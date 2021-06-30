@@ -162,6 +162,8 @@ public class AMSoundRegistry {
 
     public static final SoundEvent MUNGUS_LASER_LOOP = createSoundEvent("mungus_laser_loop");
 
+    public static final SoundEvent MUNGUS_LASER_GROW = createSoundEvent("mungus_laser_grow");
+
     public static final SoundEvent MANTIS_SHRIMP_SNAP = createSoundEvent("mantis_shrimp_snap");
 
     public static final SoundEvent MANTIS_SHRIMP_HURT = createSoundEvent("mantis_shrimp_hurt");
