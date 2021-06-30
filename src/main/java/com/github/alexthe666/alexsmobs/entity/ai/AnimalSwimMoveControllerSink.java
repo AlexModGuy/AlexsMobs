@@ -11,12 +11,21 @@ public class AnimalSwimMoveControllerSink extends MovementController {
     private final CreatureEntity entity;
     private float speedMulti;
     private float ySpeedMod = 1;
+    private float yawLimit = 10.0F;
 
     public AnimalSwimMoveControllerSink(CreatureEntity entity, float speedMulti, float ySpeedMod) {
         super(entity);
         this.entity = entity;
         this.speedMulti = speedMulti;
         this.ySpeedMod = ySpeedMod;
+    }
+
+    public AnimalSwimMoveControllerSink(CreatureEntity entity, float speedMulti, float ySpeedMod, float yawLimit) {
+        super(entity);
+        this.entity = entity;
+        this.speedMulti = speedMulti;
+        this.ySpeedMod = ySpeedMod;
+        this.yawLimit = yawLimit;
     }
 
     public void tick() {
@@ -33,7 +42,7 @@ public class AnimalSwimMoveControllerSink extends MovementController {
                 this.mob.setMoveForward(0.0F);
             } else {
                 float lvt_9_1_ = (float) (MathHelper.atan2(lvt_5_1_, lvt_1_1_) * 57.2957763671875D) - 90.0F;
-                this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, lvt_9_1_, 10.0F);
+                this.entity.rotationYaw = this.limitAngle(this.entity.rotationYaw, lvt_9_1_, yawLimit);
                 this.entity.renderYawOffset = this.entity.rotationYaw;
                 this.entity.rotationYawHead = this.entity.rotationYaw;
                 float lvt_10_1_ = (float) (this.speed * speedMulti * 3 * this.entity.getAttributeValue(Attributes.MOVEMENT_SPEED));

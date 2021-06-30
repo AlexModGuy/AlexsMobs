@@ -2,10 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFollowParentRanged;
-import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
-import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIRandomSwimming;
-import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -93,7 +90,7 @@ public class EntityCachalotWhale extends AnimalEntity {
     public EntityCachalotWhale(EntityType type, World world) {
         super(type, world);
         this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.moveController = new MoveHelperController(this);
+        this.moveController = new AnimalSwimMoveControllerSink(this, 1, 1, 3);
         this.lookController = new DolphinLookController(this, 4);
         this.headPart = new EntityCachalotPart(this, 3.0F, 3.5F);
         this.bodyFrontPart = new EntityCachalotPart(this, 4.0F, 4.0F);
@@ -196,7 +193,7 @@ public class EntityCachalotWhale extends AnimalEntity {
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new AnimalAIFollowParentRanged(this, 1.1F, 32, 10));
-        this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 0.6D, 35, 24, true) {
+        this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 0.6D, 10, 24, true) {
             public boolean shouldExecute() {
                 return !EntityCachalotWhale.this.isSleeping() && !EntityCachalotWhale.this.isBeached() && super.shouldExecute();
             }
@@ -782,7 +779,7 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     public int getHorizontalFaceSpeed() {
-        return 1;
+        return 3;
     }
 
     public void recieveEcho() {
@@ -791,43 +788,6 @@ public class EntityCachalotWhale extends AnimalEntity {
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.cachalotWhaleSpawnRolls, this.getRNG(), spawnReasonIn);
-    }
-
-    static class MoveHelperController extends MovementController {
-        private final EntityCachalotWhale dolphin;
-
-        public MoveHelperController(EntityCachalotWhale dolphinIn) {
-            super(dolphinIn);
-            this.dolphin = dolphinIn;
-        }
-
-        public void tick() {
-            if (this.action == Action.MOVE_TO) {
-                double lvt_1_1_ = this.posX - dolphin.getPosX();
-                double lvt_3_1_ = this.posY - dolphin.getPosY();
-                double lvt_5_1_ = this.posZ - dolphin.getPosZ();
-                double lvt_7_1_ = lvt_1_1_ * lvt_1_1_ + lvt_3_1_ * lvt_3_1_ + lvt_5_1_ * lvt_5_1_;
-
-                float lvt_9_1_ = (float) (MathHelper.atan2(lvt_5_1_, lvt_1_1_) * 57.2957763671875D) - 90.0F;
-                dolphin.rotationYaw = this.limitAngle(dolphin.rotationYaw, lvt_9_1_, 10.0F);
-                float lvt_10_1_ = (float) (this.speed * dolphin.whaleSpeedMod * 2 * dolphin.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                if (dolphin.isInWater()) {
-                    dolphin.setAIMoveSpeed(lvt_10_1_ * 0.02F);
-                    float lvt_11_1_ = -((float) (MathHelper.atan2(lvt_3_1_, MathHelper.sqrt(lvt_1_1_ * lvt_1_1_ + lvt_5_1_ * lvt_5_1_)) * 57.2957763671875D));
-                    dolphin.setMotion(dolphin.getMotion().add(0.0D, (double) dolphin.getAIMoveSpeed() * lvt_3_1_ * 0.6D, 0.0D));
-                    lvt_11_1_ = MathHelper.clamp(MathHelper.wrapDegrees(lvt_11_1_), -85.0F, 85.0F);
-                    dolphin.rotationPitch = this.limitAngle(dolphin.rotationPitch, lvt_11_1_, 5.0F);
-                    float lvt_12_1_ = MathHelper.cos(dolphin.rotationPitch * 0.017453292F);
-                    float lvt_13_1_ = MathHelper.sin(dolphin.rotationPitch * 0.017453292F);
-                    dolphin.moveForward = lvt_12_1_ * lvt_10_1_;
-                    dolphin.moveVertical = -lvt_13_1_ * lvt_10_1_;
-                } else {
-                    dolphin.setMotion(dolphin.getMotion().add(0.0D, -0.6D, 0.0D));
-                    dolphin.setAIMoveSpeed(lvt_10_1_ * 0.1F);
-                }
-
-            }
-        }
     }
 
     class AIBreathe extends Goal {
