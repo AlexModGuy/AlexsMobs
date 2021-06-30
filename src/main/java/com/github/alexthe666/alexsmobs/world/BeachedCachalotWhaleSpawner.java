@@ -125,7 +125,7 @@ public class BeachedCachalotWhaleSpawner {
             }
 
             blockpos = (BlockPos)var2.next();
-        } while(this.world.getBlockState(blockpos).getCollisionShape(this.world, blockpos).isEmpty());
+        } while(this.world.getBlockState(blockpos).getCollisionShape(this.world, blockpos).isEmpty() && world.getFluidState(blockpos).isEmpty());
 
         return false;
     }
