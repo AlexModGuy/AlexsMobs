@@ -55,7 +55,7 @@ public class BeachedCachalotWhaleSpawner {
                 delay = 0;
             }
             worldinfo.setBeachedCachalotSpawnDelay(this.delay);
-            if (this.delay <= 0 && world.isThundering()) {
+            if (this.delay <= 0 && world.isThundering() && world.isRaining()) {
                 this.delay = AMConfig.beachedCachalotWhaleSpawnDelay;
                 if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING)) {
                     int i = this.chance;
@@ -125,7 +125,7 @@ public class BeachedCachalotWhaleSpawner {
             }
 
             blockpos = (BlockPos)var2.next();
-        } while(this.world.getBlockState(blockpos).getCollisionShape(this.world, blockpos).isEmpty());
+        } while(this.world.getBlockState(blockpos).getCollisionShape(this.world, blockpos).isEmpty() && world.getFluidState(blockpos).isEmpty());
 
         return false;
     }

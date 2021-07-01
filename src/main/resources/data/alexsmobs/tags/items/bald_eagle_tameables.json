@@ -1,0 +1,7 @@
+{
+  "__comment": "included since some packs have fish oil disabled.",
+  "replace": false,
+  "values": [
+    "alexsmobs:fish_oil"
+  ]
+}

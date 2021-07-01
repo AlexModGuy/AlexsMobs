@@ -566,7 +566,8 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         return (float) (l + 1);
     }
 
-    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+    @Override
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
         if (player.isSecondaryUseActive()) {
             return ActionResultType.PASS;
         } else {

@@ -443,6 +443,9 @@ public class EntityMungus extends AnimalEntity implements ITargetsDroppedItems, 
                             }
                         }
                         this.playSound(AMSoundRegistry.MUNGUS_LASER_END, this.getSoundPitch(), this.getSoundVolume());
+                        if(flag){
+                            this.playSound(AMSoundRegistry.MUNGUS_LASER_GROW, this.getSoundPitch(), this.getSoundVolume());
+                        }
                         this.setBeamTarget(null);
                         beamCounter = -1200;
                         if (this.getMushroomCount() > 0) {

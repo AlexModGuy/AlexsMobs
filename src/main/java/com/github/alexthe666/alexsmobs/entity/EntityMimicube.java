@@ -185,7 +185,7 @@ public class EntityMimicube extends MonsterEntity implements IRangedAttackMob {
     }
 
     public boolean isActiveItemStackBlocking() {
-        return this.getHeldItemMainhand().getItem() instanceof ShieldItem || this.getHeldItemOffhand().getItem() instanceof ShieldItem;
+        return this.getHeldItemMainhand().isShield(this) || this.getHeldItemOffhand().isShield(this);
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {

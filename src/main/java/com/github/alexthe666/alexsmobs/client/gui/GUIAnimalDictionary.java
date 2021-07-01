@@ -11,6 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class GUIAnimalDictionary extends GuiBasicBook {
 
+
     public GUIAnimalDictionary(ItemStack bookStack) {
         super(bookStack, new TranslationTextComponent("animal_dictionary.title"));
     }
@@ -26,6 +27,4 @@ public class GUIAnimalDictionary extends GuiBasicBook {
     public String getTextFileDirectory() {
         return "alexsmobs:book/animal_dictionary/";
     }
-
-
 }

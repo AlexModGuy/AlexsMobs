@@ -30,7 +30,7 @@ public class ItemModFishBucket extends BucketItem {
     private final EntityType<?> fishType;
 
     public ItemModFishBucket(EntityType<?> fishTypeIn, Fluid fluid, Item.Properties builder) {
-        super(fluid, builder);
+        super(fluid, builder.maxStackSize(1));
         this.fishType = fishTypeIn;
         this.fishTypeSupplier = () -> fishTypeIn;
     }
@@ -39,7 +39,6 @@ public class ItemModFishBucket extends BucketItem {
         if (worldIn instanceof ServerWorld) {
             this.placeFish((ServerWorld)worldIn, p_203792_2_, pos);
         }
-
     }
 
     protected void playEmptySound(@Nullable PlayerEntity player, IWorld worldIn, BlockPos pos) {
@@ -90,7 +89,6 @@ public class ItemModFishBucket extends BucketItem {
                 ((EntityMimicOctopus)entity).readAdditional(compoundnbt.getCompound("MimicOctopusData"));
             }
             ((EntityMimicOctopus)entity).setMoistness(60000);
-
         }
     }
 
