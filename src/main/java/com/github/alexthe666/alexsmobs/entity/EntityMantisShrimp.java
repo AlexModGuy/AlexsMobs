@@ -418,7 +418,7 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
                     fish.readAdditional(fishNbt);
                 }
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                this.getAttackTarget().applyKnockback(1.7F, this.getPosX() - getAttackTarget().getPosX(), this.getPosZ() - getAttackTarget().getPosZ());
+                this.getAttackTarget().applyKnockback(1.7F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 float knockbackResist = (float) MathHelper.clamp((1.0D - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0, 1);
                 this.getAttackTarget().setMotion(this.getAttackTarget().getMotion().add(0, knockbackResist * 0.8F, 0));
                 if (!this.getAttackTarget().isInWater()) {
