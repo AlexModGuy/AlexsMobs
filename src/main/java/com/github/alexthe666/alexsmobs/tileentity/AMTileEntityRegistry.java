@@ -22,7 +22,6 @@ public class AMTileEntityRegistry {
         return (TileEntityType) builder.build(null).setRegistryName(nameLoc);
     }
 
-
     @SubscribeEvent
     public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event) {
         try {

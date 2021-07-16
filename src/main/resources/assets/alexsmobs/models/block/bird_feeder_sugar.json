@@ -1,0 +1,6 @@
+{
+  "parent": "alexsmobs:block/bird_feeder",
+  "textures": {
+    "texture": "alexsmobs:block/bird_feeder_sugar"
+  }
+}
