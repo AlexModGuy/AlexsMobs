@@ -300,17 +300,21 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             }
             if (this.getAnimation() == ANIMATION_EAT && this.getAnimationTick() == 17) {
                 this.eatItemEffect(this.getHeldItemMainhand());
-                if (this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && rand.nextInt(3) == 0 && !this.isTamed() && (!isTusked() || isChild()) && blossomThrowerUUID != null) {
-                    this.setTamed(true);
-                    this.setOwnerId(blossomThrowerUUID);
-                    PlayerEntity player = this.world.getPlayerByUuid(blossomThrowerUUID);
-                    if(player != null){
-                        this.setTamedBy(player);
+                if (this.getHeldItemMainhand().getItem() == AMItemRegistry.ACACIA_BLOSSOM && !this.isTamed() && (!isTusked() || isChild()) && blossomThrowerUUID != null) {
+                    if (rand.nextInt(3) == 0) {
+                        this.setTamed(true);
+                        this.setOwnerId(blossomThrowerUUID);
+                        PlayerEntity player = this.world.getPlayerByUuid(blossomThrowerUUID);
+                        if (player != null) {
+                            this.setTamedBy(player);
+                        }
+                        for (Entity passenger : this.getPassengers()) {
+                            passenger.dismount();
+                        }
+                        this.world.setEntityState(this, (byte) 7);
+                    } else {
+                        this.world.setEntityState(this, (byte) 6);
                     }
-                    for (Entity passenger : this.getPassengers()) {
-                        passenger.dismount();
-                    }
-                    this.world.setEntityState(this, (byte) 7);
                 }
                 this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
                 this.heal(10);
@@ -492,6 +496,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
         boolean owner = this.isTamed() && isOwner(player);
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
         if (isChested() && player.isSneaking()) {
             this.openGUI(player);
             return ActionResultType.SUCCESS;
@@ -539,11 +544,11 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             elephantInventory.clear();
             this.setChested(false);
             return ActionResultType.SUCCESS;
-        } else if (owner && !this.isChild() && super.getEntityInteractionResult(player, hand) != ActionResultType.CONSUME) {
+        } else if (owner && !this.isChild() && type != ActionResultType.CONSUME) {
             player.startRiding(this);
             return ActionResultType.SUCCESS;
         }
-        return super.getEntityInteractionResult(player, hand);
+        return type;
     }
 
     public EntitySize getSize(Pose poseIn) {
