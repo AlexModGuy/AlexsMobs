@@ -227,7 +227,7 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
             --this.currentMoveTypeDuration;
         }
 
-        if (this.onGround) {
+        if (this.onGround && !this.isSitting()) {
             if (!this.wasOnGround) {
                 this.setJumping(false);
                 this.checkLandingDelay();
@@ -259,6 +259,9 @@ public class EntityWarpedToad extends TameableEntity implements ITargetsDroppedI
                     this.enableJumpControl();
                 }
             }
+        } else if (this.isSitting()) {
+            this.setJumping(false);
+            this.checkLandingDelay();
         }
 
         this.wasOnGround = this.onGround;
