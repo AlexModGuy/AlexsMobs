@@ -264,7 +264,7 @@ public class AMItemRegistry {
             }
         });
         ComposterBlock.CHANCES.put(BANANA, 0.65F);
-        ComposterBlock.CHANCES.put(AMBlockRegistry.BANANA_PEEL, 1F);
+        ComposterBlock.CHANCES.put(AMBlockRegistry.BANANA_PEEL.asItem(), 1F);
         ComposterBlock.CHANCES.put(ACACIA_BLOSSOM, 0.65F);
         ComposterBlock.CHANCES.put(GONGYLIDIA, 0.9F);
     }
