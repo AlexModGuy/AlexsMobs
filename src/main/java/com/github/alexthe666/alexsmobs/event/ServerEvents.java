@@ -7,25 +7,24 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.item.ItemDimensionalCarver;
 import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
 import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
-import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
-import com.google.common.base.Predicates;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -364,6 +363,11 @@ public class ServerEvents {
             if (event.getEntity() != null && event.getEntity() instanceof PolarBearEntity && AMConfig.polarBearsAttackSeals) {
                 PolarBearEntity bear = (PolarBearEntity) event.getEntity();
                 bear.targetSelector.addGoal(6, new NearestAttackableTargetGoal(bear, EntitySeal.class, 15, true, true, null));
+            }
+            if (event.getEntity() != null && event.getEntity() instanceof CreeperEntity) {
+                CreeperEntity creeper = (CreeperEntity) event.getEntity();
+                creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntitySnowLeopard.class, 6.0F, 1.0D, 1.2D));
+                creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntityTiger.class, 6.0F, 1.0D, 1.2D));
             }
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
