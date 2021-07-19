@@ -285,7 +285,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             float f1 = this.rotationYaw * ((float) Math.PI / 180F);
             this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.02F, 0.0D, MathHelper.cos(f1) * 0.02F));
             if (this.getDistance(this.getAttackTarget()) < 3.5F && this.canEntityBeSeen(this.getAttackTarget())) {
-                if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() && !this.getAttackTarget().isActiveItemStackBlocking()) {
+                if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() && !this.getAttackTarget().isActiveItemStackBlocking() && !this.getAttackTarget().isSneaking()) {
                     this.getAttackTarget().startRiding(this, true);
                 }
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
