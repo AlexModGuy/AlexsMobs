@@ -837,6 +837,7 @@ public class EntityVoidWorm extends MonsterEntity {
 
         public void tick() {
             if (EntityVoidWorm.this.portalTarget != null) {
+                noClip = true;
                 AxisAlignedBB bb = EntityVoidWorm.this.portalTarget.getBoundingBox();
                 double centerX = bb.minX + ((bb.maxX - bb.minX) / 2F);
                 double centerY = bb.minY + ((bb.maxY - bb.minY) / 2F);
@@ -845,6 +846,10 @@ public class EntityVoidWorm extends MonsterEntity {
                 EntityVoidWorm.this.setMotion(EntityVoidWorm.this.getMotion().add(Math.signum(centerX - EntityVoidWorm.this.getPosX()) * sped, Math.signum(centerY - EntityVoidWorm.this.getPosY()) * sped, Math.signum(centerZ - EntityVoidWorm.this.getPosZ()) * sped));
                 EntityVoidWorm.this.getMoveHelper().setMoveTo(centerX, centerY, centerZ, 1);
             }
+        }
+
+        public void resetTask() {
+            noClip = false;
         }
     }
 
