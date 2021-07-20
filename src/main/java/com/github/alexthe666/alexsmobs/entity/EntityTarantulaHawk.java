@@ -510,10 +510,6 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         }
     }
 
-    public boolean shouldBury() {
-        return bredBuryFlag || !this.isTamed();
-    }
-
     public void updatePassenger(Entity passenger) {
         this.rotationPitch = 0;
         float radius = 1.0F + passenger.getWidth() * 0.5F;
@@ -607,6 +603,23 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         this.dataManager.set(COMMAND, Integer.valueOf(command));
     }
 
+    private BlockPos genSandPos(BlockPos parent) {
+        IWorld world = this.world;
+        Random random = new Random();
+        int range = 24;
+        for (int i = 0; i < 15; i++) {
+            BlockPos sandAir = parent.add(random.nextInt(range) - range / 2, -5, random.nextInt(range) - range / 2);
+            while (!world.isAirBlock(sandAir) && sandAir.getY() < 255) {
+                sandAir = sandAir.up();
+            }
+            BlockState state = world.getBlockState(sandAir.down());
+            if (BlockTags.SAND.contains(state.getBlock())) {
+                return sandAir.down();
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean shouldFollow() {
         return getCommand() == 1 && !this.isDragging() && !this.isDigging() && (this.getAttackTarget() == null || !this.getAttackTarget().isAlive());
@@ -657,6 +670,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         private int orbitCooldown = 0;
         private boolean clockwise = false;
         private Vector3d orbitVec = null;
+        private BlockPos sandPos = null;
 
         public AIMelee() {
             hawk = EntityTarantulaHawk.this;
@@ -664,7 +678,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
 
         @Override
         public boolean shouldExecute() {
-            return hawk.getAttackTarget() != null && !hawk.isScared() && hawk.getAttackTarget().isAlive() && !hawk.isDragging() && !hawk.isDigging() && !hawk.getAttackTarget().noClip && !hawk.getAttackTarget().isPassenger();
+            return hawk.getAttackTarget() != null && !hawk.isSitting() && !hawk.isScared() && hawk.getAttackTarget().isAlive() && !hawk.isDragging() && !hawk.isDigging() && !hawk.getAttackTarget().noClip && !hawk.getAttackTarget().isPassenger();
         }
 
         @Override
@@ -677,7 +691,10 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         public void tick() {
             LivingEntity target = hawk.getAttackTarget();
             boolean paralized = target != null && target.getCreatureAttribute() == CreatureAttribute.ARTHROPOD && !target.noClip && target.isPotionActive(AMEffectRegistry.DEBILITATING_STING);
-
+            boolean paralizedWithChild = paralized && target.getActivePotionEffect(AMEffectRegistry.DEBILITATING_STING).getAmplifier() > 0;
+            if (sandPos == null || !BlockTags.SAND.contains(world.getBlockState(sandPos).getBlock())) {
+                sandPos = hawk.genSandPos(target.getPosition());
+            }
             if (orbitCooldown > 0) {
                 orbitCooldown--;
                 hawk.setFlying(true);
@@ -689,7 +706,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
                         }
                     }
                 }
-            } else if (paralized && hawk.shouldBury()) {
+            } else if (((paralized && !hawk.isTamed()) || (paralizedWithChild && hawk.bredBuryFlag)) && sandPos != null) {
                 if (hawk.isOnGround()) {
                     hawk.setFlying(false);
                     hawk.getNavigator().tryMoveToEntityLiving(target, 1);
@@ -705,7 +722,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
                     target.startRiding(hawk, true);
                 }
             } else {
-                if (target != null) {
+                if (target != null && !paralizedWithChild) {
                     double dist = hawk.getDistance(target);
                     if (dist < 10 && !hawk.isFlying()) {
                         if (hawk.isOnGround()) {
@@ -858,7 +875,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         @Override
         public boolean shouldExecute() {
             if (hawk.isDragging() && hawk.getAttackTarget() != null) {
-                BlockPos pos = genSandPos(hawk.getPosition());
+                BlockPos pos = hawk.genSandPos(hawk.getPosition());
                 if (pos != null) {
                     buryPos = pos;
                     return true;
@@ -907,24 +924,6 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
             } else {
                 hawk.getNavigator().tryMoveToXYZ(buryPos.getX(), buryPos.getY(), buryPos.getZ(), 0.5F);
             }
-        }
-
-
-        private BlockPos genSandPos(BlockPos parent) {
-            IWorld world = hawk.world;
-            Random random = new Random();
-            int range = 24;
-            for (int i = 0; i < 15; i++) {
-                BlockPos sandAir = parent.add(random.nextInt(range) - range / 2, -5, random.nextInt(range) - range / 2);
-                while (!world.isAirBlock(sandAir) && sandAir.getY() < 255) {
-                    sandAir = sandAir.up();
-                }
-                BlockState state = world.getBlockState(sandAir.down());
-                if (BlockTags.SAND.contains(state.getBlock())) {
-                    return sandAir.down();
-                }
-            }
-            return null;
         }
     }
 
