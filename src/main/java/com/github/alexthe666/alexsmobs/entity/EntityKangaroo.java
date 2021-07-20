@@ -558,9 +558,9 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         if (clientArmorCooldown > 0) {
             clientArmorCooldown--;
         }
-        if (ticksExisted > 5 && !world.isRemote && clientArmorCooldown == 0 && this.isTamed()) {
+        if (ticksExisted > 40 && !world.isRemote && clientArmorCooldown == 0 && this.isTamed()) {
             this.updateClientInventory();
-            clientArmorCooldown = (600 + rand.nextInt(600)) * 20;
+            clientArmorCooldown = 20;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
