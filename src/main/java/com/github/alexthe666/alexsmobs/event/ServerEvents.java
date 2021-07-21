@@ -357,7 +357,7 @@ public class ServerEvents {
                 SpiderEntity spider = (SpiderEntity) event.getEntity();
                 spider.targetSelector.addGoal(4, new NearestAttackableTargetGoal(spider, EntityFly.class, 1, true, false, null));
             }
-            if (event.getEntity() != null && event.getEntity() instanceof WolfEntity && AMConfig.spidersAttackFlies) {
+            if (event.getEntity() != null && event.getEntity() instanceof WolfEntity && AMConfig.wolvesAttackMoose) {
                 WolfEntity wolf = (WolfEntity) event.getEntity();
                 wolf.targetSelector.addGoal(6, new NonTamedTargetGoal(wolf, EntityMoose.class, false, null));
             }

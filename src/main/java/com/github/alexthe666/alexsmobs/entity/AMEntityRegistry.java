@@ -3,13 +3,13 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -147,7 +147,7 @@ public class AMEntityRegistry {
         EntitySpawnPlacementRegistry.register(MIMIC_OCTOPUS, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityMimicOctopus::canMimicOctopusSpawn);
     }
 
-        @SubscribeEvent
+    @SubscribeEvent
     public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
         try {
             for (Field f : AMEntityRegistry.class.getDeclaredFields()) {
@@ -163,66 +163,66 @@ public class AMEntityRegistry {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        initializeAttributes();
     }
 
-    private static void initializeAttributes() {
-        GlobalEntityTypeAttributes.put(GRIZZLY_BEAR, EntityGrizzlyBear.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(ROADRUNNER, EntityRoadrunner.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(BONE_SERPENT, EntityBoneSerpent.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(BONE_SERPENT_PART, EntityBoneSerpentPart.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(GAZELLE, EntityGazelle.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(CROCODILE, EntityCrocodile.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(FLY, EntityFly.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(HUMMINGBIRD, EntityHummingbird.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(ORCA, EntityOrca.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(SUNBIRD, EntitySunbird.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(GORILLA, EntityGorilla.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(CRIMSON_MOSQUITO, EntityCrimsonMosquito.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(RATTLESNAKE, EntityRattlesnake.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(ENDERGRADE, EntityEndergrade.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(HAMMERHEAD_SHARK, EntityHammerheadShark.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(LOBSTER, EntityLobster.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(KOMODO_DRAGON, EntityKomodoDragon.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(CAPUCHIN_MONKEY, EntityCapuchinMonkey.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(CENTIPEDE_HEAD, EntityCentipedeHead.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(CENTIPEDE_BODY, EntityCentipedeBody.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(CENTIPEDE_TAIL, EntityCentipedeTail.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(WARPED_TOAD, EntityWarpedToad.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(MOOSE, EntityMoose.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(MIMICUBE, EntityMimicube.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(RACCOON, EntityRaccoon.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(BLOBFISH, EntityBlobfish.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(SEAL, EntitySeal.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(COCKROACH, EntityCockroach.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(SHOEBILL, EntityShoebill.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(ELEPHANT, EntityElephant.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(SOUL_VULTURE, EntitySoulVulture.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(SNOW_LEOPARD, EntitySnowLeopard.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(SPECTRE, EntitySpectre.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(CROW, EntityCrow.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(ALLIGATOR_SNAPPING_TURTLE, EntityAlligatorSnappingTurtle.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(MUNGUS, EntityMungus.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(MANTIS_SHRIMP, EntityMantisShrimp.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(GUSTER, EntityGuster.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(WARPED_MOSCO, EntityWarpedMosco.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(STRADDLER, EntityStraddler.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(STRADPOLE, EntityStradpole.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(EMU, EntityEmu.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(PLATYPUS, EntityPlatypus.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(DROPBEAR, EntityDropBear.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(TASMANIAN_DEVIL, EntityTasmanianDevil.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(KANGAROO, EntityKangaroo.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(CACHALOT_WHALE, EntityCachalotWhale.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(LEAFCUTTER_ANT, EntityLeafcutterAnt.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(ENDERIOPHAGE, EntityEnderiophage.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(BALD_EAGLE, EntityBaldEagle.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(TIGER, EntityTiger.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(TARANTULA_HAWK, EntityTarantulaHawk.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(VOID_WORM, EntityVoidWorm.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(VOID_WORM_PART, EntityVoidWormPart.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(FRILLED_SHARK, EntityFrilledShark.bakeAttributes().create());
-        GlobalEntityTypeAttributes.put(MIMIC_OCTOPUS, EntityMimicOctopus.bakeAttributes().create());
+    @SubscribeEvent
+    public static void initializeAttributes(EntityAttributeCreationEvent event) {
+        event.put(GRIZZLY_BEAR, EntityGrizzlyBear.bakeAttributes().create());
+        event.put(ROADRUNNER, EntityRoadrunner.bakeAttributes().create());
+        event.put(BONE_SERPENT, EntityBoneSerpent.bakeAttributes().create());
+        event.put(BONE_SERPENT_PART, EntityBoneSerpentPart.bakeAttributes().create());
+        event.put(GAZELLE, EntityGazelle.bakeAttributes().create());
+        event.put(CROCODILE, EntityCrocodile.bakeAttributes().create());
+        event.put(FLY, EntityFly.bakeAttributes().create());
+        event.put(HUMMINGBIRD, EntityHummingbird.bakeAttributes().create());
+        event.put(ORCA, EntityOrca.bakeAttributes().create());
+        event.put(SUNBIRD, EntitySunbird.bakeAttributes().create());
+        event.put(GORILLA, EntityGorilla.bakeAttributes().create());
+        event.put(CRIMSON_MOSQUITO, EntityCrimsonMosquito.bakeAttributes().create());
+        event.put(RATTLESNAKE, EntityRattlesnake.bakeAttributes().create());
+        event.put(ENDERGRADE, EntityEndergrade.bakeAttributes().create());
+        event.put(HAMMERHEAD_SHARK, EntityHammerheadShark.bakeAttributes().create());
+        event.put(LOBSTER, EntityLobster.bakeAttributes().create());
+        event.put(KOMODO_DRAGON, EntityKomodoDragon.bakeAttributes().create());
+        event.put(CAPUCHIN_MONKEY, EntityCapuchinMonkey.bakeAttributes().create());
+        event.put(CENTIPEDE_HEAD, EntityCentipedeHead.bakeAttributes().create());
+        event.put(CENTIPEDE_BODY, EntityCentipedeBody.bakeAttributes().create());
+        event.put(CENTIPEDE_TAIL, EntityCentipedeTail.bakeAttributes().create());
+        event.put(WARPED_TOAD, EntityWarpedToad.bakeAttributes().create());
+        event.put(MOOSE, EntityMoose.bakeAttributes().create());
+        event.put(MIMICUBE, EntityMimicube.bakeAttributes().create());
+        event.put(RACCOON, EntityRaccoon.bakeAttributes().create());
+        event.put(BLOBFISH, EntityBlobfish.bakeAttributes().create());
+        event.put(SEAL, EntitySeal.bakeAttributes().create());
+        event.put(COCKROACH, EntityCockroach.bakeAttributes().create());
+        event.put(SHOEBILL, EntityShoebill.bakeAttributes().create());
+        event.put(ELEPHANT, EntityElephant.bakeAttributes().create());
+        event.put(SOUL_VULTURE, EntitySoulVulture.bakeAttributes().create());
+        event.put(SNOW_LEOPARD, EntitySnowLeopard.bakeAttributes().create());
+        event.put(SPECTRE, EntitySpectre.bakeAttributes().create());
+        event.put(CROW, EntityCrow.bakeAttributes().create());
+        event.put(ALLIGATOR_SNAPPING_TURTLE, EntityAlligatorSnappingTurtle.bakeAttributes().create());
+        event.put(MUNGUS, EntityMungus.bakeAttributes().create());
+        event.put(MANTIS_SHRIMP, EntityMantisShrimp.bakeAttributes().create());
+        event.put(GUSTER, EntityGuster.bakeAttributes().create());
+        event.put(WARPED_MOSCO, EntityWarpedMosco.bakeAttributes().create());
+        event.put(STRADDLER, EntityStraddler.bakeAttributes().create());
+        event.put(STRADPOLE, EntityStradpole.bakeAttributes().create());
+        event.put(EMU, EntityEmu.bakeAttributes().create());
+        event.put(PLATYPUS, EntityPlatypus.bakeAttributes().create());
+        event.put(DROPBEAR, EntityDropBear.bakeAttributes().create());
+        event.put(TASMANIAN_DEVIL, EntityTasmanianDevil.bakeAttributes().create());
+        event.put(KANGAROO, EntityKangaroo.bakeAttributes().create());
+        event.put(CACHALOT_WHALE, EntityCachalotWhale.bakeAttributes().create());
+        event.put(LEAFCUTTER_ANT, EntityLeafcutterAnt.bakeAttributes().create());
+        event.put(ENDERIOPHAGE, EntityEnderiophage.bakeAttributes().create());
+        event.put(BALD_EAGLE, EntityBaldEagle.bakeAttributes().create());
+        event.put(TIGER, EntityTiger.bakeAttributes().create());
+        event.put(TARANTULA_HAWK, EntityTarantulaHawk.bakeAttributes().create());
+        event.put(VOID_WORM, EntityVoidWorm.bakeAttributes().create());
+        event.put(VOID_WORM_PART, EntityVoidWormPart.bakeAttributes().create());
+        event.put(FRILLED_SHARK, EntityFrilledShark.bakeAttributes().create());
+        event.put(MIMIC_OCTOPUS, EntityMimicOctopus.bakeAttributes().create());
 
     }
 
