@@ -2,10 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
-import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
-import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIJump;
-import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIMeleeJump;
-import com.github.alexthe666.alexsmobs.entity.ai.SwimmerJumpPathNavigator;
+import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -23,7 +20,6 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.DrownedEntity;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -257,6 +253,9 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
                 }
             }
         }
+        if (attackTarget != null && attackTarget instanceof PlayerEntity && attackTarget.isPotionActive(AMEffectRegistry.ORCAS_MIGHT)) {
+            attackTarget.removePotionEffect(AMEffectRegistry.ORCAS_MIGHT);
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
@@ -319,6 +318,7 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
             reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setAir(this.getMaxAir());
         this.rotationPitch = 0.0F;
+        this.setMoistness(2400);
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
