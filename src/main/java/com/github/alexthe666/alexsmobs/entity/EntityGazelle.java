@@ -109,7 +109,7 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem() == Items.WHEAT;
+        return stack.getItem() == Items.WHEAT || stack.getItem() == AMItemRegistry.ACACIA_BLOSSOM;
     }
 
     @Override
