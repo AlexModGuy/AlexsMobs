@@ -13,89 +13,76 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
     public final AdvancedModelBox root;
-    public final AdvancedModelBox Body;
-    public final AdvancedModelBox bodyfront;
-    public final AdvancedModelBox FrontlegR;
-    public final AdvancedModelBox FrontlegL;
+    public final AdvancedModelBox body;
+    public final AdvancedModelBox midbody;
     public final AdvancedModelBox head;
-    public final AdvancedModelBox EarL;
-    public final AdvancedModelBox EarR;
     public final AdvancedModelBox snout;
-    public final AdvancedModelBox bodymid;
-    public final AdvancedModelBox bodyback;
-    public final AdvancedModelBox backlegL;
-    public final AdvancedModelBox backlegR;
-    private ModelAnimator animator;
+    public final AdvancedModelBox left_ear;
+    public final AdvancedModelBox right_ear;
+    public final AdvancedModelBox left_leg;
+    public final AdvancedModelBox right_leg;
+    public final AdvancedModelBox left_arm;
+    public final AdvancedModelBox right_arm;
+    public final ModelAnimator animator;
 
     public ModelGrizzlyBear() {
-        textureWidth = 112;
-        textureHeight = 112;
+        textureWidth = 128;
+        textureHeight = 128;
 
         root = new AdvancedModelBox(this);
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        Body = new AdvancedModelBox(this);
-        Body.setRotationPoint(0.0F, -5.4444F, 0.2778F);
-        root.addChild(Body);
-        setRotationAngle(Body, -3.1416F, 0.0F, 3.1416F);
+        body = new AdvancedModelBox(this);
+        body.setRotationPoint(0.0F, -19.0F, 6.0F);
+        root.addChild(body);
+        body.setTextureOffset(0, 0).addBox(-7.0F, -7.0F, -19.0F, 14.0F, 15.0F, 28.0F, 0.0F, false);
+        body.setTextureOffset(0, 44).addBox(-6.0F, 8.0F, -19.0F, 12.0F, 3.0F, 28.0F, 0.0F, false);
 
-
-        bodyfront = new AdvancedModelBox(this);
-        bodyfront.setRotationPoint(0.0F, -5.5556F, -0.2778F);
-        Body.addChild(bodyfront);
-        bodyfront.setTextureOffset(0, 26).addBox(-6.0F, -9.0F, 7.0F, 12.0F, 12.0F, 7.0F, 0.0F, false);
-
-        FrontlegR = new AdvancedModelBox(this);
-        FrontlegR.setRotationPoint(-3.0F, 3.0F, 10.0F);
-        bodyfront.addChild(FrontlegR);
-        FrontlegR.setTextureOffset(28, 45).addBox(-3.0F, 0.0F, -3.0F, 5.0F, 8.0F, 5.0F, 0.0F, false);
-
-        FrontlegL = new AdvancedModelBox(this);
-        FrontlegL.setRotationPoint(3.0F, 3.0F, 10.0F);
-        bodyfront.addChild(FrontlegL);
-        FrontlegL.setTextureOffset(0, 58).addBox(-2.0F, 0.0F, -3.0F, 5.0F, 8.0F, 5.0F, 0.0F, false);
+        midbody = new AdvancedModelBox(this);
+        midbody.setRotationPoint(0.0F, 0.5F, -4.0F);
+        body.addChild(midbody);
+        midbody.setTextureOffset(27, 99).addBox(-8.0F, -8.5F, -6.0F, 16.0F, 17.0F, 12.0F, 0.1F, false);
 
         head = new AdvancedModelBox(this);
-        head.setRotationPoint(0.0F, -4.0F, 14.0F);
-        bodyfront.addChild(head);
-        head.setTextureOffset(0, 45).addBox(-4.0F, -3.0F, 0.0F, 8.0F, 7.0F, 6.0F, 0.0F, false);
-
-        EarL = new AdvancedModelBox(this);
-        EarL.setRotationPoint(-2.5F, -2.5F, 2.5F);
-        head.addChild(EarL);
-        EarL.setTextureOffset(0, 71).addBox(-2.5F, -2.5F, -0.5F, 3.0F, 3.0F, 1.0F, 0.0F, false);
-
-        EarR = new AdvancedModelBox(this);
-        EarR.setRotationPoint(2.5F, -2.5F, 2.5F);
-        head.addChild(EarR);
-        EarR.setTextureOffset(40, 65).addBox(-0.5F, -2.5F, -0.5F, 3.0F, 3.0F, 1.0F, 0.0F, false);
+        head.setRotationPoint(0.0F, -0.8F, -21.0F);
+        body.addChild(head);
+        head.setTextureOffset(57, 0).addBox(-5.0F, -5.0F, -6.0F, 10.0F, 10.0F, 8.0F, 0.0F, false);
 
         snout = new AdvancedModelBox(this);
-        snout.setRotationPoint(0.0F, 2.0F, 6.0F);
+        snout.setRotationPoint(0.0F, 0.0F, -6.0F);
         head.addChild(snout);
-        snout.setTextureOffset(40, 58).addBox(-3.0F, -2.0F, 0.0F, 6.0F, 4.0F, 3.0F, 0.0F, false);
+        snout.setTextureOffset(0, 17).addBox(-2.0F, 0.0F, -5.0F, 4.0F, 5.0F, 5.0F, 0.0F, false);
 
-        bodymid = new AdvancedModelBox(this);
-        bodymid.setRotationPoint(0.0F, -5.5556F, -11.2778F);
-        Body.addChild(bodymid);
-        bodymid.setTextureOffset(0, 0).addBox(-7.0F, -10.0F, 5.0F, 14.0F, 13.0F, 13.0F, 0.0F, false);
-        bodymid.setTextureOffset(54, 0).addBox(-7.0F, 3.0F, 5.0F, 14.0F, 3.0F, 13.0F, 0.0F, false);
+        left_ear = new AdvancedModelBox(this);
+        left_ear.setRotationPoint(3.5F, -5.0F, -3.0F);
+        head.addChild(left_ear);
+        left_ear.setTextureOffset(14, 17).addBox(-1.5F, -2.0F, -1.0F, 3.0F, 2.0F, 2.0F, 0.0F, false);
 
-        bodyback = new AdvancedModelBox(this);
-        bodyback.setRotationPoint(0.0F, -5.5556F, -11.2778F);
-        Body.addChild(bodyback);
-        bodyback.setTextureOffset(38, 26).addBox(-6.0F, -9.0F, -1.0F, 12.0F, 12.0F, 6.0F, 0.0F, false);
+        right_ear = new AdvancedModelBox(this);
+        right_ear.setRotationPoint(-3.5F, -5.0F, -3.0F);
+        head.addChild(right_ear);
+        right_ear.setTextureOffset(14, 17).addBox(-1.5F, -2.0F, -1.0F, 3.0F, 2.0F, 2.0F, 0.0F, true);
 
-        backlegL = new AdvancedModelBox(this);
-        backlegL.setRotationPoint(3.0F, 3.0F, 4.0F);
-        bodyback.addChild(backlegL);
-        backlegL.setTextureOffset(20, 58).addBox(-2.0F, 0.0F, -4.0F, 5.0F, 8.0F, 5.0F, 0.0F, false);
+        left_leg = new AdvancedModelBox(this);
+        left_leg.setRotationPoint(3.8F, 8.0F, 4.0F);
+        body.addChild(left_leg);
+        left_leg.setTextureOffset(0, 76).addBox(-3.0F, 0.0F, -3.0F, 6.0F, 11.0F, 8.0F, 0.0F, false);
 
-        backlegR = new AdvancedModelBox(this);
-        backlegR.setRotationPoint(-3.0F, 3.0F, 4.0F);
-        bodyback.addChild(backlegR);
-        backlegR.setTextureOffset(48, 45).addBox(-3.0F, 0.0F, -4.0F, 5.0F, 8.0F, 5.0F, 0.0F, false);
+        right_leg = new AdvancedModelBox(this);
+        right_leg.setRotationPoint(-3.8F, 8.0F, 4.0F);
+        body.addChild(right_leg);
+        right_leg.setTextureOffset(0, 76).addBox(-3.0F, 0.0F, -3.0F, 6.0F, 11.0F, 8.0F, 0.0F, true);
+
+        left_arm = new AdvancedModelBox(this);
+        left_arm.setRotationPoint(4.5F, 4.0F, -13.0F);
+        body.addChild(left_arm);
+        left_arm.setTextureOffset(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, false);
+
+        right_arm = new AdvancedModelBox(this);
+        right_arm.setRotationPoint(-4.5F, 4.0F, -13.0F);
+        body.addChild(right_arm);
+        right_arm.setTextureOffset(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, true);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -110,57 +97,57 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         animator.update(entity);
         animator.setAnimation(EntityGrizzlyBear.ANIMATION_MAUL);
         animator.startKeyframe(4);
-        animator.rotate(bodyfront, (float)Math.toRadians(6F), 0, 0);
-        animator.rotate(FrontlegL, (float)Math.toRadians(70F), 0, 0);
-        animator.rotate(FrontlegR, (float)Math.toRadians(-25F), 0, 0);
+        animator.rotate(body, (float)Math.toRadians(6F), 0, 0);
+        animator.rotate(left_arm, (float)Math.toRadians(70F), 0, 0);
+        animator.rotate(right_arm, (float)Math.toRadians(-25F), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(4);
-        animator.rotate(bodyfront, (float)Math.toRadians(2F), 0, 0);
-        animator.rotate(FrontlegL, (float)Math.toRadians(-25F), 0, 0);
-        animator.rotate(FrontlegR, (float)Math.toRadians(70F), 0, 0);
+        animator.rotate(body, (float)Math.toRadians(2F), 0, 0);
+        animator.rotate(left_arm, (float)Math.toRadians(-25F), 0, 0);
+        animator.rotate(right_arm, (float)Math.toRadians(70F), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(4);
-        animator.rotate(bodyfront, (float)Math.toRadians(6F), 0, 0);
-        animator.rotate(FrontlegL, (float)Math.toRadians(70F), 0, 0);
-        animator.rotate(FrontlegR, (float)Math.toRadians(-25F), 0, 0);
+        animator.rotate(body, (float)Math.toRadians(6F), 0, 0);
+        animator.rotate(left_arm, (float)Math.toRadians(70F), 0, 0);
+        animator.rotate(right_arm, (float)Math.toRadians(-25F), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(4);
-        animator.rotate(bodyfront, (float)Math.toRadians(2F), 0, 0);
-        animator.rotate(FrontlegL, (float)Math.toRadians(-25F), 0, 0);
-        animator.rotate(FrontlegR, (float)Math.toRadians(70F), 0, 0);
+        animator.rotate(body, (float)Math.toRadians(2F), 0, 0);
+        animator.rotate(left_arm, (float)Math.toRadians(-25F), 0, 0);
+        animator.rotate(right_arm, (float)Math.toRadians(70F), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(4);
         animator.endKeyframe();
         animator.setAnimation(EntityGrizzlyBear.ANIMATION_SWIPE_R);
         animator.startKeyframe(7);
-        animator.rotate(bodyfront, 0, (float)Math.toRadians(20F), 0);
-        animator.rotate(bodymid, 0, (float)Math.toRadians(10F), 0);
+        animator.rotate(body, 0, (float)Math.toRadians(20F), 0);
+        animator.rotate(midbody, 0, (float)Math.toRadians(10F), 0);
         animator.rotate(head, 0, 0, (float)Math.toRadians(10F));
-        animator.rotate(FrontlegL, (float)Math.toRadians(65F), 0, (float)Math.toRadians(-100F));
-        animator.rotate(FrontlegR, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(10F));
+        animator.rotate(left_arm, (float)Math.toRadians(65F), 0, (float)Math.toRadians(-100F));
+        animator.rotate(right_arm, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(10F));
         animator.endKeyframe();
         animator.startKeyframe(5);
-        animator.rotate(bodyfront, 0, (float)Math.toRadians(-30F), 0);
-        animator.rotate(bodymid, 0, (float)Math.toRadians(-15F), 0);
+        animator.rotate(body, 0, (float)Math.toRadians(-30F), 0);
+        animator.rotate(midbody, 0, (float)Math.toRadians(-15F), 0);
         animator.rotate(head, 0, 0, (float)Math.toRadians(0));
-        animator.rotate(FrontlegL, (float)Math.toRadians(20F), 0, (float)Math.toRadians(80F));
-        animator.rotate(FrontlegR, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(20F));
+        animator.rotate(left_arm, (float)Math.toRadians(20F), 0, (float)Math.toRadians(80F));
+        animator.rotate(right_arm, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(20F));
         animator.endKeyframe();
         animator.resetKeyframe(3);
         animator.setAnimation(EntityGrizzlyBear.ANIMATION_SWIPE_L);
         animator.startKeyframe(7);
-        animator.rotate(bodyfront, 0, (float)Math.toRadians(-20F), 0);
-        animator.rotate(bodymid, 0, (float)Math.toRadians(-10F), 0);
+        animator.rotate(body, 0, (float)Math.toRadians(-20F), 0);
+        animator.rotate(midbody, 0, (float)Math.toRadians(-10F), 0);
         animator.rotate(head, 0, 0, (float)Math.toRadians(-10F));
-        animator.rotate(FrontlegR, (float)Math.toRadians(65F), 0, (float)Math.toRadians(100F));
-        animator.rotate(FrontlegL, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(-10F));
+        animator.rotate(right_arm, (float)Math.toRadians(65F), 0, (float)Math.toRadians(100F));
+        animator.rotate(left_arm, (float)Math.toRadians(-15F), 0, (float)Math.toRadians(-10F));
         animator.endKeyframe();
         animator.startKeyframe(5);
-        animator.rotate(bodyfront, 0, (float)Math.toRadians(30F), 0);
-        animator.rotate(bodymid, 0, (float)Math.toRadians(15F), 0);
+        animator.rotate(body, 0, (float)Math.toRadians(30F), 0);
+        animator.rotate(midbody, 0, (float)Math.toRadians(15F), 0);
         animator.rotate(head, 0, 0, (float)Math.toRadians(0));
-        animator.rotate(FrontlegR, (float)Math.toRadians(-20F), 0, (float)Math.toRadians(-80F));
-        animator.rotate(FrontlegL, (float)Math.toRadians(15F), 0, (float)Math.toRadians(-20F));
+        animator.rotate(right_arm, (float)Math.toRadians(-20F), 0, (float)Math.toRadians(-80F));
+        animator.rotate(left_arm, (float)Math.toRadians(15F), 0, (float)Math.toRadians(-20F));
         animator.endKeyframe();
         animator.resetKeyframe(3);
 
@@ -212,66 +199,49 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         float partialTick = Minecraft.getInstance().getRenderPartialTicks();
         float sitProgress = entityIn.prevSitProgress + (entityIn.sitProgress - entityIn.prevSitProgress) * partialTick;
         float standProgress = entityIn.prevStandProgress + (entityIn.standProgress - entityIn.prevStandProgress) * partialTick;
-
-
-        progressRotationPrev(bodyback, sitProgress, (float)Math.toRadians(80), 0, 0, 10F);
-        progressRotationPrev(bodymid, sitProgress, (float)Math.toRadians(70), 0, 0, 10F);
-        progressRotationPrev(bodyfront, sitProgress, (float)Math.toRadians(60), 0, 0, 10F);
-        progressRotationPrev(head, sitProgress, (float)Math.toRadians(-60), 0, 0, 10F);
-        progressRotationPrev(backlegL, sitProgress, 0, (float)Math.toRadians(10), (float)Math.toRadians(-30), 10F);
-        progressRotationPrev(backlegR, sitProgress, 0, (float)Math.toRadians(-10), (float)Math.toRadians(30), 10F);
-        progressRotationPrev(FrontlegL, sitProgress, (float)Math.toRadians(-15), (float)Math.toRadians(10), 0, 10F);
-        progressRotationPrev(FrontlegR, sitProgress, (float)Math.toRadians(-15), (float)Math.toRadians(-10), 0, 10F);
-        progressPositionPrev(bodyback, sitProgress, 0, 10, 0, 10F);
-        progressPositionPrev(bodymid, sitProgress, 0, 11, -1, 10F);
-        progressPositionPrev(bodyfront, sitProgress, 0, 2, -10, 10F);
-        progressPositionPrev(head, sitProgress, 0, -2, 1, 10F);
-        progressPositionPrev(root, sitProgress, 0, 0, -10, 10F);
+        progressRotationPrev(body, sitProgress, (float)Math.toRadians(-80), 0, 0, 10F);
+        progressRotationPrev(head, sitProgress, (float)Math.toRadians(80), 0, 0, 10F);
+        progressPositionPrev(body, sitProgress, 0, 10, 0, 10F);
+        progressRotationPrev(left_leg, sitProgress, 0, (float)Math.toRadians(10), (float)Math.toRadians(-30), 10F);
+        progressRotationPrev(right_leg, sitProgress, 0, (float)Math.toRadians(-10), (float)Math.toRadians(30), 10F);
+        progressRotationPrev(left_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(10), 0, 10F);
+        progressRotationPrev(right_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(-10), 0, 10F);
+        progressPositionPrev(head, sitProgress, 0, 4, -1, 10F);
         this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);
-        this.head.rotateAngleX -= headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleX += headPitch * ((float)Math.PI / 180F);
 
-        progressRotationPrev(backlegL, standProgress, (float)Math.toRadians(-80), 0, 0, 10F);
-        progressRotationPrev(backlegR, standProgress, (float)Math.toRadians(-80), 0, 0, 10F);
-        progressPositionPrev(backlegL, standProgress, 0, -3, -4.5F, 10F);
-        progressPositionPrev(backlegR, standProgress, 0, -3, -4.5F, 10F);
-
-        progressRotationPrev(bodyback, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
-        progressRotationPrev(bodymid, standProgress, (float)Math.toRadians(90), 0, 0, 10F);
-        progressRotationPrev(bodyfront, standProgress, (float)Math.toRadians(70), 0, 0, 10F);
-        progressRotationPrev(head, standProgress, (float)Math.toRadians(-80), 0, 0, 10F);
-        progressRotationPrev(FrontlegL, standProgress, (float)Math.toRadians(-35), (float)Math.toRadians(-10), 0, 10F);
-        progressRotationPrev(FrontlegR, standProgress, (float)Math.toRadians(-35), (float)Math.toRadians(10), 0, 10F);
-        progressPositionPrev(bodyback, standProgress, 0, 1, 3, 10F);
-        progressPositionPrev(bodymid, standProgress, 0, 1.5F, 4F, 10F);
-        progressPositionPrev(bodyfront, standProgress, 0, -6F, -9F, 10F);
+        progressRotationPrev(left_leg, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
+        progressRotationPrev(right_leg, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
+        progressPositionPrev(left_leg, standProgress, 0, -4, 4, 10F);
+        progressPositionPrev(right_leg, standProgress, 0, -4, 4, 10F);
         progressPositionPrev(head, standProgress, 0, 0, 2, 10F);
-        progressPositionPrev(FrontlegR, standProgress, 0, 0, -1, 10F);
-        progressPositionPrev(FrontlegL, standProgress, 0, 0, -1, 10F);
-        progressPositionPrev(root, standProgress, 0, 1F, -6, 10F);
-
-        this.walk(backlegL, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);
-        this.bob(backlegL, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
-        this.walk(backlegR, walkSpeed, walkDegree, true, 0F, 0F, limbSwing, limbSwingAmount);
-        this.bob(backlegL, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
+        progressPositionPrev(body, standProgress, 0, -1, -5, 10F);
+        progressPositionPrev(head, standProgress, 0, 1, -3, 10F);
+        progressRotationPrev(body, standProgress, (float)Math.toRadians(-80), 0, 0, 10F);
+        progressRotationPrev(left_arm, standProgress, (float)Math.toRadians(35), (float)Math.toRadians(-10), 0, 10F);
+        progressRotationPrev(right_arm, standProgress, (float)Math.toRadians(35), (float)Math.toRadians(10), 0, 10F);
+        progressRotationPrev(head, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
+        this.walk(left_leg, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);
+        this.bob(left_leg, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
+        this.walk(right_leg, walkSpeed, walkDegree, true, 0F, 0F, limbSwing, limbSwingAmount);
+        this.bob(left_leg, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
         if(standProgress == 0 && sitProgress == 0){
-            this.walk(FrontlegR, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);
-            this.walk(FrontlegL, walkSpeed, walkDegree, true, 0F, 0F, limbSwing, limbSwingAmount);
-            this.flap(bodymid, walkSpeed, walkDegree * 0.2F, false, 1F, 0, limbSwing, limbSwingAmount);
-            this.flap(bodyfront, walkSpeed, walkDegree * 0.2F, false, 2F, 0, limbSwing, limbSwingAmount);
+            this.walk(right_arm, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);
+            this.walk(left_arm, walkSpeed, walkDegree, true, 0F, 0F, limbSwing, limbSwingAmount);
+            this.flap(midbody, walkSpeed, walkDegree * 0.2F, false, 1F, 0, limbSwing, limbSwingAmount);
+            this.flap(body, walkSpeed, walkDegree * 0.2F, false, 2F, 0, limbSwing, limbSwingAmount);
         }else{
-            this.walk(FrontlegR, walkSpeed, walkDegree * 0.1F, false, 0F, 0F, limbSwing, limbSwingAmount);
-            this.walk(FrontlegL, walkSpeed, walkDegree * 0.1F, true, 0F, 0F, limbSwing, limbSwingAmount);
+            this.walk(right_arm, walkSpeed, walkDegree * 0.1F, false, 0F, 0F, limbSwing, limbSwingAmount);
+            this.walk(left_arm, walkSpeed, walkDegree * 0.1F, true, 0F, 0F, limbSwing, limbSwingAmount);
             if(entityIn.isEating()){
-                this.walk(FrontlegR, eatSpeed, eatDegree, false, 1F, 0.3F, ageInTicks, 1);
-                this.walk(FrontlegL, eatSpeed, eatDegree, false, 1F, 0.3F, ageInTicks, 1);
-                this.walk(bodyfront, eatSpeed, eatDegree * 0.1F, false, 2F, 0.3F, ageInTicks, 1);
-                this.walk(head, eatSpeed, eatDegree * 0.3F, true, 1F, 0.3F, ageInTicks, 1);
+                this.walk(right_arm, eatSpeed, eatDegree, true, 1F, 0.6F, ageInTicks, 1);
+                this.walk(left_arm, eatSpeed, eatDegree, true, 1F, 0.6F, ageInTicks, 1);
+                this.walk(body, eatSpeed, eatDegree * 0.1F, true, 2F, 0.1F, ageInTicks, 1);
+                this.walk(head, eatSpeed, eatDegree * 0.3F, false, 1F, 0.3F, ageInTicks, 1);
             }
         }
-        this.flap(bodyback, walkSpeed, walkDegree * 0.2F, false, 1.5F, 0, limbSwing, limbSwingAmount);
         this.flap(head, walkSpeed, walkDegree * -0.1F, false, 2F, 0, limbSwing, limbSwingAmount);
-        this.bob(bodyfront, walkSpeed, walkDegree, true, limbSwing, limbSwingAmount);
-        this.bob(bodyback, walkSpeed, walkDegree, true, limbSwing, limbSwingAmount);
+        this.bob(body, walkSpeed, walkDegree, true, limbSwing, limbSwingAmount);
     }
 
     @Override
@@ -282,18 +252,16 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
         return ImmutableList.of(root,
-                Body,
-                bodyfront,
-                FrontlegR,
-                FrontlegL,
+                body,
+                right_arm,
+                left_arm,
                 head,
-                EarL,
-                EarR,
+                left_ear,
+                right_ear,
                 snout,
-                bodymid,
-                bodyback,
-                backlegL,
-                backlegR);
+                midbody,
+                left_leg,
+                right_leg);
     }
 
     public void setRotationAngle(AdvancedModelBox box, float x, float y, float z) {

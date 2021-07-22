@@ -9,9 +9,9 @@
       "y": 10,
       "page" : 0,
       "scale": 1.2,
-      "entity_scale": 0.8,
-      "offset_x": -5,
-      "offset_y": -7,
+      "entity_scale": 0.6,
+      "offset_x": -3,
+      "offset_y": -5,
       "linked_page": "grizzly_bear.json",
       "hover_text": "entity.alexsmobs.grizzly_bear"
     },
