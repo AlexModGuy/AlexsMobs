@@ -20,16 +20,18 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ShovelItem;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IServerWorld;
@@ -53,6 +55,7 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
     private static final DataParameter<Boolean> JOSTLING = EntityDataManager.createKey(EntityMoose.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> JOSTLE_ANGLE = EntityDataManager.createKey(EntityMoose.class, DataSerializers.FLOAT);
     private static final DataParameter<Optional<UUID>> JOSTLER_UUID = EntityDataManager.createKey(EntityMoose.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    private static final DataParameter<Boolean> SNOWY = EntityDataManager.createKey(EntityMoose.class, DataSerializers.BOOLEAN);
     public float prevJostleAngle;
     public float prevJostleProgress;
     public float jostleProgress;
@@ -63,6 +66,8 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
     public int timeUntilAntlerDrop = 7 * DAY + this.rand.nextInt(3) * DAY;
     private int animationTick;
     private Animation currentAnimation;
+    private int snowTimer = 0;
+    private boolean permSnow = false;
 
     protected EntityMoose(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -117,8 +122,8 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
     public boolean isBreedingItem(ItemStack stack) {
         if (stack.getItem() == Items.DANDELION && !this.isInLove() && this.getGrowingAge() == 0) {
             if (this.getRNG().nextInt(5) == 0) {
-            return true;
-            }else{
+                return true;
+            } else {
                 this.world.setEntityState(this, (byte) 6);
                 return false;
             }
@@ -150,16 +155,20 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
+        this.setSnowy(compound.getBoolean("Snowy"));
         if (compound.contains("AntlerTime")) {
             this.timeUntilAntlerDrop = compound.getInt("AntlerTime");
         }
         this.setAntlered(compound.getBoolean("Antlered"));
         this.jostleCooldown = compound.getInt("JostlingCooldown");
+        this.permSnow = compound.getBoolean("SnowPerm");
 
     }
 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
+        compound.putBoolean("Snowy", this.isSnowy());
+        compound.putBoolean("SnowPerm", this.permSnow);
         compound.putInt("AntlerTime", this.timeUntilAntlerDrop);
         compound.putBoolean("Antlered", this.isAntlered());
         compound.putInt("JostlingCooldown", this.jostleCooldown);
@@ -210,6 +219,23 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
                 }
                 getAttackTarget().applyKnockback(1F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), dmg);
+            }
+        }
+        if(snowTimer > 0){
+            snowTimer--;
+        }
+        if (snowTimer == 0 && !world.isRemote) {
+            snowTimer = 200 + rand.nextInt(400);
+            if(this.isSnowy()){
+                if(!permSnow){
+                    if (!this.world.isRemote || this.getFireTimer() > 0 || this.isInWaterOrBubbleColumn() || !EntityGrizzlyBear.isSnowingAt(world, this.getPosition().up())) {
+                        this.setSnowy(false);
+                    }
+                }
+            }else{
+                if (!this.world.isRemote && EntityGrizzlyBear.isSnowingAt(world, this.getPosition())) {
+                    this.setSnowy(true);
+                }
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -271,6 +297,37 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
 
     public void setJostlingPartnerUUID(@Nullable UUID uniqueId) {
         this.dataManager.set(JOSTLER_UUID, Optional.ofNullable(uniqueId));
+    }
+
+    public boolean isSnowy() {
+        return this.dataManager.get(SNOWY).booleanValue();
+    }
+
+    public void setSnowy(boolean honeyed) {
+        this.dataManager.set(SNOWY, Boolean.valueOf(honeyed));
+    }
+
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+        ItemStack itemstack = player.getHeldItem(hand);
+        Item item = itemstack.getItem();
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
+        if (item == Items.SNOW && !this.isSnowy() && !world.isRemote) {
+            this.consumeItemFromStack(player, itemstack);
+            this.permSnow = true;
+            this.setSnowy(true);
+            this.playSound(SoundEvents.BLOCK_SNOW_PLACE, this.getSoundVolume(), this.getSoundPitch());
+            return ActionResultType.SUCCESS;
+        }
+        if (item instanceof ShovelItem && this.isSnowy() && !world.isRemote) {
+            this.permSnow = false;
+            if (!player.isCreative()) {
+                itemstack.attemptDamageItem(1, this.getRNG(), player instanceof ServerPlayerEntity ? (ServerPlayerEntity) player : null);
+            }
+            this.setSnowy(false);
+            this.playSound(SoundEvents.BLOCK_SNOW_BREAK, this.getSoundVolume(), this.getSoundPitch());
+            return ActionResultType.SUCCESS;
+        }
+        return type;
     }
 
     @Nullable

@@ -468,7 +468,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
-    public boolean isSnowingAt(World world, BlockPos position) {
+    public static boolean isSnowingAt(World world, BlockPos position) {
         if (!world.isRaining()) {
             return false;
         } else if (!world.canSeeSky(position)) {
