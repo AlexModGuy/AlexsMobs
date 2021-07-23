@@ -149,6 +149,7 @@ public class EntityMoose extends AnimalEntity implements IAnimatedEntity {
         super.registerData();
         this.dataManager.register(ANTLERED, Boolean.valueOf(true));
         this.dataManager.register(JOSTLING, Boolean.valueOf(false));
+        this.dataManager.register(SNOWY, Boolean.valueOf(false));
         this.dataManager.register(JOSTLE_ANGLE, 0F);
         this.dataManager.register(JOSTLER_UUID, Optional.empty());
     }
