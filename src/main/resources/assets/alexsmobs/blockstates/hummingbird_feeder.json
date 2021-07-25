@@ -1,0 +1,44 @@
+{
+  "variants": {
+    "contents=0,hanging=false": [
+      {
+        "model": "alexsmobs:block/bird_feeder_empty"
+      }
+    ],
+    "contents=1,hanging=false": [
+      {
+        "model": "alexsmobs:block/bird_feeder_water"
+      }
+    ],
+    "contents=2,hanging=false": [
+      {
+        "model": "alexsmobs:block/bird_feeder_sugar"
+      }
+    ],
+    "contents=3,hanging=false": [
+      {
+        "model": "alexsmobs:block/bird_feeder_filled"
+      }
+    ],
+    "contents=0,hanging=true": [
+      {
+        "model": "alexsmobs:block/bird_feeder_empty_hanging"
+      }
+    ],
+    "contents=1,hanging=true": [
+      {
+        "model": "alexsmobs:block/bird_feeder_water_hanging"
+      }
+    ],
+    "contents=2,hanging=true": [
+      {
+        "model": "alexsmobs:block/bird_feeder_sugar_hanging"
+      }
+    ],
+    "contents=3,hanging=true": [
+      {
+        "model": "alexsmobs:block/bird_feeder_filled_hanging"
+      }
+    ]
+  }
+}

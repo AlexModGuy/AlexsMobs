@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.client.event;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.ClientProxy;
 import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
-import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
 import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
@@ -11,9 +10,7 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.item.ItemDimensionalCarver;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
-import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
@@ -31,13 +28,10 @@ import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
@@ -84,13 +78,21 @@ public class ClientEvents {
             event.getEntity().renderYawOffset = -event.getEntity().renderYawOffset;
             event.getEntity().prevRotationYawHead = -event.getEntity().prevRotationYawHead;
             event.getEntity().rotationYawHead = -event.getEntity().rotationYawHead;
-
+        }
+        if (event.getEntity().isPotionActive(AMEffectRegistry.ENDER_FLU)) {
+            event.getMatrixStack().push();
+            event.getMatrixStack().rotate(Vector3f.YP.rotationDegrees((float) (Math.cos((double) event.getEntity().ticksExisted * 7F) * Math.PI * (double) 1.2F)));
+            float vibrate = 0.05F;
+            event.getMatrixStack().translate((event.getEntity().getRNG().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRNG().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRNG().nextFloat() - 0.5F) * vibrate);
         }
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onPostRenderEntity(RenderLivingEvent.Post event) {
+        if (event.getEntity().isPotionActive(AMEffectRegistry.ENDER_FLU)) {
+            event.getMatrixStack().pop();
+        }
         if (event.getEntity().isPotionActive(AMEffectRegistry.CLINGING) && event.getEntity().getEyeHeight() < event.getEntity().getHeight() * 0.45F || event.getEntity().isPotionActive(AMEffectRegistry.DEBILITATING_STING) && event.getEntity().getCreatureAttribute() == CreatureAttribute.ARTHROPOD && event.getEntity().getWidth() > event.getEntity().getHeight()) {
             event.getMatrixStack().pop();
             event.getEntity().prevRenderYawOffset = -event.getEntity().prevRenderYawOffset;
@@ -141,13 +143,13 @@ public class ClientEvents {
             Hand hand = MoreObjects.firstNonNull(Minecraft.getInstance().player.swingingHand, Hand.MAIN_HAND);
             float f = Minecraft.getInstance().player.getSwingProgress(event.getPartialTicks());
             float f1 = MathHelper.lerp(event.getPartialTicks(), Minecraft.getInstance().player.prevRotationPitch, Minecraft.getInstance().player.rotationPitch);
-            float f5 = -0.4F * MathHelper.sin(MathHelper.sqrt(f) * (float)Math.PI);
-            float f6 = 0.2F * MathHelper.sin(MathHelper.sqrt(f) * ((float)Math.PI * 2F));
-            float f10 = -0.2F * MathHelper.sin(f * (float)Math.PI);
+            float f5 = -0.4F * MathHelper.sin(MathHelper.sqrt(f) * (float) Math.PI);
+            float f6 = 0.2F * MathHelper.sin(MathHelper.sqrt(f) * ((float) Math.PI * 2F));
+            float f10 = -0.2F * MathHelper.sin(f * (float) Math.PI);
             HandSide handside = hand == Hand.MAIN_HAND ? Minecraft.getInstance().player.getPrimaryHand() : Minecraft.getInstance().player.getPrimaryHand().opposite();
             boolean flag3 = handside == HandSide.RIGHT;
             int l = flag3 ? 1 : -1;
-            matrixStackIn.translate((double)((float)l * f5), (double)f6, (double)f10);
+            matrixStackIn.translate((float) l * f5, f6, f10);
         }
     }
 

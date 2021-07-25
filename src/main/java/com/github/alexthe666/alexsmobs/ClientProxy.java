@@ -156,6 +156,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.BANANA_PEEL, RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.CAPSID, RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(AMBlockRegistry.VOID_WORM_BEAK, RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(AMBlockRegistry.HUMMINGBIRD_FEEDER, RenderType.getCutout());
         ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.CAPSID, manager -> new RenderCapsid(manager));
         ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.VOID_WORM_BEAK, manager -> new RenderVoidWormBeak(manager));
 

@@ -24,6 +24,7 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.ShovelItem;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -33,12 +34,15 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
@@ -54,6 +58,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityGrizzlyBear.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HONEYED = EntityDataManager.createKey(EntityGrizzlyBear.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> EATING = EntityDataManager.createKey(EntityGrizzlyBear.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SNOWY = EntityDataManager.createKey(EntityGrizzlyBear.class, DataSerializers.BOOLEAN);
     private static final RangedInteger angerLogic = TickRangeConverter.convertRange(20, 39);
     public float prevStandProgress;
     public float prevSitProgress;
@@ -75,6 +80,10 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
     private UUID salmonThrowerID = null;
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(Items.SALMON, Items.HONEYCOMB, Items.HONEY_BOTTLE);
     public int timeUntilNextFur = this.rand.nextInt(24000) + 24000;
+    protected static final EntitySize STANDING_SIZE = EntitySize.flexible(1.8F,  2.85F);
+    private boolean recalcSize = false;
+    private int snowTimer = 0;
+    private boolean permSnow = false;
 
     protected EntityGrizzlyBear(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -82,6 +91,10 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 40.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.6F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    public EntitySize getSize(Pose poseIn) {
+        return isStanding() ? STANDING_SIZE.scale(this.getRenderScale()) : super.getSize(poseIn);
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -130,7 +143,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         float f1 = this.limbSwing;
         float sitAdd = 0.01F * this.sitProgress;
         float standAdd = 0.07F * this.standProgress;
-        return (double)this.getHeight() - 0.4D + (double)(0.12F * MathHelper.cos(f1 * 0.7F) * 0.7F * f) + sitAdd + standAdd;
+        return (double)this.getHeight() - 0.2D + (double)(0.12F * MathHelper.cos(f1 * 0.7F) * 0.7F * f) + sitAdd + standAdd;
     }
 
 
@@ -160,7 +173,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.damageType != null && source.damageType.equals("sting") || super.isInvulnerableTo(source);
+        return source.damageType != null && source.damageType.equals("sting") || source == DamageSource.IN_WALL ||super.isInvulnerableTo(source);
     }
 
     protected void registerGoals() {
@@ -192,18 +205,22 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("Honeyed", this.isHoneyed());
+        compound.putBoolean("Snowy", this.isSnowy());
         compound.putBoolean("Standing", this.isStanding());
         compound.putBoolean("BearSitting", this.isSitting());
         compound.putBoolean("ForcedToSit", this.forcedSit);
+        compound.putBoolean("SnowPerm", this.permSnow);
         compound.putInt("FurTime", this.timeUntilNextFur);
     }
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setHoneyed(compound.getBoolean("Honeyed"));
+        this.setSnowy(compound.getBoolean("Snowy"));
         this.setStanding(compound.getBoolean("Standing"));
         this.setSitting(compound.getBoolean("BearSitting"));
         this.forcedSit = compound.getBoolean("ForcedToSit");
+        this.permSnow = compound.getBoolean("SnowPerm");
         this.timeUntilNextFur = compound.getInt("FurTime");
     }
 
@@ -227,6 +244,23 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.getEntityInteractionResult(player, hand);
+        if(item == Items.SNOW && !this.isSnowy() && !world.isRemote){
+            this.consumeItemFromStack(player, itemstack);
+            this.permSnow = true;
+            this.setSnowy(true);
+            this.playSound(SoundEvents.BLOCK_SNOW_PLACE, this.getSoundVolume(), this.getSoundPitch());
+            return ActionResultType.SUCCESS;
+        }
+        if(item instanceof ShovelItem && this.isSnowy() && !world.isRemote){
+            this.permSnow = false;
+            if(!player.isCreative()){
+                itemstack.attemptDamageItem(1, this.getRNG(), player instanceof ServerPlayerEntity ? (ServerPlayerEntity)player : null);
+            }
+            this.setSnowy(false);
+            this.playSound(SoundEvents.BLOCK_SNOW_BREAK, this.getSoundVolume(), this.getSoundPitch());
+            return ActionResultType.SUCCESS;
+        }
+
         if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)){
             if(!player.isSneaking()){
                 player.startRiding(this);
@@ -279,6 +313,10 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
             this.setEating(true);
             this.setSitting(true);
             this.setStanding(false);
+        }
+        if(recalcSize){
+            recalcSize = false;
+            this.recalculateSize();
         }
         if(isEating() && !this.canTargetItem(this.getHeldItem(Hand.MAIN_HAND))){
             this.setEating(false);
@@ -410,7 +448,36 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
             this.entityDropItem(AMItemRegistry.BEAR_FUR);
             this.timeUntilNextFur = this.rand.nextInt(24000) + 24000;
         }
+        if(snowTimer > 0){
+            snowTimer--;
+        }
+        if (snowTimer == 0 && !world.isRemote) {
+            snowTimer = 200 + rand.nextInt(400);
+            if(this.isSnowy()){
+               if(!permSnow){
+                   if (!this.world.isRemote || this.getFireTimer() > 0 || this.isInWaterOrBubbleColumn() || !isSnowingAt(world, this.getPosition().up())) {
+                       this.setSnowy(false);
+                   }
+               }
+            }else{
+                if (!this.world.isRemote &&  isSnowingAt(world, this.getPosition())) {
+                    this.setSnowy(true);
+                }
+            }
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    public static boolean isSnowingAt(World world, BlockPos position) {
+        if (!world.isRaining()) {
+            return false;
+        } else if (!world.canSeeSky(position)) {
+            return false;
+        } else if (world.getHeight(Heightmap.Type.MOTION_BLOCKING, position).getY() > position.getY()) {
+            return false;
+        } else {
+            return world.getBiome(position).getPrecipitation() == Biome.RainType.SNOW;
+        }
     }
 
     public boolean isOnSameTeam(Entity entityIn) {
@@ -444,6 +511,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         this.dataManager.register(STANDING, Boolean.valueOf(false));
         this.dataManager.register(SITTING, Boolean.valueOf(false));
         this.dataManager.register(HONEYED, Boolean.valueOf(false));
+        this.dataManager.register(SNOWY, Boolean.valueOf(false));
         this.dataManager.register(EATING, Boolean.valueOf(false));
     }
 
@@ -463,12 +531,21 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         this.dataManager.set(HONEYED, Boolean.valueOf(honeyed));
     }
 
+    public boolean isSnowy() {
+        return this.dataManager.get(SNOWY).booleanValue();
+    }
+
+    public void setSnowy(boolean honeyed) {
+        this.dataManager.set(SNOWY, Boolean.valueOf(honeyed));
+    }
+
     public boolean isStanding() {
         return this.dataManager.get(STANDING).booleanValue();
     }
 
     public void setStanding(boolean standing) {
         this.dataManager.set(STANDING, Boolean.valueOf(standing));
+        this.recalcSize = true;
     }
 
     @Nullable

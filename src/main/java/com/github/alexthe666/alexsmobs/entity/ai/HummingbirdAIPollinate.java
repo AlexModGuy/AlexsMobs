@@ -35,7 +35,7 @@ public class HummingbirdAIPollinate  extends MoveToBlockGoal {
     }
 
     public double getTargetDistanceSq() {
-        return 1D;
+        return 3D;
     }
 
     public void tick() {
@@ -46,7 +46,7 @@ public class HummingbirdAIPollinate  extends MoveToBlockGoal {
             ++this.timeoutCounter;
             double speedLoc = movementSpeed;
             if(this.creature.getDistanceSq(blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D) >= 3){
-                speedLoc  = movementSpeed * 0.3D;
+                speedLoc = movementSpeed * 0.3D;
             }
             this.creature.getMoveHelper().setMoveTo((double) ((float) blockpos.getX()) + 0.5D, blockpos.getY(), (double) ((float) blockpos.getZ()) + 0.5D, speedLoc);
 
@@ -96,7 +96,7 @@ public class HummingbirdAIPollinate  extends MoveToBlockGoal {
     @Override
     protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
         if (worldIn.getBlockState(pos).getBlock().isIn(BlockTags.BEE_GROWABLES) || worldIn.getBlockState(pos).getBlock().isIn(BlockTags.FLOWERS)) {
-            return bird.pollinateCooldown == 0;
+            return bird.pollinateCooldown == 0 && bird.canBlockBeSeen(pos);
         }
         return false;
     }

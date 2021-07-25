@@ -92,6 +92,7 @@ public class ModelHummingbird extends AdvancedEntityModel<EntityHummingbird> {
         float partialTick = Minecraft.getInstance().getRenderPartialTicks();
         float flyProgress = entityIn.prevFlyProgress + (entityIn.flyProgress - entityIn.prevFlyProgress) * partialTick;
         float zoomProgress = entityIn.prevMovingProgress + (entityIn.movingProgress - entityIn.prevMovingProgress) * partialTick;
+        float sipProgress = entityIn.prevSipProgress + (entityIn.sipProgress - entityIn.prevSipProgress) * partialTick;
         progressRotationPrev(body, flyProgress, (float) Math.toRadians(30), 0, 0, 5F);
         progressRotationPrev(head, flyProgress, (float) Math.toRadians(-30), 0, 0, 5F);
         progressRotationPrev(wingL, flyProgress, (float) Math.toRadians(15), (float) Math.toRadians(55), (float) Math.toRadians(-100), 5F);
@@ -110,6 +111,8 @@ public class ModelHummingbird extends AdvancedEntityModel<EntityHummingbird> {
             progressRotationPrev(wingL, zoomProgress, (float) Math.toRadians(20), 0, 0, 5F);
             progressRotationPrev(wingR, zoomProgress, (float) Math.toRadians(20), 0, 0, 5F);
         }
+        progressPositionPrev(body, sipProgress, 0, -1, 3, 5F);
+        progressRotationPrev(head, sipProgress, (float) Math.toRadians(60), 0, 0, 5F);
         if (entityIn.isFlying()) {
             this.flap(wingL, flySpeed * 2.3F, flyDegree * 2.3F, false, 0, 0F, ageInTicks, 1);
             this.walk(wingL, flySpeed * 2.3F, flyDegree, false, 0, -0.4F, ageInTicks, 1);
