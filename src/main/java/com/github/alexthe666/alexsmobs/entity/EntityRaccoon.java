@@ -8,22 +8,22 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -44,10 +44,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.UUID;
-
-import static com.github.alexthe666.alexsmobs.entity.EntityElephant.getCarpetColor;
+import java.util.*;
 
 public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IFollower, ITargetsDroppedItems, ILootsChests {
 
@@ -68,13 +65,18 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
     public float sitProgress;
     public int maxStandTime = 75;
     private int standingTime = 0;
+    private int stealCooldown = 0;
     public int lookForWaterBeforeEatingTimer = 0;
     private int animationTick;
     private Animation currentAnimation;
+    private int pickupItemCooldown = 0;
     @Nullable
     private UUID eggThrowerUUID = null;
     public boolean forcedSit = false;
     public static final Animation ANIMATION_ATTACK = Animation.create(12);
+    private static final EntityPredicate VILLAGER_STEAL_PREDICATE = (new EntityPredicate()).setDistance(20.0D).allowInvulnerable().allowFriendlyFire();
+    private static final EntityPredicate IRON_GOLEM_PREDICATE = (new EntityPredicate()).setDistance(20.0D).setIgnoresLineOfSight().allowInvulnerable().allowFriendlyFire();
+
     protected EntityRaccoon(EntityType type, World world) {
         super(type, world);
         this.setPathPriority(PathNodeType.WATER_BORDER, 0.0F);
@@ -113,11 +115,12 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         this.goalSelector.addGoal(8, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(9, new RaccoonAIBeg(this, 0.65D));
         this.goalSelector.addGoal(10, new AnimalAIPanicBaby(this, 1.25D));
-        this.goalSelector.addGoal(11, new StrollGoal(200));
-        this.goalSelector.addGoal(12, new TameableAIDestroyTurtleEggs(this, 1.0D, 3));
-        this.goalSelector.addGoal(13, new AnimalAIWanderRanged(this, 120, 1.0D, 14, 7));
-        this.goalSelector.addGoal(14, new LookAtGoal(this, PlayerEntity.class, 15.0F));
-        this.goalSelector.addGoal(14, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(11, new AIStealFromVillagers(this));
+        this.goalSelector.addGoal(12, new StrollGoal(200));
+        this.goalSelector.addGoal(13, new TameableAIDestroyTurtleEggs(this, 1.0D, 3));
+        this.goalSelector.addGoal(14, new AnimalAIWanderRanged(this, 120, 1.0D, 14, 7));
+        this.goalSelector.addGoal(15, new LookAtGoal(this, PlayerEntity.class, 15.0F));
+        this.goalSelector.addGoal(15, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(3, new OwnerHurtByTargetGoal(this));
@@ -226,6 +229,14 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
             this.consumeItemFromStack(player, itemstack);
             return ActionResultType.SUCCESS;
         }
+        if(owner && !this.getHeldItemMainhand().isEmpty()){
+            if(!this.world.isRemote){
+                this.entityDropItem(this.getHeldItemMainhand().copy());
+            }
+            this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+            pickupItemCooldown = 60;
+            return ActionResultType.SUCCESS;
+        }
         if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)){
             if(!player.isSneaking()){
                 this.setCommand(this.getCommand() + 1);
@@ -255,6 +266,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         compound.putBoolean("ForcedToSit", this.forcedSit);
         compound.putInt("RacCommand", this.getCommand());
         compound.putInt("Carpet", this.dataManager.get(CARPET_COLOR));
+        compound.putInt("StealCooldown", stealCooldown);
     }
 
     public void readAdditional(CompoundNBT compound) {
@@ -263,6 +275,8 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         this.forcedSit = compound.getBoolean("ForcedToSit");
         this.setCommand(compound.getInt("RacCommand"));
         this.dataManager.set(CARPET_COLOR, compound.getInt("Carpet"));
+        this.stealCooldown = compound.getInt("StealCooldown");
+
     }
 
     public void setCommand(int command) {
@@ -369,6 +383,12 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
             this.setMotion(this.getMotion().add((double)(-MathHelper.sin(f1) * -0.06F), 0.0D, (double)(MathHelper.cos(f1) * -0.06F)));
             this.getAttackTarget().applyKnockback(0.35F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
             this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+        }
+        if(stealCooldown > 0){
+            stealCooldown--;
+        }
+        if(pickupItemCooldown > 0){
+            pickupItemCooldown--;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -506,7 +526,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return isFood(stack);
+        return isFood(stack) && pickupItemCooldown == 0;
     }
 
     @Override
@@ -580,4 +600,118 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         return pos;
     }
 
+    private class AIStealFromVillagers extends Goal {
+        EntityRaccoon raccoon;
+        AbstractVillagerEntity target;
+        int golemCheckTime = 0;
+        int cooldown = 0;
+        int fleeTime = 0;
+
+        private AIStealFromVillagers(EntityRaccoon raccoon){
+            this.raccoon = raccoon;
+            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            if(cooldown > 0){
+                cooldown--;
+                return false;
+            }else if(raccoon != null && raccoon.stealCooldown == 0 && raccoon.getHeldItemMainhand() != null && raccoon.getHeldItemMainhand().isEmpty()){
+                AbstractVillagerEntity villager = getNearbyVillagers();
+                if(!isGolemNearby() && villager != null){
+                    target = villager;
+                }
+                cooldown = 150;
+                return target != null;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean shouldContinueExecuting() {
+            return target != null && raccoon != null;
+        }
+
+        public void resetTask(){
+            target = null;
+            cooldown = 200 + rand.nextInt(200);
+            golemCheckTime = 0;
+            fleeTime = 0;
+        }
+
+        public void tick(){
+            if(target != null){
+                golemCheckTime++;
+                if(fleeTime > 0){
+                    fleeTime--;
+                    if(raccoon.getNavigator().noPath()){
+                        Vector3d fleevec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(raccoon, 16, 7, raccoon.getPositionVec());
+                        if(fleevec != null){
+                            raccoon.getNavigator().tryMoveToXYZ(fleevec.x, fleevec.y, fleevec.z, 1.3F);
+                        }
+                    }
+                    if(fleeTime == 0){
+                        resetTask();
+                    }
+                }else{
+                    raccoon.getNavigator().tryMoveToEntityLiving(target, 1.0D);
+                    if(raccoon.getDistance(target) < 1.7F){
+                        raccoon.setStanding(true);
+                        raccoon.maxStandTime = 15;
+                        MerchantOffers offers = target.getOffers();
+                        if(offers == null || offers.isEmpty() || offers.size() < 1){
+                            resetTask();
+                        }else{
+                            MerchantOffer offer = offers.get(offers.size() <= 1 ? 0 : raccoon.getRNG().nextInt(offers.size() - 1));
+                            if(offer != null){
+                                ItemStack stealStack = offer.getSellingStack().getItem() == Items.EMERALD ? offer.getBuyingStackFirst() : offer.getSellingStack();
+                                if(stealStack.isEmpty()){
+                                    resetTask();
+                                }else{
+                                    offer.increaseUses();
+                                    ItemStack copy = stealStack.copy();
+                                    copy.setCount(1);
+                                    raccoon.setHeldItem(Hand.MAIN_HAND, copy);
+                                    fleeTime = 60 + rand.nextInt(60);
+                                    raccoon.getNavigator().clearPath();
+                                    lookForWaterBeforeEatingTimer = 120 + rand.nextInt(60);
+                                    target.attackEntityFrom(DamageSource.causeMobDamage(raccoon), target.getHealth() <= 2 ? 0 : 1);
+                                    raccoon.stealCooldown = 24000 + rand.nextInt(48000);
+                                }
+                            }
+                        }
+                    }
+                    if(golemCheckTime % 30 == 0 && rand.nextBoolean() && isGolemNearby()){
+                        resetTask();
+                    }
+                }
+            }
+        }
+
+        @Nullable
+        private boolean isGolemNearby() {
+            List<IronGolemEntity> lvt_1_1_ = raccoon.world.getTargettableEntitiesWithinAABB(IronGolemEntity.class, IRON_GOLEM_PREDICATE, raccoon, raccoon.getBoundingBox().grow(25.0D));
+            return !lvt_1_1_.isEmpty();
+        }
+
+        @Nullable
+        private AbstractVillagerEntity getNearbyVillagers() {
+            List<AbstractVillagerEntity> lvt_1_1_ = raccoon.world.getTargettableEntitiesWithinAABB(AbstractVillagerEntity.class, VILLAGER_STEAL_PREDICATE, raccoon, raccoon.getBoundingBox().grow(20.0D));
+            double lvt_2_1_ = 10000;
+            AbstractVillagerEntity lvt_4_1_ = null;
+            Iterator var5 = lvt_1_1_.iterator();
+
+            while(var5.hasNext()) {
+                AbstractVillagerEntity lvt_6_1_ = (AbstractVillagerEntity)var5.next();
+                if (lvt_6_1_.getHealth() > 2.0F && !lvt_6_1_.getOffers().isEmpty() && raccoon.getDistanceSq(lvt_6_1_) < lvt_2_1_) {
+                    lvt_4_1_ = lvt_6_1_;
+                    lvt_2_1_ = raccoon.getDistanceSq(lvt_6_1_);
+                }
+            }
+
+            return lvt_4_1_;
+        }
+
+    }
 }
