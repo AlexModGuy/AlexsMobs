@@ -8,6 +8,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -45,6 +47,8 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.github.alexthe666.alexsmobs.entity.EntityElephant.getCarpetColor;
+
 public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IFollower, ITargetsDroppedItems, ILootsChests {
 
     private static final DataParameter<Boolean> STANDING = EntityDataManager.createKey(EntityRaccoon.class, DataSerializers.BOOLEAN);
@@ -53,6 +57,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
     private static final DataParameter<Boolean> WASHING = EntityDataManager.createKey(EntityRaccoon.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Optional<BlockPos>> WASH_POS = EntityDataManager.createKey(EntityRaccoon.class, DataSerializers.OPTIONAL_BLOCK_POS);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityRaccoon.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> CARPET_COLOR = EntityDataManager.createKey(EntityRaccoon.class, DataSerializers.VARINT);
     public float prevStandProgress;
     public float standProgress;
     public float prevBegProgress;
@@ -144,6 +149,35 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         return true;
     }
 
+    protected void dropInventory() {
+        super.dropInventory();
+        if (this.getColor() != null) {
+            if (!this.world.isRemote) {
+                this.entityDropItem(this.getCarpetItemBeingWorn());
+            }
+            this.setColor(null);
+        }
+
+    }
+
+    @Nullable
+    public DyeColor getColor() {
+        int lvt_1_1_ = this.dataManager.get(CARPET_COLOR);
+        return lvt_1_1_ == -1 ? null : DyeColor.byId(lvt_1_1_);
+    }
+
+    public void setColor(@Nullable DyeColor color) {
+        this.dataManager.set(CARPET_COLOR, color == null ? -1 : color.getId());
+    }
+
+    public Item getCarpetItemBeingWorn() {
+        if (this.getColor() != null) {
+            return EntityElephant.DYE_COLOR_ITEM_MAP.get(this.getColor());
+        }
+        return Items.AIR;
+    }
+
+
     public boolean isBreedingItem(ItemStack stack) {
         return stack.getItem() == Items.BREAD;
     }
@@ -152,8 +186,27 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.getEntityInteractionResult(player, hand);
-
-        if(isTamed() && isFood(itemstack) && !isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()){
+        boolean owner = this.isTamed() && isOwner(player);
+        if (owner && ItemTags.CARPETS.contains(item)) {
+            DyeColor color = EntityElephant.getCarpetColor(itemstack);
+            if (color != this.getColor()) {
+                if (this.getColor() != null) {
+                    this.entityDropItem(this.getCarpetItemBeingWorn());
+                }
+                this.playSound(SoundEvents.ENTITY_LLAMA_SWAG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                itemstack.shrink(1);
+                this.setColor(color);
+                return ActionResultType.SUCCESS;
+            }
+            return ActionResultType.PASS;
+        } else if (owner && this.getColor() != null && itemstack.getItem() == Items.SHEARS) {
+            this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            if (this.getColor() != null) {
+                this.entityDropItem(this.getCarpetItemBeingWorn());
+            }
+            this.setColor(null);
+            return ActionResultType.SUCCESS;
+        }else if(isTamed() && isFood(itemstack) && !isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()){
             if(this.getHeldItemMainhand().isEmpty()){
                 ItemStack copy = itemstack.copy();
                 copy.setCount(1);
@@ -201,6 +254,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         compound.putBoolean("RacSitting", this.isSitting());
         compound.putBoolean("ForcedToSit", this.forcedSit);
         compound.putInt("RacCommand", this.getCommand());
+        compound.putInt("Carpet", this.dataManager.get(CARPET_COLOR));
     }
 
     public void readAdditional(CompoundNBT compound) {
@@ -208,6 +262,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         this.setSitting(compound.getBoolean("RacSitting"));
         this.forcedSit = compound.getBoolean("ForcedToSit");
         this.setCommand(compound.getInt("RacCommand"));
+        this.dataManager.set(CARPET_COLOR, compound.getInt("Carpet"));
     }
 
     public void setCommand(int command) {
@@ -384,6 +439,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
         this.dataManager.register(SITTING, Boolean.valueOf(false));
         this.dataManager.register(BEGGING, Boolean.valueOf(false));
         this.dataManager.register(WASHING, Boolean.valueOf(false));
+        this.dataManager.register(CARPET_COLOR, -1);
         this.dataManager.register(COMMAND, 0);
         this.dataManager.register(WASH_POS, Optional.empty());
     }
