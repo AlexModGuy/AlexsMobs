@@ -19,7 +19,7 @@ public class RenderCockroach extends MobRenderer<EntityCockroach, ModelCockroach
     }
 
     protected void preRenderCallback(EntityCockroach entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+        matrixStackIn.scale(0.85F, 0.85F, 0.85F);
     }
 
 
