@@ -395,17 +395,17 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                 } else if (this.eagle.isInWaterOrBubbleColumn()) {
                     this.flightTarget = true;
                 } else if (this.eagle.isOnGround()) {
-                    this.flightTarget = rand.nextBoolean();
+                    this.flightTarget = rand.nextInt(5) == 0;
                 } else {
                     if (orbitResetCooldown == 0 && rand.nextInt(6) == 0) {
-                        orbitResetCooldown = 400;
+                        orbitResetCooldown = 300 + rand.nextInt(300);
                         eagle.orbitPos = eagle.getPosition();
                         eagle.orbitDist = 4 + rand.nextInt(5);
                         eagle.orbitClockwise = rand.nextBoolean();
                         orbitTime = 0;
-                        maxOrbitTime = (int) (360 + 360 * rand.nextFloat());
+                        maxOrbitTime = (int) (180 + 360 * rand.nextFloat());
                     }
-                    this.flightTarget = eagle.isBeingRidden() || rand.nextInt(7) > 0 && eagle.timeFlying < 700;
+                    this.flightTarget = eagle.isBeingRidden() || rand.nextInt(7) > 0 && eagle.timeFlying < 400;
                 }
                 Vector3d lvt_1_1_ = this.getPosition();
                 if (lvt_1_1_ == null) {
