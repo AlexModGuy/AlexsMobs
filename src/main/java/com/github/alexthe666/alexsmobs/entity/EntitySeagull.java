@@ -50,6 +50,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     private BlockPos orbitPos = null;
     private double orbitDist = 5D;
     private boolean orbitClockwise = false;
+    private boolean fallFlag = false;
 
     protected EntitySeagull(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -144,6 +145,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                     this.setFlying(false);
                 }
             } else {
+                fallFlag = false;
                 timeFlying = 0;
                 this.setNoGravity(false);
             }
@@ -176,8 +178,8 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, 0, fleePos.getZ() + extraZ);
         BlockPos ground = getCrowGround(radialPos);
         int distFromGround = (int) this.getPosY() - ground.getY();
-        int flightHeight = 10 + this.getRNG().nextInt(4);
-        BlockPos newPos = ground.up(distFromGround > 8 ? flightHeight : this.getRNG().nextInt(3) + 10);
+        int flightHeight = 8 + this.getRNG().nextInt(4);
+        BlockPos newPos = ground.up(distFromGround > 3 ? flightHeight : this.getRNG().nextInt(4) + 8);
         if (!this.isTargetBlocked(Vector3d.copyCentered(newPos)) && this.getDistanceSq(Vector3d.copyCentered(newPos)) > 1) {
             return Vector3d.copyCentered(newPos);
         }
@@ -447,11 +449,14 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                     this.eagle.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, 1F);
                 }
             }
-            if (!flightTarget && isFlying() && eagle.onGround) {
-                eagle.setFlying(false);
-                orbitTime = 0;
-                eagle.orbitPos = null;
-                orbitResetCooldown = -400 - rand.nextInt(400);
+            if (!flightTarget && isFlying()) {
+                eagle.fallFlag = true;
+                if(eagle.onGround){
+                    eagle.setFlying(false);
+                    orbitTime = 0;
+                    eagle.orbitPos = null;
+                    orbitResetCooldown = -400 - rand.nextInt(400);
+                }
             }
             if (isFlying() && (!world.isAirBlock(eagle.getPositionUnderneath()) || eagle.onGround) && !eagle.isInWaterOrBubbleColumn() && eagle.timeFlying > 30) {
                 eagle.setFlying(false);
@@ -524,7 +529,8 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                     double d1 = this.posY - this.parentEntity.getPosY();
                     double d2 = this.posZ - this.parentEntity.getPosZ();
                     double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                    parentEntity.setMotion(parentEntity.getMotion().add(vector3d.scale(this.speed * 0.05D / d5)));
+                    float yScale = d1 > 0 || fallFlag ? 1F : 0.7F;
+                    parentEntity.setMotion(parentEntity.getMotion().add(vector3d.scale(this.speed * 0.05D / d5)).mul(1F, yScale, 1F));
                     Vector3d vector3d1 = parentEntity.getMotion();
                     parentEntity.rotationYaw = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
                     parentEntity.renderYawOffset = parentEntity.rotationYaw;
