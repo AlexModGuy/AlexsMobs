@@ -89,6 +89,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityVoidPortal> VOID_PORTAL = registerEntity(EntityType.Builder.create(EntityVoidPortal::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityVoidPortal::new).immuneToFire(), "void_portal");
     public static final EntityType<EntityFrilledShark> FRILLED_SHARK = registerEntity(EntityType.Builder.create(EntityFrilledShark::new, EntityClassification.WATER_CREATURE).size(1.3F, 0.4F), "frilled_shark");
     public static final EntityType<EntityMimicOctopus> MIMIC_OCTOPUS = registerEntity(EntityType.Builder.create(EntityMimicOctopus::new, EntityClassification.WATER_CREATURE).size(0.9F, 0.6F), "mimic_octopus");
+    public static final EntityType<EntitySeagull> SEAGULL = registerEntity(EntityType.Builder.create(EntitySeagull::new, EntityClassification.CREATURE).size(0.45F, 0.45F), "seagull");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -223,6 +224,7 @@ public class AMEntityRegistry {
         GlobalEntityTypeAttributes.put(VOID_WORM_PART, EntityVoidWormPart.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(FRILLED_SHARK, EntityFrilledShark.bakeAttributes().create());
         GlobalEntityTypeAttributes.put(MIMIC_OCTOPUS, EntityMimicOctopus.bakeAttributes().create());
+        GlobalEntityTypeAttributes.put(SEAGULL, EntitySeagull.bakeAttributes().create());
 
     }
 
