@@ -15,7 +15,6 @@ public class RenderFly extends MobRenderer<EntityFly, ModelFly> {
     }
 
     protected void preRenderCallback(EntityFly entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.scale(0.5F, 0.5F, 0.5F);
     }
 
     protected boolean func_230495_a_(EntityFly fly) {

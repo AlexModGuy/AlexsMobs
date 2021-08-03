@@ -84,7 +84,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     private static final DataParameter<Boolean> CHESTED = EntityDataManager.createKey(EntityElephant.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> CARPET_COLOR = EntityDataManager.createKey(EntityElephant.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> TRADER = EntityDataManager.createKey(EntityElephant.class, DataSerializers.BOOLEAN);
-    private static final Map<DyeColor, Item> DYE_COLOR_ITEM_MAP = Util.make(Maps.newHashMap(), (map) -> {
+    public static final Map<DyeColor, Item> DYE_COLOR_ITEM_MAP = Util.make(Maps.newHashMap(), (map) -> {
         map.put(DyeColor.WHITE, Items.WHITE_CARPET);
         map.put(DyeColor.ORANGE, Items.ORANGE_CARPET);
         map.put(DyeColor.MAGENTA, Items.MAGENTA_CARPET);
@@ -138,7 +138,7 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
     }
 
     @Nullable
-    private static DyeColor getCarpetColor(ItemStack stack) {
+    public static DyeColor getCarpetColor(ItemStack stack) {
         Block lvt_1_1_ = Block.getBlockFromItem(stack.getItem());
         return lvt_1_1_ instanceof CarpetBlock ? ((CarpetBlock) lvt_1_1_).getColor() : null;
     }
