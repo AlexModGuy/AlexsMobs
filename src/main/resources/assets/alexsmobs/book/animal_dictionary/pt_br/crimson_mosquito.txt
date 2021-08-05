@@ -2,7 +2,7 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-O Mosquito Carmesim é um inseto voador horrível e mutante encontrado nas Florestas Carmesins do Nether. Esta fera vorácea procura
+O Mosquito Carmesim é um inseto voador horrível e mutante encontrado nas Florestas Carmesins do Nether. Esta fera voraz procura
  quase qualquer animal de sangue quente como lanche, incluindo pessoas. Ele primeiro ataca sua presa e a pega, sugando-a
  até secar. Depois de se saciar, ele começará a voar e usar o sangue de sua presa contra ela - cuspindo-o de
  volta no alvo.

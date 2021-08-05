@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+O Verme do Vazio é uma criatura antiga que habita naturalmente no vazio abaixo do fim.
+Pensa-se que esses vermes são algum tipo de parasita interdimensional, devido à sua capacidade inata de abrir um túnel através da realidade. 
+Este chefe pode ser retirado do vazio jogando um Verme Misterioso no vazio do fim. Pode-se obter um desses vermes colocando uma Larva de Mosquito Carmesim dentro da cápsideo de um enderiófago. 
+<NEWLINE>
+O Verme do Vasio está equipado com vários ataques devastadores. Em primeiro lugar, ele pode lançar até quatro cristais teleguiados de sua boca por vez, que procuram qualquer presa próxima e causam grande dano. Em seguida, o verme tentará morder diretamente tudo o que estiver em seu caminho. Finalmente, o verme pode abrir um portal do nada para alcançar qualquer presa escondida.
+Ao tentar matar esta besta, deve-se certificar-se de causar apenas danos significativos na cabeça. Se um segmento do corpo estiver seriamente danificado, ele irá parar de brilhar e, se for destruído, o verme inteiro se dividirá em dois. Esses vermes divididos terão metade da saúde e se moverão um pouco mais devagar, mas ainda causam uma grande quantidade de danos. Se não tomarmos cuidado, o Fim pode acabar totalmente inundados de vermes. 
+<NEWLINE>
+Quando morto, o verme deixa cair um olho e duas de suas mandíbulas. As mandíbulas podem ser colocadas juntas para fazer um bico, um troféu que quando ativado com redstone morde qualquer multidão em suas mandíbulas. 
+O olho pode ser usado com as mandíbulas e netherita para criar uma picareta mágica: o Escultor Dimensional. 
+<NEWLINE>
+<NEWLINE>
+Ao contrário de outras picaretas, o Escultor Dimensional não é usado para quebrar blocos, mas sim a própria realidade. Usando a ferramenta em qualquer lugar, pode-se abrir um portal de volta para seu ponto de renacimento. Do outro lado, um portal de retorno temporário também será aberto, por apenas um minuto. Deve-se tomar cuidado para não abusar dessa ferramenta, pois ela possui apenas 20 usos.

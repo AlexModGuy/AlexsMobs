@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Tubarões-Cobra são fósseis vivos letárgicos encontrados em oceanos profundos. Esses tubarões neutros passam a maior parte do tempo caçando peixes-bolha e lulas, suas presas favoritas.
+Ao perseguir as lulas, os Tubarões-Cobra tiram proveito dos baixos níveis de luz do mar profundo e dos instintos naturais das lulas, atraindo-as com seus dentes muito reflexivos.
+Depois de pegar alguma presa em suas mandíbulas, o tubarão usará seus dentes serrilhados especiais para causar danos junto com o efeito de Sangramento, que drena rapidamente a saúde. Ocasionalmente, esses dentes podem cair ao atacar uma lula.
+<NEWLINE>
+Se alguém obtiver alguns dentes de tubarão serrilhados, eles podem usá-los, junto com alguns outros itens aquáticos, para criar o Escudo das Profundezas. Este escudo é um pouco mais durável do que o normal, mas também causa o efeito Sangramento ao bloquear ataques próximos.
+<NEWLINE>
+<NEWLINE>
+Tubarões-Cobra podem ser transportados colocando-os em um balde de água. Se um Tubarões-Cobra estiver em menos de 10 blocos de pressão de água, ele ficará descolorido e ainda mais lento do que o normal.

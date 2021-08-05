@@ -198,6 +198,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.VOID_WORM, 0X0F1026,0X1699AB, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_void_worm"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.FRILLED_SHARK, 0X726B6B,0X873D3D, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_frilled_shark"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MIMIC_OCTOPUS, 0XFFEBDC,0X1D1C1F, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_mimic_octopus"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SEAGULL, 0XC9D2DC,0XFFD850, new Item.Properties().group(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_seagull"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -264,7 +265,7 @@ public class AMItemRegistry {
             }
         });
         ComposterBlock.CHANCES.put(BANANA, 0.65F);
-        ComposterBlock.CHANCES.put(AMBlockRegistry.BANANA_PEEL, 1F);
+        ComposterBlock.CHANCES.put(AMBlockRegistry.BANANA_PEEL.asItem(), 1F);
         ComposterBlock.CHANCES.put(ACACIA_BLOSSOM, 0.65F);
         ComposterBlock.CHANCES.put(GONGYLIDIA, 0.9F);
     }

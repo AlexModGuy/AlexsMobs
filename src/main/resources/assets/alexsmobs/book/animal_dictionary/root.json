@@ -9,9 +9,9 @@
       "y": 10,
       "page" : 0,
       "scale": 1.2,
-      "entity_scale": 0.8,
-      "offset_x": -5,
-      "offset_y": -7,
+      "entity_scale": 0.6,
+      "offset_x": -3,
+      "offset_y": -5,
       "linked_page": "grizzly_bear.json",
       "hover_text": "entity.alexsmobs.grizzly_bear"
     },
@@ -626,6 +626,18 @@
       "offset_y": -11,
       "linked_page": "mimic_octopus.json",
       "hover_text": "entity.alexsmobs.mimic_octopus"
+    },
+    {
+      "entity": "alexsmobs:seagull",
+      "x": 290,
+      "y": 10,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.6,
+      "offset_x": -1,
+      "offset_y": -5,
+      "linked_page": "seagull.json",
+      "hover_text": "entity.alexsmobs.seagull"
     }
   ],
   "linked_page_buttons": [

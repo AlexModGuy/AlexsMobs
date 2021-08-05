@@ -23,6 +23,7 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -30,6 +31,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.stats.Stats;
@@ -61,6 +64,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     private static final DataParameter<Boolean> DESERT = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> HAS_EGG = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_DIGGING = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> STUN_TICKS = EntityDataManager.createKey(EntityCrocodile.class, DataSerializers.VARINT);
     public float groundProgress = 0;
     public float prevGroundProgress = 0;
     public float swimProgress = 0;
@@ -149,6 +153,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         compound.putInt("BaskingStyle", this.baskingType);
         compound.putInt("BaskingTimer", this.baskingTimer);
         compound.putInt("SwimTimer", this.swimTimer);
+        compound.putInt("StunTimer", this.getStunTicks());
         compound.putBoolean("HasEgg", this.hasEgg());
     }
 
@@ -161,6 +166,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.baskingTimer = compound.getInt("BaskingTimer");
         this.swimTimer = compound.getInt("SwimTimer");
         this.setHasEgg(compound.getBoolean("HasEgg"));
+        this.setStunTicks(compound.getInt("StunTimer"));
     }
 
     private void switchNavigator(boolean onLand) {
@@ -184,6 +190,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.dataManager.register(HAS_EGG, Boolean.valueOf(false));
         this.dataManager.register(IS_DIGGING, Boolean.valueOf(false));
         this.dataManager.register(CLIMBING, (byte) 0);
+        this.dataManager.register(STUN_TICKS, 0);
     }
 
     public boolean isBesideClimbableBlock() {
@@ -281,14 +288,26 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
                 }
             }
         }
-        if (!world.isRemote && this.isAlive() && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_LUNGE && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
+        if (!world.isRemote && this.getStunTicks() == 0 && this.isAlive() && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_LUNGE && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
             float f1 = this.rotationYaw * ((float) Math.PI / 180F);
             this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.02F, 0.0D, MathHelper.cos(f1) * 0.02F));
             if (this.getDistance(this.getAttackTarget()) < 3.5F && this.canEntityBeSeen(this.getAttackTarget())) {
-                if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() && !this.getAttackTarget().isActiveItemStackBlocking() && !this.getAttackTarget().isSneaking()) {
-                    this.getAttackTarget().startRiding(this, true);
+                boolean flag = this.getAttackTarget().isActiveItemStackBlocking();
+                if(!flag){
+                    if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() && !this.getAttackTarget().isSneaking()) {
+                        this.getAttackTarget().startRiding(this, true);
+                    }
                 }
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                if(flag){
+                    if(this.getAttackTarget() instanceof PlayerEntity){
+                        this.damageShieldFor(((PlayerEntity)this.getAttackTarget()), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    }
+                    if(this.getStunTicks() == 0){
+                        this.setStunTicks(25 + rand.nextInt(20));
+                    }
+                }else{
+                    this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                }
                 this.playSound(AMSoundRegistry.CROCODILE_BITE, this.getSoundVolume(), this.getSoundPitch());
 
             }
@@ -309,7 +328,51 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         if (this.isInLove() && this.getAttackTarget() != null) {
             this.setAttackTarget(null);
         }
+        if(this.getStunTicks() > 0){
+            this.setStunTicks(this.getStunTicks() - 1);
+            if(world.isRemote){
+                float angle = (0.01745329251F * this.renderYawOffset);
+                double headX = 1.5F * getRenderScale() * MathHelper.sin((float) (Math.PI + angle));
+                double headZ = 1.5F * getRenderScale() * MathHelper.cos(angle);
+                for(int i = 0; i < 5; i++){
+                    float innerAngle = (0.01745329251F * (this.renderYawOffset + ticksExisted * 5) * (i + 1));
+                    double extraX = 0.5F * MathHelper.sin((float) (Math.PI + innerAngle));
+                    double extraZ = 0.5F * MathHelper.cos(innerAngle);
+                    world.addParticle(ParticleTypes.CRIT, true, this.getPosX() + headX + extraX, this.getPosYEye() + 0.5F, this.getPosZ() + headZ + extraZ, 0, 0, 0);
+                }
+            }
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    protected void damageShieldFor(PlayerEntity holder, float damage) {
+        if (holder.getActiveItemStack().isShield(holder)) {
+            if (!this.world.isRemote) {
+                holder.addStat(Stats.ITEM_USED.get(holder.getActiveItemStack().getItem()));
+            }
+
+            if (damage >= 3.0F) {
+                int i = 1 + MathHelper.floor(damage);
+                Hand hand = holder.getActiveHand();
+                holder.getActiveItemStack().damageItem(i, holder, (p_213833_1_) -> {
+                    p_213833_1_.sendBreakAnimation(hand);
+                    net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(holder, holder.getActiveItemStack(), hand);
+                });
+                if (holder.getActiveItemStack().isEmpty()) {
+                    if (hand == Hand.MAIN_HAND) {
+                        holder.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
+                    } else {
+                        holder.setItemStackToSlot(EquipmentSlotType.OFFHAND, ItemStack.EMPTY);
+                    }
+                    holder.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + this.world.rand.nextFloat() * 0.4F);
+                }
+            }
+
+        }
+    }
+
+    protected boolean isMovementBlocked() {
+        return super.isMovementBlocked() || this.getStunTicks() > 0;
     }
 
     @Override
@@ -368,7 +431,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        if (this.getAnimation() == NO_ANIMATION && this.getPassengers().isEmpty()) {
+        if (this.getAnimation() == NO_ANIMATION && this.getPassengers().isEmpty() && this.getStunTicks() == 0) {
             this.setAnimation(ANIMATION_LUNGE);
         }
         return true;
@@ -454,6 +517,13 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.dataManager.set(IS_DIGGING, isDigging);
     }
 
+    public int getStunTicks() {
+        return this.dataManager.get(STUN_TICKS);
+    }
+
+    private void setStunTicks(int stun) {
+        this.dataManager.set(STUN_TICKS, stun);
+    }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SitGoal(this));

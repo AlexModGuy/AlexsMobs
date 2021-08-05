@@ -40,7 +40,7 @@ public class EffectSunbird extends Effect {
                     float pitchMulti = Math.abs(entity.rotationPitch) / 90F;
                     entity.setMotion(entity.getMotion().add(0, 0.02 + pitchMulti * 0.02, 0));
                 }
-            } else if (!entity.isOnGround()) {
+            } else if (!entity.isOnGround() && !entity.isCrouching()) {
                 Vector3d vector3d = entity.getMotion();
                 if (vector3d.y < 0.0D) {
                     entity.setMotion(vector3d.mul(1.0D, 0.6D, 1.0D));

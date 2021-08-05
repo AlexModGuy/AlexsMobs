@@ -429,7 +429,7 @@
   "alexsmobs.sound.subtitle.void_worm_idle": "El gusano del vacío ruge",
   "alexsmobs.sound.subtitle.void_worm_hurt": "El gusano del vacío silba",
   "alexsmobs.sound.subtitle.void_portal_open": "Se abre el portal del vacío",
-  "alexsmobs.sound.subtitle.void_portal_closes": "El portal del vacío se cierra",
+  "alexsmobs.sound.subtitle.void_portal_close": "El portal del vacío se cierra",
   "alexsmobs.sound.subtitle.mimic_octopus_idle": "Chirridos de pulpo mímico",
   "alexsmobs.sound.subtitle.mimic_octopus_hurt": "Ssquishes de pulpo mímico",
   "alexsmobs.sound.subtitle.music_disc.daze": "Aturdimiento",

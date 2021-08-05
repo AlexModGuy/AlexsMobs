@@ -2,10 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
-import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
-import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIJump;
-import com.github.alexthe666.alexsmobs.entity.ai.OrcaAIMeleeJump;
-import com.github.alexthe666.alexsmobs.entity.ai.SwimmerJumpPathNavigator;
+import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -23,7 +20,6 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.DrownedEntity;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -62,6 +58,7 @@ import java.util.function.Predicate;
 public class EntityOrca extends TameableEntity implements IAnimatedEntity {
 
     public static final Animation ANIMATION_BITE = Animation.create(8);
+    public static final Animation ANIMATION_TAILSWING = Animation.create(20);
     private static final DataParameter<Integer> MOISTNESS = EntityDataManager.createKey(EntityOrca.class, DataSerializers.VARINT);
     private static final EntityPredicate PLAYER_PREDICATE = (new EntityPredicate()).setDistance(24.0D).allowFriendlyFire().allowInvulnerable().setIgnoresLineOfSight();
     public int jumpCooldown;
@@ -148,7 +145,7 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{ANIMATION_BITE};
+        return new Animation[]{ANIMATION_BITE, ANIMATION_TAILSWING};
     }
 
     public void travel(Vector3d travelVector) {
@@ -256,6 +253,24 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
                     this.playSound(SoundEvents.ENTITY_DOLPHIN_ATTACK, 1.0F, 1.0F);
                 }
             }
+            if (this.getAnimation() == ANIMATION_TAILSWING && this.getAnimationTick() == 6) {
+                float damage =(float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                if(attackTarget instanceof DrownedEntity || attackTarget instanceof GuardianEntity){
+                    damage *= 2F;
+                }
+                boolean flag = attackTarget.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+                if (flag) {
+                    this.applyEnchantments(this, attackTarget);
+                    this.playSound(SoundEvents.ENTITY_DOLPHIN_ATTACK, 1.0F, 1.0F);
+                }
+                attackTarget.applyKnockback(1F, MathHelper.sin(rotationYaw * ((float) Math.PI / 180F)), -MathHelper.cos(rotationYaw * ((float) Math.PI / 180F)));
+                float knockbackResist = (float) MathHelper.clamp((1.0D - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0, 1);
+                this.getAttackTarget().setMotion(this.getAttackTarget().getMotion().add(0, knockbackResist * 0.4F, 0));
+
+            }
+        }
+        if (attackTarget != null && attackTarget instanceof PlayerEntity && attackTarget.isPotionActive(AMEffectRegistry.ORCAS_MIGHT)) {
+            attackTarget.removePotionEffect(AMEffectRegistry.ORCAS_MIGHT);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -271,7 +286,11 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        this.setAnimation(ANIMATION_BITE);
+        if(this.isInWaterOrBubbleColumn() && rand.nextBoolean()){
+            this.setAnimation(ANIMATION_TAILSWING);
+        }else{
+            this.setAnimation(ANIMATION_BITE);
+        }
         return true;
     }
 
@@ -319,6 +338,7 @@ public class EntityOrca extends TameableEntity implements IAnimatedEntity {
             reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setAir(this.getMaxAir());
         this.rotationPitch = 0.0F;
+        this.setMoistness(2400);
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 

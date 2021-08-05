@@ -417,13 +417,13 @@ public class EntityMantisShrimp extends TameableEntity implements ISemiAquatic, 
                     fishNbt.putString("DeathLootTable", LootTables.EMPTY.toString());
                     fish.readAdditional(fishNbt);
                 }
-                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                this.getAttackTarget().applyKnockback(1.7F, this.getPosX() - getAttackTarget().getPosX(), this.getPosZ() - getAttackTarget().getPosZ());
+                this.getAttackTarget().applyKnockback(1.7F, this.getPosX() - this.getAttackTarget().getPosX(), this.getPosZ() - this.getAttackTarget().getPosZ());
                 float knockbackResist = (float) MathHelper.clamp((1.0D - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0, 1);
                 this.getAttackTarget().setMotion(this.getAttackTarget().getMotion().add(0, knockbackResist * 0.8F, 0));
                 if (!this.getAttackTarget().isInWater()) {
                     this.getAttackTarget().setFire(2);
                 }
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
             if(punchProgress == 1){
                 this.playSound(AMSoundRegistry.MANTIS_SHRIMP_SNAP, this.getSoundPitch(), this.getSoundVolume());
