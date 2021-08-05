@@ -96,6 +96,16 @@ public class ModelOrca extends AdvancedEntityModel<EntityOrca>  {
 		animator.rotate(jaw, (float)Math.toRadians(60), 0, 0);
 		animator.endKeyframe();
 		animator.resetKeyframe(3);
+		animator.setAnimation(EntityOrca.ANIMATION_TAILSWING);
+		animator.startKeyframe(5);
+		animator.move(body, 0, -6, 15);
+		animator.rotate(body, (float)Math.toRadians(-140), 0, 0);
+		animator.rotate(tail1, (float)Math.toRadians(-35), 0, 0);
+		animator.rotate(tail2, (float)Math.toRadians(-35), 0, 0);
+		animator.rotate(tailend, (float)Math.toRadians(-25), 0, 0);
+		animator.endKeyframe();
+		animator.setStaticKeyframe(3);
+		animator.resetKeyframe(12);
 
 	}
 

@@ -25,11 +25,11 @@ public class LayerGrizzlyItem extends LayerRenderer<EntityGrizzlyBear, ModelGriz
             matrixStackIn.scale(0.35F, 0.35F, 0.35F);
             matrixStackIn.translate(0.0D, 2.75D, 0.125D);
             translateToHand(false, matrixStackIn);
-            matrixStackIn.translate(0.2F, 0.55F, -0.3F);
+            matrixStackIn.translate(0.2F, 0.7F, -0.4F);
             matrixStackIn.scale(2.8F, 2.8F, 2.8F);
         }else{
             translateToHand(false, matrixStackIn);
-            matrixStackIn.translate(0.2F, 0.45F, 0.1F);
+            matrixStackIn.translate(0.2F, 0.7F, -0.4F);
         }
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(10F));
         matrixStackIn.rotate(Vector3f.XP.rotationDegrees(100F));
@@ -40,8 +40,8 @@ public class LayerGrizzlyItem extends LayerRenderer<EntityGrizzlyBear, ModelGriz
 
     protected void translateToHand(boolean left, MatrixStack matrixStack) {
         this.getEntityModel().root.translateRotate(matrixStack);
-        this.getEntityModel().Body.translateRotate(matrixStack);
-        this.getEntityModel().bodyfront.translateRotate(matrixStack);
-        this.getEntityModel().FrontlegR.translateRotate(matrixStack);
+        this.getEntityModel().midbody.translateRotate(matrixStack);
+        this.getEntityModel().body.translateRotate(matrixStack);
+        this.getEntityModel().right_arm.translateRotate(matrixStack);
     }
 }

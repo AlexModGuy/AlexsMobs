@@ -92,16 +92,20 @@ public class BlockHummingbirdFeeder extends Block {
         if(contents == 0){
             if(itemStack.getItem() == Items.SUGAR){
                 setContent = 2;
+                useItem(player, itemStack);
             }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.areItemStackTagsEqual(waterBottle, itemStack)){
                 setContent = 1;
+                useItem(player, itemStack);
             }
         }else if(contents == 1){
             if(itemStack.getItem() == Items.SUGAR){
                 setContent = 3;
+                useItem(player, itemStack);
             }
         }else if(contents == 2){
             if(itemStack.getItem() == waterBottle.getItem() && ItemStack.areItemStackTagsEqual(waterBottle, itemStack)){
                 setContent = 3;
+                useItem(player, itemStack);
             }
         }
         if(setContent >= 0){
@@ -109,6 +113,15 @@ public class BlockHummingbirdFeeder extends Block {
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.FAIL;
+    }
+
+    public void useItem(PlayerEntity playerEntity, ItemStack stack){
+        if(playerEntity.isCreative()){
+            stack.shrink(1);
+            if(stack.hasContainerItem()){
+                playerEntity.addItemStackToInventory(stack.getContainerItem().copy());
+            }
+        }
     }
 
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {

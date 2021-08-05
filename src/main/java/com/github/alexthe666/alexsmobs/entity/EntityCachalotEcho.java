@@ -48,7 +48,7 @@ public class EntityCachalotEcho extends Entity {
         float rot = p_i47273_2_.rotationYawHead + (right ? 90 : -90);
         playerLaunched = true;
         this.setFasterAnimation(true);
-        this.setPosition(p_i47273_2_.getPosX() - (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getPosY(), p_i47273_2_.getPosZ() + (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.cos(rot * ((float) Math.PI / 180F)));
+        this.setPosition(p_i47273_2_.getPosX() - (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getPosY() + 1D, p_i47273_2_.getPosZ() + (double) (p_i47273_2_.getWidth()) * 0.5D * (double) MathHelper.cos(rot * ((float) Math.PI / 180F)));
     }
 
     @OnlyIn(Dist.CLIENT)

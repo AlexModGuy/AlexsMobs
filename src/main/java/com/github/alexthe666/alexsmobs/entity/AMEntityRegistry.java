@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMEntityRegistry {
 
-    public static final EntityType<EntityGrizzlyBear> GRIZZLY_BEAR = registerEntity(EntityType.Builder.create(EntityGrizzlyBear::new, EntityClassification.CREATURE).size(1.45F, 1.75F), "grizzly_bear");
+    public static final EntityType<EntityGrizzlyBear> GRIZZLY_BEAR = registerEntity(EntityType.Builder.create(EntityGrizzlyBear::new, EntityClassification.CREATURE).size(1.8F, 2F), "grizzly_bear");
     public static final EntityType<EntityRoadrunner> ROADRUNNER = registerEntity(EntityType.Builder.create(EntityRoadrunner::new, EntityClassification.CREATURE).size(0.45F, 0.75F), "roadrunner");
     public static final EntityType<EntityBoneSerpent> BONE_SERPENT = registerEntity(EntityType.Builder.create(EntityBoneSerpent::new, EntityClassification.MONSTER).size(1.2F, 1.15F).immuneToFire(), "bone_serpent");
     public static final EntityType<EntityBoneSerpentPart> BONE_SERPENT_PART = registerEntity(EntityType.Builder.create(EntityBoneSerpentPart::new, EntityClassification.MONSTER).size(1F, 1F).immuneToFire(), "bone_serpent_part");
@@ -89,6 +89,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityVoidPortal> VOID_PORTAL = registerEntity(EntityType.Builder.create(EntityVoidPortal::new, EntityClassification.MISC).size(0.5F, 0.5F).setCustomClientFactory(EntityVoidPortal::new).immuneToFire(), "void_portal");
     public static final EntityType<EntityFrilledShark> FRILLED_SHARK = registerEntity(EntityType.Builder.create(EntityFrilledShark::new, EntityClassification.WATER_CREATURE).size(1.3F, 0.4F), "frilled_shark");
     public static final EntityType<EntityMimicOctopus> MIMIC_OCTOPUS = registerEntity(EntityType.Builder.create(EntityMimicOctopus::new, EntityClassification.WATER_CREATURE).size(0.9F, 0.6F), "mimic_octopus");
+    public static final EntityType<EntitySeagull> SEAGULL = registerEntity(EntityType.Builder.create(EntitySeagull::new, EntityClassification.CREATURE).size(0.45F, 0.45F), "seagull");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -223,7 +224,6 @@ public class AMEntityRegistry {
         event.put(VOID_WORM_PART, EntityVoidWormPart.bakeAttributes().create());
         event.put(FRILLED_SHARK, EntityFrilledShark.bakeAttributes().create());
         event.put(MIMIC_OCTOPUS, EntityMimicOctopus.bakeAttributes().create());
-
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){

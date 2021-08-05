@@ -55,7 +55,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     public static final Animation ANIMATION_BREAKBLOCK_L = Animation.create(20);
     public static final Animation ANIMATION_POUNDCHEST = Animation.create(40);
     public static final Animation ANIMATION_ATTACK = Animation.create(20);
-    protected static final EntitySize SILVERBACK_SIZE = EntitySize.fixed(1.15F, 1.85F);
+    protected static final EntitySize SILVERBACK_SIZE = EntitySize.flexible(1.15F, 1.85F);
     private static final DataParameter<Boolean> SILVERBACK = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> STANDING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityGorilla.class, DataSerializers.BOOLEAN);
@@ -212,7 +212,7 @@ public class EntityGorilla extends TameableEntity implements IAnimatedEntity, IT
     }
 
     public EntitySize getSize(Pose poseIn) {
-        return isSilverback() && !isChild() ? SILVERBACK_SIZE : super.getSize(poseIn);
+        return isSilverback() && !isChild() ? SILVERBACK_SIZE.scale(this.getRenderScale()) : super.getSize(poseIn);
     }
 
     public void updatePassenger(Entity passenger) {
