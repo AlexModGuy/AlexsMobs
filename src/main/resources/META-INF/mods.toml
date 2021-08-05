@@ -10,13 +10,19 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/alexsmobs" #optional
 authors="Alexthe666" #optional
 description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
 [[dependencies.alexsmobs]] #optional
-                   # the modid of the dependency
-                   modId="citadel" #mandatory
-                   # Does this dependency have to exist - if not, ordering below must be specified
-                   mandatory=true #mandatory
-                   # The version range of the dependency
-                   versionRange="[1.7.2,)" #mandatory
-                   # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-                   ordering="AFTER"
-                   # Side this dependency is applied on - BOTH, CLIENT or SERVER
-                   side="BOTH"
+    # the modid of the dependency
+    modId="citadel" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[1.7.2,)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="AFTER"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+[[dependencies.alexsmobs]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36.0.42,)"
+    ordering="NONE"
+    side="BOTH"
