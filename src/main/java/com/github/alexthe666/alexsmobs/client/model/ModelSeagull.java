@@ -10,19 +10,19 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
-	private final AdvancedModelBox root;
-	private final AdvancedModelBox body;
-	private final AdvancedModelBox tail;
-	private final AdvancedModelBox head;
-	private final AdvancedModelBox beak;
-	private final AdvancedModelBox left_wing;
-	private final AdvancedModelBox left_wingtip;
-	private final AdvancedModelBox left_wingtip_r1;
-	private final AdvancedModelBox right_wing;
-	private final AdvancedModelBox right_wingtip;
-	private final AdvancedModelBox right_wingtip_r1;
-	private final AdvancedModelBox left_leg;
-	private final AdvancedModelBox right_leg;
+	public final AdvancedModelBox root;
+	public final AdvancedModelBox body;
+	public final AdvancedModelBox tail;
+	public final AdvancedModelBox head;
+	public final AdvancedModelBox beak;
+	public final AdvancedModelBox left_wing;
+	public final AdvancedModelBox left_wingtip;
+	public final AdvancedModelBox left_wingtip_r1;
+	public final AdvancedModelBox right_wing;
+	public final AdvancedModelBox right_wingtip;
+	public final AdvancedModelBox right_wingtip_r1;
+	public final AdvancedModelBox left_leg;
+	public final AdvancedModelBox right_leg;
 
 	public ModelSeagull() {
 		textureWidth = 64;
@@ -30,7 +30,6 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 
 		root = new AdvancedModelBox(this);
 		root.setRotationPoint(0.0F, 24.0F, 0.0F);
-		
 
 		body = new AdvancedModelBox(this);
 		body.setRotationPoint(0.0F, -6.6F, -0.5F);
@@ -61,7 +60,6 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		left_wingtip = new AdvancedModelBox(this);
 		left_wingtip.setRotationPoint(1.5F, 0.0F, 8.0F);
 		left_wing.addChild(left_wingtip);
-		
 
 		left_wingtip_r1 = new AdvancedModelBox(this);
 		left_wingtip_r1.setRotationPoint(-1.0F, 1.0F, -3.0F);
@@ -77,7 +75,6 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		right_wingtip = new AdvancedModelBox(this);
 		right_wingtip.setRotationPoint(-1.5F, 0.0F, 8.0F);
 		right_wing.addChild(right_wingtip);
-		
 
 		right_wingtip_r1 = new AdvancedModelBox(this);
 		right_wingtip_r1.setRotationPoint(1.0F, 1.0F, -3.0F);
@@ -121,6 +118,8 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		float groundProgress = 5F - flyProgress;
 		float flapAmount = (entity.prevFlapAmount + (entity.flapAmount - entity.prevFlapAmount) * partialTick) * flyProgress * 0.2F;
 		float biteProgress = entity.prevAttackProgress + (entity.attackProgress - entity.prevAttackProgress) * partialTick;
+		float sitProgress = 0F;
+
 		progressRotationPrev(head, biteProgress, (float)Math.toRadians(60), 0, 0, 5F);
 		progressPositionPrev(head, flyProgress, 0F, 1F, -1F, 5f);
 		progressRotationPrev(left_leg, flyProgress, (float) Math.toRadians(85), 0, 0, 5F);

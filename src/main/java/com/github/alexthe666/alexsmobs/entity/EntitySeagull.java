@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
+import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIStealFromPlayers;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
@@ -18,14 +19,24 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ItemParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -48,6 +59,11 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     public float prevFlapAmount;
     public float flapAmount;
     public boolean aiItemFlag = false;
+    public float attackProgress;
+    public float prevAttackProgress;
+    public float sitProgress;
+    public float prevSitProgress;
+    public int stealCooldown = 0;
     private boolean isLandNavigator;
     private int timeFlying;
     private BlockPos orbitPos = null;
@@ -56,10 +72,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     private boolean fallFlag = false;
     private int flightLookCooldown = 0;
     private float targetFlightLookYaw;
-    public float attackProgress;
-    public float prevAttackProgress;
-    public float sitProgress;
-    public float prevSitProgress;
+    private int heldItemTime = 0;
 
     protected EntitySeagull(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -78,13 +91,14 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(4, new AIScatter());
-        this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new AIWanderIdle());
-        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(9, new LookAtGoal(this, CreatureEntity.class, 6.0F));
-        this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(1, new AITargetItems(this, false, false, 40, 16));
+        this.targetSelector.addGoal(1, new SeagullAIStealFromPlayers(this));
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new AIWanderIdle());
+        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(5, new LookAtGoal(this, CreatureEntity.class, 6.0F));
+        this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(7, new AIScatter());
+        this.targetSelector.addGoal(1, new AITargetItems(this, false, false, 15, 16));
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
@@ -143,6 +157,23 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         dataManager.set(FLIGHT_LOOK_YAW, yaw);
     }
 
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            Entity entity = source.getTrueSource();
+            this.setSitting(false);
+            boolean prev = super.attackEntityFrom(source, amount);
+            if (prev) {
+                if (!this.getHeldItemMainhand().isEmpty()) {
+                    this.entityDropItem(this.getHeldItemMainhand());
+                    this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+                    stealCooldown = 1500 + rand.nextInt(1500);
+                }
+            }
+            return prev;
+        }
+    }
 
     public void tick() {
         super.tick();
@@ -221,20 +252,62 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                 switchNavigator(true);
             }
         }
+        if (!this.getHeldItemMainhand().isEmpty()) {
+            heldItemTime++;
+            if (heldItemTime > 200 && canTargetItem(this.getHeldItemMainhand())) {
+                heldItemTime = 0;
+                this.heal(4);
+                this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
+                if (this.getHeldItemMainhand().hasContainerItem()) {
+                    this.entityDropItem(this.getHeldItemMainhand().getContainerItem());
+                }
+                eatItemEffect(this.getHeldItemMainhand());
+                this.getHeldItemMainhand().shrink(1);
+            }
+        } else {
+            heldItemTime = 0;
+        }
+        if (stealCooldown > 0) {
+            stealCooldown--;
+        }
     }
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return false;
+        return stack.getItem().isFood() && !this.isSitting();
     }
+
+    private void eatItemEffect(ItemStack heldItemMainhand) {
+        for (int i = 0; i < 2 + rand.nextInt(2); i++) {
+            double d2 = this.rand.nextGaussian() * 0.02D;
+            double d0 = this.rand.nextGaussian() * 0.02D;
+            double d1 = this.rand.nextGaussian() * 0.02D;
+            float radius = this.getWidth() * 0.65F;
+            float angle = (0.01745329251F * this.renderYawOffset);
+            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+            double extraZ = radius * MathHelper.cos(angle);
+            IParticleData data = new ItemParticleData(ParticleTypes.ITEM, heldItemMainhand);
+            if (heldItemMainhand.getItem() instanceof BlockItem) {
+                data = new BlockParticleData(ParticleTypes.BLOCK, ((BlockItem) heldItemMainhand.getItem()).getBlock().getDefaultState());
+            }
+            this.world.addParticle(data, this.getPosX() + extraX, this.getPosY() + this.getHeight() * 0.6F, this.getPosZ() + extraZ, d0, d1, d2);
+        }
+    }
+
 
     @Override
     public void onGetItem(ItemEntity e) {
-
+        ItemStack duplicate = e.getItem().copy();
+        duplicate.setCount(1);
+        if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.world.isRemote) {
+            this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
+        }
+        this.setFlying(true);
+        this.setHeldItem(Hand.MAIN_HAND, duplicate);
     }
 
     public Vector3d getBlockInViewAway(Vector3d fleePos, float radiusAdd) {
-        float radius = 5 + this.getRNG().nextInt(5);
+        float radius = 5 + radiusAdd + this.getRNG().nextInt(5);
         float neg = this.getRNG().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.renderYawOffset;
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRNG().nextFloat() * neg);
@@ -311,6 +384,21 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         }
         return !world.getFluidState(position).isEmpty() || position.getY() <= 0;
     }
+
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+        ItemStack itemstack = player.getHeldItem(hand);
+        Item item = itemstack.getItem();
+        ActionResultType type = super.getEntityInteractionResult(player, hand);
+        if (!this.getHeldItemMainhand().isEmpty() && type != ActionResultType.SUCCESS) {
+            this.entityDropItem(this.getHeldItemMainhand().copy());
+            this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+            stealCooldown = 1500 + rand.nextInt(1500);
+            return ActionResultType.SUCCESS;
+        } else {
+            return type;
+        }
+    }
+
 
     @Nullable
     @Override
@@ -456,7 +544,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
             if ((eagle.getAttackTarget() != null && eagle.getAttackTarget().isAlive() && !this.eagle.isBeingRidden()) || this.eagle.isPassenger()) {
                 return false;
             } else {
-                if (this.eagle.getRNG().nextInt(20) != 0 && !eagle.isFlying()) {
+                if (this.eagle.getRNG().nextInt(20) != 0 && !eagle.isFlying() || eagle.aiItemFlag) {
                     return false;
                 }
                 if (this.eagle.isChild()) {
@@ -633,7 +721,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
             if (this.targetEntity != null) {
                 crow.aiItemFlag = true;
                 if (this.goalOwner.getDistance(targetEntity) < 2) {
-                    crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                    crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), targetEntity.getPosY(), this.targetEntity.getPosZ(), 1.5F);
                     crow.peck();
                 }
                 if (this.goalOwner.getDistance(this.targetEntity) > 8 || crow.isFlying()) {
@@ -644,15 +732,15 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                     float xzDist = MathHelper.sqrt(f * f + f2 * f2);
 
                     if (!crow.canEntityBeSeen(targetEntity)) {
-                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), 1 + crow.getPosY(), this.targetEntity.getPosZ(), 1);
+                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), 1 + crow.getPosY(), this.targetEntity.getPosZ(), 1.5F);
                     } else {
                         if (xzDist < 5) {
                             f1 = 0;
                         }
-                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), f1 + this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), f1 + this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1.5F);
                     }
                 } else {
-                    this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                    this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1.5F);
                 }
             }
         }
