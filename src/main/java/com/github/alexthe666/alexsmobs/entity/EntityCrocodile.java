@@ -294,7 +294,7 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
             if (this.getDistance(this.getAttackTarget()) < 3.5F && this.canEntityBeSeen(this.getAttackTarget())) {
                 boolean flag = this.getAttackTarget().isActiveItemStackBlocking();
                 if(!flag){
-                    if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty()) {
+                    if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() && !this.getAttackTarget().isSneaking()) {
                         this.getAttackTarget().startRiding(this, true);
                     }
                 }
