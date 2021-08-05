@@ -224,6 +224,7 @@ public class AMEntityRegistry {
         event.put(VOID_WORM_PART, EntityVoidWormPart.bakeAttributes().create());
         event.put(FRILLED_SHARK, EntityFrilledShark.bakeAttributes().create());
         event.put(MIMIC_OCTOPUS, EntityMimicOctopus.bakeAttributes().create());
+        event.put(SEAGULL, EntitySeagull.bakeAttributes().create());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(ITag entityTag){
