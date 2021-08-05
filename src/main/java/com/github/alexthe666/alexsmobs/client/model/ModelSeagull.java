@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 
 public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 	private final AdvancedModelBox root;
@@ -112,12 +113,15 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		float flapSpeed = 0.6F;
 		float flapDegree = 0.2F;
 		float walkSpeed = 0.8F;
-		float walkDegree = 0.3F;
+		float walkDegree = 0.6F;
 		float idleSpeed = 0.1F;
 		float idleDegree = 0.1F;
 		float partialTick = Minecraft.getInstance().getRenderPartialTicks();
 		float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
+		float groundProgress = 5F - flyProgress;
 		float flapAmount = (entity.prevFlapAmount + (entity.flapAmount - entity.prevFlapAmount) * partialTick) * flyProgress * 0.2F;
+		float biteProgress = entity.prevAttackProgress + (entity.attackProgress - entity.prevAttackProgress) * partialTick;
+		progressRotationPrev(head, biteProgress, (float)Math.toRadians(60), 0, 0, 5F);
 		progressPositionPrev(head, flyProgress, 0F, 1F, -1F, 5f);
 		progressRotationPrev(left_leg, flyProgress, (float) Math.toRadians(85), 0, 0, 5F);
 		progressRotationPrev(right_leg, flyProgress, (float) Math.toRadians(85), 0, 0, 5F);
@@ -147,7 +151,9 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		}
 		this.swing(tail, idleSpeed, idleDegree, false, 1F, 0F, ageInTicks, 1);
 		this.bob(head, idleSpeed * 0.5F, idleDegree * 1.5F, true, ageInTicks, 1);
-		this.faceTarget(netHeadYaw, headPitch, 1F, head);
+		head.rotateAngleY += Math.toRadians(entity.getFlightLookYaw()) * flyProgress * 0.2F;
+		head.rotateAngleY += netHeadYaw / 57.295776F * groundProgress * 0.2F;
+		head.rotateAngleX += headPitch / 57.295776F * groundProgress * 0.2F;
 
 	}
 

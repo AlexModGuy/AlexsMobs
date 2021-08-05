@@ -1,7 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
-import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
@@ -40,6 +40,9 @@ import java.util.List;
 public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems {
 
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntitySeagull.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> FLIGHT_LOOK_YAW = EntityDataManager.createKey(EntitySeagull.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> ATTACK_TICK = EntityDataManager.createKey(EntitySeagull.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntitySeagull.class, DataSerializers.BOOLEAN);
     public float prevFlyProgress;
     public float flyProgress;
     public float prevFlapAmount;
@@ -51,6 +54,12 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     private double orbitDist = 5D;
     private boolean orbitClockwise = false;
     private boolean fallFlag = false;
+    private int flightLookCooldown = 0;
+    private float targetFlightLookYaw;
+    public float attackProgress;
+    public float prevAttackProgress;
+    public float sitProgress;
+    public float prevSitProgress;
 
     protected EntitySeagull(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -75,6 +84,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(9, new LookAtGoal(this, CreatureEntity.class, 6.0F));
         this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
+        this.targetSelector.addGoal(1, new AITargetItems(this, false, false, 40, 16));
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
@@ -101,6 +111,9 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     protected void registerData() {
         super.registerData();
         this.dataManager.register(FLYING, false);
+        this.dataManager.register(SITTING, false);
+        this.dataManager.register(ATTACK_TICK, 0);
+        this.dataManager.register(FLIGHT_LOOK_YAW, 0F);
     }
 
     public boolean isFlying() {
@@ -114,28 +127,80 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         this.dataManager.set(FLYING, flying);
     }
 
+    public boolean isSitting() {
+        return this.dataManager.get(SITTING);
+    }
+
+    public void setSitting(boolean sitting) {
+        this.dataManager.set(SITTING, sitting);
+    }
+
+    public float getFlightLookYaw() {
+        return dataManager.get(FLIGHT_LOOK_YAW);
+    }
+
+    public void setFlightLookYaw(float yaw) {
+        dataManager.set(FLIGHT_LOOK_YAW, yaw);
+    }
+
+
     public void tick() {
         super.tick();
         this.prevFlyProgress = flyProgress;
         this.prevFlapAmount = flapAmount;
+        this.prevAttackProgress = attackProgress;
+        this.prevSitProgress = sitProgress;
         float yMot = (float) -((float) this.getMotion().y * (double) (180F / (float) Math.PI));
+        float absYaw = Math.abs(this.rotationYaw - this.prevRotationYaw);
         if (isFlying() && flyProgress < 5F) {
             flyProgress++;
         }
         if (!isFlying() && flyProgress > 0F) {
             flyProgress--;
         }
-        if (yMot < 0.0F) {
+        if (isSitting() && sitProgress < 5F) {
+            sitProgress++;
+        }
+        if (!isSitting() && sitProgress > 0F) {
+            sitProgress--;
+        }
+        if (absYaw > 8) {
+            flapAmount = Math.min(1F, flapAmount + 0.1F);
+        } else if (yMot < 0.0F) {
             flapAmount = Math.min(-yMot * 0.2F, 1F);
         } else {
             if (flapAmount > 0.0F) {
-                flapAmount -= Math.min(flapAmount, 0.1F);
+                flapAmount -= Math.min(flapAmount, 0.05F);
             } else {
                 flapAmount = 0;
             }
         }
+        if (this.dataManager.get(ATTACK_TICK) > 0) {
+            this.dataManager.set(ATTACK_TICK, this.dataManager.get(ATTACK_TICK) - 1);
+            if (attackProgress < 5F) {
+                attackProgress++;
+            }
+        } else {
+            if (attackProgress > 0F) {
+                attackProgress--;
+            }
+        }
         if (!world.isRemote) {
             if (isFlying()) {
+                float lookYawDist = Math.abs(this.getFlightLookYaw() - targetFlightLookYaw);
+                if (flightLookCooldown > 0) {
+                    flightLookCooldown--;
+                }
+                if (flightLookCooldown == 0 && this.rand.nextInt(4) == 0 && lookYawDist < 0.5F) {
+                    targetFlightLookYaw = MathHelper.clamp(rand.nextFloat() * 120F - 60, -60, 60);
+                    flightLookCooldown = 3 + rand.nextInt(15);
+                }
+                if (this.getFlightLookYaw() < this.targetFlightLookYaw && lookYawDist > 0.5F) {
+                    this.setFlightLookYaw(this.getFlightLookYaw() + Math.min(lookYawDist, 4F));
+                }
+                if (this.getFlightLookYaw() > this.targetFlightLookYaw && lookYawDist > 0.5F) {
+                    this.setFlightLookYaw(this.getFlightLookYaw() - Math.min(lookYawDist, 4F));
+                }
                 if (this.onGround && !this.isInWaterOrBubbleColumn() && this.timeFlying > 30) {
                     this.setFlying(false);
                 }
@@ -251,6 +316,10 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     @Override
     public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return null;
+    }
+
+    public void peck() {
+        this.dataManager.set(ATTACK_TICK, 7);
     }
 
     private class AIScatter extends Goal {
@@ -387,7 +456,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
             if ((eagle.getAttackTarget() != null && eagle.getAttackTarget().isAlive() && !this.eagle.isBeingRidden()) || this.eagle.isPassenger()) {
                 return false;
             } else {
-                if (this.eagle.getRNG().nextInt(15) != 0 && !eagle.isFlying()) {
+                if (this.eagle.getRNG().nextInt(20) != 0 && !eagle.isFlying()) {
                     return false;
                 }
                 if (this.eagle.isChild()) {
@@ -395,17 +464,17 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                 } else if (this.eagle.isInWaterOrBubbleColumn()) {
                     this.flightTarget = true;
                 } else if (this.eagle.isOnGround()) {
-                    this.flightTarget = rand.nextInt(5) == 0;
+                    this.flightTarget = rand.nextInt(10) == 0;
                 } else {
                     if (orbitResetCooldown == 0 && rand.nextInt(6) == 0) {
-                        orbitResetCooldown = 300 + rand.nextInt(300);
+                        orbitResetCooldown = 100 + rand.nextInt(300);
                         eagle.orbitPos = eagle.getPosition();
                         eagle.orbitDist = 4 + rand.nextInt(5);
                         eagle.orbitClockwise = rand.nextBoolean();
                         orbitTime = 0;
                         maxOrbitTime = (int) (180 + 360 * rand.nextFloat());
                     }
-                    this.flightTarget = eagle.isBeingRidden() || rand.nextInt(7) > 0 && eagle.timeFlying < 400;
+                    this.flightTarget = rand.nextInt(5) != 0 && eagle.timeFlying < 400;
                 }
                 Vector3d lvt_1_1_ = this.getPosition();
                 if (lvt_1_1_ == null) {
@@ -443,7 +512,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
             } else {
                 if (eagle.isFlying() && !eagle.onGround) {
                     if (!eagle.isInWaterOrBubbleColumn()) {
-                        eagle.setMotion(eagle.getMotion().mul(1.2F, 0.6F, 1.2F));
+                        //  eagle.setMotion(eagle.getMotion().mul(1F, 0.6F, 1F));
                     }
                 } else {
                     this.eagle.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, 1F);
@@ -451,7 +520,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
             }
             if (!flightTarget && isFlying()) {
                 eagle.fallFlag = true;
-                if(eagle.onGround){
+                if (eagle.onGround) {
                     eagle.setFlying(false);
                     orbitTime = 0;
                     eagle.orbitPos = null;
@@ -470,13 +539,13 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         protected Vector3d getPosition() {
             Vector3d vector3d = eagle.getPositionVec();
             if (orbitResetCooldown > 0 && eagle.orbitPos != null) {
-                return eagle.getOrbitVec(vector3d, 4 + rand.nextInt(2));
+                return eagle.getOrbitVec(vector3d, 4 + rand.nextInt(4));
             }
             if (eagle.isBeingRidden() || eagle.isOverWaterOrVoid()) {
                 flightTarget = true;
             }
             if (flightTarget) {
-                if (eagle.timeFlying < 500 || eagle.isBeingRidden() || eagle.isOverWaterOrVoid()) {
+                if (eagle.timeFlying < 340 || eagle.isBeingRidden() || eagle.isOverWaterOrVoid()) {
                     return eagle.getBlockInViewAway(vector3d, 0);
                 } else {
                     return eagle.getBlockGrounding(vector3d);
@@ -488,7 +557,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
 
         public boolean shouldContinueExecuting() {
             if (flightTarget) {
-                return eagle.isFlying() && eagle.getDistanceSq(x, y, z) > 2F;
+                return eagle.isFlying() && eagle.getDistanceSq(x, y, z) > 4F;
             } else {
                 return (!this.eagle.getNavigator().noPath()) && !this.eagle.isBeingRidden();
             }
@@ -525,12 +594,9 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                     this.action = MovementController.Action.WAIT;
                     parentEntity.setMotion(parentEntity.getMotion().scale(0.5D));
                 } else {
-                    double d0 = this.posX - this.parentEntity.getPosX();
                     double d1 = this.posY - this.parentEntity.getPosY();
-                    double d2 = this.posZ - this.parentEntity.getPosZ();
-                    double d3 = MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                     float yScale = d1 > 0 || fallFlag ? 1F : 0.7F;
-                    parentEntity.setMotion(parentEntity.getMotion().add(vector3d.scale(this.speed * 0.05D / d5)).mul(1F, yScale, 1F));
+                    parentEntity.setMotion(parentEntity.getMotion().add(vector3d.scale(speed * 0.03D / d5)));
                     Vector3d vector3d1 = parentEntity.getMotion();
                     parentEntity.rotationYaw = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
                     parentEntity.renderYawOffset = parentEntity.rotationYaw;
@@ -538,6 +604,63 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
                 }
 
             }
+        }
+    }
+
+    private class AITargetItems extends CreatureAITargetItems {
+
+        public AITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
+            super(creature, checkSight, onlyNearby, tickThreshold, radius);
+            this.executionChance = 1;
+        }
+
+        public void resetTask() {
+            super.resetTask();
+            ((EntitySeagull) goalOwner).aiItemFlag = false;
+        }
+
+        public boolean shouldExecute() {
+            return super.shouldExecute() && !((EntitySeagull) goalOwner).isSitting() && (goalOwner.getAttackTarget() == null || !goalOwner.getAttackTarget().isAlive());
+        }
+
+        public boolean shouldContinueExecuting() {
+            return super.shouldContinueExecuting() && !((EntitySeagull) goalOwner).isSitting() && (goalOwner.getAttackTarget() == null || !goalOwner.getAttackTarget().isAlive());
+        }
+
+        @Override
+        protected void moveTo() {
+            EntitySeagull crow = (EntitySeagull) goalOwner;
+            if (this.targetEntity != null) {
+                crow.aiItemFlag = true;
+                if (this.goalOwner.getDistance(targetEntity) < 2) {
+                    crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                    crow.peck();
+                }
+                if (this.goalOwner.getDistance(this.targetEntity) > 8 || crow.isFlying()) {
+                    crow.setFlying(true);
+                    float f = (float) (crow.getPosX() - targetEntity.getPosX());
+                    float f1 = 1.8F;
+                    float f2 = (float) (crow.getPosZ() - targetEntity.getPosZ());
+                    float xzDist = MathHelper.sqrt(f * f + f2 * f2);
+
+                    if (!crow.canEntityBeSeen(targetEntity)) {
+                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), 1 + crow.getPosY(), this.targetEntity.getPosZ(), 1);
+                    } else {
+                        if (xzDist < 5) {
+                            f1 = 0;
+                        }
+                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), f1 + this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                    }
+                } else {
+                    this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                }
+            }
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            moveTo();
         }
     }
 }
