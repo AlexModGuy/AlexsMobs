@@ -96,8 +96,13 @@ public class EntityMosquitoSpit extends Entity {
 
     protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
         Entity entity = this.func_234616_v_();
+        Entity hitEntity = p_213868_1_.getEntity();
         if (entity instanceof LivingEntity) {
-            p_213868_1_.getEntity().attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity)entity).setProjectile(), 4.0F);
+            hitEntity.attackEntityFrom(DamageSource.causeIndirectDamage(this, (LivingEntity)entity).setProjectile(), 4.0F);
+        }
+        if (hitEntity instanceof EntityCrimsonMosquito && !this.world.isRemote) {
+            EntityCrimsonMosquito mosquito = ((EntityCrimsonMosquito)hitEntity);
+            mosquito.setBloodLevel(mosquito.getBloodLevel() + 1);
         }
     }
 
