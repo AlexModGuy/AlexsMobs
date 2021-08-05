@@ -262,7 +262,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         }
 
         if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)){
-            if(!player.isSneaking()){
+            if(!player.isSneaking() && !this.isChild()){
                 player.startRiding(this);
                 return ActionResultType.SUCCESS;
             }else{
