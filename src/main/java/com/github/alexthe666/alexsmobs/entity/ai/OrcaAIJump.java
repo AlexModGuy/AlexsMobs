@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 public class OrcaAIJump extends JumpGoal {
-    private static final int[] JUMP_DISTANCES = new int[]{0, 1, 4, 5, 6, 7};
+    private static final int[] JUMP_DISTANCES = new int[]{0, 1, 4, 5, 6, 7, 10};
     private final EntityOrca dolphin;
     private final int field_220712_c;
     private boolean inWater;
