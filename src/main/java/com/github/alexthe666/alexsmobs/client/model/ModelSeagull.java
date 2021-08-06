@@ -5,6 +5,8 @@ import com.github.alexthe666.alexsmobs.entity.EntitySeagull;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -118,8 +120,10 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		float groundProgress = 5F - flyProgress;
 		float flapAmount = (entity.prevFlapAmount + (entity.flapAmount - entity.prevFlapAmount) * partialTick) * flyProgress * 0.2F;
 		float biteProgress = entity.prevAttackProgress + (entity.attackProgress - entity.prevAttackProgress) * partialTick;
-		float sitProgress = 0F;
-
+		float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
+		progressPositionPrev(body, sitProgress, 0F, 4, 0F, 5f);
+		progressPositionPrev(right_leg, sitProgress, 0F, -4, 0F, 5f);
+		progressPositionPrev(left_leg, sitProgress, 0F, -4, 0F, 5f);
 		progressRotationPrev(head, biteProgress, (float)Math.toRadians(60), 0, 0, 5F);
 		progressPositionPrev(head, flyProgress, 0F, 1F, -1F, 5f);
 		progressRotationPrev(left_leg, flyProgress, (float) Math.toRadians(85), 0, 0, 5F);
@@ -155,6 +159,31 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		head.rotateAngleX += headPitch / 57.295776F * groundProgress * 0.2F;
 
 	}
+
+	@Override
+	public void render(MatrixStack matrixStackIn, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+		if (this.isChild) {
+			float f = 1.45F;
+			head.setScale(f, f, f);
+			head.setShouldScaleChildren(true);
+			matrixStackIn.push();
+			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+			matrixStackIn.translate(0.0D, 1.5D, 0D);
+			getParts().forEach((p_228292_8_) -> {
+				p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+			});
+			matrixStackIn.pop();
+			this.head.setScale(0.9F, 0.9F, 0.9F);
+		} else {
+			this.head.setScale(0.9F, 0.9F, 0.9F);
+			matrixStackIn.push();
+			getParts().forEach((p_228290_8_) -> {
+				p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+			});
+			matrixStackIn.pop();
+		}
+	}
+
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
 		AdvancedModelBox.rotateAngleX = x;

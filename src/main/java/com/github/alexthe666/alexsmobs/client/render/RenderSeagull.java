@@ -29,7 +29,7 @@ public class RenderSeagull extends MobRenderer<EntitySeagull, ModelSeagull> {
     }
 
     public ResourceLocation getEntityTexture(EntitySeagull entity) {
-        return TEXTURE;
+        return entity.isWingull() ? TEXTURE_WINGULL : TEXTURE;
     }
 
     class LayerHeldItem extends LayerRenderer<EntitySeagull, ModelSeagull> {

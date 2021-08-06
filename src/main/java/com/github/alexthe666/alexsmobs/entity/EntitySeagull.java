@@ -2,7 +2,9 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
+import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIRevealTreasure;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIStealFromPlayers;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
@@ -22,6 +24,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -39,14 +45,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.MapDecoration;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems {
 
@@ -54,6 +59,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     private static final DataParameter<Float> FLIGHT_LOOK_YAW = EntityDataManager.createKey(EntitySeagull.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> ATTACK_TICK = EntityDataManager.createKey(EntitySeagull.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntitySeagull.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Optional<BlockPos>> TREASURE_POS = EntityDataManager.createKey(EntitySeagull.class, DataSerializers.OPTIONAL_BLOCK_POS);
     public float prevFlyProgress;
     public float flyProgress;
     public float prevFlapAmount;
@@ -63,7 +69,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     public float prevAttackProgress;
     public float sitProgress;
     public float prevSitProgress;
-    public int stealCooldown = 0;
+    public int stealCooldown = rand.nextInt(2500);
     private boolean isLandNavigator;
     private int timeFlying;
     private BlockPos orbitPos = null;
@@ -73,6 +79,8 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     private int flightLookCooldown = 0;
     private float targetFlightLookYaw;
     private int heldItemTime = 0;
+    public int treasureSitTime;
+    public UUID feederUUID = null;
 
     protected EntitySeagull(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -84,6 +92,36 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         switchNavigator(false);
     }
 
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean("Flying", this.isFlying());
+        compound.putBoolean("Sitting", this.isSitting());
+        compound.putInt("StealCooldown", this.stealCooldown);
+        compound.putInt("TreasureSitTime", this.treasureSitTime);
+        if(feederUUID != null){
+            compound.putUniqueId("FeederUUID", feederUUID);
+        }
+        if(this.getTreasurePos() != null){
+            compound.putInt("TresX", this.getTreasurePos().getX());
+            compound.putInt("TresY", this.getTreasurePos().getY());
+            compound.putInt("TresZ", this.getTreasurePos().getZ());
+        }
+    }
+
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setFlying(compound.getBoolean("Flying"));
+        this.setSitting(compound.getBoolean("Sitting"));
+        this.stealCooldown = compound.getInt("StealCooldown");
+        this.treasureSitTime = compound.getInt("TreasureSitTime");
+        if(compound.hasUniqueId("FeederUUID")){
+            this.feederUUID = compound.getUniqueId("FeederUUID");
+        }
+        if(compound.contains("TresX") && compound.contains("TresY") && compound.contains("TresZ")){
+            this.setTreasurePos(new BlockPos(compound.getInt("TresX"), compound.getInt("TresY"), compound.getInt("TresZ")));
+        }
+    }
+
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 8.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
     }
@@ -91,14 +129,25 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.targetSelector.addGoal(1, new SeagullAIStealFromPlayers(this));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new AIWanderIdle());
-        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(5, new LookAtGoal(this, CreatureEntity.class, 6.0F));
-        this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(7, new AIScatter());
+        this.targetSelector.addGoal(1, new SeagullAIRevealTreasure(this));
+        this.targetSelector.addGoal(2, new SeagullAIStealFromPlayers(this));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.fromItems(Items.COD, AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL), false){
+            public boolean shouldExecute(){
+                return !EntitySeagull.this.aiItemFlag && super.shouldExecute();
+            }
+        });
+        this.goalSelector.addGoal(5, new AIWanderIdle());
+        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(7, new LookAtGoal(this, CreatureEntity.class, 6.0F));
+        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(9, new AIScatter());
         this.targetSelector.addGoal(1, new AITargetItems(this, false, false, 15, 16));
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        Item item = stack.getItem();
+        return item == Items.COD;
     }
 
     public boolean onLivingFall(float distance, float damageMultiplier) {
@@ -127,6 +176,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         this.dataManager.register(FLYING, false);
         this.dataManager.register(SITTING, false);
         this.dataManager.register(ATTACK_TICK, 0);
+        this.dataManager.register(TREASURE_POS, Optional.empty());
         this.dataManager.register(FLIGHT_LOOK_YAW, 0F);
     }
 
@@ -157,19 +207,30 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         dataManager.set(FLIGHT_LOOK_YAW, yaw);
     }
 
+    public BlockPos getTreasurePos() {
+        return this.dataManager.get(TREASURE_POS).orElse(null);
+    }
+
+    public void setTreasurePos(BlockPos pos) {
+        this.dataManager.set(TREASURE_POS, Optional.ofNullable(pos));
+    }
+
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
             Entity entity = source.getTrueSource();
-            this.setSitting(false);
             boolean prev = super.attackEntityFrom(source, amount);
             if (prev) {
+                this.setSitting(false);
                 if (!this.getHeldItemMainhand().isEmpty()) {
                     this.entityDropItem(this.getHeldItemMainhand());
                     this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
                     stealCooldown = 1500 + rand.nextInt(1500);
                 }
+                this.feederUUID = null;
+                this.treasureSitTime = 0;
             }
             return prev;
         }
@@ -270,8 +331,17 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         if (stealCooldown > 0) {
             stealCooldown--;
         }
+        if(treasureSitTime > 0){
+            treasureSitTime--;
+        }
+        if(this.isSitting() && this.isInWaterOrBubbleColumn()){
+            this.setMotion(this.getMotion().add(0, 0.02F, 0));
+        }
     }
 
+    public void eatItem(){
+        heldItemTime = 200;
+    }
     @Override
     public boolean canTargetItem(ItemStack stack) {
         return stack.getItem().isFood() && !this.isSitting();
@@ -294,6 +364,48 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         }
     }
 
+    public void setDataFromTreasureMap(PlayerEntity player){
+        boolean flag = false;
+        for(ItemStack map : player.getHeldEquipment()){
+            if(map.getItem() == Items.FILLED_MAP || map.getItem() == Items.MAP){
+                if (map.hasTag() && map.getTag().contains("Decorations", 9)) {
+                    ListNBT listnbt = map.getTag().getList("Decorations", 10);
+                    for(int i = 0; i < listnbt.size(); i++){
+                        CompoundNBT nbt = listnbt.getCompound(i);
+                        byte type = nbt.getByte("type");
+                        if(type == MapDecoration.Type.RED_X.getIcon() || type == MapDecoration.Type.TARGET_X.getIcon()){
+                            int x = nbt.getInt("x");
+                            int z = nbt.getInt("z");
+                            if(this.getDistanceSq(x, this.getPosY(), z) <= 400){
+                                flag = true;
+                                this.setTreasurePos(new BlockPos(x, 0, z));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(flag){
+            this.feederUUID = player.getUniqueID();
+            this.treasureSitTime = 300;
+            this.stealCooldown = 1500 + rand.nextInt(1500);
+        }
+    }
+
+    public void travel(Vector3d vec3d) {
+        if (this.isSitting()) {
+            if (this.getNavigator().getPath() != null) {
+                this.getNavigator().clearPath();
+            }
+            vec3d = Vector3d.ZERO;
+        }
+        super.travel(vec3d);
+    }
+
+    public boolean isWingull() {
+        String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
+        return s != null && s.toLowerCase().equals("wingull");
+    }
 
     @Override
     public void onGetItem(ItemEntity e) {
@@ -301,6 +413,14 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         duplicate.setCount(1);
         if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.world.isRemote) {
             this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
+        }
+        stealCooldown += 600 + rand.nextInt(1200);
+        if(e.getThrowerId() != null && (e.getItem().getItem() == AMItemRegistry.LOBSTER_TAIL || e.getItem().getItem() == AMItemRegistry.COOKED_LOBSTER_TAIL)){
+            PlayerEntity player = world.getPlayerByUuid(e.getThrowerId());
+            if(player != null){
+                setDataFromTreasureMap(player);
+                feederUUID = e.getThrowerId();
+            }
         }
         this.setFlying(true);
         this.setHeldItem(Hand.MAIN_HAND, duplicate);
@@ -314,7 +434,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
         double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, 0, fleePos.getZ() + extraZ);
-        BlockPos ground = getCrowGround(radialPos);
+        BlockPos ground = getSeagullGround(radialPos);
         int distFromGround = (int) this.getPosY() - ground.getY();
         int flightHeight = 8 + this.getRNG().nextInt(4);
         BlockPos newPos = ground.up(distFromGround > 3 ? flightHeight : this.getRNG().nextInt(4) + 8);
@@ -324,7 +444,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         return null;
     }
 
-    private BlockPos getCrowGround(BlockPos in) {
+    public BlockPos getSeagullGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), this.getPosY(), in.getZ());
         while (position.getY() < 256 && !world.getFluidState(position).isEmpty()) {
             position = position.up();
@@ -343,7 +463,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
         double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, getPosY(), fleePos.getZ() + extraZ);
-        BlockPos ground = this.getCrowGround(radialPos);
+        BlockPos ground = this.getSeagullGround(radialPos);
         if (ground.getY() == 0) {
             return this.getPositionVec();
         } else {
@@ -403,7 +523,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     @Nullable
     @Override
     public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return null;
+        return AMEntityRegistry.SEAGULL.create(serverWorld);
     }
 
     public void peck() {
@@ -434,7 +554,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
 
         @Override
         public boolean shouldExecute() {
-            if (EntitySeagull.this.isPassenger() || EntitySeagull.this.aiItemFlag || EntitySeagull.this.isBeingRidden()) {
+            if (EntitySeagull.this.isPassenger() || EntitySeagull.this.isSitting() || EntitySeagull.this.aiItemFlag || EntitySeagull.this.isBeingRidden()) {
                 return false;
             }
             if (!this.mustUpdate) {
@@ -541,7 +661,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
             if (orbitResetCooldown < 0) {
                 orbitResetCooldown++;
             }
-            if ((eagle.getAttackTarget() != null && eagle.getAttackTarget().isAlive() && !this.eagle.isBeingRidden()) || this.eagle.isPassenger()) {
+            if ((eagle.getAttackTarget() != null && eagle.getAttackTarget().isAlive() && !this.eagle.isBeingRidden()) || eagle.isSitting() || this.eagle.isPassenger()) {
                 return false;
             } else {
                 if (this.eagle.getRNG().nextInt(20) != 0 && !eagle.isFlying() || eagle.aiItemFlag) {

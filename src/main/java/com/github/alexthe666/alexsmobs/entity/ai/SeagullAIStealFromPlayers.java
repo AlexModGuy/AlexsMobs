@@ -29,7 +29,7 @@ public class SeagullAIStealFromPlayers extends Goal {
     @Override
     public boolean shouldExecute() {
         long worldTime = this.seagull.world.getGameTime() % 10;
-        if (this.seagull.getIdleTime() >= 100 && worldTime != 0) {
+        if (this.seagull.getIdleTime() >= 100 && worldTime != 0 || seagull.isSitting()) {
             return false;
         }
         if (this.seagull.getRNG().nextInt(12) != 0 && worldTime != 0 || seagull.stealCooldown > 0) {
@@ -74,6 +74,7 @@ public class SeagullAIStealFromPlayers extends Goal {
                     seagull.peck();
                     seagull.setHeldItem(Hand.MAIN_HAND, copy);
                     fleeTime = 60;
+                    seagull.stealCooldown = 1500 + seagull.getRNG().nextInt(1500);
                 }else{
                     resetTask();
                 }
