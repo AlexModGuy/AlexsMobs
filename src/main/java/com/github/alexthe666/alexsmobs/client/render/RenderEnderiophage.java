@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.AbstractEyesLayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
@@ -19,6 +20,10 @@ import javax.annotation.Nullable;
 public class RenderEnderiophage extends MobRenderer<EntityEnderiophage, ModelEnderiophage> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/enderiophage.png");
     private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/enderiophage_glow.png");
+    private static final ResourceLocation TEXTURE_OVERWORLD = new ResourceLocation("alexsmobs:textures/entity/enderiophage_overworld.png");
+    private static final ResourceLocation TEXTURE_OVERWORLD_GLOW = new ResourceLocation("alexsmobs:textures/entity/enderiophage_overworld_glow.png");
+    private static final ResourceLocation TEXTURE_NETHER = new ResourceLocation("alexsmobs:textures/entity/enderiophage_nether.png");
+    private static final ResourceLocation TEXTURE_NETHER_GLOW = new ResourceLocation("alexsmobs:textures/entity/enderiophage_nether_glow.png");
 
     public RenderEnderiophage(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelEnderiophage(), 0.5F);
@@ -45,7 +50,7 @@ public class RenderEnderiophage extends MobRenderer<EntityEnderiophage, ModelEnd
 
 
     public ResourceLocation getEntityTexture(EntityEnderiophage entity) {
-        return TEXTURE;
+        return entity.getVariant() == 2 ? TEXTURE_NETHER : entity.getVariant() == 1 ? TEXTURE_OVERWORLD : TEXTURE;
     }
 
     class EnderiophageEyesLayer extends AbstractEyesLayer<EntityEnderiophage, ModelEnderiophage> {
@@ -54,8 +59,19 @@ public class RenderEnderiophage extends MobRenderer<EntityEnderiophage, ModelEnd
             super(p_i50928_1_);
         }
 
+
+        public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityEnderiophage entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.getRenderType(entitylivingbaseIn));
+            this.getEntityModel().render(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        }
+
+        @Override
         public RenderType getRenderType() {
             return AMRenderTypes.getGhost(TEXTURE_GLOW);
+        }
+
+        public RenderType getRenderType(EntityEnderiophage entity) {
+            return AMRenderTypes.getGhost(entity.getVariant() == 2 ? TEXTURE_NETHER_GLOW : entity.getVariant() == 1 ? TEXTURE_OVERWORLD_GLOW : TEXTURE_GLOW);
         }
     }
 

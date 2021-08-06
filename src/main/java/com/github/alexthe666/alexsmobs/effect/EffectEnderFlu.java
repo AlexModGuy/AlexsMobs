@@ -25,6 +25,7 @@ public class EffectEnderFlu extends Effect {
                 EntityEnderiophage phage = AMEntityRegistry.ENDERIOPHAGE.create(entity.world);
                 phage.copyLocationAndAnglesFrom(entity);
                 phage.onSpawnFromEffect();
+                phage.setSkinForDimension();
                 if (!entity.world.isRemote) {
                     phage.setStandardFleeTime();
                     entity.world.addEntity(phage);

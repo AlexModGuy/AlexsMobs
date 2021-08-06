@@ -100,6 +100,7 @@ public class TileEntityCapsid extends LockableTileEntity implements ITickableTil
                     this.world.destroyBlock(this.getPos().down(), false);
                     EntityEnderiophage phage = AMEntityRegistry.ENDERIOPHAGE.create(world);
                     phage.setPosition(this.getPos().getX() + 0.5F, this.getPos().getY() - 1.0F, this.getPos().getZ() + 0.5F);
+                    phage.setVariant(0);
                     if(!world.isRemote){
                         world.addEntity(phage);
                     }

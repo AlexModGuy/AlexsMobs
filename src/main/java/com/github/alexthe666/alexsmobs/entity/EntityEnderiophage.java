@@ -57,6 +57,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntityEnderiophage.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> MISSING_EYE = EntityDataManager.createKey(EntityEnderiophage.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> PHAGE_SCALE = EntityDataManager.createKey(EntityEnderiophage.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntityEnderiophage.class, DataSerializers.VARINT);
     private static final Predicate<LivingEntity> ENDERGRADE_OR_INFECTED = (entity) -> {
         return entity instanceof EntityEndergrade || entity.isPotionActive(AMEffectRegistry.ENDER_FLU);
     };
@@ -108,6 +109,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         if (reason == SpawnReason.NATURAL) {
             doInitialPosing(worldIn);
         }
+        setSkinForDimension();
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
@@ -123,6 +125,13 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         this.dataManager.set(PHAGE_SCALE, scale);
     }
 
+    public int getVariant() {
+        return this.dataManager.get(VARIANT).intValue();
+    }
+
+    public void setVariant(int variant) {
+        this.dataManager.set(VARIANT, Integer.valueOf(variant));
+    }
 
     protected void registerGoals() {
         super.registerGoals();
@@ -166,6 +175,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
     @Override
     protected void registerData() {
         super.registerData();
+        this.dataManager.register(VARIANT, 0);
         this.dataManager.register(PHAGE_PITCH, 0F);
         this.dataManager.register(PHAGE_SCALE, 1F);
         this.dataManager.register(FLYING, false);
@@ -177,6 +187,14 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
     }
 
     protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    }
+
+    public boolean isInOverworld() {
+        return this.world.getDimensionKey() == World.OVERWORLD && !this.isAIDisabled();
+    }
+
+    public boolean isInNether() {
+        return this.world.getDimensionKey() == World.THE_NETHER && !this.isAIDisabled();
     }
 
     public void setStandardFleeTime() {
@@ -279,6 +297,15 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         this.setPhageScale(0.2F);
     }
 
+    public void setSkinForDimension(){
+        if(isInNether()){
+            this.setVariant(2);
+        }else if(isInOverworld()){
+            this.setVariant(1);
+        }else{
+            this.setVariant(0);
+        }
+    }
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return AMSoundRegistry.ENDERIOPHAGE_HURT;
     }
@@ -452,6 +479,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         super.writeAdditional(compound);
         compound.putBoolean("Flying", this.isFlying());
         compound.putBoolean("MissingEye", this.isMissingEye());
+        compound.putInt("Variant", this.getVariant());
         compound.putInt("SlowDownTicks", slowDownTicks);
     }
 
@@ -459,6 +487,7 @@ public class EntityEnderiophage extends AnimalEntity implements IMob, IFlyingAni
         super.readAdditional(compound);
         this.setFlying(compound.getBoolean("Flying"));
         this.setMissingEye(compound.getBoolean("MissingEye"));
+        this.setVariant(compound.getInt("Variant"));
         this.slowDownTicks = compound.getInt("SlowDownTicks");
     }
 
