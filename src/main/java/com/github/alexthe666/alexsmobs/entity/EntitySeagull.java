@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIRevealTreasure;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIStealFromPlayers;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.block.BlockState;
@@ -90,6 +91,18 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
         this.setPathPriority(PathNodeType.COCOA, -1.0F);
         this.setPathPriority(PathNodeType.FENCE, -1.0F);
         switchNavigator(false);
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.SEAGULL_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.SEAGULL_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.SEAGULL_HURT;
     }
 
     public void writeAdditional(CompoundNBT compound) {

@@ -250,6 +250,11 @@ public class AMSoundRegistry {
 
     public static final SoundEvent MUSIC_DISC_DAZE = createSoundEvent("music_disc_daze");
 
+    public static final SoundEvent SEAGULL_IDLE = createSoundEvent("seagull_idle");
+
+    public static final SoundEvent SEAGULL_HURT = createSoundEvent("seagull_hurt");
+
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);
