@@ -11,6 +11,8 @@ import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
@@ -24,11 +26,13 @@ import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ReportedException;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
@@ -47,6 +51,30 @@ public class ClientEvents {
     private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("alexsmobs:textures/falconry_radius.png");
     private boolean previousLavaVision = false;
     private FluidBlockRenderer previousFluidRenderer;
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onOutlineEntityColor(EventGetOutlineColor event){
+        if(event.getEntityIn() instanceof ItemEntity && ItemTags.getCollection().get(AMTagRegistry.VOID_WORM_DROPS).contains(((ItemEntity) event.getEntityIn()).getItem().getItem())){
+            int fromColor = 0;
+            int toColor = 0X21E5FF;
+            float startR = (float) (fromColor >> 16 & 255) / 255.0F;
+            float startG = (float) (fromColor >> 8 & 255) / 255.0F;
+            float startB = (float) (fromColor & 255) / 255.0F;
+            float endR = (float) (toColor >> 16 & 255) / 255.0F;
+            float endG = (float) (toColor >> 8 & 255) / 255.0F;
+            float endB = (float) (toColor & 255) / 255.0F;
+            float f = (float) (Math.cos(0.4F * (event.getEntityIn().ticksExisted + Minecraft.getInstance().getRenderPartialTicks())) + 1.0F) * 0.5F;
+            float r = (endR - startR) * f + startR;
+            float g = (endG - startG) * f + startG;
+            float b = (endB - startB) * f + startB;
+            int j =  ((((int)(r*255)) & 0xFF) << 16) |
+                    ((((int)(g*255)) & 0xFF) << 8)  |
+                    ((((int)(b*255)) & 0xFF) << 0);
+            event.setColor(j);
+            event.setResult(Event.Result.ALLOW);
+        }
+    }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
