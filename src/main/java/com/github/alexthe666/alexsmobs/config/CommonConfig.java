@@ -120,6 +120,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue frilledSharkSpawnRolls;
     public final ForgeConfigSpec.IntValue mimicOctopusSpawnWeight;
     public final ForgeConfigSpec.IntValue mimicOctopusSpawnRolls;
+    public final ForgeConfigSpec.IntValue seagullSpawnWeight;
+    public final ForgeConfigSpec.IntValue seagullSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -152,6 +154,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> voidWormSpawnDimensions;
     public final ForgeConfigSpec.DoubleValue voidWormDamageModifier;
     public final ForgeConfigSpec.DoubleValue voidWormMaxHealth;
+    public final ForgeConfigSpec.BooleanValue seagullStealing;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -194,6 +197,7 @@ public class CommonConfig {
         voidWormDamageModifier = buildDouble(builder, "voidWormDamageModifier", "all", 1.0D, 0D, 100D, "All void worm damage is scaled to this.");
         voidWormMaxHealth = buildDouble(builder, "voidWormMaxHealth", "all", 160.0D, 0D, 1000000D, "Max Health of the void worm boss.");
         voidWormSummonable = buildBoolean(builder, "voidWormSummonable", "all", true, "Whether the void worm boss is summonable or not, via the mysterious worm item.");
+        seagullStealing = buildBoolean(builder, "seagullStealing", "all", true, "Whether seagulls should steal food out of players' hotbar slots.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
@@ -297,6 +301,8 @@ public class CommonConfig {
         frilledSharkSpawnRolls = buildInt(builder, "frilledSharkSpawnRolls", "spawns", AMConfig.frilledSharkSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         mimicOctopusSpawnWeight = buildInt(builder, "mimicOctopusSpawnWeight", "spawns", AMConfig.mimicOctopusSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         mimicOctopusSpawnRolls = buildInt(builder, "mimicOctopusSpawnRolls", "spawns", AMConfig.mimicOctopusSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        seagullSpawnWeight = buildInt(builder, "seagullSpawnWeight", "spawns", AMConfig.seagullSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        seagullSpawnRolls = buildInt(builder, "seagullSpawnRolls", "spawns", AMConfig.seagullSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "spawns", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
         beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "spawns", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");

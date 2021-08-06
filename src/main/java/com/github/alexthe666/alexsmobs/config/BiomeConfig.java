@@ -65,6 +65,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> void_worm = Pair.of("alexsmobs:void_worm_spawns", DefaultBiomes.EMPTY);
 	public static Pair<String, SpawnBiomeData> frilled_shark = Pair.of("alexsmobs:frilled_shark_spawns", DefaultBiomes.DEEP_SEA);
 	public static Pair<String, SpawnBiomeData> mimic_octopus = Pair.of("alexsmobs:mimic_octopus_spawns", DefaultBiomes.MIMIC_OCTOPUS);
+	public static Pair<String, SpawnBiomeData> seagull = Pair.of("alexsmobs:seagull_spawns", DefaultBiomes.SEAGULL);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

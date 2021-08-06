@@ -277,4 +277,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:deep_warm_ocean", 0);
+
+    public static final SpawnBiomeData SEAGULL = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
+
 }

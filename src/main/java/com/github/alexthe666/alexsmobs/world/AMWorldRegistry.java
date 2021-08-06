@@ -190,6 +190,9 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.mimic_octopus, biome) && AMConfig.mimicOctopusSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.MIMIC_OCTOPUS, AMConfig.mimicOctopusSpawnWeight, 1, 2));
         }
+        if (testBiome(BiomeConfig.seagull, biome) && AMConfig.seagullSpawnWeight > 0) {
+            event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.SEAGULL, AMConfig.seagullSpawnWeight, 5, 6));
+        }
     }
 
     private static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome){
