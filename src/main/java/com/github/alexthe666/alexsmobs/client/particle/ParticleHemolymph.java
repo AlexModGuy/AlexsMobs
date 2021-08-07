@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleHemolymph extends SpriteTexturedParticle {
 
-    private static final int[] POSSIBLE_COLORS = {0X8E96FF, 0X7D75FF, 0X4E46EC};
+    private static final int[] POSSIBLE_COLORS = {0X70FFF8, 0X3BFFD0, 0X08DED9};
 
     private ParticleHemolymph(ClientWorld world, double x, double y, double z, double motionX, double motionY, double motionZ) {
         super(world, x, y, z);

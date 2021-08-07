@@ -89,6 +89,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.VOID_WORM, 0.3F));
         list.add(new Pair<>(AMEntityRegistry.FRILLED_SHARK, 0.65F));
         list.add(new Pair<>(AMEntityRegistry.MIMIC_OCTOPUS, 0.7F));
+        list.add(new Pair<>(AMEntityRegistry.SEAGULL, 1.2F));
     });
     private static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
