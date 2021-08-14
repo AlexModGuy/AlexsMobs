@@ -11,6 +11,8 @@ import net.minecraft.util.ResourceLocation;
 public class RenderCrimsonMosquito extends MobRenderer<EntityCrimsonMosquito, ModelCrimsonMosquito> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito.png");
     private static final ResourceLocation TEXTURE_SICK = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito_blue.png");
+    private static final ResourceLocation TEXTURE_FLY = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito_fly.png");
+    private static final ResourceLocation TEXTURE_SICK_FLY = new ResourceLocation("alexsmobs:textures/entity/crimson_mosquito_fly_blue.png");
 
     public RenderCrimsonMosquito(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelCrimsonMosquito(), 0.6F);
@@ -36,6 +38,9 @@ public class RenderCrimsonMosquito extends MobRenderer<EntityCrimsonMosquito, Mo
     }
 
     public ResourceLocation getEntityTexture(EntityCrimsonMosquito entity) {
-        return entity.isSick() ? TEXTURE_SICK : TEXTURE;
+        if (entity.isSick()) {
+            return entity.isFromFly() ? TEXTURE_SICK_FLY : TEXTURE_SICK;
+        }
+        return entity.isFromFly() ? TEXTURE_FLY : TEXTURE;
     }
 }
