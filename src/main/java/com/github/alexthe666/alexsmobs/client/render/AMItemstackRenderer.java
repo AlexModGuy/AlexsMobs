@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
+import com.github.alexthe666.alexsmobs.client.model.ModelMysteriousWorm;
 import com.github.alexthe666.alexsmobs.client.model.ModelShieldOfTheDeep;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -94,6 +95,8 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
     private static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
     private static final ResourceLocation SHIELD_OF_THE_DEEP_TEXTURE = new ResourceLocation("alexsmobs:textures/armor/shield_of_the_deep.png");
+    private static final ModelMysteriousWorm MYTERIOUS_WORM_MODEL = new ModelMysteriousWorm();
+    private static final ResourceLocation MYTERIOUS_WORM_TEXTURE = new ResourceLocation("alexsmobs:textures/item/mysterious_worm_model.png");
     private Map<String, Entity> renderedEntites = new HashMap();
 
     public static void incrementTick() {
@@ -164,6 +167,14 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
             matrixStackIn.translate(0.4F, -0.75F, 0.5F);
             matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-180));
             SHIELD_OF_THE_DEEP_MODEL.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(SHIELD_OF_THE_DEEP_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.pop();
+        }
+        if(itemStackIn.getItem() == AMItemRegistry.MYSTERIOUS_WORM){
+            matrixStackIn.push();
+            matrixStackIn.translate(0, -2F, 0);
+            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-180));
+            MYTERIOUS_WORM_MODEL.animateStack(itemStackIn);
+            MYTERIOUS_WORM_MODEL.render(matrixStackIn, bufferIn.getBuffer(RenderType.getItemEntityTranslucentCull(MYTERIOUS_WORM_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.pop();
         }
         if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE){
