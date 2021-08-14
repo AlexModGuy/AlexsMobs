@@ -16,6 +16,11 @@ public class GUIAnimalDictionary extends GuiBasicBook {
         super(bookStack, new TranslationTextComponent("animal_dictionary.title"));
     }
 
+    public GUIAnimalDictionary(ItemStack bookStack, String page) {
+        super(bookStack, new TranslationTextComponent("animal_dictionary.title"));
+        this.currentPageJSON = new ResourceLocation(this.getTextFileDirectory() + page + ".json");
+    }
+
     protected int getBindingColor() {
         return 0X606B26;
     }
