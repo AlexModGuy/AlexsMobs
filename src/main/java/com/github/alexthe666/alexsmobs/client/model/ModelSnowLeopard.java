@@ -141,34 +141,34 @@ public class ModelSnowLeopard extends AdvancedEntityModel<EntitySnowLeopard> {
         animator.update(entity);
         animator.setAnimation(EntitySnowLeopard.ANIMATION_ATTACK_R);
         animator.startKeyframe(3);
-        animator.rotate(body, 0, (float)Math.toRadians(-10F), 0);
-        animator.rotate(neck, 0, (float)Math.toRadians(-10F), (float)Math.toRadians(-10F));
-        animator.rotate(leg_front_right, (float)Math.toRadians(25F), (float)Math.toRadians(-20F), 0);
+        animator.rotate(body, 0, (float) Math.toRadians(-10F), 0);
+        animator.rotate(neck, 0, (float) Math.toRadians(-10F), (float) Math.toRadians(-10F));
+        animator.rotate(leg_front_right, (float) Math.toRadians(25F), (float) Math.toRadians(-20F), 0);
         animator.move(leg_front_right, 0, 1, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
-        animator.rotate(neck, 0, 0, (float)Math.toRadians(0));
-        animator.rotate(leg_front_right, (float)Math.toRadians(-90F),  (float)Math.toRadians(-30F),0);
+        animator.rotate(neck, 0, 0, (float) Math.toRadians(0));
+        animator.rotate(leg_front_right, (float) Math.toRadians(-90F), (float) Math.toRadians(-30F), 0);
         animator.move(leg_front_right, 0, 1, -2);
         animator.endKeyframe();
         animator.resetKeyframe(5);
         animator.setAnimation(EntitySnowLeopard.ANIMATION_ATTACK_L);
         animator.startKeyframe(3);
-        animator.rotate(body, 0, (float)Math.toRadians(10F), 0);
-        animator.rotate(neck, 0, (float)Math.toRadians(10F), (float)Math.toRadians(10F));
-        animator.rotate(leg_front_left, (float)Math.toRadians(25F), (float)Math.toRadians(20F), 0);
+        animator.rotate(body, 0, (float) Math.toRadians(10F), 0);
+        animator.rotate(neck, 0, (float) Math.toRadians(10F), (float) Math.toRadians(10F));
+        animator.rotate(leg_front_left, (float) Math.toRadians(25F), (float) Math.toRadians(20F), 0);
         animator.move(leg_front_left, 0, 1, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
-        animator.rotate(neck, 0, 0, (float)Math.toRadians(0));
-        animator.rotate(leg_front_left, (float)Math.toRadians(-90F),  (float)Math.toRadians(30F),0);
+        animator.rotate(neck, 0, 0, (float) Math.toRadians(0));
+        animator.rotate(leg_front_left, (float) Math.toRadians(-90F), (float) Math.toRadians(30F), 0);
         animator.move(leg_front_left, 0, 1, -2);
         animator.endKeyframe();
         animator.resetKeyframe(5);
     }
 
     @Override
-    public void setRotationAngles(EntitySnowLeopard entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+    public void setRotationAngles(EntitySnowLeopard entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         float walkSpeed = 0.7F;
         float walkDegree = 0.6F;
@@ -179,6 +179,8 @@ public class ModelSnowLeopard extends AdvancedEntityModel<EntitySnowLeopard> {
         float stalkProgress = entity.prevSneakProgress + (entity.sneakProgress - entity.prevSneakProgress) * partialTick;
         float tackleProgress = entity.prevTackleProgress + (entity.tackleProgress - entity.prevTackleProgress) * partialTick;
         float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
+        float sleepProgress = entity.prevSleepProgress + (entity.sleepProgress - entity.prevSleepProgress) * partialTick;
+        float sitSleepProgress = Math.max(sitProgress, sleepProgress);
         this.swing(tail1, idleSpeed, idleDegree * 2F, false, 2F, 0F, ageInTicks, 1 - limbSwingAmount);
         this.swing(tail2, idleSpeed, idleDegree * 1.5F, false, 2F, 0F, ageInTicks, 1 - limbSwingAmount);
         this.flap(tail3, idleSpeed * 1.2F, idleDegree * 1.5F, false, 2F, 0F, ageInTicks, 1 - limbSwingAmount);
@@ -196,47 +198,57 @@ public class ModelSnowLeopard extends AdvancedEntityModel<EntitySnowLeopard> {
         this.bob(body, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
         AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{tail1, tail2, tail3};
         this.chainSwing(tailBoxes, walkSpeed, walkDegree * 0.5F, -2.5F, limbSwing, limbSwingAmount);
-        progressRotationPrev(tail1, runProgress, (float)Math.toRadians(40), 0, 0, 5F);
-        progressRotationPrev(tail2, runProgress, (float)Math.toRadians(-20), 0, 0, 5F);
-        progressRotationPrev(tail3, runProgress, (float)Math.toRadians(-20), 0, 0, 5F);
-        progressRotationPrev(body, stalkProgress, (float)Math.toRadians(15), 0, 0, 5F);
-        progressRotationPrev(leg_back_left, stalkProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-        progressRotationPrev(leg_back_right, stalkProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-        progressRotationPrev(leg_front_left, stalkProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-        progressRotationPrev(leg_front_right, stalkProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-        progressRotationPrev(neck, stalkProgress, (float)Math.toRadians(5), 0, 0, 5F);
-        progressRotationPrev(head, stalkProgress, (float)Math.toRadians(-20), 0, 0, 5F);
-        progressRotationPrev(tail1, stalkProgress, (float)Math.toRadians(-20), 0, 0, 5F);
+        progressRotationPrev(tail1, runProgress, (float) Math.toRadians(40), 0, 0, 5F);
+        progressRotationPrev(tail2, runProgress, (float) Math.toRadians(-20), 0, 0, 5F);
+        progressRotationPrev(tail3, runProgress, (float) Math.toRadians(-20), 0, 0, 5F);
+        progressRotationPrev(body, stalkProgress, (float) Math.toRadians(15), 0, 0, 5F);
+        progressRotationPrev(leg_back_left, stalkProgress, (float) Math.toRadians(-15), 0, 0, 5F);
+        progressRotationPrev(leg_back_right, stalkProgress, (float) Math.toRadians(-15), 0, 0, 5F);
+        progressRotationPrev(leg_front_left, stalkProgress, (float) Math.toRadians(-15), 0, 0, 5F);
+        progressRotationPrev(leg_front_right, stalkProgress, (float) Math.toRadians(-15), 0, 0, 5F);
+        progressRotationPrev(neck, stalkProgress, (float) Math.toRadians(5), 0, 0, 5F);
+        progressRotationPrev(head, stalkProgress, (float) Math.toRadians(-20), 0, 0, 5F);
+        progressRotationPrev(tail1, stalkProgress, (float) Math.toRadians(-20), 0, 0, 5F);
         progressPositionPrev(leg_back_left, stalkProgress, 0, 2.1F, 0, 5F);
         progressPositionPrev(leg_back_right, stalkProgress, 0, 2.1F, 0, 5F);
         progressPositionPrev(leg_front_left, stalkProgress, 0, -1.9F, 0, 5F);
         progressPositionPrev(leg_front_right, stalkProgress, 0, -1.9F, 0, 5F);
-        progressRotationPrev(body, tackleProgress, (float)Math.toRadians(-45), 0, 0, 3F);
-        progressRotationPrev(neck, tackleProgress, (float)Math.toRadians(6), 0, 0, 3F);
-        progressRotationPrev(head, tackleProgress, (float)Math.toRadians(45), 0, 0, 3F);
-        progressRotationPrev(tail1, tackleProgress, (float)Math.toRadians(80), 0, 0, 3F);
-        progressRotationPrev(leg_front_right, tackleProgress, (float)Math.toRadians(-25), 0,  (float)Math.toRadians(45), 3F);
-        progressRotationPrev(leg_front_left, tackleProgress, (float)Math.toRadians(-25), 0,  (float)Math.toRadians(-45), 3F);
-        progressRotationPrev(leg_back_left, tackleProgress, (float)Math.toRadians(-15), 0, (float)Math.toRadians(-25), 3F);
-        progressRotationPrev(leg_back_right, tackleProgress, (float)Math.toRadians(-15), 0, (float)Math.toRadians(25), 3F);
+        progressRotationPrev(body, tackleProgress, (float) Math.toRadians(-45), 0, 0, 3F);
+        progressRotationPrev(neck, tackleProgress, (float) Math.toRadians(6), 0, 0, 3F);
+        progressRotationPrev(head, tackleProgress, (float) Math.toRadians(45), 0, 0, 3F);
+        progressRotationPrev(tail1, tackleProgress, (float) Math.toRadians(80), 0, 0, 3F);
+        progressRotationPrev(leg_front_right, tackleProgress, (float) Math.toRadians(-25), 0, (float) Math.toRadians(45), 3F);
+        progressRotationPrev(leg_front_left, tackleProgress, (float) Math.toRadians(-25), 0, (float) Math.toRadians(-45), 3F);
+        progressRotationPrev(leg_back_left, tackleProgress, (float) Math.toRadians(-15), 0, (float) Math.toRadians(-25), 3F);
+        progressRotationPrev(leg_back_right, tackleProgress, (float) Math.toRadians(-15), 0, (float) Math.toRadians(25), 3F);
         progressPositionPrev(body, tackleProgress, 0, -5F, 0, 3F);
         progressPositionPrev(leg_front_left, tackleProgress, 1F, 2F, 0, 3F);
         progressPositionPrev(leg_front_right, tackleProgress, -1F, 2F, 0, 3F);
         progressPositionPrev(tail1, tackleProgress, 0, 0F, -1F, 3F);
-        progressRotationPrev(leg_back_left, sitProgress, (float)Math.toRadians(-90), (float)Math.toRadians(-20), 0, 5F);
-        progressRotationPrev(leg_back_right, sitProgress, (float)Math.toRadians(-90), (float)Math.toRadians(20), 0, 5F);
-        progressRotationPrev(leg_front_left, sitProgress, (float)Math.toRadians(-90), 0, 0, 5F);
-        progressRotationPrev(leg_front_right, sitProgress, (float)Math.toRadians(-90), 0, 0, 5F);
         float tailAngle = entity.getEntityId() % 2 == 0 ? 1 : -1;
-        progressRotationPrev(tail1, sitProgress, (float)Math.toRadians(20), (float)Math.toRadians(tailAngle * 30), 0, 5F);
-        progressRotationPrev(tail2, sitProgress, (float)Math.toRadians(-5), (float)Math.toRadians(tailAngle * 50), 0, 5F);
-        progressRotationPrev(tail3, sitProgress, (float)Math.toRadians(10), (float)Math.toRadians(tailAngle * 20), (float)Math.toRadians(tailAngle * 20), 5F);
-        progressPositionPrev(body, sitProgress, 0, 5F, 0, 5F);
-        progressPositionPrev(leg_front_right, sitProgress, 0, 2F, 0, 5F);
-        progressPositionPrev(leg_front_left, sitProgress, 0, 2F, 0, 5F);
-        progressPositionPrev(leg_back_right, sitProgress, 0, 2.8F, -0.5F, 5F);
-        progressPositionPrev(leg_back_left, sitProgress, 0, 2.8F, -0.5F, 5F);
-        this.faceTarget(netHeadYaw, headPitch, 2, neck, head);
+        progressRotationPrev(leg_back_left, sitSleepProgress, (float) Math.toRadians(-90), (float) Math.toRadians(-20), 0, 5F);
+        progressRotationPrev(leg_back_right, sitSleepProgress, (float) Math.toRadians(-90), (float) Math.toRadians(20), 0, 5F);
+        progressRotationPrev(leg_front_left, sitSleepProgress, (float) Math.toRadians(-90), 0, 0, 5F);
+        progressRotationPrev(leg_front_right, sitSleepProgress, (float) Math.toRadians(-90), 0, 0, 5F);
+        progressPositionPrev(body, sitSleepProgress, 0, 5F, 0, 5F);
+        progressPositionPrev(leg_front_right, sitSleepProgress, 0, 2F, 0, 5F);
+        progressPositionPrev(leg_front_left, sitSleepProgress, 0, 2F, 0, 5F);
+        progressPositionPrev(leg_back_right, sitSleepProgress, 0, 2.8F, -0.5F, 5F);
+        progressPositionPrev(leg_back_left, sitSleepProgress, 0, 2.8F, -0.5F, 5F);
+        progressRotationPrev(tail1, sitProgress, (float) Math.toRadians(20), (float) Math.toRadians(tailAngle * 30), 0, 5F);
+        progressRotationPrev(tail2, sitProgress, (float) Math.toRadians(-5), (float) Math.toRadians(tailAngle * 50), 0, 5F);
+        progressRotationPrev(tail3, sitProgress, (float) Math.toRadians(10), (float) Math.toRadians(tailAngle * 20), (float) Math.toRadians(tailAngle * 20), 5F);
+        progressRotationPrev(neck, sleepProgress, (float) Math.toRadians(20), tailAngle * (float) Math.toRadians(50), 0, 5F);
+        progressRotationPrev(head, sleepProgress, (float) Math.toRadians(5), tailAngle * (float) Math.toRadians(20), 0, 5F);
+        progressPositionPrev(head, sleepProgress, tailAngle * 0.5F, -1, 1, 5F);
+        progressPositionPrev(neck, sleepProgress, 0, 1, -1, 5F);
+        progressRotationPrev(tail1, sleepProgress, (float) Math.toRadians(20), (float) Math.toRadians(tailAngle * -60), 0, 5F);
+        progressRotationPrev(tail2, sleepProgress, (float) Math.toRadians(10), (float) Math.toRadians(tailAngle * -70), (float) Math.toRadians(tailAngle * -50), 5F);
+        progressRotationPrev(tail3, sleepProgress, (float) Math.toRadians(-30), (float) Math.toRadians(tailAngle * -50), (float) Math.toRadians(tailAngle * -30), 5F);
+
+        if (sleepProgress <= 0.0F) {
+            this.faceTarget(netHeadYaw, headPitch, 2, neck, head);
+        }
     }
 
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {

@@ -25,7 +25,6 @@ public class ModelMysteriousWorm extends AdvancedEntityModel<Entity> {
         root = new AdvancedModelBox(this);
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-
         head = new AdvancedModelBox(this);
         head.setRotationPoint(0.0F, -2.0F, -6.0F);
         root.addChild(head);

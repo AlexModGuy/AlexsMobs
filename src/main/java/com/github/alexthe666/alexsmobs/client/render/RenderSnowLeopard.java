@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderSnowLeopard extends MobRenderer<EntitySnowLeopard, ModelSnowLeopard> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/snow_leopard.png");
+    private static final ResourceLocation TEXTURE_SLEEPING = new ResourceLocation("alexsmobs:textures/entity/snow_leopard_sleeping.png");
 
     public RenderSnowLeopard(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelSnowLeopard(), 0.4F);
@@ -20,6 +21,6 @@ public class RenderSnowLeopard extends MobRenderer<EntitySnowLeopard, ModelSnowL
 
 
     public ResourceLocation getEntityTexture(EntitySnowLeopard entity) {
-        return TEXTURE;
+        return entity.isSleeping() ? TEXTURE_SLEEPING : TEXTURE;
     }
 }

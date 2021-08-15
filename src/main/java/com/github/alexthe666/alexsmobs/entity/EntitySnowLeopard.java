@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -48,11 +49,14 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
     public float prevSitProgress;
     public float sitProgress;
     private static final DataParameter<Boolean> TACKLING = EntityDataManager.createKey(EntitySnowLeopard.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(EntitySnowLeopard.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntitySnowLeopard.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SL_SNEAKING = EntityDataManager.createKey(EntitySnowLeopard.class, DataSerializers.BOOLEAN);
     private boolean hasSlowedDown = false;
     private int sittingTime = 0;
     private int maxSitTime = 75;
+    public float prevSleepProgress;
+    public float sleepProgress;
 
     protected EntitySnowLeopard(EntityType type, World worldIn) {
         super(type, worldIn);
@@ -116,6 +120,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         this.dataManager.register(SITTING, Boolean.valueOf(false));
         this.dataManager.register(SL_SNEAKING, Boolean.valueOf(false));
         this.dataManager.register(TACKLING, Boolean.valueOf(false));
+        this.dataManager.register(SLEEPING, Boolean.valueOf(false));
     }
 
     public boolean isSitting() {
@@ -153,6 +158,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         this.prevSitProgress = sitProgress;
         this.prevSneakProgress = sneakProgress;
         this.prevTackleProgress = tackleProgress;
+        this.prevSleepProgress = sleepProgress;
         if (this.isSitting() && sitProgress < 5F) {
             sitProgress += 0.5F;
         }
@@ -171,6 +177,12 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         if (!isTackling() && tackleProgress > 0F) {
             tackleProgress--;
         }
+        if (this.isSleeping() && sleepProgress < 5F) {
+            sleepProgress += 0.5F;
+        }
+        if (!isSleeping() && sleepProgress > 0F) {
+            sleepProgress -= 0.5F;
+        }
         if(isSLSneaking() && !hasSlowedDown){
             hasSlowedDown = true;
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
@@ -182,28 +194,61 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         if(isTackling()){
             this.renderYawOffset = this.rotationYaw;
         }
-        if (isSitting() && ++sittingTime > maxSitTime) {
-            this.setSitting(false);
-            sittingTime = 0;
-        }
         if(this.getAttackTarget() != null && this.isSitting()){
             this.setSitting(false);
+            this.setSleeping(false);
         }
-        if (!world.isRemote && this.getAnimation() == NO_ANIMATION && this.getAttackTarget() == null && !this.isSitting() && rand.nextInt(200) == 0) {
-            maxSitTime = 2600 + rand.nextInt(2600);
-            this.setSitting(true);
+        if ((isSitting() || isSleeping()) && (++sittingTime > maxSitTime || this.getAttackTarget() != null || this.isInLove() || this.isInWaterOrBubbleColumn())) {
+            this.setSitting(false);
+            this.setSleeping(false);
+            sittingTime = 0;
+            maxSitTime = 100 + rand.nextInt(50);
+        }
+        if (this.getAttackTarget() == null && this.getMotion().lengthSquared() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSleeping() && !this.isSitting() && !this.isInWaterOrBubbleColumn() && rand.nextInt(340) == 0) {
+            sittingTime = 0;
+            if (this.getRNG().nextInt(2) != 0) {
+                maxSitTime = 200 + rand.nextInt(800);
+                this.setSitting(true);
+                this.setSleeping(false);
+            } else {
+                maxSitTime = 2000 + rand.nextInt(2600);
+                this.setSitting(false);
+                this.setSleeping(true);
+            }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        boolean prev = super.attackEntityFrom(source, amount);
+        if (prev) {
+            sittingTime = 0;
+            this.setSleeping(false);
+            this.setSitting(false);
+        }
+        return prev;
+    }
+
     public void travel(Vector3d vec3d) {
-        if (this.isSitting()) {
+        if (this.isSitting() || this.isSleeping()) {
             if (this.getNavigator().getPath() != null) {
                 this.getNavigator().clearPath();
             }
             vec3d = Vector3d.ZERO;
         }
         super.travel(vec3d);
+    }
+
+    protected boolean isMovementBlocked() {
+        return super.isMovementBlocked() || this.isSitting() || this.isSleeping();
+    }
+
+    public boolean isSleeping() {
+        return this.dataManager.get(SLEEPING).booleanValue();
+    }
+
+    public void setSleeping(boolean sleeping) {
+        this.dataManager.set(SLEEPING, Boolean.valueOf(sleeping));
     }
 
     @Override
