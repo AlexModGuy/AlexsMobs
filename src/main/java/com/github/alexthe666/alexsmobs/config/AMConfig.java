@@ -163,6 +163,7 @@ public class AMConfig {
     public static double voidWormDamageModifier = 1.0F;
     public static double voidWormMaxHealth = 160D;
     public static boolean seagullStealing = true;
+    public static boolean clingingFlipEffect = false;
 
     public static void bake(ModConfig config) {
         try {
@@ -314,6 +315,7 @@ public class AMConfig {
             voidWormDamageModifier = ConfigHolder.COMMON.voidWormDamageModifier.get();
             voidWormMaxHealth = ConfigHolder.COMMON.voidWormMaxHealth.get();
             seagullStealing = ConfigHolder.COMMON.seagullStealing.get();
+            clingingFlipEffect = ConfigHolder.COMMON.clingingFlipEffect.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

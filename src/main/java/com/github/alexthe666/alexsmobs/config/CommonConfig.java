@@ -155,6 +155,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue voidWormDamageModifier;
     public final ForgeConfigSpec.DoubleValue voidWormMaxHealth;
     public final ForgeConfigSpec.BooleanValue seagullStealing;
+    public final ForgeConfigSpec.BooleanValue clingingFlipEffect;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -198,6 +199,7 @@ public class CommonConfig {
         voidWormMaxHealth = buildDouble(builder, "voidWormMaxHealth", "all", 160.0D, 0D, 1000000D, "Max Health of the void worm boss.");
         voidWormSummonable = buildBoolean(builder, "voidWormSummonable", "all", true, "Whether the void worm boss is summonable or not, via the mysterious worm item.");
         seagullStealing = buildBoolean(builder, "seagullStealing", "all", true, "Whether seagulls should steal food out of players' hotbar slots.");
+        clingingFlipEffect = buildBoolean(builder, "clingingFlipEffect", "all", false, "Whether the Clinging Potion effect should flip the screen. Warning: may cause nausea.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");

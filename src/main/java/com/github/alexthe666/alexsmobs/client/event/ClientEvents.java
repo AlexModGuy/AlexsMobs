@@ -243,10 +243,12 @@ public class ClientEvents {
                 }
             }
             previousLavaVision = Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.LAVA_VISION);
-            if (Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.CLINGING) && Minecraft.getInstance().player.getEyeHeight() < Minecraft.getInstance().player.getHeight() * 0.45F) {
-                Minecraft.getInstance().gameRenderer.loadShader(new ResourceLocation("shaders/post/flip.json"));
-            } else if (Minecraft.getInstance().gameRenderer.getShaderGroup() != null && Minecraft.getInstance().gameRenderer.getShaderGroup().getShaderGroupName().equals("minecraft:shaders/post/flip.json")) {
-                Minecraft.getInstance().gameRenderer.stopUseShader();
+            if(AMConfig.clingingFlipEffect){
+                if (Minecraft.getInstance().player.isPotionActive(AMEffectRegistry.CLINGING) && Minecraft.getInstance().player.getEyeHeight() < Minecraft.getInstance().player.getHeight() * 0.45F) {
+                    Minecraft.getInstance().gameRenderer.loadShader(new ResourceLocation("shaders/post/flip.json"));
+                } else if (Minecraft.getInstance().gameRenderer.getShaderGroup() != null && Minecraft.getInstance().gameRenderer.getShaderGroup().getShaderGroupName().equals("minecraft:shaders/post/flip.json")) {
+                    Minecraft.getInstance().gameRenderer.stopUseShader();
+                }
             }
         }
         if (Minecraft.getInstance().getRenderViewEntity() instanceof EntityBaldEagle) {
