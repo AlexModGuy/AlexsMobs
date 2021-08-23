@@ -50,11 +50,14 @@ import java.util.function.Predicate;
 public class EntityCrimsonMosquito extends MonsterEntity {
 
     public static final ResourceLocation FULL_LOOT = new ResourceLocation("alexsmobs", "entities/crimson_mosquito_full");
+    public static final ResourceLocation FROM_FLY_LOOT = new ResourceLocation("alexsmobs", "entities/crimson_mosquito_fly");
+    public static final ResourceLocation FROM_FLY_FULL_LOOT = new ResourceLocation("alexsmobs", "entities/crimson_mosquito_fly_full");
     protected static final EntitySize FLIGHT_SIZE = EntitySize.fixed(1.2F, 1.8F);
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHOOTING = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> BLOOD_LEVEL = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> SHRINKING = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> FROM_FLY = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> MOSQUITO_SCALE = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> SICK = EntityDataManager.createKey(EntityCrimsonMosquito.class, DataSerializers.BOOLEAN);
     private static final Predicate<AnimalEntity> WARM_BLOODED = (mob) -> {
@@ -87,6 +90,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         prevMosquitoScale = 0.2F;
         this.setShrink(false);
         this.setMosquitoScale(0.2F);
+        this.setFromFly(true);
         for(int j = 0; j < 4; ++j) {
             this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getPosX() + this.rand.nextDouble() / 2.0D, this.getPosYHeight(0.5D), this.getPosZ() + this.rand.nextDouble() / 2.0D, this.rand.nextDouble() * 0.5F + 0.5F, 0, 0.0D);
         }
@@ -110,7 +114,10 @@ public class EntityCrimsonMosquito extends MonsterEntity {
 
     @Nullable
     protected ResourceLocation getLootTable() {
-        return this.getBloodLevel() > 0 ? FULL_LOOT : super.getLootTable();
+        if (this.getBloodLevel() > 0) {
+            return this.isFromFly() ? FROM_FLY_FULL_LOOT : FULL_LOOT;
+        }
+        return this.isFromFly() ? FROM_FLY_LOOT : super.getLootTable();
     }
 
     @Override
@@ -143,6 +150,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         compound.putFloat("MosquitoScale", this.getMosquitoScale());
         compound.putBoolean("Flying", this.isFlying());
         compound.putBoolean("Shrinking", this.isShrinking());
+        compound.putBoolean("IsFromFly", this.isFromFly());
         compound.putBoolean("Sick", this.isSick());
     }
 
@@ -153,6 +161,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         this.setMosquitoScale(compound.getFloat("MosquitoScale"));
         this.setFlying(compound.getBoolean("Flying"));
         this.setShrink(compound.getBoolean("Shrinking"));
+        this.setFromFly(compound.getBoolean("IsFromFly"));
         this.setSick(compound.getBoolean("Sick"));
     }
 
@@ -261,6 +270,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         this.dataManager.register(SICK, Boolean.valueOf(false));
         this.dataManager.register(BLOOD_LEVEL, 0);
         this.dataManager.register(SHRINKING, Boolean.valueOf(false));
+        this.dataManager.register(FROM_FLY, Boolean.valueOf(false));
         this.dataManager.register(MOSQUITO_SCALE, 1F);
     }
 
@@ -289,8 +299,14 @@ public class EntityCrimsonMosquito extends MonsterEntity {
         return this.dataManager.get(SHRINKING).booleanValue();
     }
 
+    public boolean isFromFly() { return this.dataManager.get(FROM_FLY).booleanValue(); }
+
     public void setShrink(boolean shrink) {
         this.dataManager.set(SHRINKING, shrink);
+    }
+
+    public void setFromFly(boolean fromFly) {
+        this.dataManager.set(FROM_FLY, fromFly);
     }
 
     public float getMosquitoScale() {
