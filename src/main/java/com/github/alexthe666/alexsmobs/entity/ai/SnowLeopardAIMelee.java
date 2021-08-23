@@ -80,7 +80,7 @@ public class SnowLeopardAIMelee extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        return leopard.getAttackTarget() != null && (leopard.getAttackTarget().isAlive() || leopard.getAttackTarget() instanceof PlayerEntity)&& !leopard.isChild();
+        return leopard.getAttackTarget() != null && !leopard.isSleeping() && !leopard.isSitting() && (leopard.getAttackTarget().isAlive() || leopard.getAttackTarget() instanceof PlayerEntity)&& !leopard.isChild();
     }
 
     public void startExecuting() {

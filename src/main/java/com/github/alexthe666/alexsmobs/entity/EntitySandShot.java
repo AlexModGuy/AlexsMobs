@@ -10,6 +10,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -32,6 +36,7 @@ public class EntitySandShot extends Entity {
     private UUID field_234609_b_;
     private int field_234610_c_;
     private boolean field_234611_d_;
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntitySandShot.class, DataSerializers.VARINT);
 
     public EntitySandShot(EntityType p_i50162_1_, World p_i50162_2_) {
         super(p_i50162_1_, p_i50162_2_);
@@ -73,6 +78,14 @@ public class EntitySandShot extends Entity {
         return MathHelper.lerp(0.2F, p_234614_0_, p_234614_1_);
     }
 
+    public int getVariant() {
+        return this.dataManager.get(VARIANT).intValue();
+    }
+
+    public void setVariant(int variant) {
+        this.dataManager.set(VARIANT, Integer.valueOf(variant));
+    }
+
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
@@ -82,9 +95,10 @@ public class EntitySandShot extends Entity {
         if (!this.field_234611_d_) {
             this.field_234611_d_ = this.func_234615_h_();
         }
+        IParticleData type = this.getVariant() == 2 ? AMParticleRegistry.GUSTER_SAND_SHOT_SOUL : this.getVariant() == 1 ? AMParticleRegistry.GUSTER_SAND_SHOT_RED : AMParticleRegistry.GUSTER_SAND_SHOT;
         for (int i = 0; i < 3 + rand.nextInt(6); ++i) {
             double d0 = 0.1D + 0.3D * (double) i;
-            world.addParticle(AMParticleRegistry.GUSTER_SAND_SHOT, this.getPosX() + 0.25F * (rand.nextFloat() - 0.5F), this.getPosY() + 0.25F * (rand.nextFloat() - 0.5F), this.getPosZ() + 0.25F * (rand.nextFloat() - 0.5F), this.getMotion().x * d0, this.getMotion().y, this.getMotion().z * d0);
+            world.addParticle(type, this.getPosX() + 0.25F * (rand.nextFloat() - 0.5F), this.getPosY() + 0.25F * (rand.nextFloat() - 0.5F), this.getPosZ() + 0.25F * (rand.nextFloat() - 0.5F), this.getMotion().x * d0, this.getMotion().y, this.getMotion().z * d0);
         }
         super.tick();
         Vector3d vector3d = this.getMotion();
@@ -133,6 +147,7 @@ public class EntitySandShot extends Entity {
     }
 
     protected void registerData() {
+        this.dataManager.register(VARIANT, 0);
     }
 
     public void setShooter(@Nullable Entity entityIn) {

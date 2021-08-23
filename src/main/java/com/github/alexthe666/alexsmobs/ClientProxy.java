@@ -251,6 +251,10 @@ public class ClientProxy extends CommonProxy {
         AlexsMobs.LOGGER.debug("Registered particle factories");
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SPIN, ParticleGusterSandSpin.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SHOT, ParticleGusterSandShot.Factory::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SPIN_RED, ParticleGusterSandSpin.FactoryRed::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SHOT_RED, ParticleGusterSandShot.FactoryRed::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SPIN_SOUL, ParticleGusterSandSpin.FactorySoul::new);
+        Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.GUSTER_SAND_SHOT_SOUL, ParticleGusterSandShot.FactorySoul::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.HEMOLYMPH, ParticleHemolymph.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.PLATYPUS_SENSE, ParticlePlatypus.Factory::new);
         Minecraft.getInstance().particles.registerFactory(AMParticleRegistry.WHALE_SPLASH, ParticleWhaleSplash.Factory::new);

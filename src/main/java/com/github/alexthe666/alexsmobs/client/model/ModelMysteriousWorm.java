@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 
 public class ModelMysteriousWorm extends AdvancedEntityModel<Entity> {
@@ -78,6 +79,9 @@ public class ModelMysteriousWorm extends AdvancedEntityModel<Entity> {
         this.resetToDefaultPose();
         float partialTick = Minecraft.getInstance().getRenderPartialTicks();
         float tick = Minecraft.getInstance().player == null ? 0 : partialTick + Minecraft.getInstance().player.ticksExisted;
+        if(Minecraft.getInstance().isGamePaused()){
+            tick = Util.milliTime() / 50 + partialTick;
+        }
         AdvancedModelBox[] tail = new AdvancedModelBox[]{head, body1, body2, body3};
         this.chainSwing(tail, 0.7F, 0.2F, -3, tick, 1);
         this.chainFlap(tail, 0.7F, 0.2F, -3, tick, 1);

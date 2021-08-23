@@ -3,11 +3,13 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelGuster;
 import com.github.alexthe666.alexsmobs.entity.EntityGuster;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.AbstractEyesLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
@@ -16,6 +18,9 @@ public class RenderGuster extends MobRenderer<EntityGuster, ModelGuster> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/guster.png");
     private static final ResourceLocation TEXTURE_GOOGLY = new ResourceLocation("alexsmobs:textures/entity/guster_silly.png");
     private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/guster_eye.png");
+    private static final ResourceLocation TEXTURE_RED = new ResourceLocation("alexsmobs:textures/entity/guster_red.png");
+    private static final ResourceLocation TEXTURE_SOUL = new ResourceLocation("alexsmobs:textures/entity/guster_soul.png");
+    private static final ResourceLocation TEXTURE_SOUL_EYES = new ResourceLocation("alexsmobs:textures/entity/guster_eye_soul.png");
 
     public RenderGuster(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelGuster(), 0.25F);
@@ -36,7 +41,7 @@ public class RenderGuster extends MobRenderer<EntityGuster, ModelGuster> {
 
 
     public ResourceLocation getEntityTexture(EntityGuster entity) {
-        return entity.isGooglyEyes() ? TEXTURE_GOOGLY : TEXTURE;
+        return entity.isGooglyEyes() ? TEXTURE_GOOGLY : entity.getVariant() == 2 ? TEXTURE_SOUL : entity.getVariant() == 1 ? TEXTURE_RED : TEXTURE;
     }
 
     class GusterEyesLayer extends AbstractEyesLayer<EntityGuster, ModelGuster> {
@@ -47,7 +52,8 @@ public class RenderGuster extends MobRenderer<EntityGuster, ModelGuster> {
 
         public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityGuster entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
             if(!entitylivingbaseIn.isGooglyEyes()){
-                super.render(matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw,  headPitch);
+                IVertexBuilder ivertexbuilder = bufferIn.getBuffer(entitylivingbaseIn.getVariant() == 2 ? AMRenderTypes.getEyesNoCull(TEXTURE_SOUL_EYES) : AMRenderTypes.getEyesNoCull(TEXTURE_EYES));
+                this.getEntityModel().render(matrixStackIn, ivertexbuilder, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             }
         }
 

@@ -14,6 +14,10 @@ public class AMParticleRegistry {
 
     public static final BasicParticleType GUSTER_SAND_SPIN = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_spin");
     public static final BasicParticleType GUSTER_SAND_SHOT = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_shot");
+    public static final BasicParticleType GUSTER_SAND_SPIN_RED = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_spin_red");
+    public static final BasicParticleType GUSTER_SAND_SHOT_RED = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_shot_red");
+    public static final BasicParticleType GUSTER_SAND_SPIN_SOUL = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_spin_soul");
+    public static final BasicParticleType GUSTER_SAND_SHOT_SOUL = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_shot_soul");
     public static final BasicParticleType HEMOLYMPH = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:hemolymph");
     public static final BasicParticleType PLATYPUS_SENSE = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:platypus_sense");
     public static final BasicParticleType WHALE_SPLASH = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:whale_splash");
