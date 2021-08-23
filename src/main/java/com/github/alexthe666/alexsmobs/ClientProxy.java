@@ -174,6 +174,10 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().displayGuiScreen(new GUIAnimalDictionary(itemStackIn));
     }
 
+    public void openBookGUI(ItemStack itemStackIn, String page) {
+        Minecraft.getInstance().displayGuiScreen(new GUIAnimalDictionary(itemStackIn, page));
+    }
+
     public Item.Properties setupISTER(Item.Properties group) {
         return group.setISTER(ClientProxy::getTEISR);
     }

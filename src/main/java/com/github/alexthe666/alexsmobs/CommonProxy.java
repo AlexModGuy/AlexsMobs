@@ -1,8 +1,10 @@
 package com.github.alexthe666.alexsmobs;
 
+import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.misc.*;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,6 +70,9 @@ public class CommonProxy {
     }
 
     public void openBookGUI(ItemStack itemStackIn) {
+    }
+
+    public void openBookGUI(ItemStack itemStackIn, String page) {
     }
 
     public Object getArmorModel(int armorId, LivingEntity entity) {
