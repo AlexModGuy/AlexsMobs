@@ -178,7 +178,6 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
-
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveController = new MovementController(this);
@@ -235,7 +234,6 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     public void setTreasurePos(BlockPos pos) {
         this.dataManager.set(TREASURE_POS, Optional.ofNullable(pos));
     }
-
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {

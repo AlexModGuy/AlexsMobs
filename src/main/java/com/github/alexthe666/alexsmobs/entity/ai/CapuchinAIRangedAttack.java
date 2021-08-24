@@ -9,7 +9,8 @@ import java.util.EnumSet;
 public class CapuchinAIRangedAttack extends Goal {
     private final EntityCapuchinMonkey entity;
     private final double moveSpeedAmp;
-    private final float maxAttackDistance;
+    private final float maxAttackDistanceDef;
+    private float maxAttackDistance;
     private int attackCooldown;
     private int attackTime = -1;
     private int seeTime;
@@ -21,7 +22,8 @@ public class CapuchinAIRangedAttack extends Goal {
         this.entity = mob;
         this.moveSpeedAmp = moveSpeedAmpIn;
         this.attackCooldown = attackCooldownIn;
-        this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
+        this.maxAttackDistanceDef = maxAttackDistanceIn * maxAttackDistanceIn;
+        this.maxAttackDistance = maxAttackDistanceDef;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
@@ -43,6 +45,7 @@ public class CapuchinAIRangedAttack extends Goal {
 
     public void startExecuting() {
         super.startExecuting();
+        this.maxAttackDistance = maxAttackDistanceDef * (entity.hasDart() ? 2 : 1);
         this.entity.setAggroed(true);
     }
 
