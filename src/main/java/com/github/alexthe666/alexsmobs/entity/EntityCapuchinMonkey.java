@@ -46,6 +46,7 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEntity, IFollower, ITargetsDroppedItems {
@@ -67,6 +68,9 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public boolean attackDecision = false;//true for ranged, false for melee
     private boolean hasSlowed = false;
     private int rideCooldown = 0;
+    public static final Predicate<Entity> TARGET_BLOON  = (balloon) -> {
+        return balloon.getEntityString() != null && (balloon.getEntityString().contains("balloon") || balloon.getEntityString().contains("balloom"));
+    };
 
     protected EntityCapuchinMonkey(EntityType type, World worldIn) {
         super(type, worldIn);

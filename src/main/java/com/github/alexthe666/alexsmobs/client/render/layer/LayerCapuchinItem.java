@@ -31,12 +31,22 @@ public class LayerCapuchinItem extends LayerRenderer<EntityCapuchinMonkey, Model
             translateToHand(false, matrixStackIn);
             if(entitylivingbaseIn.isChild()){
                 matrixStackIn.translate(0.05, -0.05F, 0.2F);
-
+            }
+            float f = 0.0F;
+            if(entitylivingbaseIn.getAnimation() == EntityCapuchinMonkey.ANIMATION_THROW){
+                if(entitylivingbaseIn.getAnimationTick() < 6){
+                    f = Math.min(3, entitylivingbaseIn.getAnimationTick() + partialTicks) * 60;
+                }else{
+                    f = (12 - (entitylivingbaseIn.getAnimationTick() + partialTicks)) * 30;
+                }
             }
             matrixStackIn.translate(0, 0.5F, 0F);
             matrixStackIn.scale(1.2F, 1.2F, 1.2F);
+            matrixStackIn.push();
+            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(f));
             IVertexBuilder ivertexbuilder = bufferIn.getBuffer(DART_MODEL.getRenderType(DART_TEXTURE));
             DART_MODEL.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.pop();
             matrixStackIn.pop();
 
         }else if(entitylivingbaseIn.getAnimation() == EntityCapuchinMonkey.ANIMATION_THROW && entitylivingbaseIn.getAnimationTick() <= 5) {
