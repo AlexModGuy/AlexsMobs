@@ -2,10 +2,12 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntitySeagull;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
@@ -76,6 +78,9 @@ public class SeagullAIStealFromPlayers extends Goal {
                     seagull.setHeldItem(Hand.MAIN_HAND, copy);
                     fleeTime = 60;
                     seagull.stealCooldown = 1500 + seagull.getRNG().nextInt(1500);
+                    if(target instanceof ServerPlayerEntity){
+                        AMAdvancementTriggerRegistry.SEAGULL_STEAL.trigger((ServerPlayerEntity)target);
+                    }
                 }else{
                     resetTask();
                 }

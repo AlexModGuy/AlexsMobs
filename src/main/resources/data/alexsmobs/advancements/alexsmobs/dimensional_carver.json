@@ -1,7 +1,8 @@
 {
     "display": {
         "icon": {
-            "item": "alexsmobs:dimensional_carver"
+            "item": "citadel:fancy_item",
+            "nbt": "{DisplayItem:\"alexsmobs:dimensional_carver\", DisplayBob:0, DisplayZoom:1, DisplayScale:1, DisplaySpin:0, DisplayShake:0}"
         },
         "title": {
             "translate": "advancements.alexsmobs.dimensional_carver.title"

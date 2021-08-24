@@ -164,7 +164,7 @@ public class EntitySeagull extends AnimalEntity implements ITargetsDroppedItems 
     }
 
     public static boolean canSeagullSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        return worldIn.getLightSubtracted(pos, 0) > 8 && worldIn.getBlockState(pos.down()).matchesBlock(Blocks.ICE);
+        return worldIn.getLightSubtracted(pos, 0) > 8 && worldIn.getFluidState(pos.down()).isEmpty();
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {

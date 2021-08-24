@@ -12,6 +12,7 @@ public class AMAdvancementTriggerRegistry {
     public static AMAdvancementTrigger VOID_WORM_SUMMON = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:void_worm_summon"));
     public static AMAdvancementTrigger VOID_WORM_SPLIT = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:void_worm_split"));
     public static AMAdvancementTrigger VOID_WORM_SLAY_HEAD = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:void_worm_kill"));
+    public static AMAdvancementTrigger SEAGULL_STEAL = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:seagull_steal"));
 
     public static void init(){
         CriteriaTriggers.register(MOSQUITO_SICK);
@@ -21,6 +22,7 @@ public class AMAdvancementTriggerRegistry {
         CriteriaTriggers.register(VOID_WORM_SUMMON);
         CriteriaTriggers.register(VOID_WORM_SPLIT);
         CriteriaTriggers.register(VOID_WORM_SLAY_HEAD);
+        CriteriaTriggers.register(SEAGULL_STEAL);
     }
 
 }

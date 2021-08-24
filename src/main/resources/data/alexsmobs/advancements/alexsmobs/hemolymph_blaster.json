@@ -1,7 +1,8 @@
 {
     "display": {
         "icon": {
-            "item": "alexsmobs:hemolymph_blaster"
+            "item": "citadel:fancy_item",
+            "nbt": "{DisplayItem:\"alexsmobs:hemolymph_blaster\", DisplayBob:0, DisplayZoom:1, DisplayScale:1, DisplaySpin:0, DisplayShake:0}"
         },
         "title": {
             "translate": "advancements.alexsmobs.hemolymph_blaster.title"

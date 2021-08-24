@@ -1,7 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:warped_fungus"
+      "item": "citadel:fancy_item",
+      "nbt": "{DisplayItem:\"minecraft:warped_fungus\", DisplayBob:0, DisplayZoom:0, DisplayScale:1, DisplaySpin:0, DisplayShake:1}"
     },
     "title": {
       "translate": "advancements.alexsmobs.crimson_mosquito_sick.title"

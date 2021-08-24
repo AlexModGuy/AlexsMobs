@@ -1,7 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:chorus_fruit"
+      "item": "citadel:effect_item",
+      "nbt": "{DisplayEffect:\"alexsmobs:ender_flu\"}"
     },
     "title": {
       "translate": "advancements.alexsmobs.ender_flu.title"
