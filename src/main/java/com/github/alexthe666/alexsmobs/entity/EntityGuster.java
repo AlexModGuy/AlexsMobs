@@ -83,8 +83,8 @@ public class EntityGuster extends MonsterEntity {
     }
 
     public static boolean canGusterSpawn(EntityType animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        boolean spawnBlock = BlockTags.SAND.contains(worldIn.getBlockState(pos.down()).getBlock());
-        return spawnBlock && (!AMConfig.limitGusterSpawnsToWeather || worldIn.getWorldInfo() != null && (worldIn.getWorldInfo().isThundering() || worldIn.getWorldInfo().isRaining()));
+        boolean spawnBlock = BlockTags.SAND.contains(worldIn.getBlockState(pos.down()).getBlock()) || BlockTags.SOUL_FIRE_BASE_BLOCKS.contains(worldIn.getBlockState(pos.down()).getBlock());
+        return spawnBlock && (!AMConfig.limitGusterSpawnsToWeather || worldIn.getWorldInfo() != null && (worldIn.getWorldInfo().isThundering() || worldIn.getWorldInfo().isRaining()) || isBiomeNether(worldIn, pos));
     }
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
@@ -286,12 +286,12 @@ public class EntityGuster extends MonsterEntity {
         this.setVariant(compound.getInt("Variant"));
     }
 
-    private boolean isBiomeRed(IWorld worldIn, BlockPos position) {
+    private static boolean isBiomeRed(IWorld worldIn, BlockPos position) {
         RegistryKey<Biome> biomeKey = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, worldIn.getBiome(position).getRegistryName());
         return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.MESA);
     }
 
-    private boolean isBiomeNether(IWorld worldIn, BlockPos position) {
+    private static boolean isBiomeNether(IWorld worldIn, BlockPos position) {
         RegistryKey<Biome> biomeKey = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, worldIn.getBiome(position).getRegistryName());
         return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.NETHER);
     }
