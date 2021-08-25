@@ -27,6 +27,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
     private ITargetsDroppedItems hunter;
     private int tickThreshold;
     private float radius = 9F;
+    private int walkCooldown = 0;
 
     public CreatureAITargetItems(CreatureEntity creature, boolean checkSight) {
         this(creature, checkSight, false);
@@ -112,7 +113,12 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
     }
 
     protected void moveTo(){
-        this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+        if(walkCooldown > 0){
+            walkCooldown--;
+        }else{
+            this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+            walkCooldown = 30 + this.goalOwner.getRNG().nextInt(40);
+        }
     }
 
     public void resetTask() {
