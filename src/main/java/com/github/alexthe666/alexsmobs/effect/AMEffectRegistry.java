@@ -85,9 +85,10 @@ public class AMEffectRegistry {
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(KNOCKBACK_RESISTANCE_POTION)), Ingredient.fromItems(Items.GLOWSTONE_DUST), createPotion(STRONG_KNOCKBACK_RESISTANCE_POTION)));
         BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(AMItemRegistry.LAVA_BOTTLE), Ingredient.fromItems(AMItemRegistry.BONE_SERPENT_TOOTH), createPotion(LAVA_VISION_POTION));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(LAVA_VISION_POTION)), Ingredient.fromItems(Items.REDSTONE), createPotion(LONG_LAVA_VISION_POTION)));
-        BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(AMItemRegistry.KOMODO_SPIT_BOTTLE), Ingredient.fromItems(AMItemRegistry.CENTIPEDE_LEG), new ItemStack(AMItemRegistry.POISON_BOTTLE));
-        BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(AMItemRegistry.POISON_BOTTLE), Ingredient.fromItems(AMItemRegistry.RATTLESNAKE_RATTLE), createPotion(POISON_RESISTANCE_POTION));
-        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(POISON_RESISTANCE_POTION)), Ingredient.fromItems(Items.REDSTONE), createPotion(LONG_POISON_RESISTANCE_POTION)));
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(Potions.POISON)), Ingredient.fromItems(AMItemRegistry.RATTLESNAKE_RATTLE), new ItemStack(AMItemRegistry.POISON_BOTTLE)));
+        BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(AMItemRegistry.POISON_BOTTLE), Ingredient.fromItems(AMItemRegistry.CENTIPEDE_LEG), createPotion(POISON_RESISTANCE_POTION));
+        BrewingRecipeRegistry.addRecipe(Ingredient.fromItems(AMItemRegistry.KOMODO_SPIT_BOTTLE), Ingredient.fromItems(AMItemRegistry.CENTIPEDE_LEG), createPotion(POISON_RESISTANCE_POTION));
+        BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(POISON_RESISTANCE_POTION)), Ingredient.fromItems(AMItemRegistry.KOMODO_SPIT), createPotion(LONG_POISON_RESISTANCE_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(Potions.STRONG_SWIFTNESS)), Ingredient.fromItems(AMItemRegistry.GAZELLE_HORN), createPotion(SPEED_III_POTION)));
         BrewingRecipeRegistry.addRecipe(Ingredient.fromStacks(createPotion(Potions.AWKWARD)), Ingredient.fromItems(AMItemRegistry.COCKROACH_WING), createPotion(BUG_PHEROMONES_POTION));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.fromStacks(createPotion(BUG_PHEROMONES_POTION)), Ingredient.fromItems(Items.REDSTONE), createPotion(LONG_BUG_PHEROMONES_POTION)));

@@ -6,5 +6,4 @@ Although slow, this cumbersome and giant arthropod can deal a dangerous amount o
 <NEWLINE>
 When slain, they have a chance to drop one or more of their legs.
 These legs can be used to craft a pair of leggings that grants its wearer the ability to climb walls, along with increased defense.
-They can also be brewed with a Bottle of Komodo Dragon Spit in order to create a Poisonous Essence, which when brewed with a Rattlesnake
-Rattle can create a Potion of Poison Resistance, that enables its user not to suffer the effects of being poisoned.
+They can also be brewed with a Poisonous Essence or a Bottle of Komodo Dragon Spit in order to create a Potion of Poison Resistance, that enables its user not to suffer the effects of being poisoned.

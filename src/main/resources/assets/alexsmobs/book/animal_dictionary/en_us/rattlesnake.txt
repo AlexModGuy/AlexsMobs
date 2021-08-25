@@ -6,5 +6,5 @@ seen, since it produces a loud rattle warning sound when a potential predator is
 rattlesnake while it is rattling, the creature will become hostile and use its poisonous bite to defend itself. Rattlesnakes
 are the sworn enemy of Roadrunners, their most common predator. Rattlesnakes can be bred with any type of meat.
 <NEWLINE>
-If a rattlesnake is slain, it has a chance to drop its rattle. These rattles can be brewed with Bottled Komodo Dragon Spit in
+If a rattlesnake is slain, it has a chance to drop its rattle. These rattles can be brewed with Potions of Poison in
 order to create a foul, poisonous essence. Brewing this essence with a Cave Centipede Leg can result in the coveted poison resistance potion.
