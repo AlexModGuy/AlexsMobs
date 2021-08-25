@@ -36,6 +36,8 @@ import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.*;
+import net.minecraft.loot.conditions.RandomChance;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
@@ -53,6 +55,7 @@ import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
@@ -559,4 +562,19 @@ public class ServerEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public void onChestGenerated(LootTableLoadEvent event) {
+        if (event.getName().equals(LootTables.CHESTS_JUNGLE_TEMPLE)) {
+            LootEntry.Builder item = ItemLootEntry.builder(AMItemRegistry.ANCIENT_DART).quality(40).weight(1);
+            LootPool.Builder builder = new LootPool.Builder().name("am_dart").addEntry(item).acceptCondition(RandomChance.builder(1f)).rolls(new RandomValueRange(0, 1)).bonusRolls(0, 1);
+            event.getTable().addPool(builder.build());
+        }
+        if (event.getName().equals(LootTables.CHESTS_JUNGLE_TEMPLE_DISPENSER)) {
+            LootEntry.Builder item = ItemLootEntry.builder(AMItemRegistry.ANCIENT_DART).quality(20).weight(3);
+            LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").addEntry(item).acceptCondition(RandomChance.builder(1f)).rolls(new RandomValueRange(0, 2)).bonusRolls(0, 1);
+            event.getTable().addPool(builder.build());
+        }
+    }
+
 }

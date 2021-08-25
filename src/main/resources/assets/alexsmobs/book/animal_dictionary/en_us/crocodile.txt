@@ -3,7 +3,7 @@
 <NEWLINE>
 <NEWLINE>
 The Crocodile is a massive reptile that spawns in rivers and swamps rarely throughout the overworld. This beast lunges towards
-its prey, grabbing and then pulling them underwater, where it proceeds to deal a devastating death roll. It is naturally hostile
+its prey, grabbing and then pulling them underwater, where it proceeds to deal a devastating death roll. This lunge attack can be blocked to temporarily stun the crocodile. It is naturally hostile
 towards man and beast alike.
 <NEWLINE>
 Although hostile, Crocodiles can be bred with Rotten Flesh. After breeding, crocodiles will come ashore to lay their eggs. If these eggs are damaged, any crocodile parents will become aggressive.

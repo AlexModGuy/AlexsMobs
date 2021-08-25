@@ -90,16 +90,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         this.goalSelector.addGoal(3, new SnowLeopardAIMelee(this));
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 60, 1.0D, 14, 7){
-            public boolean shouldExecute(){
-                return !EntitySnowLeopard.this.isSitting() && !EntitySnowLeopard.this.isSleeping() && super.shouldExecute();
-            }
-
-            public void startExecuting(){
-                EntitySnowLeopard.this.setSleeping(false);
-                EntitySnowLeopard.this.setSitting(false);
-            }
-        });
+        this.goalSelector.addGoal(7, new RandomWalkingGoal(this,  1.0D, 70));
         this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 15.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)));
@@ -127,9 +118,9 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
     protected void registerData() {
         super.registerData();
         this.dataManager.register(SITTING, Boolean.valueOf(false));
+        this.dataManager.register(SLEEPING, Boolean.valueOf(false));
         this.dataManager.register(SL_SNEAKING, Boolean.valueOf(false));
         this.dataManager.register(TACKLING, Boolean.valueOf(false));
-        this.dataManager.register(SLEEPING, Boolean.valueOf(false));
     }
 
     public boolean isSitting() {
@@ -203,26 +194,28 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         if(isTackling()){
             this.renderYawOffset = this.rotationYaw;
         }
-        if(this.getAttackTarget() != null && this.isSitting()){
-            this.setSitting(false);
-            this.setSleeping(false);
-        }
-        if ((isSitting() || isSleeping()) && (++sittingTime > maxSitTime || this.getAttackTarget() != null || this.isInLove() || this.isInWaterOrBubbleColumn())) {
-            this.setSitting(false);
-            this.setSleeping(false);
-            sittingTime = 0;
-            maxSitTime = 100 + rand.nextInt(50);
-        }
-        if (!world.isRemote && this.getAttackTarget() == null && this.getMotion().lengthSquared() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSleeping() && !this.isSitting() && !this.isInWaterOrBubbleColumn() && rand.nextInt(340) == 0) {
-            sittingTime = 0;
-            if (this.getRNG().nextInt(2) != 0) {
-                maxSitTime = 200 + rand.nextInt(800);
-                this.setSitting(true);
-                this.setSleeping(false);
-            } else {
-                maxSitTime = 2000 + rand.nextInt(2600);
+        if(!world.isRemote) {
+            if (this.getAttackTarget() != null && (this.isSitting() || this.isSleeping())) {
                 this.setSitting(false);
-                this.setSleeping(true);
+                this.setSleeping(false);
+            }
+            if ((isSitting() || isSleeping()) && (++sittingTime > maxSitTime || this.getAttackTarget() != null || this.isInLove() || this.isInWaterOrBubbleColumn())) {
+                this.setSitting(false);
+                this.setSleeping(false);
+                sittingTime = 0;
+                maxSitTime = 100 + rand.nextInt(50);
+            }
+            if (this.getAttackTarget() == null && this.getMotion().lengthSquared() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSleeping() && !this.isSitting() && !this.isInWaterOrBubbleColumn() && rand.nextInt(340) == 0) {
+                sittingTime = 0;
+                if (this.getRNG().nextInt(2) != 0) {
+                    maxSitTime = 200 + rand.nextInt(800);
+                    this.setSitting(true);
+                    this.setSleeping(false);
+                } else {
+                    maxSitTime = 2000 + rand.nextInt(2600);
+                    this.setSitting(false);
+                    this.setSleeping(true);
+                }
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -249,7 +242,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
     }
 
     protected boolean isMovementBlocked() {
-        return super.isMovementBlocked() || this.isSitting() || this.isSleeping();
+        return super.isMovementBlocked();
     }
 
     public boolean isSleeping() {

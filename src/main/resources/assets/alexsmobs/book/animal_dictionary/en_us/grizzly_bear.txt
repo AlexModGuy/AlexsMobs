@@ -9,3 +9,5 @@ approached safely. It is believed that feeding a Grizzly Bear salmon after it ha
 beast's trust, although few survive any close encounters with these bears. Those that do claim that they can be used as war mounts.
 <NEWLINE>
 Occasionally, Grizzly Bears may shed some of their hair. This hair, when combined with a Strength Potion, can be used to brew a Knockback Resistance potion.
+<NEWLINE>
+In snowy weather, the bear's pelt can become coated in snow. This can be removed with a shovel. Alternatively, one can cover a bear in snow by placing a snow layer on it. This snow will melt if the bear is in water, rain, or a hot biome.

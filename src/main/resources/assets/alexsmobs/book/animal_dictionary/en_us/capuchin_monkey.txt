@@ -7,3 +7,5 @@ They can also be made to ride their owner's shoulder, which they can also attack
 <NEWLINE>
 Capuchins can be fed a variety of other items. Feeding them eggs can be used to heal them, and they can be bred with maggots, one of their favorite foods.
 Occassionally, they can drop a banana peel when eating a banana. These banana peels can be used to create a unique dish dubbed "Sopa De Macaco", which chefs describe as "Uma Delicia".
+<NEWLINE>
+Rarely, an artifact known as an Ancient Dart can be found in chests in Jungle Temples. Giving these darts to Capuchin Monkeys gives them an upgraded ranged attack with piercing.

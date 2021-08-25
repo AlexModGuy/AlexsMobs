@@ -28,9 +28,15 @@ public class LayerCapuchinItem extends LayerRenderer<EntityCapuchinMonkey, Model
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityCapuchinMonkey entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(entitylivingbaseIn.hasDart()){
             matrixStackIn.push();
-            translateToHand(false, matrixStackIn);
             if(entitylivingbaseIn.isChild()){
-                matrixStackIn.translate(0.05, -0.05F, 0.2F);
+                matrixStackIn.scale(0.35F, 0.35F, 0.35F);
+                matrixStackIn.translate(0.5D, 2.6D, 0.15D);
+                translateToHand(false, matrixStackIn);
+                matrixStackIn.translate(-0.65, -0.75F, -0.1F);
+                matrixStackIn.scale(2.8F, 2.8F, 2.8F);
+
+            }else{
+                translateToHand(false, matrixStackIn);
             }
             float f = 0.0F;
             if(entitylivingbaseIn.getAnimation() == EntityCapuchinMonkey.ANIMATION_THROW){
