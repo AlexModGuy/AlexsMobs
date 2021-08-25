@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.entity.*;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -38,7 +39,17 @@ public class ItemAnimalDictionary extends Item {
         }
         if (playerIn.world.isRemote && Objects.requireNonNull(target.getEntityString()).contains(AlexsMobs.MODID + ":")) {
             usedOnEntity = true;
-            AlexsMobs.PROXY.openBookGUI(itemStackIn, target.getEntityString().replace(AlexsMobs.MODID + ":", ""));
+            String id = target.getEntityString().replace(AlexsMobs.MODID + ":", "");
+            if(target instanceof EntityBoneSerpent || target instanceof EntityBoneSerpentPart){
+                id = "bone_serpent";
+            }
+            if(target instanceof EntityCentipedeHead || target instanceof EntityCentipedeBody || target instanceof EntityCentipedeTail){
+                id = "cave_centipede";
+            }
+            if(target instanceof EntityVoidWorm || target instanceof EntityVoidWormPart){
+                id = "void_worm";
+            }
+            AlexsMobs.PROXY.openBookGUI(itemStackIn, id);
         }
         return ActionResultType.PASS;
     }
