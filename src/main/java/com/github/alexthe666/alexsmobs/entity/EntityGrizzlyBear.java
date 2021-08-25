@@ -148,7 +148,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
 
 
     protected float getWaterSlowDown() {
-        return 0.98F;
+        return isBeingRidden() ? 0.9F : 0.98F;
     }
 
     public void func_230258_H__() {
