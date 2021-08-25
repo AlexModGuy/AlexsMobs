@@ -545,7 +545,9 @@ public class EntityElephant extends TameableEntity implements ITargetsDroppedIte
             this.setChested(false);
             return ActionResultType.SUCCESS;
         } else if (owner && !this.isChild() && type != ActionResultType.CONSUME) {
-            player.startRiding(this);
+            if(!world.isRemote){
+                player.startRiding(this);
+            }
             return ActionResultType.SUCCESS;
         }
         return type;
