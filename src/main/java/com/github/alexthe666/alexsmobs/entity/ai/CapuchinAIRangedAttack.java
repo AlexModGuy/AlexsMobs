@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 
@@ -32,7 +33,7 @@ public class CapuchinAIRangedAttack extends Goal {
     }
 
     public boolean shouldExecute() {
-        return this.entity.getAttackTarget() != null && this.shouldRange();
+        return this.entity.getDartTarget() != null && this.shouldRange();
     }
 
     protected boolean shouldRange() {
@@ -40,7 +41,7 @@ public class CapuchinAIRangedAttack extends Goal {
     }
 
     public boolean shouldContinueExecuting() {
-        return this.entity.getAttackTarget() != null && this.entity.getAttackTarget().isAlive() &&(this.shouldExecute() || !this.entity.getNavigator().noPath()) && this.shouldRange();
+        return this.entity.getDartTarget() != null && this.entity.getDartTarget().isAlive() &&(this.shouldExecute() || !this.entity.getNavigator().noPath()) && this.shouldRange();
     }
 
     public void startExecuting() {
@@ -59,7 +60,7 @@ public class CapuchinAIRangedAttack extends Goal {
     }
 
     public void tick() {
-        LivingEntity livingentity = this.entity.getAttackTarget();
+        Entity livingentity = this.entity.getDartTarget();
         if (livingentity != null && livingentity.isAlive()) {
             double d0 = this.entity.getDistanceSq(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ());
             boolean flag = this.entity.getEntitySenses().canSee(livingentity);

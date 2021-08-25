@@ -47,6 +47,7 @@ public class EntityTossedItem extends ProjectileItemEntity {
 
     @Override
     protected void registerData() {
+        super.registerData();
         this.dataManager.register(DART, false);
     }
 
@@ -57,7 +58,6 @@ public class EntityTossedItem extends ProjectileItemEntity {
     public void setDart(boolean dart) {
         this.dataManager.set(DART, dart);
     }
-
 
     @Override
     public IPacket<?> createSpawnPacket() {
@@ -123,12 +123,10 @@ public class EntityTossedItem extends ProjectileItemEntity {
     }
 
     public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
         compound.putBoolean("Dart", this.isDart());
     }
 
     public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
         this.setDart(compound.getBoolean("Dart"));
     }
 

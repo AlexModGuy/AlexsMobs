@@ -2,10 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.ai.CapuchinAIMelee;
-import com.github.alexthe666.alexsmobs.entity.ai.CapuchinAIRangedAttack;
-import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
-import com.github.alexthe666.alexsmobs.entity.ai.TameableAIFollowOwner;
+import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -51,30 +48,38 @@ import java.util.stream.Stream;
 
 public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEntity, IFollower, ITargetsDroppedItems {
 
-    private int animationTick;
-    private Animation currentAnimation;
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityCapuchinMonkey.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityCapuchinMonkey.class, DataSerializers.VARINT);
-    protected static final DataParameter<Boolean> DART = EntityDataManager.createKey(EntityCapuchinMonkey.class, DataSerializers.BOOLEAN);
     public static final Animation ANIMATION_THROW = Animation.create(12);
     public static final Animation ANIMATION_HEADTILT = Animation.create(15);
     public static final Animation ANIMATION_SCRATCH = Animation.create(20);
+
+    protected static final DataParameter<Boolean> DART = EntityDataManager.createKey(EntityCapuchinMonkey.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityCapuchinMonkey.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityCapuchinMonkey.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> DART_TARGET = EntityDataManager.createKey(EntityCapuchinMonkey.class, DataSerializers.VARINT);
     public float prevSitProgress;
     public float sitProgress;
     public boolean forcedSit = false;
+    public boolean attackDecision = false;//true for ranged, false for melee
+    private int animationTick;
+    private Animation currentAnimation;
     private int sittingTime = 0;
     private int maxSitTime = 75;
     private Ingredient temptationItems = Ingredient.fromItemListStream(Stream.of(new Ingredient.TagList(ItemTags.getCollection().get(AMTagRegistry.INSECT_ITEMS)), new Ingredient.SingleItemList(new ItemStack(Items.EGG))));
-    public boolean attackDecision = false;//true for ranged, false for melee
     private boolean hasSlowed = false;
     private int rideCooldown = 0;
-    public static final Predicate<Entity> TARGET_BLOON  = (balloon) -> {
-        return balloon.getEntityString() != null && (balloon.getEntityString().contains("balloon") || balloon.getEntityString().contains("balloom"));
-    };
 
     protected EntityCapuchinMonkey(EntityType type, World worldIn) {
         super(type, worldIn);
         this.setPathPriority(PathNodeType.LEAVES, 0.0F);
+    }
+
+    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
+        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.4F);
+    }
+
+    public static <T extends MobEntity> boolean canCapuchinSpawn(EntityType<EntityCapuchinMonkey> gorilla, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
+        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.matchesBlock(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
     }
 
     public int getMaxSpawnedInChunk() {
@@ -84,7 +89,6 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public boolean isMaxGroupSize(int sizeIn) {
         return false;
     }
-
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.capuchinMonkeySpawnRolls, this.getRNG(), spawnReasonIn);
@@ -108,11 +112,11 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         this.goalSelector.addGoal(3, new CapuchinAIMelee(this, 1, true));
         this.goalSelector.addGoal(3, new CapuchinAIRangedAttack(this, 1, 20, 15));
         this.goalSelector.addGoal(6, new TameableAIFollowOwner(this, 1.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, temptationItems.merge(ImmutableList.of(Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.BANANAS)))), true){
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.merge(ImmutableList.of(Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.BANANAS)))), true) {
             public void tick() {
                 super.tick();
                 if (this.creature.getDistanceSq(this.closestPlayer) < 6.25D && this.creature.getRNG().nextInt(14) == 0) {
-                    ((EntityCapuchinMonkey)this.creature).setAnimation(ANIMATION_HEADTILT);
+                    ((EntityCapuchinMonkey) this.creature).setAnimation(ANIMATION_HEADTILT);
                 }
             }
         });
@@ -124,6 +128,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(4, (new HurtByTargetGoal(this, EntityCapuchinMonkey.class, EntityTossedItem.class)).setCallsForHelp());
+        this.targetSelector.addGoal(5, new CapuchinAITargetBalloons(this, true));
     }
 
     protected SoundEvent getAmbientSound() {
@@ -137,7 +142,6 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     protected SoundEvent getDeathSound() {
         return AMSoundRegistry.CAPUCHIN_MONKEY_HURT;
     }
-
 
     public boolean isOnSameTeam(Entity entityIn) {
         if (this.isTamed()) {
@@ -156,10 +160,6 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         return super.isOnSameTeam(entityIn);
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.4F);
-    }
-
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("MonkeySitting", this.isSitting());
@@ -175,6 +175,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         this.setCommand(compound.getInt("Command"));
         this.setDart(compound.getBoolean("HasDart"));
     }
+
     public void tick() {
         super.tick();
         this.prevSitProgress = this.sitProgress;
@@ -194,39 +195,39 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
             this.setSitting(true);
         }
         this.stepHeight = 2;
-        if (!forcedSit && this.isSitting() && (this.getAttackTarget() != null || this.getCommand() == 1)) {
+        if (!forcedSit && this.isSitting() && (this.getDartTarget() != null || this.getCommand() == 1)) {
             this.setSitting(false);
         }
-        if(!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_SCRATCH && this.getAnimationTick() == 10) {
-            float f1 = this.rotationYaw * ((float)Math.PI / 180F);
-            this.setMotion(this.getMotion().add((double)(-MathHelper.sin(f1) * 0.3F), 0.0D, (double)(MathHelper.cos(f1) * 0.3F)));
+        if (!world.isRemote && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_SCRATCH && this.getAnimationTick() == 10) {
+            float f1 = this.rotationYaw * ((float) Math.PI / 180F);
+            this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.3F, 0.0D, MathHelper.cos(f1) * 0.3F));
             getAttackTarget().applyKnockback(1F, getAttackTarget().getPosX() - this.getPosX(), getAttackTarget().getPosZ() - this.getPosZ());
             this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             this.setAttackDecision(this.getAttackTarget());
         }
-        if(!world.isRemote && this.getAttackTarget() != null && this.getAttackTarget().isAlive() && this.getAnimation() == ANIMATION_THROW && this.getAnimationTick() == 5) {
-            Vector3d vector3d = this.getAttackTarget().getMotion();
-            double d0 = this.getAttackTarget().getPosX() + vector3d.x - this.getPosX();
-            double d1 = this.getAttackTarget().getPosYEye() - (double)1.1F - this.getPosY();
-            double d2 = this.getAttackTarget().getPosZ() + vector3d.z - this.getPosZ();
+        if (!world.isRemote && this.getDartTarget() != null && this.getDartTarget().isAlive() && this.getAnimation() == ANIMATION_THROW && this.getAnimationTick() == 5) {
+            Vector3d vector3d = this.getDartTarget().getMotion();
+            double d0 = this.getDartTarget().getPosX() + vector3d.x - this.getPosX();
+            double d1 = this.getDartTarget().getPosYEye() - (double) 1.1F - this.getPosY();
+            double d2 = this.getDartTarget().getPosZ() + vector3d.z - this.getPosZ();
             float f = MathHelper.sqrt(d0 * d0 + d2 * d2);
             EntityTossedItem tossedItem = new EntityTossedItem(this.world, this);
             tossedItem.setDart(this.hasDart());
             tossedItem.rotationPitch -= -20.0F;
-            tossedItem.shoot(d0, d1 + (double)(f * 0.2F), d2, hasDart() ? 1.15F : 0.75F, 8.0F);
+            tossedItem.shoot(d0, d1 + (double) (f * 0.2F), d2, hasDart() ? 1.15F : 0.75F, 8.0F);
             if (!this.isSilent()) {
-                this.world.playSound((PlayerEntity)null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
+                this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_WITCH_THROW, this.getSoundCategory(), 1.0F, 0.8F + this.rand.nextFloat() * 0.4F);
             }
             this.world.addEntity(tossedItem);
-            this.setAttackDecision(this.getAttackTarget());
+            this.setAttackDecision(this.getDartTarget());
         }
-        if(rideCooldown > 0){
+        if (rideCooldown > 0) {
             rideCooldown--;
         }
-        if(!world.isRemote && getAnimation() == NO_ANIMATION && this.getRNG().nextInt(300) == 0){
+        if (!world.isRemote && getAnimation() == NO_ANIMATION && this.getRNG().nextInt(300) == 0) {
             setAnimation(ANIMATION_HEADTILT);
         }
-        if(!world.isRemote && this.isSitting()){
+        if (!world.isRemote && this.isSitting()) {
             this.getNavigator().clearPath();
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -240,7 +241,7 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        if(this.getAnimation() == NO_ANIMATION){
+        if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_SCRATCH);
         }
         return true;
@@ -256,12 +257,18 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
         super.travel(vec3d);
     }
 
+    protected void dropInventory() {
+        super.dropInventory();
+        if (hasDart()) {
+            this.entityDropItem(AMItemRegistry.ANCIENT_DART);
+        }
+    }
 
     public void updateRidden() {
         Entity entity = this.getRidingEntity();
         if (this.isPassenger() && !entity.isAlive()) {
             this.stopRiding();
-        } else if(isTamed() && entity instanceof LivingEntity && isOwner((LivingEntity) entity)){
+        } else if (isTamed() && entity instanceof LivingEntity && isOwner((LivingEntity) entity)) {
             this.setMotion(0, 0, 0);
             this.tick();
             if (this.isPassenger()) {
@@ -284,40 +291,68 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
                 }
 
             }
-        }else{
+        } else {
             super.updateRidden();
         }
 
     }
 
-    public void setAttackDecision(Entity target){
-        if(target instanceof MonsterEntity || this.hasDart()){
+    public void setAttackDecision(Entity target) {
+        if (target instanceof MonsterEntity || this.hasDart()) {
             attackDecision = true;
-        }else{
+        } else {
             attackDecision = !attackDecision;
         }
-    }
-
-    public void setCommand(int command) {
-        this.dataManager.set(COMMAND, Integer.valueOf(command));
     }
 
     public int getCommand() {
         return this.dataManager.get(COMMAND).intValue();
     }
 
-    public void setSitting(boolean sit) {
-        this.dataManager.set(SITTING, Boolean.valueOf(sit));
+    public void setCommand(int command) {
+        this.dataManager.set(COMMAND, Integer.valueOf(command));
     }
 
     public boolean isSitting() {
         return this.dataManager.get(SITTING).booleanValue();
     }
 
+    public void setSitting(boolean sit) {
+        this.dataManager.set(SITTING, Boolean.valueOf(sit));
+    }
+
+    public boolean hasDartTarget() {
+        return this.dataManager.get(DART_TARGET) != -1 && this.hasDart();
+    }
+
+
+    public void setDartTarget(Entity entity) {
+        this.dataManager.set(DART_TARGET, entity == null ? -1 : entity.getEntityId());
+        if(entity instanceof LivingEntity){
+            this.setAttackTarget((LivingEntity)entity);
+        }
+    }
+
+    @Nullable
+    public Entity getDartTarget() {
+        if (!this.hasDartTarget()) {
+            return this.getAttackTarget();
+        } else {
+            Entity entity = this.world.getEntityByID(this.dataManager.get(DART_TARGET));
+            if(entity == null || !entity.isAlive()){
+                return this.getAttackTarget();
+            }else{
+                return entity;
+            }
+        }
+    }
+
+
     @Override
     protected void registerData() {
         super.registerData();
         this.dataManager.register(COMMAND, Integer.valueOf(0));
+        this.dataManager.register(DART_TARGET, -1);
         this.dataManager.register(SITTING, Boolean.valueOf(false));
         this.dataManager.register(DART, false);
     }
@@ -329,7 +364,6 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public void setDart(boolean dart) {
         this.dataManager.set(DART, dart);
     }
-
 
     @Nullable
     @Override
@@ -353,63 +387,63 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     }
 
     @Override
-    public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+    public void setAnimationTick(int tick) {
+        animationTick = tick;
     }
 
     @Override
-    public void setAnimationTick(int tick) {
-        animationTick = tick;
+    public boolean isInvulnerableTo(DamageSource source) {
+        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
     }
 
     public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.getEntityInteractionResult(player, hand);
-        if(!isTamed() && EntityGorilla.isBanana(itemstack)){
+        if (!isTamed() && EntityGorilla.isBanana(itemstack)) {
             this.consumeItemFromStack(player, itemstack);
-            if(getRNG().nextInt(5) == 0){
+            if (getRNG().nextInt(5) == 0) {
                 this.setTamedBy(player);
-                this.world.setEntityState(this, (byte)7);
-            }else{
-                this.world.setEntityState(this, (byte)6);
+                this.world.setEntityState(this, (byte) 7);
+            } else {
+                this.world.setEntityState(this, (byte) 6);
             }
             return ActionResultType.SUCCESS;
         }
-        if(isTamed() && (EntityGorilla.isBanana(itemstack) || temptationItems.test(itemstack) && !isBreedingItem(itemstack)) && this.getHealth() < this.getMaxHealth()){
+        if (isTamed() && (EntityGorilla.isBanana(itemstack) || temptationItems.test(itemstack) && !isBreedingItem(itemstack)) && this.getHealth() < this.getMaxHealth()) {
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
             this.heal(5);
             return ActionResultType.SUCCESS;
         }
-        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack) && !EntityGorilla.isBanana(itemstack) && !temptationItems.test(itemstack)){
-            if(!this.hasDart() && itemstack.getItem() == AMItemRegistry.ANCIENT_DART){
+        if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack) && !EntityGorilla.isBanana(itemstack) && !temptationItems.test(itemstack)) {
+            if (!this.hasDart() && itemstack.getItem() == AMItemRegistry.ANCIENT_DART) {
                 this.setDart(true);
                 this.consumeItemFromStack(player, itemstack);
                 return ActionResultType.CONSUME;
             }
-            if(this.hasDart() && itemstack.getItem() == Items.SHEARS){
+            if (this.hasDart() && itemstack.getItem() == Items.SHEARS) {
                 this.setDart(false);
                 itemstack.damageItem(1, this, (p_233654_0_) -> {
                 });
                 return ActionResultType.SUCCESS;
             }
-            if(player.isSneaking() && player.getPassengers().isEmpty()){
+            if (player.isSneaking() && player.getPassengers().isEmpty()) {
                 this.startRiding(player);
                 rideCooldown = 20;
                 return ActionResultType.SUCCESS;
-            }else{
+            } else {
                 this.setCommand(this.getCommand() + 1);
-                if(this.getCommand() == 3){
+                if (this.getCommand() == 3) {
                     this.setCommand(0);
                 }
                 player.sendStatusMessage(new TranslationTextComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
-                if(sit){
+                if (sit) {
                     this.forcedSit = true;
                     this.setSitting(true);
                     return ActionResultType.SUCCESS;
-                }else{
+                } else {
                     this.forcedSit = false;
                     this.setSitting(false);
                     return ActionResultType.SUCCESS;
@@ -443,24 +477,20 @@ public class EntityCapuchinMonkey extends TameableEntity implements IAnimatedEnt
     public void onGetItem(ItemEntity e) {
         this.heal(5);
         this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
-        if(EntityGorilla.isBanana(e.getItem())){
-            if(getRNG().nextInt(4) == 0){
+        if (EntityGorilla.isBanana(e.getItem())) {
+            if (getRNG().nextInt(4) == 0) {
                 this.entityDropItem(new ItemStack(AMBlockRegistry.BANANA_PEEL));
             }
-            if(e.getThrowerId() != null && !this.isTamed()){
-                if(getRNG().nextInt(5) == 0){
+            if (e.getThrowerId() != null && !this.isTamed()) {
+                if (getRNG().nextInt(5) == 0) {
                     this.setTamed(true);
                     this.setOwnerId(e.getThrowerId());
-                    this.world.setEntityState(this, (byte)7);
-                }else{
-                    this.world.setEntityState(this, (byte)6);
+                    this.world.setEntityState(this, (byte) 7);
+                } else {
+                    this.world.setEntityState(this, (byte) 6);
                 }
             }
         }
     }
 
-    public static <T extends MobEntity> boolean canCapuchinSpawn(EntityType<EntityCapuchinMonkey> gorilla, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
-        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.matchesBlock(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
-    }
 }
