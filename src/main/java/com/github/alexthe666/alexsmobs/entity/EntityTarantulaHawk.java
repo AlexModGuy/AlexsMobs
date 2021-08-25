@@ -46,11 +46,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.BiomeDictionary;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -62,6 +63,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
     public static final int STING_DURATION = 12000;
     protected static final EntitySize FLIGHT_SIZE = EntitySize.fixed(0.9F, 1.5F);
     private static final DataParameter<Float> FLY_ANGLE = EntityDataManager.createKey(EntityTarantulaHawk.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> NETHER = EntityDataManager.createKey(EntityTarantulaHawk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityTarantulaHawk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DRAGGING = EntityDataManager.createKey(EntityTarantulaHawk.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntityTarantulaHawk.class, DataSerializers.BOOLEAN);
@@ -95,7 +97,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
 
     public static boolean canTarantulaHawkSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
         boolean spawnBlock = BlockTags.SAND.contains(worldIn.getBlockState(pos.down()).getBlock());
-        return (spawnBlock) && worldIn.getLightSubtracted(pos, 0) > 8 || AMConfig.fireproofTarantulaHawk;
+        return (spawnBlock) && worldIn.getLightSubtracted(pos, 0) > 8 || isBiomeNether(worldIn, pos) || AMConfig.fireproofTarantulaHawk;
     }
 
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
@@ -104,6 +106,19 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
 
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.tarantulaHawkSpawnRolls, this.getRNG(), spawnReasonIn);
+    }
+
+    @Nullable
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+        if(this.isBiomeNether(worldIn, this.getPosition())){
+            this.setNether(true);
+        }
+        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    private static boolean isBiomeNether(IWorld worldIn, BlockPos position) {
+        RegistryKey<Biome> biomeKey = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, worldIn.getBiome(position).getRegistryName());
+        return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.NETHER);
     }
 
     protected void registerGoals() {
@@ -138,7 +153,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
     }
 
     public boolean isImmuneToFire() {
-        return AMConfig.fireproofTarantulaHawk;
+        return isNether() || AMConfig.fireproofTarantulaHawk;
     }
 
     private void switchNavigator(boolean onLand) {
@@ -157,6 +172,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(FLY_ANGLE, 0F);
+        this.dataManager.register(NETHER, false);
         this.dataManager.register(FLYING, false);
         this.dataManager.register(SITTING, false);
         this.dataManager.register(DRAGGING, false);
@@ -181,6 +197,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("HawkSitting", this.isSitting());
+        compound.putBoolean("Nether", this.isNether());
         compound.putBoolean("Digging", this.isDigging());
         compound.putBoolean("Flying", this.isFlying());
         compound.putInt("Command", this.getCommand());
@@ -191,6 +208,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setSitting(compound.getBoolean("HawkSitting"));
+        this.setNether(compound.getBoolean("Nether"));
         this.setDigging(compound.getBoolean("Digging"));
         this.setFlying(compound.getBoolean("Flying"));
         this.setCommand(compound.getInt("Command"));
@@ -232,6 +250,14 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
             return;
         }
         this.dataManager.set(FLYING, flying);
+    }
+
+    public boolean isNether() {
+        return this.dataManager.get(NETHER).booleanValue();
+    }
+
+    public void setNether(boolean sit) {
+        this.dataManager.set(NETHER, Boolean.valueOf(sit));
     }
 
     public boolean isScared() {

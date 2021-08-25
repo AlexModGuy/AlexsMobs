@@ -18,6 +18,8 @@ import javax.annotation.Nullable;
 public class RenderTarantulaHawk extends MobRenderer<EntityTarantulaHawk, EntityModel<EntityTarantulaHawk>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk.png");
     private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_angry.png");
+    private static final ResourceLocation TEXTURE_NETHER = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_nether.png");
+    private static final ResourceLocation TEXTURE_NETHER_ANGRY = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_nether_angry.png");
     private static final ResourceLocation TEXTURE_BABY = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_baby.png");
     private static final ModelTarantulaHawk MODEL = new ModelTarantulaHawk();
     private static final ModelTarantulaHawkBaby MODEL_BABY = new ModelTarantulaHawkBaby();
@@ -54,6 +56,6 @@ public class RenderTarantulaHawk extends MobRenderer<EntityTarantulaHawk, Entity
     }
 
     public ResourceLocation getEntityTexture(EntityTarantulaHawk entity) {
-        return entity.isChild() ? TEXTURE_BABY : entity.isAngry() ? TEXTURE_ANGRY : TEXTURE;
+        return entity.isChild() ? TEXTURE_BABY : entity.isNether() ? entity.isAngry() ? TEXTURE_NETHER_ANGRY : TEXTURE_NETHER : entity.isAngry() ? TEXTURE_ANGRY : TEXTURE;
     }
 }
