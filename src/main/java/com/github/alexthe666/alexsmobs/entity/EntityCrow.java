@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.message.MessageCrowDismount;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -20,6 +21,7 @@ import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -316,6 +318,10 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                         this.setTamed(true);
                         this.setCommand(1);
                         this.setOwnerId(this.seedThrowerID);
+                        PlayerEntity player = world.getPlayerByUuid(seedThrowerID);
+                        if (player instanceof ServerPlayerEntity) {
+                            CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayerEntity)player, this);
+                        }
                         this.world.setEntityState(this, (byte) 7);
                     } else {
                         this.world.setEntityState(this, (byte) 6);
