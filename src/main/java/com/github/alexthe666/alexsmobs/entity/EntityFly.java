@@ -26,6 +26,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ITag;
@@ -54,6 +55,11 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
     protected EntityFly(EntityType type, World worldIn) {
         super(type, worldIn);
         this.moveController = new FlyingMovementController(this, 20, true);
+        this.setPathPriority(PathNodeType.DANGER_FIRE, -1.0F);
+        this.setPathPriority(PathNodeType.WATER, -1.0F);
+        this.setPathPriority(PathNodeType.WATER_BORDER, 16.0F);
+        this.setPathPriority(PathNodeType.COCOA, -1.0F);
+        this.setPathPriority(PathNodeType.FENCE, -1.0F);
     }
 
     public void writeAdditional(CompoundNBT compound) {
