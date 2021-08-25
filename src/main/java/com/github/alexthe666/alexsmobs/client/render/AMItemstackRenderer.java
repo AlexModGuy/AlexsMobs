@@ -92,7 +92,7 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         list.add(new Pair<>(AMEntityRegistry.MIMIC_OCTOPUS, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.SEAGULL, 1.2F));
     });
-    private static int ticksExisted = 0;
+    public static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
     private static final ResourceLocation SHIELD_OF_THE_DEEP_TEXTURE = new ResourceLocation("alexsmobs:textures/armor/shield_of_the_deep.png");
     private static final ModelMysteriousWorm MYTERIOUS_WORM_MODEL = new ModelMysteriousWorm();
@@ -122,10 +122,14 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
         float partialTicksForRender = Minecraft.getInstance().isGamePaused() || entity instanceof EntityMimicOctopus ? 0 : partialTicks;
+        int tick = Minecraft.getInstance().player.ticksExisted;
+        if(Minecraft.getInstance().isGamePaused()){
+            tick = ticksExisted;
+        }
         if (follow) {
             float yaw = f * 45.0F;
             entity.rotationYaw = yaw;
-            entity.ticksExisted = Minecraft.getInstance().player.ticksExisted;
+            entity.ticksExisted = tick;
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).renderYawOffset = yaw;
                 ((LivingEntity) entity).prevRenderYawOffset = yaw;
@@ -224,6 +228,8 @@ public class AMItemstackRenderer extends ItemStackTileEntityRenderer {
             }
             if (fakeEntity instanceof EntityCockroach) {
                 if (flags == 99) {
+                    matrixStackIn.translate(0, 0.25F, 0);
+                    matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-80));
                     ((EntityCockroach) fakeEntity).setMaracas(true);
                 } else {
                     ((EntityCockroach) fakeEntity).setMaracas(false);

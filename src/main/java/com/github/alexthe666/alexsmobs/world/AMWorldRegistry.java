@@ -26,6 +26,8 @@ public class AMWorldRegistry {
 
     public static Feature<NoFeatureConfig> LEAFCUTTER_ANTHILL =  new FeatureLeafcutterAnthill(NoFeatureConfig.CODEC);
     public static ConfiguredFeature<NoFeatureConfig, ?> LEAFCUTTER_ANTHILL_CF;
+    public static boolean initBiomes = false;
+
     @SubscribeEvent
     public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {
          Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, "alexsmobs:leafcutter_hill", LEAFCUTTER_ANTHILL_CF = LEAFCUTTER_ANTHILL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
@@ -33,6 +35,10 @@ public class AMWorldRegistry {
     }
 
     public static void onBiomesLoad(BiomeLoadingEvent event) {
+        if(initBiomes){
+            return;
+        }
+        initBiomes = true;
         Biome biome = ForgeRegistries.BIOMES.getValue(event.getName());
         if (testBiome(BiomeConfig.grizzlyBear, biome) && AMConfig.grizzlyBearSpawnWeight > 0) {
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(AMEntityRegistry.GRIZZLY_BEAR, AMConfig.grizzlyBearSpawnWeight, 2, 3));

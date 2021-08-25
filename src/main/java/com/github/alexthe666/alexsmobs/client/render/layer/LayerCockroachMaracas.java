@@ -72,10 +72,10 @@ public class LayerCockroachMaracas extends LayerRenderer<EntityCockroach, ModelC
             if(!entitylivingbaseIn.isHeadless()){
                 matrixStackIn.push();
                 translateToHand(4, matrixStackIn);
-                matrixStackIn.translate(0F, -0.65F, -0F);
-                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(40F * entitylivingbaseIn.danceProgress * 0.2F));
-                matrixStackIn.translate(0F, entitylivingbaseIn.danceProgress * -0.015F, entitylivingbaseIn.danceProgress * -0.08F);
+                matrixStackIn.translate(0F, -0.4F, -0.01F);
+                matrixStackIn.translate(0F, entitylivingbaseIn.danceProgress * 0.045F, entitylivingbaseIn.danceProgress * -0.09F);
                 matrixStackIn.scale(0.8F, 0.8F, 0.8F);
+                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(60F * entitylivingbaseIn.danceProgress * 0.2F));
                 IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(SOMBRERO_TEX));
                 sombrero.render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
                 matrixStackIn.pop();
