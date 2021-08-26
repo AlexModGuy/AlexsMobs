@@ -31,7 +31,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
@@ -97,12 +96,12 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.crocSpawnRolls, this.getRNG(), spawnReasonIn);
-    }
-
     public static AttributeModifierMap.MutableAttribute bakeAttributes() {
         return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 15).createMutableAttribute(Attributes.ARMOR, 8.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 10.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 0.4F).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.crocSpawnRolls, this.getRNG(), spawnReasonIn);
     }
 
     public int getMaxSpawnedInChunk() {
@@ -288,31 +287,31 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
                 }
             }
         }
-        if (!world.isRemote && this.getStunTicks() == 0 && this.isAlive() && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_LUNGE && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
+        if (!world.isRemote && this.getStunTicks() == 0 && this.isAlive() && this.getAttackTarget() != null && this.getAnimation() == ANIMATION_LUNGE  && (world.getDifficulty() != Difficulty.PEACEFUL || !(this.getAttackTarget() instanceof PlayerEntity)) && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
             float f1 = this.rotationYaw * ((float) Math.PI / 180F);
             this.setMotion(this.getMotion().add(-MathHelper.sin(f1) * 0.02F, 0.0D, MathHelper.cos(f1) * 0.02F));
             if (this.getDistance(this.getAttackTarget()) < 3.5F && this.canEntityBeSeen(this.getAttackTarget())) {
                 boolean flag = this.getAttackTarget().isActiveItemStackBlocking();
-                if(!flag){
+                if (!flag) {
                     if (this.getAttackTarget().getWidth() < this.getWidth() && this.getPassengers().isEmpty() && !this.getAttackTarget().isSneaking()) {
                         this.getAttackTarget().startRiding(this, true);
                     }
                 }
-                if(flag){
-                    if(this.getAttackTarget() instanceof PlayerEntity){
-                        this.damageShieldFor(((PlayerEntity)this.getAttackTarget()), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                if (flag) {
+                    if (this.getAttackTarget() instanceof PlayerEntity) {
+                        this.damageShieldFor(((PlayerEntity) this.getAttackTarget()), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                     }
-                    if(this.getStunTicks() == 0){
+                    if (this.getStunTicks() == 0) {
                         this.setStunTicks(25 + rand.nextInt(20));
                     }
-                }else{
+                } else {
                     this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
                 this.playSound(AMSoundRegistry.CROCODILE_BITE, this.getSoundVolume(), this.getSoundPitch());
 
             }
         }
-        if (!world.isRemote && this.isAlive() && this.getAttackTarget() != null && this.isInWater()) {
+        if (!world.isRemote && this.isAlive() && this.getAttackTarget() != null && this.isInWater() && (world.getDifficulty() != Difficulty.PEACEFUL || !(this.getAttackTarget() instanceof PlayerEntity))) {
             if (this.getAttackTarget().getRidingEntity() != null && this.getAttackTarget().getRidingEntity() == this) {
                 if (this.getAnimation() == NO_ANIMATION) {
                     this.setAnimation(ANIMATION_DEATHROLL);
@@ -328,13 +327,13 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         if (this.isInLove() && this.getAttackTarget() != null) {
             this.setAttackTarget(null);
         }
-        if(this.getStunTicks() > 0){
+        if (this.getStunTicks() > 0) {
             this.setStunTicks(this.getStunTicks() - 1);
-            if(world.isRemote){
+            if (world.isRemote) {
                 float angle = (0.01745329251F * this.renderYawOffset);
                 double headX = 1.5F * getRenderScale() * MathHelper.sin((float) (Math.PI + angle));
                 double headZ = 1.5F * getRenderScale() * MathHelper.cos(angle);
-                for(int i = 0; i < 5; i++){
+                for (int i = 0; i < 5; i++) {
                     float innerAngle = (0.01745329251F * (this.renderYawOffset + ticksExisted * 5) * (i + 1));
                     double extraX = 0.5F * MathHelper.sin((float) (Math.PI + innerAngle));
                     double extraZ = 0.5F * MathHelper.cos(innerAngle);
@@ -539,9 +538,9 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)).setCallsForHelp());
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, PlayerEntity.class, 80, false,true, null) {
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, PlayerEntity.class, 80, false, true, null) {
             public boolean shouldExecute() {
-                return !isChild() && !isTamed() && super.shouldExecute();
+                return !isChild() && !isTamed() && world.getDifficulty() != Difficulty.PEACEFUL && super.shouldExecute();
             }
         });
         this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CROCODILE_TARGETS))) {
