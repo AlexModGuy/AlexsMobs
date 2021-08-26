@@ -256,9 +256,9 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         float variantChange = this.getRNG().nextFloat();
-        if(variantChange <= 0.000001){
+        if(variantChange <= 0.00001){
             this.setVariant(5);
-        }else if(variantChange <= 0.000002){
+        }else if(variantChange <= 0.00002){
             this.setVariant(4);
         }else if(variantChange <= 0.05F){
             this.setVariant(3);
