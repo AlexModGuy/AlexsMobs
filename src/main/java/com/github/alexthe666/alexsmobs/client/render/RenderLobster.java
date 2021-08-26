@@ -12,6 +12,8 @@ public class RenderLobster extends MobRenderer<EntityLobster, ModelLobster> {
     private static final ResourceLocation TEXTURE_BLUE = new ResourceLocation("alexsmobs:textures/entity/lobster_blue.png");
     private static final ResourceLocation TEXTURE_YELLOW = new ResourceLocation("alexsmobs:textures/entity/lobster_yellow.png");
     private static final ResourceLocation TEXTURE_REDBLUE = new ResourceLocation("alexsmobs:textures/entity/lobster_redblue.png");
+    private static final ResourceLocation TEXTURE_BLACK = new ResourceLocation("alexsmobs:textures/entity/lobster_black.png");
+    private static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("alexsmobs:textures/entity/lobster_white.png");
 
     public RenderLobster(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelLobster(), 0.25F);
@@ -29,6 +31,10 @@ public class RenderLobster extends MobRenderer<EntityLobster, ModelLobster> {
                 return TEXTURE_YELLOW;
             case 3:
                 return TEXTURE_REDBLUE;
+            case 4:
+                return TEXTURE_BLACK;
+            case 5:
+                return TEXTURE_WHITE;
             default:
                 return TEXTURE_RED;
         }

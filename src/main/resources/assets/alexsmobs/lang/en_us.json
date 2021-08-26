@@ -261,6 +261,8 @@
   "entity.alexsmobs.lobster.variant_blue": "Blue Lobster",
   "entity.alexsmobs.lobster.variant_yellow": "Yellow Lobster",
   "entity.alexsmobs.lobster.variant_redblue": "Red and Blue Lobster",
+  "entity.alexsmobs.lobster.variant_black": "Black Lobster",
+  "entity.alexsmobs.lobster.variant_white": "White Lobster",
   "entity.alexsmobs.komodo_dragon": "Komodo Dragon",
   "entity.alexsmobs.capuchin_monkey": "Capuchin Monkey",
   "entity.alexsmobs.all.command_0": "%s is wandering",

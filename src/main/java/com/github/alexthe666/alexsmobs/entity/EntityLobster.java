@@ -90,6 +90,10 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
                 return "yellow";
             case 3:
                 return "redblue";
+            case 4:
+                return "black";
+            case 5:
+                return "white";
             default:
                 return "red";
         }
@@ -252,7 +256,11 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         float variantChange = this.getRNG().nextFloat();
-        if(variantChange <= 0.05F){
+        if(variantChange <= 0.000001){
+            this.setVariant(5);
+        }else if(variantChange <= 0.000002){
+            this.setVariant(4);
+        }else if(variantChange <= 0.05F){
             this.setVariant(3);
         }else if(variantChange <= 0.1F){
             this.setVariant(2);

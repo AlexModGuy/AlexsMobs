@@ -11,6 +11,8 @@ import net.minecraft.util.ResourceLocation;
 public class RenderWarpedToad extends MobRenderer<EntityWarpedToad, ModelWarpedToad> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/warped_toad.png");
     private static final ResourceLocation TEXTURE_BLINKING = new ResourceLocation("alexsmobs:textures/entity/warped_toad_blink.png");
+    private static final ResourceLocation TEXTURE_PEPE = new ResourceLocation("alexsmobs:textures/entity/warped_toad_pepe.png");
+    private static final ResourceLocation TEXTURE_PEPE_BLINKING = new ResourceLocation("alexsmobs:textures/entity/warped_toad_pepe_blink.png");
 
     public RenderWarpedToad(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelWarpedToad(), 0.85F);
@@ -23,6 +25,10 @@ public class RenderWarpedToad extends MobRenderer<EntityWarpedToad, ModelWarpedT
 
 
     public ResourceLocation getEntityTexture(EntityWarpedToad entity) {
-        return entity.isBlinking() ? TEXTURE_BLINKING : TEXTURE;
+        if(entity.isBased()){
+            return entity.isBlinking() ? TEXTURE_PEPE_BLINKING : TEXTURE_PEPE;
+        }else{
+            return entity.isBlinking() ? TEXTURE_BLINKING : TEXTURE;
+        }
     }
 }
