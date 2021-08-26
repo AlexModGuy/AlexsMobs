@@ -128,6 +128,8 @@ public class EntityHummingbird extends AnimalEntity {
         this.goalSelector.addGoal(6, new SwimGoal(this));
     }
 
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {}
+
     protected PathNavigator createNavigator(World worldIn) {
         FlyingPathNavigator flyingpathnavigator = new FlyingPathNavigator(this, worldIn) {
             public boolean canEntityStandOnPos(BlockPos pos) {

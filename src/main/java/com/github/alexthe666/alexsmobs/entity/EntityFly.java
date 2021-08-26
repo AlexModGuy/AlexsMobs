@@ -62,6 +62,8 @@ public class EntityFly extends AnimalEntity implements IFlyingAnimal {
         this.setPathPriority(PathNodeType.FENCE, -1.0F);
     }
 
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {}
+
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("NoFlyDespawn", this.isNoDespawn());
