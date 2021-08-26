@@ -717,6 +717,7 @@ public class EntityLeafcutterAnt extends AnimalEntity implements IAngerable, IAn
     class AngerGoal extends HurtByTargetGoal {
         AngerGoal(EntityLeafcutterAnt beeIn) {
             super(beeIn);
+            this.setCallsForHelp(EntityLeafcutterAnt.class);
         }
 
         /**
