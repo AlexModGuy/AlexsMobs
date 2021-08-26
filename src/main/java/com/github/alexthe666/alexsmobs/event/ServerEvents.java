@@ -408,10 +408,14 @@ public class ServerEvents {
             }
         }
         if (event.getEntityLiving() instanceof PlayerEntity && event.getSource().getTrueSource() instanceof LivingEntity) {
+            LivingEntity attacker = (LivingEntity) event.getSource().getTrueSource();
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+            if(attacker instanceof EntityMimicOctopus && ((EntityMimicOctopus) attacker).isOwner(player)){
+                event.setCanceled(true);
+                return;
+            }
             if (player.getItemStackFromSlot(EquipmentSlotType.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL) {
                 float f1 = 1F;
-                LivingEntity attacker = ((LivingEntity) event.getSource().getTrueSource());
                 if (attacker.getDistance(player) < attacker.getWidth() + player.getWidth() + 0.5F) {
                     attacker.attackEntityFrom(DamageSource.causeThornsDamage(player), 1F);
                     attacker.applyKnockback(f1 * 0.5F, MathHelper.sin((attacker.rotationYaw + 180) * ((float) Math.PI / 180F)), -MathHelper.cos((attacker.rotationYaw + 180) * ((float) Math.PI / 180F)));

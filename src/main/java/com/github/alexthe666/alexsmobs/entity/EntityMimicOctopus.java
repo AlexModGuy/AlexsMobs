@@ -833,7 +833,7 @@ public class EntityMimicOctopus extends TameableEntity implements ISemiAquatic, 
     }
 
     private void creeperExplode() {
-        Explosion explosion = new Explosion(world, this, this.getPosX(), this.getPosY(), this.getPosZ(), 1 + rand.nextFloat(), false, Explosion.Mode.NONE);
+        Explosion explosion = new Explosion(world, this,  DamageSource.causeMobDamage(this), (ExplosionContext)null, this.getPosX(), this.getPosY(), this.getPosZ(), 1 + rand.nextFloat(), false, Explosion.Mode.NONE);
         explosion.doExplosionA();
         explosion.doExplosionB(true);
     }
