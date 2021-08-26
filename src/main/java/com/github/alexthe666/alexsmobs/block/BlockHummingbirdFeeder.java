@@ -116,11 +116,11 @@ public class BlockHummingbirdFeeder extends Block {
     }
 
     public void useItem(PlayerEntity playerEntity, ItemStack stack){
-        if(playerEntity.isCreative()){
-            stack.shrink(1);
+        if(!playerEntity.isCreative()){
             if(stack.hasContainerItem()){
                 playerEntity.addItemStackToInventory(stack.getContainerItem().copy());
             }
+            stack.shrink(1);
         }
     }
 

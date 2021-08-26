@@ -35,9 +35,6 @@ public class AMWorldRegistry {
     }
 
     public static void onBiomesLoad(BiomeLoadingEvent event) {
-        if(initBiomes){
-            return;
-        }
         initBiomes = true;
         Biome biome = ForgeRegistries.BIOMES.getValue(event.getName());
         if (testBiome(BiomeConfig.grizzlyBear, biome) && AMConfig.grizzlyBearSpawnWeight > 0) {

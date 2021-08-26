@@ -345,7 +345,6 @@ public class EntityHummingbird extends AnimalEntity {
         public void resetTask(){
             localFeeder = null;
             idleAtFlowerTime = 0;
-            runCooldown = 200 + rand.nextInt(300);
         }
 
         @Override
@@ -376,7 +375,7 @@ public class EntityHummingbird extends AnimalEntity {
                    }
                }
            }
-           runCooldown = 200 + rand.nextInt(300);
+           runCooldown = 400 + rand.nextInt(600);
            return false;
         }
 
@@ -386,7 +385,7 @@ public class EntityHummingbird extends AnimalEntity {
 
         public void tick(){
             if(localFeeder != null && isValidFeeder(world.getBlockState(localFeeder))){
-                if(EntityHummingbird.this.getPosY() > localFeeder.getY()){
+                if(EntityHummingbird.this.getPosY() > localFeeder.getY() && !EntityHummingbird.this.isOnGround()){
                     EntityHummingbird.this.getMoveHelper().setMoveTo(localFeeder.getX() + 0.5F, localFeeder.getY() + 0.1F, localFeeder.getZ() + 0.5F, 1F);
                 }else{
                     EntityHummingbird.this.getMoveHelper().setMoveTo(localFeeder.getX() + rand.nextInt(4) - 2, EntityHummingbird.this.getPosY() + 1F, localFeeder.getZ() + rand.nextInt(4) - 2, 1F);
@@ -399,12 +398,13 @@ public class EntityHummingbird extends AnimalEntity {
                     EntityHummingbird.this.setFeederPos(localFeeder);
                     EntityHummingbird.this.world.setEntityState(EntityHummingbird.this, (byte)68);
                     if(idleAtFlowerTime > 55){
-                        if(EntityHummingbird.this.getCropsPollinated() > 2 && rand.nextInt(15) == 0 && isValidFeeder(world.getBlockState(localFeeder))){
+                        if(EntityHummingbird.this.getCropsPollinated() > 2 && rand.nextInt(25) == 0 && isValidFeeder(world.getBlockState(localFeeder))){
                             world.setBlockState(localFeeder, world.getBlockState(localFeeder).with(BlockHummingbirdFeeder.CONTENTS, 0));
                         }
                         EntityHummingbird.this.setCropsPollinated(EntityHummingbird.this.getCropsPollinated() + 1);
-                        EntityHummingbird.this.sipCooldown = 1200 + rand.nextInt(1200);
+                        EntityHummingbird.this.sipCooldown = 120 + rand.nextInt(1200);
                         EntityHummingbird.this.pollinateCooldown = Math.max(0, EntityHummingbird.this.pollinateCooldown / 3);
+                        runCooldown = 400 + rand.nextInt(600);
                         resetTask();
                     }
                 }
