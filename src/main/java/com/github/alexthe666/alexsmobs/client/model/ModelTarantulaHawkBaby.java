@@ -37,7 +37,7 @@ public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaH
     @Override
     public void setRotationAngles(EntityTarantulaHawk entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        float walkSpeed = 0.25F;
+        float walkSpeed = 1;
         float walkDegree = 0.75F;
         float stretch = (float) (Math.sin(limbSwing * 0.25F) * limbSwingAmount) + limbSwingAmount;
         body.setScale(1, (1 - stretch * 0.05F), (1 + stretch * 0.5F));

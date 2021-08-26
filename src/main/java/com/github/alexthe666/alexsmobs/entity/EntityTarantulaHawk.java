@@ -60,7 +60,7 @@ import java.util.Random;
 
 public class EntityTarantulaHawk extends TameableEntity implements IFollower {
 
-    public static final int STING_DURATION = 12000;
+    public static final int STING_DURATION = 2400;
     protected static final EntitySize FLIGHT_SIZE = EntitySize.fixed(0.9F, 1.5F);
     private static final DataParameter<Float> FLY_ANGLE = EntityDataManager.createKey(EntityTarantulaHawk.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> NETHER = EntityDataManager.createKey(EntityTarantulaHawk.class, DataSerializers.BOOLEAN);
@@ -494,7 +494,8 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         return source == DamageSource.CACTUS || super.isInvulnerableTo(source);
     }
 
-    public void func_234177_a_(ServerWorld world, AnimalEntity animalEntity) {
+    @Override
+    public void spawnBabyAnimal(ServerWorld world, AnimalEntity animalEntity) {
         bredBuryFlag = true;
         ServerPlayerEntity serverplayerentity = this.getLoveCause();
         if (serverplayerentity == null && animalEntity.getLoveCause() != null) {
@@ -510,6 +511,7 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
         animalEntity.setGrowingAge(6000);
         this.resetInLove();
         animalEntity.resetInLove();
+        world.setEntityState(this, (byte) 7);
         world.setEntityState(this, (byte) 18);
         if (world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
             world.addEntity(new ExperienceOrbEntity(world, this.getPosX(), this.getPosY(), this.getPosZ(), this.getRNG().nextInt(7) + 1));
@@ -765,6 +767,11 @@ public class EntityTarantulaHawk extends TameableEntity implements IFollower {
                         }
                         if (hawk.attackProgress == 5F) {
                             hawk.attackEntityAsMob(target);
+                            if(hawk.bredBuryFlag){
+                                if(target.getHealth() <= 1.0F){
+                                    target.heal(5);
+                                }
+                            }
                             target.addPotionEffect(new EffectInstance(AMEffectRegistry.DEBILITATING_STING, target.getCreatureAttribute() == CreatureAttribute.ARTHROPOD ? EntityTarantulaHawk.STING_DURATION : 600, hawk.bredBuryFlag ? 1 : 0));
                             if (!hawk.world.isRemote && target.getCreatureAttribute() == CreatureAttribute.ARTHROPOD) {
                                 AlexsMobs.sendMSGToAll(new MessageTarantulaHawkSting(hawk.getEntityId(), target.getEntityId()));
