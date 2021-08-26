@@ -2,6 +2,7 @@
   "__comment": "all non-player targets of the cachalot whale mob.",
   "replace": false,
   "values": [
+    "alexsmobs:mimic_octopus",
     "minecraft:squid"
   ]
 }
