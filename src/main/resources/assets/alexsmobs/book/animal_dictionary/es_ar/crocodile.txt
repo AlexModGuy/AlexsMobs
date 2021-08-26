@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Cocodrilo es un reptil masivo que se genera en ríos y pantanos rara vez en todo el Overworld. Esta bestia se lanza
+hacia su presa, agarrándola y luego tirando de ella bajo el agua, donde procede a repartir una tirada de muerte debastadora. 
+Es naturalmente hostil hacia el hombre y bestia por igual.
+<NEWLINE>
+El Cocodrilo a menudo viene a tierra para tomar el sol durante el día. En este momento también puede poner sus Huevos. Los Huevos de
+Cocodrilo se pueden lanzar como su pariente lejano, la gallina, y posiblemente pueda dar a luz a un Cocodrilo bebé. El joven monstruo
+estará impreso en el ser más cercano y defenderá de los monstruos la zona de su nacimiento. Interactuar con él también puede hacer que se
+quede quieto y tome el sol.
+ <NEWLINE>
+Las Escamas de Cocodrilo son soltadas cuando las criaturas se vuelven adultas o mueren. Estas Escamas se pueden utilizar para fabricar un
+Peto protector que aumenta la velocidad de natación de su portador. También puede ser utilizado para hacer una copia de este libro.

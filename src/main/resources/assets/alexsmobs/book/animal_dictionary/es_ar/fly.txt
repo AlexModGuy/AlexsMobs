@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Las Moscas son insectos comunes, pequeños e irritantes en el Overworld. Naturalmente atraídas por cosas muertas y moribundas, se los puede
+encontrar persiguiendo y mordiendo zombies casi hasta la muerte. Las Moscas se pueden reproducir con carne podrida, y al morir tienen la posibilidad
+de soltar Gusanos. Los Gusanos de Moscas se pueden utilizar para procrear otras criaturas, como los Correcaminos y los Monos Capuchinos, y, en caso de necesidad, 
+se utiliza como aperitivo ligero.
+<NEWLINE>
+Si una Mosca se encuentra en el Nether, la diminuta criatura se transformará en el monstruoso Mosquito Carmesí.

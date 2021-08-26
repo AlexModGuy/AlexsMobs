@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Endergrade es el primo perdido hace mucho tiempo del microscópio Tardigrado, o lechones de musgo. Estas criaturas deben haber sido
+transportadas a la dimensión del End hace muchos milenios, ya que se han vuelto gigantescos debido a la falta de depredadores en
+su dimensión de origen. Ellos pueden ser encontrados en islas externas de coral,
+flotando suavemente en el aire y comiendo la abundante
+fruta coral. Como los cerdos del Overworld, los Endergrados se pueden ensillar y posteriormente montar. Sin embargo, solo puedes
+controlar un Endergrado montado si está sosteniendo una Caña con fruta coral.
+<NEWLINE>
+Los Endergrados se pueden reproducir con fruta coral,
+que también se puede utilizar para atraerlos desde las alturas en las que suelen vivir.
+Ellos pueden ser útiles para evadir ataques de shulker y alcanzar alturas distantes, pese a que son un montaje muy lento.

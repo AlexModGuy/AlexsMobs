@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Correcaminos en un Ave de tamaño mediano que se puede encontrar corriendo a través de Desiertos y Mesetas. Es extremadamente
+rápido y ágil para su tamaño. Los Correcaminos a menudo entran en conflicto con las Serpientes de Cascabel, otra habitante del Desierto,
+su presa natural. Las Plumas de las Aves son muy buscadas debido a una creencia de que pueden utilizarse para crear botas que permitan 
+a su portador a correr rápido sobre la arena.

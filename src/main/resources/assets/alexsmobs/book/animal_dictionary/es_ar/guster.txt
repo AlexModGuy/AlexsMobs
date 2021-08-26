@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los Gusters son espíritus vengativos del desierto que solo se manifiestan durante las tormentas en los desiertos.
+Estas criaturas son intrínsecamente hostiles y buscarán lanzar a sus objetivos en el aire o dispararles un chorro de arena.
+Los Gusters también pueden levantar cualquier objeto que se haya caído y tirarlo, lo que dificulta la recolección de gotas de monstruos.
+Aunque poderoso,
+Los Gusters no son criaturas muy fortificadas. Sin embargo, su presencia casi etérea los hace más resistentes a los ataques de proyectiles que la mayoría de los monstruos.
+Al morir, Gusters dejará caer arena y, ocasionalmente, uno de sus ojos. Estos ojos se pueden usar para crear un Gustmaker, un bloque que, cuando se alimenta con piedra roja, libera una pequeña tormenta de ráfagas.
+Esta pequeña ráfaga puede empujar a las criaturas y los objetos. El ojo también se puede usar para crear un bolsillo de arena, que se puede usar como arma.
