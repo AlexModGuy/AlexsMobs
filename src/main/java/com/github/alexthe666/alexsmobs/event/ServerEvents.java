@@ -363,6 +363,10 @@ public class ServerEvents {
                 WolfEntity wolf = (WolfEntity) event.getEntity();
                 wolf.targetSelector.addGoal(6, new NonTamedTargetGoal(wolf, EntityMoose.class, false, null));
             }
+            if (event.getEntity() != null && event.getEntity() instanceof WolfEntity) {
+                WolfEntity wolf = (WolfEntity) event.getEntity();
+                wolf.targetSelector.addGoal(6, new NonTamedTargetGoal(wolf, EntityRaccoon.class, false, null));
+            }
             if (event.getEntity() != null && event.getEntity() instanceof PolarBearEntity && AMConfig.polarBearsAttackSeals) {
                 PolarBearEntity bear = (PolarBearEntity) event.getEntity();
                 bear.targetSelector.addGoal(6, new NearestAttackableTargetGoal(bear, EntitySeal.class, 15, true, true, null));
