@@ -111,7 +111,7 @@ public class AMConfig {
     public static int frilledSharkSpawnRolls = 0;
     public static int mimicOctopusSpawnWeight = 9;
     public static int mimicOctopusSpawnRolls = 0;
-    public static int seagullSpawnWeight = 12;
+    public static int seagullSpawnWeight = 21;
     public static int seagullSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
