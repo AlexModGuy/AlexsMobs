@@ -26,7 +26,7 @@ public class RenderGrizzlyBear extends MobRenderer<EntityGrizzlyBear, ModelGrizz
     }
 
     protected void preRenderCallback(EntityGrizzlyBear entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.scale(1.2F, 1.2F, 1.2F);
+        matrixStackIn.scale(1F, 1F, 1F);
     }
 
 
