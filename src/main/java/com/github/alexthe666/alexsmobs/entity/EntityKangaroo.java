@@ -167,7 +167,12 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
         return s != null && s.toLowerCase().equals("roger");
     }
-
+    
+    public boolean isKangarooJack() {
+        String s = TextFormatting.getTextWithoutFormattingCodes(this.getName().getString());
+        return s != null && (s.toLowerCase().contains("kangaroo") && s.toLowerCase().contains("jack");
+    }
+    
     public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.emuSpawnRolls, this.getRNG(), spawnReasonIn);
     }
@@ -215,7 +220,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.getEntityInteractionResult(player, hand);
-        if (!isTamed() && item == Items.CARROT) {
+        if (!isTamed() && item == Items.CARROT && item == Items.GOLDEN_CARROT) {
             this.consumeItemFromStack(player, itemstack);
             this.playSound(SoundEvents.ENTITY_HORSE_EAT, this.getSoundVolume(), this.getSoundPitch());
             carrotFeedings++;
@@ -392,6 +397,7 @@ public class EntityKangaroo extends TameableEntity implements IInventoryChangedL
         this.goalSelector.addGoal(3, new BreedGoal(this, 1D));
         this.goalSelector.addGoal(4, new AnimalAIRideParent(this, 1.25D));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.fromItems(Items.CARROT), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.2D, Ingredient.fromItems(Items.GOLDEN_CARROT), false));
         this.goalSelector.addGoal(5, new AnimalAIWanderRanged(this, 110, 1.2D, 10, 7));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 10.0F));
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
