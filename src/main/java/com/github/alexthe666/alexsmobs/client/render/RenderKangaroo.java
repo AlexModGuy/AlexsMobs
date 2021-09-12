@@ -35,6 +35,6 @@ public class RenderKangaroo extends MobRenderer<EntityKangaroo, ModelKangaroo> {
     }
 
     public ResourceLocation getEntityTexture(EntityKangaroo entity) {
-        return TEXTURE;
+        return entity.isKangarooJack() ? TEXTURE_JACK : TEXTURE;
     }
 }
