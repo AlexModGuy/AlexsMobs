@@ -24,6 +24,9 @@ public class RecipeMimicreamRepair extends SpecialRecipe {
      * Used to check if a recipe matches current crafting inventory
      */
     public boolean matches(CraftingInventory inv, World worldIn) {
+        if(!AMConfig.mimicreamRepair){
+            return false;
+        }
         ItemStack damageableStack = ItemStack.EMPTY;
         int mimicreamCount = 0;
 
