@@ -3,10 +3,7 @@ package com.github.alexthe666.alexsmobs.effect;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -66,6 +63,7 @@ public class EffectDebilitatingSting extends Effect {
                     EntityTarantulaHawk baby = AMEntityRegistry.TARANTULA_HAWK.create(entity.world);
                     baby.setChild(true);
                     baby.setPosition(entity.getPosX(), surface.getY() + 0.1F, entity.getPosZ());
+                    baby.onInitialSpawn(entity.world, entity.world.getDifficultyForLocation(new BlockPos(entity)), SpawnReason.BREEDING, null, null);
                     if (!entity.world.isRemote) {
                         entity.world.addEntity(baby);
                     }
