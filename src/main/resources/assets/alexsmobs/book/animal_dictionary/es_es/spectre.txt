@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Un espectro es el pariente lejano del Fantasma del Overworld, y solo se puede encontrar en el gran vacío entre las islas del fin. Estos seres espectrales no pueden ser atacados por ningún medio normal, excepto por daño mágico como pociones.
+Sin embargo, no debería haber necesidad de atacarlos, ya que los Espectros son completamente pasivos, a diferencia de sus primos Fantasmas.
+Los espectros generalmente no se interesan por los asuntos mundanos, pero sí encuentran un interés especial en Soul Hearts y seguirán a cualquier jugador que tenga uno.
+<NEWLINE>
+Si uno puede atraer a un Espectro lo suficientemente cerca, puede usar un Plomo para unirse a la bestia.
+Cuando se conecta a través de una correa, uno se verá arrastrado por el Espectro. La criatura fantasmal se convierte en una forma rápida y fácil de navegar hasta el final, ya que ser arrastrado por un Espectro a través del vacío es una forma fácil de encontrar nuevas islas finales para explorar.
+Para separarse del Spectre, simplemente escabullirse o interactuar de nuevo con el líder.

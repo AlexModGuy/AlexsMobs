@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los camarones mantis son crustáceos gigantes que se encuentran en los arrecifes de los océanos cálidos. Estos camarones gigantes están equipados con dos poderosos puños, que pueden moverse lo suficientemente rápido como para quemar a sus presas.
+Estos puños también pueden moverse lo suficientemente rápido como para lanzar a los enemigos hacia atrás y romper bloques. Aunque neutral, no sería prudente enfadarlos. El camarón mantis es un inteligente depredador de
+ peces tropicales, calamares, guardianes y, sobre todo, shulkers, su manjar favorito.
+<NEWLINE>
+Los camarones mantis se pueden domesticar dándoles de 10 a 30 peces tropicales. Si un camarón mantis está fuera del agua durante más de 5 minutos, comenzará a secarse.
+Esto se puede prevenir dándoles cubos de agua a los camarones mantis mansos cuando se escabullen, para que puedan vivir fuera del agua indefinidamente. Se puede hacer que los camarones mantis domesticados sigan, se sienten, deambulen y rompan bloques.
+Cuando se interactúa furtivamente mientras se sostiene un bloque, se le puede dar este bloque al Camarón Mantis. Luego, el camarón buscará y romperá cualquier bloque que coincida con el que sostiene en su puño, si se le ordena hacerlo.
+El camarón mantis se puede curar con cualquier tipo de pez cuando está herido y se puede criar con colas de langosta.
