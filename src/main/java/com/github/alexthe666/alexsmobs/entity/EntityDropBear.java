@@ -211,7 +211,7 @@ public class EntityDropBear extends MonsterEntity implements IAnimatedEntity {
                     upwardsFallingTicks = 0;
                     this.setMotion(this.getMotion().add(0, -0.3F, 0));
                 }
-                if (this.isEntityInsideOpaqueBlock()) {
+                if (this.isEntityInsideOpaqueBlock() && world.isAirBlock(this.getPositionUnderneath())) {
                     this.setPosition(this.getPosX(), this.getPosY() - 1, this.getPosZ());
                 }
             } else {
