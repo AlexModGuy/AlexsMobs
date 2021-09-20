@@ -143,7 +143,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
         float f1 = this.limbSwing;
         float sitAdd = 0.01F * this.sitProgress;
         float standAdd = 0.07F * this.standProgress;
-        return (double)this.getHeight() - 0.2D + (double)(0.12F * MathHelper.cos(f1 * 0.7F) * 0.7F * f) + sitAdd + standAdd;
+        return (double)this.getHeight() - 0.3D + (double)(0.12F * MathHelper.cos(f1 * 0.7F) * 0.7F * f) + sitAdd + standAdd;
     }
 
 
@@ -292,7 +292,10 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
 
     public void tick() {
         super.tick();
-        if (this.isChild() && this.getEyeHeight() > this.getHeight()) {
+        if (this.isChild() || this.getEyeHeight() > this.getHeight()) {
+            this.recalculateSize();
+        }
+        if(!isStanding() && this.getHeight() >= 2.75F){
             this.recalculateSize();
         }
         this.prevStandProgress = this.standProgress;
