@@ -10,9 +10,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.village.PointOfInterestManager;
-import net.minecraft.village.PointOfInterestManager.Status;
-import net.minecraft.village.PointOfInterestType;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.Heightmap.Type;
@@ -21,7 +18,6 @@ import net.minecraft.world.spawner.WorldEntitySpawner;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
-import java.util.Optional;
 import java.util.Random;
 
 public class BeachedCachalotWhaleSpawner {
@@ -47,7 +43,7 @@ public class BeachedCachalotWhaleSpawner {
     }
 
     public void tick() {
-        if (AMConfig.beachedCachalotWhales && --this.timer <= 0) {
+        if (AMConfig.beachedCachalotWhales && --this.timer <= 0 && world.isThundering()) {
             this.timer = 1200;
             AMWorldData worldinfo = AMWorldData.get(world);
             this.delay -= 1200;
@@ -55,13 +51,13 @@ public class BeachedCachalotWhaleSpawner {
                 delay = 0;
             }
             worldinfo.setBeachedCachalotSpawnDelay(this.delay);
-            if (this.delay <= 0 && world.isThundering() && world.isRaining()) {
+            if (this.delay <= 0) {
                 this.delay = AMConfig.beachedCachalotWhaleSpawnDelay;
                 if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_SPAWNING)) {
                     int i = this.chance;
                     this.chance = MathHelper.clamp(this.chance + AMConfig.beachedCachalotWhaleSpawnChance, 5, 100);
                     worldinfo.setBeachedCachalotSpawnChance(this.chance);
-                    if (this.random.nextInt(100) <= i && this.func_221245_b()) {
+                    if (this.random.nextInt(100) <= i && this.attemptSpawnWhale()) {
                         this.chance = AMConfig.beachedCachalotWhaleSpawnChance;
                     }
                 }
@@ -70,7 +66,7 @@ public class BeachedCachalotWhaleSpawner {
 
     }
 
-    private boolean func_221245_b() {
+    private boolean attemptSpawnWhale() {
         PlayerEntity playerentity = this.world.getRandomPlayer();
         if (playerentity == null) {
             return true;
