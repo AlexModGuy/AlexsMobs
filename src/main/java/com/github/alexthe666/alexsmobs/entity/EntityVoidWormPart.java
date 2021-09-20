@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.google.common.collect.ImmutableList;
@@ -339,7 +340,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                     world.addEntity(worm2);
                 }
                 worm2.setSplitter(true);
-                worm2.setHealth(worm2.getMaxHealth() / 2F);
+                worm2.setMaxHealth(worm.getMaxHealth() / 2F, true);
                 worm2.setSplitFromUuid(worm.getUniqueID());
                 worm2.setWormSpeed((float) MathHelper.clamp(worm.getWormSpeed() * 0.8, 0.4F, 1F));
                 worm2.resetWormScales();

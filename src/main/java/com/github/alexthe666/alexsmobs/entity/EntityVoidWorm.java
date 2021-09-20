@@ -321,6 +321,13 @@ public class EntityVoidWorm extends MonsterEntity {
         }
     }
 
+    public void setMaxHealth(double maxHealth, boolean heal){
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(maxHealth);
+        if(heal){
+            this.heal((float)maxHealth);
+        }
+    }
+
     public void addTrackingPlayer(ServerPlayerEntity player) {
         super.addTrackingPlayer(player);
         this.bossInfo.addPlayer(player);
@@ -378,6 +385,7 @@ public class EntityVoidWorm extends MonsterEntity {
             reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         this.setSegmentCount(25 + rand.nextInt(15));
         this.rotationPitch = 0.0F;
+        this.setMaxHealth(AMConfig.voidWormMaxHealth, true);
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
