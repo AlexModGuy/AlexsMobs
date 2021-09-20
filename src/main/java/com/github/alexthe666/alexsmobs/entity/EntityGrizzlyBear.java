@@ -80,7 +80,7 @@ public class EntityGrizzlyBear extends TameableEntity implements IAngerable, IAn
     private UUID salmonThrowerID = null;
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(Items.SALMON, Items.HONEYCOMB, Items.HONEY_BOTTLE);
     public int timeUntilNextFur = this.rand.nextInt(24000) + 24000;
-    protected static final EntitySize STANDING_SIZE = EntitySize.flexible(1.8F,  2.85F);
+    protected static final EntitySize STANDING_SIZE = EntitySize.flexible(1.7F,  2.75F);
     private boolean recalcSize = false;
     private int snowTimer = 0;
     private boolean permSnow = false;
