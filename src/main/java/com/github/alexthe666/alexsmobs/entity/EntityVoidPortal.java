@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -13,6 +14,9 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
@@ -103,13 +107,14 @@ public class EntityVoidPortal extends Entity {
             double particleZ = this.getBoundingBox().minZ + rand.nextFloat() * (this.getBoundingBox().maxZ - this.getBoundingBox().minZ);
             world.addParticle(AMParticleRegistry.WORM_PORTAL, particleX, particleY, particleZ, 0.1 * rand.nextGaussian(), 0.1 * rand.nextGaussian(), 0.1 * rand.nextGaussian());
         }
+        ITag<EntityType<?>> tag = EntityTypeTags.getCollection().get(AMTagRegistry.VOID_PORTAL_IGNORES);
         List<Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this, bb.shrink(0.2F));
         if (!world.isRemote) {
             MinecraftServer server = world.getServer();
             if (this.getDestination() != null && this.getLifespan() > 20 && ticksExisted > 20) {
                 BlockPos offsetPos = this.getDestination().offset(this.getAttachmentFacing().getOpposite(), 2);
                 for (Entity e : entities) {
-                    if(e.hasPortalCooldown() || e.isSneaking() || e instanceof EntityVoidPortal){
+                    if(e.hasPortalCooldown() || e.isSneaking() || e instanceof EntityVoidPortal || tag != null && tag.contains(e.getType())){
                         continue;
                     }
                     if (e instanceof EntityVoidWormPart) {
