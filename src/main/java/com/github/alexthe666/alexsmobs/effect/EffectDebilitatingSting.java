@@ -14,6 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IServerWorld;
 
 public class EffectDebilitatingSting extends Effect {
 
@@ -63,8 +64,8 @@ public class EffectDebilitatingSting extends Effect {
                     EntityTarantulaHawk baby = AMEntityRegistry.TARANTULA_HAWK.create(entity.world);
                     baby.setChild(true);
                     baby.setPosition(entity.getPosX(), surface.getY() + 0.1F, entity.getPosZ());
-                    baby.onInitialSpawn(entity.world, entity.world.getDifficultyForLocation(new BlockPos(entity)), SpawnReason.BREEDING, null, null);
                     if (!entity.world.isRemote) {
+                        baby.onInitialSpawn((IServerWorld) entity.world, entity.world.getDifficultyForLocation(entity.getPosition()), SpawnReason.BREEDING, null, null);
                         entity.world.addEntity(baby);
                     }
                 }

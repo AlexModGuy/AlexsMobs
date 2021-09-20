@@ -166,6 +166,7 @@ public class EntityVoidPortal extends Entity {
                 teleportedEntity.setPortalCooldown();
                 endpointWorld.addFromAnotherDimension(teleportedEntity);
             }
+            entity.remove();
         }
 
     }
