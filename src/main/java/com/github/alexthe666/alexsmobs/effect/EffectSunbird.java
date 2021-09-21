@@ -26,7 +26,7 @@ public class EffectSunbird extends MobEffect {
             boolean forceFall = false;
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                if (!player.isCreative() || !player.abilities.flying) {
+                if (!player.isCreative() || !player.getAbilities().flying) {
                     forceFall = true;
                 }
             }
@@ -36,8 +36,8 @@ public class EffectSunbird extends MobEffect {
         } else {
             entity.fallDistance = 0.0F;
             if (entity.isFallFlying()) {
-                if (entity.xRot < -10) {
-                    float pitchMulti = Math.abs(entity.xRot) / 90F;
+                if (entity.getXRot() < -10) {
+                    float pitchMulti = Math.abs(entity.getXRot()) / 90F;
                     entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.02 + pitchMulti * 0.02, 0));
                 }
             } else if (!entity.isOnGround() && !entity.isCrouching()) {

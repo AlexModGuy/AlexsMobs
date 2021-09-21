@@ -22,20 +22,7 @@ public class AMRenderTypes extends RenderType {
         RenderSystem.matrixMode(5888);
     });
 
-
-    protected static final RenderStateShard.TexturingStateShard FRILLED_SHARK_TEETH_GLINT_TEXTURING = new RenderStateShard.TexturingStateShard("frilled_shark_teeth_glint_texturing", () -> {
-        setupFrilledSharkGlintTexturing(8.0F);
-    }, () -> {
-        RenderSystem.matrixMode(5890);
-        RenderSystem.popMatrix();
-        RenderSystem.matrixMode(5888);
-
-    });
-
-
     public static final RenderType RAINBOW_GLINT = create("rainbow_glint", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, 7, 256, RenderType.CompositeState.builder().setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation("alexsmobs:textures/entity/rainbow_glint.png"), true, false)).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(RAINBOW_GLINT_TEXTURING).setDiffuseLightingState(DIFFUSE_LIGHTING).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).setShadeModelState(SMOOTH_SHADE).createCompositeState(false));
-
-    public static final RenderType FRILLED_SHARK_TEETH_GLINT =  create("frilled_shark_glint", DefaultVertexFormat.POSITION_TEX, 7, 256, RenderType.CompositeState.builder().setTextureState(new TextureStateShard(ItemRenderer.ENCHANT_GLINT_LOCATION, true, false)).setWriteMaskState(COLOR_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(ENTITY_GLINT_TEXTURING).setLayeringState(VIEW_OFFSET_Z_LAYERING).createCompositeState(false));
 
     protected static final RenderStateShard.TransparencyStateShard WORM_TRANSPARANCY = new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
         RenderSystem.enableBlend();
@@ -61,8 +48,8 @@ public class AMRenderTypes extends RenderType {
         RenderSystem.defaultBlendFunc();
     });
 
-    public AMRenderTypes(String p_i225992_1_, VertexFormat p_i225992_2_, int p_i225992_3_, int p_i225992_4_, boolean p_i225992_5_, boolean p_i225992_6_, Runnable p_i225992_7_, Runnable p_i225992_8_) {
-        super(p_i225992_1_, p_i225992_2_, p_i225992_3_, p_i225992_4_, p_i225992_5_, p_i225992_6_, p_i225992_7_, p_i225992_8_);
+    public AMRenderTypes(String p_173178_, VertexFormat p_173179_, VertexFormat.Mode p_173180_, int p_173181_, boolean p_173182_, boolean p_173183_, Runnable p_173184_, Runnable p_173185_) {
+        super(p_173178_, p_173179_, p_173180_, p_173181_, p_173182_, p_173183_, p_173184_, p_173185_);
     }
 
     public static RenderType getTransparentMimicube(ResourceLocation texture) {

@@ -19,15 +19,17 @@ public class AMModelLayers {
     public static final ModelLayerLocation FRONTIER_CAP = createLocation("frontier_cap", "outer_layer");
     public static final ModelLayerLocation SPIKED_TURTLE_SHELL = createLocation("spiked_turtle_shell", "outer_layer");
     public static final ModelLayerLocation FEDORA = createLocation("fedora", "outer_layer");
+    public static final ModelLayerLocation SOMBRERO = createLocation("sombrero", "outer_layer");
 
     public static void register(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(AM_ELYTRA, () -> ModelAMElytra.createLayer());
         event.registerLayerDefinition(SITTING_WANDERING_VILLAGER, () -> LayerDefinition.create(ModelWanderingVillagerRider.createBodyModel(), 64, 64));
-        event.registerLayerDefinition(ROADRUNNER_BOOTS, () -> ModelRoadrunnerBoots.createArmorLayer(CubeDeformation.NONE));
-        event.registerLayerDefinition(MOOSE_HEADGEAR, () -> ModelMooseHeadgear.createArmorLayer(CubeDeformation.NONE));
-        event.registerLayerDefinition(FRONTIER_CAP, () -> ModelFrontierCap.createArmorLayer(CubeDeformation.NONE));
-        event.registerLayerDefinition(SPIKED_TURTLE_SHELL, () -> ModelSpikedTurtleShell.createArmorLayer(CubeDeformation.NONE));
-        event.registerLayerDefinition(FEDORA, () -> ModelFedora.createArmorLayer(CubeDeformation.NONE));
+        event.registerLayerDefinition(ROADRUNNER_BOOTS, () -> ModelRoadrunnerBoots.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(MOOSE_HEADGEAR, () -> ModelMooseHeadgear.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(FRONTIER_CAP, () -> ModelFrontierCap.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(SPIKED_TURTLE_SHELL, () -> ModelSpikedTurtleShell.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(FEDORA, () -> ModelFedora.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(SOMBRERO, () -> ModelSombrero.createArmorLayer(new CubeDeformation(0.5F)));
     }
 
     private static ModelLayerLocation createLocation(String model, String layer) {

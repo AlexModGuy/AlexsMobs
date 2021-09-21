@@ -3,13 +3,10 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelBaldEagle;
 import com.github.alexthe666.alexsmobs.client.model.ModelBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
-import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
-import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -20,12 +17,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.CameraType;
-import net.minecraft.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3d;
 import com.mojang.math.Vector3f;
 
 public class RenderBaldEagle extends MobRenderer<EntityBaldEagle, ModelBaldEagle> {
@@ -54,7 +49,7 @@ public class RenderBaldEagle extends MobRenderer<EntityBaldEagle, ModelBaldEagle
                 }else if(mount.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE){
                     leftHand = mount.getMainArm() != HumanoidArm.LEFT;
                 }
-                EntityRenderer playerRender = Minecraft.getInstance().getEntityRendererProvider.Context().getRenderer(mount);
+                EntityRenderer playerRender = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(mount);
                 if(Minecraft.getInstance().player == mount && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON){
                     //handled via event
                 }else if (playerRender instanceof LivingEntityRenderer && ((LivingEntityRenderer) playerRender).getModel() instanceof HumanoidModel) {

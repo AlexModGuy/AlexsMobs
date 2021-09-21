@@ -19,7 +19,6 @@ public class SoundLaCucaracha extends AbstractTickableSoundInstance {
         this.attenuation = Attenuation.LINEAR;
         this.looping = true;
         this.delay = 0;
-        this.priority = true;
         this.x = this.cockroach.getX();
         this.y = this.cockroach.getY();
         this.z = this.cockroach.getZ();
@@ -48,7 +47,7 @@ public class SoundLaCucaracha extends AbstractTickableSoundInstance {
     }
 
     public void tick() {
-        if (!this.cockroach.removed && this.cockroach.isAlive() && this.cockroach.isDancing() && this.cockroach.hasMaracas()) {
+        if (!this.cockroach.isRemoved() && this.cockroach.isAlive() && this.cockroach.isDancing() && this.cockroach.hasMaracas()) {
             this.volume = 1;
             this.pitch = 1;
             this.x = this.cockroach.getX();

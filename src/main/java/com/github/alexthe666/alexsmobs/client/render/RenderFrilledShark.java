@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.client.model.ModelFrilledShark;
 import com.github.alexthe666.alexsmobs.entity.EntityFrilledShark;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexBuilderUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

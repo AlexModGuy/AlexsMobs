@@ -15,7 +15,7 @@ public class RenderCockroach extends MobRenderer<EntityCockroach, ModelCockroach
     public RenderCockroach(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCockroach(), 0.3F);
         this.addLayer(new LayerCockroachRainbow(this));
-        this.addLayer(new LayerCockroachMaracas(this));
+        this.addLayer(new LayerCockroachMaracas(this, renderManagerIn));
     }
 
     protected void scale(EntityCockroach entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {

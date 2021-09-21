@@ -4,13 +4,11 @@ import com.github.alexthe666.alexsmobs.client.model.ModelKangaroo;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerKangarooArmor;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerKangarooBaby;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerKangarooItem;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerMimicubeHelmet;
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderKangaroo extends MobRenderer<EntityKangaroo, ModelKangaroo> {
@@ -19,7 +17,7 @@ public class RenderKangaroo extends MobRenderer<EntityKangaroo, ModelKangaroo> {
     public RenderKangaroo(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelKangaroo(), 0.5F);
         this.addLayer(new LayerKangarooItem(this));
-        this.addLayer(new LayerKangarooArmor(this));
+        this.addLayer(new LayerKangarooArmor(this, renderManagerIn));
         this.addLayer(new LayerKangarooBaby(this));
 
     }

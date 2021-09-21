@@ -1,7 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCockroach;
-import com.github.alexthe666.alexsmobs.client.model.ModelSombrero;
+import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
+import com.github.alexthe666.alexsmobs.client.model.layered.ModelSombrero;
 import com.github.alexthe666.alexsmobs.client.render.RenderCockroach;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -10,6 +11,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -23,10 +25,10 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
     private ModelSombrero sombrero;
     private static final ResourceLocation SOMBRERO_TEX = new ResourceLocation("alexsmobs:textures/armor/sombrero.png");
 
-    public LayerCockroachMaracas(RenderCockroach render) {
+    public LayerCockroachMaracas(RenderCockroach render, EntityRendererProvider.Context renderManagerIn) {
         super(render);
         stack = new ItemStack(AMItemRegistry.MARACA);
-        this.sombrero = new ModelSombrero(0);
+        this.sombrero = new ModelSombrero(renderManagerIn.bakeLayer(AMModelLayers.SOMBRERO));
 
     }
 

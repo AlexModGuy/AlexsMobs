@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.effect;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -84,7 +83,7 @@ public class EffectDebilitatingSting extends MobEffect {
     public boolean isEntityInsideOpaqueBlock(Entity entity) {
         float f = 0.1F;
         float f1 = entity.getDimensions(entity.getPose()).width * 0.8F;
-        AABB axisalignedbb = AABB.ofSize(f1, 0.1F, f1).move(entity.getX(), entity.getEyeY(), entity.getZ());
+        AABB axisalignedbb = AABB.ofSize(new Vec3(entity.getX(), entity.getY(), entity.getZ()), f1, 0.1F, f1);
         return entity.level.getBlockCollisions(entity, axisalignedbb, (p_241338_1_, p_241338_2_) -> {
             return p_241338_1_.isSuffocating(entity.level, p_241338_2_);
         }).findAny().isPresent();

@@ -6,7 +6,9 @@ import com.github.alexthe666.alexsmobs.entity.EntityMimicube;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -25,12 +27,13 @@ import java.util.Map;
 public class LayerMimicubeHelmet extends RenderLayer<EntityMimicube, ModelMimicube> {
 
     private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
-    private final HumanoidModel defaultBipedModel = new HumanoidModel(1.0F);
+    private final HumanoidModel defaultBipedModel;
     private RenderMimicube renderer;
 
-    public LayerMimicubeHelmet(RenderMimicube render) {
+    public LayerMimicubeHelmet(RenderMimicube render, EntityRendererProvider.Context renderManagerIn) {
         super(render);
         this.renderer = render;
+        defaultBipedModel = new HumanoidModel(renderManagerIn.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR));
     }
 
     public static ResourceLocation getArmorResource(net.minecraft.world.entity.Entity entity, ItemStack stack, EquipmentSlot slot, @javax.annotation.Nullable String type) {
@@ -98,9 +101,14 @@ public class LayerMimicubeHelmet extends RenderLayer<EntityMimicube, ModelMimicu
             modelIn.body.y = 0;
             modelIn.head.setPos(0.0F, 1.0F, 0.0F);
             modelIn.hat.y = 0;
-            modelIn.head.copyFrom(renderer.getModel().body);
-            modelIn.hat.copyFrom(renderer.getModel().body);
-            modelIn.body.copyFrom(renderer.getModel().body);
+            modelIn.head.xRot = renderer.getModel().body.rotateAngleX;
+            modelIn.head.yRot = renderer.getModel().body.rotateAngleY;
+            modelIn.head.zRot = renderer.getModel().body.rotateAngleZ;
+            modelIn.head.x = renderer.getModel().body.rotationPointX;
+            modelIn.head.y = renderer.getModel().body.rotationPointY;
+            modelIn.head.z = renderer.getModel().body.rotationPointZ;
+            modelIn.hat.copyFrom(modelIn.head);
+            modelIn.body.copyFrom(modelIn.head);
         }
         modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }

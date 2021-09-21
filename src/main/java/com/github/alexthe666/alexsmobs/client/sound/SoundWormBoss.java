@@ -21,7 +21,6 @@ public class SoundWormBoss extends AbstractTickableSoundInstance {
         this.attenuation = Attenuation.NONE;
         this.looping = true;
         this.delay = 0;
-        this.priority = true;
         this.x = this.voidWorm.getX();
         this.y = this.voidWorm.getY();
         this.z = this.voidWorm.getZ();
@@ -55,7 +54,7 @@ public class SoundWormBoss extends AbstractTickableSoundInstance {
             Minecraft.getInstance().getMusicManager().stopPlaying();
 
         }
-        if (!this.voidWorm.removed && this.voidWorm.isAlive()) {
+        if (!this.voidWorm.isRemoved() && this.voidWorm.isAlive()) {
             this.volume = 1;
             this.pitch = 1;
             this.x = this.voidWorm.getX();

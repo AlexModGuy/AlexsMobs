@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.damagesource.DamageSource;
 

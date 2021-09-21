@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -27,8 +28,8 @@ public class LayerKangarooBaby extends RenderLayer<EntityKangaroo, ModelKangaroo
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityKangaroo roo, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(roo.isVehicle() && !roo.isBaby()){
             for(Entity passenger : roo.getPassengers()){
-                float riderRot = passenger.yRotO + (passenger.yRot - passenger.yRotO) * partialTicks;
-                EntityRenderer render = Minecraft.getInstance().getEntityRendererProvider.Context().getRenderer(passenger);
+                float riderRot = passenger.yRotO + (passenger.getYRot() - passenger.yRotO) * partialTicks;
+                EntityRenderer render = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(passenger);
                 EntityModel modelBase = null;
                 if (render instanceof LivingEntityRenderer) {
                     modelBase = ((LivingEntityRenderer) render).getModel();
@@ -54,7 +55,7 @@ public class LayerKangarooBaby extends RenderLayer<EntityKangaroo, ModelKangaroo
 
     public <E extends Entity> void renderEntity(E entityIn, double x, double y, double z, float yaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLight) {
         EntityRenderer<? super E> render = null;
-        EntityRendererProvider.Context manager = Minecraft.getInstance().getEntityRendererProvider.Context();
+        EntityRenderDispatcher manager = Minecraft.getInstance().getEntityRenderDispatcher();
         try {
             render = manager.getRenderer(entityIn);
 
@@ -71,7 +72,6 @@ public class LayerKangarooBaby extends RenderLayer<EntityKangaroo, ModelKangaroo
             entityIn.fillCrashReportCategory(crashreportcategory);
             CrashReportCategory crashreportcategory1 = crashreport.addCategory("Renderer details");
             crashreportcategory1.setDetail("Assigned renderer", render);
-            crashreportcategory1.setDetail("Location", CrashReportCategory.formatLocation(x, y, z));
             crashreportcategory1.setDetail("Rotation", Float.valueOf(yaw));
             crashreportcategory1.setDetail("Delta", Float.valueOf(partialTicks));
             throw new ReportedException(crashreport);

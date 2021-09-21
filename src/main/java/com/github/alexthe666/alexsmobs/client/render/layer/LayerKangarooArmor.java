@@ -8,7 +8,10 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -20,9 +23,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import com.mojang.math.Quaternion;
-import net.minecraft.util.math.vector.Vector3d;
 import com.mojang.math.Vector3f;
 
 import java.util.Map;
@@ -30,11 +31,12 @@ import java.util.Map;
 public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaroo> {
 
     private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
-    private final HumanoidModel defaultBipedModel = new HumanoidModel(1.0F);
+    private final HumanoidModel defaultBipedModel;
     private RenderKangaroo renderer;
 
-    public LayerKangarooArmor(RenderKangaroo render) {
+    public LayerKangarooArmor(RenderKangaroo render, EntityRendererProvider.Context context) {
         super(render);
+        defaultBipedModel = new HumanoidModel(context.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR));
         this.renderer = render;
     }
 
@@ -110,7 +112,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
                     matrixStackIn.mulPose(new Quaternion(Vector3f.XP, 180, true));
                     matrixStackIn.mulPose(new Quaternion(Vector3f.YP, 180, true));
                     matrixStackIn.scale(1.0F, 1.0F, 1.0F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
                 }
                 matrixStackIn.popPose();
             }
@@ -172,12 +174,22 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
         modelIn.body.x = 0;
         modelIn.body.y = 0.25F;
         modelIn.body.z = -7.6F;
-        modelIn.rightArm.copyFrom(renderer.getModel().arm_right);
-        modelIn.leftArm.copyFrom(renderer.getModel().arm_left);
-        modelIn.leftArm.y = renderer.getModel().arm_left.y - 4 + (sitProgress * 0.25F);
-        modelIn.rightArm.y = renderer.getModel().arm_right.y - 4 + (sitProgress * 0.25F);
-        modelIn.leftArm.z = renderer.getModel().arm_left.z - 0.5F;
-        modelIn.rightArm.z = renderer.getModel().arm_right.z - 0.5F;
+        modelIn.rightArm.x = renderer.getModel().arm_right.rotationPointX;
+        modelIn.rightArm.y = renderer.getModel().arm_right.rotationPointY;
+        modelIn.rightArm.z = renderer.getModel().arm_right.rotationPointZ;
+        modelIn.rightArm.xRot = renderer.getModel().arm_right.rotateAngleX;
+        modelIn.rightArm.yRot = renderer.getModel().arm_right.rotateAngleY;
+        modelIn.rightArm.zRot = renderer.getModel().arm_right.rotateAngleZ;
+        modelIn.leftArm.x = renderer.getModel().arm_left.rotationPointX;
+        modelIn.leftArm.y = renderer.getModel().arm_left.rotationPointY;
+        modelIn.leftArm.z = renderer.getModel().arm_left.rotationPointZ;
+        modelIn.leftArm.xRot = renderer.getModel().arm_left.rotateAngleX;
+        modelIn.leftArm.yRot = renderer.getModel().arm_left.rotateAngleY;
+        modelIn.leftArm.zRot = renderer.getModel().arm_left.rotateAngleZ;
+        modelIn.leftArm.y = renderer.getModel().arm_left.rotationPointY - 4 + (sitProgress * 0.25F);
+        modelIn.rightArm.y = renderer.getModel().arm_right.rotationPointY - 4 + (sitProgress * 0.25F);
+        modelIn.leftArm.z = renderer.getModel().arm_left.rotationPointZ - 0.5F;
+        modelIn.rightArm.z = renderer.getModel().arm_right.rotationPointZ - 0.5F;
         modelIn.body.visible = false;
         modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
         modelIn.body.visible = true;

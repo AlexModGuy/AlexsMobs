@@ -4,26 +4,24 @@ import com.github.alexthe666.alexsmobs.client.model.ModelLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.client.model.ModelLeafcutterAntQueen;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerLeafcutterAntLeaf;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
+import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerModelPart;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.util.math.vector.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 
-public class RenderLeafcutterAnt extends MobRenderer<EntityLeafcutterAnt, EntityModel<EntityLeafcutterAnt>> {
+public class RenderLeafcutterAnt extends MobRenderer<EntityLeafcutterAnt, AdvancedEntityModel<EntityLeafcutterAnt>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/leafcutter_ant.png");
     private static final ResourceLocation TEXTURE_QUEEN = new ResourceLocation("alexsmobs:textures/entity/leafcutter_ant_queen.png");
     private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/leafcutter_ant_angry.png");
     private static final ResourceLocation TEXTURE_QUEEN_ANGRY = new ResourceLocation("alexsmobs:textures/entity/leafcutter_ant_queen_angry.png");
-    private final ModelLeafcutterAnt model = new ModelLeafcutterAnt();
+    private final ModelLeafcutterAnt modelAnt = new ModelLeafcutterAnt();
     private final ModelLeafcutterAntQueen modelQueen = new ModelLeafcutterAntQueen();
 
     public RenderLeafcutterAnt(EntityRendererProvider.Context renderManagerIn) {
@@ -96,7 +94,7 @@ public class RenderLeafcutterAnt extends MobRenderer<EntityLeafcutterAnt, Entity
 
             matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
         } else if (entityLiving.isAutoSpinAttack()) {
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F - entityLiving.xRot));
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F - entityLiving.getXRot()));
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
         } else if (pose == Pose.SLEEPING) {
 
@@ -110,7 +108,7 @@ public class RenderLeafcutterAnt extends MobRenderer<EntityLeafcutterAnt, Entity
     }
 
     protected void scale(EntityLeafcutterAnt entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
-        model = entitylivingbaseIn.isQueen() ? modelQueen : model;
+        model = entitylivingbaseIn.isQueen() ? modelQueen : modelAnt;
         float scale = entitylivingbaseIn.getAntScale();
     }
 
