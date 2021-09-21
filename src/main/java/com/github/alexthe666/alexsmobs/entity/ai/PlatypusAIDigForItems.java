@@ -99,7 +99,7 @@ public class PlatypusAIDigForItems extends Goal {
 
             platypus.getNavigation().moveTo(digPos.getX(), digPos.getY() + 1, digPos.getZ(), 1);
 
-            platypus.yRot = f;
+            platypus.setYRot(f);
         }
 
     }

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -43,7 +44,7 @@ public class SemiAquaticAIRandomSwimming extends RandomStrollGoal {
     @Nullable
     protected Vec3 getPosition() {
         if(this.mob.hasRestriction() && this.mob.distanceToSqr(Vec3.atCenterOf(this.mob.getRestrictCenter())) > this.mob.getRestrictRadius() * this.mob.getRestrictRadius()){
-            return RandomPos.getPosTowards(this.mob, 7, 3, Vec3.atBottomCenterOf(this.mob.getRestrictCenter()));
+            return DefaultRandomPos.getPosTowards(this.mob, 7, 3, Vec3.atBottomCenterOf(this.mob.getRestrictCenter()), 1);
         }
         if(this.mob.getRandom().nextFloat() < 0.3F){
             Vec3 vector3d = findSurfaceTarget(this.mob, 15, 7);
@@ -51,9 +52,9 @@ public class SemiAquaticAIRandomSwimming extends RandomStrollGoal {
                 return vector3d;
             }
         }
-        Vec3 vector3d = RandomPos.getPos(this.mob, 7, 3);
+        Vec3 vector3d = DefaultRandomPos.getPos(this.mob, 7, 3);
 
-        for(int i = 0; vector3d != null && !this.mob.level.getFluidState(new BlockPos(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = RandomPos.getPos(this.mob, 10, 7)) {
+        for(int i = 0; vector3d != null && !this.mob.level.getFluidState(new BlockPos(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = DefaultRandomPos.getPos(this.mob, 10, 7)) {
         }
 
         return vector3d;

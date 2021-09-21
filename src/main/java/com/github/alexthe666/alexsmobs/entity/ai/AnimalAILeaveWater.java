@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.tags.FluidTags;
@@ -44,7 +45,7 @@ public class AnimalAILeaveWater extends Goal {
             this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
         if(this.creature.horizontalCollision && this.creature.isInWater()){
-            float f1 = creature.yRot * ((float)Math.PI / 180F);
+            float f1 = creature.getYRot() * ((float)Math.PI / 180F);
             creature.setDeltaMovement(creature.getDeltaMovement().add((double)(-Mth.sin(f1) * 0.2F), 0.1D, (double)(Mth.cos(f1) * 0.2F)));
 
         }
@@ -59,7 +60,7 @@ public class AnimalAILeaveWater extends Goal {
     }
 
     public BlockPos generateTarget() {
-        Vec3 vector3d = RandomPos.getLandPos(this.creature, 23, 7);
+        Vec3 vector3d = LandRandomPos.getPos(this.creature, 23, 7);
         int tries = 0;
         while(vector3d != null && tries < 8){
             boolean waterDetected = false;
@@ -70,7 +71,7 @@ public class AnimalAILeaveWater extends Goal {
                 }
             }
             if(waterDetected){
-                vector3d = RandomPos.getLandPos(this.creature, 23, 7);
+                vector3d = LandRandomPos.getPos(this.creature, 23, 7);
             }else{
                 return new BlockPos(vector3d);
             }

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.phys.Vec3;
@@ -54,10 +55,10 @@ public class AnimalAIWanderRanged extends RandomStrollGoal {
     @Nullable
     protected Vec3 getPosition() {
         if (this.mob.isInWaterOrBubble()) {
-            Vec3 vector3d = RandomPos.getLandPos(this.mob, xzRange, yRange);
+            Vec3 vector3d = LandRandomPos.getPos(this.mob, xzRange, yRange);
             return vector3d == null ? super.getPosition() : vector3d;
         } else {
-            return this.mob.getRandom().nextFloat() >= this.probability ? RandomPos.getLandPos(this.mob, xzRange, yRange) : super.getPosition();
+            return this.mob.getRandom().nextFloat() >= this.probability ? LandRandomPos.getPos(this.mob, xzRange, yRange) : super.getPosition();
         }
     }
 }

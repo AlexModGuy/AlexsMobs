@@ -36,8 +36,8 @@ public class MovementControllerCustomCollisions extends MoveControl {
             f4 = f1 / f4;
             f2 = f2 * f4;
             f3 = f3 * f4;
-            float f5 = Mth.sin(this.mob.yRot * ((float)Math.PI / 180F));
-            float f6 = Mth.cos(this.mob.yRot * ((float)Math.PI / 180F));
+            float f5 = Mth.sin(this.mob.getYRot() * ((float)Math.PI / 180F));
+            float f6 = Mth.cos(this.mob.getYRot() * ((float)Math.PI / 180F));
             float f7 = f2 * f6 - f3 * f5;
             float f8 = f3 * f6 + f2 * f5;
             if (!this.isWalkable(f7, f8)) {
@@ -61,14 +61,13 @@ public class MovementControllerCustomCollisions extends MoveControl {
             }
 
             float f9 = (float)(Mth.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-            this.mob.yRot = this.rotlerp(this.mob.yRot, f9, 90.0F);
+            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f9, 90.0F));
             this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
             BlockPos blockpos = this.mob.blockPosition();
             BlockState blockstate = this.mob.level.getBlockState(blockpos);
-            Block block = blockstate.getBlock();
             VoxelShape voxelshape = blockstate.getBlockSupportShape(this.mob.level, blockpos);
             if(!(mob instanceof ICustomCollisions && ((ICustomCollisions) mob).canPassThrough(blockpos, blockstate, voxelshape))){
-                if (d2 > (double)this.mob.maxUpStep && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getBbWidth()) || !voxelshape.isEmpty() && this.mob.getY() < voxelshape.max(Direction.Axis.Y) + (double)blockpos.getY() && !block.is(BlockTags.DOORS) && !block.is(BlockTags.FENCES)) {
+                if (d2 > (double)this.mob.maxUpStep && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getBbWidth()) || !voxelshape.isEmpty() && this.mob.getY() < voxelshape.max(Direction.Axis.Y) + (double)blockpos.getY() && !blockstate.is(BlockTags.DOORS) && !blockstate.is(BlockTags.FENCES)) {
                     this.mob.getJumpControl().jump();
                     this.operation = MoveControl.Operation.JUMPING;
                 }

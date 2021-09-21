@@ -66,7 +66,7 @@ public class RaccoonAIWash extends Goal {
                 double d0 = waterPos.getX() + 0.5D - this.raccoon.getX();
                 double d2 = waterPos.getZ() + 0.5D - this.raccoon.getZ();
                 float yaw = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                this.raccoon.yRot = yaw;
+                this.raccoon.setYRot(yaw);
                 this.raccoon.yHeadRot = yaw;
                 this.raccoon.yBodyRot = yaw;
                 this.raccoon.getNavigation().stop();
@@ -99,7 +99,7 @@ public class RaccoonAIWash extends Goal {
         if(raccoon.getMainHandItem().isEmpty()){
             return false;
         }
-        return targetPos != null && !this.raccoon.isInWater() && EntityRaccoon.isFood(this.raccoon.getMainHandItem());
+        return targetPos != null && !this.raccoon.isInWater() && EntityRaccoon.isRaccoonFood(this.raccoon.getMainHandItem());
     }
 
     public BlockPos generateTarget() {

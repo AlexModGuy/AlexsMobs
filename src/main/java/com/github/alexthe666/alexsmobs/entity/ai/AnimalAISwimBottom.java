@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -17,9 +18,9 @@ public class AnimalAISwimBottom extends RandomStrollGoal {
 
     @Nullable
     protected Vec3 getPosition() {
-        Vec3 vec = RandomPos.getPos(this.mob, 10, 7);
+        Vec3 vec = DefaultRandomPos.getPos(this.mob, 10, 7);
 
-        for(int var2 = 0; vec != null && !this.mob.level.getBlockState(new BlockPos(vec)).isPathfindable(this.mob.level, new BlockPos(vec), PathComputationType.WATER) && var2++ < 10; vec = RandomPos.getPos(this.mob, 10, 7)) {
+        for(int var2 = 0; vec != null && !this.mob.level.getBlockState(new BlockPos(vec)).isPathfindable(this.mob.level, new BlockPos(vec), PathComputationType.WATER) && var2++ < 10; vec = DefaultRandomPos.getPos(this.mob, 10, 7)) {
         }
         int yDrop = 1 + this.mob.getRandom().nextInt(3);
         if(vec != null){

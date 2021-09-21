@@ -164,7 +164,7 @@ public class CrowAIFollowOwner extends Goal {
         } else if (!this.isTeleportFriendlyBlock(new BlockPos(p_226328_1_, p_226328_2_, p_226328_3_))) {
             return false;
         } else {
-            this.crow.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.crow.yRot, this.crow.xRot);
+            this.crow.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.crow.getYRot(), this.crow.getXRot());
             this.navigator.stop();
             return true;
         }

@@ -69,7 +69,7 @@ public class SealAIDiveForItems extends Goal {
                     double d0 = thrower.getX() - this.seal.getX();
                     double d1 = thrower.getEyeY() - this.seal.getEyeY();
                     double d2 = thrower.getZ() - this.seal.getZ();
-                    double lvt_7_1_ = Mth.sqrt(d0 * d0 + d2 * d2);
+                    double lvt_7_1_ = Mth.sqrt((float) (d0 * d0 + d2 * d2));
                     float pitch = (float) (-(Mth.atan2(d1, lvt_7_1_) * 57.2957763671875D));
                     float yaw = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
                     float f8 = Mth.sin(pitch * ((float) Math.PI / 180F));
@@ -116,7 +116,7 @@ public class SealAIDiveForItems extends Goal {
             }else{
                 seal.setDigging(false);
                 seal.getNavigation().moveTo(digPos.getX(), digPos.getY(), digPos.getZ(), 1);
-                seal.yRot = f;
+                seal.setYRot(f);
             }
         }
     }

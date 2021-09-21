@@ -95,7 +95,7 @@ public class HummingbirdAIPollinate  extends MoveToBlockGoal {
 
     @Override
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
-        if (worldIn.getBlockState(pos).getBlock().is(BlockTags.BEE_GROWABLES) || worldIn.getBlockState(pos).getBlock().is(BlockTags.FLOWERS)) {
+        if (worldIn.getBlockState(pos).is(BlockTags.BEE_GROWABLES) || worldIn.getBlockState(pos).is(BlockTags.FLOWERS)) {
             return bird.pollinateCooldown == 0 && bird.canBlockBeSeen(pos);
         }
         return false;

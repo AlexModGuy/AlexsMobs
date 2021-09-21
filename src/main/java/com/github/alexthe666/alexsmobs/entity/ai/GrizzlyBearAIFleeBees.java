@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.google.common.base.Predicate;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Bee;
@@ -50,7 +51,7 @@ public class GrizzlyBearAIFleeBees extends Goal {
             return false;
         } else {
             this.closestLivingEntity = beeEntities.get(0);
-            Vec3 vec3d = RandomPos.getPosAvoid(this.entity, 16, 7, new Vec3(this.closestLivingEntity.getX(), this.closestLivingEntity.getY(), this.closestLivingEntity.getZ()));
+            Vec3 vec3d = LandRandomPos.getPosAway(this.entity, 16, 7, new Vec3(this.closestLivingEntity.getX(), this.closestLivingEntity.getY(), this.closestLivingEntity.getZ()));
             if (vec3d == null) {
                 return false;
             } else if (this.closestLivingEntity.distanceToSqr(vec3d.x, vec3d.y, vec3d.z) < this.closestLivingEntity.distanceToSqr(this.entity)) {

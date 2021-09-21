@@ -3,9 +3,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntitySeagull;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
-import net.minecraft.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -16,8 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class SeagullAIStealFromPlayers extends Goal {
 
@@ -120,7 +116,7 @@ public class SeagullAIStealFromPlayers extends Goal {
 
     private boolean hasFoods(Player player){
         for(int i = 0; i < 9; i++){
-            ItemStack stackIn = player.inventory.items.get(i);
+            ItemStack stackIn = player.getInventory().items.get(i);
             if(stackIn.isEdible() && !isBlacklisted(stackIn)){
                 return true;
             }
@@ -140,7 +136,7 @@ public class SeagullAIStealFromPlayers extends Goal {
     private ItemStack getFoodItemFrom(Player player){
         List<ItemStack> foods = new ArrayList<>();
         for(int i = 0; i < 9; i++){
-            ItemStack stackIn = player.inventory.items.get(i);
+            ItemStack stackIn = player.getInventory().items.get(i);
             if(stackIn.isEdible() && !isBlacklisted(stackIn)){
                 foods.add(stackIn);
             }

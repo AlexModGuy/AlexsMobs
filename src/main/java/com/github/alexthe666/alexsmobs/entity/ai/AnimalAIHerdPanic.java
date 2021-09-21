@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.tags.FluidTags;
@@ -56,7 +57,7 @@ public class AnimalAIHerdPanic extends Goal {
             }
             if (this.creature.getLastHurtByMob() != null && this.creature instanceof IHerdPanic && ((IHerdPanic) this.creature).canPanic()) {
 
-                List<PathfinderMob> list = this.creature.level.getEntitiesOfClass(this.creature.getClass(), this.getTargetableArea(), this.targetEntitySelector);
+                List<? extends PathfinderMob> list = this.creature.level.getEntitiesOfClass(this.creature.getClass(), this.getTargetableArea(), this.targetEntitySelector);
                 for (PathfinderMob creatureEntity : list) {
                     creatureEntity.setLastHurtByMob(this.creature.getLastHurtByMob());
                 }
@@ -67,7 +68,7 @@ public class AnimalAIHerdPanic extends Goal {
     }
 
     private boolean findRandomPositionFrom(LivingEntity revengeTarget) {
-        Vec3 vector3d = RandomPos.getPosAvoid(this.creature, 16, 7, revengeTarget.position());
+        Vec3 vector3d = LandRandomPos.getPosAway(this.creature, 16, 7, revengeTarget.position());
         if (vector3d == null) {
             return false;
         } else {
@@ -86,7 +87,7 @@ public class AnimalAIHerdPanic extends Goal {
     }
 
     protected boolean findRandomPosition() {
-        Vec3 vector3d = RandomPos.getPos(this.creature, 5, 4);
+        Vec3 vector3d = LandRandomPos.getPos(this.creature, 5, 4);
         if (vector3d == null) {
             return false;
         } else {

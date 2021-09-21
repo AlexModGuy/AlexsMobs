@@ -3,16 +3,13 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntityMantisShrimp;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.block.*;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.state.properties.BedPart;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
@@ -95,7 +92,7 @@ public class MantisShrimpAIFryRice extends MoveToBlockGoal {
                 wasLitPrior = blockstate.getValue(AbstractFurnaceBlock.LIT);
                 return true;
             }
-            return blockstate.getBlock().is(BlockTags.CAMPFIRES);
+            return blockstate.is(BlockTags.CAMPFIRES);
         }
     }
 

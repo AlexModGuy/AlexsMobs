@@ -1,9 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
-import net.minecraft.world.level.pathfinder.TurtleNodeEvaluator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
@@ -17,7 +17,7 @@ public class SemiAquaticPathNavigator extends WaterBoundPathNavigation {
     }
 
     protected PathFinder createPathFinder(int p_179679_1_) {
-        this.nodeEvaluator = new TurtleNodeEvaluator();
+        this.nodeEvaluator = new AmphibiousNodeEvaluator(true);
         return new PathFinder(this.nodeEvaluator, p_179679_1_);
     }
 

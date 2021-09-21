@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class MooseAIJostle extends Goal {
 
-    private static final TargetingConditions JOSTLE_PREDICATE = (new TargetingConditions()).range(16D).allowInvulnerable().allowSameTeam();
+    private static final TargetingConditions JOSTLE_PREDICATE = TargetingConditions.forNonCombat().range(16D).ignoreLineOfSight();
     protected EntityMoose targetMoose;
     private EntityMoose moose;
     private Level world;

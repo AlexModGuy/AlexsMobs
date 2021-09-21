@@ -105,7 +105,7 @@ public class SnowLeopardAIMelee extends Goal {
         if (stalk) {
             if (secondPartOfLeap) {
                 leopard.lookAt(target, 180F, 10F);
-                leopard.yBodyRot = leopard.yRot;
+                leopard.yBodyRot = leopard.getYRot();
                 if (leopard.isOnGround()) {
                     this.leopard.setSlSneaking(false);
                     this.leopard.setTackling(true);

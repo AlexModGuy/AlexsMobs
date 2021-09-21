@@ -21,7 +21,7 @@ public class AnimalAIRideParent extends Goal {
         if (this.childAnimal.getAge() >= 0 || this.childAnimal.isPassenger()) {
             return false;
         } else {
-            List<Animal> list = this.childAnimal.level.getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
+            List<? extends Animal> list = this.childAnimal.level.getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
             Animal animalentity = null;
             double d0 = Double.MAX_VALUE;
 

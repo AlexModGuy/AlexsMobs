@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -45,9 +46,9 @@ public class BoneSerpentAIRandomSwimming extends RandomStrollGoal {
                 return vector3d;
             }
         }
-        Vec3 vector3d = RandomPos.getPos(this.mob, 32, 16);
+        Vec3 vector3d = DefaultRandomPos.getPos(this.mob, 32, 16);
 
-        for(int i = 0; vector3d != null && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 10; vector3d = RandomPos.getPos(this.mob, 10, 7)) {
+        for(int i = 0; vector3d != null && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 10; vector3d = DefaultRandomPos.getPos(this.mob, 10, 7)) {
         }
 
         return vector3d;

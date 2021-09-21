@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
@@ -27,7 +28,7 @@ public class AnimalAIFleeAdult extends Goal {
         if (this.childAnimal.getAge() >= 0) {
             return false;
         } else {
-            List<Animal> list = this.childAnimal.level.getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(fleeDistance, 4.0D, fleeDistance));
+            List<? extends Animal> list = this.childAnimal.level.getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(fleeDistance, 4.0D, fleeDistance));
             Animal animalentity = null;
             double d0 = Double.MAX_VALUE;
 
@@ -47,7 +48,7 @@ public class AnimalAIFleeAdult extends Goal {
                 return false;
             } else {
                 this.parentAnimal = animalentity;
-                Vec3 vec3d = RandomPos.getPosAvoid(this.childAnimal, (int) fleeDistance, 7, new Vec3(this.parentAnimal.getX(), this.parentAnimal.getY(), this.parentAnimal.getZ()));
+                Vec3 vec3d = LandRandomPos.getPosAway(this.childAnimal, (int) fleeDistance, 7, new Vec3(this.parentAnimal.getX(), this.parentAnimal.getY(), this.parentAnimal.getZ()));
                 if (vec3d == null) {
                     return false;
                 } else if (this.parentAnimal.distanceToSqr(vec3d.x, vec3d.y, vec3d.z) < this.parentAnimal.distanceToSqr(this.childAnimal)) {

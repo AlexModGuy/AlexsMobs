@@ -30,7 +30,7 @@ public class OrcaAIMeleeJump extends JumpGoal {
     }
     public boolean canContinueToUse() {
         double d0 = this.dolphin.getDeltaMovement().y;
-        return dolphin.getTarget() != null && dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.xRot == 0.0F || !(Math.abs(this.dolphin.xRot) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.isOnGround();
+        return dolphin.getTarget() != null && dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.getXRot() == 0.0F || !(Math.abs(this.dolphin.getXRot()) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.isOnGround();
     }
 
     public boolean isInterruptable() {
@@ -61,7 +61,7 @@ public class OrcaAIMeleeJump extends JumpGoal {
     }
 
     public void stop() {
-        this.dolphin.setXRot(0.0F;
+        this.dolphin.setXRot(0.0F);
         this.attackCooldown = 0;
     }
 
@@ -88,12 +88,12 @@ public class OrcaAIMeleeJump extends JumpGoal {
         }
 
         Vec3 vector3d = this.dolphin.getDeltaMovement();
-        if (vector3d.y * vector3d.y < (double) 0.1F && this.dolphin.xRot != 0.0F) {
-            this.dolphin.setXRot(Mth.rotlerp(this.dolphin.xRot, 0.0F, 0.2F);
+        if (vector3d.y * vector3d.y < (double) 0.1F && this.dolphin.getXRot() != 0.0F) {
+            this.dolphin.setXRot(Mth.rotlerp(this.dolphin.getXRot(), 0.0F, 0.2F));
         } else {
-            double d0 = Math.sqrt(Entity.getHorizontalDistanceSqr(vector3d));
+            double d0 = Math.sqrt(vector3d.horizontalDistanceSqr());
             double d1 = Math.signum(-vector3d.y) * Math.acos(d0 / vector3d.length()) * (double) (180F / (float) Math.PI);
-            this.dolphin.setXRot((float) d1;
+            this.dolphin.setXRot((float) d1);
         }
 
     }

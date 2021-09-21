@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.pathfinding.*;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;

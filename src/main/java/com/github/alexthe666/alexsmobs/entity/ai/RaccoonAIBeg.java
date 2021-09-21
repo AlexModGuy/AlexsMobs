@@ -10,7 +10,7 @@ import java.util.EnumSet;
 import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class RaccoonAIBeg extends Goal {
-    private static final TargetingConditions ENTITY_PREDICATE = (new TargetingConditions()).range(32D).allowInvulnerable().allowSameTeam().allowNonAttackable().allowUnseeable();
+    private static final TargetingConditions ENTITY_PREDICATE = TargetingConditions.forNonCombat().range(32D);
     protected final EntityRaccoon raccoon;
     private final double speed;
     protected Player closestPlayer;
@@ -35,7 +35,7 @@ public class RaccoonAIBeg extends Goal {
             if (this.closestPlayer == null) {
                 return false;
             } else {
-                boolean food =  EntityRaccoon.isFood(this.closestPlayer.getMainHandItem()) || EntityRaccoon.isFood(this.closestPlayer.getOffhandItem());
+                boolean food =  EntityRaccoon.isRaccoonFood(this.closestPlayer.getMainHandItem()) || EntityRaccoon.isRaccoonFood(this.closestPlayer.getOffhandItem());
                 return food;
             }
         }

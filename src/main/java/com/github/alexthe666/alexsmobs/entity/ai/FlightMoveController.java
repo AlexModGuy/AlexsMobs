@@ -1,16 +1,16 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public class FlightMoveController extends MoveControl {
     private final Mob parentEntity;
-    private float speedGeneral;
-    private boolean shouldLookAtTarget;
-    private boolean needsYSupport;
+    private final float speedGeneral;
+    private final boolean shouldLookAtTarget;
+    private final boolean needsYSupport;
 
 
     public FlightMoveController(Mob bird, float speedGeneral, boolean shouldLookAtTarget, boolean needsYSupport) {
@@ -38,19 +38,19 @@ public class FlightMoveController extends MoveControl {
                 parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
             } else {
                 parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * speedGeneral * 0.05D / d0)));
-                if(needsYSupport){
+                if (needsYSupport) {
                     double d1 = this.wantedY - parentEntity.getY();
-                    parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(0.0D, (double)parentEntity.getSpeed() * speedGeneral * Mth.clamp(d1, -1, 1) * 0.6F, 0.0D));
+                    parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(0.0D, (double) parentEntity.getSpeed() * speedGeneral * Mth.clamp(d1, -1, 1) * 0.6F, 0.0D));
                 }
                 if (parentEntity.getTarget() == null || !shouldLookAtTarget) {
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                    parentEntity.yBodyRot = parentEntity.yRot;
-                } else{
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.yBodyRot = parentEntity.getYRot();
+                } else {
                     double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                     double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                    parentEntity.yRot = -((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI);
-                    parentEntity.yBodyRot = parentEntity.yRot;
+                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                    parentEntity.yBodyRot = parentEntity.getYRot();
                 }
             }
 

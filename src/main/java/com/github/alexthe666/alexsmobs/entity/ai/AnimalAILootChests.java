@@ -176,7 +176,6 @@ public class AnimalAILootChests extends MoveToBlockGoal {
             } else {
                 this.entity.level.blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 0);
             }
-            chest.openCount = open ? 1 : 0;
             this.entity.level.updateNeighborsAt(blockPos, chest.getBlockState().getBlock());
             this.entity.level.updateNeighborsAt(blockPos.below(), chest.getBlockState().getBlock());
         }

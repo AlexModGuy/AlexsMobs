@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.pathfinding.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 
@@ -128,7 +127,7 @@ public class FlyingAIFollowOwner extends Goal {
         } else if (!this.isTeleportFriendlyBlock(new BlockPos(x, y, z))) {
             return false;
         } else {
-            this.tameable.moveTo((double)x + 0.5D, (double)y, (double)z + 0.5D, this.tameable.yRot, this.tameable.xRot);
+            this.tameable.moveTo((double)x + 0.5D, (double)y, (double)z + 0.5D, this.tameable.getYRot(), this.tameable.getXRot());
             this.navigator.stop();
             return true;
         }

@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.tags.BlockTags;
@@ -78,8 +77,8 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
                 double xDif = logStartPos.getX() + 0.5 - ant.getX();
                 double zDif = logStartPos.getZ() + 0.5 - ant.getZ();
                 float f = (float)(Mth.atan2(zDif, xDif) * (double)(180F / (float)Math.PI)) - 90.0F;
-                ant.yRot = f;
-                ant.yBodyRot = ant.yRot;
+                ant.setYRot(f);
+                ant.yBodyRot = ant.getYRot();
                 Vec3 vec = new Vec3(logStartPos.getX() + 0.5, ant.getY(), logStartPos.getZ() + 0.5);
                 vec = vec.subtract(ant.position());
                 if(ant.isOnGround() || ant.onClimbable())

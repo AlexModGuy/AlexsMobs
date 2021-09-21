@@ -7,8 +7,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.util.Mth;
 
-import net.minecraft.world.entity.ai.control.MoveControl.Operation;
-
 public class AnimalSwimMoveControllerSink extends MoveControl {
     private final PathfinderMob entity;
     private float speedMulti;
@@ -44,9 +42,9 @@ public class AnimalSwimMoveControllerSink extends MoveControl {
                 this.mob.setZza(0.0F);
             } else {
                 float lvt_9_1_ = (float) (Mth.atan2(lvt_5_1_, lvt_1_1_) * 57.2957763671875D) - 90.0F;
-                this.entity.yRot = this.rotlerp(this.entity.yRot, lvt_9_1_, yawLimit);
-                this.entity.yBodyRot = this.entity.yRot;
-                this.entity.yHeadRot = this.entity.yRot;
+                this.entity.setYRot(this.rotlerp(this.entity.getYRot(), lvt_9_1_, yawLimit));
+                this.entity.yBodyRot = this.entity.getYRot();
+                this.entity.yHeadRot = this.entity.getYRot();
                 float lvt_10_1_ = (float) (this.speedModifier * speedMulti * 3 * this.entity.getAttributeValue(Attributes.MOVEMENT_SPEED));
                 if (this.entity.isInWater()) {
                     if(lvt_3_1_ > 0 && entity.horizontalCollision){
@@ -55,11 +53,11 @@ public class AnimalSwimMoveControllerSink extends MoveControl {
                         this.entity.setDeltaMovement(this.entity.getDeltaMovement().add(0.0D, (double) this.entity.getSpeed() * lvt_3_1_ * 0.6D * ySpeedMod, 0.0D));
                     }
                     this.entity.setSpeed(lvt_10_1_ * 0.02F);
-                    float lvt_11_1_ = -((float) (Mth.atan2(lvt_3_1_, Mth.sqrt(lvt_1_1_ * lvt_1_1_ + lvt_5_1_ * lvt_5_1_)) * 57.2957763671875D));
+                    float lvt_11_1_ = -((float) (Mth.atan2(lvt_3_1_, Mth.sqrt((float) (lvt_1_1_ * lvt_1_1_ + lvt_5_1_ * lvt_5_1_))) * 57.2957763671875D));
                     lvt_11_1_ = Mth.clamp(Mth.wrapDegrees(lvt_11_1_), -85.0F, 85.0F);
-                    this.entity.setXRot(this.rotlerp(this.entity.xRot, lvt_11_1_, 5.0F);
-                    float lvt_12_1_ = Mth.cos(this.entity.xRot * 0.017453292F);
-                    float lvt_13_1_ = Mth.sin(this.entity.xRot * 0.017453292F);
+                    this.entity.setXRot(this.rotlerp(this.entity.getXRot(), lvt_11_1_, 5.0F));
+                    float lvt_12_1_ = Mth.cos(this.entity.getXRot() * 0.017453292F);
+                    float lvt_13_1_ = Mth.sin(this.entity.getXRot() * 0.017453292F);
                     this.entity.zza = lvt_12_1_ * lvt_10_1_;
                     this.entity.yya = -lvt_13_1_ * lvt_10_1_;
                 } else {

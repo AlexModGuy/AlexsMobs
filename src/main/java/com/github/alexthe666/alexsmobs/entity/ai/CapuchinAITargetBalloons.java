@@ -4,13 +4,9 @@ import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.entity.item.minecart.MinecartEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.scores.Team;
@@ -100,7 +96,7 @@ public class CapuchinAITargetBalloons extends Goal {
                         }
                     }
 
-                    if (livingentity instanceof Player && ((Player)livingentity).abilities.invulnerable) {
+                    if (livingentity instanceof Player && ((Player)livingentity).getAbilities().invulnerable) {
                         return false;
                     } else {
                         this.monkey.setDartTarget(livingentity);

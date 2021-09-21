@@ -52,7 +52,7 @@ public class ShoebillAIFish extends Goal {
                 double d0 = waterPos.getX() + 0.5D - bird.getX();
                 double d2 = waterPos.getZ() + 0.5D - bird.getZ();
                 float yaw = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                bird.yRot = yaw;
+                bird.setYRot(yaw);
                 bird.yHeadRot = yaw;
                 bird.yBodyRot = yaw;
                 bird.getNavigation().stop();
