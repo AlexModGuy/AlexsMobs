@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.model.*;
+import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties;
@@ -37,6 +38,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -303,6 +305,12 @@ public class ClientProxy extends CommonProxy {
 
     public void resetVoidPortalCreation(Player player){
 
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onRegisterEntityRenders(EntityRenderersEvent.RegisterLayerDefinitions event){
+        AMModelLayers.register(event);
     }
 
     @Override

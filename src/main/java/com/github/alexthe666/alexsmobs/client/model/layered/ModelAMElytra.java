@@ -1,8 +1,7 @@
-package com.github.alexthe666.alexsmobs.client.model;
+package com.github.alexthe666.alexsmobs.client.model.layered;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -29,15 +28,6 @@ public class ModelAMElytra extends HumanoidModel {
         partdefinition.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(22, 0).mirror().addBox(0.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, 0.2617994F));
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
-
-    protected Iterable<ModelPart> headParts() {
-        return ImmutableList.of();
-    }
-
-    protected Iterable<ModelPart> bodyParts() {
-        return ImmutableList.of(this.leftWing, this.rightWing);
-    }
-
 
     public ModelAMElytra withAnimations(LivingEntity entity){
         float partialTick = Minecraft.getInstance().getFrameTime();
@@ -76,19 +66,19 @@ public class ModelAMElytra extends HumanoidModel {
             abstractclientplayerentity.elytraRotX = (float)((double)abstractclientplayerentity.elytraRotX + (double)(f - abstractclientplayerentity.elytraRotX) * 0.1D);
             abstractclientplayerentity.elytraRotY = (float)((double)abstractclientplayerentity.elytraRotY + (double)(f3 - abstractclientplayerentity.elytraRotY) * 0.1D);
             abstractclientplayerentity.elytraRotZ = (float)((double)abstractclientplayerentity.elytraRotZ + (double)(f1 - abstractclientplayerentity.elytraRotZ) * 0.1D);
-            this.leftWing.rotateAngleX = abstractclientplayerentity.elytraRotX;
-            this.leftWing.rotateAngleY = abstractclientplayerentity.elytraRotY;
-            this.leftWing.rotateAngleZ = abstractclientplayerentity.elytraRotZ;
+            this.leftWing.xRot = abstractclientplayerentity.elytraRotX;
+            this.leftWing.yRot = abstractclientplayerentity.elytraRotY;
+            this.leftWing.zRot = abstractclientplayerentity.elytraRotZ;
         } else {
-            this.leftWing.rotateAngleX = f;
-            this.leftWing.rotateAngleZ = f1;
-            this.leftWing.rotateAngleY = f3;
+            this.leftWing.xRot = f;
+            this.leftWing.zRot = f1;
+            this.leftWing.yRot = f3;
         }
 
         this.rightWing.x = -this.leftWing.x;
-        this.rightWing.rotateAngleY = -this.leftWing.rotateAngleY;
+        this.rightWing.yRot = -this.leftWing.yRot;
         this.rightWing.y = this.leftWing.y;
-        this.rightWing.rotateAngleX = this.leftWing.rotateAngleX;
-        this.rightWing.rotateAngleZ = -this.leftWing.rotateAngleZ;
+        this.rightWing.xRot = this.leftWing.xRot;
+        this.rightWing.zRot = -this.leftWing.zRot;
     }
 }

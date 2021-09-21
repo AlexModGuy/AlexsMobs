@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelBoneSerpentBody;
 import com.github.alexthe666.alexsmobs.client.model.ModelBoneSerpentTail;
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpentPart;
+import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -10,7 +11,7 @@ import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class RenderBoneSerpentPart extends LivingEntityRenderer<EntityBoneSerpentPart, ListModel<EntityBoneSerpentPart>> {
+public class RenderBoneSerpentPart extends LivingEntityRenderer<EntityBoneSerpentPart, AdvancedEntityModel<EntityBoneSerpentPart>> {
     private static final ResourceLocation TEXTURE_BODY = new ResourceLocation("alexsmobs:textures/entity/bone_serpent_mid.png");
     private static final ResourceLocation TEXTURE_TAIL = new ResourceLocation("alexsmobs:textures/entity/bone_serpent_tail.png");
     private ModelBoneSerpentBody bodyModel = new ModelBoneSerpentBody();

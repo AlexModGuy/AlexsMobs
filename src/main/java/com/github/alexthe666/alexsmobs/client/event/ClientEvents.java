@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.event;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.ClientProxy;
 import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
+import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
 import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
@@ -97,7 +98,7 @@ public class ClientEvents {
         if (event.getEntity() instanceof WanderingTrader) {
             if (event.getEntity().getVehicle() instanceof EntityElephant) {
                 if (!(event.getRenderer().model instanceof ModelWanderingVillagerRider)) {
-                    event.getRenderer().model = new ModelWanderingVillagerRider();
+                    event.getRenderer().model = new ModelWanderingVillagerRider(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SITTING_WANDERING_VILLAGER));
                 }
             }
         }

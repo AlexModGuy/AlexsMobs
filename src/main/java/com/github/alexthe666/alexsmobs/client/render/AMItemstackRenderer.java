@@ -25,14 +25,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.Util;
 import com.mojang.math.Quaternion;
-import net.minecraft.util.math.vector.Vector3d;
 import com.mojang.math.Vector3f;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
 public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 

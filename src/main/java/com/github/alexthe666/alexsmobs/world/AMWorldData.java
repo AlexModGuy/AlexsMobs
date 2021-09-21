@@ -18,14 +18,14 @@ public class AMWorldData extends SavedData {
     private UUID beachedCachalotID;
 
     public AMWorldData() {
-        super(IDENTIFIER);
+        super();
     }
 
     public static AMWorldData get(Level world) {
         if (world instanceof ServerLevel) {
             ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
             DimensionDataStorage storage = overworld.getDataStorage();
-            AMWorldData data = storage.computeIfAbsent(AMWorldData::new, IDENTIFIER);
+            AMWorldData data = storage.computeIfAbsent(AMWorldData::load, AMWorldData::new, IDENTIFIER);
             if(data != null){
                 data.world = world;
                 data.setDirty();
@@ -63,17 +63,18 @@ public class AMWorldData extends SavedData {
         ++this.tickCounter;
     }
 
-    @Override
-    public void load(CompoundTag nbt) {
+    public static AMWorldData load(CompoundTag nbt) {
+        AMWorldData data = new AMWorldData();
         if (nbt.contains("BeachedCachalotSpawnDelay", 99)) {
-            this.beachedCachalotSpawnDelay = nbt.getInt("BeachedCachalotSpawnDelay");
+            data.beachedCachalotSpawnDelay = nbt.getInt("BeachedCachalotSpawnDelay");
         }
         if (nbt.contains("BeachedCachalotSpawnChance", 99)) {
-            this.beachedCachalotSpawnChance = nbt.getInt("BeachedCachalotSpawnChance");
+            data.beachedCachalotSpawnChance = nbt.getInt("BeachedCachalotSpawnChance");
         }
         if (nbt.contains("BeachedCachalotId", 8)) {
-            this.beachedCachalotID = UUID.fromString(nbt.getString("BeachedCachalotId"));
+            data.beachedCachalotID = UUID.fromString(nbt.getString("BeachedCachalotId"));
         }
+        return data;
     }
 
     @Override
