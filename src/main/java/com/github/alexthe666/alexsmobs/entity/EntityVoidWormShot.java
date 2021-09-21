@@ -4,22 +4,14 @@ import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.monster.VexEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -30,9 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
-
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +30,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class EntityVoidWormShot extends Entity {
     private UUID ownerUUID;
@@ -116,14 +108,14 @@ public class EntityVoidWormShot extends Entity {
                     Vec3 vector3d = new Vec3(d0, d1, d2);
                     float speed = 0.05F;
                     shoot(d0, d1, d2, 1, 0);
-                    this.setYRot( -((float) Mth.atan2(d0, d2)) * (180F / (float) Math.PI);
+                    this.setYRot( -((float) Mth.atan2(d0, d2)) * (180F / (float) Math.PI));
                 }
             }
         }
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();
         HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
-        if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
+        if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
             this.onImpact(raytraceresult);
         }
         double d0 = this.getX() + vector3d.x;
@@ -149,7 +141,7 @@ public class EntityVoidWormShot extends Entity {
             boolean b = wormAttack(p_213868_1_.getEntity(), DamageSource.indirectMobAttack(this, (LivingEntity) entity).setProjectile(), (float) (AMConfig.voidWormDamageModifier * 4F));
             if(b && p_213868_1_.getEntity() instanceof Player){
                 Player player = ((Player)p_213868_1_.getEntity());
-                if(player.getUseItem().isShield(player)){
+                if(player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)){
                     player.disableShield(true);
                 }
             }
@@ -239,9 +231,9 @@ public class EntityVoidWormShot extends Entity {
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
         this.setDeltaMovement(vector3d);
-        float f = Mth.sqrt(getHorizontalDistanceSqr(vector3d));
-        this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI));
-        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI));
+        float f = Mth.sqrt((float) vector3d.horizontalDistanceSqr());
+        this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
     }
@@ -273,12 +265,12 @@ public class EntityVoidWormShot extends Entity {
     public void lerpMotion(double x, double y, double z) {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            float f = Mth.sqrt(x * x + z * z);
-            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI));
-            this.setYRot( (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI));
+            float f = Mth.sqrt((float) (x * x + z * z));
+            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI)));
+            this.setYRot( (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI)));
             this.xRotO = this.getXRot();
             this.yRotO = this.getYRot();
-            this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.xRot);
+            this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
         }
 
     }
@@ -294,8 +286,8 @@ public class EntityVoidWormShot extends Entity {
 
     protected void updateRotation() {
         Vec3 vector3d = this.getDeltaMovement();
-        float f = Mth.sqrt(getHorizontalDistanceSqr(vector3d));
-        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
-        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
+        float f = Mth.sqrt((float) vector3d.horizontalDistance());
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI))));
+        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI))));
     }
 }

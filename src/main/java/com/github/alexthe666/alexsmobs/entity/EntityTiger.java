@@ -10,26 +10,23 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.pathfinding.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
@@ -38,7 +35,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -95,7 +91,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     private static final EntityDataAccessor<Boolean> HOLDING = SynchedEntityData.defineId(EntityTiger.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ANGER_TIME = SynchedEntityData.defineId(EntityTiger.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> LAST_SCARED_MOB_ID = SynchedEntityData.defineId(EntityTiger.class, EntityDataSerializers.INT);
-    private static final IntRange ANGRY_TIMER = TimeUtil.rangeOfSeconds(40, 80);
+    private static final UniformInt ANGRY_TIMER = TimeUtil.rangeOfSeconds(40, 80);
     private static final Predicate<LivingEntity> NO_BLESSING_EFFECT = (mob) -> {
         return !mob.hasEffect(AMEffectRegistry.TIGERS_BLESSING);
     };
@@ -312,7 +308,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     public void startPersistentAngerTimer() {
-        this.setRemainingPersistentAngerTime(ANGRY_TIMER.randomValue(this.random));
+        this.setRemainingPersistentAngerTime(ANGRY_TIMER.sample(this.random));
     }
 
     protected void customServerAiStep() {
@@ -391,7 +387,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             this.setSprinting(false);
             this.setRunning(false);
             if (!level.isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
-                this.setXRot(0;
+                this.setXRot(0);
                 float radius = 1.0F + this.getTarget().getBbWidth() * 0.5F;
                 float angle = (0.01745329251F * this.yBodyRot);
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
@@ -494,12 +490,12 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             Vec3 vector3d2 = collideBoundingBoxHeuristicallyPassable(this, new Vec3(0.0D, this.maxUpStep, 0.0D), axisalignedbb.expandTowards(vec.x, 0.0D, vec.z), this.level, iselectioncontext, reuseablestream);
             if (vector3d2.y < (double) this.maxUpStep) {
                 Vec3 vector3d3 = collideBoundingBoxHeuristicallyPassable(this, new Vec3(vec.x, 0.0D, vec.z), axisalignedbb.move(vector3d2), this.level, iselectioncontext, reuseablestream).add(vector3d2);
-                if (getHorizontalDistanceSqr(vector3d3) > getHorizontalDistanceSqr(vector3d1)) {
+                if (vector3d3.horizontalDistanceSqr() > vector3d1.horizontalDistanceSqr()) {
                     vector3d1 = vector3d3;
                 }
             }
 
-            if (getHorizontalDistanceSqr(vector3d1) > getHorizontalDistanceSqr(vector3d)) {
+            if (vector3d1.horizontalDistanceSqr() > vector3d.horizontalDistanceSqr()) {
                 return vector3d1.add(collideBoundingBoxHeuristicallyPassable(this, new Vec3(0.0D, -vector3d1.y + vec.y, 0.0D), axisalignedbb.move(vector3d1), this.level, iselectioncontext, reuseablestream));
             }
         }
@@ -640,7 +636,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             if (type != null) return type;
             Block block = blockstate.getBlock();
             Material material = blockstate.getMaterial();
-            if (blockstate.isAir(p_237238_0_, p_237238_1_)) {
+            if (blockstate.isAir()) {
                 return BlockPathTypes.OPEN;
             } else if (blockstate.getBlock() == Blocks.BAMBOO) {
                 return BlockPathTypes.OPEN;
@@ -837,9 +833,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                 if (tiger.getAnimation() == ANIMATION_LEAP) {
                     tiger.getNavigation().stop();
                     Vec3 vec = target.position().subtract(tiger.position());
-                    tiger.yRot = -((float) Mth.atan2(vec.x, vec.z)) * (180F / (float) Math.PI);
-                    tiger.yBodyRot = tiger.yRot;
-
+                    tiger.setYRot(-((float) Mth.atan2(vec.x, vec.z)) * (180F / (float) Math.PI));
+                    tiger.yBodyRot = tiger.getYRot();
                     if (tiger.getAnimationTick() == 5 && tiger.onGround) {
                         Vec3 vector3d1 = new Vec3(target.getX() - this.tiger.getX(), 0.0D, target.getZ() - this.tiger.getZ());
                         if (vector3d1.lengthSqr() > 1.0E-7D) {

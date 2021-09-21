@@ -10,15 +10,14 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -34,7 +33,6 @@ import net.minecraft.tags.Tag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
@@ -42,9 +40,6 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -448,7 +443,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             double d0 = target.getX() - this.getX();
             double d1 = target.getY(0.3333333333333333D) - llamaspitentity.getY();
             double d2 = target.getZ() - this.getZ();
-            float f = Mth.sqrt(d0 * d0 + d2 * d2) * 0.2F;
+            float f = Mth.sqrt((float) (d0 * d0 + d2 * d2)) * 0.2F;
             llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 5.0F);
             if (!this.isSilent()) {
                 this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_SPIT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
@@ -524,7 +519,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 }
             } else {
 
-                return RandomPos.getPos(this.mosco, 20, 7);
+                return LandRandomPos.getPos(this.mosco, 20, 7);
             }
         }
 

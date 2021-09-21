@@ -37,12 +37,12 @@ public interface ICustomCollisions {
             Vec3 vector3d2 = ((ICustomCollisions)entity).collideBoundingBoxHeuristicallyPassable(entity, new Vec3(0.0D, (double)entity.maxUpStep, 0.0D), axisalignedbb.expandTowards(vec.x, 0.0D, vec.z), entity.level, iselectioncontext, reuseablestream);
             if (vector3d2.y < (double)entity.maxUpStep) {
                 Vec3 vector3d3 = ((ICustomCollisions)entity).collideBoundingBoxHeuristicallyPassable(entity, new Vec3(vec.x, 0.0D, vec.z), axisalignedbb.move(vector3d2), entity.level, iselectioncontext, reuseablestream).add(vector3d2);
-                if (Entity.getHorizontalDistanceSqr(vector3d3) > Entity.getHorizontalDistanceSqr(vector3d1)) {
+                if (vector3d3.horizontalDistanceSqr() > vector3d1.horizontalDistanceSqr()) {
                     vector3d1 = vector3d3;
                 }
             }
 
-            if (Entity.getHorizontalDistanceSqr(vector3d1) > Entity.getHorizontalDistanceSqr(vector3d)) {
+            if ( vector3d1.horizontalDistanceSqr() >  vector3d.horizontalDistanceSqr()) {
                 return vector3d1.add(((ICustomCollisions)entity).collideBoundingBoxHeuristicallyPassable(entity, new Vec3(0.0D, -vector3d1.y + vec.y, 0.0D), axisalignedbb.move(vector3d1), entity.level, iselectioncontext, reuseablestream));
             }
         }

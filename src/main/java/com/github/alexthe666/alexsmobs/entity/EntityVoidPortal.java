@@ -25,8 +25,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import org.antlr.v4.runtime.misc.Triple;
 
 import javax.annotation.Nullable;
@@ -162,14 +162,14 @@ public class EntityVoidPortal extends Entity {
             }
         } else {
             entity.unRide();
-            entity.setLevel(endpointWorld);
+            entity.level = endpointWorld;
             Entity teleportedEntity = entity.getType().create(endpointWorld);
             if (teleportedEntity != null) {
                 teleportedEntity.restoreFrom(entity);
-                teleportedEntity.moveTo(endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, entity.yRot, entity.xRot);
-                teleportedEntity.setYHeadRot(entity.yRot);
+                teleportedEntity.moveTo(endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, entity.getYRot(), entity.getXRot());
+                teleportedEntity.setYHeadRot(entity.getYHeadRot());
                 teleportedEntity.setPortalCooldown();
-                endpointWorld.addFromAnotherDimension(teleportedEntity);
+                endpointWorld.addFreshEntity(teleportedEntity);
             }
             entity.remove(RemovalReason.DISCARDED);
         }

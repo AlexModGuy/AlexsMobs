@@ -7,12 +7,10 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.JumpControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.TamableAnimal;
@@ -25,14 +23,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.pathfinding.*;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -226,7 +221,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         super.jumpFromGround();
         double d0 = this.moveControl.getSpeedModifier();
         if (d0 > 0.0D) {
-            double d1 = getHorizontalDistanceSqr(this.getDeltaMovement());
+            double d1 = this.getDeltaMovement().horizontalDistance();
             if (d1 < 0.01D) {
             }
         }
@@ -312,7 +307,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && item == AMItemRegistry.MOSQUITO_LARVA) {
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (getRandom().nextInt(3) == 0) {
                 this.tame(player);
@@ -324,7 +319,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         }
         if (isTame() && (ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS).contains(itemstack.getItem()))) {
             if (this.getHealth() < this.getMaxHealth()) {
-                this.usePlayerItem(player, itemstack);
+                this.usePlayerItem(player, hand, itemstack);
                 this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;
@@ -373,7 +368,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     }
 
     private void calculateRotationYaw(double x, double z) {
-        this.setYRot( (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F;
+        this.setYRot( (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F);
     }
 
     private void enableJumpControl() {
@@ -493,18 +488,18 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
                 double d0 = entityIn.getX() - this.getX();
                 double d2 = entityIn.getZ() - this.getZ();
                 double d1 = entityIn.getEyeY() - this.getEyeY();
-                double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+                double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
                 float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
                 float f1 = (float) (-(Mth.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
-                this.setXRot(f1;
-                this.setYRot( f;
+                this.setXRot(f1);
+                this.setYRot( f);
                 this.yBodyRot = this.getYRot();
                 this.yHeadRot = this.getYRot();
             } else {
                 if (entityIn instanceof EntityCrimsonMosquito) {
                     ((EntityCrimsonMosquito) entityIn).setShrink(true);
                 }
-                this.setXRot(0;
+                this.setXRot(0);
                 float radius = attackProgress * 0.2F * 1.2F * (getTongueLength() - getTongueLength() * 0.4F);
                 float angle = (0.01745329251F * this.yBodyRot);
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
@@ -848,7 +843,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
             } else if (!this.isTeleportFriendlyBlock(new BlockPos(p_226328_1_, p_226328_2_, p_226328_3_))) {
                 return false;
             } else {
-                this.tameable.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.yRot, this.tameable.xRot);
+                this.tameable.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.getYRot(), this.tameable.getXRot());
                 this.tameable.getNavigation().stop();
                 return true;
             }

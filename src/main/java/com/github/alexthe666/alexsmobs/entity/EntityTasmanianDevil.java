@@ -7,11 +7,10 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.entity.*;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -27,8 +26,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
@@ -185,7 +182,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
             baskProgress -= 1;
         }
         if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5 && this.hasLineOfSight(this.getTarget())) {
-            float f1 = this.yRot * ((float) Math.PI / 180F);
+            float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
             getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
@@ -212,7 +209,6 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() > 3){
             scareMobsTime = 40;
-
         }
         if(scareMobsTime > 0) {
             List<Monster> list = this.level.getEntitiesOfClass(Monster.class, this.getBoundingBox().inflate(16, 8, 16));
@@ -220,7 +216,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
                 e.setTarget(null);
                 e.setLastHurtByMob(null);
                 if(scareMobsTime % 5 == 0){
-                    Vec3 vec = RandomPos.getPosAvoid(e, 20, 7, this.position());
+                    Vec3 vec = LandRandomPos.getPosAway(e, 20, 7, this.position());
                     if(vec != null){
                         e.getNavigation().moveTo(vec.x, vec.y, vec.z, 1.5D);
                     }

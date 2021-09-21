@@ -8,17 +8,15 @@ import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.material.FluidState;
@@ -30,7 +28,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.*;
@@ -145,7 +142,7 @@ public class EntityVoidWorm extends Monster {
         ItemEntity itementity = this.spawnAtLocation(stack, 0.0F);
         if (itementity != null) {
             itementity.setNoGravity(true);
-            itementity.setGlowing(true);
+            itementity.setGlowingTag(true);
             itementity.setExtendedLifetime();
         }
         return itementity;
@@ -234,9 +231,9 @@ public class EntityVoidWorm extends Monster {
         } else {
             this.xpReward = 70;
         }
-        if (this.yRotO - this.yRot > threshold) {
+        if (this.yRotO - this.getYRot() > threshold) {
             this.setWormAngle(this.getWormAngle() + 15);
-        } else if (this.yRotO - this.yRot < -threshold) {
+        } else if (this.yRotO - this.getYRot() < -threshold) {
             this.setWormAngle(this.getWormAngle() - 15);
         } else if (this.getWormAngle() > 0) {
             this.setWormAngle(Math.max(this.getWormAngle() - 20, 0));
@@ -286,9 +283,9 @@ public class EntityVoidWorm extends Monster {
             }
             maxUpStep = 2;
         }
-        yBodyRot = yRot;
+        yBodyRot = getYRot();
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
-        this.setXRot(f2;
+        this.setXRot(f2);
         this.maxUpStep = 2;
         if (!level.isClientSide) {
             Entity child = getChild();
@@ -332,7 +329,7 @@ public class EntityVoidWorm extends Monster {
         if (this.portalTarget != null && this.portalTarget.getLifespan() < 5) {
             this.portalTarget = null;
         }
-        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+        this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
         breakBlock();
         if (updatePostSummon) {
             updatePostSummon = false;
@@ -405,7 +402,7 @@ public class EntityVoidWorm extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setSegmentCount(25 + random.nextInt(15));
-        this.setXRot(0.0F;
+        this.setXRot(0.0F);
         this.setMaxHealth(AMConfig.voidWormMaxHealth, true);
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -587,7 +584,7 @@ public class EntityVoidWorm extends Monster {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
                                 level.destroyBlock(pos, true);
-                                if (state.getBlock().is(BlockTags.ICE)) {
+                                if (state.is(BlockTags.ICE)) {
                                     level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
                                 }
                             }
@@ -667,12 +664,12 @@ public class EntityVoidWorm extends Monster {
     }
 
     private void spit(Vec3 shotAt, boolean portal) {
-        shotAt = shotAt.yRot(-this.yRot * ((float) Math.PI / 180F));
+        shotAt = shotAt.yRot(-this.getYRot() * ((float) Math.PI / 180F));
         EntityVoidWormShot shot = new EntityVoidWormShot(this.level, this);
         double d0 = shotAt.x;
         double d1 = shotAt.y;
         double d2 = shotAt.z;
-        float f = Mth.sqrt(d0 * d0 + d2 * d2) * 0.35F;
+        float f = Mth.sqrt((float) (d0 * d0 + d2 * d2)) * 0.35F;
         shot.shoot(d0, d1 + (double) f, d2, 0.5F, 3.0F);
         if (!this.isSilent()) {
             this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.DROWNED_SHOOT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);

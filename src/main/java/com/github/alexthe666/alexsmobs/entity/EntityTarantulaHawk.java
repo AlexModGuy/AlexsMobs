@@ -11,13 +11,12 @@ import com.github.alexthe666.alexsmobs.message.MessageTarantulaHawkSting;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
@@ -42,7 +41,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -367,9 +365,9 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             flightSize = true;
         }
         float threshold = 0.015F;
-        if (isFlying() && this.yRotO - this.yRot > threshold) {
+        if (isFlying() && this.yRotO - this.getYRot() > threshold) {
             this.setFlyAngle(this.getFlyAngle() + 5);
-        } else if (isFlying() && this.yRotO - this.yRot < -threshold) {
+        } else if (isFlying() && this.yRotO - this.getYRot() < -threshold) {
             this.setFlyAngle(this.getFlyAngle() - 5);
         } else if (this.getFlyAngle() > 0) {
             this.setFlyAngle(Math.max(this.getFlyAngle() - 4, 0));
@@ -447,7 +445,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && item == Items.SPIDER_EYE) {
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             spiderFeedings++;
             if (spiderFeedings >= 15 && getRandom().nextInt(6) == 0 || spiderFeedings > 25) {
@@ -458,9 +456,9 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             }
             return InteractionResult.SUCCESS;
         }
-        if (isTame() && item.is(ItemTags.FLOWERS)) {
+        if (isTame() && itemstack.is(ItemTags.FLOWERS)) {
             if (this.getHealth() < this.getMaxHealth()) {
-                this.usePlayerItem(player, itemstack);
+                this.usePlayerItem(player, hand, itemstack);
                 this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;
@@ -569,7 +567,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public void positionRider(Entity passenger) {
-        this.setXRot(0;
+        this.setXRot(0);
         float radius = 1.0F + passenger.getBbWidth() * 0.5F;
         float angle = (0.01745329251F * (this.yBodyRot - 180));
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
@@ -713,9 +711,9 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                     Vec3 strafPlus = new Vec3(extraX, 0, extraZ).scale(0.003D * Math.min(d0, 100));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(strafPlus));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d1));
-                    parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
                     if (!EntityTarantulaHawk.this.isDragging()) {
-                        parentEntity.yBodyRot = parentEntity.yRot;
+                        parentEntity.yBodyRot = parentEntity.getYRot();
                     }
                 }
 
@@ -893,7 +891,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 }
             } else {
 
-                return RandomPos.getPos(this.hawk, 10, 7);
+                return LandRandomPos.getPos(this.hawk, 10, 7);
             }
         }
 

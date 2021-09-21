@@ -2,46 +2,36 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
-import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 
 public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipart {
 
@@ -116,12 +106,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.OUT_OF_WORLD  || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
-    }
-
-    @Override
-    public net.minecraft.world.entity.Entity getEntity() {
-        return this;
+        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.OUT_OF_WORLD || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -190,7 +175,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public void setInitialPartPos(Entity parent) {
-        this.setPos(parent.xo + this.radius * Math.cos(parent.yRot * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.yRot * (Math.PI / 180.0F) + this.angleYaw));
+        this.setPos(parent.xo + this.radius * Math.cos(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw));
     }
 
     public float getWormAngle() {
@@ -226,23 +211,23 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 if (parent instanceof EntityVoidWorm) {
                     restrictRadius *= (isTail() ? 0.8F : 0.4F);
                 }
-                double x = parent.getX() + restrictRadius * Math.cos(parent.yRot * (Math.PI / 180.0F) + this.angleYaw);
+                double x = parent.getX() + restrictRadius * Math.cos(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw);
                 double yStretch = Math.abs(parent.getY() - parent.yo) > this.getBbWidth() ? parent.getY() : parent.yo;
                 double y = yStretch + this.offsetY * getWormScale();
-                double z = parent.getZ() + restrictRadius * Math.sin(parent.yRot * (Math.PI / 180.0F) + this.angleYaw);
+                double z = parent.getZ() + restrictRadius * Math.sin(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw);
 
                 double d0 = parent.xo - this.getX();
                 double d1 = parent.yo - this.getY();
                 double d2 = parent.zo - this.getZ();
                 float yaw = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                float pitch = parent.xRot;
+                float pitch = parent.getXRot();
                 if (this.getPortalTicks() <= 1 && !doesParentControlPos) {
                     double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                    float f2 = -((float) (Mth.atan2(d1, Mth.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
+                    float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float) (d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
                     this.setPos(x, y, z);
-                    this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F);
-                    this.setYRot( yaw;
-                    this.entityData.set(WORM_YAW, yRot);
+                    this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F));
+                    this.setYRot(yaw);
+                    this.entityData.set(WORM_YAW, getYRot());
                 }
                 this.markHurt();
                 this.yHeadRot = this.getYRot();
@@ -255,7 +240,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                     }
                 }
                 this.pushEntities();
-                if (parent.removed && !level.isClientSide) {
+                if (parent.isRemoved() && !level.isClientSide) {
                     this.remove(RemovalReason.DISCARDED);
                 }
                 if (parent instanceof EntityVoidWorm) {
@@ -271,7 +256,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
             this.heal(1);
         }
         super.tick();
-        if(doesParentControlPos && enterPos != null){
+        if (doesParentControlPos && enterPos != null) {
             this.teleportTo(enterPos.x, enterPos.y, enterPos.z);
         }
         if (this.getPortalTicks() > 0) {
@@ -286,10 +271,10 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                     ((EntityVoidWormPart) this.getChild()).teleportTo(enterPos, teleportPos);
                 }
                 teleportPos = null;
-            }else if(this.getPortalTicks() > 5 && enterPos != null){
+            } else if (this.getPortalTicks() > 5 && enterPos != null) {
                 this.teleportTo(enterPos.x, enterPos.y, enterPos.z);
             }
-            if(this.getPortalTicks() == 0){
+            if (this.getPortalTicks() == 0) {
                 doesParentControlPos = false;
             }
         }
@@ -318,8 +303,8 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == 20) {
-            this.remove(false); //Forge keep data until we revive player
-            for(int i = 0; i < 30; ++i) {
+            this.remove(RemovalReason.DISCARDED); //Forge keep data until we revive player
+            for (int i = 0; i < 30; ++i) {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
@@ -350,7 +335,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 worm2.setSplitFromUuid(worm.getUUID());
                 worm2.setWormSpeed((float) Mth.clamp(worm.getWormSpeed() * 0.8, 0.4F, 1F));
                 worm2.resetWormScales();
-                if(!level.isClientSide) {
+                if (!level.isClientSide) {
                     if (cause != null && cause.getEntity() instanceof ServerPlayer) {
                         AMAdvancementTriggerRegistry.VOID_WORM_SPLIT.trigger((ServerPlayer) cause.getEntity());
                     }
@@ -359,11 +344,6 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
             worm.resetWormScales();
         }
     }
-
-    public void remove(RemovalReason.DISCARDED) {
-        this.remove(false);
-    }
-
 
     public boolean isAlliedTo(Entity entityIn) {
         EntityVoidWorm worm = this.getWorm();
@@ -446,9 +426,9 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
-        if(super.hurt(source, damage)){
+        if (super.hurt(source, damage)) {
             EntityVoidWorm worm = this.getWorm();
-            if(worm != null){
+            if (worm != null) {
                 worm.playHurtSoundWorm(source);
             }
             return true;
@@ -503,7 +483,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public boolean shouldContinuePersisting() {
-        return isAddedToWorld() || this.removed;
+        return isAddedToWorld() || this.isRemoved();
     }
 
     public float getWormYaw(float partialTicks) {
@@ -515,8 +495,8 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         teleportPos = to;
         this.enterPos = enterPos;
         EntityVoidWorm worm = this.getWorm();
-        if(worm != null){
-            if(this.getChild() == null){
+        if (worm != null) {
+            if (this.getChild() == null) {
                 worm.fullyThrough = true;
             }
         }
