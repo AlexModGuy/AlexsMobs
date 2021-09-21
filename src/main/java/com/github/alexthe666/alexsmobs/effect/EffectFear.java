@@ -1,31 +1,31 @@
 package com.github.alexthe666.alexsmobs.effect;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 
-public class EffectFear extends Effect {
+public class EffectFear extends MobEffect {
 
     protected EffectFear() {
-        super(EffectType.NEUTRAL, 0X7474F7);
-        this.addAttributesModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", (double)-1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
+        super(MobEffectCategory.NEUTRAL, 0X7474F7);
+        this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", (double)-1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
         this.setRegistryName(AlexsMobs.MODID, "fear");
     }
 
-    public void performEffect(LivingEntity entity, int amplifier) {
-        if(entity.getMotion().y > 0 && !entity.isInWaterOrBubbleColumn()){
-            entity.setMotion(entity.getMotion().mul(1, 0, 1));
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
+        if(entity.getDeltaMovement().y > 0 && !entity.isInWaterOrBubble()){
+            entity.setDeltaMovement(entity.getDeltaMovement().multiply(1, 0, 1));
         }
     }
 
-    public boolean isReady(int duration, int amplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration > 0;
     }
 
-    public String getName() {
+    public String getDescriptionId() {
         return "alexsmobs.potion.fear";
     }
 }

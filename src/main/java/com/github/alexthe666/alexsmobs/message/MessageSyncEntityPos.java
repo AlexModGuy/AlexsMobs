@@ -3,9 +3,9 @@ package com.github.alexthe666.alexsmobs.message;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityStraddleboard;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -28,11 +28,11 @@ public class MessageSyncEntityPos {
     public MessageSyncEntityPos() {
     }
 
-    public static MessageSyncEntityPos read(PacketBuffer buf) {
+    public static MessageSyncEntityPos read(FriendlyByteBuf buf) {
         return new MessageSyncEntityPos(buf.readInt(), buf.readDouble(), buf.readDouble(), buf.readDouble());
     }
 
-    public static void write(MessageSyncEntityPos message, PacketBuffer buf) {
+    public static void write(MessageSyncEntityPos message, FriendlyByteBuf buf) {
         buf.writeInt(message.eagleId);
         buf.writeDouble(message.posX);
         buf.writeDouble(message.posY);
@@ -46,16 +46,16 @@ public class MessageSyncEntityPos {
         public static void handle(MessageSyncEntityPos message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
             context.get().enqueueWork(() -> {
-                PlayerEntity player = context.get().getSender();
+                Player player = context.get().getSender();
                 if (context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
                     player = AlexsMobs.PROXY.getClientSidePlayer();
                 }
                 if (player != null) {
-                    if (player.world != null) {
-                        Entity entity = player.world.getEntityByID(message.eagleId);
+                    if (player.level != null) {
+                        Entity entity = player.level.getEntity(message.eagleId);
                         if (entity instanceof EntityBaldEagle || entity instanceof EntityStraddleboard) {
-                            entity.setPosition(message.posX, message.posY, message.posZ);
-                            entity.teleportKeepLoaded(message.posX, message.posY, message.posZ);
+                            entity.setPos(message.posX, message.posY, message.posZ);
+                            entity.teleportToWithTicket(message.posX, message.posY, message.posZ);
                         }
                     }
                 }

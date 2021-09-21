@@ -1,14 +1,14 @@
 package com.github.alexthe666.alexsmobs.item;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
@@ -22,22 +22,22 @@ public class ItemShieldOfTheDeep extends Item {
         return true;
     }
 
-    public UseAction getUseAction(ItemStack p_77661_1_) {
-        return UseAction.BLOCK;
+    public UseAnim getUseAnimation(ItemStack p_77661_1_) {
+        return UseAnim.BLOCK;
     }
 
     public int getUseDuration(ItemStack p_77626_1_) {
         return 72000;
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World p_77659_1_, PlayerEntity p_77659_2_, Hand p_77659_3_) {
-        ItemStack lvt_4_1_ = p_77659_2_.getHeldItem(p_77659_3_);
-        p_77659_2_.setActiveHand(p_77659_3_);
-        return ActionResult.resultConsume(lvt_4_1_);
+    public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_) {
+        ItemStack lvt_4_1_ = p_77659_2_.getItemInHand(p_77659_3_);
+        p_77659_2_.startUsingItem(p_77659_3_);
+        return InteractionResultHolder.consume(lvt_4_1_);
     }
 
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return AMItemRegistry.SERRATED_SHARK_TOOTH == p_82789_2_.getItem() || super.getIsRepairable(p_82789_1_, p_82789_2_);
+    public boolean isValidRepairItem(ItemStack p_82789_1_, ItemStack p_82789_2_) {
+        return AMItemRegistry.SERRATED_SHARK_TOOTH == p_82789_2_.getItem() || super.isValidRepairItem(p_82789_1_, p_82789_2_);
     }
 
 }

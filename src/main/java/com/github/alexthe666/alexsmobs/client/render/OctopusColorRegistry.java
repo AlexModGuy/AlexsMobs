@@ -1,8 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,7 +16,7 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class OctopusColorRegistry {
 
-    public static final BlockState FALLBACK_BLOCK = Blocks.SAND.getDefaultState();
+    public static final BlockState FALLBACK_BLOCK = Blocks.SAND.defaultBlockState();
     public static Map<String, Integer> TEXTURES_TO_COLOR = new HashMap<>();
 
     public static int getBlockColor(BlockState stack) {
@@ -70,6 +70,6 @@ public class OctopusColorRegistry {
     }
 
     private static TextureAtlasSprite getTextureAtlas(BlockState state) {
-        return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModel(state).getParticleTexture();
+        return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(state).getParticleIcon();
     }
 }

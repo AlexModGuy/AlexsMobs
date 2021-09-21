@@ -5,7 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelLobster extends AdvancedEntityModel<EntityLobster> {
 	private final AdvancedModelBox root;
@@ -22,86 +22,86 @@ public class ModelLobster extends AdvancedEntityModel<EntityLobster> {
 	private final AdvancedModelBox legs_right;
 
 	public ModelLobster() {
-		textureWidth = 64;
-		textureHeight = 64;
+		texWidth = 64;
+		texHeight = 64;
 
 		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
 		body = new AdvancedModelBox(this);
-		body.setRotationPoint(0.0F, -1.0F, 0.0F);
+		body.setPos(0.0F, -1.0F, 0.0F);
 		root.addChild(body);
-		body.setTextureOffset(0, 11).addBox(-2.0F, -1.4F, -7.0F, 4.0F, 2.0F, 7.0F, 0.0F, false);
+		body.texOffs(0, 11).addBox(-2.0F, -1.4F, -7.0F, 4.0F, 2.0F, 7.0F, 0.0F, false);
 
 		antenna_left = new AdvancedModelBox(this);
-		antenna_left.setRotationPoint(1.4F, -0.5F, -7.0F);
+		antenna_left.setPos(1.4F, -0.5F, -7.0F);
 		body.addChild(antenna_left);
 		setRotationAngle(antenna_left, -0.3054F, -0.4363F, 0.0F);
-		antenna_left.setTextureOffset(18, 18).addBox(0.0F, -0.9F, -5.0F, 0.0F, 1.0F, 5.0F, 0.0F, false);
+		antenna_left.texOffs(18, 18).addBox(0.0F, -0.9F, -5.0F, 0.0F, 1.0F, 5.0F, 0.0F, false);
 
 		antenna_right = new AdvancedModelBox(this);
-		antenna_right.setRotationPoint(-1.4F, -0.5F, -7.0F);
+		antenna_right.setPos(-1.4F, -0.5F, -7.0F);
 		body.addChild(antenna_right);
 		setRotationAngle(antenna_right, -0.3054F, 0.4363F, 0.0F);
-		antenna_right.setTextureOffset(18, 20).addBox(0.0F, -0.9F, -5.0F, 0.0F, 1.0F, 5.0F, 0.0F, true);
+		antenna_right.texOffs(18, 20).addBox(0.0F, -0.9F, -5.0F, 0.0F, 1.0F, 5.0F, 0.0F, true);
 
 		arm_left = new AdvancedModelBox(this);
-		arm_left.setRotationPoint(1.7F, -0.4F, -5.0F);
+		arm_left.setPos(1.7F, -0.4F, -5.0F);
 		body.addChild(arm_left);
 		setRotationAngle(arm_left, 0.0F, 0.6981F, 0.3491F);
-		arm_left.setTextureOffset(15, 5).addBox(0.0F, 0.0F, -0.5F, 4.0F, 0.0F, 1.0F, 0.0F, false);
+		arm_left.texOffs(15, 5).addBox(0.0F, 0.0F, -0.5F, 4.0F, 0.0F, 1.0F, 0.0F, false);
 
 		hand_left = new AdvancedModelBox(this);
-		hand_left.setRotationPoint(4.0F, 0.4F, 0.4F);
+		hand_left.setPos(4.0F, 0.4F, 0.4F);
 		arm_left.addChild(hand_left);
 		setRotationAngle(hand_left, 0.0F, 0.6981F, 0.0F);
-		hand_left.setTextureOffset(0, 21).addBox(0.0F, -1.0F, -1.9F, 3.0F, 1.0F, 2.0F, 0.0F, false);
+		hand_left.texOffs(0, 21).addBox(0.0F, -1.0F, -1.9F, 3.0F, 1.0F, 2.0F, 0.0F, false);
 
 		arm_right = new AdvancedModelBox(this);
-		arm_right.setRotationPoint(-1.7F, -0.4F, -5.0F);
+		arm_right.setPos(-1.7F, -0.4F, -5.0F);
 		body.addChild(arm_right);
 		setRotationAngle(arm_right, 0.0F, -0.6981F, -0.3491F);
-		arm_right.setTextureOffset(15, 6).addBox(-4.0F, 0.0F, -0.5F, 4.0F, 0.0F, 1.0F, 0.0F, true);
+		arm_right.texOffs(15, 6).addBox(-4.0F, 0.0F, -0.5F, 4.0F, 0.0F, 1.0F, 0.0F, true);
 
 		hand_right = new AdvancedModelBox(this);
-		hand_right.setRotationPoint(-4.0F, 0.4F, 0.4F);
+		hand_right.setPos(-4.0F, 0.4F, 0.4F);
 		arm_right.addChild(hand_right);
 		setRotationAngle(hand_right, 0.0F, -0.6981F, 0.0F);
-		hand_right.setTextureOffset(0, 25).addBox(-3.0F, -1.0F, -1.9F, 3.0F, 1.0F, 2.0F, 0.0F, true);
+		hand_right.texOffs(0, 25).addBox(-3.0F, -1.0F, -1.9F, 3.0F, 1.0F, 2.0F, 0.0F, true);
 
 		tail = new AdvancedModelBox(this);
-		tail.setRotationPoint(0.0F, -0.4F, 0.0F);
+		tail.setPos(0.0F, -0.4F, 0.0F);
 		body.addChild(tail);
-		tail.setTextureOffset(0, 0).addBox(-1.5F, -1.0F, 0.0F, 3.0F, 2.0F, 8.0F, 0.0F, false);
+		tail.texOffs(0, 0).addBox(-1.5F, -1.0F, 0.0F, 3.0F, 2.0F, 8.0F, 0.0F, false);
 
 		tail2 = new AdvancedModelBox(this);
-		tail2.setRotationPoint(0.0F, 0.0F, 6.0F);
+		tail2.setPos(0.0F, 0.0F, 6.0F);
 		tail.addChild(tail2);
-		tail2.setTextureOffset(15, 0).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 0.0F, 4.0F, 0.0F, false);
+		tail2.texOffs(15, 0).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 0.0F, 4.0F, 0.0F, false);
 
 		legs_left = new AdvancedModelBox(this);
-		legs_left.setRotationPoint(2.0F, 0.1F, -1.45F);
+		legs_left.setPos(2.0F, 0.1F, -1.45F);
 		body.addChild(legs_left);
 		setRotationAngle(legs_left, 0.0F, 0.0F, 0.3054F);
-		legs_left.setTextureOffset(16, 11).addBox(0.0F, 0.0F, -3.55F, 3.0F, 0.0F, 5.0F, 0.0F, false);
+		legs_left.texOffs(16, 11).addBox(0.0F, 0.0F, -3.55F, 3.0F, 0.0F, 5.0F, 0.0F, false);
 
 		legs_right = new AdvancedModelBox(this);
-		legs_right.setRotationPoint(-2.0F, 0.1F, -1.45F);
+		legs_right.setPos(-2.0F, 0.1F, -1.45F);
 		body.addChild(legs_right);
 		setRotationAngle(legs_right, 0.0F, 0.0F, -0.3054F);
-		legs_right.setTextureOffset(25, 11).addBox(-3.0F, 0.0F, -3.55F, 3.0F, 0.0F, 5.0F, 0.0F, true);
+		legs_right.texOffs(25, 11).addBox(-3.0F, 0.0F, -3.55F, 3.0F, 0.0F, 5.0F, 0.0F, true);
 		this.updateDefaultPose();
 	}
 
 	@Override
-	public void setRotationAngles(EntityLobster entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityLobster entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		float idleSpeed = 0.1f;
 		float idleDegree = 0.3f;
 		float walkSpeed = 3f;
 		float walkDegree = 0.6F;
-		float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+		float partialTick = Minecraft.getInstance().getFrameTime();
 		float attackProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTick;
 		progressRotationPrev(arm_left, attackProgress, 0, (float)Math.toRadians(45), 0, 5F);
 		progressRotationPrev(arm_right, attackProgress, 0, (float)Math.toRadians(-45), 0, 5F);
@@ -122,7 +122,7 @@ public class ModelLobster extends AdvancedEntityModel<EntityLobster> {
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -133,8 +133,8 @@ public class ModelLobster extends AdvancedEntityModel<EntityLobster> {
 
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.rotateAngleX = x;
-		AdvancedModelBox.rotateAngleY = y;
-		AdvancedModelBox.rotateAngleZ = z;
+		AdvancedModelBox.xRot = x;
+		AdvancedModelBox.yRot = y;
+		AdvancedModelBox.zRot = z;
 	}
 }

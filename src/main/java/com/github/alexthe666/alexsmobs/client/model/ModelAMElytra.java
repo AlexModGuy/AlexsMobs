@@ -2,17 +2,17 @@ package com.github.alexthe666.alexsmobs.client.model;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 
-public class ModelAMElytra extends BipedModel {
+public class ModelAMElytra extends HumanoidModel {
 
-    private final ModelRenderer rightWing = new ModelRenderer(this, 22, 0);
-    private final ModelRenderer leftWing = new ModelRenderer(this, 22, 0);
+    private final ModelPart rightWing = new ModelPart(this, 22, 0);
+    private final ModelPart leftWing = new ModelPart(this, 22, 0);
 
     public ModelAMElytra() {
         super(0);
@@ -21,33 +21,33 @@ public class ModelAMElytra extends BipedModel {
         this.rightWing.addBox(0.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, 1.0F);
     }
 
-    protected Iterable<ModelRenderer> getHeadParts() {
+    protected Iterable<ModelPart> headParts() {
         return ImmutableList.of();
     }
 
-    protected Iterable<ModelRenderer> getBodyParts() {
+    protected Iterable<ModelPart> bodyParts() {
         return ImmutableList.of(this.leftWing, this.rightWing);
     }
 
 
     public ModelAMElytra withAnimations(LivingEntity entity){
-        float partialTick = Minecraft.getInstance().getRenderPartialTicks();
-        float limbSwingAmount = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTick;
-        float limbSwing = entity.limbSwing + partialTick;
-        setRotationAngles(entity, limbSwing, limbSwingAmount, entity.ticksExisted + partialTick, 0, 0);
+        float partialTick = Minecraft.getInstance().getFrameTime();
+        float limbSwingAmount = entity.animationSpeedOld + (entity.animationSpeed - entity.animationSpeedOld) * partialTick;
+        float limbSwing = entity.animationPosition + partialTick;
+        setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);
         return  this;
     }
 
-    public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         float f = 0.2617994F;
         float f1 = -0.2617994F;
         float f2 = 0.0F;
         float f3 = 0.0F;
-        if (entityIn.isElytraFlying()) {
+        if (entityIn.isFallFlying()) {
             float f4 = 1.0F;
-            Vector3d vector3d = entityIn.getMotion();
+            Vec3 vector3d = entityIn.getDeltaMovement();
             if (vector3d.y < 0.0D) {
-                Vector3d vector3d1 = vector3d.normalize();
+                Vec3 vector3d1 = vector3d.normalize();
                 f4 = 1.0F - (float)Math.pow(-vector3d1.y, 1.5D);
             }
 
@@ -60,26 +60,26 @@ public class ModelAMElytra extends BipedModel {
             f3 = 0.08726646F;
         }
 
-        this.leftWing.rotationPointX = 5.0F;
-        this.leftWing.rotationPointY = f2;
-        if (entityIn instanceof AbstractClientPlayerEntity) {
-            AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity)entityIn;
-            abstractclientplayerentity.rotateElytraX = (float)((double)abstractclientplayerentity.rotateElytraX + (double)(f - abstractclientplayerentity.rotateElytraX) * 0.1D);
-            abstractclientplayerentity.rotateElytraY = (float)((double)abstractclientplayerentity.rotateElytraY + (double)(f3 - abstractclientplayerentity.rotateElytraY) * 0.1D);
-            abstractclientplayerentity.rotateElytraZ = (float)((double)abstractclientplayerentity.rotateElytraZ + (double)(f1 - abstractclientplayerentity.rotateElytraZ) * 0.1D);
-            this.leftWing.rotateAngleX = abstractclientplayerentity.rotateElytraX;
-            this.leftWing.rotateAngleY = abstractclientplayerentity.rotateElytraY;
-            this.leftWing.rotateAngleZ = abstractclientplayerentity.rotateElytraZ;
+        this.leftWing.x = 5.0F;
+        this.leftWing.y = f2;
+        if (entityIn instanceof AbstractClientPlayer) {
+            AbstractClientPlayer abstractclientplayerentity = (AbstractClientPlayer)entityIn;
+            abstractclientplayerentity.elytraRotX = (float)((double)abstractclientplayerentity.elytraRotX + (double)(f - abstractclientplayerentity.elytraRotX) * 0.1D);
+            abstractclientplayerentity.elytraRotY = (float)((double)abstractclientplayerentity.elytraRotY + (double)(f3 - abstractclientplayerentity.elytraRotY) * 0.1D);
+            abstractclientplayerentity.elytraRotZ = (float)((double)abstractclientplayerentity.elytraRotZ + (double)(f1 - abstractclientplayerentity.elytraRotZ) * 0.1D);
+            this.leftWing.xRot = abstractclientplayerentity.elytraRotX;
+            this.leftWing.yRot = abstractclientplayerentity.elytraRotY;
+            this.leftWing.zRot = abstractclientplayerentity.elytraRotZ;
         } else {
-            this.leftWing.rotateAngleX = f;
-            this.leftWing.rotateAngleZ = f1;
-            this.leftWing.rotateAngleY = f3;
+            this.leftWing.xRot = f;
+            this.leftWing.zRot = f1;
+            this.leftWing.yRot = f3;
         }
 
-        this.rightWing.rotationPointX = -this.leftWing.rotationPointX;
-        this.rightWing.rotateAngleY = -this.leftWing.rotateAngleY;
-        this.rightWing.rotationPointY = this.leftWing.rotationPointY;
-        this.rightWing.rotateAngleX = this.leftWing.rotateAngleX;
-        this.rightWing.rotateAngleZ = -this.leftWing.rotateAngleZ;
+        this.rightWing.x = -this.leftWing.x;
+        this.rightWing.yRot = -this.leftWing.yRot;
+        this.rightWing.y = this.leftWing.y;
+        this.rightWing.xRot = this.leftWing.xRot;
+        this.rightWing.zRot = -this.leftWing.zRot;
     }
 }

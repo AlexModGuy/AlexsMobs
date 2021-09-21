@@ -6,9 +6,9 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
     private final AdvancedModelBox root;
@@ -28,77 +28,77 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
     private ModelAnimator animator;
 
     public ModelEmu() {
-        textureWidth = 128;
-        textureHeight = 128;
+        texWidth = 128;
+        texHeight = 128;
 
         root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+        root.setPos(0.0F, 24.0F, 0.0F);
 
 
         body = new AdvancedModelBox(this);
-        body.setRotationPoint(0.0F, -19.625F, -0.125F);
+        body.setPos(0.0F, -19.625F, -0.125F);
         root.addChild(body);
-        body.setTextureOffset(0, 0).addBox(-6.0F, -4.375F, -10.875F, 12.0F, 11.0F, 21.0F, 0.0F, false);
+        body.texOffs(0, 0).addBox(-6.0F, -4.375F, -10.875F, 12.0F, 11.0F, 21.0F, 0.0F, false);
 
         leg_left = new AdvancedModelBox(this);
-        leg_left.setRotationPoint(3.0F, 6.625F, 0.125F);
+        leg_left.setPos(3.0F, 6.625F, 0.125F);
         body.addChild(leg_left);
-        leg_left.setTextureOffset(0, 55).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, false);
+        leg_left.texOffs(0, 55).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, false);
 
         legfur_left = new AdvancedModelBox(this);
-        legfur_left.setRotationPoint(0.0F, 0.0F, 0.0F);
+        legfur_left.setPos(0.0F, 0.0F, 0.0F);
         leg_left.addChild(legfur_left);
-        legfur_left.setTextureOffset(31, 33).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
+        legfur_left.texOffs(31, 33).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
 
         foot_left = new AdvancedModelBox(this);
-        foot_left.setRotationPoint(0.0F, 11.0F, -1.0F);
+        foot_left.setPos(0.0F, 11.0F, -1.0F);
         leg_left.addChild(foot_left);
-        foot_left.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -4.0F, 3.0F, 2.0F, 6.0F, 0.0F, false);
+        foot_left.texOffs(0, 10).addBox(-1.5F, 0.0F, -4.0F, 3.0F, 2.0F, 6.0F, 0.0F, false);
 
         leg_right = new AdvancedModelBox(this);
-        leg_right.setRotationPoint(-3.0F, 6.625F, 0.125F);
+        leg_right.setPos(-3.0F, 6.625F, 0.125F);
         body.addChild(leg_right);
-        leg_right.setTextureOffset(0, 55).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, true);
+        leg_right.texOffs(0, 55).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, true);
 
         legfur_right = new AdvancedModelBox(this);
-        legfur_right.setRotationPoint(0.0F, 0.0F, 0.0F);
+        legfur_right.setPos(0.0F, 0.0F, 0.0F);
         leg_right.addChild(legfur_right);
-        legfur_right.setTextureOffset(31, 33).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, true);
+        legfur_right.texOffs(31, 33).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, true);
 
         foot_right = new AdvancedModelBox(this);
-        foot_right.setRotationPoint(0.0F, 11.0F, -1.0F);
+        foot_right.setPos(0.0F, 11.0F, -1.0F);
         leg_right.addChild(foot_right);
-        foot_right.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -4.0F, 3.0F, 2.0F, 6.0F, 0.0F, true);
+        foot_right.texOffs(0, 10).addBox(-1.5F, 0.0F, -4.0F, 3.0F, 2.0F, 6.0F, 0.0F, true);
 
         neck1 = new AdvancedModelBox(this);
-        neck1.setRotationPoint(0.0F, 0.625F, -9.5F);
+        neck1.setPos(0.0F, 0.625F, -9.5F);
         body.addChild(neck1);
-        neck1.setTextureOffset(41, 41).addBox(-3.0F, -9.0F, -6.0F, 6.0F, 12.0F, 6.0F, 0.0F, false);
+        neck1.texOffs(41, 41).addBox(-3.0F, -9.0F, -6.0F, 6.0F, 12.0F, 6.0F, 0.0F, false);
 
         neck2 = new AdvancedModelBox(this);
-        neck2.setRotationPoint(0.0F, -8.5F, -2.0F);
+        neck2.setPos(0.0F, -8.5F, -2.0F);
         neck1.addChild(neck2);
-        neck2.setTextureOffset(46, 0).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 7.0F, 4.0F, 0.0F, false);
+        neck2.texOffs(46, 0).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 7.0F, 4.0F, 0.0F, false);
 
         headPivot = new AdvancedModelBox(this);
-        headPivot.setRotationPoint(-0.5F, -6.5F, 0.0F);
+        headPivot.setPos(-0.5F, -6.5F, 0.0F);
         neck2.addChild(headPivot);
 
         head = new AdvancedModelBox(this);
-        head.setRotationPoint(0.0F, 0.0F, 0.0F);
+        head.setPos(0.0F, 0.0F, 0.0F);
         headPivot.addChild(head);
-        head.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -3.0F, 5.0F, 4.0F, 5.0F, 0.0F, false);
-        head.setTextureOffset(71, 54).addBox(0.5F, -6.0F, -3.0F, 0.0F, 6.0F, 7.0F, 0.0F, false);
+        head.texOffs(0, 0).addBox(-2.0F, -4.0F, -3.0F, 5.0F, 4.0F, 5.0F, 0.0F, false);
+        head.texOffs(71, 54).addBox(0.5F, -6.0F, -3.0F, 0.0F, 6.0F, 7.0F, 0.0F, false);
 
         beak = new AdvancedModelBox(this);
-        beak.setRotationPoint(0.5F, -1.0F, -3.0F);
+        beak.setPos(0.5F, -1.0F, -3.0F);
         head.addChild(beak);
-        beak.setTextureOffset(46, 12).addBox(-2.0F, -1.0F, -3.0F, 4.0F, 2.0F, 3.0F, 0.0F, false);
+        beak.texOffs(46, 12).addBox(-2.0F, -1.0F, -3.0F, 4.0F, 2.0F, 3.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
-        tail.setRotationPoint(0.0F, -0.875F, 9.125F);
+        tail.setPos(0.0F, -0.875F, 9.125F);
         body.addChild(tail);
-        tail.setTextureOffset(0, 33).addBox(-5.0F, -0.5F, -5.0F, 10.0F, 11.0F, 10.0F, 0.0F, false);
+        tail.texOffs(0, 33).addBox(-5.0F, -0.5F, -5.0F, 10.0F, 11.0F, 10.0F, 0.0F, false);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -246,7 +246,7 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
     }
 
     @Override
-    public void setRotationAngles(EntityEmu emu, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityEmu emu, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animate(emu, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         float walkSpeed = 0.4F;
         float walkDegree = 0.4F;
@@ -298,31 +298,31 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
         progressRotationPrev(headPivot, runProgress, (float)Math.toRadians(-50), 0, 0, 5F);
     }
 
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if (this.isChild) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
             float f = 1.5F;
             head.setScale(f, f, f);
             head.setShouldScaleChildren(true);
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             matrixStackIn.scale(0.35F, 0.35F, 0.35F);
             matrixStackIn.translate(0.0D, 2.8D, 0D);
-            getParts().forEach((p_228292_8_) -> {
+            parts().forEach((p_228292_8_) -> {
                 p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
             head.setScale(1, 1, 1);
         } else {
-            matrixStackIn.push();
-            getParts().forEach((p_228290_8_) -> {
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
                 p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
 
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -332,8 +332,8 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.rotateAngleX = x;
-        AdvancedModelBox.rotateAngleY = y;
-        AdvancedModelBox.rotateAngleZ = z;
+        AdvancedModelBox.xRot = x;
+        AdvancedModelBox.yRot = y;
+        AdvancedModelBox.zRot = z;
     }
 }

@@ -6,40 +6,40 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.DolphinLookController;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.DolphinLookControl;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -49,14 +49,40 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class EntityCachalotWhale extends AnimalEntity {
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
-    private static final EntityPredicate REWARD_PLAYER_PREDICATE = (new EntityPredicate()).setDistance(50.0D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks();
-    private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityCachalotWhale.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(EntityCachalotWhale.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> BEACHED = EntityDataManager.createKey(EntityCachalotWhale.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> ALBINO = EntityDataManager.createKey(EntityCachalotWhale.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DESPAWN_BEACH = EntityDataManager.createKey(EntityCachalotWhale.class, DataSerializers.BOOLEAN);
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FollowBoatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
+
+public class EntityCachalotWhale extends Animal {
+
+    private static final TargetingConditions REWARD_PLAYER_PREDICATE = (new TargetingConditions()).range(50.0D).allowInvulnerable().allowSameTeam().allowNonAttackable();
+    private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(EntityCachalotWhale.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(EntityCachalotWhale.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> BEACHED = SynchedEntityData.defineId(EntityCachalotWhale.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ALBINO = SynchedEntityData.defineId(EntityCachalotWhale.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DESPAWN_BEACH = SynchedEntityData.defineId(EntityCachalotWhale.class, EntityDataSerializers.BOOLEAN);
     public final double[][] ringBuffer = new double[64][3];
     public final EntityCachalotPart headPart;
     public final EntityCachalotPart bodyFrontPart;
@@ -80,18 +106,18 @@ public class EntityCachalotWhale extends AnimalEntity {
     private int chargeCooldown = 0;
     private float whaleSpeedMod = 1F;
     private int rewardTime = 0;
-    private PlayerEntity rewardPlayer;
+    private Player rewardPlayer;
     private int blockBreakCounter;
     private int despawnDelay = 47999;
     private int ambergrisDrops = 0;
     private boolean hasAlbinoAttribute = false;
     private int echoSoundCooldown = 0;
 
-    public EntityCachalotWhale(EntityType type, World world) {
+    public EntityCachalotWhale(EntityType type, Level world) {
         super(type, world);
-        this.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.moveController = new AnimalSwimMoveControllerSink(this, 1, 1, 3);
-        this.lookController = new DolphinLookController(this, 4);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.moveControl = new AnimalSwimMoveControllerSink(this, 1, 1, 3);
+        this.lookControl = new DolphinLookControl(this, 4);
         this.headPart = new EntityCachalotPart(this, 3.0F, 3.5F);
         this.bodyFrontPart = new EntityCachalotPart(this, 4.0F, 4.0F);
         this.bodyPart = new EntityCachalotPart(this, 5.0F, 4.0F);
@@ -101,15 +127,15 @@ public class EntityCachalotWhale extends AnimalEntity {
         this.whaleParts = new EntityCachalotPart[]{this.headPart, this.bodyFrontPart, this.bodyPart, this.tail1Part, this.tail2Part, this.tail3Part};
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 160.0D).createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 32.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 1.2F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 30F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 160.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 1.2F).add(Attributes.ATTACK_DAMAGE, 30F);
     }
 
-    public static <T extends MobEntity> boolean canCachalotWhaleSpawn(EntityType<T> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
-        return iServerWorld.getFluidState(pos).isTagged(FluidTags.WATER);
+    public static <T extends Mob> boolean canCachalotWhaleSpawn(EntityType<T> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+        return iServerWorld.getFluidState(pos).is(FluidTags.WATER);
     }
 
-    public boolean canDespawn(double distanceToClosestPlayer) {
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return !this.isSleeping() && !this.isCharging() && !this.isDespawnBeach() && !isAlbino();
     }
 
@@ -121,7 +147,7 @@ public class EntityCachalotWhale extends AnimalEntity {
         if (this.canDespawn()) {
             this.despawnDelay = this.despawnDelay - 1;
             if (this.despawnDelay <= 0) {
-                this.clearLeashed(true, false);
+                this.dropLeash(true, false);
                 this.remove();
             }
         }
@@ -142,34 +168,34 @@ public class EntityCachalotWhale extends AnimalEntity {
     public void scaleParts() {
         for (EntityCachalotPart parts : whaleParts) {
             float prev = parts.scale;
-            parts.scale = this.isChild() ? 0.5F : 1F;
+            parts.scale = this.isBaby() ? 0.5F : 1F;
             if (prev != parts.scale) {
-                parts.recalculateSize();
+                parts.refreshDimensions();
             }
         }
     }
 
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return false;
     }
 
-    public void collideWithNearbyEntities() {
+    public void pushEntities() {
     }
 
-    public ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
-        return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
+    public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
+        return super.mobInteract(p_230254_1_, p_230254_2_);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("Albino", this.isAlbino());
         compound.putBoolean("Beached", this.isBeached());
         compound.putBoolean("BeachedDespawnFlag", this.isDespawnBeach());
         compound.putInt("DespawnDelay", this.despawnDelay);
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setAlbino(compound.getBoolean("Albino"));
         this.setBeached(compound.getBoolean("Beached"));
         this.setDespawnBeach(compound.getBoolean("BeachedDespawnFlag"));
@@ -179,42 +205,42 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(CHARGING, Boolean.valueOf(false));
-        this.dataManager.register(SLEEPING, Boolean.valueOf(false));
-        this.dataManager.register(BEACHED, Boolean.valueOf(false));
-        this.dataManager.register(ALBINO, Boolean.valueOf(false));
-        this.dataManager.register(DESPAWN_BEACH, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CHARGING, Boolean.valueOf(false));
+        this.entityData.define(SLEEPING, Boolean.valueOf(false));
+        this.entityData.define(BEACHED, Boolean.valueOf(false));
+        this.entityData.define(ALBINO, Boolean.valueOf(false));
+        this.entityData.define(DESPAWN_BEACH, Boolean.valueOf(false));
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new AIBreathe());
-        this.goalSelector.addGoal(1, new FindWaterGoal(this));
+        this.goalSelector.addGoal(1, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new AnimalAIFollowParentRanged(this, 1.1F, 32, 10));
         this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 0.6D, 10, 24, true) {
-            public boolean shouldExecute() {
-                return !EntityCachalotWhale.this.isSleeping() && !EntityCachalotWhale.this.isBeached() && super.shouldExecute();
+            public boolean canUse() {
+                return !EntityCachalotWhale.this.isSleeping() && !EntityCachalotWhale.this.isBeached() && super.canUse();
             }
         });
-        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 20.0F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 20.0F));
         this.goalSelector.addGoal(7, new FollowBoatGoal(this));
-        this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this).setCallsForHelp()));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 30, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.CACHALOT_WHALE_TARGETS))) {
-            public boolean shouldExecute() {
-                return !EntityCachalotWhale.this.isSleeping() && !EntityCachalotWhale.this.isBeached() && super.shouldExecute();
+        this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this).setAlertOthers()));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 30, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.CACHALOT_WHALE_TARGETS))) {
+            public boolean canUse() {
+                return !EntityCachalotWhale.this.isSleeping() && !EntityCachalotWhale.this.isBeached() && super.canUse();
             }
         });
     }
 
-    protected PathNavigator createNavigator(World worldIn) {
-        return new SwimmerPathNavigator(this, worldIn);
+    protected PathNavigation createNavigation(Level worldIn) {
+        return new WaterBoundPathNavigation(this, worldIn);
     }
 
-    public void updateAITasks() {
-        super.updateAITasks();
+    public void customServerAiStep() {
+        super.customServerAiStep();
         breakBlock();
     }
 
@@ -224,22 +250,22 @@ public class EntityCachalotWhale extends AnimalEntity {
             return;
         }
         boolean flag = false;
-        ResourceLocation breakables = this.isCharging() && this.getAttackTarget() != null ? AMTagRegistry.CACHALOT_WHALE_BREAKABLES : AMTagRegistry.ORCA_BREAKABLES;
-        if (!world.isRemote && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, this)) {
+        ResourceLocation breakables = this.isCharging() && this.getTarget() != null ? AMTagRegistry.CACHALOT_WHALE_BREAKABLES : AMTagRegistry.ORCA_BREAKABLES;
+        if (!level.isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
                         BlockPos pos = new BlockPos(a, b, c);
-                        BlockState state = world.getBlockState(pos);
-                        FluidState fluidState = world.getFluidState(pos);
+                        BlockState state = level.getBlockState(pos);
+                        FluidState fluidState = level.getFluidState(pos);
                         Block block = state.getBlock();
-                        if (!state.isAir() && !state.getShape(world, pos).isEmpty() && BlockTags.getCollection().get(breakables).contains(state.getBlock()) && fluidState.isEmpty()) {
+                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && BlockTags.getAllTags().getTag(breakables).contains(state.getBlock()) && fluidState.isEmpty()) {
                             if (block != Blocks.AIR) {
-                                this.setMotion(this.getMotion().mul(0.6F, 1, 0.6F));
+                                this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
-                                world.destroyBlock(pos, true);
-                                if (state.getBlock().isIn(BlockTags.ICE)) {
-                                    world.setBlockState(pos, Blocks.WATER.getDefaultState());
+                                level.destroyBlock(pos, true);
+                                if (state.getBlock().is(BlockTags.ICE)) {
+                                    level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
                                 }
                             }
                         }
@@ -248,15 +274,15 @@ public class EntityCachalotWhale extends AnimalEntity {
             }
         }
         if (flag) {
-            blockBreakCounter = this.isCharging() && this.getAttackTarget() != null ? 2 : 20;
+            blockBreakCounter = this.isCharging() && this.getTarget() != null ? 2 : 20;
         }
     }
 
-    public void travel(Vector3d travelVector) {
-        if (this.isServerWorld() && this.isInWater()) {
-            this.moveRelative(this.getAIMoveSpeed(), travelVector);
-            this.move(MoverType.SELF, this.getMotion());
-            this.setMotion(this.getMotion().scale(0.9D));
+    public void travel(Vec3 travelVector) {
+        if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(this.getSpeed(), travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
 
         } else {
             super.travel(travelVector);
@@ -265,44 +291,44 @@ public class EntityCachalotWhale extends AnimalEntity {
 
     private void spawnSpoutParticles() {
         if (this.isAlive()) {
-            for (int j = 0; j < 5 + rand.nextInt(4); ++j) {
-                float radius = this.headPart.getWidth() * 0.5F;
-                float angle = (0.01745329251F * this.renderYawOffset);
-                double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
-                double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
-                double motX = this.rand.nextGaussian();
-                double motZ = this.rand.nextGaussian();
-                this.world.addParticle(AMParticleRegistry.WHALE_SPLASH, this.headPart.getPosX() + extraX, this.headPart.getPosY() + this.headPart.getHeight(), this.headPart.getPosZ() + extraZ, motX * 0.1F + this.getMotion().x, 2F, motZ * 0.1F + this.getMotion().z);
+            for (int j = 0; j < 5 + random.nextInt(4); ++j) {
+                float radius = this.headPart.getBbWidth() * 0.5F;
+                float angle = (0.01745329251F * this.yBodyRot);
+                double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
+                double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
+                double motX = this.random.nextGaussian();
+                double motZ = this.random.nextGaussian();
+                this.level.addParticle(AMParticleRegistry.WHALE_SPLASH, this.headPart.getX() + extraX, this.headPart.getY() + this.headPart.getBbHeight(), this.headPart.getZ() + extraZ, motX * 0.1F + this.getDeltaMovement().x, 2F, motZ * 0.1F + this.getDeltaMovement().z);
             }
         }
     }
 
     public boolean isCharging() {
-        return this.dataManager.get(CHARGING).booleanValue();
+        return this.entityData.get(CHARGING).booleanValue();
     }
 
     public void setCharging(boolean charging) {
-        this.dataManager.set(CHARGING, Boolean.valueOf(charging));
+        this.entityData.set(CHARGING, Boolean.valueOf(charging));
     }
 
     public boolean isSleeping() {
-        return this.dataManager.get(SLEEPING).booleanValue();
+        return this.entityData.get(SLEEPING).booleanValue();
     }
 
     public void setSleeping(boolean charging) {
-        this.dataManager.set(SLEEPING, Boolean.valueOf(charging));
+        this.entityData.set(SLEEPING, Boolean.valueOf(charging));
     }
 
     public boolean isBeached() {
-        return this.dataManager.get(BEACHED).booleanValue();
+        return this.entityData.get(BEACHED).booleanValue();
     }
 
     public void setBeached(boolean charging) {
-        this.dataManager.set(BEACHED, Boolean.valueOf(charging));
+        this.entityData.set(BEACHED, Boolean.valueOf(charging));
     }
 
     public boolean isAlbino() {
-        return this.dataManager.get(ALBINO).booleanValue();
+        return this.entityData.get(ALBINO).booleanValue();
     }
 
     public void setAlbino(boolean albino) {
@@ -315,43 +341,43 @@ public class EntityCachalotWhale extends AnimalEntity {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(160.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(30.0D);
         }
-        this.dataManager.set(ALBINO, Boolean.valueOf(albino));
+        this.entityData.set(ALBINO, Boolean.valueOf(albino));
     }
 
     public boolean isDespawnBeach() {
-        return this.dataManager.get(DESPAWN_BEACH).booleanValue();
+        return this.entityData.get(DESPAWN_BEACH).booleanValue();
     }
 
     public void setDespawnBeach(boolean despawn) {
-        this.dataManager.set(DESPAWN_BEACH, Boolean.valueOf(despawn));
+        this.entityData.set(DESPAWN_BEACH, Boolean.valueOf(despawn));
     }
 
     protected float getSoundVolume() {
         return this.isSilent() ? 0 : (float) AMConfig.cachalotVolume;
     }
 
-    public void livingTick() {
-        super.livingTick();
+    public void aiStep() {
+        super.aiStep();
         scaleParts();
         if (echoSoundCooldown > 0) {
             echoSoundCooldown--;
         }
         if (this.isSleeping()) {
-            this.getNavigator().clearPath();
-            this.rotationPitch = -90;
+            this.getNavigation().stop();
+            this.xRot = -90;
             this.whaleSpeedMod = 0;
-            if (this.areEyesInFluid(FluidTags.WATER) && this.getAir() < 200) {
-                this.setMotion(this.getMotion().add(0, 0.06, 0));
+            if (this.isEyeInFluid(FluidTags.WATER) && this.getAirSupply() < 200) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0, 0.06, 0));
             } else {
-                BlockPos waterPos = this.getPosition();
-                while (world.getFluidState(waterPos).isTagged(FluidTags.WATER) && waterPos.getY() < 255) {
-                    waterPos = waterPos.up();
+                BlockPos waterPos = this.blockPosition();
+                while (level.getFluidState(waterPos).is(FluidTags.WATER) && waterPos.getY() < 255) {
+                    waterPos = waterPos.above();
                 }
-                if (waterPos.getY() - this.getPosY() < (isChild() ? 7 : 12)) {
-                    this.setMotion(this.getMotion().add(0, -0.06, 0));
+                if (waterPos.getY() - this.getY() < (isBaby() ? 7 : 12)) {
+                    this.setDeltaMovement(this.getDeltaMovement().add(0, -0.06, 0));
                 }
-                if (rand.nextInt(100) == 0) {
-                    this.setMotion(this.getMotion().add(0, rand.nextGaussian() * 0.06, 0));
+                if (random.nextInt(100) == 0) {
+                    this.setDeltaMovement(this.getDeltaMovement().add(0, random.nextGaussian() * 0.06, 0));
                 }
             }
         } else {
@@ -359,19 +385,19 @@ public class EntityCachalotWhale extends AnimalEntity {
                 this.whaleSpeedMod = 1;
             }
         }
-        float rPitch = (float) -((float) this.getMotion().y * (double) (180F / (float) Math.PI));
-        this.rotationPitch = MathHelper.clamp(rPitch, -90, 90);
-        if (this.isOnGround() && !this.isInWaterOrBubbleColumn()) {
+        float rPitch = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+        this.xRot = Mth.clamp(rPitch, -90, 90);
+        if (this.isOnGround() && !this.isInWaterOrBubble()) {
             this.setBeached(true);
-            this.rotationPitch = 0;
+            this.xRot = 0;
             this.setSleeping(false);
         }
         if (this.isBeached()) {
             this.whaleSpeedMod = 0;
-            this.setMotion(this.getMotion().mul(0.5, 0.5, 0.5));
-            if (this.areEyesInFluid(FluidTags.WATER)) {
-                PlayerEntity entity = this.world.getClosestPlayer(REWARD_PLAYER_PREDICATE, this);
-                if (this.getRevengeTarget() != entity) {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0.5, 0.5, 0.5));
+            if (this.isEyeInFluid(FluidTags.WATER)) {
+                Player entity = this.level.getNearestPlayer(REWARD_PLAYER_PREDICATE, this);
+                if (this.getLastHurtByMob() != entity) {
                     rewardTime = 15;
                     rewardPlayer = entity;
                 }
@@ -382,25 +408,25 @@ public class EntityCachalotWhale extends AnimalEntity {
         if (!this.isBeached() && rewardTime > 0) {
             float dif = 0;
             if (rewardPlayer != null) {
-                double d0 = rewardPlayer.getPosX() - this.getPosX();
-                double d1 = rewardPlayer.getPosYEye() - this.getPosYEye();
-                double d2 = rewardPlayer.getPosZ() - this.getPosZ();
-                double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
-                float targetYaw = (float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                float targetPitch = (float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
-                this.rotationYaw = (this.rotationYaw + MathHelper.clamp(targetYaw - this.rotationYaw, -2, 2));
-                this.rotationPitch = (this.rotationPitch + MathHelper.clamp(targetPitch - this.rotationPitch, -2, 2));
-                this.renderYawOffset = rotationYaw;
-                dif = Math.abs(MathHelper.wrapDegrees(targetYaw) - MathHelper.wrapDegrees(this.rotationYaw));
+                double d0 = rewardPlayer.getX() - this.getX();
+                double d1 = rewardPlayer.getEyeY() - this.getEyeY();
+                double d2 = rewardPlayer.getZ() - this.getZ();
+                double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+                float targetYaw = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+                float targetPitch = (float) (-(Mth.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
+                this.yRot = (this.yRot + Mth.clamp(targetYaw - this.yRot, -2, 2));
+                this.xRot = (this.xRot + Mth.clamp(targetPitch - this.xRot, -2, 2));
+                this.yBodyRot = yRot;
+                dif = Math.abs(Mth.wrapDegrees(targetYaw) - Mth.wrapDegrees(this.yRot));
             }
             if (dif < 5) {
-                if (rewardTime % 5 == 0 && ambergrisDrops < 2 + rand.nextInt(1) && this.isDespawnBeach()) {
+                if (rewardTime % 5 == 0 && ambergrisDrops < 2 + random.nextInt(1) && this.isDespawnBeach()) {
                     ambergrisDrops++;
-                    if (!world.isRemote) {
-                        Vector3d vec = this.getMouthVec();
-                        ItemEntity itementity = new ItemEntity(this.world, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS));
-                        itementity.setDefaultPickupDelay();
-                        world.addEntity(itementity);
+                    if (!level.isClientSide) {
+                        Vec3 vec = this.getMouthVec();
+                        ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS));
+                        itementity.setDefaultPickUpDelay();
+                        level.addFreshEntity(itementity);
                     }
                 }
                 this.rewardTime--;
@@ -436,37 +462,37 @@ public class EntityCachalotWhale extends AnimalEntity {
         if (!isBeached() && this.beachedProgress > 0F) {
             this.beachedProgress--;
         }
-        this.rotationYawHead = this.rotationYaw;
-        this.renderYawOffset = this.rotationYaw;
+        this.yHeadRot = this.yRot;
+        this.yBodyRot = this.yRot;
 
-        if (!this.isAIDisabled()) {
+        if (!this.isNoAi()) {
             if (this.ringBufferIndex < 0) {
                 for (int i = 0; i < this.ringBuffer.length; ++i) {
-                    this.ringBuffer[i][0] = this.rotationYaw;
-                    this.ringBuffer[i][1] = this.getPosY();
+                    this.ringBuffer[i][0] = this.yRot;
+                    this.ringBuffer[i][1] = this.getY();
                 }
             }
             this.ringBufferIndex++;
             if (this.ringBufferIndex == this.ringBuffer.length) {
                 this.ringBufferIndex = 0;
             }
-            this.ringBuffer[this.ringBufferIndex][0] = this.rotationYaw;
-            this.ringBuffer[ringBufferIndex][1] = this.getPosY();
-            Vector3d[] avector3d = new Vector3d[this.whaleParts.length];
+            this.ringBuffer[this.ringBufferIndex][0] = this.yRot;
+            this.ringBuffer[ringBufferIndex][1] = this.getY();
+            Vec3[] avector3d = new Vec3[this.whaleParts.length];
 
             for (int j = 0; j < this.whaleParts.length; ++j) {
                 this.whaleParts[j].collideWithNearbyEntities();
-                avector3d[j] = new Vector3d(this.whaleParts[j].getPosX(), this.whaleParts[j].getPosY(), this.whaleParts[j].getPosZ());
+                avector3d[j] = new Vec3(this.whaleParts[j].getX(), this.whaleParts[j].getY(), this.whaleParts[j].getZ());
             }
-            float f4 = MathHelper.sin(this.rotationYaw * ((float) Math.PI / 180F) - 0 * 0.01F);
-            float f19 = MathHelper.cos(this.rotationYaw * ((float) Math.PI / 180F) - 0 * 0.01F);
+            float f4 = Mth.sin(this.yRot * ((float) Math.PI / 180F) - 0 * 0.01F);
+            float f19 = Mth.cos(this.yRot * ((float) Math.PI / 180F) - 0 * 0.01F);
             float f15 = (float) (this.getMovementOffsets(5, 1.0F)[1] - this.getMovementOffsets(10, 1.0F)[1]) * 10.0F * ((float) Math.PI / 180F);
-            float f16 = MathHelper.cos(f15);
-            float f2 = MathHelper.sin(f15);
-            float f17 = this.rotationYaw * ((float) Math.PI / 180F);
-            float pitch = this.rotationPitch * ((float) Math.PI / 180F);
-            float f3 = MathHelper.sin(f17) * (1 - Math.abs(this.rotationPitch / 90F));
-            float f18 = MathHelper.cos(f17) * (1 - Math.abs(this.rotationPitch / 90F));
+            float f16 = Mth.cos(f15);
+            float f2 = Mth.sin(f15);
+            float f17 = this.yRot * ((float) Math.PI / 180F);
+            float pitch = this.xRot * ((float) Math.PI / 180F);
+            float f3 = Mth.sin(f17) * (1 - Math.abs(this.xRot / 90F));
+            float f18 = Mth.cos(f17) * (1 - Math.abs(this.xRot / 90F));
 
             this.setPartPosition(this.bodyPart, f3 * 0.5F, -pitch * 0.5F, -f18 * 0.5F);
             this.setPartPosition(this.bodyFrontPart, (f3) * -3.5F, -pitch * 3F, (f18) * 3.5F);
@@ -486,32 +512,32 @@ public class EntityCachalotWhale extends AnimalEntity {
                 }
 
                 double[] adouble1 = this.getMovementOffsets(15 + k * 5, 1.0F);
-                float f7 = this.rotationYaw * ((float) Math.PI / 180F) + (float) MathHelper.wrapDegrees(adouble1[0] - adouble[0]) * ((float) Math.PI / 180F);
-                float f20 = MathHelper.sin(f7) * (1 - Math.abs(this.rotationPitch / 90F));
-                float f21 = MathHelper.cos(f7) * (1 - Math.abs(this.rotationPitch / 90F));
+                float f7 = this.yRot * ((float) Math.PI / 180F) + (float) Mth.wrapDegrees(adouble1[0] - adouble[0]) * ((float) Math.PI / 180F);
+                float f20 = Mth.sin(f7) * (1 - Math.abs(this.xRot / 90F));
+                float f21 = Mth.cos(f7) * (1 - Math.abs(this.xRot / 90F));
                 float f22 = k == 2 ? -3.6F : -3.6F;
                 float f23 = (float) (k + 1) * f22 - 2F;
                 this.setPartPosition(enderdragonpartentity, -(f3 * 0.5F + f20 * f23) * f16, pitch * 1.5F * (k + 1), (f18 * 0.5F + f21 * f23) * f16);
             }
 
             for (int l = 0; l < this.whaleParts.length; ++l) {
-                this.whaleParts[l].prevPosX = avector3d[l].x;
-                this.whaleParts[l].prevPosY = avector3d[l].y;
-                this.whaleParts[l].prevPosZ = avector3d[l].z;
-                this.whaleParts[l].lastTickPosX = avector3d[l].x;
-                this.whaleParts[l].lastTickPosY = avector3d[l].y;
-                this.whaleParts[l].lastTickPosZ = avector3d[l].z;
+                this.whaleParts[l].xo = avector3d[l].x;
+                this.whaleParts[l].yo = avector3d[l].y;
+                this.whaleParts[l].zo = avector3d[l].z;
+                this.whaleParts[l].xOld = avector3d[l].x;
+                this.whaleParts[l].yOld = avector3d[l].y;
+                this.whaleParts[l].zOld = avector3d[l].z;
             }
         }
-        if (!world.isRemote) {
-            LivingEntity target = this.getAttackTarget();
+        if (!level.isClientSide) {
+            LivingEntity target = this.getTarget();
             if (target == null || !target.isAlive()) {
                 whaleSpeedMod = this.isSleeping() ? 0 : 1;
                 this.setCharging(false);
             } else if (!isBeached() && !isSleeping()) {
-                this.faceEntity(target, 360, 360);
-                waitForEchoFlag = this.getRevengeTarget() == null || !this.getRevengeTarget().isEntityEqual(target);
-                if (target instanceof PlayerEntity || !target.isInWaterOrBubbleColumn()) {
+                this.lookAt(target, 360, 360);
+                waitForEchoFlag = this.getLastHurtByMob() == null || !this.getLastHurtByMob().is(target);
+                if (target instanceof Player || !target.isInWaterOrBubble()) {
                     waitForEchoFlag = false;
                 }
                 if (waitForEchoFlag && !receivedEcho) {
@@ -519,71 +545,71 @@ public class EntityCachalotWhale extends AnimalEntity {
                     whaleSpeedMod = 0.25F;
                     if (echoTimer % 10 == 0) {
                         if (echoTimer % 40 == 0) {
-                            this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK, this.getSoundVolume(), this.getSoundPitch());
+                            this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK, this.getSoundVolume(), this.getVoicePitch());
                         }
-                        EntityCachalotEcho echo = new EntityCachalotEcho(this.world, this);
-                        float radius = this.headPart.getWidth() * 0.5F;
-                        float angle = (0.01745329251F * this.renderYawOffset);
-                        double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
-                        double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
-                        double x = this.headPart.getPosX() + extraX;
-                        double y = this.headPart.getPosY() + this.headPart.getHeight() * 0.5D;
-                        double z = this.headPart.getPosZ() + extraZ;
-                        double d0 = target.getPosX() - x;
-                        double d1 = target.getPosYHeight(0.1D) - y;
-                        double d2 = target.getPosZ() - z;
-                        echo.setPosition(x, y, z);
+                        EntityCachalotEcho echo = new EntityCachalotEcho(this.level, this);
+                        float radius = this.headPart.getBbWidth() * 0.5F;
+                        float angle = (0.01745329251F * this.yBodyRot);
+                        double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
+                        double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
+                        double x = this.headPart.getX() + extraX;
+                        double y = this.headPart.getY() + this.headPart.getBbHeight() * 0.5D;
+                        double z = this.headPart.getZ() + extraZ;
+                        double d0 = target.getX() - x;
+                        double d1 = target.getY(0.1D) - y;
+                        double d2 = target.getZ() - z;
+                        echo.setPos(x, y, z);
                         echo.shoot(d0, d1, d2, 1F, 0.0F);
-                        this.world.addEntity(echo);
+                        this.level.addFreshEntity(echo);
                     }
                     echoTimer++;
                 }
                 if (!waitForEchoFlag || receivedEcho) {
-                    double d0 = target.getPosX() - this.getPosX();
-                    double d1 = target.getPosYEye() - this.getPosYEye();
-                    double d2 = target.getPosZ() - this.getPosZ();
-                    double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
-                    float targetYaw = (float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                    float targetPitch = (float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
-                    this.rotationPitch = (this.rotationPitch + MathHelper.clamp(targetPitch - this.rotationPitch, -2, 2));
+                    double d0 = target.getX() - this.getX();
+                    double d1 = target.getEyeY() - this.getEyeY();
+                    double d2 = target.getZ() - this.getZ();
+                    double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+                    float targetYaw = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+                    float targetPitch = (float) (-(Mth.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
+                    this.xRot = (this.xRot + Mth.clamp(targetPitch - this.xRot, -2, 2));
                     if (d0 * d0 + d2 * d2 >= 4) {
-                        this.rotationYaw = (this.rotationYaw + MathHelper.clamp(targetYaw - this.rotationYaw, -2, 2));
-                        this.renderYawOffset = rotationYaw;
+                        this.yRot = (this.yRot + Mth.clamp(targetYaw - this.yRot, -2, 2));
+                        this.yBodyRot = yRot;
                     }
-                    float dif = Math.abs(MathHelper.wrapDegrees(targetYaw) - MathHelper.wrapDegrees(this.rotationYaw));
+                    float dif = Math.abs(Mth.wrapDegrees(targetYaw) - Mth.wrapDegrees(this.yRot));
                     if (chargeCooldown <= 0 && dif < 4) {
                         this.setCharging(true);
                         whaleSpeedMod = 1.5F;
                         if (d0 * d0 + d2 * d2 < 4) {
-                            this.rotationYaw = prevRotationYaw;
-                            this.renderYawOffset = prevRotationYaw;
-                            this.setMotion(this.getMotion().mul(0.8, 1, 0.8));
+                            this.yRot = yRotO;
+                            this.yBodyRot = yRotO;
+                            this.setDeltaMovement(this.getDeltaMovement().multiply(0.8, 1, 0.8));
                         } else {
-                            this.getMoveHelper().setMoveTo(target.getPosX(), target.getPosY(), target.getPosZ(), 1.0D);
+                            this.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0D);
                         }
                         if (this.isCharging()) {
-                            if (this.getDistance(target) < this.getWidth() && chargeProgress > 4) {
-                                target.attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                            if (this.distanceTo(target) < this.getBbWidth() && chargeProgress > 4) {
+                                target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                                 this.setCharging(false);
-                                if (target.getRidingEntity() instanceof BoatEntity) {
-                                    BoatEntity boat = (BoatEntity) target.getRidingEntity();
+                                if (target.getVehicle() instanceof Boat) {
+                                    Boat boat = (Boat) target.getVehicle();
                                     for (int i = 0; i < 3; ++i) {
-                                        this.entityDropItem(boat.getBoatType().asPlank());
+                                        this.spawnAtLocation(boat.getBoatType().getPlanks());
                                     }
                                     for (int j = 0; j < 2; ++j) {
-                                        this.entityDropItem(Items.STICK);
+                                        this.spawnAtLocation(Items.STICK);
                                     }
-                                    target.dismount();
-                                    boat.attackEntityFrom(DamageSource.causeMobDamage(this), 1000);
+                                    target.removeVehicle();
+                                    boat.hurt(DamageSource.mobAttack(this), 1000);
                                     boat.remove();
                                 }
-                                chargeCooldown = target instanceof PlayerEntity ? 30 : 100;
-                                if (rand.nextInt(10) == 0) {
-                                    if (!world.isRemote) {
-                                        Vector3d vec = this.getMouthVec();
-                                        ItemEntity itementity = new ItemEntity(this.world, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.CACHALOT_WHALE_TOOTH));
-                                        itementity.setDefaultPickupDelay();
-                                        world.addEntity(itementity);
+                                chargeCooldown = target instanceof Player ? 30 : 100;
+                                if (random.nextInt(10) == 0) {
+                                    if (!level.isClientSide) {
+                                        Vec3 vec = this.getMouthVec();
+                                        ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.CACHALOT_WHALE_TOOTH));
+                                        itementity.setDefaultPickUpDelay();
+                                        level.addFreshEntity(itementity);
                                     }
                                 }
                             }
@@ -595,82 +621,82 @@ public class EntityCachalotWhale extends AnimalEntity {
                 chargeCooldown--;
             }
             if (spoutTimer > 0) {
-                world.setEntityState(this, (byte) 67);
+                level.broadcastEntityEvent(this, (byte) 67);
                 spoutTimer--;
-                this.rotationPitch = 0;
-                this.setMotion(this.getMotion().mul(0, 0, 0));
+                this.xRot = 0;
+                this.setDeltaMovement(this.getDeltaMovement().multiply(0, 0, 0));
             }
-            if (isSleepTime() && !this.isSleeping() && this.isInWaterOrBubbleColumn() && this.getAttackTarget() == null) {
+            if (isSleepTime() && !this.isSleeping() && this.isInWaterOrBubble() && this.getTarget() == null) {
                 this.setSleeping(true);
             }
-            if (this.isSleeping() && (!isSleepTime() || this.getAttackTarget() != null)) {
+            if (this.isSleeping() && (!isSleepTime() || this.getTarget() != null)) {
                 this.setSleeping(false);
             }
         }
 
         if (this.isAlive() && isCharging()) {
-            for (Entity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.headPart.getBoundingBox().grow(1.0D), null)) {
-                if (!isOnSameTeam(entity) && !(entity instanceof EntityCachalotPart) && entity != this) {
+            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.headPart.getBoundingBox().inflate(1.0D), null)) {
+                if (!isAlliedTo(entity) && !(entity instanceof EntityCachalotPart) && entity != this) {
                     launch(entity, true);
                 }
             }
         }
-        if (this.isInWater() && !this.areEyesInFluid(FluidTags.WATER) && this.getAir() > 140) {
-            this.setMotion(this.getMotion().add(0, -0.06, 0));
+        if (this.isInWater() && !this.isEyeInFluid(FluidTags.WATER) && this.getAirSupply() > 140) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0, -0.06, 0));
         }
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             this.tryDespawn();
         }
-        prevEyesInWater = this.areEyesInFluid(FluidTags.WATER);
+        prevEyesInWater = this.isEyeInFluid(FluidTags.WATER);
     }
 
     private void launch(Entity e, boolean huge) {
         if (e.isOnGround() || e.isInWater()) {
-            double d0 = e.getPosX() - this.getPosX();
-            double d1 = e.getPosZ() - this.getPosZ();
+            double d0 = e.getX() - this.getX();
+            double d1 = e.getZ() - this.getZ();
             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
             float f = huge ? 2F : 0.5F;
-            e.addVelocity(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
+            e.push(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
         }
     }
 
     private boolean isSleepTime() {
-        long time = world.getDayTime();
-        return time > 18000 && time < 22812 && this.isInWaterOrBubbleColumn();
+        long time = level.getDayTime();
+        return time > 18000 && time < 22812 && this.isInWaterOrBubble();
     }
 
-    public Vector3d getReturnEchoVector() {
-        float radius = this.headPart.getWidth() * 0.5F;
-        float angle = (0.01745329251F * this.renderYawOffset);
-        double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
-        double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
-        double x = this.headPart.getPosX() + extraX;
-        double y = this.headPart.getPosY() + this.headPart.getHeight() * 0.5D;
-        double z = this.headPart.getPosZ() + extraZ;
-        return new Vector3d(x, y, z);
+    public Vec3 getReturnEchoVector() {
+        float radius = this.headPart.getBbWidth() * 0.5F;
+        float angle = (0.01745329251F * this.yBodyRot);
+        double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
+        double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
+        double x = this.headPart.getX() + extraX;
+        double y = this.headPart.getY() + this.headPart.getBbHeight() * 0.5D;
+        double z = this.headPart.getZ() + extraZ;
+        return new Vec3(x, y, z);
     }
 
-    public Vector3d getMouthVec() {
-        float radius = this.headPart.getWidth() * 0.5F;
-        float angle = (0.01745329251F * this.renderYawOffset);
-        double extraX = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.sin((float) (Math.PI + angle)) + (rand.nextFloat() - 0.5F) + this.getMotion().x * 2F;
-        double extraZ = (radius * (1F + rand.nextFloat() * 0.13F)) * MathHelper.cos(angle) + (rand.nextFloat() - 0.5F) + this.getMotion().z * 2F;
-        double x = this.headPart.getPosX() + extraX;
-        double y = this.headPart.getPosY() + 0.25D;
-        double z = this.headPart.getPosZ() + extraZ;
-        return new Vector3d(x, y, z);
+    public Vec3 getMouthVec() {
+        float radius = this.headPart.getBbWidth() * 0.5F;
+        float angle = (0.01745329251F * this.yBodyRot);
+        double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
+        double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
+        double x = this.headPart.getX() + extraX;
+        double y = this.headPart.getY() + 0.25D;
+        double z = this.headPart.getZ() + extraZ;
+        return new Vec3(x, y, z);
     }
 
-    public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
-        LivingEntity prev = this.getAttackTarget();
+    public void setTarget(@Nullable LivingEntity entitylivingbaseIn) {
+        LivingEntity prev = this.getTarget();
         if (prev != entitylivingbaseIn && entitylivingbaseIn != null) {
             receivedEcho = false;
         }
-        super.setAttackTarget(entitylivingbaseIn);
+        super.setTarget(entitylivingbaseIn);
     }
 
     public double[] getMovementOffsets(int p_70974_1_, float partialTicks) {
-        if (this.getShouldBeDead()) {
+        if (this.isDeadOrDying()) {
             partialTicks = 0.0F;
         }
 
@@ -684,16 +710,16 @@ public class EntityCachalotWhale extends AnimalEntity {
         d0 = this.ringBuffer[i][1];
         d1 = this.ringBuffer[j][1] - d0;
         adouble[1] = d0 + d1 * (double) partialTicks;
-        adouble[2] = MathHelper.lerp(partialTicks, this.ringBuffer[i][2], this.ringBuffer[j][2]);
+        adouble[2] = Mth.lerp(partialTicks, this.ringBuffer[i][2], this.ringBuffer[j][2]);
         return adouble;
     }
 
-    public void applyEntityCollision(Entity entityIn) {
+    public void push(Entity entityIn) {
 
     }
 
     private void setPartPosition(EntityCachalotPart part, double offsetX, double offsetY, double offsetZ) {
-        part.setPosition(this.getPosX() + offsetX * part.scale, this.getPosY() + offsetY * part.scale, this.getPosZ() + offsetZ * part.scale);
+        part.setPos(this.getX() + offsetX * part.scale, this.getY() + offsetY * part.scale, this.getZ() + offsetZ * part.scale);
     }
 
     @Override
@@ -708,25 +734,25 @@ public class EntityCachalotWhale extends AnimalEntity {
 
     @Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
         EntityCachalotWhale whale = AMEntityRegistry.CACHALOT_WHALE.create(serverWorld);
         whale.setAlbino(this.isAlbino());
         return whale;
     }
 
     public boolean attackEntityPartFrom(EntityCachalotPart entityCachalotPart, DamageSource source, float amount) {
-        return this.attackEntityFrom(source, amount);
+        return this.hurt(source, amount);
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.setAir(this.getMaxAir());
-        this.rotationPitch = 0.0F;
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        this.setAirSupply(this.getMaxAirSupply());
+        this.xRot = 0.0F;
         if (spawnDataIn == null) {
-            spawnDataIn = new AgeableEntity.AgeableData(0.75F);
+            spawnDataIn = new AgableMob.AgableMobGroupData(0.75F);
         }
-        this.setAlbino(rand.nextInt(100) == 0);
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        this.setAlbino(random.nextInt(100) == 0);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public boolean canBreatheUnderwater() {
@@ -734,51 +760,51 @@ public class EntityCachalotWhale extends AnimalEntity {
     }
 
     public void baseTick() {
-        int i = this.getAir();
+        int i = this.getAirSupply();
         super.baseTick();
         this.updateAir(i);
     }
 
-    public boolean isPushedByWater() {
+    public boolean isPushedByFluid() {
         return false;
     }
 
-    public CreatureAttribute getCreatureAttribute() {
-        return CreatureAttribute.WATER;
+    public MobType getMobType() {
+        return MobType.WATER;
     }
 
-    public boolean isNotColliding(IWorldReader worldIn) {
-        return worldIn.checkNoEntityCollision(this);
+    public boolean checkSpawnObstruction(LevelReader worldIn) {
+        return worldIn.isUnobstructed(this);
     }
 
     protected void updateAir(int p_209207_1_) {
     }
 
-    public int getMaxAir() {
+    public int getMaxAirSupply() {
         return 4000;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void handleStatusUpdate(byte id) {
+    public void handleEntityEvent(byte id) {
         if (id == 67) {
             spawnSpoutParticles();
         } else {
-            super.handleStatusUpdate(id);
+            super.handleEntityEvent(id);
         }
     }
 
-    protected int determineNextAir(int currentAir) {
-        if (!this.areEyesInFluid(FluidTags.WATER) && prevEyesInWater && !world.isRemote && spoutTimer <= 0 && currentAir < this.getMaxAir() / 2) {
-            spoutTimer = 20 + rand.nextInt(10);
+    protected int increaseAirSupply(int currentAir) {
+        if (!this.isEyeInFluid(FluidTags.WATER) && prevEyesInWater && !level.isClientSide && spoutTimer <= 0 && currentAir < this.getMaxAirSupply() / 2) {
+            spoutTimer = 20 + random.nextInt(10);
         }
-        return this.getMaxAir();
+        return this.getMaxAirSupply();
     }
 
-    public int getVerticalFaceSpeed() {
+    public int getMaxHeadXRot() {
         return 1;
     }
 
-    public int getHorizontalFaceSpeed() {
+    public int getMaxHeadYRot() {
         return 3;
     }
 
@@ -786,62 +812,62 @@ public class EntityCachalotWhale extends AnimalEntity {
         this.receivedEcho = true;
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.cachalotWhaleSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.cachalotWhaleSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     class AIBreathe extends Goal {
 
         public AIBreathe() {
-            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
-        public boolean shouldExecute() {
-            return EntityCachalotWhale.this.getAir() < 140;
+        public boolean canUse() {
+            return EntityCachalotWhale.this.getAirSupply() < 140;
         }
 
-        public boolean shouldContinueExecuting() {
-            return this.shouldExecute();
+        public boolean canContinueToUse() {
+            return this.canUse();
         }
 
-        public boolean isPreemptible() {
+        public boolean isInterruptable() {
             return false;
         }
 
-        public void startExecuting() {
+        public void start() {
             this.navigate();
         }
 
         private void navigate() {
-            Iterable<BlockPos> lvt_1_1_ = BlockPos.getAllInBoxMutable(MathHelper.floor(EntityCachalotWhale.this.getPosX() - 1.0D), MathHelper.floor(EntityCachalotWhale.this.getPosY()), MathHelper.floor(EntityCachalotWhale.this.getPosZ() - 1.0D), MathHelper.floor(EntityCachalotWhale.this.getPosX() + 1.0D), MathHelper.floor(EntityCachalotWhale.this.getPosY() + 8.0D), MathHelper.floor(EntityCachalotWhale.this.getPosZ() + 1.0D));
+            Iterable<BlockPos> lvt_1_1_ = BlockPos.betweenClosed(Mth.floor(EntityCachalotWhale.this.getX() - 1.0D), Mth.floor(EntityCachalotWhale.this.getY()), Mth.floor(EntityCachalotWhale.this.getZ() - 1.0D), Mth.floor(EntityCachalotWhale.this.getX() + 1.0D), Mth.floor(EntityCachalotWhale.this.getY() + 8.0D), Mth.floor(EntityCachalotWhale.this.getZ() + 1.0D));
             BlockPos lvt_2_1_ = null;
             Iterator var3 = lvt_1_1_.iterator();
 
             while (var3.hasNext()) {
                 BlockPos lvt_4_1_ = (BlockPos) var3.next();
-                if (this.canBreatheAt(EntityCachalotWhale.this.world, lvt_4_1_)) {
-                    lvt_2_1_ = lvt_4_1_.down((int) (EntityCachalotWhale.this.getHeight() * 0.25d));
+                if (this.canBreatheAt(EntityCachalotWhale.this.level, lvt_4_1_)) {
+                    lvt_2_1_ = lvt_4_1_.below((int) (EntityCachalotWhale.this.getBbHeight() * 0.25d));
                     break;
                 }
             }
 
             if (lvt_2_1_ == null) {
-                lvt_2_1_ = new BlockPos(EntityCachalotWhale.this.getPosX(), EntityCachalotWhale.this.getPosY() + 4.0D, EntityCachalotWhale.this.getPosZ());
+                lvt_2_1_ = new BlockPos(EntityCachalotWhale.this.getX(), EntityCachalotWhale.this.getY() + 4.0D, EntityCachalotWhale.this.getZ());
             }
-            if (EntityCachalotWhale.this.areEyesInFluid(FluidTags.WATER)) {
-                EntityCachalotWhale.this.setMotion(EntityCachalotWhale.this.getMotion().add(0, 0.05F, 0));
+            if (EntityCachalotWhale.this.isEyeInFluid(FluidTags.WATER)) {
+                EntityCachalotWhale.this.setDeltaMovement(EntityCachalotWhale.this.getDeltaMovement().add(0, 0.05F, 0));
             }
 
-            EntityCachalotWhale.this.getNavigator().tryMoveToXYZ(lvt_2_1_.getX(), lvt_2_1_.getY(), lvt_2_1_.getZ(), 0.7D);
+            EntityCachalotWhale.this.getNavigation().moveTo(lvt_2_1_.getX(), lvt_2_1_.getY(), lvt_2_1_.getZ(), 0.7D);
         }
 
         public void tick() {
             this.navigate();
         }
 
-        private boolean canBreatheAt(IWorldReader p_205140_1_, BlockPos p_205140_2_) {
+        private boolean canBreatheAt(LevelReader p_205140_1_, BlockPos p_205140_2_) {
             BlockState lvt_3_1_ = p_205140_1_.getBlockState(p_205140_2_);
-            return (p_205140_1_.getFluidState(p_205140_2_).isEmpty() || lvt_3_1_.matchesBlock(Blocks.BUBBLE_COLUMN)) && lvt_3_1_.allowsMovement(p_205140_1_, p_205140_2_, PathType.LAND);
+            return (p_205140_1_.getFluidState(p_205140_2_).isEmpty() || lvt_3_1_.is(Blocks.BUBBLE_COLUMN)) && lvt_3_1_.isPathfindable(p_205140_1_, p_205140_2_, PathComputationType.LAND);
         }
     }
 }

@@ -4,26 +4,26 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -31,54 +31,60 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
+
 public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMultipart {
 
-    private static final DataParameter<Boolean> TAIL = EntityDataManager.createKey(EntityBoneSerpentPart.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> BODYINDEX = EntityDataManager.createKey(EntityBoneSerpentPart.class, DataSerializers.VARINT);
-    private static final DataParameter<Optional<UUID>> PARENT_UUID = EntityDataManager.createKey(EntityBoneSerpentPart.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-    public EntitySize multipartSize;
+    private static final EntityDataAccessor<Boolean> TAIL = SynchedEntityData.defineId(EntityBoneSerpentPart.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> BODYINDEX = SynchedEntityData.defineId(EntityBoneSerpentPart.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Optional<UUID>> PARENT_UUID = SynchedEntityData.defineId(EntityBoneSerpentPart.class, EntityDataSerializers.OPTIONAL_UUID);
+    public EntityDimensions multipartSize;
     protected float radius;
     protected float angleYaw;
     protected float offsetY;
     protected float damageMultiplier = 1;
 
-    public EntityBoneSerpentPart(EntityType t, World world) {
+    public EntityBoneSerpentPart(EntityType t, Level world) {
         super(t, world);
-        multipartSize = t.getSize();
+        multipartSize = t.getDimensions();
     }
 
     public EntityBoneSerpentPart(EntityType t, LivingEntity parent, float radius, float angleYaw, float offsetY) {
-        super(t, parent.world);
+        super(t, parent.level);
         this.setParent(parent);
         this.radius = radius;
         this.angleYaw = (angleYaw + 90.0F) * ((float) Math.PI / 180.0F);
         this.offsetY = offsetY;
     }
 
-    public CreatureAttribute getCreatureAttribute() {
-        return CreatureAttribute.UNDEAD;
+    public MobType getMobType() {
+        return MobType.UNDEAD;
     }
 
     public boolean startRiding(Entity entityIn) {
-        if(!(entityIn instanceof AbstractMinecartEntity || entityIn instanceof BoatEntity)){
+        if(!(entityIn instanceof AbstractMinecart || entityIn instanceof Boat)){
             return super.startRiding(entityIn);
         }
         return false;
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
     @Override
-    public net.minecraft.entity.Entity getEntity() {
+    public net.minecraft.world.entity.Entity getEntity() {
         return this;
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         if (this.getParentId() != null) {
-            compound.putUniqueId("ParentUUID", this.getParentId());
+            compound.putUUID("ParentUUID", this.getParentId());
         }
         compound.putBoolean("TailPart", isTail());
         compound.putInt("BodyIndex", getBodyIndex());
@@ -86,10 +92,10 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         compound.putFloat("PartRadius", radius);
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        if (compound.hasUniqueId("ParentUUID")) {
-            this.setParentId(compound.getUniqueId("ParentUUID"));
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.hasUUID("ParentUUID")) {
+            this.setParentId(compound.getUUID("ParentUUID"));
         }
         this.setTail(compound.getBoolean("TailPart"));
         this.setBodyIndex(compound.getInt("BodyIndex"));
@@ -98,57 +104,57 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(PARENT_UUID, Optional.empty());
-        this.dataManager.register(TAIL, false);
-        this.dataManager.register(BODYINDEX, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(PARENT_UUID, Optional.empty());
+        this.entityData.define(TAIL, false);
+        this.entityData.define(BODYINDEX, 0);
     }
 
     @Nullable
     public UUID getParentId() {
-        return this.dataManager.get(PARENT_UUID).orElse(null);
+        return this.entityData.get(PARENT_UUID).orElse(null);
     }
 
     public void setParentId(@Nullable UUID uniqueId) {
-        this.dataManager.set(PARENT_UUID, Optional.ofNullable(uniqueId));
+        this.entityData.set(PARENT_UUID, Optional.ofNullable(uniqueId));
     }
 
     public void setInitialPartPos(Entity parent) {
-        this.setPosition(parent.prevPosX + this.radius * Math.cos(parent.rotationYaw * (Math.PI / 180.0F) + this.angleYaw), parent.prevPosY + this.offsetY, parent.prevPosZ + this.radius * Math.sin(parent.rotationYaw * (Math.PI / 180.0F) + this.angleYaw));
+        this.setPos(parent.xo + this.radius * Math.cos(parent.yRot * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.yRot * (Math.PI / 180.0F) + this.angleYaw));
     }
 
     @Override
     public void tick() {
-        inPortal = false;
-        if (this.ticksExisted > 10) {
+        isInsidePortal = false;
+        if (this.tickCount > 10) {
             Entity parent = getParent();
-            recalculateSize();
-            if (parent != null && !world.isRemote) {
+            refreshDimensions();
+            if (parent != null && !level.isClientSide) {
                 this.setNoGravity(true);
-                this.setPosition(parent.prevPosX + this.radius * Math.cos(parent.prevRotationYaw * (Math.PI / 180.0F) + this.angleYaw), parent.prevPosY + this.offsetY, parent.prevPosZ + this.radius * Math.sin(parent.prevRotationYaw * (Math.PI / 180.0F) + this.angleYaw));
-                double d0 = parent.getPosX() - this.getPosX();
-                double d1 = parent.getPosY() - this.getPosY();
-                double d2 = parent.getPosZ() - this.getPosZ();
+                this.setPos(parent.xo + this.radius * Math.cos(parent.yRotO * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.yRotO * (Math.PI / 180.0F) + this.angleYaw));
+                double d0 = parent.getX() - this.getX();
+                double d1 = parent.getY() - this.getY();
+                double d2 = parent.getZ() - this.getZ();
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                float f2 = -((float) (MathHelper.atan2(d1, MathHelper.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
-                this.rotationPitch = this.limitAngle(this.rotationPitch, f2, 5.0F);
-                this.markVelocityChanged();
-                this.rotationYaw = parent.prevRotationYaw;
-                this.rotationYawHead = this.rotationYaw;
-                this.renderYawOffset = this.prevRotationYaw;
+                float f2 = -((float) (Mth.atan2(d1, Mth.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
+                this.xRot = this.limitAngle(this.xRot, f2, 5.0F);
+                this.markHurt();
+                this.yRot = parent.yRotO;
+                this.yHeadRot = this.yRot;
+                this.yBodyRot = this.yRotO;
                 if (parent instanceof LivingEntity) {
-                    if(!world.isRemote && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)){
-                        AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getEntityId(), parent.getEntityId(), 0));
+                    if(!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)){
+                        AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), 0));
                         this.hurtTime = ((LivingEntity) parent).hurtTime;
                         this.deathTime = ((LivingEntity) parent).deathTime;
                     }
                 }
-                this.collideWithNearbyEntities();
-                if (parent.removed && !world.isRemote) {
+                this.pushEntities();
+                if (parent.removed && !level.isClientSide) {
                     this.remove();
                 }
-            } else if (ticksExisted > 20 && !world.isRemote) {
+            } else if (tickCount > 20 && !level.isClientSide) {
                 remove();
             }
         }
@@ -156,7 +162,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     protected float limitAngle(float sourceAngle, float targetAngle, float maximumChange) {
-        float f = MathHelper.wrapDegrees(targetAngle - sourceAngle);
+        float f = Mth.wrapDegrees(targetAngle - sourceAngle);
         if (f > maximumChange) {
             f = maximumChange;
         }
@@ -181,90 +187,90 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
 
     public Entity getParent() {
         UUID id = getParentId();
-        if (id != null && !world.isRemote) {
-            return ((ServerWorld) world).getEntityByUuid(id);
+        if (id != null && !level.isClientSide) {
+            return ((ServerLevel) level).getEntity(id);
         }
         return null;
     }
 
     public void setParent(Entity entity) {
-        this.setParentId(entity.getUniqueID());
+        this.setParentId(entity.getUUID());
     }
 
     @Override
-    public boolean isEntityEqual(net.minecraft.entity.Entity entity) {
+    public boolean is(net.minecraft.world.entity.Entity entity) {
         return this == entity || this.getParent() == entity;
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return true;
     }
 
     @Override
-    public HandSide getPrimaryHand() {
+    public HumanoidArm getMainArm() {
         return null;
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public void collideWithNearbyEntities() {
-        List<net.minecraft.entity.Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+    public void pushEntities() {
+        List<net.minecraft.world.entity.Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
         Entity parent = this.getParent();
         if (parent != null) {
-            entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityBoneSerpentPart) && entity.canBePushed()).forEach(entity -> entity.applyEntityCollision(parent));
+            entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityBoneSerpentPart) && entity.isPushable()).forEach(entity -> entity.push(parent));
 
         }
     }
 
-    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         Entity parent = getParent();
 
-        return parent != null ? parent.processInitialInteract(player, hand) : ActionResultType.PASS;
+        return parent != null ? parent.interact(player, hand) : InteractionResult.PASS;
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float damage) {
+    public boolean hurt(DamageSource source, float damage) {
         Entity parent = getParent();
-        boolean prev = parent != null && parent.attackEntityFrom(source, damage * this.damageMultiplier);
-        if (prev && !world.isRemote) {
-            AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getEntityId(), parent.getEntityId(), damage * this.damageMultiplier));
+        boolean prev = parent != null && parent.hurt(source, damage * this.damageMultiplier);
+        if (prev && !level.isClientSide) {
+            AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), damage * this.damageMultiplier));
         }
         return prev;
     }
 
     @Override
-    public Iterable<ItemStack> getArmorInventoryList() {
+    public Iterable<ItemStack> getArmorSlots() {
         return ImmutableList.of();
     }
 
     @Override
-    public ItemStack getItemStackFromSlot(EquipmentSlotType slotIn) {
+    public ItemStack getItemBySlot(EquipmentSlot slotIn) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public void setItemStackToSlot(EquipmentSlotType slotIn, ItemStack stack) {
+    public void setItemSlot(EquipmentSlot slotIn, ItemStack stack) {
 
     }
 
     public boolean isTail() {
-        return this.dataManager.get(TAIL).booleanValue();
+        return this.entityData.get(TAIL).booleanValue();
     }
 
     public void setTail(boolean tail) {
-        this.dataManager.set(TAIL, Boolean.valueOf(tail));
+        this.entityData.set(TAIL, Boolean.valueOf(tail));
     }
 
     public int getBodyIndex() {
-        return this.dataManager.get(BODYINDEX);
+        return this.entityData.get(BODYINDEX);
     }
 
     public void setBodyIndex(int index) {
-        this.dataManager.set(BODYINDEX, index);
+        this.entityData.set(BODYINDEX, index);
     }
 
     public boolean shouldNotExist() {

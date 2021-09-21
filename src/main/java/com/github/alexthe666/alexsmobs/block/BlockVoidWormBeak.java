@@ -2,87 +2,95 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityVoidWormBeak;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockVoidWormBeak extends ContainerBlock {
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class BlockVoidWormBeak extends BaseEntityBlock {
 
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    private static final VoxelShape AABB = Block.makeCuboidShape(0, 4, 0, 16, 12, 16);
-    private static final VoxelShape AABB_VERTICAL = Block.makeCuboidShape(0, 0, 4, 16, 16, 12);
+    private static final VoxelShape AABB = Block.box(0, 4, 0, 16, 12, 16);
+    private static final VoxelShape AABB_VERTICAL = Block.box(0, 0, 4, 16, 16, 12);
 
     public BlockVoidWormBeak() {
-        super(Properties.create(Material.DRAGON_EGG).notSolid().sound(SoundType.ANCIENT_DEBRIS).harvestTool(ToolType.PICKAXE).hardnessAndResistance(3F).doesNotBlockMovement());
-        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
+        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).harvestTool(ToolType.PICKAXE).strength(3F).noCollission());
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
         this.setRegistryName("alexsmobs:void_worm_beak");
     }
 
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return state.get(FACING).getAxis() == Direction.Axis.Y ? AABB_VERTICAL : AABB;
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        return state.getValue(FACING).getAxis() == Direction.Axis.Y ? AABB_VERTICAL : AABB;
     }
 
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if(!worldIn.isRemote){
+    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        if(!worldIn.isClientSide){
             this.updateState(state, worldIn, pos, blockIn);
         }
     }
 
-    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
-        if(!worldIn.isRemote){
+    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+        if(!worldIn.isClientSide){
             this.updateState(state, worldIn, pos, state.getBlock());
         }
     }
 
-    public void updateState(BlockState state, World worldIn, BlockPos pos, Block blockIn) {
-        boolean flag = state.get(POWERED);
-        boolean flag1 = worldIn.isBlockPowered(pos);
+    public void updateState(BlockState state, Level worldIn, BlockPos pos, Block blockIn) {
+        boolean flag = state.getValue(POWERED);
+        boolean flag1 = worldIn.hasNeighborSignal(pos);
 
         if (flag1 != flag) {
-            worldIn.setBlockState(pos, state.with(POWERED, Boolean.valueOf(flag1)), 3);
-            worldIn.notifyNeighborsOfStateChange(pos.down(), this);
+            worldIn.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(flag1)), 3);
+            worldIn.updateNeighborsAt(pos.below(), this);
         }
     }
 
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public BlockEntity newBlockEntity(BlockGetter worldIn) {
         return new TileEntityVoidWormBeak();
     }
 
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(FACING, context.getFace()).with(POWERED, Boolean.valueOf(context.getWorld().isBlockPowered(context.getPos())));
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getClickedFace()).setValue(POWERED, Boolean.valueOf(context.getLevel().hasNeighborSignal(context.getClickedPos())));
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {
-        return state.with(FACING, rot.rotate(state.get(FACING)));
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     public BlockState mirror(BlockState state, Mirror mirrorIn) {
-        return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+        return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
     }
 
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, POWERED);
     }
 }

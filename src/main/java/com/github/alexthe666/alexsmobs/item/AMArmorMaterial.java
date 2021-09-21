@@ -1,8 +1,8 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.sounds.SoundEvent;
 
 public class AMArmorMaterial extends CustomArmorMaterial {
 
@@ -19,7 +19,7 @@ public class AMArmorMaterial extends CustomArmorMaterial {
         this.maxDamageFactor = durability;
     }
 
-    public int getDurability(EquipmentSlotType slotIn) {
+    public int getDurabilityForSlot(EquipmentSlot slotIn) {
         return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
     }
 }

@@ -4,42 +4,44 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntitySeagull;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 public class SeagullAIStealFromPlayers extends Goal {
 
     private EntitySeagull seagull;
-    private Vector3d fleeVec = null;
-    private PlayerEntity target;
+    private Vec3 fleeVec = null;
+    private Player target;
     private int fleeTime = 0;
 
     public SeagullAIStealFromPlayers(EntitySeagull entitySeagull) {
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Flag.TARGET));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.TARGET));
         this.seagull = entitySeagull;
     }
 
     @Override
-    public boolean shouldExecute() {
-        long worldTime = this.seagull.world.getGameTime() % 10;
-        if (this.seagull.getIdleTime() >= 100 && worldTime != 0 || seagull.isSitting() || !AMConfig.seagullStealing) {
+    public boolean canUse() {
+        long worldTime = this.seagull.level.getGameTime() % 10;
+        if (this.seagull.getNoActionTime() >= 100 && worldTime != 0 || seagull.isSitting() || !AMConfig.seagullStealing) {
             return false;
         }
-        if (this.seagull.getRNG().nextInt(12) != 0 && worldTime != 0 || seagull.stealCooldown > 0) {
+        if (this.seagull.getRandom().nextInt(12) != 0 && worldTime != 0 || seagull.stealCooldown > 0) {
             return false;
         }
-        if(this.seagull.getHeldItemMainhand().isEmpty()){
-            PlayerEntity valid = getClosestValidPlayer();
+        if(this.seagull.getMainHandItem().isEmpty()){
+            Player valid = getClosestValidPlayer();
             if(valid != null){
                 target = valid;
                 return true;
@@ -48,11 +50,11 @@ public class SeagullAIStealFromPlayers extends Goal {
         return false;
     }
 
-    public void startExecuting(){
+    public void start(){
         this.seagull.aiItemFlag = true;
     }
 
-    public void resetTask(){
+    public void stop(){
         this.seagull.aiItemFlag = false;
         target = null;
         fleeVec = null;
@@ -60,14 +62,14 @@ public class SeagullAIStealFromPlayers extends Goal {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        return target != null && !target.isCreative() && (seagull.getHeldItemMainhand().isEmpty() || fleeTime > 0);
+    public boolean canContinueToUse() {
+        return target != null && !target.isCreative() && (seagull.getMainHandItem().isEmpty() || fleeTime > 0);
     }
 
     public void tick(){
         seagull.setFlying(true);
-        seagull.getMoveHelper().setMoveTo(target.getPosX(), target.getPosYEye(), target.getPosZ(), 1.2F);
-        if(seagull.getDistance(target) < 2F && seagull.getHeldItemMainhand().isEmpty()){
+        seagull.getMoveControl().setWantedPosition(target.getX(), target.getEyeY(), target.getZ(), 1.2F);
+        if(seagull.distanceTo(target) < 2F && seagull.getMainHandItem().isEmpty()){
             if(hasFoods(target)){
                 ItemStack foodStack = getFoodItemFrom(target);
                 if(!foodStack.isEmpty()){
@@ -75,27 +77,27 @@ public class SeagullAIStealFromPlayers extends Goal {
                     foodStack.shrink(1);
                     copy.setCount(1);
                     seagull.peck();
-                    seagull.setHeldItem(Hand.MAIN_HAND, copy);
+                    seagull.setItemInHand(InteractionHand.MAIN_HAND, copy);
                     fleeTime = 60;
-                    seagull.stealCooldown = 1500 + seagull.getRNG().nextInt(1500);
-                    if(target instanceof ServerPlayerEntity){
-                        AMAdvancementTriggerRegistry.SEAGULL_STEAL.trigger((ServerPlayerEntity)target);
+                    seagull.stealCooldown = 1500 + seagull.getRandom().nextInt(1500);
+                    if(target instanceof ServerPlayer){
+                        AMAdvancementTriggerRegistry.SEAGULL_STEAL.trigger((ServerPlayer)target);
                     }
                 }else{
-                    resetTask();
+                    stop();
                 }
             }else{
-                resetTask();
+                stop();
             }
         }
         if(fleeTime > 0){
             if(fleeVec == null){
-                fleeVec = seagull.getBlockInViewAway(target.getPositionVec(), 4);
+                fleeVec = seagull.getBlockInViewAway(target.position(), 4);
             }
             if(fleeVec != null){
                 seagull.setFlying(true);
-                seagull.getMoveHelper().setMoveTo(fleeVec.x, fleeVec.y, fleeVec.z, 1.2F);
-                if(seagull.getDistanceSq(fleeVec) < 5){
+                seagull.getMoveControl().setWantedPosition(fleeVec.x, fleeVec.y, fleeVec.z, 1.2F);
+                if(seagull.distanceToSqr(fleeVec) < 5){
                     fleeVec = seagull.getBlockInViewAway(fleeVec, 4);
                 }
             }
@@ -103,12 +105,12 @@ public class SeagullAIStealFromPlayers extends Goal {
         }
     }
 
-    private PlayerEntity getClosestValidPlayer(){
-        List<PlayerEntity> list = seagull.world.getEntitiesWithinAABB(PlayerEntity.class, seagull.getBoundingBox().grow(10, 25, 10), EntityPredicates.CAN_AI_TARGET);
-        PlayerEntity closest = null;
+    private Player getClosestValidPlayer(){
+        List<Player> list = seagull.level.getEntitiesOfClass(Player.class, seagull.getBoundingBox().inflate(10, 25, 10), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
+        Player closest = null;
         if(!list.isEmpty()){
-            for(PlayerEntity player : list){
-                if((closest == null || closest.getDistance(seagull) > player.getDistance(seagull)) && hasFoods(player)){
+            for(Player player : list){
+                if((closest == null || closest.distanceTo(seagull) > player.distanceTo(seagull)) && hasFoods(player)){
                     closest = player;
                 }
             }
@@ -116,10 +118,10 @@ public class SeagullAIStealFromPlayers extends Goal {
         return closest;
     }
 
-    private boolean hasFoods(PlayerEntity player){
+    private boolean hasFoods(Player player){
         for(int i = 0; i < 9; i++){
-            ItemStack stackIn = player.inventory.mainInventory.get(i);
-            if(stackIn.isFood() && !isBlacklisted(stackIn)){
+            ItemStack stackIn = player.inventory.items.get(i);
+            if(stackIn.isEdible() && !isBlacklisted(stackIn)){
                 return true;
             }
         }
@@ -135,16 +137,16 @@ public class SeagullAIStealFromPlayers extends Goal {
         return false;
     }
 
-    private ItemStack getFoodItemFrom(PlayerEntity player){
+    private ItemStack getFoodItemFrom(Player player){
         List<ItemStack> foods = new ArrayList<>();
         for(int i = 0; i < 9; i++){
-            ItemStack stackIn = player.inventory.mainInventory.get(i);
-            if(stackIn.isFood() && !isBlacklisted(stackIn)){
+            ItemStack stackIn = player.inventory.items.get(i);
+            if(stackIn.isEdible() && !isBlacklisted(stackIn)){
                 foods.add(stackIn);
             }
         }
         if(!foods.isEmpty()){
-            return foods.get(foods.size() <= 1 ? 0 : seagull.getRNG().nextInt(foods.size() - 1));
+            return foods.get(foods.size() <= 1 ? 0 : seagull.getRandom().nextInt(foods.size() - 1));
         }
         return ItemStack.EMPTY;
     }

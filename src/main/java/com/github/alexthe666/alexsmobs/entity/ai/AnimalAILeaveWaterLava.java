@@ -1,29 +1,31 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 public class AnimalAILeaveWaterLava extends Goal {
-    private final CreatureEntity creature;
+    private final PathfinderMob creature;
     private BlockPos targetPos;
     private int executionChance = 30;
 
-    public AnimalAILeaveWaterLava(CreatureEntity creature) {
+    public AnimalAILeaveWaterLava(PathfinderMob creature) {
         this.creature = creature;
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
-    public boolean shouldExecute() {
-        if (this.creature.world.getFluidState(this.creature.getPosition()).isTagged(FluidTags.WATER) || this.creature.world.getFluidState(this.creature.getPosition()).isTagged(FluidTags.LAVA)){
-            if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldLeaveWater() && (this.creature.getAttackTarget() != null || this.creature.getRNG().nextInt(executionChance) == 0)){
+    public boolean canUse() {
+        if (this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER) || this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.LAVA)){
+            if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldLeaveWater() && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)){
                 targetPos = generateTarget();
                 return targetPos != null;
             }
@@ -31,44 +33,44 @@ public class AnimalAILeaveWaterLava extends Goal {
         return false;
     }
 
-    public void startExecuting() {
+    public void start() {
         if(targetPos != null){
-            this.creature.getNavigator().tryMoveToXYZ(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
+            this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
     }
 
     public void tick() {
         if(targetPos != null){
-            this.creature.getNavigator().tryMoveToXYZ(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
+            this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
-        if(this.creature.collidedHorizontally && (this.creature.isInWater() || this.creature.isInLava())){
-            float f1 = creature.rotationYaw * ((float)Math.PI / 180F);
-            creature.setMotion(creature.getMotion().add((double)(-MathHelper.sin(f1) * 0.2F), 0.1D, (double)(MathHelper.cos(f1) * 0.2F)));
+        if(this.creature.horizontalCollision && (this.creature.isInWater() || this.creature.isInLava())){
+            float f1 = creature.yRot * ((float)Math.PI / 180F);
+            creature.setDeltaMovement(creature.getDeltaMovement().add((double)(-Mth.sin(f1) * 0.2F), 0.1D, (double)(Mth.cos(f1) * 0.2F)));
 
         }
     }
 
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         if(this.creature instanceof ISemiAquatic && !((ISemiAquatic) this.creature).shouldLeaveWater()){
-            this.creature.getNavigator().clearPath();
+            this.creature.getNavigation().stop();
             return false;
         }
-        return !this.creature.getNavigator().noPath() && targetPos != null && !this.creature.world.getFluidState(targetPos).isTagged(FluidTags.WATER)  && !this.creature.world.getFluidState(targetPos).isTagged(FluidTags.LAVA);
+        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level.getFluidState(targetPos).is(FluidTags.WATER)  && !this.creature.level.getFluidState(targetPos).is(FluidTags.LAVA);
     }
 
     public BlockPos generateTarget() {
-        Vector3d vector3d = RandomPositionGenerator.getLandPos(this.creature, 23, 7);
+        Vec3 vector3d = RandomPos.getLandPos(this.creature, 23, 7);
         int tries = 0;
         while(vector3d != null && tries < 8){
             boolean waterDetected = false;
-            for(BlockPos blockpos1 : BlockPos.getAllInBoxMutable(MathHelper.floor(vector3d.x - 2.0D), MathHelper.floor(vector3d.y - 1.0D), MathHelper.floor(vector3d.z - 2.0D), MathHelper.floor(vector3d.x + 2.0D), MathHelper.floor(vector3d.y), MathHelper.floor(vector3d.z + 2.0D))) {
-                if (this.creature.world.getFluidState(blockpos1).isTagged(FluidTags.WATER) || this.creature.world.getFluidState(blockpos1).isTagged(FluidTags.LAVA)) {
+            for(BlockPos blockpos1 : BlockPos.betweenClosed(Mth.floor(vector3d.x - 2.0D), Mth.floor(vector3d.y - 1.0D), Mth.floor(vector3d.z - 2.0D), Mth.floor(vector3d.x + 2.0D), Mth.floor(vector3d.y), Mth.floor(vector3d.z + 2.0D))) {
+                if (this.creature.level.getFluidState(blockpos1).is(FluidTags.WATER) || this.creature.level.getFluidState(blockpos1).is(FluidTags.LAVA)) {
                     waterDetected = true;
                     break;
                 }
             }
             if(waterDetected){
-                vector3d = RandomPositionGenerator.getLandPos(this.creature, 23, 7);
+                vector3d = RandomPos.getLandPos(this.creature, 23, 7);
             }else{
                 return new BlockPos(vector3d);
             }

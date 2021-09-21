@@ -3,15 +3,15 @@ package com.github.alexthe666.alexsmobs.message;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeContainer;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkBiomeContainer;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -34,15 +34,15 @@ public class MessageMungusBiomeChange  {
     public MessageMungusBiomeChange() {
     }
 
-    public static MessageMungusBiomeChange read(PacketBuffer buf) {
-        return new MessageMungusBiomeChange(buf.readInt(), buf.readInt(), buf.readInt(), buf.readString());
+    public static MessageMungusBiomeChange read(FriendlyByteBuf buf) {
+        return new MessageMungusBiomeChange(buf.readInt(), buf.readInt(), buf.readInt(), buf.readUtf());
     }
 
-    public static void write(MessageMungusBiomeChange message, PacketBuffer buf) {
+    public static void write(MessageMungusBiomeChange message, FriendlyByteBuf buf) {
         buf.writeInt(message.mungusID);
         buf.writeInt(message.posX);
         buf.writeInt(message.posZ);
-        buf.writeString(message.biomeOption);
+        buf.writeUtf(message.biomeOption);
     }
 
     public static class Handler {
@@ -51,20 +51,20 @@ public class MessageMungusBiomeChange  {
 
         public static void handle(MessageMungusBiomeChange message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
+            Player player = context.get().getSender();
             if(context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT){
                 player = AlexsMobs.PROXY.getClientSidePlayer();
             }
 
             if (player != null) {
-                if (player.world != null) {
-                    Entity entity = player.world.getEntityByID(message.mungusID);
-                    Registry<Biome> registry = player.world.func_241828_r().getRegistry(Registry.BIOME_KEY);
-                    Biome biome =  registry.getOrDefault(new ResourceLocation(message.biomeOption));
+                if (player.level != null) {
+                    Entity entity = player.level.getEntity(message.mungusID);
+                    Registry<Biome> registry = player.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+                    Biome biome =  registry.get(new ResourceLocation(message.biomeOption));
                     if(AMConfig.mungusBiomeTransformationType == 2) {
-                        if (entity instanceof EntityMungus && entity.getDistanceSq(message.posX, entity.getPosY(), message.posZ) < 1000 && biome != null) {
-                            Chunk chunk = player.world.getChunkAt(new BlockPos(message.posX, 0, message.posZ));
-                            BiomeContainer container = chunk.getBiomes();
+                        if (entity instanceof EntityMungus && entity.distanceToSqr(message.posX, entity.getY(), message.posZ) < 1000 && biome != null) {
+                            LevelChunk chunk = player.level.getChunkAt(new BlockPos(message.posX, 0, message.posZ));
+                            ChunkBiomeContainer container = chunk.getBiomes();
                             if (container != null) {
                                 for (int i = 0; i < container.biomes.length; i++) {
                                     container.biomes[i] = biome;

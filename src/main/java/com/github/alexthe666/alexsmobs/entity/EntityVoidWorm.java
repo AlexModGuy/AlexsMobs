@@ -8,69 +8,90 @@ import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.*;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class EntityVoidWorm extends MonsterEntity {
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+
+public class EntityVoidWorm extends Monster {
 
     public static final ResourceLocation SPLITTER_LOOT = new ResourceLocation("alexsmobs", "entities/void_worm_splitter");
-    private static final DataParameter<Optional<UUID>> CHILD_UUID = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-    private static final DataParameter<Optional<UUID>> SPLIT_FROM_UUID = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-    private static final DataParameter<Integer> SEGMENT_COUNT = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> JAW_TICKS = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.VARINT);
-    private static final DataParameter<Float> WORM_ANGLE = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> SPEEDMOD = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.FLOAT);
-    private static final DataParameter<Boolean> SPLITTER = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> PORTAL_TICKS = EntityDataManager.createKey(EntityVoidWorm.class, DataSerializers.VARINT);
-    private final ServerBossInfo bossInfo = (ServerBossInfo) (new ServerBossInfo(this.getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS)).setDarkenSky(true);
+    private static final EntityDataAccessor<Optional<UUID>> CHILD_UUID = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> SPLIT_FROM_UUID = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> SEGMENT_COUNT = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> JAW_TICKS = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> WORM_ANGLE = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> SPEEDMOD = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> SPLITTER = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> PORTAL_TICKS = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.INT);
+    private final ServerBossEvent bossInfo = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.PROGRESS)).setDarkenScreen(true);
     public float prevWormAngle;
     public float prevJawProgress;
     public float jawProgress;
-    public Vector3d teleportPos = null;
+    public Vec3 teleportPos = null;
     public EntityVoidPortal portalTarget = null;
     public boolean fullyThrough = true;
     public boolean updatePostSummon = false;
     private int makePortalCooldown = 0;
     private int stillTicks = 0;
     private int blockBreakCounter;
-    private int makeIdlePortalCooldown = 200 + rand.nextInt(800);
+    private int makeIdlePortalCooldown = 200 + random.nextInt(800);
 
-    protected EntityVoidWorm(EntityType<? extends MonsterEntity> type, World worldIn) {
+    protected EntityVoidWorm(EntityType<? extends Monster> type, Level worldIn) {
         super(type, worldIn);
-        this.experienceValue = 10;
-        this.moveController = new FlightMoveController(this, 1F, false, true);
+        this.xpReward = 10;
+        this.moveControl = new FlightMoveController(this, 1F, false, true);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -89,54 +110,54 @@ public class EntityVoidWorm extends MonsterEntity {
         return isSilent() ? 0 : 5;
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.voidWormSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.voidWormSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canVoidWormSpawn(EntityType animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
+    public static boolean canVoidWormSpawn(EntityType animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
         return true;
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, AMConfig.voidWormMaxHealth).createMutableAttribute(Attributes.ARMOR, 4.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 256.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F).createMutableAttribute(Attributes.ATTACK_DAMAGE, 5);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, AMConfig.voidWormMaxHealth).add(Attributes.ARMOR, 4.0D).add(Attributes.FOLLOW_RANGE, 256.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 5);
     }
 
     @Nullable
-    protected ResourceLocation getLootTable() {
-        return this.isSplitter() ? SPLITTER_LOOT : super.getLootTable();
+    protected ResourceLocation getDefaultLootTable() {
+        return this.isSplitter() ? SPLITTER_LOOT : super.getDefaultLootTable();
     }
 
-    public void onKillCommand() {
+    public void kill() {
         this.remove();
     }
 
-    public void onDeath(DamageSource cause) {
-       super.onDeath(cause);
-       if(!world.isRemote && !this.isSplitter()){
-           if(cause != null && cause.getTrueSource() instanceof ServerPlayerEntity) {
-               AMAdvancementTriggerRegistry.VOID_WORM_SLAY_HEAD.trigger((ServerPlayerEntity) cause.getTrueSource());
+    public void die(DamageSource cause) {
+       super.die(cause);
+       if(!level.isClientSide && !this.isSplitter()){
+           if(cause != null && cause.getEntity() instanceof ServerPlayer) {
+               AMAdvancementTriggerRegistry.VOID_WORM_SLAY_HEAD.trigger((ServerPlayer) cause.getEntity());
            }
        }
     }
 
     @Override
-    public ItemEntity entityDropItem(ItemStack stack) {
-        ItemEntity itementity = this.entityDropItem(stack, 0.0F);
+    public ItemEntity spawnAtLocation(ItemStack stack) {
+        ItemEntity itementity = this.spawnAtLocation(stack, 0.0F);
         if (itementity != null) {
             itementity.setNoGravity(true);
             itementity.setGlowing(true);
-            itementity.setNoDespawn();
+            itementity.setExtendedLifetime();
         }
         return itementity;
     }
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source == DamageSource.OUT_OF_WORLD || source.isFireDamage() || super.isInvulnerableTo(source);
+        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source == DamageSource.OUT_OF_WORLD || source.isFire() || super.isInvulnerableTo(source);
     }
 
     @Override
-    public boolean canDespawn(double distanceToClosestPlayer) {
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return false;
     }
 
@@ -145,18 +166,18 @@ public class EntityVoidWorm extends MonsterEntity {
         this.goalSelector.addGoal(1, new EntityVoidWorm.AIEnterPortal());
         this.goalSelector.addGoal(2, new EntityVoidWorm.AIAttack());
         this.goalSelector.addGoal(3, new EntityVoidWorm.AIFlyIdle());
-        this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, PlayerEntity.class, 10, false, true, null));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EnderDragonEntity.class, 10, false, true, null));
+        this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, Player.class, 10, false, true, null));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EnderDragon.class, 10, false, true, null));
     }
 
-    protected PathNavigator createNavigator(World worldIn) {
-        return new DirectPathNavigator(this, world);
+    protected PathNavigation createNavigation(Level worldIn) {
+        return new DirectPathNavigator(this, level);
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        if (compound.hasUniqueId("ChildUUID")) {
-            this.setChildId(compound.getUniqueId("ChildUUID"));
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.hasUUID("ChildUUID")) {
+            this.setChildId(compound.getUUID("ChildUUID"));
         }
         this.setWormSpeed(compound.getFloat("WormSpeed"));
         this.setSplitter(compound.getBoolean("Splitter"));
@@ -169,19 +190,19 @@ public class EntityVoidWorm extends MonsterEntity {
 
     }
 
-    public void setCustomName(@Nullable ITextComponent name) {
+    public void setCustomName(@Nullable Component name) {
         super.setCustomName(name);
         this.bossInfo.setName(this.getDisplayName());
     }
 
-    public boolean hasNoGravity() {
+    public boolean isNoGravity() {
         return true;
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         if (this.getChildId() != null) {
-            compound.putUniqueId("ChildUUID", this.getChildId());
+            compound.putUUID("ChildUUID", this.getChildId());
         }
         compound.putInt("PortalTicks", getPortalTicks());
         compound.putInt("MakePortalTime", makeIdlePortalCooldown);
@@ -192,13 +213,13 @@ public class EntityVoidWorm extends MonsterEntity {
 
     public Entity getChild() {
         UUID id = getChildId();
-        if (id != null && !world.isRemote) {
-            return ((ServerWorld) world).getEntityByUuid(id);
+        if (id != null && !level.isClientSide) {
+            return ((ServerLevel) level).getEntity(id);
         }
         return null;
     }
 
-    public boolean canBeLeashedTo(PlayerEntity player) {
+    public boolean canBeLeashed(Player player) {
         return true;
     }
 
@@ -209,27 +230,27 @@ public class EntityVoidWorm extends MonsterEntity {
         prevJawProgress = this.jawProgress;
         float threshold = 0.05F;
         if (this.isSplitter()) {
-            this.experienceValue = 10;
+            this.xpReward = 10;
         } else {
-            this.experienceValue = 70;
+            this.xpReward = 70;
         }
-        if (this.prevRotationYaw - this.rotationYaw > threshold) {
+        if (this.yRotO - this.yRot > threshold) {
             this.setWormAngle(this.getWormAngle() + 15);
-        } else if (this.prevRotationYaw - this.rotationYaw < -threshold) {
+        } else if (this.yRotO - this.yRot < -threshold) {
             this.setWormAngle(this.getWormAngle() - 15);
         } else if (this.getWormAngle() > 0) {
             this.setWormAngle(Math.max(this.getWormAngle() - 20, 0));
         } else if (this.getWormAngle() < 0) {
             this.setWormAngle(Math.min(this.getWormAngle() + 20, 0));
         }
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if (!fullyThrough) {
-                this.setMotion(this.getMotion().mul(0.9F, 0.9F, 0.9F).add(0, -0.01, 0));
+                this.setDeltaMovement(this.getDeltaMovement().multiply(0.9F, 0.9F, 0.9F).add(0, -0.01, 0));
             } else {
-                this.setMotion(this.getMotion().add(0, 0.01, 0));
+                this.setDeltaMovement(this.getDeltaMovement().add(0, 0.01, 0));
             }
         }
-        if (Math.abs(prevPosX - this.getPosX()) < 0.01F && Math.abs(prevPosY - this.getPosY()) < 0.01F && Math.abs(prevPosZ - this.getPosZ()) < 0.01F) {
+        if (Math.abs(xo - this.getX()) < 0.01F && Math.abs(yo - this.getY()) < 0.01F && Math.abs(zo - this.getZ()) < 0.01F) {
             stillTicks++;
         } else {
             stillTicks = 0;
@@ -243,37 +264,37 @@ public class EntityVoidWorm extends MonsterEntity {
         if (makeIdlePortalCooldown > 0) {
             makeIdlePortalCooldown--;
         }
-        if (makeIdlePortalCooldown == 0 && rand.nextInt(100) == 0) {
+        if (makeIdlePortalCooldown == 0 && random.nextInt(100) == 0) {
             this.createPortalRandomDestination();
-            makeIdlePortalCooldown = 200 + rand.nextInt(1000);
+            makeIdlePortalCooldown = 200 + random.nextInt(1000);
         }
-        if (this.dataManager.get(JAW_TICKS) > 0) {
+        if (this.entityData.get(JAW_TICKS) > 0) {
             if (this.jawProgress < 5) {
                 jawProgress++;
             }
-            this.dataManager.set(JAW_TICKS, this.dataManager.get(JAW_TICKS) - 1);
+            this.entityData.set(JAW_TICKS, this.entityData.get(JAW_TICKS) - 1);
         } else {
             if (this.jawProgress > 0) {
                 jawProgress--;
             }
         }
         if (this.isAlive()) {
-            for (Entity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(2.0D), null)) {
-                if (!entity.isEntityEqual(this) && !(entity instanceof EntityVoidWormPart) && !entity.isOnSameTeam(this) && entity != this) {
+            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D), null)) {
+                if (!entity.is(this) && !(entity instanceof EntityVoidWormPart) && !entity.isAlliedTo(this) && entity != this) {
                     launch(entity, false);
                 }
             }
-            stepHeight = 2;
+            maxUpStep = 2;
         }
-        renderYawOffset = rotationYaw;
-        float f2 = (float) -((float) this.getMotion().y * (double) (180F / (float) Math.PI));
-        this.rotationPitch = f2;
-        this.stepHeight = 2;
-        if (!world.isRemote) {
+        yBodyRot = yRot;
+        float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+        this.xRot = f2;
+        this.maxUpStep = 2;
+        if (!level.isClientSide) {
             Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;
-                int tailstart = Math.min(3 + rand.nextInt(2), getSegmentCount());
+                int tailstart = Math.min(3 + random.nextInt(2), getSegmentCount());
                 int segments = getSegmentCount();
                 for (int i = 0; i < segments; i++) {
                     float scale = 1F + (i / (float) segments) * 0.5F;
@@ -291,20 +312,20 @@ public class EntityVoidWorm extends MonsterEntity {
                     part.setTail(tail);
                     part.setWormScale(scale);
                     if (partParent == this) {
-                        this.setChildId(part.getUniqueID());
+                        this.setChildId(part.getUUID());
                     } else if (partParent instanceof EntityVoidWormPart) {
-                        ((EntityVoidWormPart) partParent).setChildId(part.getUniqueID());
+                        ((EntityVoidWormPart) partParent).setChildId(part.getUUID());
                     }
                     part.setInitialPartPos(this);
                     partParent = part;
-                    world.addEntity(part);
+                    level.addFreshEntity(part);
                 }
             }
         }
         if (this.getPortalTicks() > 0) {
             this.setPortalTicks(this.getPortalTicks() - 1);
             if (this.getPortalTicks() == 2 && teleportPos != null) {
-                this.setPosition(teleportPos.x, teleportPos.y, teleportPos.z);
+                this.setPos(teleportPos.x, teleportPos.y, teleportPos.z);
                 teleportPos = null;
             }
         }
@@ -316,8 +337,8 @@ public class EntityVoidWorm extends MonsterEntity {
         if (updatePostSummon) {
             updatePostSummon = false;
         }
-        if (!this.isSilent() && !world.isRemote) {
-            this.world.setEntityState(this, (byte) 67);
+        if (!this.isSilent() && !level.isClientSide) {
+            this.level.broadcastEntityEvent(this, (byte) 67);
         }
     }
 
@@ -328,41 +349,41 @@ public class EntityVoidWorm extends MonsterEntity {
         }
     }
 
-    public void addTrackingPlayer(ServerPlayerEntity player) {
-        super.addTrackingPlayer(player);
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
         this.bossInfo.addPlayer(player);
     }
 
-    public void removeTrackingPlayer(ServerPlayerEntity player) {
-        super.removeTrackingPlayer(player);
+    public void stopSeenByPlayer(ServerPlayer player) {
+        super.stopSeenByPlayer(player);
         this.bossInfo.removePlayer(player);
     }
 
-    public void teleportTo(Vector3d vec) {
+    public void teleportTo(Vec3 vec) {
         this.setPortalTicks(10);
         teleportPos = vec;
         fullyThrough = false;
         if (this.getChild() instanceof EntityVoidWormPart) {
-            ((EntityVoidWormPart) this.getChild()).teleportTo(this.getPositionVec(), teleportPos);
+            ((EntityVoidWormPart) this.getChild()).teleportTo(this.position(), teleportPos);
         }
     }
 
     private void launch(Entity e, boolean huge) {
         if (e.isOnGround()) {
-            double d0 = e.getPosX() - this.getPosX();
-            double d1 = e.getPosZ() - this.getPosZ();
+            double d0 = e.getX() - this.getX();
+            double d1 = e.getZ() - this.getZ();
             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
             float f = huge ? 2F : 0.5F;
-            e.addVelocity(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
+            e.push(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
         }
     }
 
     public void resetWormScales() {
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             Entity child = getChild();
             if (child == null) {
                 LivingEntity nextPart = this;
-                int tailstart = Math.min(3 + rand.nextInt(2), getSegmentCount());
+                int tailstart = Math.min(3 + random.nextInt(2), getSegmentCount());
                 int segments = getSegmentCount();
                 int i = 0;
                 while (nextPart instanceof EntityVoidWormPart) {
@@ -381,157 +402,157 @@ public class EntityVoidWorm extends MonsterEntity {
     }
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason
-            reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.setSegmentCount(25 + rand.nextInt(15));
-        this.rotationPitch = 0.0F;
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
+            reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        this.setSegmentCount(25 + random.nextInt(15));
+        this.xRot = 0.0F;
         this.setMaxHealth(AMConfig.voidWormMaxHealth, true);
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(SPLIT_FROM_UUID, Optional.empty());
-        this.dataManager.register(CHILD_UUID, Optional.empty());
-        this.dataManager.register(SEGMENT_COUNT, 10);
-        this.dataManager.register(JAW_TICKS, 0);
-        this.dataManager.register(WORM_ANGLE, 0F);
-        this.dataManager.register(SPEEDMOD, 1F);
-        this.dataManager.register(SPLITTER, false);
-        this.dataManager.register(PORTAL_TICKS, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SPLIT_FROM_UUID, Optional.empty());
+        this.entityData.define(CHILD_UUID, Optional.empty());
+        this.entityData.define(SEGMENT_COUNT, 10);
+        this.entityData.define(JAW_TICKS, 0);
+        this.entityData.define(WORM_ANGLE, 0F);
+        this.entityData.define(SPEEDMOD, 1F);
+        this.entityData.define(SPLITTER, false);
+        this.entityData.define(PORTAL_TICKS, 0);
     }
 
 
     public float getWormAngle() {
-        return this.dataManager.get(WORM_ANGLE);
+        return this.entityData.get(WORM_ANGLE);
     }
 
     public void setWormAngle(float progress) {
-        this.dataManager.set(WORM_ANGLE, progress);
+        this.entityData.set(WORM_ANGLE, progress);
     }
 
     public float getWormSpeed() {
-        return this.dataManager.get(SPEEDMOD);
+        return this.entityData.get(SPEEDMOD);
     }
 
     public void setWormSpeed(float progress) {
         if (getWormSpeed() != progress) {
-            moveController = new FlightMoveController(this, progress, false, true);
+            moveControl = new FlightMoveController(this, progress, false, true);
         }
-        this.dataManager.set(SPEEDMOD, progress);
+        this.entityData.set(SPEEDMOD, progress);
     }
 
     public boolean isSplitter() {
-        return this.dataManager.get(SPLITTER);
+        return this.entityData.get(SPLITTER);
     }
 
     public void setSplitter(boolean splitter) {
-        this.dataManager.set(SPLITTER, splitter);
+        this.entityData.set(SPLITTER, splitter);
     }
 
     public void openMouth(int time) {
-        this.dataManager.set(JAW_TICKS, time);
+        this.entityData.set(JAW_TICKS, time);
     }
 
     public boolean isMouthOpen() {
-        return dataManager.get(JAW_TICKS) >= 5F;
+        return entityData.get(JAW_TICKS) >= 5F;
     }
 
     @Nullable
     public UUID getChildId() {
-        return this.dataManager.get(CHILD_UUID).orElse(null);
+        return this.entityData.get(CHILD_UUID).orElse(null);
     }
 
     public void setChildId(@Nullable UUID uniqueId) {
-        this.dataManager.set(CHILD_UUID, Optional.ofNullable(uniqueId));
+        this.entityData.set(CHILD_UUID, Optional.ofNullable(uniqueId));
     }
 
     @Nullable
     public UUID getSplitFromUUID() {
-        return this.dataManager.get(SPLIT_FROM_UUID).orElse(null);
+        return this.entityData.get(SPLIT_FROM_UUID).orElse(null);
     }
 
     public void setSplitFromUuid(@Nullable UUID uniqueId) {
-        this.dataManager.set(SPLIT_FROM_UUID, Optional.ofNullable(uniqueId));
+        this.entityData.set(SPLIT_FROM_UUID, Optional.ofNullable(uniqueId));
     }
 
     public int getPortalTicks() {
-        return this.dataManager.get(PORTAL_TICKS).intValue();
+        return this.entityData.get(PORTAL_TICKS).intValue();
     }
 
     public void setPortalTicks(int ticks) {
-        this.dataManager.set(PORTAL_TICKS, Integer.valueOf(ticks));
+        this.entityData.set(PORTAL_TICKS, Integer.valueOf(ticks));
     }
 
     public int getSegmentCount() {
-        return this.dataManager.get(SEGMENT_COUNT).intValue();
+        return this.entityData.get(SEGMENT_COUNT).intValue();
     }
 
     public void setSegmentCount(int command) {
-        this.dataManager.set(SEGMENT_COUNT, Integer.valueOf(command));
+        this.entityData.set(SEGMENT_COUNT, Integer.valueOf(command));
     }
 
-    public void collideWithNearbyEntities() {
-        List<Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-        entities.stream().filter(entity -> !(entity instanceof EntityVoidWormPart) && entity.canBePushed()).forEach(entity -> entity.applyEntityCollision(this));
+    public void pushEntities() {
+        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        entities.stream().filter(entity -> !(entity instanceof EntityVoidWormPart) && entity.isPushable()).forEach(entity -> entity.push(this));
     }
 
     @Override
-    public void applyEntityCollision(Entity entityIn) {
+    public void push(Entity entityIn) {
 
     }
 
     public void createStuckPortal() {
-        if (this.getAttackTarget() != null) {
-            createPortal(this.getAttackTarget().getPositionVec().add(rand.nextInt(8) - 4, 2 + rand.nextInt(3), rand.nextInt(8) - 4));
+        if (this.getTarget() != null) {
+            createPortal(this.getTarget().position().add(random.nextInt(8) - 4, 2 + random.nextInt(3), random.nextInt(8) - 4));
         } else {
-            Vector3d vec = Vector3d.copyCentered(world.getHeight(Heightmap.Type.MOTION_BLOCKING, this.getPosition().up(rand.nextInt(10) + 10)));
+            Vec3 vec = Vec3.atCenterOf(level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, this.blockPosition().above(random.nextInt(10) + 10)));
             createPortal(vec);
         }
     }
 
-    public void createPortal(Vector3d to) {
-        createPortal(this.getPositionVec().add(this.getLookVec().scale(20)), to, null);
+    public void createPortal(Vec3 to) {
+        createPortal(this.position().add(this.getLookAngle().scale(20)), to, null);
     }
 
 
     public void createPortalRandomDestination() {
-        Vector3d vec = null;
+        Vec3 vec = null;
         for (int i = 0; i < 15; i++) {
-            BlockPos pos = new BlockPos(this.getPosX() + rand.nextInt(60) - 30, 0, this.getPosZ() + rand.nextInt(60) - 30);
-            BlockPos height = world.getHeight(Heightmap.Type.MOTION_BLOCKING, pos);
+            BlockPos pos = new BlockPos(this.getX() + random.nextInt(60) - 30, 0, this.getZ() + random.nextInt(60) - 30);
+            BlockPos height = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos);
             if(height.getY() < 10){
-                height = height.up(50 + rand.nextInt(50));
+                height = height.above(50 + random.nextInt(50));
             }else{
-                height = height.up(rand.nextInt(30));
+                height = height.above(random.nextInt(30));
             }
-            if (world.isAirBlock(height)) {
-                vec = Vector3d.copyCenteredHorizontally(height);
+            if (level.isEmptyBlock(height)) {
+                vec = Vec3.atBottomCenterOf(height);
             }
         }
         if (vec != null) {
-            createPortal(this.getPositionVec().add(this.getLookVec().scale(20)), vec, null);
+            createPortal(this.position().add(this.getLookAngle().scale(20)), vec, null);
         }
     }
 
-    public void createPortal(Vector3d from, Vector3d to, @Nullable Direction outDir) {
-        if (!world.isRemote && portalTarget == null) {
-            Vector3d Vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
-            RayTraceResult result = this.world.rayTraceBlocks(new RayTraceContext(Vector3d, from, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-            Vector3d vec = result.getHitVec() != null ? result.getHitVec() : this.getPositionVec();
-            if (result instanceof BlockRayTraceResult) {
-                BlockRayTraceResult result1 = (BlockRayTraceResult) result;
-                vec = vec.add(net.minecraft.util.math.vector.Vector3d.copy(result1.getFace().getDirectionVec()));
+    public void createPortal(Vec3 from, Vec3 to, @Nullable Direction outDir) {
+        if (!level.isClientSide && portalTarget == null) {
+            Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
+            HitResult result = this.level.clip(new ClipContext(Vector3d, from, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+            Vec3 vec = result.getLocation() != null ? result.getLocation() : this.position();
+            if (result instanceof BlockHitResult) {
+                BlockHitResult result1 = (BlockHitResult) result;
+                vec = vec.add(net.minecraft.world.phys.Vec3.atLowerCornerOf(result1.getDirection().getNormal()));
             }
-            EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(world);
-            portal.setPosition(vec.x, vec.y, vec.z);
-            Vector3d dirVec = vec.subtract(this.getPositionVec());
-            Direction dir = Direction.getFacingFromVector(dirVec.x, dirVec.y, dirVec.z);
+            EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(level);
+            portal.setPos(vec.x, vec.y, vec.z);
+            Vec3 dirVec = vec.subtract(this.position());
+            Direction dir = Direction.getNearest(dirVec.x, dirVec.y, dirVec.z);
             portal.setAttachmentFacing(dir);
             portal.setLifespan(10000);
-            if (!world.isRemote) {
-                world.addEntity(portal);
+            if (!level.isClientSide) {
+                level.addFreshEntity(portal);
             }
             portalTarget = portal;
             portal.setDestination(new BlockPos(to.x, to.y, to.z), outDir);
@@ -543,7 +564,7 @@ public class EntityVoidWorm extends MonsterEntity {
         portalTarget = null;
     }
 
-    public boolean canBePushed() {
+    public boolean isPushable() {
         return false;
     }
 
@@ -553,21 +574,21 @@ public class EntityVoidWorm extends MonsterEntity {
             return;
         }
         boolean flag = false;
-        if (!world.isRemote && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, this)) {
+        if (!level.isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
                         BlockPos pos = new BlockPos(a, b, c);
-                        BlockState state = world.getBlockState(pos);
-                        FluidState fluidState = world.getFluidState(pos);
+                        BlockState state = level.getBlockState(pos);
+                        FluidState fluidState = level.getFluidState(pos);
                         Block block = state.getBlock();
-                        if (!state.isAir() && !state.getShape(world, pos).isEmpty() && BlockTags.getCollection().get(AMTagRegistry.VOID_WORM_BREAKABLES).contains(state.getBlock()) && fluidState.isEmpty()) {
+                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && BlockTags.getAllTags().getTag(AMTagRegistry.VOID_WORM_BREAKABLES).contains(state.getBlock()) && fluidState.isEmpty()) {
                             if (block != Blocks.AIR) {
-                                this.setMotion(this.getMotion().mul(0.6F, 1, 0.6F));
+                                this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
-                                world.destroyBlock(pos, true);
-                                if (state.getBlock().isIn(BlockTags.ICE)) {
-                                    world.setBlockState(pos, Blocks.WATER.getDefaultState());
+                                level.destroyBlock(pos, true);
+                                if (state.getBlock().is(BlockTags.ICE)) {
+                                    level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
                                 }
                             }
                         }
@@ -581,89 +602,89 @@ public class EntityVoidWorm extends MonsterEntity {
     }
 
 
-    public boolean isTargetBlocked(Vector3d target) {
-        Vector3d Vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+    public boolean isTargetBlocked(Vec3 target) {
+        Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 
-        return this.world.rayTraceBlocks(new RayTraceContext(Vector3d, target, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() != RayTraceResult.Type.MISS;
+        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
-    public Vector3d getBlockInViewAway(Vector3d fleePos, float radiusAdd) {
-        float radius = (0.75F * (0.7F * 6) * -3 - this.getRNG().nextInt(24)) * radiusAdd;
-        float neg = this.getRNG().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.renderYawOffset;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRNG().nextFloat() * neg);
-        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-        double extraZ = radius * MathHelper.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, 0, fleePos.getZ() + extraZ);
+    public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
+        float radius = (0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24)) * radiusAdd;
+        float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        float renderYawOffset = this.yBodyRot;
+        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getGround(radialPos);
-        int distFromGround = (int) this.getPosY() - ground.getY();
-        int flightHeight = 10 + this.getRNG().nextInt(20);
-        BlockPos newPos = ground.up(distFromGround > 8 ? flightHeight : this.getRNG().nextInt(10) + 15);
-        if (!this.isTargetBlocked(Vector3d.copyCentered(newPos)) && this.getDistanceSq(Vector3d.copyCentered(newPos)) > 1) {
-            return Vector3d.copyCentered(newPos);
+        int distFromGround = (int) this.getY() - ground.getY();
+        int flightHeight = 10 + this.getRandom().nextInt(20);
+        BlockPos newPos = ground.above(distFromGround > 8 ? flightHeight : this.getRandom().nextInt(10) + 15);
+        if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
+            return Vec3.atCenterOf(newPos);
         }
         return null;
     }
 
-    public Vector3d getBlockInViewAwaySlam(Vector3d fleePos, int slamHeight) {
-        float radius = 3 + rand.nextInt(3);
-        float neg = this.getRNG().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.renderYawOffset;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRNG().nextFloat() * neg);
-        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-        double extraZ = radius * MathHelper.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, 0, fleePos.getZ() + extraZ);
+    public Vec3 getBlockInViewAwaySlam(Vec3 fleePos, int slamHeight) {
+        float radius = 3 + random.nextInt(3);
+        float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        float renderYawOffset = this.yBodyRot;
+        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getHeighestAirAbove(radialPos, slamHeight);
-        if (!this.isTargetBlocked(Vector3d.copyCentered(ground)) && this.getDistanceSq(Vector3d.copyCentered(ground)) > 1) {
-            return Vector3d.copyCentered(ground);
+        if (!this.isTargetBlocked(Vec3.atCenterOf(ground)) && this.distanceToSqr(Vec3.atCenterOf(ground)) > 1) {
+            return Vec3.atCenterOf(ground);
         }
         return null;
     }
 
     private BlockPos getHeighestAirAbove(BlockPos radialPos, int limit) {
-        BlockPos position = new BlockPos(radialPos.getX(), this.getPosY(), radialPos.getZ());
-        while (position.getY() < 256 && position.getY() < this.getPosY() + limit && world.isAirBlock(position)) {
-            position = position.up();
+        BlockPos position = new BlockPos(radialPos.getX(), this.getY(), radialPos.getZ());
+        while (position.getY() < 256 && position.getY() < this.getY() + limit && level.isEmptyBlock(position)) {
+            position = position.above();
         }
         return position;
     }
 
     private BlockPos getGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getPosY(), in.getZ());
-        while (position.getY() > 1 && world.isAirBlock(position)) {
-            position = position.down();
+        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        while (position.getY() > 1 && level.isEmptyBlock(position)) {
+            position = position.below();
         }
         if (position.getY() < 2) {
-            return position.up(60 + rand.nextInt(5));
+            return position.above(60 + random.nextInt(5));
         }
 
         return position;
     }
 
-    public boolean isOnSameTeam(Entity entityIn) {
-        return super.isOnSameTeam(entityIn) || this.getSplitFromUUID() != null && this.getSplitFromUUID().equals(entityIn.getUniqueID()) ||
-                entityIn instanceof EntityVoidWorm && ((EntityVoidWorm) entityIn).getSplitFromUUID() != null && ((EntityVoidWorm) entityIn).getSplitFromUUID().equals(entityIn.getUniqueID());
+    public boolean isAlliedTo(Entity entityIn) {
+        return super.isAlliedTo(entityIn) || this.getSplitFromUUID() != null && this.getSplitFromUUID().equals(entityIn.getUUID()) ||
+                entityIn instanceof EntityVoidWorm && ((EntityVoidWorm) entityIn).getSplitFromUUID() != null && ((EntityVoidWorm) entityIn).getSplitFromUUID().equals(entityIn.getUUID());
     }
 
-    private void spit(Vector3d shotAt, boolean portal) {
-        shotAt = shotAt.rotateYaw(-this.rotationYaw * ((float) Math.PI / 180F));
-        EntityVoidWormShot shot = new EntityVoidWormShot(this.world, this);
+    private void spit(Vec3 shotAt, boolean portal) {
+        shotAt = shotAt.yRot(-this.yRot * ((float) Math.PI / 180F));
+        EntityVoidWormShot shot = new EntityVoidWormShot(this.level, this);
         double d0 = shotAt.x;
         double d1 = shotAt.y;
         double d2 = shotAt.z;
-        float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.35F;
+        float f = Mth.sqrt(d0 * d0 + d2 * d2) * 0.35F;
         shot.shoot(d0, d1 + (double) f, d2, 0.5F, 3.0F);
         if (!this.isSilent()) {
-            this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_DROWNED_SHOOT, this.getSoundCategory(), 1.0F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+            this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.DROWNED_SHOOT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
         shot.setPortalType(portal);
         this.openMouth(5);
-        this.world.addEntity(shot);
+        this.level.addFreshEntity(shot);
     }
 
     private boolean wormAttack(Entity entity, DamageSource source, float dmg) {
         dmg *= AMConfig.voidWormDamageModifier;
-        return entity instanceof EnderDragonEntity ? ((EnderDragonEntity) entity).attackDragonFrom(source, dmg * 0.5F) : entity.attackEntityFrom(source, dmg);
+        return entity instanceof EnderDragon ? ((EnderDragon) entity).reallyHurt(source, dmg * 0.5F) : entity.hurt(source, dmg);
     }
 
     public void playHurtSoundWorm(DamageSource source) {
@@ -686,16 +707,16 @@ public class EntityVoidWorm extends MonsterEntity {
 
         public AIFlyIdle() {
             super();
-            this.setMutexFlags(EnumSet.of(Flag.MOVE));
+            this.setFlags(EnumSet.of(Flag.MOVE));
             this.voidWorm = EntityVoidWorm.this;
         }
 
         @Override
-        public boolean shouldExecute() {
-            if (this.voidWorm.isBeingRidden() || this.voidWorm.portalTarget != null || (voidWorm.getAttackTarget() != null && voidWorm.getAttackTarget().isAlive()) || this.voidWorm.isPassenger()) {
+        public boolean canUse() {
+            if (this.voidWorm.isVehicle() || this.voidWorm.portalTarget != null || (voidWorm.getTarget() != null && voidWorm.getTarget().isAlive()) || this.voidWorm.isPassenger()) {
                 return false;
             } else {
-                Vector3d lvt_1_1_ = this.getPosition();
+                Vec3 lvt_1_1_ = this.getPosition();
                 if (lvt_1_1_ == null) {
                     return false;
                 } else {
@@ -708,26 +729,26 @@ public class EntityVoidWorm extends MonsterEntity {
         }
 
         public void tick() {
-            voidWorm.getMoveHelper().setMoveTo(x, y, z, 1F);
+            voidWorm.getMoveControl().setWantedPosition(x, y, z, 1F);
         }
 
         @Nullable
-        protected Vector3d getPosition() {
-            Vector3d vector3d = voidWorm.getPositionVec();
+        protected Vec3 getPosition() {
+            Vec3 vector3d = voidWorm.position();
             return voidWorm.getBlockInViewAway(vector3d, 1);
         }
 
-        public boolean shouldContinueExecuting() {
-            return voidWorm.getDistanceSq(x, y, z) > 20F && this.voidWorm.portalTarget == null && !voidWorm.collidedHorizontally && (voidWorm.getAttackTarget() == null || !voidWorm.getAttackTarget().isAlive());
+        public boolean canContinueToUse() {
+            return voidWorm.distanceToSqr(x, y, z) > 20F && this.voidWorm.portalTarget == null && !voidWorm.horizontalCollision && (voidWorm.getTarget() == null || !voidWorm.getTarget().isAlive());
         }
 
-        public void startExecuting() {
-            voidWorm.getMoveHelper().setMoveTo(x, y, z, 1F);
+        public void start() {
+            voidWorm.getMoveControl().setWantedPosition(x, y, z, 1F);
         }
 
-        public void resetTask() {
-            this.voidWorm.getNavigator().clearPath();
-            super.resetTask();
+        public void stop() {
+            this.voidWorm.getNavigation().stop();
+            super.stop();
         }
     }
 
@@ -736,38 +757,38 @@ public class EntityVoidWorm extends MonsterEntity {
         private AttackMode mode = AttackMode.CIRCLE;
         private int modeTicks = 0;
         private int maxCircleTime = 500;
-        private Vector3d moveTo = null;
+        private Vec3 moveTo = null;
 
         public AIAttack() {
             super();
-            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
         @Override
-        public boolean shouldExecute() {
-            return EntityVoidWorm.this.getAttackTarget() != null && EntityVoidWorm.this.getAttackTarget().isAlive();
+        public boolean canUse() {
+            return EntityVoidWorm.this.getTarget() != null && EntityVoidWorm.this.getTarget().isAlive();
         }
 
-        public void resetTask() {
+        public void stop() {
             mode = AttackMode.CIRCLE;
             modeTicks = 0;
         }
 
-        public void startExecuting() {
+        public void start() {
             mode = AttackMode.CIRCLE;
-            maxCircleTime = 60 + rand.nextInt(200);
+            maxCircleTime = 60 + random.nextInt(200);
         }
 
         public void tick() {
-            LivingEntity target = EntityVoidWorm.this.getAttackTarget();
+            LivingEntity target = EntityVoidWorm.this.getTarget();
             boolean flag = false;
             float speed = 1;
-            for (Entity entity : EntityVoidWorm.this.world.getEntitiesWithinAABB(LivingEntity.class, EntityVoidWorm.this.getBoundingBox().grow(2.0D), null)) {
-                if (!entity.isEntityEqual(EntityVoidWorm.this) && !(entity instanceof EntityVoidWormPart) && !entity.isOnSameTeam(EntityVoidWorm.this) && entity != EntityVoidWorm.this) {
+            for (Entity entity : EntityVoidWorm.this.level.getEntitiesOfClass(LivingEntity.class, EntityVoidWorm.this.getBoundingBox().inflate(2.0D), null)) {
+                if (!entity.is(EntityVoidWorm.this) && !(entity instanceof EntityVoidWormPart) && !entity.isAlliedTo(EntityVoidWorm.this) && entity != EntityVoidWorm.this) {
                     if (EntityVoidWorm.this.isMouthOpen()) {
                         launch(entity, true);
                         flag = true;
-                        wormAttack(entity, DamageSource.causeMobDamage(EntityVoidWorm.this), 8.0F + rand.nextFloat() * 8.0F);
+                        wormAttack(entity, DamageSource.mobAttack(EntityVoidWorm.this), 8.0F + random.nextFloat() * 8.0F);
                     } else {
                         EntityVoidWorm.this.openMouth(15);
                     }
@@ -775,28 +796,28 @@ public class EntityVoidWorm extends MonsterEntity {
             }
             if (target != null) {
                 if (mode == AttackMode.CIRCLE) {
-                    if (moveTo == null || EntityVoidWorm.this.getDistanceSq(moveTo) < 16 || EntityVoidWorm.this.collidedHorizontally) {
-                        moveTo = EntityVoidWorm.this.getBlockInViewAway(target.getPositionVec(), 0.4F + rand.nextFloat() * 0.2F);
+                    if (moveTo == null || EntityVoidWorm.this.distanceToSqr(moveTo) < 16 || EntityVoidWorm.this.horizontalCollision) {
+                        moveTo = EntityVoidWorm.this.getBlockInViewAway(target.position(), 0.4F + random.nextFloat() * 0.2F);
                     }
                     modeTicks++;
                     if (modeTicks % 50 == 0) {
-                        EntityVoidWorm.this.spit(new Vector3d(3, 3, 0), false);
-                        EntityVoidWorm.this.spit(new Vector3d(-3, 3, 0), false);
-                        EntityVoidWorm.this.spit(new Vector3d(3, -3, 0), false);
-                        EntityVoidWorm.this.spit(new Vector3d(-3, -3, 0), false);
+                        EntityVoidWorm.this.spit(new Vec3(3, 3, 0), false);
+                        EntityVoidWorm.this.spit(new Vec3(-3, 3, 0), false);
+                        EntityVoidWorm.this.spit(new Vec3(3, -3, 0), false);
+                        EntityVoidWorm.this.spit(new Vec3(-3, -3, 0), false);
                     }
                     if (modeTicks > maxCircleTime) {
-                        maxCircleTime = 60 + rand.nextInt(200);
+                        maxCircleTime = 60 + random.nextInt(200);
                         mode = AttackMode.SLAM_RISE;
                         modeTicks = 0;
                         moveTo = null;
                     }
                 } else if (mode == AttackMode.SLAM_RISE) {
                     if (moveTo == null) {
-                        moveTo = EntityVoidWorm.this.getBlockInViewAwaySlam(target.getPositionVec(), 20 + rand.nextInt(20));
+                        moveTo = EntityVoidWorm.this.getBlockInViewAwaySlam(target.position(), 20 + random.nextInt(20));
                     }
                     if (moveTo != null) {
-                        if (EntityVoidWorm.this.getPosY() > target.getPosY() + 15) {
+                        if (EntityVoidWorm.this.getY() > target.getY() + 15) {
                             moveTo = null;
                             modeTicks = 0;
                             mode = AttackMode.SLAM_FALL;
@@ -804,29 +825,29 @@ public class EntityVoidWorm extends MonsterEntity {
                     }
                 } else if (mode == AttackMode.SLAM_FALL) {
                     speed = 2;
-                    EntityVoidWorm.this.faceEntity(target, 360, 360);
-                    moveTo = target.getPositionVec();
-                    if (EntityVoidWorm.this.collidedHorizontally) {
-                        moveTo = new Vector3d(target.getPosX(), EntityVoidWorm.this.getPosY() + 3, target.getPosZ());
+                    EntityVoidWorm.this.lookAt(target, 360, 360);
+                    moveTo = target.position();
+                    if (EntityVoidWorm.this.horizontalCollision) {
+                        moveTo = new Vec3(target.getX(), EntityVoidWorm.this.getY() + 3, target.getZ());
                     }
                     EntityVoidWorm.this.openMouth(20);
-                    if (EntityVoidWorm.this.getDistanceSq(moveTo) < 4 || flag) {
+                    if (EntityVoidWorm.this.distanceToSqr(moveTo) < 4 || flag) {
                         mode = AttackMode.CIRCLE;
                         moveTo = null;
                         modeTicks = 0;
                     }
                 }
             }
-            if (!EntityVoidWorm.this.canEntityBeSeen(target) && rand.nextInt(100) == 0) {
+            if (!EntityVoidWorm.this.canSee(target) && random.nextInt(100) == 0) {
                 if (EntityVoidWorm.this.makePortalCooldown == 0) {
-                    Vector3d to = new Vector3d(target.getPosX(), target.getBoundingBox().maxY + 0.1, target.getPosZ());
-                    EntityVoidWorm.this.createPortal(EntityVoidWorm.this.getPositionVec().add(EntityVoidWorm.this.getLookVec().scale(20)), to, Direction.UP);
+                    Vec3 to = new Vec3(target.getX(), target.getBoundingBox().maxY + 0.1, target.getZ());
+                    EntityVoidWorm.this.createPortal(EntityVoidWorm.this.position().add(EntityVoidWorm.this.getLookAngle().scale(20)), to, Direction.UP);
                     EntityVoidWorm.this.makePortalCooldown = 50;
                     mode = AttackMode.SLAM_FALL;
                 }
             }
             if (moveTo != null && EntityVoidWorm.this.portalTarget == null) {
-                EntityVoidWorm.this.getMoveHelper().setMoveTo(moveTo.x, moveTo.y, moveTo.z, speed);
+                EntityVoidWorm.this.getMoveControl().setWantedPosition(moveTo.x, moveTo.y, moveTo.z, speed);
             }
         }
     }
@@ -835,38 +856,38 @@ public class EntityVoidWorm extends MonsterEntity {
 
         public AIEnterPortal() {
             super();
-            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
         @Override
-        public boolean shouldExecute() {
+        public boolean canUse() {
             return EntityVoidWorm.this.portalTarget != null;
         }
 
         public void tick() {
             if (EntityVoidWorm.this.portalTarget != null) {
-                noClip = true;
-                AxisAlignedBB bb = EntityVoidWorm.this.portalTarget.getBoundingBox();
+                noPhysics = true;
+                AABB bb = EntityVoidWorm.this.portalTarget.getBoundingBox();
                 double centerX = bb.minX + ((bb.maxX - bb.minX) / 2F);
                 double centerY = bb.minY + ((bb.maxY - bb.minY) / 2F);
                 double centerZ = bb.minZ + ((bb.maxZ - bb.minZ) / 2F);
                 float sped = 0.08F;
-                EntityVoidWorm.this.setMotion(EntityVoidWorm.this.getMotion().add(Math.signum(centerX - EntityVoidWorm.this.getPosX()) * sped, Math.signum(centerY - EntityVoidWorm.this.getPosY()) * sped, Math.signum(centerZ - EntityVoidWorm.this.getPosZ()) * sped));
-                EntityVoidWorm.this.getMoveHelper().setMoveTo(centerX, centerY, centerZ, 1);
+                EntityVoidWorm.this.setDeltaMovement(EntityVoidWorm.this.getDeltaMovement().add(Math.signum(centerX - EntityVoidWorm.this.getX()) * sped, Math.signum(centerY - EntityVoidWorm.this.getY()) * sped, Math.signum(centerZ - EntityVoidWorm.this.getZ()) * sped));
+                EntityVoidWorm.this.getMoveControl().setWantedPosition(centerX, centerY, centerZ, 1);
             }
         }
 
-        public void resetTask() {
-            noClip = false;
+        public void stop() {
+            noPhysics = false;
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void handleStatusUpdate(byte id) {
+    public void handleEntityEvent(byte id) {
         if (id == 67) {
             AlexsMobs.PROXY.onEntityStatus(this, id);
         } else {
-            super.handleStatusUpdate(id);
+            super.handleEntityEvent(id);
         }
     }
 }

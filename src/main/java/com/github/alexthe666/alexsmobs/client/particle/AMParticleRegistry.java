@@ -1,8 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.particle;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -12,20 +12,20 @@ import java.lang.reflect.Field;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMParticleRegistry {
 
-    public static final BasicParticleType GUSTER_SAND_SPIN = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_spin");
-    public static final BasicParticleType GUSTER_SAND_SHOT = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_shot");
-    public static final BasicParticleType GUSTER_SAND_SPIN_RED = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_spin_red");
-    public static final BasicParticleType GUSTER_SAND_SHOT_RED = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_shot_red");
-    public static final BasicParticleType GUSTER_SAND_SPIN_SOUL = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_spin_soul");
-    public static final BasicParticleType GUSTER_SAND_SHOT_SOUL = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:guster_sand_shot_soul");
-    public static final BasicParticleType HEMOLYMPH = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:hemolymph");
-    public static final BasicParticleType PLATYPUS_SENSE = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:platypus_sense");
-    public static final BasicParticleType WHALE_SPLASH = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:whale_splash");
-    public static final BasicParticleType DNA = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:dna");
-    public static final BasicParticleType SHOCKED = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:shocked");
-    public static final BasicParticleType WORM_PORTAL = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:worm_portal");
-    public static final BasicParticleType INVERT_DIG = (BasicParticleType) new BasicParticleType(true).setRegistryName("alexsmobs:invert_dig");
-    public static final BasicParticleType TEETH_GLINT = (BasicParticleType) new BasicParticleType(false).setRegistryName("alexsmobs:teeth_glint");
+    public static final SimpleParticleType GUSTER_SAND_SPIN = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:guster_sand_spin");
+    public static final SimpleParticleType GUSTER_SAND_SHOT = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:guster_sand_shot");
+    public static final SimpleParticleType GUSTER_SAND_SPIN_RED = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:guster_sand_spin_red");
+    public static final SimpleParticleType GUSTER_SAND_SHOT_RED = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:guster_sand_shot_red");
+    public static final SimpleParticleType GUSTER_SAND_SPIN_SOUL = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:guster_sand_spin_soul");
+    public static final SimpleParticleType GUSTER_SAND_SHOT_SOUL = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:guster_sand_shot_soul");
+    public static final SimpleParticleType HEMOLYMPH = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:hemolymph");
+    public static final SimpleParticleType PLATYPUS_SENSE = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:platypus_sense");
+    public static final SimpleParticleType WHALE_SPLASH = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:whale_splash");
+    public static final SimpleParticleType DNA = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:dna");
+    public static final SimpleParticleType SHOCKED = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:shocked");
+    public static final SimpleParticleType WORM_PORTAL = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:worm_portal");
+    public static final SimpleParticleType INVERT_DIG = (SimpleParticleType) new SimpleParticleType(true).setRegistryName("alexsmobs:invert_dig");
+    public static final SimpleParticleType TEETH_GLINT = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:teeth_glint");
 
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

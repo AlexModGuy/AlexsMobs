@@ -1,11 +1,11 @@
 package com.github.alexthe666.alexsmobs.item;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 
 import javax.annotation.Nullable;
 
@@ -23,10 +23,10 @@ public class ItemTabIcon extends Item {
     }
 
     @Nullable
-    public static EntityType getEntityType(@Nullable CompoundNBT tag) {
+    public static EntityType getEntityType(@Nullable CompoundTag tag) {
         if (tag != null && tag.contains("DisplayEntityType")) {
             String entityType = tag.getString("DisplayEntityType");
-           return Registry.ENTITY_TYPE.getOptional(ResourceLocation.tryCreate(entityType)).orElse(null);
+           return Registry.ENTITY_TYPE.getOptional(ResourceLocation.tryParse(entityType)).orElse(null);
         }
         return null;
     }

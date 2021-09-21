@@ -1,12 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMimicube;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.Items;
 
 import java.util.EnumSet;
 
@@ -27,7 +27,7 @@ public class MimiCubeAIRangedAttack extends Goal {
         this.moveSpeedAmp = moveSpeedAmpIn;
         this.attackCooldown = attackCooldownIn;
         this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     public void setAttackCooldown(int attackCooldownIn) {
@@ -38,8 +38,8 @@ public class MimiCubeAIRangedAttack extends Goal {
      * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
      * method as well.
      */
-    public boolean shouldExecute() {
-        return this.entity.getAttackTarget() == null ? false : this.isBowInMainhand();
+    public boolean canUse() {
+        return this.entity.getTarget() == null ? false : this.isBowInMainhand();
     }
 
     protected boolean isBowInMainhand() {
@@ -49,40 +49,40 @@ public class MimiCubeAIRangedAttack extends Goal {
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean shouldContinueExecuting() {
-        return (this.shouldExecute() || !this.entity.getNavigator().noPath()) && this.isBowInMainhand();
+    public boolean canContinueToUse() {
+        return (this.canUse() || !this.entity.getNavigation().isDone()) && this.isBowInMainhand();
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void startExecuting() {
-        super.startExecuting();
-        this.entity.setAggroed(true);
+    public void start() {
+        super.start();
+        this.entity.setAggressive(true);
     }
 
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
-    public void resetTask() {
-        super.resetTask();
-        this.entity.setAggroed(false);
+    public void stop() {
+        super.stop();
+        this.entity.setAggressive(false);
         this.seeTime = 0;
         this.attackTime = -1;
-        this.entity.resetActiveHand();
+        this.entity.stopUsingItem();
     }
 
     /**
      * Keep ticking a continuous task that has already been started
      */
     public void tick() {
-        LivingEntity livingentity = this.entity.getAttackTarget();
+        LivingEntity livingentity = this.entity.getTarget();
         if(crossbowCooldown > 0){
             crossbowCooldown--;
         }
         if (livingentity != null) {
-            double d0 = this.entity.getDistanceSq(livingentity.getPosX(), livingentity.getPosY(), livingentity.getPosZ());
-            boolean flag = this.entity.canEntityBeSeen(livingentity);
+            double d0 = this.entity.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
+            boolean flag = this.entity.canSee(livingentity);
             boolean flag1 = this.seeTime > 0;
             if (flag != flag1) {
                 this.seeTime = 0;
@@ -95,19 +95,19 @@ public class MimiCubeAIRangedAttack extends Goal {
             }
 
             if (!(d0 > (double)this.maxAttackDistance) && this.seeTime >= 20) {
-                this.entity.getNavigator().clearPath();
+                this.entity.getNavigation().stop();
                 ++this.strafingTime;
             } else {
-                this.entity.getNavigator().tryMoveToEntityLiving(livingentity, this.moveSpeedAmp);
+                this.entity.getNavigation().moveTo(livingentity, this.moveSpeedAmp);
                 this.strafingTime = -1;
             }
 
             if (this.strafingTime >= 20) {
-                if ((double)this.entity.getRNG().nextFloat() < 0.3D) {
+                if ((double)this.entity.getRandom().nextFloat() < 0.3D) {
                     this.strafingClockwise = !this.strafingClockwise;
                 }
 
-                if ((double)this.entity.getRNG().nextFloat() < 0.3D) {
+                if ((double)this.entity.getRandom().nextFloat() < 0.3D) {
                     this.strafingBackwards = !this.strafingBackwards;
                 }
 
@@ -121,26 +121,26 @@ public class MimiCubeAIRangedAttack extends Goal {
                     this.strafingBackwards = true;
                 }
 
-                this.entity.getMoveHelper().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
-                this.entity.faceEntity(livingentity, 30.0F, 30.0F);
+                this.entity.getMoveControl().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
+                this.entity.lookAt(livingentity, 30.0F, 30.0F);
             } else {
-                this.entity.getLookController().setLookPositionWithEntity(livingentity, 30.0F, 30.0F);
+                this.entity.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
             }
-            boolean crossbow = this.entity.getHeldItemMainhand().getItem() instanceof CrossbowItem;
-            if (this.entity.isHandActive() || crossbow) {
+            boolean crossbow = this.entity.getMainHandItem().getItem() instanceof CrossbowItem;
+            if (this.entity.isUsingItem() || crossbow) {
                 if (!flag && this.seeTime < -60) {
-                    this.entity.resetActiveHand();
+                    this.entity.stopUsingItem();
                 } else if (flag) {
-                    int i = this.entity.getItemInUseMaxCount();
+                    int i = this.entity.getTicksUsingItem();
                     if (i >= 20 || crossbow && crossbowCooldown == 0) {
-                        this.entity.resetActiveHand();
-                        this.entity.attackEntityWithRangedAttack(livingentity, BowItem.getArrowVelocity(i));
+                        this.entity.stopUsingItem();
+                        this.entity.performRangedAttack(livingentity, BowItem.getPowerForTime(i));
                         this.attackTime = this.attackCooldown;
                         crossbowCooldown = 20;
                     }
                 }
             } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
-                this.entity.setActiveHand(ProjectileHelper.getHandWith(this.entity, Items.BOW));
+                this.entity.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.entity, Items.BOW));
             }
 
         }

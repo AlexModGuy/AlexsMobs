@@ -4,31 +4,31 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.core.NonNullList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.lang.reflect.Field;
 
-public class AMItemGroup extends ItemGroup {
+public class AMItemGroup extends CreativeModeTab {
     public AMItemGroup() {
         super(AlexsMobs.MODID);
     }
 
     @Override
-    public ItemStack createIcon() {
+    public ItemStack makeIcon() {
         return new ItemStack(AMItemRegistry.TAB_ICON);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void fill(NonNullList<ItemStack> items) {
-        super.fill(items);
+    public void fillItemList(NonNullList<ItemStack> items) {
+        super.fillItemList(items);
         try {
             for (Field f : AMEffectRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -46,7 +46,7 @@ public class AMItemGroup extends ItemGroup {
                 if (obj instanceof Enchantment ) {
                     Enchantment enchant = (Enchantment)obj;
                     if(enchant.isAllowedOnBooks()){
-                        items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(enchant, enchant.getMaxLevel())));
+                        items.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchant, enchant.getMaxLevel())));
                     }
                 }
             }

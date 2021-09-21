@@ -3,14 +3,14 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
 
@@ -25,45 +25,45 @@ public class KangarooAIMelee extends MeleeAttackGoal {
         this.kangaroo = kangaroo;
     }
 
-    public boolean shouldExecute() {
-        return super.shouldExecute();
+    public boolean canUse() {
+        return super.canUse();
     }
 
     public void tick() {
         boolean dontSuper = false;
-        LivingEntity target = kangaroo.getAttackTarget();
+        LivingEntity target = kangaroo.getTarget();
         if (target != null) {
-            if (target == kangaroo.getRevengeTarget()) {
-                if (target.getDistance(kangaroo) < kangaroo.getWidth() + 1F && target.isInWater()) {
-                    target.setMotion(target.getMotion().add(0, -0.09, 0));
-                    target.setAir(target.getAir() - 30);
+            if (target == kangaroo.getLastHurtByMob()) {
+                if (target.distanceTo(kangaroo) < kangaroo.getBbWidth() + 1F && target.isInWater()) {
+                    target.setDeltaMovement(target.getDeltaMovement().add(0, -0.09, 0));
+                    target.setAirSupply(target.getAirSupply() - 30);
                 }
-                if (waterPos == null || !kangaroo.world.getFluidState(waterPos).isTagged(FluidTags.WATER)) {
+                if (waterPos == null || !kangaroo.level.getFluidState(waterPos).is(FluidTags.WATER)) {
                     kangaroo.setVisualFlag(0);
                     waterCheckTick++;
                     waterPos = generateWaterPos();
                 } else {
-                    kangaroo.setPathPriority(PathNodeType.WATER, 0);
-                    kangaroo.setPathPriority(PathNodeType.WATER_BORDER, 0);
-                    double localSpeed = MathHelper.clamp(kangaroo.getDistanceSq(waterPos.getX(), waterPos.getY(), waterPos.getZ()) * 0.5F, 1D, 2.3D);
-                    kangaroo.getMoveHelper().setMoveTo(waterPos.getX(), waterPos.getY(), waterPos.getZ(), localSpeed);
+                    kangaroo.setPathfindingMalus(BlockPathTypes.WATER, 0);
+                    kangaroo.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0);
+                    double localSpeed = Mth.clamp(kangaroo.distanceToSqr(waterPos.getX(), waterPos.getY(), waterPos.getZ()) * 0.5F, 1D, 2.3D);
+                    kangaroo.getMoveControl().setWantedPosition(waterPos.getX(), waterPos.getY(), waterPos.getZ(), localSpeed);
                     if (kangaroo.isInWater()){
                         waterTimeout++;
                     }
                     if(waterTimeout < 1400){
                         dontSuper = true;
-                        checkAndPerformAttack(target, kangaroo.getDistanceSq(target));
+                        checkAndPerformAttack(target, kangaroo.distanceToSqr(target));
                     }
-                    if (kangaroo.isInWater() || kangaroo.getDistanceSq(Vector3d.copyCentered(waterPos)) < 10) {
+                    if (kangaroo.isInWater() || kangaroo.distanceToSqr(Vec3.atCenterOf(waterPos)) < 10) {
                         kangaroo.totalMovingProgress = 0;
                     }
-                    if(kangaroo.getDistanceSq(Vector3d.copyCentered(waterPos)) > 10){
+                    if(kangaroo.distanceToSqr(Vec3.atCenterOf(waterPos)) > 10){
                         kangaroo.setVisualFlag(0);
                     }
-                    if (kangaroo.getDistanceSq(Vector3d.copyCentered(waterPos)) < 3 && kangaroo.isInWater()) {
+                    if (kangaroo.distanceToSqr(Vec3.atCenterOf(waterPos)) < 3 && kangaroo.isInWater()) {
                         kangaroo.setStanding(true);
                         kangaroo.maxStandTime = 100;
-                        kangaroo.getLookController().setLookPositionWithEntity(target, 360, 180);
+                        kangaroo.getLookControl().setLookAt(target, 360, 180);
                         kangaroo.setVisualFlag(1);
                     }
                 }
@@ -76,18 +76,18 @@ public class KangarooAIMelee extends MeleeAttackGoal {
         }
     }
 
-    public boolean shouldContinueExecuting() {
-        return waterPos != null && this.kangaroo.getAttackTarget() != null || super.shouldContinueExecuting();
+    public boolean canContinueToUse() {
+        return waterPos != null && this.kangaroo.getTarget() != null || super.canContinueToUse();
     }
 
-    public void resetTask() {
-        super.resetTask();
+    public void stop() {
+        super.stop();
         waterCheckTick = 0;
         waterTimeout = 0;
         waterPos = null;
         kangaroo.setVisualFlag(0);
-        kangaroo.setPathPriority(PathNodeType.WATER, 8);
-        kangaroo.setPathPriority(PathNodeType.WATER_BORDER, 8);
+        kangaroo.setPathfindingMalus(BlockPathTypes.WATER, 8);
+        kangaroo.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 8);
     }
 
     public BlockPos generateWaterPos() {
@@ -95,11 +95,11 @@ public class KangarooAIMelee extends MeleeAttackGoal {
         Random random = new Random();
         int range = 15;
         for (int i = 0; i < 15; i++) {
-            BlockPos blockpos1 = this.kangaroo.getPosition().add(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-            while (this.kangaroo.world.isAirBlock(blockpos1) && blockpos1.getY() > 1) {
-                blockpos1 = blockpos1.down();
+            BlockPos blockpos1 = this.kangaroo.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
+            while (this.kangaroo.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
+                blockpos1 = blockpos1.below();
             }
-            if (this.kangaroo.world.getFluidState(blockpos1).isTagged(FluidTags.WATER)) {
+            if (this.kangaroo.level.getFluidState(blockpos1).is(FluidTags.WATER)) {
                 blockpos = blockpos1;
             }
         }
@@ -110,20 +110,20 @@ public class KangarooAIMelee extends MeleeAttackGoal {
         double d0 = this.getAttackReachSqr(enemy) + 5D;
         if (distToEnemySqr <= d0) {
             if(kangaroo.isInWater()){
-                float f1 = kangaroo.rotationYaw * ((float)Math.PI / 180F);
-                kangaroo.setMotion(kangaroo.getMotion().add((double)(-MathHelper.sin(f1) * 0.3F), 0.0D, (double)(MathHelper.cos(f1) * 0.3F)));
-                enemy.applyKnockback(1F, enemy.getPosX() - kangaroo.getPosX(), enemy.getPosZ() - kangaroo.getPosZ());
+                float f1 = kangaroo.yRot * ((float)Math.PI / 180F);
+                kangaroo.setDeltaMovement(kangaroo.getDeltaMovement().add((double)(-Mth.sin(f1) * 0.3F), 0.0D, (double)(Mth.cos(f1) * 0.3F)));
+                enemy.knockback(1F, enemy.getX() - kangaroo.getX(), enemy.getZ() - kangaroo.getZ());
 
             }
-            this.resetSwingCooldown();
+            this.resetAttackCooldown();
             if(kangaroo.getAnimation() == IAnimatedEntity.NO_ANIMATION){
-                if(kangaroo.getRNG().nextBoolean()){
+                if(kangaroo.getRandom().nextBoolean()){
                     kangaroo.setAnimation(EntityKangaroo.ANIMATION_KICK);
                 }else{
-                    if(!kangaroo.getHeldItemMainhand().isEmpty()){
+                    if(!kangaroo.getMainHandItem().isEmpty()){
                         kangaroo.setAnimation(kangaroo.isLeftHanded() ? EntityKangaroo.ANIMATION_PUNCH_L : EntityKangaroo.ANIMATION_PUNCH_R);
                     }else{
-                        kangaroo.setAnimation(kangaroo.getRNG().nextBoolean() ? EntityKangaroo.ANIMATION_PUNCH_R : EntityKangaroo.ANIMATION_PUNCH_L);
+                        kangaroo.setAnimation(kangaroo.getRandom().nextBoolean() ? EntityKangaroo.ANIMATION_PUNCH_R : EntityKangaroo.ANIMATION_PUNCH_L);
                     }
                 }
             }

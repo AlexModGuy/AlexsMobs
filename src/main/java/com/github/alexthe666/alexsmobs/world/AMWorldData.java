@@ -1,17 +1,17 @@
 package com.github.alexthe666.alexsmobs.world;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.DimensionSavedDataManager;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.saveddata.SavedData;
 
 import java.util.UUID;
 
-public class AMWorldData extends WorldSavedData {
+public class AMWorldData extends SavedData {
 
     private static final String IDENTIFIER = "alexsmobs_world_data";
-    private World world;
+    private Level world;
     private int tickCounter;
     private int beachedCachalotSpawnDelay;
     private int beachedCachalotSpawnChance;
@@ -21,14 +21,14 @@ public class AMWorldData extends WorldSavedData {
         super(IDENTIFIER);
     }
 
-    public static AMWorldData get(World world) {
-        if (world instanceof ServerWorld) {
-            ServerWorld overworld = world.getServer().getWorld(World.OVERWORLD);
-            DimensionSavedDataManager storage = overworld.getSavedData();
-            AMWorldData data = storage.getOrCreate(AMWorldData::new, IDENTIFIER);
+    public static AMWorldData get(Level world) {
+        if (world instanceof ServerLevel) {
+            ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
+            DimensionDataStorage storage = overworld.getDataStorage();
+            AMWorldData data = storage.computeIfAbsent(AMWorldData::new, IDENTIFIER);
             if(data != null){
                 data.world = world;
-                data.markDirty();
+                data.setDirty();
             }
             return data;
         }
@@ -64,7 +64,7 @@ public class AMWorldData extends WorldSavedData {
     }
 
     @Override
-    public void read(CompoundNBT nbt) {
+    public void load(CompoundTag nbt) {
         if (nbt.contains("BeachedCachalotSpawnDelay", 99)) {
             this.beachedCachalotSpawnDelay = nbt.getInt("BeachedCachalotSpawnDelay");
         }
@@ -77,7 +77,7 @@ public class AMWorldData extends WorldSavedData {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         compound.putInt("beachedCachalotSpawnDelay", this.beachedCachalotSpawnDelay);
         compound.putInt("beachedCachalotSpawnChance", this.beachedCachalotSpawnChance);
         if (this.beachedCachalotID != null) {

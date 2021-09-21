@@ -3,45 +3,45 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.entity.EntityGust;
 import com.github.alexthe666.alexsmobs.entity.EntityGuster;
 import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.model.LlamaSpitModel;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.model.LlamaSpitModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.settings.ParticleStatus;
-import net.minecraft.entity.projectile.LlamaSpitEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.entity.projectile.LlamaSpit;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import com.mojang.math.Vector3f;
 
 public class RenderSandShot extends EntityRenderer<EntitySandShot> {
     private static final ResourceLocation SAND_SHOT = new ResourceLocation("alexsmobs:textures/entity/sand_shot.png");
-    private final LlamaSpitModel<LlamaSpitEntity> model = new LlamaSpitModel<>();
+    private final LlamaSpitModel<LlamaSpit> model = new LlamaSpitModel<>();
 
-    public RenderSandShot(EntityRendererManager renderManagerIn) {
+    public RenderSandShot(EntityRenderDispatcher renderManagerIn) {
         super(renderManagerIn);
     }
 
-    public void render(EntitySandShot entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        matrixStackIn.push();
+    public void render(EntitySandShot entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+        matrixStackIn.pushPose();
         matrixStackIn.translate(0.0D, (double)0.15F, 0.0D);
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw) - 90.0F));
-        matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.yRot) - 90.0F));
+        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.xRot)));
         matrixStackIn.scale(1.2F, 1.2F, 1.2F);
         int i = EntityGuster.getColorForVariant(entityIn.getVariant());
         float r = (float) (i >> 16 & 255) / 255.0F;
         float g = (float) (i >> 8 & 255) / 255.0F;
         float b = (float) (i & 255) / 255.0F;
-        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(this.model.getRenderType(SAND_SHOT));
-        this.model.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, r, g, b, 1.0F);
-        matrixStackIn.pop();
+        VertexConsumer ivertexbuilder = bufferIn.getBuffer(this.model.renderType(SAND_SHOT));
+        this.model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, r, g, b, 1.0F);
+        matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    public ResourceLocation getEntityTexture(EntitySandShot entity) {
+    public ResourceLocation getTextureLocation(EntitySandShot entity) {
         return SAND_SHOT;
     }
 }

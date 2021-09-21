@@ -4,34 +4,34 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageSyncEntityPos;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LilyPadBlock;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.WaterlilyBlock;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.IBooleanFunction;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.FMLPlayMessages;
@@ -39,13 +39,26 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-public class EntityStraddleboard extends Entity implements IJumpingMount {
-    private static final DataParameter<ItemStack> ITEMSTACK = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.ITEMSTACK);
-    private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.VARINT);
-    private static final DataParameter<Float> DAMAGE_TAKEN = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.FLOAT);
-    private static final DataParameter<Integer> ROCKING_TICKS = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> DEFAULT_COLOR = EntityDataManager.createKey(EntityStraddleboard.class, DataSerializers.BOOLEAN);
+import net.minecraft.BlockUtil;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.PlayerRideableJumping;
+import net.minecraft.world.entity.Pose;
+
+public class EntityStraddleboard extends Entity implements PlayerRideableJumping {
+    private static final EntityDataAccessor<ItemStack> ITEMSTACK = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Integer> TIME_SINCE_HIT = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DAMAGE_TAKEN = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> ROCKING_TICKS = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DEFAULT_COLOR = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.BOOLEAN);
     public float boardRot = 0;
     public float prevBoardRot = 0;
     private double lastYd;
@@ -56,103 +69,103 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     private float prevRockingAngle;
     private boolean jumpOutOfLava = false;
     private float outOfControlTicks;
-    private BoatEntity.Status status;
-    private BoatEntity.Status previousStatus;
+    private Boat.Status status;
+    private Boat.Status previousStatus;
     private float momentum;
     private double waterLevel;
     private float boatGlide;
     private int extinguishTimer = 0;
 
-    public EntityStraddleboard(EntityType<?> p_i48580_1_, World p_i48580_2_) {
+    public EntityStraddleboard(EntityType<?> p_i48580_1_, Level p_i48580_2_) {
         super(p_i48580_1_, p_i48580_2_);
-        this.preventEntitySpawning = true;
+        this.blocksBuilding = true;
     }
 
-    public EntityStraddleboard(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
+    public EntityStraddleboard(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.STRADDLEBOARD, world);
     }
 
-    public EntityStraddleboard(World worldIn, double x, double y, double z) {
+    public EntityStraddleboard(Level worldIn, double x, double y, double z) {
         this(AMEntityRegistry.STRADDLEBOARD, worldIn);
-        this.setPosition(x, y, z);
-        this.setMotion(Vector3d.ZERO);
-        this.prevPosX = x;
-        this.prevPosY = y;
-        this.prevPosZ = z;
+        this.setPos(x, y, z);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
     }
 
-    public static boolean func_242378_a(Entity p_242378_0_, Entity entity) {
-        return (entity.func_241845_aY() || entity.canBePushed()) && !p_242378_0_.isRidingSameEntity(entity);
+    public static boolean canVehicleCollide(Entity p_242378_0_, Entity entity) {
+        return (entity.canBeCollidedWith() || entity.isPushable()) && !p_242378_0_.isPassengerOfSameVehicle(entity);
     }
 
-    protected float getEyeHeight(Pose poseIn, EntitySize sizeIn) {
+    protected float getEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
         return sizeIn.height;
     }
 
-    protected boolean canTriggerWalking() {
+    protected boolean isMovementNoisy() {
         return false;
     }
 
-    protected void registerData() {
-        this.dataManager.register(TIME_SINCE_HIT, 0);
-        this.dataManager.register(ITEMSTACK, new ItemStack(AMItemRegistry.STRADDLEBOARD));
-        this.dataManager.register(ROCKING_TICKS, 0);
-        this.dataManager.register(DEFAULT_COLOR, true);
-        this.dataManager.register(COLOR, 0);
-        this.dataManager.register(DAMAGE_TAKEN, 0.0F);
+    protected void defineSynchedData() {
+        this.entityData.define(TIME_SINCE_HIT, 0);
+        this.entityData.define(ITEMSTACK, new ItemStack(AMItemRegistry.STRADDLEBOARD));
+        this.entityData.define(ROCKING_TICKS, 0);
+        this.entityData.define(DEFAULT_COLOR, true);
+        this.entityData.define(COLOR, 0);
+        this.entityData.define(DAMAGE_TAKEN, 0.0F);
     }
 
     public boolean shouldRiderSit() {
         return false;
     }
 
-    public boolean canCollide(Entity entity) {
-        return func_242378_a(this, entity);
+    public boolean canCollideWith(Entity entity) {
+        return canVehicleCollide(this, entity);
     }
 
-    public boolean func_241845_aY() {
+    public boolean canBeCollidedWith() {
         return true;
     }
 
-    public boolean canBePushed() {
+    public boolean isPushable() {
         return true;
     }
 
-    protected Vector3d func_241839_a(Direction.Axis axis, TeleportationRepositioner.Result result) {
-        return LivingEntity.func_242288_h(super.func_241839_a(axis, result));
+    protected Vec3 getRelativePortalPosition(Direction.Axis axis, BlockUtil.FoundRectangle result) {
+        return LivingEntity.resetForwardDirectionOfRelativePortalPosition(super.getRelativePortalPosition(axis, result));
     }
 
-    public double getMountedYOffset() {
+    public double getPassengersRidingOffset() {
         return 0.9D;
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
-        } else if (!this.world.isRemote && !this.removed) {
+        } else if (!this.level.isClientSide && !this.removed) {
             this.setTimeSinceHit(10);
             this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
-            this.markVelocityChanged();
+            this.markHurt();
             this.setRockingTicks(25);
-            boolean flag = source.getTrueSource() instanceof PlayerEntity && ((PlayerEntity) source.getTrueSource()).abilities.isCreativeMode;
+            boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).abilities.instabuild;
             if (flag || this.getDamageTaken() > 40.0F) {
                 if (!flag) {
-                    PlayerEntity p = null;
-                    if(source.getTrueSource() instanceof PlayerEntity){
-                        p = (PlayerEntity)source.getTrueSource();
+                    Player p = null;
+                    if(source.getEntity() instanceof Player){
+                        p = (Player)source.getEntity();
                     }
-                    if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity){
-                        p = (PlayerEntity)this.getControllingPassenger();
+                    if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof Player){
+                        p = (Player)this.getControllingPassenger();
                     }
                     boolean dropItem = true;
                     if(p != null && this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN) > 0){
-                        if(p.addItemStackToInventory(this.getItemBoard())){
+                        if(p.addItem(this.getItemBoard())){
                             dropItem = false;
                         }
                     }
                     if(dropItem){
-                        if(this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)){
-                            this.entityDropItem(this.getItemBoard());
+                        if(this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)){
+                            this.spawnAtLocation(this.getItemBoard());
                         }
                     }
 
@@ -172,58 +185,58 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     }
 
 
-    public void applyEntityCollision(Entity entityIn) {
+    public void push(Entity entityIn) {
         if (entityIn instanceof EntityStraddleboard) {
             if (entityIn.getBoundingBox().minY < this.getBoundingBox().maxY) {
-                super.applyEntityCollision(entityIn);
+                super.push(entityIn);
             }
         } else if (entityIn.getBoundingBox().minY <= this.getBoundingBox().minY) {
-            super.applyEntityCollision(entityIn);
+            super.push(entityIn);
         }
 
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void performHurtAnimation() {
+    public void animateHurt() {
         this.setTimeSinceHit(10);
         this.setDamageTaken(this.getDamageTaken() * 11.0F);
     }
 
-    public boolean canBeCollidedWith() {
+    public boolean isPickable() {
         return !this.removed;
     }
 
-    private BoatEntity.Status getBoatStatus() {
-        BoatEntity.Status boatentity$status = this.getUnderwaterStatus();
+    private Boat.Status getBoatStatus() {
+        Boat.Status boatentity$status = this.getUnderwaterStatus();
         if (boatentity$status != null) {
             this.waterLevel = this.getBoundingBox().maxY;
             return boatentity$status;
         } else if (this.checkInWater()) {
-            return BoatEntity.Status.IN_WATER;
+            return Boat.Status.IN_WATER;
         } else {
             float f = this.getBoatGlide();
             if (f > 0.0F) {
                 this.boatGlide = f;
-                return BoatEntity.Status.ON_LAND;
+                return Boat.Status.ON_LAND;
             } else {
-                return BoatEntity.Status.IN_AIR;
+                return Boat.Status.IN_AIR;
             }
         }
     }
 
     public float getBoatGlide() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
-        AxisAlignedBB axisalignedbb1 = new AxisAlignedBB(axisalignedbb.minX, axisalignedbb.minY - 0.001D, axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-        int i = MathHelper.floor(axisalignedbb1.minX) - 1;
-        int j = MathHelper.ceil(axisalignedbb1.maxX) + 1;
-        int k = MathHelper.floor(axisalignedbb1.minY) - 1;
-        int l = MathHelper.ceil(axisalignedbb1.maxY) + 1;
-        int i1 = MathHelper.floor(axisalignedbb1.minZ) - 1;
-        int j1 = MathHelper.ceil(axisalignedbb1.maxZ) + 1;
-        VoxelShape voxelshape = VoxelShapes.create(axisalignedbb1);
+        AABB axisalignedbb = this.getBoundingBox();
+        AABB axisalignedbb1 = new AABB(axisalignedbb.minX, axisalignedbb.minY - 0.001D, axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
+        int i = Mth.floor(axisalignedbb1.minX) - 1;
+        int j = Mth.ceil(axisalignedbb1.maxX) + 1;
+        int k = Mth.floor(axisalignedbb1.minY) - 1;
+        int l = Mth.ceil(axisalignedbb1.maxY) + 1;
+        int i1 = Mth.floor(axisalignedbb1.minZ) - 1;
+        int j1 = Mth.ceil(axisalignedbb1.maxZ) + 1;
+        VoxelShape voxelshape = Shapes.create(axisalignedbb1);
         float f = 0.0F;
         int k1 = 0;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
         for(int l1 = i; l1 < j; ++l1) {
             for(int i2 = i1; i2 < j1; ++i2) {
@@ -231,10 +244,10 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
                 if (j2 != 2) {
                     for(int k2 = k; k2 < l; ++k2) {
                         if (j2 <= 0 || k2 != k && k2 != l - 1) {
-                            blockpos$mutable.setPos(l1, k2, i2);
-                            BlockState blockstate = this.world.getBlockState(blockpos$mutable);
-                            if (!(blockstate.getBlock() instanceof LilyPadBlock) && VoxelShapes.compare(blockstate.getCollisionShape(this.world, blockpos$mutable).withOffset((double)l1, (double)k2, (double)i2), voxelshape, IBooleanFunction.AND)) {
-                                f += blockstate.getSlipperiness(this.world, blockpos$mutable, this);
+                            blockpos$mutable.set(l1, k2, i2);
+                            BlockState blockstate = this.level.getBlockState(blockpos$mutable);
+                            if (!(blockstate.getBlock() instanceof WaterlilyBlock) && Shapes.joinIsNotEmpty(blockstate.getBlockSupportShape(this.level, blockpos$mutable).move((double)l1, (double)k2, (double)i2), voxelshape, BooleanOp.AND)) {
+                                f += blockstate.getSlipperiness(this.level, blockpos$mutable, this);
                                 ++k1;
                             }
                         }
@@ -247,24 +260,24 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     }
 
     private boolean checkInWater() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
-        int i = MathHelper.floor(axisalignedbb.minX);
-        int j = MathHelper.ceil(axisalignedbb.maxX);
-        int k = MathHelper.floor(axisalignedbb.minY);
-        int l = MathHelper.ceil(axisalignedbb.minY - 0.001D);
-        int i1 = MathHelper.floor(axisalignedbb.minZ);
-        int j1 = MathHelper.ceil(axisalignedbb.maxZ);
+        AABB axisalignedbb = this.getBoundingBox();
+        int i = Mth.floor(axisalignedbb.minX);
+        int j = Mth.ceil(axisalignedbb.maxX);
+        int k = Mth.floor(axisalignedbb.minY);
+        int l = Mth.ceil(axisalignedbb.minY - 0.001D);
+        int i1 = Mth.floor(axisalignedbb.minZ);
+        int j1 = Mth.ceil(axisalignedbb.maxZ);
         boolean flag = false;
         this.waterLevel = Double.MIN_VALUE;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
         for(int k1 = i; k1 < j; ++k1) {
             for(int l1 = k; l1 < l; ++l1) {
                 for(int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.setPos(k1, l1, i2);
-                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
-                    if (fluidstate.isTagged(FluidTags.WATER) || fluidstate.isTagged(FluidTags.LAVA)) {
-                        float f = (float)l1 + fluidstate.getActualHeight(this.world, blockpos$mutable);
+                    blockpos$mutable.set(k1, l1, i2);
+                    FluidState fluidstate = this.level.getFluidState(blockpos$mutable);
+                    if (fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA)) {
+                        float f = (float)l1 + fluidstate.getHeight(this.level, blockpos$mutable);
                         this.waterLevel = Math.max((double)f, this.waterLevel);
                         flag |= axisalignedbb.minY < (double)f;
                     }
@@ -277,86 +290,86 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
 
     private void updateMotion() {
         double d0 = -0.04F;
-        double d1 = this.hasNoGravity() ? 0.0D : (double) -0.04F;
+        double d1 = this.isNoGravity() ? 0.0D : (double) -0.04F;
         double d2 = 0.0D;
         this.momentum = 0.05F;
-        if (this.previousStatus == BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.IN_AIR && this.status != BoatEntity.Status.ON_LAND) {
-            this.waterLevel = this.getPosYHeight(1.0D);
-            this.setPosition(this.getPosX(), (double) (this.getWaterLevelAbove() - this.getHeight()) + 0.25, this.getPosZ());
-            this.setMotion(this.getMotion().mul(1.0D, 1D, 1.0D));
+        if (this.previousStatus == Boat.Status.IN_AIR && this.status != Boat.Status.IN_AIR && this.status != Boat.Status.ON_LAND) {
+            this.waterLevel = this.getY(1.0D);
+            this.setPos(this.getX(), (double) (this.getWaterLevelAbove() - this.getBbHeight()) + 0.25, this.getZ());
+            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 1D, 1.0D));
             this.lastYd = 0.0D;
-            this.status = BoatEntity.Status.IN_WATER;
+            this.status = Boat.Status.IN_WATER;
         } else {
-            if (this.status == BoatEntity.Status.IN_WATER) {
-                d2 = (this.waterLevel - this.getPosY()) / (double) this.getHeight();
+            if (this.status == Boat.Status.IN_WATER) {
+                d2 = (this.waterLevel - this.getY()) / (double) this.getBbHeight();
                 this.momentum = 0.9F;
-            } else if (this.status == BoatEntity.Status.UNDER_FLOWING_WATER) {
+            } else if (this.status == Boat.Status.UNDER_FLOWING_WATER) {
                 d1 = -7.0E-4D;
                 this.momentum = 0.9F;
-            } else if (this.status == BoatEntity.Status.UNDER_WATER) {
+            } else if (this.status == Boat.Status.UNDER_WATER) {
                 d2 = 0.01F;
                 this.momentum = 0.45F;
-            } else if (this.status == BoatEntity.Status.IN_AIR) {
+            } else if (this.status == Boat.Status.IN_AIR) {
                 this.momentum = 0.9F;
-            } else if (this.status == BoatEntity.Status.ON_LAND) {
+            } else if (this.status == Boat.Status.ON_LAND) {
                 this.momentum = this.boatGlide;
-                if (this.getControllingPassenger() instanceof PlayerEntity) {
+                if (this.getControllingPassenger() instanceof Player) {
                     this.boatGlide /= 2.0F;
                 }
             }
 
-            Vector3d vector3d = this.getMotion();
-            this.setMotion(vector3d.x * (double) this.momentum, vector3d.y + d1, vector3d.z * (double) this.momentum);
+            Vec3 vector3d = this.getDeltaMovement();
+            this.setDeltaMovement(vector3d.x * (double) this.momentum, vector3d.y + d1, vector3d.z * (double) this.momentum);
             if (d2 > 0.0D) {
-                Vector3d vector3d1 = this.getMotion();
-                this.setMotion(vector3d1.x, (vector3d1.y + d2 * 0.06153846016296973D) * 0.75D, vector3d1.z);
+                Vec3 vector3d1 = this.getDeltaMovement();
+                this.setDeltaMovement(vector3d1.x, (vector3d1.y + d2 * 0.06153846016296973D) * 0.75D, vector3d1.z);
             }
         }
 
     }
 
     public boolean isDefaultColor() {
-        return this.dataManager.get(DEFAULT_COLOR).booleanValue();
+        return this.entityData.get(DEFAULT_COLOR).booleanValue();
     }
 
     public void setDefaultColor(boolean bar) {
-        this.dataManager.set(DEFAULT_COLOR, Boolean.valueOf(bar));
+        this.entityData.set(DEFAULT_COLOR, Boolean.valueOf(bar));
     }
 
     public int getColor() {
         if(isDefaultColor()){
             return 0XADC3D7;
         }
-        return this.dataManager.get(COLOR);
+        return this.entityData.get(COLOR);
     }
 
     public void setColor(int index) {
-        this.dataManager.set(COLOR, index);
+        this.entityData.set(COLOR, index);
     }
 
 
     @Nullable
-    private BoatEntity.Status getUnderwaterStatus() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
+    private Boat.Status getUnderwaterStatus() {
+        AABB axisalignedbb = this.getBoundingBox();
         double d0 = axisalignedbb.maxY + 0.001D;
-        int i = MathHelper.floor(axisalignedbb.minX);
-        int j = MathHelper.ceil(axisalignedbb.maxX);
-        int k = MathHelper.floor(axisalignedbb.maxY);
-        int l = MathHelper.ceil(d0);
-        int i1 = MathHelper.floor(axisalignedbb.minZ);
-        int j1 = MathHelper.ceil(axisalignedbb.maxZ);
+        int i = Mth.floor(axisalignedbb.minX);
+        int j = Mth.ceil(axisalignedbb.maxX);
+        int k = Mth.floor(axisalignedbb.maxY);
+        int l = Mth.ceil(d0);
+        int i1 = Mth.floor(axisalignedbb.minZ);
+        int j1 = Mth.ceil(axisalignedbb.maxZ);
         boolean flag = false;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
         for (int k1 = i; k1 < j; ++k1) {
             for (int l1 = k; l1 < l; ++l1) {
                 for (int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.setPos(k1, l1, i2);
-                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
-                    if ((fluidstate.isTagged(FluidTags.WATER) || fluidstate.isTagged(FluidTags.LAVA) && d0 < (double) ((float) blockpos$mutable.getY() + fluidstate.getActualHeight(this.world, blockpos$mutable))))
+                    blockpos$mutable.set(k1, l1, i2);
+                    FluidState fluidstate = this.level.getFluidState(blockpos$mutable);
+                    if ((fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA) && d0 < (double) ((float) blockpos$mutable.getY() + fluidstate.getHeight(this.level, blockpos$mutable))))
                     {
                         if (!fluidstate.isSource()) {
-                            return BoatEntity.Status.UNDER_FLOWING_WATER;
+                            return Boat.Status.UNDER_FLOWING_WATER;
                         }
 
                         flag = true;
@@ -365,7 +378,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
             }
         }
 
-        return flag ? BoatEntity.Status.UNDER_WATER : null;
+        return flag ? Boat.Status.UNDER_WATER : null;
     }
 
 
@@ -374,10 +387,10 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         super.tick();
         this.previousStatus = this.status;
         this.status = this.getBoatStatus();
-        this.func_234318_eL_();
-        this.doBlockCollisions();
-        if (this.isEntityInsideOpaqueBlock()) {
-            this.pushOutOfBlocks(this.getPosX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getPosZ());
+        this.floatStrider();
+        this.checkInsideBlocks();
+        if (this.isInWall()) {
+            this.moveTowardsClosestSpace(this.getX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getZ());
         }
         if (this.getTimeSinceHit() > 0) {
             this.setTimeSinceHit(this.getTimeSinceHit() - 1);
@@ -387,50 +400,50 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
         }
         if (isInLava()) {
             this.setNoGravity(true);
-            if(this.eyesFluidLevel.getDouble(FluidTags.LAVA) >= this.getHeight()){
-                this.setMotion(0, 0.1, 0);
+            if(this.fluidHeight.getDouble(FluidTags.LAVA) >= this.getBbHeight()){
+                this.setDeltaMovement(0, 0.1, 0);
             }
         }else{
             this.setNoGravity(false);
         }
-        float f2 = (float) -((float) this.getMotion().y * 0.5F * (double) (180F / (float) Math.PI));
-        this.rotationPitch = f2;
+        float f2 = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) (180F / (float) Math.PI));
+        this.xRot = f2;
 
         if(extinguishTimer > 0){
             extinguishTimer--;
         }
         this.updateRocking();
         Entity controller = getControllingPassenger();
-        if (controller instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) controller;
-            if(this.ticksExisted % 50 == 0){
+        if (controller instanceof Player) {
+            Player player = (Player) controller;
+            if(this.tickCount % 50 == 0){
                 if(getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX) > 0){
-                    player.addPotionEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 100, 0, true, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
                 }
             }
-            if(player.getFireTimer() > 0 && extinguishTimer == 0){
-                player.extinguish();
+            if(player.getRemainingFireTicks() > 0 && extinguishTimer == 0){
+                player.clearFire();
             }
-            this.rotationYaw = player.prevRotationYaw;
-            Vector3d vector3d = this.getMotion();
+            this.yRot = player.yRotO;
+            Vec3 vector3d = this.getDeltaMovement();
             if (vector3d.y > -0.5D) {
                 this.fallDistance = 1.0F;
             }
 
-            Vector3d vector3d1 = player.getLookVec();
-            float f = player.rotationPitch * ((float) Math.PI / 180F);
+            Vec3 vector3d1 = player.getLookAngle();
+            float f = player.xRot * ((float) Math.PI / 180F);
             double d1 = Math.sqrt(vector3d1.x * vector3d1.x + vector3d1.z * vector3d1.z);
-            double d3 = Math.sqrt(horizontalMag(vector3d));
+            double d3 = Math.sqrt(getHorizontalDistanceSqr(vector3d));
             double d4 = vector3d1.length();
-            float f1 = MathHelper.cos(f);
+            float f1 = Mth.cos(f);
             f1 = (float) ((double) f1 * (double) f1 * Math.min(1.0D, d4 / 0.4D));
             double d5 = vector3d.y * -0.1D * (double) f1;
-            float slow = player.moveForward < 0 ? 0 : player.moveForward * 0.115F;
+            float slow = player.zza < 0 ? 0 : player.zza * 0.115F;
             float threshold = 0.05F;
-            if (this.prevRotationYaw - this.rotationYaw > threshold) {
+            if (this.yRotO - this.yRot > threshold) {
                 boardRot = boardRot + 2;
                 slow *= 0;
-            } else if (this.prevRotationYaw - this.rotationYaw < -threshold) {
+            } else if (this.yRotO - this.yRot < -threshold) {
                 boardRot = boardRot - 2;
                 slow *= 0;
             } else if (boardRot > 0) {
@@ -438,7 +451,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
             } else if (boardRot < 0) {
                 boardRot = (Math.min(boardRot + 10, 0));
             }
-            boardRot = (MathHelper.clamp(boardRot, -25, 25));
+            boardRot = (Mth.clamp(boardRot, -25, 25));
 
             vector3d = vector3d.add(vector3d1.x * slow / d1, 0.0D, vector3d1.z * slow / d1);
 
@@ -447,44 +460,44 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
                 vector3d = vector3d.add((vector3d1.x / d1 * d3 - vector3d.x) * 0.1D, 0.0D, (vector3d1.z / d1 * d3 - vector3d.z) * 0.1D);
             }
 
-            this.setMotion(vector3d.mul(0.99F, 1F, 0.99F));
+            this.setDeltaMovement(vector3d.multiply(0.99F, 1F, 0.99F));
 
-            if (player.isEntityInsideOpaqueBlock()) {
-                player.dismount();
-                this.attackEntityFrom(DamageSource.GENERIC, 100);
+            if (player.isInWall()) {
+                player.removeVehicle();
+                this.hurt(DamageSource.GENERIC, 100);
             }
         }
         this.updateMotion();
-        this.move(MoverType.SELF, this.getMotion());
+        this.move(MoverType.SELF, this.getDeltaMovement());
     }
 
-    public double getPosYEye() {
-        return this.getPosY() + 0.3F;
+    public double getEyeY() {
+        return this.getY() + 0.3F;
     }
 
 
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
-        if(!world.isRemote){
-            EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.create(world);
-            CompoundNBT tag = new CompoundNBT();
-            this.writeAdditional(tag);
-            copy.readAdditional(tag);
-            copy.copyLocationAndAnglesFrom(passenger);
-            world.addEntity(copy);
+        if(!level.isClientSide){
+            EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.create(level);
+            CompoundTag tag = new CompoundTag();
+            this.addAdditionalSaveData(tag);
+            copy.readAdditionalSaveData(tag);
+            copy.copyPosition(passenger);
+            level.addFreshEntity(copy);
         }
         this.remove();
     }
 
-    private void func_234318_eL_() {
+    private void floatStrider() {
 
     }
 
     @Nullable
     public Entity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
-            if (passenger instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) passenger;
+            if (passenger instanceof Player) {
+                Player player = (Player) passenger;
                 return player;
             }
         }
@@ -492,7 +505,7 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     }
 
     private void updateRocking() {
-        if (this.world.isRemote) {
+        if (this.level.isClientSide) {
             int i = this.getRockingTicks();
             if (i > 0) {
                 this.rockingIntensity += 1F;
@@ -500,9 +513,9 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
                 this.rockingIntensity -= 0.1F;
             }
 
-            this.rockingIntensity = MathHelper.clamp(this.rockingIntensity, 0.0F, 1.0F);
+            this.rockingIntensity = Mth.clamp(this.rockingIntensity, 0.0F, 1.0F);
             this.prevRockingAngle = this.rockingAngle;
-            this.rockingAngle = 10.0F * (float) Math.sin(0.5F * (float) this.world.getGameTime()) * this.rockingIntensity;
+            this.rockingAngle = 10.0F * (float) Math.sin(0.5F * (float) this.level.getGameTime()) * this.rockingIntensity;
         } else {
             if (!this.rocking) {
                 this.setRockingTicks(0);
@@ -515,12 +528,12 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
                 int j = 60 - k - 1;
                 if (j > 0 && k == 0) {
                     this.setRockingTicks(0);
-                    Vector3d vector3d = this.getMotion();
+                    Vec3 vector3d = this.getDeltaMovement();
                     if (this.downwards) {
-                        this.setMotion(vector3d.add(0.0D, -0.7D, 0.0D));
-                        this.removePassengers();
+                        this.setDeltaMovement(vector3d.add(0.0D, -0.7D, 0.0D));
+                        this.ejectPassengers();
                     } else {
-                        this.setMotion(vector3d.x, this.isPassenger(PlayerEntity.class) ? 2.7D : 0.6D, vector3d.z);
+                        this.setDeltaMovement(vector3d.x, this.hasPassenger(Player.class) ? 2.7D : 0.6D, vector3d.z);
                     }
                 }
 
@@ -531,14 +544,14 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     }
 
     public float getWaterLevelAbove() {
-        AxisAlignedBB axisalignedbb = this.getBoundingBox();
-        int i = MathHelper.floor(axisalignedbb.minX);
-        int j = MathHelper.ceil(axisalignedbb.maxX);
-        int k = MathHelper.floor(axisalignedbb.maxY);
-        int l = MathHelper.ceil(axisalignedbb.maxY - this.lastYd);
-        int i1 = MathHelper.floor(axisalignedbb.minZ);
-        int j1 = MathHelper.ceil(axisalignedbb.maxZ);
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        AABB axisalignedbb = this.getBoundingBox();
+        int i = Mth.floor(axisalignedbb.minX);
+        int j = Mth.ceil(axisalignedbb.maxX);
+        int k = Mth.floor(axisalignedbb.maxY);
+        int l = Mth.ceil(axisalignedbb.maxY - this.lastYd);
+        int i1 = Mth.floor(axisalignedbb.minZ);
+        int j1 = Mth.ceil(axisalignedbb.maxZ);
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
         label39:
         for (int k1 = k; k1 < l; ++k1) {
@@ -546,10 +559,10 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
 
             for (int l1 = i; l1 < j; ++l1) {
                 for (int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.setPos(l1, k1, i2);
-                    FluidState fluidstate = this.world.getFluidState(blockpos$mutable);
-                    if (fluidstate.isTagged(FluidTags.WATER) || fluidstate.isTagged(FluidTags.LAVA)) {
-                        f = Math.max(f, fluidstate.getActualHeight(this.world, blockpos$mutable));
+                    blockpos$mutable.set(l1, k1, i2);
+                    FluidState fluidstate = this.level.getFluidState(blockpos$mutable);
+                    if (fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA)) {
+                        f = Math.max(f, fluidstate.getHeight(this.level, blockpos$mutable));
                     }
 
                     if (f >= 1.0F) {
@@ -567,14 +580,14 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     }
 
     @Override
-    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand) {
         if (player.isSecondaryUseActive()) {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         } else {
-            if (!this.world.isRemote) {
-                return player.startRiding(this) ? ActionResultType.CONSUME : ActionResultType.PASS;
+            if (!this.level.isClientSide) {
+                return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
             } else {
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
     }
@@ -583,87 +596,87 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
      * Gets the damage taken from the last hit.
      */
     public float getDamageTaken() {
-        return this.dataManager.get(DAMAGE_TAKEN);
+        return this.entityData.get(DAMAGE_TAKEN);
     }
 
     public void setDamageTaken(float damageTaken) {
-        this.dataManager.set(DAMAGE_TAKEN, damageTaken);
+        this.entityData.set(DAMAGE_TAKEN, damageTaken);
     }
 
     /**
      * Gets the time since the last hit.
      */
     public int getTimeSinceHit() {
-        return this.dataManager.get(TIME_SINCE_HIT);
+        return this.entityData.get(TIME_SINCE_HIT);
     }
 
     /**
      * Sets the time to count down from since the last time entity was hit.
      */
     public void setTimeSinceHit(int timeSinceHit) {
-        this.dataManager.set(TIME_SINCE_HIT, timeSinceHit);
+        this.entityData.set(TIME_SINCE_HIT, timeSinceHit);
     }
 
     private int getRockingTicks() {
-        return this.dataManager.get(ROCKING_TICKS);
+        return this.entityData.get(ROCKING_TICKS);
     }
 
     private void setRockingTicks(int ticks) {
-        this.dataManager.set(ROCKING_TICKS, ticks);
+        this.entityData.set(ROCKING_TICKS, ticks);
     }
 
     @OnlyIn(Dist.CLIENT)
     public float getRockingAngle(float partialTicks) {
-        return MathHelper.lerp(partialTicks, this.prevRockingAngle, this.rockingAngle);
+        return Mth.lerp(partialTicks, this.prevRockingAngle, this.rockingAngle);
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
 
     @Override
-    protected void readAdditional(CompoundNBT compound) {
+    protected void readAdditionalSaveData(CompoundTag compound) {
         this.setDefaultColor(compound.getBoolean("IsDefColor"));
         if(compound.contains("BoardStack")){
-            this.setItemStack(ItemStack.read(compound.getCompound("BoardStack")));
+            this.setItemStack(ItemStack.of(compound.getCompound("BoardStack")));
         }
         this.setColor(compound.getInt("Color"));
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
+    protected void addAdditionalSaveData(CompoundTag compound) {
         compound.putBoolean("IsDefColor", this.isDefaultColor());
         compound.putInt("Color", this.getColor());
         if(!this.getItemStack().isEmpty()){
-            CompoundNBT stackTag = new CompoundNBT();
-            this.getItemStack().write(stackTag);
+            CompoundTag stackTag = new CompoundTag();
+            this.getItemStack().save(stackTag);
             compound.put("BoardStack", stackTag);
         }
 
     }
 
     @Override
-    public void setJumpPower(int i) {
+    public void onPlayerJump(int i) {
 
     }
 
     @Override
     public boolean canJump() {
-        return this.world.getBlockState(this.getPositionUnderneath()).getFluidState().isTagged(FluidTags.LAVA);
+        return this.level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFluidState().is(FluidTags.LAVA);
     }
 
     @Override
     public void handleStartJump(int i) {
         jumpOutOfLava = true;
-        this.isAirBorne=true;
+        this.hasImpulse=true;
         float scaled = i * 0.01F + 0.1F * getEnchant(AMEnchantmentRegistry.STRADDLE_JUMP);
-        this.setMotion(this.getMotion().add(0, scaled * 1.5F, 0));
+        this.setDeltaMovement(this.getDeltaMovement().add(0, scaled * 1.5F, 0));
     }
 
     private int getEnchant(Enchantment enchantment){
-        return EnchantmentHelper.getEnchantmentLevel(enchantment, this.getItemBoard());
+        return EnchantmentHelper.getItemEnchantmentLevel(enchantment, this.getItemBoard());
     }
 
     public boolean shouldSerpentFriend(){
@@ -676,11 +689,11 @@ public class EntityStraddleboard extends Entity implements IJumpingMount {
     }
 
     public void setItemStack(ItemStack item){
-        this.dataManager.set(ITEMSTACK, item);
+        this.entityData.set(ITEMSTACK, item);
     }
 
     public ItemStack getItemStack(){
-       return this.dataManager.get(ITEMSTACK);
+       return this.entityData.get(ITEMSTACK);
     }
 
     public enum Status {

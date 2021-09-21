@@ -6,7 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosquito> {
 	private final AdvancedModelBox root;
@@ -29,115 +29,115 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 	private ModelAnimator animator;
 
 	public ModelCrimsonMosquito() {
-		textureWidth = 128;
-		textureHeight = 128;
+		texWidth = 128;
+		texHeight = 128;
 
 		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
 		body = new AdvancedModelBox(this);
-		body.setRotationPoint(0.0F, -9.5F, -0.25F);
+		body.setPos(0.0F, -9.5F, -0.25F);
 		root.addChild(body);
-		body.setTextureOffset(31, 65).addBox(-3.0F, -3.5F, -3.75F, 6.0F, 6.0F, 6.0F, 0.0F, false);
+		body.texOffs(31, 65).addBox(-3.0F, -3.5F, -3.75F, 6.0F, 6.0F, 6.0F, 0.0F, false);
 
 		wingL = new AdvancedModelBox(this);
-		wingL.setRotationPoint(2.7F, -3.2F, -0.75F);
+		wingL.setPos(2.7F, -3.2F, -0.75F);
 		body.addChild(wingL);
-		wingL.setTextureOffset(37, 59).addBox(0.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
+		wingL.texOffs(37, 59).addBox(0.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
 
 		wingR = new AdvancedModelBox(this);
-		wingR.setRotationPoint(-2.7F, -3.2F, -0.75F);
+		wingR.setPos(-2.7F, -3.2F, -0.75F);
 		body.addChild(wingR);
-		wingR.setTextureOffset(37, 53).addBox(-18.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
+		wingR.texOffs(37, 53).addBox(-18.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
 
 		legsL = new AdvancedModelBox(this);
-		legsL.setRotationPoint(3.0F, 2.5F, -2.75F);
+		legsL.setPos(3.0F, 2.5F, -2.75F);
 		body.addChild(legsL);
 		
 
 		legL1 = new AdvancedModelBox(this);
-		legL1.setRotationPoint(0.0F, 0.0F, 0.0F);
+		legL1.setPos(0.0F, 0.0F, 0.0F);
 		legsL.addChild(legL1);
 		setRotationAngle(legL1, 0.0F, 0.5236F, 0.0F);
-		legL1.setTextureOffset(0, 51).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legL1.texOffs(0, 51).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legL2 = new AdvancedModelBox(this);
-		legL2.setRotationPoint(0.0F, 0.0F, 0.4F);
+		legL2.setPos(0.0F, 0.0F, 0.4F);
 		legsL.addChild(legL2);
-		legL2.setTextureOffset(37, 16).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legL2.texOffs(37, 16).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legL3 = new AdvancedModelBox(this);
-		legL3.setRotationPoint(0.0F, 0.0F, 0.9F);
+		legL3.setPos(0.0F, 0.0F, 0.9F);
 		legsL.addChild(legL3);
 		setRotationAngle(legL3, 0.0F, -0.8727F, 0.0F);
-		legL3.setTextureOffset(37, 0).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legL3.texOffs(37, 0).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legsR = new AdvancedModelBox(this);
-		legsR.setRotationPoint(-3.0F, 2.5F, -2.75F);
+		legsR.setPos(-3.0F, 2.5F, -2.75F);
 		body.addChild(legsR);
 		
 
 		legR1 = new AdvancedModelBox(this);
-		legR1.setRotationPoint(0.0F, 0.0F, 0.0F);
+		legR1.setPos(0.0F, 0.0F, 0.0F);
 		legsR.addChild(legR1);
 		setRotationAngle(legR1, 0.0F, -0.5236F, 0.0F);
-		legR1.setTextureOffset(37, 37).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legR1.texOffs(37, 37).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legR2 = new AdvancedModelBox(this);
-		legR2.setRotationPoint(0.0F, 0.0F, 0.4F);
+		legR2.setPos(0.0F, 0.0F, 0.4F);
 		legsR.addChild(legR2);
-		legR2.setTextureOffset(0, 35).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legR2.texOffs(0, 35).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legR3 = new AdvancedModelBox(this);
-		legR3.setRotationPoint(0.0F, 0.0F, 0.9F);
+		legR3.setPos(0.0F, 0.0F, 0.9F);
 		legsR.addChild(legR3);
 		setRotationAngle(legR3, 0.0F, 0.8727F, 0.0F);
-		legR3.setTextureOffset(0, 19).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legR3.texOffs(0, 19).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		tail = new AdvancedModelBox(this);
-		tail.setRotationPoint(0.0F, -1.5F, 2.25F);
+		tail.setPos(0.0F, -1.5F, 2.25F);
 		body.addChild(tail);
-		tail.setTextureOffset(48, 83).addBox(-2.0F, -1.4F, 0.0F, 4.0F, 4.0F, 16.0F, 0.0F, false);
+		tail.texOffs(48, 83).addBox(-2.0F, -1.4F, 0.0F, 4.0F, 4.0F, 16.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
-		head.setRotationPoint(0.0F, 0.5F, -3.75F);
+		head.setPos(0.0F, 0.5F, -3.75F);
 		body.addChild(head);
-		head.setTextureOffset(56, 65).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+		head.texOffs(56, 65).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
 		antennaL = new AdvancedModelBox(this);
-		antennaL.setRotationPoint(1.0F, -0.1F, -4.0F);
+		antennaL.setPos(1.0F, -0.1F, -4.0F);
 		head.addChild(antennaL);
 		setRotationAngle(antennaL, 1.2217F, -0.48F, 0.0436F);
-		antennaL.setTextureOffset(5, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
+		antennaL.texOffs(5, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
 
 		antennaR = new AdvancedModelBox(this);
-		antennaR.setRotationPoint(-1.0F, -0.1F, -4.0F);
+		antennaR.setPos(-1.0F, -0.1F, -4.0F);
 		head.addChild(antennaR);
 		setRotationAngle(antennaR, 1.2217F, 0.48F, -0.0436F);
-		antennaR.setTextureOffset(0, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
+		antennaR.texOffs(0, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
 
 		mouth = new AdvancedModelBox(this);
-		mouth.setRotationPoint(0.0F, 2.0F, -3.5F);
+		mouth.setPos(0.0F, 2.0F, -3.5F);
 		head.addChild(mouth);
 		setRotationAngle(mouth, -1.0036F, 0.0F, 0.0F);
-		mouth.setTextureOffset(23, 0).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 8.0F, 1.0F, 0.0F, false);
+		mouth.texOffs(23, 0).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 8.0F, 1.0F, 0.0F, false);
 		animator = ModelAnimator.create();
 		this.updateDefaultPose();
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
 	@Override
-	public void setRotationAngles(EntityCrimsonMosquito entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityCrimsonMosquito entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		float flySpeed = 0.5F;
 		float flyDegree = 0.5F;
 
-		float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+		float partialTick = Minecraft.getInstance().getFrameTime();
 		float flyProgress = entityIn.prevFlyProgress + (entityIn.flyProgress - entityIn.prevFlyProgress) * partialTick;
 		float shootProgress = entityIn.prevShootProgress + (entityIn.shootProgress - entityIn.prevShootProgress) * partialTick;
 		this.walk(antennaR, flySpeed, flyDegree * 0.15F, false, 0, 0.1F, ageInTicks, 1);
@@ -167,10 +167,10 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 			this.flap(wingL, flySpeed * 3.3F, flyDegree, true, 0, 0.2F, ageInTicks, 1);
 			this.flap(wingR, flySpeed * 3.3F, flyDegree, false, 0, 0.2F, ageInTicks, 1);
 		}else{
-			this.wingR.rotateAngleX = (float) Math.toRadians(30);
-			this.wingR.rotateAngleY = (float) Math.toRadians(70);
-			this.wingL.rotateAngleX = (float) Math.toRadians(30);
-			this.wingL.rotateAngleY = (float) Math.toRadians(-70);
+			this.wingR.xRot = (float) Math.toRadians(30);
+			this.wingR.yRot = (float) Math.toRadians(70);
+			this.wingL.xRot = (float) Math.toRadians(30);
+			this.wingL.yRot = (float) Math.toRadians(-70);
 		}
 		if(flyProgress > 0){
 			progressPositionPrev(body, flyProgress, 0, -10F, 0F, 5F);
@@ -190,7 +190,7 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 			this.walk(tail, flySpeed, flyDegree * 0.15F, false, 0, -0.1F, ageInTicks, 1);
 		}
 		float bloatScale = 1F + entityIn.getBloodLevel() * 0.1F;
-		this.tail.rotateAngleX -= entityIn.getBloodLevel() * 0.05F;
+		this.tail.xRot -= entityIn.getBloodLevel() * 0.05F;
 		this.tail.setScale(bloatScale, bloatScale, bloatScale);
 	}
 		@Override
@@ -199,8 +199,8 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 	}
 
 	public void setRotationAngle(AdvancedModelBox modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
+		modelRenderer.xRot = x;
+		modelRenderer.yRot = y;
+		modelRenderer.zRot = z;
 	}
 }

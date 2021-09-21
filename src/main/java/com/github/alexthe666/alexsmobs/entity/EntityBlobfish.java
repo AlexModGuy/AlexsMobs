@@ -5,139 +5,152 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.FindWaterGoal;
-import net.minecraft.entity.ai.goal.PanicGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.IFlyingAnimal;
-import net.minecraft.entity.passive.WaterMobEntity;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.SwimmerPathNavigator;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 
-    private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(EntityBlobfish.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Float> BLOBFISH_SCALE = EntityDataManager.createKey(EntityBlobfish.class, DataSerializers.FLOAT);
-    private static final DataParameter<Boolean> DEPRESSURIZED = EntityDataManager.createKey(EntityBlobfish.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SLIMED = EntityDataManager.createKey(EntityBlobfish.class, DataSerializers.BOOLEAN);
+public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
+
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityBlobfish.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> BLOBFISH_SCALE = SynchedEntityData.defineId(EntityBlobfish.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> DEPRESSURIZED = SynchedEntityData.defineId(EntityBlobfish.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SLIMED = SynchedEntityData.defineId(EntityBlobfish.class, EntityDataSerializers.BOOLEAN);
     public float squishFactor;
     public float prevSquishFactor;
     public float squishAmount;
     private boolean wasOnGround;
 
-    protected EntityBlobfish(EntityType type, World world) {
+    protected EntityBlobfish(EntityType type, Level world) {
         super(type, world);
-        this.moveController = new AquaticMoveController(this, 1.0F);
+        this.moveControl = new AquaticMoveController(this, 1.0F);
     }
 
-    public static AttributeModifierMap.MutableAttribute func_234176_m_() {
-        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 3.0D);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 3.0D);
     }
 
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.blobfishSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.blobfishSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean func_223363_b(EntityType<? extends AbstractFishEntity> p_223363_0_, IWorld p_223363_1_, SpawnReason p_223363_2_, BlockPos p_223363_3_, Random p_223363_4_) {
-        return p_223363_1_.getBlockState(p_223363_3_).getMaterial() == Material.WATER && p_223363_1_.getBlockState(p_223363_3_.up()).getMaterial() == Material.WATER;
+    public static boolean checkFishSpawnRules(EntityType<? extends AbstractFish> p_223363_0_, LevelAccessor p_223363_1_, MobSpawnType p_223363_2_, BlockPos p_223363_3_, Random p_223363_4_) {
+        return p_223363_1_.getBlockState(p_223363_3_).getMaterial() == Material.WATER && p_223363_1_.getBlockState(p_223363_3_.above()).getMaterial() == Material.WATER;
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 8D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8D).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
-    protected PathNavigator createNavigator(World worldIn) {
-        return new SwimmerPathNavigator(this, worldIn);
+    protected PathNavigation createNavigation(Level worldIn) {
+        return new WaterBoundPathNavigation(this, worldIn);
     }
 
-    protected void updateAir(int p_209207_1_) {
-        if (this.isAlive() && !this.isInWaterOrBubbleColumn() && !isSlimed()) {
-            this.setAir(p_209207_1_ - 1);
-            if (this.getAir() == -20) {
-                this.setAir(0);
-                this.attackEntityFrom(DamageSource.DROWN, rand.nextInt(2) == 0 ? 1F : 0F);
+    protected void handleAirSupply(int p_209207_1_) {
+        if (this.isAlive() && !this.isInWaterOrBubble() && !isSlimed()) {
+            this.setAirSupply(p_209207_1_ - 1);
+            if (this.getAirSupply() == -20) {
+                this.setAirSupply(0);
+                this.hurt(DamageSource.DROWN, random.nextInt(2) == 0 ? 1F : 0F);
             }
         } else {
-            this.setAir(2000);
+            this.setAirSupply(2000);
         }
     }
 
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
+    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
         return p_213348_2_.height * 0.65F;
     }
 
-    public boolean preventDespawn() {
-        return super.preventDespawn() || this.isFromBucket() || isSlimed();
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.isFromBucket() || isSlimed();
     }
 
-    public boolean canDespawn(double p_213397_1_) {
+    public boolean removeWhenFarAway(double p_213397_1_) {
         return !this.isFromBucket() && !this.hasCustomName();
     }
 
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 4;
     }
 
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FROM_BUCKET, false);
-        this.dataManager.register(BLOBFISH_SCALE, 1.0F);
-        this.dataManager.register(DEPRESSURIZED, false);
-        this.dataManager.register(SLIMED, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(FROM_BUCKET, false);
+        this.entityData.define(BLOBFISH_SCALE, 1.0F);
+        this.entityData.define(DEPRESSURIZED, false);
+        this.entityData.define(SLIMED, false);
     }
 
-    public EntitySize getSize(Pose poseIn) {
-        return super.getSize(poseIn).scale(this.getBlobfishScale());
+    public EntityDimensions getDimensions(Pose poseIn) {
+        return super.getDimensions(poseIn).scale(this.getBlobfishScale());
     }
 
 
     private boolean isFromBucket() {
-        return this.dataManager.get(FROM_BUCKET);
+        return this.entityData.get(FROM_BUCKET);
     }
 
     public void setFromBucket(boolean p_203706_1_) {
-        this.dataManager.set(FROM_BUCKET, p_203706_1_);
+        this.entityData.set(FROM_BUCKET, p_203706_1_);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("FromBucket", this.isFromBucket());
         compound.putBoolean("Depressurized", this.isDepressurized());
         compound.putBoolean("Slimed", this.isSlimed());
         compound.putFloat("BlobfishScale", this.getBlobfishScale());
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setFromBucket(compound.getBoolean("FromBucket"));
         this.setDepressurized(compound.getBoolean("Depressurized"));
         this.setSlimed(compound.getBoolean("Slimed"));
@@ -145,10 +158,10 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
     }
 
     private boolean hasClearance() {
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
         for (int l1 = 0; l1 < 10; ++l1) {
-            BlockState blockstate = world.getBlockState(blockpos$mutable.setPos(this.getPosX(), this.getPosY() + l1, this.getPosZ()));
-            if (!blockstate.getFluidState().isTagged(FluidTags.WATER)) {
+            BlockState blockstate = level.getBlockState(blockpos$mutable.set(this.getX(), this.getY() + l1, this.getZ()));
+            if (!blockstate.getFluidState().is(FluidTags.WATER)) {
                 return false;
             }
         }
@@ -158,43 +171,43 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
 
 
     public float getBlobfishScale() {
-        return this.dataManager.get(BLOBFISH_SCALE);
+        return this.entityData.get(BLOBFISH_SCALE);
     }
 
     public void setBlobfishScale(float scale) {
-        this.dataManager.set(BLOBFISH_SCALE, scale);
+        this.entityData.set(BLOBFISH_SCALE, scale);
     }
 
     public boolean isDepressurized() {
-        return this.dataManager.get(DEPRESSURIZED);
+        return this.entityData.get(DEPRESSURIZED);
     }
 
     public void setDepressurized(boolean depressurized) {
-        this.dataManager.set(DEPRESSURIZED, depressurized);
+        this.entityData.set(DEPRESSURIZED, depressurized);
     }
 
     public boolean isSlimed() {
-        return this.dataManager.get(SLIMED);
+        return this.entityData.get(SLIMED);
     }
 
     public void setSlimed(boolean slimed) {
-        this.dataManager.set(SLIMED, slimed);
+        this.entityData.set(SLIMED, slimed);
     }
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new FindWaterGoal(this));
+        this.goalSelector.addGoal(1, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(2, new PanicGoal(this, 1D));
         this.goalSelector.addGoal(3, new AnimalAISwimBottom(this, 1F, 7));
     }
 
-    public void travel(Vector3d travelVector) {
-        if (this.isServerWorld() && this.isInWater()) {
-            this.moveRelative(this.getAIMoveSpeed(), travelVector);
-            this.move(MoverType.SELF, this.getMotion());
-            this.setMotion(this.getMotion().scale(0.9D));
-            if (this.getAttackTarget() == null) {
-                this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
+    public void travel(Vec3 travelVector) {
+        if (this.isEffectiveAi() && this.isInWater()) {
+            this.moveRelative(this.getSpeed(), travelVector);
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
+            if (this.getTarget() == null) {
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
             }
         } else {
             super.travel(travelVector);
@@ -202,43 +215,43 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
 
     }
 
-    protected ActionResultType getEntityInteractionResult(PlayerEntity p_230254_1_, Hand p_230254_2_) {
-        ItemStack lvt_3_1_ = p_230254_1_.getHeldItem(p_230254_2_);
+    protected InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
+        ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
         if (lvt_3_1_.getItem() == Items.SLIME_BALL && this.isAlive() && !this.isSlimed()) {
             this.setSlimed(true);
-            for (int i = 0; i < 6 + rand.nextInt(3); i++) {
-                double d2 = this.rand.nextGaussian() * 0.02D;
-                double d0 = this.rand.nextGaussian() * 0.02D;
-                double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, lvt_3_1_), this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, this.getPosY() + this.getHeight() * 0.5F + (double) (this.rand.nextFloat() * this.getHeight() * 0.5F), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, d0, d1, d2);
+            for (int i = 0; i < 6 + random.nextInt(3); i++) {
+                double d2 = this.random.nextGaussian() * 0.02D;
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
             lvt_3_1_.shrink(1);
-            return ActionResultType.func_233537_a_(this.world.isRemote);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
         if (lvt_3_1_.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
+            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
             lvt_3_1_.shrink(1);
             ItemStack lvt_4_1_ = this.getFishBucket();
             this.setBucketData(lvt_4_1_);
-            if (!this.world.isRemote) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) p_230254_1_, lvt_4_1_);
+            if (!this.level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) p_230254_1_, lvt_4_1_);
             }
 
             if (lvt_3_1_.isEmpty()) {
-                p_230254_1_.setHeldItem(p_230254_2_, lvt_4_1_);
-            } else if (!p_230254_1_.inventory.addItemStackToInventory(lvt_4_1_)) {
-                p_230254_1_.dropItem(lvt_4_1_, false);
+                p_230254_1_.setItemInHand(p_230254_2_, lvt_4_1_);
+            } else if (!p_230254_1_.inventory.add(lvt_4_1_)) {
+                p_230254_1_.drop(lvt_4_1_, false);
             }
 
             this.remove();
-            return ActionResultType.func_233537_a_(this.world.isRemote);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
-            return super.getEntityInteractionResult(p_230254_1_, p_230254_2_);
+            return super.mobInteract(p_230254_1_, p_230254_2_);
         }
     }
 
     protected SoundEvent getSwimSound() {
-        return SoundEvents.ENTITY_FISH_SWIM;
+        return SoundEvents.FISH_SWIM;
     }
 
     protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
@@ -247,25 +260,25 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
     protected ItemStack getFishBucket(){
         ItemStack stack = new ItemStack(AMItemRegistry.BLOBFISH_BUCKET);
         if (this.hasCustomName()) {
-            stack.setDisplayName(this.getCustomName());
+            stack.setHoverName(this.getCustomName());
         }
         return stack;
     }
 
     protected void setBucketData(ItemStack bucket) {
         if (this.hasCustomName()) {
-            bucket.setDisplayName(this.getCustomName());
+            bucket.setHoverName(this.getCustomName());
         }
-        CompoundNBT compoundnbt = bucket.getOrCreateTag();
+        CompoundTag compoundnbt = bucket.getOrCreateTag();
         compoundnbt.putFloat("BucketScale", this.getBlobfishScale());
         compoundnbt.putBoolean("Slimed", this.isSlimed());
     }
 
 
     @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        this.setBlobfishScale(0.75F + rand.nextFloat() * 0.5F);
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        this.setBlobfishScale(0.75F + random.nextFloat() * 0.5F);
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     public void tick() {
@@ -273,8 +286,8 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
         this.prevSquishFactor = this.squishFactor;
         this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
 
-        float f2 = (float) -((float) this.getMotion().y * 2.2F * (double) (180F / (float) Math.PI));
-        this.rotationPitch = f2;
+        float f2 = (float) -((float) this.getDeltaMovement().y * 2.2F * (double) (180F / (float) Math.PI));
+        this.xRot = f2;
         if (!isInWater()) {
             if (this.onGround && !this.wasOnGround) {
                 this.squishAmount = -0.35F;
@@ -299,14 +312,14 @@ public class EntityBlobfish extends WaterMobEntity implements IFlyingAnimal {
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_COD_DEATH;
+        return SoundEvents.COD_DEATH;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_COD_HURT;
+        return SoundEvents.COD_HURT;
     }
 
-    public static boolean canBlobfishSpawn(EntityType<EntityBlobfish> entityType, IServerWorld iServerWorld, SpawnReason reason, BlockPos pos, Random random) {
-        return reason == SpawnReason.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnHeight && iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.up()).getMaterial() == Material.WATER;
+    public static boolean canBlobfishSpawn(EntityType<EntityBlobfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+        return reason == MobSpawnType.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnHeight && iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
     }
 }

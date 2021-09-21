@@ -5,18 +5,18 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.misc.*;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipeSerializer;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
@@ -28,9 +28,9 @@ import static com.github.alexthe666.alexsmobs.AlexsMobs.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
-    public static final LootConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.Serializer());
-    public static final LootConditionType MATCHES_BLOSSOM_CONDTN = registerLootCondition("alexsmobs:matches_blossom_tag", new MatchesBlossomTagCondition.Serializer());
-    public static SpecialRecipeSerializer MIMICREAM_RECIPE;
+    public static final LootItemConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.Serializer());
+    public static final LootItemConditionType MATCHES_BLOSSOM_CONDTN = registerLootCondition("alexsmobs:matches_blossom_tag", new MatchesBlossomTagCondition.Serializer());
+    public static SimpleRecipeSerializer MIMICREAM_RECIPE;
 
     @SubscribeEvent
     public static void registerModifierSerializers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
@@ -43,16 +43,16 @@ public class CommonProxy {
     }
 
     @SubscribeEvent
-    public static void registerRecipes(RegistryEvent.Register<IRecipeSerializer<?>> event) {
+    public static void registerRecipes(RegistryEvent.Register<RecipeSerializer<?>> event) {
         if(AMConfig.mimicreamRepair){
-            MIMICREAM_RECIPE = new SpecialRecipeSerializer<>(RecipeMimicreamRepair::new);
+            MIMICREAM_RECIPE = new SimpleRecipeSerializer<>(RecipeMimicreamRepair::new);
             MIMICREAM_RECIPE.setRegistryName(new ResourceLocation("alexsmobs:mimicream_repair_recipe"));
             event.getRegistry().register(MIMICREAM_RECIPE);
         }
     }
 
-    private static LootConditionType registerLootCondition(String registryName, ILootSerializer<? extends ILootCondition> serializer) {
-        return Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(registryName), new LootConditionType(serializer));
+    private static LootItemConditionType registerLootCondition(String registryName, Serializer<? extends LootItemCondition> serializer) {
+        return Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation(registryName), new LootItemConditionType(serializer));
     }
 
     public void init() {
@@ -65,7 +65,7 @@ public class CommonProxy {
         return group;
     }
 
-    public PlayerEntity getClientSidePlayer() {
+    public Player getClientSidePlayer() {
         return null;
     }
 
@@ -104,5 +104,5 @@ public class CommonProxy {
         return true;
     }
 
-    public void resetVoidPortalCreation(PlayerEntity player){}
+    public void resetVoidPortalCreation(Player player){}
 }

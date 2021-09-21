@@ -6,37 +6,37 @@ import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.merchant.villager.AbstractVillagerEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
-import net.minecraft.entity.passive.IFlyingAnimal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -45,13 +45,21 @@ import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Random;
 
-public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+
+public class EntitySoulVulture extends Monster implements FlyingAnimal {
 
     public static final ResourceLocation SOUL_LOOT = new ResourceLocation("alexsmobs", "entities/soul_vulture_heart");
-    private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntitySoulVulture.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> TACKLING = EntityDataManager.createKey(EntitySoulVulture.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Optional<BlockPos>> PERCH_POS = EntityDataManager.createKey(EntitySoulVulture.class, DataSerializers.OPTIONAL_BLOCK_POS);
-    private static final DataParameter<Integer> SOUL_LEVEL = EntityDataManager.createKey(EntitySoulVulture.class, DataSerializers.VARINT);
+    private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(EntitySoulVulture.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> TACKLING = SynchedEntityData.defineId(EntitySoulVulture.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Optional<BlockPos>> PERCH_POS = SynchedEntityData.defineId(EntitySoulVulture.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
+    private static final EntityDataAccessor<Integer> SOUL_LEVEL = SynchedEntityData.defineId(EntitySoulVulture.class, EntityDataSerializers.INT);
     public float prevFlyProgress;
     public float flyProgress;
     public float prevTackleProgress;
@@ -61,28 +69,28 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
     private int landingCooldown = 0;
     private int tackleCooldown = 0;
 
-    protected EntitySoulVulture(EntityType type, World worldIn) {
+    protected EntitySoulVulture(EntityType type, Level worldIn) {
         super(type, worldIn);
         switchNavigator(true);
     }
 
-    public CreatureAttribute getCreatureAttribute() {
-        return CreatureAttribute.UNDEAD;
+    public MobType getMobType() {
+        return MobType.UNDEAD;
     }
 
     @Nullable
-    protected ResourceLocation getLootTable() {
-        return this.getSoulLevel() > 2 ? SOUL_LOOT : super.getLootTable();
+    protected ResourceLocation getDefaultLootTable() {
+        return this.getSoulLevel() > 2 ? SOUL_LOOT : super.getDefaultLootTable();
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.soulVultureSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.soulVultureSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canVultureSpawn(EntityType<? extends MobEntity> typeIn, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
-        BlockPos blockpos = pos.down();
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.SOUL_VULTURE_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
-        return reason == SpawnReason.SPAWNER || spawnBlock && canSpawnOn(AMEntityRegistry.SOUL_VULTURE, worldIn, reason, pos, randomIn);
+    public static boolean canVultureSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+        BlockPos blockpos = pos.below();
+        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.SOUL_VULTURE_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
+        return reason == MobSpawnType.SPAWNER || spawnBlock && checkMobSpawnRules(AMEntityRegistry.SOUL_VULTURE, worldIn, reason, pos, randomIn);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -97,49 +105,49 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
         return AMSoundRegistry.SOUL_VULTURE_HURT;
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 12.0D).createMutableAttribute(Attributes.FOLLOW_RANGE, 18.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.FOLLOW_RANGE, 18.0D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     public boolean isPerchBlock(BlockPos pos, BlockState state) {
-        return world.isAirBlock(pos.up()) && world.isAirBlock(pos.up(2)) && BlockTags.getCollection().get(AMTagRegistry.SOUL_VULTURE_PERCHES).contains(state.getBlock());
+        return level.isEmptyBlock(pos.above()) && level.isEmptyBlock(pos.above(2)) && BlockTags.getAllTags().getTag(AMTagRegistry.SOUL_VULTURE_PERCHES).contains(state.getBlock());
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AICirclePerch(this));
         this.goalSelector.addGoal(2, new AIFlyRandom(this));
         this.goalSelector.addGoal(3, new AITackleMelee(this));
-        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 20F));
-        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 20F));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntitySoulVulture.class));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, AbstractPiglinEntity.class, true));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillagerEntity.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, AbstractPiglin.class, true));
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillager.class, true));
     }
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.moveController = new MovementController(this);
-            this.navigator = new GroundPathNavigatorWide(this, world);
+            this.moveControl = new MoveControl(this);
+            this.navigation = new GroundPathNavigatorWide(this, level);
             this.isLandNavigator = true;
         } else {
-            this.moveController = new MoveHelper(this);
-            this.navigator = new DirectPathNavigator(this, world);
+            this.moveControl = new MoveHelper(this);
+            this.navigation = new DirectPathNavigator(this, level);
             this.isLandNavigator = false;
         }
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FLYING, false);
-        this.dataManager.register(TACKLING, false);
-        this.dataManager.register(PERCH_POS, Optional.empty());
-        this.dataManager.register(SOUL_LEVEL, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(FLYING, false);
+        this.entityData.define(TACKLING, false);
+        this.entityData.define(PERCH_POS, Optional.empty());
+        this.entityData.define(SOUL_LEVEL, 0);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("Flying", this.isFlying());
         if(this.getPerchPos() != null){
             compound.putInt("PerchX", this.getPerchPos().getX());
@@ -150,8 +158,8 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
         compound.putInt("LandingCooldown", landingCooldown);
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setFlying(compound.getBoolean("Flying"));
         this.setSoulLevel(compound.getInt("SoulLevel"));
         this.landingCooldown = compound.getInt("LandingCooldown");
@@ -161,64 +169,64 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
     }
 
     public boolean isFlying() {
-        return this.dataManager.get(FLYING);
+        return this.entityData.get(FLYING);
     }
 
     public void setFlying(boolean flying) {
-        this.dataManager.set(FLYING, flying);
+        this.entityData.set(FLYING, flying);
     }
 
     public boolean isTackling() {
-        return this.dataManager.get(TACKLING);
+        return this.entityData.get(TACKLING);
     }
 
     public void setTackling(boolean tackling) {
-        this.dataManager.set(TACKLING, tackling);
+        this.entityData.set(TACKLING, tackling);
     }
 
     public BlockPos getPerchPos() {
-        return this.dataManager.get(PERCH_POS).orElse(null);
+        return this.entityData.get(PERCH_POS).orElse(null);
     }
 
     public void setPerchPos(BlockPos pos) {
-        this.dataManager.set(PERCH_POS, Optional.ofNullable(pos));
+        this.entityData.set(PERCH_POS, Optional.ofNullable(pos));
     }
 
     public int getSoulLevel() {
-        return this.dataManager.get(SOUL_LEVEL);
+        return this.entityData.get(SOUL_LEVEL);
     }
 
     public void setSoulLevel(int tackling) {
-        this.dataManager.set(SOUL_LEVEL, tackling);
+        this.entityData.set(SOUL_LEVEL, tackling);
     }
 
     public void tick() {
         super.tick();
         this.prevTackleProgress = tackleProgress;
         this.prevFlyProgress = flyProgress;
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if(perchSearchCooldown > 0){
                 perchSearchCooldown--;
             }
-            if(this.getAttackTarget() != null && this.getAttackTarget().isAlive()){
-                this.setPerchPos(this.getAttackTarget().getPosition().up(7));
+            if(this.getTarget() != null && this.getTarget().isAlive()){
+                this.setPerchPos(this.getTarget().blockPosition().above(7));
             }else{
-                if (this.getPerchPos() != null && !isPerchBlock(this.getPerchPos(), world.getBlockState(this.getPerchPos()))) {
+                if (this.getPerchPos() != null && !isPerchBlock(this.getPerchPos(), level.getBlockState(this.getPerchPos()))) {
                     this.setPerchPos(null);
                 }
             }
             if (this.getPerchPos() == null && perchSearchCooldown == 0) {
-                perchSearchCooldown = 20 + rand.nextInt(20);
+                perchSearchCooldown = 20 + random.nextInt(20);
                 this.setPerchPos(this.findNewPerchPos());
             }
             if (!isFlying() && landingCooldown == 0 && (this.getPerchPos() == null || this.shouldLeavePerch(this.getPerchPos()))) {
                 this.setFlying(true);
             }
-            if (!isFlying() && this.getAttackTarget() != null){
+            if (!isFlying() && this.getTarget() != null){
                 this.setFlying(true);
             }
 
-            if(landingCooldown > 0 && isFlying() && this.isOnGround() && this.getAttackTarget() == null){
+            if(landingCooldown > 0 && isFlying() && this.isOnGround() && this.getTarget() == null){
                 this.setFlying(false);
             }
         }
@@ -254,33 +262,33 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void handleStatusUpdate(byte id) {
+    public void handleEntityEvent(byte id) {
         if(id == 68){
-            for (int i = 0; i < 6 + rand.nextInt(3); i++) {
-                double d2 = this.rand.nextGaussian() * 0.02D;
-                double d0 = this.rand.nextGaussian() * 0.02D;
-                double d1 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(ParticleTypes.SOUL, this.getPosX() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, this.getPosY() + this.getHeight() * 0.5F + (double) (this.rand.nextFloat() * this.getHeight() * 0.5F), this.getPosZ() + (double) (this.rand.nextFloat() * this.getWidth()) - (double) this.getWidth() * 0.5F, d0, d1, d2);
+            for (int i = 0; i < 6 + random.nextInt(3); i++) {
+                double d2 = this.random.nextGaussian() * 0.02D;
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.SOUL, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
         }else{
-            super.handleStatusUpdate(id);
+            super.handleEntityEvent(id);
         }
     }
 
     public BlockPos findNewPerchPos() {
-        BlockState beneathState = world.getBlockState(this.getPositionUnderneath());
-        if(isPerchBlock(this.getPositionUnderneath(), beneathState)){
-            return this.getPositionUnderneath();
+        BlockState beneathState = level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement());
+        if(isPerchBlock(this.getBlockPosBelowThatAffectsMyMovement(), beneathState)){
+            return this.getBlockPosBelowThatAffectsMyMovement();
         }
         BlockPos blockpos = null;
         Random random = new Random();
         int range = 14;
         for (int i = 0; i < 15; i++) {
-            BlockPos blockpos1 = this.getPosition().add(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-            while (this.world.isAirBlock(blockpos1) && blockpos1.getY() > 1) {
-                blockpos1 = blockpos1.down();
+            BlockPos blockpos1 = this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
+            while (this.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
+                blockpos1 = blockpos1.below();
             }
-            if (isPerchBlock(blockpos1, world.getBlockState(blockpos1))) {
+            if (isPerchBlock(blockpos1, level.getBlockState(blockpos1))) {
                 blockpos = blockpos1;
             }
         }
@@ -288,18 +296,18 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
     }
 
     private boolean shouldLeavePerch(BlockPos perchPos) {
-        return this.getDistanceSq(Vector3d.copyCentered(perchPos)) > 13 || landingCooldown == 0;
+        return this.distanceToSqr(Vec3.atCenterOf(perchPos)) > 13 || landingCooldown == 0;
     }
 
-    public boolean onLivingFall(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
         return false;
     }
 
-    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
     public boolean shouldSwoop(){
-        return this.getAttackTarget() != null && this.tackleCooldown == 0;
+        return this.getTarget() != null && this.tackleCooldown == 0;
     }
 
     class AICirclePerch extends Goal {
@@ -314,79 +322,79 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
 
         public AICirclePerch(EntitySoulVulture vulture) {
             this.vulture = vulture;
-            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
-        public boolean shouldExecute() {
+        public boolean canUse() {
             return  !vulture.shouldSwoop() && this.vulture.isFlying() && this.vulture.getPerchPos() != null;
         }
 
-        public void startExecuting() {
+        public void start() {
             circlingTime = 0;
-            speed = 0.8F + rand.nextFloat() * 0.4F;
-            yLevel = vulture.rand.nextInt(3);
-            maxCirclingTime = 360 + this.vulture.rand.nextInt(80);
-            circleDistance = 5 + this.vulture.rand.nextFloat() * 5;
-            clockwise = this.vulture.rand.nextBoolean();
+            speed = 0.8F + random.nextFloat() * 0.4F;
+            yLevel = vulture.random.nextInt(3);
+            maxCirclingTime = 360 + this.vulture.random.nextInt(80);
+            circleDistance = 5 + this.vulture.random.nextFloat() * 5;
+            clockwise = this.vulture.random.nextBoolean();
         }
 
-        public void resetTask() {
+        public void stop() {
             circlingTime = 0;
-            speed = 0.8F + rand.nextFloat() * 0.4F;
-            yLevel = vulture.rand.nextInt(3);
-            maxCirclingTime = 360 + this.vulture.rand.nextInt(80);
-            circleDistance = 5 + this.vulture.rand.nextFloat() * 5;
-            clockwise = this.vulture.rand.nextBoolean();
+            speed = 0.8F + random.nextFloat() * 0.4F;
+            yLevel = vulture.random.nextInt(3);
+            maxCirclingTime = 360 + this.vulture.random.nextInt(80);
+            circleDistance = 5 + this.vulture.random.nextFloat() * 5;
+            clockwise = this.vulture.random.nextBoolean();
             this.vulture.tackleCooldown = 0;
         }
 
         public void tick() {
             BlockPos encircle = vulture.getPerchPos();
             double localSpeed = speed;
-            if(this.vulture.getAttackTarget() != null){
+            if(this.vulture.getTarget() != null){
                 localSpeed *= 1.55D;
             }
             if (encircle != null) {
                 circlingTime++;
                 if(circlingTime > 360){
-                    vulture.getMoveHelper().setMoveTo(encircle.getX() + 0.5D, encircle.getY() + 1.1D, encircle.getZ() + 0.5D, localSpeed);
-                    if(vulture.collidedVertically || this.vulture.getDistanceSq(encircle.getX() + 0.5D, encircle.getY() + 1.1D, encircle.getZ() + 0.5D) < 1D){
+                    vulture.getMoveControl().setWantedPosition(encircle.getX() + 0.5D, encircle.getY() + 1.1D, encircle.getZ() + 0.5D, localSpeed);
+                    if(vulture.verticalCollision || this.vulture.distanceToSqr(encircle.getX() + 0.5D, encircle.getY() + 1.1D, encircle.getZ() + 0.5D) < 1D){
                         vulture.setFlying(false);
-                        vulture.setMotion(Vector3d.ZERO);
-                        vulture.landingCooldown = 400 + rand.nextInt(1200);
-                        resetTask();
+                        vulture.setDeltaMovement(Vec3.ZERO);
+                        vulture.landingCooldown = 400 + random.nextInt(1200);
+                        stop();
                     }
                 }else{
                     BlockPos circlePos = getVultureCirclePos(encircle);
                     if (circlePos != null) {
-                        vulture.getMoveHelper().setMoveTo(circlePos.getX() + 0.5D, circlePos.getY() + 0.5D, circlePos.getZ() + 0.5D, localSpeed);
+                        vulture.getMoveControl().setWantedPosition(circlePos.getX() + 0.5D, circlePos.getY() + 0.5D, circlePos.getZ() + 0.5D, localSpeed);
                     }
                 }
             }
         }
 
-        public boolean shouldContinueExecuting() {
-            return shouldExecute();
+        public boolean canContinueToUse() {
+            return canUse();
         }
 
         public BlockPos getVultureCirclePos(BlockPos target) {
             float angle = (0.01745329251F * 3 * (clockwise ? -circlingTime : circlingTime));
-            double extraX = circleDistance * MathHelper.sin((angle));
-            double extraZ = circleDistance * MathHelper.cos(angle);
+            double extraX = circleDistance * Mth.sin((angle));
+            double extraZ = circleDistance * Mth.cos(angle);
             BlockPos pos = new BlockPos(target.getX() + extraX, target.getY() + 1 + yLevel, target.getZ() + extraZ);
-            if (vulture.world.isAirBlock(pos)) {
+            if (vulture.level.isEmptyBlock(pos)) {
                 return pos;
             }
             return null;
         }
     }
 
-    public boolean isTargetBlocked(Vector3d target) {
-        Vector3d Vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
-        return this.world.rayTraceBlocks(new RayTraceContext(Vector3d, target, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() != RayTraceResult.Type.MISS;
+    public boolean isTargetBlocked(Vec3 target) {
+        Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
+        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
-    class MoveHelper extends MovementController {
+    class MoveHelper extends MoveControl {
         private final EntitySoulVulture parentEntity;
 
         public MoveHelper(EntitySoulVulture bird) {
@@ -395,33 +403,33 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
         }
 
         public void tick() {
-            if (this.action == MovementController.Action.MOVE_TO) {
-                Vector3d vector3d = new Vector3d(this.posX - parentEntity.getPosX(), this.posY - parentEntity.getPosY(), this.posZ - parentEntity.getPosZ());
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
                 double d5 = vector3d.length();
                 if (d5 < 0.3) {
-                    this.action = MovementController.Action.WAIT;
-                    parentEntity.setMotion(parentEntity.getMotion().scale(0.5D));
+                    this.operation = MoveControl.Operation.WAIT;
+                    parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
                 } else {
-                    double d0 = this.posX - this.parentEntity.getPosX();
-                    double d1 = this.posY - this.parentEntity.getPosY();
-                    double d2 = this.posZ - this.parentEntity.getPosZ();
-                    double d3 = (double)MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                    parentEntity.setMotion(parentEntity.getMotion().add(vector3d.scale(this.speed * 0.05D / d5)));
-                    Vector3d vector3d1 = parentEntity.getMotion();
-                    parentEntity.rotationYaw = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                    parentEntity.renderYawOffset = parentEntity.rotationYaw;
+                    double d0 = this.wantedX - this.parentEntity.getX();
+                    double d1 = this.wantedY - this.parentEntity.getY();
+                    double d2 = this.wantedZ - this.parentEntity.getZ();
+                    double d3 = (double)Mth.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                    parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d5)));
+                    Vec3 vector3d1 = parentEntity.getDeltaMovement();
+                    parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
+                    parentEntity.yBodyRot = parentEntity.yRot;
 
                 }
 
             }
         }
 
-        private boolean func_220673_a(Vector3d p_220673_1_, int p_220673_2_) {
-            AxisAlignedBB axisalignedbb = this.parentEntity.getBoundingBox();
+        private boolean canReach(Vec3 p_220673_1_, int p_220673_2_) {
+            AABB axisalignedbb = this.parentEntity.getBoundingBox();
 
             for (int i = 1; i < p_220673_2_; ++i) {
-                axisalignedbb = axisalignedbb.offset(p_220673_1_);
-                if (!this.parentEntity.world.hasNoCollisions(this.parentEntity, axisalignedbb)) {
+                axisalignedbb = axisalignedbb.move(p_220673_1_);
+                if (!this.parentEntity.level.noCollision(this.parentEntity, axisalignedbb)) {
                     return false;
                 }
             }
@@ -437,32 +445,32 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
 
         public AIFlyRandom(EntitySoulVulture vulture) {
             this.vulture = vulture;
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
-        public boolean shouldExecute() {
+        public boolean canUse() {
             if(vulture.getPerchPos() != null || vulture.shouldSwoop()){
                 return false;
             }
-            MovementController movementcontroller = this.vulture.getMoveHelper();
-            if(!movementcontroller.isUpdating() || target == null){
+            MoveControl movementcontroller = this.vulture.getMoveControl();
+            if(!movementcontroller.hasWanted() || target == null){
                 target = getBlockInViewVulture();
                 if(target != null){
-                    this.vulture.getMoveHelper().setMoveTo(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, 1.0D);
+                    this.vulture.getMoveControl().setWantedPosition(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, 1.0D);
                 }
                 return true;
             }
             return false;
         }
 
-        public boolean shouldContinueExecuting() {
+        public boolean canContinueToUse() {
             if(vulture.getPerchPos() != null || vulture.shouldSwoop()){
                 return false;
             }
-            return target != null && vulture.getDistanceSq(Vector3d.copyCentered(target)) > 2.4D && vulture.getMoveHelper().isUpdating() && !vulture.collidedHorizontally;
+            return target != null && vulture.distanceToSqr(Vec3.atCenterOf(target)) > 2.4D && vulture.getMoveControl().hasWanted() && !vulture.horizontalCollision;
         }
 
-        public void resetTask(){
+        public void stop(){
             target = null;
         }
 
@@ -471,26 +479,26 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
                 target = getBlockInViewVulture();
             }
             if (target != null) {
-                this.vulture.getMoveHelper().setMoveTo(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, 1.0D);
-                if(vulture.getDistanceSq(Vector3d.copyCentered(target)) < 2.5F){
+                this.vulture.getMoveControl().setWantedPosition(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, 1.0D);
+                if(vulture.distanceToSqr(Vec3.atCenterOf(target)) < 2.5F){
                     target = null;
                 }
             }
         }
 
         public BlockPos getBlockInViewVulture() {
-            float radius = 0.75F * (0.7F * 6) * -3 - vulture.getRNG().nextInt(10);
-            float neg = vulture.getRNG().nextBoolean() ? 1 : -1;
-            float renderYawOffset = vulture.renderYawOffset;
-            float angle = (0.01745329251F * renderYawOffset) + 3.15F + (vulture.getRNG().nextFloat() * neg);
-            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-            double extraZ = radius * MathHelper.cos(angle);
-            BlockPos radialPos = new BlockPos(vulture.getPosX() + extraX, vulture.getPosY(), vulture.getPosZ() + extraZ);
-            while(world.isAirBlock(radialPos) && radialPos.getY() > 2){
-                radialPos = radialPos.down();
+            float radius = 0.75F * (0.7F * 6) * -3 - vulture.getRandom().nextInt(10);
+            float neg = vulture.getRandom().nextBoolean() ? 1 : -1;
+            float renderYawOffset = vulture.yBodyRot;
+            float angle = (0.01745329251F * renderYawOffset) + 3.15F + (vulture.getRandom().nextFloat() * neg);
+            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraZ = radius * Mth.cos(angle);
+            BlockPos radialPos = new BlockPos(vulture.getX() + extraX, vulture.getY(), vulture.getZ() + extraZ);
+            while(level.isEmptyBlock(radialPos) && radialPos.getY() > 2){
+                radialPos = radialPos.below();
             }
-            BlockPos newPos = radialPos.up(vulture.getPosY() - radialPos.getY() > 16 ? 4 : vulture.getRNG().nextInt(5) + 5);
-            if (!vulture.isTargetBlocked(Vector3d.copyCentered(newPos)) && vulture.getDistanceSq(Vector3d.copyCentered(newPos)) > 6) {
+            BlockPos newPos = radialPos.above(vulture.getY() - radialPos.getY() > 16 ? 4 : vulture.getRandom().nextInt(5) + 5);
+            if (!vulture.isTargetBlocked(Vec3.atCenterOf(newPos)) && vulture.distanceToSqr(Vec3.atCenterOf(newPos)) > 6) {
                 return newPos;
             }
             return null;
@@ -503,11 +511,11 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
 
         public AITackleMelee(EntitySoulVulture vulture) {
             this.vulture = vulture;
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
-        public boolean shouldExecute() {
-            if(vulture.getAttackTarget() != null && vulture.shouldSwoop()) {
+        public boolean canUse() {
+            if(vulture.getTarget() != null && vulture.shouldSwoop()) {
                 vulture.setFlying(true);
                 return true;
             }
@@ -515,7 +523,7 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
         }
 
 
-        public void resetTask(){
+        public void stop(){
             vulture.setTackling(false);
         }
 
@@ -525,25 +533,25 @@ public class EntitySoulVulture extends MonsterEntity implements IFlyingAnimal {
             }else{
                 vulture.setTackling(false);
             }
-            if (vulture.getAttackTarget() != null) {
-                this.vulture.getMoveHelper().setMoveTo(vulture.getAttackTarget().getPosX(), vulture.getAttackTarget().getPosY() + vulture.getAttackTarget().getEyeHeight(), vulture.getAttackTarget().getPosZ(), 2.0D);
-                double d0 = this.vulture.getPosX() - this.vulture.getAttackTarget().getPosX();
-                double d2 = this.vulture.getPosZ() - this.vulture.getAttackTarget().getPosZ();
-                double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
-                float f = (float)(MathHelper.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                vulture.rotationYaw = f;
-                vulture.renderYawOffset = vulture.rotationYaw;
-                if (vulture.getBoundingBox().grow(0.3F, 0.3F, 0.3F).intersects(vulture.getAttackTarget().getBoundingBox()) && vulture.tackleCooldown == 0) {
-                    tackleCooldown = 100 + rand.nextInt(200);
+            if (vulture.getTarget() != null) {
+                this.vulture.getMoveControl().setWantedPosition(vulture.getTarget().getX(), vulture.getTarget().getY() + vulture.getTarget().getEyeHeight(), vulture.getTarget().getZ(), 2.0D);
+                double d0 = this.vulture.getX() - this.vulture.getTarget().getX();
+                double d2 = this.vulture.getZ() - this.vulture.getTarget().getZ();
+                double d3 = (double)Mth.sqrt(d0 * d0 + d2 * d2);
+                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                vulture.yRot = f;
+                vulture.yBodyRot = vulture.yRot;
+                if (vulture.getBoundingBox().inflate(0.3F, 0.3F, 0.3F).intersects(vulture.getTarget().getBoundingBox()) && vulture.tackleCooldown == 0) {
+                    tackleCooldown = 100 + random.nextInt(200);
                     float dmg = (float) vulture.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
-                    if(vulture.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(vulture), dmg)){
+                    if(vulture.getTarget().hurt(DamageSource.mobAttack(vulture), dmg)){
                         if(vulture.getHealth() < vulture.getMaxHealth() - dmg && vulture.getSoulLevel() < 5){
                             this.vulture.setSoulLevel(vulture.getSoulLevel() + 1);
                             this.vulture.heal(dmg);
-                            this.vulture.world.setEntityState(vulture, (byte)68);
+                            this.vulture.level.broadcastEntityEvent(vulture, (byte)68);
                         }
                     }
-                    resetTask();
+                    stop();
                 }
             }
         }

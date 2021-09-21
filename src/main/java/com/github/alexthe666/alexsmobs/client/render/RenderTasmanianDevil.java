@@ -2,43 +2,43 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelTasmanianDevil;
 import com.github.alexthe666.alexsmobs.entity.EntityTasmanianDevil;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderTasmanianDevil extends MobRenderer<EntityTasmanianDevil, ModelTasmanianDevil> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tasmanian_devil.png");
     private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/tasmanian_devil_eyes.png");
 
-    public RenderTasmanianDevil(EntityRendererManager renderManagerIn) {
+    public RenderTasmanianDevil(EntityRenderDispatcher renderManagerIn) {
         super(renderManagerIn, new ModelTasmanianDevil(), 0.3F);
         this.addLayer(new EyeLayer(this));
     }
 
-    protected void preRenderCallback(EntityTasmanianDevil entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntityTasmanianDevil entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
     }
 
 
-    public ResourceLocation getEntityTexture(EntityTasmanianDevil entity) {
+    public ResourceLocation getTextureLocation(EntityTasmanianDevil entity) {
         return TEXTURE;
     }
 
-    class EyeLayer extends LayerRenderer<EntityTasmanianDevil, ModelTasmanianDevil> {
+    class EyeLayer extends RenderLayer<EntityTasmanianDevil, ModelTasmanianDevil> {
 
         public EyeLayer(RenderTasmanianDevil render) {
             super(render);
         }
 
-        public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityTasmanianDevil entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityTasmanianDevil entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
           if(entitylivingbaseIn.getAnimation() == EntityTasmanianDevil.ANIMATION_HOWL && entitylivingbaseIn.getAnimationTick() < 34){
-              IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEyes(TEXTURE_EYES));
-              this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+              VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.eyes(TEXTURE_EYES));
+              this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
           }
         }
     }

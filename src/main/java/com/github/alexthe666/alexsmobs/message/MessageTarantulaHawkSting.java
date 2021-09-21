@@ -6,12 +6,12 @@ import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
 import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.EffectInstance;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -30,11 +30,11 @@ public class MessageTarantulaHawkSting {
     public MessageTarantulaHawkSting() {
     }
 
-    public static MessageTarantulaHawkSting read(PacketBuffer buf) {
+    public static MessageTarantulaHawkSting read(FriendlyByteBuf buf) {
         return new MessageTarantulaHawkSting(buf.readInt(), buf.readInt());
     }
 
-    public static void write(MessageTarantulaHawkSting message, PacketBuffer buf) {
+    public static void write(MessageTarantulaHawkSting message, FriendlyByteBuf buf) {
         buf.writeInt(message.hawk);
         buf.writeInt(message.spider);
     }
@@ -45,17 +45,17 @@ public class MessageTarantulaHawkSting {
 
         public static void handle(MessageTarantulaHawkSting message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
+            Player player = context.get().getSender();
             if(context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT){
                 player = AlexsMobs.PROXY.getClientSidePlayer();
             }
 
             if (player != null) {
-                if (player.world != null) {
-                    Entity entity = player.world.getEntityByID(message.hawk);
-                    Entity spider = player.world.getEntityByID(message.spider);
-                    if (entity instanceof EntityTarantulaHawk && spider instanceof LivingEntity && ((LivingEntity) spider).getCreatureAttribute() == CreatureAttribute.ARTHROPOD) {
-                        ((LivingEntity) spider).addPotionEffect(new EffectInstance(AMEffectRegistry.DEBILITATING_STING, EntityTarantulaHawk.STING_DURATION));
+                if (player.level != null) {
+                    Entity entity = player.level.getEntity(message.hawk);
+                    Entity spider = player.level.getEntity(message.spider);
+                    if (entity instanceof EntityTarantulaHawk && spider instanceof LivingEntity && ((LivingEntity) spider).getMobType() == MobType.ARTHROPOD) {
+                        ((LivingEntity) spider).addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING, EntityTarantulaHawk.STING_DURATION));
                     }
                 }
             }

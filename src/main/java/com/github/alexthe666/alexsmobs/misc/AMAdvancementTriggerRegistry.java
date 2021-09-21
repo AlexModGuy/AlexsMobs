@@ -1,7 +1,7 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class AMAdvancementTriggerRegistry {
 

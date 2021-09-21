@@ -1,7 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 
 public interface ITargetsDroppedItems {
 

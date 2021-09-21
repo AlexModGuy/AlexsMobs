@@ -5,22 +5,22 @@ import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.google.common.base.Predicates;
 import jdk.nashorn.internal.ir.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.client.renderer.debug.CaveDebugRenderer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.village.PointOfInterestManager;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.carver.CaveWorldCarver;
 import net.minecraft.world.gen.placement.CaveEdge;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,16 +38,16 @@ public class ItemEcholocator extends Item {
         this.ender = ender;
     }
 
-    private List<BlockPos> getNearbyPortals(BlockPos blockpos, ServerWorld world, int range) {
+    private List<BlockPos> getNearbyPortals(BlockPos blockpos, ServerLevel world, int range) {
         if(ender){
-            PointOfInterestManager pointofinterestmanager = world.getPointOfInterestManager();
-            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.END_PORTAL_FRAME.getPredicate(), Predicates.alwaysTrue(), blockpos, range, PointOfInterestManager.Status.ANY);
+            PoiManager pointofinterestmanager = world.getPoiManager();
+            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.END_PORTAL_FRAME.getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
             return stream.collect(Collectors.toList());
         }else{
             Random random = new Random();
             for(int i = 0; i < 256; i++){
-                BlockPos checkPos = blockpos.add(random.nextInt(range) - range/2, random.nextInt(range)/2 - range/2, random.nextInt(range) - range/2);
-                if(world.getBlockState(checkPos).getBlock() == Blocks.CAVE_AIR && world.getLight(checkPos) < 4){
+                BlockPos checkPos = blockpos.offset(random.nextInt(range) - range/2, random.nextInt(range)/2 - range/2, random.nextInt(range) - range/2);
+                if(world.getBlockState(checkPos).getBlock() == Blocks.CAVE_AIR && world.getMaxLocalRawBrightness(checkPos) < 4){
                     return Collections.singletonList(checkPos);
                 }
             }
@@ -56,38 +56,38 @@ public class ItemEcholocator extends Item {
 
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity livingEntityIn, Hand handIn) {
-        ItemStack stack = livingEntityIn.getHeldItem(handIn);
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player livingEntityIn, InteractionHand handIn) {
+        ItemStack stack = livingEntityIn.getItemInHand(handIn);
         boolean left = false;
-        if (livingEntityIn.getActiveHand() == Hand.OFF_HAND && livingEntityIn.getPrimaryHand() == HandSide.RIGHT || livingEntityIn.getActiveHand() == Hand.MAIN_HAND && livingEntityIn.getPrimaryHand() == HandSide.LEFT) {
+        if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
             left = true;
         }
         EntityCachalotEcho whaleEcho = new EntityCachalotEcho(worldIn, livingEntityIn, !left);
-        if (!worldIn.isRemote && worldIn instanceof ServerWorld) {
-            BlockPos playerPos = livingEntityIn.getPosition();
-            List<BlockPos> portals = getNearbyPortals(playerPos, (ServerWorld) worldIn, 128);
+        if (!worldIn.isClientSide && worldIn instanceof ServerLevel) {
+            BlockPos playerPos = livingEntityIn.blockPosition();
+            List<BlockPos> portals = getNearbyPortals(playerPos, (ServerLevel) worldIn, 128);
             BlockPos pos = null;
             if(ender){
                 for (BlockPos portalPos : portals) {
-                    if (pos == null || pos.distanceSq(playerPos) > portalPos.distanceSq(playerPos)) {
+                    if (pos == null || pos.distSqr(playerPos) > portalPos.distSqr(playerPos)) {
                         pos = portalPos;
                     }
                 }
             }else{
-                CompoundNBT nbt = stack.getOrCreateTag();
+                CompoundTag nbt = stack.getOrCreateTag();
                 if(nbt.contains("CavePos") && nbt.getBoolean("ValidCavePos")){
-                    pos = BlockPos.fromLong(nbt.getLong("CavePos"));
-                    if(worldIn.getBlockState(pos).getBlock() != Blocks.CAVE_AIR ||worldIn.getLight(pos) >= 4 || 1000000 < pos.distanceSq(playerPos)){
+                    pos = BlockPos.of(nbt.getLong("CavePos"));
+                    if(worldIn.getBlockState(pos).getBlock() != Blocks.CAVE_AIR ||worldIn.getMaxLocalRawBrightness(pos) >= 4 || 1000000 < pos.distSqr(playerPos)){
                         nbt.putBoolean("ValidCavePos", false);
                     }
                 }else{
                     for (BlockPos portalPos : portals) {
-                        if (pos == null || pos.distanceSq(playerPos) < portalPos.distanceSq(playerPos)) {
+                        if (pos == null || pos.distSqr(playerPos) < portalPos.distSqr(playerPos)) {
                             pos = portalPos;
                         }
                     }
                     if(pos != null){
-                        nbt.putLong("CavePos", pos.toLong());
+                        nbt.putLong("CavePos", pos.asLong());
                         nbt.putBoolean("ValidCavePos", true);
                         stack.setTag(nbt);
                     }
@@ -95,20 +95,20 @@ public class ItemEcholocator extends Item {
 
             }
             if (pos != null) {
-                double d0 = pos.getX() + 0.5F - whaleEcho.getPosX();
-                double d1 = pos.getY() + 0.5F - whaleEcho.getPosY();
-                double d2 = pos.getZ() + 0.5F - whaleEcho.getPosZ();
-                whaleEcho.ticksExisted = 15;
+                double d0 = pos.getX() + 0.5F - whaleEcho.getX();
+                double d1 = pos.getY() + 0.5F - whaleEcho.getY();
+                double d2 = pos.getZ() + 0.5F - whaleEcho.getZ();
+                whaleEcho.tickCount = 15;
                 whaleEcho.shoot(d0, d1, d2, 0.4F, 0.3F);
-                worldIn.addEntity(whaleEcho);
-                worldIn.playSound((PlayerEntity)null, whaleEcho.getPosX(), whaleEcho.getPosY(), whaleEcho.getPosZ(), AMSoundRegistry.CACHALOT_WHALE_CLICK, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                stack.damageItem(1, livingEntityIn, (player) -> {
-                    player.sendBreakAnimation(livingEntityIn.getActiveHand());
+                worldIn.addFreshEntity(whaleEcho);
+                worldIn.playSound((Player)null, whaleEcho.getX(), whaleEcho.getY(), whaleEcho.getZ(), AMSoundRegistry.CACHALOT_WHALE_CLICK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                stack.hurtAndBreak(1, livingEntityIn, (player) -> {
+                    player.broadcastBreakEvent(livingEntityIn.getUsedItemHand());
                 });
             }
         }
-        livingEntityIn.getCooldownTracker().setCooldown(this, 5);
+        livingEntityIn.getCooldowns().addCooldown(this, 5);
 
-        return ActionResult.func_233538_a_(stack, worldIn.isRemote());
+        return InteractionResultHolder.sidedSuccess(stack, worldIn.isClientSide());
     }
 }

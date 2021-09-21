@@ -5,29 +5,29 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.tileentity.BeehiveTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -36,87 +36,101 @@ import net.minecraftforge.common.ToolType;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockCapsid extends ContainerBlock {
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-    public static final DirectionProperty HORIZONTAL_FACING = HorizontalBlock.HORIZONTAL_FACING;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class BlockCapsid extends BaseEntityBlock {
+
+    public static final DirectionProperty HORIZONTAL_FACING = HorizontalDirectionalBlock.FACING;
     public BlockCapsid() {
-        super(Properties.create(Material.GLASS).notSolid().setAllowsSpawn(BlockCapsid::spawnOption).setOpaque(BlockCapsid::isntSolid).sound(SoundType.GLASS).setLightLevel((state) -> 5).harvestTool(ToolType.PICKAXE).hardnessAndResistance(4.5F));
+        super(Properties.of(Material.GLASS).noOcclusion().isValidSpawn(BlockCapsid::spawnOption).isRedstoneConductor(BlockCapsid::isntSolid).sound(SoundType.GLASS).lightLevel((state) -> 5).harvestTool(ToolType.PICKAXE).strength(4.5F));
         this.setRegistryName("alexsmobs:capsid");
     }
 
     public BlockState rotate(BlockState p_185499_1_, Rotation p_185499_2_) {
-        return (BlockState)p_185499_1_.with(HORIZONTAL_FACING, p_185499_2_.rotate((Direction)p_185499_1_.get(HORIZONTAL_FACING)));
+        return (BlockState)p_185499_1_.setValue(HORIZONTAL_FACING, p_185499_2_.rotate((Direction)p_185499_1_.getValue(HORIZONTAL_FACING)));
     }
 
     public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_) {
-        return p_185471_1_.rotate(p_185471_2_.toRotation((Direction)p_185471_1_.get(HORIZONTAL_FACING)));
+        return p_185471_1_.rotate(p_185471_2_.getRotation((Direction)p_185471_1_.getValue(HORIZONTAL_FACING)));
     }
 
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing());
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(HORIZONTAL_FACING, context.getHorizontalDirection());
     }
 
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(HORIZONTAL_FACING);
     }
 
-    private static Boolean spawnOption(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity) {
+    private static Boolean spawnOption(BlockState state, BlockGetter reader, BlockPos pos, EntityType<?> entity) {
         return (boolean)false;
     }
 
-    private static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {
+    private static boolean isntSolid(BlockState state, BlockGetter reader, BlockPos pos) {
         return false;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean isSideInvisible(BlockState p_200122_1_, BlockState p_200122_2_, Direction p_200122_3_) {
-        return p_200122_2_.getBlock() == this ? true : super.isSideInvisible(p_200122_1_, p_200122_2_, p_200122_3_);
+    public boolean skipRendering(BlockState p_200122_1_, BlockState p_200122_2_, Direction p_200122_3_) {
+        return p_200122_2_.getBlock() == this ? true : super.skipRendering(p_200122_1_, p_200122_2_, p_200122_3_);
     }
 
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        ItemStack heldItem = player.getHeldItem(handIn);
-        if (worldIn.getTileEntity(pos) instanceof TileEntityCapsid && (!player.isSneaking()  && heldItem.getItem() != this.asItem())) {
-            TileEntityCapsid capsid = (TileEntityCapsid)worldIn.getTileEntity(pos);
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        ItemStack heldItem = player.getItemInHand(handIn);
+        if (worldIn.getBlockEntity(pos) instanceof TileEntityCapsid && (!player.isShiftKeyDown()  && heldItem.getItem() != this.asItem())) {
+            TileEntityCapsid capsid = (TileEntityCapsid)worldIn.getBlockEntity(pos);
             ItemStack copy = heldItem.copy();
             copy.setCount(1);
-            if(capsid.getStackInSlot(0).isEmpty()){
-                capsid.setInventorySlotContents(0, copy);
+            if(capsid.getItem(0).isEmpty()){
+                capsid.setItem(0, copy);
                 if(!player.isCreative()){
                     heldItem.shrink(1);
                 }
-                return ActionResultType.SUCCESS;
-            }else if(capsid.getStackInSlot(0).isItemEqual(copy) && capsid.getStackInSlot(0).getMaxStackSize() > capsid.getStackInSlot(0).getCount() + copy.getCount()){
-                capsid.getStackInSlot(0).grow(1);
+                return InteractionResult.SUCCESS;
+            }else if(capsid.getItem(0).sameItem(copy) && capsid.getItem(0).getMaxStackSize() > capsid.getItem(0).getCount() + copy.getCount()){
+                capsid.getItem(0).grow(1);
                 if(!player.isCreative()){
                     heldItem.shrink(1);
                 }
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }else{
-                spawnAsEntity(worldIn, pos, capsid.getStackInSlot(0).copy());
-                capsid.setInventorySlotContents(0, ItemStack.EMPTY);
-                return ActionResultType.SUCCESS;
+                popResource(worldIn, pos, capsid.getItem(0).copy());
+                capsid.setItem(0, ItemStack.EMPTY);
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        BlockEntity tileentity = worldIn.getBlockEntity(pos);
         if (tileentity instanceof TileEntityCapsid) {
-            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityCapsid) tileentity);
-            worldIn.updateComparatorOutputLevel(pos, this);
+            Containers.dropContents(worldIn, pos, (TileEntityCapsid) tileentity);
+            worldIn.updateNeighbourForOutputSignal(pos, this);
         }
-        super.onReplaced(state, worldIn, pos, newState, isMoving);
+        super.onRemove(state, worldIn, pos, newState, isMoving);
     }
 
 
-    public BlockRenderType getRenderType(BlockState p_149645_1_) {
-        return BlockRenderType.MODEL;
+    public RenderShape getRenderShape(BlockState p_149645_1_) {
+        return RenderShape.MODEL;
     }
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public BlockEntity newBlockEntity(BlockGetter worldIn) {
         return new TileEntityCapsid();
     }
 }

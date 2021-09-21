@@ -1,50 +1,50 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.Level;
 
-public class GroundPathNavigatorWide extends GroundPathNavigator {
+public class GroundPathNavigatorWide extends GroundPathNavigation {
     private float distancemodifier = 0.75F;
 
-    public GroundPathNavigatorWide(MobEntity entitylivingIn, World worldIn) {
+    public GroundPathNavigatorWide(Mob entitylivingIn, Level worldIn) {
         super(entitylivingIn, worldIn);
     }
 
-    public GroundPathNavigatorWide(MobEntity entitylivingIn, World worldIn, float distancemodifier) {
+    public GroundPathNavigatorWide(Mob entitylivingIn, Level worldIn, float distancemodifier) {
         super(entitylivingIn, worldIn);
         this.distancemodifier = distancemodifier;
     }
 
-    protected void pathFollow() {
-        Vector3d vector3d = this.getEntityPosition();
-        this.maxDistanceToWaypoint = this.entity.getWidth() * distancemodifier;
-        Vector3i vector3i = this.currentPath.func_242948_g();
-        double d0 = Math.abs(this.entity.getPosX() - ((double)vector3i.getX() + 0.5D));
-        double d1 = Math.abs(this.entity.getPosY() - (double)vector3i.getY());
-        double d2 = Math.abs(this.entity.getPosZ() - ((double)vector3i.getZ() + 0.5D));
+    protected void followThePath() {
+        Vec3 vector3d = this.getTempMobPos();
+        this.maxDistanceToWaypoint = this.mob.getBbWidth() * distancemodifier;
+        Vec3i vector3i = this.path.getNextNodePos();
+        double d0 = Math.abs(this.mob.getX() - ((double)vector3i.getX() + 0.5D));
+        double d1 = Math.abs(this.mob.getY() - (double)vector3i.getY());
+        double d2 = Math.abs(this.mob.getZ() - ((double)vector3i.getZ() + 0.5D));
         boolean flag = d0 < (double)this.maxDistanceToWaypoint && d2 < (double)this.maxDistanceToWaypoint && d1 < 1.0D;
-        if (flag || this.entity.func_233660_b_(this.currentPath.getCurrentPoint().nodeType) && this.func_234112_b_(vector3d)) {
-            this.currentPath.incrementPathIndex();
+        if (flag || this.mob.canCutCorner(this.path.getNextNode().type) && this.shouldTargetNextNodeInDirection(vector3d)) {
+            this.path.advance();
         }
 
-        this.checkForStuck(vector3d);
+        this.doStuckDetection(vector3d);
     }
 
-    private boolean func_234112_b_(Vector3d currentPosition) {
-        if (this.currentPath.getCurrentPathIndex() + 1 >= this.currentPath.getCurrentPathLength()) {
+    private boolean shouldTargetNextNodeInDirection(Vec3 currentPosition) {
+        if (this.path.getNextNodeIndex() + 1 >= this.path.getNodeCount()) {
             return false;
         } else {
-            Vector3d vector3d = Vector3d.copyCenteredHorizontally(this.currentPath.func_242948_g());
-            if (!currentPosition.isWithinDistanceOf(vector3d, 2.0D)) {
+            Vec3 vector3d = Vec3.atBottomCenterOf(this.path.getNextNodePos());
+            if (!currentPosition.closerThan(vector3d, 2.0D)) {
                 return false;
             } else {
-                Vector3d vector3d1 = Vector3d.copyCenteredHorizontally(this.currentPath.func_242947_d(this.currentPath.getCurrentPathIndex() + 1));
-                Vector3d vector3d2 = vector3d1.subtract(vector3d);
-                Vector3d vector3d3 = currentPosition.subtract(vector3d);
-                return vector3d2.dotProduct(vector3d3) > 0.0D;
+                Vec3 vector3d1 = Vec3.atBottomCenterOf(this.path.getNodePos(this.path.getNextNodeIndex() + 1));
+                Vec3 vector3d2 = vector3d1.subtract(vector3d);
+                Vec3 vector3d3 = currentPosition.subtract(vector3d);
+                return vector3d2.dot(vector3d3) > 0.0D;
             }
         }
     }

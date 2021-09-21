@@ -3,8 +3,8 @@ package com.github.alexthe666.alexsmobs.config;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeConfig;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Field;

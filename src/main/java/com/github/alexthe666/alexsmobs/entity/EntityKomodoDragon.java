@@ -6,90 +6,107 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppedItems {
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(Items.ROTTEN_FLESH);
+public class EntityKomodoDragon extends TamableAnimal implements ITargetsDroppedItems {
+
+    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(Items.ROTTEN_FLESH);
     public int slaughterCooldown = 0;
-    public int timeUntilSpit = this.rand.nextInt(12000) + 24000;
+    public int timeUntilSpit = this.random.nextInt(12000) + 24000;
     private int riderAttackCooldown = 0;
     public static final Predicate<EntityKomodoDragon> HURT_OR_BABY = (p_213616_0_) -> {
-        return p_213616_0_.isChild() || p_213616_0_.getHealth() <= 0.7F * p_213616_0_.getMaxHealth();
+        return p_213616_0_.isBaby() || p_213616_0_.getHealth() <= 0.7F * p_213616_0_.getMaxHealth();
     };
 
-    public static <T extends MobEntity> boolean canKomodoDragonSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        boolean spawnBlock = BlockTags.getCollection().get(AMTagRegistry.KOMODO_DRAGON_SPAWNS).contains(worldIn.getBlockState(pos.down()).getBlock());
-        return spawnBlock && worldIn.getLightSubtracted(pos, 0) > 8;
+    public static <T extends Mob> boolean canKomodoDragonSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.KOMODO_DRAGON_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
+        return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.komodoDragonSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.komodoDragonSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new SitGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2D, false));
         this.goalSelector.addGoal(2, new TameableAIRide(this, 2D));
         this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, TEMPTATION_ITEMS, false));
         this.goalSelector.addGoal(4, new AnimalAIFleeAdult(this, 1.25D, 32));
         this.goalSelector.addGoal(5, new KomodoDragonAIBreed(this, 1.0D));
-        this.goalSelector.addGoal(6, new RandomWalkingGoal(this, 1D, 50));
-        this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1D, 50));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(4, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, EntityKomodoDragon.class, 50, true, false, HURT_OR_BABY));
-        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, PlayerEntity.class, 150, true, true, null));
-        this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.KOMODO_DRAGON_TARGETS))));
+        this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, Player.class, 150, true, true, null));
+        this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.KOMODO_DRAGON_TARGETS))));
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
-            Entity entity = source.getTrueSource();
-            this.setSitting(false);
-            if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            Entity entity = source.getEntity();
+            this.setOrderedToSit(false);
+            if (entity != null && this.isTame() && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
                 amount = (amount + 1.0F) / 3.0F;
             }
-            return super.attackEntityFrom(source, amount);
+            return super.hurt(source, amount);
         }
     }
 
@@ -107,22 +124,22 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
 
 
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         if (compound.contains("SpitTime")) {
             this.timeUntilSpit = compound.getInt("SpitTime");
         }
 
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putInt("SpitTime", this.timeUntilSpit);
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         Item item = stack.getItem();
-        return isTamed() && item == Items.ROTTEN_FLESH;
+        return isTame() && item == Items.ROTTEN_FLESH;
     }
 
     public void tick() {
@@ -130,52 +147,52 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
         if(slaughterCooldown > 0){
             slaughterCooldown--;
         }
-        if (!this.world.isRemote && this.isAlive() && !this.isChild() && --this.timeUntilSpit <= 0) {
-            this.entityDropItem(AMItemRegistry.KOMODO_SPIT);
-            this.timeUntilSpit = this.rand.nextInt(12000) + 24000;
+        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilSpit <= 0) {
+            this.spawnAtLocation(AMItemRegistry.KOMODO_SPIT);
+            this.timeUntilSpit = this.random.nextInt(12000) + 24000;
         }
         if(riderAttackCooldown > 0){
             riderAttackCooldown--;
         }
-        if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof PlayerEntity){
-            PlayerEntity rider = (PlayerEntity)this.getControllingPassenger();
-            if(rider.getLastAttackedEntity() != null && this.getDistance(rider.getLastAttackedEntity()) < this.getWidth() + 3F && !this.isOnSameTeam(rider.getLastAttackedEntity())){
-                UUID preyUUID = rider.getLastAttackedEntity().getUniqueID();
-                if (!this.getUniqueID().equals(preyUUID) && riderAttackCooldown == 0) {
-                    attackEntityAsMob(rider.getLastAttackedEntity());
+        if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof Player){
+            Player rider = (Player)this.getControllingPassenger();
+            if(rider.getLastHurtMob() != null && this.distanceTo(rider.getLastHurtMob()) < this.getBbWidth() + 3F && !this.isAlliedTo(rider.getLastHurtMob())){
+                UUID preyUUID = rider.getLastHurtMob().getUUID();
+                if (!this.getUUID().equals(preyUUID) && riderAttackCooldown == 0) {
+                    doHurtTarget(rider.getLastHurtMob());
                     riderAttackCooldown = 20;
                 }
             }
         }
     }
 
-    public boolean isOnSameTeam(Entity entityIn) {
-        if (this.isTamed()) {
+    public boolean isAlliedTo(Entity entityIn) {
+        if (this.isTame()) {
             LivingEntity livingentity = this.getOwner();
             if (entityIn == livingentity) {
                 return true;
             }
-            if (entityIn instanceof TameableEntity) {
-                return ((TameableEntity) entityIn).isOwner(livingentity);
+            if (entityIn instanceof TamableAnimal) {
+                return ((TamableAnimal) entityIn).isOwnedBy(livingentity);
             }
             if (livingentity != null) {
-                return livingentity.isOnSameTeam(entityIn);
+                return livingentity.isAlliedTo(entityIn);
             }
         }
 
-        return super.isOnSameTeam(entityIn);
+        return super.isAlliedTo(entityIn);
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-        if (super.attackEntityAsMob(entityIn)) {
+    public boolean doHurtTarget(Entity entityIn) {
+        if (super.doHurtTarget(entityIn)) {
             if (entityIn instanceof LivingEntity) {
                 int i = 5;
-                if (this.world.getDifficulty() == Difficulty.NORMAL) {
+                if (this.level.getDifficulty() == Difficulty.NORMAL) {
                     i = 10;
-                } else if (this.world.getDifficulty() == Difficulty.HARD) {
+                } else if (this.level.getDifficulty() == Difficulty.HARD) {
                     i = 20;
                 }
-                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, i * 20, 0));
+                ((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.POISON, i * 20, 0));
             }
 
             return true;
@@ -184,71 +201,71 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
         }
     }
 
-    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
-        if (potioneffectIn.getPotion() == Effects.POISON) {
+    public boolean canBeAffected(MobEffectInstance potioneffectIn) {
+        if (potioneffectIn.getEffect() == MobEffects.POISON) {
             return false;
         }
-        return super.isPotionApplicable(potioneffectIn);
+        return super.canBeAffected(potioneffectIn);
     }
 
     @Nullable
     public Entity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
-            if (passenger instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) passenger;
+            if (passenger instanceof Player) {
+                Player player = (Player) passenger;
                 return player;
             }
         }
         return null;
     }
 
-    public void updatePassenger(Entity passenger) {
-        if (this.isPassenger(passenger)) {
+    public void positionRider(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
             float radius = 0;
-            float angle = (0.01745329251F * this.renderYawOffset);
-            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-            double extraZ = radius * MathHelper.cos(angle);
-            passenger.setPosition(this.getPosX() + extraX, this.getPosY() + this.getMountedYOffset() + passenger.getYOffset(), this.getPosZ() + extraZ);
+            float angle = (0.01745329251F * this.yBodyRot);
+            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraZ = radius * Mth.cos(angle);
+            passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
     }
 
-    public double getMountedYOffset() {
-        float f = Math.min(0.25F, this.limbSwingAmount);
-        float f1 = this.limbSwing;
-        return (double)this.getHeight() - 0.2D + (double)(0.12F * MathHelper.cos(f1 * 0.7F) * 0.7F * f);
+    public double getPassengersRidingOffset() {
+        float f = Math.min(0.25F, this.animationSpeed);
+        float f1 = this.animationPosition;
+        return (double)this.getBbHeight() - 0.2D + (double)(0.12F * Mth.cos(f1 * 0.7F) * 0.7F * f);
     }
 
 
 
-    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(hand);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.getEntityInteractionResult(player, hand);
+        InteractionResult type = super.mobInteract(player, hand);
 
-        if(item == Items.ROTTEN_FLESH && !isTamed()){
+        if(item == Items.ROTTEN_FLESH && !isTame()){
             int size = itemstack.getCount();
-            int tameAmount = 58 + rand.nextInt(16);
+            int tameAmount = 58 + random.nextInt(16);
             if(size > tameAmount){
-                this.setTamedBy(player);
+                this.tame(player);
             }
             itemstack.shrink(size);
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player)){
-            if(isBreedingItem(itemstack)){
-                this.setInLove(600);
-                this.consumeItemFromStack(player, itemstack);
-                return ActionResultType.SUCCESS;
+        if(type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)){
+            if(isFood(itemstack)){
+                this.setInLoveTime(600);
+                this.usePlayerItem(player, itemstack);
+                return InteractionResult.SUCCESS;
             }
-            if(!player.isSneaking() && !isBreedingItem(itemstack) && !this.isChild()){
+            if(!player.isShiftKeyDown() && !isFood(itemstack) && !this.isBaby()){
                 player.startRiding(this);
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
         return type;
     }
 
-    protected EntityKomodoDragon(EntityType type, World worldIn) {
+    protected EntityKomodoDragon(EntityType type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -256,24 +273,24 @@ public class EntityKomodoDragon extends TameableEntity implements ITargetsDroppe
         return 0.98F;
     }
 
-    public void setAttackTarget(@Nullable LivingEntity entitylivingbaseIn) {
-        if(!this.isChild() || slaughterCooldown > 0){
-            super.setAttackTarget(entitylivingbaseIn);
+    public void setTarget(@Nullable LivingEntity entitylivingbaseIn) {
+        if(!this.isBaby() || slaughterCooldown > 0){
+            super.setTarget(entitylivingbaseIn);
         }
     }
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30D).createMutableAttribute(Attributes.ARMOR, 0.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.23F);
     }
 
     @Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
         return AMEntityRegistry.KOMODO_DRAGON.create(p_241840_1_);
     }
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem() == Items.ROTTEN_FLESH || stack.getItem().getFood() != null && stack.getItem().getFood().isMeat();
+        return stack.getItem() == Items.ROTTEN_FLESH || stack.getItem().getFoodProperties() != null && stack.getItem().getFoodProperties().isMeat();
     }
 
     @Override

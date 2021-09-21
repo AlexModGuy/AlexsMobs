@@ -2,14 +2,14 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.block.CropsBlock;
-import net.minecraft.command.arguments.EntityAnchorArgument;
-import net.minecraft.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LevelReader;
 
 public class CrowAICircleCrops extends MoveToBlockGoal {
 
@@ -28,41 +28,41 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
         this.crow = bird;
     }
 
-    public void startExecuting() {
-        super.startExecuting();
+    public void start() {
+        super.start();
         circlePhase = true;
-        clockwise = crow.getRNG().nextBoolean();
-        yLevel = 1 + crow.getRNG().nextInt(3);
-        circleDistance = 1 + crow.getRNG().nextInt(3);
+        clockwise = crow.getRandom().nextBoolean();
+        yLevel = 1 + crow.getRandom().nextInt(3);
+        circleDistance = 1 + crow.getRandom().nextInt(3);
     }
 
-    public boolean shouldExecute() {
-        return !crow.isChild() && (crow.getAttackTarget() == null || !crow.getAttackTarget().isAlive()) && !crow.isTamed() && crow.fleePumpkinFlag == 0 && !crow.aiItemFlag && super.shouldExecute();
+    public boolean canUse() {
+        return !crow.isBaby() && (crow.getTarget() == null || !crow.getTarget().isAlive()) && !crow.isTame() && crow.fleePumpkinFlag == 0 && !crow.aiItemFlag && super.canUse();
     }
 
-    public boolean shouldContinueExecuting() {
-        return destinationBlock != null && (crow.getAttackTarget() == null || !crow.getAttackTarget().isAlive()) && !crow.isTamed() && !crow.aiItemFlag && crow.fleePumpkinFlag == 0 && super.shouldContinueExecuting();
+    public boolean canContinueToUse() {
+        return blockPos != null && (crow.getTarget() == null || !crow.getTarget().isAlive()) && !crow.isTame() && !crow.aiItemFlag && crow.fleePumpkinFlag == 0 && super.canContinueToUse();
     }
 
-    public void resetTask() {
+    public void stop() {
         idleAtFlowerTime = 0;
         circlingTime = 0;
-        timeoutCounter = 0;
-        destinationBlock = null;
+        tryTicks = 0;
+        blockPos = null;
     }
 
-    public double getTargetDistanceSq() {
+    public double acceptedDistance() {
         return 1D;
     }
 
     public void tick() {
-        BlockPos blockpos = this.func_241846_j();
+        BlockPos blockpos = this.getMoveToTarget();
         if(circlePhase){
-            this.timeoutCounter = 0;
+            this.tryTicks = 0;
             BlockPos circlePos = getVultureCirclePos(blockpos);
             if (circlePos != null) {
                 crow.setFlying(true);
-                crow.getMoveHelper().setMoveTo(circlePos.getX() + 0.5D, circlePos.getY() + 0.5D, circlePos.getZ() + 0.5D, 0.7F);
+                crow.getMoveControl().setWantedPosition(circlePos.getX() + 0.5D, circlePos.getY() + 0.5D, circlePos.getZ() + 0.5D, 0.7F);
             }
             circlingTime++;
             if(circlingTime > 200){
@@ -74,20 +74,20 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
             if(crow.isOnGround()){
                 crow.setFlying(false);
             }
-            if (!isWithinXZDist(blockpos, this.creature.getPositionVec(), this.getTargetDistanceSq())) {
+            if (!isWithinXZDist(blockpos, this.mob.position(), this.acceptedDistance())) {
                 this.isAboveDestinationBear = false;
-                ++this.timeoutCounter;
-                this.creature.getNavigator().tryMoveToXYZ((double) ((float) blockpos.getX()) + 0.5D, blockpos.getY() - 0.5D, (double) ((float) blockpos.getZ()) + 0.5D, 1);
+                ++this.tryTicks;
+                this.mob.getNavigation().moveTo((double) ((float) blockpos.getX()) + 0.5D, blockpos.getY() - 0.5D, (double) ((float) blockpos.getZ()) + 0.5D, 1);
             } else {
                 this.isAboveDestinationBear = true;
-                --this.timeoutCounter;
+                --this.tryTicks;
             }
 
-            if (this.getIsAboveDestination()) {
-                crow.lookAt(EntityAnchorArgument.Type.EYES, new Vector3d(destinationBlock.getX() + 0.5D, destinationBlock.getY(), destinationBlock.getZ() + 0.5));
+            if (this.isReachedTarget()) {
+                crow.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5));
                 if (this.idleAtFlowerTime >= 5) {
                     this.pollinate();
-                    this.resetTask();
+                    this.stop();
                 } else {
                     crow.peck();
                     ++this.idleAtFlowerTime;
@@ -98,42 +98,42 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
 
     public BlockPos getVultureCirclePos(BlockPos target) {
         float angle = (0.01745329251F * 8 * (clockwise ? -circlingTime : circlingTime));
-        double extraX = circleDistance * MathHelper.sin((angle));
-        double extraZ = circleDistance * MathHelper.cos(angle);
+        double extraX = circleDistance * Mth.sin((angle));
+        double extraZ = circleDistance * Mth.cos(angle);
         BlockPos pos = new BlockPos(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);
-        if (crow.world.isAirBlock(pos)) {
+        if (crow.level.isEmptyBlock(pos)) {
             return pos;
         }
         return null;
     }
 
-    private boolean isWithinXZDist(BlockPos blockpos, Vector3d positionVec, double distance) {
-        return blockpos.distanceSq(positionVec.getX(), positionVec.getY(), positionVec.getZ(), true) < distance * distance;
+    private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
+        return blockpos.distSqr(positionVec.x(), positionVec.y(), positionVec.z(), true) < distance * distance;
     }
 
-    protected boolean getIsAboveDestination() {
+    protected boolean isReachedTarget() {
         return this.isAboveDestinationBear;
     }
 
     private void pollinate() {
-        if(crow.world.getBlockState(destinationBlock).getBlock() instanceof CropsBlock){
-            CropsBlock block = (CropsBlock)crow.world.getBlockState(destinationBlock).getBlock();
-            int cropAge = crow.world.getBlockState(destinationBlock).get(block.getAgeProperty());
+        if(crow.level.getBlockState(blockPos).getBlock() instanceof CropBlock){
+            CropBlock block = (CropBlock)crow.level.getBlockState(blockPos).getBlock();
+            int cropAge = crow.level.getBlockState(blockPos).getValue(block.getAgeProperty());
             if(cropAge > 0){
-                crow.world.setBlockState(destinationBlock, crow.world.getBlockState(destinationBlock).with(block.getAgeProperty(), cropAge - 1));
+                crow.level.setBlockAndUpdate(blockPos, crow.level.getBlockState(blockPos).setValue(block.getAgeProperty(), cropAge - 1));
             }else{
-                crow.world.destroyBlock(destinationBlock, true);
+                crow.level.destroyBlock(blockPos, true);
             }
-            resetTask();
+            stop();
         }else{
-            crow.world.destroyBlock(destinationBlock, true);
-            resetTask();
+            crow.level.destroyBlock(blockPos, true);
+            stop();
         }
-        timeoutCounter = 1200;
+        tryTicks = 1200;
     }
 
     @Override
-    protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
-        return BlockTags.getCollection().get(AMTagRegistry.CROW_FOODBLOCKS).contains(worldIn.getBlockState(pos).getBlock());
+    protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
+        return BlockTags.getAllTags().getTag(AMTagRegistry.CROW_FOODBLOCKS).contains(worldIn.getBlockState(pos).getBlock());
     }
 }

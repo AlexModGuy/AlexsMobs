@@ -1,6 +1,6 @@
 package com.github.alexthe666.alexsmobs.misc;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class AMTagRegistry {
     public static final ResourceLocation INSECT_ITEMS = new ResourceLocation("alexsmobs", "insect_items");

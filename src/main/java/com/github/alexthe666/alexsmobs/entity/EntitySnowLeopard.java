@@ -9,34 +9,47 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, ITargetsDroppedItems {
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+
+public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITargetsDroppedItems {
 
     public static final Animation ANIMATION_ATTACK_R = Animation.create(13);
     public static final Animation ANIMATION_ATTACK_L = Animation.create(13);
@@ -48,58 +61,58 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
     public float tackleProgress;
     public float prevSitProgress;
     public float sitProgress;
-    private static final DataParameter<Boolean> TACKLING = EntityDataManager.createKey(EntitySnowLeopard.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SLEEPING = EntityDataManager.createKey(EntitySnowLeopard.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntitySnowLeopard.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> SL_SNEAKING = EntityDataManager.createKey(EntitySnowLeopard.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> TACKLING = SynchedEntityData.defineId(EntitySnowLeopard.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SLEEPING = SynchedEntityData.defineId(EntitySnowLeopard.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntitySnowLeopard.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SL_SNEAKING = SynchedEntityData.defineId(EntitySnowLeopard.class, EntityDataSerializers.BOOLEAN);
     private boolean hasSlowedDown = false;
     private int sittingTime = 0;
     private int maxSitTime = 75;
     public float prevSleepProgress;
     public float sleepProgress;
 
-    protected EntitySnowLeopard(EntityType type, World worldIn) {
+    protected EntitySnowLeopard(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.stepHeight = 2F;
+        this.maxUpStep = 2F;
     }
 
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.snowLeopardSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.snowLeopardSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static <T extends MobEntity> boolean canSnowLeopardSpawn(EntityType<EntitySnowLeopard> snowleperd, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
-        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.BASE_STONE_OVERWORLD) || blockstate.matchesBlock(Blocks.DIRT) || blockstate.matchesBlock(Blocks.GRASS_BLOCK)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+    public static <T extends Mob> boolean canSnowLeopardSpawn(EntityType<EntitySnowLeopard> snowleperd, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, Random random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.below());
+        return (blockstate.is(BlockTags.BASE_STONE_OVERWORLD) || blockstate.is(Blocks.DIRT) || blockstate.is(Blocks.GRASS_BLOCK)) && worldIn.getRawBrightness(p_223317_3_, 0) > 8;
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
+    public boolean isFood(ItemStack stack) {
         return stack.getItem() == AMItemRegistry.MOOSE_RIBS || stack.getItem() == AMItemRegistry.COOKED_MOOSE_RIBS;
     }
 
-    public boolean onLivingFall(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
         return false;
     }
 
-    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new AnimalAIPanicBaby(this, 1.25D));
         this.goalSelector.addGoal(3, new SnowLeopardAIMelee(this));
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(7, new RandomWalkingGoal(this,  1.0D, 70));
-        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 15.0F));
-        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(7, new RandomStrollGoal(this,  1.0D, 70));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 15.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new AnimalAIHurtByTargetNotBaby(this)));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getCollection().get(AMTagRegistry.SNOW_LEOPARD_TARGETS))));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.SNOW_LEOPARD_TARGETS))));
         this.targetSelector.addGoal(3, new CreatureAITargetItems(this, false, 30));
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 30D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35F).createMutableAttribute(Attributes.FOLLOW_RANGE, 64F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.MOVEMENT_SPEED, 0.35F).add(Attributes.FOLLOW_RANGE, 64F);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -115,41 +128,41 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(SITTING, Boolean.valueOf(false));
-        this.dataManager.register(SLEEPING, Boolean.valueOf(false));
-        this.dataManager.register(SL_SNEAKING, Boolean.valueOf(false));
-        this.dataManager.register(TACKLING, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(SLEEPING, Boolean.valueOf(false));
+        this.entityData.define(SL_SNEAKING, Boolean.valueOf(false));
+        this.entityData.define(TACKLING, Boolean.valueOf(false));
     }
 
     public boolean isSitting() {
-        return this.dataManager.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING).booleanValue();
     }
 
     public void setSitting(boolean bar) {
-        this.dataManager.set(SITTING, Boolean.valueOf(bar));
+        this.entityData.set(SITTING, Boolean.valueOf(bar));
     }
 
     public boolean isTackling() {
-        return this.dataManager.get(TACKLING).booleanValue();
+        return this.entityData.get(TACKLING).booleanValue();
     }
 
     public void setTackling(boolean bar) {
-        this.dataManager.set(TACKLING, Boolean.valueOf(bar));
+        this.entityData.set(TACKLING, Boolean.valueOf(bar));
     }
 
     public boolean isSLSneaking() {
-        return this.dataManager.get(SL_SNEAKING).booleanValue();
+        return this.entityData.get(SL_SNEAKING).booleanValue();
     }
 
     public void setSlSneaking(boolean bar) {
-        this.dataManager.set(SL_SNEAKING, Boolean.valueOf(bar));
+        this.entityData.set(SL_SNEAKING, Boolean.valueOf(bar));
     }
 
     @Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
         return AMEntityRegistry.SNOW_LEOPARD.create(serverWorld);
     }
 
@@ -192,27 +205,27 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
         }
         if(isTackling()){
-            this.renderYawOffset = this.rotationYaw;
+            this.yBodyRot = this.yRot;
         }
-        if(!world.isRemote) {
-            if (this.getAttackTarget() != null && (this.isSitting() || this.isSleeping())) {
+        if(!level.isClientSide) {
+            if (this.getTarget() != null && (this.isSitting() || this.isSleeping())) {
                 this.setSitting(false);
                 this.setSleeping(false);
             }
-            if ((isSitting() || isSleeping()) && (++sittingTime > maxSitTime || this.getAttackTarget() != null || this.isInLove() || this.isInWaterOrBubbleColumn())) {
+            if ((isSitting() || isSleeping()) && (++sittingTime > maxSitTime || this.getTarget() != null || this.isInLove() || this.isInWaterOrBubble())) {
                 this.setSitting(false);
                 this.setSleeping(false);
                 sittingTime = 0;
-                maxSitTime = 100 + rand.nextInt(50);
+                maxSitTime = 100 + random.nextInt(50);
             }
-            if (this.getAttackTarget() == null && this.getMotion().lengthSquared() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSleeping() && !this.isSitting() && !this.isInWaterOrBubbleColumn() && rand.nextInt(340) == 0) {
+            if (this.getTarget() == null && this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSleeping() && !this.isSitting() && !this.isInWaterOrBubble() && random.nextInt(340) == 0) {
                 sittingTime = 0;
-                if (this.getRNG().nextInt(2) != 0) {
-                    maxSitTime = 200 + rand.nextInt(800);
+                if (this.getRandom().nextInt(2) != 0) {
+                    maxSitTime = 200 + random.nextInt(800);
                     this.setSitting(true);
                     this.setSleeping(false);
                 } else {
-                    maxSitTime = 2000 + rand.nextInt(2600);
+                    maxSitTime = 2000 + random.nextInt(2600);
                     this.setSitting(false);
                     this.setSleeping(true);
                 }
@@ -221,8 +234,8 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        boolean prev = super.attackEntityFrom(source, amount);
+    public boolean hurt(DamageSource source, float amount) {
+        boolean prev = super.hurt(source, amount);
         if (prev) {
             sittingTime = 0;
             this.setSleeping(false);
@@ -231,26 +244,26 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
         return prev;
     }
 
-    public void travel(Vector3d vec3d) {
+    public void travel(Vec3 vec3d) {
         if (this.isSitting() || this.isSleeping()) {
-            if (this.getNavigator().getPath() != null) {
-                this.getNavigator().clearPath();
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
             }
-            vec3d = Vector3d.ZERO;
+            vec3d = Vec3.ZERO;
         }
         super.travel(vec3d);
     }
 
-    protected boolean isMovementBlocked() {
-        return super.isMovementBlocked();
+    protected boolean isImmobile() {
+        return super.isImmobile();
     }
 
     public boolean isSleeping() {
-        return this.dataManager.get(SLEEPING).booleanValue();
+        return this.entityData.get(SLEEPING).booleanValue();
     }
 
     public void setSleeping(boolean sleeping) {
-        this.dataManager.set(SLEEPING, Boolean.valueOf(sleeping));
+        this.entityData.set(SLEEPING, Boolean.valueOf(sleeping));
     }
 
     @Override
@@ -280,7 +293,7 @@ public class EntitySnowLeopard extends AnimalEntity implements IAnimatedEntity, 
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem().isFood() && stack.getItem().getFood() != null && stack.getItem().getFood().isMeat();
+        return stack.getItem().isEdible() && stack.getItem().getFoodProperties() != null && stack.getItem().getFoodProperties().isMeat();
     }
 
     @Override

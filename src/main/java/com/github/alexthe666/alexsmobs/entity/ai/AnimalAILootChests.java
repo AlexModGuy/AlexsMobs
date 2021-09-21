@@ -3,22 +3,22 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
-import net.minecraft.block.Block;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.entity.ai.goal.MoveToBlockGoal;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.LevelReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,23 +26,23 @@ import java.util.Random;
 
 public class AnimalAILootChests extends MoveToBlockGoal {
 
-    private final AnimalEntity entity;
+    private final Animal entity;
     private final ILootsChests chestLooter;
     private boolean hasOpenedChest = false;
 
-    public AnimalAILootChests(AnimalEntity entity, int range) {
+    public AnimalAILootChests(Animal entity, int range) {
         super(entity, 1.0F, range);
         this.entity = entity;
         this.chestLooter = (ILootsChests) entity;
     }
 
-    public boolean isChestRaidable(IWorldReader world, BlockPos pos) {
-        if (world.getBlockState(pos).getBlock() instanceof ContainerBlock) {
+    public boolean isChestRaidable(LevelReader world, BlockPos pos) {
+        if (world.getBlockState(pos).getBlock() instanceof BaseEntityBlock) {
             Block block = world.getBlockState(pos).getBlock();
             boolean listed = false;
-            TileEntity entity = world.getTileEntity(pos);
-            if (entity instanceof IInventory) {
-                IInventory inventory = (IInventory) entity;
+            BlockEntity entity = world.getBlockEntity(pos);
+            if (entity instanceof Container) {
+                Container inventory = (Container) entity;
                 try {
                     if (!inventory.isEmpty() && chestLooter.isLootable(inventory)) {
                         return true;
@@ -57,43 +57,43 @@ public class AnimalAILootChests extends MoveToBlockGoal {
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (this.entity instanceof TameableEntity && ((TameableEntity) entity).isTamed()) {
+    public boolean canUse() {
+        if (this.entity instanceof TamableAnimal && ((TamableAnimal) entity).isTame()) {
             return false;
         }
         if (!AMConfig.raccoonsStealFromChests) {
             return false;
         }
-        if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
+        if (!this.entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
             return false;
         }
-        if (this.runDelay <= 0) {
-            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.world, this.entity)) {
+        if (this.nextStartTick <= 0) {
+            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.level, this.entity)) {
                 return false;
             }
         }
-        return super.shouldExecute();
+        return super.canUse();
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        return super.shouldContinueExecuting() && this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty();
+    public boolean canContinueToUse() {
+        return super.canContinueToUse() && this.entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty();
     }
 
     public boolean canSeeChest() {
-        RayTraceResult raytraceresult = entity.world.rayTraceBlocks(new RayTraceContext(entity.getEyePosition(1.0F), new Vector3d(destinationBlock.getX() + 0.5, destinationBlock.getY() + 0.5, destinationBlock.getZ() + 0.5), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
-        if (raytraceresult instanceof BlockRayTraceResult) {
-            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) raytraceresult;
-            BlockPos pos = blockRayTraceResult.getPos();
-            return pos.equals(destinationBlock) || entity.world.isAirBlock(pos) || this.entity.world.getTileEntity(pos) == this.entity.world.getTileEntity(destinationBlock);
+        HitResult raytraceresult = entity.level.clip(new ClipContext(entity.getEyePosition(1.0F), new Vec3(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+        if (raytraceresult instanceof BlockHitResult) {
+            BlockHitResult blockRayTraceResult = (BlockHitResult) raytraceresult;
+            BlockPos pos = blockRayTraceResult.getBlockPos();
+            return pos.equals(blockPos) || entity.level.isEmptyBlock(pos) || this.entity.level.getBlockEntity(pos) == this.entity.level.getBlockEntity(blockPos);
         }
         return true;
     }
 
-    public ItemStack getFoodFromInventory(IInventory inventory, Random random) {
+    public ItemStack getFoodFromInventory(Container inventory, Random random) {
         List<ItemStack> items = new ArrayList<ItemStack>();
-        for (int i = 0; i < inventory.getSizeInventory(); i++) {
-            ItemStack stack = inventory.getStackInSlot(i);
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stack = inventory.getItem(i);
             if (chestLooter.shouldLootItem(stack)) {
                 items.add(stack);
             }
@@ -111,29 +111,29 @@ public class AnimalAILootChests extends MoveToBlockGoal {
     @Override
     public void tick() {
         super.tick();
-        if (this.destinationBlock != null) {
-            TileEntity te = this.entity.world.getTileEntity(this.destinationBlock);
-            if (te instanceof IInventory) {
-                IInventory feeder = (IInventory) te;
-                double distance = this.entity.getDistanceSq(this.destinationBlock.getX() + 0.5F, this.destinationBlock.getY() + 0.5F, this.destinationBlock.getZ() + 0.5F);
+        if (this.blockPos != null) {
+            BlockEntity te = this.entity.level.getBlockEntity(this.blockPos);
+            if (te instanceof Container) {
+                Container feeder = (Container) te;
+                double distance = this.entity.distanceToSqr(this.blockPos.getX() + 0.5F, this.blockPos.getY() + 0.5F, this.blockPos.getZ() + 0.5F);
                 if (canSeeChest()) {
-                    if (this.getIsAboveDestination() && distance <= 3) {
+                    if (this.isReachedTarget() && distance <= 3) {
                         toggleChest(feeder, false);
-                        ItemStack stack = getFoodFromInventory(feeder, this.entity.world.rand);
+                        ItemStack stack = getFoodFromInventory(feeder, this.entity.level.random);
                         if (stack == ItemStack.EMPTY) {
-                            this.resetTask();
+                            this.stop();
                         } else {
                             ItemStack duplicate = stack.copy();
                             duplicate.setCount(1);
-                            if (!this.entity.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.entity.world.isRemote) {
-                                this.entity.entityDropItem(this.entity.getHeldItem(Hand.MAIN_HAND), 0.0F);
+                            if (!this.entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.entity.level.isClientSide) {
+                                this.entity.spawnAtLocation(this.entity.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
                             }
-                            this.entity.setHeldItem(Hand.MAIN_HAND, duplicate);
+                            this.entity.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
                             if (entity instanceof EntityRaccoon) {
                                 ((EntityRaccoon) entity).lookForWaterBeforeEatingTimer = 10;
                             }
                             stack.shrink(1);
-                            this.resetTask();
+                            this.stop();
 
                         }
                     } else {
@@ -150,35 +150,35 @@ public class AnimalAILootChests extends MoveToBlockGoal {
     }
 
 
-    public void resetTask() {
-        super.resetTask();
-        if (this.destinationBlock != null) {
-            TileEntity te = this.entity.world.getTileEntity(this.destinationBlock);
-            if (te instanceof IInventory) {
-                toggleChest((IInventory) te, false);
+    public void stop() {
+        super.stop();
+        if (this.blockPos != null) {
+            BlockEntity te = this.entity.level.getBlockEntity(this.blockPos);
+            if (te instanceof Container) {
+                toggleChest((Container) te, false);
             }
         }
-        this.destinationBlock = null;
+        this.blockPos = null;
         this.hasOpenedChest = false;
     }
 
 
     @Override
-    protected boolean shouldMoveTo(IWorldReader worldIn, BlockPos pos) {
+    protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
         return pos != null && isChestRaidable(worldIn, pos);
     }
 
-    public void toggleChest(IInventory te, boolean open) {
-        if (te instanceof ChestTileEntity) {
-            ChestTileEntity chest = (ChestTileEntity) te;
+    public void toggleChest(Container te, boolean open) {
+        if (te instanceof ChestBlockEntity) {
+            ChestBlockEntity chest = (ChestBlockEntity) te;
             if (open) {
-                this.entity.world.addBlockEvent(this.destinationBlock, chest.getBlockState().getBlock(), 1, 1);
+                this.entity.level.blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 1);
             } else {
-                this.entity.world.addBlockEvent(this.destinationBlock, chest.getBlockState().getBlock(), 1, 0);
+                this.entity.level.blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 0);
             }
-            chest.numPlayersUsing = open ? 1 : 0;
-            this.entity.world.notifyNeighborsOfStateChange(destinationBlock, chest.getBlockState().getBlock());
-            this.entity.world.notifyNeighborsOfStateChange(destinationBlock.down(), chest.getBlockState().getBlock());
+            chest.openCount = open ? 1 : 0;
+            this.entity.level.updateNeighborsAt(blockPos, chest.getBlockState().getBlock());
+            this.entity.level.updateNeighborsAt(blockPos.below(), chest.getBlockState().getBlock());
         }
     }
 }

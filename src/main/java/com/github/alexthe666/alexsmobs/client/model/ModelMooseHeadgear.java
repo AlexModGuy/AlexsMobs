@@ -1,65 +1,65 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ArmorStandEntity;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelMooseHeadgear extends BipedModel {
-    public ModelRenderer hornL;
-    public ModelRenderer hornR;
+public class ModelMooseHeadgear extends HumanoidModel {
+    public ModelPart hornL;
+    public ModelPart hornR;
 
     public ModelMooseHeadgear(float modelSize) {
         super(modelSize, 0, 64, 32);
-        this.textureWidth = 64;
-        this.textureHeight = 32;
-        this.hornL = new ModelRenderer(this, 0, 0);
-        this.hornL.setRotationPoint(5.0F, -8.0F, 1.0F);
-        this.hornL.setTextureOffset(3, 17).addBox(0.0F, -5.5F, -4.0F, 10.0F, 6.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-        this.hornR = new ModelRenderer(this, 0, 0);
+        this.texWidth = 64;
+        this.texHeight = 32;
+        this.hornL = new ModelPart(this, 0, 0);
+        this.hornL.setPos(5.0F, -8.0F, 1.0F);
+        this.hornL.texOffs(3, 17).addBox(0.0F, -5.5F, -4.0F, 10.0F, 6.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+        this.hornR = new ModelPart(this, 0, 0);
         this.hornR.mirror = true;
-        this.hornR.setRotationPoint(-5.0F, -8.0F, 1.0F);
-        this.hornR.setTextureOffset(3, 17).addBox(-10.0F, -5.5F, -4.0F, 10.0F, 6.0F, 8.0F, 0.0F, 0.0F, 0.0F);
-        this.bipedHead.addChild(this.hornL);
-        this.bipedHead.addChild(this.hornR);
+        this.hornR.setPos(-5.0F, -8.0F, 1.0F);
+        this.hornR.texOffs(3, 17).addBox(-10.0F, -5.5F, -4.0F, 10.0F, 6.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+        this.head.addChild(this.hornL);
+        this.head.addChild(this.hornR);
     }
 
-    public void setRotationAngles(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entityIn instanceof ArmorStandEntity) {
-            ArmorStandEntity entityarmorstand = (ArmorStandEntity) entityIn;
-            this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
-            this.bipedHead.rotateAngleY = 0.017453292F * entityarmorstand.getHeadRotation().getY();
-            this.bipedHead.rotateAngleZ = 0.017453292F * entityarmorstand.getHeadRotation().getZ();
-            this.bipedHead.setRotationPoint(0.0F, 1.0F, 0.0F);
-            this.bipedBody.rotateAngleX = 0.017453292F * entityarmorstand.getBodyRotation().getX();
-            this.bipedBody.rotateAngleY = 0.017453292F * entityarmorstand.getBodyRotation().getY();
-            this.bipedBody.rotateAngleZ = 0.017453292F * entityarmorstand.getBodyRotation().getZ();
-            this.bipedLeftArm.rotateAngleX = 0.017453292F * entityarmorstand.getLeftArmRotation().getX();
-            this.bipedLeftArm.rotateAngleY = 0.017453292F * entityarmorstand.getLeftArmRotation().getY();
-            this.bipedLeftArm.rotateAngleZ = 0.017453292F * entityarmorstand.getLeftArmRotation().getZ();
-            this.bipedRightArm.rotateAngleX = 0.017453292F * entityarmorstand.getRightArmRotation().getX();
-            this.bipedRightArm.rotateAngleY = 0.017453292F * entityarmorstand.getRightArmRotation().getY();
-            this.bipedRightArm.rotateAngleZ = 0.017453292F * entityarmorstand.getRightArmRotation().getZ();
-            this.bipedLeftLeg.rotateAngleX = 0.017453292F * entityarmorstand.getLeftLegRotation().getX();
-            this.bipedLeftLeg.rotateAngleY = 0.017453292F * entityarmorstand.getLeftLegRotation().getY();
-            this.bipedLeftLeg.rotateAngleZ = 0.017453292F * entityarmorstand.getLeftLegRotation().getZ();
-            this.bipedLeftLeg.setRotationPoint(1.9F, 11.0F, 0.0F);
-            this.bipedRightLeg.rotateAngleX = 0.017453292F * entityarmorstand.getRightLegRotation().getX();
-            this.bipedRightLeg.rotateAngleY = 0.017453292F * entityarmorstand.getRightLegRotation().getY();
-            this.bipedRightLeg.rotateAngleZ = 0.017453292F * entityarmorstand.getRightLegRotation().getZ();
-            this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
-            this.bipedHeadwear.copyModelAngles(this.bipedHead);
+    public void setupAnim(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (entityIn instanceof ArmorStand) {
+            ArmorStand entityarmorstand = (ArmorStand) entityIn;
+            this.head.xRot = 0.017453292F * entityarmorstand.getHeadPose().getX();
+            this.head.yRot = 0.017453292F * entityarmorstand.getHeadPose().getY();
+            this.head.zRot = 0.017453292F * entityarmorstand.getHeadPose().getZ();
+            this.head.setPos(0.0F, 1.0F, 0.0F);
+            this.body.xRot = 0.017453292F * entityarmorstand.getBodyPose().getX();
+            this.body.yRot = 0.017453292F * entityarmorstand.getBodyPose().getY();
+            this.body.zRot = 0.017453292F * entityarmorstand.getBodyPose().getZ();
+            this.leftArm.xRot = 0.017453292F * entityarmorstand.getLeftArmPose().getX();
+            this.leftArm.yRot = 0.017453292F * entityarmorstand.getLeftArmPose().getY();
+            this.leftArm.zRot = 0.017453292F * entityarmorstand.getLeftArmPose().getZ();
+            this.rightArm.xRot = 0.017453292F * entityarmorstand.getRightArmPose().getX();
+            this.rightArm.yRot = 0.017453292F * entityarmorstand.getRightArmPose().getY();
+            this.rightArm.zRot = 0.017453292F * entityarmorstand.getRightArmPose().getZ();
+            this.leftLeg.xRot = 0.017453292F * entityarmorstand.getLeftLegPose().getX();
+            this.leftLeg.yRot = 0.017453292F * entityarmorstand.getLeftLegPose().getY();
+            this.leftLeg.zRot = 0.017453292F * entityarmorstand.getLeftLegPose().getZ();
+            this.leftLeg.setPos(1.9F, 11.0F, 0.0F);
+            this.rightLeg.xRot = 0.017453292F * entityarmorstand.getRightLegPose().getX();
+            this.rightLeg.yRot = 0.017453292F * entityarmorstand.getRightLegPose().getY();
+            this.rightLeg.zRot = 0.017453292F * entityarmorstand.getRightLegPose().getZ();
+            this.rightLeg.setPos(-1.9F, 11.0F, 0.0F);
+            this.hat.copyFrom(this.head);
         } else {
-            super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
     }
 
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    public void setRotateAngle(ModelPart modelRenderer, float x, float y, float z) {
+        modelRenderer.xRot = x;
+        modelRenderer.yRot = y;
+        modelRenderer.zRot = z;
     }
 }

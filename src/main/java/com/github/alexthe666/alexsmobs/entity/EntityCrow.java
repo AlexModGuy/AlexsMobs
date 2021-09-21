@@ -8,43 +8,43 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.item.ItemFrameEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
@@ -55,13 +55,42 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
-    private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntityCrow.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> ATTACK_TICK = EntityDataManager.createKey(EntityCrow.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(EntityCrow.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityCrow.class, DataSerializers.VARINT);
-    private static final DataParameter<Optional<BlockPos>> PERCH_POS = EntityDataManager.createKey(EntityCrow.class, DataSerializers.OPTIONAL_BLOCK_POS);
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+
+public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
+
+    private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(EntityCrow.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(EntityCrow.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityCrow.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityCrow.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Optional<BlockPos>> PERCH_POS = SynchedEntityData.defineId(EntityCrow.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
     public float prevFlyProgress;
     public float flyProgress;
     public float prevAttackProgress;
@@ -79,24 +108,24 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
     private int checkPerchCooldown = 0;
     private boolean gatheringClockwise = false;
 
-    protected EntityCrow(EntityType type, World worldIn) {
+    protected EntityCrow(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.setPathPriority(PathNodeType.DANGER_FIRE, -1.0F);
-        this.setPathPriority(PathNodeType.WATER, -1.0F);
-        this.setPathPriority(PathNodeType.WATER_BORDER, 16.0F);
-        this.setPathPriority(PathNodeType.COCOA, -1.0F);
-        this.setPathPriority(PathNodeType.FENCE, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
+        this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.FENCE, -1.0F);
         switchNavigator(false);
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 8.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new SitGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new CrowAIMelee(this));
         this.goalSelector.addGoal(3, new CrowAIFollowOwner(this, 1.0D, 4.0F, 2.0F, true));
         this.goalSelector.addGoal(4, new AIDepositChests());
@@ -105,51 +134,51 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new CrowAICircleCrops(this));
         this.goalSelector.addGoal(7, new AIWalkIdle());
-        this.goalSelector.addGoal(8, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(9, new LookAtGoal(this, CreatureEntity.class, 6.0F));
-        this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, PathfinderMob.class, 6.0F));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new AITargetItems(this, false, false, 40, 16));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, (new HurtByTargetGoal(this, PlayerEntity.class)).setCallsForHelp());
+        this.targetSelector.addGoal(4, (new HurtByTargetGoal(this, Player.class)).setAlertOthers());
 
     }
 
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.crowSpawnRolls, this.getRNG(), spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.crowSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static <T extends MobEntity> boolean canCrowSpawn(EntityType<EntityCrow> crow, IWorld worldIn, SpawnReason reason, BlockPos p_223317_3_, Random random) {
-        BlockState blockstate = worldIn.getBlockState(p_223317_3_.down());
-        return (blockstate.isIn(BlockTags.LEAVES) || blockstate.matchesBlock(Blocks.GRASS_BLOCK) || blockstate.isIn(BlockTags.LOGS) || blockstate.matchesBlock(Blocks.AIR)) && worldIn.getLightSubtracted(p_223317_3_, 0) > 8;
+    public static <T extends Mob> boolean canCrowSpawn(EntityType<EntityCrow> crow, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, Random random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.below());
+        return (blockstate.is(BlockTags.LEAVES) || blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(BlockTags.LOGS) || blockstate.is(Blocks.AIR)) && worldIn.getRawBrightness(p_223317_3_, 0) > 8;
     }
 
-    public boolean isOnSameTeam(Entity entityIn) {
-        if (this.isTamed()) {
+    public boolean isAlliedTo(Entity entityIn) {
+        if (this.isTame()) {
             LivingEntity livingentity = this.getOwner();
             if (entityIn == livingentity) {
                 return true;
             }
-            if (entityIn instanceof TameableEntity) {
-                return ((TameableEntity) entityIn).isOwner(livingentity);
+            if (entityIn instanceof TamableAnimal) {
+                return ((TamableAnimal) entityIn).isOwnedBy(livingentity);
             }
             if (livingentity != null) {
-                return livingentity.isOnSameTeam(entityIn);
+                return livingentity.isAlliedTo(entityIn);
             }
         }
 
-        return super.isOnSameTeam(entityIn);
+        return super.isAlliedTo(entityIn);
     }
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.moveController = new MovementController(this);
-            this.navigator = new GroundPathNavigator(this, world);
+            this.moveControl = new MoveControl(this);
+            this.navigation = new GroundPathNavigation(this, level);
             this.isLandNavigator = true;
         } else {
-            this.moveController = new FlightMoveController(this, 0.7F, false);
-            this.navigator = new DirectPathNavigator(this, world);
+            this.moveControl = new FlightMoveController(this, 0.7F, false);
+            this.navigation = new DirectPathNavigator(this, level);
             this.isLandNavigator = false;
         }
     }
@@ -158,60 +187,60 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         return false;
     }
 
-    public boolean onLivingFall(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
         return false;
     }
 
-    protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
-            Entity entity = source.getTrueSource();
-            this.setSitting(false);
-            if (entity != null && this.isTamed() && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            Entity entity = source.getEntity();
+            this.setOrderedToSit(false);
+            if (entity != null && this.isTame() && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
                 amount = (amount + 1.0F) / 4.0F;
             }
-            boolean prev = super.attackEntityFrom(source, amount);
+            boolean prev = super.hurt(source, amount);
             if (prev) {
-                if (!this.getHeldItemMainhand().isEmpty()) {
-                    this.entityDropItem(this.getHeldItemMainhand().copy());
-                    this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+                if (!this.getMainHandItem().isEmpty()) {
+                    this.spawnAtLocation(this.getMainHandItem().copy());
+                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                 }
             }
             return prev;
         }
     }
 
-    public void updateRidden() {
-        Entity entity = this.getRidingEntity();
+    public void rideTick() {
+        Entity entity = this.getVehicle();
         if (this.isPassenger() && !entity.isAlive()) {
             this.stopRiding();
-        } else if (isTamed() && entity instanceof LivingEntity && isOwner((LivingEntity) entity)) {
-            this.setMotion(0, 0, 0);
+        } else if (isTame() && entity instanceof LivingEntity && isOwnedBy((LivingEntity) entity)) {
+            this.setDeltaMovement(0, 0, 0);
             this.tick();
-            Entity riding = this.getRidingEntity();
+            Entity riding = this.getVehicle();
             if (this.isPassenger()) {
                 int i = riding.getPassengers().indexOf(this);
                 float radius = 0.43F;
-                float angle = (0.01745329251F * (((PlayerEntity) riding).renderYawOffset + (i == 0 ? -90 : 90)));
-                double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-                double extraZ = radius * MathHelper.cos(angle);
-                double extraY = (riding.isSneaking() ? 1.25D : 1.45D);
-                this.rotationYawHead = ((PlayerEntity) riding).rotationYawHead;
-                this.prevRotationYaw = ((PlayerEntity) riding).rotationYawHead;
-                this.setPosition(riding.getPosX() + extraX, riding.getPosY() + extraY, riding.getPosZ() + extraZ);
-                if (!riding.isAlive() || rideCooldown == 0 && riding.isSneaking() || ((PlayerEntity) riding).isElytraFlying() || this.getAttackTarget() != null && this.getAttackTarget().isAlive()) {
-                    this.dismount();
-                    if (!world.isRemote) {
-                        AlexsMobs.sendMSGToAll(new MessageCrowDismount(this.getEntityId(), riding.getEntityId()));
+                float angle = (0.01745329251F * (((Player) riding).yBodyRot + (i == 0 ? -90 : 90)));
+                double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                double extraZ = radius * Mth.cos(angle);
+                double extraY = (riding.isShiftKeyDown() ? 1.25D : 1.45D);
+                this.yHeadRot = ((Player) riding).yHeadRot;
+                this.yRotO = ((Player) riding).yHeadRot;
+                this.setPos(riding.getX() + extraX, riding.getY() + extraY, riding.getZ() + extraZ);
+                if (!riding.isAlive() || boardingCooldown == 0 && riding.isShiftKeyDown() || ((Player) riding).isFallFlying() || this.getTarget() != null && this.getTarget().isAlive()) {
+                    this.removeVehicle();
+                    if (!level.isClientSide) {
+                        AlexsMobs.sendMSGToAll(new MessageCrowDismount(this.getId(), riding.getId()));
                     }
                 }
             }
         }else{
-            super.updateRidden();
+            super.rideTick();
         }
     }
 
@@ -226,24 +255,24 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         return crowCount;
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem() == Items.PUMPKIN_SEEDS && this.isTamed();
+    public boolean isFood(ItemStack stack) {
+        return stack.getItem() == Items.PUMPKIN_SEEDS && this.isTame();
     }
 
-    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getHeldItem(hand);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
-        ActionResultType type = super.getEntityInteractionResult(player, hand);
-        if (!this.getHeldItemMainhand().isEmpty() && type != ActionResultType.SUCCESS) {
-            this.entityDropItem(this.getHeldItemMainhand().copy());
-            this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
-            return ActionResultType.SUCCESS;
+        InteractionResult type = super.mobInteract(player, hand);
+        if (!this.getMainHandItem().isEmpty() && type != InteractionResult.SUCCESS) {
+            this.spawnAtLocation(this.getMainHandItem().copy());
+            this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            return InteractionResult.SUCCESS;
         } else {
-            if (type == ActionResultType.PASS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
-                if (isCrowEdible(itemstack) && this.getHeldItemMainhand().isEmpty()) {
+            if (type == InteractionResult.PASS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
+                if (isCrowEdible(itemstack) && this.getMainHandItem().isEmpty()) {
                     ItemStack cop = itemstack.copy();
                     cop.setCount(1);
-                    this.setHeldItem(Hand.MAIN_HAND, cop);
+                    this.setItemInHand(InteractionHand.MAIN_HAND, cop);
                     itemstack.shrink(1);
                 }
                 this.setCommand(this.getCommand() + 1);
@@ -251,20 +280,20 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                     this.setCommand(0);
                 }
                 if(this.getCommand() == 3){
-                    player.sendStatusMessage(new TranslationTextComponent("entity.alexsmobs.crow.command_3", this.getName()), true);
+                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.crow.command_3", this.getName()), true);
                 }else{
-                    player.sendStatusMessage(new TranslationTextComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 }
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
-                    this.setSitting(true);
-                    return ActionResultType.SUCCESS;
+                    this.setOrderedToSit(true);
+                    return InteractionResult.SUCCESS;
                 } else {
-                    this.setSitting(false);
-                    return ActionResultType.SUCCESS;
+                    this.setOrderedToSit(false);
+                    return InteractionResult.SUCCESS;
                 }
             }
-            return super.getEntityInteractionResult(player, hand);
+            return super.mobInteract(player, hand);
         }
     }
 
@@ -289,7 +318,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         if (fleePumpkinFlag > 0) {
             fleePumpkinFlag--;
         }
-        if (!world.isRemote) {
+        if (!level.isClientSide) {
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -307,39 +336,39 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                 this.setNoGravity(false);
             }
         }
-        if (!this.getHeldItemMainhand().isEmpty()) {
+        if (!this.getMainHandItem().isEmpty()) {
             heldItemTime++;
-            if (heldItemTime > 60 && isCrowEdible(this.getHeldItemMainhand()) && (!this.isTamed() || this.getHealth() < this.getMaxHealth())) {
+            if (heldItemTime > 60 && isCrowEdible(this.getMainHandItem()) && (!this.isTame() || this.getHealth() < this.getMaxHealth())) {
                 heldItemTime = 0;
                 this.heal(4);
-                this.playSound(SoundEvents.ENTITY_PARROT_EAT, this.getSoundVolume(), this.getSoundPitch());
-                if (this.getHeldItemMainhand().getItem() == Items.PUMPKIN_SEEDS && seedThrowerID != null && !this.isTamed()) {
-                    if (getRNG().nextFloat() < 0.3F) {
-                        this.setTamed(true);
+                this.playSound(SoundEvents.PARROT_EAT, this.getSoundVolume(), this.getVoicePitch());
+                if (this.getMainHandItem().getItem() == Items.PUMPKIN_SEEDS && seedThrowerID != null && !this.isTame()) {
+                    if (getRandom().nextFloat() < 0.3F) {
+                        this.setTame(true);
                         this.setCommand(1);
-                        this.setOwnerId(this.seedThrowerID);
-                        PlayerEntity player = world.getPlayerByUuid(seedThrowerID);
-                        if (player instanceof ServerPlayerEntity) {
-                            CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayerEntity)player, this);
+                        this.setOwnerUUID(this.seedThrowerID);
+                        Player player = level.getPlayerByUUID(seedThrowerID);
+                        if (player instanceof ServerPlayer) {
+                            CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer)player, this);
                         }
-                        this.world.setEntityState(this, (byte) 7);
+                        this.level.broadcastEntityEvent(this, (byte) 7);
                     } else {
-                        this.world.setEntityState(this, (byte) 6);
+                        this.level.broadcastEntityEvent(this, (byte) 6);
                     }
                 }
-                if (this.getHeldItemMainhand().hasContainerItem()) {
-                    this.entityDropItem(this.getHeldItemMainhand().getContainerItem());
+                if (this.getMainHandItem().hasContainerItem()) {
+                    this.spawnAtLocation(this.getMainHandItem().getContainerItem());
                 }
-                this.getHeldItemMainhand().shrink(1);
+                this.getMainHandItem().shrink(1);
             }
         } else {
             heldItemTime = 0;
         }
-        if (rideCooldown > 0) {
-            rideCooldown--;
+        if (boardingCooldown > 0) {
+            boardingCooldown--;
         }
-        if (this.dataManager.get(ATTACK_TICK) > 0) {
-            this.dataManager.set(ATTACK_TICK, this.dataManager.get(ATTACK_TICK) - 1);
+        if (this.entityData.get(ATTACK_TICK) > 0) {
+            this.entityData.set(ATTACK_TICK, this.entityData.get(ATTACK_TICK) - 1);
             if (attackProgress < 5F) {
                 attackProgress++;
             }
@@ -352,50 +381,50 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             checkPerchCooldown--;
         }
 
-        if(this.isTamed() && checkPerchCooldown == 0){
+        if(this.isTame() && checkPerchCooldown == 0){
             checkPerchCooldown = 50;
-            BlockState below = this.getStateBelow();
+            BlockState below = this.getBlockStateOn();
             if(below.getBlock() == Blocks.HAY_BLOCK){
                 this.heal(1);
-                this.world.setEntityState(this, (byte) 67);
-                this.setPerchPos(this.getPositionUnderneath());
+                this.level.broadcastEntityEvent(this, (byte) 67);
+                this.setPerchPos(this.getBlockPosBelowThatAffectsMyMovement());
             }
         }
-        if(this.getCommand() == 3 && isTamed() && getPerchPos() != null && checkPerchCooldown == 0){
+        if(this.getCommand() == 3 && isTame() && getPerchPos() != null && checkPerchCooldown == 0){
             checkPerchCooldown = 120;
-            BlockState below = this.world.getBlockState(getPerchPos());
+            BlockState below = this.level.getBlockState(getPerchPos());
             if(below.getBlock() != Blocks.HAY_BLOCK){
-                this.world.setEntityState(this, (byte) 68);
+                this.level.broadcastEntityEvent(this, (byte) 68);
                 this.setPerchPos(null);
                 this.setCommand(2);
-                this.setSitting(true);
+                this.setOrderedToSit(true);
             }
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void handleStatusUpdate(byte id) {
+    public void handleEntityEvent(byte id) {
         if (id == 67) {
             for(int i = 0; i < 7; ++i) {
-                double d0 = this.rand.nextGaussian() * 0.02D;
-                double d1 = this.rand.nextGaussian() * 0.02D;
-                double d2 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(ParticleTypes.HAPPY_VILLAGER, this.getPosXRandom(1.0D), this.getPosYRandom() + 0.5D, this.getPosZRandom(1.0D), d0, d1, d2);
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         } else if (id == 68) {
             for(int i = 0; i < 7; ++i) {
-                double d0 = this.rand.nextGaussian() * 0.02D;
-                double d1 = this.rand.nextGaussian() * 0.02D;
-                double d2 = this.rand.nextGaussian() * 0.02D;
-                this.world.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getPosXRandom(1.0D), this.getPosYRandom() + 0.5D, this.getPosZRandom(1.0D), d0, d1, d2);
+                double d0 = this.random.nextGaussian() * 0.02D;
+                double d1 = this.random.nextGaussian() * 0.02D;
+                double d2 = this.random.nextGaussian() * 0.02D;
+                this.level.addParticle(ParticleTypes.ANGRY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         } else {
-            super.handleStatusUpdate(id);
+            super.handleEntityEvent(id);
         }
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("Flying", this.isFlying());
         compound.putBoolean("MonkeySitting", this.isSitting());
         compound.putInt("Command", this.getCommand());
@@ -406,20 +435,20 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         }
     }
 
-    public void travel(Vector3d vec3d) {
+    public void travel(Vec3 vec3d) {
         if (this.isSitting()) {
-            if (this.getNavigator().getPath() != null) {
-                this.getNavigator().clearPath();
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
             }
-            vec3d = Vector3d.ZERO;
+            vec3d = Vec3.ZERO;
         }
         super.travel(vec3d);
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setFlying(compound.getBoolean("Flying"));
-        this.setSitting(compound.getBoolean("MonkeySitting"));
+        this.setOrderedToSit(compound.getBoolean("MonkeySitting"));
         this.setCommand(compound.getInt("Command"));
         if (compound.contains("PerchX") && compound.contains("PerchY") && compound.contains("PerchZ")) {
             this.setPerchPos(new BlockPos(compound.getInt("PerchX"), compound.getInt("PerchY"), compound.getInt("PerchZ")));
@@ -427,40 +456,40 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
     }
 
     public boolean isFlying() {
-        return this.dataManager.get(FLYING);
+        return this.entityData.get(FLYING);
     }
 
     public void setFlying(boolean flying) {
-        if(flying && isChild()){
+        if(flying && isBaby()){
             return;
         }
-        this.dataManager.set(FLYING, flying);
+        this.entityData.set(FLYING, flying);
     }
 
     public int getCommand() {
-        return this.dataManager.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND).intValue();
     }
 
     public void setCommand(int command) {
-        this.dataManager.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, Integer.valueOf(command));
     }
 
     public boolean isSitting() {
-        return this.dataManager.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING).booleanValue();
     }
 
-    public void setSitting(boolean sit) {
-        this.dataManager.set(SITTING, Boolean.valueOf(sit));
+    public void setOrderedToSit(boolean sit) {
+        this.entityData.set(SITTING, Boolean.valueOf(sit));
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FLYING, false);
-        this.dataManager.register(ATTACK_TICK, 0);
-        this.dataManager.register(COMMAND, Integer.valueOf(0));
-        this.dataManager.register(SITTING, Boolean.valueOf(false));
-        this.dataManager.register(PERCH_POS, Optional.empty());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(FLYING, false);
+        this.entityData.define(ATTACK_TICK, 0);
+        this.entityData.define(COMMAND, Integer.valueOf(0));
+        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(PERCH_POS, Optional.empty());
     }
 
     @Override
@@ -470,17 +499,17 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
     @Nullable
     @Override
-    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
         return AMEntityRegistry.CROW.create(serverWorld);
     }
 
-    public boolean isTargetBlocked(Vector3d target) {
-        Vector3d Vector3d = new Vector3d(this.getPosX(), this.getPosYEye(), this.getPosZ());
+    public boolean isTargetBlocked(Vec3 target) {
+        Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 
-        return this.world.rayTraceBlocks(new RayTraceContext(Vector3d, target, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() != RayTraceResult.Type.MISS;
+        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
-    public int getTalkInterval() {
+    public int getAmbientSoundInterval() {
         return 60;
     }
 
@@ -496,74 +525,74 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         return AMSoundRegistry.CROW_HURT;
     }
 
-    public Vector3d getBlockInViewAway(Vector3d fleePos, float radiusAdd) {
-        float radius = 0.75F * (0.7F * 6) * -3 - this.getRNG().nextInt(24) - radiusAdd;
-        float neg = this.getRNG().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.renderYawOffset;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRNG().nextFloat() * neg);
-        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-        double extraZ = radius * MathHelper.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, 0, fleePos.getZ() + extraZ);
+    public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
+        float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
+        float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        float renderYawOffset = this.yBodyRot;
+        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getCrowGround(radialPos);
-        int distFromGround = (int) this.getPosY() - ground.getY();
-        int flightHeight = 4 + this.getRNG().nextInt(10);
-        BlockPos newPos = ground.up(distFromGround > 8 ? flightHeight : (int)this.getRNG().nextInt(6) + 1);
-        if (!this.isTargetBlocked(Vector3d.copyCentered(newPos)) && this.getDistanceSq(Vector3d.copyCentered(newPos)) > 1) {
-            return Vector3d.copyCentered(newPos);
+        int distFromGround = (int) this.getY() - ground.getY();
+        int flightHeight = 4 + this.getRandom().nextInt(10);
+        BlockPos newPos = ground.above(distFromGround > 8 ? flightHeight : (int)this.getRandom().nextInt(6) + 1);
+        if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
+            return Vec3.atCenterOf(newPos);
         }
         return null;
     }
 
 
     private BlockPos getCrowGround(BlockPos in){
-        BlockPos position = new BlockPos(in.getX(), this.getPosY(), in.getZ());
-        while (position.getY() > 2 && world.isAirBlock(position)) {
-            position = position.down();
+        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        while (position.getY() > 2 && level.isEmptyBlock(position)) {
+            position = position.below();
         }
         return position;
     }
-    public Vector3d getBlockGrounding(Vector3d fleePos) {
-        float radius = 0.75F * (0.7F * 6) * -3 - this.getRNG().nextInt(24);
-        float neg = this.getRNG().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.renderYawOffset;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRNG().nextFloat() * neg);
-        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
-        double extraZ = radius * MathHelper.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.getX() + extraX, getPosY(), fleePos.getZ() + extraZ);
+    public Vec3 getBlockGrounding(Vec3 fleePos) {
+        float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24);
+        float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        float renderYawOffset = this.yBodyRot;
+        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraZ = radius * Mth.cos(angle);
+        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getCrowGround(radialPos);
         if (ground.getY() == 0) {
-            return this.getPositionVec();
+            return this.position();
         } else {
-            ground = this.getPosition();
-            while (ground.getY() > 2 && world.isAirBlock(ground)) {
-                ground = ground.down();
+            ground = this.blockPosition();
+            while (ground.getY() > 2 && level.isEmptyBlock(ground)) {
+                ground = ground.below();
             }
         }
-        if (!this.isTargetBlocked(Vector3d.copyCentered(ground.up()))) {
-            return Vector3d.copyCentered(ground);
+        if (!this.isTargetBlocked(Vec3.atCenterOf(ground.above()))) {
+            return Vec3.atCenterOf(ground);
         }
         return null;
     }
 
     private boolean isOverWater() {
-        BlockPos position = this.getPosition();
-        while (position.getY() > 2 && world.isAirBlock(position)) {
-            position = position.down();
+        BlockPos position = this.blockPosition();
+        while (position.getY() > 2 && level.isEmptyBlock(position)) {
+            position = position.below();
         }
-        return !world.getFluidState(position).isEmpty();
+        return !level.getFluidState(position).isEmpty();
     }
 
     public void peck() {
-        this.dataManager.set(ATTACK_TICK, 7);
+        this.entityData.set(ATTACK_TICK, 7);
     }
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return isCrowEdible(stack) || this.isTamed();
+        return isCrowEdible(stack) || this.isTame();
     }
 
     private boolean isCrowEdible(ItemStack stack) {
-        return stack.getItem().isFood() || ItemTags.getCollection().get(AMTagRegistry.CROW_FOODSTUFFS).contains(stack.getItem());
+        return stack.getItem().isEdible() || ItemTags.getAllTags().getTag(AMTagRegistry.CROW_FOODSTUFFS).contains(stack.getItem());
     }
 
     public double getMaxDistToItem() {
@@ -574,23 +603,23 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
     public void onGetItem(ItemEntity e) {
         ItemStack duplicate = e.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getHeldItem(Hand.MAIN_HAND).isEmpty() && !this.world.isRemote) {
-            this.entityDropItem(this.getHeldItem(Hand.MAIN_HAND), 0.0F);
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+            this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
-        this.setHeldItem(Hand.MAIN_HAND, duplicate);
-        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTamed()) {
-            seedThrowerID = e.getThrowerId();
+        this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
+        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame()) {
+            seedThrowerID = e.getThrower();
         } else {
             seedThrowerID = null;
         }
     }
 
     public BlockPos getPerchPos() {
-        return this.dataManager.get(PERCH_POS).orElse(null);
+        return this.entityData.get(PERCH_POS).orElse(null);
     }
 
     public void setPerchPos(BlockPos pos) {
-        this.dataManager.set(PERCH_POS, Optional.ofNullable(pos));
+        this.entityData.set(PERCH_POS, Optional.ofNullable(pos));
     }
 
 
@@ -603,22 +632,22 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
         public AIWalkIdle() {
             super();
-            this.setMutexFlags(EnumSet.of(Flag.MOVE));
+            this.setFlags(EnumSet.of(Flag.MOVE));
             this.crow = EntityCrow.this;
         }
 
         @Override
-        public boolean shouldExecute() {
-            if (this.crow.isBeingRidden() || EntityCrow.this.getCommand() == 1 || EntityCrow.this.aiItemFlag || (crow.getAttackTarget() != null && crow.getAttackTarget().isAlive()) || this.crow.isPassenger() || this.crow.isSitting()) {
+        public boolean canUse() {
+            if (this.crow.isVehicle() || EntityCrow.this.getCommand() == 1 || EntityCrow.this.aiItemFlag || (crow.getTarget() != null && crow.getTarget().isAlive()) || this.crow.isPassenger() || this.crow.isSitting()) {
                 return false;
             } else {
-                if (this.crow.getRNG().nextInt(30) != 0 && !crow.isFlying()) {
+                if (this.crow.getRandom().nextInt(30) != 0 && !crow.isFlying()) {
                     return false;
                 }
                 if (this.crow.isOnGround()) {
-                    this.flightTarget = rand.nextBoolean();
+                    this.flightTarget = random.nextBoolean();
                 } else {
-                    this.flightTarget = rand.nextInt(5) > 0 && crow.timeFlying < 200;
+                    this.flightTarget = random.nextInt(5) > 0 && crow.timeFlying < 200;
                 }
                 if(crow.getCommand() == 3){
                     if(crow.aiItemFrameFlag){
@@ -626,7 +655,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                     }
                     this.flightTarget = true;
                 }
-                Vector3d lvt_1_1_ = this.getPosition();
+                Vec3 lvt_1_1_ = this.getPosition();
                 if (lvt_1_1_ == null) {
                     return false;
                 } else {
@@ -640,9 +669,9 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
         public void tick() {
             if (flightTarget) {
-                crow.getMoveHelper().setMoveTo(x, y, z, 1F);
+                crow.getMoveControl().setWantedPosition(x, y, z, 1F);
             } else {
-                this.crow.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, 1F);
+                this.crow.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
             if (!flightTarget && isFlying() && crow.onGround) {
                 crow.setFlying(false);
@@ -653,10 +682,10 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         }
 
         @Nullable
-        protected Vector3d getPosition() {
-            Vector3d vector3d = crow.getPositionVec();
+        protected Vec3 getPosition() {
+            Vec3 vector3d = crow.position();
             if (crow.getCommand() == 3 && crow.getPerchPos() != null) {
-                return crow.getGatheringVec(vector3d, 4 + rand.nextInt(2));
+                return crow.getGatheringVec(vector3d, 4 + random.nextInt(2));
             }
             if(crow.isOverWater()){
                 flightTarget = true;
@@ -669,43 +698,43 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                 }
             } else {
 
-                return RandomPositionGenerator.findRandomTarget(this.crow, 10, 7);
+                return RandomPos.getPos(this.crow, 10, 7);
             }
         }
 
-        public boolean shouldContinueExecuting() {
+        public boolean canContinueToUse() {
             if (crow.aiItemFlag || crow.isSitting() || EntityCrow.this.getCommand() == 1) {
                 return false;
             }
             if (flightTarget) {
-                return crow.isFlying() && crow.getDistanceSq(x, y, z) > 2F;
+                return crow.isFlying() && crow.distanceToSqr(x, y, z) > 2F;
             } else {
-                return (!this.crow.getNavigator().noPath()) && !this.crow.isBeingRidden();
+                return (!this.crow.getNavigation().isDone()) && !this.crow.isVehicle();
             }
         }
 
-        public void startExecuting() {
+        public void start() {
             if (flightTarget) {
                 crow.setFlying(true);
-                crow.getMoveHelper().setMoveTo(x, y, z, 1F);
+                crow.getMoveControl().setWantedPosition(x, y, z, 1F);
             } else {
-                this.crow.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, 1F);
+                this.crow.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
         }
 
-        public void resetTask() {
-            this.crow.getNavigator().clearPath();
-            super.resetTask();
+        public void stop() {
+            this.crow.getNavigation().stop();
+            super.stop();
         }
     }
 
-    private Vector3d getGatheringVec(Vector3d vector3d, float gatheringCircleDist) {
-        float angle = (0.01745329251F * 8 * (gatheringClockwise ? -ticksExisted : ticksExisted));
-        double extraX = gatheringCircleDist * MathHelper.sin((angle));
-        double extraZ = gatheringCircleDist * MathHelper.cos(angle);
+    private Vec3 getGatheringVec(Vec3 vector3d, float gatheringCircleDist) {
+        float angle = (0.01745329251F * 8 * (gatheringClockwise ? -tickCount : tickCount));
+        double extraX = gatheringCircleDist * Mth.sin((angle));
+        double extraZ = gatheringCircleDist * Mth.cos(angle);
         if(this.getPerchPos() != null){
-            Vector3d pos = new Vector3d(getPerchPos().getX() + extraX, getPerchPos().getY() + 2, getPerchPos().getZ() + extraZ);
-            if (this.world.isAirBlock(new BlockPos(pos))) {
+            Vec3 pos = new Vec3(getPerchPos().getX() + extraX, getPerchPos().getY() + 2, getPerchPos().getZ() + extraZ);
+            if (this.level.isEmptyBlock(new BlockPos(pos))) {
                 return pos;
             }
         }
@@ -718,37 +747,37 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         protected int executionChance = 8;
         protected boolean mustUpdate;
         private Entity targetEntity;
-        private Vector3d flightTarget = null;
+        private Vec3 flightTarget = null;
         private int cooldown = 0;
-        private ITag tag;
+        private Tag tag;
 
         AIScatter() {
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
-            tag = EntityTypeTags.getCollection().get(AMTagRegistry.SCATTERS_CROWS);
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+            tag = EntityTypeTags.getAllTags().getTag(AMTagRegistry.SCATTERS_CROWS);
             this.theNearestAttackableTargetSorter = new AIScatter.Sorter(EntityCrow.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && e.getType().isContained(tag) || e instanceof PlayerEntity && !((PlayerEntity) e).isCreative();
+                    return e.isAlive() && e.getType().is(tag) || e instanceof Player && !((Player) e).isCreative();
                 }
             };
         }
 
         @Override
-        public boolean shouldExecute() {
-            if (EntityCrow.this.isPassenger() || EntityCrow.this.aiItemFlag || EntityCrow.this.isBeingRidden() || EntityCrow.this.isTamed()) {
+        public boolean canUse() {
+            if (EntityCrow.this.isPassenger() || EntityCrow.this.aiItemFlag || EntityCrow.this.isVehicle() || EntityCrow.this.isTame()) {
                 return false;
             }
             if (!this.mustUpdate) {
-                long worldTime = EntityCrow.this.world.getGameTime() % 10;
-                if (EntityCrow.this.getIdleTime() >= 100 && worldTime != 0) {
+                long worldTime = EntityCrow.this.level.getGameTime() % 10;
+                if (EntityCrow.this.getNoActionTime() >= 100 && worldTime != 0) {
                     return false;
                 }
-                if (EntityCrow.this.getRNG().nextInt(this.executionChance) != 0 && worldTime != 0) {
+                if (EntityCrow.this.getRandom().nextInt(this.executionChance) != 0 && worldTime != 0) {
                     return false;
                 }
             }
-            List<Entity> list = EntityCrow.this.world.getEntitiesWithinAABB(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<Entity> list = EntityCrow.this.level.getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
             if (list.isEmpty()) {
                 return false;
             } else {
@@ -760,11 +789,11 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         }
 
         @Override
-        public boolean shouldContinueExecuting() {
-            return targetEntity != null && !EntityCrow.this.isTamed();
+        public boolean canContinueToUse() {
+            return targetEntity != null && !EntityCrow.this.isTame();
         }
 
-        public void resetTask() {
+        public void stop() {
             flightTarget = null;
             this.targetEntity = null;
         }
@@ -776,7 +805,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             }
             if (flightTarget != null) {
                 EntityCrow.this.setFlying(true);
-                EntityCrow.this.getMoveHelper().setMoveTo(flightTarget.x, flightTarget.y, flightTarget.z, 1F);
+                EntityCrow.this.getMoveControl().setWantedPosition(flightTarget.x, flightTarget.y, flightTarget.z, 1F);
                 if(cooldown == 0 && EntityCrow.this.isTargetBlocked(flightTarget)){
                     cooldown = 30;
                     flightTarget = null;
@@ -784,14 +813,14 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             }
 
             if (targetEntity != null) {
-                if (EntityCrow.this.onGround || flightTarget == null || flightTarget != null && EntityCrow.this.getDistanceSq(flightTarget) < 3) {
-                    Vector3d vec = EntityCrow.this.getBlockInViewAway(targetEntity.getPositionVec(), 0);
-                    if (vec != null && vec.getY() > EntityCrow.this.getPosY()) {
+                if (EntityCrow.this.onGround || flightTarget == null || flightTarget != null && EntityCrow.this.distanceToSqr(flightTarget) < 3) {
+                    Vec3 vec = EntityCrow.this.getBlockInViewAway(targetEntity.position(), 0);
+                    if (vec != null && vec.y() > EntityCrow.this.getY()) {
                         flightTarget = vec;
                     }
                 }
-                if (EntityCrow.this.getDistance(targetEntity) > 20.0F) {
-                    this.resetTask();
+                if (EntityCrow.this.distanceTo(targetEntity) > 20.0F) {
+                    this.stop();
                 }
             }
         }
@@ -800,10 +829,10 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             return 4D;
         }
 
-        protected AxisAlignedBB getTargetableArea(double targetDistance) {
-            Vector3d renderCenter = new Vector3d(EntityCrow.this.getPosX(), EntityCrow.this.getPosY() + 0.5, EntityCrow.this.getPosZ());
-            AxisAlignedBB aabb = new AxisAlignedBB(-2, -2, -2, 2, 2, 2);
-            return aabb.offset(renderCenter);
+        protected AABB getTargetableArea(double targetDistance) {
+            Vec3 renderCenter = new Vec3(EntityCrow.this.getX(), EntityCrow.this.getY() + 0.5, EntityCrow.this.getZ());
+            AABB aabb = new AABB(-2, -2, -2, 2, 2, 2);
+            return aabb.move(renderCenter);
         }
 
 
@@ -815,8 +844,8 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             }
 
             public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-                double d0 = this.theEntity.getDistanceSq(p_compare_1_);
-                double d1 = this.theEntity.getDistanceSq(p_compare_2_);
+                double d0 = this.theEntity.distanceToSqr(p_compare_1_);
+                double d1 = this.theEntity.distanceToSqr(p_compare_2_);
                 return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
             }
         }
@@ -824,80 +853,80 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
     private class AIAvoidPumpkins extends Goal {
         private final int searchLength;
-        private final int field_203113_j;
+        private final int verticalSearchRange;
         protected BlockPos destinationBlock;
         protected int runDelay = 70;
-        private Vector3d flightTarget;
+        private Vec3 flightTarget;
 
         private AIAvoidPumpkins() {
             searchLength = 20;
-            field_203113_j = 1;
+            verticalSearchRange = 1;
         }
 
-        public boolean shouldContinueExecuting() {
-            return destinationBlock != null && isPumpkin(EntityCrow.this.world, destinationBlock.toMutable()) && isCloseToPumpkin(16);
+        public boolean canContinueToUse() {
+            return destinationBlock != null && isPumpkin(EntityCrow.this.level, destinationBlock.mutable()) && isCloseToPumpkin(16);
         }
 
         public boolean isCloseToPumpkin(double dist) {
-            return destinationBlock == null || EntityCrow.this.getDistanceSq(Vector3d.copyCentered(destinationBlock)) < dist * dist;
+            return destinationBlock == null || EntityCrow.this.distanceToSqr(Vec3.atCenterOf(destinationBlock)) < dist * dist;
         }
 
         @Override
-        public boolean shouldExecute() {
-            if (EntityCrow.this.isTamed()) {
+        public boolean canUse() {
+            if (EntityCrow.this.isTame()) {
                 return false;
             }
             if (this.runDelay > 0) {
                 --this.runDelay;
                 return false;
             } else {
-                this.runDelay = 70 + EntityCrow.this.rand.nextInt(150);
+                this.runDelay = 70 + EntityCrow.this.random.nextInt(150);
                 return this.searchForDestination();
             }
         }
 
-        public void startExecuting() {
+        public void start() {
             EntityCrow.this.fleePumpkinFlag = 200;
-            Vector3d vec = EntityCrow.this.getBlockInViewAway(Vector3d.copyCentered(destinationBlock), 10);
+            Vec3 vec = EntityCrow.this.getBlockInViewAway(Vec3.atCenterOf(destinationBlock), 10);
             if (vec != null) {
                 flightTarget = vec;
                 EntityCrow.this.setFlying(true);
-                EntityCrow.this.getMoveHelper().setMoveTo(vec.x, vec.y, vec.z, 1F);
+                EntityCrow.this.getMoveControl().setWantedPosition(vec.x, vec.y, vec.z, 1F);
             }
         }
 
         public void tick() {
             if (this.isCloseToPumpkin(16)) {
                 EntityCrow.this.fleePumpkinFlag = 200;
-                if (flightTarget == null || EntityCrow.this.getDistanceSq(flightTarget) < 2F) {
-                    Vector3d vec = EntityCrow.this.getBlockInViewAway(Vector3d.copyCentered(destinationBlock), 10);
+                if (flightTarget == null || EntityCrow.this.distanceToSqr(flightTarget) < 2F) {
+                    Vec3 vec = EntityCrow.this.getBlockInViewAway(Vec3.atCenterOf(destinationBlock), 10);
                     if (vec != null) {
                         flightTarget = vec;
                         EntityCrow.this.setFlying(true);
                     }
                 }
                 if (flightTarget != null) {
-                    EntityCrow.this.getMoveHelper().setMoveTo(flightTarget.x, flightTarget.y, flightTarget.z, 1F);
+                    EntityCrow.this.getMoveControl().setWantedPosition(flightTarget.x, flightTarget.y, flightTarget.z, 1F);
                 }
             }
         }
 
-        public void resetTask() {
+        public void stop() {
             flightTarget = null;
         }
 
         protected boolean searchForDestination() {
             int lvt_1_1_ = this.searchLength;
-            int lvt_2_1_ = this.field_203113_j;
-            BlockPos lvt_3_1_ = EntityCrow.this.getPosition();
-            BlockPos.Mutable lvt_4_1_ = new BlockPos.Mutable();
+            int lvt_2_1_ = this.verticalSearchRange;
+            BlockPos lvt_3_1_ = EntityCrow.this.blockPosition();
+            BlockPos.MutableBlockPos lvt_4_1_ = new BlockPos.MutableBlockPos();
 
             for (int lvt_5_1_ = -8; lvt_5_1_ <= 2; lvt_5_1_++) {
                 for (int lvt_6_1_ = 0; lvt_6_1_ < lvt_1_1_; ++lvt_6_1_) {
                     for (int lvt_7_1_ = 0; lvt_7_1_ <= lvt_6_1_; lvt_7_1_ = lvt_7_1_ > 0 ? -lvt_7_1_ : 1 - lvt_7_1_) {
                         for (int lvt_8_1_ = lvt_7_1_ < lvt_6_1_ && lvt_7_1_ > -lvt_6_1_ ? lvt_6_1_ : 0; lvt_8_1_ <= lvt_6_1_; lvt_8_1_ = lvt_8_1_ > 0 ? -lvt_8_1_ : 1 - lvt_8_1_) {
-                            lvt_4_1_.setAndOffset(lvt_3_1_, lvt_7_1_, lvt_5_1_ - 1, lvt_8_1_);
-                            if (this.isPumpkin(EntityCrow.this.world, lvt_4_1_)) {
+                            lvt_4_1_.setWithOffset(lvt_3_1_, lvt_7_1_, lvt_5_1_ - 1, lvt_8_1_);
+                            if (this.isPumpkin(EntityCrow.this.level, lvt_4_1_)) {
                                 this.destinationBlock = lvt_4_1_;
                                 return true;
                             }
@@ -909,58 +938,58 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             return false;
         }
 
-        private boolean isPumpkin(World world, BlockPos.Mutable lvt_4_1_) {
-            return BlockTags.getCollection().get(AMTagRegistry.CROW_FEARS).contains(world.getBlockState(lvt_4_1_).getBlock());
+        private boolean isPumpkin(Level world, BlockPos.MutableBlockPos lvt_4_1_) {
+            return BlockTags.getAllTags().getTag(AMTagRegistry.CROW_FEARS).contains(world.getBlockState(lvt_4_1_).getBlock());
         }
 
     }
 
     private class AITargetItems extends CreatureAITargetItems {
 
-        public AITargetItems(CreatureEntity creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
+        public AITargetItems(PathfinderMob creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
             super(creature, checkSight, onlyNearby, tickThreshold, radius);
             this.executionChance = 1;
         }
 
-        public void resetTask() {
-            super.resetTask();
-            ((EntityCrow) goalOwner).aiItemFlag = false;
+        public void stop() {
+            super.stop();
+            ((EntityCrow) mob).aiItemFlag = false;
         }
 
-        public boolean shouldExecute() {
-            return super.shouldExecute()  &&  !((EntityCrow) goalOwner).isSitting() && (goalOwner.getAttackTarget() == null || !goalOwner.getAttackTarget().isAlive());
+        public boolean canUse() {
+            return super.canUse()  &&  !((EntityCrow) mob).isSitting() && (mob.getTarget() == null || !mob.getTarget().isAlive());
         }
 
-        public boolean shouldContinueExecuting() {
-            return super.shouldContinueExecuting() && !((EntityCrow) goalOwner).isSitting() &&  (goalOwner.getAttackTarget() == null || !goalOwner.getAttackTarget().isAlive());
+        public boolean canContinueToUse() {
+            return super.canContinueToUse() && !((EntityCrow) mob).isSitting() &&  (mob.getTarget() == null || !mob.getTarget().isAlive());
         }
 
         @Override
         protected void moveTo() {
-            EntityCrow crow = (EntityCrow) goalOwner;
+            EntityCrow crow = (EntityCrow) mob;
             if (this.targetEntity != null) {
                 crow.aiItemFlag = true;
-                if (this.goalOwner.getDistance(targetEntity) < 2) {
-                    crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                if (this.mob.distanceTo(targetEntity) < 2) {
+                    crow.getMoveControl().setWantedPosition(this.targetEntity.getX(), targetEntity.getY(), this.targetEntity.getZ(), 1);
                     crow.peck();
                 }
-                if (this.goalOwner.getDistance(this.targetEntity) > 8 || crow.isFlying()) {
+                if (this.mob.distanceTo(this.targetEntity) > 8 || crow.isFlying()) {
                     crow.setFlying(true);
-                    float f = (float) (crow.getPosX() - targetEntity.getPosX());
+                    float f = (float) (crow.getX() - targetEntity.getX());
                     float f1 = 1.8F;
-                    float f2 = (float) (crow.getPosZ() - targetEntity.getPosZ());
-                    float xzDist = MathHelper.sqrt(f * f + f2 * f2);
+                    float f2 = (float) (crow.getZ() - targetEntity.getZ());
+                    float xzDist = Mth.sqrt(f * f + f2 * f2);
 
-                    if(!crow.canEntityBeSeen(targetEntity)){
-                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), 1 + crow.getPosY(), this.targetEntity.getPosZ(), 1);
+                    if(!crow.canSee(targetEntity)){
+                        crow.getMoveControl().setWantedPosition(this.targetEntity.getX(), 1 + crow.getY(), this.targetEntity.getZ(), 1);
                     }else{
                         if (xzDist < 5) {
                             f1 = 0;
                         }
-                        crow.getMoveHelper().setMoveTo(this.targetEntity.getPosX(), f1 + this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                        crow.getMoveControl().setWantedPosition(this.targetEntity.getX(), f1 + this.targetEntity.getY(), this.targetEntity.getZ(), 1);
                     }
                 } else {
-                    this.goalOwner.getNavigator().tryMoveToXYZ(this.targetEntity.getPosX(), this.targetEntity.getPosY(), this.targetEntity.getPosZ(), 1);
+                    this.mob.getNavigation().moveTo(this.targetEntity.getX(), this.targetEntity.getY(), this.targetEntity.getZ(), 1);
                 }
             }
         }
@@ -975,26 +1004,26 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
 
     private class AIDepositChests extends Goal {
         protected final AIDepositChests.Sorter theNearestAttackableTargetSorter;
-        protected final Predicate<ItemFrameEntity> targetEntitySelector;
+        protected final Predicate<ItemFrame> targetEntitySelector;
         protected int executionChance = 8;
         protected boolean mustUpdate;
-        private ItemFrameEntity targetEntity;
-        private Vector3d flightTarget = null;
+        private ItemFrame targetEntity;
+        private Vec3 flightTarget = null;
         private int cooldown = 0;
-        private ITag tag;
+        private Tag tag;
 
         AIDepositChests() {
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
             this.theNearestAttackableTargetSorter = new AIDepositChests.Sorter(EntityCrow.this);
-            this.targetEntitySelector = new Predicate<ItemFrameEntity>() {
+            this.targetEntitySelector = new Predicate<ItemFrame>() {
                 @Override
-                public boolean apply(@Nullable ItemFrameEntity e) {
-                    BlockPos hangingPosition = e.getHangingPosition().offset(e.getHorizontalFacing().getOpposite());
-                    TileEntity entity = e.world.getTileEntity(hangingPosition);
+                public boolean apply(@Nullable ItemFrame e) {
+                    BlockPos hangingPosition = e.getPos().relative(e.getDirection().getOpposite());
+                    BlockEntity entity = e.level.getBlockEntity(hangingPosition);
                     if(entity != null){
-                        LazyOptional<IItemHandler> handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, e.getHorizontalFacing().getOpposite());
+                        LazyOptional<IItemHandler> handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, e.getDirection().getOpposite());
                         if(handler != null && handler.isPresent()){
-                            return e.getDisplayedItem().isItemEqual(EntityCrow.this.getHeldItemMainhand());
+                            return e.getItem().sameItem(EntityCrow.this.getMainHandItem());
                         }
                     }
                     return false;
@@ -1003,23 +1032,23 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         }
 
         @Override
-        public boolean shouldExecute() {
-            if (EntityCrow.this.isPassenger() || EntityCrow.this.aiItemFlag || EntityCrow.this.isBeingRidden() || EntityCrow.this.isSitting() || EntityCrow.this.getCommand() != 3) {
+        public boolean canUse() {
+            if (EntityCrow.this.isPassenger() || EntityCrow.this.aiItemFlag || EntityCrow.this.isVehicle() || EntityCrow.this.isSitting() || EntityCrow.this.getCommand() != 3) {
                 return false;
             }
-            if(EntityCrow.this.getHeldItemMainhand().isEmpty()){
+            if(EntityCrow.this.getMainHandItem().isEmpty()){
                 return false;
             }
             if (!this.mustUpdate) {
-                long worldTime = EntityCrow.this.world.getGameTime() % 10;
-                if (EntityCrow.this.getIdleTime() >= 100 && worldTime != 0) {
+                long worldTime = EntityCrow.this.level.getGameTime() % 10;
+                if (EntityCrow.this.getNoActionTime() >= 100 && worldTime != 0) {
                     return false;
                 }
-                if (EntityCrow.this.getRNG().nextInt(this.executionChance) != 0 && worldTime != 0) {
+                if (EntityCrow.this.getRandom().nextInt(this.executionChance) != 0 && worldTime != 0) {
                     return false;
                 }
             }
-            List<ItemFrameEntity> list = EntityCrow.this.world.getEntitiesWithinAABB(ItemFrameEntity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<ItemFrame> list = EntityCrow.this.level.getEntitiesOfClass(ItemFrame.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
             if (list.isEmpty()) {
                 return false;
             } else {
@@ -1032,11 +1061,11 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
         }
 
         @Override
-        public boolean shouldContinueExecuting() {
-            return targetEntity != null && EntityCrow.this.getCommand() == 3 && !EntityCrow.this.getHeldItemMainhand().isEmpty();
+        public boolean canContinueToUse() {
+            return targetEntity != null && EntityCrow.this.getCommand() == 3 && !EntityCrow.this.getMainHandItem().isEmpty();
         }
 
-        public void resetTask() {
+        public void stop() {
             flightTarget = null;
             this.targetEntity = null;
             EntityCrow.this.aiItemFrameFlag = false;
@@ -1049,30 +1078,30 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             }
             if (flightTarget != null) {
                 EntityCrow.this.setFlying(true);
-                if(EntityCrow.this.collidedHorizontally){
-                    EntityCrow.this.getMoveHelper().setMoveTo(flightTarget.x, EntityCrow.this.getPosY() + 1F, flightTarget.z, 1F);
+                if(EntityCrow.this.horizontalCollision){
+                    EntityCrow.this.getMoveControl().setWantedPosition(flightTarget.x, EntityCrow.this.getY() + 1F, flightTarget.z, 1F);
 
                 }else{
-                    EntityCrow.this.getMoveHelper().setMoveTo(flightTarget.x, flightTarget.y, flightTarget.z, 1F);
+                    EntityCrow.this.getMoveControl().setWantedPosition(flightTarget.x, flightTarget.y, flightTarget.z, 1F);
                 }
             }
             if (targetEntity != null) {
-                flightTarget = targetEntity.getPositionVec();
-                if (EntityCrow.this.getDistance(targetEntity) < 2.0F) {
+                flightTarget = targetEntity.position();
+                if (EntityCrow.this.distanceTo(targetEntity) < 2.0F) {
                     try{
-                        BlockPos hangingPosition = targetEntity.getHangingPosition().offset(targetEntity.getHorizontalFacing().getOpposite());
-                        TileEntity entity = targetEntity.world.getTileEntity(hangingPosition);
-                        Direction deposit = targetEntity.getHorizontalFacing();
+                        BlockPos hangingPosition = targetEntity.getPos().relative(targetEntity.getDirection().getOpposite());
+                        BlockEntity entity = targetEntity.level.getBlockEntity(hangingPosition);
+                        Direction deposit = targetEntity.getDirection();
                         LazyOptional<IItemHandler> handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, deposit);
                         if(handler.orElse(null) != null && cooldown == 0) {
-                            ItemStack duplicate = EntityCrow.this.getHeldItem(Hand.MAIN_HAND).copy();
+                            ItemStack duplicate = EntityCrow.this.getItemInHand(InteractionHand.MAIN_HAND).copy();
                             ItemStack insertSimulate = ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, true);
                             if (!insertSimulate.equals(duplicate)) {
                                 ItemStack shrunkenStack = ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, false);
                                 if(shrunkenStack.isEmpty()){
-                                    EntityCrow.this.setHeldItem(Hand.MAIN_HAND, ItemStack.EMPTY);
+                                    EntityCrow.this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
                                 }else{
-                                    EntityCrow.this.setHeldItem(Hand.MAIN_HAND, shrunkenStack);
+                                    EntityCrow.this.setItemInHand(InteractionHand.MAIN_HAND, shrunkenStack);
                                 }
                                 EntityCrow.this.peck();
                             }else{
@@ -1081,7 +1110,7 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
                         }
                     }catch (Exception e){
                     }
-                    this.resetTask();
+                    this.stop();
                 }
             }
         }
@@ -1090,10 +1119,10 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             return 4D;
         }
 
-        protected AxisAlignedBB getTargetableArea(double targetDistance) {
-            Vector3d renderCenter = new Vector3d(EntityCrow.this.getPosX(), EntityCrow.this.getPosY(), EntityCrow.this.getPosZ());
-            AxisAlignedBB aabb = new AxisAlignedBB(-16, -16, -16, 16, 16, 16);
-            return aabb.offset(renderCenter);
+        protected AABB getTargetableArea(double targetDistance) {
+            Vec3 renderCenter = new Vec3(EntityCrow.this.getX(), EntityCrow.this.getY(), EntityCrow.this.getZ());
+            AABB aabb = new AABB(-16, -16, -16, 16, 16, 16);
+            return aabb.move(renderCenter);
         }
 
 
@@ -1105,8 +1134,8 @@ public class EntityCrow extends TameableEntity implements ITargetsDroppedItems {
             }
 
             public int compare(Entity p_compare_1_, Entity p_compare_2_) {
-                double d0 = this.theEntity.getDistanceSq(p_compare_1_);
-                double d1 = this.theEntity.getDistanceSq(p_compare_2_);
+                double d0 = this.theEntity.distanceToSqr(p_compare_1_);
+                double d1 = this.theEntity.distanceToSqr(p_compare_2_);
                 return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
             }
         }

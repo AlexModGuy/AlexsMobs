@@ -7,13 +7,13 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Mth;
 
 public class ModelKangaroo extends AdvancedEntityModel<EntityKangaroo> {
 	public final AdvancedModelBox root;
@@ -39,105 +39,105 @@ public class ModelKangaroo extends AdvancedEntityModel<EntityKangaroo> {
 	private ModelAnimator animator;
 
 	public ModelKangaroo() {
-		textureWidth = 128;
-		textureHeight = 128;
+		texWidth = 128;
+		texHeight = 128;
 
 		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
 		body = new AdvancedModelBox(this);
-		body.setRotationPoint(0.0F, -15.0F, 4.0F);
+		body.setPos(0.0F, -15.0F, 4.0F);
 		root.addChild(body);
-		body.setTextureOffset(0, 0).addBox(-5.0F, -6.0F, -6.0F, 10.0F, 11.0F, 13.0F, 0.0F, false);
+		body.texOffs(0, 0).addBox(-5.0F, -6.0F, -6.0F, 10.0F, 11.0F, 13.0F, 0.0F, false);
 
 		pouch = new AdvancedModelBox(this);
-		pouch.setRotationPoint(0.0F, 2.7F, -2.2F);
+		pouch.setPos(0.0F, 2.7F, -2.2F);
 		body.addChild(pouch);
-		pouch.setTextureOffset(64, 6).addBox(-3.5F, -2.5F, -4.0F, 7.0F, 5.0F, 8.0F, -0.1F, false);
+		pouch.texOffs(64, 6).addBox(-3.5F, -2.5F, -4.0F, 7.0F, 5.0F, 8.0F, -0.1F, false);
 
 		tail1 = new AdvancedModelBox(this);
-		tail1.setRotationPoint(0.0F, -5.0F, 7.0F);
+		tail1.setPos(0.0F, -5.0F, 7.0F);
 		body.addChild(tail1);
-		tail1.setTextureOffset(0, 25).addBox(-2.5F, 0.0F, 0.0F, 5.0F, 6.0F, 15.0F, 0.0F, false);
+		tail1.texOffs(0, 25).addBox(-2.5F, 0.0F, 0.0F, 5.0F, 6.0F, 15.0F, 0.0F, false);
 
 		tail2 = new AdvancedModelBox(this);
-		tail2.setRotationPoint(0.0F, 4.0F, 15.0F);
+		tail2.setPos(0.0F, 4.0F, 15.0F);
 		tail1.addChild(tail2);
-		tail2.setTextureOffset(26, 32).addBox(-1.5F, -3.0F, 0.0F, 3.0F, 4.0F, 15.0F, 0.0F, false);
+		tail2.texOffs(26, 32).addBox(-1.5F, -3.0F, 0.0F, 3.0F, 4.0F, 15.0F, 0.0F, false);
 
 		leg_left = new AdvancedModelBox(this);
-		leg_left.setRotationPoint(4.25F, 0.75F, -0.5F);
+		leg_left.setPos(4.25F, 0.75F, -0.5F);
 		body.addChild(leg_left);
-		leg_left.setTextureOffset(48, 28).addBox(-1.25F, -3.75F, -3.5F, 3.0F, 7.0F, 8.0F, 0.0F, false);
+		leg_left.texOffs(48, 28).addBox(-1.25F, -3.75F, -3.5F, 3.0F, 7.0F, 8.0F, 0.0F, false);
 
 		knee_left = new AdvancedModelBox(this);
-		knee_left.setRotationPoint(0.25F, 3.25F, -3.5F);
+		knee_left.setPos(0.25F, 3.25F, -3.5F);
 		leg_left.addChild(knee_left);
-		knee_left.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, 0.0F, 2.0F, 9.0F, 3.0F, 0.0F, false);
+		knee_left.texOffs(0, 0).addBox(-1.0F, 0.0F, 0.0F, 2.0F, 9.0F, 3.0F, 0.0F, false);
 
 		foot_left = new AdvancedModelBox(this);
-		foot_left.setRotationPoint(0.0F, 9.0F, 1.0F);
+		foot_left.setPos(0.0F, 9.0F, 1.0F);
 		knee_left.addChild(foot_left);
-		foot_left.setTextureOffset(35, 13).addBox(-1.5F, 0.0F, -10.0F, 3.0F, 2.0F, 12.0F, 0.0F, false);
+		foot_left.texOffs(35, 13).addBox(-1.5F, 0.0F, -10.0F, 3.0F, 2.0F, 12.0F, 0.0F, false);
 
 		leg_right = new AdvancedModelBox(this);
-		leg_right.setRotationPoint(-4.25F, 0.75F, -0.5F);
+		leg_right.setPos(-4.25F, 0.75F, -0.5F);
 		body.addChild(leg_right);
-		leg_right.setTextureOffset(48, 28).addBox(-1.75F, -3.75F, -3.5F, 3.0F, 7.0F, 8.0F, 0.0F, true);
+		leg_right.texOffs(48, 28).addBox(-1.75F, -3.75F, -3.5F, 3.0F, 7.0F, 8.0F, 0.0F, true);
 
 		knee_right = new AdvancedModelBox(this);
-		knee_right.setRotationPoint(-0.25F, 3.25F, -3.5F);
+		knee_right.setPos(-0.25F, 3.25F, -3.5F);
 		leg_right.addChild(knee_right);
-		knee_right.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, 0.0F, 2.0F, 9.0F, 3.0F, 0.0F, true);
+		knee_right.texOffs(0, 0).addBox(-1.0F, 0.0F, 0.0F, 2.0F, 9.0F, 3.0F, 0.0F, true);
 
 		foot_right = new AdvancedModelBox(this);
-		foot_right.setRotationPoint(0.0F, 9.0F, 1.0F);
+		foot_right.setPos(0.0F, 9.0F, 1.0F);
 		knee_right.addChild(foot_right);
-		foot_right.setTextureOffset(35, 13).addBox(-1.5F, 0.0F, -10.0F, 3.0F, 2.0F, 12.0F, 0.0F, true);
+		foot_right.texOffs(35, 13).addBox(-1.5F, 0.0F, -10.0F, 3.0F, 2.0F, 12.0F, 0.0F, true);
 
 		chest = new AdvancedModelBox(this);
-		chest.setRotationPoint(0.0F, -6.0F, -6.0F);
+		chest.setPos(0.0F, -6.0F, -6.0F);
 		body.addChild(chest);
-		chest.setTextureOffset(0, 47).addBox(-4.0F, 0.0F, -9.0F, 8.0F, 9.0F, 9.0F, 0.0F, false);
+		chest.texOffs(0, 47).addBox(-4.0F, 0.0F, -9.0F, 8.0F, 9.0F, 9.0F, 0.0F, false);
 
 		arm_left = new AdvancedModelBox(this);
-		arm_left.setRotationPoint(4.0F, 6.0F, -6.0F);
+		arm_left.setPos(4.0F, 6.0F, -6.0F);
 		chest.addChild(arm_left);
-		arm_left.setTextureOffset(71, 49).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 12.0F, 3.0F, 0.0F, false);
+		arm_left.texOffs(71, 49).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 12.0F, 3.0F, 0.0F, false);
 
 		arm_right = new AdvancedModelBox(this);
-		arm_right.setRotationPoint(-4.0F, 6.0F, -6.0F);
+		arm_right.setPos(-4.0F, 6.0F, -6.0F);
 		chest.addChild(arm_right);
-		arm_right.setTextureOffset(71, 49).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 12.0F, 3.0F, 0.0F, true);
+		arm_right.texOffs(71, 49).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 12.0F, 3.0F, 0.0F, true);
 
 		neck = new AdvancedModelBox(this);
-		neck.setRotationPoint(0.0F, 2.0F, -8.0F);
+		neck.setPos(0.0F, 2.0F, -8.0F);
 		chest.addChild(neck);
-		neck.setTextureOffset(35, 52).addBox(-2.0F, -6.0F, -3.0F, 4.0F, 11.0F, 5.0F, 0.0F, false);
+		neck.texOffs(35, 52).addBox(-2.0F, -6.0F, -3.0F, 4.0F, 11.0F, 5.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
-		head.setRotationPoint(0.0F, -6.0F, -0.5F);
+		head.setPos(0.0F, -6.0F, -0.5F);
 		neck.addChild(head);
-		head.setTextureOffset(34, 0).addBox(-2.5F, -4.0F, -3.5F, 5.0F, 4.0F, 6.0F, 0.0F, false);
+		head.texOffs(34, 0).addBox(-2.5F, -4.0F, -3.5F, 5.0F, 4.0F, 6.0F, 0.0F, false);
 
 		ear_left = new AdvancedModelBox(this);
-		ear_left.setRotationPoint(0.4F, -4.0F, 1.5F);
+		ear_left.setPos(0.4F, -4.0F, 1.5F);
 		head.addChild(ear_left);
 		setRotationAngle(ear_left, -0.1745F, -0.3491F, 0.4363F);
-		ear_left.setTextureOffset(0, 47).addBox(0.0F, -6.0F, -1.0F, 3.0F, 6.0F, 1.0F, 0.0F, false);
+		ear_left.texOffs(0, 47).addBox(0.0F, -6.0F, -1.0F, 3.0F, 6.0F, 1.0F, 0.0F, false);
 
 		ear_right = new AdvancedModelBox(this);
-		ear_right.setRotationPoint(-0.4F, -4.0F, 1.5F);
+		ear_right.setPos(-0.4F, -4.0F, 1.5F);
 		head.addChild(ear_right);
 		setRotationAngle(ear_right, -0.1745F, 0.3491F, -0.4363F);
-		ear_right.setTextureOffset(0, 47).addBox(-3.0F, -6.0F, -1.0F, 3.0F, 6.0F, 1.0F, 0.0F, true);
+		ear_right.texOffs(0, 47).addBox(-3.0F, -6.0F, -1.0F, 3.0F, 6.0F, 1.0F, 0.0F, true);
 		setRotationAngle(chest, 0.1745F, 0F, 0F);
 		setRotationAngle(tail1, -0.1745F, 0F, 0F);
 		snout = new AdvancedModelBox(this);
-		snout.setRotationPoint(0.0F, -1.5F, -3.5F);
+		snout.setPos(0.0F, -1.5F, -3.5F);
 		head.addChild(snout);
-		snout.setTextureOffset(0, 25).addBox(-1.5F, -1.5F, -4.0F, 3.0F, 3.0F, 4.0F, 0.0F, false);
+		snout.texOffs(0, 25).addBox(-1.5F, -1.5F, -4.0F, 3.0F, 3.0F, 4.0F, 0.0F, false);
 		this.updateDefaultPose();
 		animator = ModelAnimator.create();
 	}
@@ -237,10 +237,10 @@ public class ModelKangaroo extends AdvancedEntityModel<EntityKangaroo> {
 
 
 	@Override
-	public void setRotationAngles(EntityKangaroo entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+	public void setupAnim(EntityKangaroo entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 		animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		float partialTick = Minecraft.getInstance().getRenderPartialTicks();
-		float jumpRotation = MathHelper.sin(entity.getJumpCompletion(partialTick) * 3.1415927F);
+		float partialTick = Minecraft.getInstance().getFrameTime();
+		float jumpRotation = Mth.sin(entity.getJumpCompletion(partialTick) * 3.1415927F);
 		float walkSpeed = 1F;
 		float walkDegree = 0.5F;
 		float idleSpeed = 0.05F;
@@ -285,83 +285,83 @@ public class ModelKangaroo extends AdvancedEntityModel<EntityKangaroo> {
 		this.flap(ear_right, idleSpeed, idleDegree * -1.5F, false, 1F, -0.1F, ageInTicks, 1);
 		this.flap(ear_left, idleSpeed, idleDegree * 1.5F, false, 1F, 0.1F, ageInTicks, 1);
 
-		this.body.rotationPointY -= (jumpRotation * 4.0F);
-		this.knee_left.rotationPointY -= (jumpRotation * 2F);
-		this.knee_right.rotationPointY -= (jumpRotation * 2F);
-		this.leg_right.rotationPointY -= (jumpRotation * 2F);
-		this.leg_left.rotationPointY -= (jumpRotation * 2F);
-		this.leg_right.rotationPointZ += (jumpRotation * 2F);
-		this.leg_left.rotationPointZ += (jumpRotation * 2F);
-		this.head.rotationPointY += (jumpRotation * 1F);
-		this.leg_left.rotateAngleX += (jumpRotation * 50.0F) * 0.017453292F;
-		this.leg_right.rotateAngleX += (jumpRotation * 50.0F) * 0.017453292F;
-		this.foot_left.rotateAngleX += (jumpRotation * 25.0F) * 0.017453292F;
-		this.foot_right.rotateAngleX += (jumpRotation * 25.0F) * 0.017453292F;
-		this.knee_left.rotateAngleX += (jumpRotation * -25.0F) * 0.017453292F;
-		this.knee_right.rotateAngleX += (jumpRotation * -25.0F) * 0.017453292F;
-		this.neck.rotateAngleX += (jumpRotation * 15.0F) * 0.017453292F;
-		this.head.rotateAngleX += (jumpRotation * -10.0F) * 0.017453292F;
-		this.body.rotateAngleX += (jumpRotation * 10.0F) * 0.017453292F;
-		this.arm_left.rotateAngleX += (jumpRotation * 20.0F) * 0.017453292F;
-		this.arm_right.rotateAngleX += (jumpRotation * 20.0F) * 0.017453292F;
-		this.chest.rotateAngleX += (jumpRotation * -5.0F) * 0.017453292F;
+		this.body.y -= (jumpRotation * 4.0F);
+		this.knee_left.y -= (jumpRotation * 2F);
+		this.knee_right.y -= (jumpRotation * 2F);
+		this.leg_right.y -= (jumpRotation * 2F);
+		this.leg_left.y -= (jumpRotation * 2F);
+		this.leg_right.z += (jumpRotation * 2F);
+		this.leg_left.z += (jumpRotation * 2F);
+		this.head.y += (jumpRotation * 1F);
+		this.leg_left.xRot += (jumpRotation * 50.0F) * 0.017453292F;
+		this.leg_right.xRot += (jumpRotation * 50.0F) * 0.017453292F;
+		this.foot_left.xRot += (jumpRotation * 25.0F) * 0.017453292F;
+		this.foot_right.xRot += (jumpRotation * 25.0F) * 0.017453292F;
+		this.knee_left.xRot += (jumpRotation * -25.0F) * 0.017453292F;
+		this.knee_right.xRot += (jumpRotation * -25.0F) * 0.017453292F;
+		this.neck.xRot += (jumpRotation * 15.0F) * 0.017453292F;
+		this.head.xRot += (jumpRotation * -10.0F) * 0.017453292F;
+		this.body.xRot += (jumpRotation * 10.0F) * 0.017453292F;
+		this.arm_left.xRot += (jumpRotation * 20.0F) * 0.017453292F;
+		this.arm_right.xRot += (jumpRotation * 20.0F) * 0.017453292F;
+		this.chest.xRot += (jumpRotation * -5.0F) * 0.017453292F;
 
-		this.foot_left.rotateAngleX += (Math.max(0, jumpRotation - 0.5F) * 25.0F) * 0.017453292F;
-		this.foot_right.rotateAngleX += (Math.max(0, jumpRotation - 0.5F) * 25.0F) * 0.017453292F;
-		ItemStack helmet = entity.getItemStackFromSlot(EquipmentSlotType.HEAD);
-		ItemStack hand = entity.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+		this.foot_left.xRot += (Math.max(0, jumpRotation - 0.5F) * 25.0F) * 0.017453292F;
+		this.foot_right.xRot += (Math.max(0, jumpRotation - 0.5F) * 25.0F) * 0.017453292F;
+		ItemStack helmet = entity.getItemBySlot(EquipmentSlot.HEAD);
+		ItemStack hand = entity.getItemBySlot(EquipmentSlot.MAINHAND);
 		if(!helmet.isEmpty()){
-			this.ear_left.rotateAngleZ += 75 * 0.017453292F;
-			this.ear_right.rotateAngleZ += -75 * 0.017453292F;
+			this.ear_left.zRot += 75 * 0.017453292F;
+			this.ear_right.zRot += -75 * 0.017453292F;
 		}
 		if(!hand.isEmpty()){
 			if(entity.isLeftHanded()){
-				this.arm_left.rotateAngleX -= 25 * 0.017453292F;
+				this.arm_left.xRot -= 25 * 0.017453292F;
 			}else{
-				this.arm_right.rotateAngleX -= 25 * 0.017453292F;
+				this.arm_right.xRot -= 25 * 0.017453292F;
 			}
 		}
-		this.head.rotateAngleY += netHeadYaw * 0.35F * ((float)Math.PI / 180F);
-		this.head.rotateAngleX += headPitch * 0.65F * ((float)Math.PI / 180F);
-		this.neck.rotateAngleY += netHeadYaw * 0.15F * ((float)Math.PI / 180F);
-		if(entity.isChild() && entity.isPassenger() && entity.getRidingEntity() instanceof EntityKangaroo) {
-			this.head.rotateAngleX -= 50 * 0.017453292F;
-			this.neck.rotateAngleX += 120 * 0.017453292F;
+		this.head.yRot += netHeadYaw * 0.35F * ((float)Math.PI / 180F);
+		this.head.xRot += headPitch * 0.65F * ((float)Math.PI / 180F);
+		this.neck.yRot += netHeadYaw * 0.15F * ((float)Math.PI / 180F);
+		if(entity.isBaby() && entity.isPassenger() && entity.getVehicle() instanceof EntityKangaroo) {
+			this.head.xRot -= 50 * 0.017453292F;
+			this.neck.xRot += 120 * 0.017453292F;
 			progressPositionPrev(head, 1F, 0, 0F, -2F, 1F);
 		}
 	}
 
 	@Override
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		if (this.isChild) {
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		if (this.young) {
 			float f = 1.65F;
 			head.setScale(f, f, f);
 			head.setShouldScaleChildren(true);
-			matrixStackIn.push();
+			matrixStackIn.pushPose();
 			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 			matrixStackIn.translate(0.0D, 1.5D, 0D);
 			if(renderOnlyHead){
-				neck.setRotationPoint(0.0F, 0F, 0.0F);
+				neck.setPos(0.0F, 0F, 0.0F);
 				this.neck.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 			}else{
-				neck.setRotationPoint(0.0F, 2.0F, -8.0F);
-				getParts().forEach((p_228292_8_) -> {
+				neck.setPos(0.0F, 2.0F, -8.0F);
+				parts().forEach((p_228292_8_) -> {
 					p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 				});
 			}
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 			head.setScale(1, 1, 1);
 		} else {
-			matrixStackIn.push();
-			getParts().forEach((p_228290_8_) -> {
+			matrixStackIn.pushPose();
+			parts().forEach((p_228290_8_) -> {
 				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 			});
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 		}
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<ModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -371,8 +371,8 @@ public class ModelKangaroo extends AdvancedEntityModel<EntityKangaroo> {
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.rotateAngleX = x;
-		AdvancedModelBox.rotateAngleY = y;
-		AdvancedModelBox.rotateAngleZ = z;
+		AdvancedModelBox.xRot = x;
+		AdvancedModelBox.yRot = y;
+		AdvancedModelBox.zRot = z;
 	}
 }

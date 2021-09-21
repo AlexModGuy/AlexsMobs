@@ -1,7 +1,7 @@
 package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

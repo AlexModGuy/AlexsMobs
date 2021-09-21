@@ -1,9 +1,9 @@
 package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionHand;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -14,11 +14,11 @@ public class MessageSwingArm {
 
     }
 
-    public static MessageSwingArm read(PacketBuffer buf) {
+    public static MessageSwingArm read(FriendlyByteBuf buf) {
         return new MessageSwingArm();
     }
 
-    public static void write(MessageSwingArm message, PacketBuffer buf) {
+    public static void write(MessageSwingArm message, FriendlyByteBuf buf) {
     }
 
     public static class Handler {
@@ -28,10 +28,10 @@ public class MessageSwingArm {
         public static void handle(MessageSwingArm message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
             context.get().enqueueWork(() -> {
-                PlayerEntity player = context.get().getSender();
+                Player player = context.get().getSender();
                 if (player != null) {
-                    ItemFalconryGlove.onLeftClick(player, player.getHeldItem(Hand.OFF_HAND));
-                    ItemFalconryGlove.onLeftClick(player, player.getHeldItem(Hand.MAIN_HAND));
+                    ItemFalconryGlove.onLeftClick(player, player.getItemInHand(InteractionHand.OFF_HAND));
+                    ItemFalconryGlove.onLeftClick(player, player.getItemInHand(InteractionHand.MAIN_HAND));
                 }
             });
         }

@@ -1,9 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.InteractionHand;
 
 public class CapuchinAIMelee extends MeleeAttackGoal {
 
@@ -14,20 +14,20 @@ public class CapuchinAIMelee extends MeleeAttackGoal {
         this.monkey = monkey;
     }
 
-    public boolean shouldExecute() {
-        return super.shouldExecute() && !monkey.attackDecision;
+    public boolean canUse() {
+        return super.canUse() && !monkey.attackDecision;
     }
 
-    public boolean shouldContinueExecuting() {
-        return super.shouldContinueExecuting() && !monkey.attackDecision;
+    public boolean canContinueToUse() {
+        return super.canContinueToUse() && !monkey.attackDecision;
     }
 
     protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
         double d0 = this.getAttackReachSqr(enemy);
         if (distToEnemySqr <= d0) {
-            this.resetSwingCooldown();
-            this.attacker.swingArm(Hand.MAIN_HAND);
-            this.attacker.attackEntityAsMob(enemy);
+            this.resetAttackCooldown();
+            this.mob.swing(InteractionHand.MAIN_HAND);
+            this.mob.doHurtTarget(enemy);
         }
 
     }

@@ -1,34 +1,34 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ICustomCollisions;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.pathfinding.NodeProcessor;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.level.pathfinder.NodeEvaluator;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class MovementControllerCustomCollisions extends MovementController {
+public class MovementControllerCustomCollisions extends MoveControl {
 
-    public MovementControllerCustomCollisions(MobEntity mob) {
+    public MovementControllerCustomCollisions(Mob mob) {
         super(mob);
     }
 
 
     public void tick() {
-        if (this.action == MovementController.Action.STRAFE) {
+        if (this.operation == MoveControl.Operation.STRAFE) {
             float f = (float)this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
-            float f1 = (float)this.speed * f;
-            float f2 = this.moveForward;
-            float f3 = this.moveStrafe;
-            float f4 = MathHelper.sqrt(f2 * f2 + f3 * f3);
+            float f1 = (float)this.speedModifier * f;
+            float f2 = this.strafeForwards;
+            float f3 = this.strafeRight;
+            float f4 = Mth.sqrt(f2 * f2 + f3 * f3);
             if (f4 < 1.0F) {
                 f4 = 1.0F;
             }
@@ -36,59 +36,59 @@ public class MovementControllerCustomCollisions extends MovementController {
             f4 = f1 / f4;
             f2 = f2 * f4;
             f3 = f3 * f4;
-            float f5 = MathHelper.sin(this.mob.rotationYaw * ((float)Math.PI / 180F));
-            float f6 = MathHelper.cos(this.mob.rotationYaw * ((float)Math.PI / 180F));
+            float f5 = Mth.sin(this.mob.yRot * ((float)Math.PI / 180F));
+            float f6 = Mth.cos(this.mob.yRot * ((float)Math.PI / 180F));
             float f7 = f2 * f6 - f3 * f5;
             float f8 = f3 * f6 + f2 * f5;
-            if (!this.func_234024_b_(f7, f8)) {
-                this.moveForward = 1.0F;
-                this.moveStrafe = 0.0F;
+            if (!this.isWalkable(f7, f8)) {
+                this.strafeForwards = 1.0F;
+                this.strafeRight = 0.0F;
             }
 
-            this.mob.setAIMoveSpeed(f1);
-            this.mob.setMoveForward(this.moveForward);
-            this.mob.setMoveStrafing(this.moveStrafe);
-            this.action = MovementController.Action.WAIT;
-        } else if (this.action == MovementController.Action.MOVE_TO) {
-            this.action = MovementController.Action.WAIT;
-            double d0 = this.posX - this.mob.getPosX();
-            double d1 = this.posZ - this.mob.getPosZ();
-            double d2 = this.posY - this.mob.getPosY();
+            this.mob.setSpeed(f1);
+            this.mob.setZza(this.strafeForwards);
+            this.mob.setXxa(this.strafeRight);
+            this.operation = MoveControl.Operation.WAIT;
+        } else if (this.operation == MoveControl.Operation.MOVE_TO) {
+            this.operation = MoveControl.Operation.WAIT;
+            double d0 = this.wantedX - this.mob.getX();
+            double d1 = this.wantedZ - this.mob.getZ();
+            double d2 = this.wantedY - this.mob.getY();
             double d3 = d0 * d0 + d2 * d2 + d1 * d1;
             if (d3 < (double)2.5000003E-7F) {
-                this.mob.setMoveForward(0.0F);
+                this.mob.setZza(0.0F);
                 return;
             }
 
-            float f9 = (float)(MathHelper.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-            this.mob.rotationYaw = this.limitAngle(this.mob.rotationYaw, f9, 90.0F);
-            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
-            BlockPos blockpos = this.mob.getPosition();
-            BlockState blockstate = this.mob.world.getBlockState(blockpos);
+            float f9 = (float)(Mth.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+            this.mob.yRot = this.rotlerp(this.mob.yRot, f9, 90.0F);
+            this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+            BlockPos blockpos = this.mob.blockPosition();
+            BlockState blockstate = this.mob.level.getBlockState(blockpos);
             Block block = blockstate.getBlock();
-            VoxelShape voxelshape = blockstate.getCollisionShape(this.mob.world, blockpos);
+            VoxelShape voxelshape = blockstate.getBlockSupportShape(this.mob.level, blockpos);
             if(!(mob instanceof ICustomCollisions && ((ICustomCollisions) mob).canPassThrough(blockpos, blockstate, voxelshape))){
-                if (d2 > (double)this.mob.stepHeight && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getWidth()) || !voxelshape.isEmpty() && this.mob.getPosY() < voxelshape.getEnd(Direction.Axis.Y) + (double)blockpos.getY() && !block.isIn(BlockTags.DOORS) && !block.isIn(BlockTags.FENCES)) {
-                    this.mob.getJumpController().setJumping();
-                    this.action = MovementController.Action.JUMPING;
+                if (d2 > (double)this.mob.maxUpStep && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getBbWidth()) || !voxelshape.isEmpty() && this.mob.getY() < voxelshape.max(Direction.Axis.Y) + (double)blockpos.getY() && !block.is(BlockTags.DOORS) && !block.is(BlockTags.FENCES)) {
+                    this.mob.getJumpControl().jump();
+                    this.operation = MoveControl.Operation.JUMPING;
                 }
             }
-        } else if (this.action == MovementController.Action.JUMPING) {
-            this.mob.setAIMoveSpeed((float)(this.speed * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+        } else if (this.operation == MoveControl.Operation.JUMPING) {
+            this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
             if (this.mob.isOnGround()) {
-                this.action = MovementController.Action.WAIT;
+                this.operation = MoveControl.Operation.WAIT;
             }
         } else {
-            this.mob.setMoveForward(0.0F);
+            this.mob.setZza(0.0F);
         }
 
     }
 
-    private boolean func_234024_b_(float p_234024_1_, float p_234024_2_) {
-        PathNavigator pathnavigator = this.mob.getNavigator();
+    private boolean isWalkable(float p_234024_1_, float p_234024_2_) {
+        PathNavigation pathnavigator = this.mob.getNavigation();
         if (pathnavigator != null) {
-            NodeProcessor nodeprocessor = pathnavigator.getNodeProcessor();
-            if (nodeprocessor != null && nodeprocessor.getFloorNodeType(this.mob.world, MathHelper.floor(this.mob.getPosX() + (double)p_234024_1_), MathHelper.floor(this.mob.getPosY()), MathHelper.floor(this.mob.getPosZ() + (double)p_234024_2_)) != PathNodeType.WALKABLE) {
+            NodeEvaluator nodeprocessor = pathnavigator.getNodeEvaluator();
+            if (nodeprocessor != null && nodeprocessor.getBlockPathType(this.mob.level, Mth.floor(this.mob.getX() + (double)p_234024_1_), Mth.floor(this.mob.getY()), Mth.floor(this.mob.getZ() + (double)p_234024_2_)) != BlockPathTypes.WALKABLE) {
                 return false;
             }
         }

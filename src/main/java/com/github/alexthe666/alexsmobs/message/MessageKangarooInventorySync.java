@@ -3,10 +3,10 @@ package com.github.alexthe666.alexsmobs.message;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.github.alexthe666.citadel.server.message.PacketBufferUtils;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -27,14 +27,14 @@ public class MessageKangarooInventorySync {
     public MessageKangarooInventorySync() {
     }
 
-    public static MessageKangarooInventorySync read(PacketBuffer buf) {
-        return new MessageKangarooInventorySync(buf.readInt(), buf.readInt(), buf.readItemStack());
+    public static MessageKangarooInventorySync read(FriendlyByteBuf buf) {
+        return new MessageKangarooInventorySync(buf.readInt(), buf.readInt(), buf.readItem());
     }
 
-    public static void write(MessageKangarooInventorySync message, PacketBuffer buf) {
+    public static void write(MessageKangarooInventorySync message, FriendlyByteBuf buf) {
         buf.writeInt(message.kangaroo);
         buf.writeInt(message.slotId);
-        buf.writeItemStack(message.stack);
+        buf.writeItem(message.stack);
     }
 
     public static class Handler {
@@ -43,19 +43,19 @@ public class MessageKangarooInventorySync {
 
         public static void handle(MessageKangarooInventorySync message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
-            PlayerEntity player = context.get().getSender();
+            Player player = context.get().getSender();
             if(context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT){
                 player = AlexsMobs.PROXY.getClientSidePlayer();
             }
 
             if (player != null) {
-                if (player.world != null) {
-                    Entity entity = player.world.getEntityByID(message.kangaroo);
+                if (player.level != null) {
+                    Entity entity = player.level.getEntity(message.kangaroo);
                     if(entity instanceof EntityKangaroo && ((EntityKangaroo) entity).kangarooInventory != null){
                         if(message.slotId < 0){
 
                         }else{
-                            ((EntityKangaroo) entity).kangarooInventory.setInventorySlotContents(message.slotId, message.stack);
+                            ((EntityKangaroo) entity).kangarooInventory.setItem(message.slotId, message.stack);
                         }
                     }
                 }

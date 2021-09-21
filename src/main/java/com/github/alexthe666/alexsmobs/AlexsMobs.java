@@ -8,9 +8,9 @@ import com.github.alexthe666.alexsmobs.message.*;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -19,13 +19,14 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +38,7 @@ public class AlexsMobs {
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
-    public static ItemGroup TAB = new AMItemGroup();
+    public static CreativeModeTab TAB = new AMItemGroup();
     private static int packetsRegistered;
 
     static {
@@ -66,7 +67,7 @@ public class AlexsMobs {
     }
 
     @SubscribeEvent
-    public void onModConfigEvent(final ModConfig.ModConfigEvent event) {
+    public void onModConfigEvent(final ModConfigEvent event) {
         final ModConfig config = event.getConfig();
         // Rebake the configs when they change
         if (config.getSpec() == ConfigHolder.COMMON_SPEC) {
@@ -88,14 +89,14 @@ public class AlexsMobs {
     }
 
     public static <MSG> void sendMSGToAll(MSG message) {
-        for (ServerPlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
+        for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
             sendNonLocal(message, player);
         }
     }
 
-    public static <MSG> void sendNonLocal(MSG msg, ServerPlayerEntity player) {
-        if (player.server.isDedicatedServer() || !player.getName().equals(player.server.getServerOwner())) {
-            NETWORK_WRAPPER.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+    public static <MSG> void sendNonLocal(MSG msg, ServerPlayer player) {
+        if (player.server.isDedicatedServer() || !player.getName().equals(player.server.getSingleplayerName())) {
+            NETWORK_WRAPPER.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
         }
     }
 

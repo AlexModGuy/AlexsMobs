@@ -6,10 +6,10 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelSnowLeopard extends AdvancedEntityModel<EntitySnowLeopard> {
     private final AdvancedModelBox root;
@@ -31,102 +31,102 @@ public class ModelSnowLeopard extends AdvancedEntityModel<EntitySnowLeopard> {
     private ModelAnimator animator;
 
     public ModelSnowLeopard() {
-        textureWidth = 128;
-        textureHeight = 128;
+        texWidth = 128;
+        texHeight = 128;
 
         root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+        root.setPos(0.0F, 24.0F, 0.0F);
 
 
         body = new AdvancedModelBox(this);
-        body.setRotationPoint(0.0F, -11.0F, 0.0F);
+        body.setPos(0.0F, -11.0F, 0.0F);
         root.addChild(body);
-        body.setTextureOffset(0, 32).addBox(-4.5F, 2.0F, -11.0F, 9.0F, 2.0F, 22.0F, 0.0F, false);
-        body.setTextureOffset(0, 0).addBox(-4.5F, -7.0F, -11.0F, 9.0F, 9.0F, 22.0F, 0.0F, false);
+        body.texOffs(0, 32).addBox(-4.5F, 2.0F, -11.0F, 9.0F, 2.0F, 22.0F, 0.0F, false);
+        body.texOffs(0, 0).addBox(-4.5F, -7.0F, -11.0F, 9.0F, 9.0F, 22.0F, 0.0F, false);
 
         tail1 = new AdvancedModelBox(this);
-        tail1.setRotationPoint(0.0F, -6.5F, 11.0F);
+        tail1.setPos(0.0F, -6.5F, 11.0F);
         body.addChild(tail1);
         setRotationAngle(tail1, -0.9599F, 0.0F, 0.0F);
-        tail1.setTextureOffset(41, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 17.0F, 0.0F, false);
+        tail1.texOffs(41, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 3.0F, 17.0F, 0.0F, false);
 
         tail2 = new AdvancedModelBox(this);
-        tail2.setRotationPoint(0.0F, 2.9F, 17.0F);
+        tail2.setPos(0.0F, 2.9F, 17.0F);
         tail1.addChild(tail2);
         setRotationAngle(tail2, 0.7854F, 0.0F, 0.0F);
-        tail2.setTextureOffset(52, 52).addBox(-1.5F, -3.0F, 0.0F, 3.0F, 3.0F, 11.0F, 0.1F, false);
+        tail2.texOffs(52, 52).addBox(-1.5F, -3.0F, 0.0F, 3.0F, 3.0F, 11.0F, 0.1F, false);
 
         tail3 = new AdvancedModelBox(this);
-        tail3.setRotationPoint(0.0F, -0.2F, 11.1F);
+        tail3.setPos(0.0F, -0.2F, 11.1F);
         tail2.addChild(tail3);
         setRotationAngle(tail3, 0.6545F, 0.0F, 0.0F);
-        tail3.setTextureOffset(41, 32).addBox(-1.5F, -3.0F, 0.0F, 3.0F, 3.0F, 11.0F, 0.2F, false);
+        tail3.texOffs(41, 32).addBox(-1.5F, -3.0F, 0.0F, 3.0F, 3.0F, 11.0F, 0.2F, false);
 
         leg_front_left = new AdvancedModelBox(this);
-        leg_front_left.setRotationPoint(3.0F, 1.0F, -8.0F);
+        leg_front_left.setPos(3.0F, 1.0F, -8.0F);
         body.addChild(leg_front_left);
-        leg_front_left.setTextureOffset(0, 32).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 13.0F, 4.0F, 0.0F, false);
+        leg_front_left.texOffs(0, 32).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 13.0F, 4.0F, 0.0F, false);
 
         leg_front_right = new AdvancedModelBox(this);
-        leg_front_right.setRotationPoint(-3.0F, 1.0F, -8.0F);
+        leg_front_right.setPos(-3.0F, 1.0F, -8.0F);
         body.addChild(leg_front_right);
-        leg_front_right.setTextureOffset(0, 32).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 13.0F, 4.0F, 0.0F, true);
+        leg_front_right.texOffs(0, 32).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 13.0F, 4.0F, 0.0F, true);
 
         leg_back_left = new AdvancedModelBox(this);
-        leg_back_left.setRotationPoint(3.0F, 0.0F, 8.0F);
+        leg_back_left.setPos(3.0F, 0.0F, 8.0F);
         body.addChild(leg_back_left);
-        leg_back_left.setTextureOffset(0, 0).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
+        leg_back_left.texOffs(0, 0).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
 
         leg_back_right = new AdvancedModelBox(this);
-        leg_back_right.setRotationPoint(-3.0F, 0.0F, 8.0F);
+        leg_back_right.setPos(-3.0F, 0.0F, 8.0F);
         body.addChild(leg_back_right);
-        leg_back_right.setTextureOffset(0, 0).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, true);
+        leg_back_right.texOffs(0, 0).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, true);
 
         neck = new AdvancedModelBox(this);
-        neck.setRotationPoint(0.0F, -4.0F, -11.0F);
+        neck.setPos(0.0F, -4.0F, -11.0F);
         body.addChild(neck);
         setRotationAngle(neck, -0.3054F, 0.0F, 0.0F);
-        neck.setTextureOffset(27, 57).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 7.0F, 5.0F, 0.1F, false);
+        neck.texOffs(27, 57).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 7.0F, 5.0F, 0.1F, false);
 
         head = new AdvancedModelBox(this);
-        head.setRotationPoint(0.0F, 0.1F, -3.1F);
+        head.setPos(0.0F, 0.1F, -3.1F);
         neck.addChild(head);
         setRotationAngle(head, 0.3054F, 0.0F, 0.0F);
-        head.setTextureOffset(0, 57).addBox(-3.0F, -3.0F, -6.0F, 6.0F, 6.0F, 7.0F, 0.0F, false);
+        head.texOffs(0, 57).addBox(-3.0F, -3.0F, -6.0F, 6.0F, 6.0F, 7.0F, 0.0F, false);
 
         whisker_left = new AdvancedModelBox(this);
-        whisker_left.setRotationPoint(3.0F, 2.0F, -4.0F);
+        whisker_left.setPos(3.0F, 2.0F, -4.0F);
         head.addChild(whisker_left);
         setRotationAngle(whisker_left, 0.0F, -0.8727F, 0.0F);
-        whisker_left.setTextureOffset(17, 17).addBox(0.0F, -3.0F, 0.0F, 2.0F, 4.0F, 0.0F, 0.0F, false);
+        whisker_left.texOffs(17, 17).addBox(0.0F, -3.0F, 0.0F, 2.0F, 4.0F, 0.0F, 0.0F, false);
 
         whisker_right = new AdvancedModelBox(this);
-        whisker_right.setRotationPoint(-3.0F, 2.0F, -4.0F);
+        whisker_right.setPos(-3.0F, 2.0F, -4.0F);
         head.addChild(whisker_right);
         setRotationAngle(whisker_right, 0.0F, 0.8727F, 0.0F);
-        whisker_right.setTextureOffset(17, 17).addBox(-2.0F, -3.0F, 0.0F, 2.0F, 4.0F, 0.0F, 0.0F, true);
+        whisker_right.texOffs(17, 17).addBox(-2.0F, -3.0F, 0.0F, 2.0F, 4.0F, 0.0F, 0.0F, true);
 
         ear_left = new AdvancedModelBox(this);
-        ear_left.setRotationPoint(3.0F, -3.0F, -2.0F);
+        ear_left.setPos(3.0F, -3.0F, -2.0F);
         head.addChild(ear_left);
-        ear_left.setTextureOffset(41, 7).addBox(-1.0F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, false);
+        ear_left.texOffs(41, 7).addBox(-1.0F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, false);
 
         ear_right = new AdvancedModelBox(this);
-        ear_right.setRotationPoint(-3.0F, -3.0F, -2.0F);
+        ear_right.setPos(-3.0F, -3.0F, -2.0F);
         head.addChild(ear_right);
-        ear_right.setTextureOffset(41, 7).addBox(0.0F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, true);
+        ear_right.texOffs(41, 7).addBox(0.0F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, true);
 
         snout = new AdvancedModelBox(this);
-        snout.setRotationPoint(0.0F, 0.1F, -6.4F);
+        snout.setPos(0.0F, 0.1F, -6.4F);
         head.addChild(snout);
         setRotationAngle(snout, 0.1745F, 0.0F, 0.0F);
-        snout.setTextureOffset(41, 0).addBox(-2.0F, 0.0F, -2.2F, 4.0F, 3.0F, 3.0F, 0.0F, false);
+        snout.texOffs(41, 0).addBox(-2.0F, 0.0F, -2.2F, 4.0F, 3.0F, 3.0F, 0.0F, false);
         this.updateDefaultPose();
         animator = new ModelAnimator();
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -168,14 +168,14 @@ public class ModelSnowLeopard extends AdvancedEntityModel<EntitySnowLeopard> {
     }
 
     @Override
-    public void setRotationAngles(EntitySnowLeopard entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntitySnowLeopard entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         float walkSpeed = 0.7F;
         float walkDegree = 0.6F;
         float idleSpeed = 0.1F;
         float idleDegree = 0.1F;
         float runProgress = 5F * limbSwingAmount;
-        float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+        float partialTick = Minecraft.getInstance().getFrameTime();
         float stalkProgress = entity.prevSneakProgress + (entity.sneakProgress - entity.prevSneakProgress) * partialTick;
         float tackleProgress = entity.prevTackleProgress + (entity.tackleProgress - entity.prevTackleProgress) * partialTick;
         float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
@@ -225,7 +225,7 @@ public class ModelSnowLeopard extends AdvancedEntityModel<EntitySnowLeopard> {
         progressPositionPrev(leg_front_left, tackleProgress, 1F, 2F, 0, 3F);
         progressPositionPrev(leg_front_right, tackleProgress, -1F, 2F, 0, 3F);
         progressPositionPrev(tail1, tackleProgress, 0, 0F, -1F, 3F);
-        float tailAngle = entity.getEntityId() % 2 == 0 ? 1 : -1;
+        float tailAngle = entity.getId() % 2 == 0 ? 1 : -1;
         progressRotationPrev(leg_back_left, sitSleepProgress, (float) Math.toRadians(-90), (float) Math.toRadians(-20), 0, 5F);
         progressRotationPrev(leg_back_right, sitSleepProgress, (float) Math.toRadians(-90), (float) Math.toRadians(20), 0, 5F);
         progressRotationPrev(leg_front_left, sitSleepProgress, (float) Math.toRadians(-90), 0, 0, 5F);
@@ -251,32 +251,32 @@ public class ModelSnowLeopard extends AdvancedEntityModel<EntitySnowLeopard> {
         }
     }
 
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if (this.isChild) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
             float f = 1.45F;
             head.setScale(f, f, f);
             head.setShouldScaleChildren(true);
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0D);
-            getParts().forEach((p_228292_8_) -> {
+            parts().forEach((p_228292_8_) -> {
                 p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
             head.setScale(1, 1, 1);
         } else {
-            matrixStackIn.push();
-            getParts().forEach((p_228290_8_) -> {
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
                 p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
 
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.rotateAngleX = x;
-        AdvancedModelBox.rotateAngleY = y;
-        AdvancedModelBox.rotateAngleZ = z;
+        AdvancedModelBox.xRot = x;
+        AdvancedModelBox.yRot = y;
+        AdvancedModelBox.zRot = z;
     }
 }

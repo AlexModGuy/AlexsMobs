@@ -4,10 +4,10 @@ import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
     public final AdvancedModelBox root;
@@ -20,52 +20,52 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
     public final AdvancedModelBox tail2;
 
     public ModelSeal() {
-        textureWidth = 64;
-        textureHeight = 64;
+        texWidth = 64;
+        texHeight = 64;
 
         root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+        root.setPos(0.0F, 24.0F, 0.0F);
 
 
         body = new AdvancedModelBox(this);
-        body.setRotationPoint(0.0F, -4.5F, -4.0F);
+        body.setPos(0.0F, -4.5F, -4.0F);
         root.addChild(body);
-        body.setTextureOffset(0, 0).addBox(-4.0F, -1.5F, -5.0F, 8.0F, 6.0F, 10.0F, 0.0F, false);
+        body.texOffs(0, 0).addBox(-4.0F, -1.5F, -5.0F, 8.0F, 6.0F, 10.0F, 0.0F, false);
 
         arm_left = new AdvancedModelBox(this);
-        arm_left.setRotationPoint(4.0F, 3.8F, -1.0F);
+        arm_left.setPos(4.0F, 3.8F, -1.0F);
         body.addChild(arm_left);
-        arm_left.setTextureOffset(27, 29).addBox(0.0F, -0.5F, -2.0F, 5.0F, 1.0F, 4.0F, 0.0F, false);
+        arm_left.texOffs(27, 29).addBox(0.0F, -0.5F, -2.0F, 5.0F, 1.0F, 4.0F, 0.0F, false);
 
         arm_right = new AdvancedModelBox(this);
-        arm_right.setRotationPoint(-4.0F, 3.8F, -1.0F);
+        arm_right.setPos(-4.0F, 3.8F, -1.0F);
         body.addChild(arm_right);
-        arm_right.setTextureOffset(27, 29).addBox(-5.0F, -0.5F, -2.0F, 5.0F, 1.0F, 4.0F, 0.0F, true);
+        arm_right.texOffs(27, 29).addBox(-5.0F, -0.5F, -2.0F, 5.0F, 1.0F, 4.0F, 0.0F, true);
 
         head = new AdvancedModelBox(this);
-        head.setRotationPoint(0.0F, 1.5F, -5.0F);
+        head.setPos(0.0F, 1.5F, -5.0F);
         body.addChild(head);
-        head.setTextureOffset(27, 0).addBox(-2.5F, -2.5F, -3.0F, 5.0F, 5.0F, 3.0F, 0.0F, false);
+        head.texOffs(27, 0).addBox(-2.5F, -2.5F, -3.0F, 5.0F, 5.0F, 3.0F, 0.0F, false);
 
         snout = new AdvancedModelBox(this);
-        snout.setRotationPoint(0.0F, 1.0F, -3.0F);
+        snout.setPos(0.0F, 1.0F, -3.0F);
         head.addChild(snout);
-        snout.setTextureOffset(0, 33).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
+        snout.texOffs(0, 33).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
-        tail.setRotationPoint(0.0F, 1.5F, 5.0F);
+        tail.setPos(0.0F, 1.5F, 5.0F);
         body.addChild(tail);
-        tail.setTextureOffset(0, 17).addBox(-2.5F, -2.0F, 0.0F, 5.0F, 5.0F, 10.0F, 0.0F, false);
+        tail.texOffs(0, 17).addBox(-2.5F, -2.0F, 0.0F, 5.0F, 5.0F, 10.0F, 0.0F, false);
 
         tail2 = new AdvancedModelBox(this);
-        tail2.setRotationPoint(0.0F, 1.7F, 9.0F);
+        tail2.setPos(0.0F, 1.7F, 9.0F);
         tail.addChild(tail2);
-        tail2.setTextureOffset(21, 17).addBox(-4.0F, -1.0F, -1.0F, 8.0F, 2.0F, 6.0F, 0.0F, false);
+        tail2.texOffs(21, 17).addBox(-4.0F, -1.0F, -1.0F, 8.0F, 2.0F, 6.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -75,17 +75,17 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
     }
 
     @Override
-    public void setRotationAngles(EntitySeal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntitySeal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        float walkSpeed = isChild ? 0.9F : 1.5F;
+        float walkSpeed = young ? 0.9F : 1.5F;
         float walkDegree = 1F;
         float swimSpeed = 0.5F;
         float swimDegree = 0.5F;
-        float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+        float partialTick = Minecraft.getInstance().getFrameTime();
         float baskProgress = entity.prevBaskProgress + (entity.baskProgress - entity.prevBaskProgress) * partialTick;
         float swimAngle = entity.prevSwimAngle + (entity.getSwimAngle() - entity.prevSwimAngle) * partialTick;
         float diggingProgress = entity.prevDigProgress + (entity.digProgress - entity.prevDigProgress) * partialTick;
-        int baskType = entity.getEntityId() % 5;
+        int baskType = entity.getId() % 5;
         progressRotationPrev(body, diggingProgress,  (float) Math.toRadians(70), 0, 0, 5F);
         progressRotationPrev(head, diggingProgress,  (float) Math.toRadians(10), 0, 0, 5F);
         progressRotationPrev(tail, diggingProgress,  (float) Math.toRadians(-10), 0, 0, 5F);
@@ -159,14 +159,14 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         }
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head, body, tail, tail2};
         if (!entity.isInWater()) {
-            this.body.rotationPointY += (float) (Math.sin((double) (limbSwing * walkSpeed) - (Math.PI * 0.1F)) * (double) limbSwingAmount * (double) walkDegree * 4D - (limbSwingAmount * walkDegree * 4D));
+            this.body.y += (float) (Math.sin((double) (limbSwing * walkSpeed) - (Math.PI * 0.1F)) * (double) limbSwingAmount * (double) walkDegree * 4D - (limbSwingAmount * walkDegree * 4D));
             this.chainWave(bodyParts, walkSpeed, walkDegree * 0.5F, -2F, limbSwing, limbSwingAmount);
             this.walk(tail2, walkSpeed, walkDegree, false, 9, 0, limbSwing, limbSwingAmount);
             this.flap(arm_right, walkSpeed, walkDegree * 1.8F, true, 8.7F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_left, walkSpeed, walkDegree * 1.8F, false, 8.7F, 0, limbSwing, limbSwingAmount);
         } else {
-            this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
-            this.body.rotationPointY += (float) (Math.sin(limbSwing * swimSpeed) * (double) limbSwingAmount * (double) swimDegree * 9D - (limbSwingAmount * swimDegree * 9D));
+            this.body.xRot += headPitch * ((float)Math.PI / 180F);
+            this.body.y += (float) (Math.sin(limbSwing * swimSpeed) * (double) limbSwingAmount * (double) swimDegree * 9D - (limbSwingAmount * swimDegree * 9D));
             this.chainWave(bodyParts, swimSpeed, swimDegree, -3F, limbSwing, limbSwingAmount);
             this.walk(tail2, swimSpeed, swimDegree, false, -8F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_right, swimSpeed * 0.5F, swimDegree * 4.5F, true, 3F, 0, limbSwing, limbSwingAmount);
@@ -174,36 +174,36 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         }
         this.faceTarget(netHeadYaw, headPitch, 1, head);
         float yawAmount = swimAngle / 57.295776F * 0.5F;
-        body.rotateAngleZ += yawAmount;
+        body.zRot += yawAmount;
 
     }
 
-    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        if (this.isChild) {
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
             float f = 1.65F;
             head.setScale(f, f, f);
             head.setShouldScaleChildren(true);
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             matrixStackIn.translate(0.0D, 1.5D, 0D);
-            getParts().forEach((p_228292_8_) -> {
+            parts().forEach((p_228292_8_) -> {
                 p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
             head.setScale(1, 1, 1);
         } else {
-            matrixStackIn.push();
-            getParts().forEach((p_228290_8_) -> {
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
                 p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
             });
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
 
     }
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-        advancedModelBox.rotateAngleX = x;
-        advancedModelBox.rotateAngleY = y;
-        advancedModelBox.rotateAngleZ = z;
+        advancedModelBox.xRot = x;
+        advancedModelBox.yRot = y;
+        advancedModelBox.zRot = z;
     }
 }

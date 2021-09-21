@@ -2,23 +2,23 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelRattlesnake;
 import com.github.alexthe666.alexsmobs.entity.EntityRattlesnake;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderRattlesnake extends MobRenderer<EntityRattlesnake, ModelRattlesnake> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/rattlesnake.png");
 
-    public RenderRattlesnake(EntityRendererManager renderManagerIn) {
+    public RenderRattlesnake(EntityRenderDispatcher renderManagerIn) {
         super(renderManagerIn, new ModelRattlesnake(), 0.2F);
     }
 
-    protected void preRenderCallback(EntityRattlesnake entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntityRattlesnake entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
     }
 
 
-    public ResourceLocation getEntityTexture(EntityRattlesnake entity) {
+    public ResourceLocation getTextureLocation(EntityRattlesnake entity) {
         return TEXTURE;
     }
 }

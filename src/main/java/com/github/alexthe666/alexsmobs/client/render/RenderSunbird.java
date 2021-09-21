@@ -2,28 +2,28 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelSunbird;
 import com.github.alexthe666.alexsmobs.entity.EntitySunbird;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
 
 public class RenderSunbird extends MobRenderer<EntitySunbird, ModelSunbird> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/sunbird.png");
 
-    public RenderSunbird(EntityRendererManager renderManagerIn) {
+    public RenderSunbird(EntityRenderDispatcher renderManagerIn) {
         super(renderManagerIn, new ModelSunbird(), 0.5F);
     }
 
-    protected void preRenderCallback(EntitySunbird entitylivingbaseIn, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(EntitySunbird entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
         matrixStackIn.scale(1.25F, 1.25F, 1.25F);
     }
 
-    protected int getBlockLight(EntitySunbird entityIn, BlockPos partialTicks) {
+    protected int getBlockLightLevel(EntitySunbird entityIn, BlockPos partialTicks) {
         return 15;
     }
 
-    public ResourceLocation getEntityTexture(EntitySunbird entity) {
+    public ResourceLocation getTextureLocation(EntitySunbird entity) {
         return TEXTURE;
     }
 }
