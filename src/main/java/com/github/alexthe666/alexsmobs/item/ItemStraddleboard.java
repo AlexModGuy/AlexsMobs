@@ -68,13 +68,13 @@ public class ItemStraddleboard extends Item implements DyeableLeatherItem {
                 boatentity.setDefaultColor(!this.hasCustomColor(itemstack));
                 boatentity.setItemStack(itemstack.copy());
                 boatentity.setColor(this.getColor(itemstack));
-                boatentity.yRot = playerIn.yRot;
+                boatentity.setYRot(playerIn.getYRot());
                 if (!worldIn.noCollision(boatentity, boatentity.getBoundingBox().inflate(-0.1D))) {
                     return InteractionResultHolder.fail(itemstack);
                 } else {
                     if (!worldIn.isClientSide) {
                         worldIn.addFreshEntity(boatentity);
-                        if (!playerIn.abilities.instabuild) {
+                        if (!playerIn.getAbilities().instabuild) {
                             itemstack.shrink(1);
                         }
                     }

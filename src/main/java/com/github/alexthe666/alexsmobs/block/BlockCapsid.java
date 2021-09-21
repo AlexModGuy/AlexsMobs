@@ -2,41 +2,26 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
-import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
-import net.minecraft.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.tileentity.BeehiveTileEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
-
 import javax.annotation.Nullable;
-import java.util.List;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -54,7 +39,7 @@ public class BlockCapsid extends BaseEntityBlock {
 
     public static final DirectionProperty HORIZONTAL_FACING = HorizontalDirectionalBlock.FACING;
     public BlockCapsid() {
-        super(Properties.of(Material.GLASS).noOcclusion().isValidSpawn(BlockCapsid::spawnOption).isRedstoneConductor(BlockCapsid::isntSolid).sound(SoundType.GLASS).lightLevel((state) -> 5).harvestTool(ToolType.PICKAXE).strength(4.5F));
+        super(Properties.of(Material.GLASS).noOcclusion().isValidSpawn(BlockCapsid::spawnOption).isRedstoneConductor(BlockCapsid::isntSolid).sound(SoundType.GLASS).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(4.5F));
         this.setRegistryName("alexsmobs:capsid");
     }
 
@@ -128,9 +113,15 @@ public class BlockCapsid extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
+
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockGetter worldIn) {
-        return new TileEntityCapsid();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new TileEntityCapsid(pos, state);
+    }
+
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
+        return createTickerHelper(p_152182_, AMTileEntityRegistry.CAPSID, TileEntityCapsid::commonTick);
     }
 }

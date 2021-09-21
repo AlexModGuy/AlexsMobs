@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -198,10 +199,10 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
         progressPositionPrev(arm_left, washProgress, 0, 1F, -1.4F, 5f);
         progressPositionPrev(arm_right, washProgress, 0, 1F, -1.4F, 5f);
         if (washProgress > 0) {
-            this.arm_left.y -= (float) (-Math.abs(Math.sin(ageInTicks * 0.5F) * (double) washProgress * 0.2D * 1));
-            this.arm_left.z -= (float) (-Math.abs(Math.sin(ageInTicks * 0.25F) * (double) washProgress * 0.2D * 3));
-            this.arm_right.y -= (float) (-Math.abs(Math.sin(ageInTicks * 0.5F) * (double) washProgress * 0.2D * 1));
-            this.arm_right.z -= (float) (-Math.abs(Math.cos(ageInTicks * 0.25F) * (double) washProgress * 0.2D * 3));
+            this.arm_left.rotationPointY -= (float) (-Math.abs(Math.sin(ageInTicks * 0.5F) * (double) washProgress * 0.2D * 1));
+            this.arm_left.rotationPointZ -= (float) (-Math.abs(Math.sin(ageInTicks * 0.25F) * (double) washProgress * 0.2D * 3));
+            this.arm_right.rotationPointY -= (float) (-Math.abs(Math.sin(ageInTicks * 0.5F) * (double) washProgress * 0.2D * 1));
+            this.arm_right.rotationPointZ -= (float) (-Math.abs(Math.cos(ageInTicks * 0.25F) * (double) washProgress * 0.2D * 3));
             this.swing(arm_right, 0.5F, 0.25F, false, 2F, -0.1F, ageInTicks, washProgress * 0.2F);
             this.swing(arm_left, 0.5F, 0.25F, true, 2F, -0.1F, ageInTicks, washProgress * 0.2F);
             float bodyFlap = (float) (Math.sin(ageInTicks * 0.5F) * (double) washProgress * 0.2D * 0.15F);

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -84,38 +85,38 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 				Vec3 vector3d1 = entity.getEyePosition(0.0F);
 				double d0 = vector3d.y - vector3d1.y;
 				if (d0 > 0.0D) {
-					this.eye.y = -11.0F;
+					this.eye.rotationPointY = -11.0F;
 				} else {
-					this.eye.y = -10.0F;
+					this.eye.rotationPointY = -10.0F;
 				}
 
 				Vec3 vector3d2 = entity.getViewVector(0.0F);
 				vector3d2 = new Vec3(vector3d2.x, 0.0D, vector3d2.z);
-				Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().rotateAngleY(((float) Math.PI / 2F));
+				Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot(((float) Math.PI / 2F));
 				double d1 = vector3d2.dot(vector3d3);
-				this.eye.x += Mth.sqrt((float) Math.abs(d1)) * 2.0F * (float) Math.signum(d1);
+				this.eye.rotationPointX += Mth.sqrt((float) Math.abs(d1)) * 2.0F * (float) Math.signum(d1);
 			}
 		}else{
 			Vec3 vector3d = Vec3.atCenterOf(targetPos);
 			Vec3 vector3d1 = entity.getEyePosition(0.0F);
 			double d0 = vector3d.y - vector3d1.y;
 			if (d0 > 0.0D) {
-				this.eye.y = -11.0F;
+				this.eye.rotationPointY = -11.0F;
 			} else {
-				this.eye.y = -10.0F;
+				this.eye.rotationPointY = -10.0F;
 			}
 
 			Vec3 vector3d2 = entity.getViewVector(0.0F);
 			vector3d2 = new Vec3(vector3d2.x, 0.0D, vector3d2.z);
-			Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().rotateAngleY(((float) Math.PI / 2F));
+			Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot(((float) Math.PI / 2F));
 			double d1 = vector3d2.dot(vector3d3);
-			this.eye.x += Mth.sqrt((float) Math.abs(d1)) * 2.0F * (float) Math.signum(d1);
+			this.eye.rotationPointX += Mth.sqrt((float) Math.abs(d1)) * 2.0F * (float) Math.signum(d1);
 
 		}
 		this.walk(hair, idleSpeed, idleDegree, false, 1F, -0.1F, ageInTicks, 1);
 		this.flap(nose, idleSpeed, idleDegree, false, 0F, 0F, ageInTicks, 1);
 		sack.setScale(glowyBob, glowyBob, glowyBob + swell * 0.2F);
-		this.sack.z += swell * 0.02F;
+		this.sack.rotationPointZ += swell * 0.02F;
 		progressRotationPrev(hair, limbSwingAmount, (float)Math.toRadians(-23), 0, 0, 1F);
 		this.walk(leg_right, walkSpeed, walkDegree * 1.1F, true, 1, 0F, limbSwing, limbSwingAmount);
 		this.bob(leg_right, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);

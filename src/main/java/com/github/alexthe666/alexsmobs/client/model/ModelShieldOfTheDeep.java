@@ -1,29 +1,38 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
+import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
+import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.Entity;
 
-public class ModelShieldOfTheDeep extends EntityModel<Entity> {
-	private final ModelPart shield;
-	private final ModelPart handle;
+public class ModelShieldOfTheDeep extends AdvancedEntityModel<Entity> {
+	private final AdvancedModelBox shield;
+	private final AdvancedModelBox handle;
 
 	public ModelShieldOfTheDeep() {
 		texWidth = 64;
 		texHeight = 64;
 
-		shield = new ModelPart(this);
+		shield = new AdvancedModelBox(this);
 		shield.setPos(-2.0F, 16.0F, 0.0F);
 		shield.setTextureOffset(0, 0).addBox(-1.0F, -4.0F, -6.0F, 1.0F, 12.0F, 12.0F, 0.0F, false);
 		shield.setTextureOffset(17, 15).addBox(-3.0F, -3.0F, -5.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
 		shield.setTextureOffset(27, 0).addBox(-4.0F, -1.0F, -3.0F, 3.0F, 6.0F, 6.0F, 0.0F, false);
 
-		handle = new ModelPart(this);
+		handle = new AdvancedModelBox(this);
 		handle.setPos(8.0F, 8.0F, -8.0F);
 		shield.addChild(handle);
 		handle.setTextureOffset(0, 25).addBox(-8.0F, -8.5F, 7.0F, 5.0F, 5.0F, 2.0F, 0.0F, false);
+	}
+
+	@Override
+	public Iterable<AdvancedModelBox> getAllParts() {
+		return ImmutableList.of(handle, shield);
 	}
 
 	@Override
@@ -36,9 +45,8 @@ public class ModelShieldOfTheDeep extends EntityModel<Entity> {
 		shield.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
-	public void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
+	@Override
+	public Iterable<BasicModelPart> parts() {
+		return ImmutableList.of(shield);
 	}
 }

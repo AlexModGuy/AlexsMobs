@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityMimicOctopus;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -287,7 +288,7 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
 
         if(swimProgress > 0.0F){
             float rot = headPitch * ((float)Math.PI / 180F);
-            this.head.y += Math.abs(rot) * -7;
+            this.head.rotationPointY += Math.abs(rot) * -7;
             this.head.rotateAngleX -= rot;
         }
         progressRotationPrev(mantle, sitProgress, (float) Math.toRadians(20), 0, 0, 5F);

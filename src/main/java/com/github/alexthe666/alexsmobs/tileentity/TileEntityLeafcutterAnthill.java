@@ -7,21 +7,16 @@ import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.google.common.collect.Lists;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -30,13 +25,13 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Function;
 
-public class TileEntityLeafcutterAnthill extends BlockEntity implements TickableBlockEntity {
+public class TileEntityLeafcutterAnthill extends BlockEntity {
     private static final Direction[] DIRECTIONS_UP = new Direction[]{Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     private final List<TileEntityLeafcutterAnthill.Ant> ants = Lists.newArrayList();
     private int leafFeedings = 0;
 
-    public TileEntityLeafcutterAnthill() {
-        super(AMTileEntityRegistry.LEAFCUTTER_ANTHILL);
+    public TileEntityLeafcutterAnthill(BlockPos pos, BlockState state) {
+        super(AMTileEntityRegistry.LEAFCUTTER_ANTHILL, pos, state);
     }
 
     public boolean hasNoAnts() {
@@ -101,7 +96,7 @@ public class TileEntityLeafcutterAnthill extends BlockEntity implements Tickable
                     double d0 = (double) blockpos.getX() + 0.5D;
                     double d1 = (double) blockpos.getY() + 1.0D;
                     double d2 = (double) blockpos.getZ() + 0.5D;
-                    entity.moveTo(d0, d1, d2, entity.yRot, entity.xRot);
+                    entity.moveTo(d0, d1, d2, entity.getYRot(), entity.getXRot());
                     if(((EntityLeafcutterAnt) entity).isQueen()){
                         entityLeafcutterAnt.setStayOutOfHiveCountdown(400);
                     }
@@ -116,8 +111,6 @@ public class TileEntityLeafcutterAnthill extends BlockEntity implements Tickable
         }
 
     }
-
-
 
     public void tryEnterHive(EntityLeafcutterAnt p_226962_1_, boolean p_226962_2_, int p_226962_3_) {
         if (this.ants.size() < AMConfig.leafcutterAntColonySize) {
@@ -142,7 +135,7 @@ public class TileEntityLeafcutterAnthill extends BlockEntity implements Tickable
                 this.level.playSound(null, blockpos.getX(), blockpos.getY(), blockpos.getZ(), SoundEvents.BEEHIVE_ENTER, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
 
-            p_226962_1_.remove();
+            p_226962_1_.remove(Entity.RemovalReason.DISCARDED);
         }
     }
 
@@ -191,10 +184,8 @@ public class TileEntityLeafcutterAnthill extends BlockEntity implements Tickable
         }
     }
 
-    public void tick() {
-        if (!level.isClientSide) {
-            tickAnts();
-        }
+    public static void serverTick(Level level, BlockPos pos, BlockState state, TileEntityLeafcutterAnthill entity) {
+        entity.tickAnts();
     }
 
     private void growFungus() {
@@ -257,8 +248,8 @@ public class TileEntityLeafcutterAnthill extends BlockEntity implements Tickable
     }
 
 
-    public void load(BlockState state, CompoundTag nbt) {
-        super.load(state, nbt);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
         this.ants.clear();
         this.leafFeedings = nbt.getInt("LeafFeedings");
         ListTag listnbt = nbt.getList("Ants", 10);

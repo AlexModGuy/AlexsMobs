@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityGust;
 import com.github.alexthe666.alexsmobs.entity.EntityGuster;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -87,27 +88,27 @@ public class ModelGuster extends AdvancedEntityModel<EntityGuster> {
         this.chainFlap(tornadoBoxes, walkSpeed, walkDegree * 0.1F, -2, limbSwing, limbSwingAmount);
         this.bob(root, idleSpeed, idleDegree * 3, false, ageInTicks, 1);
         if(entity.isGooglyEyes()){
-            this.eye_left.y += (float)(Math.sin( (double)(ageInTicks * 0.7) - 2) * (double)1.9);
-            this.eye_right.y += (float)(Math.sin( (double)(ageInTicks * 0.7) + 2) * (double)1.9);
+            this.eye_left.rotationPointY += (float)(Math.sin( (double)(ageInTicks * 0.7) - 2) * (double)1.9);
+            this.eye_right.rotationPointY += (float)(Math.sin( (double)(ageInTicks * 0.7) + 2) * (double)1.9);
         }else{
-            this.eye_left.y += (float)(Math.sin( (double)(ageInTicks * 0.1) - 2) * (double)0.9);
-            this.eye_right.y += (float)(Math.sin( (double)(ageInTicks * 0.1) + 2) * (double)0.9);
+            this.eye_left.rotationPointY += (float)(Math.sin( (double)(ageInTicks * 0.1) - 2) * (double)0.9);
+            this.eye_right.rotationPointY += (float)(Math.sin( (double)(ageInTicks * 0.1) + 2) * (double)0.9);
         }
         this.bob(eyes, idleSpeed, idleDegree * -3.2F, false, ageInTicks, 1);
         this.eyes.rotateAngleY += netHeadYaw * 0.5F * ((float)Math.PI / 180F);
         this.eyes.rotateAngleX += headPitch * 0.8F * ((float)Math.PI / 180F);
 
-        tornado.x += Math.cos(ageInTicks * 0.7F) * 4F;
-        tornado.z += Math.sin(ageInTicks * 0.7F) * 4F;
-        tornado.x += Math.cos(ageInTicks * 0.3F) * 2F - tornado.x;
-        tornado.z += Math.sin(ageInTicks * 0.3F) * 2F - tornado.z;
+        tornado.rotationPointX += Math.cos(ageInTicks * 0.7F) * 4F;
+        tornado.rotationPointZ += Math.sin(ageInTicks * 0.7F) * 4F;
+        tornado.rotationPointX += Math.cos(ageInTicks * 0.3F) * 2F - tornado.rotationPointX;
+        tornado.rotationPointZ += Math.sin(ageInTicks * 0.3F) * 2F - tornado.rotationPointZ;
         tornadomid.rotateAngleZ += Math.sin(ageInTicks * 0.2F) * 0.1;
         tornado.rotateAngleY -= ageInTicks * 1F;
         tornado2.rotateAngleY -= tornado.rotateAngleY + ageInTicks * 0.3F;
         tornado3.rotateAngleY -= tornado.rotateAngleY + tornado2.rotateAngleY + ageInTicks * 0.2F;
         tornado4.rotateAngleY -= tornado.rotateAngleY + tornado2.rotateAngleY + tornado3.rotateAngleY + ageInTicks * 0.34F;
         tornadomid.rotateAngleY += ageInTicks * 0.5F;
-        eyes.z -= 2 + Math.cos(tornado3.rotateAngleY);
+        eyes.rotationPointZ -= 2 + Math.cos(tornado3.rotateAngleY);
     }
 
     public void animateGust(EntityGust entity, float limbSwing, float limbSwingAmount, float ageInTicks){
@@ -121,29 +122,29 @@ public class ModelGuster extends AdvancedEntityModel<EntityGuster> {
         this.chainFlap(tornadoBoxes, walkSpeed, walkDegree * 0.1F, -2, limbSwing, limbSwingAmount);
         this.bob(root, idleSpeed, idleDegree * 3, false, ageInTicks, 1);
         this.bob(eyes, idleSpeed, idleDegree * -3.2F, false, ageInTicks, 1);
-        tornado.x += Math.cos(ageInTicks * 0.7F) * 4F;
-        tornado.z += Math.sin(ageInTicks * 0.7F) * 4F;
-        tornado.x += Math.cos(ageInTicks * 0.3F) * 2F - tornado.x;
-        tornado.z += Math.sin(ageInTicks * 0.3F) * 2F - tornado.z;
+        tornado.rotationPointX += Math.cos(ageInTicks * 0.7F) * 4F;
+        tornado.rotationPointZ += Math.sin(ageInTicks * 0.7F) * 4F;
+        tornado.rotationPointX += Math.cos(ageInTicks * 0.3F) * 2F - tornado.rotationPointX;
+        tornado.rotationPointZ += Math.sin(ageInTicks * 0.3F) * 2F - tornado.rotationPointZ;
         tornadomid.rotateAngleZ += Math.sin(ageInTicks * 0.2F) * 0.1;
         tornado.rotateAngleY -= ageInTicks * 1F;
         tornado2.rotateAngleY -= tornado.rotateAngleY + ageInTicks * 0.3F;
         tornado3.rotateAngleY -= tornado.rotateAngleY + tornado2.rotateAngleY + ageInTicks * 0.2F;
         tornado4.rotateAngleY -= tornado.rotateAngleY + tornado2.rotateAngleY + tornado3.rotateAngleY + ageInTicks * 0.34F;
         tornadomid.rotateAngleY += ageInTicks * 0.5F;
-        eyes.z -= 2 + Math.cos(tornado3.rotateAngleY);
+        eyes.rotationPointZ -= 2 + Math.cos(tornado3.rotateAngleY);
     }
 
     public void hideEyes(){
-        this.eyes.visible = false;
-        this.eye_left.visible = false;
-        this.eye_right.visible = false;
+        this.eyes.showModel = false;
+        this.eye_left.showModel = false;
+        this.eye_right.showModel = false;
     }
 
     public void showEyes(){
-        this.eyes.visible = true;
-        this.eye_left.visible = true;
-        this.eye_right.visible = true;
+        this.eyes.showModel = true;
+        this.eye_left.showModel = true;
+        this.eye_right.showModel = true;
     }
     @Override
     public void renderToBuffer(PoseStack matrixStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){

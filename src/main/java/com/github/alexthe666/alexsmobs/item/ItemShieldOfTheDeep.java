@@ -1,25 +1,24 @@
 package com.github.alexthe666.alexsmobs.item;
 
-import net.minecraft.world.entity.LivingEntity;
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nullable;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 public class ItemShieldOfTheDeep extends Item {
     public ItemShieldOfTheDeep(Item.Properties group) {
         super(group);
     }
 
-    public boolean isShield(ItemStack stack, @Nullable LivingEntity entity)
-    {
-        return true;
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return ToolActions.DEFAULT_SHIELD_ACTIONS.contains(toolAction);
     }
 
     public UseAnim getUseAnimation(ItemStack p_77661_1_) {
@@ -40,4 +39,8 @@ public class ItemShieldOfTheDeep extends Item {
         return AMItemRegistry.SERRATED_SHARK_TOOTH == p_82789_2_.getItem() || super.isValidRepairItem(p_82789_1_, p_82789_2_);
     }
 
+    @Override
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+        consumer.accept((net.minecraftforge.client.IItemRenderProperties) AlexsMobs.PROXY.getISTERProperties());
+    }
 }

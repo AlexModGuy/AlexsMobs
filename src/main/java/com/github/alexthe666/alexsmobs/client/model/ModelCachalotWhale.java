@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityCachalotWhale;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -101,7 +102,7 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		this.resetToDefaultPose();
 		float partialTicks = ageInTicks - entity.tickCount;
 		float renderYaw = (float)entity.getMovementOffsets(0, partialTicks)[0] ;
-		float properPitch = entity.rotateAngleXO + (entity.rotateAngleX - entity.rotateAngleXO) * partialTicks;
+		float properPitch = entity.xRotO + (entity.getXRot() - entity.xRotO) * partialTicks;
 		float chargeProgress = entity.prevChargingProgress + (entity.chargeProgress - entity.prevChargingProgress) * partialTicks;
 		float sleepProgress = entity.prevSleepProgress + (entity.sleepProgress - entity.prevSleepProgress) * partialTicks;
 		float beachedProgress = entity.prevBeachedProgress + (entity.beachedProgress - entity.prevBeachedProgress) * partialTicks;
@@ -146,8 +147,8 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 			this.bob(body, swimSpeed, swimDegree * 20, false, limbSwing, limbSwingAmount);
 			this.chainWave(tailBoxes, swimSpeed, swimDegree * 0.8F, -2F, limbSwing, limbSwingAmount);
 			this.walk(head, swimSpeed, swimDegree * 0.1F, false, 2F, 0, limbSwing, limbSwingAmount);
-			this.tail1.z -= 4 * limbSwingAmount;
-			this.tail2.z -= 2 * limbSwingAmount;
+			this.tail1.rotationPointZ -= 4 * limbSwingAmount;
+			this.tail2.rotationPointZ -= 2 * limbSwingAmount;
 		}
 	}
 

@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.criterion.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SerializationContext;

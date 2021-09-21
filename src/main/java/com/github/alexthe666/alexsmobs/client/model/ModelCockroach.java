@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -171,20 +172,20 @@ public class ModelCockroach extends AdvancedEntityModel<EntityCockroach> {
         this.swing(right_leg_mid, walkSpeed, walkDegree, true, 0, 0F, limbSwing, limbSwingAmount);
         this.faceTarget(netHeadYaw, headPitch, 1, head);
         if(entity.isHeadless()){
-            head.visible = false;
-            left_antenna.visible = false;
-            right_antenna.visible = false;
+            head.showModel = false;
+            left_antenna.showModel = false;
+            right_antenna.showModel = false;
         }else{
-            head.visible = true;
-            left_antenna.visible = true;
-            right_antenna.visible = true;
+            head.showModel = true;
+            left_antenna.showModel = true;
+            right_antenna.showModel = true;
         }
         if(entity.isBaby()){
-            left_wing.visible = false;
-            right_wing.visible = false;
+            left_wing.showModel = false;
+            right_wing.showModel = false;
         }else{
-            left_wing.visible = true;
-            right_wing.visible = true;
+            left_wing.showModel = true;
+            right_wing.showModel = true;
         }
     }
 

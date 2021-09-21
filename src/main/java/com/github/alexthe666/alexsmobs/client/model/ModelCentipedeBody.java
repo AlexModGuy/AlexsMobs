@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityCentipedeBody;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.geom.ModelPart;
 
@@ -96,8 +97,8 @@ public class ModelCentipedeBody extends AdvancedEntityModel<EntityCentipedeBody>
 		this.swing(legbackR1, walkSpeed, walkDegree, false, offset + 0.5F, 0F, limbSwing, limbSwingAmount);
 		this.flap(legbackR2, walkSpeed, walkDegree * 0.5F, false, offset + 0.5F, 0.1F, limbSwing, limbSwingAmount);
 		double walkOffset = (offset ) * Math.PI * 0.5F;
-		this.body.y += (float)(Math.sin( (double)(limbSwing * walkSpeed) - walkOffset) * (double)limbSwingAmount * (double)walkDegree - (double)(limbSwingAmount * walkDegree) );
-		this.body.y += (float)(Math.sin( (double)(ageInTicks * 0.1) - walkOffset) * (double)0.01 );
+		this.body.rotationPointY += (float)(Math.sin( (double)(limbSwing * walkSpeed) - walkOffset) * (double)limbSwingAmount * (double)walkDegree - (double)(limbSwingAmount * walkDegree) );
+		this.body.rotationPointY += (float)(Math.sin( (double)(ageInTicks * 0.1) - walkOffset) * (double)0.01 );
 	}
 
 	@Override

@@ -15,7 +15,11 @@ import net.minecraft.world.level.Level;
 
 import net.minecraft.world.item.Item.Properties;
 
+import java.util.Random;
+
 public class ItemAnimalEgg extends Item {
+
+    private Random random = new Random();
 
     public ItemAnimalEgg(Properties properties) {
         super(properties);
@@ -32,12 +36,12 @@ public class ItemAnimalEgg extends Item {
                 eggentity = new EntityCockroachEgg(worldIn, playerIn);
             }
             eggentity.setItem(itemstack);
-            eggentity.shootFromRotation(playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 1.5F, 1.0F);
+            eggentity.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0.0F, 1.5F, 1.0F);
             worldIn.addFreshEntity(eggentity);
         }
 
         playerIn.awardStat(Stats.ITEM_USED.get(this));
-        if (!playerIn.abilities.instabuild) {
+        if (!playerIn.getAbilities().instabuild) {
             itemstack.shrink(1);
         }
 

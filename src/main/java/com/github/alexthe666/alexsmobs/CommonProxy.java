@@ -102,4 +102,8 @@ public class CommonProxy {
     public Object getISTERProperties() {
         return null;
     }
+
+    public Object getArmorRenderProperties() {
+        return null;
+    }
 }

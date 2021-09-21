@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -121,9 +122,9 @@ public class ModelRattlesnake extends AdvancedEntityModel<EntityRattlesnake> {
         progressRotationPrev(neck2, curlProgress, (float) Math.toRadians(-20), (float) Math.toRadians(60), 0, 5F);
         progressRotationPrev(head, curlProgress, (float) Math.toRadians(20), (float) Math.toRadians(-30), (float) Math.toRadians(10), 5F);
         if (entity.randomToungeTick > 0) {
-            tongue.visible = true;
+            tongue.showModel = true;
         }else{
-			tongue.visible = false;
+			tongue.showModel = false;
 		}
         this.walk(tongue, 1, 0.5F, false, 1F, 0f, ageInTicks, 1);
         if (entity.isRattling()) {

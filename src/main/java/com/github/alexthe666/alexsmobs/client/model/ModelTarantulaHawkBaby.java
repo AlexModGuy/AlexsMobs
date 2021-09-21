@@ -3,11 +3,10 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.entity.Entity;
 
 public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaHawk> {
     private final AdvancedModelBox root;
@@ -41,7 +40,7 @@ public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaH
         float walkDegree = 0.75F;
         float stretch = (float) (Math.sin(limbSwing * 0.25F) * limbSwingAmount) + limbSwingAmount;
         body.setScale(1, (1 - stretch * 0.05F), (1 + stretch * 0.5F));
-        body.z -= stretch * 4;
+        body.rotationPointZ -= stretch * 4;
         this.walk(head, 0.25F, 0.075F, false, -1, 0F, ageInTicks, 1);
         this.walk(head, walkSpeed, walkDegree * 0.1F, false, -1, 0F, limbSwing, limbSwingAmount);
 

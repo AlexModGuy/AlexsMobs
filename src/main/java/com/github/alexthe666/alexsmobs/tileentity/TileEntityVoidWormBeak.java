@@ -1,25 +1,29 @@
 package com.github.alexthe666.alexsmobs.tileentity;
 
 import com.github.alexthe666.alexsmobs.block.BlockVoidWormBeak;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class TileEntityVoidWormBeak extends BlockEntity implements TickableBlockEntity {
+public class TileEntityVoidWormBeak extends BlockEntity {
 
     private float chompProgress;
     private float prevChompProgress;
     public int ticksExisted;
 
 
-    public TileEntityVoidWormBeak() {
-        super(AMTileEntityRegistry.VOID_WORM_BEAK);
+    public TileEntityVoidWormBeak(BlockPos pos, BlockState state) {
+        super(AMTileEntityRegistry.VOID_WORM_BEAK, pos, state);
     }
 
-    @Override
+    public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityVoidWormBeak entity) {
+        entity.tick();
+    }
+
     public void tick() {
         prevChompProgress = chompProgress;
         boolean powered = false;

@@ -6,6 +6,8 @@ import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
+import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties;
+import com.github.alexthe666.alexsmobs.client.render.item.CustomArmorRenderProperties;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderVoidWormBeak;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
@@ -53,13 +55,13 @@ import net.minecraftforge.fmlclient.registry.ClientRegistry;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-    private static final ModelRoadrunnerBoots ROADRUNNER_BOOTS_MODEL = new ModelRoadrunnerBoots(0.7F);
+   /* private static final ModelRoadrunnerBoots ROADRUNNER_BOOTS_MODEL = new ModelRoadrunnerBoots(0.7F);
     private static final ModelMooseHeadgear MOOSE_HEADGEAR_MODEL = new ModelMooseHeadgear(0.3F);
     private static final ModelFrontierCap FRONTIER_CAP_MODEL = new ModelFrontierCap(0.3F);
     private static final ModelSombrero SOMBRERO_MODEL = new ModelSombrero(0.3F);
     private static final ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(1.0F);
-    private static final ModelFedora FEDORA_MODEL = new ModelFedora(0.3F);
-    private static final ModelAMElytra ELYTRA_MODEL = new ModelAMElytra();
+    private static final ModelFedora FEDORA_MODEL = ModelFedora.createArmorLayer();
+    private static final ModelAMElytra ELYTRA_MODEL = new ModelAMElytra();*/
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
     public static final Map<Integer, SoundWormBoss> WORMBOSS_SOUND_MAP = new HashMap<>();
     public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
@@ -201,6 +203,7 @@ public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     public Object getArmorModel(int armorId, LivingEntity entity) {
         switch (armorId) {
+            /*
             case 0:
                 return ROADRUNNER_BOOTS_MODEL;
             case 1:
@@ -215,6 +218,8 @@ public class ClientProxy extends CommonProxy {
                 return FEDORA_MODEL;
             case 6:
                 return ELYTRA_MODEL.withAnimations(entity);
+
+             */
             default:
                 return null;
         }
@@ -302,8 +307,11 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public Object getISTERProperties() {
-        return new CitadelItemRenderProperties();
+        return new AMItemRenderProperties();
     }
 
-
+    @Override
+    public Object getArmorRenderProperties() {
+        return new CustomArmorRenderProperties();
+    }
 }

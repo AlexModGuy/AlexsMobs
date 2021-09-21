@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -268,7 +269,7 @@ public class ModelElephant extends AdvancedEntityModel<EntityElephant> {
         if (this.young) {
             float f = 1.5F;
             float f2 = 0.75F;
-            head.y = -13F;
+            head.rotationPointY = -13F;
             head.setScale(f, f, f);
             tail.setScale(f, f, f);
             head.setShouldScaleChildren(true);
@@ -285,7 +286,7 @@ public class ModelElephant extends AdvancedEntityModel<EntityElephant> {
             tail.setScale(1, 1, 1);
             trunk1.setScale(1, 1, 1);
         } else {
-            head.y = -10.0F;
+            head.rotationPointY = -10.0F;
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
                 p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);

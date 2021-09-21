@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityMimicube;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -73,7 +74,7 @@ public class ModelMimicube extends AdvancedEntityModel<EntityMimicube> {
 		float lvt_6_1_ = Mth.lerp(Minecraft.getInstance().getFrameTime(), entity.prevSquishFactor, entity.squishFactor);
 		float lvt_7_1_ = 1.0F / (lvt_6_1_ + 1.0F);
 		float squishScale = 1.0F / lvt_7_1_;
-		this.innerbody.y += lvt_6_1_ * -5F;
+		this.innerbody.rotationPointY += lvt_6_1_ * -5F;
 		this.body.setScale(1F, squishScale, 1F);
 	}
 

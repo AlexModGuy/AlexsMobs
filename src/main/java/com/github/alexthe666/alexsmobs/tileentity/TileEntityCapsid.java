@@ -6,6 +6,8 @@ import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateCapsid;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EndRodBlock;
@@ -22,7 +24,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.level.block.entity.TickableBlockEntity;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
@@ -39,7 +40,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
-public class TileEntityCapsid extends BaseContainerBlockEntity implements TickableBlockEntity, WorldlyContainer {
+public class TileEntityCapsid extends BaseContainerBlockEntity implements WorldlyContainer {
     private static final int[] slotsTop = new int[]{0};
     public int ticksExisted;
     public float prevFloatUpProgress;
@@ -53,11 +54,14 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Tickab
     private int transformProg = 0;
     private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
 
-    public TileEntityCapsid() {
-        super(AMTileEntityRegistry.CAPSID);
+    public TileEntityCapsid(BlockPos pos, BlockState state) {
+        super(AMTileEntityRegistry.CAPSID, pos, state);
     }
 
-    @Override
+    public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityCapsid entity) {
+        entity.tick();
+    }
+
     public void tick() {
         prevFloatUpProgress = floatUpProgress;
         prevYawSwitchProgress = yawSwitchProgress;
@@ -120,7 +124,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Tickab
                     this.setItem(0, new ItemStack(AMItemRegistry.MYSTERIOUS_WORM));
                 }
             }
-            if(this.getItem(0).getItem().is(ItemTags.MUSIC_DISCS) && this.getItem(0).getItem() != AMItemRegistry.MUSIC_DISC_DAZE && level.getBlockState(this.getBlockPos().above()).getBlock() != this.getBlockState().getBlock()) {
+            if(this.getItem(0).is(ItemTags.MUSIC_DISCS) && this.getItem(0).getItem() != AMItemRegistry.MUSIC_DISC_DAZE && level.getBlockState(this.getBlockPos().above()).getBlock() != this.getBlockState().getBlock()) {
                 vibrating = true;
                 if(transformProg > 120) {
                     ItemStack current = this.getItem(0).copy();
@@ -207,8 +211,8 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Tickab
     }
 
     @Override
-    public void load(BlockState state, CompoundTag compound) {
-        super.load(state, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
         this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compound, this.stacks);
     }
@@ -275,7 +279,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Tickab
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-        load(this.getBlockState(), packet.getTag());
+        load(packet.getTag());
     }
 
     public CompoundTag getUpdateTag() {

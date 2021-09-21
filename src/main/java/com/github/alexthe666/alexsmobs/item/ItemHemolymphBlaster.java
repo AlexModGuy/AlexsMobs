@@ -62,8 +62,8 @@ public class ItemHemolymphBlaster extends Item {
         if(entity.isCreative()){
             return ItemStack.EMPTY;
         }
-        for(int i = 0; i < entity.inventory.getContainerSize(); ++i) {
-            ItemStack itemstack1 = entity.inventory.getItem(i);
+        for(int i = 0; i < entity.getInventory().getContainerSize(); ++i) {
+            ItemStack itemstack1 = entity.getInventory().getItem(i);
             if (HEMOLYMPH.test(itemstack1)) {
                 return itemstack1;
             }

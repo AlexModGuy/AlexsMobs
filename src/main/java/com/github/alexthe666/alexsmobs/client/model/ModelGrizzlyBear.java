@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -87,10 +88,6 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         animator = ModelAnimator.create();
     }
 
-    public void addChildSub(AdvancedModelBox parent, AdvancedModelBox child) {
-        child.setPos(child.x - parent.x, child.y - parent.y, child.z - parent.z);
-        parent.addChild(child);
-    }
 
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
         this.resetToDefaultPose();

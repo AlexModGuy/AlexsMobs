@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityCentipedeHead;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.geom.ModelPart;
 
@@ -73,7 +74,7 @@ public class ModelCentipedeHead extends AdvancedEntityModel<EntityCentipedeHead>
 		this.swing(antenna_left, idleSpeed, idleDegree, true, 1, -0.1F, ageInTicks, 1);
 		this.swing(antenna_right, idleSpeed, idleDegree, false, 1, -0.1F, ageInTicks, 1);
 		this.swing(fangs, idleSpeed, idleDegree * 0.1F, false, 0, 0, ageInTicks, 1);
-		this.fangs.z = -6.2F;
+		this.fangs.rotationPointZ = -6.2F;
 	}
 
 	@Override

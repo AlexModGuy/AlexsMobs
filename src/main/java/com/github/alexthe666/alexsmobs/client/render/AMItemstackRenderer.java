@@ -6,17 +6,16 @@ import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -99,6 +98,10 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation MYTERIOUS_WORM_TEXTURE = new ResourceLocation("alexsmobs:textures/item/mysterious_worm_model.png");
     private Map<String, Entity> renderedEntites = new HashMap();
 
+    public AMItemstackRenderer() {
+        super(null, null);
+    }
+
     public static void incrementTick() {
         ticksExisted++;
     }
@@ -115,7 +118,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     public static void drawEntityOnScreen(PoseStack matrixstack, int posX, int posY, float scale, boolean follow, double xRot, double yRot, double zRot, float mouseX, float mouseY, Entity entity) {
         float f = (float) Math.atan(-mouseX / 40.0F);
         float f1 = (float) Math.atan(mouseY / 40.0F);
-
+        RenderSystem.applyModelViewMatrix();
         matrixstack.scale(scale, scale, scale);
         entity.setOnGround(false);
         float partialTicks = Minecraft.getInstance().getFrameTime();
@@ -128,7 +131,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         }
         if (follow) {
             float yaw = f * 45.0F;
-            entity.yRot = yaw;
+            entity.setYRot(yaw);
             entity.tickCount = tick;
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).yBodyRot = yaw;
@@ -145,23 +148,26 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         matrixstack.mulPose(Vector3f.XP.rotationDegrees((float) (-xRot)));
         matrixstack.mulPose(Vector3f.YP.rotationDegrees((float) yRot));
         matrixstack.mulPose(Vector3f.ZP.rotationDegrees((float) zRot));
-        EntityRendererProvider.Context entityrenderermanager = Minecraft.getInstance().getEntityRendererProvider.Context();
+        Lighting.setupForEntityInInventory();
+        EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         quaternion1.conj();
-        entityrenderermanager.overrideCameraOrientation(quaternion1);
-        entityrenderermanager.setRenderShadow(false);
-        MultiBufferSource.BufferSource irendertypebuffer$impl = Minecraft.getInstance().renderBuffers().bufferSource();
+        entityrenderdispatcher.overrideCameraOrientation(quaternion1);
+        entityrenderdispatcher.setRenderShadow(false);
+        MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
         RenderSystem.runAsFancy(() -> {
-            entityrenderermanager.render(entity, 0.0D, 0.0D, 0.0D, f, partialTicksForRender, matrixstack, irendertypebuffer$impl, 15728880);
+            entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, multibuffersource$buffersource, 15728880);
         });
-        irendertypebuffer$impl.endBatch();
-        entityrenderermanager.setRenderShadow(true);
-        entity.yRot = 0.0F;
-        entity.xRot = 0.0F;
+        multibuffersource$buffersource.endBatch();
+        entityrenderdispatcher.setRenderShadow(true);
+        entity.setYRot(0.0F);
+        entity.setXRot(0.0F);
         if (entity instanceof LivingEntity) {
             ((LivingEntity) entity).yBodyRot = 0.0F;
             ((LivingEntity) entity).yHeadRotO = 0.0F;
             ((LivingEntity) entity).yHeadRot = 0.0F;
         }
+        RenderSystem.applyModelViewMatrix();
+        Lighting.setupFor3DItems();
     }
 
     @Override
@@ -184,9 +190,9 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE){
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             if(p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }else{
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY), p_239207_2_, 240, combinedOverlayIn, matrixStackIn, bufferIn);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY), p_239207_2_, 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON) {

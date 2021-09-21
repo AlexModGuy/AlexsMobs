@@ -13,7 +13,6 @@ import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -36,7 +35,6 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.loot.*;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
@@ -46,7 +44,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
@@ -90,7 +88,6 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.RandomValueBounds;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.phys.AABB;
@@ -130,15 +127,15 @@ public class ServerEvents {
                 ServerPlayer player = (ServerPlayer) trip.a;
                 ServerLevel endpointWorld = (ServerLevel) trip.b;
                 BlockPos endpoint = (BlockPos) trip.c;
-                player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.yRot, player.xRot);
+                player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.getYRot(), player.getXRot());
             }
             teleportPlayers.clear();
         }
     }
 
     protected static BlockHitResult rayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
-        float f = player.xRot;
-        float f1 = player.yRot;
+        float f = player.getXRot();
+        float f1 = player.getYRot();
         Vec3 vector3d = player.getEyePosition(1.0F);
         float f2 = Mth.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
         float f3 = Mth.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
@@ -404,7 +401,7 @@ public class ServerEvents {
     public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
         if (event.getPlayer().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR && event.getTarget() instanceof LivingEntity) {
             float f1 = 2;
-            ((LivingEntity) event.getTarget()).knockback(f1 * 0.5F, Mth.sin(event.getPlayer().yRot * ((float) Math.PI / 180F)), -Mth.cos(event.getPlayer().yRot * ((float) Math.PI / 180F)));
+            ((LivingEntity) event.getTarget()).knockback(f1 * 0.5F, Mth.sin(event.getPlayer().getYRot() * ((float) Math.PI / 180F)), -Mth.cos(event.getPlayer().getYRot() * ((float) Math.PI / 180F)));
         }
         if(event.getPlayer().hasEffect(AMEffectRegistry.TIGERS_BLESSING) && event.getTarget() instanceof LivingEntity && !event.getTarget().isAlliedTo(event.getPlayer()) && !(event.getTarget() instanceof EntityTiger)){
             AABB bb = new AABB(event.getPlayer().getX() - 32, event.getPlayer().getY() - 32, event.getPlayer().getZ() - 32, event.getPlayer().getZ() + 32, event.getPlayer().getY() + 32, event.getPlayer().getZ() + 32);
@@ -441,7 +438,7 @@ public class ServerEvents {
                 float f1 = 1F;
                 if (attacker.distanceTo(player) < attacker.getBbWidth() + player.getBbWidth() + 0.5F) {
                     attacker.hurt(DamageSource.thorns(player), 1F);
-                    attacker.knockback(f1 * 0.5F, Mth.sin((attacker.yRot + 180) * ((float) Math.PI / 180F)), -Mth.cos((attacker.yRot + 180) * ((float) Math.PI / 180F)));
+                    attacker.knockback(f1 * 0.5F, Mth.sin((attacker.getYRot() + 180) * ((float) Math.PI / 180F)), -Mth.cos((attacker.getYRot() + 180) * ((float) Math.PI / 180F)));
                 }
             }
         }
@@ -485,7 +482,7 @@ public class ServerEvents {
             }
             AttributeInstance modifiableattributeinstance = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);
             if (event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS || modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
-                boolean sand = event.getEntityLiving().level.getBlockState(getDownPos(event.getEntityLiving().blockPosition(), event.getEntityLiving().level)).getBlock().is(BlockTags.SAND);
+                boolean sand = event.getEntityLiving().level.getBlockState(getDownPos(event.getEntityLiving().blockPosition(), event.getEntityLiving().level)).is(BlockTags.SAND);
                 if (sand && !modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
                     modifiableattributeinstance.addPermanentModifier(SAND_SPEED_BONUS);
                 }
@@ -550,7 +547,7 @@ public class ServerEvents {
                 EntityVoidWorm worm = AMEntityRegistry.VOID_WORM.create(event.getWorld());
                 worm.setPos(event.getEntity().getX(), 0, event.getEntity().getZ());
                 worm.setSegmentCount(25 + new Random().nextInt(15));
-                worm.xRot = -90.0F;
+                worm.setXRot(-90.0F);
                 worm.updatePostSummon = true;
                 if(!event.getWorld().isClientSide){
                     if(((ItemEntity) event.getEntity()).getThrower() != null){
@@ -594,12 +591,12 @@ public class ServerEvents {
     public void onChestGenerated(LootTableLoadEvent event) {
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(40).setWeight(1);
-            LootPool.Builder builder = new LootPool.Builder().name("am_dart").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(new RandomValueBounds(0, 1)).bonusRolls(0, 1);
+            LootPool.Builder builder = new LootPool.Builder().name("am_dart").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 1)).bonusRolls(0, 1);
             event.getTable().addPool(builder.build());
         }
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE_DISPENSER)) {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(20).setWeight(3);
-            LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(new RandomValueBounds(0, 2)).bonusRolls(0, 1);
+            LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 2)).bonusRolls(0, 1);
             event.getTable().addPool(builder.build());
         }
     }

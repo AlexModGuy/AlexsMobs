@@ -1,12 +1,6 @@
 package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
-import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
-import com.google.common.base.Predicates;
-import net.minecraft.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.entity.player.Player;
@@ -21,31 +15,22 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.BeehiveTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.village.PointOfInterestManager;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.ToolType;
-
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -60,7 +45,7 @@ public class BlockHummingbirdFeeder extends Block {
     private static final VoxelShape AABB_HANGING = Block.box(4, 0, 4, 12, 16, 12);
 
     public BlockHummingbirdFeeder() {
-        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.LANTERN).harvestTool(ToolType.PICKAXE).strength(3F).randomTicks().noOcclusion());
+        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.LANTERN).strength(3F).randomTicks().noOcclusion());
         this.setRegistryName("alexsmobs:hummingbird_feeder");
         this.registerDefaultState(this.stateDefinition.any().setValue(CONTENTS, 0).setValue(HANGING, false));
     }

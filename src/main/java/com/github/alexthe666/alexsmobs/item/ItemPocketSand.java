@@ -12,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import com.mojang.math.Vector3f;
 import net.minecraft.world.level.Level;
 
+import java.util.Random;
 import java.util.function.Predicate;
 
 import net.minecraft.world.item.Item.Properties;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 public class ItemPocketSand extends Item {
 
+    private Random random = new Random();
     public static final Predicate<ItemStack> IS_SAND = (stack) -> {
         return ItemTags.SAND.contains(stack.getItem());
     };
@@ -36,8 +38,8 @@ public class ItemPocketSand extends Item {
         if(entity.isCreative()){
             return ItemStack.EMPTY;
         }
-        for(int i = 0; i < entity.inventory.getContainerSize(); ++i) {
-            ItemStack itemstack1 = entity.inventory.getItem(i);
+        for(int i = 0; i < entity.getInventory().getContainerSize(); ++i) {
+            ItemStack itemstack1 = entity.getInventory().getItem(i);
             if (IS_SAND.test(itemstack1)) {
                 return itemstack1;
             }

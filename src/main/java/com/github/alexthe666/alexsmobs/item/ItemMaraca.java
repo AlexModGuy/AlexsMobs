@@ -10,7 +10,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 
+import java.util.Random;
+
 public class ItemMaraca extends Item {
+
+    private Random random = new Random();
 
     public ItemMaraca(Item.Properties property) {
         super(property);

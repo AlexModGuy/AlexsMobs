@@ -34,7 +34,11 @@ public class ItemModArmor extends ArmorItem {
 
     public ItemModArmor(CustomArmorMaterial armorMaterial, EquipmentSlot slot) {
         super(armorMaterial, slot, new Item.Properties().tab(AlexsMobs.TAB));
+    }
 
+    @Override
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+        consumer.accept((net.minecraftforge.client.IItemRenderProperties) AlexsMobs.PROXY.getArmorRenderProperties());
     }
 
     @Override
@@ -117,25 +121,5 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/emu_leggings.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Nullable
-    public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
-        if (this.material == AMItemRegistry.ROADRUNNER_ARMOR_MATERIAL) {
-            return (A) AlexsMobs.PROXY.getArmorModel(0, entity);
-        } else if (this.material == AMItemRegistry.MOOSE_ARMOR_MATERIAL) {
-            return (A) AlexsMobs.PROXY.getArmorModel(1, entity);
-        } else if (this.material == AMItemRegistry.RACCOON_ARMOR_MATERIAL) {
-            return (A) AlexsMobs.PROXY.getArmorModel(2, entity);
-        } else if (this.material == AMItemRegistry.SOMBRERO_ARMOR_MATERIAL) {
-            return (A) AlexsMobs.PROXY.getArmorModel(3, entity);
-        } else if (this.material == AMItemRegistry.SPIKED_TURTLE_SHELL_ARMOR_MATERIAL) {
-            return (A) AlexsMobs.PROXY.getArmorModel(4, entity);
-        } else if (this.material == AMItemRegistry.FEDORA_ARMOR_MATERIAL) {
-            return (A) AlexsMobs.PROXY.getArmorModel(5, entity);
-        } else {
-            return super.getArmorModel(entity, itemStack, armorSlot, _default);
-        }
     }
 }

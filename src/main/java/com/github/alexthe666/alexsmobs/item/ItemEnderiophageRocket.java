@@ -39,7 +39,7 @@ public class ItemEnderiophageRocket extends Item {
             ItemStack itemstack = playerIn.getItemInHand(handIn);
             if (!worldIn.isClientSide) {
                 worldIn.addFreshEntity(new EntityEnderiophageRocket(worldIn, itemstack, playerIn));
-                if (!playerIn.abilities.instabuild) {
+                if (!playerIn.getAbilities().instabuild) {
                     itemstack.shrink(1);
                 }
             }

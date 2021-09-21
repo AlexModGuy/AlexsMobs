@@ -42,10 +42,10 @@ public class ItemFishOil extends Item {
         if (p_77654_1_.isEmpty()) {
             return new ItemStack(Items.GLASS_BOTTLE);
         } else {
-            if (p_77654_3_ instanceof Player && !((Player)p_77654_3_).abilities.instabuild) {
+            if (p_77654_3_ instanceof Player && !((Player)p_77654_3_).getAbilities().instabuild) {
                 ItemStack lvt_4_2_ = new ItemStack(Items.GLASS_BOTTLE);
                 Player lvt_5_1_ = (Player)p_77654_3_;
-                if (!lvt_5_1_.inventory.add(lvt_4_2_)) {
+                if (!lvt_5_1_.getInventory().add(lvt_4_2_)) {
                     lvt_5_1_.drop(lvt_4_2_, false);
                 }
             }
@@ -70,7 +70,7 @@ public class ItemFishOil extends Item {
         return SoundEvents.HONEY_DRINK;
     }
 
-    public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_) {
-        return ItemUtils.useDrink(p_77659_1_, p_77659_2_, p_77659_3_);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+        return ItemUtils.startUsingInstantly(level, player, interactionHand);
     }
 }

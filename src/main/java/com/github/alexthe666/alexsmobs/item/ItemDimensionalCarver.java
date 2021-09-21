@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -24,17 +23,20 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
+import java.util.Random;
+
 public class ItemDimensionalCarver extends Item {
 
     public static final int MAX_TIME = 200;
+    private Random random = new Random();
 
     public ItemDimensionalCarver(Item.Properties props) {
         super(props);
     }
 
     protected static BlockHitResult rayTracePortal(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
-        float f = player.xRot;
-        float f1 = player.yRot;
+        float f = player.getXRot();
+        float f1 = player.getYRot();
         Vec3 vector3d = player.getEyePosition(1.0F);
         float f2 = Mth.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
         float f3 = Mth.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);

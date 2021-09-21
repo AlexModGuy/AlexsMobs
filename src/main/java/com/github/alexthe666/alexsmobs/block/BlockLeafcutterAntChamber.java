@@ -5,13 +5,9 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import com.google.common.base.Predicates;
-import net.minecraft.block.*;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -26,8 +22,6 @@ import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.ToolType;
-
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
@@ -44,7 +38,7 @@ public class BlockLeafcutterAntChamber extends Block {
     public static final IntegerProperty FUNGUS = IntegerProperty.create("fungus", 0, 5);
 
     public BlockLeafcutterAntChamber() {
-        super(BlockBehaviour.Properties.of(Material.GRASS).sound(SoundType.GRAVEL).harvestTool(ToolType.SHOVEL).strength(4F).randomTicks());
+        super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(4F).randomTicks());
         this.setRegistryName("alexsmobs:leafcutter_ant_chamber");
         this.registerDefaultState(this.stateDefinition.any().setValue(FUNGUS, 0));
     }
@@ -124,4 +118,5 @@ public class BlockLeafcutterAntChamber extends Block {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FUNGUS);
     }
+
 }

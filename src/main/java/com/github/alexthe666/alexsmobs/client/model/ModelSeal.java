@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -159,14 +160,14 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         }
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{head, body, tail, tail2};
         if (!entity.isInWater()) {
-            this.body.y += (float) (Math.sin((double) (limbSwing * walkSpeed) - (Math.PI * 0.1F)) * (double) limbSwingAmount * (double) walkDegree * 4D - (limbSwingAmount * walkDegree * 4D));
+            this.body.rotationPointY += (float) (Math.sin((double) (limbSwing * walkSpeed) - (Math.PI * 0.1F)) * (double) limbSwingAmount * (double) walkDegree * 4D - (limbSwingAmount * walkDegree * 4D));
             this.chainWave(bodyParts, walkSpeed, walkDegree * 0.5F, -2F, limbSwing, limbSwingAmount);
             this.walk(tail2, walkSpeed, walkDegree, false, 9, 0, limbSwing, limbSwingAmount);
             this.flap(arm_right, walkSpeed, walkDegree * 1.8F, true, 8.7F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_left, walkSpeed, walkDegree * 1.8F, false, 8.7F, 0, limbSwing, limbSwingAmount);
         } else {
             this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
-            this.body.y += (float) (Math.sin(limbSwing * swimSpeed) * (double) limbSwingAmount * (double) swimDegree * 9D - (limbSwingAmount * swimDegree * 9D));
+            this.body.rotationPointY += (float) (Math.sin(limbSwing * swimSpeed) * (double) limbSwingAmount * (double) swimDegree * 9D - (limbSwingAmount * swimDegree * 9D));
             this.chainWave(bodyParts, swimSpeed, swimDegree, -3F, limbSwing, limbSwingAmount);
             this.walk(tail2, swimSpeed, swimDegree, false, -8F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_right, swimSpeed * 0.5F, swimDegree * 4.5F, true, 3F, 0, limbSwing, limbSwingAmount);

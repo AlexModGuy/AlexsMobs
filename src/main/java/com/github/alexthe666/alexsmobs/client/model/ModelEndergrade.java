@@ -6,6 +6,7 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7
 import com.github.alexthe666.alexsmobs.entity.EntityEndergrade;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -129,7 +130,7 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 		float biteProgress= entityIn.prevBiteProgress + (entityIn.biteProgress - entityIn.prevBiteProgress) * partialTick;
 		this.mouth.setScale(1, 1, 1 + biteProgress * 0.4F);
 		this.bodymain.rotateAngleX += birdPitch * ((float)Math.PI / 180F);
-		this.mouth.z = -3 - biteProgress * 0.2F;
+		this.mouth.rotationPointZ = -3 - biteProgress * 0.2F;
 		this.chainWave(bodyParts, walkSpeed, walkDegree * 0.3F, -1, limbSwing, limbSwingAmount);
 		this.chainWave(legPartsRight, walkSpeed, walkDegree, -1, limbSwing, limbSwingAmount);
 		this.chainWave(legPartsLeft, walkSpeed, walkDegree, -1, limbSwing, limbSwingAmount);

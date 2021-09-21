@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityVoidWormBeak;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.Entity;
@@ -50,13 +51,8 @@ public class ModelVoidWormBeak extends AdvancedEntityModel<Entity> {
         this.flap(left, 0.5F, 0.5F, false, 0F, 0.3F, ageInTicks, amount);
         this.flap(right, 0.5F, -0.5F, false, 0F, -0.3F, ageInTicks, amount);
         float rotation = Mth.cos(ageInTicks * 0.5F) * 0.5F * amount + 0.3F * amount;
-        left.y -= rotation * 4.5F;
-        right.y -= rotation * 4.5F;
+        left.rotationPointY -= rotation * 4.5F;
+        right.rotationPointY -= rotation * 4.5F;
     }
 
-    public void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
-    }
 }

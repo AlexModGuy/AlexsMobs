@@ -3,8 +3,11 @@ package com.github.alexthe666.alexsmobs.block;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
+import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
-import net.minecraft.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -25,11 +28,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolType;
-
 import javax.annotation.Nullable;
 import java.util.List;
-
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlockLeafcutterAnthill extends BaseEntityBlock {
 
     public BlockLeafcutterAnthill() {
-        super(BlockBehaviour.Properties.of(Material.GRASS).sound(SoundType.GRAVEL).harvestTool(ToolType.SHOVEL).strength(2.5F));
+        super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(2.5F));
         this.setRegistryName("alexsmobs:leafcutter_anthill");
     }
 
@@ -89,7 +89,7 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
         super.playerWillDestroy(worldIn, pos, state, player);
     }
 
-    public void fallOn(Level worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
+    public void fallOn(Level worldIn, BlockState state, BlockPos pos, Entity entityIn, float fallDistance) {
         if (entityIn instanceof LivingEntity) {
             this.angerNearbyAnts(worldIn, (LivingEntity) entityIn, pos);
             if (!worldIn.isClientSide && worldIn.getBlockEntity(pos) instanceof TileEntityLeafcutterAnthill) {
@@ -100,7 +100,7 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
                 }
             }
         }
-        super.fallOn(worldIn, pos, entityIn, fallDistance);
+        super.fallOn(worldIn, state, pos, entityIn, fallDistance);
     }
 
     public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
@@ -142,9 +142,15 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
         }
     }
 
+
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockGetter worldIn) {
-        return new TileEntityLeafcutterAnthill();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new TileEntityLeafcutterAnthill(pos, state);
+    }
+
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
+        return p_152180_.isClientSide ? null : createTickerHelper(p_152182_, AMTileEntityRegistry.LEAFCUTTER_ANTHILL, TileEntityLeafcutterAnthill::serverTick);
     }
 }

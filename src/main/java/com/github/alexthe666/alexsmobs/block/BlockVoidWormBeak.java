@@ -1,7 +1,10 @@
 package com.github.alexthe666.alexsmobs.block;
 
+import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
+import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityVoidWormBeak;
-import net.minecraft.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -16,16 +19,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.ToolType;
-
 import javax.annotation.Nullable;
 import java.util.Random;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
@@ -40,7 +37,7 @@ public class BlockVoidWormBeak extends BaseEntityBlock {
     private static final VoxelShape AABB_VERTICAL = Block.box(0, 0, 4, 16, 16, 12);
 
     public BlockVoidWormBeak() {
-        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).harvestTool(ToolType.PICKAXE).strength(3F).noCollission());
+        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(3F).noCollission());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
         this.setRegistryName("alexsmobs:void_worm_beak");
     }
@@ -74,8 +71,8 @@ public class BlockVoidWormBeak extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockGetter worldIn) {
-        return new TileEntityVoidWormBeak();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new TileEntityVoidWormBeak(pos, state);
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -92,5 +89,10 @@ public class BlockVoidWormBeak extends BaseEntityBlock {
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, POWERED);
+    }
+
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
+        return createTickerHelper(p_152182_, AMTileEntityRegistry.VOID_WORM_BEAK, TileEntityVoidWormBeak::commonTick);
     }
 }

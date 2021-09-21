@@ -25,6 +25,10 @@ public class ItemFalconryGlove extends Item {
         super(properties);
     }
 
+    @Override
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+        consumer.accept((net.minecraftforge.client.IItemRenderProperties) AlexsMobs.PROXY.getISTERProperties());
+    }
 
     public static void onLeftClick(Player playerIn, ItemStack stack) {
         if(stack.getItem() == AMItemRegistry.FALCONRY_GLOVE){
@@ -75,7 +79,7 @@ public class ItemFalconryGlove extends Item {
                         eagle.removeVehicle();
                         eagle.setOrderedToSit(false);
                         eagle.setCommand(0);
-                        eagle.moveTo(playerIn.getX(), playerIn.getEyeY(), playerIn.getZ(), eagle.yRot, eagle.xRot);
+                        eagle.moveTo(playerIn.getX(), playerIn.getEyeY(), playerIn.getZ(), eagle.getYRot(), eagle.getXRot());
                         if(eagle.level.isClientSide){
                             AlexsMobs.sendMSGToServer(new MessageSyncEntityPos(eagle.getId(), playerIn.getX(), playerIn.getEyeY(), playerIn.getZ()));
                         }else{

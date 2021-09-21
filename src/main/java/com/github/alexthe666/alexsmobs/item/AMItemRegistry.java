@@ -13,7 +13,6 @@ import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -50,7 +49,7 @@ public class AMItemRegistry {
     public static CustomArmorMaterial EMU_ARMOR_MATERIAL = new AMArmorMaterial("emu", 9, new int[]{4, 4, 4, 4}, 20, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
     public static CustomArmorMaterial TARANTULA_HAWK_ELYTRA_MATERIAL = new AMArmorMaterial("tarantula_hawk_elytra", 9, new int[]{3, 3, 3, 3}, 5, SoundEvents.ARMOR_EQUIP_LEATHER, 0);
 
-    public static final Item TAB_ICON = new ItemTabIcon(AlexsMobs.PROXY.setupISTER(new Item.Properties())).setRegistryName("alexsmobs:tab_icon");
+    public static final Item TAB_ICON = new ItemTabIcon(new Item.Properties()).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:animal_dictionary");
     public static final Item BEAR_FUR = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:bear_fur");
     public static final Item ROADRUNNER_FEATHER = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:roadrunner_feather");
@@ -130,18 +129,18 @@ public class AMItemRegistry {
     public static final Item ENDERIOPHAGE_ROCKET = new ItemEnderiophageRocket(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:enderiophage_rocket");
     public static final Item FALCONRY_GLOVE_INVENTORY = new Item(new Item.Properties()).setRegistryName("alexsmobs:falconry_glove_inventory");
     public static final Item FALCONRY_GLOVE_HAND = new Item(new Item.Properties()).setRegistryName("alexsmobs:falconry_glove_hand");
-    public static final Item FALCONRY_GLOVE = new ItemFalconryGlove(AlexsMobs.PROXY.setupISTER(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1))).setRegistryName("alexsmobs:falconry_glove");
+    public static final Item FALCONRY_GLOVE = new ItemFalconryGlove(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:falconry_glove");
     public static final Item FALCONRY_HOOD = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:falconry_hood");
     public static final Item TARANTULA_HAWK_WING_FRAGMENT = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing_fragment");
     public static final Item TARANTULA_HAWK_WING = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing");
     public static final Item TARANTULA_HAWK_ELYTRA = new ItemTarantulaHawkElytra(new Item.Properties().tab(AlexsMobs.TAB).durability(800).rarity(Rarity.UNCOMMON), TARANTULA_HAWK_ELYTRA_MATERIAL).setRegistryName("alexsmobs:tarantula_hawk_elytra");
-    public static final Item MYSTERIOUS_WORM = new Item(AlexsMobs.PROXY.setupISTER(new Item.Properties().tab(AlexsMobs.TAB).rarity(Rarity.RARE))).setRegistryName("alexsmobs:mysterious_worm");
+    public static final Item MYSTERIOUS_WORM = new ItemFancyRender(new Item.Properties().tab(AlexsMobs.TAB).rarity(Rarity.RARE)).setRegistryName("alexsmobs:mysterious_worm");
     public static final Item VOID_WORM_MANDIBLE = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:void_worm_mandible");
     public static final Item VOID_WORM_EYE = new Item(new Item.Properties().tab(AlexsMobs.TAB).rarity(Rarity.RARE)).setRegistryName("alexsmobs:void_worm_eye");
     public static final Item DIMENSIONAL_CARVER = new ItemDimensionalCarver(new Item.Properties().tab(AlexsMobs.TAB).durability(20).rarity(Rarity.EPIC)).setRegistryName("alexsmobs:dimensional_carver");
     public static final Item SERRATED_SHARK_TOOTH = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:serrated_shark_tooth");
     public static final Item FRILLED_SHARK_BUCKET = new ItemModFishBucket(AMEntityRegistry.FRILLED_SHARK, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:frilled_shark_bucket");
-    public static final Item SHIELD_OF_THE_DEEP = new ItemShieldOfTheDeep(AlexsMobs.PROXY.setupISTER(new Item.Properties().durability(400).rarity(Rarity.UNCOMMON).tab(AlexsMobs.TAB))).setRegistryName("alexsmobs:shield_of_the_deep");
+    public static final Item SHIELD_OF_THE_DEEP = new ItemShieldOfTheDeep(new Item.Properties().durability(400).rarity(Rarity.UNCOMMON).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:shield_of_the_deep");
     public static final Item MIMIC_OCTOPUS_BUCKET = new ItemModFishBucket(AMEntityRegistry.MIMIC_OCTOPUS, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:mimic_octopus_bucket");
 
     public static final Item MUSIC_DISC_THIME = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
