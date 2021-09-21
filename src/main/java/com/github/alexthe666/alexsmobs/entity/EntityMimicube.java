@@ -368,11 +368,11 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         public MimicubeMoveHelper(EntityMimicube slimeIn) {
             super(slimeIn);
             this.slime = slimeIn;
-            this.yRot = 180.0F * slimeIn.yRot / (float) Math.PI;
+            this.setYRot( 180.0F * slimeIn.yRot / (float) Math.PI;
         }
 
         public void setDirection(float yRotIn, boolean aggressive) {
-            this.yRot = yRotIn;
+            this.setYRot( yRotIn;
             this.isAggressive = aggressive;
         }
 

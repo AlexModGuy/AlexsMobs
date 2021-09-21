@@ -108,7 +108,7 @@ public class EntityStradpole extends WaterAnimal {
                 if(!level.isClientSide){
                     level.addFreshEntity(straddler);
                 }
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
@@ -126,7 +126,7 @@ public class EntityStradpole extends WaterAnimal {
                 p_230254_1_.drop(itemstack1, false);
             }
 
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
             return super.mobInteract(p_230254_1_, p_230254_2_);
@@ -230,7 +230,7 @@ public class EntityStradpole extends WaterAnimal {
     public void tick() {
         float f = 1.0F;
         if (entityData.get(LAUNCHED)) {
-            this.yBodyRot = this.yRot;
+            this.yBodyRot = this.getYRot();
             HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
             if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
                 this.onImpact(raytraceresult);
@@ -245,7 +245,7 @@ public class EntityStradpole extends WaterAnimal {
         this.swimPitch = f2;
         if (this.onGround && !this.isInWater() && !this.isInLava()) {
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
-            this.yRot = this.random.nextFloat() * 360.0F;
+            this.setYRot( this.random.nextFloat() * 360.0F;
             this.onGround = false;
             this.hasImpulse = true;
         }
@@ -258,7 +258,7 @@ public class EntityStradpole extends WaterAnimal {
             if (despawnTimer > 100) {
                 despawnTimer = 0;
                 this.spawnAnim();
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
         }
     }
@@ -351,9 +351,9 @@ public class EntityStradpole extends WaterAnimal {
         Vec3 lvt_9_1_ = (new Vec3(p_70186_1_, p_70186_3_, p_70186_5_)).normalize().add(this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_, this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_, this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_).scale(p_70186_7_);
         this.setDeltaMovement(lvt_9_1_);
         float lvt_10_1_ = Mth.sqrt(getHorizontalDistanceSqr(lvt_9_1_));
-        this.yRot = (float) (Mth.atan2(lvt_9_1_.x, lvt_9_1_.z) * 57.2957763671875D);
-        this.xRot = (float) (Mth.atan2(lvt_9_1_.y, lvt_10_1_) * 57.2957763671875D);
-        this.xRotO = this.xRot;
+        this.setYRot( (float) (Mth.atan2(lvt_9_1_.x, lvt_9_1_.z) * 57.2957763671875D);
+        this.setXRot((float) (Mth.atan2(lvt_9_1_.y, lvt_10_1_) * 57.2957763671875D);
+        this.xRotO = this.getXRot();
         this.yBodyRot = yRot;
         this.yHeadRot = yRot;
         this.yHeadRotO = yRot;

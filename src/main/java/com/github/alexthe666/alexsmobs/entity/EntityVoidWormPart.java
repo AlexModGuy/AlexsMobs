@@ -88,7 +88,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public void kill() {
-        this.remove();
+        this.remove(RemovalReason.DISCARDED);
     }
 
     public EntityDimensions getDimensions(Pose poseIn) {
@@ -240,12 +240,12 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                     double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                     float f2 = -((float) (Mth.atan2(d1, Mth.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
                     this.setPos(x, y, z);
-                    this.xRot = this.limitAngle(this.xRot, f2, 5.0F);
-                    this.yRot = yaw;
+                    this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F);
+                    this.setYRot( yaw;
                     this.entityData.set(WORM_YAW, yRot);
                 }
                 this.markHurt();
-                this.yHeadRot = this.yRot;
+                this.yHeadRot = this.getYRot();
                 this.yBodyRot = pitch;
                 if (parent instanceof LivingEntity) {
                     if (!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)) {
@@ -256,7 +256,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 }
                 this.pushEntities();
                 if (parent.removed && !level.isClientSide) {
-                    this.remove();
+                    this.remove(RemovalReason.DISCARDED);
                 }
                 if (parent instanceof EntityVoidWorm) {
                     this.setWormAngle(((EntityVoidWorm) parent).prevWormAngle);
@@ -264,7 +264,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                     this.setWormAngle(((EntityVoidWormPart) parent).prevWormAngle);
                 }
             } else if (tickCount > 20 && !level.isClientSide) {
-                remove();
+                remove(RemovalReason.DISCARDED);
             }
         }
         if (tickCount % 400 == 0) {
@@ -360,7 +360,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         }
     }
 
-    public void remove() {
+    public void remove(RemovalReason.DISCARDED) {
         this.remove(false);
     }
 

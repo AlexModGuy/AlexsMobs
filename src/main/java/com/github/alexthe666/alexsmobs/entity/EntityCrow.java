@@ -8,14 +8,13 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.monster.Monster;
@@ -39,7 +38,6 @@ import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.LevelAccessor;
@@ -64,7 +62,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -499,7 +497,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return AMEntityRegistry.CROW.create(serverWorld);
     }
 
@@ -697,8 +695,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                     return crow.getBlockGrounding(vector3d);
                 }
             } else {
-
-                return RandomPos.getPos(this.crow, 10, 7);
+                return LandRandomPos.getPos(this.crow, 10, 7);
             }
         }
 
@@ -980,7 +977,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                     float f2 = (float) (crow.getZ() - targetEntity.getZ());
                     float xzDist = Mth.sqrt(f * f + f2 * f2);
 
-                    if(!crow.canSee(targetEntity)){
+                    if(!crow.hasLineOfSight(targetEntity)){
                         crow.getMoveControl().setWantedPosition(this.targetEntity.getX(), 1 + crow.getY(), this.targetEntity.getZ(), 1);
                     }else{
                         if (xzDist < 5) {

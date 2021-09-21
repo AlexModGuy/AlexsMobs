@@ -8,13 +8,12 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.TamableAnimal;
@@ -36,7 +35,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.DifficultyInstance;
@@ -55,7 +53,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -202,8 +200,8 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if (spawnDataIn instanceof AgableMob.AgableMobGroupData) {
-            AgableMob.AgableMobGroupData lvt_6_1_ = (AgableMob.AgableMobGroupData) spawnDataIn;
+        if (spawnDataIn instanceof AgeableMob.AgeableMobGroupData) {
+            AgeableMob.AgeableMobGroupData lvt_6_1_ = (AgeableMob.AgeableMobGroupData) spawnDataIn;
             if (lvt_6_1_.getGroupSize() == 0) {
                 this.setSilverback(true);
             }
@@ -216,7 +214,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
 
     @Nullable
     public EntityGorilla getNearestSilverback(LevelAccessor world, double dist) {
-        List<EntityGorilla> list = world.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(dist, dist / 2, dist));
+        List<? extends EntityGorilla> list = world.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(dist, dist / 2, dist));
         if (list.isEmpty()) {
             return null;
         }
@@ -241,7 +239,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
             this.setOrderedToSit(false);
-            passenger.yRot = this.yRot;
+            passenger.setYRot(this.getYRot());
             if (passenger instanceof EntityGorilla) {
                 EntityGorilla babyGorilla = (EntityGorilla) passenger;
                 babyGorilla.setStanding(this.isStanding());
@@ -330,7 +328,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         }
         if (isTame() && isBanana(itemstack) && this.getHealth() < this.getMaxHealth()) {
             this.heal(5);
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }
@@ -460,7 +458,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             this.setAnimation(ANIMATION_POUNDCHEST);
         }
         if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
-            float f1 = this.yRot * ((float) Math.PI / 180F);
+            float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
             getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
@@ -516,7 +514,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.GORILLA.create(p_241840_1_);
     }
 
@@ -572,7 +570,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
 
         @Nullable
         protected Vec3 getPosition() {
-            return RandomPos.getPos(this.mob, EntityGorilla.this.isSilverback() ? 25 : 10, 7);
+            return LandRandomPos.getPos(this.mob, EntityGorilla.this.isSilverback() ? 25 : 10, 7);
         }
 
     }

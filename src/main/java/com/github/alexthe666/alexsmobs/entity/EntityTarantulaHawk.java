@@ -64,7 +64,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -515,7 +515,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return null;
     }
 
@@ -569,7 +569,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public void positionRider(Entity passenger) {
-        this.xRot = 0;
+        this.setXRot(0;
         float radius = 1.0F + passenger.getBbWidth() * 0.5F;
         float angle = (0.01745329251F * (this.yBodyRot - 180));
         double extraX = radius * Mth.sin((float) (Math.PI + angle));

@@ -61,7 +61,7 @@ public class BoneSerpentAIMeleeJump extends JumpGoal {
     }
 
     public void stop() {
-        this.dolphin.xRot = 0.0F;
+        this.dolphin.setXRot(0.0F;
         this.attackCooldown = 0;
     }
 
@@ -87,11 +87,11 @@ public class BoneSerpentAIMeleeJump extends JumpGoal {
 
         Vec3 vector3d = this.dolphin.getDeltaMovement();
         if (vector3d.y * vector3d.y < (double) 0.1F && this.dolphin.xRot != 0.0F) {
-            this.dolphin.xRot = Mth.rotlerp(this.dolphin.xRot, 0.0F, 0.2F);
+            this.dolphin.setXRot(Mth.rotlerp(this.dolphin.xRot, 0.0F, 0.2F);
         } else {
             double d0 = Math.sqrt(Entity.getHorizontalDistanceSqr(vector3d));
             double d1 = Math.signum(-vector3d.y) * Math.acos(d0 / vector3d.length()) * (double) (180F / (float) Math.PI);
-            this.dolphin.xRot = (float) d1;
+            this.dolphin.setXRot((float) d1;
         }
 
     }

@@ -36,7 +36,7 @@ import net.minecraft.server.level.ServerLevel;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -162,7 +162,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return AMEntityRegistry.SNOW_LEOPARD.create(serverWorld);
     }
 
@@ -205,7 +205,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
         }
         if(isTackling()){
-            this.yBodyRot = this.yRot;
+            this.yBodyRot = this.getYRot();
         }
         if(!level.isClientSide) {
             if (this.getTarget() != null && (this.isSitting() || this.isSleeping())) {

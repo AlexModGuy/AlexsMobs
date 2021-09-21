@@ -56,7 +56,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -166,7 +166,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
                 p_230254_1_.drop(itemstack1, false);
             }
 
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
             return super.mobInteract(p_230254_1_, p_230254_2_);
@@ -426,7 +426,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return AMEntityRegistry.PLATYPUS.create(serverWorld);
     }
 

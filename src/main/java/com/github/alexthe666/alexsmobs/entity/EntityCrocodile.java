@@ -11,11 +11,9 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
@@ -39,7 +37,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.Registry;
 import net.minecraft.world.*;
@@ -56,7 +53,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -76,6 +73,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, ISemiAquatic {
 
@@ -314,9 +313,9 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             }
         }
         if (!level.isClientSide && this.getStunTicks() == 0 && this.isAlive() && this.getTarget() != null && this.getAnimation() == ANIMATION_LUNGE  && (level.getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player)) && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
-            float f1 = this.yRot * ((float) Math.PI / 180F);
+            float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
-            if (this.distanceTo(this.getTarget()) < 3.5F && this.canSee(this.getTarget())) {
+            if (this.distanceTo(this.getTarget()) < 3.5F && this.hasLineOfSight(this.getTarget())) {
                 boolean flag = this.getTarget().isBlocking();
                 if (!flag) {
                     if (this.getTarget().getBbWidth() < this.getBbWidth() && this.getPassengers().isEmpty() && !this.getTarget().isShiftKeyDown()) {
@@ -371,7 +370,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     protected void damageShieldFor(Player holder, float damage) {
-        if (holder.getUseItem().isShield(holder)) {
+        if (holder.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
             if (!this.level.isClientSide) {
                 holder.awardStat(Stats.ITEM_USED.get(holder.getUseItem().getItem()));
             }
@@ -428,7 +427,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
 
     public void positionRider(Entity passenger) {
         if (!this.getPassengers().isEmpty()) {
-            this.yBodyRot = Mth.wrapDegrees(this.yRot - 180F);
+            this.yBodyRot = Mth.wrapDegrees(this.getYRot() - 180F);
         }
         if (this.hasPassenger(passenger)) {
             float radius = 2F;
@@ -596,7 +595,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.CROCODILE.create(p_241840_1_);
     }
 
@@ -607,7 +606,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             return super.mobInteract(player, hand);
         }
         if (isTame() && item.isEdible() && item.getFoodProperties() != null && item.getFoodProperties().isMeat() && this.getHealth() < this.getMaxHealth()) {
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.heal(10);
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;

@@ -116,7 +116,7 @@ public class SnowLeopardAIMelee extends Goal {
                     }
                     this.leopard.setDeltaMovement(vector3d1.x, vector3d1.y + 0.6F, vector3d1.z);
                 }
-                if (this.leopard.distanceTo(target) < 3F && this.leopard.canSee(target)) {
+                if (this.leopard.distanceTo(target) < 3F && this.leopard.hasLineOfSight(target)) {
                     target.hurt(DamageSource.mobAttack(leopard), (float) (leopard.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 2.5F));
                     this.stalk = false;
                     this.secondPartOfLeap = false;
@@ -131,7 +131,7 @@ public class SnowLeopardAIMelee extends Goal {
                     this.leopard.setSlSneaking(true);
                     this.leopard.getNavigation().moveTo(leapPos.x, leapPos.y, leapPos.z, 1D);
                     if (this.leopard.distanceToSqr(leapPos.x, leapPos.y, leapPos.z) < 9) {
-                        if (this.leopard.canSee(target)) {
+                        if (this.leopard.hasLineOfSight(target)) {
                             secondPartOfLeap = true;
                             this.leopard.getNavigation().stop();
                         }

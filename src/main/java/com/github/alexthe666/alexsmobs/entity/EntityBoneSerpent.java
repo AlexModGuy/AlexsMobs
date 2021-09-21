@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -243,7 +242,7 @@ public class EntityBoneSerpent extends Monster {
         if (jumpCooldown > 0) {
             jumpCooldown--;
             float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
-            this.xRot = f2;
+            this.setXRot(f2);
 
         }
         if (!ground && this.isLandNavigator) {
@@ -336,18 +335,18 @@ public class EntityBoneSerpent extends Monster {
                     this.mob.setZza(0.0F);
                 } else {
                     float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                    this.dolphin.yRot = this.rotlerp(this.dolphin.yRot, f, 10.0F);
-                    this.dolphin.yBodyRot = this.dolphin.yRot;
-                    this.dolphin.yHeadRot = this.dolphin.yRot;
+                    this.dolphin.setYRot(this.rotlerp(this.dolphin.getYRot(), f, 10.0F));
+                    this.dolphin.yBodyRot = this.dolphin.getYRot();
+                    this.dolphin.yHeadRot = this.dolphin.getYRot();
                     float f1 = (float) (this.speedModifier * this.dolphin.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     if (this.dolphin.isInWater() || this.dolphin.isInLava()) {
                         this.dolphin.setSpeed(f1 * 0.02F);
-                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
+                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
                         f2 = Mth.clamp(Mth.wrapDegrees(f2), -85.0F, 85.0F);
                         this.dolphin.setDeltaMovement(this.dolphin.getDeltaMovement().add(0.0D, (double) this.dolphin.getSpeed() * d1 * 0.6D, 0.0D));
-                        this.dolphin.xRot = this.rotlerp(this.dolphin.xRot, f2, 1.0F);
-                        float f3 = Mth.cos(this.dolphin.xRot * ((float) Math.PI / 180F));
-                        float f4 = Mth.sin(this.dolphin.xRot * ((float) Math.PI / 180F));
+                        this.dolphin.setXRot(this.rotlerp(this.dolphin.getXRot(), f2, 1.0F));
+                        float f3 = Mth.cos(this.dolphin.getXRot() * ((float) Math.PI / 180F));
+                        float f4 = Mth.sin(this.dolphin.getXRot() * ((float) Math.PI / 180F));
                         this.dolphin.zza = f3 * f1;
                         this.dolphin.yya = -f4 * f1;
                     } else {

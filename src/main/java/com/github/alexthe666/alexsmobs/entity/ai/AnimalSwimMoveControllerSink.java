@@ -57,7 +57,7 @@ public class AnimalSwimMoveControllerSink extends MoveControl {
                     this.entity.setSpeed(lvt_10_1_ * 0.02F);
                     float lvt_11_1_ = -((float) (Mth.atan2(lvt_3_1_, Mth.sqrt(lvt_1_1_ * lvt_1_1_ + lvt_5_1_ * lvt_5_1_)) * 57.2957763671875D));
                     lvt_11_1_ = Mth.clamp(Mth.wrapDegrees(lvt_11_1_), -85.0F, 85.0F);
-                    this.entity.xRot = this.rotlerp(this.entity.xRot, lvt_11_1_, 5.0F);
+                    this.entity.setXRot(this.rotlerp(this.entity.xRot, lvt_11_1_, 5.0F);
                     float lvt_12_1_ = Mth.cos(this.entity.xRot * 0.017453292F);
                     float lvt_13_1_ = Mth.sin(this.entity.xRot * 0.017453292F);
                     this.entity.zza = lvt_12_1_ * lvt_10_1_;

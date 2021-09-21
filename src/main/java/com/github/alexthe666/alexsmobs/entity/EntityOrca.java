@@ -55,7 +55,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -229,7 +229,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         if (jumpCooldown > 0) {
             jumpCooldown--;
             float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
-            this.xRot = f2;
+            this.setXRot(f2;
         }
         if (this.isNoAi()) {
             this.setAirSupply(this.getMaxAirSupply());
@@ -245,7 +245,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
                 if (this.onGround) {
                     this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
-                    this.yRot = this.random.nextFloat() * 360.0F;
+                    this.setYRot( this.random.nextFloat() * 360.0F;
                     this.onGround = false;
                     this.hasImpulse = true;
                 }
@@ -344,7 +344,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob p_241840_2_) {
         return AMEntityRegistry.ORCA.create(serverWorld);
     }
 
@@ -361,7 +361,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setAirSupply(this.getMaxAirSupply());
-        this.xRot = 0.0F;
+        this.setXRot(0.0F;
         this.setMoistness(2400);
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -494,7 +494,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                         this.dolphin.setSpeed(f1 * 0.02F);
                         float f2 = -((float) (Mth.atan2(d1, Mth.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
                         f2 = Mth.clamp(Mth.wrapDegrees(f2), -85.0F, 85.0F);
-                        this.dolphin.xRot = this.rotlerp(this.dolphin.xRot, f2, 5.0F);
+                        this.dolphin.setXRot(this.rotlerp(this.dolphin.xRot, f2, 5.0F);
                         float f3 = Mth.cos(this.dolphin.xRot * ((float) Math.PI / 180F));
                         float f4 = Mth.sin(this.dolphin.xRot * ((float) Math.PI / 180F));
                         this.dolphin.zza = f3 * f1;

@@ -9,10 +9,8 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Pillager;
@@ -41,7 +39,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -157,7 +155,7 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
             double range = 15;
             int fleeTime = 100 + getRandom().nextInt(5);
             this.revengeCooldown = fleeTime;
-            List<EntityEmu> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
+            List<? extends EntityEmu> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntityEmu emu : list) {
                 emu.revengeCooldown = fleeTime;
                 if(emu.isBaby() && random.nextInt(2) == 0){
@@ -196,7 +194,7 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
                 revengeCooldown = 0;
             }
             if (this.getTarget() != null && this.getAnimation() == ANIMATION_SCRATCH && this.distanceTo(this.getTarget()) < 4F && (this.getAnimationTick() == 8 || this.getAnimationTick() == 15)) {
-                float f1 = this.yRot * ((float) Math.PI / 180F);
+                float f1 = this.getYRot() * ((float) Math.PI / 180F);
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
                 getTarget().knockback(0.4F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
                 this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
@@ -238,7 +236,7 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         EntityEmu emu = AMEntityRegistry.EMU.create(serverWorld);
         emu.setVariant(this.getVariant());
         return emu;

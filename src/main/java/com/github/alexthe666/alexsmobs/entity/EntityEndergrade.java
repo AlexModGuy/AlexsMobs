@@ -8,62 +8,45 @@ import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
-
-import net.minecraft.world.entity.ai.control.MoveControl.Operation;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 
 public class EntityEndergrade extends Animal implements FlyingAnimal {
 
@@ -81,12 +64,16 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         this.moveControl = new EntityEndergrade.MoveHelperController(this);
     }
 
-    protected PathNavigation createNavigation(Level worldIn) {
-        return new DirectPathNavigator(this, worldIn);
-    }
-
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
+    }
+
+    public static boolean canEndergradeSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+        return !worldIn.getBlockState(pos.below()).isAir();
+    }
+
+    protected PathNavigation createNavigation(Level worldIn) {
+        return new DirectPathNavigator(this, worldIn);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -109,24 +96,24 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new TameableAIRide(this, 1.2D));
         this.goalSelector.addGoal(1, new EndergradeAIBreakFlowers(this));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.2D){
-            public void start(){
+        this.goalSelector.addGoal(2, new BreedGoal(this, 1.2D) {
+            public void start() {
                 super.start();
                 EntityEndergrade.this.stopWandering = true;
             }
 
-            public void stop(){
+            public void stop() {
                 super.stop();
                 EntityEndergrade.this.stopWandering = false;
             }
         });
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.CHORUS_FRUIT), false){
-            public void start(){
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.CHORUS_FRUIT), false) {
+            public void start() {
                 super.start();
                 EntityEndergrade.this.stopWandering = true;
             }
 
-            public void stop(){
+            public void stop() {
                 super.stop();
                 EntityEndergrade.this.stopWandering = false;
             }
@@ -157,7 +144,6 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     protected SoundEvent getDeathSound() {
         return AMSoundRegistry.ENDERGRADE_HURT;
     }
-
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -285,12 +271,8 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.ENDERGRADE.create(p_241840_1_);
-    }
-
-    public static boolean canEndergradeSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        return !worldIn.getBlockState(pos.below()).isAir();
     }
 
     protected void dropEquipment() {
@@ -300,6 +282,11 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                 this.spawnAtLocation(Items.SADDLE);
             }
         }
+    }
+
+    @Override
+    public boolean isFlying() {
+        return true;
     }
 
     static class RandomFlyGoal extends Goal {
@@ -388,8 +375,8 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                 f4 = f1 / f4;
                 f2 = f2 * f4;
                 f3 = f3 * f4;
-                float f5 = Mth.sin(this.mob.yRot * ((float) Math.PI / 180F));
-                float f6 = Mth.cos(this.mob.yRot * ((float) Math.PI / 180F));
+                float f5 = Mth.sin(this.mob.getYRot() * ((float) Math.PI / 180F));
+                float f6 = Mth.cos(this.mob.getYRot() * ((float) Math.PI / 180F));
                 float f7 = f2 * f6 - f3 * f5;
                 float f8 = f3 * f6 + f2 * f5;
                 this.strafeForwards = 1.0F;
@@ -413,13 +400,13 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(localSpeed * 0.005D / d0)));
                     if (parentEntity.getTarget() == null) {
                         Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                        parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                        parentEntity.yBodyRot = parentEntity.yRot;
+                        parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                        parentEntity.yBodyRot = parentEntity.getYRot();
                     } else {
                         double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                         double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                        parentEntity.yRot = -((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI);
-                        parentEntity.yBodyRot = parentEntity.yRot;
+                        parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                        parentEntity.yBodyRot = parentEntity.getYRot();
                     }
                 }
 

@@ -5,10 +5,8 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -40,7 +38,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -254,7 +252,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if(type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)){
             if(isFood(itemstack)){
                 this.setInLoveTime(600);
-                this.usePlayerItem(player, itemstack);
+                this.usePlayerItem(player, hand, itemstack);
                 return InteractionResult.SUCCESS;
             }
             if(!player.isShiftKeyDown() && !isFood(itemstack) && !this.isBaby()){
@@ -284,7 +282,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.KOMODO_DRAGON.create(p_241840_1_);
     }
 

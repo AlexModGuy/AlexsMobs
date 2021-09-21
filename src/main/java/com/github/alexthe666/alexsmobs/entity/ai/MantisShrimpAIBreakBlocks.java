@@ -112,7 +112,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
         if (!allBlocks.isEmpty()) {
             allBlocks.sort(this.targetSorter);
             for(BlockPos pos : allBlocks){
-                if(canSeeBlock(pos)){
+                if(hasLineOfSightBlock(pos)){
                     this.destinationBlock = pos;
                     return;
                 }
@@ -147,7 +147,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
         }
     }
 
-    private boolean canSeeBlock(BlockPos destinationBlock) {
+    private boolean hasLineOfSightBlock(BlockPos destinationBlock) {
         Vec3 Vector3d = new Vec3(mantisShrimp.getX(), mantisShrimp.getEyeY(), mantisShrimp.getZ());
         Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
         BlockHitResult result = mantisShrimp.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mantisShrimp));

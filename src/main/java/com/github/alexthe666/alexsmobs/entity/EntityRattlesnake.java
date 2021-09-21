@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -208,7 +208,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.RATTLESNAKE.create(p_241840_1_);
     }
 

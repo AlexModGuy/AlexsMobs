@@ -46,7 +46,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
@@ -183,7 +183,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         boolean dig = isDigging() && isInWaterOrBubble();
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
         if (isInWater()) {
-            this.xRot = f2 * 2.5F;
+            this.setXRot(f2 * 2.5F;
         }
 
         if (isInWater() && this.isLandNavigator) {
@@ -306,7 +306,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setArctic(this.isBiomeArctic(worldIn, this.blockPosition()));
         this.setAirSupply(this.getMaxAirSupply());
-        this.xRot = 0.0F;
+        this.setXRot(0.0F;
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
@@ -363,7 +363,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         EntitySeal seal = AMEntityRegistry.SEAL.create(serverWorld);
         seal.setArctic(this.isBiomeArctic(serverWorld, this.blockPosition()));
         return seal;

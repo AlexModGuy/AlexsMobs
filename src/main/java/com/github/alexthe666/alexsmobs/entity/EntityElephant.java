@@ -9,20 +9,18 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Maps;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WoolCarpetBlock;
-import net.minecraft.entity.*;
-import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +30,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -52,7 +49,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -60,9 +56,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.fml.network.NetworkHooks;
-
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +68,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -99,6 +92,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class EntityElephant extends TamableAnimal implements ITargetsDroppedItems, IAnimatedEntity {
 
@@ -361,7 +355,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             chargingTicks = 0;
         }
         if (this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
-            this.yBodyRot = yRot;
+            this.yBodyRot = getYRot();
             if (this.getAnimationTick() == 20) {
                 this.charging = true;
             }
@@ -383,12 +377,12 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
         }
         if (!level.isClientSide && target != null) {
-            if (this.distanceTo(target) > 8 && this.getControllingPassenger() == null && this.isTusked() && this.canSee(target) && this.getAnimation() == NO_ANIMATION && !charging && chargeCooldown == 0) {
+            if (this.distanceTo(target) > 8 && this.getControllingPassenger() == null && this.isTusked() && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !charging && chargeCooldown == 0) {
                 this.setAnimation(ANIMATION_CHARGE_PREPARE);
             }
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && this.getControllingPassenger() == null) {
                 this.lookAt(target, 360, 30);
-                this.yBodyRot = yRot;
+                this.yBodyRot = getYRot();
                 if (this.getAnimationTick() == 20) {
                     this.charging = true;
                 }
@@ -478,9 +472,9 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 this.dropLeash(true, false);
                 this.elephantInventory.clearContent();
                 if(this.getControllingVillager() != null){
-                    this.getControllingVillager().remove();
+                    this.getControllingVillager().remove(RemovalReason.DISCARDED);
                 }
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
         }
     }
@@ -542,7 +536,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
             return InteractionResult.SUCCESS;
         } else if (owner && ItemTags.CARPETS.contains(stack.getItem())) {
-            DyeColor color = getCarpetColor(stack.getStack());
+            DyeColor color = getCarpetColor(stack);
             if (color != this.getColor()) {
                 if (this.getColor() != null) {
                     this.spawnAtLocation(this.getCarpetItemBeingWorn());
@@ -563,7 +557,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         } else if (owner && !this.isChested() && ItemTags.getAllTags().getTag(AMTagRegistry.FORGE_WOODEN_CHESTS).contains(stack.getItem())) {
             this.setChested(true);
             this.playSound(SoundEvents.DONKEY_CHEST, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-            if (!player.abilities.instabuild) {
+            if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
             return InteractionResult.sidedSuccess(this.level.isClientSide);
@@ -645,7 +639,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         EntityElephant baby = AMEntityRegistry.ELEPHANT.create(serverWorld);
         baby.setTusked(this.getNearestTusked(level, 15) == null || random.nextInt(2) == 0);
         return baby;
@@ -780,8 +774,8 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if (spawnDataIn instanceof AgableMob.AgableMobGroupData) {
-            AgableMob.AgableMobGroupData lvt_6_1_ = (AgableMob.AgableMobGroupData) spawnDataIn;
+        if (spawnDataIn instanceof AgeableMob.AgeableMobGroupData) {
+            AgeableMob.AgeableMobGroupData lvt_6_1_ = (AgeableMob.AgeableMobGroupData) spawnDataIn;
             if (lvt_6_1_.getGroupSize() == 0) {
                 this.setTusked(true);
             }
@@ -794,7 +788,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     @Nullable
     public EntityElephant getNearestTusked(LevelAccessor world, double dist) {
-        List<EntityElephant> list = world.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(dist, dist / 2, dist));
+        List<? extends EntityElephant> list = world.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(dist, dist / 2, dist));
         if (list.isEmpty()) {
             return null;
         }
@@ -1019,7 +1013,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
         @Nullable
         protected Vec3 getPosition() {
-            return RandomPos.getPos(this.mob, EntityElephant.this.isTusked() || !EntityElephant.this.inCaravan() ? 25 : 10, 7);
+            return LandRandomPos.getPos(this.mob, EntityElephant.this.isTusked() || !EntityElephant.this.inCaravan() ? 25 : 10, 7);
         }
 
     }

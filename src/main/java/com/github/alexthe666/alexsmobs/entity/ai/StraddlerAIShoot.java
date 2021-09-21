@@ -66,7 +66,7 @@ public class StraddlerAIShoot  extends Goal {
         }
         if (livingentity != null) {
             double d0 = this.entity.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
-            boolean flag = this.entity.canSee(livingentity);
+            boolean flag = this.entity.hasLineOfSight(livingentity);
             boolean flag1 = this.seeTime > 0;
             if (flag != flag1) {
                 this.seeTime = 0;

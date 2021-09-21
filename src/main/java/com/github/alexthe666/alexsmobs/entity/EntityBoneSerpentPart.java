@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -24,18 +23,16 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.fml.network.NetworkHooks;
-
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMultipart {
 
@@ -74,11 +71,6 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
-    }
-
-    @Override
-    public net.minecraft.world.entity.Entity getEntity() {
-        return this;
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -121,7 +113,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     public void setInitialPartPos(Entity parent) {
-        this.setPos(parent.xo + this.radius * Math.cos(parent.yRot * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.yRot * (Math.PI / 180.0F) + this.angleYaw));
+        this.setPos(parent.xo + this.radius * Math.cos(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw));
     }
 
     @Override
@@ -137,11 +129,11 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
                 double d1 = parent.getY() - this.getY();
                 double d2 = parent.getZ() - this.getZ();
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                float f2 = -((float) (Mth.atan2(d1, Mth.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
-                this.xRot = this.limitAngle(this.xRot, f2, 5.0F);
+                float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
+                this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F));
                 this.markHurt();
-                this.yRot = parent.yRotO;
-                this.yHeadRot = this.yRot;
+                this.setYRot(parent.yRotO);
+                this.yHeadRot = this.getYRot();
                 this.yBodyRot = this.yRotO;
                 if (parent instanceof LivingEntity) {
                     if(!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)){
@@ -151,11 +143,11 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
                     }
                 }
                 this.pushEntities();
-                if (parent.removed && !level.isClientSide) {
-                    this.remove();
+                if (parent.isRemoved() && !level.isClientSide) {
+                    this.remove(RemovalReason.DISCARDED);
                 }
             } else if (tickCount > 20 && !level.isClientSide) {
-                remove();
+                remove(RemovalReason.DISCARDED);
             }
         }
         super.tick();
@@ -179,10 +171,6 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         }
 
         return f1;
-    }
-
-    public void remove() {
-        this.remove(false);
     }
 
     public Entity getParent() {
@@ -289,6 +277,6 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     public boolean shouldContinuePersisting() {
-        return isAddedToWorld() || this.removed;
+        return isAddedToWorld() || this.isRemoved();
     }
 }

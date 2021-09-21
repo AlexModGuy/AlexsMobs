@@ -9,13 +9,12 @@ import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -35,27 +34,22 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
@@ -356,7 +350,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
-        if (item.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
+        if (itemstack.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
             this.heal(10);
             if (!player.isCreative()) {
                 itemstack.shrink(1);
@@ -464,7 +458,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                     }
                     float birdYaw = yawAdd * 0.5F;
                     this.yBodyRot = Mth.wrapDegrees(((LivingEntity) mount).yBodyRot + birdYaw);
-                    this.yRot = Mth.wrapDegrees(((LivingEntity) mount).yRot + birdYaw);
+                    this.setYRot(Mth.wrapDegrees(((LivingEntity) mount).getYRot() + birdYaw));
                     this.yHeadRot = Mth.wrapDegrees(((LivingEntity) mount).yHeadRot + birdYaw);
                     float radius = 0.6F;
                     float angle = (0.01745329251F * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));
@@ -610,7 +604,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.BALD_EAGLE.create(p_241840_1_);
     }
 
@@ -706,7 +700,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
             float angle = (0.01745329251F * this.yBodyRot);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
-            passenger.yRot = this.yBodyRot + 90F;
+            passenger.setYRot(this.yBodyRot + 90F);
             if (passenger instanceof LivingEntity) {
                 LivingEntity living = (LivingEntity) passenger;
                 living.yBodyRot = this.yBodyRot + 90F;
@@ -737,12 +731,12 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                 return true;
             }
         }
-        return !this.isAlive() || launchTime > 12000 || this.isInsidePortal || this.portalTime > 0 || removed;
+        return !this.isAlive() || launchTime > 12000 || this.isInsidePortal || this.portalTime > 0 || this.isRemoved();
     }
 
-    public void remove(boolean keepData) {
+    public void remove(RemovalReason reason) {
         if (this.lastPlayerControlTime == 0 && !this.isPassenger()) {
-            super.remove(keepData);
+            super.remove(reason);
         }
     }
 
@@ -773,9 +767,9 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                 this.getLookControl().setLookAt(owner, 30, 30);
             } else {
                 this.yBodyRot = rotationYaw;
-                this.yRot = rotationYaw;
+                this.setYRot(rotationYaw);
                 this.yHeadRot = rotationYaw;
-                this.xRot = rotationPitch;
+                this.setXRot(rotationPitch);
             }
             if (rotationPitch < 10 && this.isOnGround()) {
                 this.setFlying(true);
@@ -877,11 +871,11 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                     double d0 = this.wantedX - this.parentEntity.getX();
                     double d1 = this.wantedY - this.parentEntity.getY();
                     double d2 = this.wantedZ - this.parentEntity.getZ();
-                    double d3 = Mth.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                    double d3 = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d5)));
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                    parentEntity.yBodyRot = parentEntity.yRot;
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.yBodyRot = parentEntity.getYRot();
 
                 }
 
@@ -1024,7 +1018,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                     return eagle.getBlockGrounding(vector3d);
                 }
             } else {
-                return RandomPos.getPos(this.eagle, 10, 7);
+                return LandRandomPos.getPos(this.eagle, 10, 7);
             }
         }
 
@@ -1121,7 +1115,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                             float angle = (0.01745329251F * eagle.yBodyRot);
                             double extraX = radius * Mth.sin((float) (Math.PI + angle));
                             double extraZ = radius * Mth.cos(angle);
-                            target.yRot = eagle.yBodyRot + 90F;
+                            target.setYRot(eagle.yBodyRot + 90F);
                             if (target instanceof LivingEntity) {
                                 LivingEntity living = target;
                                 living.yBodyRot = eagle.yBodyRot + 90F;

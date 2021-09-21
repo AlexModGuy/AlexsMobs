@@ -12,8 +12,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class EntityEmuEgg extends ThrowableItemProjectile {
 
@@ -66,12 +66,12 @@ public class EntityEmuEgg extends ThrowableItemProjectile {
                         lvt_4_1_.setVariant(1);
                     }
                     lvt_4_1_.setAge(-24000);
-                    lvt_4_1_.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
+                    lvt_4_1_.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                     this.level.addFreshEntity(lvt_4_1_);
                 }
             }
             this.level.broadcastEntityEvent(this, (byte) 3);
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
 
     }

@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -86,11 +85,11 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
             double d1 = parent.getY() - this.getY();
             double d2 = parent.getZ() - this.getZ();
             double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-            float f2 = -((float) (Mth.atan2(d1, Mth.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
-            this.xRot = this.limitAngle(this.xRot, f2, 5.0F);
+            float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
+            this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F));
             this.markHurt();
-            this.yRot = parentYaw;
-            this.yHeadRot = this.yRot;
+            this.setYRot( parentYaw);
+            this.yHeadRot = this.getYRot();
             this.yBodyRot = this.yRotO;
             if (parent instanceof LivingEntity) {
                 if(!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)){
@@ -100,12 +99,12 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
                 }
             }
             this.pushEntities();
-            if ((parent.removed) && !level.isClientSide) {
-                this.remove();
+            if (parent.isRemoved() && !level.isClientSide) {
+                this.remove(RemovalReason.DISCARDED);
             }
         }
         if (parent == null && !level.isClientSide) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 
@@ -131,10 +130,10 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
 
     public void setInitialPartPos(LivingEntity parent, int index) {
         double radAdd = this.radius * index;
-        this.yRot = parent.yRot;
+        this.setYRot( parent.getYRot());
         this.yBodyRot = parent.yBodyRot;
-        this.parentYaw = parent.yRot;
-        this.setPos(parent.xo +  radAdd * Math.cos(parent.yRot * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + radAdd * Math.sin(parent.yRot * (Math.PI / 180.0F) + this.angleYaw));
+        this.parentYaw = parent.getYRot();
+        this.setPos(parent.xo +  radAdd * Math.cos(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + radAdd * Math.sin(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw));
     }
 
     public EntityCentipedeBody(EntityType t, LivingEntity parent, float radius, float angleYaw, float offsetY) {

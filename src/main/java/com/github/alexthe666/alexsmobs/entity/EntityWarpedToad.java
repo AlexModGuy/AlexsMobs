@@ -55,7 +55,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -373,7 +373,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     }
 
     private void calculateRotationYaw(double x, double z) {
-        this.yRot = (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F;
+        this.setYRot( (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F;
     }
 
     private void enableJumpControl() {
@@ -496,15 +496,15 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
                 double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
                 float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
                 float f1 = (float) (-(Mth.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
-                this.xRot = f1;
-                this.yRot = f;
-                this.yBodyRot = this.yRot;
-                this.yHeadRot = this.yRot;
+                this.setXRot(f1;
+                this.setYRot( f;
+                this.yBodyRot = this.getYRot();
+                this.yHeadRot = this.getYRot();
             } else {
                 if (entityIn instanceof EntityCrimsonMosquito) {
                     ((EntityCrimsonMosquito) entityIn).setShrink(true);
                 }
-                this.xRot = 0;
+                this.setXRot(0;
                 float radius = attackProgress * 0.2F * 1.2F * (getTongueLength() - getTongueLength() * 0.4F);
                 float angle = (0.01745329251F * this.yBodyRot);
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
@@ -571,7 +571,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return AMEntityRegistry.WARPED_TOAD.create(serverWorld);
     }
 
@@ -736,7 +736,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
             Entity entityIn = parentEntity.getTarget();
             if (entityIn != null) {
                 double dist = parentEntity.distanceTo(entityIn);
-                if (dist < 8 && this.parentEntity.canSee(entityIn)) {
+                if (dist < 8 && this.parentEntity.hasLineOfSight(entityIn)) {
                     if (!parentEntity.isTongueOut() && parentEntity.attackProgress == 0 && spitCooldown == 0) {
                         this.parentEntity.setTongueLength((float) Math.max(1F, dist + 2F));
                         spitCooldown = 10;

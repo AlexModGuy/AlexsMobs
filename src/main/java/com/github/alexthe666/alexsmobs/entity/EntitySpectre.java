@@ -38,7 +38,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -117,7 +117,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        this.xRot = 0.0F;
+        this.setXRot(0.0F;
         this.randomizeDirection();
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
 
@@ -141,8 +141,8 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     public void tick() {
         super.tick();
         Vec3 vector3d1 = this.getDeltaMovement();
-        this.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-        this.yBodyRot = this.yRot;
+        this.setYRot( -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
+        this.yBodyRot = this.getYRot();
 
         prevBirdPitch = this.birdPitch;
         noPhysics = true;
@@ -169,7 +169,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return null;
     }
 

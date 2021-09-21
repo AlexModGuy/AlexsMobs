@@ -93,7 +93,7 @@ public class CapuchinAITargetBalloons extends Goal {
                     return false;
                 } else {
                     if (this.shouldCheckSight) {
-                        if (this.monkey.getSensing().canSee(livingentity)) {
+                        if (this.monkey.getSensing().hasLineOfSight(livingentity)) {
                             this.targetUnseenTicks = 0;
                         } else if (++this.targetUnseenTicks > this.unseenMemoryTicks) {
                             return false;

@@ -62,7 +62,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -564,7 +564,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return AMEntityRegistry.SEAGULL.create(serverWorld);
     }
 
@@ -893,7 +893,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                     float f2 = (float) (crow.getZ() - targetEntity.getZ());
                     float xzDist = Mth.sqrt(f * f + f2 * f2);
 
-                    if (!crow.canSee(targetEntity)) {
+                    if (!crow.hasLineOfSight(targetEntity)) {
                         crow.getMoveControl().setWantedPosition(this.targetEntity.getX(), 1 + crow.getY(), this.targetEntity.getZ(), 1.5F);
                     } else {
                         if (xzDist < 5) {

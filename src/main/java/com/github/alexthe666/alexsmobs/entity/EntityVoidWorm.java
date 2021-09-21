@@ -128,7 +128,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     public void kill() {
-        this.remove();
+        this.remove(RemovalReason.DISCARDED);
     }
 
     public void die(DamageSource cause) {
@@ -288,7 +288,7 @@ public class EntityVoidWorm extends Monster {
         }
         yBodyRot = yRot;
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
-        this.xRot = f2;
+        this.setXRot(f2;
         this.maxUpStep = 2;
         if (!level.isClientSide) {
             Entity child = getChild();
@@ -405,7 +405,7 @@ public class EntityVoidWorm extends Monster {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setSegmentCount(25 + random.nextInt(15));
-        this.xRot = 0.0F;
+        this.setXRot(0.0F;
         this.setMaxHealth(AMConfig.voidWormMaxHealth, true);
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -838,7 +838,7 @@ public class EntityVoidWorm extends Monster {
                     }
                 }
             }
-            if (!EntityVoidWorm.this.canSee(target) && random.nextInt(100) == 0) {
+            if (!EntityVoidWorm.this.hasLineOfSight(target) && random.nextInt(100) == 0) {
                 if (EntityVoidWorm.this.makePortalCooldown == 0) {
                     Vec3 to = new Vec3(target.getX(), target.getBoundingBox().maxY + 0.1, target.getZ());
                     EntityVoidWorm.this.createPortal(EntityVoidWorm.this.position().add(EntityVoidWorm.this.getLookAngle().scale(20)), to, Direction.UP);

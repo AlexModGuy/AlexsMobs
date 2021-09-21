@@ -150,7 +150,7 @@ public class EntityVoidPortal extends Entity {
             }
         }
         if (this.getLifespan() <= 0) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 
@@ -171,7 +171,7 @@ public class EntityVoidPortal extends Entity {
                 teleportedEntity.setPortalCooldown();
                 endpointWorld.addFromAnotherDimension(teleportedEntity);
             }
-            entity.remove();
+            entity.remove(RemovalReason.DISCARDED);
         }
 
     }

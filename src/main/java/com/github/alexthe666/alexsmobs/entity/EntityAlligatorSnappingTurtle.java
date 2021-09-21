@@ -5,10 +5,9 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.entity.*;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -30,25 +29,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.*;
 import net.minecraft.server.level.ServerLevel;
-
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Random;
 import java.util.function.Predicate;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.Shearable;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -179,7 +167,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
         if (!open && openMouthProgress > 0) {
             openMouthProgress--;
         }
-        if (this.attackProgress == 4 && this.isAlive() && this.getTarget() != null && this.canSee(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F) {
+        if (this.attackProgress == 4 && this.isAlive() && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F) {
             float dmg = this.isBaby() ? 1F : (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
             this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
         }
@@ -212,8 +200,8 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
                 chaseTime++;
                 this.entityData.set(ATTACK_TARGET_FLAG, true);
                 this.lookAt(this.getTarget(), 360, 40);
-                this.yBodyRot = this.yRot;
-                if (this.canSee(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F && openMouthProgress > 4) {
+                this.yBodyRot = this.getYRot();
+                if (this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F && openMouthProgress > 4) {
                     this.entityData.set(LUNGE_FLAG, true);
                 }
                 if (this.distanceTo(this.getTarget()) > (this.getTarget() instanceof Player ? 5 : 10) && chaseTime > 40) {
@@ -432,7 +420,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE.create(p_241840_1_);
     }
 }

@@ -10,25 +10,17 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.base.Predicates;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.VineBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.DrownedEntity;
-import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -42,9 +34,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
@@ -69,7 +59,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -102,7 +92,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     private static final EntityDataAccessor<Boolean> QUEEN = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ANGER_TIME = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.INT);
     private static final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
-    private static final IntRange ANGRY_TIMER = TimeUtil.rangeOfSeconds(10, 20);
+    private static final UniformInt ANGRY_TIMER = TimeUtil.rangeOfSeconds(10, 20);
     public float attachChangeProgress = 0F;
     public float prevAttachChangeProgress = 0F;
     private Direction prevAttachDir = Direction.DOWN;
@@ -349,7 +339,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 this.hivePos = null;
             }
             LivingEntity attackTarget = this.getTarget();
-            if (attackTarget != null && distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1 && this.canSee(attackTarget)) {
+            if (attackTarget != null && distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1 && this.hasLineOfSight(attackTarget)) {
                 if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 6) {
                     float damage = (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     attackTarget.hurt(DamageSource.mobAttack(this), damage);
@@ -412,7 +402,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     public void startPersistentAngerTimer() {
-        this.setRemainingPersistentAngerTime(ANGRY_TIMER.randomValue(this.random));
+        this.setRemainingPersistentAngerTime(ANGRY_TIMER.sample(this.random));
     }
 
     protected void customServerAiStep() {
@@ -604,7 +594,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return null;
     }
 
@@ -618,7 +608,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         double d0 = p_233629_1_.getX() - p_233629_1_.xo;
         double d1 = (p_233629_1_.getY() - p_233629_1_.yo) * 2.0F;
         double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * 4.0F;
+        float f = Mth.sqrt((float)(d0 * d0 + d1 * d1 + d2 * d2)) * 4.0F;
         if (f > 1.0F) {
             f = 1.0F;
         }
@@ -753,7 +743,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         }
 
         protected void alertOther(Mob mobIn, LivingEntity targetIn) {
-            if (mobIn instanceof EntityLeafcutterAnt && this.mob.canSee(targetIn)) {
+            if (mobIn instanceof EntityLeafcutterAnt && this.mob.hasLineOfSight(targetIn)) {
                 mobIn.setTarget(targetIn);
             }
 

@@ -62,7 +62,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -405,7 +405,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         super.aiStep();
         if (this.getBeamTarget() != null) {
             BlockPos t = this.getBeamTarget();
-            if (isMushroomTarget(t) && this.canSeeMushroom(t)) {
+            if (isMushroomTarget(t) && this.hasLineOfSightMushroom(t)) {
                 this.getLookControl().setLookAt(t.getX() + 0.5F, t.getY() + 0.15F, t.getZ() + 0.5F, 90.0F, 90.0F);
                 this.getLookControl().tick();
                 double d5 = 1.0F;
@@ -536,7 +536,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.MUNGUS.create(p_241840_1_);
     }
 
@@ -565,7 +565,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         }
     }
 
-    private boolean canSeeMushroom(BlockPos destinationBlock) {
+    private boolean hasLineOfSightMushroom(BlockPos destinationBlock) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
         BlockHitResult result = this.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
@@ -659,7 +659,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             if (this.destinationBlock == null || !EntityMungus.this.isMushroomTarget(this.destinationBlock) || EntityMungus.this.beamCounter < 0) {
                 stop();
             } else {
-                if (!EntityMungus.this.canSeeMushroom(this.destinationBlock)) {
+                if (!EntityMungus.this.hasLineOfSightMushroom(this.destinationBlock)) {
                     EntityMungus.this.getNavigation().moveTo(this.destinationBlock.getX(), this.destinationBlock.getY(), this.destinationBlock.getZ(), 1D);
                 } else {
                     EntityMungus.this.setBeamTarget(this.destinationBlock);

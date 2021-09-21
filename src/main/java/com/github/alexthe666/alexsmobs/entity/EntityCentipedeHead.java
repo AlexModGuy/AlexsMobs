@@ -3,10 +3,8 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -173,7 +171,7 @@ public class EntityCentipedeHead extends Monster {
     public void tick(){
         super.tick();
         isInsidePortal = false;
-        yRot = yBodyRot;
+        setYRot(yBodyRot);
         if (!level.isClientSide) {
             Entity child = getChild();
             if (child == null) {

@@ -9,10 +9,9 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.entity.*;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Fox;
@@ -35,7 +34,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -53,7 +52,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -86,7 +85,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     private static final EntityDataAccessor<Boolean> HONEYED = SynchedEntityData.defineId(EntityGrizzlyBear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(EntityGrizzlyBear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SNOWY = SynchedEntityData.defineId(EntityGrizzlyBear.class, EntityDataSerializers.BOOLEAN);
-    private static final IntRange angerLogic = TimeUtil.rangeOfSeconds(20, 39);
+    private static final UniformInt angerLogic = TimeUtil.rangeOfSeconds(20, 39);
     public float prevStandProgress;
     public float prevSitProgress;
     public float standProgress;
@@ -179,7 +178,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public void startPersistentAngerTimer() {
-        this.setRemainingPersistentAngerTime(angerLogic.randomValue(this.random));
+        this.setRemainingPersistentAngerTime(angerLogic.sample(this.random));
     }
 
     public int getRemainingPersistentAngerTime() {
@@ -272,7 +271,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if(item == Items.SNOW && !this.isSnowy() && !level.isClientSide){
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.permSnow = true;
             this.setSnowy(true);
             this.playSound(SoundEvents.SNOW_PLACE, this.getSoundVolume(), this.getVoicePitch());
@@ -449,12 +448,12 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                 }
                 if ((this.getAnimation() == ANIMATION_SWIPE_L) && this.getAnimationTick() == 7) {
                     doHurtTarget(attackTarget);
-                    float rot = yRot + 90;
+                    float rot = getYRot() + 90;
                     attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
                 }
                 if ((this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 7) {
                     doHurtTarget(attackTarget);
-                    float rot = yRot - 90;
+                    float rot = getYRot() - 90;
                     attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
                 }
 
@@ -580,7 +579,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel world, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob p_241840_2_) {
         return AMEntityRegistry.GRIZZLY_BEAR.create(world);
     }
 
@@ -623,7 +622,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         if (spawnDataIn == null) {
-            spawnDataIn = new AgableMob.AgableMobGroupData(1.0F);
+            spawnDataIn = new AgeableMob.AgeableMobGroupData(1.0F);
         }
 
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);

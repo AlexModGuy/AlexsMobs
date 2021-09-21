@@ -10,7 +10,6 @@ import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -34,21 +33,15 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
 import java.util.function.Predicate;
-
-import net.minecraft.world.entity.ai.control.MoveControl.Operation;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -67,6 +60,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
+
+import javax.annotation.Nullable;
 
 public class EntityCrimsonMosquito extends Monster {
 
@@ -194,7 +189,7 @@ public class EntityCrimsonMosquito extends Monster {
         double d0 = target.getX() - this.getX();
         double d1 = target.getY(0.3333333333333333D) - llamaspitentity.getY();
         double d2 = target.getZ() - this.getZ();
-        float f = Mth.sqrt(d0 * d0 + d2 * d2) * 0.2F;
+        float f = Mth.sqrt((float)(d0 * d0 + d2 * d2)) * 0.2F;
         llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 10.0F);
         if (!this.isSilent()) {
             this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_SPIT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
@@ -231,7 +226,7 @@ public class EntityCrimsonMosquito extends Monster {
                 Entity mount = this.getVehicle();
                 if (mount instanceof LivingEntity) {
                     this.yBodyRot = ((LivingEntity) mount).yBodyRot;
-                    this.yRot = ((LivingEntity) mount).yRot;
+                    this.setYRot( ((LivingEntity) mount).getYRot());
                     this.yHeadRot = ((LivingEntity) mount).yHeadRot;
                     this.yRotO = ((LivingEntity) mount).yHeadRot;
                     float radius = 1F;
@@ -459,7 +454,7 @@ public class EntityCrimsonMosquito extends Monster {
                         this.level.broadcastEntityEvent(this, (byte)79);
                         level.addFreshEntity(mosco);
                     }
-                    this.remove();
+                    this.remove(RemovalReason.DISCARDED);
 
                 }
             }
@@ -626,8 +621,8 @@ public class EntityCrimsonMosquito extends Monster {
                     f4 = f1 / f4;
                     f2 = f2 * f4;
                     f3 = f3 * f4;
-                    float f5 = Mth.sin(this.mob.yRot * ((float) Math.PI / 180F));
-                    float f6 = Mth.cos(this.mob.yRot * ((float) Math.PI / 180F));
+                    float f5 = Mth.sin(this.mob.getYRot() * ((float) Math.PI / 180F));
+                    float f6 = Mth.cos(this.mob.getYRot() * ((float) Math.PI / 180F));
                     float f7 = f2 * f6 - f3 * f5;
                     float f8 = f3 * f6 + f2 * f5;
                     this.strafeForwards = 1.0F;
@@ -647,13 +642,13 @@ public class EntityCrimsonMosquito extends Monster {
                         parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                         if (parentEntity.getTarget() == null) {
                             Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                            parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                            parentEntity.yBodyRot = parentEntity.yRot;
+                            parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                            parentEntity.yBodyRot = parentEntity.getYRot();
                         } else {
                             double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                             double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                            parentEntity.yRot = -((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI);
-                            parentEntity.yBodyRot = parentEntity.yRot;
+                            parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                            parentEntity.yBodyRot = parentEntity.getYRot();
                         }
                     }
 

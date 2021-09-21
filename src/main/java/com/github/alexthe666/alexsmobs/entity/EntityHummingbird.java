@@ -11,11 +11,8 @@ import com.google.common.base.Predicates;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
@@ -51,7 +48,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -123,7 +120,7 @@ public class EntityHummingbird extends Animal {
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem().is(ItemTags.FLOWERS);
+        return stack.is(ItemTags.FLOWERS);
     }
 
     public int getMaxSpawnClusterSize() {
@@ -334,7 +331,7 @@ public class EntityHummingbird extends Animal {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return AMEntityRegistry.HUMMINGBIRD.create(serverWorld);
     }
 
@@ -410,7 +407,7 @@ public class EntityHummingbird extends Animal {
                     EntityHummingbird.this.getMoveControl().setWantedPosition(localFeeder.getX() + random.nextInt(4) - 2, EntityHummingbird.this.getY() + 1F, localFeeder.getZ() + random.nextInt(4) - 2, 1F);
                 }
                 Vec3 vec = Vec3.upFromBottomCenterOf(localFeeder, 0.1F);
-                double dist = Mth.sqrt(EntityHummingbird.this.distanceToSqr(vec));
+                double dist = Mth.sqrt((float)EntityHummingbird.this.distanceToSqr(vec));
                 if(dist < 2.5F && EntityHummingbird.this.getY() > localFeeder.getY()){
                     EntityHummingbird.this.lookAt(EntityAnchorArgument.Anchor.EYES, vec);
                     idleAtFlowerTime++;

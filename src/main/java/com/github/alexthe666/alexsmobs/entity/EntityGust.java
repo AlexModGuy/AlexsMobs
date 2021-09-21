@@ -9,21 +9,18 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
-
 import java.util.List;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class EntityGust extends Entity {
     protected static final EntityDataAccessor<Boolean> VERTICAL = SynchedEntityData.defineId(EntityGust.class, EntityDataSerializers.BOOLEAN);
@@ -68,7 +65,7 @@ public class EntityGust extends Entity {
     public void tick() {
         super.tick();
         if(this.tickCount > 300){
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
         for (int i = 0; i < 1 + random.nextInt(1); ++i) {
             level.addParticle(AMParticleRegistry.GUSTER_SAND_SPIN, this.getX() + 0.5F * (random.nextFloat() - 0.5F), this.getY() + 0.5F * (random.nextFloat() - 0.5F), this.getZ() + 0.5F * (random.nextFloat() - 0.5F), this.getX(), this.getY() + 0.5F, this.getZ());
@@ -87,13 +84,13 @@ public class EntityGust extends Entity {
         double d1 = this.getY() + vector3d.y;
         double d2 = this.getZ() + vector3d.z;
         if(this.getY() > this.level.getMaxBuildHeight()){
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
         this.updateRotation();
         float f = 0.99F;
         float f1 = 0.06F;
          if (this.isInWaterOrBubble()) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         } else {
             this.setDeltaMovement(vector3d);
             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.06F, 0.0D));
@@ -131,7 +128,7 @@ public class EntityGust extends Entity {
             other.setPos(avgX, avgY, avgZ);
             other.setGustDir(other.getGustDir(0) + this.getGustDir(0), other.getGustDir(1) + this.getGustDir(1), other.getGustDir(2) + this.getGustDir(2));
             if(this.isAlive() && other.isAlive()){
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
         }else if(entity != null){
             pushedEntity = entity;
@@ -148,7 +145,7 @@ public class EntityGust extends Entity {
             BlockPos pos = p_230299_1_.getBlockPos();
             if(level.getBlockState(pos).getMaterial().isSolid()){
                 if (!this.level.isClientSide) {
-                    this.remove();
+                    this.remove(RemovalReason.DISCARDED);
 
                 }
             }
@@ -202,20 +199,20 @@ public class EntityGust extends Entity {
     public void lerpMotion(double x, double y, double z) {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            float f = Mth.sqrt(x * x + z * z);
-            this.xRot = (float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI));
-            this.yRot = (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI));
-            this.xRotO = this.xRot;
-            this.yRotO = this.yRot;
-            this.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+            float f = Mth.sqrt((float)(x * x + z * z));
+            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI)));
+            this.setYRot( (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI)));
+            this.xRotO = this.getXRot();
+            this.yRotO = this.getYRot();
+            this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
         }
 
     }
 
     protected void updateRotation() {
         Vec3 vector3d = this.getDeltaMovement();
-        float f = Mth.sqrt(getHorizontalDistanceSqr(vector3d));
-        this.xRot = lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
-        this.yRot = lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
+        float f = Mth.sqrt((float)(vector3d.x * vector3d.x + vector3d.z * vector3d.z));
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI))));
+        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI))));
     }
 }

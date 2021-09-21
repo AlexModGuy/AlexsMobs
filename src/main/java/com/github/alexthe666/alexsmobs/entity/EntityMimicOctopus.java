@@ -61,7 +61,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -380,7 +380,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                 player.drop(itemstack1, false);
             }
 
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
         if (this.isTame() && item == Items.SLIME_BALL && this.getMoistness() < 24000) {
@@ -531,7 +531,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         }
         if (this.isInWaterOrBubble()) {
             float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) (180F / (float) Math.PI));
-            this.xRot = f2;
+            this.setXRot(f2;
         }
         if (camoCooldown > 0) {
             camoCooldown--;
@@ -740,7 +740,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return AMEntityRegistry.MIMIC_OCTOPUS.create(serverWorld);
     }
 
@@ -1214,7 +1214,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                     this.stop();
                     EntityMimicOctopus.this.setMimicState(MimicState.OVERLAY);
                     EntityMimicOctopus.this.setMimickedBlock(null);
-                } else if (EntityMimicOctopus.this.distanceTo(targetEntity) < 5.0F && EntityMimicOctopus.this.canSee(targetEntity)) {
+                } else if (EntityMimicOctopus.this.distanceTo(targetEntity) < 5.0F && EntityMimicOctopus.this.hasLineOfSight(targetEntity)) {
                     int i = 1200;
                     EntityMimicOctopus.this.stopMimicCooldown = i;
                     EntityMimicOctopus.this.camoCooldown = i + 40;
@@ -1324,7 +1324,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                 }
                 double dist = EntityMimicOctopus.this.distanceTo(target);
                 boolean move = true;
-                if (dist < 7F && EntityMimicOctopus.this.canSee(target) && EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN && EntityMimicOctopus.this.isUpgraded()) {
+                if (dist < 7F && EntityMimicOctopus.this.hasLineOfSight(target) && EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN && EntityMimicOctopus.this.isUpgraded()) {
                     EntityMimicOctopus.this.entityData.set(UPGRADED_LASER_ENTITY_ID, target.getId());
                     move = false;
                 }

@@ -11,9 +11,8 @@ import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -53,7 +52,7 @@ import java.util.function.Predicate;
 
 import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -227,7 +226,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 if (mount instanceof LivingEntity) {
                     passengerIndex = mount.getPassengers().indexOf(this);
                     this.yBodyRot = ((LivingEntity) mount).yBodyRot;
-                    this.yRot = ((LivingEntity) mount).yRot;
+                    this.setYRot( ((LivingEntity) mount).getYRot());
                     this.yHeadRot = ((LivingEntity) mount).yHeadRot;
                     this.yRotO = ((LivingEntity) mount).yHeadRot;
                     float radius = mount.getBbWidth();
@@ -378,14 +377,14 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 fleeAfterStealTime--;
             }
         }
-        this.yBodyRot = this.yRot;
-        this.yHeadRot = this.yRot;
+        this.yBodyRot = this.getYRot();
+        this.yHeadRot = this.getYRot();
         this.setPhagePitch(-90F);
         if (this.isAlive() && this.isFlying() && randomMotionSpeed > 0.75F && this.getDeltaMovement().lengthSqr() > 0.02D) {
             if (level.isClientSide) {
                 float pitch = -this.getPhagePitch() / 90F;
                 float radius = this.getBbWidth() * 0.2F * -pitch;
-                float angle = (0.01745329251F * this.yRot);
+                float angle = (0.01745329251F * this.getYRot());
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
                 double extraY = 0.2F - (1 - pitch) * 0.15F;
                 double extraZ = radius * Mth.cos(angle);
@@ -542,7 +541,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return null;
     }
 
@@ -694,7 +693,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                     return phage.getBlockGrounding(vector3d);
                 }
             } else {
-                return RandomPos.getPos(this.phage, 10, 7);
+                return LandRandomPos.getPos(this.phage, 10, 7);
             }
         }
 

@@ -115,9 +115,9 @@ public class EntitySandShot extends Entity {
         float f = 0.99F;
         float f1 = 0.06F;
         if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         } else if (this.isInWaterOrBubble()) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         } else {
             this.setDeltaMovement(vector3d.scale(0.99F));
             this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.03F, 0.0D));
@@ -142,7 +142,7 @@ public class EntitySandShot extends Entity {
     protected void onHitBlock(BlockHitResult p_230299_1_) {
         BlockState blockstate = this.level.getBlockState(p_230299_1_.getBlockPos());
         if (!this.level.isClientSide) {
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 
@@ -208,10 +208,10 @@ public class EntitySandShot extends Entity {
         Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
         this.setDeltaMovement(vector3d);
         float f = Mth.sqrt(getHorizontalDistanceSqr(vector3d));
-        this.yRot = (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI));
-        this.xRot = (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI));
-        this.yRotO = this.yRot;
-        this.xRotO = this.xRot;
+        this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI));
+        this.yRotO = this.getYRot();
+        this.xRotO = this.getXRot();
     }
 
     public void shootFromRotation(Entity p_234612_1_, float p_234612_2_, float p_234612_3_, float p_234612_4_, float p_234612_5_, float p_234612_6_) {
@@ -241,11 +241,11 @@ public class EntitySandShot extends Entity {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
             float f = Mth.sqrt(x * x + z * z);
-            this.xRot = (float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI));
-            this.yRot = (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI));
-            this.xRotO = this.xRot;
-            this.yRotO = this.yRot;
-            this.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, this.xRot);
+            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI));
+            this.setYRot( (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI));
+            this.xRotO = this.getXRot();
+            this.yRotO = this.getYRot();
+            this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.xRot);
         }
 
     }
@@ -262,7 +262,7 @@ public class EntitySandShot extends Entity {
     protected void updateRotation() {
         Vec3 vector3d = this.getDeltaMovement();
         float f = Mth.sqrt(getHorizontalDistanceSqr(vector3d));
-        this.xRot = lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
-        this.yRot = lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
+        this.setYRot( lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
     }
 }

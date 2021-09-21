@@ -251,7 +251,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
             this.playSound(SoundEvents.CROSSBOW_LOADING_END, 2F, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             pole.shoot(d1, d2 + (double)f3, d3, 2F, 0F);
             pole.yRot = this.yRot % 360.0F;
-            pole.xRot = Mth.clamp(this.yRot, -90.0F, 90.0F) % 360.0F;
+            pole.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F;
             if(!level.isClientSide){
                 this.level.addFreshEntity(pole);
             }

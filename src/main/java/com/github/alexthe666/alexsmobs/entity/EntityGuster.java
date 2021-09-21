@@ -6,10 +6,8 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.monster.Monster;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.Registry;
 import net.minecraft.ChatFormatting;
@@ -164,7 +161,7 @@ public class EntityGuster extends Monster {
         double d0 = target.getX() - this.getX();
         double d1 = target.getY(0.3333333333333333D) - sghot.getY();
         double d2 = target.getZ() - this.getZ();
-        float f = Mth.sqrt(d0 * d0 + d2 * d2) * 0.35F;
+        float f = Mth.sqrt((float)(d0 * d0 + d2 * d2)) * 0.35F;
         sghot.shoot(d0, d1 + (double) f, d2, 1F, 10.0F);
         sghot.setVariant(this.getVariant());
         if (!this.isSilent()) {
@@ -198,7 +195,7 @@ public class EntityGuster extends Monster {
             this.setVariant(0);
         }
         this.setAirSupply(this.getMaxAirSupply());
-        this.xRot = 0.0F;
+        this.setXRot(0.0F);
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 

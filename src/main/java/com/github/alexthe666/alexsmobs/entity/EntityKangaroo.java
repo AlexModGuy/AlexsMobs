@@ -15,14 +15,12 @@ import com.google.common.collect.Multimap;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.JumpControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.TamableAnimal;
@@ -51,7 +49,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
@@ -61,8 +58,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
-
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
@@ -72,7 +67,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -87,6 +82,7 @@ import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class EntityKangaroo extends TamableAnimal implements ContainerListener, IAnimatedEntity, IFollower {
 
@@ -190,7 +186,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.emuSpawnRolls, this.getRandom(), spawnReasonIn);
+        return AMEntityRegistry.rollSpawn(AMConfig.kangarooSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -237,7 +233,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && item == Items.CARROT) {
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.HORSE_EAT, this.getSoundVolume(), this.getVoicePitch());
             carrotFeedings++;
             if (carrotFeedings > 10 && getRandom().nextInt(2) == 0 || carrotFeedings > 15) {
@@ -249,7 +245,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             return InteractionResult.SUCCESS;
         }
         if (isTame() && this.getHealth() < this.getMaxHealth() && item.isEdible() && item.getFoodProperties() != null && !item.getFoodProperties().isMeat()) {
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.HORSE_EAT, this.getSoundVolume(), this.getVoicePitch());
             this.heal(item.getFoodProperties().getNutrition());
             return InteractionResult.SUCCESS;
@@ -540,19 +536,19 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             this.setJumping(false);
         }
         LivingEntity attackTarget = this.getTarget();
-        if (attackTarget != null && this.canSee(attackTarget)) {
+        if (attackTarget != null && this.hasLineOfSight(attackTarget)) {
             if (distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1) {
                 if (this.getAnimation() == ANIMATION_KICK && this.getAnimationTick() == 8) {
-                    attackTarget.knockback(1.3F, Mth.sin(this.yRot * ((float) Math.PI / 180F)), -Mth.cos(this.yRot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(1.3F, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
                     this.doHurtTarget(this.getTarget());
                 }
                 if ((this.getAnimation() == ANIMATION_PUNCH_L) && this.getAnimationTick() == 6) {
-                    float rot = yRot + 90;
+                    float rot = getYRot() + 90;
                     attackTarget.knockback(0.85F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
                     this.doHurtTarget(this.getTarget());
                 }
                 if ((this.getAnimation() == ANIMATION_PUNCH_R) && this.getAnimationTick() == 6) {
-                    float rot = yRot - 90;
+                    float rot = getYRot() - 90;
                     attackTarget.knockback(0.85F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
                     this.doHurtTarget(this.getTarget());
                 }
@@ -569,7 +565,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         }
         if (this.isBaby() && this.isPassenger() && this.getVehicle() instanceof EntityKangaroo) {
             EntityKangaroo mount = (EntityKangaroo) this.getVehicle();
-            this.yRot = mount.yBodyRot;
+            this.setYRot( mount.yBodyRot);
             this.yHeadRot = mount.yBodyRot;
             this.yBodyRot = mount.yBodyRot;
         }
@@ -689,7 +685,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     private void calculateRotationYaw(double x, double z) {
-        this.yRot = (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F;
+        this.setYRot( (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F);
     }
 
     public boolean canSpawnSprintParticle() {
@@ -780,7 +776,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel serverWorld, AgableMob ageableEntity) {
+    public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
         return AMEntityRegistry.KANGAROO.create(serverWorld);
     }
 
@@ -947,7 +943,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         super.jumpFromGround();
         double d0 = this.moveControl.getSpeedModifier();
         if (d0 > 0.0D) {
-            double d1 = getHorizontalDistanceSqr(this.getDeltaMovement());
+            double d1 = this.getDeltaMovement().horizontalDistanceSqr();
             if (d1 < 0.01D) {
             }
         }

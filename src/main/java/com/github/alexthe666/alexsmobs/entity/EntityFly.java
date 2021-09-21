@@ -4,13 +4,15 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.animal.Animal;
@@ -47,7 +49,7 @@ import net.minecraftforge.common.data.ForgeBlockTagsProvider;
 import javax.annotation.Nullable;
 import java.util.*;
 
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -216,7 +218,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
                 }
                 level.addFreshEntity(mosquito);
                 mosquito.onSpawnFromFly();
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
         }
     }
@@ -258,8 +260,13 @@ public class EntityFly extends Animal implements FlyingAnimal {
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.FLY.create(p_241840_1_);
+    }
+
+    @Override
+    public boolean isFlying() {
+        return true;
     }
 
     class WanderGoal extends Goal {
@@ -295,10 +302,10 @@ public class EntityFly extends Animal implements FlyingAnimal {
 
         @Nullable
         private Vec3 getRandomLocation() {
-            Vec3 vector3d = EntityFly.this.getViewVector(0.0F);
+            Vec3   vec3 = EntityFly.this.getViewVector(0.0F);
             int i = 8;
-            Vec3 vector3d2 = RandomPos.getAboveLandPos(EntityFly.this, 3, 3, vector3d, ((float) Math.PI / 2F), 1, 1);
-            return vector3d2 != null ? vector3d2 : RandomPos.getAirPos(EntityFly.this, 3, 3, -3, vector3d, (float) Math.PI / 2F);
+            Vec3 vec32 = HoverRandomPos.getPos(EntityFly.this, 8, 7, vec3.x, vec3.z, ((float)Math.PI / 2F), 3, 1);
+            return vec32 != null ? vec32 : AirAndWaterRandomPos.getPos(EntityFly.this, 8, 4, -2, vec3.x, vec3.z, (double)((float)Math.PI / 2F));
         }
     }
 

@@ -405,7 +405,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                 }
             }
         }
-        if(!level.isClientSide && this.getTarget() != null && this.canSee(this.getTarget()) && this.distanceTo(this.getTarget()) < 4 && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5) {
+        if(!level.isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 4 && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5) {
             float f1 = this.yRot * ((float)Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add((double)(-MathHelper.sin(f1) * -0.06F), 0.0D, (double)(MathHelper.cos(f1) * -0.06F)));
             this.getTarget().knockback(0.35F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());

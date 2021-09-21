@@ -63,7 +63,7 @@ public class CapuchinAIRangedAttack extends Goal {
         Entity livingentity = this.entity.getDartTarget();
         if (livingentity != null && livingentity.isAlive()) {
             double d0 = this.entity.distanceToSqr(livingentity.getX(), livingentity.getY(), livingentity.getZ());
-            boolean flag = this.entity.getSensing().canSee(livingentity);
+            boolean flag = this.entity.getSensing().hasLineOfSight(livingentity);
             boolean flag1 = this.seeTime > 0;
             if (flag != flag1) {
                 this.seeTime = 0;

@@ -10,7 +10,6 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -186,11 +185,11 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic {
 
             if (itemstack.isEmpty()) {
                 p_230254_1_.setItemInHand(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.inventory.add(itemstack1)) {
+            } else if (!p_230254_1_.getInventory().add(itemstack1)) {
                 p_230254_1_.drop(itemstack1, false);
             }
 
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
             return super.mobInteract(p_230254_1_, p_230254_2_);

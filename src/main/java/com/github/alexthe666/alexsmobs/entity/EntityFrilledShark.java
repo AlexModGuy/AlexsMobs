@@ -13,10 +13,8 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Squid;
@@ -36,7 +34,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.*;
@@ -207,11 +204,11 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
 
             if (itemstack.isEmpty()) {
                 p_230254_1_.setItemInHand(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.inventory.add(itemstack1)) {
+            } else if (!p_230254_1_.getInventory().add(itemstack1)) {
                 p_230254_1_.drop(itemstack1, false);
             }
 
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
             return super.mobInteract(p_230254_1_, p_230254_2_);
@@ -238,7 +235,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
         double d0 = p_233629_1_.getX() - p_233629_1_.xo;
         double d1 = p_233629_1_.getY() - p_233629_1_.yo;
         double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * 8.0F;
+        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2)) * 8.0F;
         if (f > 1.0F) {
             f = 1.0F;
         }
@@ -267,7 +264,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
             this.setDepressurized(true);
         }
         if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 12) {
-            float f1 = this.yRot * ((float) Math.PI / 180F);
+            float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.06F, 0.0D, Mth.cos(f1) * 0.06F));
             if (this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
                 this.getTarget().addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION, 60, 2));

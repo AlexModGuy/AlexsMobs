@@ -80,7 +80,7 @@ public class AnimalAILootChests extends MoveToBlockGoal {
         return super.canContinueToUse() && this.entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty();
     }
 
-    public boolean canSeeChest() {
+    public boolean hasLineOfSightChest() {
         HitResult raytraceresult = entity.level.clip(new ClipContext(entity.getEyePosition(1.0F), new Vec3(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
         if (raytraceresult instanceof BlockHitResult) {
             BlockHitResult blockRayTraceResult = (BlockHitResult) raytraceresult;
@@ -116,7 +116,7 @@ public class AnimalAILootChests extends MoveToBlockGoal {
             if (te instanceof Container) {
                 Container feeder = (Container) te;
                 double distance = this.entity.distanceToSqr(this.blockPos.getX() + 0.5F, this.blockPos.getY() + 0.5F, this.blockPos.getZ() + 0.5F);
-                if (canSeeChest()) {
+                if (hasLineOfSightChest()) {
                     if (this.isReachedTarget() && distance <= 3) {
                         toggleChest(feeder, false);
                         ItemStack stack = getFoodFromInventory(feeder, this.entity.level.random);

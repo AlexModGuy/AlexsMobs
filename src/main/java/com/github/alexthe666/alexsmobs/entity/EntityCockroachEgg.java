@@ -16,8 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class EntityCockroachEgg extends ThrowableItemProjectile {
 
@@ -62,13 +62,13 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
             for(int j = 0; j < i; ++j) {
                 EntityCockroach croc = AMEntityRegistry.COCKROACH.create(this.level);
                 croc.setAge(-24000);
-                croc.moveTo(this.getX(), this.getY(), this.getZ(), this.yRot, 0.0F);
+                croc.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                 croc.finalizeSpawn((ServerLevel)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
                 croc.restrictTo(this.blockPosition(), 20);
                 this.level.addFreshEntity(croc);
             }
             this.level.broadcastEntityEvent(this, (byte)3);
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
 
     }

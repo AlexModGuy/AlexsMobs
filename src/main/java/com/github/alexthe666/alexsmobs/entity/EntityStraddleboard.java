@@ -171,7 +171,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
                 }
 
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             }
 
             return true;
@@ -407,7 +407,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             this.setNoGravity(false);
         }
         float f2 = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) (180F / (float) Math.PI));
-        this.xRot = f2;
+        this.setXRot(f2;
 
         if(extinguishTimer > 0){
             extinguishTimer--;
@@ -424,7 +424,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             if(player.getRemainingFireTicks() > 0 && extinguishTimer == 0){
                 player.clearFire();
             }
-            this.yRot = player.yRotO;
+            this.setYRot( player.yRotO;
             Vec3 vector3d = this.getDeltaMovement();
             if (vector3d.y > -0.5D) {
                 this.fallDistance = 1.0F;
@@ -486,7 +486,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             copy.copyPosition(passenger);
             level.addFreshEntity(copy);
         }
-        this.remove();
+        this.remove(RemovalReason.DISCARDED);
     }
 
     private void floatStrider() {

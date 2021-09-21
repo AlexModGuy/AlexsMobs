@@ -6,9 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
@@ -239,11 +237,11 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
 
             if (lvt_3_1_.isEmpty()) {
                 p_230254_1_.setItemInHand(p_230254_2_, lvt_4_1_);
-            } else if (!p_230254_1_.inventory.add(lvt_4_1_)) {
+            } else if (!p_230254_1_.getInventory().add(lvt_4_1_)) {
                 p_230254_1_.drop(lvt_4_1_, false);
             }
 
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
             return super.mobInteract(p_230254_1_, p_230254_2_);
@@ -287,7 +285,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
         this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
 
         float f2 = (float) -((float) this.getDeltaMovement().y * 2.2F * (double) (180F / (float) Math.PI));
-        this.xRot = f2;
+        this.setXRot(f2);
         if (!isInWater()) {
             if (this.onGround && !this.wasOnGround) {
                 this.squishAmount = -0.35F;
@@ -321,5 +319,10 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
 
     public static boolean canBlobfishSpawn(EntityType<EntityBlobfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
         return reason == MobSpawnType.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnHeight && iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
+    }
+
+    @Override
+    public boolean isFlying() {
+        return false;
     }
 }

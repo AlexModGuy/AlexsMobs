@@ -59,7 +59,7 @@ import java.util.stream.Stream;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -391,7 +391,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             this.setSprinting(false);
             this.setRunning(false);
             if (!level.isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
-                this.xRot = 0;
+                this.setXRot(0;
                 float radius = 1.0F + this.getTarget().getBbWidth() * 0.5F;
                 float angle = (0.01745329251F * this.yBodyRot);
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
@@ -461,7 +461,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
 
     @Nullable
     @Override
-    public AgableMob getBreedOffspring(ServerLevel p_241840_1_, AgableMob p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         boolean whiteOther = p_241840_2_ instanceof EntityTiger && ((EntityTiger) p_241840_2_).isWhite();
         EntityTiger baby = AMEntityRegistry.TIGER.create(p_241840_1_);
         double whiteChance = 0.1D;

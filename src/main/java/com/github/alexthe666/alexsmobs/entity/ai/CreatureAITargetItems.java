@@ -136,7 +136,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
         }else{
             moveTo();
         }
-        if(targetEntity != null && this.mob.canSee(targetEntity) && this.mob.getBbWidth() > 2D && this.mob.isOnGround()){
+        if(targetEntity != null && this.mob.hasLineOfSight(targetEntity) && this.mob.getBbWidth() > 2D && this.mob.isOnGround()){
             this.mob.getMoveControl().setWantedPosition(targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), 1);
         }
         if (this.targetEntity != null && this.targetEntity.isAlive() && this.mob.distanceToSqr(this.targetEntity) < this.hunter.getMaxDistToItem() && mob.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
