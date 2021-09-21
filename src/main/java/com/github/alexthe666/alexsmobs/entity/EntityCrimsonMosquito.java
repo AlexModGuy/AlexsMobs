@@ -249,7 +249,7 @@ public class EntityCrimsonMosquito extends MonsterEntity {
                         }
                     }
                     if(drinkTime > 81 && !world.isRemote){
-                        drinkTime = -100;
+                        drinkTime = -20 - rand.nextInt(20);
                         this.dismount();
                         AlexsMobs.sendMSGToAll(new MessageMosquitoDismount(this.getEntityId(), mount.getEntityId()));
                         this.setFlying(false);
