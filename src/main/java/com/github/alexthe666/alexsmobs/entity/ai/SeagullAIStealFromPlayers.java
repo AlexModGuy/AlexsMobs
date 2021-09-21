@@ -119,7 +119,16 @@ public class SeagullAIStealFromPlayers extends Goal {
     private boolean hasFoods(PlayerEntity player){
         for(int i = 0; i < 9; i++){
             ItemStack stackIn = player.inventory.mainInventory.get(i);
-            if(stackIn.isFood()){
+            if(stackIn.isFood() && !isBlacklisted(stackIn)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isBlacklisted(ItemStack stack){
+        for(String str : AMConfig.seagullStealingBlacklist){
+            if(stack.getItem().getRegistryName().toString().equals(str)){
                 return true;
             }
         }
@@ -130,7 +139,7 @@ public class SeagullAIStealFromPlayers extends Goal {
         List<ItemStack> foods = new ArrayList<>();
         for(int i = 0; i < 9; i++){
             ItemStack stackIn = player.inventory.mainInventory.get(i);
-            if(stackIn.isFood()){
+            if(stackIn.isFood() && !isBlacklisted(stackIn)){
                 foods.add(stackIn);
             }
         }
