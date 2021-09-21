@@ -6,11 +6,9 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.MimiCubeAIRangedAttack;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +16,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.item.*;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,9 +32,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import net.minecraft.world.entity.ai.control.MoveControl.Operation;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,6 +46,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.TridentItem;
+import net.minecraftforge.common.ToolActions;
 
 public class EntityMimicube extends Monster implements RangedAttackMob {
 
@@ -134,7 +129,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         double d0 = target.getX() - this.getX();
         double d1 = target.getY(0.3333333333333333D) - tridententity.getY();
         double d2 = target.getZ() - this.getZ();
-        double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+        double d3 = Mth.sqrt((float)(d0 * d0 + d2 * d2));
         tridententity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level.addFreshEntity(tridententity);
@@ -152,7 +147,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         double d0 = target.getX() - this.getX();
         double d1 = target.getY(0.3333333333333333D) - abstractarrowentity.getY();
         double d2 = target.getZ() - this.getZ();
-        double d3 = Mth.sqrt(d0 * d0 + d2 * d2);
+        double d3 = Mth.sqrt((float)(d0 * d0 + d2 * d2));
         abstractarrowentity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4));
         this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level.addFreshEntity(abstractarrowentity);
@@ -202,7 +197,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     public boolean isBlocking() {
-        return this.getMainHandItem().isShield(this) || this.getOffhandItem().isShield(this);
+        return this.getMainHandItem().canPerformAction(ToolActions.SHIELD_BLOCK) || this.getOffhandItem().canPerformAction(ToolActions.SHIELD_BLOCK);
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -368,11 +363,11 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         public MimicubeMoveHelper(EntityMimicube slimeIn) {
             super(slimeIn);
             this.slime = slimeIn;
-            this.setYRot( 180.0F * slimeIn.yRot / (float) Math.PI;
+            this.yRot = 180.0F * slimeIn.getYRot() / (float) Math.PI;
         }
 
         public void setDirection(float yRotIn, boolean aggressive) {
-            this.setYRot( yRotIn;
+            this.yRot = yRotIn;
             this.isAggressive = aggressive;
         }
 

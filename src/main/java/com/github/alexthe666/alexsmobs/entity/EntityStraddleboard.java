@@ -1,56 +1,44 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.message.MessageSyncEntityPos;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.WaterlilyBlock;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
-import net.minecraft.world.entity.vehicle.Boat;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.BlockUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.*;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.BlockUtil;
-import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.PlayerRideableJumping;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.WaterlilyBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
+
+import javax.annotation.Nullable;
 
 public class EntityStraddleboard extends Entity implements PlayerRideableJumping {
     private static final EntityDataAccessor<ItemStack> ITEMSTACK = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.ITEM_STACK);
@@ -142,29 +130,29 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
-        } else if (!this.level.isClientSide && !this.removed) {
+        } else if (!this.level.isClientSide && !this.isRemoved()) {
             this.setTimeSinceHit(10);
             this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
             this.markHurt();
             this.setRockingTicks(25);
-            boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).abilities.instabuild;
+            boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
             if (flag || this.getDamageTaken() > 40.0F) {
                 if (!flag) {
                     Player p = null;
-                    if(source.getEntity() instanceof Player){
-                        p = (Player)source.getEntity();
+                    if (source.getEntity() instanceof Player) {
+                        p = (Player) source.getEntity();
                     }
-                    if(this.getControllingPassenger() != null && this.getControllingPassenger() instanceof Player){
-                        p = (Player)this.getControllingPassenger();
+                    if (this.getControllingPassenger() != null && this.getControllingPassenger() instanceof Player) {
+                        p = (Player) this.getControllingPassenger();
                     }
                     boolean dropItem = true;
-                    if(p != null && this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN) > 0){
-                        if(p.addItem(this.getItemBoard())){
+                    if (p != null && this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN) > 0) {
+                        if (p.addItem(this.getItemBoard())) {
                             dropItem = false;
                         }
                     }
-                    if(dropItem){
-                        if(this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)){
+                    if (dropItem) {
+                        if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
                             this.spawnAtLocation(this.getItemBoard());
                         }
                     }
@@ -203,7 +191,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     public boolean isPickable() {
-        return !this.removed;
+        return !this.isRemoved();
     }
 
     private Boat.Status getBoatStatus() {
@@ -238,16 +226,16 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         int k1 = 0;
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
-        for(int l1 = i; l1 < j; ++l1) {
-            for(int i2 = i1; i2 < j1; ++i2) {
+        for (int l1 = i; l1 < j; ++l1) {
+            for (int i2 = i1; i2 < j1; ++i2) {
                 int j2 = (l1 != i && l1 != j - 1 ? 0 : 1) + (i2 != i1 && i2 != j1 - 1 ? 0 : 1);
                 if (j2 != 2) {
-                    for(int k2 = k; k2 < l; ++k2) {
+                    for (int k2 = k; k2 < l; ++k2) {
                         if (j2 <= 0 || k2 != k && k2 != l - 1) {
                             blockpos$mutable.set(l1, k2, i2);
                             BlockState blockstate = this.level.getBlockState(blockpos$mutable);
-                            if (!(blockstate.getBlock() instanceof WaterlilyBlock) && Shapes.joinIsNotEmpty(blockstate.getBlockSupportShape(this.level, blockpos$mutable).move((double)l1, (double)k2, (double)i2), voxelshape, BooleanOp.AND)) {
-                                f += blockstate.getSlipperiness(this.level, blockpos$mutable, this);
+                            if (!(blockstate.getBlock() instanceof WaterlilyBlock) && Shapes.joinIsNotEmpty(blockstate.getBlockSupportShape(this.level, blockpos$mutable).move(l1, k2, i2), voxelshape, BooleanOp.AND)) {
+                                f += blockstate.getFriction(this.level, blockpos$mutable, this);
                                 ++k1;
                             }
                         }
@@ -256,7 +244,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             }
         }
 
-        return f / (float)k1;
+        return f / (float) k1;
     }
 
     private boolean checkInWater() {
@@ -271,15 +259,15 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         this.waterLevel = Double.MIN_VALUE;
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
-        for(int k1 = i; k1 < j; ++k1) {
-            for(int l1 = k; l1 < l; ++l1) {
-                for(int i2 = i1; i2 < j1; ++i2) {
+        for (int k1 = i; k1 < j; ++k1) {
+            for (int l1 = k; l1 < l; ++l1) {
+                for (int i2 = i1; i2 < j1; ++i2) {
                     blockpos$mutable.set(k1, l1, i2);
                     FluidState fluidstate = this.level.getFluidState(blockpos$mutable);
                     if (fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA)) {
-                        float f = (float)l1 + fluidstate.getHeight(this.level, blockpos$mutable);
-                        this.waterLevel = Math.max((double)f, this.waterLevel);
-                        flag |= axisalignedbb.minY < (double)f;
+                        float f = (float) l1 + fluidstate.getHeight(this.level, blockpos$mutable);
+                        this.waterLevel = Math.max(f, this.waterLevel);
+                        flag |= axisalignedbb.minY < (double) f;
                     }
                 }
             }
@@ -337,7 +325,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     public int getColor() {
-        if(isDefaultColor()){
+        if (isDefaultColor()) {
             return 0XADC3D7;
         }
         return this.entityData.get(COLOR);
@@ -366,8 +354,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
                 for (int i2 = i1; i2 < j1; ++i2) {
                     blockpos$mutable.set(k1, l1, i2);
                     FluidState fluidstate = this.level.getFluidState(blockpos$mutable);
-                    if ((fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA) && d0 < (double) ((float) blockpos$mutable.getY() + fluidstate.getHeight(this.level, blockpos$mutable))))
-                    {
+                    if ((fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA) && d0 < (double) ((float) blockpos$mutable.getY() + fluidstate.getHeight(this.level, blockpos$mutable)))) {
                         if (!fluidstate.isSource()) {
                             return Boat.Status.UNDER_FLOWING_WATER;
                         }
@@ -400,50 +387,50 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         }
         if (isInLava()) {
             this.setNoGravity(true);
-            if(this.fluidHeight.getDouble(FluidTags.LAVA) >= this.getBbHeight()){
+            if (this.fluidHeight.getDouble(FluidTags.LAVA) >= this.getBbHeight()) {
                 this.setDeltaMovement(0, 0.1, 0);
             }
-        }else{
+        } else {
             this.setNoGravity(false);
         }
         float f2 = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) (180F / (float) Math.PI));
-        this.setXRot(f2;
+        this.setXRot(f2);
 
-        if(extinguishTimer > 0){
+        if (extinguishTimer > 0) {
             extinguishTimer--;
         }
         this.updateRocking();
         Entity controller = getControllingPassenger();
         if (controller instanceof Player) {
             Player player = (Player) controller;
-            if(this.tickCount % 50 == 0){
-                if(getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX) > 0){
+            if (this.tickCount % 50 == 0) {
+                if (getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX) > 0) {
                     player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
                 }
             }
-            if(player.getRemainingFireTicks() > 0 && extinguishTimer == 0){
+            if (player.getRemainingFireTicks() > 0 && extinguishTimer == 0) {
                 player.clearFire();
             }
-            this.setYRot( player.yRotO;
+            this.setYRot(player.yRotO);
             Vec3 vector3d = this.getDeltaMovement();
             if (vector3d.y > -0.5D) {
                 this.fallDistance = 1.0F;
             }
 
             Vec3 vector3d1 = player.getLookAngle();
-            float f = player.xRot * ((float) Math.PI / 180F);
+            float f = player.getXRot() * ((float) Math.PI / 180F);
             double d1 = Math.sqrt(vector3d1.x * vector3d1.x + vector3d1.z * vector3d1.z);
-            double d3 = Math.sqrt(getHorizontalDistanceSqr(vector3d));
+            double d3 = Math.sqrt((float) vector3d.horizontalDistanceSqr());
             double d4 = vector3d1.length();
             float f1 = Mth.cos(f);
             f1 = (float) ((double) f1 * (double) f1 * Math.min(1.0D, d4 / 0.4D));
             double d5 = vector3d.y * -0.1D * (double) f1;
             float slow = player.zza < 0 ? 0 : player.zza * 0.115F;
             float threshold = 0.05F;
-            if (this.yRotO - this.yRot > threshold) {
+            if (this.yRotO - this.getYRot() > threshold) {
                 boardRot = boardRot + 2;
                 slow *= 0;
-            } else if (this.yRotO - this.yRot < -threshold) {
+            } else if (this.yRotO - this.getYRot() < -threshold) {
                 boardRot = boardRot - 2;
                 slow *= 0;
             } else if (boardRot > 0) {
@@ -478,7 +465,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
-        if(!level.isClientSide){
+        if (!level.isClientSide) {
             EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.create(level);
             CompoundTag tag = new CompoundTag();
             this.addAdditionalSaveData(tag);
@@ -533,7 +520,9 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
                         this.setDeltaMovement(vector3d.add(0.0D, -0.7D, 0.0D));
                         this.ejectPassengers();
                     } else {
-                        this.setDeltaMovement(vector3d.x, this.hasPassenger(Player.class) ? 2.7D : 0.6D, vector3d.z);
+                        this.setDeltaMovement(vector3d.x, this.hasPassenger((p_150274_) -> {
+                            return p_150274_ instanceof Player;
+                        }) ? 2.7D : 0.6D, vector3d.z);
                     }
                 }
 
@@ -639,7 +628,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         this.setDefaultColor(compound.getBoolean("IsDefColor"));
-        if(compound.contains("BoardStack")){
+        if (compound.contains("BoardStack")) {
             this.setItemStack(ItemStack.of(compound.getCompound("BoardStack")));
         }
         this.setColor(compound.getInt("Color"));
@@ -649,7 +638,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     protected void addAdditionalSaveData(CompoundTag compound) {
         compound.putBoolean("IsDefColor", this.isDefaultColor());
         compound.putInt("Color", this.getColor());
-        if(!this.getItemStack().isEmpty()){
+        if (!this.getItemStack().isEmpty()) {
             CompoundTag stackTag = new CompoundTag();
             this.getItemStack().save(stackTag);
             compound.put("BoardStack", stackTag);
@@ -670,16 +659,16 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     @Override
     public void handleStartJump(int i) {
         jumpOutOfLava = true;
-        this.hasImpulse=true;
+        this.hasImpulse = true;
         float scaled = i * 0.01F + 0.1F * getEnchant(AMEnchantmentRegistry.STRADDLE_JUMP);
         this.setDeltaMovement(this.getDeltaMovement().add(0, scaled * 1.5F, 0));
     }
 
-    private int getEnchant(Enchantment enchantment){
+    private int getEnchant(Enchantment enchantment) {
         return EnchantmentHelper.getItemEnchantmentLevel(enchantment, this.getItemBoard());
     }
 
-    public boolean shouldSerpentFriend(){
+    public boolean shouldSerpentFriend() {
         return getEnchant(AMEnchantmentRegistry.STRADDLE_SERPENTFRIEND) > 0;
     }
 
@@ -688,12 +677,12 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     }
 
-    public void setItemStack(ItemStack item){
-        this.entityData.set(ITEMSTACK, item);
+    public ItemStack getItemStack() {
+        return this.entityData.get(ITEMSTACK);
     }
 
-    public ItemStack getItemStack(){
-       return this.entityData.get(ITEMSTACK);
+    public void setItemStack(ItemStack item) {
+        this.entityData.set(ITEMSTACK, item);
     }
 
     public enum Status {

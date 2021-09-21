@@ -7,15 +7,12 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ShulkerBullet;
@@ -39,18 +36,14 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.*;
 import net.minecraft.server.level.ServerLevel;
-
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
-
 import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -336,7 +329,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && item == Items.TROPICAL_FISH) {
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             fishFeedings++;
             if (fishFeedings > 10 && getRandom().nextInt(6) == 0 || fishFeedings > 30) {
@@ -347,9 +340,9 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
             }
             return InteractionResult.SUCCESS;
         }
-        if (isTame() && item.is(ItemTags.FISHES)) {
+        if (isTame() && itemstack.is(ItemTags.FISHES)) {
             if (this.getHealth() < this.getMaxHealth()) {
-                this.usePlayerItem(player, itemstack);
+                this.usePlayerItem(player, hand, itemstack);
                 this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;
@@ -696,7 +689,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
             } else if (!this.isTeleportFriendlyBlock(new BlockPos(p_226328_1_, p_226328_2_, p_226328_3_))) {
                 return false;
             } else {
-                this.tameable.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.yRot, this.tameable.xRot);
+                this.tameable.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.getYRot(), this.tameable.getXRot());
                 this.tameable.getNavigation().stop();
                 return true;
             }

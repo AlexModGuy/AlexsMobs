@@ -11,11 +11,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -39,7 +37,6 @@ import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.DifficultyInstance;
@@ -162,7 +159,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
             if (itemstack.isEmpty()) {
                 p_230254_1_.setItemInHand(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.inventory.add(itemstack1)) {
+            } else if (!p_230254_1_.getInventory().add(itemstack1)) {
                 p_230254_1_.drop(itemstack1, false);
             }
 
@@ -439,7 +436,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     public void onGetItem(ItemEntity e) {
         this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
         if(e.getItem().getItem() == Items.REDSTONE || e.getItem().getItem() == Items.REDSTONE_BLOCK){
-            superCharged = e.getItem().getItem().getItem() == Items.REDSTONE_BLOCK;
+            superCharged = e.getItem().getItem() == Items.REDSTONE_BLOCK;
             this.setSensing(true);
         }else{
             this.heal(6);

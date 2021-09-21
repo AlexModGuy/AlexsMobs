@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -117,7 +116,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        this.setXRot(0.0F;
+        this.setXRot(0.0F);
         this.randomizeDirection();
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
 
@@ -141,7 +140,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     public void tick() {
         super.tick();
         Vec3 vector3d1 = this.getDeltaMovement();
-        this.setYRot( -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
+        this.setYRot( -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
         this.yBodyRot = this.getYRot();
 
         prevBirdPitch = this.birdPitch;
@@ -203,6 +202,11 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
         this.setCardinalInt(2 + random.nextInt(3));
     }
 
+    @Override
+    public boolean isFlying() {
+        return true;
+    }
+
     static class MoveHelperController extends MoveControl {
         private final EntitySpectre parentEntity;
 
@@ -222,11 +226,11 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
                     double d0 = this.wantedX - this.parentEntity.getX();
                     double d1 = this.wantedY - this.parentEntity.getY();
                     double d2 = this.wantedZ - this.parentEntity.getZ();
-                    double d3 = Mth.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                    double d3 = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d5)));
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                    parentEntity.yBodyRot = parentEntity.yRot;
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.yBodyRot = parentEntity.getYRot();
 
                 }
 
@@ -315,7 +319,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
                 target = island ? getIslandPos(this.parentEntity.blockPosition()) : getBlockFromDirection();
             }
             if (!island) {
-                parentEntity.yRot = parentEntity.getCardinalDirection().toYRot();
+                parentEntity.setYRot(parentEntity.getCardinalDirection().toYRot());
             }
             if (target != null) {
                 this.parentEntity.getMoveControl().setWantedPosition(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, 1.0D);
@@ -354,7 +358,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     class TemptHeartGoal extends Goal {
         protected final EntitySpectre creature;
-        private final TargetingConditions ENTITY_PREDICATE = (new TargetingConditions()).range(64D).allowInvulnerable().allowSameTeam().allowNonAttackable();
+        private final TargetingConditions ENTITY_PREDICATE = TargetingConditions.forNonCombat().range(64D).ignoreInvisibilityTesting().ignoreLineOfSight();
         private final double speed;
         private final Ingredient temptItem;
         protected Player closestPlayer;

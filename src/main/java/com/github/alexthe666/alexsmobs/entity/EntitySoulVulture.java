@@ -32,7 +32,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
@@ -413,11 +412,11 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
                     double d0 = this.wantedX - this.parentEntity.getX();
                     double d1 = this.wantedY - this.parentEntity.getY();
                     double d2 = this.wantedZ - this.parentEntity.getZ();
-                    double d3 = (double)Mth.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                    double d3 = (double)Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d5)));
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                    parentEntity.yBodyRot = parentEntity.yRot;
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.yBodyRot = parentEntity.getYRot();
 
                 }
 
@@ -537,10 +536,10 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
                 this.vulture.getMoveControl().setWantedPosition(vulture.getTarget().getX(), vulture.getTarget().getY() + vulture.getTarget().getEyeHeight(), vulture.getTarget().getZ(), 2.0D);
                 double d0 = this.vulture.getX() - this.vulture.getTarget().getX();
                 double d2 = this.vulture.getZ() - this.vulture.getTarget().getZ();
-                double d3 = (double)Mth.sqrt(d0 * d0 + d2 * d2);
+                double d3 = (double)Mth.sqrt((float) (d0 * d0 + d2 * d2));
                 float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                vulture.yRot = f;
-                vulture.yBodyRot = vulture.yRot;
+                vulture.setYRot(f);
+                vulture.yBodyRot = vulture.getYRot();
                 if (vulture.getBoundingBox().inflate(0.3F, 0.3F, 0.3F).intersects(vulture.getTarget().getBoundingBox()) && vulture.tackleCooldown == 0) {
                     tackleCooldown = 100 + random.nextInt(200);
                     float dmg = (float) vulture.getAttribute(Attributes.ATTACK_DAMAGE).getValue();

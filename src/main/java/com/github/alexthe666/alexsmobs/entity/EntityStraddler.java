@@ -10,10 +10,8 @@ import com.google.common.collect.Sets;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Strider;
@@ -23,13 +21,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.pathfinding.*;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
@@ -176,7 +172,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
     }
 
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-        Vec3[] avector3d = new Vec3[]{getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.yRot), getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.yRot - 22.5F), getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.yRot + 22.5F), getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.yRot - 45.0F), getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.yRot + 45.0F)};
+        Vec3[] avector3d = new Vec3[]{getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot()), getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot() - 22.5F), getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot() + 22.5F), getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot() - 45.0F), getCollisionHorizontalEscapeVector(this.getBbWidth(), livingEntity.getBbWidth(), livingEntity.getYRot() + 45.0F)};
         Set<BlockPos> set = Sets.newLinkedHashSet();
         double d0 = this.getBoundingBox().maxY;
         double d1 = this.getBoundingBox().minY - 0.5D;
@@ -246,12 +242,12 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
             double d1 = this.getTarget().getX() - this.getX();
             double d2 = d0 - pole.getY();
             double d3 = this.getTarget().getZ() - this.getZ();
-            float f = Mth.sqrt(d1 * d1 + d3 * d3) * 0.4F;
-            float f3 = Mth.sqrt(d1 * d1 + d2 * d2 + d3 * d3) * 0.2F;
+            float f = Mth.sqrt((float) (d1 * d1 + d3 * d3)) * 0.4F;
+            float f3 = Mth.sqrt((float) (d1 * d1 + d2 * d2 + d3 * d3)) * 0.2F;
             this.playSound(SoundEvents.CROSSBOW_LOADING_END, 2F, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             pole.shoot(d1, d2 + (double)f3, d3, 2F, 0F);
-            pole.yRot = this.yRot % 360.0F;
-            pole.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F;
+            pole.setYRot(this.getYRot() % 360.0F);
+            pole.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F);
             if(!level.isClientSide){
                 this.level.addFreshEntity(pole);
             }

@@ -7,7 +7,6 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicates;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -28,7 +27,6 @@ import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.LevelAccessor;
@@ -153,13 +151,13 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             BlockPos ground = new BlockPos(this.getX(), this.getY() - 1.0D, this.getZ());
             float f = 0.91F;
             if (this.onGround) {
-                f = this.level.getBlockState(ground).getSlipperiness(this.level, ground, this) * 0.91F;
+                f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
             }
 
             float f1 = 0.16277137F / (f * f * f);
             f = 0.91F;
             if (this.onGround) {
-                f = this.level.getBlockState(ground).getSlipperiness(this.level, ground, this) * 0.91F;
+                f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
             }
             this.calculateEntityAnimation(this, true);
 
@@ -191,7 +189,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             this.level.addParticle(type, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, 0D, extraZMotion);
         } else {
             if (this.tickCount % 100 == 0) {
-                List<Entity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getScorchArea(), SCORCH_PRED);
+                List<? extends Entity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getScorchArea(), SCORCH_PRED);
                 for (Entity e : list) {
                     e.setSecondsOnFire(4);
                     if (e instanceof Phantom) {
@@ -281,7 +279,12 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
 
     private boolean isValidBeacon(BlockPos pos) {
         BlockEntity te = level.getBlockEntity(pos);
-        return te instanceof BeaconBlockEntity && ((BeaconBlockEntity) te).getLevels() > 0;
+        return te instanceof BeaconBlockEntity && !((BeaconBlockEntity) te).getBeamSections().isEmpty();
+    }
+
+    @Override
+    public boolean isFlying() {
+        return true;
     }
 
     static class MoveHelperController extends MoveControl {
@@ -303,13 +306,13 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                     if (parentEntity.getTarget() == null) {
                         Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                        parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                        parentEntity.yBodyRot = parentEntity.yRot;
+                        parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                        parentEntity.yBodyRot = parentEntity.getYRot();
                     } else {
                         double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                         double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                        parentEntity.yRot = -((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI);
-                        parentEntity.yBodyRot = parentEntity.yRot;
+                        parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                        parentEntity.yBodyRot = parentEntity.getYRot();
                     }
                 }
 

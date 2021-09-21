@@ -6,11 +6,9 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -148,7 +146,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
             double range = 15;
             int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
-            List<EntitySeal> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
+            List<? extends EntitySeal> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntitySeal gaz : list) {
                 gaz.revengeCooldown = fleeTime;
                 gaz.setBasking(false);
@@ -183,7 +181,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         boolean dig = isDigging() && isInWaterOrBubble();
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
         if (isInWater()) {
-            this.setXRot(f2 * 2.5F;
+            this.setXRot(f2 * 2.5F);
         }
 
         if (isInWater() && this.isLandNavigator) {
@@ -236,9 +234,9 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
                 this.setLastHurtByMob(null);
             }
             float threshold = 0.05F;
-            if (isInWater() && this.yRotO - this.yRot > threshold) {
+            if (isInWater() && this.yRotO - this.getYRot() > threshold) {
                 this.setSwimAngle(this.getSwimAngle() + 2);
-            } else if (isInWater() && this.yRotO - this.yRot < -threshold) {
+            } else if (isInWater() && this.yRotO - this.getYRot() < -threshold) {
                 this.setSwimAngle(this.getSwimAngle() - 2);
             } else if (this.getSwimAngle() > 0) {
                 this.setSwimAngle(Math.max(this.getSwimAngle() - 10, 0));
@@ -306,7 +304,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setArctic(this.isBiomeArctic(worldIn, this.blockPosition()));
         this.setAirSupply(this.getMaxAirSupply());
-        this.setXRot(0.0F;
+        this.setXRot(0.0F);
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 

@@ -12,10 +12,8 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
@@ -332,7 +330,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (item == Items.SNOW && !this.isSnowy() && !level.isClientSide) {
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.permSnow = true;
             this.setSnowy(true);
             this.playSound(SoundEvents.SNOW_PLACE, this.getSoundVolume(), this.getVoicePitch());

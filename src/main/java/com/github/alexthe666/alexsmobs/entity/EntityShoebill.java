@@ -10,11 +10,9 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -33,7 +31,6 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -119,7 +116,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
             double range = 15;
             int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
-            List<EntityShoebill> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
+            List<? extends EntityShoebill> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntityShoebill gaz : list) {
                 gaz.revengeCooldown = fleeTime;
             }
@@ -219,7 +216,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
             }
         }
         if (!level.isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 9) {
-            float f1 = this.yRot * ((float) Math.PI / 180F);
+            float f1 = this.getYRot() * ((float) Math.PI / 180F);
             getTarget().knockback(0.3F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }

@@ -8,16 +8,17 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Monster;
@@ -43,7 +44,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.tags.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.*;
@@ -70,12 +70,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
@@ -344,7 +338,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             return InteractionResult.SUCCESS;
         }
         if (!isTame() && (item == AMItemRegistry.LOBSTER_TAIL || item == AMItemRegistry.COOKED_LOBSTER_TAIL)) {
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.DOLPHIN_EAT, this.getSoundVolume(), this.getVoicePitch());
             fishFeedings++;
             if (this.getMimicState() == MimicState.OVERLAY && this.getMimickedBlock() == null) {
@@ -359,7 +353,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         }
         if (isTame() && (item == AMItemRegistry.LOBSTER_TAIL || item == AMItemRegistry.COOKED_LOBSTER_TAIL)) {
             if (this.getHealth() < this.getMaxHealth()) {
-                this.usePlayerItem(player, itemstack);
+                this.usePlayerItem(player, hand, itemstack);
                 this.playSound(SoundEvents.DOLPHIN_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;
@@ -376,7 +370,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
 
             if (itemstack.isEmpty()) {
                 player.setItemInHand(hand, itemstack1);
-            } else if (!player.inventory.add(itemstack1)) {
+            } else if (!player.getInventory().add(itemstack1)) {
                 player.drop(itemstack1, false);
             }
 
@@ -386,7 +380,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         if (this.isTame() && item == Items.SLIME_BALL && this.getMoistness() < 24000) {
             this.setMoistness(48000);
             this.makeEatingParticles(itemstack);
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             return InteractionResult.SUCCESS;
         }
         if (this.isTame() && !this.isUpgraded() && item == AMItemRegistry.MIMICREAM) {
@@ -400,7 +394,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                 this.stopMimicCooldown = 40;
             }
             this.makeEatingParticles(itemstack);
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             return InteractionResult.SUCCESS;
         }
         if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
@@ -458,7 +452,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         double d0 = p_233629_1_.getX() - p_233629_1_.xo;
         double d1 = p_233629_1_.getY() - p_233629_1_.yo;
         double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * (groundProgress < 2.5F ? 4.0F : 8.0F);
+        float f = Mth.sqrt((float)(d0 * d0 + d1 * d1 + d2 * d2)) * (groundProgress < 2.5F ? 4.0F : 8.0F);
         if (f > 1.0F) {
             f = 1.0F;
         }
@@ -531,7 +525,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         }
         if (this.isInWaterOrBubble()) {
             float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) (180F / (float) Math.PI));
-            this.setXRot(f2;
+            this.setXRot(f2);
         }
         if (camoCooldown > 0) {
             camoCooldown--;
@@ -982,7 +976,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             if (targetEntity != null) {
                 if (flightTarget == null || flightTarget != null && EntityMimicOctopus.this.distanceToSqr(flightTarget) < 6) {
                     Vec3 vec;
-                    vec = RandomPos.getPosAvoid(EntityMimicOctopus.this, 16, 7, targetEntity.position());
+                    vec = DefaultRandomPos.getPosAway(EntityMimicOctopus.this, 16, 7, targetEntity.position());
                     if (vec != null) {
                         flightTarget = vec;
                     }
@@ -1118,7 +1112,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             } else if (!this.isTeleportFriendlyBlock(new BlockPos(p_226328_1_, p_226328_2_, p_226328_3_))) {
                 return false;
             } else {
-                this.tameable.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.yRot, this.tameable.xRot);
+                this.tameable.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.getYRot(), this.tameable.getXRot());
                 this.tameable.getNavigation().stop();
                 return true;
             }

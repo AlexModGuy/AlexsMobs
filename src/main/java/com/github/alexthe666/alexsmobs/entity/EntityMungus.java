@@ -11,10 +11,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -34,6 +32,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
@@ -86,7 +85,12 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     private static final EntityDataAccessor<Integer> SACK_SWELL = SynchedEntityData.defineId(EntityMungus.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> EXPLOSION_DISABLED = SynchedEntityData.defineId(EntityMungus.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockState>> MUSHROOM_STATE = SynchedEntityData.defineId(EntityMungus.class, EntityDataSerializers.BLOCK_STATE);
-    private static final int WIDTH_BITS = (int) Math.round(Math.log(16.0D) / Math.log(2.0D)) - 2;
+
+    //biome container constants
+    private static final int WIDTH_BITS = Mth.ceillog2(16) - 2;
+    private static final int HORIZONTAL_MASK = (1 << WIDTH_BITS) - 1;
+    public static final int MAX_SIZE = 1 << WIDTH_BITS + WIDTH_BITS + DimensionType.BITS_FOR_Y - 2;
+
     private static HashMap<String, String> MUSHROOM_TO_BIOME = new HashMap<>();
     private static HashMap<String, String> MUSHROOM_TO_BLOCK = new HashMap<>();
     private static boolean initBiomeData = false;
@@ -252,7 +256,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                             level.setBlockAndUpdate(blockpos, finalTransformState);
                         }
                         if (level.random.nextInt(4) == 0 && level.getBlockState(blockpos).getMaterial().isSolid() && level.getFluidState(blockpos.above()).isEmpty() && !level.getBlockState(blockpos.above()).canOcclude()) {
-                            level.setBlockAndUpdate(blockpos.above(), this.getMushroomState().getBlockState());
+                            level.setBlockAndUpdate(blockpos.above(), this.getMushroomState());
                         }
                     }
                 }
@@ -278,6 +282,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         return null;
     }
 
+
     private void transformBiome(BlockPos pos, Biome biome) {
         LevelChunk chunk = level.getChunkAt(pos);
         ChunkBiomeContainer container = chunk.getBiomes();
@@ -287,9 +292,9 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             ChunkGenerator chunkgenerator = ((ServerLevel) level).getChunkSource().getGenerator();
             Biome b = null;
             for (int lvt_6_1_ = 0; lvt_6_1_ < container.biomes.length; ++lvt_6_1_) {
-                int lvt_7_1_ = lvt_6_1_ & ChunkBiomeContainer.HORIZONTAL_MASK;
-                int lvt_8_1_ = lvt_6_1_ >> WIDTH_BITS + WIDTH_BITS & ChunkBiomeContainer.VERTICAL_MASK;
-                int lvt_9_1_ = lvt_6_1_ >> WIDTH_BITS & ChunkBiomeContainer.HORIZONTAL_MASK;
+                int lvt_7_1_ = lvt_6_1_ & HORIZONTAL_MASK;
+                int lvt_8_1_ = lvt_6_1_ >> WIDTH_BITS + WIDTH_BITS;
+                int lvt_9_1_ = lvt_6_1_ >> WIDTH_BITS & HORIZONTAL_MASK;
                 b = chunkgenerator.getBiomeSource().getNoiseBiome(lvt_4_1_ + lvt_7_1_, lvt_8_1_, lvt_5_1_ + lvt_9_1_);
                 container.biomes[lvt_6_1_] = b;
             }
@@ -327,7 +332,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         InteractionResult type = super.mobInteract(player, hand);
         if (itemstack.getItem() == Items.POISONOUS_POTATO && !this.isBaby()) {
             this.entityData.set(REVERTING, true);
-            usePlayerItem(player, itemstack);
+            usePlayerItem(player, hand, itemstack);
             return InteractionResult.SUCCESS;
         }
         if (shouldFollowMushroom(itemstack) && this.getMushroomCount() < 5) {
@@ -338,7 +343,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                 this.setMushroomCount(0);
             }
             this.setMushroomState(state);
-            this.usePlayerItem(player, itemstack);
+            this.usePlayerItem(player, hand, itemstack);
             this.setMushroomCount(this.getMushroomCount() + 1);
             return InteractionResult.SUCCESS;
         } else {

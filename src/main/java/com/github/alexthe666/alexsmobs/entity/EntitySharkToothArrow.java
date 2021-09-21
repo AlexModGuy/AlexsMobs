@@ -17,8 +17,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class EntitySharkToothArrow extends Arrow {
 

@@ -5,8 +5,8 @@ import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.BoneSerpentPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -30,7 +30,6 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -122,7 +121,7 @@ public class EntityStradpole extends WaterAnimal {
 
             if (itemstack.isEmpty()) {
                 p_230254_1_.setItemInHand(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.inventory.add(itemstack1)) {
+            } else if (!p_230254_1_.getInventory().add(itemstack1)) {
                 p_230254_1_.drop(itemstack1, false);
             }
 
@@ -245,7 +244,7 @@ public class EntityStradpole extends WaterAnimal {
         this.swimPitch = f2;
         if (this.onGround && !this.isInWater() && !this.isInLava()) {
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
-            this.setYRot( this.random.nextFloat() * 360.0F;
+            this.setYRot( this.random.nextFloat() * 360.0F);
             this.onGround = false;
             this.hasImpulse = true;
         }
@@ -350,14 +349,14 @@ public class EntityStradpole extends WaterAnimal {
     public void shoot(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
         Vec3 lvt_9_1_ = (new Vec3(p_70186_1_, p_70186_3_, p_70186_5_)).normalize().add(this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_, this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_, this.random.nextGaussian() * 0.007499999832361937D * (double) p_70186_8_).scale(p_70186_7_);
         this.setDeltaMovement(lvt_9_1_);
-        float lvt_10_1_ = Mth.sqrt(getHorizontalDistanceSqr(lvt_9_1_));
-        this.setYRot( (float) (Mth.atan2(lvt_9_1_.x, lvt_9_1_.z) * 57.2957763671875D);
-        this.setXRot((float) (Mth.atan2(lvt_9_1_.y, lvt_10_1_) * 57.2957763671875D);
+        float lvt_10_1_ = (float) lvt_9_1_.horizontalDistanceSqr();
+        this.setYRot( (float) (Mth.atan2(lvt_9_1_.x, lvt_9_1_.z) * 57.2957763671875D));
+        this.setXRot((float) (Mth.atan2(lvt_9_1_.y, lvt_10_1_) * 57.2957763671875D));
         this.xRotO = this.getXRot();
-        this.yBodyRot = yRot;
-        this.yHeadRot = yRot;
-        this.yHeadRotO = yRot;
-        this.yRotO = yRot;
+        this.yBodyRot = getYRot();
+        this.yHeadRot = getYRot();
+        this.yHeadRotO = getYRot();
+        this.yRotO = getYRot();
         this.setDespawnSoon(true);
         this.entityData.set(LAUNCHED, true);
     }
@@ -397,9 +396,9 @@ public class EntityStradpole extends WaterAnimal {
                     return vector3d;
                 }
             }
-            Vec3 vector3d = RandomPos.getPos(this.mob, 7, 3);
+            Vec3 vector3d = LandRandomPos.getPos(this.mob, 7, 3);
 
-            for (int i = 0; vector3d != null && !this.mob.level.getFluidState(new BlockPos(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = RandomPos.getPos(this.mob, 10, 7)) {
+            for (int i = 0; vector3d != null && !this.mob.level.getFluidState(new BlockPos(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
             }
 
             return vector3d;

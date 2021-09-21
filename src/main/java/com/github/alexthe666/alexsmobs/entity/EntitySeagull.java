@@ -9,14 +9,12 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
@@ -41,13 +39,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 
@@ -285,7 +280,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         this.prevAttackProgress = attackProgress;
         this.prevSitProgress = sitProgress;
         float yMot = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
-        float absYaw = Math.abs(this.yRot - this.yRotO);
+        float absYaw = Math.abs(this.getYRot() - this.yRotO);
         if (isFlying() && flyProgress < 5F) {
             flyProgress++;
         }
@@ -801,7 +796,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                     return eagle.getBlockGrounding(vector3d);
                 }
             } else {
-                return RandomPos.getPos(this.eagle, 10, 7);
+                return LandRandomPos.getPos(this.eagle, 10, 7);
             }
         }
 
@@ -848,8 +843,8 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                     float yScale = d1 > 0 || fallFlag ? 1F : 0.7F;
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(speedModifier * 0.03D / d5)));
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
-                    parentEntity.yBodyRot = parentEntity.yRot;
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.yBodyRot = parentEntity.getYRot();
 
                 }
 

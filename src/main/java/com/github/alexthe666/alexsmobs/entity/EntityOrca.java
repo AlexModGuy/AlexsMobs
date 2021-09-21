@@ -8,15 +8,13 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.DolphinLookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Monster;
@@ -84,7 +82,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     public static final Animation ANIMATION_BITE = Animation.create(8);
     public static final Animation ANIMATION_TAILSWING = Animation.create(20);
     private static final EntityDataAccessor<Integer> MOISTNESS = SynchedEntityData.defineId(EntityOrca.class, EntityDataSerializers.INT);
-    private static final TargetingConditions PLAYER_PREDICATE = (new TargetingConditions()).range(24.0D).allowSameTeam().allowInvulnerable().allowUnseeable();
+    private static final TargetingConditions PLAYER_PREDICATE = TargetingConditions.forNonCombat().range(24.0D).ignoreLineOfSight();
     public int jumpCooldown;
     private int animationTick;
     private Animation currentAnimation;
@@ -97,7 +95,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         super(type, worldIn);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new MoveHelperController(this);
-        this.lookControl = new DolphinLookControl(this, 10);
+        this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
@@ -210,7 +208,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
                                 level.destroyBlock(pos, true);
-                                if (state.getBlock().is(BlockTags.ICE)) {
+                                if (state.is(BlockTags.ICE)) {
                                     level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
                                 }
                             }
@@ -229,7 +227,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         if (jumpCooldown > 0) {
             jumpCooldown--;
             float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
-            this.setXRot(f2;
+            this.setXRot(f2);
         }
         if (this.isNoAi()) {
             this.setAirSupply(this.getMaxAirSupply());
@@ -245,7 +243,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
                 if (this.onGround) {
                     this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
-                    this.setYRot( this.random.nextFloat() * 360.0F;
+                    this.setYRot( this.random.nextFloat() * 360.0F);
                     this.onGround = false;
                     this.hasImpulse = true;
                 }
@@ -253,8 +251,8 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
             if (this.level.isClientSide && this.isInWater() && this.getDeltaMovement().lengthSqr() > 0.03D) {
                 Vec3 vector3d = this.getViewVector(0.0F);
-                float f = Mth.cos(this.yRot * ((float) Math.PI / 180F)) * 0.9F;
-                float f1 = Mth.sin(this.yRot * ((float) Math.PI / 180F)) * 0.9F;
+                float f = Mth.cos(this.getYRot() * ((float) Math.PI / 180F)) * 0.9F;
+                float f1 = Mth.sin(this.getYRot() * ((float) Math.PI / 180F)) * 0.9F;
                 float f2 = 1.2F - this.random.nextFloat() * 0.7F;
 
                 for (int i = 0; i < 2; ++i) {
@@ -287,7 +285,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                     this.doEnchantDamageEffects(this, attackTarget);
                     this.playSound(SoundEvents.DOLPHIN_ATTACK, 1.0F, 1.0F);
                 }
-                attackTarget.knockback(1F, Mth.sin(yRot * ((float) Math.PI / 180F)), -Mth.cos(yRot * ((float) Math.PI / 180F)));
+                attackTarget.knockback(1F, Mth.sin(getYRot() * ((float) Math.PI / 180F)), -Mth.cos(getYRot() * ((float) Math.PI / 180F)));
                 float knockbackResist = (float) Mth.clamp((1.0D - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0, 1);
                 this.getTarget().setDeltaMovement(this.getTarget().getDeltaMovement().add(0, knockbackResist * 0.4F, 0));
 
@@ -361,7 +359,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setAirSupply(this.getMaxAirSupply());
-        this.setXRot(0.0F;
+        this.setXRot(0.0F);
         this.setMoistness(2400);
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
@@ -486,17 +484,17 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                     this.mob.setZza(0.0F);
                 } else {
                     float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                    this.dolphin.yRot = this.rotlerp(this.dolphin.yRot, f, 10.0F);
-                    this.dolphin.yBodyRot = this.dolphin.yRot;
-                    this.dolphin.yHeadRot = this.dolphin.yRot;
+                    this.dolphin.setYRot(this.rotlerp(this.dolphin.getYRot(), f, 10.0F));
+                    this.dolphin.yBodyRot = this.dolphin.getYRot();
+                    this.dolphin.yHeadRot = this.dolphin.getYRot();
                     float f1 = (float) (this.speedModifier * this.dolphin.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     if (this.dolphin.isInWater()) {
                         this.dolphin.setSpeed(f1 * 0.02F);
-                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt(d0 * d0 + d2 * d2)) * (double) (180F / (float) Math.PI)));
+                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float) (d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
                         f2 = Mth.clamp(Mth.wrapDegrees(f2), -85.0F, 85.0F);
-                        this.dolphin.setXRot(this.rotlerp(this.dolphin.xRot, f2, 5.0F);
-                        float f3 = Mth.cos(this.dolphin.xRot * ((float) Math.PI / 180F));
-                        float f4 = Mth.sin(this.dolphin.xRot * ((float) Math.PI / 180F));
+                        this.dolphin.setXRot(this.rotlerp(this.dolphin.getXRot(), f2, 5.0F));
+                        float f3 = Mth.cos(this.dolphin.getXRot() * ((float) Math.PI / 180F));
+                        float f4 = Mth.sin(this.dolphin.getXRot() * ((float) Math.PI / 180F));
                         this.dolphin.zza = f3 * f1;
                         this.dolphin.yya = -f4 * f1;
                     } else {
