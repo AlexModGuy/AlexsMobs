@@ -37,57 +37,57 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -30.0F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-21.0F, -30.0F, -60.0F, 42.0F, 60.0F, 112.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-21.0F, -30.0F, -60.0F, 42.0F, 60.0F, 112.0F, 0.0F, false);
 
 		top_fin = new AdvancedModelBox(this);
 		top_fin.setPos(0.0F, -34.0F, 42.0F);
 		body.addChild(top_fin);
-		top_fin.texOffs(0, 0).addBox(-3.0F, -4.0F, -10.0F, 6.0F, 8.0F, 20.0F, 0.0F, false);
+		top_fin.setTextureOffset(0, 0).addBox(-3.0F, -4.0F, -10.0F, 6.0F, 8.0F, 20.0F, 0.0F, false);
 
 		arm_left = new AdvancedModelBox(this);
 		arm_left.setPos(21.0F, 26.0F, -38.0F);
 		body.addChild(arm_left);
-		arm_left.texOffs(304, 220).addBox(0.0F, -2.0F, -3.0F, 36.0F, 4.0F, 21.0F, 0.0F, false);
+		arm_left.setTextureOffset(304, 220).addBox(0.0F, -2.0F, -3.0F, 36.0F, 4.0F, 21.0F, 0.0F, false);
 
 		arm_right = new AdvancedModelBox(this);
 		arm_right.setPos(-21.0F, 26.0F, -38.0F);
 		body.addChild(arm_right);
-		arm_right.texOffs(304, 220).addBox(-36.0F, -2.0F, -3.0F, 36.0F, 4.0F, 21.0F, 0.0F, true);
+		arm_right.setTextureOffset(304, 220).addBox(-36.0F, -2.0F, -3.0F, 36.0F, 4.0F, 21.0F, 0.0F, true);
 
 		tail1 = new AdvancedModelBox(this);
 		tail1.setPos(0.0F, -1.0F, 52.0F);
 		body.addChild(tail1);
-		tail1.texOffs(163, 227).addBox(-15.0F, -22.0F, 0.0F, 30.0F, 45.0F, 80.0F, 0.0F, false);
+		tail1.setTextureOffset(163, 227).addBox(-15.0F, -22.0F, 0.0F, 30.0F, 45.0F, 80.0F, 0.0F, false);
 
 		tail2 = new AdvancedModelBox(this);
 		tail2.setPos(0.0F, -1.0F, 80.0F);
 		tail1.addChild(tail2);
-		tail2.texOffs(197, 0).addBox(-9.0F, -14.0F, 0.0F, 18.0F, 28.0F, 65.0F, 0.0F, false);
+		tail2.setTextureOffset(197, 0).addBox(-9.0F, -14.0F, 0.0F, 18.0F, 28.0F, 65.0F, 0.0F, false);
 
 		tail3 = new AdvancedModelBox(this);
 		tail3.setPos(0.0F, 2.0F, 56.0F);
 		tail2.addChild(tail3);
-		tail3.texOffs(158, 173).addBox(-33.0F, -5.0F, -5.0F, 66.0F, 9.0F, 37.0F, 0.0F, false);
+		tail3.setTextureOffset(158, 173).addBox(-33.0F, -5.0F, -5.0F, 66.0F, 9.0F, 37.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, -2.0F, -60.0F);
 		body.addChild(head);
-		head.texOffs(0, 173).addBox(-18.0F, -28.0F, -85.0F, 36.0F, 48.0F, 85.0F, 0.0F, false);
+		head.setTextureOffset(0, 173).addBox(-18.0F, -28.0F, -85.0F, 36.0F, 48.0F, 85.0F, 0.0F, false);
 
 		jaw = new AdvancedModelBox(this);
 		jaw.setPos(0.0F, 20.0F, 0.0F);
 		head.addChild(jaw);
-		jaw.texOffs(293, 23).addBox(-7.0F, 0.0F, -71.0F, 14.0F, 9.0F, 71.0F, 0.0F, false);
+		jaw.setTextureOffset(293, 23).addBox(-7.0F, 0.0F, -71.0F, 14.0F, 9.0F, 71.0F, 0.0F, false);
 
 		teeth = new AdvancedModelBox(this);
 		teeth.setPos(0.0F, 0.0F, -7.0F);
 		jaw.addChild(teeth);
-		teeth.texOffs(32, 370).addBox(-4.0F, -4.0F, -59.0F, 8.0F, 4.0F, 60.0F, 0.0F, false);
+		teeth.setTextureOffset(32, 370).addBox(-4.0F, -4.0F, -59.0F, 8.0F, 4.0F, 60.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 	
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -101,15 +101,15 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		this.resetToDefaultPose();
 		float partialTicks = ageInTicks - entity.tickCount;
 		float renderYaw = (float)entity.getMovementOffsets(0, partialTicks)[0] ;
-		float properPitch = entity.xRotO + (entity.xRot - entity.xRotO) * partialTicks;
+		float properPitch = entity.rotateAngleXO + (entity.rotateAngleX - entity.rotateAngleXO) * partialTicks;
 		float chargeProgress = entity.prevChargingProgress + (entity.chargeProgress - entity.prevChargingProgress) * partialTicks;
 		float sleepProgress = entity.prevSleepProgress + (entity.sleepProgress - entity.prevSleepProgress) * partialTicks;
 		float beachedProgress = entity.prevBeachedProgress + (entity.beachedProgress - entity.prevBeachedProgress) * partialTicks;
 		float f = Mth.clamp((float)entity.getMovementOffsets(7, partialTicks)[0] - renderYaw, -50, 50);
-		this.tail1.yRot += (float) Mth.clamp((float)entity.getMovementOffsets(15, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
-		this.tail2.yRot += (float) Mth.clamp((float)entity.getMovementOffsets(17, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
-		this.body.xRot += Math.min(properPitch, sleepProgress * -9) * ((float)Math.PI / 180F);
-		this.body.zRot += f * 0.017453292F;
+		this.tail1.rotateAngleY += (float) Mth.clamp((float)entity.getMovementOffsets(15, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
+		this.tail2.rotateAngleY += (float) Mth.clamp((float)entity.getMovementOffsets(17, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
+		this.body.rotateAngleX += Math.min(properPitch, sleepProgress * -9) * ((float)Math.PI / 180F);
+		this.body.rotateAngleZ += f * 0.017453292F;
 		AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{tail1, tail2, tail3};
 		float swimSpeed = 0.2F + 0;
 		float swimDegree = 0.4F;
@@ -175,8 +175,8 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 
 	}
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

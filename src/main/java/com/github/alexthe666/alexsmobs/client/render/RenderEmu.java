@@ -3,7 +3,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelEmu;
 import com.github.alexthe666.alexsmobs.entity.EntityEmu;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
@@ -14,7 +14,7 @@ public class RenderEmu extends MobRenderer<EntityEmu, ModelEmu> {
     private static final ResourceLocation TEXTURE_BLONDE_BABY = new ResourceLocation("alexsmobs:textures/entity/emu_baby_blonde.png");
     private static final ResourceLocation TEXTURE_BLUE = new ResourceLocation("alexsmobs:textures/entity/emu_blue.png");
 
-    public RenderEmu(EntityRenderDispatcher renderManagerIn) {
+    public RenderEmu(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelEmu(), 0.45F);
     }
 

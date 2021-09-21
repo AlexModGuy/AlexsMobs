@@ -33,66 +33,66 @@ public class ModelKomodoDragon extends AdvancedEntityModel<EntityKomodoDragon> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -7.0F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-4.0F, -3.5F, -10.0F, 8.0F, 6.0F, 18.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-4.0F, -3.5F, -10.0F, 8.0F, 6.0F, 18.0F, 0.0F, false);
 
 		tail1 = new AdvancedModelBox(this);
 		tail1.setPos(0.0F, -1.0F, 8.0F);
 		body.addChild(tail1);
 		setRotationAngle(tail1, -0.5672F, 0.0F, 0.0F);
-		tail1.texOffs(0, 25).addBox(-2.5F, -2.0F, -1.0F, 5.0F, 5.0F, 10.0F, 0.0F, false);
+		tail1.setTextureOffset(0, 25).addBox(-2.5F, -2.0F, -1.0F, 5.0F, 5.0F, 10.0F, 0.0F, false);
 
 		tail2 = new AdvancedModelBox(this);
 		tail2.setPos(0.0F, 0.5F, 9.0F);
 		tail1.addChild(tail2);
 		setRotationAngle(tail2, 0.4363F, 0.0F, 0.0F);
-		tail2.texOffs(20, 30).addBox(-1.5F, -2.0F, 0.0F, 3.0F, 4.0F, 11.0F, 0.0F, false);
+		tail2.setTextureOffset(20, 30).addBox(-1.5F, -2.0F, 0.0F, 3.0F, 4.0F, 11.0F, 0.0F, false);
 
 		tail3 = new AdvancedModelBox(this);
 		tail3.setPos(0.0F, 0.0F, 11.0F);
 		tail2.addChild(tail3);
 		setRotationAngle(tail3, 0.1745F, 0.0F, 0.0F);
-		tail3.texOffs(35, 0).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 10.0F, 0.0F, false);
+		tail3.setTextureOffset(35, 0).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 10.0F, 0.0F, false);
 
 		legfront_left = new AdvancedModelBox(this);
 		legfront_left.setPos(3.5F, 0.5F, -7.5F);
 		body.addChild(legfront_left);
 		setRotationAngle(legfront_left, -0.3054F, 0.0F, -0.48F);
-		legfront_left.texOffs(21, 46).addBox(-1.5F, -1.5F, -1.5F, 3.0F, 9.0F, 3.0F, 0.0F, false);
+		legfront_left.setTextureOffset(21, 46).addBox(-1.5F, -1.5F, -1.5F, 3.0F, 9.0F, 3.0F, 0.0F, false);
 
 		legfront_right = new AdvancedModelBox(this);
 		legfront_right.setPos(-3.5F, 0.5F, -7.5F);
 		body.addChild(legfront_right);
 		setRotationAngle(legfront_right, -0.3054F, 0.0F, 0.48F);
-		legfront_right.texOffs(21, 46).addBox(-1.5F, -1.5F, -1.5F, 3.0F, 9.0F, 3.0F, 0.0F, true);
+		legfront_right.setTextureOffset(21, 46).addBox(-1.5F, -1.5F, -1.5F, 3.0F, 9.0F, 3.0F, 0.0F, true);
 
 		legback_left = new AdvancedModelBox(this);
 		legback_left.setPos(3.5F, 0.5F, 6.6F);
 		body.addChild(legback_left);
 		setRotationAngle(legback_left, 0.2182F, 0.0F, -0.5672F);
-		legback_left.texOffs(0, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 9.0F, 4.0F, 0.0F, false);
+		legback_left.setTextureOffset(0, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 9.0F, 4.0F, 0.0F, false);
 
 		legback_right = new AdvancedModelBox(this);
 		legback_right.setPos(-3.5F, 0.5F, 6.6F);
 		body.addChild(legback_right);
 		setRotationAngle(legback_right, 0.2182F, 0.0F, 0.5672F);
-		legback_right.texOffs(0, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 9.0F, 4.0F, 0.0F, true);
+		legback_right.setTextureOffset(0, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 9.0F, 4.0F, 0.0F, true);
 
 		neck = new AdvancedModelBox(this);
 		neck.setPos(0.0F, -0.5F, -10.0F);
 		body.addChild(neck);
 		setRotationAngle(neck, 0.1309F, 0.0F, 0.0F);
-		neck.texOffs(0, 41).addBox(-2.5F, -2.5F, -5.0F, 5.0F, 5.0F, 5.0F, 0.0F, false);
+		neck.setTextureOffset(0, 41).addBox(-2.5F, -2.5F, -5.0F, 5.0F, 5.0F, 5.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, 0.0F, -5.0F);
 		neck.addChild(head);
 		setRotationAngle(head, -0.1745F, 0.0F, 0.0F);
-		head.texOffs(38, 25).addBox(-2.0F, -1.9F, -6.0F, 4.0F, 4.0F, 6.0F, 0.0F, false);
+		head.setTextureOffset(38, 25).addBox(-2.0F, -1.9F, -6.0F, 4.0F, 4.0F, 6.0F, 0.0F, false);
 
 		tongue = new AdvancedModelBox(this);
 		tongue.setPos(0.0F, 0.5564F, -6.001F);
 		head.addChild(tongue);
-		tongue.texOffs(44, 44).addBox(-0.5F, 0.0F, -5.0F, 1.0F, 0.0F, 5.0F, 0.0F, false);
+		tongue.setTextureOffset(44, 44).addBox(-0.5F, 0.0F, -5.0F, 1.0F, 0.0F, 5.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 
@@ -147,7 +147,7 @@ public class ModelKomodoDragon extends AdvancedEntityModel<EntityKomodoDragon> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -157,8 +157,8 @@ public class ModelKomodoDragon extends AdvancedEntityModel<EntityKomodoDragon> {
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

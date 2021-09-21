@@ -18,7 +18,9 @@ import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
 import com.github.alexthe666.alexsmobs.item.ItemHemolymphBlaster;
 import com.github.alexthe666.alexsmobs.item.ItemTarantulaHawkElytra;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
+import com.github.alexthe666.citadel.client.CitadelItemRenderProperties;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -28,7 +30,6 @@ import net.minecraft.client.CameraType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.item.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -36,8 +37,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -48,6 +47,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)
@@ -72,88 +72,94 @@ public class ClientProxy extends CommonProxy {
 
     public void clientInit() {
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GRIZZLY_BEAR, manager -> new RenderGrizzlyBear(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ROADRUNNER, manager -> new RenderRoadrunner(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BONE_SERPENT, manager -> new RenderBoneSerpent(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BONE_SERPENT_PART, manager -> new RenderBoneSerpentPart(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GAZELLE, manager -> new RenderGazelle(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CROCODILE, manager -> new RenderCrocodile(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.FLY, manager -> new RenderFly(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.HUMMINGBIRD, manager -> new RenderHummingbird(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ORCA, manager -> new RenderOrca(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SUNBIRD, manager -> new RenderSunbird(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GORILLA, manager -> new RenderGorilla(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CRIMSON_MOSQUITO, manager -> new RenderCrimsonMosquito(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MOSQUITO_SPIT, manager -> new RenderMosquitoSpit(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.RATTLESNAKE, manager -> new RenderRattlesnake(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERGRADE, manager -> new RenderEndergrade(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.HAMMERHEAD_SHARK, manager -> new RenderHammerheadShark(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SHARK_TOOTH_ARROW, manager -> new RenderSharkToothArrow(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.LOBSTER, manager -> new RenderLobster(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.KOMODO_DRAGON, manager -> new RenderKomodoDragon(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CAPUCHIN_MONKEY, manager -> new RenderCapuchinMonkey(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TOSSED_ITEM, manager -> new RenderTossedItem(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CENTIPEDE_HEAD, manager -> new RenderCentipedeHead(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CENTIPEDE_BODY, manager -> new RenderCentipedeBody(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CENTIPEDE_TAIL, manager -> new RenderCentipedeTail(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.WARPED_TOAD, manager -> new RenderWarpedToad(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MOOSE, manager -> new RenderMoose(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MIMICUBE, manager -> new RenderMimicube(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.RACCOON, manager -> new RenderRaccoon(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BLOBFISH, manager -> new RenderBlobfish(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SEAL, manager -> new RenderSeal(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.COCKROACH, manager -> new RenderCockroach(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.COCKROACH_EGG, manager -> new ThrownItemRenderer(manager, itemRendererIn));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SHOEBILL, manager -> new RenderShoebill(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ELEPHANT, manager -> new RenderElephant(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SOUL_VULTURE, manager -> new RenderSoulVulture(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SNOW_LEOPARD, manager -> new RenderSnowLeopard(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SPECTRE, manager -> new RenderSpectre(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CROW, manager -> new RenderCrow(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE, manager -> new RenderAlligatorSnappingTurtle(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MUNGUS, manager -> new RenderMungus(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MANTIS_SHRIMP, manager -> new RenderMantisShrimp(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GUSTER, manager -> new RenderGuster(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SAND_SHOT, manager -> new RenderSandShot(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.GUST, manager -> new RenderGust(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.WARPED_MOSCO, manager -> new RenderWarpedMosco(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.HEMOLYMPH, manager -> new RenderHemolymph(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.STRADDLER, manager -> new RenderStraddler(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.STRADPOLE, manager -> new RenderStradpole(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.STRADDLEBOARD, manager -> new RenderStraddleboard(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.EMU, manager -> new RenderEmu(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.EMU_EGG, manager -> new ThrownItemRenderer(manager, itemRendererIn));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.PLATYPUS, manager -> new RenderPlatypus(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.DROPBEAR, manager -> new RenderDropBear(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TASMANIAN_DEVIL, manager -> new RenderTasmanianDevil(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.KANGAROO, manager -> new RenderKangaroo(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CACHALOT_WHALE, manager -> new RenderCachalotWhale(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.CACHALOT_ECHO, manager -> new RenderCachalotEcho(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.LEAFCUTTER_ANT, manager -> new RenderLeafcutterAnt(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERIOPHAGE, manager -> new RenderEnderiophage(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.ENDERIOPHAGE_ROCKET, manager -> new ThrownItemRenderer(manager, itemRendererIn));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.BALD_EAGLE, manager -> new RenderBaldEagle(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TIGER, manager -> new RenderTiger(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.TARANTULA_HAWK, manager -> new RenderTarantulaHawk(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.VOID_WORM, manager -> new RenderVoidWormHead(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.VOID_WORM_PART, manager -> new RenderVoidWormBody(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.VOID_WORM_SHOT, manager -> new RenderVoidWormShot(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.VOID_PORTAL, manager -> new RenderVoidPortal(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.FRILLED_SHARK, manager -> new RenderFrilledShark(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.MIMIC_OCTOPUS, manager -> new RenderMimicOctopus(manager));
-        RenderingRegistry.registerEntityRenderingHandler(AMEntityRegistry.SEAGULL, manager -> new RenderSeagull(manager));
+        EntityRenderers.register(AMEntityRegistry.GRIZZLY_BEAR, RenderGrizzlyBear::new);
+        EntityRenderers.register(AMEntityRegistry.ROADRUNNER, RenderRoadrunner::new);
+        EntityRenderers.register(AMEntityRegistry.BONE_SERPENT, RenderBoneSerpent::new);
+        EntityRenderers.register(AMEntityRegistry.BONE_SERPENT_PART, RenderBoneSerpentPart::new);
+        EntityRenderers.register(AMEntityRegistry.GAZELLE, RenderGazelle::new);
+        EntityRenderers.register(AMEntityRegistry.CROCODILE, RenderCrocodile::new);
+        EntityRenderers.register(AMEntityRegistry.FLY, RenderFly::new);
+        EntityRenderers.register(AMEntityRegistry.HUMMINGBIRD, RenderHummingbird::new);
+        EntityRenderers.register(AMEntityRegistry.ORCA, RenderOrca::new);
+        EntityRenderers.register(AMEntityRegistry.SUNBIRD, RenderSunbird::new);
+        EntityRenderers.register(AMEntityRegistry.GORILLA, RenderGorilla::new);
+        EntityRenderers.register(AMEntityRegistry.CRIMSON_MOSQUITO, RenderCrimsonMosquito::new);
+        EntityRenderers.register(AMEntityRegistry.MOSQUITO_SPIT, RenderMosquitoSpit::new);
+        EntityRenderers.register(AMEntityRegistry.RATTLESNAKE, RenderRattlesnake::new);
+        EntityRenderers.register(AMEntityRegistry.ENDERGRADE, RenderEndergrade::new);
+        EntityRenderers.register(AMEntityRegistry.HAMMERHEAD_SHARK, RenderHammerheadShark::new);
+        EntityRenderers.register(AMEntityRegistry.SHARK_TOOTH_ARROW, RenderSharkToothArrow::new);
+        EntityRenderers.register(AMEntityRegistry.LOBSTER, RenderLobster::new);
+        EntityRenderers.register(AMEntityRegistry.KOMODO_DRAGON, RenderKomodoDragon::new);
+        EntityRenderers.register(AMEntityRegistry.CAPUCHIN_MONKEY, RenderCapuchinMonkey::new);
+        EntityRenderers.register(AMEntityRegistry.TOSSED_ITEM, RenderTossedItem::new);
+        EntityRenderers.register(AMEntityRegistry.CENTIPEDE_HEAD, RenderCentipedeHead::new);
+        EntityRenderers.register(AMEntityRegistry.CENTIPEDE_BODY, RenderCentipedeBody::new);
+        EntityRenderers.register(AMEntityRegistry.CENTIPEDE_TAIL, RenderCentipedeTail::new);
+        EntityRenderers.register(AMEntityRegistry.WARPED_TOAD, RenderWarpedToad::new);
+        EntityRenderers.register(AMEntityRegistry.MOOSE, RenderMoose::new);
+        EntityRenderers.register(AMEntityRegistry.MIMICUBE, RenderMimicube::new);
+        EntityRenderers.register(AMEntityRegistry.RACCOON, RenderRaccoon::new);
+        EntityRenderers.register(AMEntityRegistry.BLOBFISH, RenderBlobfish::new);
+        EntityRenderers.register(AMEntityRegistry.SEAL, RenderSeal::new);
+        EntityRenderers.register(AMEntityRegistry.COCKROACH, RenderCockroach::new);
+        EntityRenderers.register(AMEntityRegistry.COCKROACH_EGG, (render) -> {
+            return new ThrownItemRenderer<>(render, 0.75F, true);
+        });
+        EntityRenderers.register(AMEntityRegistry.SHOEBILL, RenderShoebill::new);
+        EntityRenderers.register(AMEntityRegistry.ELEPHANT, RenderElephant::new);
+        EntityRenderers.register(AMEntityRegistry.SOUL_VULTURE, RenderSoulVulture::new);
+        EntityRenderers.register(AMEntityRegistry.SNOW_LEOPARD, RenderSnowLeopard::new);
+        EntityRenderers.register(AMEntityRegistry.SPECTRE, RenderSpectre::new);
+        EntityRenderers.register(AMEntityRegistry.CROW, RenderCrow::new);
+        EntityRenderers.register(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE, RenderAlligatorSnappingTurtle::new);
+        EntityRenderers.register(AMEntityRegistry.MUNGUS, RenderMungus::new);
+        EntityRenderers.register(AMEntityRegistry.MANTIS_SHRIMP, RenderMantisShrimp::new);
+        EntityRenderers.register(AMEntityRegistry.GUSTER, RenderGuster::new);
+        EntityRenderers.register(AMEntityRegistry.SAND_SHOT, RenderSandShot::new);
+        EntityRenderers.register(AMEntityRegistry.GUST, RenderGust::new);
+        EntityRenderers.register(AMEntityRegistry.WARPED_MOSCO, RenderWarpedMosco::new);
+        EntityRenderers.register(AMEntityRegistry.HEMOLYMPH, RenderHemolymph::new);
+        EntityRenderers.register(AMEntityRegistry.STRADDLER, RenderStraddler::new);
+        EntityRenderers.register(AMEntityRegistry.STRADPOLE, RenderStradpole::new);
+        EntityRenderers.register(AMEntityRegistry.STRADDLEBOARD, RenderStraddleboard::new);
+        EntityRenderers.register(AMEntityRegistry.EMU, RenderEmu::new);
+        EntityRenderers.register(AMEntityRegistry.EMU_EGG, (render) -> {
+            return new ThrownItemRenderer<>(render, 0.75F, true);
+        });
+        EntityRenderers.register(AMEntityRegistry.PLATYPUS, RenderPlatypus::new);
+        EntityRenderers.register(AMEntityRegistry.DROPBEAR, RenderDropBear::new);
+        EntityRenderers.register(AMEntityRegistry.TASMANIAN_DEVIL, RenderTasmanianDevil::new);
+        EntityRenderers.register(AMEntityRegistry.KANGAROO, RenderKangaroo::new);
+        EntityRenderers.register(AMEntityRegistry.CACHALOT_WHALE, RenderCachalotWhale::new);
+        EntityRenderers.register(AMEntityRegistry.CACHALOT_ECHO, RenderCachalotEcho::new);
+        EntityRenderers.register(AMEntityRegistry.LEAFCUTTER_ANT, RenderLeafcutterAnt::new);
+        EntityRenderers.register(AMEntityRegistry.ENDERIOPHAGE, RenderEnderiophage::new);
+        EntityRenderers.register(AMEntityRegistry.ENDERIOPHAGE_ROCKET, (render) -> {
+            return new ThrownItemRenderer<>(render, 0.75F, true);
+        });
+        EntityRenderers.register(AMEntityRegistry.BALD_EAGLE, RenderBaldEagle::new);
+        EntityRenderers.register(AMEntityRegistry.TIGER, RenderTiger::new);
+        EntityRenderers.register(AMEntityRegistry.TARANTULA_HAWK, RenderTarantulaHawk::new);
+        EntityRenderers.register(AMEntityRegistry.VOID_WORM, RenderVoidWormHead::new);
+        EntityRenderers.register(AMEntityRegistry.VOID_WORM_PART, RenderVoidWormBody::new);
+        EntityRenderers.register(AMEntityRegistry.VOID_WORM_SHOT, RenderVoidWormShot::new);
+        EntityRenderers.register(AMEntityRegistry.VOID_PORTAL, RenderVoidPortal::new);
+        EntityRenderers.register(AMEntityRegistry.FRILLED_SHARK, RenderFrilledShark::new);
+        EntityRenderers.register(AMEntityRegistry.MIMIC_OCTOPUS, RenderMimicOctopus::new);
+        EntityRenderers.register(AMEntityRegistry.SEAGULL, RenderSeagull::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
-            ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
+            ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
                 return !ItemBloodSprayer.isUsable(stack) || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns().isOnCooldown(AMItemRegistry.BLOOD_SPRAYER) ? 1.0F : 0.0F;
             });
-            ItemProperties.register(AMItemRegistry.HEMOLYMPH_BLASTER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_) -> {
+            ItemProperties.register(AMItemRegistry.HEMOLYMPH_BLASTER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
                 return !ItemHemolymphBlaster.isUsable(stack) || p_239428_2_ instanceof Player && ((Player) p_239428_2_).getCooldowns().isOnCooldown(AMItemRegistry.HEMOLYMPH_BLASTER) ? 1.0F : 0.0F;
             });
-            ItemProperties.register(AMItemRegistry.TARANTULA_HAWK_ELYTRA, new ResourceLocation("broken"), (stack, p_239428_1_, p_239428_2_) -> {
+            ItemProperties.register(AMItemRegistry.TARANTULA_HAWK_ELYTRA, new ResourceLocation("broken"), (stack, p_239428_1_, p_239428_2_, j) -> {
                 return ItemTarantulaHawkElytra.isUsable(stack) ? 0.0F : 1.0F;
             });
-            ItemProperties.register(AMItemRegistry.SHIELD_OF_THE_DEEP, new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_) -> {
+            ItemProperties.register(AMItemRegistry.SHIELD_OF_THE_DEEP, new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_, j) -> {
                 return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F;
             });
         }catch (Exception e){
@@ -163,8 +169,8 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.CAPSID, RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.VOID_WORM_BEAK, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.HUMMINGBIRD_FEEDER, RenderType.cutout());
-        ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.CAPSID, manager -> new RenderCapsid(manager));
-        ClientRegistry.bindTileEntityRenderer(AMTileEntityRegistry.VOID_WORM_BEAK, manager -> new RenderVoidWormBeak(manager));
+        BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID, RenderCapsid::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK, RenderVoidWormBeak::new);
 
     }
 
@@ -181,10 +187,6 @@ public class ClientProxy extends CommonProxy {
 
     public void openBookGUI(ItemStack itemStackIn, String page) {
         Minecraft.getInstance().setScreen(new GUIAnimalDictionary(itemStackIn, page));
-    }
-
-    public Item.Properties setupISTER(Item.Properties group) {
-        return group.setISTER(ClientProxy::getTEISR);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -297,5 +299,11 @@ public class ClientProxy extends CommonProxy {
     public void resetVoidPortalCreation(Player player){
 
     }
+
+    @Override
+    public Object getISTERProperties() {
+        return new CitadelItemRenderProperties();
+    }
+
 
 }

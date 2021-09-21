@@ -14,7 +14,7 @@ import net.minecraft.client.MouseHandler;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -145,7 +145,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         matrixstack.mulPose(Vector3f.XP.rotationDegrees((float) (-xRot)));
         matrixstack.mulPose(Vector3f.YP.rotationDegrees((float) yRot));
         matrixstack.mulPose(Vector3f.ZP.rotationDegrees((float) zRot));
-        EntityRenderDispatcher entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
+        EntityRendererProvider.Context entityrenderermanager = Minecraft.getInstance().getEntityRendererProvider.Context();
         quaternion1.conj();
         entityrenderermanager.overrideCameraOrientation(quaternion1);
         entityrenderermanager.setRenderShadow(false);

@@ -38,33 +38,33 @@ public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonke
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -9.9F, 3.9F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-3.0F, -2.1F, -9.9F, 6.0F, 5.0F, 11.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-3.0F, -2.1F, -9.9F, 6.0F, 5.0F, 11.0F, 0.0F, false);
 
 		arm_left = new AdvancedModelBox(this);
 		arm_left.setPos(2.1F, 2.4F, -8.8F);
 		body.addChild(arm_left);
-		arm_left.texOffs(28, 17).addBox(-1.0F, -1.5F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, false);
+		arm_left.setTextureOffset(28, 17).addBox(-1.0F, -1.5F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, false);
 
 		arm_right = new AdvancedModelBox(this);
 		arm_right.setPos(-2.1F, 2.4F, -8.8F);
 		body.addChild(arm_right);
-		arm_right.texOffs(28, 17).addBox(-1.0F, -1.5F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, true);
+		arm_right.setTextureOffset(28, 17).addBox(-1.0F, -1.5F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, true);
 
 		leg_left = new AdvancedModelBox(this);
 		leg_left.setPos(2.0F, 2.9F, 0.1F);
 		body.addChild(leg_left);
-		leg_left.texOffs(0, 0).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
+		leg_left.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
 
 		leg_right = new AdvancedModelBox(this);
 		leg_right.setPos(-2.0F, 2.9F, 0.1F);
 		body.addChild(leg_right);
-		leg_right.texOffs(0, 0).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, true);
+		leg_right.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, true);
 
 		tail1 = new AdvancedModelBox(this);
 		tail1.setPos(0.0F, -1.1F, 0.5F);
 		body.addChild(tail1);
 		setRotationAngle(tail1, 0.6981F, 0.0F, 0.0F);
-		tail1.texOffs(15, 22).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 8.0F, 0.0F, false);
+		tail1.setTextureOffset(15, 22).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 8.0F, 0.0F, false);
 
 		tail2 = new AdvancedModelBox(this);
 		tail2.setPos(0.0F, -0.2F, 7.7F);
@@ -76,22 +76,22 @@ public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonke
 		tail2_r1.setPos(0.0F, -0.1875F, -0.0791F);
 		tail2.addChild(tail2_r1);
 		setRotationAngle(tail2_r1, -1.4399F, 0.0F, 0.0F);
-		tail2_r1.texOffs(0, 17).addBox(-1.0F, -0.8125F, -0.2209F, 2.0F, 3.0F, 9.0F, -0.1F, false);
+		tail2_r1.setTextureOffset(0, 17).addBox(-1.0F, -0.8125F, -0.2209F, 2.0F, 3.0F, 9.0F, -0.1F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, -1.1F, -9.9F);
 		body.addChild(head);
-		head.texOffs(24, 0).addBox(-2.0F, -3.0F, -3.0F, 4.0F, 4.0F, 3.0F, 0.0F, false);
+		head.setTextureOffset(24, 0).addBox(-2.0F, -3.0F, -3.0F, 4.0F, 4.0F, 3.0F, 0.0F, false);
 
 		hair = new AdvancedModelBox(this);
 		hair.setPos(0.0F, -1.0F, -2.0F);
 		head.addChild(hair);
-		hair.texOffs(6, 38).addBox(-3.0F, -2.0F, 0.0F, 6.0F, 4.0F, 0.0F, 0.0F, false);
+		hair.setTextureOffset(6, 38).addBox(-3.0F, -2.0F, 0.0F, 6.0F, 4.0F, 0.0F, 0.0F, false);
 
 		snout = new AdvancedModelBox(this);
 		snout.setPos(0.0F, 1.0F, -3.0F);
 		head.addChild(snout);
-		snout.texOffs(0, 17).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+		snout.setTextureOffset(0, 17).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
 		this.updateDefaultPose();
 		this.animator = ModelAnimator.create();
 	}
@@ -193,7 +193,7 @@ public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonke
 	}
 
 		@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -267,8 +267,8 @@ public class ModelCapuchinMonkey extends AdvancedEntityModel<EntityCapuchinMonke
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

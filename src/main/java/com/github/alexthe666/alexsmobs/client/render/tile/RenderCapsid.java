@@ -4,26 +4,23 @@ import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.math.MathHelper;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import java.util.Random;
 
-public class RenderCapsid<T extends TileEntityCapsid> extends BlockEntityRenderer<T> {
+public class RenderCapsid<T extends TileEntityCapsid> implements BlockEntityRenderer<T> {
 
     private final Random random = new Random();
-    public RenderCapsid(BlockEntityRenderDispatcher rendererDispatcherIn) {
-        super(rendererDispatcherIn);
+    public RenderCapsid(BlockEntityRendererProvider.Context rendererDispatcherIn) {
     }
 
     protected int getModelCount(ItemStack stack) {
@@ -60,7 +57,7 @@ public class RenderCapsid<T extends TileEntityCapsid> extends BlockEntityRendere
                 matrixStackIn.translate((entity.getLevel().random.nextFloat() - 0.5F)* vibrate, (entity.getLevel().random.nextFloat() - 0.5F) * vibrate, (entity.getLevel().random.nextFloat() - 0.5F)* vibrate);
             }
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
-            BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(stack, entity.getLevel(), (LivingEntity)null);
+            BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(stack, entity.getLevel(), (LivingEntity)null, 0);
             boolean flag = ibakedmodel.isGui3d();
             if (!flag) {
                 float f7 = -0.0F * (float)(j - 1) * 0.5F;

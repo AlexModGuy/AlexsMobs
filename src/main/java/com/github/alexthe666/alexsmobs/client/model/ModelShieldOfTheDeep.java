@@ -16,14 +16,14 @@ public class ModelShieldOfTheDeep extends EntityModel<Entity> {
 
 		shield = new ModelPart(this);
 		shield.setPos(-2.0F, 16.0F, 0.0F);
-		shield.texOffs(0, 0).addBox(-1.0F, -4.0F, -6.0F, 1.0F, 12.0F, 12.0F, 0.0F, false);
-		shield.texOffs(17, 15).addBox(-3.0F, -3.0F, -5.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
-		shield.texOffs(27, 0).addBox(-4.0F, -1.0F, -3.0F, 3.0F, 6.0F, 6.0F, 0.0F, false);
+		shield.setTextureOffset(0, 0).addBox(-1.0F, -4.0F, -6.0F, 1.0F, 12.0F, 12.0F, 0.0F, false);
+		shield.setTextureOffset(17, 15).addBox(-3.0F, -3.0F, -5.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
+		shield.setTextureOffset(27, 0).addBox(-4.0F, -1.0F, -3.0F, 3.0F, 6.0F, 6.0F, 0.0F, false);
 
 		handle = new ModelPart(this);
 		handle.setPos(8.0F, 8.0F, -8.0F);
 		shield.addChild(handle);
-		handle.texOffs(0, 25).addBox(-8.0F, -8.5F, 7.0F, 5.0F, 5.0F, 2.0F, 0.0F, false);
+		handle.setTextureOffset(0, 25).addBox(-8.0F, -8.5F, 7.0F, 5.0F, 5.0F, 2.0F, 0.0F, false);
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class ModelShieldOfTheDeep extends EntityModel<Entity> {
 	}
 
 	public void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
-		modelRenderer.xRot = x;
-		modelRenderer.yRot = y;
-		modelRenderer.zRot = z;
+		modelRenderer.rotateAngleX = x;
+		modelRenderer.rotateAngleY = y;
+		modelRenderer.rotateAngleZ = z;
 	}
 }

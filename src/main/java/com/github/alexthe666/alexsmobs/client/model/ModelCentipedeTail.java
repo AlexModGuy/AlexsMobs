@@ -35,91 +35,91 @@ public class ModelCentipedeTail extends AdvancedEntityModel<EntityCentipedeTail>
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -7.6F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-7.0F, -4.2F, -8.0F, 14.0F, 9.0F, 16.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-7.0F, -4.2F, -8.0F, 14.0F, 9.0F, 16.0F, 0.0F, false);
 
 		end_leg_L1 = new AdvancedModelBox(this);
 		end_leg_L1.setPos(2.5F, -0.1F, 8.0F);
 		body.addChild(end_leg_L1);
 		setRotationAngle(end_leg_L1, 0.3054F, 0.3927F, 0.0F);
-		end_leg_L1.texOffs(0, 26).addBox(-1.5F, -1.1F, -1.0F, 3.0F, 3.0F, 12.0F, 0.0F, false);
+		end_leg_L1.setTextureOffset(0, 26).addBox(-1.5F, -1.1F, -1.0F, 3.0F, 3.0F, 12.0F, 0.0F, false);
 
 		end_leg_L2 = new AdvancedModelBox(this);
 		end_leg_L2.setPos(0.0F, 0.2F, 11.0F);
 		end_leg_L1.addChild(end_leg_L2);
 		setRotationAngle(end_leg_L2, -0.6981F, 0.0F, 0.0F);
-		end_leg_L2.texOffs(31, 31).addBox(-1.0F, -0.8F, -0.3F, 2.0F, 2.0F, 10.0F, 0.0F, false);
+		end_leg_L2.setTextureOffset(31, 31).addBox(-1.0F, -0.8F, -0.3F, 2.0F, 2.0F, 10.0F, 0.0F, false);
 
 		end_leg_L3 = new AdvancedModelBox(this);
 		end_leg_L3.setPos(0.0F, 0.2F, 9.5F);
 		end_leg_L2.addChild(end_leg_L3);
 		setRotationAngle(end_leg_L3, -0.4363F, 0.0F, 0.0F);
-		end_leg_L3.texOffs(19, 26).addBox(-0.5F, -0.5F, 0.0F, 1.0F, 1.0F, 9.0F, 0.0F, false);
+		end_leg_L3.setTextureOffset(19, 26).addBox(-0.5F, -0.5F, 0.0F, 1.0F, 1.0F, 9.0F, 0.0F, false);
 
 		end_leg_R1 = new AdvancedModelBox(this);
 		end_leg_R1.setPos(-2.5F, -0.1F, 8.0F);
 		body.addChild(end_leg_R1);
 		setRotationAngle(end_leg_R1, 0.3054F, -0.3927F, 0.0F);
-		end_leg_R1.texOffs(0, 26).addBox(-1.5F, -1.1F, -1.0F, 3.0F, 3.0F, 12.0F, 0.0F, true);
+		end_leg_R1.setTextureOffset(0, 26).addBox(-1.5F, -1.1F, -1.0F, 3.0F, 3.0F, 12.0F, 0.0F, true);
 
 		end_leg_R2 = new AdvancedModelBox(this);
 		end_leg_R2.setPos(0.0F, 0.2F, 11.0F);
 		end_leg_R1.addChild(end_leg_R2);
 		setRotationAngle(end_leg_R2, -0.6981F, 0.0F, 0.0F);
-		end_leg_R2.texOffs(31, 31).addBox(-1.0F, -0.8F, -0.3F, 2.0F, 2.0F, 10.0F, 0.0F, true);
+		end_leg_R2.setTextureOffset(31, 31).addBox(-1.0F, -0.8F, -0.3F, 2.0F, 2.0F, 10.0F, 0.0F, true);
 
 		end_leg_R3 = new AdvancedModelBox(this);
 		end_leg_R3.setPos(0.0F, 0.2F, 9.5F);
 		end_leg_R2.addChild(end_leg_R3);
 		setRotationAngle(end_leg_R3, -0.4363F, 0.0F, 0.0F);
-		end_leg_R3.texOffs(19, 26).addBox(-0.5F, -0.5F, 0.0F, 1.0F, 1.0F, 9.0F, 0.0F, true);
+		end_leg_R3.setTextureOffset(19, 26).addBox(-0.5F, -0.5F, 0.0F, 1.0F, 1.0F, 9.0F, 0.0F, true);
 
 		legfrontL1 = new AdvancedModelBox(this);
 		legfrontL1.setPos(6.6F, 3.6F, -4.0F);
 		body.addChild(legfrontL1);
 		setRotationAngle(legfrontL1, 0.0F, -0.2618F, -0.3491F);
-		legfrontL1.texOffs(44, 44).addBox(0.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F, 0.0F, false);
+		legfrontL1.setTextureOffset(44, 44).addBox(0.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F, 0.0F, false);
 
 		legfrontL2 = new AdvancedModelBox(this);
 		legfrontL2.setPos(7.1F, -0.5F, 0.1F);
 		legfrontL1.addChild(legfrontL2);
 		setRotationAngle(legfrontL2, 0.0F, 0.0F, 1.0908F);
-		legfrontL2.texOffs(0, 42).addBox(0.0F, -1.0F, -1.0F, 9.0F, 2.0F, 2.0F, 0.0F, false);
+		legfrontL2.setTextureOffset(0, 42).addBox(0.0F, -1.0F, -1.0F, 9.0F, 2.0F, 2.0F, 0.0F, false);
 
 		legfrontR1 = new AdvancedModelBox(this);
 		legfrontR1.setPos(-6.6F, 3.6F, -4.0F);
 		body.addChild(legfrontR1);
 		setRotationAngle(legfrontR1, 0.0F, 0.2618F, 0.3491F);
-		legfrontR1.texOffs(44, 44).addBox(-8.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F, 0.0F, true);
+		legfrontR1.setTextureOffset(44, 44).addBox(-8.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F, 0.0F, true);
 
 		legfrontR2 = new AdvancedModelBox(this);
 		legfrontR2.setPos(-7.1F, -0.5F, 0.1F);
 		legfrontR1.addChild(legfrontR2);
 		setRotationAngle(legfrontR2, 0.0F, 0.0F, -1.0908F);
-		legfrontR2.texOffs(0, 42).addBox(-9.0F, -1.0F, -1.0F, 9.0F, 2.0F, 2.0F, 0.0F, true);
+		legfrontR2.setTextureOffset(0, 42).addBox(-9.0F, -1.0F, -1.0F, 9.0F, 2.0F, 2.0F, 0.0F, true);
 
 		legbackL1 = new AdvancedModelBox(this);
 		legbackL1.setPos(6.6F, 3.6F, 4.0F);
 		body.addChild(legbackL1);
 		setRotationAngle(legbackL1, 0.0F, -0.5672F, -0.3491F);
-		legbackL1.texOffs(23, 44).addBox(0.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F, 0.0F, false);
+		legbackL1.setTextureOffset(23, 44).addBox(0.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F, 0.0F, false);
 
 		legbackL2 = new AdvancedModelBox(this);
 		legbackL2.setPos(7.1F, -0.5F, 0.1F);
 		legbackL1.addChild(legbackL2);
 		setRotationAngle(legbackL2, 0.0F, 0.0F, 1.0036F);
-		legbackL2.texOffs(31, 26).addBox(0.0F, -1.0F, -1.0F, 9.0F, 2.0F, 2.0F, 0.0F, false);
+		legbackL2.setTextureOffset(31, 26).addBox(0.0F, -1.0F, -1.0F, 9.0F, 2.0F, 2.0F, 0.0F, false);
 
 		legbackR1 = new AdvancedModelBox(this);
 		legbackR1.setPos(-6.6F, 3.6F, 4.0F);
 		body.addChild(legbackR1);
 		setRotationAngle(legbackR1, 0.0F, 0.5672F, 0.3491F);
-		legbackR1.texOffs(23, 44).addBox(-8.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F, 0.0F, true);
+		legbackR1.setTextureOffset(23, 44).addBox(-8.0F, -1.0F, -1.0F, 8.0F, 2.0F, 2.0F, 0.0F, true);
 
 		legbackR2 = new AdvancedModelBox(this);
 		legbackR2.setPos(-7.1F, -0.5F, 0.1F);
 		legbackR1.addChild(legbackR2);
 		setRotationAngle(legbackR2, 0.0F, 0.0F, -1.0036F);
-		legbackR2.texOffs(31, 26).addBox(-9.0F, -1.0F, -1.0F, 9.0F, 2.0F, 2.0F, 0.0F, true);
+		legbackR2.setTextureOffset(31, 26).addBox(-9.0F, -1.0F, -1.0F, 9.0F, 2.0F, 2.0F, 0.0F, true);
 		this.updateDefaultPose();
 	}
 
@@ -148,7 +148,7 @@ public class ModelCentipedeTail extends AdvancedEntityModel<EntityCentipedeTail>
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -158,8 +158,8 @@ public class ModelCentipedeTail extends AdvancedEntityModel<EntityCentipedeTail>
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

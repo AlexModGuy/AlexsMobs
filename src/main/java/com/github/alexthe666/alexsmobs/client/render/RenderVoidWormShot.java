@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import com.mojang.math.Quaternion;
@@ -19,7 +19,7 @@ public class RenderVoidWormShot extends EntityRenderer<EntityVoidWormShot> {
     private static final ResourceLocation TEXTURE_PORTAL = new ResourceLocation("alexsmobs:textures/entity/void_worm_shot_portal.png");
     private static ModelVoidWormShot MODEL = new ModelVoidWormShot();
 
-    public RenderVoidWormShot(EntityRenderDispatcher renderManager) {
+    public RenderVoidWormShot(EntityRendererProvider.Context renderManager) {
         super(renderManager);
     }
 

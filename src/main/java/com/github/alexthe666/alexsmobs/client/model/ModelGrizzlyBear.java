@@ -36,53 +36,53 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -19.0F, 6.0F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-7.0F, -7.0F, -19.0F, 14.0F, 15.0F, 28.0F, 0.0F, false);
-        body.texOffs(0, 44).addBox(-6.0F, 8.0F, -19.0F, 12.0F, 3.0F, 28.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-7.0F, -7.0F, -19.0F, 14.0F, 15.0F, 28.0F, 0.0F, false);
+        body.setTextureOffset(0, 44).addBox(-6.0F, 8.0F, -19.0F, 12.0F, 3.0F, 28.0F, 0.0F, false);
 
         midbody = new AdvancedModelBox(this);
         midbody.setPos(0.0F, 0.5F, -4.0F);
         body.addChild(midbody);
-        midbody.texOffs(27, 99).addBox(-8.0F, -8.5F, -6.0F, 16.0F, 17.0F, 12.0F, 0.1F, false);
+        midbody.setTextureOffset(27, 99).addBox(-8.0F, -8.5F, -6.0F, 16.0F, 17.0F, 12.0F, 0.1F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -0.8F, -21.0F);
         body.addChild(head);
-        head.texOffs(57, 0).addBox(-5.0F, -5.0F, -6.0F, 10.0F, 10.0F, 8.0F, 0.0F, false);
+        head.setTextureOffset(57, 0).addBox(-5.0F, -5.0F, -6.0F, 10.0F, 10.0F, 8.0F, 0.0F, false);
 
         snout = new AdvancedModelBox(this);
         snout.setPos(0.0F, 0.0F, -6.0F);
         head.addChild(snout);
-        snout.texOffs(0, 17).addBox(-2.0F, 0.0F, -5.0F, 4.0F, 5.0F, 5.0F, 0.0F, false);
+        snout.setTextureOffset(0, 17).addBox(-2.0F, 0.0F, -5.0F, 4.0F, 5.0F, 5.0F, 0.0F, false);
 
         left_ear = new AdvancedModelBox(this);
         left_ear.setPos(3.5F, -5.0F, -3.0F);
         head.addChild(left_ear);
-        left_ear.texOffs(14, 17).addBox(-1.5F, -2.0F, -1.0F, 3.0F, 2.0F, 2.0F, 0.0F, false);
+        left_ear.setTextureOffset(14, 17).addBox(-1.5F, -2.0F, -1.0F, 3.0F, 2.0F, 2.0F, 0.0F, false);
 
         right_ear = new AdvancedModelBox(this);
         right_ear.setPos(-3.5F, -5.0F, -3.0F);
         head.addChild(right_ear);
-        right_ear.texOffs(14, 17).addBox(-1.5F, -2.0F, -1.0F, 3.0F, 2.0F, 2.0F, 0.0F, true);
+        right_ear.setTextureOffset(14, 17).addBox(-1.5F, -2.0F, -1.0F, 3.0F, 2.0F, 2.0F, 0.0F, true);
 
         left_leg = new AdvancedModelBox(this);
         left_leg.setPos(3.8F, 8.0F, 4.0F);
         body.addChild(left_leg);
-        left_leg.texOffs(0, 76).addBox(-3.0F, 0.0F, -3.0F, 6.0F, 11.0F, 8.0F, 0.0F, false);
+        left_leg.setTextureOffset(0, 76).addBox(-3.0F, 0.0F, -3.0F, 6.0F, 11.0F, 8.0F, 0.0F, false);
 
         right_leg = new AdvancedModelBox(this);
         right_leg.setPos(-3.8F, 8.0F, 4.0F);
         body.addChild(right_leg);
-        right_leg.texOffs(0, 76).addBox(-3.0F, 0.0F, -3.0F, 6.0F, 11.0F, 8.0F, 0.0F, true);
+        right_leg.setTextureOffset(0, 76).addBox(-3.0F, 0.0F, -3.0F, 6.0F, 11.0F, 8.0F, 0.0F, true);
 
         left_arm = new AdvancedModelBox(this);
         left_arm.setPos(4.5F, 4.0F, -13.0F);
         body.addChild(left_arm);
-        left_arm.texOffs(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, false);
+        left_arm.setTextureOffset(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, false);
 
         right_arm = new AdvancedModelBox(this);
         right_arm.setPos(-4.5F, 4.0F, -13.0F);
         body.addChild(right_arm);
-        right_arm.texOffs(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, true);
+        right_arm.setTextureOffset(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, true);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -207,8 +207,8 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         progressRotationPrev(left_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(10), 0, 10F);
         progressRotationPrev(right_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(-10), 0, 10F);
         progressPositionPrev(head, sitProgress, 0, 4, -1, 10F);
-        this.head.yRot += netHeadYaw * ((float)Math.PI / 180F);
-        this.head.xRot += headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);
+        this.head.rotateAngleX += headPitch * ((float)Math.PI / 180F);
 
         progressRotationPrev(left_leg, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
         progressRotationPrev(right_leg, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
@@ -245,7 +245,7 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -265,8 +265,8 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
     }
 
     public void setRotationAngle(AdvancedModelBox box, float x, float y, float z) {
-        box.xRot = x;
-        box.yRot = y;
-        box.zRot = z;
+        box.rotateAngleX = x;
+        box.rotateAngleY = y;
+        box.rotateAngleZ = z;
     }
 }

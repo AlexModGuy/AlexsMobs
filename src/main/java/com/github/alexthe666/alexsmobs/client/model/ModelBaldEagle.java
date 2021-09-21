@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -42,37 +43,37 @@ public class ModelBaldEagle extends AdvancedEntityModel<EntityBaldEagle> {
         body.setPos(0.0F, -9.3F, -2.0F);
         root.addChild(body);
         setRotationAngle(body, 0.8727F, 0.0F, 0.0F);
-        body.texOffs(1, 12).addBox(-2.0F, 0.0F, -1.8F, 4.0F, 8.0F, 5.0F, 0.0F, false);
+        body.setTextureOffset(1, 12).addBox(-2.0F, 0.0F, -1.8F, 4.0F, 8.0F, 5.0F, 0.0F, false);
 
         legL = new AdvancedModelBox(this);
         legL.setPos(-1.4F, 5.5F, -1.15F);
         body.addChild(legL);
         setRotationAngle(legL, -0.8727F, 0.1745F, 0.0F);
-        legL.texOffs(0, 26).addBox(-0.5F, 0.2F, -0.5F, 1.0F, 4.0F, 1.0F, 0.0F, false);
+        legL.setTextureOffset(0, 26).addBox(-0.5F, 0.2F, -0.5F, 1.0F, 4.0F, 1.0F, 0.0F, false);
 
         footL = new AdvancedModelBox(this);
         footL.setPos(0.0F, 4.2F, 0.5F);
         legL.addChild(footL);
         setRotationAngle(footL, 0.0F, 0.1745F, -0.1745F);
-        footL.texOffs(5, 25).addBox(-1.5F, 0.0F, -1.9F, 3.0F, 2.0F, 4.0F, 0.0F, false);
+        footL.setTextureOffset(5, 25).addBox(-1.5F, 0.0F, -1.9F, 3.0F, 2.0F, 4.0F, 0.0F, false);
 
         legR = new AdvancedModelBox(this);
         legR.setPos(1.4F, 5.5F, -1.15F);
         body.addChild(legR);
         setRotationAngle(legR, -0.8727F, -0.1745F, 0.0F);
-        legR.texOffs(0, 26).addBox(-0.5F, 0.2F, -0.5F, 1.0F, 4.0F, 1.0F, 0.0F, false);
+        legR.setTextureOffset(0, 26).addBox(-0.5F, 0.2F, -0.5F, 1.0F, 4.0F, 1.0F, 0.0F, false);
 
         footR = new AdvancedModelBox(this);
         footR.setPos(0.0F, 4.2F, 0.5F);
         legR.addChild(footR);
         setRotationAngle(footR, 0.0F, -0.1745F, 0.1745F);
-        footR.texOffs(5, 25).addBox(-1.5F, 0.0F, -1.9F, 3.0F, 2.0F, 4.0F, 0.0F, false);
+        footR.setTextureOffset(5, 25).addBox(-1.5F, 0.0F, -1.9F, 3.0F, 2.0F, 4.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, 8.07F, 1.36F);
         body.addChild(tail);
         setRotationAngle(tail, 0.392F, 0.0F, 0.0F);
-        tail.texOffs(24, 1).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 7.0F, 1.0F, 0.0F, false);
+        tail.setTextureOffset(24, 1).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 7.0F, 1.0F, 0.0F, false);
 
         headPivot = new AdvancedModelBox(this);
         headPivot.setPos(0.0F, -0.51F, 0.64F);
@@ -81,68 +82,68 @@ public class ModelBaldEagle extends AdvancedEntityModel<EntityBaldEagle> {
 
         head = new AdvancedModelBox(this);
         headPivot.addChild(head);
-        head.texOffs(1, 3).addBox(-1.5F, -4.4F, -1.0F, 3.0F, 6.0F, 3.0F, 0.0F, false);
+        head.setTextureOffset(1, 3).addBox(-1.5F, -4.4F, -1.0F, 3.0F, 6.0F, 3.0F, 0.0F, false);
 
         topHead = new AdvancedModelBox(this);
         topHead.setPos(0.0F, -4.9F, -0.5F);
         head.addChild(topHead);
-        topHead.texOffs(10, 0).addBox(-1.5F, -0.5F, -1.5F, 3.0F, 1.0F, 4.0F, 0.0F, false);
+        topHead.setTextureOffset(10, 0).addBox(-1.5F, -0.5F, -1.5F, 3.0F, 1.0F, 4.0F, 0.0F, false);
 
         beak1 = new AdvancedModelBox(this);
         beak1.setPos(0.0F, -3.5F, -0.7F);
         head.addChild(beak1);
         setRotationAngle(beak1, -0.1745F, 0.0F, 0.0F);
-        beak1.texOffs(21, 9).addBox(-0.5F, -1.0F, -1.94F, 1.0F, 2.0F, 2.0F, 0.0F, false);
+        beak1.setTextureOffset(21, 9).addBox(-0.5F, -1.0F, -1.94F, 1.0F, 2.0F, 2.0F, 0.0F, false);
 
         beak2 = new AdvancedModelBox(this);
         beak2.setPos(0.0F, -1.0F, -2.54F);
         beak1.addChild(beak2);
-        beak2.texOffs(16, 9).addBox(-0.5F, 0.01F, -0.4F, 1.0F, 3.0F, 1.0F, 0.0F, false);
+        beak2.setTextureOffset(16, 9).addBox(-0.5F, 0.01F, -0.4F, 1.0F, 3.0F, 1.0F, 0.0F, false);
 
         hood_tie = new AdvancedModelBox(this);
         hood_tie.setPos(0.0F, -3.65F, 1.85F);
         head.addChild(hood_tie);
         setRotationAngle(hood_tie, -0.2215F, 0.0F, 0.0F);
-        hood_tie.texOffs(40, -4).addBox(0.0F, -4.0F, -2.0F, 0.0F, 5.0F, 4.0F, 0.0F, false);
+        hood_tie.setTextureOffset(40, -4).addBox(0.0F, -4.0F, -2.0F, 0.0F, 5.0F, 4.0F, 0.0F, false);
 
         hood = new AdvancedModelBox(this);
         hood.setPos(0.0F, -4.9F, -0.5F);
         head.addChild(hood);
-        hood.texOffs(36, 7).addBox(-1.5F, -0.5F, -1.5F, 3.0F, 4.0F, 4.0F, 0.0F, false);
+        hood.setTextureOffset(36, 7).addBox(-1.5F, -0.5F, -1.5F, 3.0F, 4.0F, 4.0F, 0.0F, false);
         hood.setScale(1.1F, 1.1F, 1.1F);
         wingR = new AdvancedModelBox(this);
         wingR.setPos(-1.9F, 0.0F, 2.0F);
         body.addChild(wingR);
         setRotationAngle(wingR, 0.576F, 0.1571F, 0.1396F);
-        wingR.texOffs(20, 14).addBox(-0.5F, -1.0F, -4.5F, 1.0F, 12.0F, 5.0F, 0.0F, true);
+        wingR.setTextureOffset(20, 14).addBox(-0.5F, -1.0F, -4.5F, 1.0F, 12.0F, 5.0F, 0.0F, true);
 
         feathersR = new AdvancedModelBox(this);
         feathersR.setPos(-0.5F, 0.8F, 1.6F);
         wingR.addChild(feathersR);
-        feathersR.texOffs(52, 10).addBox(0.5F, -1.5F, -3.1F, 0.0F, 16.0F, 2.0F, 0.0F, true);
+        feathersR.setTextureOffset(52, 10).addBox(0.5F, -1.5F, -3.1F, 0.0F, 16.0F, 2.0F, 0.0F, true);
 
         tipR = new AdvancedModelBox(this);
         tipR.setPos(-0.51F, 11.8F, 0.5F);
         wingR.addChild(tipR);
         setRotationAngle(tipR, 0.0F, 0.0F, 0.0873F);
-        tipR.texOffs(36, 10).addBox(0.5F, -6.0F, -6.0F, 0.0F, 13.0F, 8.0F, 0.0F, true);
+        tipR.setTextureOffset(36, 10).addBox(0.5F, -6.0F, -6.0F, 0.0F, 13.0F, 8.0F, 0.0F, true);
 
         wingL = new AdvancedModelBox(this);
         wingL.setPos(1.9F, 0.0F, 2.0F);
         body.addChild(wingL);
         setRotationAngle(wingL, 0.576F, -0.1571F, -0.1396F);
-        wingL.texOffs(20, 14).addBox(-0.5F, -1.0F, -4.5F, 1.0F, 12.0F, 5.0F, 0.0F, false);
+        wingL.setTextureOffset(20, 14).addBox(-0.5F, -1.0F, -4.5F, 1.0F, 12.0F, 5.0F, 0.0F, false);
 
         feathersL = new AdvancedModelBox(this);
         feathersL.setPos(0.5F, 0.8F, 1.6F);
         wingL.addChild(feathersL);
-        feathersL.texOffs(52, 10).addBox(-0.5F, -1.5F, -3.1F, 0.0F, 16.0F, 2.0F, 0.0F, false);
+        feathersL.setTextureOffset(52, 10).addBox(-0.5F, -1.5F, -3.1F, 0.0F, 16.0F, 2.0F, 0.0F, false);
 
         tipL = new AdvancedModelBox(this);
         tipL.setPos(0.51F, 11.8F, 0.5F);
         wingL.addChild(tipL);
         setRotationAngle(tipL, 0.0F, 0.0F, -0.0873F);
-        tipL.texOffs(36, 10).addBox(-0.5F, -6.0F, -6.0F, 0.0F, 13.0F, 8.0F, 0.0F, false);
+        tipL.setTextureOffset(36, 10).addBox(-0.5F, -6.0F, -6.0F, 0.0F, 13.0F, 8.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
@@ -220,11 +221,11 @@ public class ModelBaldEagle extends AdvancedEntityModel<EntityBaldEagle> {
         this.walk(head, idleSpeed * 0.7F, idleDegree, false, -1F, 0.05F, ageInTicks, 1);
         this.walk(tail, idleSpeed * 0.7F, idleDegree, false, 1F, 0.05F, ageInTicks, 1);
         if(!entity.isVehicle()){
-            head.yRot += netHeadYaw / 57.295776F;
-            head.zRot += headPitch / 57.295776F;
+            head.rotateAngleY += netHeadYaw / 57.295776F;
+            head.rotateAngleZ += headPitch / 57.295776F;
         }
         float birdPitch = entity.prevBirdPitch + (entity.birdPitch - entity.prevBirdPitch) * partialTicks;
-        this.body.xRot += birdPitch * flyProgress * 0.2F * ((float)Math.PI / 180F);
+        this.body.rotateAngleX += birdPitch * flyProgress * 0.2F * ((float)Math.PI / 180F);
 
     }
 
@@ -253,7 +254,7 @@ public class ModelBaldEagle extends AdvancedEntityModel<EntityBaldEagle> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -265,8 +266,8 @@ public class ModelBaldEagle extends AdvancedEntityModel<EntityBaldEagle> {
 
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

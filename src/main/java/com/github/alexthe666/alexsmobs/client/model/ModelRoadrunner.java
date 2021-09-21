@@ -37,29 +37,29 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
         cube_r1.setPos(0.0F, 0.0F, 0.0F);
         body.addChild(cube_r1);
         setRotationAngle(cube_r1, -0.1309F, 0.0F, 0.0F);
-        cube_r1.texOffs(0, 0).addBox(-2.0F, -2.5F, -4.5F, 4.0F, 5.0F, 9.0F, 0.0F, false);
+        cube_r1.setTextureOffset(0, 0).addBox(-2.0F, -2.5F, -4.5F, 4.0F, 5.0F, 9.0F, 0.0F, false);
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -1.8F, -3.3F);
         body.addChild(head);
         setRotationAngle(head, 0.5236F, 0.0F, 0.0F);
-        head.texOffs(0, 27).addBox(-1.5F, -5.7F, -1.2F, 3.0F, 6.0F, 3.0F, 0.0F, false);
+        head.setTextureOffset(0, 27).addBox(-1.5F, -5.7F, -1.2F, 3.0F, 6.0F, 3.0F, 0.0F, false);
         crest = new AdvancedModelBox(this);
         crest.setPos(0.0F, -4.7F, 0.4F);
         head.addChild(crest);
-        crest.texOffs(0, 0).addBox(0.0F, -3.0F, -1.5F, 0.0F, 4.0F, 4.0F, 0.0F, false);
+        crest.setTextureOffset(0, 0).addBox(0.0F, -3.0F, -1.5F, 0.0F, 4.0F, 4.0F, 0.0F, false);
         beak = new AdvancedModelBox(this);
         beak.setPos(0.0F, -4.6F, -1.1F);
         head.addChild(beak);
         setRotationAngle(beak, -0.48F, 0.0F, 0.0F);
-        beak.texOffs(18, 0).addBox(-0.5F, -0.506F, -3.3706F, 1.0F, 1.0F, 4.0F, 0.0F, false);
+        beak.setTextureOffset(18, 0).addBox(-0.5F, -0.506F, -3.3706F, 1.0F, 1.0F, 4.0F, 0.0F, false);
         legL = new AdvancedModelBox(this);
         legL.setPos(1.0F, 2.5F, 1.0F);
         body.addChild(legL);
-        legL.texOffs(0, 15).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, 0.0F, false);
+        legL.setTextureOffset(0, 15).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, 0.0F, false);
         legR = new AdvancedModelBox(this);
         legR.setPos(-1.0F, 2.5F, 1.0F);
         body.addChild(legR);
-        legR.texOffs(0, 15).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, 0.0F, true);
+        legR.setTextureOffset(0, 15).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, 0.0F, true);
         wingL = new AdvancedModelBox(this);
         wingL.setPos(2.5F, -1.8F, -2.0F);
         body.addChild(wingL);
@@ -68,7 +68,7 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
         cube_r2.setPos(-0.5F, 2.0F, 2.0F);
         wingL.addChild(cube_r2);
         setRotationAngle(cube_r2, -0.1309F, 0.0F, 0.0F);
-        cube_r2.texOffs(18, 18).addBox(0.0F, -2.5F, -3.5F, 1.0F, 5.0F, 9.0F, 0.0F, false);
+        cube_r2.setTextureOffset(18, 18).addBox(0.0F, -2.5F, -3.5F, 1.0F, 5.0F, 9.0F, 0.0F, false);
         wingR = new AdvancedModelBox(this);
         wingR.setPos(-2.5F, -1.8F, -2.0F);
         body.addChild(wingR);
@@ -77,12 +77,12 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
         cube_r3.setPos(0.5F, 2.0F, 2.0F);
         wingR.addChild(cube_r3);
         setRotationAngle(cube_r3, -0.1309F, 0.0F, 0.0F);
-        cube_r3.texOffs(18, 18).addBox(-1.0F, -2.5F, -3.5F, 1.0F, 5.0F, 9.0F, 0.0F, true);
+        cube_r3.setTextureOffset(18, 18).addBox(-1.0F, -2.5F, -3.5F, 1.0F, 5.0F, 9.0F, 0.0F, true);
         tail = new AdvancedModelBox(this);
         tail.setPos(-0.5F, -0.9F, 4.8F);
         body.addChild(tail);
         setRotationAngle(tail, 0.2182F, 0.0F, 0.0F);
-        tail.texOffs(0, 15).addBox(-1.0F, -1.0F, -0.3F, 3.0F, 1.0F, 10.0F, 0.0F, false);
+        tail.setTextureOffset(0, 15).addBox(-1.0F, -1.0F, -0.3F, 3.0F, 1.0F, 10.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
@@ -148,7 +148,7 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -159,8 +159,8 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
 
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

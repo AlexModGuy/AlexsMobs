@@ -31,44 +31,44 @@ public class ModelStraddler extends AdvancedEntityModel<EntityStraddler> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -14.0F, 0.0F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-14.0F, -12.0F, -7.0F, 28.0F, 11.0F, 14.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-14.0F, -12.0F, -7.0F, 28.0F, 11.0F, 14.0F, 0.0F, false);
 
         hair = new AdvancedModelBox(this);
         hair.setPos(0.0F, -13.0F, 0.0F);
         body.addChild(hair);
-        hair.texOffs(23, 26).addBox(-6.0F, -4.0F, 0.0F, 12.0F, 5.0F, 0.0F, 0.0F, false);
+        hair.setTextureOffset(23, 26).addBox(-6.0F, -4.0F, 0.0F, 12.0F, 5.0F, 0.0F, 0.0F, false);
 
         horn_left = new AdvancedModelBox(this);
         horn_left.setPos(9.5F, -12.0F, -4.0F);
         body.addChild(horn_left);
-        horn_left.texOffs(0, 26).addBox(-2.5F, -18.0F, 0.0F, 6.0F, 18.0F, 10.0F, 0.0F, false);
+        horn_left.setTextureOffset(0, 26).addBox(-2.5F, -18.0F, 0.0F, 6.0F, 18.0F, 10.0F, 0.0F, false);
 
         hair_left = new AdvancedModelBox(this);
         hair_left.setPos(-2.5F, -17.0F, 10.0F);
         horn_left.addChild(hair_left);
         setRotationAngle(hair_left, -0.5672F, -0.2618F, 0.0F);
-        hair_left.texOffs(33, 33).addBox(0.0F, 0.0F, 0.0F, 0.0F, 6.0F, 16.0F, 0.0F, false);
+        hair_left.setTextureOffset(33, 33).addBox(0.0F, 0.0F, 0.0F, 0.0F, 6.0F, 16.0F, 0.0F, false);
 
         horn_right = new AdvancedModelBox(this);
         horn_right.setPos(-9.5F, -12.0F, -4.0F);
         body.addChild(horn_right);
-        horn_right.texOffs(0, 26).addBox(-3.5F, -18.0F, 0.0F, 6.0F, 18.0F, 10.0F, 0.0F, true);
+        horn_right.setTextureOffset(0, 26).addBox(-3.5F, -18.0F, 0.0F, 6.0F, 18.0F, 10.0F, 0.0F, true);
 
         hair_right = new AdvancedModelBox(this);
         hair_right.setPos(2.5F, -17.0F, 10.0F);
         horn_right.addChild(hair_right);
         setRotationAngle(hair_right, -0.5672F, 0.2618F, 0.0F);
-        hair_right.texOffs(33, 33).addBox(0.0F, 0.0F, 0.0F, 0.0F, 6.0F, 16.0F, 0.0F, true);
+        hair_right.setTextureOffset(33, 33).addBox(0.0F, 0.0F, 0.0F, 0.0F, 6.0F, 16.0F, 0.0F, true);
 
         leg_left = new AdvancedModelBox(this);
         leg_left.setPos(7.0F, -0.5F, 0.0F);
         body.addChild(leg_left);
-        leg_left.texOffs(50, 26).addBox(-3.0F, -0.5F, -3.0F, 6.0F, 15.0F, 6.0F, 0.0F, false);
+        leg_left.setTextureOffset(50, 26).addBox(-3.0F, -0.5F, -3.0F, 6.0F, 15.0F, 6.0F, 0.0F, false);
 
         leg_right = new AdvancedModelBox(this);
         leg_right.setPos(-7.0F, -0.5F, 0.0F);
         body.addChild(leg_right);
-        leg_right.texOffs(50, 26).addBox(-3.0F, -0.5F, -3.0F, 6.0F, 15.0F, 6.0F, 0.0F, true);
+        leg_right.setTextureOffset(50, 26).addBox(-3.0F, -0.5F, -3.0F, 6.0F, 15.0F, 6.0F, 0.0F, true);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -112,7 +112,7 @@ public class ModelStraddler extends AdvancedEntityModel<EntityStraddler> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -142,16 +142,16 @@ public class ModelStraddler extends AdvancedEntityModel<EntityStraddler> {
         this.swing(hair_right, walkSpeed, walkDegree * 0.8F, false, -1, 0F, limbSwing, limbSwingAmount);
 
         if (entity.getPassengers().size() <= 0) {
-            this.body.xRot += headPitch * 0.5F * ((float) Math.PI / 180F);
-            this.leg_right.xRot -= headPitch * 0.5F * ((float) Math.PI / 180F);
-            this.leg_left.xRot -= headPitch * 0.5F * ((float) Math.PI / 180F);
+            this.body.rotateAngleX += headPitch * 0.5F * ((float) Math.PI / 180F);
+            this.leg_right.rotateAngleX -= headPitch * 0.5F * ((float) Math.PI / 180F);
+            this.leg_left.rotateAngleX -= headPitch * 0.5F * ((float) Math.PI / 180F);
         }
     }
 
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-        advancedModelBox.xRot = x;
-        advancedModelBox.yRot = y;
-        advancedModelBox.zRot = z;
+        advancedModelBox.rotateAngleX = x;
+        advancedModelBox.rotateAngleY = y;
+        advancedModelBox.rotateAngleZ = z;
     }
 }

@@ -30,28 +30,28 @@ public class ModelMysteriousWorm extends AdvancedEntityModel<Entity> {
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -2.0F, -6.0F);
         root.addChild(head);
-        head.texOffs(14, 0).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 2.0F, 0.0F, false);
-        head.texOffs(0, 19).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
+        head.setTextureOffset(14, 0).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 2.0F, 0.0F, false);
+        head.setTextureOffset(0, 19).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
 
         body1 = new AdvancedModelBox(this);
         body1.setPos(0.0F, 0.0F, 0.0F);
         head.addChild(body1);
-        body1.texOffs(0, 11).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 5.0F, 0.0F, false);
+        body1.setTextureOffset(0, 11).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 5.0F, 0.0F, false);
 
         body2 = new AdvancedModelBox(this);
         body2.setPos(0.0F, 0.0F, 5.0F);
         body1.addChild(body2);
-        body2.texOffs(10, 14).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 5.0F, 0.1F, false);
+        body2.setTextureOffset(10, 14).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 5.0F, 0.1F, false);
 
         body3 = new AdvancedModelBox(this);
         body3.setPos(0.0F, 0.0F, 5.0F);
         body2.addChild(body3);
-        body3.texOffs(0, 0).addBox(-1.5F, -1.5F, 0.0F, 3.0F, 3.0F, 7.0F, 0.0F, false);
+        body3.setTextureOffset(0, 0).addBox(-1.5F, -1.5F, 0.0F, 3.0F, 3.0F, 7.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -71,9 +71,9 @@ public class ModelMysteriousWorm extends AdvancedEntityModel<Entity> {
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 
     public void animateStack(ItemStack itemStackIn) {

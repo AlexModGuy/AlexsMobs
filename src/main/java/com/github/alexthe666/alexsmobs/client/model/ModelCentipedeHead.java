@@ -27,12 +27,12 @@ public class ModelCentipedeHead extends AdvancedEntityModel<EntityCentipedeHead>
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, -7.875F, 0.375F);
 		bone.addChild(head);
-		head.texOffs(0, 11).addBox(-7.0F, -3.125F, -5.375F, 14.0F, 7.0F, 13.0F, 0.0F, false);
+		head.setTextureOffset(0, 11).addBox(-7.0F, -3.125F, -5.375F, 14.0F, 7.0F, 13.0F, 0.0F, false);
 
 		head2 = new AdvancedModelBox(this);
 		head2.setPos(0.0F, -2.125F, -6.375F);
 		head.addChild(head2);
-		head2.texOffs(0, 11).addBox(-2.0F, -1.0F, -1.0F, 4.0F, 2.0F, 2.0F, 0.0F, false);
+		head2.setTextureOffset(0, 11).addBox(-2.0F, -1.0F, -1.0F, 4.0F, 2.0F, 2.0F, 0.0F, false);
 
 		antenna_left = new AdvancedModelBox(this);
 		antenna_left.setPos(1.2F, -2.125F, -5.775F);
@@ -44,7 +44,7 @@ public class ModelCentipedeHead extends AdvancedEntityModel<EntityCentipedeHead>
 		antenna_left_r1.setPos(0.5F, 0.0F, 0.0F);
 		antenna_left.addChild(antenna_left_r1);
 		setRotationAngle(antenna_left_r1, 0.1309F, 0.0F, 0.0873F);
-		antenna_left_r1.texOffs(0, 0).addBox(-1.0F, 0.0F, -1.0F, 23.0F, 0.0F, 10.0F, 0.0F, false);
+		antenna_left_r1.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.0F, 23.0F, 0.0F, 10.0F, 0.0F, false);
 
 		antenna_right = new AdvancedModelBox(this);
 		antenna_right.setPos(-1.2F, -2.125F, -5.775F);
@@ -56,12 +56,12 @@ public class ModelCentipedeHead extends AdvancedEntityModel<EntityCentipedeHead>
 		antenna_right_r1.setPos(-0.5F, 0.0F, 0.0F);
 		antenna_right.addChild(antenna_right_r1);
 		setRotationAngle(antenna_right_r1, 0.1309F, 0.0F, -0.0873F);
-		antenna_right_r1.texOffs(0, 0).addBox(-22.0F, 0.0F, -1.0F, 23.0F, 0.0F, 10.0F, 0.0F, true);
+		antenna_right_r1.setTextureOffset(0, 0).addBox(-22.0F, 0.0F, -1.0F, 23.0F, 0.0F, 10.0F, 0.0F, true);
 
 		fangs = new AdvancedModelBox(this);
 		fangs.setPos(0.0F, 1.875F, -6.375F);
 		head.addChild(fangs);
-		fangs.texOffs(0, 32).addBox(-7.0F, 0.0F, -5.0F, 14.0F, 0.0F, 6.0F, 0.0F, false);
+		fangs.setTextureOffset(0, 32).addBox(-7.0F, 0.0F, -5.0F, 14.0F, 0.0F, 6.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 
@@ -77,7 +77,7 @@ public class ModelCentipedeHead extends AdvancedEntityModel<EntityCentipedeHead>
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(bone);
 	}
 
@@ -87,8 +87,8 @@ public class ModelCentipedeHead extends AdvancedEntityModel<EntityCentipedeHead>
 	}
 
 		public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

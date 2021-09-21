@@ -3,14 +3,15 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelFly;
 import com.github.alexthe666.alexsmobs.entity.EntityFly;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderFly extends MobRenderer<EntityFly, ModelFly> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/fly.png");
 
-    public RenderFly(EntityRenderDispatcher renderManagerIn) {
+    public RenderFly(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelFly(), 0.2F);
     }
 

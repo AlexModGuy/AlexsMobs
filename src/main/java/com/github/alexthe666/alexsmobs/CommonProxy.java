@@ -17,8 +17,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,8 +26,8 @@ import static com.github.alexthe666.alexsmobs.AlexsMobs.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
-    public static final LootItemConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.Serializer());
-    public static final LootItemConditionType MATCHES_BLOSSOM_CONDTN = registerLootCondition("alexsmobs:matches_blossom_tag", new MatchesBlossomTagCondition.Serializer());
+    public static final LootItemConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.LootSerializer());
+    public static final LootItemConditionType MATCHES_BLOSSOM_CONDTN = registerLootCondition("alexsmobs:matches_blossom_tag", new MatchesBlossomTagCondition.LootSerializer());
     public static SimpleRecipeSerializer MIMICREAM_RECIPE;
 
     @SubscribeEvent
@@ -60,11 +58,6 @@ public class CommonProxy {
 
     public void clientInit() {
     }
-
-    public Item.Properties setupISTER(Item.Properties group) {
-        return group;
-    }
-
     public Player getClientSidePlayer() {
         return null;
     }
@@ -105,4 +98,8 @@ public class CommonProxy {
     }
 
     public void resetVoidPortalCreation(Player player){}
+
+    public Object getISTERProperties() {
+        return null;
+    }
 }

@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
@@ -20,7 +20,7 @@ public class RenderSpectre extends MobRenderer<EntitySpectre, ModelSpectre> {
     private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/spectre_glow.png");
     private static final ResourceLocation TEXTURE_LEAD = new ResourceLocation("alexsmobs:textures/entity/spectre_lead.png");
 
-    public RenderSpectre(EntityRenderDispatcher renderManagerIn) {
+    public RenderSpectre(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSpectre(), 0.5F);
         this.addLayer(new SpectreEyesLayer(this));
         this.addLayer(new SpectreMembraneLayer(this));

@@ -21,16 +21,16 @@ public class ModelVoidWormBeak extends AdvancedEntityModel<Entity> {
         left = new AdvancedModelBox(this);
         left.setPos(0.0F, 0.0F, 0.0F);
         root.addChild(left);
-        left.texOffs(0, 0).addBox(-0.1F, -12.9F, -3.5F, 7.0F, 13.0F, 7.0F, -0.1F, false);
+        left.setTextureOffset(0, 0).addBox(-0.1F, -12.9F, -3.5F, 7.0F, 13.0F, 7.0F, -0.1F, false);
         right = new AdvancedModelBox(this);
         right.setPos(0.0F, 0.0F, 0.0F);
         root.addChild(right);
-        right.texOffs(0, 21).addBox(-7.0F, -13.0F, -3.5F, 7.0F, 13.0F, 7.0F, 0.0F, false);
+        right.setTextureOffset(0, 21).addBox(-7.0F, -13.0F, -3.5F, 7.0F, 13.0F, 7.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -55,8 +55,8 @@ public class ModelVoidWormBeak extends AdvancedEntityModel<Entity> {
     }
 
     public void setRotationAngle(ModelPart modelRenderer, float x, float y, float z) {
-        modelRenderer.xRot = x;
-        modelRenderer.yRot = y;
-        modelRenderer.zRot = z;
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
     }
 }

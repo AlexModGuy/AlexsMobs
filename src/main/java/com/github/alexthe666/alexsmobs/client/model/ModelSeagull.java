@@ -36,28 +36,28 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -6.6F, -0.5F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-2.0F, -2.5F, -4.5F, 4.0F, 5.0F, 9.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-2.0F, -2.5F, -4.5F, 4.0F, 5.0F, 9.0F, 0.0F, false);
 
 		tail = new AdvancedModelBox(this);
 		tail.setPos(0.0F, -1.5F, 4.5F);
 		body.addChild(tail);
 		setRotationAngle(tail, -0.3927F, 0.0F, 0.0F);
-		tail.texOffs(18, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 2.0F, 5.0F, 0.0F, false);
+		tail.setTextureOffset(18, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 2.0F, 5.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, -0.5F, -4.0F);
 		body.addChild(head);
-		head.texOffs(16, 26).addBox(-1.5F, -6.0F, -1.5F, 3.0F, 8.0F, 3.0F, 0.0F, false);
+		head.setTextureOffset(16, 26).addBox(-1.5F, -6.0F, -1.5F, 3.0F, 8.0F, 3.0F, 0.0F, false);
 
 		beak = new AdvancedModelBox(this);
 		beak.setPos(0.0F, -4.0F, -1.5F);
 		head.addChild(beak);
-		beak.texOffs(11, 15).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 4.0F, 0.0F, false);
+		beak.setTextureOffset(11, 15).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 4.0F, 0.0F, false);
 
 		left_wing = new AdvancedModelBox(this);
 		left_wing.setPos(2.0F, -1.5F, -2.5F);
 		body.addChild(left_wing);
-		left_wing.texOffs(0, 15).addBox(0.0F, -1.0F, -1.0F, 1.0F, 4.0F, 8.0F, 0.0F, false);
+		left_wing.setTextureOffset(0, 15).addBox(0.0F, -1.0F, -1.0F, 1.0F, 4.0F, 8.0F, 0.0F, false);
 
 		left_wingtip = new AdvancedModelBox(this);
 		left_wingtip.setPos(1.5F, 0.0F, 8.0F);
@@ -67,12 +67,12 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		left_wingtip_r1.setPos(-1.0F, 1.0F, -3.0F);
 		left_wingtip.addChild(left_wingtip_r1);
 		setRotationAngle(left_wingtip_r1, 0.2182F, 0.0F, 0.0F);
-		left_wingtip_r1.texOffs(19, 15).addBox(0.0F, -1.5F, 0.0F, 0.0F, 3.0F, 7.0F, 0.0F, false);
+		left_wingtip_r1.setTextureOffset(19, 15).addBox(0.0F, -1.5F, 0.0F, 0.0F, 3.0F, 7.0F, 0.0F, false);
 
 		right_wing = new AdvancedModelBox(this);
 		right_wing.setPos(-2.0F, -1.5F, -2.5F);
 		body.addChild(right_wing);
-		right_wing.texOffs(0, 15).addBox(-1.0F, -1.0F, -1.0F, 1.0F, 4.0F, 8.0F, 0.0F, true);
+		right_wing.setTextureOffset(0, 15).addBox(-1.0F, -1.0F, -1.0F, 1.0F, 4.0F, 8.0F, 0.0F, true);
 
 		right_wingtip = new AdvancedModelBox(this);
 		right_wingtip.setPos(-1.5F, 0.0F, 8.0F);
@@ -82,22 +82,22 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		right_wingtip_r1.setPos(1.0F, 1.0F, -3.0F);
 		right_wingtip.addChild(right_wingtip_r1);
 		setRotationAngle(right_wingtip_r1, 0.2182F, 0.0F, 0.0F);
-		right_wingtip_r1.texOffs(19, 15).addBox(0.0F, -1.5F, 0.0F, 0.0F, 3.0F, 7.0F, 0.0F, true);
+		right_wingtip_r1.setTextureOffset(19, 15).addBox(0.0F, -1.5F, 0.0F, 0.0F, 3.0F, 7.0F, 0.0F, true);
 
 		left_leg = new AdvancedModelBox(this);
 		left_leg.setPos(1.0F, 2.5F, 2.0F);
 		body.addChild(left_leg);
-		left_leg.texOffs(27, 8).addBox(-1.0F, 0.0F, -3.0F, 3.0F, 4.0F, 3.0F, 0.0F, false);
+		left_leg.setTextureOffset(27, 8).addBox(-1.0F, 0.0F, -3.0F, 3.0F, 4.0F, 3.0F, 0.0F, false);
 
 		right_leg = new AdvancedModelBox(this);
 		right_leg.setPos(-1.0F, 2.5F, 2.0F);
 		body.addChild(right_leg);
-		right_leg.texOffs(27, 8).addBox(-2.0F, 0.0F, -3.0F, 3.0F, 4.0F, 3.0F, 0.0F, true);
+		right_leg.setTextureOffset(27, 8).addBox(-2.0F, 0.0F, -3.0F, 3.0F, 4.0F, 3.0F, 0.0F, true);
 		this.updateDefaultPose();
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -154,9 +154,9 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		}
 		this.swing(tail, idleSpeed, idleDegree, false, 1F, 0F, ageInTicks, 1);
 		this.bob(head, idleSpeed * 0.5F, idleDegree * 1.5F, true, ageInTicks, 1);
-		head.yRot += Math.toRadians(entity.getFlightLookYaw()) * flyProgress * 0.2F;
-		head.yRot += netHeadYaw / 57.295776F * groundProgress * 0.2F;
-		head.xRot += headPitch / 57.295776F * groundProgress * 0.2F;
+		head.rotateAngleY += Math.toRadians(entity.getFlightLookYaw()) * flyProgress * 0.2F;
+		head.rotateAngleY += netHeadYaw / 57.295776F * groundProgress * 0.2F;
+		head.rotateAngleX += headPitch / 57.295776F * groundProgress * 0.2F;
 
 	}
 
@@ -186,8 +186,8 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

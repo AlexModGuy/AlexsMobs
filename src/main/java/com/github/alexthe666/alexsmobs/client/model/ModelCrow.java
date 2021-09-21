@@ -32,48 +32,48 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 		body.setPos(0.0F, -2.1F, 0.0F);
 		root.addChild(body);
 		setRotationAngle(body, 1.0036F, 0.0F, 0.0F);
-		body.texOffs(0, 0).addBox(-1.5F, -5.0F, 0.0F, 3.0F, 5.0F, 3.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-1.5F, -5.0F, 0.0F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
 		leg_left = new AdvancedModelBox(this);
 		leg_left.setPos(0.9F, 0.0F, 0.0F);
 		body.addChild(leg_left);
 		setRotationAngle(leg_left, 0.5672F, 0.0F, 0.0F);
-		leg_left.texOffs(0, 17).addBox(-0.5F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, false);
+		leg_left.setTextureOffset(0, 17).addBox(-0.5F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, false);
 
 		leg_right = new AdvancedModelBox(this);
 		leg_right.setPos(-0.9F, 0.0F, 0.0F);
 		body.addChild(leg_right);
 		setRotationAngle(leg_right, 0.5672F, 0.0F, 0.0F);
-		leg_right.texOffs(0, 17).addBox(-0.5F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, true);
+		leg_right.setTextureOffset(0, 17).addBox(-0.5F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, true);
 
 		wing_left = new AdvancedModelBox(this);
 		wing_left.setPos(1.5F, -4.9F, 1.7F);
 		body.addChild(wing_left);
 		setRotationAngle(wing_left, 0.0436F, 0.0F, 0.0F);
-		wing_left.texOffs(13, 13).addBox(-0.5F, 0.0F, -1.7F, 1.0F, 6.0F, 3.0F, 0.0F, false);
+		wing_left.setTextureOffset(13, 13).addBox(-0.5F, 0.0F, -1.7F, 1.0F, 6.0F, 3.0F, 0.0F, false);
 
 		wing_right = new AdvancedModelBox(this);
 		wing_right.setPos(-1.5F, -4.9F, 1.7F);
 		body.addChild(wing_right);
 		setRotationAngle(wing_right, 0.0436F, 0.0F, 0.0F);
-		wing_right.texOffs(13, 13).addBox(-0.5F, 0.0F, -1.7F, 1.0F, 6.0F, 3.0F, 0.0F, true);
+		wing_right.setTextureOffset(13, 13).addBox(-0.5F, 0.0F, -1.7F, 1.0F, 6.0F, 3.0F, 0.0F, true);
 
 		tail = new AdvancedModelBox(this);
 		tail.setPos(0.0F, -0.1F, 3.0F);
 		body.addChild(tail);
 		setRotationAngle(tail, -0.1309F, 0.0F, 0.0F);
-		tail.texOffs(13, 0).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 2.0F, -0.1F, false);
+		tail.setTextureOffset(13, 0).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 4.0F, 2.0F, -0.1F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, -4.8F, 1.7F);
 		body.addChild(head);
 		setRotationAngle(head, -0.7418F, 0.0F, 0.0F);
-		head.texOffs(0, 9).addBox(-1.5F, -2.8F, -1.5F, 3.0F, 4.0F, 3.0F, -0.2F, false);
+		head.setTextureOffset(0, 9).addBox(-1.5F, -2.8F, -1.5F, 3.0F, 4.0F, 3.0F, -0.2F, false);
 
 		beak = new AdvancedModelBox(this);
 		beak.setPos(0.0F, -1.4F, -1.9F);
 		head.addChild(beak);
-		beak.texOffs(13, 7).addBox(-0.5F, -1.0F, -1.8F, 1.0F, 2.0F, 3.0F, 0.0F, false);
+		beak.setTextureOffset(13, 7).addBox(-0.5F, -1.0F, -1.8F, 1.0F, 2.0F, 3.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 
@@ -132,8 +132,8 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 		progressRotationPrev(leg_left, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
 		progressRotationPrev(leg_right, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
 		progressRotationPrev(head, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
-		head.yRot += netHeadYaw / 57.295776F;
-		head.zRot += headPitch / 57.295776F;
+		head.rotateAngleY += netHeadYaw / 57.295776F;
+		head.rotateAngleZ += headPitch / 57.295776F;
 
 	}
 
@@ -162,13 +162,13 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

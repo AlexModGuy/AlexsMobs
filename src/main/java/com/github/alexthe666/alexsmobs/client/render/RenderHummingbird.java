@@ -3,7 +3,8 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelHummingbird;
 import com.github.alexthe666.alexsmobs.entity.EntityHummingbird;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
@@ -12,7 +13,7 @@ public class RenderHummingbird extends MobRenderer<EntityHummingbird, ModelHummi
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/hummingbird_1.png");
     private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/hummingbird_2.png");
 
-    public RenderHummingbird(EntityRenderDispatcher renderManagerIn) {
+    public RenderHummingbird(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelHummingbird(), 0.15F);
     }
 

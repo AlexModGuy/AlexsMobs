@@ -40,12 +40,12 @@ public class ModelGorilla extends AdvancedEntityModel<EntityGorilla> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -10.0F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 17).addBox(-4.0F, -5.0F, 0.0F, 8.0F, 7.0F, 8.0F, 0.0F, false);
+		body.setTextureOffset(0, 17).addBox(-4.0F, -5.0F, 0.0F, 8.0F, 7.0F, 8.0F, 0.0F, false);
 
 		bodyfront = new AdvancedModelBox(this);
 		bodyfront.setPos(0.0F, -2.0F, 0.0F);
 		body.addChild(bodyfront);
-		bodyfront.texOffs(0, 0).addBox(-5.0F, -4.0F, -8.0F, 10.0F, 8.0F, 8.0F, 0.0F, false);
+		bodyfront.setTextureOffset(0, 0).addBox(-5.0F, -4.0F, -8.0F, 10.0F, 8.0F, 8.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, -3.6667F, -7.6667F);
@@ -56,7 +56,7 @@ public class ModelGorilla extends AdvancedEntityModel<EntityGorilla> {
 		head_r1.setPos(0.0F, -0.3333F, -1.3333F);
 		head.addChild(head_r1);
 		setRotationAngle(head_r1, 0.0F, 0.0436F, 0.0F);
-		head_r1.texOffs(27, 27).addBox(-3.0F, -4.0F, -2.0F, 6.0F, 6.0F, 6.0F, 0.0F, false);
+		head_r1.setTextureOffset(27, 27).addBox(-3.0F, -4.0F, -2.0F, 6.0F, 6.0F, 6.0F, 0.0F, false);
 
 		forehead = new AdvancedModelBox(this);
 		forehead.setPos(0.0F, -3.3333F, 0.6667F);
@@ -67,32 +67,32 @@ public class ModelGorilla extends AdvancedEntityModel<EntityGorilla> {
 		forehead_r1.setPos(0.0F, 1.182F, 0.4021F);
 		forehead.addChild(forehead_r1);
 		setRotationAngle(forehead_r1, 0.3142F, 0.0F, 0.0F);
-		forehead_r1.texOffs(31, 11).addBox(-2.0F, -3.0F, -3.0F, 4.0F, 6.0F, 6.0F, 0.0F, false);
+		forehead_r1.setTextureOffset(31, 11).addBox(-2.0F, -3.0F, -3.0F, 4.0F, 6.0F, 6.0F, 0.0F, false);
 
 		mouth = new AdvancedModelBox(this);
 		mouth.setPos(0.0F, 0.6667F, -3.3333F);
 		head.addChild(mouth);
-		mouth.texOffs(37, 0).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+		mouth.setTextureOffset(37, 0).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
 		armL = new AdvancedModelBox(this);
 		armL.setPos(5.0F, -1.5F, -7.0F);
 		bodyfront.addChild(armL);
-		armL.texOffs(0, 33).addBox(-2.0F, -1.5F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, false);
+		armL.setTextureOffset(0, 33).addBox(-2.0F, -1.5F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, false);
 
 		armR = new AdvancedModelBox(this);
 		armR.setPos(-5.0F, -1.5F, -7.0F);
 		bodyfront.addChild(armR);
-		armR.texOffs(0, 33).addBox(-2.0F, -1.5F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, true);
+		armR.setTextureOffset(0, 33).addBox(-2.0F, -1.5F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, true);
 
 		legL = new AdvancedModelBox(this);
 		legL.setPos(2.0F, 2.0F, 6.0F);
 		body.addChild(legL);
-		legL.texOffs(17, 40).addBox(-1.0F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, 0.0F, false);
+		legL.setTextureOffset(17, 40).addBox(-1.0F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, 0.0F, false);
 
 		legR = new AdvancedModelBox(this);
 		legR.setPos(-2.0F, 2.0F, 6.0F);
 		body.addChild(legR);
-		legR.texOffs(17, 40).addBox(-2.0F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, 0.0F, true);
+		legR.setTextureOffset(17, 40).addBox(-2.0F, 0.0F, -2.0F, 3.0F, 8.0F, 4.0F, 0.0F, true);
 		this.updateDefaultPose();
 		animator = ModelAnimator.create();
 	}
@@ -262,13 +262,13 @@ public class ModelGorilla extends AdvancedEntityModel<EntityGorilla> {
 
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 

@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -22,7 +22,7 @@ public class RenderGuster extends MobRenderer<EntityGuster, ModelGuster> {
     private static final ResourceLocation TEXTURE_SOUL = new ResourceLocation("alexsmobs:textures/entity/guster_soul.png");
     private static final ResourceLocation TEXTURE_SOUL_EYES = new ResourceLocation("alexsmobs:textures/entity/guster_eye_soul.png");
 
-    public RenderGuster(EntityRenderDispatcher renderManagerIn) {
+    public RenderGuster(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGuster(), 0.25F);
         this.addLayer(new RenderGuster.GusterEyesLayer(this));
     }

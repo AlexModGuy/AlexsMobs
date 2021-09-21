@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.loot.*;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
@@ -44,8 +43,8 @@ public class MatchesBananaTagCondition implements LootItemCondition {
         return block != null && match != null && match.contains(block.getBlock());
     }
 
-    public static class Serializer implements Serializer<MatchesBananaTagCondition> {
-        public Serializer() {
+    public static class LootSerializer implements Serializer<MatchesBananaTagCondition> {
+        public LootSerializer() {
         }
 
         public void serialize(JsonObject p_230424_1_, MatchesBananaTagCondition p_230424_2_, JsonSerializationContext p_230424_3_) {

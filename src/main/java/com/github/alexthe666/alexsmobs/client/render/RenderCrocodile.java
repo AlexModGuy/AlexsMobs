@@ -3,7 +3,8 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelCrocodile;
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
@@ -11,7 +12,7 @@ public class RenderCrocodile extends MobRenderer<EntityCrocodile, ModelCrocodile
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/crocodile_0.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/crocodile_1.png");
 
-    public RenderCrocodile(EntityRenderDispatcher renderManagerIn) {
+    public RenderCrocodile(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCrocodile(), 0.8F);
     }
 

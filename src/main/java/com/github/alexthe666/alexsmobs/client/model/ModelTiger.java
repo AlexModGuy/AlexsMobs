@@ -36,62 +36,62 @@ public class ModelTiger extends AdvancedEntityModel<EntityTiger> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -14.0F, 0.0F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-5.0F, -6.0F, -12.0F, 10.0F, 11.0F, 22.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-5.0F, -6.0F, -12.0F, 10.0F, 11.0F, 22.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, -4.0F, 8.6F);
         body.addChild(tail);
         setRotationAngle(tail, 0.0873F, 0.0F, 0.0F);
-        tail.texOffs(46, 34).addBox(-1.5F, -1.0F, 0.0F, 3.0F, 9.0F, 3.0F, 0.0F, false);
+        tail.setTextureOffset(46, 34).addBox(-1.5F, -1.0F, 0.0F, 3.0F, 9.0F, 3.0F, 0.0F, false);
 
         tail2 = new AdvancedModelBox(this);
         tail2.setPos(0.0F, 7.9F, 0.0F);
         tail.addChild(tail2);
         setRotationAngle(tail2, 0.2182F, 0.0F, 0.0F);
-        tail2.texOffs(43, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 9.0F, 3.0F, -0.1F, false);
+        tail2.setTextureOffset(43, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 9.0F, 3.0F, -0.1F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -4.0F, -12.0F);
         body.addChild(head);
-        head.texOffs(0, 34).addBox(-4.0F, -4.0F, -6.0F, 8.0F, 7.0F, 6.0F, 0.0F, false);
-        head.texOffs(9, 15).addBox(4.0F, -1.0F, -5.0F, 1.0F, 4.0F, 2.0F, 0.0F, false);
-        head.texOffs(9, 15).addBox(-5.0F, -1.0F, -5.0F, 1.0F, 4.0F, 2.0F, 0.0F, true);
+        head.setTextureOffset(0, 34).addBox(-4.0F, -4.0F, -6.0F, 8.0F, 7.0F, 6.0F, 0.0F, false);
+        head.setTextureOffset(9, 15).addBox(4.0F, -1.0F, -5.0F, 1.0F, 4.0F, 2.0F, 0.0F, false);
+        head.setTextureOffset(9, 15).addBox(-5.0F, -1.0F, -5.0F, 1.0F, 4.0F, 2.0F, 0.0F, true);
 
         earleft = new AdvancedModelBox(this);
         earleft.setPos(3.0F, -4.0F, -2.0F);
         head.addChild(earleft);
-        earleft.texOffs(0, 15).addBox(0.0F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, false);
+        earleft.setTextureOffset(0, 15).addBox(0.0F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, false);
 
         earright = new AdvancedModelBox(this);
         earright.setPos(-3.0F, -4.0F, -2.0F);
         head.addChild(earright);
-        earright.texOffs(0, 15).addBox(-1.0F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, true);
+        earright.setTextureOffset(0, 15).addBox(-1.0F, -2.0F, -2.0F, 1.0F, 2.0F, 3.0F, 0.0F, true);
 
         snout = new AdvancedModelBox(this);
         snout.setPos(0.0F, -1.0F, -6.0F);
         head.addChild(snout);
         setRotationAngle(snout, 0.1745F, 0.0F, 0.0F);
-        snout.texOffs(43, 13).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 4.0F, 3.0F, 0.0F, false);
+        snout.setTextureOffset(43, 13).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 4.0F, 3.0F, 0.0F, false);
 
         legleft = new AdvancedModelBox(this);
         legleft.setPos(2.9F, 5.0F, 7.9F);
         body.addChild(legleft);
-        legleft.texOffs(0, 48).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 11.0F, 5.0F, 0.0F, false);
+        legleft.setTextureOffset(0, 48).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 11.0F, 5.0F, 0.0F, false);
 
         legright = new AdvancedModelBox(this);
         legright.setPos(-2.9F, 5.0F, 7.9F);
         body.addChild(legright);
-        legright.texOffs(0, 48).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 11.0F, 5.0F, 0.0F, true);
+        legright.setTextureOffset(0, 48).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 11.0F, 5.0F, 0.0F, true);
 
         armleft = new AdvancedModelBox(this);
         armleft.setPos(3.5F, -1.5F, -9.0F);
         body.addChild(armleft);
-        armleft.texOffs(29, 34).addBox(-2.0F, -5.5F, -2.0F, 4.0F, 21.0F, 4.0F, 0.0F, false);
+        armleft.setTextureOffset(29, 34).addBox(-2.0F, -5.5F, -2.0F, 4.0F, 21.0F, 4.0F, 0.0F, false);
 
         armright = new AdvancedModelBox(this);
         armright.setPos(-3.5F, -1.5F, -9.0F);
         body.addChild(armright);
-        armright.texOffs(29, 34).addBox(-2.0F, -5.5F, -2.0F, 4.0F, 21.0F, 4.0F, 0.0F, true);
+        armright.setTextureOffset(29, 34).addBox(-2.0F, -5.5F, -2.0F, 4.0F, 21.0F, 4.0F, 0.0F, true);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -329,7 +329,7 @@ public class ModelTiger extends AdvancedEntityModel<EntityTiger> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -362,8 +362,8 @@ public class ModelTiger extends AdvancedEntityModel<EntityTiger> {
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

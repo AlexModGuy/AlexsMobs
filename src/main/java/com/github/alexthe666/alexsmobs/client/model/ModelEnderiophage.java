@@ -44,32 +44,32 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -11.0F, 0.0F);
         root.addChild(body);
-        body.texOffs(0, 30).addBox(-4.0F, -2.0F, -4.0F, 8.0F, 3.0F, 8.0F, 0.0F, false);
+        body.setTextureOffset(0, 30).addBox(-4.0F, -2.0F, -4.0F, 8.0F, 3.0F, 8.0F, 0.0F, false);
 
         mouth = new AdvancedModelBox(this);
         mouth.setPos(0.0F, 1.0F, 0.0F);
         body.addChild(mouth);
-        mouth.texOffs(0, 0).addBox(-1.0F, -5.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
+        mouth.setTextureOffset(0, 0).addBox(-1.0F, -5.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
 
         sheath = new AdvancedModelBox(this);
         sheath.setPos(0.0F, -2.0F, 0.0F);
         body.addChild(sheath);
-        sheath.texOffs(50, 43).addBox(-2.0F, -14.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
+        sheath.setTextureOffset(50, 43).addBox(-2.0F, -14.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
 
         collar = new AdvancedModelBox(this);
         collar.setPos(0.0F, -14.0F, 0.0F);
         sheath.addChild(collar);
-        collar.texOffs(0, 55).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 1.0F, 6.0F, 0.0F, false);
+        collar.setTextureOffset(0, 55).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 1.0F, 6.0F, 0.0F, false);
 
         capsid = new AdvancedModelBox(this);
         capsid.setPos(0.0F, -1.0F, 0.0F);
         collar.addChild(capsid);
-        capsid.texOffs(0, 0).addBox(-7.0F, -15.0F, -7.0F, 14.0F, 15.0F, 14.0F, 0.0F, false);
+        capsid.setTextureOffset(0, 0).addBox(-7.0F, -15.0F, -7.0F, 14.0F, 15.0F, 14.0F, 0.0F, false);
 
         eye = new AdvancedModelBox(this);
         eye.setPos(0.0F, -8.0F, 0.0F);
         capsid.addChild(eye);
-        eye.texOffs(43, 0).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 6.0F, 0.0F, false);
+        eye.setTextureOffset(43, 0).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 6.0F, 0.0F, false);
 
         tailmid_leftPivot = new AdvancedModelBox(this);
         tailmid_leftPivot.setPos(4.0F, -1.0F, 0.0F);
@@ -77,7 +77,7 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
 
         tailmid_left = new AdvancedModelBox(this);
         tailmid_leftPivot.addChild(tailmid_left);
-        tailmid_left.texOffs(25, 43).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
+        tailmid_left.setTextureOffset(25, 43).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
         tailmid_rightPivot = new AdvancedModelBox(this);
         tailmid_rightPivot.setPos(-4.0F, -1.0F, 0.0F);
@@ -85,7 +85,7 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
 
         tailmid_right = new AdvancedModelBox(this);
         tailmid_rightPivot.addChild(tailmid_right);
-        tailmid_right.texOffs(25, 43).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
+        tailmid_right.setTextureOffset(25, 43).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
 
         tailback_leftPivot = new AdvancedModelBox(this);
         tailback_leftPivot.setPos(4.0F, -1.0F, 4.0F);
@@ -94,7 +94,7 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
 
         tailback_left = new AdvancedModelBox(this);
         tailback_leftPivot.addChild(tailback_left);
-        tailback_left.texOffs(33, 30).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
+        tailback_left.setTextureOffset(33, 30).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
         tailback_rightPivot = new AdvancedModelBox(this);
         tailback_rightPivot.setPos(-4.0F, -1.0F, 4.0F);
@@ -103,7 +103,7 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
 
         tailback_right = new AdvancedModelBox(this);
         tailback_rightPivot.addChild(tailback_right);
-        tailback_right.texOffs(33, 30).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
+        tailback_right.setTextureOffset(33, 30).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
 
         tailfront_leftPivot = new AdvancedModelBox(this);
         tailfront_leftPivot.setPos(4.0F, -1.0F, -4.0F);
@@ -112,7 +112,7 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
 
         tailfront_left = new AdvancedModelBox(this);
         tailfront_leftPivot.addChild(tailfront_left);
-        tailfront_left.texOffs(0, 42).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
+        tailfront_left.setTextureOffset(0, 42).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
 
         tailfront_rightPivot = new AdvancedModelBox(this);
@@ -122,7 +122,7 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
 
         tailfront_right = new AdvancedModelBox(this);
         tailfront_rightPivot.addChild(tailfront_right);
-        tailfront_right.texOffs(0, 42).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
+        tailfront_right.setTextureOffset(0, 42).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
         this.updateDefaultPose();
     }
 
@@ -195,8 +195,8 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             this.eye.visible = true;
         }
         if(entity.isPassenger()){
-            this.body.xRot += Math.PI/2F;
-            this.body.yRot += Math.PI/2F * entity.passengerIndex;
+            this.body.rotateAngleX += Math.PI/2F;
+            this.body.rotateAngleY += Math.PI/2F * entity.passengerIndex;
             this.sheath.setScale(1F, (float) (0.85F + Math.sin(ageInTicks) * 0.15F), 1F);
             this.collar.y -= (float) (Math.sin(ageInTicks) * 0.15F - 0.15F) * 12F;
             this.capsid.setScale((float) (0.85F + Math.sin(ageInTicks + 2F) * 0.15F), (float) (1F + Math.sin(ageInTicks) * 0.15F), (float) (0.85F + Math.sin(ageInTicks + 2F) * 0.15F));
@@ -205,7 +205,7 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
         }else{
             this.sheath.setScale(1F,1F, 1F);
             this.capsid.setScale(1F,1F, 1F);
-            this.body.xRot -= phagePitch * flyProgress * 0.2F;
+            this.body.rotateAngleX -= phagePitch * flyProgress * 0.2F;
         }
         progressPositionPrev(body, tentacleProgress, 0, -6, 0, 5F);
         progressRotationPrev(tailfront_left, tentacleProgress, 0, 0, (float) Math.toRadians(-45), 5F);
@@ -220,8 +220,8 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             Vec3 vector3d1 = entity.getEyePosition(partialTicks);
             Vec3 vector3d2 = vector3d.subtract(vector3d1);
             float f = Mth.sqrt(vector3d2.x * vector3d2.x + vector3d2.z * vector3d2.z) - totalYaw;
-            this.eye.yRot += -(float) (Mth.atan2(vector3d2.x, vector3d2.z)) - totalYaw;
-            this.eye.xRot += -Mth.clamp(vector3d2.y * 0.5F, Math.PI * -0.5F, Math.PI * 0.5F) + phagePitch * flyProgress * 0.2F;
+            this.eye.rotateAngleY += -(float) (Mth.atan2(vector3d2.x, vector3d2.z)) - totalYaw;
+            this.eye.rotateAngleX += -Mth.clamp(vector3d2.y * 0.5F, Math.PI * -0.5F, Math.PI * 0.5F) + phagePitch * flyProgress * 0.2F;
         }
     }
 
@@ -231,13 +231,13 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-        advancedModelBox.xRot = x;
-        advancedModelBox.yRot = y;
-        advancedModelBox.zRot = z;
+        advancedModelBox.rotateAngleX = x;
+        advancedModelBox.rotateAngleY = y;
+        advancedModelBox.rotateAngleZ = z;
     }
 }

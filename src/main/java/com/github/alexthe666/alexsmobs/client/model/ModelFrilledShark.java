@@ -33,54 +33,54 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -3.0F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-3.0F, -3.0F, -15.0F, 6.0F, 6.0F, 18.0F, 0.0F, false);
-		body.texOffs(66, 59).addBox(0.0F, -9.0F, -14.0F, 0.0F, 6.0F, 17.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-3.0F, -3.0F, -15.0F, 6.0F, 6.0F, 18.0F, 0.0F, false);
+		body.setTextureOffset(66, 59).addBox(0.0F, -9.0F, -14.0F, 0.0F, 6.0F, 17.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, -2.0F, -15.0F);
 		body.addChild(head);
-		head.texOffs(31, 0).addBox(-3.0F, -1.0F, -7.0F, 6.0F, 3.0F, 7.0F, 0.0F, false);
+		head.setTextureOffset(31, 0).addBox(-3.0F, -1.0F, -7.0F, 6.0F, 3.0F, 7.0F, 0.0F, false);
 
 		jaw = new AdvancedModelBox(this);
 		jaw.setPos(0.0F, 2.4F, 0.4F);
 		head.addChild(jaw);
 		setRotationAngle(jaw, 0.2618F, 0.0F, 0.0F);
-		jaw.texOffs(41, 25).addBox(-2.5F, 0.0F, -7.0F, 5.0F, 2.0F, 7.0F, 0.0F, false);
+		jaw.setTextureOffset(41, 25).addBox(-2.5F, 0.0F, -7.0F, 5.0F, 2.0F, 7.0F, 0.0F, false);
 
 		pectoralfin_left = new AdvancedModelBox(this);
 		pectoralfin_left.setPos(3.0F, 2.4F, -10.0F);
 		body.addChild(pectoralfin_left);
 		setRotationAngle(pectoralfin_left, 0.0F, 0.0F, 0.48F);
-		pectoralfin_left.texOffs(41, 42).addBox(0.0F, 0.0F, 0.0F, 5.0F, 0.0F, 7.0F, 0.0F, false);
+		pectoralfin_left.setTextureOffset(41, 42).addBox(0.0F, 0.0F, 0.0F, 5.0F, 0.0F, 7.0F, 0.0F, false);
 
 		pectoralfin_right = new AdvancedModelBox(this);
 		pectoralfin_right.setPos(-3.0F, 2.4F, -10.0F);
 		body.addChild(pectoralfin_right);
 		setRotationAngle(pectoralfin_right, 0.0F, 0.0F, -0.48F);
-		pectoralfin_right.texOffs(41, 42).addBox(-5.0F, 0.0F, 0.0F, 5.0F, 0.0F, 7.0F, 0.0F, true);
+		pectoralfin_right.setTextureOffset(41, 42).addBox(-5.0F, 0.0F, 0.0F, 5.0F, 0.0F, 7.0F, 0.0F, true);
 
 		tail1 = new AdvancedModelBox(this);
 		tail1.setPos(0.0F, -0.9F, 3.0F);
 		body.addChild(tail1);
-		tail1.texOffs(21, 25).addBox(-2.0F, -2.0F, 0.0F, 4.0F, 5.0F, 11.0F, 0.0F, false);
-		tail1.texOffs(0, 25).addBox(0.0F, -5.0F, 5.0F, 0.0F, 3.0F, 6.0F, 0.0F, false);
+		tail1.setTextureOffset(21, 25).addBox(-2.0F, -2.0F, 0.0F, 4.0F, 5.0F, 11.0F, 0.0F, false);
+		tail1.setTextureOffset(0, 25).addBox(0.0F, -5.0F, 5.0F, 0.0F, 3.0F, 6.0F, 0.0F, false);
 
 		pelvicfin_left = new AdvancedModelBox(this);
 		pelvicfin_left.setPos(2.0F, 3.0F, 5.0F);
 		tail1.addChild(pelvicfin_left);
 		setRotationAngle(pelvicfin_left, 0.0F, 0.0F, -0.9599F);
-		pelvicfin_left.texOffs(21, 25).addBox(0.0F, 0.0F, -1.0F, 0.0F, 3.0F, 5.0F, 0.0F, false);
+		pelvicfin_left.setTextureOffset(21, 25).addBox(0.0F, 0.0F, -1.0F, 0.0F, 3.0F, 5.0F, 0.0F, false);
 
 		pelvicfin_right = new AdvancedModelBox(this);
 		pelvicfin_right.setPos(-2.0F, 3.0F, 5.0F);
 		tail1.addChild(pelvicfin_right);
 		setRotationAngle(pelvicfin_right, 0.0F, 0.0F, 0.9599F);
-		pelvicfin_right.texOffs(21, 25).addBox(0.0F, 0.0F, -1.0F, 0.0F, 3.0F, 5.0F, 0.0F, true);
+		pelvicfin_right.setTextureOffset(21, 25).addBox(0.0F, 0.0F, -1.0F, 0.0F, 3.0F, 5.0F, 0.0F, true);
 
 		tail2 = new AdvancedModelBox(this);
 		tail2.setPos(0.0F, 0.1F, 11.0F);
 		tail1.addChild(tail2);
-		tail2.texOffs(0, 25).addBox(0.0F, -6.0F, 0.0F, 0.0F, 11.0F, 20.0F, 0.0F, false);
+		tail2.setTextureOffset(0, 25).addBox(0.0F, -6.0F, 0.0F, 0.0F, 11.0F, 20.0F, 0.0F, false);
 		this.updateDefaultPose();
 		animator = ModelAnimator.create();
 	}
@@ -132,7 +132,7 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -142,8 +142,8 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

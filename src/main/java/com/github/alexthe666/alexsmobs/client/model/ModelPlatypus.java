@@ -32,48 +32,48 @@ public class ModelPlatypus extends AdvancedEntityModel<EntityPlatypus> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -2.6F, -0.1F);
         root.addChild(body);
-        body.texOffs(0, 2).addBox(-3.5F, -3.4F, -5.9F, 7.0F, 6.0F, 11.0F, 0.0F, false);
+        body.setTextureOffset(0, 2).addBox(-3.5F, -3.4F, -5.9F, 7.0F, 6.0F, 11.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -0.4F, -5.9F);
         body.addChild(head);
-        head.texOffs(5, 51).addBox(-3.0F, -2.5F, -4.0F, 6.0F, 5.0F, 4.0F, 0.0F, false);
+        head.setTextureOffset(5, 51).addBox(-3.0F, -2.5F, -4.0F, 6.0F, 5.0F, 4.0F, 0.0F, false);
 
         beak = new AdvancedModelBox(this);
         beak.setPos(0.0F, 2.0F, -5.0F);
         head.addChild(beak);
-        beak.texOffs(28, 0).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 2.0F, 4.0F, 0.0F, false);
+        beak.setTextureOffset(28, 0).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 2.0F, 4.0F, 0.0F, false);
 
         fedora = new AdvancedModelBox(this);
         fedora.setPos(0.0F, -2.6F, -1.9F);
         head.addChild(fedora);
-        fedora.texOffs(23, 20).addBox(-4.0F, 0.0F, -4.0F, 8.0F, 0.0F, 8.0F, 0.0F, false);
-        fedora.texOffs(29, 30).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 2.0F, 4.0F, 0.0F, false);
+        fedora.setTextureOffset(23, 20).addBox(-4.0F, 0.0F, -4.0F, 8.0F, 0.0F, 8.0F, 0.0F, false);
+        fedora.setTextureOffset(29, 30).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 2.0F, 4.0F, 0.0F, false);
 
         arm_left = new AdvancedModelBox(this);
         arm_left.setPos(3.5F, 2.1F, -4.9F);
         body.addChild(arm_left);
-        arm_left.texOffs(7, 39).addBox(0.0F, -0.5F, 0.0F, 3.0F, 1.0F, 3.0F, 0.0F, false);
+        arm_left.setTextureOffset(7, 39).addBox(0.0F, -0.5F, 0.0F, 3.0F, 1.0F, 3.0F, 0.0F, false);
 
         arm_right = new AdvancedModelBox(this);
         arm_right.setPos(-3.5F, 2.1F, -4.9F);
         body.addChild(arm_right);
-        arm_right.texOffs(7, 39).addBox(-3.0F, -0.5F, 0.0F, 3.0F, 1.0F, 3.0F, 0.0F, true);
+        arm_right.setTextureOffset(7, 39).addBox(-3.0F, -0.5F, 0.0F, 3.0F, 1.0F, 3.0F, 0.0F, true);
 
         leg_left = new AdvancedModelBox(this);
         leg_left.setPos(3.5F, 2.1F, 2.6F);
         body.addChild(leg_left);
-        leg_left.texOffs(27, 43).addBox(0.0F, -0.5F, -0.5F, 3.0F, 1.0F, 3.0F, 0.0F, false);
+        leg_left.setTextureOffset(27, 43).addBox(0.0F, -0.5F, -0.5F, 3.0F, 1.0F, 3.0F, 0.0F, false);
 
         leg_right = new AdvancedModelBox(this);
         leg_right.setPos(-3.5F, 2.1F, 2.6F);
         body.addChild(leg_right);
-        leg_right.texOffs(27, 43).addBox(-3.0F, -0.5F, -0.5F, 3.0F, 1.0F, 3.0F, 0.0F, true);
+        leg_right.setTextureOffset(27, 43).addBox(-3.0F, -0.5F, -0.5F, 3.0F, 1.0F, 3.0F, 0.0F, true);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, -0.4F, 5.1F);
         body.addChild(tail);
-        tail.texOffs(0, 24).addBox(-3.0F, -1.0F, 0.0F, 6.0F, 3.0F, 8.0F, 0.0F, false);
+        tail.setTextureOffset(0, 24).addBox(-3.0F, -1.0F, 0.0F, 6.0F, 3.0F, 8.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
@@ -175,13 +175,13 @@ public class ModelPlatypus extends AdvancedEntityModel<EntityPlatypus> {
 
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

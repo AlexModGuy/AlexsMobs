@@ -31,73 +31,73 @@ public class ModelGazelle extends AdvancedEntityModel<EntityGazelle> {
         texHeight = 64;
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, 20.8F, 0.0F);
-        body.texOffs(0, 0).addBox(-4.0F, -16.8F, -9.0F, 8.0F, 8.0F, 18.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-4.0F, -16.8F, -9.0F, 8.0F, 8.0F, 18.0F, 0.0F, false);
         neck = new AdvancedModelBox(this);
         neck.setPos(0.0F, -14.8F, -8.0F);
         body.addChild(neck);
         setRotationAngle(neck, 0.2618F, 0.0F, 0.0F);
-        neck.texOffs(0, 0).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 9.0F, 4.0F, 0.0F, false);
+        neck.setTextureOffset(0, 0).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 9.0F, 4.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -7.0F, 0.0F);
         neck.addChild(head);
         setRotationAngle(head, -0.2618F, 0.0F, 0.0F);
-        head.texOffs(0, 27).addBox(-2.5F, -4.0F, -3.0F, 5.0F, 5.0F, 5.0F, 0.0F, false);
+        head.setTextureOffset(0, 27).addBox(-2.5F, -4.0F, -3.0F, 5.0F, 5.0F, 5.0F, 0.0F, false);
 
         earL = new AdvancedModelBox(this);
         earL.setPos(1.5F, -3.3F, 0.5F);
         head.addChild(earL);
         setRotationAngle(earL, -0.2618F, -0.5236F, 0.6109F);
-        earL.texOffs(0, 38).addBox(-0.5F, -3.7F, -0.5F, 2.0F, 4.0F, 1.0F, 0.0F, false);
+        earL.setTextureOffset(0, 38).addBox(-0.5F, -3.7F, -0.5F, 2.0F, 4.0F, 1.0F, 0.0F, false);
 
         earR = new AdvancedModelBox(this);
         earR.setPos(-1.5F, -3.3F, 0.5F);
         head.addChild(earR);
         setRotationAngle(earR, -0.2618F, 0.5236F, -0.6109F);
-        earR.texOffs(0, 38).addBox(-1.5F, -3.7F, -0.5F, 2.0F, 4.0F, 1.0F, 0.0F, true);
+        earR.setTextureOffset(0, 38).addBox(-1.5F, -3.7F, -0.5F, 2.0F, 4.0F, 1.0F, 0.0F, true);
 
         snout = new AdvancedModelBox(this);
         snout.setPos(0.0F, -0.5F, -2.9F);
         head.addChild(snout);
-        snout.texOffs(34, 27).addBox(-1.5F, -1.5F, -3.1F, 3.0F, 3.0F, 3.0F, 0.0F, false);
+        snout.setTextureOffset(34, 27).addBox(-1.5F, -1.5F, -3.1F, 3.0F, 3.0F, 3.0F, 0.0F, false);
 
         hornL = new AdvancedModelBox(this);
         hornL.setPos(1.3F, -3.4F, -1.9F);
         head.addChild(hornL);
         setRotationAngle(hornL, -0.2618F, 0.0F, 0.2618F);
-        hornL.texOffs(35, 0).addBox(-1.0F, -9.0F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, false);
+        hornL.setTextureOffset(35, 0).addBox(-1.0F, -9.0F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, false);
 
         hornR = new AdvancedModelBox(this);
         hornR.setPos(-1.3F, -3.4F, -1.9F);
         head.addChild(hornR);
         setRotationAngle(hornR, -0.2618F, 0.0F, -0.2618F);
-        hornR.texOffs(35, 0).addBox(-1.0F, -9.0F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, true);
+        hornR.setTextureOffset(35, 0).addBox(-1.0F, -9.0F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, true);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, -13.8F, 9.0F);
         body.addChild(tail);
         setRotationAngle(tail, 0.3491F, 0.0F, 0.0F);
-        tail.texOffs(35, 12).addBox(-2.0F, 0.0F, 0.0F, 4.0F, 5.0F, 0.0F, 0.0F, false);
+        tail.setTextureOffset(35, 12).addBox(-2.0F, 0.0F, 0.0F, 4.0F, 5.0F, 0.0F, 0.0F, false);
 
         frontlegR = new AdvancedModelBox(this);
         frontlegR.setPos(2.5F, -6.8F, -6.5F);
         body.addChild(frontlegR);
-        frontlegR.texOffs(34, 34).addBox(-6.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, true);
+        frontlegR.setTextureOffset(34, 34).addBox(-6.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, true);
 
         frontlegL = new AdvancedModelBox(this);
         frontlegL.setPos(2.5F, -6.8F, -6.5F);
         body.addChild(frontlegL);
-        frontlegL.texOffs(34, 34).addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, false);
+        frontlegL.setTextureOffset(34, 34).addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, false);
 
         backlegL = new AdvancedModelBox(this);
         backlegL.setPos(2.5F, -7.8F, 7.5F);
         body.addChild(backlegL);
-        backlegL.texOffs(21, 27).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, false);
+        backlegL.setTextureOffset(21, 27).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, false);
 
         backlegR = new AdvancedModelBox(this);
         backlegR.setPos(-2.5F, -7.8F, 7.5F);
         body.addChild(backlegR);
-        backlegR.texOffs(21, 27).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, true);
+        backlegR.setTextureOffset(21, 27).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, true);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -285,7 +285,7 @@ public class ModelGazelle extends AdvancedEntityModel<EntityGazelle> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body);
     }
 
@@ -295,8 +295,8 @@ public class ModelGazelle extends AdvancedEntityModel<EntityGazelle> {
     }
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-        advancedModelBox.xRot = x;
-        advancedModelBox.yRot = y;
-        advancedModelBox.zRot = z;
+        advancedModelBox.rotateAngleX = x;
+        advancedModelBox.rotateAngleY = y;
+        advancedModelBox.rotateAngleZ = z;
     }
 }

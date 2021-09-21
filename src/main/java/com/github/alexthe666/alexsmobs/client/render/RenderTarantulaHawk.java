@@ -7,7 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
 import com.github.alexthe666.alexsmobs.entity.EntityTiger;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +23,7 @@ public class RenderTarantulaHawk extends MobRenderer<EntityTarantulaHawk, Entity
     private static final ResourceLocation TEXTURE_BABY = new ResourceLocation("alexsmobs:textures/entity/tarantula_hawk_baby.png");
     private static final ModelTarantulaHawk MODEL = new ModelTarantulaHawk();
     private static final ModelTarantulaHawkBaby MODEL_BABY = new ModelTarantulaHawkBaby();
-    public RenderTarantulaHawk(EntityRenderDispatcher renderManagerIn) {
+    public RenderTarantulaHawk(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, MODEL, 0.5F);
     }
 

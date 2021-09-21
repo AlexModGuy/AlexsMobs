@@ -53,74 +53,74 @@ public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -24.0F, 0.0F);
         root.addChild(body);
-        body.texOffs(0, 31).addBox(-8.0F, -10.0F, -7.0F, 16.0F, 14.0F, 14.0F, 0.0F, false);
+        body.setTextureOffset(0, 31).addBox(-8.0F, -10.0F, -7.0F, 16.0F, 14.0F, 14.0F, 0.0F, false);
 
         back = new AdvancedModelBox(this);
         back.setPos(0.0F, -4.0F, 7.0F);
         body.addChild(back);
         setRotationAngle(back, -0.4363F, 0.0F, 0.0F);
-        back.texOffs(44, 44).addBox(-5.0F, -1.0F, 0.0F, 10.0F, 10.0F, 17.0F, 0.0F, false);
+        back.setTextureOffset(44, 44).addBox(-5.0F, -1.0F, 0.0F, 10.0F, 10.0F, 17.0F, 0.0F, false);
 
         legfront_left = new AdvancedModelBox(this);
         legfront_left.setPos(5.5F, 2.0F, -4.5F);
         body.addChild(legfront_left);
         setRotationAngle(legfront_left, 0.0F, -0.5236F, 0.0F);
-        legfront_left.texOffs(72, 86).addBox(-3.5F, -2.0F, -3.5F, 7.0F, 12.0F, 7.0F, 0.0F, false);
+        legfront_left.setTextureOffset(72, 86).addBox(-3.5F, -2.0F, -3.5F, 7.0F, 12.0F, 7.0F, 0.0F, false);
 
         kneefront_left = new AdvancedModelBox(this);
         kneefront_left.setPos(0.0F, 10.0F, 0.0F);
         legfront_left.addChild(kneefront_left);
-        kneefront_left.texOffs(101, 81).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, false);
+        kneefront_left.setTextureOffset(101, 81).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, false);
 
         legfront_right = new AdvancedModelBox(this);
         legfront_right.setPos(-5.5F, 2.0F, -4.5F);
         body.addChild(legfront_right);
         setRotationAngle(legfront_right, 0.0F, 0.5236F, 0.0F);
-        legfront_right.texOffs(72, 86).addBox(-3.5F, -2.0F, -3.5F, 7.0F, 12.0F, 7.0F, 0.0F, true);
+        legfront_right.setTextureOffset(72, 86).addBox(-3.5F, -2.0F, -3.5F, 7.0F, 12.0F, 7.0F, 0.0F, true);
 
         kneefront_right = new AdvancedModelBox(this);
         kneefront_right.setPos(0.0F, 10.0F, 0.0F);
         legfront_right.addChild(kneefront_right);
-        kneefront_right.texOffs(101, 81).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, true);
+        kneefront_right.setTextureOffset(101, 81).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, true);
 
         legback_left = new AdvancedModelBox(this);
         legback_left.setPos(5.5F, 2.0F, 5.5F);
         body.addChild(legback_left);
         setRotationAngle(legback_left, 0.0F, 0.6981F, 0.0F);
-        legback_left.texOffs(72, 86).addBox(-3.5F, -2.0F, -3.5F, 7.0F, 12.0F, 7.0F, 0.0F, false);
+        legback_left.setTextureOffset(72, 86).addBox(-3.5F, -2.0F, -3.5F, 7.0F, 12.0F, 7.0F, 0.0F, false);
 
         kneeback_left = new AdvancedModelBox(this);
         kneeback_left.setPos(0.0F, 10.0F, 0.0F);
         legback_left.addChild(kneeback_left);
-        kneeback_left.texOffs(101, 81).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, false);
+        kneeback_left.setTextureOffset(101, 81).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, false);
 
         legback_right = new AdvancedModelBox(this);
         legback_right.setPos(-5.5F, 2.0F, 5.5F);
         body.addChild(legback_right);
         setRotationAngle(legback_right, 0.0F, -0.6981F, 0.0F);
-        legback_right.texOffs(72, 86).addBox(-3.5F, -2.0F, -3.5F, 7.0F, 12.0F, 7.0F, 0.0F, true);
+        legback_right.setTextureOffset(72, 86).addBox(-3.5F, -2.0F, -3.5F, 7.0F, 12.0F, 7.0F, 0.0F, true);
 
         kneeback_right = new AdvancedModelBox(this);
         kneeback_right.setPos(0.0F, 10.0F, 0.0F);
         legback_right.addChild(kneeback_right);
-        kneeback_right.texOffs(101, 81).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, true);
+        kneeback_right.setTextureOffset(101, 81).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, 0.0F, true);
 
         chest = new AdvancedModelBox(this);
         chest.setPos(0.0F, -10.0F, 0.0F);
         body.addChild(chest);
-        chest.texOffs(0, 0).addBox(-12.0F, -14.0F, -8.0F, 24.0F, 14.0F, 16.0F, 0.0F, false);
+        chest.setTextureOffset(0, 0).addBox(-12.0F, -14.0F, -8.0F, 24.0F, 14.0F, 16.0F, 0.0F, false);
 
         wingtop_left = new AdvancedModelBox(this);
         wingtop_left.setPos(0.5F, -7.0F, 8.0F);
         chest.addChild(wingtop_left);
         setRotationAngle(wingtop_left, 0.0F, -0.0873F, -0.2182F);
-        wingtop_left.texOffs(24, 109).addBox(0.0F, -11.0F, 0.0F, 33.0F, 19.0F, 0.0F, 0.0F, false);
+        wingtop_left.setTextureOffset(24, 109).addBox(0.0F, -11.0F, 0.0F, 33.0F, 19.0F, 0.0F, 0.0F, false);
 
         wingtop_right = new AdvancedModelBox(this);
         wingtop_right.setPos(-0.5F, -7.0F, 8.0F);
         chest.addChild(wingtop_right);
         setRotationAngle(wingtop_right, 0.0F, 0.0873F, 0.2182F);
-        wingtop_right.texOffs(24, 109).addBox(-33.0F, -11.0F, 0.0F, 33.0F, 19.0F, 0.0F, 0.0F, true);
+        wingtop_right.setTextureOffset(24, 109).addBox(-33.0F, -11.0F, 0.0F, 33.0F, 19.0F, 0.0F, 0.0F, true);
 
         wingbottom_left = new AdvancedModelBox(this);
         wingbottom_left.setPos(0.5F, -6.0F, 8.0F);
@@ -132,7 +132,7 @@ public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
         wingbottom_left_r1.setPos(0.0F, 0.0F, 0.0F);
         wingbottom_left.addChild(wingbottom_left_r1);
         setRotationAngle(wingbottom_left_r1, 0.0436F, 0.0F, 0.829F);
-        wingbottom_left_r1.texOffs(24, 109).addBox(0.0F, -11.0F, 0.0F, 33.0F, 19.0F, 0.0F, 0.0F, false);
+        wingbottom_left_r1.setTextureOffset(24, 109).addBox(0.0F, -11.0F, 0.0F, 33.0F, 19.0F, 0.0F, 0.0F, false);
 
         wingbottom_right = new AdvancedModelBox(this);
         wingbottom_right.setPos(-0.5F, -6.0F, 8.0F);
@@ -144,64 +144,64 @@ public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
         wingbottom_right_r1.setPos(0.0F, 0.0F, 0.0F);
         wingbottom_right.addChild(wingbottom_right_r1);
         setRotationAngle(wingbottom_right_r1, 0.0436F, 0.0F, -0.829F);
-        wingbottom_right_r1.texOffs(24, 109).addBox(-33.0F, -11.0F, 0.0F, 33.0F, 19.0F, 0.0F, 0.0F, true);
+        wingbottom_right_r1.setTextureOffset(24, 109).addBox(-33.0F, -11.0F, 0.0F, 33.0F, 19.0F, 0.0F, 0.0F, true);
 
         shoulder_left = new AdvancedModelBox(this);
         shoulder_left.setPos(16.0F, -11.0F, 0.0F);
         chest.addChild(shoulder_left);
-        shoulder_left.texOffs(0, 60).addBox(-4.0F, -6.0F, -6.0F, 12.0F, 12.0F, 12.0F, 0.0F, false);
+        shoulder_left.setTextureOffset(0, 60).addBox(-4.0F, -6.0F, -6.0F, 12.0F, 12.0F, 12.0F, 0.0F, false);
 
         shoulderspikes_left = new AdvancedModelBox(this);
         shoulderspikes_left.setPos(6.5F, -4.0F, 0.0F);
         shoulder_left.addChild(shoulderspikes_left);
-        shoulderspikes_left.texOffs(101, 101).addBox(-6.5F, -8.0F, 0.0F, 13.0F, 16.0F, 0.0F, 0.0F, false);
+        shoulderspikes_left.setTextureOffset(101, 101).addBox(-6.5F, -8.0F, 0.0F, 13.0F, 16.0F, 0.0F, 0.0F, false);
 
         arm_left = new AdvancedModelBox(this);
         arm_left.setPos(1.1F, 6.0F, 2.0F);
         shoulder_left.addChild(arm_left);
-        arm_left.texOffs(71, 21).addBox(-5.0F, 0.0F, -7.0F, 10.0F, 11.0F, 10.0F, 0.0F, false);
+        arm_left.setTextureOffset(71, 21).addBox(-5.0F, 0.0F, -7.0F, 10.0F, 11.0F, 10.0F, 0.0F, false);
 
         hand_left = new AdvancedModelBox(this);
         hand_left.setPos(0.0F, 11.0F, 0.0F);
         arm_left.addChild(hand_left);
-        hand_left.texOffs(0, 85).addBox(-4.0F, 0.0F, -7.0F, 8.0F, 12.0F, 10.0F, 0.0F, false);
+        hand_left.setTextureOffset(0, 85).addBox(-4.0F, 0.0F, -7.0F, 8.0F, 12.0F, 10.0F, 0.0F, false);
 
         shoulder_right = new AdvancedModelBox(this);
         shoulder_right.setPos(-16.0F, -11.0F, 0.0F);
         chest.addChild(shoulder_right);
-        shoulder_right.texOffs(0, 60).addBox(-8.0F, -6.0F, -6.0F, 12.0F, 12.0F, 12.0F, 0.0F, true);
+        shoulder_right.setTextureOffset(0, 60).addBox(-8.0F, -6.0F, -6.0F, 12.0F, 12.0F, 12.0F, 0.0F, true);
 
         shoulderspikes_right = new AdvancedModelBox(this);
         shoulderspikes_right.setPos(-6.5F, -4.0F, 0.0F);
         shoulder_right.addChild(shoulderspikes_right);
-        shoulderspikes_right.texOffs(101, 101).addBox(-6.5F, -8.0F, 0.0F, 13.0F, 16.0F, 0.0F, 0.0F, true);
+        shoulderspikes_right.setTextureOffset(101, 101).addBox(-6.5F, -8.0F, 0.0F, 13.0F, 16.0F, 0.0F, 0.0F, true);
 
         arm_right = new AdvancedModelBox(this);
         arm_right.setPos(-1.2F, 6.0F, 2.0F);
         shoulder_right.addChild(arm_right);
-        arm_right.texOffs(71, 21).addBox(-5.0F, 0.0F, -7.0F, 10.0F, 11.0F, 10.0F, 0.0F, true);
+        arm_right.setTextureOffset(71, 21).addBox(-5.0F, 0.0F, -7.0F, 10.0F, 11.0F, 10.0F, 0.0F, true);
 
         hand_right = new AdvancedModelBox(this);
         hand_right.setPos(0.0F, 11.0F, 0.0F);
         arm_right.addChild(hand_right);
-        hand_right.texOffs(0, 85).addBox(-4.0F, 0.0F, -7.0F, 8.0F, 12.0F, 10.0F, 0.0F, true);
+        hand_right.setTextureOffset(0, 85).addBox(-4.0F, 0.0F, -7.0F, 8.0F, 12.0F, 10.0F, 0.0F, true);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -14.0F, -1.0F);
         chest.addChild(head);
-        head.texOffs(82, 43).addBox(-5.0F, -5.0F, -5.0F, 10.0F, 5.0F, 10.0F, 0.0F, false);
+        head.setTextureOffset(82, 43).addBox(-5.0F, -5.0F, -5.0F, 10.0F, 5.0F, 10.0F, 0.0F, false);
 
         antenna_left = new AdvancedModelBox(this);
         antenna_left.setPos(2.0F, -5.0F, -5.0F);
         head.addChild(antenna_left);
         setRotationAngle(antenna_left, -0.829F, 0.0F, 0.0F);
-        antenna_left.texOffs(102, 59).addBox(-1.0F, -20.0F, 0.0F, 6.0F, 20.0F, 0.0F, 0.0F, false);
+        antenna_left.setTextureOffset(102, 59).addBox(-1.0F, -20.0F, 0.0F, 6.0F, 20.0F, 0.0F, 0.0F, false);
 
         antenna_right = new AdvancedModelBox(this);
         antenna_right.setPos(-2.0F, -5.0F, -5.0F);
         head.addChild(antenna_right);
         setRotationAngle(antenna_right, -0.829F, 0.0F, 0.0F);
-        antenna_right.texOffs(102, 59).addBox(-5.0F, -20.0F, 0.0F, 6.0F, 20.0F, 0.0F, 0.0F, true);
+        antenna_right.setTextureOffset(102, 59).addBox(-5.0F, -20.0F, 0.0F, 6.0F, 20.0F, 0.0F, 0.0F, true);
 
         proboscis = new AdvancedModelBox(this);
         proboscis.setPos(0.0F, -1.0F, -6.0F);
@@ -212,7 +212,7 @@ public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
         proboscis_r1.setPos(0.0F, -1.0F, 1.0F);
         proboscis.addChild(proboscis_r1);
         setRotationAngle(proboscis_r1, 0.3054F, 0.0F, 0.0F);
-        proboscis_r1.texOffs(37, 86).addBox(-1.0F, 0.0F, -15.0F, 2.0F, 1.0F, 15.0F, 0.0F, false);
+        proboscis_r1.setTextureOffset(37, 86).addBox(-1.0F, 0.0F, -15.0F, 2.0F, 1.0F, 15.0F, 0.0F, false);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -359,7 +359,7 @@ public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -465,14 +465,14 @@ public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
             this.bob(body, flySpeed, flyDegree * 5, false, ageInTicks, 1);
         }
         if(entity.getAnimation() != EntityWarpedMosco.ANIMATION_SUCK){
-            this.head.yRot += netHeadYaw * 0.6F * ((float)Math.PI / 180F);
-            this.head.xRot += headPitch * 0.9F * ((float)Math.PI / 180F);
+            this.head.rotateAngleY += netHeadYaw * 0.6F * ((float)Math.PI / 180F);
+            this.head.rotateAngleX += headPitch * 0.9F * ((float)Math.PI / 180F);
         }
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

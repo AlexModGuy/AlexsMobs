@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -17,7 +17,7 @@ import com.mojang.math.Vector3f;
 public class RenderHemolymph extends EntityRenderer<EntityHemolymph> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/hemolymph.png");
 
-    public RenderHemolymph(EntityRenderDispatcher renderManagerIn) {
+    public RenderHemolymph(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 

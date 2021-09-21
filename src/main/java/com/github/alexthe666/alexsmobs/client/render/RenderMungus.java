@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -34,7 +34,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
     private static final ResourceLocation TEXTURE_SHOES = new ResourceLocation("alexsmobs:textures/entity/mungus_shoes.png");
     private static final RenderType beamType = AMRenderTypes.getMungusBeam(BEAM_TEXTURE);
 
-    public RenderMungus(EntityRenderDispatcher renderManagerIn) {
+    public RenderMungus(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMungus(0), 0.5F);
         this.addLayer(new MungusSackLayer(this));
         this.addLayer(new MungusMushroomLayer(this));

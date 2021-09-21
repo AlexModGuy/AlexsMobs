@@ -5,7 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityAlligatorSnappingTurtle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -16,7 +16,7 @@ public class RenderAlligatorSnappingTurtle extends MobRenderer<EntityAlligatorSn
     private static final ResourceLocation TEXTURE_MOSS = new ResourceLocation("alexsmobs:textures/entity/alligator_snapping_turtle_moss.png");
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/alligator_snapping_turtle.png");
 
-    public RenderAlligatorSnappingTurtle(EntityRenderDispatcher renderManagerIn) {
+    public RenderAlligatorSnappingTurtle(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelAlligatorSnappingTurtle(), 0.75F);
         this.addLayer(new AlligatorSnappingTurtleMossLayer(this));
     }

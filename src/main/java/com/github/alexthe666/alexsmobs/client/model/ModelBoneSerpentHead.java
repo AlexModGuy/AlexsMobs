@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.geom.ModelPart;
 
@@ -26,50 +27,50 @@ public class ModelBoneSerpentHead extends AdvancedEntityModel<EntityBoneSerpent>
         hornL.setPos(4.1F, -7.0F, -1.0F);
         head.addChild(hornL);
         setRotationAngle(hornL, 0.6545F, 0.3927F, 0.0F);
-        hornL.texOffs(61, 42).addBox(-0.1F, -3.0F, -5.0F, 5.0F, 5.0F, 16.0F, 0.0F, false);
+        hornL.setTextureOffset(61, 42).addBox(-0.1F, -3.0F, -5.0F, 5.0F, 5.0F, 16.0F, 0.0F, false);
 
         hornR = new AdvancedModelBox(this);
         hornR.setPos(-4.1F, -7.0F, -1.0F);
         head.addChild(hornR);
         setRotationAngle(hornR, 0.6545F, -0.3927F, 0.0F);
-        hornR.texOffs(61, 42).addBox(-4.9F, -3.0F, -5.0F, 5.0F, 5.0F, 16.0F, 0.0F, true);
+        hornR.setTextureOffset(61, 42).addBox(-4.9F, -3.0F, -5.0F, 5.0F, 5.0F, 16.0F, 0.0F, true);
 
         middlehorn = new AdvancedModelBox(this);
         middlehorn.setPos(-2.9F, -6.0F, -1.0F);
         head.addChild(middlehorn);
         setRotationAngle(middlehorn, 0.6545F, 0.0F, 0.0F);
-        middlehorn.texOffs(67, 67).addBox(-0.1F, -4.0F, -5.0F, 6.0F, 6.0F, 22.0F, 0.0F, false);
+        middlehorn.setTextureOffset(67, 67).addBox(-0.1F, -4.0F, -5.0F, 6.0F, 6.0F, 22.0F, 0.0F, false);
 
         headtop = new AdvancedModelBox(this);
         headtop.setPos(0.0F, -2.5F, 0.0F);
         head.addChild(headtop);
-        headtop.texOffs(0, 0).addBox(-9.0F, -4.5F, -30.0F, 18.0F, 11.0F, 30.0F, 0.0F, false);
+        headtop.setTextureOffset(0, 0).addBox(-9.0F, -4.5F, -30.0F, 18.0F, 11.0F, 30.0F, 0.0F, false);
 
         jaw = new AdvancedModelBox(this);
         jaw.setPos(0.0F, 2.5F, -2.0F);
         head.addChild(jaw);
-        jaw.texOffs(0, 42).addBox(-8.0F, -1.5F, -26.0F, 16.0F, 7.0F, 28.0F, 0.0F, false);
+        jaw.setTextureOffset(0, 42).addBox(-8.0F, -1.5F, -26.0F, 16.0F, 7.0F, 28.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
     @Override
     public void setupAnim(EntityBoneSerpent entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        this.head.xRot = headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
         float walkSpeed = 0.35F;
         float walkDegree = 3F;
         float idleSpeed = 0.1F;
         float idleDegree = 0.2F;
         double walkOffset = 0;
         this.walk(jaw, idleSpeed * 0.5F, idleDegree * 0.3F, false, -1.2F, 0F, ageInTicks, 1);
-        this.head.y += (float)(Math.sin( (double)(limbSwing * walkSpeed) + walkOffset) * (double)limbSwingAmount * (double)walkDegree - (double)(limbSwingAmount * walkDegree) );
+        this.head.rotationPointY += (float)(Math.sin( (double)(limbSwing * walkSpeed) + walkOffset) * (double)limbSwingAmount * (double)walkDegree - (double)(limbSwingAmount * walkDegree) );
         this.walk(jaw, walkSpeed * 1F, walkDegree * 0.03F, false, -1.2F, 0F, limbSwing, limbSwingAmount);
-        this.head.y += (float)(Math.sin( (double)(ageInTicks * idleSpeed) + walkOffset) * (double)1 * (double)idleDegree - (double)(1 * idleDegree) );
+        this.head.rotationPointY += (float)(Math.sin( (double)(ageInTicks * idleSpeed) + walkOffset) * (double)1 * (double)idleDegree - (double)(1 * idleDegree) );
 
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(head);
     }
 
@@ -79,8 +80,8 @@ public class ModelBoneSerpentHead extends AdvancedEntityModel<EntityBoneSerpent>
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

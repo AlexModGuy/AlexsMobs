@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,7 @@ public class RenderGust extends EntityRenderer<EntityGust> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/guster.png");
     private final ModelGuster model = new ModelGuster();
 
-    public RenderGust(EntityRenderDispatcher renderManagerIn) {
+    public RenderGust(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 

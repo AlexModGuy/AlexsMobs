@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.model.LlamaSpitModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.settings.ParticleStatus;
@@ -21,7 +21,7 @@ public class RenderSandShot extends EntityRenderer<EntitySandShot> {
     private static final ResourceLocation SAND_SHOT = new ResourceLocation("alexsmobs:textures/entity/sand_shot.png");
     private final LlamaSpitModel<LlamaSpit> model = new LlamaSpitModel<>();
 
-    public RenderSandShot(EntityRenderDispatcher renderManagerIn) {
+    public RenderSandShot(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 

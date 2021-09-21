@@ -4,9 +4,10 @@ import com.github.alexthe666.alexsmobs.client.model.ModelBoneSerpentBody;
 import com.github.alexthe666.alexsmobs.client.model.ModelBoneSerpentTail;
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpentPart;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.model.ListModel;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderBoneSerpentPart extends LivingEntityRenderer<EntityBoneSerpentPart, ListModel<EntityBoneSerpentPart>> {
@@ -15,7 +16,7 @@ public class RenderBoneSerpentPart extends LivingEntityRenderer<EntityBoneSerpen
     private ModelBoneSerpentBody bodyModel = new ModelBoneSerpentBody();
     private ModelBoneSerpentTail tailModel = new ModelBoneSerpentTail();
 
-    public RenderBoneSerpentPart(EntityRenderDispatcher renderManagerIn) {
+    public RenderBoneSerpentPart(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelBoneSerpentBody(), 0.3F);
     }
 

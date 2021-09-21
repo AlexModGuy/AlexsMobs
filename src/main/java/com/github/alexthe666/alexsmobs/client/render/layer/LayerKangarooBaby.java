@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.model.EntityModel;
@@ -28,7 +28,7 @@ public class LayerKangarooBaby extends RenderLayer<EntityKangaroo, ModelKangaroo
         if(roo.isVehicle() && !roo.isBaby()){
             for(Entity passenger : roo.getPassengers()){
                 float riderRot = passenger.yRotO + (passenger.yRot - passenger.yRotO) * partialTicks;
-                EntityRenderer render = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(passenger);
+                EntityRenderer render = Minecraft.getInstance().getEntityRendererProvider.Context().getRenderer(passenger);
                 EntityModel modelBase = null;
                 if (render instanceof LivingEntityRenderer) {
                     modelBase = ((LivingEntityRenderer) render).getModel();
@@ -54,7 +54,7 @@ public class LayerKangarooBaby extends RenderLayer<EntityKangaroo, ModelKangaroo
 
     public <E extends Entity> void renderEntity(E entityIn, double x, double y, double z, float yaw, float partialTicks, PoseStack matrixStack, MultiBufferSource bufferIn, int packedLight) {
         EntityRenderer<? super E> render = null;
-        EntityRenderDispatcher manager = Minecraft.getInstance().getEntityRenderDispatcher();
+        EntityRendererProvider.Context manager = Minecraft.getInstance().getEntityRendererProvider.Context();
         try {
             render = manager.getRenderer(entityIn);
 

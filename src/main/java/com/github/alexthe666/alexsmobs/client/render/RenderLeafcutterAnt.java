@@ -5,7 +5,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelLeafcutterAntQueen;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerLeafcutterAntLeaf;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.Pose;
@@ -26,7 +26,7 @@ public class RenderLeafcutterAnt extends MobRenderer<EntityLeafcutterAnt, Entity
     private final ModelLeafcutterAnt model = new ModelLeafcutterAnt();
     private final ModelLeafcutterAntQueen modelQueen = new ModelLeafcutterAntQueen();
 
-    public RenderLeafcutterAnt(EntityRenderDispatcher renderManagerIn) {
+    public RenderLeafcutterAnt(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelLeafcutterAnt(), 0.25F);
         this.addLayer(new LayerLeafcutterAntLeaf(this));
     }

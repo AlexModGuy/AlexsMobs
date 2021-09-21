@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexBuilderUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +21,7 @@ public class RenderFrilledShark extends MobRenderer<EntityFrilledShark, ModelFri
     private static final ResourceLocation TEXTURE_KAIJU_DEPRESSURIZED = new ResourceLocation("alexsmobs:textures/entity/frilled_shark_kaiju_depressurized.png");
     private static final ResourceLocation TEXTURE_TEETH = new ResourceLocation("alexsmobs:textures/entity/frilled_shark_teeth.png");
 
-    public RenderFrilledShark(EntityRenderDispatcher renderManagerIn) {
+    public RenderFrilledShark(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelFrilledShark(), 0.4F);
         this.addLayer(new TeethLayer(this));
     }

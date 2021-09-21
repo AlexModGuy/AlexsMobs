@@ -27,37 +27,37 @@ public class ModelRattlesnake extends AdvancedEntityModel<EntityRattlesnake> {
 
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, 24.0F, 0.0F);
-        body.texOffs(0, 0).addBox(-2.0F, -3.0F, -4.0F, 4.0F, 3.0F, 7.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-2.0F, -3.0F, -4.0F, 4.0F, 3.0F, 7.0F, 0.0F, false);
 
         tail1 = new AdvancedModelBox(this);
         tail1.setPos(0.0F, -1.75F, 2.95F);
         body.addChild(tail1);
-        tail1.texOffs(0, 11).addBox(-1.5F, -1.25F, 0.05F, 3.0F, 3.0F, 7.0F, 0.0F, false);
+        tail1.setTextureOffset(0, 11).addBox(-1.5F, -1.25F, 0.05F, 3.0F, 3.0F, 7.0F, 0.0F, false);
 
         tail2 = new AdvancedModelBox(this);
         tail2.setPos(0.0F, 0.45F, 7.05F);
         tail1.addChild(tail2);
-        tail2.texOffs(15, 16).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 6.0F, 0.0F, false);
+        tail2.setTextureOffset(15, 16).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 6.0F, 0.0F, false);
 
         neck1 = new AdvancedModelBox(this);
         neck1.setPos(0.0F, -1.5F, -4.0F);
         body.addChild(neck1);
-        neck1.texOffs(18, 6).addBox(-1.5F, -1.5F, -5.0F, 3.0F, 3.0F, 5.0F, 0.0F, false);
+        neck1.setTextureOffset(18, 6).addBox(-1.5F, -1.5F, -5.0F, 3.0F, 3.0F, 5.0F, 0.0F, false);
 
         neck2 = new AdvancedModelBox(this);
         neck2.setPos(0.0F, 0.0F, -4.9F);
         neck1.addChild(neck2);
-        neck2.texOffs(12, 25).addBox(-1.0F, -1.5F, -5.1F, 2.0F, 3.0F, 5.0F, 0.0F, false);
+        neck2.setTextureOffset(12, 25).addBox(-1.0F, -1.5F, -5.1F, 2.0F, 3.0F, 5.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, 0.0F, -5.0F);
         neck2.addChild(head);
-        head.texOffs(0, 22).addBox(-2.0F, -1.0F, -3.8F, 4.0F, 2.0F, 4.0F, 0.0F, false);
+        head.setTextureOffset(0, 22).addBox(-2.0F, -1.0F, -3.8F, 4.0F, 2.0F, 4.0F, 0.0F, false);
 
         tongue = new AdvancedModelBox(this);
         tongue.setPos(0.0F, 0.0F, -3.8F);
         head.addChild(tongue);
-        tongue.texOffs(0, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 2.0F, 0.0F, false);
+        tongue.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 0.0F, 2.0F, 0.0F, false);
         this.updateDefaultPose();
         this.animator = ModelAnimator.create();
     }
@@ -138,7 +138,7 @@ public class ModelRattlesnake extends AdvancedEntityModel<EntityRattlesnake> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(body);
     }
 
@@ -148,8 +148,8 @@ public class ModelRattlesnake extends AdvancedEntityModel<EntityRattlesnake> {
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

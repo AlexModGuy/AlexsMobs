@@ -4,7 +4,8 @@ import com.github.alexthe666.alexsmobs.client.model.ModelGorilla;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerGorillaItem;
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
@@ -14,7 +15,7 @@ public class RenderGorilla extends MobRenderer<EntityGorilla, ModelGorilla> {
     private static final ResourceLocation TEXTURE_DK = new ResourceLocation("alexsmobs:textures/entity/gorilla_dk.png");
     private static final ResourceLocation TEXTURE_FUNKY = new ResourceLocation("alexsmobs:textures/entity/gorilla_funky.png");
 
-    public RenderGorilla(EntityRenderDispatcher renderManagerIn) {
+    public RenderGorilla(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGorilla(), 0.7F);
         this.addLayer(new LayerGorillaItem(this));
     }

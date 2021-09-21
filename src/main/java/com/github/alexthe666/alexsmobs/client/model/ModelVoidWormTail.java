@@ -25,31 +25,31 @@ public class ModelVoidWormTail extends AdvancedEntityModel<EntityVoidWormPart> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -19.0F, -16.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-8.0F, -19.0F, 0.0F, 16.0F, 38.0F, 35.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-8.0F, -19.0F, 0.0F, 16.0F, 38.0F, 35.0F, 0.0F, false);
 
 		frillstop_left = new AdvancedModelBox(this);
 		frillstop_left.setPos(8.0F, -19.0F, 16.0F);
 		body.addChild(frillstop_left);
 		setRotationAngle(frillstop_left, 0.0F, 0.0F, 0.7854F);
-		frillstop_left.texOffs(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, false);
+		frillstop_left.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, false);
 
 		frillstop_right = new AdvancedModelBox(this);
 		frillstop_right.setPos(-8.0F, -19.0F, 16.0F);
 		body.addChild(frillstop_right);
 		setRotationAngle(frillstop_right, 0.0F, 0.0F, -0.7854F);
-		frillstop_right.texOffs(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, true);
+		frillstop_right.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, true);
 
 		frillsbottom_left = new AdvancedModelBox(this);
 		frillsbottom_left.setPos(8.0F, 19.0F, 16.0F);
 		body.addChild(frillsbottom_left);
 		setRotationAngle(frillsbottom_left, 0.0F, 0.0F, 2.5307F);
-		frillsbottom_left.texOffs(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, false);
+		frillsbottom_left.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, false);
 
 		frillsbottom_right = new AdvancedModelBox(this);
 		frillsbottom_right.setPos(-8.0F, 19.0F, 16.0F);
 		body.addChild(frillsbottom_right);
 		setRotationAngle(frillsbottom_right, 0.0F, 0.0F, -2.5307F);
-		frillsbottom_right.texOffs(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, true);
+		frillsbottom_right.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, true);
 		this.updateDefaultPose();
 	}
 
@@ -58,11 +58,11 @@ public class ModelVoidWormTail extends AdvancedEntityModel<EntityVoidWormPart> {
 	public void setupAnim(EntityVoidWormPart entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		float yawAmount = (entityIn.prevWormAngle + (entityIn.getWormAngle() - entityIn.prevWormAngle) * (ageInTicks - entityIn.tickCount)) / 57.295776F * 0.5F;
-		this.body.zRot += yawAmount;
+		this.body.rotateAngleZ += yawAmount;
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -72,8 +72,8 @@ public class ModelVoidWormTail extends AdvancedEntityModel<EntityVoidWormPart> {
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

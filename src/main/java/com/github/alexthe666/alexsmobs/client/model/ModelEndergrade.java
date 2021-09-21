@@ -37,58 +37,58 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 		bodymain = new AdvancedModelBox(this);
 		bodymain.setPos(0.0F, -9.0F, -1.0F);
 		root.addChild(bodymain);
-		bodymain.texOffs(0, 0).addBox(-4.5F, -3.5F, 0.0F, 9.0F, 9.0F, 10.0F, 0.0F, false);
+		bodymain.setTextureOffset(0, 0).addBox(-4.5F, -3.5F, 0.0F, 9.0F, 9.0F, 10.0F, 0.0F, false);
 
 		legbackL = new AdvancedModelBox(this);
 		legbackL.setPos(3.5F, 3.5F, 7.0F);
 		bodymain.addChild(legbackL);
-		legbackL.texOffs(11, 45).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
+		legbackL.setTextureOffset(11, 45).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
 		legbackR = new AdvancedModelBox(this);
 		legbackR.setPos(-3.5F, 3.5F, 7.0F);
 		bodymain.addChild(legbackR);
-		legbackR.texOffs(11, 45).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
+		legbackR.setTextureOffset(11, 45).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
 		legmidL = new AdvancedModelBox(this);
 		legmidL.setPos(3.5F, 3.5F, 1.0F);
 		bodymain.addChild(legmidL);
-		legmidL.texOffs(39, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
+		legmidL.setTextureOffset(39, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
 		legmidR = new AdvancedModelBox(this);
 		legmidR.setPos(-3.5F, 3.5F, 1.0F);
 		bodymain.addChild(legmidR);
-		legmidR.texOffs(39, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
+		legmidR.setTextureOffset(39, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
 		bodyfront = new AdvancedModelBox(this);
 		bodyfront.setPos(0.0F, 0.5F, 0.0F);
 		bodymain.addChild(bodyfront);
-		bodyfront.texOffs(25, 29).addBox(-4.0F, -3.5F, -8.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
+		bodyfront.setTextureOffset(25, 29).addBox(-4.0F, -3.5F, -8.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, -0.5F, -8.0F);
 		bodyfront.addChild(head);
-		head.texOffs(35, 16).addBox(-3.0F, -2.0F, -4.0F, 6.0F, 6.0F, 4.0F, 0.0F, false);
+		head.setTextureOffset(35, 16).addBox(-3.0F, -2.0F, -4.0F, 6.0F, 6.0F, 4.0F, 0.0F, false);
 
 		mouth = new AdvancedModelBox(this);
 		mouth.setPos(0.0F, 1.5F, -4.5F);
 		head.addChild(mouth);
-		mouth.texOffs(26, 46).addBox(-1.5F, -1.5F, -2.5F, 3.0F, 3.0F, 3.0F, 0.0F, false);
+		mouth.setTextureOffset(26, 46).addBox(-1.5F, -1.5F, -2.5F, 3.0F, 3.0F, 3.0F, 0.0F, false);
 
 		legfrontL = new AdvancedModelBox(this);
 		legfrontL.setPos(3.5F, 3.0F, -5.0F);
 		bodyfront.addChild(legfrontL);
-		legfrontL.texOffs(0, 37).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
+		legfrontL.setTextureOffset(0, 37).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
 		legfrontR = new AdvancedModelBox(this);
 		legfrontR.setPos(-3.5F, 3.0F, -5.0F);
 		bodyfront.addChild(legfrontR);
-		legfrontR.texOffs(0, 37).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
+		legfrontR.setTextureOffset(0, 37).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
 		tail = new AdvancedModelBox(this);
 		tail.setPos(0.5F, -1.0F, 9.9F);
 		bodymain.addChild(tail);
 		setRotationAngle(tail, -0.1745F, 0.0F, 0.0F);
-		tail.texOffs(0, 20).addBox(-4.0F, -1.5F, -2.4F, 7.0F, 7.0F, 9.0F, 0.0F, false);
+		tail.setTextureOffset(0, 20).addBox(-4.0F, -1.5F, -2.4F, 7.0F, 7.0F, 9.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 
@@ -128,7 +128,7 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 		float birdPitch = entityIn.prevTartigradePitch + (entityIn.tartigradePitch - entityIn.prevTartigradePitch) * partialTick;
 		float biteProgress= entityIn.prevBiteProgress + (entityIn.biteProgress - entityIn.prevBiteProgress) * partialTick;
 		this.mouth.setScale(1, 1, 1 + biteProgress * 0.4F);
-		this.bodymain.xRot += birdPitch * ((float)Math.PI / 180F);
+		this.bodymain.rotateAngleX += birdPitch * ((float)Math.PI / 180F);
 		this.mouth.z = -3 - biteProgress * 0.2F;
 		this.chainWave(bodyParts, walkSpeed, walkDegree * 0.3F, -1, limbSwing, limbSwingAmount);
 		this.chainWave(legPartsRight, walkSpeed, walkDegree, -1, limbSwing, limbSwingAmount);
@@ -139,7 +139,7 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -149,8 +149,8 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 	}
 
 	public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-		advancedModelBox.xRot = x;
-		advancedModelBox.yRot = y;
-		advancedModelBox.zRot = z;
+		advancedModelBox.rotateAngleX = x;
+		advancedModelBox.rotateAngleY = y;
+		advancedModelBox.rotateAngleZ = z;
 	}
 }

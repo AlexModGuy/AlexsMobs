@@ -33,37 +33,37 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -7.0F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-6.0F, -16.0F, -4.0F, 12.0F, 16.0F, 8.0F, f, false);
+		body.setTextureOffset(0, 0).addBox(-6.0F, -16.0F, -4.0F, 12.0F, 16.0F, 8.0F, f, false);
 
 		hair = new AdvancedModelBox(this);
 		hair.setPos(0.0F, -16.0F, 0.0F);
 		body.addChild(hair);
-		hair.texOffs(33, 0).addBox(-5.0F, -5.0F, 0.0F, 10.0F, 5.0F, 0.0F, f, false);
+		hair.setTextureOffset(33, 0).addBox(-5.0F, -5.0F, 0.0F, 10.0F, 5.0F, 0.0F, f, false);
 
 		eye = new AdvancedModelBox(this);
 		eye.setPos(0.0F, -11.0F, -4.1F);
 		body.addChild(eye);
-		eye.texOffs(0, 0).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 1.0F, f, false);
+		eye.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 1.0F, f, false);
 
 		leg_left = new AdvancedModelBox(this);
 		leg_left.setPos(3.0F, 0.0F, 0.0F);
 		body.addChild(leg_left);
-		leg_left.texOffs(0, 39).addBox(-2.0F, 0.0F, -3.0F, 5.0F, 7.0F, 6.0F, f, false);
+		leg_left.setTextureOffset(0, 39).addBox(-2.0F, 0.0F, -3.0F, 5.0F, 7.0F, 6.0F, f, false);
 
 		leg_right = new AdvancedModelBox(this);
 		leg_right.setPos(-3.0F, 0.0F, 0.0F);
 		body.addChild(leg_right);
-		leg_right.texOffs(0, 25).addBox(-3.0F, 0.0F, -3.0F, 5.0F, 7.0F, 6.0F, f, false);
+		leg_right.setTextureOffset(0, 25).addBox(-3.0F, 0.0F, -3.0F, 5.0F, 7.0F, 6.0F, f, false);
 
 		nose = new AdvancedModelBox(this);
 		nose.setPos(0.0F, -9.0F, -4.0F);
 		body.addChild(nose);
-		nose.texOffs(35, 43).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, f, false);
+		nose.setTextureOffset(35, 43).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, f, false);
 
 		sack = new AdvancedModelBox(this);
 		sack.setPos(0.0F, -7.0F, 4.0F);
 		body.addChild(sack);
-		sack.texOffs(23, 25).addBox(-4.0F, -8.0F, 0.0F, 8.0F, 10.0F, 3.0F, f, false);
+		sack.setTextureOffset(23, 25).addBox(-4.0F, -8.0F, 0.0F, 8.0F, 10.0F, 3.0F, f, false);
 		this.updateDefaultPose();
 	}
 
@@ -91,7 +91,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 
 				Vec3 vector3d2 = entity.getViewVector(0.0F);
 				vector3d2 = new Vec3(vector3d2.x, 0.0D, vector3d2.z);
-				Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot(((float) Math.PI / 2F));
+				Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().rotateAngleY(((float) Math.PI / 2F));
 				double d1 = vector3d2.dot(vector3d3);
 				this.eye.x += Mth.sqrt((float) Math.abs(d1)) * 2.0F * (float) Math.signum(d1);
 			}
@@ -107,7 +107,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 
 			Vec3 vector3d2 = entity.getViewVector(0.0F);
 			vector3d2 = new Vec3(vector3d2.x, 0.0D, vector3d2.z);
-			Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot(((float) Math.PI / 2F));
+			Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().rotateAngleY(((float) Math.PI / 2F));
 			double d1 = vector3d2.dot(vector3d3);
 			this.eye.x += Mth.sqrt((float) Math.abs(d1)) * 2.0F * (float) Math.signum(d1);
 
@@ -128,7 +128,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -171,8 +171,8 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

@@ -25,12 +25,12 @@ public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaH
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -3.0F, -7.0F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-4.0F, -3.0F, 0.0F, 8.0F, 6.0F, 15.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-4.0F, -3.0F, 0.0F, 8.0F, 6.0F, 15.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, 0.9F, 0.0F);
         body.addChild(head);
-        head.texOffs(0, 22).addBox(-3.5F, -3.0F, -3.0F, 7.0F, 5.0F, 3.0F, 0.0F, false);
+        head.setTextureOffset(0, 22).addBox(-3.5F, -3.0F, -3.0F, 7.0F, 5.0F, 3.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
@@ -48,7 +48,7 @@ public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaH
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -63,8 +63,8 @@ public class ModelTarantulaHawkBaby extends AdvancedEntityModel<EntityTarantulaH
     }
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-        advancedModelBox.xRot = x;
-        advancedModelBox.yRot = y;
-        advancedModelBox.zRot = z;
+        advancedModelBox.rotateAngleX = x;
+        advancedModelBox.rotateAngleY = y;
+        advancedModelBox.rotateAngleZ = z;
     }
 }

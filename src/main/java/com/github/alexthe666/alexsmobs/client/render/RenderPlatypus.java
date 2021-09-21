@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -16,7 +16,7 @@ public class RenderPlatypus extends MobRenderer<EntityPlatypus, ModelPlatypus> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/platypus.png");
     private static final ResourceLocation TEXTURE_PERRY = new ResourceLocation("alexsmobs:textures/entity/platypus_perry.png");
 
-    public RenderPlatypus(EntityRenderDispatcher renderManagerIn) {
+    public RenderPlatypus(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelPlatypus(), 0.45F);
         this.addLayer(new FedoraLayer(this));
     }

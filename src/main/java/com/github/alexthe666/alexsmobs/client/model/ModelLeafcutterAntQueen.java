@@ -41,74 +41,74 @@ public class ModelLeafcutterAntQueen extends AdvancedEntityModel<EntityLeafcutte
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -10.0F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 25).addBox(-3.5F, -5.0F, -5.0F, 7.0F, 9.0F, 11.0F, 0.0F, false);
+		body.setTextureOffset(0, 25).addBox(-3.5F, -5.0F, -5.0F, 7.0F, 9.0F, 11.0F, 0.0F, false);
 
 		legront_left = new AdvancedModelBox(this);
 		legront_left.setPos(3.5F, 4.0F, -4.0F);
 		body.addChild(legront_left);
 		setRotationAngle(legront_left, 0.0F, 0.3927F, 0.0F);
-		legront_left.texOffs(38, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
+		legront_left.setTextureOffset(38, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
 
 		legront_right = new AdvancedModelBox(this);
 		legront_right.setPos(-3.5F, 4.0F, -4.0F);
 		body.addChild(legront_right);
 		setRotationAngle(legront_right, 0.0F, -0.3927F, 0.0F);
-		legront_right.texOffs(38, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
+		legront_right.setTextureOffset(38, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
 
 		legmid_left = new AdvancedModelBox(this);
 		legmid_left.setPos(3.5F, 4.0F, 0.0F);
 		body.addChild(legmid_left);
-		legmid_left.texOffs(19, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
+		legmid_left.setTextureOffset(19, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
 
 		legmid_right = new AdvancedModelBox(this);
 		legmid_right.setPos(-3.5F, 4.0F, 0.0F);
 		body.addChild(legmid_right);
-		legmid_right.texOffs(19, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
+		legmid_right.setTextureOffset(19, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
 
 		legback_left = new AdvancedModelBox(this);
 		legback_left.setPos(3.5F, 4.0F, 4.0F);
 		body.addChild(legback_left);
 		setRotationAngle(legback_left, 0.0F, -0.3927F, 0.0F);
-		legback_left.texOffs(0, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
+		legback_left.setTextureOffset(0, 46).addBox(0.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, false);
 
 		legback_right = new AdvancedModelBox(this);
 		legback_right.setPos(-3.5F, 4.0F, 4.0F);
 		body.addChild(legback_right);
 		setRotationAngle(legback_right, 0.0F, 0.3927F, 0.0F);
-		legback_right.texOffs(0, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
+		legback_right.setTextureOffset(0, 46).addBox(-9.0F, -2.0F, 0.0F, 9.0F, 8.0F, 0.0F, 0.0F, true);
 
 		abdomen = new AdvancedModelBox(this);
 		abdomen.setPos(0.0F, -1.0F, 6.0F);
 		body.addChild(abdomen);
-		abdomen.texOffs(0, 0).addBox(-4.5F, -2.0F, 0.0F, 9.0F, 9.0F, 15.0F, 0.0F, false);
+		abdomen.setTextureOffset(0, 0).addBox(-4.5F, -2.0F, 0.0F, 9.0F, 9.0F, 15.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, 0.0F, -5.0F);
 		body.addChild(head);
-		head.texOffs(37, 25).addBox(-4.5F, -4.0F, -7.0F, 9.0F, 7.0F, 7.0F, 0.0F, false);
+		head.setTextureOffset(37, 25).addBox(-4.5F, -4.0F, -7.0F, 9.0F, 7.0F, 7.0F, 0.0F, false);
 
 		antenna_left = new AdvancedModelBox(this);
 		antenna_left.setPos(0.5F, -4.0F, -7.0F);
 		head.addChild(antenna_left);
 		setRotationAngle(antenna_left, 0.0F, -0.5672F, 0.3054F);
-		antenna_left.texOffs(34, 0).addBox(0.0F, 0.0F, -12.0F, 9.0F, 0.0F, 12.0F, 0.0F, false);
+		antenna_left.setTextureOffset(34, 0).addBox(0.0F, 0.0F, -12.0F, 9.0F, 0.0F, 12.0F, 0.0F, false);
 
 		antenna_right = new AdvancedModelBox(this);
 		antenna_right.setPos(-0.5F, -4.0F, -7.0F);
 		head.addChild(antenna_right);
 		setRotationAngle(antenna_right, 0.0F, 0.5672F, -0.3054F);
-		antenna_right.texOffs(34, 0).addBox(-9.0F, 0.0F, -12.0F, 9.0F, 0.0F, 12.0F, 0.0F, true);
+		antenna_right.setTextureOffset(34, 0).addBox(-9.0F, 0.0F, -12.0F, 9.0F, 0.0F, 12.0F, 0.0F, true);
 
 		fangs = new AdvancedModelBox(this);
 		fangs.setPos(0.0F, 2.0F, -7.0F);
 		head.addChild(fangs);
-		fangs.texOffs(37, 40).addBox(-4.5F, -1.0F, -3.0F, 9.0F, 2.0F, 3.0F, 0.0F, false);
+		fangs.setTextureOffset(37, 40).addBox(-4.5F, -1.0F, -3.0F, 9.0F, 2.0F, 3.0F, 0.0F, false);
 		this.updateDefaultPose();
 		animator = ModelAnimator.create();
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -192,8 +192,8 @@ public class ModelLeafcutterAntQueen extends AdvancedEntityModel<EntityLeafcutte
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

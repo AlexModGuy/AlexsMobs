@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.Entity;
@@ -32,7 +32,7 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
     private static final ResourceLocation TEXTURE_ANGRY_WHITE = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger_white_angry.png");
     private static final ResourceLocation TEXTURE_SLEEPING_WHITE = new ResourceLocation("alexsmobs:textures/entity/tiger/tiger_white_sleeping.png");
 
-    public RenderTiger(EntityRenderDispatcher renderManagerIn) {
+    public RenderTiger(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelTiger(), 0.6F);
         this.addLayer(new LayerTigerEyes(this));
     }

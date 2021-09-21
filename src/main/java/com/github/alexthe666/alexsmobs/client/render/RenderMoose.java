@@ -8,18 +8,19 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 public class RenderMoose extends MobRenderer<EntityMoose, ModelMoose> {
     private static final ResourceLocation TEXTURE_ANTLERED = new ResourceLocation("alexsmobs:textures/entity/moose_antlered.png");
     private static final ResourceLocation TEXTURE_SNOWY = new ResourceLocation("alexsmobs:textures/entity/moose_snowy.png");
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/moose.png");
 
-    public RenderMoose(EntityRenderDispatcher renderManagerIn) {
+    public RenderMoose(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMoose(), 0.8F);
         this.addLayer(new LayerSnow());
     }

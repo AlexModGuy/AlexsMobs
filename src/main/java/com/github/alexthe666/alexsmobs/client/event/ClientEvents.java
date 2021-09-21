@@ -12,6 +12,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -25,7 +26,7 @@ import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FluidState;
@@ -35,6 +36,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.util.Mth;
 import com.mojang.math.Vector3f;
@@ -53,10 +55,10 @@ public class ClientEvents {
     private boolean previousLavaVision = false;
     private LiquidBlockRenderer previousFluidRenderer;
 
-   /*    @SubscribeEvent
+    @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onOutlineEntityColor(EventGetOutlineColor event){
-     if(event.getEntityIn() instanceof ItemEntity && ItemTags.getCollection().get(AMTagRegistry.VOID_WORM_DROPS).contains(((ItemEntity) event.getEntityIn()).getItem().getItem())){
+     if(event.getEntityIn() instanceof ItemEntity && ItemTags.getAllTags().getTag(AMTagRegistry.VOID_WORM_DROPS).contains(((ItemEntity) event.getEntityIn()).getItem().getItem())){
             int fromColor = 0;
             int toColor = 0X21E5FF;
             float startR = (float) (fromColor >> 16 & 255) / 255.0F;
@@ -65,7 +67,7 @@ public class ClientEvents {
             float endR = (float) (toColor >> 16 & 255) / 255.0F;
             float endG = (float) (toColor >> 8 & 255) / 255.0F;
             float endB = (float) (toColor & 255) / 255.0F;
-            float f = (float) (Math.cos(0.4F * (event.getEntityIn().ticksExisted + Minecraft.getInstance().getRenderPartialTicks())) + 1.0F) * 0.5F;
+            float f = (float) (Math.cos(0.4F * (event.getEntityIn().tickCount + Minecraft.getInstance().getFrameTime())) + 1.0F) * 0.5F;
             float r = (endR - startR) * f + startR;
             float g = (endG - startG) * f + startG;
             float b = (endB - startB) * f + startB;
@@ -76,13 +78,13 @@ public class ClientEvents {
             event.setResult(Event.Result.ALLOW);
         }
     }
-*/
+
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onFogDensity(EntityViewRenderEvent.FogDensity event) {
-        FluidState fluidstate = event.getInfo().getFluidInCamera();
+        FogType fogType = event.getInfo().getFluidInCamera();
         if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION)) {
-            if (fluidstate.is(FluidTags.LAVA)) {
+            if (fogType == FogType.LAVA) {
                 event.setDensity(0.05F);
                 event.setCanceled(true);
             }
@@ -171,7 +173,7 @@ public class ClientEvents {
             ItemInHandRenderer renderer = Minecraft.getInstance().getItemInHandRenderer();
             InteractionHand hand = MoreObjects.firstNonNull(Minecraft.getInstance().player.swingingArm, InteractionHand.MAIN_HAND);
             float f = Minecraft.getInstance().player.getAttackAnim(event.getPartialTicks());
-            float f1 = Mth.lerp(event.getPartialTicks(), Minecraft.getInstance().player.xRotO, Minecraft.getInstance().player.xRot);
+            float f1 = Mth.lerp(event.getPartialTicks(), Minecraft.getInstance().player.xRotO, Minecraft.getInstance().player.getXRot());
             float f5 = -0.4F * Mth.sin(Mth.sqrt(f) * (float) Math.PI);
             float f6 = 0.2F * Mth.sin(Mth.sqrt(f) * ((float) Math.PI * 2F));
             float f10 = -0.2F * Mth.sin(f * (float) Math.PI);
@@ -201,7 +203,6 @@ public class ClientEvents {
             entityIn.fillCrashReportCategory(crashreportcategory);
             CrashReportCategory crashreportcategory1 = crashreport.addCategory("Renderer details");
             crashreportcategory1.setDetail("Assigned renderer", render);
-            crashreportcategory1.setDetail("Location", CrashReportCategory.formatLocation(x, y, z));
             crashreportcategory1.setDetail("Rotation", Float.valueOf(yaw));
             crashreportcategory1.setDetail("Delta", Float.valueOf(partialTicks));
             throw new ReportedException(crashreport);
@@ -256,12 +257,12 @@ public class ClientEvents {
             EntityBaldEagle eagle = (EntityBaldEagle) Minecraft.getInstance().getCameraEntity();
             LocalPlayer playerEntity = Minecraft.getInstance().player;
 
-            if (((EntityBaldEagle) Minecraft.getInstance().getCameraEntity()).shouldHoodedReturn() || eagle.removed) {
+            if (((EntityBaldEagle) Minecraft.getInstance().getCameraEntity()).shouldHoodedReturn() || eagle.isRemoved()) {
                 Minecraft.getInstance().setCameraEntity(playerEntity);
                 Minecraft.getInstance().options.setCameraType(CameraType.values()[AlexsMobs.PROXY.getPreviousPOV()]);
             } else {
-                float rotX = Mth.wrapDegrees(playerEntity.yRot + playerEntity.yHeadRot);
-                float rotY = playerEntity.xRot;
+                float rotX = Mth.wrapDegrees(playerEntity.getYRot() + playerEntity.yHeadRot);
+                float rotY = playerEntity.getXRot();
                 Entity over = null;
                 if (Minecraft.getInstance().hitResult instanceof EntityHitResult) {
                     over = ((EntityHitResult) Minecraft.getInstance().hitResult).getEntity();

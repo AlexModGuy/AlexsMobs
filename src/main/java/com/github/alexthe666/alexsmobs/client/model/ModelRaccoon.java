@@ -37,52 +37,52 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -11.0F, 0.5F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-5.5F, -4.0F, -7.5F, 11.0F, 8.0F, 15.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-5.5F, -4.0F, -7.5F, 11.0F, 8.0F, 15.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.5F, -1.0F, 7.5F);
         body.addChild(tail);
-        tail.texOffs(0, 24).addBox(-3.0F, -2.0F, 0.0F, 5.0F, 5.0F, 19.0F, 0.0F, false);
+        tail.setTextureOffset(0, 24).addBox(-3.0F, -2.0F, 0.0F, 5.0F, 5.0F, 19.0F, 0.0F, false);
 
         arm_left = new AdvancedModelBox(this);
         arm_left.setPos(3.0F, 4.0F, -5.5F);
         body.addChild(arm_left);
-        arm_left.texOffs(0, 24).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
+        arm_left.setTextureOffset(0, 24).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
 
         arm_right = new AdvancedModelBox(this);
         arm_right.setPos(-3.0F, 4.0F, -5.5F);
         body.addChild(arm_right);
-        arm_right.texOffs(0, 24).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, true);
+        arm_right.setTextureOffset(0, 24).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, true);
 
         leg_left = new AdvancedModelBox(this);
         leg_left.setPos(3.0F, 4.0F, 6.5F);
         body.addChild(leg_left);
-        leg_left.texOffs(9, 32).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
+        leg_left.setTextureOffset(9, 32).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
 
         leg_right = new AdvancedModelBox(this);
         leg_right.setPos(-3.0F, 4.0F, 6.5F);
         body.addChild(leg_right);
-        leg_right.texOffs(9, 32).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, true);
+        leg_right.setTextureOffset(9, 32).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, true);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, 0.5F, -8.5F);
         body.addChild(head);
-        head.texOffs(30, 30).addBox(-4.5F, -4.0F, -4.0F, 9.0F, 7.0F, 5.0F, 0.0F, false);
+        head.setTextureOffset(30, 30).addBox(-4.5F, -4.0F, -4.0F, 9.0F, 7.0F, 5.0F, 0.0F, false);
 
         ear_left = new AdvancedModelBox(this);
         ear_left.setPos(3.5F, -4.0F, -2.0F);
         head.addChild(ear_left);
-        ear_left.texOffs(9, 24).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        ear_left.setTextureOffset(9, 24).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
 
         ear_right = new AdvancedModelBox(this);
         ear_right.setPos(-3.5F, -4.0F, -2.0F);
         head.addChild(ear_right);
-        ear_right.texOffs(9, 24).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, true);
+        ear_right.setTextureOffset(9, 24).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, true);
 
         snout = new AdvancedModelBox(this);
         snout.setPos(0.0F, 1.5F, -5.0F);
         head.addChild(snout);
-        snout.texOffs(0, 0).addBox(-2.0F, -1.5F, -2.0F, 4.0F, 3.0F, 3.0F, 0.0F, false);
+        snout.setTextureOffset(0, 0).addBox(-2.0F, -1.5F, -2.0F, 4.0F, 3.0F, 3.0F, 0.0F, false);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -93,7 +93,7 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -205,11 +205,11 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
             this.swing(arm_right, 0.5F, 0.25F, false, 2F, -0.1F, ageInTicks, washProgress * 0.2F);
             this.swing(arm_left, 0.5F, 0.25F, true, 2F, -0.1F, ageInTicks, washProgress * 0.2F);
             float bodyFlap = (float) (Math.sin(ageInTicks * 0.5F) * (double) washProgress * 0.2D * 0.15F);
-            body.zRot += bodyFlap;
-            tail.yRot += bodyFlap;
-            head.zRot -= bodyFlap;
-            leg_left.zRot -= bodyFlap;
-            leg_right.zRot -= bodyFlap;
+            body.rotateAngleZ += bodyFlap;
+            tail.rotateAngleY += bodyFlap;
+            head.rotateAngleZ -= bodyFlap;
+            leg_left.rotateAngleZ -= bodyFlap;
+            leg_right.rotateAngleZ -= bodyFlap;
         }else{
             this.faceTarget(v3, v4, 1.3F, head);
         }

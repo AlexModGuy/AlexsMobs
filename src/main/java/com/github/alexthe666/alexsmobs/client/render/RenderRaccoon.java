@@ -6,19 +6,20 @@ import com.github.alexthe666.alexsmobs.client.render.layer.LayerRaccoonItem;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/raccoon.png");
     private static final ResourceLocation TEXTURE_BANDANA = new ResourceLocation("alexsmobs:textures/entity/raccoon_bandana.png");
 
-    public RenderRaccoon(EntityRenderDispatcher renderManagerIn) {
+    public RenderRaccoon(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelRaccoon(), 0.4F);
         this.addLayer(new LayerRaccoonEyes(this));
         this.addLayer(new LayerRaccoonItem(this));

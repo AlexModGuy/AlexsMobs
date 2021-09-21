@@ -4,15 +4,16 @@ import com.github.alexthe666.alexsmobs.client.model.ModelSeal;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerSealItem;
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/seal.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/seal_arctic.png");
 
-    public RenderSeal(EntityRenderDispatcher renderManagerIn) {
+    public RenderSeal(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSeal(), 0.45F);
         this.addLayer(new LayerSealItem(this));
     }

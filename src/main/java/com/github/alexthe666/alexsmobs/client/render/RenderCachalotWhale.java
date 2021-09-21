@@ -6,7 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityCachalotWhale;
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -19,7 +19,7 @@ public class RenderCachalotWhale extends MobRenderer<EntityCachalotWhale, ModelC
     private static final ResourceLocation TEXTURE_ALBINO = new ResourceLocation("alexsmobs:textures/entity/cachalot/cachalot_whale_albino.png");
     private static final ResourceLocation TEXTURE_ALBINO_SLEEPING = new ResourceLocation("alexsmobs:textures/entity/cachalot/cachalot_whale_albino_sleeping.png");
 
-    public RenderCachalotWhale(EntityRenderDispatcher renderManagerIn) {
+    public RenderCachalotWhale(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCachalotWhale(), 4.2F);
     }
 

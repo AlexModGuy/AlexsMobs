@@ -38,47 +38,47 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -19.625F, -0.125F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-6.0F, -4.375F, -10.875F, 12.0F, 11.0F, 21.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-6.0F, -4.375F, -10.875F, 12.0F, 11.0F, 21.0F, 0.0F, false);
 
         leg_left = new AdvancedModelBox(this);
         leg_left.setPos(3.0F, 6.625F, 0.125F);
         body.addChild(leg_left);
-        leg_left.texOffs(0, 55).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, false);
+        leg_left.setTextureOffset(0, 55).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, false);
 
         legfur_left = new AdvancedModelBox(this);
         legfur_left.setPos(0.0F, 0.0F, 0.0F);
         leg_left.addChild(legfur_left);
-        legfur_left.texOffs(31, 33).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
+        legfur_left.setTextureOffset(31, 33).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
 
         foot_left = new AdvancedModelBox(this);
         foot_left.setPos(0.0F, 11.0F, -1.0F);
         leg_left.addChild(foot_left);
-        foot_left.texOffs(0, 10).addBox(-1.5F, 0.0F, -4.0F, 3.0F, 2.0F, 6.0F, 0.0F, false);
+        foot_left.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -4.0F, 3.0F, 2.0F, 6.0F, 0.0F, false);
 
         leg_right = new AdvancedModelBox(this);
         leg_right.setPos(-3.0F, 6.625F, 0.125F);
         body.addChild(leg_right);
-        leg_right.texOffs(0, 55).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, true);
+        leg_right.setTextureOffset(0, 55).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 11.0F, 2.0F, 0.0F, true);
 
         legfur_right = new AdvancedModelBox(this);
         legfur_right.setPos(0.0F, 0.0F, 0.0F);
         leg_right.addChild(legfur_right);
-        legfur_right.texOffs(31, 33).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, true);
+        legfur_right.setTextureOffset(31, 33).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, true);
 
         foot_right = new AdvancedModelBox(this);
         foot_right.setPos(0.0F, 11.0F, -1.0F);
         leg_right.addChild(foot_right);
-        foot_right.texOffs(0, 10).addBox(-1.5F, 0.0F, -4.0F, 3.0F, 2.0F, 6.0F, 0.0F, true);
+        foot_right.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -4.0F, 3.0F, 2.0F, 6.0F, 0.0F, true);
 
         neck1 = new AdvancedModelBox(this);
         neck1.setPos(0.0F, 0.625F, -9.5F);
         body.addChild(neck1);
-        neck1.texOffs(41, 41).addBox(-3.0F, -9.0F, -6.0F, 6.0F, 12.0F, 6.0F, 0.0F, false);
+        neck1.setTextureOffset(41, 41).addBox(-3.0F, -9.0F, -6.0F, 6.0F, 12.0F, 6.0F, 0.0F, false);
 
         neck2 = new AdvancedModelBox(this);
         neck2.setPos(0.0F, -8.5F, -2.0F);
         neck1.addChild(neck2);
-        neck2.texOffs(46, 0).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 7.0F, 4.0F, 0.0F, false);
+        neck2.setTextureOffset(46, 0).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 7.0F, 4.0F, 0.0F, false);
 
         headPivot = new AdvancedModelBox(this);
         headPivot.setPos(-0.5F, -6.5F, 0.0F);
@@ -87,18 +87,18 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, 0.0F, 0.0F);
         headPivot.addChild(head);
-        head.texOffs(0, 0).addBox(-2.0F, -4.0F, -3.0F, 5.0F, 4.0F, 5.0F, 0.0F, false);
-        head.texOffs(71, 54).addBox(0.5F, -6.0F, -3.0F, 0.0F, 6.0F, 7.0F, 0.0F, false);
+        head.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -3.0F, 5.0F, 4.0F, 5.0F, 0.0F, false);
+        head.setTextureOffset(71, 54).addBox(0.5F, -6.0F, -3.0F, 0.0F, 6.0F, 7.0F, 0.0F, false);
 
         beak = new AdvancedModelBox(this);
         beak.setPos(0.5F, -1.0F, -3.0F);
         head.addChild(beak);
-        beak.texOffs(46, 12).addBox(-2.0F, -1.0F, -3.0F, 4.0F, 2.0F, 3.0F, 0.0F, false);
+        beak.setTextureOffset(46, 12).addBox(-2.0F, -1.0F, -3.0F, 4.0F, 2.0F, 3.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, -0.875F, 9.125F);
         body.addChild(tail);
-        tail.texOffs(0, 33).addBox(-5.0F, -0.5F, -5.0F, 10.0F, 11.0F, 10.0F, 0.0F, false);
+        tail.setTextureOffset(0, 33).addBox(-5.0F, -0.5F, -5.0F, 10.0F, 11.0F, 10.0F, 0.0F, false);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -322,7 +322,7 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -332,8 +332,8 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

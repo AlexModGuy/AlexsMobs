@@ -5,7 +5,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.model.LlamaSpitModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.projectile.LlamaSpit;
@@ -17,7 +18,7 @@ public class RenderMosquitoSpit extends EntityRenderer<EntityMosquitoSpit> {
     private static final ResourceLocation SPIT_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/mosquito_spit.png");
     private final LlamaSpitModel<LlamaSpit> model = new LlamaSpitModel<>();
 
-    public RenderMosquitoSpit(EntityRenderDispatcher renderManagerIn) {
+    public RenderMosquitoSpit(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 

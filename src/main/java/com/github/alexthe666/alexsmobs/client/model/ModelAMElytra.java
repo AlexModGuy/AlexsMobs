@@ -2,23 +2,32 @@ package com.github.alexthe666.alexsmobs.client.model;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.phys.Vec3;
 
 public class ModelAMElytra extends HumanoidModel {
+    private final ModelPart rightWing;
+    private final ModelPart leftWing;
 
-    private final ModelPart rightWing = new ModelPart(this, 22, 0);
-    private final ModelPart leftWing = new ModelPart(this, 22, 0);
+    public ModelAMElytra(ModelPart p_170538_) {
+        super(p_170538_);
+        this.leftWing = p_170538_.getChild("left_wing");
+        this.rightWing = p_170538_.getChild("right_wing");
+    }
 
-    public ModelAMElytra() {
-        super(0);
-        this.leftWing.addBox(-10.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, 1.0F);
-        this.rightWing.mirror = true;
-        this.rightWing.addBox(0.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, 1.0F);
+    public static LayerDefinition createLayer() {
+        MeshDefinition meshdefinition = new MeshDefinition();
+        PartDefinition partdefinition = meshdefinition.getRoot();
+        CubeDeformation cubedeformation = new CubeDeformation(1.0F);
+        partdefinition.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(22, 0).addBox(-10.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, -0.2617994F));
+        partdefinition.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(22, 0).mirror().addBox(0.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, 0.2617994F));
+        return LayerDefinition.create(meshdefinition, 64, 32);
     }
 
     protected Iterable<ModelPart> headParts() {
@@ -67,19 +76,19 @@ public class ModelAMElytra extends HumanoidModel {
             abstractclientplayerentity.elytraRotX = (float)((double)abstractclientplayerentity.elytraRotX + (double)(f - abstractclientplayerentity.elytraRotX) * 0.1D);
             abstractclientplayerentity.elytraRotY = (float)((double)abstractclientplayerentity.elytraRotY + (double)(f3 - abstractclientplayerentity.elytraRotY) * 0.1D);
             abstractclientplayerentity.elytraRotZ = (float)((double)abstractclientplayerentity.elytraRotZ + (double)(f1 - abstractclientplayerentity.elytraRotZ) * 0.1D);
-            this.leftWing.xRot = abstractclientplayerentity.elytraRotX;
-            this.leftWing.yRot = abstractclientplayerentity.elytraRotY;
-            this.leftWing.zRot = abstractclientplayerentity.elytraRotZ;
+            this.leftWing.rotateAngleX = abstractclientplayerentity.elytraRotX;
+            this.leftWing.rotateAngleY = abstractclientplayerentity.elytraRotY;
+            this.leftWing.rotateAngleZ = abstractclientplayerentity.elytraRotZ;
         } else {
-            this.leftWing.xRot = f;
-            this.leftWing.zRot = f1;
-            this.leftWing.yRot = f3;
+            this.leftWing.rotateAngleX = f;
+            this.leftWing.rotateAngleZ = f1;
+            this.leftWing.rotateAngleY = f3;
         }
 
         this.rightWing.x = -this.leftWing.x;
-        this.rightWing.yRot = -this.leftWing.yRot;
+        this.rightWing.rotateAngleY = -this.leftWing.rotateAngleY;
         this.rightWing.y = this.leftWing.y;
-        this.rightWing.xRot = this.leftWing.xRot;
-        this.rightWing.zRot = -this.leftWing.zRot;
+        this.rightWing.rotateAngleX = this.leftWing.rotateAngleX;
+        this.rightWing.rotateAngleZ = -this.leftWing.rotateAngleZ;
     }
 }

@@ -25,24 +25,24 @@ public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -4.0F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
 		hair_left = new AdvancedModelBox(this);
 		hair_left.setPos(4.0F, -4.0F, 0.0F);
 		body.addChild(hair_left);
 		setRotationAngle(hair_left, 0.0F, 0.0F, 1.1345F);
-		hair_left.texOffs(0, 17).addBox(0.0F, 0.0F, -3.0F, 9.0F, 0.0F, 8.0F, 0.0F, false);
+		hair_left.setTextureOffset(0, 17).addBox(0.0F, 0.0F, -3.0F, 9.0F, 0.0F, 8.0F, 0.0F, false);
 
 		hair_right = new AdvancedModelBox(this);
 		hair_right.setPos(-4.0F, -4.0F, 0.0F);
 		body.addChild(hair_right);
 		setRotationAngle(hair_right, 0.0F, 0.0F, -1.1345F);
-		hair_right.texOffs(0, 17).addBox(-9.0F, 0.0F, -3.0F, 9.0F, 0.0F, 8.0F, 0.0F, true);
+		hair_right.setTextureOffset(0, 17).addBox(-9.0F, 0.0F, -3.0F, 9.0F, 0.0F, 8.0F, 0.0F, true);
 
 		tail = new AdvancedModelBox(this);
 		tail.setPos(0.0F, 0.0F, 4.0F);
 		body.addChild(tail);
-		tail.texOffs(24, 24).addBox(0.0F, -4.0F, 0.0F, 0.0F, 8.0F, 14.0F, 0.0F, false);
+		tail.setTextureOffset(24, 24).addBox(0.0F, -4.0F, 0.0F, 0.0F, 8.0F, 14.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 
@@ -61,12 +61,12 @@ public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 		this.faceTarget(netHeadYaw, headPitch, 1.2F, body);
 		float partialTick = Minecraft.getInstance().getFrameTime();
 		float birdPitch = entity.prevSwimPitch + (entity.swimPitch - entity.prevSwimPitch) * partialTick;
-		this.body.xRot += birdPitch * ((float)Math.PI / 180F);
+		this.body.rotateAngleX += birdPitch * ((float)Math.PI / 180F);
 
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -76,8 +76,8 @@ public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 	}
 
 	public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-		advancedModelBox.xRot = x;
-		advancedModelBox.yRot = y;
-		advancedModelBox.zRot = z;
+		advancedModelBox.rotateAngleX = x;
+		advancedModelBox.rotateAngleY = y;
+		advancedModelBox.rotateAngleZ = z;
 	}
 }

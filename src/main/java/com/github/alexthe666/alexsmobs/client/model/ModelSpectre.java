@@ -29,18 +29,18 @@ public class ModelSpectre extends AdvancedEntityModel<EntitySpectre> {
         body.setPos(0.0F, -0.5F, 0.0F);
         root.addChild(body);
         setRotationAngle(body, 0.0F, -0.7854F, 0.0F);
-        body.texOffs(43, 0).addBox(-12.0F, -5.5F, -12.0F, 24.0F, 6.0F, 24.0F, 0.0F, false);
+        body.setTextureOffset(43, 0).addBox(-12.0F, -5.5F, -12.0F, 24.0F, 6.0F, 24.0F, 0.0F, false);
 
         spine = new AdvancedModelBox(this);
         spine.setPos(0.0F, -5.5F, 0.0F);
         body.addChild(spine);
         setRotationAngle(spine, 0.0F, 0.7854F, 0.0F);
-        spine.texOffs(0, 0).addBox(0.0F, -3.0F, -14.0F, 0.0F, 8.0F, 42.0F, 0.0F, false);
+        spine.setTextureOffset(0, 0).addBox(0.0F, -3.0F, -14.0F, 0.0F, 8.0F, 42.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, 1.0F, 28.0F);
         spine.addChild(tail);
-        tail.texOffs(76, 31).addBox(0.0F, -6.0F, 0.0F, 0.0F, 11.0F, 27.0F, 0.0F, false);
+        tail.setTextureOffset(76, 31).addBox(0.0F, -6.0F, 0.0F, 0.0F, 11.0F, 27.0F, 0.0F, false);
 
         wing_left_p = new AdvancedModelBox(this);
         wing_left_p.setPos(12.0F, -2.5F, -12.0F);
@@ -48,7 +48,7 @@ public class ModelSpectre extends AdvancedEntityModel<EntitySpectre> {
 
         wing_left = new AdvancedModelBox(this);
         wing_left_p.addChild(wing_left);
-        wing_left.texOffs(76, 76).addBox(0.0F, -1.5F, 0.0F, 26.0F, 3.0F, 23.0F, 0.0F, false);
+        wing_left.setTextureOffset(76, 76).addBox(0.0F, -1.5F, 0.0F, 26.0F, 3.0F, 23.0F, 0.0F, false);
 
         wing_right_p = new AdvancedModelBox(this);
         wing_right_p.setPos(-12.0F, -2.5F, 12.0F);
@@ -57,12 +57,12 @@ public class ModelSpectre extends AdvancedEntityModel<EntitySpectre> {
 
         wing_right = new AdvancedModelBox(this);
         wing_right_p.addChild(wing_right);
-        wing_right.texOffs(0, 51).addBox(-26.0F, -1.5F, 0.0F, 26.0F, 3.0F, 23.0F, 0.0F, false);
+        wing_right.setTextureOffset(0, 51).addBox(-26.0F, -1.5F, 0.0F, 26.0F, 3.0F, 23.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -83,13 +83,13 @@ public class ModelSpectre extends AdvancedEntityModel<EntitySpectre> {
         this.walk(root, flySpeed, flyDegree * 0.15F, true, 7.3F, 0, ageInTicks, 1);
         float partialTick = Minecraft.getInstance().getFrameTime();
         float birdPitch = entity.prevBirdPitch + (entity.birdPitch - entity.prevBirdPitch) * partialTick;
-        this.root.xRot += birdPitch * ((float)Math.PI / 180F);
+        this.root.rotateAngleX += birdPitch * ((float)Math.PI / 180F);
 
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

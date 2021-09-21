@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -30,7 +30,7 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
     private static final ResourceLocation GUARDIAN_BEAM_TEXTURE = new ResourceLocation("textures/entity/guardian_beam.png");
     private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(GUARDIAN_BEAM_TEXTURE);
 
-    public RenderMimicOctopus(EntityRenderDispatcher renderManagerIn) {
+    public RenderMimicOctopus(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMimicOctopus(), 0.4F);
         this.addLayer(new OverlayLayer(this));
     }

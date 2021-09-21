@@ -38,81 +38,81 @@ public class ModelSunbird extends AdvancedEntityModel<EntitySunbird> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, 0.0F, 0.0F);
         root.addChild(body);
-        body.texOffs(0, 32).addBox(-3.0F, -5.0F, -7.0F, 6.0F, 5.0F, 14.0F, 0.0F, false);
+        body.setTextureOffset(0, 32).addBox(-3.0F, -5.0F, -7.0F, 6.0F, 5.0F, 14.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, -5.0F, 7.0F);
         body.addChild(tail);
-        tail.texOffs(0, 0).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 0.0F, 20.0F, 0.0F, false);
+        tail.setTextureOffset(0, 0).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 0.0F, 20.0F, 0.0F, false);
 
         wingL1 = new AdvancedModelBox(this);
         wingL1.setPos(3.0F, -4.0F, -5.0F);
         body.addChild(wingL1);
-        wingL1.texOffs(37, 11).addBox(0.0F, -1.0F, -1.0F, 9.0F, 1.0F, 3.0F, 0.0F, false);
-        wingL1.texOffs(27, 32).addBox(0.0F, -0.5F, -2.0F, 13.0F, 0.0F, 10.0F, 0.0F, false);
+        wingL1.setTextureOffset(37, 11).addBox(0.0F, -1.0F, -1.0F, 9.0F, 1.0F, 3.0F, 0.0F, false);
+        wingL1.setTextureOffset(27, 32).addBox(0.0F, -0.5F, -2.0F, 13.0F, 0.0F, 10.0F, 0.0F, false);
 
         wingR2 = new AdvancedModelBox(this);
         wingR2.setPos(13.0F, -0.5F, 0.0F);
         wingL1.addChild(wingR2);
-        wingR2.texOffs(0, 21).addBox(0.0F, 0.0F, -2.0F, 16.0F, 0.0F, 10.0F, 0.0F, false);
+        wingR2.setTextureOffset(0, 21).addBox(0.0F, 0.0F, -2.0F, 16.0F, 0.0F, 10.0F, 0.0F, false);
 
         wingR1 = new AdvancedModelBox(this);
         wingR1.setPos(-3.0F, -4.0F, -5.0F);
         body.addChild(wingR1);
-        wingR1.texOffs(37, 11).addBox(-9.0F, -1.0F, -1.0F, 9.0F, 1.0F, 3.0F, 0.0F, true);
-        wingR1.texOffs(27, 32).addBox(-13.0F, -0.5F, -2.0F, 13.0F, 0.0F, 10.0F, 0.0F, true);
+        wingR1.setTextureOffset(37, 11).addBox(-9.0F, -1.0F, -1.0F, 9.0F, 1.0F, 3.0F, 0.0F, true);
+        wingR1.setTextureOffset(27, 32).addBox(-13.0F, -0.5F, -2.0F, 13.0F, 0.0F, 10.0F, 0.0F, true);
 
         wingR3 = new AdvancedModelBox(this);
         wingR3.setPos(-13.0F, -0.5F, 0.0F);
         wingR1.addChild(wingR3);
-        wingR3.texOffs(0, 21).addBox(-16.0F, 0.0F, -2.0F, 16.0F, 0.0F, 10.0F, 0.0F, true);
+        wingR3.setTextureOffset(0, 21).addBox(-16.0F, 0.0F, -2.0F, 16.0F, 0.0F, 10.0F, 0.0F, true);
 
         legL = new AdvancedModelBox(this);
         legL.setPos(1.5F, 0.0F, 3.0F);
         body.addChild(legL);
         setRotationAngle(legL, 1.2654F, 0.0F, 0.0F);
-        legL.texOffs(0, 21).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 5.0F, 1.0F, 0.0F, false);
+        legL.setTextureOffset(0, 21).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 5.0F, 1.0F, 0.0F, false);
 
         footL = new AdvancedModelBox(this);
         footL.setPos(0.0F, 5.0F, 0.5F);
         legL.addChild(footL);
-        footL.texOffs(6, 9).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 2.0F, 2.0F, 0.0F, false);
+        footL.setTextureOffset(6, 9).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 2.0F, 2.0F, 0.0F, false);
 
         legR = new AdvancedModelBox(this);
         legR.setPos(-1.5F, 0.0F, 3.0F);
         body.addChild(legR);
         setRotationAngle(legR, 1.2654F, 0.0F, 0.0F);
-        legR.texOffs(0, 21).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 5.0F, 1.0F, 0.0F, true);
+        legR.setTextureOffset(0, 21).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 5.0F, 1.0F, 0.0F, true);
 
         footR = new AdvancedModelBox(this);
         footR.setPos(0.0F, 5.0F, 0.5F);
         legR.addChild(footR);
-        footR.texOffs(6, 9).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 2.0F, 2.0F, 0.0F, true);
+        footR.setTextureOffset(6, 9).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 2.0F, 2.0F, 0.0F, true);
 
         neck = new AdvancedModelBox(this);
         neck.setPos(0.0F, -2.55F, -6.95F);
         body.addChild(neck);
-        neck.texOffs(37, 0).addBox(-1.5F, -1.45F, -7.05F, 3.0F, 3.0F, 7.0F, 0.0F, false);
+        neck.setTextureOffset(37, 0).addBox(-1.5F, -1.45F, -7.05F, 3.0F, 3.0F, 7.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, 0.05F, -7.05F);
         neck.addChild(head);
-        head.texOffs(0, 0).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+        head.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
         crest = new AdvancedModelBox(this);
         crest.setPos(0.0F, -2.0F, -2.5F);
         head.addChild(crest);
-        crest.texOffs(0, 9).addBox(0.0F, -3.0F, -2.5F, 0.0F, 3.0F, 5.0F, 0.0F, false);
+        crest.setTextureOffset(0, 9).addBox(0.0F, -3.0F, -2.5F, 0.0F, 3.0F, 5.0F, 0.0F, false);
 
         beak = new AdvancedModelBox(this);
         beak.setPos(0.0F, 1.0F, -4.0F);
         head.addChild(beak);
-        beak.texOffs(0, 32).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 4.0F, 0.0F, false);
+        beak.setTextureOffset(0, 32).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 4.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -139,13 +139,13 @@ public class ModelSunbird extends AdvancedEntityModel<EntitySunbird> {
         this.faceTarget(netHeadYaw, headPitch, 2, neck, head);
         float partialTick = Minecraft.getInstance().getFrameTime();
         float birdPitch = entityIn.prevBirdPitch + (entityIn.birdPitch - entityIn.prevBirdPitch) * partialTick;
-        this.body.xRot = birdPitch * ((float)Math.PI / 180F);
+        this.body.rotateAngleX = birdPitch * ((float)Math.PI / 180F);
 
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

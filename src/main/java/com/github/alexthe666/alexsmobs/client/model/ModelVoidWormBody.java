@@ -30,7 +30,7 @@ public class ModelVoidWormBody extends AdvancedEntityModel<EntityVoidWormPart> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -14.0F, -10.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-7.0F, -12.0F, 0.0F, 14.0F, 26.0F, 21.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-7.0F, -12.0F, 0.0F, 14.0F, 26.0F, 21.0F, 0.0F, false);
 
 		frillstop_left = new AdvancedModelBox(this);
 		frillstop_left.setPos(7.0F, -12.0F, 10.0F);
@@ -41,7 +41,7 @@ public class ModelVoidWormBody extends AdvancedEntityModel<EntityVoidWormPart> {
 		frillstop_left_r1.setPos(0.0F, 0.0F, 0.0F);
 		frillstop_left.addChild(frillstop_left_r1);
 		setRotationAngle(frillstop_left_r1, 0.0F, 0.0F, 0.7854F);
-		frillstop_left_r1.texOffs(0, 48).addBox(0.0F, -8.0F, -10.0F, 0.0F, 8.0F, 21.0F, 0.0F, false);
+		frillstop_left_r1.setTextureOffset(0, 48).addBox(0.0F, -8.0F, -10.0F, 0.0F, 8.0F, 21.0F, 0.0F, false);
 
 		frillstop_right = new AdvancedModelBox(this);
 		frillstop_right.setPos(-7.0F, -12.0F, 10.0F);
@@ -52,7 +52,7 @@ public class ModelVoidWormBody extends AdvancedEntityModel<EntityVoidWormPart> {
 		frillstop_right_r1.setPos(0.0F, 0.0F, 0.0F);
 		frillstop_right.addChild(frillstop_right_r1);
 		setRotationAngle(frillstop_right_r1, 0.0F, 0.0F, -0.7854F);
-		frillstop_right_r1.texOffs(0, 48).addBox(0.0F, -8.0F, -10.0F, 0.0F, 8.0F, 21.0F, 0.0F, true);
+		frillstop_right_r1.setTextureOffset(0, 48).addBox(0.0F, -8.0F, -10.0F, 0.0F, 8.0F, 21.0F, 0.0F, true);
 
 		frillsbottom_left = new AdvancedModelBox(this);
 		frillsbottom_left.setPos(7.0F, 14.0F, 10.0F);
@@ -64,7 +64,7 @@ public class ModelVoidWormBody extends AdvancedEntityModel<EntityVoidWormPart> {
 		frillsbottom_left_r1.setPos(0.0F, 0.0F, 0.0F);
 		frillsbottom_left.addChild(frillsbottom_left_r1);
 		setRotationAngle(frillsbottom_left_r1, 0.0F, 0.0F, 0.7854F);
-		frillsbottom_left_r1.texOffs(0, 48).addBox(0.0F, -8.0F, -10.0F, 0.0F, 8.0F, 21.0F, 0.0F, false);
+		frillsbottom_left_r1.setTextureOffset(0, 48).addBox(0.0F, -8.0F, -10.0F, 0.0F, 8.0F, 21.0F, 0.0F, false);
 
 		frillsbottom_right = new AdvancedModelBox(this);
 		frillsbottom_right.setPos(-7.0F, 14.0F, 10.0F);
@@ -76,20 +76,20 @@ public class ModelVoidWormBody extends AdvancedEntityModel<EntityVoidWormPart> {
 		frillsbottom_right_r1.setPos(0.0F, 0.0F, 0.0F);
 		frillsbottom_right.addChild(frillsbottom_right_r1);
 		setRotationAngle(frillsbottom_right_r1, 0.0F, 0.0F, -0.7854F);
-		frillsbottom_right_r1.texOffs(0, 48).addBox(0.0F, -8.0F, -10.0F, 0.0F, 8.0F, 21.0F, 0.0F, true);
+		frillsbottom_right_r1.setTextureOffset(0, 48).addBox(0.0F, -8.0F, -10.0F, 0.0F, 8.0F, 21.0F, 0.0F, true);
 		this.updateDefaultPose();
 	}
 
 	@Override
 	public void setupAnim(EntityVoidWormPart entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
-		this.root.xRot += headPitch * ((float)Math.PI / 180F);
+		this.root.rotateAngleX += headPitch * ((float)Math.PI / 180F);
 		float yawAmount = (entityIn.prevWormAngle + (entityIn.getWormAngle() - entityIn.prevWormAngle) * (ageInTicks - entityIn.tickCount)) / 57.295776F * 0.5F;
-		this.body.zRot += yawAmount;
+		this.body.rotateAngleZ += yawAmount;
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -99,8 +99,8 @@ public class ModelVoidWormBody extends AdvancedEntityModel<EntityVoidWormPart> {
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

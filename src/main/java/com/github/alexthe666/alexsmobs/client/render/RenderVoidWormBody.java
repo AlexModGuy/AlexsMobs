@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.model.EntityModel;
@@ -26,7 +26,7 @@ public class RenderVoidWormBody extends LivingEntityRenderer<EntityVoidWormPart,
     private ModelVoidWormBody bodyModel = new ModelVoidWormBody();
     private ModelVoidWormTail tailModel = new ModelVoidWormTail();
 
-    public RenderVoidWormBody(EntityRenderDispatcher renderManagerIn) {
+    public RenderVoidWormBody(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelVoidWormBody(), 1F);
         this.addLayer(new LayerGlow(this));
     }

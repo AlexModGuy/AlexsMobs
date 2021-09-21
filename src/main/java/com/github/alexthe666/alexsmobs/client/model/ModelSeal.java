@@ -30,42 +30,42 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -4.5F, -4.0F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-4.0F, -1.5F, -5.0F, 8.0F, 6.0F, 10.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-4.0F, -1.5F, -5.0F, 8.0F, 6.0F, 10.0F, 0.0F, false);
 
         arm_left = new AdvancedModelBox(this);
         arm_left.setPos(4.0F, 3.8F, -1.0F);
         body.addChild(arm_left);
-        arm_left.texOffs(27, 29).addBox(0.0F, -0.5F, -2.0F, 5.0F, 1.0F, 4.0F, 0.0F, false);
+        arm_left.setTextureOffset(27, 29).addBox(0.0F, -0.5F, -2.0F, 5.0F, 1.0F, 4.0F, 0.0F, false);
 
         arm_right = new AdvancedModelBox(this);
         arm_right.setPos(-4.0F, 3.8F, -1.0F);
         body.addChild(arm_right);
-        arm_right.texOffs(27, 29).addBox(-5.0F, -0.5F, -2.0F, 5.0F, 1.0F, 4.0F, 0.0F, true);
+        arm_right.setTextureOffset(27, 29).addBox(-5.0F, -0.5F, -2.0F, 5.0F, 1.0F, 4.0F, 0.0F, true);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, 1.5F, -5.0F);
         body.addChild(head);
-        head.texOffs(27, 0).addBox(-2.5F, -2.5F, -3.0F, 5.0F, 5.0F, 3.0F, 0.0F, false);
+        head.setTextureOffset(27, 0).addBox(-2.5F, -2.5F, -3.0F, 5.0F, 5.0F, 3.0F, 0.0F, false);
 
         snout = new AdvancedModelBox(this);
         snout.setPos(0.0F, 1.0F, -3.0F);
         head.addChild(snout);
-        snout.texOffs(0, 33).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
+        snout.setTextureOffset(0, 33).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, 1.5F, 5.0F);
         body.addChild(tail);
-        tail.texOffs(0, 17).addBox(-2.5F, -2.0F, 0.0F, 5.0F, 5.0F, 10.0F, 0.0F, false);
+        tail.setTextureOffset(0, 17).addBox(-2.5F, -2.0F, 0.0F, 5.0F, 5.0F, 10.0F, 0.0F, false);
 
         tail2 = new AdvancedModelBox(this);
         tail2.setPos(0.0F, 1.7F, 9.0F);
         tail.addChild(tail2);
-        tail2.texOffs(21, 17).addBox(-4.0F, -1.0F, -1.0F, 8.0F, 2.0F, 6.0F, 0.0F, false);
+        tail2.setTextureOffset(21, 17).addBox(-4.0F, -1.0F, -1.0F, 8.0F, 2.0F, 6.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -165,7 +165,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
             this.flap(arm_right, walkSpeed, walkDegree * 1.8F, true, 8.7F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_left, walkSpeed, walkDegree * 1.8F, false, 8.7F, 0, limbSwing, limbSwingAmount);
         } else {
-            this.body.xRot += headPitch * ((float)Math.PI / 180F);
+            this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
             this.body.y += (float) (Math.sin(limbSwing * swimSpeed) * (double) limbSwingAmount * (double) swimDegree * 9D - (limbSwingAmount * swimDegree * 9D));
             this.chainWave(bodyParts, swimSpeed, swimDegree, -3F, limbSwing, limbSwingAmount);
             this.walk(tail2, swimSpeed, swimDegree, false, -8F, 0, limbSwing, limbSwingAmount);
@@ -174,7 +174,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         }
         this.faceTarget(netHeadYaw, headPitch, 1, head);
         float yawAmount = swimAngle / 57.295776F * 0.5F;
-        body.zRot += yawAmount;
+        body.rotateAngleZ += yawAmount;
 
     }
 
@@ -202,8 +202,8 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
     }
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-        advancedModelBox.xRot = x;
-        advancedModelBox.yRot = y;
-        advancedModelBox.zRot = z;
+        advancedModelBox.rotateAngleX = x;
+        advancedModelBox.rotateAngleY = y;
+        advancedModelBox.rotateAngleZ = z;
     }
 }

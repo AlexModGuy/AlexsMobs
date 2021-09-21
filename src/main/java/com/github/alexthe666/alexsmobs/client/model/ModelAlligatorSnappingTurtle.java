@@ -6,6 +6,7 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7
 import com.github.alexthe666.alexsmobs.entity.EntityAlligatorSnappingTurtle;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -39,73 +40,73 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, 0.0F, 0.0F);
         root.addChild(body);
-        body.texOffs(0, 22).addBox(-7.0F, -6.0F, -8.0F, 14.0F, 6.0F, 16.0F, 0.0F, false);
+        body.setTextureOffset(0, 22).addBox(-7.0F, -6.0F, -8.0F, 14.0F, 6.0F, 16.0F, 0.0F, false);
 
         arm_left = new AdvancedModelBox(this);
         arm_left.setPos(6.1F, -1.7F, -6.4F);
         body.addChild(arm_left);
         setRotationAngle(arm_left, 0.0F, 0.5672F, 0.0436F);
-        arm_left.texOffs(47, 45).addBox(-0.5F, -1.5F, -2.0F, 9.0F, 3.0F, 4.0F, 0.0F, false);
+        arm_left.setTextureOffset(47, 45).addBox(-0.5F, -1.5F, -2.0F, 9.0F, 3.0F, 4.0F, 0.0F, false);
 
         arm_right = new AdvancedModelBox(this);
         arm_right.setPos(-6.1F, -1.7F, -6.4F);
         body.addChild(arm_right);
         setRotationAngle(arm_right, 0.0F, -0.5672F, -0.0436F);
-        arm_right.texOffs(47, 45).addBox(-8.5F, -1.5F, -2.0F, 9.0F, 3.0F, 4.0F, 0.0F, true);
+        arm_right.setTextureOffset(47, 45).addBox(-8.5F, -1.5F, -2.0F, 9.0F, 3.0F, 4.0F, 0.0F, true);
 
         leg_left = new AdvancedModelBox(this);
         leg_left.setPos(6.1F, -1.7F, 6.6F);
         body.addChild(leg_left);
         setRotationAngle(leg_left, 0.0F, -0.6109F, 0.0436F);
-        leg_left.texOffs(45, 22).addBox(-0.5F, -1.5F, -3.0F, 8.0F, 3.0F, 5.0F, 0.0F, false);
+        leg_left.setTextureOffset(45, 22).addBox(-0.5F, -1.5F, -3.0F, 8.0F, 3.0F, 5.0F, 0.0F, false);
 
         leg_right = new AdvancedModelBox(this);
         leg_right.setPos(-6.1F, -1.7F, 6.6F);
         body.addChild(leg_right);
         setRotationAngle(leg_right, 0.0F, 0.6109F, -0.0436F);
-        leg_right.texOffs(45, 22).addBox(-7.5F, -1.5F, -3.0F, 8.0F, 3.0F, 5.0F, 0.0F, true);
+        leg_right.setTextureOffset(45, 22).addBox(-7.5F, -1.5F, -3.0F, 8.0F, 3.0F, 5.0F, 0.0F, true);
 
         shell = new AdvancedModelBox(this);
         shell.setPos(0.0F, -6.0F, 0.0F);
         body.addChild(shell);
-        shell.texOffs(0, 0).addBox(-8.0F, -1.0F, -9.0F, 16.0F, 3.0F, 18.0F, 0.0F, false);
+        shell.setTextureOffset(0, 0).addBox(-8.0F, -1.0F, -9.0F, 16.0F, 3.0F, 18.0F, 0.0F, false);
 
         spikes_left = new AdvancedModelBox(this);
         spikes_left.setPos(4.0F, -2.0F, 0.0F);
         shell.addChild(spikes_left);
-        spikes_left.texOffs(0, 45).addBox(-4.0F, -1.0F, -8.0F, 7.0F, 2.0F, 16.0F, 0.0F, false);
+        spikes_left.setTextureOffset(0, 45).addBox(-4.0F, -1.0F, -8.0F, 7.0F, 2.0F, 16.0F, 0.0F, false);
 
         spikes_right = new AdvancedModelBox(this);
         spikes_right.setPos(-4.0F, -2.0F, 0.0F);
         shell.addChild(spikes_right);
-        spikes_right.texOffs(0, 45).addBox(-3.0F, -1.0F, -8.0F, 7.0F, 2.0F, 16.0F, 0.0F, true);
+        spikes_right.setTextureOffset(0, 45).addBox(-3.0F, -1.0F, -8.0F, 7.0F, 2.0F, 16.0F, 0.0F, true);
 
         neck = new AdvancedModelBox(this);
         neck.setPos(0.0F, -2.0F, -8.0F);
         body.addChild(neck);
-        neck.texOffs(51, 9).addBox(-3.5F, -3.0F, -3.0F, 7.0F, 5.0F, 3.0F, 0.0F, false);
+        neck.setTextureOffset(51, 9).addBox(-3.5F, -3.0F, -3.0F, 7.0F, 5.0F, 3.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -0.75F, -3.05F);
         neck.addChild(head);
-        head.texOffs(51, 0).addBox(-3.0F, -2.25F, -4.95F, 6.0F, 3.0F, 5.0F, 0.0F, false);
+        head.setTextureOffset(51, 0).addBox(-3.0F, -2.25F, -4.95F, 6.0F, 3.0F, 5.0F, 0.0F, false);
 
         head_inside = new AdvancedModelBox(this);
         head_inside.setPos(0.0F, 0F, 0F);
         head.addChild(head_inside);
-        head_inside.texOffs(73, 0).addBox(-3.0F, -2.25F, -4.95F, 6.0F, 3.0F, 5.0F, 0.0F, false);
+        head_inside.setTextureOffset(73, 0).addBox(-3.0F, -2.25F, -4.95F, 6.0F, 3.0F, 5.0F, 0.0F, false);
 
 
         jaw = new AdvancedModelBox(this);
         jaw.setPos(0.0F, 1.15F, 0.15F);
         head.addChild(jaw);
         setRotationAngle(jaw, -0.2182F, 0.0F, 0.0F);
-        jaw.texOffs(51, 53).addBox(-2.5F, -0.5F, -5.0F, 5.0F, 2.0F, 5.0F, 0.0F, false);
+        jaw.setTextureOffset(51, 53).addBox(-2.5F, -0.5F, -5.0F, 5.0F, 2.0F, 5.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, -2.5F, 8.0F);
         body.addChild(tail);
-        tail.texOffs(31, 45).addBox(-1.5F, -1.5F, 0.0F, 3.0F, 3.0F, 9.0F, 0.0F, false);
+        tail.setTextureOffset(31, 45).addBox(-1.5F, -1.5F, 0.0F, 3.0F, 3.0F, 9.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
@@ -125,7 +126,7 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
         progressPositionPrev(jaw, openProgress, 0, -1, 0, 5F);
         progressPositionPrev(neck, snapProgress, 0, 0, 0, 5F);
         neck.setScale((1 - snapProgress * 0.05F), (1 - snapProgress * 0.05F), (1 + snapProgress * 0.5F));
-        head.z -= 1.45F * snapProgress;
+        head.rotationPointZ -= 1.45F * snapProgress;
         progressRotationPrev(head, snapProgress, (float) Math.toRadians(10), 0, 0, 5F);
         progressRotationPrev(jaw, snapProgress, (float) Math.toRadians(-10), 0, 0, 5F);
         this.swing(tail, idleSpeed, idleDegree * 1.15F, false, 3, 0F, ageInTicks, 1);
@@ -162,7 +163,7 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -173,8 +174,8 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
 
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotationPointX = x;
+        AdvancedModelBox.rotationPointY = y;
+        AdvancedModelBox.rotationPointZ = z;
     }
 }

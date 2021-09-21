@@ -27,34 +27,34 @@ public class ModelMimicube extends AdvancedEntityModel<EntityMimicube> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, 0.0F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-8.0F, -14.0F, -8.0F, 16.0F, 14.0F, 16.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-8.0F, -14.0F, -8.0F, 16.0F, 14.0F, 16.0F, 0.0F, false);
 
 		innerbody = new AdvancedModelBox(this);
 		innerbody.setPos(0.0F, -7.0F, 0.0F);
 		root.addChild(innerbody);
-		innerbody.texOffs(0, 31).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
+		innerbody.setTextureOffset(0, 31).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
 		mouth = new AdvancedModelBox(this);
 		mouth.setPos(2.0F, 4.0F, -5.0F);
 		innerbody.addChild(mouth);
-		mouth.texOffs(0, 12).addBox(-2.0F, -2.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+		mouth.setTextureOffset(0, 12).addBox(-2.0F, -2.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
 
 		eye_left = new AdvancedModelBox(this);
 		eye_left.setPos(3.5F, -1.5F, -4.0F);
 		innerbody.addChild(eye_left);
 		setRotationAngle(eye_left, 0.0F, 0.0F, 0.3054F);
-		eye_left.texOffs(0, 6).addBox(-1.5F, -1.5F, -1.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
+		eye_left.setTextureOffset(0, 6).addBox(-1.5F, -1.5F, -1.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
 
 		eye_right = new AdvancedModelBox(this);
 		eye_right.setPos(-3.5F, -0.5F, -4.0F);
 		innerbody.addChild(eye_right);
 		setRotationAngle(eye_right, 0.0F, 0.0F, -0.3927F);
-		eye_right.texOffs(0, 0).addBox(-1.5F, -1.5F, -1.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
+		eye_right.setTextureOffset(0, 0).addBox(-1.5F, -1.5F, -1.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -79,8 +79,8 @@ public class ModelMimicube extends AdvancedEntityModel<EntityMimicube> {
 
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

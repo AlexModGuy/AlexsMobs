@@ -36,57 +36,57 @@ public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevi
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -5.5F, 0.0F);
 		root.addChild(body);
-		body.texOffs(0, 0).addBox(-2.5F, -2.5F, -6.0F, 5.0F, 5.0F, 12.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-2.5F, -2.5F, -6.0F, 5.0F, 5.0F, 12.0F, 0.0F, false);
 
 		tail = new AdvancedModelBox(this);
 		tail.setPos(0.0F, -0.5F, 6.0F);
 		body.addChild(tail);
-		tail.texOffs(0, 18).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 10.0F, 0.0F, false);
+		tail.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 10.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(-0.5F, -1.5F, -6.0F);
 		body.addChild(head);
-		head.texOffs(15, 18).addBox(-1.5F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+		head.setTextureOffset(15, 18).addBox(-1.5F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
 		ear_left = new AdvancedModelBox(this);
 		ear_left.setPos(2.5F, -1.0F, -1.0F);
 		head.addChild(ear_left);
-		ear_left.texOffs(2, 9).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 2.0F, 0.0F, 0.0F, false);
+		ear_left.setTextureOffset(2, 9).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 2.0F, 0.0F, 0.0F, false);
 
 		ear_right = new AdvancedModelBox(this);
 		ear_right.setPos(-1.5F, -2.0F, -1.0F);
 		head.addChild(ear_right);
-		ear_right.texOffs(2, 9).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 0.0F, 0.0F, true);
+		ear_right.setTextureOffset(2, 9).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 0.0F, 0.0F, true);
 
 		upper_jaw = new AdvancedModelBox(this);
 		upper_jaw.setPos(0.5F, 0.0F, -4.0F);
 		head.addChild(upper_jaw);
-		upper_jaw.texOffs(23, 0).addBox(-1.5F, -1.0F, -3.0F, 3.0F, 2.0F, 3.0F, 0.0F, false);
+		upper_jaw.setTextureOffset(23, 0).addBox(-1.5F, -1.0F, -3.0F, 3.0F, 2.0F, 3.0F, 0.0F, false);
 
 		lower_jaw = new AdvancedModelBox(this);
 		lower_jaw.setPos(0.5F, 1.0F, -4.0F);
 		head.addChild(lower_jaw);
-		lower_jaw.texOffs(23, 6).addBox(-1.5F, 0.0F, -3.0F, 3.0F, 1.0F, 3.0F, 0.0F, false);
+		lower_jaw.setTextureOffset(23, 6).addBox(-1.5F, 0.0F, -3.0F, 3.0F, 1.0F, 3.0F, 0.0F, false);
 
 		arm_left = new AdvancedModelBox(this);
 		arm_left.setPos(1.4F, 1.5F, -4.0F);
 		body.addChild(arm_left);
-		arm_left.texOffs(0, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, 0.0F, false);
+		arm_left.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, 0.0F, false);
 
 		arm_right = new AdvancedModelBox(this);
 		arm_right.setPos(-1.4F, 1.5F, -4.0F);
 		body.addChild(arm_right);
-		arm_right.texOffs(0, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, 0.0F, true);
+		arm_right.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, 0.0F, true);
 
 		leg_left = new AdvancedModelBox(this);
 		leg_left.setPos(1.4F, 2.5F, 4.5F);
 		body.addChild(leg_left);
-		leg_left.texOffs(0, 0).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 3.0F, 0.0F, false);
+		leg_left.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 3.0F, 0.0F, false);
 
 		leg_right = new AdvancedModelBox(this);
 		leg_right.setPos(-1.4F, 2.5F, 4.5F);
 		body.addChild(leg_right);
-		leg_right.texOffs(0, 0).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 3.0F, 0.0F, true);
+		leg_right.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 3.0F, 0.0F, true);
 		this.updateDefaultPose();
 		animator = ModelAnimator.create();
 	}
@@ -216,13 +216,13 @@ public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevi
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
 	public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-		advancedModelBox.xRot = x;
-		advancedModelBox.yRot = y;
-		advancedModelBox.zRot = z;
+		advancedModelBox.rotateAngleX = x;
+		advancedModelBox.rotateAngleY = y;
+		advancedModelBox.rotateAngleZ = z;
 	}
 }

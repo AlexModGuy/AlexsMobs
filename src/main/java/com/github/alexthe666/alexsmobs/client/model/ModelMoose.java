@@ -39,71 +39,71 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -18.75F, 1.25F);
 		root.addChild(body);
-		body.texOffs(71, 33).addBox(-4.5F, -7.25F, -3.25F, 9.0F, 11.0F, 14.0F, 0.0F, false);
+		body.setTextureOffset(71, 33).addBox(-4.5F, -7.25F, -3.25F, 9.0F, 11.0F, 14.0F, 0.0F, false);
 
 		body_front = new AdvancedModelBox(this);
 		body_front.setPos(0.0F, -0.25F, -4.25F);
 		body.addChild(body_front);
-		body_front.texOffs(0, 69).addBox(-5.0F, -8.0F, -8.0F, 10.0F, 13.0F, 9.0F, 0.0F, false);
+		body_front.setTextureOffset(0, 69).addBox(-5.0F, -8.0F, -8.0F, 10.0F, 13.0F, 9.0F, 0.0F, false);
 
 		frontleg_left = new AdvancedModelBox(this);
 		frontleg_left.setPos(3.0F, 5.0F, -5.0F);
 		body_front.addChild(frontleg_left);
-		frontleg_left.texOffs(17, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
+		frontleg_left.setTextureOffset(17, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
 
 		frontleg_right = new AdvancedModelBox(this);
 		frontleg_right.setPos(-3.0F, 5.0F, -5.0F);
 		body_front.addChild(frontleg_right);
-		frontleg_right.texOffs(17, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, true);
+		frontleg_right.setTextureOffset(17, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, true);
 
 		neck = new AdvancedModelBox(this);
 		neck.setPos(0.0F, -4.5F, -8.0F);
 		body_front.addChild(neck);
 		setRotationAngle(neck, -0.1745F, 0.0F, 0.0F);
-		neck.texOffs(40, 17).addBox(-3.5F, -2.5F, -6.0F, 7.0F, 8.0F, 7.0F, 0.0F, false);
+		neck.setTextureOffset(40, 17).addBox(-3.5F, -2.5F, -6.0F, 7.0F, 8.0F, 7.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, 1.0F, -7.0F);
 		neck.addChild(head);
 		setRotationAngle(head, 0.2182F, 0.0F, 0.0F);
-		head.texOffs(34, 52).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 5.0F, 0.0F, false);
+		head.setTextureOffset(34, 52).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 5.0F, 0.0F, false);
 
 		beard = new AdvancedModelBox(this);
 		beard.setPos(0.0F, 3.0F, -1.0F);
 		head.addChild(beard);
-		beard.texOffs(19, 30).addBox(0.0F, -2.0F, -3.0F, 0.0F, 7.0F, 6.0F, 0.0F, false);
+		beard.setTextureOffset(19, 30).addBox(0.0F, -2.0F, -3.0F, 0.0F, 7.0F, 6.0F, 0.0F, false);
 
 		horn_left = new AdvancedModelBox(this);
 		horn_left.setPos(3.0F, -3.0F, -2.0F);
 		head.addChild(horn_left);
-		horn_left.texOffs(31, 37).addBox(0.0F, -6.0F, -3.0F, 10.0F, 6.0F, 8.0F, 0.0F, false);
+		horn_left.setTextureOffset(31, 37).addBox(0.0F, -6.0F, -3.0F, 10.0F, 6.0F, 8.0F, 0.0F, false);
 
 		horn_right = new AdvancedModelBox(this);
 		horn_right.setPos(-3.0F, -3.0F, -2.0F);
 		head.addChild(horn_right);
-		horn_right.texOffs(31, 37).addBox(-10.0F, -6.0F, -3.0F, 10.0F, 6.0F, 8.0F, 0.0F, true);
+		horn_right.setTextureOffset(31, 37).addBox(-10.0F, -6.0F, -3.0F, 10.0F, 6.0F, 8.0F, 0.0F, true);
 
 		snout = new AdvancedModelBox(this);
 		snout.setPos(0.0F, -2.0F, -3.0F);
 		head.addChild(snout);
 		setRotationAngle(snout, 0.1309F, 0.0F, 0.0F);
-		snout.texOffs(33, 0).addBox(-2.0F, 0.0F, -7.0F, 4.0F, 5.0F, 7.0F, 0.0F, false);
+		snout.setTextureOffset(33, 0).addBox(-2.0F, 0.0F, -7.0F, 4.0F, 5.0F, 7.0F, 0.0F, false);
 
 		tail = new AdvancedModelBox(this);
 		tail.setPos(0.0F, -3.25F, 10.75F);
 		body.addChild(tail);
 		setRotationAngle(tail, 0.1745F, 0.0F, 0.0F);
-		tail.texOffs(0, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 12.0F, 0.0F, 0.0F, false);
+		tail.setTextureOffset(0, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 12.0F, 0.0F, 0.0F, false);
 
 		backleg_left = new AdvancedModelBox(this);
 		backleg_left.setPos(2.5F, 3.75F, 8.75F);
 		body.addChild(backleg_left);
-		backleg_left.texOffs(0, 45).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, false);
+		backleg_left.setTextureOffset(0, 45).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, false);
 
 		backleg_right = new AdvancedModelBox(this);
 		backleg_right.setPos(-2.5F, 3.75F, 8.75F);
 		body.addChild(backleg_right);
-		backleg_right.texOffs(0, 45).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, true);
+		backleg_right.setTextureOffset(0, 45).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, true);
 		this.updateDefaultPose();
 		animator = ModelAnimator.create();
 	}
@@ -212,9 +212,9 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 		progressPositionPrev(head, jostleProgress, 0, 0, -1, 5F);
 		if(jostleProgress > 0){
 			float yawAmount = jostleAngle / 57.295776F * 0.5F * jostleProgress * 0.2F;
-			neck.yRot += yawAmount;
-			head.yRot += yawAmount;
-			head.zRot += yawAmount;
+			neck.rotateAngleY += yawAmount;
+			head.rotateAngleY += yawAmount;
+			head.rotateAngleZ += yawAmount;
 		}else{
 			this.faceTarget(netHeadYaw, headPitch, 2, neck, head);
 		}
@@ -253,13 +253,13 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
 	public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-		AdvancedModelBox.xRot = x;
-		AdvancedModelBox.yRot = y;
-		AdvancedModelBox.zRot = z;
+		AdvancedModelBox.rotateAngleX = x;
+		AdvancedModelBox.rotateAngleY = y;
+		AdvancedModelBox.rotateAngleZ = z;
 	}
 }

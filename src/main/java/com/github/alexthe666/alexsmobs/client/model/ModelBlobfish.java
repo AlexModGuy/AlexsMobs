@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.geom.ModelPart;
 
@@ -26,39 +27,39 @@ public class ModelBlobfish extends AdvancedEntityModel<EntityBlobfish> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -2.5F, 1.0F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-3.0F, -2.5F, -8.0F, 6.0F, 5.0F, 8.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-3.0F, -2.5F, -8.0F, 6.0F, 5.0F, 8.0F, 0.0F, false);
 
         nose = new AdvancedModelBox(this);
         nose.setPos(0.0F, -0.5F, -8.0F);
         body.addChild(nose);
-        nose.texOffs(0, 19).addBox(-2.0F, -1.0F, -1.0F, 4.0F, 2.0F, 1.0F, 0.0F, false);
+        nose.setTextureOffset(0, 19).addBox(-2.0F, -1.0F, -1.0F, 4.0F, 2.0F, 1.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
         tail.setPos(0.0F, 0.25F, 0.0F);
         body.addChild(tail);
-        tail.texOffs(11, 14).addBox(-2.0F, -2.25F, 0.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+        tail.setTextureOffset(11, 14).addBox(-2.0F, -2.25F, 0.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
         tail_fin = new AdvancedModelBox(this);
         tail_fin.setPos(0.0F, -1.45F, 0.0F);
         tail.addChild(tail_fin);
-        tail_fin.texOffs(0, 14).addBox(0.0F, -2.0F, -1.0F, 0.0F, 6.0F, 10.0F, 0.0F, false);
+        tail_fin.setTextureOffset(0, 14).addBox(0.0F, -2.0F, -1.0F, 0.0F, 6.0F, 10.0F, 0.0F, false);
 
         fin_left = new AdvancedModelBox(this);
         fin_left.setPos(3.0F, 1.0F, -4.0F);
         body.addChild(fin_left);
         setRotationAngle(fin_left, 0.0F, -0.6109F, 0.0F);
-        fin_left.texOffs(0, 0).addBox(0.0F, -1.5F, 0.0F, 3.0F, 3.0F, 0.0F, 0.0F, false);
+        fin_left.setTextureOffset(0, 0).addBox(0.0F, -1.5F, 0.0F, 3.0F, 3.0F, 0.0F, 0.0F, false);
 
         fin_right = new AdvancedModelBox(this);
         fin_right.setPos(-3.0F, 1.0F, -4.0F);
         body.addChild(fin_right);
         setRotationAngle(fin_right, 0.0F, 0.6109F, 0.0F);
-        fin_right.texOffs(0, 0).addBox(-3.0F, -1.5F, 0.0F, 3.0F, 3.0F, 0.0F, 0.0F, true);
+        fin_right.setTextureOffset(0, 0).addBox(-3.0F, -1.5F, 0.0F, 3.0F, 3.0F, 0.0F, 0.0F, true);
         this.updateDefaultPose();
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -70,7 +71,7 @@ public class ModelBlobfish extends AdvancedEntityModel<EntityBlobfish> {
     @Override
     public void setupAnim(EntityBlobfish entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
         this.resetToDefaultPose();
-        this.body.xRot = headPitch * ((float)Math.PI / 180F);
+        this.body.rotateAngleX = headPitch * ((float)Math.PI / 180F);
         float swimSpeed = 1.5F;
         float swimDegree = 0.85F;
         this.swing(tail, swimSpeed, swimDegree, false, 0, 0, limbSwing, limbSwingAmount);
@@ -81,8 +82,8 @@ public class ModelBlobfish extends AdvancedEntityModel<EntityBlobfish> {
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

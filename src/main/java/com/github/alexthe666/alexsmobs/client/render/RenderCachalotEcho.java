@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.model.LlamaSpitModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.projectile.LlamaSpitEntity;
@@ -22,7 +22,7 @@ public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
     private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_2.png");
     private static final ResourceLocation TEXTURE_3 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_3.png");
 
-    public RenderCachalotEcho(EntityRenderDispatcher renderManagerIn) {
+    public RenderCachalotEcho(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 

@@ -27,27 +27,27 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -3.0F, 0.0F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 6.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 6.0F, 0.0F, false);
 
         legs = new AdvancedModelBox(this);
         legs.setPos(0.0F, 2.0F, -2.0F);
         body.addChild(legs);
-        legs.texOffs(0, 11).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 1.0F, 5.0F, 0.0F, false);
+        legs.setTextureOffset(0, 11).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 1.0F, 5.0F, 0.0F, false);
 
         left_wing = new AdvancedModelBox(this);
         left_wing.setPos(1.0F, -2.0F, -1.0F);
         body.addChild(left_wing);
-        left_wing.texOffs(12, 11).addBox(0.0F, 0.0F, -1.0F, 4.0F, 0.0F, 3.0F, 0.0F, false);
+        left_wing.setTextureOffset(12, 11).addBox(0.0F, 0.0F, -1.0F, 4.0F, 0.0F, 3.0F, 0.0F, false);
 
         right_wing = new AdvancedModelBox(this);
         right_wing.setPos(-1.0F, -2.0F, -1.0F);
         body.addChild(right_wing);
-        right_wing.texOffs(12, 11).addBox(-4.0F, 0.0F, -1.0F, 4.0F, 0.0F, 3.0F, 0.0F, true);
+        right_wing.setTextureOffset(12, 11).addBox(-4.0F, 0.0F, -1.0F, 4.0F, 0.0F, 3.0F, 0.0F, true);
 
         mouth = new AdvancedModelBox(this);
         mouth.setPos(0.0F, 0.0F, -3.0F);
         body.addChild(mouth);
-        mouth.texOffs(15, 16).addBox(0.0F, 0.0F, -1.0F, 0.0F, 4.0F, 2.0F, 0.0F, false);        this.updateDefaultPose();
+        mouth.setTextureOffset(15, 16).addBox(0.0F, 0.0F, -1.0F, 0.0F, 4.0F, 2.0F, 0.0F, false);        this.updateDefaultPose();
     }
 
     public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
@@ -80,8 +80,8 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
         this.flap(mouth, idleSpeed * 0.2F, idleDegree * 0.05F, false, -2, 0F, ageInTicks, 1);
         boolean flag = entityIn.isOnGround() && entityIn.getDeltaMovement().lengthSqr() < 1.0E-7D;
         if(flag){
-            this.left_wing.zRot = (float) Math.toRadians(-35);
-            this.right_wing.zRot = (float) Math.toRadians(35);
+            this.left_wing.rotateAngleZ = (float) Math.toRadians(-35);
+            this.right_wing.rotateAngleZ = (float) Math.toRadians(35);
             this.swing(legs, flySpeed * 0.6F, flyDegree * 0.2F, false, 1, 0F, limbSwing, limbSwingAmount);
         }else{
             this.flap(left_wing, flySpeed * 1.3F, flyDegree, true, 0, 0.2F, ageInTicks, 1);
@@ -91,7 +91,7 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -101,8 +101,8 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
     }
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-        advancedModelBox.xRot = x;
-        advancedModelBox.yRot = y;
-        advancedModelBox.zRot = z;
+        advancedModelBox.rotateAngleX = x;
+        advancedModelBox.rotateAngleY = y;
+        advancedModelBox.rotateAngleZ = z;
     }
 }

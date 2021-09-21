@@ -7,7 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.EntitySeagull;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -20,7 +20,7 @@ public class RenderSeagull extends MobRenderer<EntitySeagull, ModelSeagull> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/seagull.png");
     private static final ResourceLocation TEXTURE_WINGULL = new ResourceLocation("alexsmobs:textures/entity/seagull_wingull.png");
 
-    public RenderSeagull(EntityRenderDispatcher renderManagerIn) {
+    public RenderSeagull(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSeagull(), 0.2F);
         this.addLayer(new LayerHeldItem(this));
     }

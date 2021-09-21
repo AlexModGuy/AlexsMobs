@@ -41,90 +41,90 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -15.0F, 0.0F);
         root.addChild(body);
-        body.texOffs(33, 54).addBox(-3.0F, -3.0F, -5.0F, 6.0F, 6.0F, 10.0F, 0.0F, false);
+        body.setTextureOffset(33, 54).addBox(-3.0F, -3.0F, -5.0F, 6.0F, 6.0F, 10.0F, 0.0F, false);
 
         wing_left = new AdvancedModelBox(this);
         wing_left.setPos(1.0F, -3.0F, -3.0F);
         body.addChild(wing_left);
         setRotationAngle(wing_left, 0.0F, 0.0F, -0.1309F);
-        wing_left.texOffs(0, 0).addBox(0.0F, 0.0F, -1.0F, 20.0F, 0.0F, 21.0F, 0.0F, false);
+        wing_left.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -1.0F, 20.0F, 0.0F, 21.0F, 0.0F, false);
 
         wing_right = new AdvancedModelBox(this);
         wing_right.setPos(-1.0F, -3.0F, -3.0F);
         body.addChild(wing_right);
         setRotationAngle(wing_right, 0.0F, 0.0F, 0.1309F);
-        wing_right.texOffs(0, 0).addBox(-20.0F, 0.0F, -1.0F, 20.0F, 0.0F, 21.0F, 0.0F, true);
+        wing_right.setTextureOffset(0, 0).addBox(-20.0F, 0.0F, -1.0F, 20.0F, 0.0F, 21.0F, 0.0F, true);
 
         legback_left = new AdvancedModelBox(this);
         legback_left.setPos(2.0F, 3.0F, 3.0F);
         body.addChild(legback_left);
         setRotationAngle(legback_left, 0.0F, -0.3054F, 0.0F);
-        legback_left.texOffs(0, 41).addBox(0.0F, -3.0F, 0.0F, 21.0F, 15.0F, 0.0F, 0.0F, false);
+        legback_left.setTextureOffset(0, 41).addBox(0.0F, -3.0F, 0.0F, 21.0F, 15.0F, 0.0F, 0.0F, false);
 
         legback_right = new AdvancedModelBox(this);
         legback_right.setPos(-2.0F, 3.0F, 3.0F);
         body.addChild(legback_right);
         setRotationAngle(legback_right, 0.0F, 0.3054F, 0.0F);
-        legback_right.texOffs(0, 41).addBox(-21.0F, -3.0F, 0.0F, 21.0F, 15.0F, 0.0F, 0.0F, true);
+        legback_right.setTextureOffset(0, 41).addBox(-21.0F, -3.0F, 0.0F, 21.0F, 15.0F, 0.0F, 0.0F, true);
 
         legmid_left = new AdvancedModelBox(this);
         legmid_left.setPos(2.0F, 3.0F, 0.0F);
         body.addChild(legmid_left);
-        legmid_left.texOffs(43, 38).addBox(0.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, false);
+        legmid_left.setTextureOffset(43, 38).addBox(0.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, false);
 
         legmid_right = new AdvancedModelBox(this);
         legmid_right.setPos(-2.0F, 3.0F, 0.0F);
         body.addChild(legmid_right);
-        legmid_right.texOffs(43, 38).addBox(-19.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, true);
+        legmid_right.setTextureOffset(43, 38).addBox(-19.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, true);
 
         legfront_left = new AdvancedModelBox(this);
         legfront_left.setPos(2.0F, 3.0F, -3.0F);
         body.addChild(legfront_left);
         setRotationAngle(legfront_left, 0.0F, 0.2618F, 0.0F);
-        legfront_left.texOffs(41, 22).addBox(0.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, false);
+        legfront_left.setTextureOffset(41, 22).addBox(0.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, false);
 
         legfront_right = new AdvancedModelBox(this);
         legfront_right.setPos(-2.0F, 3.0F, -3.0F);
         body.addChild(legfront_right);
         setRotationAngle(legfront_right, 0.0F, -0.2618F, 0.0F);
-        legfront_right.texOffs(41, 22).addBox(-19.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, true);
+        legfront_right.setTextureOffset(41, 22).addBox(-19.0F, -3.0F, 0.0F, 19.0F, 15.0F, 0.0F, 0.0F, true);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, 0.0F, -5.0F);
         body.addChild(head);
-        head.texOffs(0, 57).addBox(-4.0F, -2.0F, -4.0F, 8.0F, 7.0F, 4.0F, 0.0F, false);
+        head.setTextureOffset(0, 57).addBox(-4.0F, -2.0F, -4.0F, 8.0F, 7.0F, 4.0F, 0.0F, false);
 
         fang_left = new AdvancedModelBox(this);
         fang_left.setPos(1.0F, 4.5F, -3.3F);
         head.addChild(fang_left);
-        fang_left.texOffs(0, 22).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 4.0F, 1.0F, 0.0F, false);
+        fang_left.setTextureOffset(0, 22).addBox(-1.0F, -1.0F, -1.0F, 3.0F, 4.0F, 1.0F, 0.0F, false);
 
         fang_right = new AdvancedModelBox(this);
         fang_right.setPos(-1.0F, 4.5F, -3.3F);
         head.addChild(fang_right);
-        fang_right.texOffs(0, 22).addBox(-2.0F, -1.0F, -1.0F, 3.0F, 4.0F, 1.0F, 0.0F, true);
+        fang_right.setTextureOffset(0, 22).addBox(-2.0F, -1.0F, -1.0F, 3.0F, 4.0F, 1.0F, 0.0F, true);
 
         antenna_left = new AdvancedModelBox(this);
         antenna_left.setPos(1.0F, -2.0F, -4.0F);
         head.addChild(antenna_left);
         setRotationAngle(antenna_left, 0.0F, -0.3927F, -0.3491F);
-        antenna_left.texOffs(0, 0).addBox(0.0F, 0.0F, -8.0F, 0.0F, 11.0F, 8.0F, 0.0F, false);
+        antenna_left.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -8.0F, 0.0F, 11.0F, 8.0F, 0.0F, false);
 
         antenna_right = new AdvancedModelBox(this);
         antenna_right.setPos(-1.0F, -2.0F, -4.0F);
         head.addChild(antenna_right);
         setRotationAngle(antenna_right, 0.0F, 0.3927F, 0.3491F);
-        antenna_right.texOffs(0, 0).addBox(0.0F, 0.0F, -8.0F, 0.0F, 11.0F, 8.0F, 0.0F, true);
+        antenna_right.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -8.0F, 0.0F, 11.0F, 8.0F, 0.0F, true);
 
         abdomen = new AdvancedModelBox(this);
         abdomen.setPos(0.0F, -2.0F, 5.0F);
         body.addChild(abdomen);
-        abdomen.texOffs(0, 22).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 6.0F, 12.0F, 0.0F, false);
+        abdomen.setTextureOffset(0, 22).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 6.0F, 12.0F, 0.0F, false);
 
         stinger = new AdvancedModelBox(this);
         stinger.setPos(0.0F, 3.0F, 12.0F);
         abdomen.addChild(stinger);
-        stinger.texOffs(9, 0).addBox(0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 5.0F, 0.0F, false);
+        stinger.setTextureOffset(9, 0).addBox(0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 5.0F, 0.0F, false);
         this.updateDefaultPose();
     }
 
@@ -253,7 +253,7 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
             this.walk(head, walkSpeed, walkDegree * 0.4F, false, 3, 0, limbSwing, limbSwingAmount);
         }
         float f = (float) Math.toRadians(flyAngle);
-        this.body.zRot += f;
+        this.body.rotateAngleZ += f;
         if(dragProgress == 0){
             this.faceTarget(netHeadYaw, headPitch, 1.2F, head);
         }
@@ -265,13 +265,13 @@ public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk>
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.xRot = x;
-        AdvancedModelBox.yRot = y;
-        AdvancedModelBox.zRot = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

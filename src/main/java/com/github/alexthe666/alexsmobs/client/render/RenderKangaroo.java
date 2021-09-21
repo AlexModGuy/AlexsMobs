@@ -8,7 +8,7 @@ import com.github.alexthe666.alexsmobs.client.render.layer.LayerMimicubeHelmet;
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 public class RenderKangaroo extends MobRenderer<EntityKangaroo, ModelKangaroo> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/kangaroo.png");
 
-    public RenderKangaroo(EntityRenderDispatcher renderManagerIn) {
+    public RenderKangaroo(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelKangaroo(), 0.5F);
         this.addLayer(new LayerKangarooItem(this));
         this.addLayer(new LayerKangarooArmor(this));

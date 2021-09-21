@@ -39,17 +39,17 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -9.5F, -0.25F);
 		root.addChild(body);
-		body.texOffs(31, 65).addBox(-3.0F, -3.5F, -3.75F, 6.0F, 6.0F, 6.0F, 0.0F, false);
+		body.setTextureOffset(31, 65).addBox(-3.0F, -3.5F, -3.75F, 6.0F, 6.0F, 6.0F, 0.0F, false);
 
 		wingL = new AdvancedModelBox(this);
 		wingL.setPos(2.7F, -3.2F, -0.75F);
 		body.addChild(wingL);
-		wingL.texOffs(37, 59).addBox(0.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
+		wingL.setTextureOffset(37, 59).addBox(0.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
 
 		wingR = new AdvancedModelBox(this);
 		wingR.setPos(-2.7F, -3.2F, -0.75F);
 		body.addChild(wingR);
-		wingR.texOffs(37, 53).addBox(-18.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
+		wingR.setTextureOffset(37, 53).addBox(-18.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
 
 		legsL = new AdvancedModelBox(this);
 		legsL.setPos(3.0F, 2.5F, -2.75F);
@@ -60,18 +60,18 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 		legL1.setPos(0.0F, 0.0F, 0.0F);
 		legsL.addChild(legL1);
 		setRotationAngle(legL1, 0.0F, 0.5236F, 0.0F);
-		legL1.texOffs(0, 51).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legL1.setTextureOffset(0, 51).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legL2 = new AdvancedModelBox(this);
 		legL2.setPos(0.0F, 0.0F, 0.4F);
 		legsL.addChild(legL2);
-		legL2.texOffs(37, 16).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legL2.setTextureOffset(37, 16).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legL3 = new AdvancedModelBox(this);
 		legL3.setPos(0.0F, 0.0F, 0.9F);
 		legsL.addChild(legL3);
 		setRotationAngle(legL3, 0.0F, -0.8727F, 0.0F);
-		legL3.texOffs(37, 0).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legL3.setTextureOffset(37, 0).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legsR = new AdvancedModelBox(this);
 		legsR.setPos(-3.0F, 2.5F, -2.75F);
@@ -82,52 +82,52 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 		legR1.setPos(0.0F, 0.0F, 0.0F);
 		legsR.addChild(legR1);
 		setRotationAngle(legR1, 0.0F, -0.5236F, 0.0F);
-		legR1.texOffs(37, 37).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legR1.setTextureOffset(37, 37).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legR2 = new AdvancedModelBox(this);
 		legR2.setPos(0.0F, 0.0F, 0.4F);
 		legsR.addChild(legR2);
-		legR2.texOffs(0, 35).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legR2.setTextureOffset(0, 35).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		legR3 = new AdvancedModelBox(this);
 		legR3.setPos(0.0F, 0.0F, 0.9F);
 		legsR.addChild(legR3);
 		setRotationAngle(legR3, 0.0F, 0.8727F, 0.0F);
-		legR3.texOffs(0, 19).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
+		legR3.setTextureOffset(0, 19).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
 		tail = new AdvancedModelBox(this);
 		tail.setPos(0.0F, -1.5F, 2.25F);
 		body.addChild(tail);
-		tail.texOffs(48, 83).addBox(-2.0F, -1.4F, 0.0F, 4.0F, 4.0F, 16.0F, 0.0F, false);
+		tail.setTextureOffset(48, 83).addBox(-2.0F, -1.4F, 0.0F, 4.0F, 4.0F, 16.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, 0.5F, -3.75F);
 		body.addChild(head);
-		head.texOffs(56, 65).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+		head.setTextureOffset(56, 65).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
 		antennaL = new AdvancedModelBox(this);
 		antennaL.setPos(1.0F, -0.1F, -4.0F);
 		head.addChild(antennaL);
 		setRotationAngle(antennaL, 1.2217F, -0.48F, 0.0436F);
-		antennaL.texOffs(5, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
+		antennaL.setTextureOffset(5, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
 
 		antennaR = new AdvancedModelBox(this);
 		antennaR.setPos(-1.0F, -0.1F, -4.0F);
 		head.addChild(antennaR);
 		setRotationAngle(antennaR, 1.2217F, 0.48F, -0.0436F);
-		antennaR.texOffs(0, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
+		antennaR.setTextureOffset(0, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
 
 		mouth = new AdvancedModelBox(this);
 		mouth.setPos(0.0F, 2.0F, -3.5F);
 		head.addChild(mouth);
 		setRotationAngle(mouth, -1.0036F, 0.0F, 0.0F);
-		mouth.texOffs(23, 0).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 8.0F, 1.0F, 0.0F, false);
+		mouth.setTextureOffset(23, 0).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 8.0F, 1.0F, 0.0F, false);
 		animator = ModelAnimator.create();
 		this.updateDefaultPose();
 	}
 
 	@Override
-	public Iterable<ModelPart> parts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 
@@ -167,10 +167,10 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 			this.flap(wingL, flySpeed * 3.3F, flyDegree, true, 0, 0.2F, ageInTicks, 1);
 			this.flap(wingR, flySpeed * 3.3F, flyDegree, false, 0, 0.2F, ageInTicks, 1);
 		}else{
-			this.wingR.xRot = (float) Math.toRadians(30);
-			this.wingR.yRot = (float) Math.toRadians(70);
-			this.wingL.xRot = (float) Math.toRadians(30);
-			this.wingL.yRot = (float) Math.toRadians(-70);
+			this.wingR.rotateAngleX = (float) Math.toRadians(30);
+			this.wingR.rotateAngleY = (float) Math.toRadians(70);
+			this.wingL.rotateAngleX = (float) Math.toRadians(30);
+			this.wingL.rotateAngleY = (float) Math.toRadians(-70);
 		}
 		if(flyProgress > 0){
 			progressPositionPrev(body, flyProgress, 0, -10F, 0F, 5F);
@@ -190,7 +190,7 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 			this.walk(tail, flySpeed, flyDegree * 0.15F, false, 0, -0.1F, ageInTicks, 1);
 		}
 		float bloatScale = 1F + entityIn.getBloodLevel() * 0.1F;
-		this.tail.xRot -= entityIn.getBloodLevel() * 0.05F;
+		this.tail.rotateAngleX -= entityIn.getBloodLevel() * 0.05F;
 		this.tail.setScale(bloatScale, bloatScale, bloatScale);
 	}
 		@Override
@@ -199,8 +199,8 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 	}
 
 	public void setRotationAngle(AdvancedModelBox modelRenderer, float x, float y, float z) {
-		modelRenderer.xRot = x;
-		modelRenderer.yRot = y;
-		modelRenderer.zRot = z;
+		modelRenderer.rotateAngleX = x;
+		modelRenderer.rotateAngleY = y;
+		modelRenderer.rotateAngleZ = z;
 	}
 }

@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
@@ -25,7 +25,7 @@ public class RenderEnderiophage extends MobRenderer<EntityEnderiophage, ModelEnd
     private static final ResourceLocation TEXTURE_NETHER = new ResourceLocation("alexsmobs:textures/entity/enderiophage_nether.png");
     private static final ResourceLocation TEXTURE_NETHER_GLOW = new ResourceLocation("alexsmobs:textures/entity/enderiophage_nether_glow.png");
 
-    public RenderEnderiophage(EntityRenderDispatcher renderManagerIn) {
+    public RenderEnderiophage(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelEnderiophage(), 0.5F);
         this.addLayer(new EnderiophageEyesLayer(this));
     }

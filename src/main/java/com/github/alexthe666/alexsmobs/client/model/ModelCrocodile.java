@@ -43,93 +43,93 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         body = new AdvancedModelBox(this);
         body.setPos(0.0F, -9.375F, 0.125F);
         root.addChild(body);
-        body.texOffs(0, 0).addBox(-8.0F, -4.625F, -14.125F, 16.0F, 11.0F, 35.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-8.0F, -4.625F, -14.125F, 16.0F, 11.0F, 35.0F, 0.0F, false);
 
         neck = new AdvancedModelBox(this);
         neck.setPos(0.0F, 1.125F, -14.375F);
         body.addChild(neck);
-        neck.texOffs(70, 47).addBox(-6.0F, -4.75F, -8.75F, 12.0F, 9.0F, 9.0F, 0.0F, false);
+        neck.setTextureOffset(70, 47).addBox(-6.0F, -4.75F, -8.75F, 12.0F, 9.0F, 9.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
         head.setPos(0.0F, -0.9167F, -8.4167F);
         neck.addChild(head);
-        head.texOffs(32, 90).addBox(-5.0F, -3.8333F, -9.3333F, 10.0F, 5.0F, 9.0F, 0.0F, false);
+        head.setTextureOffset(32, 90).addBox(-5.0F, -3.8333F, -9.3333F, 10.0F, 5.0F, 9.0F, 0.0F, false);
 
         snout = new AdvancedModelBox(this);
         snout.setPos(0.0F, 1.1667F, -1.3333F);
         head.addChild(snout);
-        snout.texOffs(0, 0).addBox(-3.0F, -4.0F, -19.0F, 6.0F, 4.0F, 11.0F, 0.0F, false);
+        snout.setTextureOffset(0, 0).addBox(-3.0F, -4.0F, -19.0F, 6.0F, 4.0F, 11.0F, 0.0F, false);
 
         TeethLTop = new AdvancedModelBox(this);
         TeethLTop.setPos(2.1F, -0.4F, -13.4F);
         snout.addChild(TeethLTop);
         setRotationAngle(TeethLTop, 0.0F, 0.0F, -0.1309F);
-        TeethLTop.texOffs(0, 16).addBox(-2.1F, 0.1F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, false);
+        TeethLTop.setTextureOffset(0, 16).addBox(-2.1F, 0.1F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, false);
 
         TeethRTop = new AdvancedModelBox(this);
         TeethRTop.setPos(-2.1F, -0.4F, -13.4F);
         snout.addChild(TeethRTop);
         setRotationAngle(TeethRTop, 0.0F, 0.0F, 0.1309F);
-        TeethRTop.texOffs(0, 16).addBox(-0.9F, 0.1F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, true);
+        TeethRTop.setTextureOffset(0, 16).addBox(-0.9F, 0.1F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, true);
 
         jaw = new AdvancedModelBox(this);
         jaw.setPos(0.0F, 0.9167F, -3.0833F);
         head.addChild(jaw);
-        jaw.texOffs(0, 78).addBox(-5.5F, -0.75F, -6.05F, 11.0F, 4.0F, 9.0F, 0.0F, false);
+        jaw.setTextureOffset(0, 78).addBox(-5.5F, -0.75F, -6.05F, 11.0F, 4.0F, 9.0F, 0.0F, false);
 
         jaw2 = new AdvancedModelBox(this);
         jaw2.setPos(0.5F, 6.25F, 1.75F);
         jaw.addChild(jaw2);
-        jaw2.texOffs(0, 93).addBox(-3.5F, -6.0F, -18.8F, 6.0F, 3.0F, 12.0F, 0.0F, false);
+        jaw2.setTextureOffset(0, 93).addBox(-3.5F, -6.0F, -18.8F, 6.0F, 3.0F, 12.0F, 0.0F, false);
 
         TeethLBottom = new AdvancedModelBox(this);
         TeethLBottom.setPos(1.0F, -6.7F, -13.2F);
         jaw2.addChild(TeethLBottom);
         setRotationAngle(TeethLBottom, 0.0F, 0.0F, 0.1309F);
-        TeethLBottom.texOffs(93, 66).addBox(-1.4F, -0.9F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, false);
+        TeethLBottom.setTextureOffset(93, 66).addBox(-1.4F, -0.9F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, false);
 
         TeethRBottom = new AdvancedModelBox(this);
         TeethRBottom.setPos(-2.0F, -6.7F, -13.2F);
         jaw2.addChild(TeethRBottom);
         setRotationAngle(TeethRBottom, 0.0F, 0.0F, -0.1309F);
-        TeethRBottom.texOffs(93, 66).addBox(-1.6F, -0.9F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, true);
+        TeethRBottom.setTextureOffset(93, 66).addBox(-1.6F, -0.9F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, true);
 
         LLegFront = new AdvancedModelBox(this);
         LLegFront.setPos(8.0F, 0.875F, -9.625F);
         body.addChild(LLegFront);
-        LLegFront.texOffs(0, 47).addBox(-2.0F, -2.5F, -2.5F, 4.0F, 11.0F, 5.0F, 0.0F, false);
+        LLegFront.setTextureOffset(0, 47).addBox(-2.0F, -2.5F, -2.5F, 4.0F, 11.0F, 5.0F, 0.0F, false);
 
         RLegFront = new AdvancedModelBox(this);
         RLegFront.setPos(-8.0F, 0.875F, -9.625F);
         body.addChild(RLegFront);
-        RLegFront.texOffs(0, 47).addBox(-2.0F, -2.5F, -2.5F, 4.0F, 11.0F, 5.0F, 0.0F, true);
+        RLegFront.setTextureOffset(0, 47).addBox(-2.0F, -2.5F, -2.5F, 4.0F, 11.0F, 5.0F, 0.0F, true);
 
         LLegBack = new AdvancedModelBox(this);
         LLegBack.setPos(8.0F, 0.875F, 13.875F);
         body.addChild(LLegBack);
-        LLegBack.texOffs(65, 99).addBox(-2.0F, -2.5F, -3.0F, 4.0F, 11.0F, 6.0F, 0.0F, false);
+        LLegBack.setTextureOffset(65, 99).addBox(-2.0F, -2.5F, -3.0F, 4.0F, 11.0F, 6.0F, 0.0F, false);
 
         RLegBack = new AdvancedModelBox(this);
         RLegBack.setPos(-8.0F, 0.875F, 13.875F);
         body.addChild(RLegBack);
-        RLegBack.texOffs(65, 99).addBox(-2.0F, -2.5F, -3.0F, 4.0F, 11.0F, 6.0F, 0.0F, true);
+        RLegBack.setTextureOffset(65, 99).addBox(-2.0F, -2.5F, -3.0F, 4.0F, 11.0F, 6.0F, 0.0F, true);
 
         Tail1 = new AdvancedModelBox(this);
         Tail1.setPos(0.0F, 0.875F, 23.375F);
         body.addChild(Tail1);
-        Tail1.texOffs(0, 47).addBox(-5.0F, -4.5F, -2.5F, 10.0F, 10.0F, 20.0F, 0.0F, false);
+        Tail1.setTextureOffset(0, 47).addBox(-5.0F, -4.5F, -2.5F, 10.0F, 10.0F, 20.0F, 0.0F, false);
 
         Tail2 = new AdvancedModelBox(this);
         Tail2.setPos(0.0F, 0.25F, 19.5F);
         Tail1.addChild(Tail2);
-        Tail2.texOffs(68, 0).addBox(-3.0F, -3.75F, -2.0F, 6.0F, 9.0F, 18.0F, 0.0F, false);
-        Tail2.texOffs(72, 102).addBox(-3.0F, -6.75F, -2.0F, 6.0F, 3.0F, 18.0F, 0.0F, false);
+        Tail2.setTextureOffset(68, 0).addBox(-3.0F, -3.75F, -2.0F, 6.0F, 9.0F, 18.0F, 0.0F, false);
+        Tail2.setTextureOffset(72, 102).addBox(-3.0F, -6.75F, -2.0F, 6.0F, 3.0F, 18.0F, 0.0F, false);
 
         Tail3 = new AdvancedModelBox(this);
         Tail3.setPos(0.0F, 1.25F, 17.0F);
         Tail2.addChild(Tail3);
-        Tail3.texOffs(70, 70).addBox(0.0F, -10.0F, -1.0F, 0.0F, 6.0F, 22.0F, 0.0F, false);
-        Tail3.texOffs(39, 56).addBox(-2.0F, -4.0F, -1.0F, 4.0F, 8.0F, 22.0F, 0.0F, false);
+        Tail3.setTextureOffset(70, 70).addBox(0.0F, -10.0F, -1.0F, 0.0F, 6.0F, 22.0F, 0.0F, false);
+        Tail3.setTextureOffset(39, 56).addBox(-2.0F, -4.0F, -1.0F, 4.0F, 8.0F, 22.0F, 0.0F, false);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -245,13 +245,13 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         }
         if (baskProgress > 0) {
             this.walk(head, 0.1F, 0.1F, false, 1F, 0.1F, ageInTicks, 1);
-            this.jaw.xRot = -head.xRot;
+            this.jaw.rotateAngleX = -head.rotateAngleX;
 
         }
     }
 
     @Override
-    public Iterable<ModelPart> parts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -284,8 +284,8 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
     }
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
-        advancedModelBox.xRot = x;
-        advancedModelBox.yRot = y;
-        advancedModelBox.zRot = z;
+        advancedModelBox.rotateAngleX = x;
+        advancedModelBox.rotateAngleY = y;
+        advancedModelBox.rotateAngleZ = z;
     }
 }

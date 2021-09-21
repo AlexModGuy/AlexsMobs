@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -16,7 +16,7 @@ public class RenderDropBear extends MobRenderer<EntityDropBear, ModelDropBear> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/dropbear.png");
     private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/dropbear_eyes.png");
 
-    public RenderDropBear(EntityRenderDispatcher renderManagerIn) {
+    public RenderDropBear(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelDropBear(), 0.7F);
         this.addLayer(new EyeLayer(this));
     }
