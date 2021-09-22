@@ -208,7 +208,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     if (entity instanceof EntityBlobfish) {
                         ((EntityBlobfish) entity).setDepressurized(true);
                     }
-                    fakeEntity = this.renderedEntites.putIfAbsent(local.getDescriptionId(), entity);
+                    this.renderedEntites.put(local.getDescriptionId(), entity);
+                    fakeEntity = entity;
                 } else {
                     fakeEntity = this.renderedEntites.get(local.getDescriptionId());
                 }

@@ -19,14 +19,17 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
     public static ModelFrontierCap FRONTIER_CAP_MODEL;
     public static ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL;
     public static ModelFedora FEDORA_MODEL;
+    public static ModelSombrero SOMBRERO_MODEL;
 
     public static void initializeModels() {
         init = true;
-        ELYTRA_MODEL = new ModelAMElytra(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.AM_ELYTRA));
         ROADRUNNER_BOOTS_MODEL = new ModelRoadrunnerBoots(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.ROADRUNNER_BOOTS));
         MOOSE_HEADGEAR_MODEL = new ModelMooseHeadgear(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.MOOSE_HEADGEAR));
         FRONTIER_CAP_MODEL = new ModelFrontierCap(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.FRONTIER_CAP));
         FEDORA_MODEL = new ModelFedora(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.FEDORA));
+        SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SPIKED_TURTLE_SHELL));
+        SOMBRERO_MODEL = new ModelSombrero(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SOMBRERO));
+        ELYTRA_MODEL = new ModelAMElytra(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.AM_ELYTRA));
     }
 
     public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
@@ -34,7 +37,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
             initializeModels();
         }
         if(itemStack.getItem() == AMItemRegistry.TARANTULA_HAWK_ELYTRA){
-            return (A)ELYTRA_MODEL;
+            return (A)ELYTRA_MODEL.withAnimations(entityLiving);
         }
         if(itemStack.getItem() == AMItemRegistry.ROADDRUNNER_BOOTS){
             return (A)ROADRUNNER_BOOTS_MODEL;
@@ -43,10 +46,16 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
             return (A)MOOSE_HEADGEAR_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.FRONTIER_CAP){
-            return (A)FRONTIER_CAP_MODEL;
+            return (A)FRONTIER_CAP_MODEL.withAnimations(entityLiving);
         }
         if(itemStack.getItem() == AMItemRegistry.FEDORA){
             return (A)FEDORA_MODEL;
+        }
+        if(itemStack.getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL){
+            return (A)SPIKED_TURTLE_SHELL_MODEL;
+        }
+        if(itemStack.getItem() == AMItemRegistry.SOMBRERO){
+            return (A)SOMBRERO_MODEL;
         }
         return _default;
     }

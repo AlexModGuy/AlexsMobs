@@ -66,7 +66,7 @@ public class ItemTarantulaHawkElytra extends ArmorItem {
 
     @Nullable
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return "alexsmobs:textures/armor/tarantula_hawk_elytra.png";
+        return null;//"alexsmobs:textures/armor/tarantula_hawk_elytra.png";
     }
 
 

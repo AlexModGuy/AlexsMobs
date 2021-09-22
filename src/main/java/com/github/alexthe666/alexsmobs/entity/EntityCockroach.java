@@ -5,6 +5,8 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFleeLight;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -46,15 +48,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.Shearable;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -362,7 +355,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     private void tellOthersImPlayingLaCucaracha() {
-        List<EntityCockroach> list = this.level.getEntitiesOfClass(EntityCockroach.class, this.getMusicianDistance(), null);
+        List<EntityCockroach> list = this.level.getEntitiesOfClass(EntityCockroach.class, this.getMusicianDistance(), EntitySelector.NO_SPECTATORS);
         for (EntityCockroach roach : list) {
             if (!roach.hasMaracas()) {
                 roach.setNearestMusician(this.getUUID());

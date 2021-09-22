@@ -12,23 +12,23 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 @OnlyIn(Dist.CLIENT)
 public class AMModelLayers {
 
-    public static final ModelLayerLocation AM_ELYTRA = createLocation("am_elytra", "outer_layer");
-    public static final ModelLayerLocation SITTING_WANDERING_VILLAGER = createLocation("sitting_wandering_villager", "base");
-    public static final ModelLayerLocation ROADRUNNER_BOOTS = createLocation("roadrunner_boots", "outer_layer");
-    public static final ModelLayerLocation MOOSE_HEADGEAR = createLocation("moose_headgear", "outer_layer");
-    public static final ModelLayerLocation FRONTIER_CAP = createLocation("frontier_cap", "outer_layer");
-    public static final ModelLayerLocation SPIKED_TURTLE_SHELL = createLocation("spiked_turtle_shell", "outer_layer");
-    public static final ModelLayerLocation FEDORA = createLocation("fedora", "outer_layer");
-    public static final ModelLayerLocation SOMBRERO = createLocation("sombrero", "outer_layer");
+    public static final ModelLayerLocation AM_ELYTRA = createLocation("am_elytra", "main");
+    public static final ModelLayerLocation SITTING_WANDERING_VILLAGER = createLocation("sitting_wandering_villager", "main");
+    public static final ModelLayerLocation ROADRUNNER_BOOTS = createLocation("roadrunner_boots", "main");
+    public static final ModelLayerLocation MOOSE_HEADGEAR = createLocation("moose_headgear", "main");
+    public static final ModelLayerLocation FRONTIER_CAP = createLocation("frontier_cap", "main");
+    public static final ModelLayerLocation SPIKED_TURTLE_SHELL = createLocation("spiked_turtle_shell", "main");
+    public static final ModelLayerLocation FEDORA = createLocation("fedora", "main");
+    public static final ModelLayerLocation SOMBRERO = createLocation("sombrero", "main");
 
     public static void register(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(AM_ELYTRA, () -> ModelAMElytra.createLayer());
         event.registerLayerDefinition(SITTING_WANDERING_VILLAGER, () -> LayerDefinition.create(ModelWanderingVillagerRider.createBodyModel(), 64, 64));
         event.registerLayerDefinition(ROADRUNNER_BOOTS, () -> ModelRoadrunnerBoots.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(MOOSE_HEADGEAR, () -> ModelMooseHeadgear.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(FRONTIER_CAP, () -> ModelFrontierCap.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(SPIKED_TURTLE_SHELL, () -> ModelSpikedTurtleShell.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(FEDORA, () -> ModelFedora.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(AM_ELYTRA, () -> ModelAMElytra.createLayer(new CubeDeformation(1.0F)));
         event.registerLayerDefinition(SOMBRERO, () -> ModelSombrero.createArmorLayer(new CubeDeformation(0.5F)));
     }
 

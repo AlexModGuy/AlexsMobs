@@ -14,19 +14,19 @@ public class ModelAMElytra extends HumanoidModel {
     private final ModelPart rightWing;
     private final ModelPart leftWing;
 
-    public ModelAMElytra(ModelPart p_170538_) {
-        super(p_170538_);
-        this.leftWing = p_170538_.getChild("left_wing");
-        this.rightWing = p_170538_.getChild("right_wing");
+    public ModelAMElytra(ModelPart part) {
+        super(part);
+        this.leftWing = part.getChild("body").getChild("left_wing");
+        this.rightWing = part.getChild("body").getChild("right_wing");
     }
 
-    public static LayerDefinition createLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
+    public static LayerDefinition createLayer(CubeDeformation deformation) {
+        MeshDefinition meshdefinition = HumanoidModel.createMesh(deformation, 0.0F);
+        PartDefinition partdefinition = meshdefinition.getRoot().getChild("body");
         CubeDeformation cubedeformation = new CubeDeformation(1.0F);
         partdefinition.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(22, 0).addBox(-10.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, -0.2617994F));
         partdefinition.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(22, 0).mirror().addBox(0.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, 0.2617994F));
-        return LayerDefinition.create(meshdefinition, 64, 32);
+        return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
     public ModelAMElytra withAnimations(LivingEntity entity){
