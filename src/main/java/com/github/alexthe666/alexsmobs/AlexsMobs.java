@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs;
 
+import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
@@ -11,9 +12,11 @@ import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -58,12 +61,17 @@ public class AlexsMobs {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModConfigEvent);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticleEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupEntityModelLayers);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
         MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoadFromJSON);
+    }
+
+    private void setupEntityModelLayers(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+        AMModelLayers.register(event);
     }
 
     @SubscribeEvent

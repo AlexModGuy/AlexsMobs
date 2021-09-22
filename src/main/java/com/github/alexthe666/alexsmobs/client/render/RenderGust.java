@@ -33,7 +33,7 @@ public class RenderGust extends EntityRenderer<EntityGust> {
                 matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180F));
 
             }
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.yRot) - 90.0F));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE));
             this.model.hideEyes();

@@ -23,8 +23,8 @@ public class RenderHemolymph extends EntityRenderer<EntityHemolymph> {
 
     public void render(EntityHemolymph p_225623_1_, float p_225623_2_, float p_225623_3_, PoseStack p_225623_4_, MultiBufferSource p_225623_5_, int p_225623_6_) {
         p_225623_4_.pushPose();
-        p_225623_4_.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(p_225623_3_, p_225623_1_.yRotO, p_225623_1_.yRot) - 90.0F));
-        p_225623_4_.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(p_225623_3_, p_225623_1_.xRotO, p_225623_1_.xRot)));
+        p_225623_4_.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(p_225623_3_, p_225623_1_.yRotO, p_225623_1_.getYRot()) - 90.0F));
+        p_225623_4_.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(p_225623_3_, p_225623_1_.xRotO, p_225623_1_.getXRot())));
         float lvt_17_1_ = 0;
         if (lvt_17_1_ > 0.0F) {
             float lvt_18_1_ = -Mth.sin(lvt_17_1_ * 3.0F) * lvt_17_1_;

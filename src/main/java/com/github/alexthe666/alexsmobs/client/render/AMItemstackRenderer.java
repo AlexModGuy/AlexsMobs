@@ -115,7 +115,6 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     public static void drawEntityOnScreen(PoseStack matrixstack, int posX, int posY, float scale, boolean follow, double xRot, double yRot, double zRot, float mouseX, float mouseY, Entity entity) {
         float f = (float) Math.atan(-mouseX / 40.0F);
         float f1 = (float) Math.atan(mouseY / 40.0F);
-        RenderSystem.applyModelViewMatrix();
         matrixstack.scale(scale, scale, scale);
         entity.setOnGround(false);
         float partialTicks = Minecraft.getInstance().getFrameTime();
@@ -145,7 +144,6 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         matrixstack.mulPose(Vector3f.XP.rotationDegrees((float) (-xRot)));
         matrixstack.mulPose(Vector3f.YP.rotationDegrees((float) yRot));
         matrixstack.mulPose(Vector3f.ZP.rotationDegrees((float) zRot));
-        Lighting.setupForEntityInInventory();
         EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         quaternion1.conj();
         entityrenderdispatcher.overrideCameraOrientation(quaternion1);
@@ -223,7 +221,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                         if (entity instanceof EntityBlobfish) {
                             ((EntityBlobfish) entity).setDepressurized(true);
                         }
-                        fakeEntity = this.renderedEntites.putIfAbsent(type.getDescriptionId(), entity);
+                        this.renderedEntites.put(type.getDescriptionId(), entity);
+                        fakeEntity = entity;
                     } else {
                         fakeEntity = this.renderedEntites.get(type.getDescriptionId());
                     }

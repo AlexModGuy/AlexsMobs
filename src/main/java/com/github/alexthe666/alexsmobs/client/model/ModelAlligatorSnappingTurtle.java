@@ -55,8 +55,8 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
         arm_right.setTextureOffset(47, 45).addBox(-8.5F, -1.5F, -2.0F, 9.0F, 3.0F, 4.0F, 0.0F, true);
 
         leg_left = new AdvancedModelBox(this);
-        leg_left.setPos(6.1F, -1.7F, 6.6F);
         body.addChild(leg_left);
+        leg_left.setPos(6.1F, -1.7F, 6.6F);
         setRotationAngle(leg_left, 0.0F, -0.6109F, 0.0436F);
         leg_left.setTextureOffset(45, 22).addBox(-0.5F, -1.5F, -3.0F, 8.0F, 3.0F, 5.0F, 0.0F, false);
 
@@ -174,8 +174,8 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
 
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.rotationPointX = x;
-        AdvancedModelBox.rotationPointY = y;
-        AdvancedModelBox.rotationPointZ = z;
+        AdvancedModelBox.rotateAngleX = x;
+        AdvancedModelBox.rotateAngleY = y;
+        AdvancedModelBox.rotateAngleZ = z;
     }
 }

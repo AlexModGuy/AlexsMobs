@@ -310,7 +310,6 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onRegisterEntityRenders(EntityRenderersEvent.RegisterLayerDefinitions event){
-        AMModelLayers.register(event);
     }
 
     @Override
