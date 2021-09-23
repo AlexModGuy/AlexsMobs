@@ -67,6 +67,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     private LivingEntity leader;
     private int packSize = 1;
     private int shakeTime = 0;
+    private boolean hasSpikedArmor = false;
 
     protected EntityFroststalker(EntityType<? extends Animal> type, Level level) {
         super(type, level);
@@ -201,6 +202,15 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
             currentSpeedMode = 1;
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
         }
+        if (this.hasSpikes() && !hasSpikedArmor) {
+            hasSpikedArmor = true;
+            this.getAttribute(Attributes.ARMOR).setBaseValue(12F);
+        }
+        if (!this.hasSpikes() && hasSpikedArmor) {
+            hasSpikedArmor = false;
+            this.getAttribute(Attributes.ARMOR).setBaseValue(0F);
+        }
+
         if (!level.isClientSide) {
             if (this.tickCount % 200 == 0) {
                 if (isInWaterRainOrBubble() && !this.hasSpikes()) {
