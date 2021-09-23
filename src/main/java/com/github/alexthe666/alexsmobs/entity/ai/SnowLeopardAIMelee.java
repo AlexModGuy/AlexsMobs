@@ -55,7 +55,7 @@ public class SnowLeopardAIMelee extends Goal {
         }
     }
 
-    static BlockPos moveUpToAboveSolid(BlockPos p_226342_0_, int p_226342_1_, int p_226342_2_, Predicate<BlockPos> p_226342_3_) {
+    public static BlockPos moveUpToAboveSolid(BlockPos p_226342_0_, int p_226342_1_, int p_226342_2_, Predicate<BlockPos> p_226342_3_) {
         if (p_226342_1_ < 0) {
             throw new IllegalArgumentException("aboveSolidAmount was " + p_226342_1_ + ", expected >= 0");
         } else if (!p_226342_3_.test(p_226342_0_)) {

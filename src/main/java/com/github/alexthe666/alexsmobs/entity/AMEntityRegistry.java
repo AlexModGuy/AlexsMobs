@@ -6,6 +6,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.tags.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -96,6 +97,8 @@ public class AMEntityRegistry {
     public static final EntityType<EntityFrilledShark> FRILLED_SHARK = registerEntity(EntityType.Builder.of(EntityFrilledShark::new, MobCategory.WATER_CREATURE).sized(1.3F, 0.4F), "frilled_shark");
     public static final EntityType<EntityMimicOctopus> MIMIC_OCTOPUS = registerEntity(EntityType.Builder.of(EntityMimicOctopus::new, MobCategory.WATER_CREATURE).sized(0.9F, 0.6F), "mimic_octopus");
     public static final EntityType<EntitySeagull> SEAGULL = registerEntity(EntityType.Builder.of(EntitySeagull::new, MobCategory.CREATURE).sized(0.45F, 0.45F), "seagull");
+    public static final EntityType<EntityFroststalker> FROSTSTALKER = registerEntity(EntityType.Builder.of(EntityFroststalker::new, MobCategory.CREATURE).sized(0.95F, 1.15F).immuneTo(Blocks.POWDER_SNOW), "froststalker");
+    public static final EntityType<EntityIceShard> ICE_SHARD = registerEntity(EntityType.Builder.of(EntityIceShard::new, MobCategory.MISC).sized(0.45F, 0.45F).setCustomClientFactory(EntityIceShard::new).fireImmune(), "ice_shard");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -233,6 +236,7 @@ public class AMEntityRegistry {
         event.put(FRILLED_SHARK, EntityFrilledShark.bakeAttributes().build());
         event.put(MIMIC_OCTOPUS, EntityMimicOctopus.bakeAttributes().build());
         event.put(SEAGULL, EntitySeagull.bakeAttributes().build());
+        event.put(FROSTSTALKER, EntityFroststalker.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(Tag entityTag){
