@@ -1,8 +1,11 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFroststalker;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.datafixers.DataFixUtils;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -20,7 +23,7 @@ public class FroststalkerAIFollowLeader  extends Goal {
     }
 
     protected int nextStartTick(EntityFroststalker froststalker) {
-        return 200 + froststalker.getRandom().nextInt(200) % 20;
+        return 100 + froststalker.getRandom().nextInt(200) % 40;
     }
 
     public boolean canUse() {
@@ -33,15 +36,30 @@ public class FroststalkerAIFollowLeader  extends Goal {
             return false;
         } else {
             this.nextStartTick = this.nextStartTick(this.mob);
-            Predicate<EntityFroststalker> predicate = (p_25258_) -> {
+            Predicate<Player> playerPredicate = (player) -> {
+                return player.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET);
+            };
+            Predicate<EntityFroststalker> froststalkerPredicate = (p_25258_) -> {
                 return p_25258_.canBeFollowed() || !p_25258_.isFollower();
             };
             float range = 60F;
-            List<EntityFroststalker> list = this.mob.level.getEntitiesOfClass(EntityFroststalker.class, this.mob.getBoundingBox().inflate(range, range, range), predicate);
-            EntityFroststalker entityFroststalker = DataFixUtils.orElse(list.stream().filter(EntityFroststalker::canBeFollowed).findAny(), this.mob);
-            entityFroststalker.addFollowers(list.stream().filter((p_25255_) -> {
-                return !p_25255_.isFollower();
-            }));
+            List<Player> playerList = this.mob.level.getEntitiesOfClass(Player.class, this.mob.getBoundingBox().inflate(range, range, range), playerPredicate);
+            Player closestPlayer = null;
+            for(Player player : playerList){
+                if(closestPlayer == null || player.distanceTo(mob) < closestPlayer.distanceTo(mob)){
+                    closestPlayer = player;
+                }
+            }
+            if(closestPlayer == null){
+                List<EntityFroststalker> list = this.mob.level.getEntitiesOfClass(EntityFroststalker.class, this.mob.getBoundingBox().inflate(range, range, range), froststalkerPredicate);
+                EntityFroststalker entityFroststalker = DataFixUtils.orElse(list.stream().filter(EntityFroststalker::canBeFollowed).findAny(), this.mob);
+                entityFroststalker.addFollowers(list.stream().filter((p_25255_) -> {
+                    return !p_25255_.isFollower();
+                }));
+            }else{
+                this.mob.startFollowing(closestPlayer);
+            }
+
             return this.mob.isFollower();
         }
     }

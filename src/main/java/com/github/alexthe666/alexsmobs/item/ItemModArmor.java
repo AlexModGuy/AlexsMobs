@@ -56,6 +56,9 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.RACCOON_ARMOR_MATERIAL) {
             tooltip.add(new TranslatableComponent("item.alexsmobs.frontier_cap.desc").withStyle(ChatFormatting.BLUE));
         }
+        if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
+            tooltip.add(new TranslatableComponent("item.alexsmobs.froststalker_helmet.desc").withStyle(ChatFormatting.BLUE));
+        }
     }
 
     private void buildCrocAttributes(CustomArmorMaterial materialIn) {
@@ -119,6 +122,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/fedora.png";
         } else if (this.material == AMItemRegistry.EMU_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/emu_leggings.png";
+        } else if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
+            return "alexsmobs:textures/armor/froststalker_helmet.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }

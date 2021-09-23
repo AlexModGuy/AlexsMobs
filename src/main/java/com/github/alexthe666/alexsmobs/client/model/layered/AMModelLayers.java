@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model.layered;
 
+import com.github.alexthe666.alexsmobs.client.model.ModelFroststalker;
 import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -20,6 +21,7 @@ public class AMModelLayers {
     public static final ModelLayerLocation SPIKED_TURTLE_SHELL = createLocation("spiked_turtle_shell", "main");
     public static final ModelLayerLocation FEDORA = createLocation("fedora", "main");
     public static final ModelLayerLocation SOMBRERO = createLocation("sombrero", "main");
+    public static final ModelLayerLocation FROSTSTALKER_HELMET = createLocation("froststalker_helmet", "main");
 
     public static void register(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(SITTING_WANDERING_VILLAGER, () -> LayerDefinition.create(ModelWanderingVillagerRider.createBodyModel(), 64, 64));
@@ -30,6 +32,7 @@ public class AMModelLayers {
         event.registerLayerDefinition(FEDORA, () -> ModelFedora.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(AM_ELYTRA, () -> ModelAMElytra.createLayer(new CubeDeformation(1.0F)));
         event.registerLayerDefinition(SOMBRERO, () -> ModelSombrero.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(FROSTSTALKER_HELMET, () -> ModelFroststalkerHelmet.createArmorLayer(new CubeDeformation(0.5F)));
     }
 
     private static ModelLayerLocation createLocation(String model, String layer) {

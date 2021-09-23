@@ -20,6 +20,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
     public static ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL;
     public static ModelFedora FEDORA_MODEL;
     public static ModelSombrero SOMBRERO_MODEL;
+    public static ModelFroststalkerHelmet FROSTSTALKER_HELMET_MODEL;
 
     public static void initializeModels() {
         init = true;
@@ -29,6 +30,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         FEDORA_MODEL = new ModelFedora(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.FEDORA));
         SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SPIKED_TURTLE_SHELL));
         SOMBRERO_MODEL = new ModelSombrero(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SOMBRERO));
+        FROSTSTALKER_HELMET_MODEL = new ModelFroststalkerHelmet(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.FROSTSTALKER_HELMET));
         ELYTRA_MODEL = new ModelAMElytra(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.AM_ELYTRA));
     }
 
@@ -56,6 +58,9 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         }
         if(itemStack.getItem() == AMItemRegistry.SOMBRERO){
             return (A)SOMBRERO_MODEL;
+        }
+        if(itemStack.getItem() == AMItemRegistry.FROSTSTALKER_HELMET){
+            return (A)FROSTSTALKER_HELMET_MODEL;
         }
         return _default;
     }

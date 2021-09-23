@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
@@ -23,13 +24,20 @@ public class FroststalkerAIMelee extends Goal {
     private int startingOrbit = 0;
 
     public FroststalkerAIMelee(EntityFroststalker froststalker) {
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         this.froststalker = froststalker;
     }
 
     @Override
     public boolean canUse() {
-        return froststalker.getTarget() != null && froststalker.getTarget().isAlive();
+        if(froststalker.getTarget() != null && froststalker.getTarget().isAlive()){
+            if(froststalker.isValidLeader(froststalker.getTarget())){
+                return froststalker.getLastHurtByMob() != null && froststalker.getLastHurtByMob().equals(froststalker.getTarget());
+            }else{
+                return true;
+            }
+        }
+        return false;
     }
 
     public void start() {
@@ -83,7 +91,7 @@ public class FroststalkerAIMelee extends Goal {
                 }
             }
             if (froststalker.isTackling() && froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F && froststalker.hasLineOfSight(target)) {
-                target.hurt(DamageSource.mobAttack(froststalker), 1);
+                target.hurt(DamageSource.mobAttack(froststalker), (float) froststalker.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 start();
             }
             if (!flag) {

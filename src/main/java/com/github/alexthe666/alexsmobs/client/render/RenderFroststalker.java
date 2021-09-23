@@ -21,4 +21,9 @@ public class RenderFroststalker extends MobRenderer<EntityFroststalker, ModelFro
     public ResourceLocation getTextureLocation(EntityFroststalker entity) {
         return entity.hasSpikes() ? TEXTURE : TEXTURE_NOSPIKES;
     }
+
+    protected boolean isShaking(EntityFroststalker entity) {
+        return entity.isInWaterRainOrBubble() && !entity.hasSpikes();
+    }
+
 }
