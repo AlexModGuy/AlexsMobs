@@ -429,7 +429,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             this.playSound(AMSoundRegistry.ELEPHANT_TRUMPET, this.getSoundVolume(), this.getVoicePitch());
         }
         if (this.isAlive() && charging) {
-            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D), null)) {
+            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
                 if (!(this.isTame() && isAlliedTo(entity)) && !(!this.isTame() && entity instanceof EntityElephant) && entity != this) {
                     entity.hurt(DamageSource.mobAttack(this), 8.0F + random.nextFloat() * 8.0F);
                     launch(entity, true);

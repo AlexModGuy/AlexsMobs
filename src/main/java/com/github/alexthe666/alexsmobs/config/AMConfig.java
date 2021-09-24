@@ -165,6 +165,7 @@ public class AMConfig {
     public static boolean seagullStealing = true;
     public static List<? extends String> seagullStealingBlacklist = Lists.newArrayList();
     public static boolean clingingFlipEffect = false;
+    public static double tusklinShoesBarteringChance = 0.025F;
 
     public static void bake(ModConfig config) {
         try {
@@ -318,6 +319,7 @@ public class AMConfig {
             seagullStealing = ConfigHolder.COMMON.seagullStealing.get();
             seagullStealingBlacklist = (List<? extends String>) ConfigHolder.COMMON.seagullStealingBlacklist.get();
             clingingFlipEffect = ConfigHolder.COMMON.clingingFlipEffect.get();
+            tusklinShoesBarteringChance = ConfigHolder.COMMON.tusklinShoesBarteringChance.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

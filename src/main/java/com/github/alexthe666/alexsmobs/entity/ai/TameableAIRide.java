@@ -16,16 +16,22 @@ public class TameableAIRide extends Goal {
     private PathfinderMob tameableEntity;
     private LivingEntity player;
     private double speed;
+    private boolean strafe;
 
     public TameableAIRide(PathfinderMob dragon, double speed) {
+        this(dragon, speed, true);
+    }
+
+    public TameableAIRide(PathfinderMob dragon, double speed, boolean strafe) {
         this.tameableEntity = dragon;
         this.speed = speed;
+        this.strafe = strafe;
         this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
     public boolean canUse() {
-        if (tameableEntity.getControllingPassenger() instanceof Player) {
+        if (tameableEntity.getControllingPassenger() instanceof Player && tameableEntity.isVehicle()) {
             player = (Player) tameableEntity.getControllingPassenger();
             return true;
         }
@@ -44,9 +50,9 @@ public class TameableAIRide extends Goal {
         double x = tameableEntity.getX();
         double y = tameableEntity.getY();
         double z = tameableEntity.getZ();
-        if (player.zza != 0) {
+        if (shouldMoveForward()) {
             Vec3 lookVec = player.getLookAngle();
-            if (player.zza < 0) {
+            if (shouldMoveBackwards()) {
                 lookVec = lookVec.yRot((float) Math.PI);
             }
             x += lookVec.x * 10;
@@ -55,8 +61,19 @@ public class TameableAIRide extends Goal {
                 y += lookVec.y * 10;
             }
         }
-        tameableEntity.xxa = player.xxa * 0.35F;
+        if(strafe){
+            tameableEntity.xxa = player.xxa * 0.35F;
+        }
         tameableEntity.maxUpStep = 1;
         tameableEntity.getMoveControl().setWantedPosition(x, y, z, speed);
+    }
+
+    public boolean shouldMoveForward(){
+        return player.zza != 0;
+    }
+
+
+    public boolean shouldMoveBackwards(){
+        return player.zza < 0;
     }
 }

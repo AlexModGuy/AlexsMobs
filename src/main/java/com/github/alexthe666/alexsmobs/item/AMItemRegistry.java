@@ -145,6 +145,7 @@ public class AMItemRegistry {
     public static final Item MIMIC_OCTOPUS_BUCKET = new ItemModFishBucket(AMEntityRegistry.MIMIC_OCTOPUS, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:mimic_octopus_bucket");
     public static final Item FROSTSTALKER_HORN = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:froststalker_horn");
     public static final Item FROSTSTALKER_HELMET = new ItemModArmor(FROSTSTALKER_ARMOR_MATERIAL, EquipmentSlot.HEAD).setRegistryName("alexsmobs:froststalker_helmet");
+    public static final Item PIGSHOES = new ItemPigshoes(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:pigshoes");
 
     public static final Item MUSIC_DISC_THIME = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
     public static final Item MUSIC_DISC_DAZE = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_daze");

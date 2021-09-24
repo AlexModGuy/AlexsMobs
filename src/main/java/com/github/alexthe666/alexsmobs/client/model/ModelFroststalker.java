@@ -8,6 +8,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 
 public class ModelFroststalker extends AdvancedEntityModel<EntityFroststalker> {
@@ -112,6 +114,30 @@ public class ModelFroststalker extends AdvancedEntityModel<EntityFroststalker> {
         legright.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 11.0F, 4.0F, 0.0F, true);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
+    }
+
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
+            float f = 1.5F;
+            head.setScale(f, f, f);
+            head.setShouldScaleChildren(true);
+            horn.showModel = false;
+            matrixStackIn.pushPose();
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0D, 1.5D, 0D);
+            parts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+            head.setScale(1, 1, 1);
+        } else {
+            horn.showModel = true;
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+        }
     }
 
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {

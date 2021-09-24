@@ -44,6 +44,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.*;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
@@ -275,6 +276,7 @@ public class ServerEvents {
             }
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BEAR_FUR, 1, 1, 2, 1));
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_SCUTE, 5, 1, 2, 1));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ROADRUNNER_FEATHER, 1, 2, 2, 2));
             genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.MOSQUITO_LARVA, 1, 3, 5, 1));
             rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.SOMBRERO, 20, 1, 1, 1));
             rareTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.BANANA_PEEL, 1, 2, 1, 1));
@@ -597,6 +599,11 @@ public class ServerEvents {
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE_DISPENSER)) {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(20).setWeight(3);
             LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 2)).bonusRolls(0, 1);
+            event.getTable().addPool(builder.build());
+        }
+        if (event.getName().equals(BuiltInLootTables.PIGLIN_BARTERING) && AMConfig.tusklinShoesBarteringChance > 0) {
+            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.PIGSHOES).setQuality(5).setWeight(8);
+            LootPool.Builder builder = new LootPool.Builder().name("am_pigshoes").add(item).when(LootItemRandomChanceCondition.randomChance((float) AMConfig.tusklinShoesBarteringChance)).setRolls(ConstantValue.exactly(1));
             event.getTable().addPool(builder.build());
         }
     }

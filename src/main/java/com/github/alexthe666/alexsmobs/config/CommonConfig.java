@@ -157,6 +157,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue seagullStealing;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> seagullStealingBlacklist;
     public final ForgeConfigSpec.BooleanValue clingingFlipEffect;
+    public final ForgeConfigSpec.DoubleValue tusklinShoesBarteringChance;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -202,6 +203,7 @@ public class CommonConfig {
         seagullStealing = buildBoolean(builder, "seagullStealing", "all", true, "Whether seagulls should steal food out of players' hotbar slots.");
         seagullStealingBlacklist = builder.comment("List of items that seagulls cannot take from players.").defineList("seagullStealingBlacklist", Lists.newArrayList(), o -> o instanceof String);
         clingingFlipEffect = buildBoolean(builder, "clingingFlipEffect", "all", false, "Whether the Clinging Potion effect should flip the screen. Warning: may cause nausea.");
+        tusklinShoesBarteringChance = buildDouble(builder, "tusklinShoesBarteringChance", "all", 0.025F, 0D, 1.0F, "Percent chance of getting Pigshoes from Piglin Bartering. Set to zero to disable.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");

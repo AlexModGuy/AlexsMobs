@@ -2,12 +2,15 @@ package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFroststalker;
 import com.github.alexthe666.alexsmobs.entity.EntityTusklin;
+import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
 
@@ -109,7 +112,48 @@ public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
-    
+
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
+            float f = 1.6F;
+            float f1 = 2.2F;
+            float f2 = 1.4F;
+            ear_left.setScale(f1, f1, f1);
+            ear_right.setScale(f1, f1, f1);
+            head.setScale(f, f, f);
+            arm_left.setScale(1, f2, 1);
+            arm_right.setScale(1, f2, 1);
+            leg_left.setScale(1, f2, 1);
+            leg_right.setScale(1, f2, 1);
+            head.setShouldScaleChildren(true);
+            tusk_left.showModel = false;
+            tusk_right.showModel = false;
+            matrixStackIn.pushPose();
+            matrixStackIn.scale(0.45F, 0.45F, 0.45F);
+            matrixStackIn.translate(0.0D, 1.6D, 0.125D);
+            parts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+            head.setScale(1, 1, 1);
+            ear_left.setScale(1, 1, 1);
+            ear_right.setScale(1, 1, 1);
+            arm_left.setScale(1, 1, 1);
+            arm_right.setScale(1, 1, 1);
+            leg_left.setScale(1, 1, 1);
+            leg_right.setScale(1, 1, 1);
+
+        } else {
+            tusk_left.showModel = true;
+            tusk_right.showModel = true;
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+        }
+    }
+
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
         return ImmutableList.of(root, body, leg_left, leg_right, torso, arm_left, arm_right, head, tusk_left, tusk_right, earLeft_r1, ear_left, ear_right, earLeft_r2);
@@ -242,10 +286,14 @@ public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
     public void setupAnim(EntityTusklin entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        float walkSpeed = 0.7F;
-        float walkDegree = 0.4F;
+        float walkSpeed = 1.0F;
+        float walkDegree = 0.8F;
         float idleSpeed = 0.125F;
         float idleDegree = 0.5F;
+        if(this.young){
+            this.head.rotationPointY -= 4.0F;
+            this.head.rotationPointZ += 2.0F;
+        }
         this.walk(head, idleSpeed * 0.4F, idleDegree * 0.2F, true, 1F, -0.01F, ageInTicks, 1);
         this.flap(ear_right, idleSpeed * 0.7F, idleDegree * 0.2F, false, 0F, -0.01F, ageInTicks, 1);
         this.flap(ear_left, idleSpeed * 0.7F, idleDegree * 0.2F, true, 0F, -0.01F, ageInTicks, 1);
@@ -257,7 +305,9 @@ public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
         this.bob(head, walkSpeed * 0.6F, walkDegree * 2F, true, limbSwing, limbSwingAmount);
         this.bob(ear_right, walkSpeed, walkDegree * -0.75F, true, limbSwing, limbSwingAmount);
         this.bob(ear_left, walkSpeed, walkDegree * -0.75F, true, limbSwing, limbSwingAmount);
-
+        if(entity.getAnimation() == IAnimatedEntity.NO_ANIMATION){
+            this.faceTarget(netHeadYaw, headPitch, 1, head);
+        }
     }
 
     public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {

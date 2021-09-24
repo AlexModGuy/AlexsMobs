@@ -34,7 +34,7 @@ public class FroststalkerAIMelee extends Goal {
             if(froststalker.isValidLeader(froststalker.getTarget())){
                 return froststalker.getLastHurtByMob() != null && froststalker.getLastHurtByMob().equals(froststalker.getTarget());
             }else{
-                return true;
+                return !froststalker.isFleeingFire();
             }
         }
         return false;
@@ -49,6 +49,7 @@ public class FroststalkerAIMelee extends Goal {
         pursuitTime = 0;
         maxPursuitTime = 40 + froststalker.getRandom().nextInt(40);
         startingOrbit = froststalker.getRandom().nextInt(360);
+        this.froststalker.frostJump();
     }
 
     public void tick() {
@@ -68,6 +69,8 @@ public class FroststalkerAIMelee extends Goal {
                 float extraSpeed = 0.2F * Math.max(5F - froststalker.distanceTo(target), 0F);
                 if (pursuitPos != null) {
                     froststalker.getNavigation().moveTo(pursuitPos.getX(), pursuitPos.getY(), pursuitPos.getZ(), 1.0F + extraSpeed);
+                }else{
+                    froststalker.getNavigation().moveTo(target, 1.0F);
                 }
             } else if (willJump && pursuitTime == maxPursuitTime) {
                 froststalker.lookAt(target, 180F, 10F);
@@ -91,7 +94,7 @@ public class FroststalkerAIMelee extends Goal {
                 }
             }
             if (froststalker.isTackling() && froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F && froststalker.hasLineOfSight(target)) {
-                target.hurt(DamageSource.mobAttack(froststalker), (float) froststalker.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                target.hurt(DamageSource.mobAttack(froststalker), (float) froststalker.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 start();
             }
             if (!flag) {

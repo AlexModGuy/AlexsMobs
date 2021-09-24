@@ -4,6 +4,7 @@
   "values": [
     "#alexsmobs:villagers",
     "#alexsmobs:passive_land_animals",
-    "minecraft:goat"
+    "minecraft:goat",
+    "alexsmobs:tusklin"
   ]
 }

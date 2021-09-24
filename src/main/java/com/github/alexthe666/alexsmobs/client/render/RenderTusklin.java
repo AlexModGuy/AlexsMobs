@@ -2,6 +2,8 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelFroststalker;
 import com.github.alexthe666.alexsmobs.client.model.ModelTusklin;
+import com.github.alexthe666.alexsmobs.client.render.layer.LayerEndergradeSaddle;
+import com.github.alexthe666.alexsmobs.client.render.layer.LayerTusklinGear;
 import com.github.alexthe666.alexsmobs.entity.EntityFroststalker;
 import com.github.alexthe666.alexsmobs.entity.EntityTusklin;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,6 +16,11 @@ public class RenderTusklin extends MobRenderer<EntityTusklin, ModelTusklin> {
 
     public RenderTusklin(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelTusklin(), 1.0F);
+        this.addLayer(new LayerTusklinGear(this));
+    }
+
+    protected boolean isShaking(EntityTusklin entity) {
+        return entity.isInNether();
     }
 
     @Override

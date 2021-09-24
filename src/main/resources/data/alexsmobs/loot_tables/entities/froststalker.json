@@ -4,8 +4,11 @@
       "name": "froststalker",
       "conditions": [
         {
+          "condition": "minecraft:killed_by_player"
+        },
+        {
           "condition": "random_chance_with_looting",
-          "chance": 0.33,
+          "chance": 0.23,
           "looting_multiplier": 0.1
         }
       ],

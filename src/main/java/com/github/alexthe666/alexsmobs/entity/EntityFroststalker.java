@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -33,8 +35,9 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -68,9 +71,13 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     private int packSize = 1;
     private int shakeTime = 0;
     private boolean hasSpikedArmor = false;
+    private int fleeFireFlag;
 
     protected EntityFroststalker(EntityType<? extends Animal> type, Level level) {
         super(type, level);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
     }
 
     @Nullable
@@ -79,10 +86,20 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 24D).add(Attributes.ARMOR, 2.0D).add(Attributes.ATTACK_DAMAGE, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.3F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 24D).add(Attributes.ARMOR, 2.0D).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.MOVEMENT_SPEED, 0.3F);
+    }
+
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
+        return false;
+    }
+
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
     public boolean hurt(DamageSource source, float amount) {
+        if(source.isFire()){
+            amount *= 2F;
+        }
         boolean prev = super.hurt(source, amount);
         if (prev && this.hasSpikes() && !this.isSpikeShaking() && source.getEntity() != null && source.getEntity().distanceTo(this) < 10) {
             this.setSpikeShaking(true);
@@ -105,14 +122,15 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
                 }
             }
         });
-        this.goalSelector.addGoal(1, new FroststalkerAIMelee(this));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(4, new FroststalkerAIFollowLeader(this));
-        this.goalSelector.addGoal(5, new AnimalAIFindWater(this));
-        this.goalSelector.addGoal(6, new AnimalAILeaveWater(this));
-        this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 90, 1.0D, 7, 7));
-        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 15.0F));
+        this.goalSelector.addGoal(1, new AIAvoidFire());
+        this.goalSelector.addGoal(2, new FroststalkerAIMelee(this));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
+        this.goalSelector.addGoal(5, new FroststalkerAIFollowLeader(this));
+        this.goalSelector.addGoal(6, new AnimalAIFindWater(this));
+        this.goalSelector.addGoal(7, new AnimalAILeaveWater(this));
+        this.goalSelector.addGoal(8, new AnimalAIWanderRanged(this, 90, 1.0D, 7, 7));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, LivingEntity.class, 15.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, EntityFroststalker.class)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.FROSTSTALKER_TARGETS))));
@@ -297,10 +315,17 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
                     this.getAnimation() == ANIMATION_SLASH_R && this.getAnimationTick() == 7;
             if (this.getTarget() != null && attackAnim) {
                 getTarget().knockback(0.2F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-                this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
         }
+        if (fleeFireFlag > 0) {
+            fleeFireFlag--;
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    public boolean isFleeingFire(){
+        return fleeFireFlag > 0;
     }
 
     public boolean isHotBiome() {
@@ -424,7 +449,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
 
     public boolean doHurtTarget(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION) {
-            int anim = this.random.nextInt(3);
+            int anim = this.random.nextInt(4);
             if (anim == 0) {
                 this.setAnimation(ANIMATION_SHOVE);
             } else if (anim == 1) {
@@ -534,7 +559,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return null;
+        return AMEntityRegistry.FROSTSTALKER.create(p_146743_);
     }
 
     @Override
@@ -563,5 +588,95 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         public SchoolSpawnGroupData(EntityFroststalker p_27553_) {
             this.leader = p_27553_;
         }
+    }
+
+
+    private class AIAvoidFire extends Goal {
+        private final int searchLength;
+        private final int verticalSearchRange;
+        protected BlockPos destinationBlock;
+        protected int runDelay = 20;
+        private Vec3 fleeTarget;
+
+        private AIAvoidFire() {
+            searchLength = 20;
+            verticalSearchRange = 1;
+        }
+
+        public boolean canContinueToUse() {
+            return destinationBlock != null && isFire(EntityFroststalker.this.level, destinationBlock.mutable()) && isCloseToFire(16);
+        }
+
+        public boolean isCloseToFire(double dist) {
+            return destinationBlock == null || EntityFroststalker.this.distanceToSqr(Vec3.atCenterOf(destinationBlock)) < dist * dist;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (this.runDelay > 0) {
+                --this.runDelay;
+                return false;
+            } else {
+                this.runDelay = 30 + EntityFroststalker.this.random.nextInt(100);
+                return this.searchForDestination();
+            }
+        }
+
+        public void start() {
+            EntityFroststalker.this.fleeFireFlag = 200;
+            Vec3 vec = LandRandomPos.getPosAway(EntityFroststalker.this, 15, 5, Vec3.atCenterOf(destinationBlock));
+            if (vec != null) {
+                EntityFroststalker.this.standFor(100 + random.nextInt(100));
+                fleeTarget = vec;
+                EntityFroststalker.this.getNavigation().moveTo(vec.x, vec.y, vec.z, 1.2F);
+            }
+        }
+
+        public void tick() {
+            if (this.isCloseToFire(16)) {
+                EntityFroststalker.this.fleeFireFlag = 200;
+                if (fleeTarget == null || EntityFroststalker.this.distanceToSqr(fleeTarget) < 2F) {
+                    Vec3 vec = LandRandomPos.getPosAway(EntityFroststalker.this, 15, 5, Vec3.atCenterOf(destinationBlock));
+                    if (vec != null) {
+                        fleeTarget = vec;
+                    }
+                }
+                if (fleeTarget != null) {
+                    EntityFroststalker.this.getNavigation().moveTo(fleeTarget.x, fleeTarget.y, fleeTarget.z, 1F);
+                }
+            }
+        }
+
+        public void stop() {
+            fleeTarget = null;
+        }
+
+        protected boolean searchForDestination() {
+            int lvt_1_1_ = this.searchLength;
+            int lvt_2_1_ = this.verticalSearchRange;
+            BlockPos lvt_3_1_ = EntityFroststalker.this.blockPosition();
+            BlockPos.MutableBlockPos lvt_4_1_ = new BlockPos.MutableBlockPos();
+
+            for (int lvt_5_1_ = -8; lvt_5_1_ <= 2; lvt_5_1_++) {
+                for (int lvt_6_1_ = 0; lvt_6_1_ < lvt_1_1_; ++lvt_6_1_) {
+                    for (int lvt_7_1_ = 0; lvt_7_1_ <= lvt_6_1_; lvt_7_1_ = lvt_7_1_ > 0 ? -lvt_7_1_ : 1 - lvt_7_1_) {
+                        for (int lvt_8_1_ = lvt_7_1_ < lvt_6_1_ && lvt_7_1_ > -lvt_6_1_ ? lvt_6_1_ : 0; lvt_8_1_ <= lvt_6_1_; lvt_8_1_ = lvt_8_1_ > 0 ? -lvt_8_1_ : 1 - lvt_8_1_) {
+                            lvt_4_1_.setWithOffset(lvt_3_1_, lvt_7_1_, lvt_5_1_ - 1, lvt_8_1_);
+                            if (this.isFire(EntityFroststalker.this.level, lvt_4_1_)) {
+                                this.destinationBlock = lvt_4_1_;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private boolean isFire(Level world, BlockPos.MutableBlockPos lvt_4_1_) {
+            return BlockTags.getAllTags().getTag(AMTagRegistry.FROSTSTALKER_FEARS).contains(world.getBlockState(lvt_4_1_).getBlock());
+        }
+
     }
 }

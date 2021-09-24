@@ -99,7 +99,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntitySeagull> SEAGULL = registerEntity(EntityType.Builder.of(EntitySeagull::new, MobCategory.CREATURE).sized(0.45F, 0.45F), "seagull");
     public static final EntityType<EntityFroststalker> FROSTSTALKER = registerEntity(EntityType.Builder.of(EntityFroststalker::new, MobCategory.CREATURE).sized(0.95F, 1.15F).immuneTo(Blocks.POWDER_SNOW), "froststalker");
     public static final EntityType<EntityIceShard> ICE_SHARD = registerEntity(EntityType.Builder.of(EntityIceShard::new, MobCategory.MISC).sized(0.45F, 0.45F).setCustomClientFactory(EntityIceShard::new).fireImmune(), "ice_shard");
-    public static final EntityType<EntityTusklin> TUSKLIN = registerEntity(EntityType.Builder.of(EntityTusklin::new, MobCategory.CREATURE).sized(1.4F, 1.15F).immuneTo(Blocks.POWDER_SNOW), "tusklin");
+    public static final EntityType<EntityTusklin> TUSKLIN = registerEntity(EntityType.Builder.of(EntityTusklin::new, MobCategory.CREATURE).sized(2.2F, 1.9F).immuneTo(Blocks.POWDER_SNOW), "tusklin");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
