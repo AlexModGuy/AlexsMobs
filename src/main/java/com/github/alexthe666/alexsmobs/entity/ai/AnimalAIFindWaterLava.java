@@ -15,9 +15,15 @@ public class AnimalAIFindWaterLava extends Goal {
     private final PathfinderMob creature;
     private BlockPos targetPos;
     private int executionChance = 30;
+    private double speed;
 
     public AnimalAIFindWaterLava(PathfinderMob creature) {
+        this(creature, 1.0F);
+    }
+
+    public AnimalAIFindWaterLava(PathfinderMob creature, double speed) {
         this.creature = creature;
+        this.speed = speed;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
@@ -33,13 +39,13 @@ public class AnimalAIFindWaterLava extends Goal {
 
     public void start() {
         if(targetPos != null){
-            this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
+            this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed);
         }
     }
 
     public void tick() {
         if(targetPos != null){
-            this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
+            this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), speed);
         }
     }
 

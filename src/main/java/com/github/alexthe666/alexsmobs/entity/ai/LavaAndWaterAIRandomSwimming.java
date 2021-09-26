@@ -11,8 +11,8 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public class BoneSerpentAIRandomSwimming extends RandomStrollGoal {
-    public BoneSerpentAIRandomSwimming(PathfinderMob creature, double speed, int chance) {
+public class LavaAndWaterAIRandomSwimming extends RandomStrollGoal {
+    public LavaAndWaterAIRandomSwimming(PathfinderMob creature, double speed, int chance) {
         super(creature, speed, chance, false);
     }
 
@@ -63,7 +63,7 @@ public class BoneSerpentAIRandomSwimming extends RandomStrollGoal {
         return this.mob.level.getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.mob.level.getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
     }
 
-    private Vec3 findSurfaceTarget(PathfinderMob creature, int i, int i1) {
+    protected Vec3 findSurfaceTarget(PathfinderMob creature, int i, int i1) {
         Vec3 creaturePos = creature.position();
         BlockPos upPos = creature.blockPosition();
         while(creature.level.getFluidState(upPos).is(FluidTags.LAVA) || creature.level.getFluidState(upPos).is(FluidTags.WATER)){

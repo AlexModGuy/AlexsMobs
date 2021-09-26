@@ -216,6 +216,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.SEAGULL, 0XC9D2DC,0XFFD850, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_seagull"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.FROSTSTALKER, 0X788AC1,0XA1C3FF, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_froststalker"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TUSKLIN, 0X735841,0XE8E2D5, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_tusklin"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.LAVIATHAN, 0XD68356,0X3C3947, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_laviathan"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

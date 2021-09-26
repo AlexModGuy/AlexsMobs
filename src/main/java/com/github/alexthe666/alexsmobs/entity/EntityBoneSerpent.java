@@ -148,7 +148,7 @@ public class EntityBoneSerpent extends Monster {
         this.goalSelector.addGoal(0, new BoneSerpentAIFindLava(this));
         this.goalSelector.addGoal(1, new BoneSerpentAIMeleeJump(this));
         this.goalSelector.addGoal(2, new BoneSerpentAIJump(this, 10));
-        this.goalSelector.addGoal(3, new BoneSerpentAIRandomSwimming(this, 1.0D, 8));
+        this.goalSelector.addGoal(3, new LavaAndWaterAIRandomSwimming(this, 1.0D, 8));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());

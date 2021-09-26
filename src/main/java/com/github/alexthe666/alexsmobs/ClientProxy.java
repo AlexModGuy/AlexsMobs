@@ -155,6 +155,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.FROSTSTALKER, RenderFroststalker::new);
         EntityRenderers.register(AMEntityRegistry.ICE_SHARD, RenderIceShard::new);
         EntityRenderers.register(AMEntityRegistry.TUSKLIN, RenderTusklin::new);
+        EntityRenderers.register(AMEntityRegistry.LAVIATHAN, RenderLaviathan::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {

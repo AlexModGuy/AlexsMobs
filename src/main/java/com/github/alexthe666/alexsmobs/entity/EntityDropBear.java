@@ -308,7 +308,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
     private void onLand() {
         if (!level.isClientSide) {
             level.broadcastEntityEvent(this, (byte) 39);
-            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5D), null)) {
+            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5D))) {
                 if (!isAlliedTo(entity) && !(entity instanceof EntityDropBear) && entity != this) {
                     entity.hurt(DamageSource.mobAttack(this), 2.0F + random.nextFloat() * 5F);
                     launch(entity, true);
