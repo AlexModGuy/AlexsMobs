@@ -1,7 +1,7 @@
 {
   "pools": [
     {
-      "name": "froststalker",
+      "name": "froststalker_spikes",
       "conditions": [
         {
           "condition": "random_chance_with_looting",

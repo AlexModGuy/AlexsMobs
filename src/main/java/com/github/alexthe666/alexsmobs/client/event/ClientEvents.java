@@ -15,6 +15,7 @@ import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
 import com.google.common.base.MoreObjects;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -82,13 +83,11 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onFogDensity(EntityViewRenderEvent.FogDensity event) {
+    public void onFogDensity(EntityViewRenderEvent.RenderFogEvent event) {
         FogType fogType = event.getInfo().getFluidInCamera();
-        if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION)) {
-            if (fogType == FogType.LAVA) {
-                event.setDensity(0.05F);
-                event.setCanceled(true);
-            }
+        if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION) && fogType == FogType.LAVA) {
+            RenderSystem.setShaderFogStart(-8.0F);
+            RenderSystem.setShaderFogEnd(50.0F);
         }
     }
 

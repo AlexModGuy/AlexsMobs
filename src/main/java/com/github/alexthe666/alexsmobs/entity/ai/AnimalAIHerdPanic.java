@@ -1,10 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.entity.EntityLaviathan;
 import com.github.alexthe666.alexsmobs.entity.IHerdPanic;
 import com.google.common.base.Predicate;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -68,7 +70,12 @@ public class AnimalAIHerdPanic extends Goal {
     }
 
     private boolean findRandomPositionFrom(LivingEntity revengeTarget) {
-        Vec3 vector3d = LandRandomPos.getPosAway(this.creature, 16, 7, revengeTarget.position());
+        Vec3 vector3d;
+        if(this.creature instanceof EntityLaviathan){
+            vector3d = DefaultRandomPos.getPosAway(this.creature, 32, 16, revengeTarget.position());
+        }else{
+            vector3d = LandRandomPos.getPosAway(this.creature, 16, 7, revengeTarget.position());
+        }
         if (vector3d == null) {
             return false;
         } else {
@@ -110,6 +117,7 @@ public class AnimalAIHerdPanic extends Goal {
             ((IHerdPanic) this.creature).onPanic();
         }
         this.creature.getNavigation().moveTo(this.randPosX, this.randPosY, this.randPosZ, this.speed);
+
         this.running = true;
     }
 

@@ -36,7 +36,6 @@ public class RenderCachalotWhale extends MobRenderer<EntityCachalotWhale, ModelC
         }
     }
 
-
     public ResourceLocation getTextureLocation(EntityCachalotWhale entity) {
         if(entity.isAlbino()){
             return entity.isSleeping() || entity.isBeached() ? TEXTURE_ALBINO_SLEEPING : TEXTURE_ALBINO;

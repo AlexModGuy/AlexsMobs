@@ -21,7 +21,8 @@ public class LavaAndWaterAIRandomSwimming extends RandomStrollGoal {
             return false;
         } else {
             if (!this.forceTrigger) {
-                if (this.mob.getRandom().nextInt(this.interval) != 0) {
+                int i = this.mob.isInLava() || this.mob.isInWater() ? this.interval : this.interval * 2;
+                if (this.mob.getRandom().nextInt(i) != 0) {
                     return false;
                 }
             }
@@ -70,7 +71,7 @@ public class LavaAndWaterAIRandomSwimming extends RandomStrollGoal {
             upPos = upPos.above();
         }
         if(isAirAbove(upPos.below(), 0, 0, 0) && canJumpTo(upPos.below(), 0, 0, 0)){
-            return new Vec3(upPos.getX() + 0.5F, upPos.getY() + 3.5F, upPos.getZ() + 0.5F);
+            return new Vec3(upPos.getX() + 0.5F, upPos.getY() - 0.5F, upPos.getZ() + 0.5F);
         }
         return null;
     }

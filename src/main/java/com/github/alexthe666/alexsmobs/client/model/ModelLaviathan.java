@@ -140,17 +140,19 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         return ImmutableList.of(root);
     }
 
+
     @Override
     public void setupAnim(EntityLaviathan entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         float partialTick = Minecraft.getInstance().getFrameTime();
-        float hh1 = entity.prevHeadHeight / 3F;
-        float hh2 = entity.getHeadHeight() / 3F;
-        float rawHeadHeight = hh1 + (hh2 - hh1) * partialTick;
+        float hh1 = entity.prevHeadHeight;
+        float hh2 = entity.getHeadHeight();
+        float rawHeadHeight = (hh1 + (hh2 - hh1) * partialTick) / 3F;
         float clampedNeckRot = Mth.clamp(-rawHeadHeight, -1, 1);
         float headStillProgress = 1F - Math.abs(clampedNeckRot);
         float swimProgress = entity.prevSwimProgress + (entity.swimProgress - entity.prevSwimProgress) * partialTick;
         float onLandProgress = 5F - swimProgress;
+        float biteProgress = entity.prevBiteProgress + (entity.biteProgress - entity.prevBiteProgress) * partialTick;
         this.neck.rotateAngleX += clampedNeckRot;
         this.neck.rotationPointZ += Math.abs(clampedNeckRot) * 2F;
         this.neck2.rotateAngleX -= clampedNeckRot * 0.4F;
@@ -166,6 +168,12 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         progressRotationPrev(leftLeg, onLandProgress, 0, 0, (float) Math.toRadians(15), 5F);
         progressRotationPrev(rightArm, onLandProgress, 0, 0, (float) Math.toRadians(-20), 5F);
         progressRotationPrev(leftArm, onLandProgress, 0, 0, (float) Math.toRadians(20), 5F);
+        progressRotationPrev(head, biteProgress, (float) Math.toRadians(-10), 0, 0, 5F);
+        progressRotationPrev(top_jaw, biteProgress, (float) Math.toRadians(-20), 0, 0, 5F);
+        progressRotationPrev(bottom_jaw, biteProgress, (float) Math.toRadians(40), 0, 0, 5F);
+        progressRotationPrev(neck, biteProgress, (float) Math.toRadians(10), 0, 0, 5F);
+        progressPositionPrev(bottom_jaw, biteProgress, 0, 2, -1, 5F);
+        progressPositionPrev(neck, biteProgress, 0, 0, 2, 5F);
         float idleSpeed = 0.04f;
         float idleDegree = 0.3f;
         float walkSpeed = 0.9f - 0.6F * 0.2F * swimProgress;
@@ -180,7 +188,7 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         this.swing(rightArm, walkSpeed, walkDegree, true, 2, -0.25F, limbSwing, limbSwingAmount * onLandProgress * 0.2F);
         this.bob(body, -walkSpeed * 0.5F, walkDegree * 3, true, limbSwing, limbSwingAmount);
         this.chainSwing(neckBoxes, walkSpeed, walkDegree * 0.3F, -21, limbSwing, limbSwingAmount * swimProgress * 0.2F * headStillProgress);
-        this.swing(tail, walkSpeed, walkDegree * 0.5F, false, -3, 0F, limbSwing, 1.0F * swimProgress * 0.2F);
+        this.swing(tail, walkSpeed, walkDegree * 0.5F, false, -3, 0F, limbSwing, limbSwingAmount * swimProgress * 0.2F);
         this.flap(leftLeg, walkSpeed, walkDegree, true, 2, 0.2F, limbSwing, limbSwingAmount * swimProgress * 0.2F);
         this.flap(rightLeg, walkSpeed, walkDegree, false, 2, 0.2F, limbSwing, limbSwingAmount * swimProgress * 0.2F);
         this.flap(leftArm, walkSpeed, walkDegree, false, 2, -0.25F, limbSwing, limbSwingAmount * swimProgress * 0.2F);

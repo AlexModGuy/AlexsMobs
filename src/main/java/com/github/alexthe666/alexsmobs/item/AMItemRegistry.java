@@ -146,6 +146,8 @@ public class AMItemRegistry {
     public static final Item FROSTSTALKER_HORN = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:froststalker_horn");
     public static final Item FROSTSTALKER_HELMET = new ItemModArmor(FROSTSTALKER_ARMOR_MATERIAL, EquipmentSlot.HEAD).setRegistryName("alexsmobs:froststalker_helmet");
     public static final Item PIGSHOES = new ItemPigshoes(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:pigshoes");
+    public static final Item STRADDLE_HELMET = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:straddle_helmet");
+    public static final Item STRADDLE_SADDLE = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:straddle_saddle");
 
     public static final Item MUSIC_DISC_THIME = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
     public static final Item MUSIC_DISC_DAZE = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_daze");

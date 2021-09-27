@@ -46,6 +46,10 @@ public class EntityLaviathanPart extends PartEntity<EntityLaviathan> {
         return this.getParent() == null ? InteractionResult.PASS : this.getParent().mobInteract(player, hand);
     }
 
+    public boolean canBeCollidedWith() {
+        return true;
+    }
+
     protected void collideWithEntity(Entity entityIn) {
         entityIn.push(this);
     }
