@@ -5,6 +5,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
@@ -140,8 +142,15 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         return ImmutableList.of(root);
     }
 
+    public void translateRotate(PoseStack stack){
+        this.head.translateRotate(stack);
+        this.neck2.translateRotate(stack);
+        this.neck.translateRotate(stack);
+        this.body.translateRotate(stack);
+        this.root.translateRotate(stack);
+    }
 
-    @Override
+                                @Override
     public void setupAnim(EntityLaviathan entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         float partialTick = Minecraft.getInstance().getFrameTime();
@@ -151,7 +160,7 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         float clampedNeckRot = Mth.clamp(-rawHeadHeight, -1, 1);
         float headStillProgress = 1F - Math.abs(clampedNeckRot);
         float swimProgress = entity.prevSwimProgress + (entity.swimProgress - entity.prevSwimProgress) * partialTick;
-        float onLandProgress = 5F - swimProgress;
+        float onLandProgress = Math.max(0, 5F - swimProgress);
         float biteProgress = entity.prevBiteProgress + (entity.biteProgress - entity.prevBiteProgress) * partialTick;
         this.neck.rotateAngleX += clampedNeckRot;
         this.neck.rotationPointZ += Math.abs(clampedNeckRot) * 2F;
@@ -159,10 +168,10 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         this.neck2.rotationPointZ += Math.abs(clampedNeckRot) * 2F;
         this.head.rotateAngleX -= clampedNeckRot * 0.6F;
         this.head.rotationPointZ += Math.abs(clampedNeckRot) * 2F;
-
+        this.neck.rotationPointY -= Mth.clamp(Math.abs(entity.getHeadYaw(partialTick)) / 50F, 0F, 1F);
         this.neck.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.65F);
-        this.neck2.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.5F);
-        this.head.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.25F);
+        this.neck2.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.6F);
+        this.head.rotateAngleY += Math.toRadians(entity.getHeadYaw(partialTick) * 0.45F);
 
         progressRotationPrev(rightLeg, onLandProgress, 0, 0, (float) Math.toRadians(-15), 5F);
         progressRotationPrev(leftLeg, onLandProgress, 0, 0, (float) Math.toRadians(15), 5F);
@@ -176,7 +185,10 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         progressPositionPrev(neck, biteProgress, 0, 0, 2, 5F);
         float idleSpeed = 0.04f;
         float idleDegree = 0.3f;
-        float walkSpeed = 0.9f - 0.6F * 0.2F * swimProgress;
+        float walkSpeed = 0.9F;
+        if(entity.swimProgress >= 5F){
+            walkSpeed = 0.3F;
+        }
         float walkDegree = 0.5F + swimProgress * 0.05F;
         AdvancedModelBox[] neckBoxes = new AdvancedModelBox[]{neck, neck2, head};
         this.chainWave(neckBoxes, idleSpeed, idleDegree * 0.2F, 9, ageInTicks, 1.0F);
@@ -205,5 +217,27 @@ public class ModelLaviathan extends AdvancedEntityModel<EntityLaviathan> {
         return ImmutableList.of(root, body, leftArm, rightArm, leftLeg, rightLeg, tail, neck, neck2, head, bottom_jaw, top_jaw, shell, vent1, vent2, vent3, vent4);
     }
 
+    @Override
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
+            float f = 1.45F;
+            head.setScale(f, f, f);
+            head.setShouldScaleChildren(true);
+            matrixStackIn.pushPose();
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0D, 1.5D, 0.125D);
+            parts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+            head.setScale(1, 1, 1);
+        } else {
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+        }
 
+    }
 }

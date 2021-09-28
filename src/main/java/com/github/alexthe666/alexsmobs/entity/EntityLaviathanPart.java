@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 
 import java.util.List;
@@ -33,13 +34,13 @@ public class EntityLaviathanPart extends PartEntity<EntityLaviathan> {
         return true;
     }
 
-    protected void collideWithNearbyEntities() {
-        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-        Entity parent = this.getParent();
-        if (parent != null) {
-            entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityLaviathanPart && ((EntityLaviathanPart) entity).getParent() == parent) && entity.isPushable()).forEach(entity -> entity.push(parent));
+    @Override
+    public Vec3 getLeashOffset() {
+        return new Vec3(0.0D, (double)this.getEyeHeight() * 0.15F, (double)(this.getBbWidth() * 0.1F));
+    }
 
-        }
+    protected void collideWithNearbyEntities() {
+
     }
 
     public InteractionResult getEntityInteractionResult(Player player, InteractionHand hand) {
