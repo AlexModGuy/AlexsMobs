@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -66,6 +67,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     private static final Predicate<EntityCrimsonMosquito> HEALTHY_MOSQUITOES = (mob) -> {
         return mob.isAlive() && mob.getHealth() > 0 && !mob.isSick();
     };
+    public static final ResourceLocation OBSIDIAN_LOOT = new ResourceLocation("alexsmobs", "entities/laviathan_obsidian");
     public final EntityLaviathanPart headPart;
     public final EntityLaviathanPart neckPart1;
     public final EntityLaviathanPart neckPart2;
@@ -114,6 +116,12 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         this.allParts = new EntityLaviathanPart[]{this.neckPart1, this.neckPart2, this.neckPart3, this.neckPart4, this.neckPart5, this.headPart, this.seat1, this.seat2, this.seat3, this.seat4};
         this.seatParts = new EntityLaviathanPart[]{this.seat1, this.seat2, this.seat3, this.seat4};
         switchNavigator(true);
+    }
+
+
+    @Nullable
+    protected ResourceLocation getDefaultLootTable() {
+        return this.isObsidian() ? OBSIDIAN_LOOT : super.getDefaultLootTable();
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -566,7 +574,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
             if (!this.isChilling() && headPeakCooldown == 0) {
                 float low = getLowHeadHeight();
-                this.setHeadHeight(this.getHeadHeight() + (((getLowHeadHeight() + getHighHeadHeight(low)) / 2F) - this.getHeadHeight()) * 0.2F);
+                this.setHeadHeight(this.getHeadHeight() +  (0.5F + ((getLowHeadHeight() + getHighHeadHeight(low)) / 2F) - this.getHeadHeight()) * 0.2F);
             } else {
                 if (getMaxFluidHeight() <= this.getBbHeight() * 0.5F && getMaxFluidHeight() >= this.getBbHeight() * 0.25F) {
                     float mot = (float) this.getDeltaMovement().lengthSqr();
@@ -630,23 +638,20 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     public float getLowHeadHeight() {
-        float checkAt = -3F;
-        while (checkAt < 3F) {
-            if (!isHeadInWall((float) this.getY() + checkAt)) {
-                break;
-            }
-            checkAt += 0.2F;
+        float checkAt = 0F;
+        while (checkAt > -3F && !isHeadInWall((float) this.getY() + checkAt)) {
+            checkAt -= 0.2F;
         }
         return checkAt;
     }
 
     public float getHighHeadHeight(float low) {
-        float checkAt = low;
-        while (checkAt < 3F) {
-            if (isHeadInWall((float) this.getY() + checkAt)) {
+        float checkAt = 3F;
+        while (checkAt > 0) {
+            if(isHeadInWall((float) this.getY() + checkAt)) {
                 break;
             }
-            checkAt += 0.2F;
+            checkAt -= 0.2F;
         }
 
         return checkAt;
