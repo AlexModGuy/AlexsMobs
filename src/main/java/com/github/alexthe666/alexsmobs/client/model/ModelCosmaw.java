@@ -6,26 +6,27 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelCosmaw extends AdvancedEntityModel<EntityCosmaw> {
-    private final AdvancedModelBox root;
-    private final AdvancedModelBox body;
-    private final AdvancedModelBox leftArm;
-    private final AdvancedModelBox rightArm;
-    private final AdvancedModelBox leftFin;
-    private final AdvancedModelBox rightFin;
-    private final AdvancedModelBox mouthArm1;
-    private final AdvancedModelBox mouthArm2;
-    private final AdvancedModelBox mouth;
-    private final AdvancedModelBox topJaw;
-    private final AdvancedModelBox lowerJaw;
-    private final AdvancedModelBox eyesBase;
-    private final AdvancedModelBox leftEye;
-    private final AdvancedModelBox rightEye;
-    private final AdvancedModelBox tail;
-    private final AdvancedModelBox leftLeg;
-    private final AdvancedModelBox rightLeg;
-    private final AdvancedModelBox tailFin;
+    public final AdvancedModelBox root;
+    public final AdvancedModelBox body;
+    public final AdvancedModelBox leftArm;
+    public final AdvancedModelBox rightArm;
+    public final AdvancedModelBox leftFin;
+    public final AdvancedModelBox rightFin;
+    public final AdvancedModelBox mouthArm1;
+    public final AdvancedModelBox mouthArm2;
+    public final AdvancedModelBox mouth;
+    public final AdvancedModelBox topJaw;
+    public final AdvancedModelBox lowerJaw;
+    public final AdvancedModelBox eyesBase;
+    public final AdvancedModelBox leftEye;
+    public final AdvancedModelBox rightEye;
+    public final AdvancedModelBox tail;
+    public final AdvancedModelBox leftLeg;
+    public final AdvancedModelBox rightLeg;
+    public final AdvancedModelBox tailFin;
 
     public ModelCosmaw() {
         texWidth = 128;
@@ -147,7 +148,8 @@ public class ModelCosmaw extends AdvancedEntityModel<EntityCosmaw> {
         float idleDegree = 0.2F;
         float partialTick = Minecraft.getInstance().getFrameTime();
         float clutchProgress = entity.prevClutchProgress + (entity.clutchProgress - entity.prevClutchProgress) * partialTick;
-        float openProgress = Math.max(entity.prevOpenProgress + (entity.openProgress - entity.prevOpenProgress) * partialTick, clutchProgress);
+        float biteProgress = entity.prevBiteProgress + (entity.biteProgress - entity.prevBiteProgress) * partialTick;
+        float openProgress = Math.max(Math.max(entity.prevOpenProgress + (entity.openProgress - entity.prevOpenProgress) * partialTick, clutchProgress), biteProgress);
         float cosmawPitch = (float) (Math.toRadians(entity.getClampedCosmawPitch(partialTick)) * (5F - clutchProgress) * 0.2F);
         float cosmawPitchAbs = (float) (Math.abs(entity.getClampedCosmawPitch(partialTick) / 90F) * (5F - clutchProgress) * 0.2F);
         body.rotateAngleX += cosmawPitch;
@@ -187,7 +189,13 @@ public class ModelCosmaw extends AdvancedEntityModel<EntityCosmaw> {
         progressRotationPrev(mouthArm2, clutchProgress, (float)Math.toRadians(120), 0, 0, 5F);
         progressPositionPrev(mouthArm2, clutchProgress, 0, -2, 3, 5F);
         progressPositionPrev(body, clutchProgress, 0, -10, 33, 5F);
-
+        progressPositionPrev(body, biteProgress, 0,  0, 20, 5F);
+        progressRotationPrev(mouthArm1, biteProgress, (float)Math.toRadians(-35), 0, 0, 5F);
+        progressRotationPrev(mouthArm2, biteProgress, (float)Math.toRadians(50), 0, 0, 5F);
+        progressRotationPrev(leftArm, biteProgress, (float)Math.toRadians(10), 0, (float)Math.toRadians(-30), 5F);
+        progressRotationPrev(rightArm, biteProgress, (float)Math.toRadians(10), 0, (float)Math.toRadians(30), 5F);
+        float eyeYaw = (Mth.clamp(netHeadYaw, -40, 40) / 57.295776F);
+        this.eyesBase.rotateAngleY += eyeYaw * 0.35F;
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {

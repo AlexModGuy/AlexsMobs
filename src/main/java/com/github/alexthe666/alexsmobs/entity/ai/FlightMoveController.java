@@ -54,9 +54,10 @@ public class FlightMoveController extends MoveControl {
                 }
             }
 
+        } else if (this.operation == Operation.STRAFE) {
+            this.operation = Operation.WAIT;
         }
     }
-
     private boolean canReach(Vec3 p_220673_1_, int p_220673_2_) {
         AABB axisalignedbb = this.parentEntity.getBoundingBox();
 

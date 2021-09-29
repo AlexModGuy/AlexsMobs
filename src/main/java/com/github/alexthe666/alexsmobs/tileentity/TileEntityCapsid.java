@@ -138,6 +138,20 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
                     this.setItem(0, new ItemStack(AMItemRegistry.MUSIC_DISC_DAZE));
                 }
             }
+            if(this.getItem(0).is(Items.COD) && level.getBlockState(this.getBlockPos().above()).getBlock() != this.getBlockState().getBlock()) {
+                vibrating = true;
+                if(transformProg > 120) {
+                    ItemStack current = this.getItem(0).copy();
+                    current.shrink(1);
+                    if(!current.isEmpty()){
+                        ItemEntity itemEntity = new ItemEntity(this.level, this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 0.5F, this.getBlockPos().getZ() + 0.5F, current);
+                        if(!level.isClientSide){
+                            level.addFreshEntity(itemEntity);
+                        }
+                    }
+                    this.setItem(0, new ItemStack(AMItemRegistry.COSMIC_COD));
+                }
+            }
             } else {
             floatUpProgress = 0F;
         }

@@ -134,6 +134,10 @@ public class FlyingAIFollowOwner extends Goal {
     }
 
     private boolean isTeleportFriendlyBlock(BlockPos pos) {
+        if(this.world.getBlockState(pos).isAir()){
+            BlockPos blockpos = pos.subtract(this.tameable.blockPosition());
+            return this.world.noCollision(this.tameable, this.tameable.getBoundingBox().move(blockpos));
+        }
         BlockPathTypes pathnodetype = WalkNodeEvaluator.getBlockPathTypeStatic(this.world, pos.mutable());
         if (pathnodetype != BlockPathTypes.WALKABLE) {
             return false;

@@ -8,10 +8,16 @@ import net.minecraft.world.level.Level;
 public class DirectPathNavigator extends GroundPathNavigation {
 
     private Mob mob;
+    private float yMobOffset = 0;
 
     public DirectPathNavigator(Mob mob, Level world) {
+        this(mob, world, 0);
+    }
+
+    public DirectPathNavigator(Mob mob, Level world, float yMobOffset) {
         super(mob, world);
         this.mob = mob;
+        this.yMobOffset = yMobOffset;
     }
 
     public void tick() {
@@ -24,7 +30,7 @@ public class DirectPathNavigator extends GroundPathNavigation {
     }
 
     public boolean moveTo(Entity entityIn, double speedIn) {
-        mob.getMoveControl().setWantedPosition(entityIn.getX(), entityIn.getY(), entityIn.getZ(), speedIn);
+        mob.getMoveControl().setWantedPosition(entityIn.getX(), entityIn.getY() + yMobOffset, entityIn.getZ(), speedIn);
         return true;
     }
 
