@@ -40,7 +40,7 @@ public class SealAIDiveForItems extends Goal {
 
     private static List<ItemStack> getItemStacks(EntitySeal seal) {
         LootTable loottable = seal.level.getServer().getLootTables().get(SEAL_REWARD);
-        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) seal.level)).withParameter(LootContextParams.THIS_ENTITY, seal).withRandom(seal.level.random).create(LootContextParamSets.PIGLIN_BARTER));
+        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) seal.level)).withParameter(LootContextParams.ORIGIN, seal.position()).withParameter(LootContextParams.THIS_ENTITY, seal).withRandom(seal.level.random).create(LootContextParamSets.PIGLIN_BARTER));
     }
 
     @Override

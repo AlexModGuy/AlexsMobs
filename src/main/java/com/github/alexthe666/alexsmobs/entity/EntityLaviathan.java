@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -118,6 +120,17 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         switchNavigator(true);
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.LAVIATHAN_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.LAVIATHAN_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.LAVIATHAN_HURT;
+    }
 
     @Nullable
     protected ResourceLocation getDefaultLootTable() {

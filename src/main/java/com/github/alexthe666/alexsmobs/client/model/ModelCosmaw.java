@@ -153,15 +153,20 @@ public class ModelCosmaw extends AdvancedEntityModel<EntityCosmaw> {
         float biteProgress = entity.prevBiteProgress + (entity.biteProgress - entity.prevBiteProgress) * partialTick;
         float openProgress = Math.max(Math.max(entity.prevOpenProgress + (entity.openProgress - entity.prevOpenProgress) * partialTick, clutchProgress), biteProgress);
         float cosmawPitch = (float) (Math.toRadians(entity.getClampedCosmawPitch(partialTick)) * (5F - clutchProgress) * 0.2F);
-        float cosmawPitchAbs = (float) (Math.abs(entity.getClampedCosmawPitch(partialTick) / 90F) * (5F - clutchProgress) * 0.2F);
+        float cosmawPitchPos = (float) ((entity.getClampedCosmawPitch(partialTick) / 90F) * (5F - clutchProgress) * 0.2F);
         body.rotateAngleX += cosmawPitch;
         eyesBase.rotateAngleX -= cosmawPitch;
         mouthArm1.rotateAngleX -= cosmawPitch * 0.2F;
         mouthArm2.rotateAngleX -= cosmawPitch * 1.7F;
         lowerJaw.rotateAngleX -= cosmawPitch * 0.3F;
         topJaw.rotateAngleX -= cosmawPitch * 0.3F;
-        mouthArm2.rotationPointY -= cosmawPitchAbs * 2;
-        mouthArm2.rotationPointZ += cosmawPitchAbs * 3;
+        if(cosmawPitchPos > 0){
+            mouthArm2.rotationPointY -= Math.min(cosmawPitchPos * 6, 3F);
+        }else{
+            mouthArm2.rotationPointZ -= cosmawPitchPos * 3;
+            mouthArm2.rotationPointY += cosmawPitchPos;
+
+        }
         this.walk(body, idleSpeed, idleDegree * 0.1F, false, -1F, 0.05F, ageInTicks, 1);
         this.walk(tail, idleSpeed, idleDegree * -0.15F, true, -1F, 0.05F, ageInTicks, 1);
         this.swing(leftFin, idleSpeed, idleDegree * 0.22F, false, -2F, 0.05F, ageInTicks, 1);

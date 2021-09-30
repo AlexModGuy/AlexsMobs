@@ -638,6 +638,54 @@
       "offset_y": -14,
       "linked_page": "seagull.json",
       "hover_text": "entity.alexsmobs.seagull"
+    },
+    {
+      "entity": "alexsmobs:froststalker",
+      "x": 320,
+      "y": 10,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.2,
+      "offset_x": -6,
+      "offset_y": -6,
+      "linked_page": "froststalker.json",
+      "hover_text": "entity.alexsmobs.froststalker"
+    },
+    {
+      "entity": "alexsmobs:tusklin",
+      "x": 350,
+      "y": 10,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 0.7,
+      "offset_x": -3,
+      "offset_y": 0,
+      "linked_page": "tusklin.json",
+      "hover_text": "entity.alexsmobs.tusklin"
+    },
+    {
+      "entity": "alexsmobs:laviathan",
+      "x": 230,
+      "y": 40,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 0.8,
+      "offset_x": -34,
+      "offset_y": -20,
+      "linked_page": "laviathan.json",
+      "hover_text": "entity.alexsmobs.laviathan"
+    },
+    {
+      "entity": "alexsmobs:cosmaw",
+      "x": 260,
+      "y": 40,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 0.4,
+      "offset_x": 5,
+      "offset_y": 3,
+      "linked_page": "cosmaw.json",
+      "hover_text": "entity.alexsmobs.cosmaw"
     }
   ],
   "linked_page_buttons": [

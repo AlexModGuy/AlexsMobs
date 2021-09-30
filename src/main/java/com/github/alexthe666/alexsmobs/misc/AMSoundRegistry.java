@@ -254,6 +254,22 @@ public class AMSoundRegistry {
 
     public static final SoundEvent SEAGULL_HURT = createSoundEvent("seagull_hurt");
 
+    public static final SoundEvent FROSTSTALKER_IDLE = createSoundEvent("froststalker_idle");
+
+    public static final SoundEvent FROSTSTALKER_HURT = createSoundEvent("froststalker_hurt");
+   
+    public static final SoundEvent TUSKLIN_IDLE = createSoundEvent("tusklin_idle");
+
+    public static final SoundEvent TUSKLIN_HURT = createSoundEvent("tusklin_hurt");
+
+    public static final SoundEvent LAVIATHAN_IDLE = createSoundEvent("laviathan_idle");
+
+    public static final SoundEvent LAVIATHAN_HURT = createSoundEvent("laviathan_hurt");
+
+    public static final SoundEvent COSMAW_IDLE = createSoundEvent("cosmaw_idle");
+
+    public static final SoundEvent COSMAW_HURT = createSoundEvent("cosmaw_hurt");
+
 
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);

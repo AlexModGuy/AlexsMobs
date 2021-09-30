@@ -2,14 +2,17 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -117,6 +120,18 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         }));
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.COSMAW_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.COSMAW_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.COSMAW_HURT;
+    }
+
     public boolean isFood(ItemStack stack) {
         return this.isTame() && stack.is(AMItemRegistry.COSMIC_COD);
     }
@@ -168,6 +183,18 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         }
     }
 
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("CosmawSitting", this.isSitting());
+        compound.putInt("Command", this.getCommand());
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setOrderedToSit(compound.getBoolean("CosmawSitting"));
+        this.setCommand(compound.getInt("Command"));
+    }
 
     public void tick() {
         super.tick();

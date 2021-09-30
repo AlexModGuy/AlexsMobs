@@ -126,7 +126,7 @@ public class FroststalkerAIMelee extends Goal {
         while (!froststalker.level.getBlockState(circlePos).isAir() && circlePos.getY() < froststalker.level.getMaxBuildHeight()) {
             circlePos = circlePos.above();
         }
-        while (!froststalker.level.getBlockState(circlePos.below()).entityCanStandOn(froststalker.level, circlePos.below(), froststalker)) {
+        while (!froststalker.level.getBlockState(circlePos.below()).entityCanStandOn(froststalker.level, circlePos.below(), froststalker) && circlePos.getY() > 1) {
             circlePos = circlePos.below();
         }
         if (froststalker.getWalkTargetValue(circlePos) > -1) {

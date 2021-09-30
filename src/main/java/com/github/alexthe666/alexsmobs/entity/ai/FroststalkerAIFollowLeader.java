@@ -36,14 +36,11 @@ public class FroststalkerAIFollowLeader  extends Goal {
             return false;
         } else {
             this.nextStartTick = this.nextStartTick(this.mob);
-            Predicate<Player> playerPredicate = (player) -> {
-                return player.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET);
-            };
             Predicate<EntityFroststalker> froststalkerPredicate = (p_25258_) -> {
                 return p_25258_.canBeFollowed() || !p_25258_.isFollower();
             };
             float range = 60F;
-            List<Player> playerList = this.mob.level.getEntitiesOfClass(Player.class, this.mob.getBoundingBox().inflate(range, range, range), playerPredicate);
+            List<Player> playerList = this.mob.level.getEntitiesOfClass(Player.class, this.mob.getBoundingBox().inflate(range, range, range), EntityFroststalker.VALID_LEADER_PLAYERS);
             Player closestPlayer = null;
             for(Player player : playerList){
                 if(closestPlayer == null || player.distanceTo(mob) < closestPlayer.distanceTo(mob)){

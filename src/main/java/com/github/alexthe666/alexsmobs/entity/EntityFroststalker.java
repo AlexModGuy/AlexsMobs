@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -13,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
@@ -30,6 +32,8 @@ import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
@@ -41,6 +45,8 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemiAquatic {
@@ -56,6 +62,9 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     private static final EntityDataAccessor<Boolean> SPIKE_SHAKING = SynchedEntityData.defineId(EntityFroststalker.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> BIPEDAL = SynchedEntityData.defineId(EntityFroststalker.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> TURN_ANGLE = SynchedEntityData.defineId(EntityFroststalker.class, EntityDataSerializers.FLOAT);
+    public static final Predicate<Player> VALID_LEADER_PLAYERS = (player) -> {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET);
+    };
     public float bipedProgress;
     public float prevBipedProgress;
     public float tackleProgress;
@@ -72,6 +81,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     private int shakeTime = 0;
     private boolean hasSpikedArmor = false;
     private int fleeFireFlag;
+    private int resetLeaderCooldown = 100;
 
     protected EntityFroststalker(EntityType<? extends Animal> type, Level level) {
         super(type, level);
@@ -79,6 +89,19 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.FROSTSTALKER_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.FROSTSTALKER_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.FROSTSTALKER_HURT;
+    }
+
 
     @Nullable
     protected ResourceLocation getDefaultLootTable() {
@@ -151,6 +174,13 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     @Override
+    public void setInLove(@Nullable Player player) {
+        if(player != null && isValidLeader(player)){
+            super.setInLove(player);
+        }
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(TURN_ANGLE, 0F);
@@ -182,6 +212,10 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
 
     public boolean hasRestriction() {
         return this.isFollower();
+    }
+
+    public boolean isFood(ItemStack stack) {
+        return stack.is(Items.PORKCHOP) || stack.is(Items.COOKED_PORKCHOP);
     }
 
     public void tick() {
@@ -321,7 +355,32 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         if (fleeFireFlag > 0) {
             fleeFireFlag--;
         }
+        if(!level.isClientSide){
+            if(resetLeaderCooldown > 0){
+                resetLeaderCooldown--;
+            }else{
+                resetLeaderCooldown = 200 + this.getRandom().nextInt(200);
+                this.lookForPlayerLeader();
+            }
+        }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    private void lookForPlayerLeader() {
+       if(!(this.leader instanceof Player)){
+           float range = 10;
+           List<Player> playerList = this.level.getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(range, range, range), EntityFroststalker.VALID_LEADER_PLAYERS);
+           Player closestPlayer = null;
+           for(Player player : playerList){
+               if(closestPlayer == null || player.distanceTo(this) < closestPlayer.distanceTo(this)){
+                   closestPlayer = player;
+               }
+           }
+           if(closestPlayer != null){
+               this.stopFollowing();
+               this.startFollowing(closestPlayer);
+           }
+       }
     }
 
     public boolean isFleeingFire(){
