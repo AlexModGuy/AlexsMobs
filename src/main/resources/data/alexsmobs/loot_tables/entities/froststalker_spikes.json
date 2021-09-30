@@ -12,7 +12,7 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
           "name": "alexsmobs:froststalker_horn",
           "weight": 1
         }

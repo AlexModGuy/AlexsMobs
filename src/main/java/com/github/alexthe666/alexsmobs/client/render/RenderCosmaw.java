@@ -25,7 +25,7 @@ public class RenderCosmaw extends MobRenderer<EntityCosmaw, ModelCosmaw> {
     }
 
     protected void scale(EntityCosmaw entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.translate(0, -0.2F, 0);
+        matrixStackIn.translate(0, -0.5F, 0);
     }
 
     public ResourceLocation getTextureLocation(EntityCosmaw entity) {

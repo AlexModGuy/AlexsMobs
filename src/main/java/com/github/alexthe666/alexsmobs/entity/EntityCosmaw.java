@@ -1,18 +1,16 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
-import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
-import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
-import com.github.alexthe666.alexsmobs.entity.ai.FlyingAIFollowOwner;
+import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,13 +25,12 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -46,8 +43,8 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     private static final EntityDataAccessor<Float> COSMAW_PITCH = SynchedEntityData.defineId(EntityCosmaw.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(EntityCosmaw.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityCapuchinMonkey.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityCapuchinMonkey.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityCosmaw.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityCosmaw.class, EntityDataSerializers.INT);
     public float clutchProgress;
     public float prevClutchProgress;
     public float openProgress;
@@ -55,7 +52,10 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     public float prevCosmawPitch;
     public float biteProgress;
     public float prevBiteProgress;
+    private float stuckRot = random.nextInt(3) * 90;
     private UUID fishThrowerID;
+    private int heldItemTime;
+    private BlockPos lastSafeTpPosition;
 
     protected EntityCosmaw(EntityType<? extends TamableAnimal> type, Level lvl) {
         super(type, lvl);
@@ -75,6 +75,10 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     }
 
+    @Override
+    protected void outOfWorld() {
+    }
+
     public boolean doHurtTarget(Entity entityIn) {
         if (this.entityData.get(ATTACK_TICK) == 0 && this.biteProgress == 0) {
             this.entityData.set(ATTACK_TICK, 5);
@@ -86,10 +90,18 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AIAttack());
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(3, new FlyingAIFollowOwner(this, 1.3D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(3, new FlyingAIFollowOwner(this, 1.3D, 8.0F, 4.0F, false));
         this.goalSelector.addGoal(4, new AIPickupOwner());
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.2D));
-        this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, Ingredient.of(Items.CHORUS_FRUIT, AMItemRegistry.COSMIC_COD), false));
+        this.goalSelector.addGoal(6, new AnimalAITemptDistance(this, 1.1D, Ingredient.of(Items.CHORUS_FRUIT, AMItemRegistry.COSMIC_COD), false, 25) {
+            public boolean canUse() {
+                return super.canUse() && EntityCosmaw.this.getMainHandItem().isEmpty();
+            }
+
+            public boolean canContinueToUse() {
+                return super.canContinueToUse() && EntityCosmaw.this.getMainHandItem().isEmpty();
+            }
+        });
         this.goalSelector.addGoal(7, new RandomFlyGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 10));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -105,8 +117,16 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         }));
     }
 
+    public boolean isFood(ItemStack stack) {
+        return this.isTame() && stack.is(AMItemRegistry.COSMIC_COD);
+    }
+
     public boolean isNoGravity() {
         return true;
+    }
+
+    public boolean isLeftHanded() {
+        return false;
     }
 
     public float getClampedCosmawPitch(float partialTick) {
@@ -138,6 +158,17 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         this.entityData.set(SITTING, Boolean.valueOf(sit));
     }
 
+
+    public void positionRider(Entity passenger) {
+        if (this.hasPassenger(passenger)) {
+            float f = this.animationPosition;
+            float f1 = this.animationSpeed;
+            float bob = (float) (Math.sin(f * 0.7F) * (double) f1 * 0.0625F * 1.6F - (f1 * 0.0625F * 1.6F));
+            passenger.setPos(this.getX(), this.getY() - bob + 0.3F - this.getPassengersRidingOffset(), this.getZ());
+        }
+    }
+
+
     public void tick() {
         super.tick();
         prevOpenProgress = openProgress;
@@ -154,9 +185,15 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         if (!isMouthOpen() && openProgress > 0F) {
             openProgress--;
         }
+        if (isVehicle() && clutchProgress < 5F) {
+            clutchProgress++;
+        }
+        if (!isVehicle() && clutchProgress > 0F) {
+            clutchProgress--;
+        }
         if (this.entityData.get(ATTACK_TICK) > 0) {
             if (biteProgress < 5F) {
-                biteProgress = Math.min(5F, biteProgress +2F);
+                biteProgress = Math.min(5F, biteProgress + 2F);
             } else {
                 if (this.getTarget() != null && this.distanceTo(this.getTarget()) < 3.3D) {
                     this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
@@ -168,6 +205,77 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                 biteProgress -= 1F;
             }
         }
+        if (!this.getMainHandItem().isEmpty()) {
+            heldItemTime++;
+            if (heldItemTime > 30 && canTargetItem(this.getMainHandItem())) {
+                heldItemTime = 0;
+                this.heal(4);
+                this.playSound(SoundEvents.DOLPHIN_EAT, this.getSoundVolume(), this.getVoicePitch());
+                if (this.getMainHandItem().getItem() == AMItemRegistry.COSMIC_COD && fishThrowerID != null && !this.isTame()) {
+                    if (getRandom().nextFloat() < 0.3F) {
+                        this.setTame(true);
+                        this.setCommand(1);
+                        this.setOwnerUUID(this.fishThrowerID);
+                        Player player = level.getPlayerByUUID(fishThrowerID);
+                        if (player instanceof ServerPlayer) {
+                            CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer) player, this);
+                        }
+                        this.level.broadcastEntityEvent(this, (byte) 7);
+                    } else {
+                        this.level.broadcastEntityEvent(this, (byte) 6);
+                    }
+                }
+                if (this.getMainHandItem().hasContainerItem()) {
+                    this.spawnAtLocation(this.getMainHandItem().getContainerItem());
+                }
+                this.getMainHandItem().shrink(1);
+            }
+        } else {
+            heldItemTime = 0;
+        }
+        if (!level.isClientSide) {
+            if (tickCount % 100 == 0 || lastSafeTpPosition == null) {
+                BlockPos pos = getCosmawGround(this.blockPosition());
+                if (pos.getY() > 1) {
+                    lastSafeTpPosition = pos;
+                }
+            }
+            if (this.isVehicle()) {
+                if (lastSafeTpPosition != null) {
+                    double dist = this.distanceToSqr(Vec3.atCenterOf(lastSafeTpPosition));
+                    float speed = 0.8F;
+                    if(this.getY() < -40){
+                        speed = 3F;
+                    }
+                    if (verticalCollision && dist > 14) {
+                        this.setYRot(this.stuckRot);
+                        if (random.nextInt(50) == 0) {
+                            this.stuckRot = Mth.wrapDegrees(this.stuckRot + 90);
+
+                        }
+                        float angle = (0.01745329251F * stuckRot);
+                        double extraX = -2 * Mth.sin((float) (Math.PI + angle));
+                        double extraZ = -2 * Mth.cos(angle);
+                        this.getMoveControl().setWantedPosition(this.getX()+ extraX, this.getY() + 2, this.getZ() + extraZ, speed);
+                    } else if (lastSafeTpPosition.getY() > this.getY() + 2.3F) {
+                        this.getMoveControl().setWantedPosition(this.getX(), this.getY() + 2, this.getZ(), speed);
+                    } else {
+                        this.getMoveControl().setWantedPosition(lastSafeTpPosition.getX(), lastSafeTpPosition.getY() + 2, lastSafeTpPosition.getZ(), speed);
+                    }
+                    if (dist < 7 && getCosmawGround(this.blockPosition()).getY() > 1) {
+                        this.ejectPassengers();
+                    }
+                } else {
+                    if (this.getY() < 0F) {
+                        this.getDeltaMovement().add(0, 0.75F, 0);
+                    } else if (this.getY() < 80F) {
+                        this.getDeltaMovement().add(0, 0.1F, 0);
+                    }
+                }
+
+            }
+        }
+
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -183,11 +291,20 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                 fishThrowerID = player.getUUID();
             }
             return InteractionResult.SUCCESS;
-        }  else if (owner && !this.isBaby() && type != InteractionResult.CONSUME) {
-            if(!level.isClientSide){
-                player.startRiding(this);
+        } else if (owner && !this.isBaby() && type != InteractionResult.CONSUME) {
+            this.setCommand(this.getCommand() + 1);
+            if (this.getCommand() == 3) {
+                this.setCommand(0);
             }
-            return InteractionResult.SUCCESS;
+            player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+            boolean sit = this.getCommand() == 2;
+            if (sit) {
+                this.setOrderedToSit(true);
+                return InteractionResult.SUCCESS;
+            } else {
+                this.setOrderedToSit(false);
+                return InteractionResult.SUCCESS;
+            }
         }
         return type;
     }
@@ -227,8 +344,8 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return null;
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
+        return AMEntityRegistry.COSMAW.create(level);
     }
 
     private BlockPos getCosmawGround(BlockPos in) {
@@ -274,6 +391,32 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     @Override
     public boolean shouldFollow() {
+        return this.getCommand() == 1 && !this.isVehicle();
+    }
+
+    private boolean shouldWander() {
+        if (this.isVehicle()) {
+            return false;
+        }
+        if (this.isTame()) {
+            if (this.getCommand() == 2 || this.isSitting()) {
+                return false;
+            }
+            if (this.getCommand() == 1 && this.getOwner() != null && this.distanceTo(this.getOwner()) < 10) {
+                return true;
+            }
+            return this.getCommand() == 0;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean canRiderInteract() {
+        return true;
+    }
+
+    public boolean shouldRiderSit() {
         return false;
     }
 
@@ -287,7 +430,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         }
 
         public boolean canUse() {
-            if (this.parentEntity.getNavigation().isDone() && this.parentEntity.getTarget() == null && this.parentEntity.getRandom().nextInt(4) == 0) {
+            if (this.parentEntity.getNavigation().isDone() && this.parentEntity.shouldWander() && this.parentEntity.getTarget() == null && this.parentEntity.getRandom().nextInt(4) == 0) {
                 target = getBlockInViewCosmaw();
                 if (target != null) {
                     this.parentEntity.getMoveControl().setWantedPosition(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, 1.0D);
@@ -298,7 +441,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         }
 
         public boolean canContinueToUse() {
-            return target != null && parentEntity.getTarget() == null;
+            return target != null && this.parentEntity.shouldWander() && parentEntity.getTarget() == null;
         }
 
         public void stop() {
@@ -324,7 +467,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY(), parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.getCosmawGround(radialPos);
             if (ground.getY() <= 1) {
-                ground = ground.above(50 + parentEntity.random.nextInt(4));
+                ground = ground.above(70 + parentEntity.random.nextInt(4));
             } else {
                 ground = ground.above(2 + parentEntity.random.nextInt(2));
             }
@@ -337,11 +480,36 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     }
 
     private class AIPickupOwner extends Goal {
+        private LivingEntity owner;
 
         @Override
         public boolean canUse() {
+            if (EntityCosmaw.this.isTame() && EntityCosmaw.this.getOwner() != null && !EntityCosmaw.this.isSitting() && !EntityCosmaw.this.getOwner().isPassenger()) {
+                if (!EntityCosmaw.this.getOwner().isOnGround() && EntityCosmaw.this.getOwner().fallDistance > 4F) {
+                    owner = EntityCosmaw.this.getOwner();
+                    return true;
+                }
+            }
             return false;
         }
+
+        @Override
+        public void tick() {
+            if (owner != null) {
+                double dist = EntityCosmaw.this.distanceTo(owner);
+                if(!owner.isFallFlying() || owner.getY() < -30F) {
+                    if (dist < 3F || owner.getY() <= -50F) {
+                        owner.fallDistance = 0.0F;
+                        owner.startRiding(EntityCosmaw.this);
+                    } else if (dist > 100F || owner.getY() <= -20F) {
+                        EntityCosmaw.this.teleportTo(owner.getX(), owner.getY() - 1F, owner.getZ());
+                    } else {
+                        EntityCosmaw.this.getNavigation().moveTo(owner, 1F + Math.min(dist * 0.3F, 3));
+                    }
+                }
+            }
+        }
+
     }
 
     private class AIAttack extends Goal {
@@ -355,10 +523,10 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             return EntityCosmaw.this.getTarget() != null && EntityCosmaw.this.getTarget().isAlive();
         }
 
-        public void tick(){
-            if(EntityCosmaw.this.distanceTo(EntityCosmaw.this.getTarget()) < 3D * (EntityCosmaw.this.isBaby() ? 0.5F : 1)){
+        public void tick() {
+            if (EntityCosmaw.this.distanceTo(EntityCosmaw.this.getTarget()) < 3D * (EntityCosmaw.this.isBaby() ? 0.5F : 1)) {
                 EntityCosmaw.this.doHurtTarget(EntityCosmaw.this.getTarget());
-            }else {
+            } else {
                 EntityCosmaw.this.getNavigation().moveTo(EntityCosmaw.this.getTarget(), 1);
             }
         }

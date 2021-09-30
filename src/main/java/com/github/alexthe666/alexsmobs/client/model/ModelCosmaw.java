@@ -5,6 +5,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
@@ -140,7 +142,7 @@ public class ModelCosmaw extends AdvancedEntityModel<EntityCosmaw> {
     }
 
     @Override
-    public void setupAnim(EntityCosmaw entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+    public void setupAnim(EntityCosmaw entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         float walkSpeed = 0.7F;
         float walkDegree = 0.4F;
@@ -155,11 +157,11 @@ public class ModelCosmaw extends AdvancedEntityModel<EntityCosmaw> {
         body.rotateAngleX += cosmawPitch;
         eyesBase.rotateAngleX -= cosmawPitch;
         mouthArm1.rotateAngleX -= cosmawPitch * 0.2F;
-        mouthArm2.rotateAngleX -= cosmawPitch * 1.9F;
+        mouthArm2.rotateAngleX -= cosmawPitch * 1.7F;
         lowerJaw.rotateAngleX -= cosmawPitch * 0.3F;
         topJaw.rotateAngleX -= cosmawPitch * 0.3F;
-        mouthArm2.rotationPointY -= cosmawPitchAbs;
-        mouthArm2.rotationPointZ += cosmawPitchAbs * 1.6F;
+        mouthArm2.rotationPointY -= cosmawPitchAbs * 2;
+        mouthArm2.rotationPointZ += cosmawPitchAbs * 3;
         this.walk(body, idleSpeed, idleDegree * 0.1F, false, -1F, 0.05F, ageInTicks, 1);
         this.walk(tail, idleSpeed, idleDegree * -0.15F, true, -1F, 0.05F, ageInTicks, 1);
         this.swing(leftFin, idleSpeed, idleDegree * 0.22F, false, -2F, 0.05F, ageInTicks, 1);
@@ -181,19 +183,19 @@ public class ModelCosmaw extends AdvancedEntityModel<EntityCosmaw> {
         this.walk(leftArm, walkSpeed, walkDegree * 0.3F, false, -2F, -0.05F, limbSwing, limbSwingAmount);
         this.walk(rightArm, walkSpeed, walkDegree * 0.3F, false, -2F, -0.05F, limbSwing, limbSwingAmount);
         this.bob(body, walkSpeed, walkDegree * 4F, false, limbSwing, limbSwingAmount);
-        progressRotationPrev(topJaw, openProgress, (float)Math.toRadians(-30), 0, 0, 5F);
-        progressRotationPrev(lowerJaw, openProgress, (float)Math.toRadians(30), 0, 0, 5F);
-        progressRotationPrev(body, clutchProgress, (float)Math.toRadians(-30), 0, 0, 5F);
-        progressRotationPrev(eyesBase, clutchProgress, (float)Math.toRadians(30), 0, 0, 5F);
-        progressRotationPrev(mouthArm1, clutchProgress, (float)Math.toRadians(-5), 0, 0, 5F);
-        progressRotationPrev(mouthArm2, clutchProgress, (float)Math.toRadians(120), 0, 0, 5F);
+        progressRotationPrev(topJaw, openProgress, (float) Math.toRadians(-30), 0, 0, 5F);
+        progressRotationPrev(lowerJaw, openProgress, (float) Math.toRadians(30), 0, 0, 5F);
+        progressRotationPrev(body, clutchProgress, (float) Math.toRadians(-30), 0, 0, 5F);
+        progressRotationPrev(eyesBase, clutchProgress, (float) Math.toRadians(30), 0, 0, 5F);
+        progressRotationPrev(mouthArm1, clutchProgress, (float) Math.toRadians(-5), 0, 0, 5F);
+        progressRotationPrev(mouthArm2, clutchProgress, (float) Math.toRadians(120), 0, 0, 5F);
         progressPositionPrev(mouthArm2, clutchProgress, 0, -2, 3, 5F);
         progressPositionPrev(body, clutchProgress, 0, -10, 33, 5F);
-        progressPositionPrev(body, biteProgress, 0,  0, 20, 5F);
-        progressRotationPrev(mouthArm1, biteProgress, (float)Math.toRadians(-35), 0, 0, 5F);
-        progressRotationPrev(mouthArm2, biteProgress, (float)Math.toRadians(50), 0, 0, 5F);
-        progressRotationPrev(leftArm, biteProgress, (float)Math.toRadians(10), 0, (float)Math.toRadians(-30), 5F);
-        progressRotationPrev(rightArm, biteProgress, (float)Math.toRadians(10), 0, (float)Math.toRadians(30), 5F);
+        progressPositionPrev(body, biteProgress, 0, 0, 20, 5F);
+        progressRotationPrev(mouthArm1, biteProgress, (float) Math.toRadians(-35), 0, 0, 5F);
+        progressRotationPrev(mouthArm2, biteProgress, (float) Math.toRadians(50), 0, 0, 5F);
+        progressRotationPrev(leftArm, biteProgress, (float) Math.toRadians(10), 0, (float) Math.toRadians(-30), 5F);
+        progressRotationPrev(rightArm, biteProgress, (float) Math.toRadians(10), 0, (float) Math.toRadians(30), 5F);
         float eyeYaw = (Mth.clamp(netHeadYaw, -40, 40) / 57.295776F);
         this.eyesBase.rotateAngleY += eyeYaw * 0.35F;
     }
@@ -202,5 +204,28 @@ public class ModelCosmaw extends AdvancedEntityModel<EntityCosmaw> {
         AdvancedModelBox.rotateAngleX = x;
         AdvancedModelBox.rotateAngleY = y;
         AdvancedModelBox.rotateAngleZ = z;
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
+            float f = 1.5F;
+            eyesBase.setScale(f, f, f);
+            eyesBase.setShouldScaleChildren(true);
+            matrixStackIn.pushPose();
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0D, 1.5D, 0D);
+            parts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+            eyesBase.setScale(1, 1, 1);
+        } else {
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+        }
     }
 }
