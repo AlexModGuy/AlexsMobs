@@ -9,6 +9,14 @@
   "item_renders": [
   ],
   "recipes": [
+    {
+      "recipe": "alexsmobs:froststalker_helmet",
+      "shapeless": false,
+      "x": 210,
+      "y": 50,
+      "page": 1,
+      "scale": 1
+    }
   ],
   "tabula_renders": [
   ],

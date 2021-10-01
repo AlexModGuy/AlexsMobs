@@ -1,23 +1,23 @@
 {
     "display": {
         "icon": {
-            "item": "alexsmobs:mysterious_worm"
+            "item": "alexsmobs:cosmic_cod"
         },
         "title": {
-            "translate": "advancements.alexsmobs.mysterious_worm.title"
+            "translate": "advancements.alexsmobs.cosmic_cod.title"
         },
         "description": {
-            "translate": "advancements.alexsmobs.mysterious_worm.desc"
+            "translate": "advancements.alexsmobs.cosmic_cod.desc"
         }
     },
     "parent": "alexsmobs:alexsmobs/capsid",
     "criteria": {
-        "mysterious_worm": {
+        "capsid": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "items": ["alexsmobs:mysterious_worm"]
+                        "items": ["alexsmobs:cosmic_cod"]
                     }
                 ]
             }

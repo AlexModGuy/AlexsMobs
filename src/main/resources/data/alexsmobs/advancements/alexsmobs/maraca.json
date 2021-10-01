@@ -12,12 +12,12 @@
     },
     "parent": "alexsmobs:alexsmobs/rattlesnake",
     "criteria": {
-        "rat_upgrade_basic": {
+        "maraca": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:maraca"
+                        "items": ["alexsmobs:maraca"]
                     }
                 ]
             }

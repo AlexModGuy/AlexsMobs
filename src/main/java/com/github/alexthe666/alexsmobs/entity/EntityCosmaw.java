@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -34,12 +36,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Random;
 import java.util.UUID;
 
 public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems, FlyingAnimal, IFollower {
@@ -67,6 +71,14 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, 0.3F);
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.cosmawSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public static boolean canCosmawSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+        return !worldIn.getBlockState(pos.below()).isAir();
     }
 
     protected void defineSynchedData() {

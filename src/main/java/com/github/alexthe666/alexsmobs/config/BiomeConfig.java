@@ -14,7 +14,7 @@ import java.util.Map;
 public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> grizzlyBear = Pair.of("alexsmobs:grizzly_bear_spawns", DefaultBiomes.GRIZZLY_BEAR);
 	public static Pair<String, SpawnBiomeData> roadrunner = Pair.of("alexsmobs:roadrunner_spawns", DefaultBiomes.ROADRUNNER);
-	public static Pair<String, SpawnBiomeData> boneSerpent = Pair.of("alexsmobs:bone_serpent_spawns", DefaultBiomes.BONE_SERPENT);
+	public static Pair<String, SpawnBiomeData> boneSerpent = Pair.of("alexsmobs:bone_serpent_spawns", DefaultBiomes.ALL_NETHER);
 	public static Pair<String, SpawnBiomeData> gazelle = Pair.of("alexsmobs:gazelle_spawns", DefaultBiomes.GAZELLE);
 	public static Pair<String, SpawnBiomeData> crocodile = Pair.of("alexsmobs:crocodile_spawns", DefaultBiomes.CROCODILE);
 	public static Pair<String, SpawnBiomeData> fly = Pair.of("alexsmobs:fly_spawns", DefaultBiomes.FLY);
@@ -66,6 +66,10 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> frilled_shark = Pair.of("alexsmobs:frilled_shark_spawns", DefaultBiomes.DEEP_SEA);
 	public static Pair<String, SpawnBiomeData> mimic_octopus = Pair.of("alexsmobs:mimic_octopus_spawns", DefaultBiomes.MIMIC_OCTOPUS);
 	public static Pair<String, SpawnBiomeData> seagull = Pair.of("alexsmobs:seagull_spawns", DefaultBiomes.SEAGULL);
+	public static Pair<String, SpawnBiomeData> froststalker = Pair.of("alexsmobs:froststalker_spawns", DefaultBiomes.FROSTSTALKER);
+	public static Pair<String, SpawnBiomeData> tusklin = Pair.of("alexsmobs:tusklin_spawns", DefaultBiomes.TUSKLIN);
+	public static Pair<String, SpawnBiomeData> laviathan = Pair.of("alexsmobs:laviathan_spawns", DefaultBiomes.ALL_NETHER);
+	public static Pair<String, SpawnBiomeData> cosmaw = Pair.of("alexsmobs:cosmaw_spawns", DefaultBiomes.COSMAW);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

@@ -13,12 +13,12 @@
     },
     "parent": "alexsmobs:alexsmobs/tame_bald_eagle",
     "criteria": {
-        "rat_upgrade_basic": {
+        "falconry_glove": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:falconry_glove"
+                        "items": ["alexsmobs:falconry_glove"]
                     }
                 ]
             }

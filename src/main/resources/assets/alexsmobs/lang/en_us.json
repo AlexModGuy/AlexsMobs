@@ -679,5 +679,21 @@
   "advancements.alexsmobs.dimensional_carver.title": "Break On Through...",
   "advancements.alexsmobs.dimensional_carver.desc": "Using the drops of the Void Worm, create the Dimensional Carver, which allows you to dig through the fabric of reality to return home at any given point.",
   "advancements.alexsmobs.seagull_steal.title": "Mine? Mine? Mine?",
-  "advancements.alexsmobs.seagull_steal.desc": "Have food stolen from your inventory by a seagull."
+  "advancements.alexsmobs.seagull_steal.desc": "Have food stolen from your inventory by a seagull.",
+  "advancements.alexsmobs.froststalker_kill.title": "Ice Scream",
+  "advancements.alexsmobs.froststalker_kill.desc": "Slay a Froststalker.",
+  "advancements.alexsmobs.froststalker_helmet.title": "An Impostor Amoung Us",
+  "advancements.alexsmobs.froststalker_helmet.desc": "Craft a Froststalker Helmet to walk amongst Froststalkers undetected.",
+  "advancements.alexsmobs.breed_froststalker.title": "Undercover",
+  "advancements.alexsmobs.breed_froststalker.desc": "Breed two Froststalkers with porkchops.",
+  "advancements.alexsmobs.laviathan_spyclass.title": "Loch-Nether Monster!",
+  "advancements.alexsmobs.laviathan_spyclass.desc": "Observe a Laviathan through the lens of a Spyglass.",
+  "advancements.alexsmobs.straddle_saddle.title": "The Family Sedan",
+  "advancements.alexsmobs.straddle_saddle.desc": "Craft a Straddlite Saddle. Don't forget the trim!",
+  "advancements.alexsmobs.laviathan_four_passengers.title": "Mass Transit",
+  "advancements.alexsmobs.laviathan_four_passengers.desc": "Ride a Laviathan with three other passengers.",
+  "advancements.alexsmobs.cosmic_cod.title": "Weird Fishes/Arpeggi",
+  "advancements.alexsmobs.cosmic_cod.desc": "Create a Cosmic Cod by placing a Cod in a Capsid.",
+  "advancements.alexsmobs.tame_cosmaw.title": "Its a Fish? Its a Bug? What is it?",
+  "advancements.alexsmobs.tame_cosmaw.desc": "Tame a Cosmaw by feeding it Cosmic Cod."
 }

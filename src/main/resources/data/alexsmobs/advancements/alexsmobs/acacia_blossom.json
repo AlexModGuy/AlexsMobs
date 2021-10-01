@@ -9,16 +9,16 @@
         "description": {
             "translate": "advancements.alexsmobs.acacia_blossom.desc"
         },
-        "frame": "challenge"
+        "frame": "goal"
     },
     "parent": "alexsmobs:alexsmobs/root",
     "criteria": {
-        "rat_upgrade_basic": {
+        "acacia_blossom": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:acacia_blossom"
+                        "items": ["alexsmobs:acacia_blossom"]
                     }
                 ]
             }

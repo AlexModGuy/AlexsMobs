@@ -1,24 +1,24 @@
 {
     "display": {
         "icon": {
-            "item": "alexsmobs:spiked_turtle_shell"
+            "item": "alexsmobs:straddle_saddle"
         },
         "title": {
-            "translate": "advancements.alexsmobs.spiked_turtle_shell.title"
+            "translate": "advancements.alexsmobs.straddle_saddle.title"
         },
         "description": {
-            "translate": "advancements.alexsmobs.spiked_turtle_shell.desc"
+            "translate": "advancements.alexsmobs.straddle_saddle.desc"
         },
         "frame": "challenge"
     },
-    "parent": "alexsmobs:alexsmobs/spiked_scute",
+    "parent": "alexsmobs:alexsmobs/straddler",
     "criteria": {
-        "spiked_turtle_shell": {
+        "straddleboard": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "items": ["alexsmobs:spiked_turtle_shell"]
+                        "items": ["alexsmobs:straddle_saddle"]
                     }
                 ]
             }

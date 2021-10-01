@@ -12,12 +12,12 @@
     },
     "parent": "alexsmobs:alexsmobs/capsid",
     "criteria": {
-        "trig": {
+        "enderiophage_rocket": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:enderiophage_rocket"
+                        "items": ["alexsmobs:enderiophage_rocket"]
                     }
                 ]
             }

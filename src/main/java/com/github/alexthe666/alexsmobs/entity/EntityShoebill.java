@@ -130,7 +130,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
             this.navigation = new GroundPathNavigatorWide(this, level);
             this.isLandNavigator = true;
         } else {
-            this.moveControl = new FlightMoveController(this, 0.7F);
+            this.moveControl = new FlightMoveController(this, 0.7F, false);
             this.navigation = new DirectPathNavigator(this, level);
             this.isLandNavigator = false;
         }

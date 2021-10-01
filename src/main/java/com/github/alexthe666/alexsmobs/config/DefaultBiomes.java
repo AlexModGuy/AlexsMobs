@@ -21,7 +21,7 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 1);
 
-    public static final SpawnBiomeData BONE_SERPENT = new SpawnBiomeData()
+    public static final SpawnBiomeData ALL_NETHER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "nether", 0);
 
     public static final SpawnBiomeData GAZELLE = new SpawnBiomeData()
@@ -282,4 +282,19 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
 
+    public static final SpawnBiomeData FROSTSTALKER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:ice_spikes", 0);
+
+    public static final SpawnBiomeData TUSKLIN = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:ice_spikes", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "forest", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mountain", 1);
+
+
+    public static final SpawnBiomeData COSMAW = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:the_end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:small_end_islands", 0);
 }

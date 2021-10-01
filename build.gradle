@@ -29,6 +29,9 @@ repositories{
     maven {
         name = "CurseMaven"
         url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
     }
 }
 apply plugin: 'eclipse'
@@ -121,8 +124,8 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.17.1-37.0.65'
     annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
-    compileOnly "curse.maven:citadel2-331936:3468089"
-    runtimeOnly "curse.maven:citadel2-331936:3468089"
+    compileOnly "curse.maven:citadel-331936:3468089" // change to 3477606
+    runtimeOnly "curse.maven:citadel-331936:3468089"
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

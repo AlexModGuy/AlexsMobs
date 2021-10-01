@@ -113,7 +113,14 @@ public class AMConfig {
     public static int mimicOctopusSpawnRolls = 0;
     public static int seagullSpawnWeight = 21;
     public static int seagullSpawnRolls = 0;
-
+    public static int froststalkerSpawnWeight = 20;
+    public static int froststalkerSpawnRolls = 0;
+    public static int tusklinSpawnWeight = 18;
+    public static int tusklinSpawnRolls = 0;
+    public static int laviathanSpawnWeight = 15;
+    public static int laviathanSpawnRolls = 1;
+    public static int cosmawSpawnWeight = 9;
+    public static int cosmawSpawnRolls = 0;
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -278,6 +285,14 @@ public class AMConfig {
             mimicOctopusSpawnRolls = ConfigHolder.COMMON.mimicOctopusSpawnRolls.get();
             seagullSpawnWeight = ConfigHolder.COMMON.seagullSpawnWeight.get();
             seagullSpawnRolls = ConfigHolder.COMMON.seagullSpawnRolls.get();
+            froststalkerSpawnWeight = ConfigHolder.COMMON.froststalkerSpawnWeight.get();
+            froststalkerSpawnRolls = ConfigHolder.COMMON.froststalkerSpawnRolls.get();
+            tusklinSpawnWeight = ConfigHolder.COMMON.tusklinSpawnWeight.get();
+            tusklinSpawnRolls = ConfigHolder.COMMON.tusklinSpawnRolls.get();
+            laviathanSpawnWeight = ConfigHolder.COMMON.laviathanSpawnWeight.get();
+            laviathanSpawnRolls = ConfigHolder.COMMON.laviathanSpawnRolls.get();
+            cosmawSpawnWeight = ConfigHolder.COMMON.cosmawSpawnWeight.get();
+            cosmawSpawnRolls = ConfigHolder.COMMON.cosmawSpawnRolls.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

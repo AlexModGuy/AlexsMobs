@@ -1,7 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
@@ -13,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -41,6 +44,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -53,6 +57,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -118,6 +123,20 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         this.allParts = new EntityLaviathanPart[]{this.neckPart1, this.neckPart2, this.neckPart3, this.neckPart4, this.neckPart5, this.headPart, this.seat1, this.seat2, this.seat3, this.seat4};
         this.seatParts = new EntityLaviathanPart[]{this.seat1, this.seat2, this.seat3, this.seat4};
         switchNavigator(true);
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.laviathanSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public static boolean canLaviathanSpawn(EntityType<EntityLaviathan> p_234314_0_, LevelAccessor p_234314_1_, MobSpawnType p_234314_2_, BlockPos p_234314_3_, Random p_234314_4_) {
+        BlockPos.MutableBlockPos blockpos$mutable = p_234314_3_.mutable();
+
+        do {
+            blockpos$mutable.move(Direction.UP);
+        } while(p_234314_1_.getFluidState(blockpos$mutable).is(FluidTags.LAVA));
+
+        return p_234314_1_.getBlockState(blockpos$mutable).isAir();
     }
 
     protected SoundEvent getAmbientSound() {
@@ -647,6 +666,14 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                     }
                 }
             }
+        }
+        if(this.isVehicle() && !level.isClientSide && tickCount % 40 == 0 && this.getPassengers().size() > 3){
+            for(Entity entity : this.getPassengers()){
+                if(entity instanceof ServerPlayer){
+                    AMAdvancementTriggerRegistry.LAVIATHAN_FOUR_PASSENGERS.trigger((ServerPlayer)entity);
+                }
+            }
+
         }
     }
 

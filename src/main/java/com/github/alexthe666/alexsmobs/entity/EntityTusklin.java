@@ -1,11 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -34,12 +36,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class EntityTusklin extends Animal implements IAnimatedEntity {
 
@@ -58,6 +62,14 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
 
     protected EntityTusklin(EntityType<? extends Animal> p_27557_, Level p_27558_) {
         super(p_27557_, p_27558_);
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.tusklinSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public static boolean canTusklinSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+        return worldIn.getRawBrightness(pos, 0) > 8 && (worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.SNOW_BLOCK));
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

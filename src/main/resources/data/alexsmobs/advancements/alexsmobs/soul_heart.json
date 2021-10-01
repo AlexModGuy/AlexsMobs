@@ -12,12 +12,12 @@
     },
     "parent": "alexsmobs:alexsmobs/soul_vulture",
     "criteria": {
-        "rat_upgrade_basic": {
+        "soul_heart": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:soul_heart"
+                        "items": ["alexsmobs:soul_heart"]
                     }
                 ]
             }

@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -23,6 +25,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -38,7 +41,10 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -46,6 +52,9 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -102,6 +111,13 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         return AMSoundRegistry.FROSTSTALKER_HURT;
     }
 
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.froststalkerSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public static boolean canFroststalkerSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+        return worldIn.getRawBrightness(pos, 0) > 8 && (worldIn.getBlockState(pos.below()).is(Blocks.ICE) || worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.SNOW_BLOCK));
+    }
 
     @Nullable
     protected ResourceLocation getDefaultLootTable() {
@@ -165,6 +181,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     private void jumpUnderwater() {
         BlockPos pos = this.getOnPos();
         if(this.level.isWaterAt(pos) && !this.level.isWaterAt(pos.above())){
+            this.setPos(this.getX(), this.getY() + 1, this.getZ());
             this.level.setBlockAndUpdate(pos, Blocks.FROSTED_ICE.defaultBlockState());
             this.level.getBlockTicks().scheduleTick(pos, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
         }
@@ -417,7 +434,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         Vec3 vec3 = this.getDeltaMovement();
         this.setDeltaMovement(vec3.x, d0, vec3.z);
         float f = this.getYRot() * ((float) Math.PI / 180F);
-        this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * 0.2F, 0.0D, Mth.cos(f) * 0.2F));
+        this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * 0.2F, 0, Mth.cos(f) * 0.2F));
         this.hasImpulse = true;
         net.minecraftforge.common.ForgeHooks.onLivingJump(this);
     }
@@ -603,9 +620,9 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_27528_, DifficultyInstance p_27529_, MobSpawnType
-            p_27530_, @Nullable SpawnGroupData p_27531_, @Nullable CompoundTag p_27532_) {
-        super.finalizeSpawn(p_27528_, p_27529_, p_27530_, p_27531_, p_27532_);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_27528_, DifficultyInstance p_27529_, MobSpawnType p_27530_, @Nullable SpawnGroupData p_27531_, @Nullable CompoundTag p_27532_) {
+        //do not call super here
+        this.getAttribute(Attributes.FOLLOW_RANGE).addPermanentModifier(new AttributeModifier("Random spawn bonus", this.random.nextGaussian() * 0.05D, AttributeModifier.Operation.MULTIPLY_BASE));
         if (p_27531_ == null) {
             p_27531_ = new SchoolSpawnGroupData(this);
         } else {

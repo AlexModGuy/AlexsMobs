@@ -19,7 +19,7 @@
       "conditions": {
         "items": [
           {
-            "item": "alexsmobs:ambergris"
+            "items": ["alexsmobs:ambergris"]
           }
         ]
       }

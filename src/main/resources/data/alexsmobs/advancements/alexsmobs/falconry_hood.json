@@ -12,12 +12,12 @@
     },
     "parent": "alexsmobs:alexsmobs/falconry_glove",
     "criteria": {
-        "rat_upgrade_basic": {
+        "falconry_hood": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:falconry_hood"
+                        "items": ["alexsmobs:falconry_hood"]
                     }
                 ]
             }

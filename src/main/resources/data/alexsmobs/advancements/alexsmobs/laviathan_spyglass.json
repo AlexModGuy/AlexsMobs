@@ -1,0 +1,43 @@
+{
+  "parent": "alexsmobs:alexsmobs/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:spyglass"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.laviathan_spyglass.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.laviathan_spyglass.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "laviathan_spyglass": {
+      "trigger": "minecraft:using_item",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "player": {
+                "looking_at": {
+                  "type": "alexsmobs:laviathan"
+                }
+              }
+            },
+            "entity": "this"
+          }
+        ],
+        "item": {
+          "items": [
+            "minecraft:spyglass"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -12,12 +12,12 @@
     },
     "parent": "alexsmobs:alexsmobs/gongylidia",
     "criteria": {
-        "trig": {
+        "leafcutter_ant_pupa": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "alexsmobs:leafcutter_ant_pupa"
+                        "items": ["alexsmobs:leafcutter_ant_pupa"]
                     }
                 ]
             }
