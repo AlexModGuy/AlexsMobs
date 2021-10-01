@@ -582,7 +582,6 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         }
         if (!level.isClientSide) {
             if (this.getChillTime() > 0) {
-                System.out.println(this.getChillTime());
                 this.setChillTime(this.getChillTime() - 1);
             } else if (this.shouldSwim()) {
                 if (random.nextInt(this.isVehicle() ? 200 : 2000) == 0 && revengeCooldown == 0) {

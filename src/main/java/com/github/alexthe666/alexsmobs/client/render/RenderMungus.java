@@ -149,7 +149,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             float f28 = 0.4999F;
             float f29 = -1.0F + f2;
             float f30 = f4 * 0.5F + f29;
-            VertexConsumer ivertexbuilder = bufferIn.getBuffer(beamType);
+            VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getMungusBeam(BEAM_TEXTURE));
             PoseStack.Pose matrixstack$entry = matrixStackIn.last();
             Matrix4f matrix4f = matrixstack$entry.pose();
             Matrix3f matrix3f = matrixstack$entry.normal();
@@ -190,7 +190,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             float alpha = 0.75F + (Mth.cos(ageInTicks * 0.2F) + 1F) * 0.125F;
             this.getParentModel().renderToBuffer(matrixStackIn, lead, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
             if (entitylivingbaseIn.getBeamTarget() != null) {
-                VertexConsumer beam = bufferIn.getBuffer(AMRenderTypes.getEyesFlickering(TEXTURE_BEAM_OVERLAY, 0));
+                VertexConsumer beam = bufferIn.getBuffer(AMRenderTypes.getMungusBeam(TEXTURE_BEAM_OVERLAY));
                 float beamAlpha = 0.75F + (Mth.cos(ageInTicks * 1) + 1F) * 0.125F;
                 this.getParentModel().renderToBuffer(matrixStackIn, beam, 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, beamAlpha);
             }

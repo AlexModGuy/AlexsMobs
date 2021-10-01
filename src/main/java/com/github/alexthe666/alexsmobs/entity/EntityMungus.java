@@ -198,7 +198,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         super.tickDeath();
         if (this.getMushroomCount() >= 5 && AMConfig.mungusBiomeTransformationType > 0 && !this.isBaby() && !this.entityData.get(EXPLOSION_DISABLED)) {
             this.swellProgress++;
-            if (this.deathTime == 20 && !hasExploded) {
+            if (this.deathTime == 19 && !hasExploded) {
                 hasExploded = true;
                 explode();
             }
@@ -309,6 +309,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                 for (int i = 0; i < container.biomes.length; i++) {
                     container.biomes[i] = biome;
                 }
+                int id = this.getId();
                 AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), biome.getRegistryName().toString()));
             }
         }

@@ -51,30 +51,33 @@ public class MessageMungusBiomeChange  {
 
         public static void handle(MessageMungusBiomeChange message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
-            Player player = context.get().getSender();
-            if(context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT){
-                player = AlexsMobs.PROXY.getClientSidePlayer();
-            }
+            context.get().enqueueWork(()->{
+                Player player = context.get().getSender();
+                if(context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT){
+                    player = AlexsMobs.PROXY.getClientSidePlayer();
+                }
 
-            if (player != null) {
-                if (player.level != null) {
-                    Entity entity = player.level.getEntity(message.mungusID);
-                    Registry<Biome> registry = player.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
-                    Biome biome =  registry.get(new ResourceLocation(message.biomeOption));
-                    if(AMConfig.mungusBiomeTransformationType == 2) {
-                        if (entity instanceof EntityMungus && entity.distanceToSqr(message.posX, entity.getY(), message.posZ) < 1000 && biome != null) {
-                            LevelChunk chunk = player.level.getChunkAt(new BlockPos(message.posX, 0, message.posZ));
-                            ChunkBiomeContainer container = chunk.getBiomes();
-                            if (container != null) {
-                                for (int i = 0; i < container.biomes.length; i++) {
-                                    container.biomes[i] = biome;
+                if (player != null) {
+                    if (player.level != null) {
+                        Entity entity = player.level.getEntity(message.mungusID);
+                        Registry<Biome> registry = player.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+                        Biome biome =  registry.get(new ResourceLocation(message.biomeOption));
+                        if(AMConfig.mungusBiomeTransformationType == 2) {
+                            if (entity instanceof EntityMungus && entity.distanceToSqr(message.posX, entity.getY(), message.posZ) < 1000 && biome != null) {
+                                LevelChunk chunk = player.level.getChunkAt(new BlockPos(message.posX, 0, message.posZ));
+                                ChunkBiomeContainer container = chunk.getBiomes();
+                                if (container != null) {
+                                    for (int i = 0; i < container.biomes.length; i++) {
+                                        container.biomes[i] = biome;
+                                    }
                                 }
+                                AlexsMobs.PROXY.updateBiomeVisuals(message.posX, message.posZ);
                             }
-                            AlexsMobs.PROXY.updateBiomeVisuals(message.posX, message.posZ);
                         }
                     }
                 }
-            }
+            });
+
         }
     }
 

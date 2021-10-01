@@ -267,6 +267,9 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             if(fakeEntity instanceof EntityMimicOctopus){
                 matrixStackIn.translate(0, 0.5F, 0);
             }
+            if(fakeEntity instanceof EntityCosmaw){
+                matrixStackIn.translate(0, 0.2F, 0);
+            }
             if (fakeEntity != null) {
                 MouseHandler mouseHelper = Minecraft.getInstance().mouseHandler;
                 double mouseX = (mouseHelper.xpos() * (double) Minecraft.getInstance().getWindow().getGuiScaledWidth()) / (double) Minecraft.getInstance().getWindow().getScreenWidth();

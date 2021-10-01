@@ -16,7 +16,7 @@
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
-                    {mm
+                    {
                         "items": ["alexsmobs:endolocator"]
                     }
                 ]
