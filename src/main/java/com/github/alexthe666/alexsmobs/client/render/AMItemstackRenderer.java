@@ -154,7 +154,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         entityrenderdispatcher.setRenderShadow(false);
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
         RenderSystem.runAsFancy(() -> {
-            entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixstack, multibuffersource$buffersource, 15728880);
+            entityrenderdispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, partialTicksForRender, matrixstack, multibuffersource$buffersource, 15728880);
         });
         multibuffersource$buffersource.endBatch();
         entityrenderdispatcher.setRenderShadow(true);
@@ -183,7 +183,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             matrixStackIn.translate(0, -2F, 0);
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
             MYTERIOUS_WORM_MODEL.animateStack(itemStackIn);
-            MYTERIOUS_WORM_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.itemEntityTranslucentCull(MYTERIOUS_WORM_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            MYTERIOUS_WORM_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(MYTERIOUS_WORM_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
         if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE){

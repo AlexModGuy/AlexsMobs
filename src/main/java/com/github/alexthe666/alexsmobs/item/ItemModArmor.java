@@ -57,7 +57,7 @@ public class ItemModArmor extends ArmorItem {
             tooltip.add(new TranslatableComponent("item.alexsmobs.frontier_cap.desc").withStyle(ChatFormatting.BLUE));
         }
         if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.froststalker_helmet.desc").withStyle(ChatFormatting.BLUE));
+            tooltip.add(new TranslatableComponent("item.alexsmobs.froststalker_helmet.desc").withStyle(ChatFormatting.AQUA));
         }
     }
 

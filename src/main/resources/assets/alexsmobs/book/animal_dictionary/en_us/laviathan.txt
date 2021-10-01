@@ -13,4 +13,4 @@ The Saddle allows up to four passengers, and the tack allows one to control the 
 <NEWLINE>
 Laviathans are known for being one of the most successful predators of Crimson Mosquitoes, often breaching the surface of lava and emitting smoke from vents on their backs and heads. This smoke lures the insects, who are then quickly snapped up in the beak of the Laviathan.
 <NEWLINE>
-Being creatures of a Lava-y consistency, one would expect these giant reptiles to be harmed by water. But it is now believed that when exposed to water, these beasts "solidify" into a stronger, obsidian form.
+Being creatures of a Lava-y consistency, one would expect these giant reptiles to be harmed by water. But it is now believed that when exposed to water, these beasts "solidify" into a stronger, obsidian form. Laviathans can be bred with Crimson Mosquito Larva and healed with Magma Cream.

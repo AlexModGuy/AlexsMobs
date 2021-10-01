@@ -24,8 +24,8 @@ public class ModelAMElytra extends HumanoidModel {
         MeshDefinition meshdefinition = HumanoidModel.createMesh(deformation, 0.0F);
         PartDefinition partdefinition = meshdefinition.getRoot().getChild("body");
         CubeDeformation cubedeformation = new CubeDeformation(1.0F);
-        partdefinition.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(22, 0).addBox(-10.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, -0.2617994F));
-        partdefinition.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(22, 0).mirror().addBox(0.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, 0.2617994F));
+        partdefinition.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(32, 32).addBox(-10.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, -0.2617994F));
+        partdefinition.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(32, 32).mirror().addBox(0.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, cubedeformation), PartPose.offsetAndRotation(-5.0F, 0.0F, 0.0F, 0.2617994F, 0.0F, 0.2617994F));
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
@@ -55,7 +55,7 @@ public class ModelAMElytra extends HumanoidModel {
         } else if (entityIn.isCrouching()) {
             f = 0.6981317F;
             f1 = (-(float)Math.PI / 4F);
-            f2 = 3.0F;
+            f2 = -1.0F;
             f3 = 0.08726646F;
         }
 

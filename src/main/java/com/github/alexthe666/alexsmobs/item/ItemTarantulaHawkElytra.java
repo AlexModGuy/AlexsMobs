@@ -26,6 +26,11 @@ public class ItemTarantulaHawkElytra extends ArmorItem {
         super(mat, EquipmentSlot.CHEST, props);
     }
 
+    @Override
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
+        consumer.accept((net.minecraftforge.client.IItemRenderProperties) AlexsMobs.PROXY.getArmorRenderProperties());
+    }
+
     public static boolean isUsable(ItemStack stack) {
         return stack.getDamageValue() < stack.getMaxDamage() - 1;
     }
@@ -66,13 +71,6 @@ public class ItemTarantulaHawkElytra extends ArmorItem {
 
     @Nullable
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return null;//"alexsmobs:textures/armor/tarantula_hawk_elytra.png";
-    }
-
-
-    @OnlyIn(Dist.CLIENT)
-    @Nullable
-    public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
-        return (A) AlexsMobs.PROXY.getArmorModel(6, entity);
+        return "alexsmobs:textures/armor/tarantula_hawk_elytra.png";
     }
 }
