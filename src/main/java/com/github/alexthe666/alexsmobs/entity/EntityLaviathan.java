@@ -678,7 +678,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
     public float getLowHeadHeight() {
         float checkAt = 0F;
-        while (checkAt > -3F && !isHeadInWall((float) this.getY() + checkAt)) {
+        while (checkAt > -3F && !isHeadInWall((float) this.getY() + checkAt) && !isHeadInLava((float)this.getY() + checkAt)) {
             checkAt -= 0.2F;
         }
         return checkAt;
@@ -711,6 +711,16 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             return this.level.getBlockCollisions(this, aabb, (p_20129_, p_20130_) -> {
                 return p_20129_.isSuffocating(this.level, p_20130_);
             }).findAny().isPresent();
+        }
+    }
+
+    public boolean isHeadInLava(float offset) {
+        if (this.noPhysics) {
+            return false;
+        } else {
+            float f = 0.8F;
+            BlockPos pos = new BlockPos(headPart.getX(), offset, headPart.getZ());
+            return !level.getFluidState(pos).isEmpty();
         }
     }
 
