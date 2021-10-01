@@ -220,7 +220,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             }
             this.setColor(null);
             return InteractionResult.SUCCESS;
-        }else if(isTame() && isRaccoonFood(itemstack) && !isRaccoonFood(itemstack) && this.getHealth() < this.getMaxHealth()){
+        }else if(isTame() && isRaccoonFood(itemstack) && !isFood(itemstack) && this.getHealth() < this.getMaxHealth()){
             if(this.getMainHandItem().isEmpty()){
                 ItemStack copy = itemstack.copy();
                 copy.setCount(1);
@@ -248,7 +248,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             pickupItemCooldown = 60;
             return InteractionResult.SUCCESS;
         }
-        if(type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)){
+        if(type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isRaccoonFood(itemstack)){
             if(!player.isShiftKeyDown()){
                 this.setCommand(this.getCommand() + 1);
                 if(this.getCommand() == 3){
@@ -537,7 +537,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return isFood(stack) && pickupItemCooldown == 0;
+        return isRaccoonFood(stack) && pickupItemCooldown == 0;
     }
 
     @Override
@@ -568,7 +568,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
     @Override
     public boolean shouldLootItem(ItemStack stack) {
-        return isFood(stack);
+        return isRaccoonFood(stack);
     }
 
     class StrollGoal extends MoveThroughVillageGoal {

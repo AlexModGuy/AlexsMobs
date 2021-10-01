@@ -173,7 +173,6 @@ public class EntityRoadrunner extends Animal {
     }
 
     public boolean isFood(ItemStack stack) {
-        Item item = stack.getItem();
         return ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS).contains(stack.getItem());
     }
 

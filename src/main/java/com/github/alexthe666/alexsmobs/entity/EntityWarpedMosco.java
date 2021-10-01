@@ -236,7 +236,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             }
             if (this.getAnimation() == ANIMATION_SLAM) {
                 if (this.getAnimationTick() == 19) {
-                    for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D), null)) {
+                    for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D))) {
                         if (!isAlliedTo(entity) && !(entity instanceof EntityWarpedMosco) && entity != this) {
                             entity.hurt(DamageSource.mobAttack(this), 10.0F + random.nextFloat() * 8.0F);
                             launch(entity, true);

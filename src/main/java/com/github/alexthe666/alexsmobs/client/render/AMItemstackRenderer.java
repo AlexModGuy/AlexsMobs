@@ -267,6 +267,9 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             if(fakeEntity instanceof EntityMimicOctopus){
                 matrixStackIn.translate(0, 0.5F, 0);
             }
+            if(fakeEntity instanceof EntityLaviathan){
+                matrixStackIn.translate(0, 0.3F, 0);
+            }
             if(fakeEntity instanceof EntityCosmaw){
                 matrixStackIn.translate(0, 0.2F, 0);
             }

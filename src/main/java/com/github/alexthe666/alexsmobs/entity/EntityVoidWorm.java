@@ -276,7 +276,7 @@ public class EntityVoidWorm extends Monster {
             }
         }
         if (this.isAlive()) {
-            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D), null)) {
+            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
                 if (!entity.is(this) && !(entity instanceof EntityVoidWormPart) && !entity.isAlliedTo(this) && entity != this) {
                     launch(entity, false);
                 }
@@ -780,7 +780,7 @@ public class EntityVoidWorm extends Monster {
             LivingEntity target = EntityVoidWorm.this.getTarget();
             boolean flag = false;
             float speed = 1;
-            for (Entity entity : EntityVoidWorm.this.level.getEntitiesOfClass(LivingEntity.class, EntityVoidWorm.this.getBoundingBox().inflate(2.0D), null)) {
+            for (Entity entity : EntityVoidWorm.this.level.getEntitiesOfClass(LivingEntity.class, EntityVoidWorm.this.getBoundingBox().inflate(2.0D))) {
                 if (!entity.is(EntityVoidWorm.this) && !(entity instanceof EntityVoidWormPart) && !entity.isAlliedTo(EntityVoidWorm.this) && entity != EntityVoidWorm.this) {
                     if (EntityVoidWorm.this.isMouthOpen()) {
                         launch(entity, true);

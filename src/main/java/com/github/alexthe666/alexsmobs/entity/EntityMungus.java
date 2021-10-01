@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
+import com.github.alexthe666.alexsmobs.entity.ai.MungusAITemptMushroom;
 import com.github.alexthe666.alexsmobs.message.MessageMungusBiomeChange;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -117,7 +118,6 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         if (item instanceof BlockItem) {
             if (MUSHROOM_TO_BIOME.containsKey(item.getRegistryName().toString())) {
                 return ((BlockItem) item).getBlock().defaultBlockState();
-
             }
         }
         return null;
@@ -157,11 +157,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         this.goalSelector.addGoal(0, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new PanicGoal(this, 1.25D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1, Ingredient.of(), false) {
-            protected boolean shouldFollowItem(ItemStack stack) {
-                return EntityMungus.this.shouldFollowMushroom(stack) || stack.getItem() == Items.MUSHROOM_STEW;
-            }
-        });
+        this.goalSelector.addGoal(3, new MungusAITemptMushroom(this, 1.0F));
         this.goalSelector.addGoal(5, new AITargetMushrooms());
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 60, 1.0D, 14, 7));
@@ -316,9 +312,9 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
 
     }
 
-    private boolean shouldFollowMushroom(ItemStack stack) {
+    public boolean shouldFollowMushroom(ItemStack stack) {
         BlockState state = getMushroomBlockstate(stack.getItem());
-        if (state != null) {
+        if (state != null && !state.isAir()) {
             if (this.getMushroomCount() == 0) {
                 return true;
             } else {

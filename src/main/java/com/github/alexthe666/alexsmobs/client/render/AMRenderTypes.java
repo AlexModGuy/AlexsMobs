@@ -82,8 +82,8 @@ public class AMRenderTypes extends RenderType {
     }
 
     public static RenderType getEyesAlphaEnabled(ResourceLocation locationIn) {
-        RenderStateShard.TextureStateShard renderstate$texturestate = new RenderStateShard.TextureStateShard(locationIn, false, false);
-        return create("eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, RenderType.CompositeState.builder().setTextureState(renderstate$texturestate).setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_CULL_SHADER).setTransparencyState(WORM_TRANSPARANCY).setWriteMaskState(COLOR_WRITE).setCullState(RenderStateShard.NO_CULL).createCompositeState(false));
+        RenderType.CompositeState rendertype$compositestate = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_EYES_SHADER).setTextureState(new RenderStateShard.TextureStateShard(locationIn, false, false)).setTransparencyState(WORM_TRANSPARANCY).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).createCompositeState(true);
+        return create("eye_alpha", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, rendertype$compositestate);
     }
 
     public static RenderType getMungusBeam(ResourceLocation guardianBeamTexture) {

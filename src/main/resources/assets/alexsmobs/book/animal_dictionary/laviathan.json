@@ -9,6 +9,22 @@
   "item_renders": [
   ],
   "recipes": [
+    {
+      "recipe": "alexsmobs:straddle_saddle",
+      "shapeless": false,
+      "x": 220,
+      "y": 110,
+      "page": 0,
+      "scale": 1
+    },
+    {
+      "recipe": "alexsmobs:straddle_helmet",
+      "shapeless": false,
+      "x": 20,
+      "y": 10,
+      "page": 1,
+      "scale": 1
+    }
   ],
   "tabula_renders": [
   ],

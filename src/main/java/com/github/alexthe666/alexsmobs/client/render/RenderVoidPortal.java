@@ -47,7 +47,7 @@ public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
     private void renderArc(PoseStack matrixStackIn, MultiBufferSource bufferIn, ResourceLocation res) {
         matrixStackIn.pushPose();
 
-        VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getGhost(res));
+        VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getFullBright(res));
         PoseStack.Pose lvt_19_1_ = matrixStackIn.last();
         Matrix4f lvt_20_1_ = lvt_19_1_.pose();
         Matrix3f lvt_21_1_ = lvt_19_1_.normal();

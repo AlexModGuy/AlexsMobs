@@ -8,4 +8,4 @@ When injured by their quarry, the Froststalker can shake off the ice shards on i
 <NEWLINE>
 If slain, a Froststalker has a chance of dropping its horn. This horn can be used to create a helmet that tricks Froststalkers into believing the wearer is a fellow Froststalker.
 <NEWLINE>
-Be warned that these beasts will not hesitate to turn on
+Be warned that these beasts will not hesitate to turn on those who wear this helmet, as the slightest infraction against the pack could blow their cover. Froststalkers can only be bred whilst wearing this, with two porkchops. In warm biomes, Froststalkers will be inflicted with weakness and their ice spikes will melt off.

@@ -616,7 +616,7 @@ public class EntityCachalotWhale extends Animal {
         }
 
         if (this.isAlive() && isCharging()) {
-            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.headPart.getBoundingBox().inflate(1.0D), null)) {
+            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.headPart.getBoundingBox().inflate(1.0D))) {
                 if (!isAlliedTo(entity) && !(entity instanceof EntityCachalotPart) && entity != this) {
                     launch(entity, true);
                 }
