@@ -18,6 +18,8 @@ public class AMSoundRegistry {
 
     public static final SoundEvent GRIZZLY_BEAR_DIE = createSoundEvent("grizzly_bear_die");
 
+    public static final SoundEvent BEAR_DUST = createSoundEvent("bear_dust");
+
     public static final SoundEvent ROADRUNNER_IDLE = createSoundEvent("roadrunner_idle");
 
     public static final SoundEvent ROADRUNNER_HURT = createSoundEvent("roadrunner_hurt");

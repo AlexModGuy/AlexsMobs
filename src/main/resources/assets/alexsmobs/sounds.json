@@ -1047,6 +1047,15 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.mungus_laser_end"
   },
+  "bear_dust": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mungus_laser_grow"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bear_dust"
+  },
   "mantis_shrimp_hurt": {
     "category": "neutral",
     "sounds": [

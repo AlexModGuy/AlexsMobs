@@ -54,6 +54,7 @@ public class AMItemRegistry {
     public static final Item TAB_ICON = new ItemTabIcon(new Item.Properties()).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:animal_dictionary");
     public static final Item BEAR_FUR = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:bear_fur");
+    public static final Item BEAR_DUST = new ItemBearDust(new Item.Properties().rarity(Rarity.EPIC)).setRegistryName("alexsmobs:bear_dust");
     public static final Item ROADRUNNER_FEATHER = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:roadrunner_feather");
     public static final Item ROADDRUNNER_BOOTS = new ItemModArmor(ROADRUNNER_ARMOR_MATERIAL, EquipmentSlot.FEET).setRegistryName("alexsmobs:roadrunner_boots");
     public static final Item LAVA_BOTTLE = new Item(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:lava_bottle");

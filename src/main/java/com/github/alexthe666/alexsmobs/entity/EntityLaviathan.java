@@ -687,7 +687,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     public float getHighHeadHeight(float low) {
         float checkAt = 3F;
         while (checkAt > 0) {
-            if(isHeadInWall((float) this.getY() + checkAt)) {
+            if(isHeadInWall((float) this.getY() + checkAt)  && !isHeadInLava((float)this.getY() + checkAt)) {
                 break;
             }
             checkAt -= 0.2F;
