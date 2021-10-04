@@ -35,9 +35,10 @@ public class ItemModFishBucket extends BucketItem {
         this.fishTypeSupplier = () -> fishTypeIn;
     }
 
-    public void checkExtraContent(Level worldIn, ItemStack p_203792_2_, BlockPos pos) {
-        if (worldIn instanceof ServerLevel) {
-            this.placeFish((ServerLevel)worldIn, p_203792_2_, pos);
+    @Override
+    public void checkExtraContent(@Nullable Player player, Level lvl, ItemStack stack, BlockPos pos) {
+        if (lvl instanceof ServerLevel) {
+            this.placeFish((ServerLevel)lvl, stack, pos);
         }
     }
 
