@@ -1,0 +1,106 @@
+{
+  "biomes": [
+    [
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "overworld"
+      },
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "jungle"
+      }
+    ],
+    [
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "overworld"
+      },
+
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "biomesoplenty:wetland"
+      }
+    ],
+    [
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "overworld"
+      },
+
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "biomesoplenty:ominous_woods"
+      }
+    ],
+    [
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "overworld"
+      },
+
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "biomesoplenty:tropics"
+      }
+    ],
+    [
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "overworld"
+      },
+
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "biomesoplenty:bayou"
+      }
+    ],
+    [
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "overworld"
+      },
+
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "biomesoplenty:rainforest"
+      }
+    ],
+    [
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "overworld"
+      },
+
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "biomesoplenty:lavender_field"
+      }
+    ],
+    [
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "overworld"
+      },
+      {
+        "type": "BIOME_DICT",
+        "negate": false,
+        "value": "biomesoplenty:jade_cliffs"
+      }
+    ]
+  ]
+}

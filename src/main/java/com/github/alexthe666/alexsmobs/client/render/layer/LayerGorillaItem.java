@@ -28,10 +28,10 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
             matrixStackIn.pushPose();
             this.getParentModel().root.translateAndRotate(matrixStackIn);
             this.getParentModel().body.translateAndRotate(matrixStackIn);
-            this.getParentModel().bodyfront.translateAndRotate(matrixStackIn);
+            this.getParentModel().chest.translateAndRotate(matrixStackIn);
             this.getParentModel().head.translateAndRotate(matrixStackIn);
             float f = 0.1F * (float) Math.sin((entitylivingbaseIn.tickCount + partialTicks) * 0.1F) + (entitylivingbaseIn.isBaby() ? 0.2F : 0F);
-            matrixStackIn.translate(0.0F, -0.5F - f, -0.2F);
+            matrixStackIn.translate(0.0F, -0.7F - f, -0.2F);
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
             Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, haloStack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
@@ -60,7 +60,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
     protected void translateToHand(boolean left, PoseStack matrixStack) {
         this.getParentModel().root.translateAndRotate(matrixStack);
         this.getParentModel().body.translateAndRotate(matrixStack);
-        this.getParentModel().bodyfront.translateAndRotate(matrixStack);
-        this.getParentModel().armR.translateAndRotate(matrixStack);
+        this.getParentModel().chest.translateAndRotate(matrixStack);
+        this.getParentModel().leftArm.translateAndRotate(matrixStack);
     }
 }

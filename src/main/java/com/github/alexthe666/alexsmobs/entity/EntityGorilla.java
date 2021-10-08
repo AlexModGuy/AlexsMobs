@@ -100,6 +100,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     @Nullable
     private UUID bananaThrowerID = null;
     private boolean hasSilverbackAttributes = false;
+    public int poundChestCooldown = 0;
 
     protected EntityGorilla(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -156,6 +157,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(2, new GorillaAIFollowCaravan(this, 0.8D));
+        this.goalSelector.addGoal(3, new GorillaAIChargeLooker(this, 1.6D));
         this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.BANANAS)), false));
         this.goalSelector.addGoal(4, new AnimalAIRideParent(this, 1.25D));
         this.goalSelector.addGoal(6, new AIWalkIdle(this, 0.8D));
@@ -454,7 +456,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         if (this.forcedSit && !this.isVehicle() && this.isTame()) {
             this.setOrderedToSit(true);
         }
-        if (this.isSilverback() && random.nextInt(600) == 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && sitProgress == 0 && !this.isNoAi() && this.getMainHandItem().isEmpty()) {
+        if (this.isSilverback() && random.nextInt(800) == 0 && poundChestCooldown <= 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && sitProgress == 0 && !this.isNoAi() && this.getMainHandItem().isEmpty()) {
             this.setAnimation(ANIMATION_POUNDCHEST);
         }
         if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
@@ -476,6 +478,9 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30F);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8F);
             this.heal(30F);
+        }
+        if(poundChestCooldown > 0){
+            poundChestCooldown--;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
