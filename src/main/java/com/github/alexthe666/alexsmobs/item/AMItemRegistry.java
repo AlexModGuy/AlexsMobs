@@ -239,6 +239,9 @@ public class AMItemRegistry {
                 if (obj instanceof Block) {
                     Item.Properties props = new Item.Properties();
                     props.tab(AlexsMobs.TAB);
+                    if(obj == AMBlockRegistry.STRADDLITE_BLOCK){
+                        props.fireResistant();
+                    }
                     BlockItem blockItem = new BlockItem((Block) obj, props);
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);
