@@ -21,6 +21,6 @@ public class ModelSpikedTurtleShell extends HumanoidModel{
 		head.addOrReplaceChild("spikes1", CubeListBuilder.create().texOffs(34, 15).addBox(0.0F, -33F, -4.5F, 4.0F, 1.0F, 9.0F, deformation), PartPose.offset(0, 24.0F, 0));
 		head.addOrReplaceChild("spikes2", CubeListBuilder.create().texOffs(34, 15).addBox(-4.0F, -33F, -4.5F, 4.0F, 1.0F, 9.0F, deformation), PartPose.offset(0, 24.0F, 0));
 
-		return LayerDefinition.create(meshdefinition, 64, 64);
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 }

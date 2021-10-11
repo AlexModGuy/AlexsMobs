@@ -76,7 +76,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     public static final Animation ANIMATION_BREAKBLOCK_L = Animation.create(20);
     public static final Animation ANIMATION_POUNDCHEST = Animation.create(40);
     public static final Animation ANIMATION_ATTACK = Animation.create(20);
-    protected static final EntityDimensions SILVERBACK_SIZE = EntityDimensions.scalable(1.15F, 1.85F);
+    protected static final EntityDimensions SILVERBACK_SIZE = EntityDimensions.scalable(1.35F, 1.95F);
     private static final EntityDataAccessor<Boolean> SILVERBACK = SynchedEntityData.defineId(EntityGorilla.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(EntityGorilla.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityGorilla.class, EntityDataSerializers.BOOLEAN);
@@ -262,7 +262,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     }
 
     public double getPassengersRidingOffset() {
-        return (double) this.getBbHeight() * 0.55F * getGorillaScale() * (isSilverback() ? 0.75F : 1.0F);
+        return (double) this.getBbHeight() * 0.65F * getGorillaScale() * (isSilverback() ? 0.75F : 1.0F);
     }
 
     @Override
