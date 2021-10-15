@@ -225,10 +225,11 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
             }
             return InteractionResult.SUCCESS;
         }
-        if (isMushroom(itemstack) && this.getPassiveTicks() <= 0) {
+        if (isMushroom(itemstack) && (this.getPassiveTicks() <= 0 || this.getHealth() < this.getMaxHealth())) {
             if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
+            this.heal(6);
             this.setPassiveTicks(this.getPassiveTicks() + 1200);
             return InteractionResult.SUCCESS;
         }
