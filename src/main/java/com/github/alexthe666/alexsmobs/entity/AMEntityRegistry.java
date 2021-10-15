@@ -60,7 +60,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityCockroach> COCKROACH = registerEntity(EntityType.Builder.of(EntityCockroach::new, MobCategory.AMBIENT).sized(0.7F, 0.3F), "cockroach");
     public static final EntityType<EntityCockroachEgg> COCKROACH_EGG = registerEntity(EntityType.Builder.of(EntityCockroachEgg::new, MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(EntityCockroachEgg::new).fireImmune(), "cockroach_egg");
     public static final EntityType<EntityShoebill> SHOEBILL = registerEntity(EntityType.Builder.of(EntityShoebill::new, MobCategory.CREATURE).sized(0.8F, 1.5F).setUpdateInterval(1), "shoebill");
-    public static final EntityType<EntityElephant> ELEPHANT = registerEntity(EntityType.Builder.of(EntityElephant::new, MobCategory.CREATURE).sized(2.1F, 2.5F).setUpdateInterval(1), "elephant");
+    public static final EntityType<EntityElephant> ELEPHANT = registerEntity(EntityType.Builder.of(EntityElephant::new, MobCategory.CREATURE).sized(3.1F, 3.5F).setUpdateInterval(1), "elephant");
     public static final EntityType<EntitySoulVulture> SOUL_VULTURE = registerEntity(EntityType.Builder.of(EntitySoulVulture::new, MobCategory.MONSTER).sized(0.9F, 1.3F).setUpdateInterval(1).fireImmune(), "soul_vulture");
     public static final EntityType<EntitySnowLeopard> SNOW_LEOPARD = registerEntity(EntityType.Builder.of(EntitySnowLeopard::new, MobCategory.CREATURE).sized(1.2F, 1.3F), "snow_leopard");
     public static final EntityType<EntitySpectre> SPECTRE = registerEntity(EntityType.Builder.of(EntitySpectre::new, MobCategory.CREATURE).sized(3.15F, 0.8F).fireImmune().setTrackingRange(10).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "spectre");

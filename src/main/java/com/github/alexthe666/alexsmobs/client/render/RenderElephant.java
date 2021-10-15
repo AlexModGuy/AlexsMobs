@@ -14,7 +14,7 @@ public class RenderElephant extends MobRenderer<EntityElephant, ModelElephant> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/elephant/elephant.png");
 
     public RenderElephant(EntityRendererProvider.Context renderManagerIn) {
-        super(renderManagerIn, new ModelElephant(0), 0.8F);
+        super(renderManagerIn, new ModelElephant(0), 1.4F);
         this.addLayer(new LayerElephantOverlays(this));
         this.addLayer(new LayerElephantItem(this));
     }

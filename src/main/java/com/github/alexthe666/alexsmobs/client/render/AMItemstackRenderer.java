@@ -60,7 +60,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.SEAL, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.COCKROACH, 1F));
         list.add(new Pair<>(AMEntityRegistry.SHOEBILL, 0.8F));
-        list.add(new Pair<>(AMEntityRegistry.ELEPHANT, 0.45F));
+        list.add(new Pair<>(AMEntityRegistry.ELEPHANT, 0.3F));
         list.add(new Pair<>(AMEntityRegistry.SOUL_VULTURE, 0.8F));
         list.add(new Pair<>(AMEntityRegistry.SNOW_LEOPARD, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.SPECTRE, 0.3F));
@@ -69,7 +69,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.MUNGUS, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.MANTIS_SHRIMP, 0.7F));
         list.add(new Pair<>(AMEntityRegistry.GUSTER, 0.55F));
-        list.add(new Pair<>(AMEntityRegistry.WARPED_MOSCO, 0.45F));
+        list.add(new Pair<>(AMEntityRegistry.WARPED_MOSCO, 0.35F));
         list.add(new Pair<>(AMEntityRegistry.STRADDLER, 0.38F));
         list.add(new Pair<>(AMEntityRegistry.STRADPOLE, 0.9F));
         list.add(new Pair<>(AMEntityRegistry.EMU, 0.7F));

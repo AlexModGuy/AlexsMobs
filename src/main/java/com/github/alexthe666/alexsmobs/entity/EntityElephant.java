@@ -103,7 +103,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     public static final Animation ANIMATION_FLING = Animation.create(25);
     public static final Animation ANIMATION_EAT = Animation.create(30);
     public static final Animation ANIMATION_BREAKLEAVES = Animation.create(20);
-    protected static final EntityDimensions TUSKED_SIZE = EntityDimensions.fixed(2.3F, 2.75F);
+    protected static final EntityDimensions TUSKED_SIZE = EntityDimensions.fixed(3.7F, 3.75F);
     private static final EntityDataAccessor<Boolean> TUSKED = SynchedEntityData.defineId(EntityElephant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityElephant.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STANDING = SynchedEntityData.defineId(EntityElephant.class, EntityDataSerializers.BOOLEAN);
