@@ -16,9 +16,11 @@
     "tame": {
       "trigger": "minecraft:player_interacted_with_entity",
       "conditions": {
-        "item": {
-          "tag": "minecraft:carpets"
-        },
+        "items": [
+          {
+            "tag": "minecraft:carpets"
+          }
+        ],
         "entity": {
           "type": "alexsmobs:elephant",
           "nbt": "{Tamed:true}"
