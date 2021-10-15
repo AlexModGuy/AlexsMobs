@@ -724,6 +724,10 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             return super.canContinueToUse() && this.turtle.hasEgg();
         }
 
+        public double acceptedDistance() {
+            return turtle.getBbWidth() + 0.5D;
+        }
+
         public void tick() {
             super.tick();
             BlockPos blockpos = this.turtle.blockPosition();
