@@ -38,7 +38,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
-version = '1.13.0'
+version = '1.13.1'
 group = 'com.github.alexthe667' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alexsmobs'
 
@@ -134,7 +134,7 @@ jar {
         attributes([
             "Specification-Title": "alexsmobs",
             "Specification-Vendor": "alexthe667",
-            "Specification-Version": "1.13.0", // We are version 1 of ourselves
+            "Specification-Version": "1.13.1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"alexthe667",

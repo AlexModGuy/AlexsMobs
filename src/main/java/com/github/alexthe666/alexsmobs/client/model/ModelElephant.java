@@ -217,6 +217,7 @@ public class ModelElephant extends AdvancedEntityModel<EntityElephant> {
         animator.move(left_leg, 0,  -1, 0);
         animator.move(right_leg, 0,  -1, 0);
         animator.move(head, 0,  2, 0);
+        animator.move(trunk2, 0,  -2, 0);
         animator.move(body, 0,  6, 0);
         animator.endKeyframe();
         animator.setStaticKeyframe(10);
@@ -293,7 +294,7 @@ public class ModelElephant extends AdvancedEntityModel<EntityElephant> {
         if (this.young) {
             float f = 1.5F;
             float f2 = 0.75F;
-            head.rotationPointY = -13F;
+            head.rotationPointY = -10;
             head.setScale(f, f, f);
             tail.setScale(f, f, f);
             head.setShouldScaleChildren(true);
@@ -310,7 +311,7 @@ public class ModelElephant extends AdvancedEntityModel<EntityElephant> {
             tail.setScale(1, 1, 1);
             trunk1.setScale(1, 1, 1);
         } else {
-            head.rotationPointY = -10.0F;
+            head.rotationPointY = -2.0F;
             matrixStackIn.pushPose();
             parts().forEach((p_228290_8_) -> {
                 p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
