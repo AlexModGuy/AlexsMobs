@@ -49,8 +49,8 @@
     {
       "name": "trader_elephant_chest",
       "rolls": {
-        "min": 1,
-        "max": 10
+        "min": 2,
+        "max": 13
       },
       "entries": [
         {
@@ -101,6 +101,21 @@
           "type": "item",
           "name": "alexsmobs:centipede_leg",
           "weight": 3
+        },
+        {
+          "type": "item",
+          "name": "alexsmobs:emu_egg",
+          "weight": 4
+        },
+        {
+          "type": "item",
+          "name": "alexsmobs:emu_feather",
+          "weight": 2
+        },
+        {
+          "type": "item",
+          "name": "alexsmobs:tarantula_hawk_wing_fragment",
+          "weight": 5
         },
         {
           "type": "item",

@@ -57,6 +57,13 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 8,
+          "functions": [
+          ],
+          "name": "alexsmobs:serrated_shark_tooth"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 60,
           "functions": [
             {
