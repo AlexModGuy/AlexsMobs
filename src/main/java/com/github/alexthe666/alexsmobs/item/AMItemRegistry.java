@@ -137,7 +137,7 @@ public class AMItemRegistry {
     public static final Item TARANTULA_HAWK_WING_FRAGMENT = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing_fragment");
     public static final Item TARANTULA_HAWK_WING = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:tarantula_hawk_wing");
     public static final Item TARANTULA_HAWK_ELYTRA = new ItemTarantulaHawkElytra(new Item.Properties().tab(AlexsMobs.TAB).durability(800).rarity(Rarity.UNCOMMON), TARANTULA_HAWK_ELYTRA_MATERIAL).setRegistryName("alexsmobs:tarantula_hawk_elytra");
-    public static final Item MYSTERIOUS_WORM = new ItemFancyRender(new Item.Properties().tab(AlexsMobs.TAB).rarity(Rarity.RARE)).setRegistryName("alexsmobs:mysterious_worm");
+    public static final Item MYSTERIOUS_WORM = new ItemMysteriousWorm(new Item.Properties().tab(AlexsMobs.TAB).rarity(Rarity.RARE)).setRegistryName("alexsmobs:mysterious_worm");
     public static final Item VOID_WORM_MANDIBLE = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:void_worm_mandible");
     public static final Item VOID_WORM_EYE = new Item(new Item.Properties().tab(AlexsMobs.TAB).rarity(Rarity.RARE)).setRegistryName("alexsmobs:void_worm_eye");
     public static final Item DIMENSIONAL_CARVER = new ItemDimensionalCarver(new Item.Properties().tab(AlexsMobs.TAB).durability(20).rarity(Rarity.EPIC)).setRegistryName("alexsmobs:dimensional_carver");

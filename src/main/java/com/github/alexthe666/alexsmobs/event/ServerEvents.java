@@ -542,29 +542,6 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onEntityLeaveWorld(EntityLeaveWorldEvent event){
-        if(event.getEntity() instanceof ItemEntity && ((ItemEntity) event.getEntity()).getItem().getItem() == AMItemRegistry.MYSTERIOUS_WORM && AMConfig.voidWormSummonable){
-            String dim = event.getEntity().level.dimension().location().toString();
-            if(AMConfig.voidWormSpawnDimensions.contains(dim) && event.getEntity().getY() < -10){
-                EntityVoidWorm worm = AMEntityRegistry.VOID_WORM.create(event.getWorld());
-                worm.setPos(event.getEntity().getX(), 0, event.getEntity().getZ());
-                worm.setSegmentCount(25 + new Random().nextInt(15));
-                worm.setXRot(-90.0F);
-                worm.updatePostSummon = true;
-                if(!event.getWorld().isClientSide){
-                    if(((ItemEntity) event.getEntity()).getThrower() != null){
-                        UUID uuid = ((ItemEntity) event.getEntity()).getThrower();
-                        if(event.getWorld().getPlayerByUUID(uuid) instanceof ServerPlayer){
-                            AMAdvancementTriggerRegistry.VOID_WORM_SUMMON.trigger((ServerPlayer)event.getWorld().getPlayerByUUID(uuid));
-                        }
-                    }
-                    event.getWorld().addFreshEntity(worm);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void onLivingAttack(LivingAttackEvent event) {
         if(!event.getEntityLiving().getUseItem().isEmpty() && event.getSource() != null && event.getSource().getEntity() != null){
             if(event.getEntityLiving().getUseItem().getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP){
