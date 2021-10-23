@@ -57,13 +57,6 @@ import net.minecraftforge.fmlclient.registry.ClientRegistry;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-   /* private static final ModelRoadrunnerBoots ROADRUNNER_BOOTS_MODEL = new ModelRoadrunnerBoots(0.7F);
-    private static final ModelMooseHeadgear MOOSE_HEADGEAR_MODEL = new ModelMooseHeadgear(0.3F);
-    private static final ModelFrontierCap FRONTIER_CAP_MODEL = new ModelFrontierCap(0.3F);
-    private static final ModelSombrero SOMBRERO_MODEL = new ModelSombrero(0.3F);
-    private static final ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(1.0F);
-    private static final ModelFedora FEDORA_MODEL = ModelFedora.createArmorLayer();
-    private static final ModelAMElytra ELYTRA_MODEL = new ModelAMElytra();*/
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
     public static final Map<Integer, SoundWormBoss> WORMBOSS_SOUND_MAP = new HashMap<>();
     public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
@@ -157,6 +150,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.TUSKLIN, RenderTusklin::new);
         EntityRenderers.register(AMEntityRegistry.LAVIATHAN, RenderLaviathan::new);
         EntityRenderers.register(AMEntityRegistry.COSMAW, RenderCosmaw::new);
+        EntityRenderers.register(AMEntityRegistry.TOUCAN, RenderToucan::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {

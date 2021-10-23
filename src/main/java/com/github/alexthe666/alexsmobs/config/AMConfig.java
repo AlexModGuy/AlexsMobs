@@ -173,6 +173,12 @@ public class AMConfig {
     public static List<? extends String> seagullStealingBlacklist = Lists.newArrayList();
     public static boolean clingingFlipEffect = false;
     public static double tusklinShoesBarteringChance = 0.025F;
+    public static List<? extends String> toucanFruitMatches = Lists.newArrayList(
+            "minecraft:apple|minecraft:oak_sapling",
+            "minecraft:golden_apple|minecraft:oak_sapling",
+            "minecraft:enchanted_golden_apple|minecraft:oak_sapling",
+            "alexsmobs:banana|minecraft:jungle_sapling"
+    );
 
     public static void bake(ModConfig config) {
         try {
