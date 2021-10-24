@@ -73,6 +73,8 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     private int timeFlying;
     private int heldItemTime;
     private boolean aiItemFlag;
+    private Ingredient temptationItems = Ingredient.fromItemListStream(Stream.of(new Ingredient.TagList(ItemTags.getCollection().get(AMTagRegistry.INSECT_ITEMS))));
+    
 
     protected EntityToucan(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -146,6 +148,13 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         this.targetSelector.addGoal(1, new FlyingAITargetDroppedItems(this, false, false, 15, 16));
     }
 
+        if (temptationItems.test(itemstack) && this.getHealth() < this.getMaxHealth()) {
+            this.consumeItemFromStack(player, itemstack);
+            this.playSound(SoundEvents.ENTITY_CAT_EAT, this.getSoundVolume(), this.getSoundPitch());
+            this.heal(5);
+            return ActionResultType.SUCCESS;
+        }
+    
     @Override
     public void setItemFlag(boolean itemAIFlag){
         aiItemFlag = itemAIFlag;
