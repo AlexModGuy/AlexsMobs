@@ -64,6 +64,7 @@ public class EntityRattlesnake extends AnimalEntity implements IAnimatedEntity {
         this.goalSelector.addGoal(2, new WarnPredatorsGoal());
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.fromTag(ItemTags.getCollection().get(AMTagRegistry.RATTLESNAKE_RATTLE)), false));
         this.goalSelector.addGoal(5, new AnimalAIWanderRanged(this, 60, 1.0D, 7, 7));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 15.0F));
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
