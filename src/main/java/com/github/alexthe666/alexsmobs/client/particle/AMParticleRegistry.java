@@ -26,6 +26,7 @@ public class AMParticleRegistry {
     public static final SimpleParticleType WORM_PORTAL = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:worm_portal");
     public static final SimpleParticleType INVERT_DIG = (SimpleParticleType) new SimpleParticleType(true).setRegistryName("alexsmobs:invert_dig");
     public static final SimpleParticleType TEETH_GLINT = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:teeth_glint");
+    public static final SimpleParticleType SMELLY = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:smelly");
 
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

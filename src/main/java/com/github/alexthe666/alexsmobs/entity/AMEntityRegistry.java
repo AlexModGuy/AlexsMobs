@@ -103,6 +103,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityLaviathan> LAVIATHAN = registerEntity(EntityType.Builder.of(EntityLaviathan::new, MobCategory.CREATURE).sized(3.3F, 2.4F).fireImmune().setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "laviathan");
     public static final EntityType<EntityCosmaw> COSMAW = registerEntity(EntityType.Builder.of(EntityCosmaw::new, MobCategory.CREATURE).sized(1.95F, 1.8F), "cosmaw");
     public static final EntityType<EntityToucan> TOUCAN = registerEntity(EntityType.Builder.of(EntityToucan::new, MobCategory.CREATURE).sized(0.45F, 0.45F), "toucan");
+    public static final EntityType<EntityManedWolf> MANED_WOLF = registerEntity(EntityType.Builder.of(EntityManedWolf::new, MobCategory.CREATURE).sized(0.9F, 1.26F), "maned_wolf");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -249,6 +250,7 @@ public class AMEntityRegistry {
         event.put(LAVIATHAN, EntityLaviathan.bakeAttributes().build());
         event.put(COSMAW, EntityCosmaw.bakeAttributes().build());
         event.put(TOUCAN, EntityToucan.bakeAttributes().build());
+        event.put(MANED_WOLF, EntityManedWolf.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(Tag entityTag){

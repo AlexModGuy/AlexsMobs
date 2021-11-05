@@ -151,6 +151,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.LAVIATHAN, RenderLaviathan::new);
         EntityRenderers.register(AMEntityRegistry.COSMAW, RenderCosmaw::new);
         EntityRenderers.register(AMEntityRegistry.TOUCAN, RenderToucan::new);
+        EntityRenderers.register(AMEntityRegistry.MANED_WOLF, RenderManedWolf::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -280,6 +281,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.WORM_PORTAL, ParticleWormPortal.Factory::new);
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.INVERT_DIG, ParticleInvertDig.Factory::new);
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.TEETH_GLINT, ParticleTeethGlint.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SMELLY, ParticleSmelly.Factory::new);
     }
 
 

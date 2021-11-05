@@ -188,40 +188,42 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
         entity.tickAnts();
     }
 
-    private void growFungus() {
-        BlockPos bottomChamber = this.getBlockPos().below();
-        while (level.getBlockState(bottomChamber.below()).getBlock() == AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER && bottomChamber.getY() > 0) {
-            bottomChamber = bottomChamber.below();
-        }
-        BlockPos chamber = bottomChamber;
-        if (isUnfilledChamber(chamber)) {
-            int fungalLevel = level.getBlockState(chamber).getValue(BlockLeafcutterAntChamber.FUNGUS);
-            int fungalLevel2 = Mth.clamp(fungalLevel + 1 + level.getRandom().nextInt(1), 0, 5);
-            level.setBlockAndUpdate(chamber, AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.defaultBlockState().setValue(BlockLeafcutterAntChamber.FUNGUS, fungalLevel2));
-        } else {
-            boolean flag = false;
-            List<BlockPos> possibleChambers = new ArrayList<>();
-            while (!flag) {
-                for (BlockPos blockpos : BlockPos.betweenClosed(chamber.offset(-4, 0, -4), chamber.offset(4, 0, 4))) {
-                    if (isUnfilledChamber(blockpos)) {
-                        possibleChambers.add(blockpos.immutable());
-                        flag = true;
-                    }
-                }
-                if (!flag) {
-                    chamber = chamber.above();
-                    if (chamber.getY() > this.worldPosition.getY()) {
-                        return;
-                    }
-                }
+    public void growFungus() {
+        if(!this.hasNoAnts()){
+            BlockPos bottomChamber = this.getBlockPos().below();
+            while (level.getBlockState(bottomChamber.below()).getBlock() == AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER && bottomChamber.getY() > 0) {
+                bottomChamber = bottomChamber.below();
             }
-            Collections.shuffle(possibleChambers);
-            if (!possibleChambers.isEmpty()) {
-                BlockPos newChamber = possibleChambers.get(0);
-                if (newChamber != null && isUnfilledChamber(newChamber)) {
-                    int fungalLevel = level.getBlockState(newChamber).getValue(BlockLeafcutterAntChamber.FUNGUS);
-                    int fungalLevel2 = Mth.clamp(fungalLevel + 1 + level.getRandom().nextInt(1), 0, 5);
-                    level.setBlockAndUpdate(newChamber, AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.defaultBlockState().setValue(BlockLeafcutterAntChamber.FUNGUS, fungalLevel2));
+            BlockPos chamber = bottomChamber;
+            if (isUnfilledChamber(chamber)) {
+                int fungalLevel = level.getBlockState(chamber).getValue(BlockLeafcutterAntChamber.FUNGUS);
+                int fungalLevel2 = Mth.clamp(fungalLevel + 1 + level.getRandom().nextInt(1), 0, 5);
+                level.setBlockAndUpdate(chamber, AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.defaultBlockState().setValue(BlockLeafcutterAntChamber.FUNGUS, fungalLevel2));
+            } else {
+                boolean flag = false;
+                List<BlockPos> possibleChambers = new ArrayList<>();
+                while (!flag) {
+                    for (BlockPos blockpos : BlockPos.betweenClosed(chamber.offset(-4, 0, -4), chamber.offset(4, 0, 4))) {
+                        if (isUnfilledChamber(blockpos)) {
+                            possibleChambers.add(blockpos.immutable());
+                            flag = true;
+                        }
+                    }
+                    if (!flag) {
+                        chamber = chamber.above();
+                        if (chamber.getY() > this.worldPosition.getY()) {
+                            return;
+                        }
+                    }
+                }
+                Collections.shuffle(possibleChambers);
+                if (!possibleChambers.isEmpty()) {
+                    BlockPos newChamber = possibleChambers.get(0);
+                    if (newChamber != null && isUnfilledChamber(newChamber)) {
+                        int fungalLevel = level.getBlockState(newChamber).getValue(BlockLeafcutterAntChamber.FUNGUS);
+                        int fungalLevel2 = Mth.clamp(fungalLevel + 1 + level.getRandom().nextInt(1), 0, 5);
+                        level.setBlockAndUpdate(newChamber, AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.defaultBlockState().setValue(BlockLeafcutterAntChamber.FUNGUS, fungalLevel2));
+                    }
                 }
             }
         }
