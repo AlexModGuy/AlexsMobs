@@ -94,6 +94,8 @@ public class EntityLobster extends WaterMobEntity implements ISemiAquatic {
                 return "black";
             case 5:
                 return "white";
+            case 6:
+                return "orange";
             default:
                 return "red";
         }
