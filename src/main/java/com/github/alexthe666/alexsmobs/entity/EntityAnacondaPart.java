@@ -42,6 +42,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     private float prevSwell;
     private float prevStrangleProgess;
     private int headEntityId = -1;
+    private double prevHeight = 0;
     public Vec3[] stranglePosition = new Vec3[]{
             new Vec3(0.5, 0, 0),
             new Vec3(-0.5, 0, 0),
@@ -147,8 +148,10 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         double d2 = parentButt.z - ourButt.z;
         double d3 = Math.sqrt(d0 * d0 + d2 * d2);
         double hgt = doHeight ? (getLowPartHeight(parentButt.x, parentButt.y, parentButt.z) + getHighPartHeight(ourButt.x, ourButt.y, ourButt.z)) : 0;
-
-        double partYDest = Mth.clamp(this.getScale() * 1.5F * hgt, -0.35F, 1);
+        if(Math.abs(hgt - prevHeight) > 0.2F){
+            prevHeight = hgt;
+        }
+        double partYDest = Mth.clamp(this.getScale() * prevHeight, -0.6F, 0.6F);
         float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
         float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * (double) (180F / (float) Math.PI))));
         float f2 = this.limitAngle(this.getXRot(), rawAngle, 10F);
@@ -175,12 +178,13 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         if(isFluidAt(x, yIn, z)){
             return 0.0;
         }
-        double checkAt = 3D;
-        while (checkAt > 0) {
+        double checkAt = 0D;
+        while (checkAt <= 3) {
             if(isOpaqueBlockAt(x, yIn + checkAt, z)) {
+                checkAt += 0.2D;
+            }else{
                 break;
             }
-            checkAt -= 0.2D;
         }
         return checkAt;
     }
