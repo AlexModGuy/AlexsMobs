@@ -153,26 +153,6 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         super.tick();
     }
 
-    protected float limitAngle(float sourceAngle, float targetAngle, float maximumChange) {
-        float f = Mth.wrapDegrees(targetAngle - sourceAngle);
-        if (f > maximumChange) {
-            f = maximumChange;
-        }
-
-        if (f < -maximumChange) {
-            f = -maximumChange;
-        }
-
-        float f1 = sourceAngle + f;
-        if (f1 < 0.0F) {
-            f1 += 360.0F;
-        } else if (f1 > 360.0F) {
-            f1 -= 360.0F;
-        }
-
-        return f1;
-    }
-
     public Entity getParent() {
         UUID id = getParentId();
         if (id != null && !level.isClientSide) {

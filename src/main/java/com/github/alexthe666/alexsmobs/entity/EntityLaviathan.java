@@ -605,7 +605,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
             if (!this.isChilling() && headPeakCooldown == 0) {
                 float low = getLowHeadHeight();
-                this.setHeadHeight(this.getHeadHeight() +  (0.5F + ((getLowHeadHeight() + getHighHeadHeight(low)) / 2F) - this.getHeadHeight()) * 0.2F);
+                this.setHeadHeight(this.getHeadHeight() + (0.5F + ((getLowHeadHeight() + getHighHeadHeight(low)) / 2F) - this.getHeadHeight()) * 0.2F);
             } else {
                 if (getMaxFluidHeight() <= this.getBbHeight() * 0.5F && getMaxFluidHeight() >= this.getBbHeight() * 0.25F) {
                     float mot = (float) this.getDeltaMovement().lengthSqr();

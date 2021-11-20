@@ -1,0 +1,31 @@
+{
+  "parent": "builtin/entity",
+  "gui_light": "front",
+  "ambientocclusion": true,
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [0, 0, 0]
+    },
+    "thirdperson_lefthand": {
+      "translation": [0, 0, 0]
+    },
+    "firstperson_righthand": {
+      "translation": [0, 0, 0]
+    },
+    "firstperson_lefthand": {
+      "translation": [0, 0, 0]
+    },
+    "ground": {
+      "translation": [0, 0, 0]
+    },
+    "gui": {
+      "translation": [0, 0, 0]
+    },
+    "head": {
+      "translation": [0, 0, 0]
+    },
+    "fixed": {
+      "translation": [0, 0, 0]
+    }
+  }
+}

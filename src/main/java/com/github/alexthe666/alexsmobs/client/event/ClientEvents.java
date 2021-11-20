@@ -6,49 +6,53 @@ import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
 import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
 import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
+import com.github.alexthe666.alexsmobs.client.render.RenderVineLasso;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
+import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
+import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.CameraType;
+import com.mojang.math.Vector3f;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
-import net.minecraft.world.entity.MobType;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.LiquidBlockRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.util.Mth;
-import com.mojang.math.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEvents {
@@ -59,8 +63,8 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onOutlineEntityColor(EventGetOutlineColor event){
-     if(event.getEntityIn() instanceof ItemEntity && ItemTags.getAllTags().getTag(AMTagRegistry.VOID_WORM_DROPS).contains(((ItemEntity) event.getEntityIn()).getItem().getItem())){
+    public void onOutlineEntityColor(EventGetOutlineColor event) {
+        if (event.getEntityIn() instanceof ItemEntity && ItemTags.getAllTags().getTag(AMTagRegistry.VOID_WORM_DROPS).contains(((ItemEntity) event.getEntityIn()).getItem().getItem())) {
             int fromColor = 0;
             int toColor = 0X21E5FF;
             float startR = (float) (fromColor >> 16 & 255) / 255.0F;
@@ -73,9 +77,9 @@ public class ClientEvents {
             float r = (endR - startR) * f + startR;
             float g = (endG - startG) * f + startG;
             float b = (endB - startB) * f + startB;
-            int j =  ((((int)(r*255)) & 0xFF) << 16) |
-                    ((((int)(g*255)) & 0xFF) << 8)  |
-                    ((((int)(b*255)) & 0xFF) << 0);
+            int j = ((((int) (r * 255)) & 0xFF) << 16) |
+                    ((((int) (g * 255)) & 0xFF) << 8) |
+                    ((((int) (b * 255)) & 0xFF) << 0);
             event.setColor(j);
             event.setResult(Event.Result.ALLOW);
         }
@@ -130,6 +134,43 @@ public class ClientEvents {
             event.getEntity().yBodyRot = -event.getEntity().yBodyRot;
             event.getEntity().yHeadRotO = -event.getEntity().yHeadRotO;
             event.getEntity().yHeadRot = -event.getEntity().yHeadRot;
+        }
+        if (VineLassoUtil.hasLassoData(event.getEntity()) && !(event.getEntity() instanceof Player)) {
+            Entity lassoedOwner = VineLassoUtil.getLassoedTo(event.getEntity());
+            if (lassoedOwner instanceof LivingEntity && lassoedOwner != event.getEntity()) {
+                double d0 = Mth.lerp(event.getPartialRenderTick(), event.getEntity().xOld, event.getEntity().getX());
+                double d1 = Mth.lerp(event.getPartialRenderTick(), event.getEntity().yOld, event.getEntity().getY());
+                double d2 = Mth.lerp(event.getPartialRenderTick(), event.getEntity().zOld, event.getEntity().getZ());
+                event.getMatrixStack().pushPose();
+                event.getMatrixStack().translate(-d0, -d1, -d2);
+                RenderVineLasso.renderVine(event.getEntity(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), (LivingEntity) lassoedOwner, ((LivingEntity) lassoedOwner).getMainArm() == HumanoidArm.LEFT, 0.1F);
+                event.getMatrixStack().popPose();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onPoseHand(EventPosePlayerHand event) {
+        LivingEntity player = (LivingEntity) event.getEntityIn();
+        float f = Minecraft.getInstance().getFrameTime();
+        boolean leftHand = false;
+        boolean usingLasso = player.isUsingItem() && player.getUseItem().is(AMItemRegistry.VINE_LASSO);
+        if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.VINE_LASSO) {
+            leftHand = player.getMainArm() == HumanoidArm.LEFT;
+        } else if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.VINE_LASSO) {
+            leftHand = player.getMainArm() != HumanoidArm.LEFT;
+        }
+        if (leftHand && event.isLeftHand() && usingLasso) {
+            float swing = (float) Math.sin(player.tickCount + f) * 0.5F;
+            event.setResult(Event.Result.ALLOW);
+            event.getModel().leftArm.xRot = (float) Math.toRadians(-120F) + (float) Math.sin(player.tickCount + f) * 0.5F;
+            event.getModel().leftArm.yRot = (float) Math.toRadians(-20F) + (float) Math.cos(player.tickCount + f) * 0.5F;
+        }
+        if (!leftHand && !event.isLeftHand() && usingLasso) {
+            event.setResult(Event.Result.ALLOW);
+            event.getModel().rightArm.xRot = (float) Math.toRadians(-120F) + (float) Math.sin(player.tickCount + f) * 0.5F;
+            event.getModel().rightArm.yRot = (float) Math.toRadians(20F) - (float) Math.cos(player.tickCount + f) * 0.5F;
         }
     }
 
@@ -245,7 +286,7 @@ public class ClientEvents {
                 }
             }
             previousLavaVision = Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION);
-            if(AMConfig.clingingFlipEffect){
+            if (AMConfig.clingingFlipEffect) {
                 if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.CLINGING) && Minecraft.getInstance().player.getEyeHeight() < Minecraft.getInstance().player.getBbHeight() * 0.45F) {
                     Minecraft.getInstance().gameRenderer.loadEffect(new ResourceLocation("shaders/post/flip.json"));
                 } else if (Minecraft.getInstance().gameRenderer.currentEffect() != null && Minecraft.getInstance().gameRenderer.currentEffect().getName().equals("minecraft:shaders/post/flip.json")) {
