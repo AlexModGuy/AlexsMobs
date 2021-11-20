@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelShieldOfTheDeep;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
+import com.github.alexthe666.alexsmobs.item.ItemVineLasso;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -192,6 +193,20 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }else{
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY), p_239207_2_, 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+            }
+        }
+        if(itemStackIn.getItem() == AMItemRegistry.VINE_LASSO){
+            matrixStackIn.translate(0.5F, 0.5f, 0.5f);
+            if(p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+                if(ItemVineLasso.isItemInUse(itemStackIn)){
+                    if(p_239207_2_.firstPerson()){
+                        matrixStackIn.translate(p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -0.3F : 0.3F, 0.0f, -0.5f);
+                    }
+                    matrixStackIn.mulPose(Vector3f.YP.rotation(Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getFrameTime()));
+                }
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+            }else{
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY), p_239207_2_, 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON) {

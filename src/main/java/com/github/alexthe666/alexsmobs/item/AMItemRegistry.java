@@ -151,7 +151,10 @@ public class AMItemRegistry {
     public static final Item STRADDLE_HELMET = new Item(new Item.Properties().tab(AlexsMobs.TAB).fireResistant()).setRegistryName("alexsmobs:straddle_helmet");
     public static final Item STRADDLE_SADDLE = new Item(new Item.Properties().tab(AlexsMobs.TAB).fireResistant()).setRegistryName("alexsmobs:straddle_saddle");
     public static final Item COSMIC_COD = new Item(new Item.Properties().tab(AlexsMobs.TAB).food(new FoodProperties.Builder().nutrition(6).saturationMod(0.3F).effect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU, 12000), 0.15F).build())).setRegistryName("alexsmobs:cosmic_cod");
-
+    public static final Item SHED_SNAKE_SKIN = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:shed_snake_skin");
+    public static final Item VINE_LASSO_INVENTORY = new Item(new Item.Properties()).setRegistryName("alexsmobs:vine_lasso_inventory");
+    public static final Item VINE_LASSO_HAND = new Item(new Item.Properties()).setRegistryName("alexsmobs:vine_lasso_hand");
+    public static final Item VINE_LASSO = new ItemVineLasso(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:vine_lasso");
     public static final Item MUSIC_DISC_THIME = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
     public static final Item MUSIC_DISC_DAZE = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_daze");
 
@@ -159,6 +162,7 @@ public class AMItemRegistry {
     public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
     public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
     public static final BannerPattern PATTERN_NEW_MEXICO = addBanner("new_mexico");
+    public static final BannerPattern PATTERN_BRAZIL = addBanner("brazil");
 
     private static BannerPattern addBanner(String name) {
         return BannerPattern.create(name.toUpperCase(), name, "alexsmobs." + name, true);
@@ -225,6 +229,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.COSMAW, 0X746DBD,0XD6BFE3, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_cosmaw"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TOUCAN, 0XF58F33,0X1E2133, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_toucan"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MANED_WOLF, 0XBB7A47,0X40271A, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_maned_wolf"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ANACONDA, 0X565C22,0XD3763F, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_anaconda"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -256,6 +261,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_0, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_0"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_1, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_1"));
         event.getRegistry().register(new BannerPatternItem(PATTERN_NEW_MEXICO, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_new_mexico"));
+        event.getRegistry().register(new BannerPatternItem(PATTERN_BRAZIL, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_brazil"));
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(CROCODILE_SCUTE));
         ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(ROADRUNNER_FEATHER));
         CENTIPEDE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(CENTIPEDE_LEG));
