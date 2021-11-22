@@ -20,7 +20,6 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -65,6 +64,10 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         switchNavigator(true);
     }
 
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
+    }
+
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
@@ -75,10 +78,6 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
             this.navigation = new SemiAquaticPathNavigator(this, level);
             this.isLandNavigator = false;
         }
-    }
-
-    public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
     protected void registerGoals() {
@@ -145,6 +144,10 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         return this.entityData.get(CHILD_UUID).orElse(null);
     }
 
+    public void setChildId(@Nullable UUID uniqueId) {
+        this.entityData.set(CHILD_UUID, Optional.ofNullable(uniqueId));
+    }
+
     public int getFeedings() {
         return this.entityData.get(FEEDINGS);
     }
@@ -175,10 +178,6 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public void setYellow(boolean yellow) {
         this.entityData.set(YELLOW, Boolean.valueOf(yellow));
-    }
-
-    public void setChildId(@Nullable UUID uniqueId) {
-        this.entityData.set(CHILD_UUID, Optional.ofNullable(uniqueId));
     }
 
     public int getMaxHeadXRot() {
@@ -237,7 +236,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 double extraZ = radius * Mth.cos(angle);
                 double extraY = -0.5F;
                 this.setPosRaw(extraX + e.getX(), e.getY(1.0F), extraZ + e.getZ());
-                e.setDeltaMovement(e.getDeltaMovement().multiply(0.0, 1, 0.0));
+                e.setDeltaMovement(Vec3.ZERO);
                 if (strangleTimer >= 40 && strangleTimer % 20 == 0) {
                     this.getTarget().hurt(DamageSource.mobAttack(this), 4);
                 }
@@ -298,7 +297,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 parts[0] = (EntityAnacondaPart) this.getChild();
                 this.entityData.set(CHILD_ID, parts[0].getId());
                 int i = 1;
-                while(i < parts.length && parts[i - 1].getChild() instanceof EntityAnacondaPart){
+                while (i < parts.length && parts[i - 1].getChild() instanceof EntityAnacondaPart) {
                     parts[i] = (EntityAnacondaPart) parts[i - 1].getChild();
                     i++;
                 }
@@ -322,12 +321,12 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 }
             }
         }
-        if(shedCooldown > 0){
+        if (shedCooldown > 0) {
             shedCooldown--;
         }
-        if(this.getSheddingTime() > 0){
+        if (this.getSheddingTime() > 0) {
             this.setSheddingTime(this.getSheddingTime() - 1);
-            if(this.getSheddingTime() == 0){
+            if (this.getSheddingTime() == 0) {
                 this.spawnItemAtOffset(new ItemStack(AMItemRegistry.SHED_SNAKE_SKIN), 1 + random.nextFloat(), 0.2F);
                 shedCooldown = 1000 + random.nextInt(2000);
             }
@@ -414,8 +413,8 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         } else if (this.level.isClientSide) {
             return null;
         } else {
-            Vec3 vec = new Vec3(0, 0, f).yRot(-f * ((float)Math.PI / 180F));
-            ItemEntity itementity = new ItemEntity(this.level, this.getX() + vec.x, this.getY() + (double)f1, this.getZ() + vec.z, stack);
+            Vec3 vec = new Vec3(0, 0, f).yRot(-f * ((float) Math.PI / 180F));
+            ItemEntity itementity = new ItemEntity(this.level, this.getX() + vec.x, this.getY() + (double) f1, this.getZ() + vec.z, stack);
             itementity.setDefaultPickUpDelay();
             if (captureDrops() != null) captureDrops().add(itementity);
             else
@@ -464,7 +463,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         entity.addAdditionalSaveData(emptyNbt);
         emptyNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
         entity.readAdditionalSaveData(emptyNbt);
-        if(this.getChild() instanceof EntityAnacondaPart){
+        if (this.getChild() instanceof EntityAnacondaPart) {
             ((EntityAnacondaPart) this.getChild()).setSwell(5);
         }
         super.killed(world, entity);
@@ -472,13 +471,13 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return  source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
     }
 
     public void feed() {
         this.heal(10);
         this.setFeedings(this.getFeedings() + 1);
-        if(this.getFeedings() >= 0 && shedCooldown <= 0){
+        if (this.getFeedings() >= 3 && shedCooldown <= 0) {
             this.setFeedings(0);
             this.setSheddingTime(500);
         }
@@ -514,9 +513,10 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
             LivingEntity target = snake.getTarget();
             if (target != null && target.isAlive()) {
                 double dist = snake.distanceTo(target);
-                if (dist < 1 + target.getBbWidth() && !snake.isStrangling()) {
+                if (dist < 1 + target.getBbWidth() && !snake.isStrangling() && jumpAttemptCooldown == 0) {
                     target.hurt(DamageSource.mobAttack(snake), 4);
-                    snake.setStrangling(target.getBbWidth() < 2F);
+                    snake.setStrangling(target.getBbWidth() <= 2.3F);
+                    jumpAttemptCooldown = 5 + random.nextInt(5);
                 }
                 if (snake.isStrangling()) {
                     snake.getNavigation().stop();
@@ -526,7 +526,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                   // snake.lookAt(target, 1, 1);
+                    // snake.lookAt(target, 1, 1);
                 }
             }
         }
