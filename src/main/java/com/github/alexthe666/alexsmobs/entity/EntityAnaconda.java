@@ -405,7 +405,6 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         return (float) (40 * -Math.sin(this.walkDist * 3 - (i))) * f + this.strangleProgress * 0.2F * i * strangleIntensity;
     }
 
-
     @Nullable
     public ItemEntity spawnItemAtOffset(ItemStack stack, float f, float f1) {
         if (stack.isEmpty()) {

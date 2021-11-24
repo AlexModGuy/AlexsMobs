@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.8
 // Paste this class into your mod and generate all required imports
 
 
+import com.github.alexthe666.alexsmobs.entity.EntityAnteater;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.entity.EntityOrca;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -210,5 +211,13 @@ public class ModelLeafcutterAnt extends AdvancedEntityModel<EntityLeafcutterAnt>
 		AdvancedModelBox.rotateAngleX = x;
 		AdvancedModelBox.rotateAngleY = y;
 		AdvancedModelBox.rotateAngleZ = z;
+	}
+
+	public void animateAnteater(EntityAnteater anteater, float partialTicks) {
+		this.resetToDefaultPose();
+		float ageInTicks = anteater.tickCount + partialTicks;
+		float struggleSpeed = 0.5F;
+		float struggleDegree = 1.0F;
+		this.swing(root, struggleSpeed, struggleDegree * 0.8F, false, 0, 0, ageInTicks, 1);
 	}
 }

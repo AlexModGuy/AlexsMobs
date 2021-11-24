@@ -144,6 +144,10 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         }
     }
 
+    public boolean canCollideWith(Entity entity) {
+        return !(entity instanceof EntityAnteater) && super.canCollideWith(entity);
+    }
+
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 0.25F).add(Attributes.ATTACK_DAMAGE, 2F);
     }
@@ -199,6 +203,12 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
 
     protected void playStepSound(BlockPos pos, BlockState state) {
 
+    }
+
+    public void push(Entity entity) {
+        if(!(entity instanceof EntityAnteater)){
+            super.push(entity);
+        }
     }
 
     private void pacifyAllNearby(){

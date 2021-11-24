@@ -107,6 +107,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityAnaconda> ANACONDA = registerEntity(EntityType.Builder.of(EntityAnaconda::new, MobCategory.CREATURE).sized(0.8F, 0.8F), "anaconda");
     public static final EntityType<EntityAnacondaPart> ANACONDA_PART = registerEntity(EntityType.Builder.of(EntityAnacondaPart::new, MobCategory.CREATURE).sized(0.8F, 0.8F).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "anaconda_part");
     public static final EntityType<EntityVineLasso> VINE_LASSO = registerEntity(EntityType.Builder.of(EntityVineLasso::new, MobCategory.MISC).sized(0.85F, 0.2F).setCustomClientFactory(EntityVineLasso::new).fireImmune(), "vine_lasso");
+    public static final EntityType<EntityAnteater> ANTEATER = registerEntity(EntityType.Builder.of(EntityAnteater::new, MobCategory.CREATURE).sized(1.3F, 1.1F), "anteater");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -256,6 +257,7 @@ public class AMEntityRegistry {
         event.put(MANED_WOLF, EntityManedWolf.bakeAttributes().build());
         event.put(ANACONDA, EntityAnaconda.bakeAttributes().build());
         event.put(ANACONDA_PART, EntityAnacondaPart.bakeAttributes().build());
+        event.put(ANTEATER, EntityAnteater.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(Tag entityTag){
