@@ -243,6 +243,10 @@ public class ModelCaveCentipede<T extends LivingEntity> extends AdvancedEntityMo
         float walkDegree = 0.85F;
         float idleSpeed = 0.25F;
         float idleDegree = 0.35F;
+        if(entity.deathTime > 0){
+            limbSwing = ageInTicks;
+            limbSwingAmount = 1;
+        }
         if(type == 0){
             this.swing(antenna_left, idleSpeed, idleDegree, true, 1, -0.1F, ageInTicks, 1);
             this.swing(antenna_right, idleSpeed, idleDegree, false, 1, -0.1F, ageInTicks, 1);

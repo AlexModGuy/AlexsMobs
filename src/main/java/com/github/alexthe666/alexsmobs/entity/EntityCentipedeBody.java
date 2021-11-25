@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.entity.util.AnacondaPartIndex;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -28,17 +29,22 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
 
     private static final EntityDataAccessor<Integer> BODYINDEX = SynchedEntityData.defineId(EntityCentipedeBody.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> BODY_XROT = SynchedEntityData.defineId(EntityCentipedeBody.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Optional<UUID>> PARENT_UUID = SynchedEntityData.defineId(EntityCentipedeBody.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> CHILD_UUID = SynchedEntityData.defineId(EntityCentipedeBody.class, EntityDataSerializers.OPTIONAL_UUID);
     public EntityDimensions multipartSize;
     protected float radius;
     protected float angleYaw;
     protected float offsetY;
     protected float damageMultiplier = 1;
     private float parentYaw = 0;
+    private double prevHeight = 0;
     protected EntityCentipedeBody(EntityType type, Level worldIn) {
         super(type, worldIn);
         multipartSize = type.getDimensions();
@@ -58,75 +64,47 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         return MobType.ARTHROPOD;
     }
 
+    public boolean isNoGravity() {
+        return false;
+    }
+
     @Override
     public void tick() {
         super.tick();
         isInsidePortal = false;
-        Entity parent = getParent();
-        refreshDimensions();
-        if (parent != null && !level.isClientSide) {
-            float f = this.distanceTo(parent);
-            this.setNoGravity(true);
-            this.lookAt(parent, 1, 1);
-            this.parentYaw = this.limitAngle(this.parentYaw, parent.yRotO, 5.0F);
-            double yD1 = (parent.getY() - this.getY()) / (double) f;
-            double ySet = parent.yo;
-            if (!level.getBlockState(new BlockPos(this.getX(), ySet - 0.1, this.getZ())).canOcclude()) {
-                ySet = parent.yo - 0.2F;
-            }
-            if (this.isInWall() || level.getBlockState(new BlockPos(this.getX(), ySet, this.getZ())).canOcclude()) {
-                ySet = parent.yo + 0.2F;
-            }
-            double yaw = parentYaw;
-            double x = parent.xo + this.radius * Math.cos(yaw * (Math.PI / 180.0F) + this.angleYaw);
-            double z = parent.zo + this.radius * Math.sin(yaw * (Math.PI / 180.0F) + this.angleYaw);
-            this.setPos(x, ySet, z);
-            double d0 = parent.getX() - this.getX();
-            double d1 = parent.getY() - this.getY();
-            double d2 = parent.getZ() - this.getZ();
-            double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-            float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
-            this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F));
-            this.markHurt();
-            this.setYRot( parentYaw);
-            this.yHeadRot = this.getYRot();
-            this.yBodyRot = this.yRotO;
-            if (parent instanceof LivingEntity) {
-                if(!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)){
-                    AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), 0));
-                    this.hurtTime = ((LivingEntity) parent).hurtTime;
-                    this.deathTime = ((LivingEntity) parent).deathTime;
+        this.setDeltaMovement(Vec3.ZERO);
+        if (this.tickCount > 1) {
+            Entity parent = getParent();
+            refreshDimensions();
+            if (parent != null && !level.isClientSide) {
+                if (parent instanceof LivingEntity) {
+                    if (!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)) {
+                        AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), 0));
+                        this.hurtTime = ((LivingEntity) parent).hurtTime;
+                        this.deathTime = ((LivingEntity) parent).deathTime;
+                    }
                 }
-            }
-            this.pushEntities();
-            if (parent.isRemoved() && !level.isClientSide) {
-                this.remove(RemovalReason.DISCARDED);
+                if (parent.isRemoved() && !level.isClientSide) {
+                    this.remove(RemovalReason.DISCARDED);
+                }
+            } else if (tickCount > 20 && !level.isClientSide) {
+                remove(RemovalReason.DISCARDED);
             }
         }
-        if (parent == null && !level.isClientSide) {
-            this.remove(RemovalReason.DISCARDED);
-        }
-    }
-    public void setInitialPartPos(LivingEntity parent, int index) {
-        double radAdd = this.radius * index;
-        this.setYRot( parent.getYRot());
-        this.yBodyRot = parent.yBodyRot;
-        this.parentYaw = parent.getYRot();
-        this.setPos(parent.xo +  radAdd * Math.cos(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + radAdd * Math.sin(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw));
     }
 
     public EntityCentipedeBody(EntityType t, LivingEntity parent, float radius, float angleYaw, float offsetY) {
         super(t, parent.level);
         this.setParent(parent);
-        this.radius = radius;
-        this.angleYaw = (angleYaw + 90.0F) * ((float) Math.PI / 180.0F);
-        this.offsetY = offsetY;
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         if (this.getParentId() != null) {
             compound.putUUID("ParentUUID", this.getParentId());
+        }
+        if (this.getChildId() != null) {
+            compound.putUUID("ChildUUID", this.getChildId());
         }
         compound.putInt("BodyIndex", getBodyIndex());
         compound.putFloat("PartAngle", angleYaw);
@@ -138,6 +116,9 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         if (compound.hasUUID("ParentUUID")) {
             this.setParentId(compound.getUUID("ParentUUID"));
         }
+        if (compound.hasUUID("ChildUUID")) {
+            this.setChildId(compound.getUUID("ChildUUID"));
+        }
         this.setBodyIndex(compound.getInt("BodyIndex"));
         this.angleYaw = compound.getFloat("PartAngle");
         this.radius = compound.getFloat("PartRadius");
@@ -146,7 +127,9 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(PARENT_UUID, Optional.empty());
+        this.entityData.define(CHILD_UUID, Optional.empty());
         this.entityData.define(BODYINDEX, 0);
+        this.entityData.define(BODY_XROT, 0F);
     }
 
     public Entity getParent() {
@@ -159,6 +142,24 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
 
     public void setParent(Entity entity) {
         this.setParentId(entity.getUUID());
+    }
+
+
+    public Entity getChild() {
+        UUID id = getChildId();
+        if (id != null && !level.isClientSide) {
+            return ((ServerLevel) level).getEntity(id);
+        }
+        return null;
+    }
+
+    @Nullable
+    public UUID getChildId() {
+        return this.entityData.get(CHILD_UUID).orElse(null);
+    }
+
+    public void setChildId(@Nullable UUID uniqueId) {
+        this.entityData.set(CHILD_UUID, Optional.ofNullable(uniqueId));
     }
 
     @Override
@@ -216,6 +217,94 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ARMOR, 6.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F).add(Attributes.MOVEMENT_SPEED, 0.25F);
+    }
+
+    public Vec3 tickMultipartPosition(int headId, float parentOffset, Vec3 parentPosition, float parentXRot, float ourYRot, boolean doHeight) {
+        float yDif = doHeight ? 1.0F - 0.95F * (float)Math.min(Math.abs(parentPosition.y - this.getY()), 1.0F) : 1F;
+        Vec3 parentFront = parentPosition.add(calcOffsetVec(yDif * parentOffset * this.getScale(), parentXRot, ourYRot));
+        Vec3 parentButt = parentPosition.add(calcOffsetVec(yDif * -parentOffset * this.getScale(), parentXRot, ourYRot));
+        Vec3 ourButt = parentButt.add(calcOffsetVec((yDif * -getBackOffset() - 0.5F * this.getBbWidth()) * this.getScale(), this.getXRot(), ourYRot));
+        Vec3 avg = new Vec3((parentButt.x + ourButt.x) / 2F, (parentButt.y + ourButt.y) / 2F, (parentButt.z + ourButt.z) / 2F);
+        double d0 = parentButt.x - ourButt.x;
+        double d1 = parentButt.y - ourButt.y;
+        double d2 = parentButt.z - ourButt.z;
+        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+        double hgt = doHeight ? (getLowPartHeight(parentButt.x, parentButt.y, parentButt.z) + getHighPartHeight(ourButt.x, ourButt.y, ourButt.z)) : 0;
+        if(Math.abs(prevHeight - hgt) > 0.2){
+            prevHeight = hgt;
+        }
+        if(!isOpaqueBlockAt(parentFront.x,parentFront.y + 0.4F, parentFront.z) && Math.abs(prevHeight) > 1){
+            prevHeight = 0;
+        }
+        double partYDest = Mth.clamp(prevHeight, -0.4F, 0.4F);
+        float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
+        float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * (double) (180F / (float) Math.PI))));
+        float f2 = this.limitAngle(this.getXRot(), rawAngle, 10);
+        this.setXRot(f2);
+        this.entityData.set(BODY_XROT, f2);
+        this.setYRot(f);
+        this.yHeadRot = f;
+        this.moveTo(avg.x, avg.y, avg.z, f, f2);
+        return avg;
+    }
+
+    public float getXRot() {
+        return this.entityData.get(BODY_XROT);
+    }
+
+    public double getLowPartHeight(double x, double yIn, double z) {
+        if(isFluidAt(x, yIn, z)){
+            return 0.0;
+        }
+        double checkAt = 0D;
+        while (checkAt > -3D && !isOpaqueBlockAt(x,yIn + checkAt, z)) {
+            checkAt -= 0.2D;
+        }
+        return checkAt;
+    }
+
+    public double getHighPartHeight(double x, double yIn, double z) {
+        if(isFluidAt(x, yIn, z)){
+            return 0.0;
+        }
+        double checkAt = 0D;
+        while (checkAt <= 3) {
+            if(isOpaqueBlockAt(x, yIn + checkAt, z)) {
+                checkAt += 0.2D;
+            }else{
+                break;
+            }
+        }
+        return checkAt;
+    }
+
+    public boolean isFluidAt(double x, double y, double z) {
+        if (this.noPhysics) {
+            return false;
+        } else {
+            return !level.getFluidState(new BlockPos(x, y, z)).isEmpty();
+        }
+    }
+
+    public boolean isOpaqueBlockAt(double x, double y, double z) {
+        if (this.noPhysics) {
+            return false;
+        } else {
+            float f = 1F;
+            Vec3 vec1 = new Vec3(x, y, z);
+            AABB aabb = AABB.ofSize(vec1, f, 0.1F, f);
+            return this.level.getBlockCollisions(this, aabb, (p_20129_, p_20130_) -> {
+                return p_20129_.isSuffocating(this.level, p_20130_);
+            }).findAny().isPresent();
+        }
+    }
+
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    public float getBackOffset() {
+        return 0.5F;
     }
 
     @Override

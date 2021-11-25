@@ -98,11 +98,13 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Standing", this.isStanding());
+        compound.putInt("AntCooldown", this.eatAntCooldown);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setStanding(compound.getBoolean("Standing"));
+        this.eatAntCooldown = compound.getInt("AntCooldown");
     }
 
     public boolean isFood(ItemStack stack) {
