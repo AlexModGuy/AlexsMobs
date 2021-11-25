@@ -686,6 +686,54 @@
       "offset_y": 3,
       "linked_page": "cosmaw.json",
       "hover_text": "entity.alexsmobs.cosmaw"
+    },
+    {
+      "entity": "alexsmobs:toucan",
+      "x": 290,
+      "y": 40,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 2.1,
+      "offset_x": -26,
+      "offset_y": -22,
+      "linked_page": "toucan.json",
+      "hover_text": "entity.alexsmobs.toucan"
+    },
+    {
+      "entity": "alexsmobs:maned_wolf",
+      "x": 320,
+      "y": 40,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.2,
+      "offset_x": -6,
+      "offset_y": -5,
+      "linked_page": "maned_wolf.json",
+      "hover_text": "entity.alexsmobs.maned_wolf"
+    },
+    {
+      "entity": "alexsmobs:anaconda",
+      "x": 350,
+      "y": 40,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 2.1,
+      "offset_x": -28,
+      "offset_y": -27,
+      "linked_page": "anaconda.json",
+      "hover_text": "entity.alexsmobs.anaconda"
+    },
+    {
+      "entity": "alexsmobs:anteater",
+      "x": 230,
+      "y": 70,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.2,
+      "offset_x": -12,
+      "offset_y": -8,
+      "linked_page": "anteater.json",
+      "hover_text": "entity.alexsmobs.anteater"
     }
   ],
   "linked_page_buttons": [

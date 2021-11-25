@@ -47,6 +47,7 @@ public class EntityCentipedeHead extends Monster {
 
     protected EntityCentipedeHead(EntityType type, Level worldIn) {
         super(type, worldIn);
+        this.xpReward = 13;
         this.maxUpStep = 3;
     }
 
@@ -131,7 +132,7 @@ public class EntityCentipedeHead extends Monster {
     }
 
     public int getSegmentCount() {
-        return this.entityData.get(SEGMENT_COUNT);
+        return Math.max(this.entityData.get(SEGMENT_COUNT), 1);
     }
 
     public void setSegmentCount(int segments) {
@@ -171,7 +172,7 @@ public class EntityCentipedeHead extends Monster {
         if (this.getChildId() != null) {
             compound.putUUID("ChildUUID", this.getChildId());
         }
-        compound.putInt("Segments", getSegmentCount());
+        compound.putInt("SegCount", getSegmentCount());
 
     }
 
@@ -180,7 +181,7 @@ public class EntityCentipedeHead extends Monster {
         if (compound.hasUUID("ChildUUID")) {
             this.setChildId(compound.getUUID("ChildUUID"));
         }
-        this.setSegmentCount(compound.getInt("Segments"));
+        this.setSegmentCount(compound.getInt("SegCount"));
     }
 
     @Override
@@ -233,25 +234,27 @@ public class EntityCentipedeHead extends Monster {
                     prevPos = part.position();
                 }
             }
-            if ((parts == null || parts[0] == null) && this.getChild() instanceof EntityCentipedeBody) {
-                parts = new EntityCentipedeBody[this.getSegmentCount()];
-                parts[0] = (EntityCentipedeBody) this.getChild();
-                this.entityData.set(CHILD_ID, parts[0].getId());
-                int i = 1;
-                while (i < parts.length && parts[i - 1].getChild() instanceof EntityCentipedeBody) {
-                    parts[i] = (EntityCentipedeBody) parts[i - 1].getChild();
-                    i++;
+            if(tickCount > 1) {
+                if ((parts == null || parts[0] == null) && this.getChild() instanceof EntityCentipedeBody) {
+                    parts = new EntityCentipedeBody[this.getSegmentCount()];
+                    parts[0] = (EntityCentipedeBody) this.getChild();
+                    this.entityData.set(CHILD_ID, parts[0].getId());
+                    int i = 1;
+                    while (i < parts.length && parts[i - 1].getChild() instanceof EntityCentipedeBody) {
+                        parts[i] = (EntityCentipedeBody) parts[i - 1].getChild();
+                        i++;
+                    }
                 }
-            }
-            Vec3 prev = this.position();
-            float xRot = this.getXRot();
-            float backOffset = 0.45F;
-            for (int i = 0; i < this.getSegmentCount(); i++) {
-                if (this.parts[i] != null) {
-                    float reqRot = getYawForPart(i);
-                    prev = parts[i].tickMultipartPosition(this.getId(), backOffset, prev, xRot, reqRot, true);
-                    xRot = parts[i].getXRot();
-                    backOffset = parts[i].getBackOffset();
+                Vec3 prev = this.position();
+                float xRot = this.getXRot();
+                float backOffset = 0.45F;
+                for (int i = 0; i < this.getSegmentCount(); i++) {
+                    if (this.parts[i] != null) {
+                        float reqRot = getYawForPart(i);
+                        prev = parts[i].tickMultipartPosition(this.getId(), backOffset, prev, xRot, reqRot, true);
+                        xRot = parts[i].getXRot();
+                        backOffset = parts[i].getBackOffset();
+                    }
                 }
             }
         }
