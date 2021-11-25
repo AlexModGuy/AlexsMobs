@@ -121,6 +121,17 @@ public class AMConfig {
     public static int laviathanSpawnRolls = 1;
     public static int cosmawSpawnWeight = 9;
     public static int cosmawSpawnRolls = 0;
+
+    public static int toucanSpawnWeight = 22;
+    public static int toucanSpawnRolls = 1;
+    public static int manedWolfSpawnWeight = 8;
+    public static int manedWolfSpawnRolls = 0;
+    public static int anacondaSpawnWeight = 12;
+    public static int anacondaSpawnRolls = 0;
+    public static int anteaterSpawnWeight = 7;
+    public static int anteaterSpawnRolls = 0;
+
+
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
     public static boolean shadersCompat = false;
@@ -299,6 +310,14 @@ public class AMConfig {
             laviathanSpawnRolls = ConfigHolder.COMMON.laviathanSpawnRolls.get();
             cosmawSpawnWeight = ConfigHolder.COMMON.cosmawSpawnWeight.get();
             cosmawSpawnRolls = ConfigHolder.COMMON.cosmawSpawnRolls.get();
+            toucanSpawnWeight = ConfigHolder.COMMON.toucanSpawnWeight.get();
+            toucanSpawnRolls = ConfigHolder.COMMON.toucanSpawnRolls.get();
+            manedWolfSpawnWeight = ConfigHolder.COMMON.manedWolfSpawnWeight.get();
+            manedWolfSpawnRolls = ConfigHolder.COMMON.manedWolfSpawnRolls.get();
+            anacondaSpawnWeight = ConfigHolder.COMMON.anacondaSpawnWeight.get();
+            anacondaSpawnRolls = ConfigHolder.COMMON.anacondaSpawnRolls.get();
+            anteaterSpawnWeight = ConfigHolder.COMMON.anteaterSpawnWeight.get();
+            anteaterSpawnRolls = ConfigHolder.COMMON.anteaterSpawnRolls.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

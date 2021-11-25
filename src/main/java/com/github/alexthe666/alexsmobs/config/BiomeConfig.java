@@ -70,6 +70,10 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> tusklin = Pair.of("alexsmobs:tusklin_spawns", DefaultBiomes.TUSKLIN);
 	public static Pair<String, SpawnBiomeData> laviathan = Pair.of("alexsmobs:laviathan_spawns", DefaultBiomes.ALL_NETHER);
 	public static Pair<String, SpawnBiomeData> cosmaw = Pair.of("alexsmobs:cosmaw_spawns", DefaultBiomes.COSMAW);
+	public static Pair<String, SpawnBiomeData> toucan = Pair.of("alexsmobs:toucan_spawns", DefaultBiomes.TOUCAN);
+	public static Pair<String, SpawnBiomeData> maned_wolf = Pair.of("alexsmobs:maned_wolf_spawns", DefaultBiomes.MANED_WOLF);
+	public static Pair<String, SpawnBiomeData> anaconda = Pair.of("alexsmobs:anaconda_spawns", DefaultBiomes.ANACONDA);
+	public static Pair<String, SpawnBiomeData> anteater = Pair.of("alexsmobs:anteater_spawns", DefaultBiomes.ANTEATER);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

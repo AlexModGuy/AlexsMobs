@@ -169,6 +169,10 @@ public class AMEntityRegistry {
         SpawnPlacements.register(TUSKLIN, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityTusklin::canTusklinSpawn);
         SpawnPlacements.register(LAVIATHAN, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityLaviathan::canLaviathanSpawn);
         SpawnPlacements.register(COSMAW, SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCosmaw::canCosmawSpawn);
+        SpawnPlacements.register(TOUCAN, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, EntityToucan::canToucanSpawn);
+        SpawnPlacements.register(MANED_WOLF, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityManedWolf::checkAnimalSpawnRules);
+        SpawnPlacements.register(ANACONDA, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAnaconda::canAnacondaSpawn);
+        SpawnPlacements.register(ANTEATER, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAnteater::canAnteaterSpawn);
 
     }
 
