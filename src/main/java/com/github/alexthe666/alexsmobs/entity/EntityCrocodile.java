@@ -249,10 +249,19 @@ public class EntityCrocodile extends TameableEntity implements IAnimatedEntity, 
         if (this.getAttackTarget() != null && !hasSpedUp) {
             hasSpedUp = true;
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28F);
+            if(dist < 2D){
+                        shark.attackEntityAsMob(prey);
+                        if(shark.rand.nextFloat() < 0.3F){
+                            shark.entityDropItem(new ItemStack(AMItemRegistry.CROCODILE_TOOTH));
+                        }
         }
         if (this.getAttackTarget() == null && hasSpedUp) {
             hasSpedUp = false;
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
+            if(dist < 2D){
+                        shark.attackEntityAsMob(prey);
+                        if(shark.rand.nextFloat() < 0.3F){
+                            shark.entityDropItem(new ItemStack(AMItemRegistry.CROCODILE_TOOTH));
         }
         if (!this.world.isRemote) {
             this.setBesideClimbableBlock(this.collidedHorizontally);
