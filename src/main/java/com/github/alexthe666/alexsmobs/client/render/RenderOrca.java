@@ -9,7 +9,10 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderOrca extends MobRenderer<EntityOrca, ModelOrca> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/orca.png");
+    private static final ResourceLocation TEXTURE_NE = new ResourceLocation("alexsmobs:textures/entity/orca_ne.png");
+    private static final ResourceLocation TEXTURE_NW = new ResourceLocation("alexsmobs:textures/entity/orca_nw.png");
+    private static final ResourceLocation TEXTURE_SE = new ResourceLocation("alexsmobs:textures/entity/orca_se.png");
+    private static final ResourceLocation TEXTURE_SW = new ResourceLocation("alexsmobs:textures/entity/orca_sw.png");
 
     public RenderOrca(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelOrca(), 1.0F);
@@ -21,6 +24,16 @@ public class RenderOrca extends MobRenderer<EntityOrca, ModelOrca> {
 
 
     public ResourceLocation getTextureLocation(EntityOrca entity) {
-        return TEXTURE;
+        switch (entity.getVariant()){
+            case 0:
+                return TEXTURE_NE;
+            case 1:
+                return TEXTURE_NW;
+            case 2:
+                return TEXTURE_SE;
+            case 3:
+            default:
+                return TEXTURE_SW;
+        }
     }
 }

@@ -83,6 +83,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     public static final Animation ANIMATION_TAILSWING = Animation.create(20);
     private static final EntityDataAccessor<Integer> MOISTNESS = SynchedEntityData.defineId(EntityOrca.class, EntityDataSerializers.INT);
     private static final TargetingConditions PLAYER_PREDICATE = TargetingConditions.forNonCombat().range(24.0D).ignoreLineOfSight();
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityOrca.class, EntityDataSerializers.INT);
     public int jumpCooldown;
     private int animationTick;
     private Animation currentAnimation;
@@ -125,6 +126,28 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(MOISTNESS, 2400);
+        this.entityData.define(VARIANT, 0);
+    }
+
+    public int getVariant() {
+        return this.entityData.get(VARIANT).intValue();
+    }
+
+    public void setVariant(int variant) {
+        this.entityData.set(VARIANT, Integer.valueOf(variant));
+    }
+
+    public int determineVariant(BlockPos coords){
+        if(coords == null){
+            return 0;
+        }
+        if(coords.getZ() < 0){//north
+            //west
+            return coords.getX() < 0 ? 1 : 0;
+        }else{//south
+            //west
+            return coords.getX() < 0 ? 3 : 2;
+        }
     }
 
     protected SoundEvent getAmbientSound() {
@@ -359,6 +382,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType
             reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setAirSupply(this.getMaxAirSupply());
+        this.setVariant(determineVariant(this.blockPosition()));
         this.setXRot(0.0F);
         this.setMoistness(2400);
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
