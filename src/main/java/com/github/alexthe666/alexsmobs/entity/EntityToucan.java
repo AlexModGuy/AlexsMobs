@@ -38,6 +38,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -182,6 +183,12 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     @Override
     public void setItemFlag(boolean itemAIFlag) {
         aiItemFlag = itemAIFlag;
+    }
+
+
+    public boolean isFood(ItemStack stack) {
+        Item item = stack.getItem();
+        return item == Items.EGG;
     }
 
     @Override
@@ -458,8 +465,10 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return null;
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
+        EntityToucan toucan = AMEntityRegistry.TOUCAN.create(level);
+        toucan.setVariant(this.getVariant());
+        return toucan;
     }
 
     @Override

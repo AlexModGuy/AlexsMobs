@@ -93,6 +93,8 @@ public class ServerEvents {
     private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER, "frontier cap speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final Map<ServerLevel, BeachedCachalotWhaleSpawner> BEACHED_CACHALOT_WHALE_SPAWNER_MAP = new HashMap<ServerLevel, BeachedCachalotWhaleSpawner>();
     public static List<Triple<ServerPlayer, ServerLevel, BlockPos>> teleportPlayers = new ArrayList<>();
+    public static final UUID ALEX_UUID = UUID.fromString("71363abe-fd03-49c9-940d-aae8b8209b7c");
+    public static final UUID CARRO_UUID = UUID.fromString("98905d4a-1cbc-41a4-9ded-2300404e2290");
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.WorldTickEvent tick) {
@@ -171,6 +173,9 @@ public class ServerEvents {
             CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             if (data != null && !data.getBoolean("alexsmobs_has_book")) {
                 ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY));
+                if(event.getPlayer().getUUID() != null && (event.getPlayer().getUUID().equals(ALEX_UUID) || event.getPlayer().getUUID().equals(CARRO_UUID))){
+                    ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.BEAR_DUST));
+                }
                 data.putBoolean("alexsmobs_has_book", true);
                 playerData.put(Player.PERSISTED_NBT_TAG, data);
             }

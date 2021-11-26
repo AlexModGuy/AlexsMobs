@@ -5,6 +5,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 
 public class ModelToucan extends AdvancedEntityModel<EntityToucan> {
@@ -93,6 +95,31 @@ public class ModelToucan extends AdvancedEntityModel<EntityToucan> {
     public Iterable<AdvancedModelBox> getAllParts() {
         return ImmutableList.of(root, body, tail, left_wing, left_wingtip, right_wing, right_wingtip, right_leg, left_leg, head, beak);
     }
+
+    @Override
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+        if (this.young) {
+            float f = 1.24F;
+            head.setScale(f, f, f);
+            head.setShouldScaleChildren(true);
+            matrixStackIn.pushPose();
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0D, 1.5D, 0D);
+            parts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+            this.head.setScale(0.9F, 0.9F, 0.9F);
+        } else {
+            this.head.setScale(0.9F, 0.9F, 0.9F);
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+        }
+    }
+
 
     @Override
     public void setupAnim(EntityToucan entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
