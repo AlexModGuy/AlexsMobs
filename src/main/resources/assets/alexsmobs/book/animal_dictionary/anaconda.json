@@ -9,6 +9,14 @@
   "item_renders": [
   ],
   "recipes": [
+    {
+      "recipe": "alexsmobs:vine_lasso",
+      "shapeless": false,
+      "x": 215,
+      "y": 10,
+      "page": 1,
+      "scale": 1
+    }
   ],
   "tabula_renders": [
   ],
