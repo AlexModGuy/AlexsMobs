@@ -73,7 +73,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40D).add(Attributes.ATTACK_DAMAGE, 9.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.KNOCKBACK_RESISTANCE, 0.9F);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -373,7 +373,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
             if (this.isAlive() && ridingTime > 0 && this.getDeltaMovement().horizontalDistanceSqr() > 0.1D) {
                 for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
                     if (!(entity instanceof EntityTusklin) && !entity.isPassengerOfSameVehicle(this)) {
-                        entity.hurt(DamageSource.mobAttack(this), 2F + random.nextFloat() * 1.0F);
+                        entity.hurt(DamageSource.mobAttack(this), 4F + random.nextFloat() * 3.0F);
                         if (entity.isOnGround()) {
                             double d0 = entity.getX() - this.getX();
                             double d1 = entity.getZ() - this.getZ();
