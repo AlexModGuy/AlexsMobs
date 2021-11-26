@@ -121,9 +121,8 @@ public class AMConfig {
     public static int laviathanSpawnRolls = 1;
     public static int cosmawSpawnWeight = 9;
     public static int cosmawSpawnRolls = 0;
-
-    public static int toucanSpawnWeight = 22;
-    public static int toucanSpawnRolls = 1;
+    public static int toucanSpawnWeight = 23;
+    public static int toucanSpawnRolls = 0;
     public static int manedWolfSpawnWeight = 8;
     public static int manedWolfSpawnRolls = 0;
     public static int anacondaSpawnWeight = 12;

@@ -11,10 +11,14 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -27,6 +31,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -48,7 +53,6 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     private static final EntityDataAccessor<Optional<UUID>> CHILD_UUID = SynchedEntityData.defineId(EntityAnaconda.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> CHILD_ID = SynchedEntityData.defineId(EntityAnaconda.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> FEEDINGS = SynchedEntityData.defineId(EntityAnaconda.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> STRANGLING = SynchedEntityData.defineId(EntityAnaconda.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> YELLOW = SynchedEntityData.defineId(EntityAnaconda.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> SHEDTIME = SynchedEntityData.defineId(EntityAnaconda.class, EntityDataSerializers.INT);
@@ -59,6 +63,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     private float strangleProgress = 0F;
     private int strangleTimer = 0;
     private int shedCooldown = 0;
+    private int feedings = 0;
     private boolean isLandNavigator;
     private int swimTimer = -1000;
 
@@ -106,12 +111,25 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.goalSelector.addGoal(8, new SemiAquaticAIRandomSwimming(this, 1.5D, 7));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 25F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, LivingEntity.class, 10, false, false, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.ANACONDA_TARGETS))));
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, LivingEntity.class, 30, false, false, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.ANACONDA_TARGETS))));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, 110, false, true, null) {
+            public boolean canUse() {
+                return !isBaby() && level.getDifficulty() != Difficulty.PEACEFUL && !EntityAnaconda.this.isInLove() && super.canUse();
+            }
+        });
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
     protected float getStandingEyeHeight(Pose p_33799_, EntityDimensions p_33800_) {
         return this.isBaby() ? 0.15F : 0.3F;
+    }
+
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if(isFood(itemstack)){
+            this.setTarget(null);
+        }
+        return super.mobInteract(player, hand);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -119,7 +137,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         if (compound.hasUUID("ChildUUID")) {
             this.setChildId(compound.getUUID("ChildUUID"));
         }
-        compound.putInt("Feedings", getFeedings());
+        compound.putInt("Feedings", feedings);
         compound.putInt("ShedTime", getSheddingTime());
         compound.putBoolean("Yellow", isYellow());
         compound.putInt("ShedCooldown", shedCooldown);
@@ -130,7 +148,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         if (this.getChildId() != null) {
             compound.putUUID("ChildUUID", this.getChildId());
         }
-        this.setFeedings(compound.getInt("Feedings"));
+        feedings = compound.getInt("Feedings");
         this.setSheddingTime(compound.getInt("ShedTime"));
         this.setYellow(compound.getBoolean("Yellow"));
         shedCooldown = compound.getInt("ShedCooldown");
@@ -147,7 +165,6 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         super.defineSynchedData();
         this.entityData.define(CHILD_UUID, Optional.empty());
         this.entityData.define(CHILD_ID, -1);
-        this.entityData.define(FEEDINGS, 0);
         this.entityData.define(STRANGLING, false);
         this.entityData.define(YELLOW, false);
         this.entityData.define(SHEDTIME, 0);
@@ -160,14 +177,6 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public void setChildId(@Nullable UUID uniqueId) {
         this.entityData.set(CHILD_UUID, Optional.ofNullable(uniqueId));
-    }
-
-    public int getFeedings() {
-        return this.entityData.get(FEEDINGS);
-    }
-
-    public void setFeedings(int feedings) {
-        this.entityData.set(FEEDINGS, feedings);
     }
 
     public int getSheddingTime() {
@@ -250,7 +259,11 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 double extraZ = radius * Mth.cos(angle);
                 double extraY = -0.5F;
                 this.setPosRaw(extraX + e.getX(), e.getY(1.0F), extraZ + e.getZ());
-                e.setDeltaMovement(Vec3.ZERO);
+                if(!e.isOnGround()){
+                    e.setDeltaMovement(new Vec3(0, -0.08F, 0));
+                }else{
+                    e.setDeltaMovement(Vec3.ZERO);
+                }
                 if (strangleTimer >= 40 && strangleTimer % 20 == 0) {
                     this.getTarget().hurt(DamageSource.mobAttack(this), 4);
                 }
@@ -306,7 +319,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                     prevPos = part.position();
                 }
             }
-            if ((parts == null || parts[0] == null) && this.getChild() instanceof EntityAnacondaPart) {
+            if (shouldReplaceParts() && this.getChild() instanceof EntityAnacondaPart) {
                 parts = new EntityAnacondaPart[segments];
                 parts[0] = (EntityAnacondaPart) this.getChild();
                 this.entityData.set(CHILD_ID, parts[0].getId());
@@ -347,11 +360,23 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         }
         if (!level.isClientSide) {
             if (isInWater()) {
-                swimTimer++;
+                swimTimer = Math.max(swimTimer + 1, 0);
             } else {
-                swimTimer--;
+                swimTimer = Math.min(swimTimer - 1, 0);
             }
         }
+    }
+
+    private boolean shouldReplaceParts() {
+        if(parts == null || parts[0] == null){
+            return true;
+        }
+        for(int i = 0; i < 7; i++){
+            if(parts[i] == null){
+                return true;
+            }
+        }
+        return false;
     }
 
     private float getYawForPart(int i) {
@@ -449,7 +474,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         if (this.getTarget() != null && !this.getTarget().isInWater()) {
             return true;
         }
-        return swimTimer > 600;
+        return swimTimer > 600 || this.isShedding();
     }
 
     @Override
@@ -489,10 +514,9 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public void feed() {
         this.heal(10);
-        this.setFeedings(this.getFeedings() + 1);
-        if (this.getFeedings() >= 3 && shedCooldown <= 0) {
-            this.setFeedings(0);
-            this.setSheddingTime(500);
+        this.feedings++;
+        if (feedings >= 3 && feedings % 3 == 0 && shedCooldown <= 0) {
+            this.setSheddingTime(this.getRandom().nextInt(500) + 500);
         }
     }
 

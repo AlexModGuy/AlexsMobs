@@ -184,6 +184,18 @@ public class EntityCentipedeHead extends Monster {
         this.setSegmentCount(compound.getInt("SegCount"));
     }
 
+    private boolean shouldReplaceParts() {
+        if(parts == null || parts[0] == null || parts.length != this.getSegmentCount()){
+            return true;
+        }
+        for(int i = 0; i < this.getSegmentCount(); i++){
+            if(parts[i] == null){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
@@ -235,7 +247,7 @@ public class EntityCentipedeHead extends Monster {
                 }
             }
             if(tickCount > 1) {
-                if ((parts == null || parts[0] == null) && this.getChild() instanceof EntityCentipedeBody) {
+                if (shouldReplaceParts() && this.getChild() instanceof EntityCentipedeBody) {
                     parts = new EntityCentipedeBody[this.getSegmentCount()];
                     parts[0] = (EntityCentipedeBody) this.getChild();
                     this.entityData.set(CHILD_ID, parts[0].getId());

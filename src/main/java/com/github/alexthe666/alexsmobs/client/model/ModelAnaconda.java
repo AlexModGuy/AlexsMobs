@@ -71,6 +71,7 @@ public class ModelAnaconda<T extends LivingEntity> extends AdvancedEntityModel<T
             progressRotationPrev(jaw, strangle, (float)Math.toRadians(160), 0, 0, 5F);
             this.part.rotateAngleY += netHeadYaw / 57.295776F;
             this.part.rotateAngleX += Math.min(0, headPitch / 57.295776F);
+            this.part.rotationPointX += Math.sin(limbSwing) * 2.0F * limbSwingAmount;
             this.walk(part, 0.7F, 0.2F, false, 1F, 0.05F, ageInTicks, strangle * 0.2F);
             this.walk(jaw, 0.7F, 0.4F, true, 1F, -0.05F, ageInTicks, strangle * 0.2F);
         }else if(entity instanceof EntityAnacondaPart){ //body

@@ -402,7 +402,6 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
         if (spawnDataIn == null) {
             spawnDataIn = new AgeableMob.AgeableMobGroupData(0.5F);
         }
-
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
@@ -438,7 +437,6 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
 
         public void tick() {
             LivingEntity enemy = EntityAnteater.this.getTarget();
-            System.out.println(enemy);
             double d0 = this.getAttackReachSqr(enemy);
             double distToEnemySqr = EntityAnteater.this.distanceTo(enemy);
             EntityAnteater.this.lookAt(enemy, 100, 5);
