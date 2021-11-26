@@ -26,7 +26,7 @@ public class BlockGustmaker extends Block {
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
 
     public BlockGustmaker() {
-        super(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(4.5F));
+        super(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(TRIGGERED, Boolean.valueOf(false)));
         this.setRegistryName("alexsmobs:gustmaker");
     }

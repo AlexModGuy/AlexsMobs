@@ -19,7 +19,7 @@ public class AMBlockRegistry {
     public static final Block HUMMINGBIRD_FEEDER = new BlockHummingbirdFeeder();
     public static final Block CROCODILE_EGG = new BlockCrocodileEgg();
     public static final Block GUSTMAKER = new BlockGustmaker();
-    public static final Block STRADDLITE_BLOCK = new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(30.0F, 1200.0F).sound(SoundType.ANCIENT_DEBRIS)).setRegistryName("alexsmobs:straddlite_block");
+    public static final Block STRADDLITE_BLOCK = new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(1.0F, 1200.0F).sound(SoundType.ANCIENT_DEBRIS)).setRegistryName("alexsmobs:straddlite_block");
     public static final Block LEAFCUTTER_ANTHILL = new BlockLeafcutterAnthill();
     public static final Block LEAFCUTTER_ANT_CHAMBER = new BlockLeafcutterAntChamber();
     public static final Block CAPSID = new BlockCapsid();

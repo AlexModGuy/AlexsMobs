@@ -38,7 +38,7 @@ public class BlockLeafcutterAntChamber extends Block {
     public static final IntegerProperty FUNGUS = IntegerProperty.create("fungus", 0, 5);
 
     public BlockLeafcutterAntChamber() {
-        super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(4F).randomTicks());
+        super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(1.3F).randomTicks());
         this.setRegistryName("alexsmobs:leafcutter_ant_chamber");
         this.registerDefaultState(this.stateDefinition.any().setValue(FUNGUS, 0));
     }

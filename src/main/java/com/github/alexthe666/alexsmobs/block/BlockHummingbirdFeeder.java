@@ -45,7 +45,7 @@ public class BlockHummingbirdFeeder extends Block {
     private static final VoxelShape AABB_HANGING = Block.box(4, 0, 4, 12, 16, 12);
 
     public BlockHummingbirdFeeder() {
-        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.LANTERN).strength(3F).randomTicks().noOcclusion());
+        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.LANTERN).strength(0.5F).randomTicks().noOcclusion());
         this.setRegistryName("alexsmobs:hummingbird_feeder");
         this.registerDefaultState(this.stateDefinition.any().setValue(CONTENTS, 0).setValue(HANGING, false));
     }

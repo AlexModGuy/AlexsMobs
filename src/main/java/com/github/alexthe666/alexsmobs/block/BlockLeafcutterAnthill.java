@@ -40,7 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlockLeafcutterAnthill extends BaseEntityBlock {
 
     public BlockLeafcutterAnthill() {
-        super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(2.5F));
+        super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(0.75F));
         this.setRegistryName("alexsmobs:leafcutter_anthill");
     }
 
