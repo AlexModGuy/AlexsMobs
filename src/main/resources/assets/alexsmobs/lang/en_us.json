@@ -739,5 +739,9 @@
   "advancements.alexsmobs.cosmic_cod.title": "Weird Fishes/Arpeggi",
   "advancements.alexsmobs.cosmic_cod.desc": "Create a Cosmic Cod by placing a Cod in a Capsid.",
   "advancements.alexsmobs.tame_cosmaw.title": "Its a Fish? Its a Bug? What is it?",
-  "advancements.alexsmobs.tame_cosmaw.desc": "Tame a Cosmaw by feeding it Cosmic Cod."
+  "advancements.alexsmobs.tame_cosmaw.desc": "Tame a Cosmaw by feeding it Cosmic Cod.",
+  "advancements.alexsmobs.breed_anteater.title": "Aunt Anteater",
+  "advancements.alexsmobs.breed_anteater.desc": "Breed two Anteaters by feeding them pupae.",
+  "advancements.alexsmobs.maned_wolf_apple.title": "Hungry For Apples?",
+  "advancements.alexsmobs.maned_wolf_apple.desc": "Feed a Maned Wolf an apple."
 }

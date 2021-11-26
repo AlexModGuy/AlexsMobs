@@ -80,9 +80,9 @@ public class ModelToucan extends AdvancedEntityModel<EntityToucan> {
         head.setTextureOffset(0, 24).addBox(-1.5F, -4.0F, -2.0F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
         beak = new AdvancedModelBox(this);
-        beak.setRotationPoint(0.0F, -4.0F, -2.0F);
+        beak.setRotationPoint(0.0F, -4.0F, -1.8F);
         head.addChild(beak);
-        beak.setTextureOffset(0, 12).addBox(-1.0F, 0.0F, -6.0F, 2.0F, 3.0F, 6.0F, 0.0F, false);
+        beak.setTextureOffset(0, 12).addBox(-1.0F, 0.0F, -6.0F, 2.0F, 3.0F, 6F, 0.0F, false);
         this.updateDefaultPose();
     }
 

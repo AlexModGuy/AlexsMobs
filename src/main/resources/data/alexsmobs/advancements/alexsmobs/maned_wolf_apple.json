@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:maned_wolf\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.maned_wolf_apple.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.maned_wolf_apple.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "item": {
+          "items": [
+            "minecraft:apple"
+          ]
+        },
+        "entity": {
+          "type": "alexsmobs:maned_wolf"
+        }
+      }
+    }
+  }
+}
