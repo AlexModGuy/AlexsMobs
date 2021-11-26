@@ -286,7 +286,8 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                     e.setDeltaMovement(Vec3.ZERO);
                 }
                 if (strangleTimer >= 40 && strangleTimer % 20 == 0) {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), 4);
+                    double health = Mth.clamp(this.getTarget().getMaxHealth(), 4, 50);
+                    this.getTarget().hurt(DamageSource.mobAttack(this), (float)Math.max(4F, 0.35F * health));
                 }
                 if (this.getTarget() == null || !this.getTarget().isAlive()) {
                     strangleTimer = 0;

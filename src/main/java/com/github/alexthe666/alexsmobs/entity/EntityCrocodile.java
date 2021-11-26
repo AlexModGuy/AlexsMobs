@@ -342,7 +342,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                     this.setAnimation(ANIMATION_DEATHROLL);
                 }
                 if (this.getAnimation() == ANIMATION_DEATHROLL && this.getAnimationTick() % 10 == 0 && this.distanceTo(this.getTarget()) < 5D) {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), 2);
+                    this.getTarget().hurt(DamageSource.mobAttack(this), 5);
                 }
             }
         }
