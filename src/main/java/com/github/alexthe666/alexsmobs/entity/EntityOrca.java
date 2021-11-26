@@ -416,11 +416,13 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Moistness", this.getMoistness());
+        compound.putInt("Variant", this.getVariant());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setMoistness(compound.getInt("Moistness"));
+        this.setVariant(compound.getInt("Variant"));
     }
 
     public void onJumpHit(LivingEntity entityIn) {

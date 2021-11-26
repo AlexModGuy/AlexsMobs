@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.entity.util.AnacondaPartIndex;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
@@ -39,6 +41,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.phys.Vec3;
@@ -73,6 +76,24 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(true);
     }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.ANACONDA_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.ANACONDA_HURT;
+    }
+
+
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        if (!isBaby()) {
+            this.playSound(AMSoundRegistry.ANACONDA_SLITHER, 1.0F, 1.0F);
+        } else {
+            super.playStepSound(pos, state);
+        }
+    }
+
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
@@ -553,6 +574,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 if (dist < 1 + target.getBbWidth() && !snake.isStrangling() && jumpAttemptCooldown == 0) {
                     target.hurt(DamageSource.mobAttack(snake), 4);
                     snake.setStrangling(target.getBbWidth() <= 2.3F);
+                    snake.playSound(AMSoundRegistry.ANACONDA_ATTACK, snake.getSoundVolume(), snake.getVoicePitch());
                     jumpAttemptCooldown = 5 + random.nextInt(5);
                 }
                 if (snake.isStrangling()) {

@@ -6,8 +6,10 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
 import com.github.alexthe666.alexsmobs.message.MessageStartDancing;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import com.google.common.base.Predicates;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -17,9 +19,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -124,6 +128,18 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     public void setDancing(boolean dancing) {
         this.entityData.set(DANCING, dancing);
         this.isJukeboxing = dancing;
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.MANED_WOLF_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.MANED_WOLF_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.MANED_WOLF_HURT;
     }
 
     private void attractAnimals() {
@@ -327,4 +343,10 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
             this.setJukeboxPos(null);
         }
     }
+
+    public boolean isEnder() {
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        return s != null && (s.toLowerCase().contains("plummet") || s.toLowerCase().contains("ender"));
+    }
+
 }

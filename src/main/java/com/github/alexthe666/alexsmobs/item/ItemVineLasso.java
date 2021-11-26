@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
 import com.github.alexthe666.alexsmobs.entity.EntityVineLasso;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.mojang.math.Vector3f;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -51,13 +52,18 @@ public class ItemVineLasso extends Item {
     public InteractionResultHolder<ItemStack> use(Level p_40672_, Player p_40673_, InteractionHand p_40674_) {
         ItemStack itemstack = p_40673_.getItemInHand(p_40674_);
         p_40673_.startUsingItem(p_40674_);
-        return InteractionResultHolder.success(itemstack);
 
+        return InteractionResultHolder.success(itemstack);
+    }
+
+    public void onUseTick(Level worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
+        if(count % 7 == 0){
+            livingEntityIn.playSound(AMSoundRegistry.VINE_LASSO,1.0F, 1.0F + (livingEntityIn.getRandom().nextFloat() - livingEntityIn.getRandom().nextFloat()) * 0.2F);
+        }
     }
 
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity livingEntityIn, int i) {
         if (!worldIn.isClientSide) {
-            //worldIn.playSound((Player)null, livingEntityIn.getX(), livingEntityIn.getY(), livingEntityIn.getZ(), SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 0.5F, 0.4F + (random.nextFloat() * 0.4F + 0.8F));
             boolean left = false;
             if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
                 left = true;

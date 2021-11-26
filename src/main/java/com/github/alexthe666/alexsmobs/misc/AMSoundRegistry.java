@@ -272,6 +272,23 @@ public class AMSoundRegistry {
 
     public static final SoundEvent COSMAW_HURT = createSoundEvent("cosmaw_hurt");
 
+    public static final SoundEvent TOUCAN_IDLE = createSoundEvent("toucan_idle");
+
+    public static final SoundEvent TOUCAN_HURT = createSoundEvent("toucan_hurt");
+
+    public static final SoundEvent MANED_WOLF_IDLE = createSoundEvent("maned_wolf_idle");
+
+    public static final SoundEvent MANED_WOLF_HURT = createSoundEvent("maned_wolf_hurt");
+
+    public static final SoundEvent ANACONDA_SLITHER = createSoundEvent("anaconda_slither");
+
+    public static final SoundEvent ANACONDA_HURT = createSoundEvent("anaconda_hurt");
+
+    public static final SoundEvent ANACONDA_ATTACK = createSoundEvent("anaconda_attack");
+
+    public static final SoundEvent VINE_LASSO = createSoundEvent("vine_lasso");
+
+    public static final SoundEvent ANTEATER_HURT = createSoundEvent("anteater_hurt");
 
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);

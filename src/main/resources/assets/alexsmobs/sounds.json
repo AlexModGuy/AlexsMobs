@@ -1052,6 +1052,12 @@
     "sounds": [
       {
         "name": "alexsmobs:mungus_laser_grow"
+      },
+      {
+        "name": "alexsmobs:bear_dust_0"
+      },
+      {
+        "name": "alexsmobs:bear_dust_1"
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.bear_dust"
@@ -1791,5 +1797,128 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.cosmaw_hurt"
+  },
+  "toucan_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:toucan_idle_0"
+      },
+      {
+        "name": "alexsmobs:toucan_idle_1"
+      },
+      {
+        "name": "alexsmobs:toucan_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.toucan_idle"
+  },
+  "toucan_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:toucan_hurt_0"
+      },
+      {
+        "name": "alexsmobs:toucan_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.toucan_hurt"
+  },
+  "maned_wolf_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:maned_wolf_idle_0"
+      },
+      {
+        "name": "alexsmobs:maned_wolf_idle_1"
+      },
+      {
+        "name": "alexsmobs:maned_wolf_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.maned_wolf_idle"
+  },
+  "maned_wolf_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:maned_wolf_hurt_0"
+      },
+      {
+        "name": "alexsmobs:maned_wolf_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.maned_wolf_hurt"
+  },
+  "anaconda_slither": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:anaconda_slither_0"
+      },
+      {
+        "name": "alexsmobs:anaconda_slither_1"
+      },
+      {
+        "name": "alexsmobs:anaconda_slither_2"
+      },
+      {
+        "name": "alexsmobs:anaconda_slither_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.anaconda_slither"
+  },
+  "anaconda_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:anaconda_hurt_0"
+      },
+      {
+        "name": "alexsmobs:anaconda_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.anaconda_hurt"
+  },
+  "anaconda_attack": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:anaconda_attack_0"
+      },
+      {
+        "name": "alexsmobs:anaconda_attack_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.anaconda_attack"
+  },
+  "vine_lasso": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:vine_lasso_0"
+      },
+      {
+        "name": "alexsmobs:vine_lasso_1"
+      },
+      {
+        "name": "alexsmobs:vine_lasso_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.vine_lasso"
+  },
+  "anteater_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:anteater_hurt_0"
+      },
+      {
+        "name": "alexsmobs:anteater_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.anteater_hurt"
   }
 }
