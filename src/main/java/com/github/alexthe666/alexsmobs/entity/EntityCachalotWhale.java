@@ -157,7 +157,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public boolean isPickable() {
-        return false;
+        return true;
     }
 
     public void pushEntities() {
@@ -561,11 +561,19 @@ public class EntityCachalotWhale extends Animal {
                     if (chargeCooldown <= 0 && dif < 4) {
                         this.setCharging(true);
                         whaleSpeedMod = 1.5F;
-                        if (d0 * d0 + d2 * d2 < 4) {
+                        double distSq = d0 * d0 + d2 * d2;
+                        if (distSq < 4) {
                             this.setYRot(yRotO);
                             this.yBodyRot = yRotO;
                             this.setDeltaMovement(this.getDeltaMovement().multiply(0.8, 1, 0.8));
                         } else {
+                            Vec3 vector3d = this.getDeltaMovement();
+                            Vec3 vector3d1 = new Vec3(target.getX() - this.getX(), target.getY() - this.getY(), target.getZ() - this.getZ());
+                            if (vector3d1.lengthSqr() > 1.0E-7D) {
+                                vector3d1 = vector3d1.normalize().scale(0.9D).add(vector3d.scale(0.8D));
+                            }
+                            this.setDeltaMovement(vector3d1.x, vector3d1.y, vector3d1.z);
+
                             this.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0D);
                         }
                         if (this.isCharging()) {
@@ -696,7 +704,6 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public void push(Entity entityIn) {
-
     }
 
     private void setPartPosition(EntityCachalotPart part, double offsetX, double offsetY, double offsetZ) {
