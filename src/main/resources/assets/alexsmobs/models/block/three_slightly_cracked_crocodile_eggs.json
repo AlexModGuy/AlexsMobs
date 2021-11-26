@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/template_three_turtle_eggs",
+  "parent": "alexsmobs:block/template_three_crocodile_eggs",
   "textures": {
     "all": "alexsmobs:block/crocodile_egg_slightly_cracked"
   }

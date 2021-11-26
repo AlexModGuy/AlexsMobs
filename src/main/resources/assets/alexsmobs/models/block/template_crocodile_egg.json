@@ -1,0 +1,30 @@
+{
+	"credit": "Made by Carro1001 in Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "#all"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 8],
+			"to": [9, 6, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 3, 10]},
+			"faces": {
+				"north": {"uv": [2, 2, 4, 5], "texture": "#all"},
+				"east": {"uv": [0, 2, 2, 5], "texture": "#all"},
+				"south": {"uv": [6, 2, 8, 5], "texture": "#all"},
+				"west": {"uv": [4, 2, 6, 5], "texture": "#all"},
+				"up": {"uv": [4, 2, 2, 0], "texture": "#all"},
+				"down": {"uv": [6, 0, 4, 2], "texture": "#all"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "root",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}
