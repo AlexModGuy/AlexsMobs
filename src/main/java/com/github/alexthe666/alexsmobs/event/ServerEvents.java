@@ -429,7 +429,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLivingDamageEvent(LivingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof Player) {
+        if (event.getSource().getEntity() instanceof LivingEntity) {
             LivingEntity attacker = (LivingEntity) event.getSource().getEntity();
             if (event.getAmount() > 0 && attacker.hasEffect(AMEffectRegistry.SOULSTEAL) && attacker.getEffect(AMEffectRegistry.SOULSTEAL) != null) {
                 int level = attacker.getEffect(AMEffectRegistry.SOULSTEAL).getAmplifier() + 1;
