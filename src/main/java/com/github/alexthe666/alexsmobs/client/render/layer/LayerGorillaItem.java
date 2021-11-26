@@ -46,7 +46,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
             matrixStackIn.scale(2.8F, 2.8F, 2.8F);
         }else{
             translateToHand(false, matrixStackIn);
-            matrixStackIn.translate(0.3F, 0.75F, -0.0F);
+            matrixStackIn.translate(-0.4F, 0.75F, -0.0F);
         }
         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-2.5F));
         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
