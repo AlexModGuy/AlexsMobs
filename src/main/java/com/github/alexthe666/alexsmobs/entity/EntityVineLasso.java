@@ -94,7 +94,7 @@ public class EntityVineLasso extends Entity {
         if(this.getOwner() != null && this.distanceTo(this.getOwner()) > 15){
             this.removeAndAddToInventory();
         }
-        if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
+        if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir) && !this.isInWater() && !this.isInLava()) {
             this.removeAndAddToInventory();
         }else {
             this.setDeltaMovement(vector3d.scale(0.99F));
@@ -117,12 +117,12 @@ public class EntityVineLasso extends Entity {
     private void removeAndAddToInventory(){
         Entity entity = this.getOwner();
         ItemStack item = new ItemStack(AMItemRegistry.VINE_LASSO);
-        if(entity != null && entity instanceof Player && ((Player) entity).addItem(item)){
-            this.remove(RemovalReason.DISCARDED);
-        }else{
-            this.spawnAtLocation(item);
-            this.remove(RemovalReason.DISCARDED);
+        if(!this.isRemoved()){
+            if (!(entity instanceof Player) || !((Player) entity).addItem(item)) {
+                this.spawnAtLocation(item);
+            }
         }
+        this.remove(RemovalReason.DISCARDED);
     }
 
     protected void onHitBlock(BlockHitResult p_230299_1_) {

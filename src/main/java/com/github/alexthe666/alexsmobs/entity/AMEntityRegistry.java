@@ -263,7 +263,7 @@ public class AMEntityRegistry {
         event.put(ANACONDA, EntityAnaconda.bakeAttributes().build());
         event.put(ANACONDA_PART, EntityAnacondaPart.bakeAttributes().build());
         event.put(ANTEATER, EntityAnteater.bakeAttributes().build());
-        event.put(JERBOA, EntityJerboa.bakeAttributes().build());
+        //event.put(JERBOA, EntityJerboa.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(Tag entityTag){
