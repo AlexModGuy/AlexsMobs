@@ -16,9 +16,9 @@
     {
       "entity": "alexsmobs:elephant",
       "x": 92,
-      "y": 110,
+      "y": 120,
       "page" : 0,
-      "scale": 1.0,
+      "scale": 0.8,
       "rot_x": 30,
       "rot_y": 225,
       "rot_z": 0,
