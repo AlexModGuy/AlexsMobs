@@ -1,16 +1,15 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.entity.EntityOrca;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.JumpGoal;
-import net.minecraft.fluid.FluidState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.JumpGoal;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class OrcaAIMeleeJump extends JumpGoal {
     private final EntityOrca dolphin;
@@ -21,80 +20,80 @@ public class OrcaAIMeleeJump extends JumpGoal {
         this.dolphin = dolphin;
     }
 
-    public boolean shouldExecute() {
-        if (this.dolphin.getAttackTarget() == null || !dolphin.shouldUseJumpAttack(this.dolphin.getAttackTarget()) || this.dolphin.isOnGround() || !dolphin.isInWater() || dolphin.jumpCooldown > 0) {
+    public boolean canUse() {
+        if (this.dolphin.getTarget() == null || !dolphin.shouldUseJumpAttack(this.dolphin.getTarget()) || this.dolphin.isOnGround() || !dolphin.isInWater() || dolphin.jumpCooldown > 0) {
             return false;
         } else {
-            BlockPos blockpos = this.dolphin.getPosition();
+            BlockPos blockpos = this.dolphin.blockPosition();
             return true;
         }
     }
-    public boolean shouldContinueExecuting() {
-        double d0 = this.dolphin.getMotion().y;
-        return dolphin.getAttackTarget() != null && dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.rotationPitch == 0.0F || !(Math.abs(this.dolphin.rotationPitch) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.isOnGround();
+    public boolean canContinueToUse() {
+        double d0 = this.dolphin.getDeltaMovement().y;
+        return dolphin.getTarget() != null && dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.getXRot() == 0.0F || !(Math.abs(this.dolphin.getXRot()) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.isOnGround();
     }
 
-    public boolean isPreemptible() {
+    public boolean isInterruptable() {
         return false;
     }
 
-    public void startExecuting() {
-        LivingEntity target = this.dolphin.getAttackTarget();
+    public void start() {
+        LivingEntity target = this.dolphin.getTarget();
         if(target != null){
-            double distanceXZ = dolphin.getDistanceSq(target.getPosX(), dolphin.getPosY(), target.getPosZ());
+            double distanceXZ = dolphin.distanceToSqr(target.getX(), dolphin.getY(), target.getZ());
             if(distanceXZ < 150){
-                dolphin.faceEntity(target, 260, 30);
-                double smoothX = MathHelper.clamp(Math.abs(target.getPosX() - dolphin.getPosX()), 0, 1);
-                double smoothY = MathHelper.clamp(Math.abs(target.getPosY() - dolphin.getPosY()), 0, 1);
-                double smoothZ = MathHelper.clamp(Math.abs(target.getPosZ() - dolphin.getPosZ()), 0, 1);
-                double d0 = (target.getPosX() - this.dolphin.getPosX()) * 0.3 * smoothX;
-                double d1 = Math.signum(target.getPosY() - this.dolphin.getPosY());
-                double d2 = (target.getPosZ() - this.dolphin.getPosZ()) * 0.3 * smoothZ;
-                float up = 1F + dolphin.getRNG().nextFloat() * 0.8F;
-                this.dolphin.setMotion(this.dolphin.getMotion().add((double) d0 * 0.3D, up, (double) d2 * 0.3D));
-                this.dolphin.getNavigator().clearPath();
-                this.dolphin.jumpCooldown = dolphin.getRNG().nextInt(32) + 64;
+                dolphin.lookAt(target, 260, 30);
+                double smoothX = Mth.clamp(Math.abs(target.getX() - dolphin.getX()), 0, 1);
+                double smoothY = Mth.clamp(Math.abs(target.getY() - dolphin.getY()), 0, 1);
+                double smoothZ = Mth.clamp(Math.abs(target.getZ() - dolphin.getZ()), 0, 1);
+                double d0 = (target.getX() - this.dolphin.getX()) * 0.3 * smoothX;
+                double d1 = Math.signum(target.getY() - this.dolphin.getY());
+                double d2 = (target.getZ() - this.dolphin.getZ()) * 0.3 * smoothZ;
+                float up = 1F + dolphin.getRandom().nextFloat() * 0.8F;
+                this.dolphin.setDeltaMovement(this.dolphin.getDeltaMovement().add((double) d0 * 0.3D, up, (double) d2 * 0.3D));
+                this.dolphin.getNavigation().stop();
+                this.dolphin.jumpCooldown = dolphin.getRandom().nextInt(32) + 64;
             }else{
-                dolphin.getNavigator().tryMoveToEntityLiving(target, 1.0F);
+                dolphin.getNavigation().moveTo(target, 1.0F);
             }
 
         }
     }
 
-    public void resetTask() {
-        this.dolphin.rotationPitch = 0.0F;
+    public void stop() {
+        this.dolphin.setXRot(0.0F);
         this.attackCooldown = 0;
     }
 
     public void tick() {
         boolean flag = this.inWater;
         if (!flag) {
-            FluidState fluidstate = this.dolphin.world.getFluidState(this.dolphin.getPosition());
-            this.inWater = fluidstate.isTagged(FluidTags.WATER);
+            FluidState fluidstate = this.dolphin.level.getFluidState(this.dolphin.blockPosition());
+            this.inWater = fluidstate.is(FluidTags.WATER);
         }
         if(attackCooldown > 0){
             attackCooldown--;
         }
         if (this.inWater && !flag) {
-            this.dolphin.playSound(SoundEvents.ENTITY_DOLPHIN_JUMP, 1.0F, 1.0F);
+            this.dolphin.playSound(SoundEvents.DOLPHIN_JUMP, 1.0F, 1.0F);
         }
-        LivingEntity target = this.dolphin.getAttackTarget();
+        LivingEntity target = this.dolphin.getTarget();
         if(target != null){
-            if(this.dolphin.getDistance(target) < 3F && attackCooldown <= 0){
+            if(this.dolphin.distanceTo(target) < 3F && attackCooldown <= 0){
                 this.dolphin.onJumpHit(target);
                 attackCooldown = 20;
-            }else if(this.dolphin.getDistance(target) < 5F){
+            }else if(this.dolphin.distanceTo(target) < 5F){
                 this.dolphin.setAnimation(EntityOrca.ANIMATION_BITE);
             }
         }
 
-        Vector3d vector3d = this.dolphin.getMotion();
-        if (vector3d.y * vector3d.y < (double) 0.1F && this.dolphin.rotationPitch != 0.0F) {
-            this.dolphin.rotationPitch = MathHelper.rotLerp(this.dolphin.rotationPitch, 0.0F, 0.2F);
+        Vec3 vector3d = this.dolphin.getDeltaMovement();
+        if (vector3d.y * vector3d.y < (double) 0.1F && this.dolphin.getXRot() != 0.0F) {
+            this.dolphin.setXRot(Mth.rotlerp(this.dolphin.getXRot(), 0.0F, 0.2F));
         } else {
-            double d0 = Math.sqrt(Entity.horizontalMag(vector3d));
+            double d0 = Math.sqrt(vector3d.horizontalDistanceSqr());
             double d1 = Math.signum(-vector3d.y) * Math.acos(d0 / vector3d.length()) * (double) (180F / (float) Math.PI);
-            this.dolphin.rotationPitch = (float) d1;
+            this.dolphin.setXRot((float) d1);
         }
 
     }

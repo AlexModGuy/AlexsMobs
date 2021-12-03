@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "alexsmobs:straddlite_block"
+    }
+  ],
+  "result": {
+    "item": "alexsmobs:straddlite",
+    "count": 9
+  }
+}

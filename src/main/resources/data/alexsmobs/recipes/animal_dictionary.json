@@ -5,7 +5,10 @@
       "item": "minecraft:book"
     },
     {
-      "item": "alexsmobs:crocodile_scute"
+      "tag": "alexsmobs:animal_dictionary_ingredient"
+    },
+    {
+      "tag": "forge:dyes/green"
     }
   ],
   "result": {

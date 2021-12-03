@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Enderiophage es un monstruoso autómata bioquímico que se encuentra con poca frecuencia en End Midlands. Esta criatura antinatural parece haber sido creada con un propósito en mente: eliminar los Endergrades nativos de End.
+Sin embargo, debido a su escasa población, es poco probable que sus creadores hayan tenido éxito en su Endeavour. El ataque del Enderiophage depende de que inflija un efecto conocido como Ender Flu en su presa. Aunque dura diez minutos, cuando pase el efecto, el huésped estallará con nuevos fagos más pequeños y morirá rápidamente por el daño masivo.
+Este efecto se puede eliminar consumiendo fruta de coro o leche. A otras criaturas infligidas también se les puede dar el fruto para que sean curadas.
+<NEWLINE>
+El Enderiophage, aunque neutral para la mayoría, también es hostil hacia los Endermen. Después de infligir a su presa con Ender Flu, el Ojo de Ender dentro del fago se hará añicos, dejándolos buscar la vista de un Endermen.
+Para restaurar esta habilidad, se aferrará a un Enderman y lo cegará, mientras intenta escabullirse con el ojo recuperado. Un Enderiophage no puede atacar sin un ojo.
+<NEWLINE>
+Al ser destruido, el Enderiophage puede soltar un bloque único llamado Capsid. Esta cápside puede contener hasta una pila completa de artículos dentro de ella, y cuando se coloca otra cápside o inventario encima de ella, el artículo flotará hacia arriba.
+De esta manera, la cápside puede usarse para transportar artículos hacia arriba. El Capsid también se puede fabricar con pepitas de hierro y endstone para crear un Enderiophage Rocket, que se puede usar en lugar del Firework Rocket mientras se vuela con el Elytra.
+Si se coloca un Ojo de Ender en una Cápside sobre una Vara de Extremo vertical, ¡se transformará en un Enderiófago! Quizás así es como llegaron a ser estos seres ...

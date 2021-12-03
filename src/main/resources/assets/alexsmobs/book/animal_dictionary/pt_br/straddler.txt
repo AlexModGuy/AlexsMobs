@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Basaltilhos são parentes gigantes do comum Lavagantes do Nether. Ao contrário do Lavagante, Basaltilho só podem ser encontrados nos deltas do basalto.
+Eles também são muito mais resistentes do que seus primos, pois são capazes de andar na água, bem como na lava. No entanto, Basaltilhos são agressivos.
+Qualquer explorador que chegue perto demais é considerado um intruso e é atacado imediatamente. O Straddler usa seu cabelo longo e preso em rede para lançar Stradpoles em seus alvos, o que pode causar uma quantidade razoável de dano.
+Se mortos, Basaltilhos derrubarão Basalto e raramente Basaltita. Este mineral é incomum e pode ser usado para fabricar uma Prancha Basaltica.
+<NEWLINE>
+Prancha Basaltica são tingíveis e flutuam na lava, mas afundam na água. Eles podem ser usados para cruzar os grandes oceanos de lava do Nether com facilidade. No entanto, ao contrário do Lavagante que é relativamente seguro, a Prancha Basaltica é propenso a estalar e tombar, resultando em uma viagem mais arriscada, porém mais rápida.
+Se alguém usando uma Prancha de Basaltita bater no teto ou na parede com muita força, eles podem afundar em uma cova de lava.

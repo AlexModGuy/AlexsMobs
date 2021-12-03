@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:anteater\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.breed_anteater.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.breed_anteater.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/leafcutter_ant_pupa",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:bred_animals",
+      "conditions": {
+        "child": {
+          "type": "alexsmobs:anteater"
+        }
+      }
+    }
+  }
+}

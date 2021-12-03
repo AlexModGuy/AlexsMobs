@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "citadel:effect_item",
+      "nbt": "{DisplayEffect:\"alexsmobs:ender_flu\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.ender_flu.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.ender_flu.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/enderiophage",
+  "criteria": {
+    "all_effects": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alexsmobs:ender_flu": {}
+        }
+      }
+    }
+  }
+}

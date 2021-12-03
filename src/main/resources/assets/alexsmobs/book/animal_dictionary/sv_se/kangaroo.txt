@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Kängurur är stora, neutrala pungdjur som kommer från
+
+ savanner och stenöknar. Dessa varelser har unik rörelse: De rör sig bara genom att hoppa.
+De kan ibland ses med en joey i sin pung. Trots sitt förhistoriska utseende, är känguruer strikta växtätare som älskar att mata på gräs. De är dock, ingen lätt match. Om den attackeras, kan känguruen slå eller sparka med båda fötterna för att hantera förödande attacker.
+När de dödas, kan de släppa lite av sitt kött, som kan tillagas och göras till en utsökt känguruburgare. De kan också släppa en del av sitt skinn, som kan tillverkas i läder eller ett unikt fanemönster.
+<NEWLINE>
+Känguru kan tämjas med tio till femton morötter. När den tämjs, kan man beordra dem att stanna, följa eller vandra genom att interagera med dem och få tillgång till känguruens påseinventering genom att smyga. Om det finns ett närstridsvapen i pungen kommer kängurun att använda detta när det attackerar.
+Vuxen känguru kan också utrusta valfri hjälm eller bröstsköld som placeras i sin pung, och kan äta placerade livsmedel som inte är kött från pungen när de skadas för att återfå hälsan. Kängurur kan uppfödas med en död buske eller något gräs.

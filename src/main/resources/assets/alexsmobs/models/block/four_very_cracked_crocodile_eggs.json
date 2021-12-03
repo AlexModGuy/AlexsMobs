@@ -1,0 +1,6 @@
+{
+  "parent": "alexsmobs:block/template_four_crocodile_eggs",
+  "textures": {
+    "all": "alexsmobs:block/crocodile_egg_very_cracked"
+  }
+}

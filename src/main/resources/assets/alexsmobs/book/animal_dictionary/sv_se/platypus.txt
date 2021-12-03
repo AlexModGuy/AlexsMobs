@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Näbbdjuret är en varelse som ser ut som en kombination av flera andra djur, men är ändå helt unik i sig. Det kan sällan påträffas i åbiomer i Övervärlden.
+Detta konstiga däggdjur har giftiga taggar på fötterna, som det kan använda för att tillföra gifteffekter på alla angripare.
+Näbbdjurens svaga luktsinne, hörsel och syn har lett den att förlita sig på el för att jaga och navigera. På grund av detta, lockas näbbdjuret naturligt till redstone när den hålls. Om den matas med redstone, laddar näbbdjuret sin elektriska känslighet, och letar efter några fluglarver i närliggande lerblock.
+När man letar efter mat, gräver näbbdjuret upp flera lerbollar och fluglarver, som sedan kan samlas in. Om man matar ett helt redstone block, kommer mängden grävda föremål att höjas kraftigt.
+Liksom andra små vattenlevande varelser, kan näbbdjuret transporteras i en hink med vatten. Den kan uppfödas med hummerstjärtar, dess favoritmat.
+

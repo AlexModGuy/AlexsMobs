@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "item": "citadel:fancy_item",
+            "nbt": "{DisplayItem:\"alexsmobs:sopa_de_macaco\", DisplayBob:1, DisplayZoom:0, DisplayScale:1, DisplaySpin:0, DisplayShake:0}"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.sopa_de_macaco.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.sopa_de_macaco.desc"
+        },
+        "frame": "challenge"
+    },
+    "parent": "alexsmobs:alexsmobs/tame_capuchin",
+    "criteria": {
+        "sopa_de_macaco": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:sopa_de_macaco"]
+                    }
+                ]
+            }
+        }
+    }
+}

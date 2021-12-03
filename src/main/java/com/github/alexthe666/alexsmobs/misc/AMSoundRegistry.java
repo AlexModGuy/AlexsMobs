@@ -1,8 +1,8 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,6 +17,8 @@ public class AMSoundRegistry {
     public static final SoundEvent GRIZZLY_BEAR_HURT = createSoundEvent("grizzly_bear_hurt");
 
     public static final SoundEvent GRIZZLY_BEAR_DIE = createSoundEvent("grizzly_bear_die");
+
+    public static final SoundEvent BEAR_DUST = createSoundEvent("bear_dust");
 
     public static final SoundEvent ROADRUNNER_IDLE = createSoundEvent("roadrunner_idle");
 
@@ -137,7 +139,157 @@ public class AMSoundRegistry {
     public static final SoundEvent SOUL_VULTURE_IDLE = createSoundEvent("soul_vulture_idle");
 
     public static final SoundEvent SOUL_VULTURE_HURT = createSoundEvent("soul_vulture_hurt");
+
+    public static final SoundEvent SNOW_LEOPARD_IDLE = createSoundEvent("snow_leopard_idle");
+
+    public static final SoundEvent SNOW_LEOPARD_HURT = createSoundEvent("snow_leopard_hurt");
+
+    public static final SoundEvent SPECTRE_IDLE = createSoundEvent("spectre_idle");
+
+    public static final SoundEvent SPECTRE_HURT = createSoundEvent("spectre_hurt");
+
+    public static final SoundEvent CROW_IDLE = createSoundEvent("crow_idle");
+
+    public static final SoundEvent CROW_HURT = createSoundEvent("crow_hurt");
+
+    public static final SoundEvent ALLIGATOR_SNAPPING_TURTLE_IDLE = createSoundEvent("alligator_snapping_turtle_idle");
+
+    public static final SoundEvent ALLIGATOR_SNAPPING_TURTLE_HURT = createSoundEvent("alligator_snapping_turtle_hurt");
+
+    public static final SoundEvent MUNGUS_IDLE = createSoundEvent("mungus_idle");
+
+    public static final SoundEvent MUNGUS_HURT = createSoundEvent("mungus_hurt");
+
+    public static final SoundEvent MUNGUS_LASER_END = createSoundEvent("mungus_laser_end");
+
+    public static final SoundEvent MUNGUS_LASER_LOOP = createSoundEvent("mungus_laser_loop");
+
+    public static final SoundEvent MUNGUS_LASER_GROW = createSoundEvent("mungus_laser_grow");
+
+    public static final SoundEvent MANTIS_SHRIMP_SNAP = createSoundEvent("mantis_shrimp_snap");
+
+    public static final SoundEvent MANTIS_SHRIMP_HURT = createSoundEvent("mantis_shrimp_hurt");
+
+    public static final SoundEvent GUSTER_IDLE = createSoundEvent("guster_idle");
+
+    public static final SoundEvent GUSTER_HURT = createSoundEvent("guster_hurt");
     
+    public static final SoundEvent WARPED_MOSCO_IDLE = createSoundEvent("warped_mosco_idle");
+
+    public static final SoundEvent WARPED_MOSCO_HURT = createSoundEvent("warped_mosco_hurt");
+
+    public static final SoundEvent STRADDLER_IDLE = createSoundEvent("straddler_idle");
+
+    public static final SoundEvent STRADDLER_HURT = createSoundEvent("straddler_hurt");
+
+    public static final SoundEvent EMU_IDLE = createSoundEvent("emu_idle");
+
+    public static final SoundEvent EMU_HURT = createSoundEvent("emu_hurt");
+
+    public static final SoundEvent PLATYPUS_IDLE = createSoundEvent("platypus_idle");
+
+    public static final SoundEvent PLATYPUS_HURT = createSoundEvent("platypus_hurt");
+
+    public static final SoundEvent DROPBEAR_IDLE = createSoundEvent("dropbear_idle");
+
+    public static final SoundEvent DROPBEAR_HURT = createSoundEvent("dropbear_hurt");
+
+    public static final SoundEvent TASMANIAN_DEVIL_IDLE = createSoundEvent("tasmanian_devil_idle");
+
+    public static final SoundEvent TASMANIAN_DEVIL_HURT = createSoundEvent("tasmanian_devil_hurt");
+
+    public static final SoundEvent TASMANIAN_DEVIL_ROAR = createSoundEvent("tasmanian_devil_roar");
+
+    public static final SoundEvent KANGAROO_IDLE = createSoundEvent("kangaroo_idle");
+
+    public static final SoundEvent KANGAROO_HURT = createSoundEvent("kangaroo_hurt");
+
+    public static final SoundEvent CACHALOT_WHALE_IDLE = createSoundEvent("cachalot_whale_idle");
+
+    public static final SoundEvent CACHALOT_WHALE_HURT = createSoundEvent("cachalot_whale_hurt");
+
+    public static final SoundEvent CACHALOT_WHALE_CLICK = createSoundEvent("cachalot_whale_click");
+
+    public static final SoundEvent LEAFCUTTER_ANT_HURT = createSoundEvent("leafcutter_ant_hurt");
+
+    public static final SoundEvent LEAFCUTTER_ANT_QUEEN_HURT = createSoundEvent("leafcutter_ant_queen_hurt");
+
+    public static final SoundEvent ENDERIOPHAGE_HURT = createSoundEvent("enderiophage_hurt");
+
+    public static final SoundEvent ENDERIOPHAGE_SQUISH = createSoundEvent("enderiophage_squish");
+
+    public static final SoundEvent ENDERIOPHAGE_WALK = createSoundEvent("enderiophage_walk");
+
+    public static final SoundEvent MUSIC_DISC_THIME = createSoundEvent("music_disc_thime");
+
+    public static final SoundEvent BALD_EAGLE_IDLE = createSoundEvent("bald_eagle_idle");
+
+    public static final SoundEvent BALD_EAGLE_HURT = createSoundEvent("bald_eagle_hurt");
+
+    public static final SoundEvent TIGER_IDLE = createSoundEvent("tiger_idle");
+
+    public static final SoundEvent TIGER_HURT = createSoundEvent("tiger_hurt");
+
+    public static final SoundEvent TIGER_ANGRY = createSoundEvent("tiger_angry");
+
+    public static final SoundEvent TARANTULA_HAWK_WING = createSoundEvent("tarantula_hawk_wing");
+
+    public static final SoundEvent TARANTULA_HAWK_HURT = createSoundEvent("tarantula_hawk_hurt");
+
+    public static final SoundEvent MUSIC_WORMBOSS = createSoundEvent("music_wormboss");
+
+    public static final SoundEvent VOID_WORM_IDLE = createSoundEvent("void_worm_idle");
+
+    public static final SoundEvent VOID_WORM_HURT = createSoundEvent("void_worm_hurt");
+
+    public static final SoundEvent VOID_PORTAL_CLOSE = createSoundEvent("void_portal_close");
+
+    public static final SoundEvent VOID_PORTAL_OPEN = createSoundEvent("void_portal_open");
+
+    public static final SoundEvent MIMIC_OCTOPUS_IDLE = createSoundEvent("mimic_octopus_idle");
+
+    public static final SoundEvent MIMIC_OCTOPUS_HURT = createSoundEvent("mimic_octopus_hurt");
+
+    public static final SoundEvent MUSIC_DISC_DAZE = createSoundEvent("music_disc_daze");
+
+    public static final SoundEvent SEAGULL_IDLE = createSoundEvent("seagull_idle");
+
+    public static final SoundEvent SEAGULL_HURT = createSoundEvent("seagull_hurt");
+
+    public static final SoundEvent FROSTSTALKER_IDLE = createSoundEvent("froststalker_idle");
+
+    public static final SoundEvent FROSTSTALKER_HURT = createSoundEvent("froststalker_hurt");
+   
+    public static final SoundEvent TUSKLIN_IDLE = createSoundEvent("tusklin_idle");
+
+    public static final SoundEvent TUSKLIN_HURT = createSoundEvent("tusklin_hurt");
+
+    public static final SoundEvent LAVIATHAN_IDLE = createSoundEvent("laviathan_idle");
+
+    public static final SoundEvent LAVIATHAN_HURT = createSoundEvent("laviathan_hurt");
+
+    public static final SoundEvent COSMAW_IDLE = createSoundEvent("cosmaw_idle");
+
+    public static final SoundEvent COSMAW_HURT = createSoundEvent("cosmaw_hurt");
+
+    public static final SoundEvent TOUCAN_IDLE = createSoundEvent("toucan_idle");
+
+    public static final SoundEvent TOUCAN_HURT = createSoundEvent("toucan_hurt");
+
+    public static final SoundEvent MANED_WOLF_IDLE = createSoundEvent("maned_wolf_idle");
+
+    public static final SoundEvent MANED_WOLF_HURT = createSoundEvent("maned_wolf_hurt");
+
+    public static final SoundEvent ANACONDA_SLITHER = createSoundEvent("anaconda_slither");
+
+    public static final SoundEvent ANACONDA_HURT = createSoundEvent("anaconda_hurt");
+
+    public static final SoundEvent ANACONDA_ATTACK = createSoundEvent("anaconda_attack");
+
+    public static final SoundEvent VINE_LASSO = createSoundEvent("vine_lasso");
+
+    public static final SoundEvent ANTEATER_HURT = createSoundEvent("anteater_hurt");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

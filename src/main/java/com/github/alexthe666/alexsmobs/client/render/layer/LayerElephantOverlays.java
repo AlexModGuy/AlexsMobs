@@ -3,19 +3,17 @@ package com.github.alexthe666.alexsmobs.client.render.layer;
 import com.github.alexthe666.alexsmobs.client.model.ModelElephant;
 import com.github.alexthe666.alexsmobs.client.render.RenderElephant;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.entity.model.LlamaModel;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.passive.horse.LlamaEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.resources.ResourceLocation;
 
-public class LayerElephantOverlays extends LayerRenderer<EntityElephant, ModelElephant> {
+public class LayerElephantOverlays extends RenderLayer<EntityElephant, ModelElephant> {
 
     private static final ResourceLocation[] ELEPHANT_DECOR_TEXTURES = new ResourceLocation[]{new ResourceLocation("alexsmobs:textures/entity/elephant/decor/white.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/orange.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/magenta.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/light_blue.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/yellow.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/lime.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/pink.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/gray.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/light_gray.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/cyan.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/purple.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/blue.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/brown.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/green.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/red.png"), new ResourceLocation("alexsmobs:textures/entity/elephant/decor/black.png")};
     private static final ResourceLocation TRADER_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/elephant/decor/trader.png");
@@ -27,10 +25,10 @@ public class LayerElephantOverlays extends LayerRenderer<EntityElephant, ModelEl
         super(renderElephant);
     }
 
-    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityElephant elephant, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityElephant elephant, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(elephant.isChested()){
-            IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutout(TEXTURE_CHEST));
-            this.getEntityModel().render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(elephant, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutout(TEXTURE_CHEST));
+            this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(elephant, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
         }
         DyeColor lvt_11_1_ = elephant.getColor();
         if(lvt_11_1_ != null || elephant.isTrader()) {
@@ -41,10 +39,10 @@ public class LayerElephantOverlays extends LayerRenderer<EntityElephant, ModelEl
                 lvt_12_3_ = TRADER_TEXTURE;
             }
 
-            ((ModelElephant) this.getEntityModel()).copyModelAttributesTo(this.model);
-            this.model.setRotationAngles(elephant, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            IVertexBuilder lvt_13_1_ = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(lvt_12_3_));
-            this.model.render(matrixStackIn, lvt_13_1_, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            ((ModelElephant) this.getParentModel()).copyPropertiesTo(this.model);
+            this.model.setupAnim(elephant, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            VertexConsumer lvt_13_1_ = bufferIn.getBuffer(RenderType.entityCutoutNoCull(lvt_12_3_));
+            this.model.renderToBuffer(matrixStackIn, lvt_13_1_, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 }

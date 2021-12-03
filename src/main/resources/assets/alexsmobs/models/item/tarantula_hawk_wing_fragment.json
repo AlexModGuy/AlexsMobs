@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alexsmobs:item/tarantula_hawk_wing_fragment"
+  }
+}

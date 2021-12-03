@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:capsid"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.capsid.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.capsid.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/enderiophage",
+    "criteria": {
+        "capsid": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:capsid"]
+                    }
+                ]
+            }
+        }
+    }
+}

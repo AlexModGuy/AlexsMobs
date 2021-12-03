@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los Mungus son criaturas extrañas y fúngicas que se encuentran en los campos de hongos. Estas extrañas criaturas son parientes del Guardian y Strider, y son visualmente similares a ellos.
+A diferencia de sus antecesores Guardianes, Mungus es completamente pasivo. De vez en cuando, se pueden ver con un hongo que crece fuera de la capa de micelio que los cubre.
+Si se alimenta con más del mismo hongo, más hongos echarán raíces en el Mungus. Con uno o más hongos, Mungus disparará un rayo similar al de un Guardián cerca
+ hongos del mismo tipo. Usarán esto para cultivar más de ese tipo de hongo, y si el hongo está sobre el micelio, puede convertirse en un hongo gigante. Esta voluntad
+exprima el Mungus y baje la cantidad de hongos en él. Si lo matan con cinco hongos en la espalda, el Mungus estallará con una violenta explosión y convertirá al local
+ área en el bioma perteneciente a su hongo: para los hongos rojos y marrones, los campos de hongos; y por hongos carmesí y deformados,
+los bosques Crimson y Warped respectivamente.
+ La conversión de un bioma se puede deshacer alimentando a un Mungus con una papa venenosa. Mungus se puede criar con sopa de hongos.

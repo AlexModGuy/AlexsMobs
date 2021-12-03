@@ -1,0 +1,13 @@
+{
+  "__comment": "all non-player targets of the mantis shrimp mob.",
+  "replace": false,
+  "values": [
+    "alexsmobs:mimic_octopus",
+    "alexsmobs:lobster",
+    "minecraft:shulker",
+    "minecraft:squid",
+    "minecraft:guardian",
+    "minecraft:elder_guardian",
+    "minecraft:tropical_fish"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:orca\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.orcas_might.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.orcas_might.desc"
+    },
+    "frame": "challenge"
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "all_effects": {
+      "trigger": "minecraft:effects_changed",
+      "conditions": {
+        "effects": {
+          "alexsmobs:orcas_might": {}
+        }
+      }
+    }
+  }
+}

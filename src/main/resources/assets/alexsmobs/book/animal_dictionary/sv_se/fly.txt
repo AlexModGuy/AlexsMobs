@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Flugor är små, irriterande insekter som är vanliga i Övervärlden. Naturligtvis lockas de av döda och döende saker, de kan hittas
+jagar och biter zombier nästan till döds. Flugor kan föda upp med ruttet kött, och vid döden har de möjlighet att tappa
+larver. Fluglarver kan användas för att föda upp andra varelser, som tuppgökar och kapucinapor, och, i en nypa, användas som
+ ett lätt mellanmål.
+<NEWLINE>
+Om en fluga råkar hamna i Nether, kommer den lilla varelsen att förvandlas till den monströsa karmosinmygga.

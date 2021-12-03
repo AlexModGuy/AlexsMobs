@@ -1,7 +1,7 @@
 package com.github.alexthe666.alexsmobs.effect;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 
 import javax.annotation.Nonnull;
@@ -25,12 +25,12 @@ public class ProperBrewingRecipe extends BrewingRecipe {
         if (stack == null) {
             return false;
         } else {
-            ItemStack[] matchingStacks = input.getMatchingStacks();
+            ItemStack[] matchingStacks = input.getItems();
             if (matchingStacks.length == 0) {
                 return stack.isEmpty();
             } else {
                 for (ItemStack itemstack : matchingStacks) {
-                    if (itemstack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(itemstack, stack)) {
+                    if (itemstack.sameItem(stack) && ItemStack.tagMatches(itemstack, stack)) {
                         return true;
                     }
                 }

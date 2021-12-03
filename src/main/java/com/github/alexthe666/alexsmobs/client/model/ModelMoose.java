@@ -1,16 +1,16 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityGazelle;
 import com.github.alexthe666.alexsmobs.entity.EntityMoose;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 	private final AdvancedModelBox root;
@@ -30,79 +30,79 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 	private ModelAnimator animator;
 
 	public ModelMoose() {
-		textureWidth = 128;
-		textureHeight = 128;
+		texWidth = 128;
+		texHeight = 128;
 
 		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
 		body = new AdvancedModelBox(this);
-		body.setRotationPoint(0.0F, -18.75F, 1.25F);
+		body.setPos(0.0F, -18.75F, 1.25F);
 		root.addChild(body);
 		body.setTextureOffset(71, 33).addBox(-4.5F, -7.25F, -3.25F, 9.0F, 11.0F, 14.0F, 0.0F, false);
 
 		body_front = new AdvancedModelBox(this);
-		body_front.setRotationPoint(0.0F, -0.25F, -4.25F);
+		body_front.setPos(0.0F, -0.25F, -4.25F);
 		body.addChild(body_front);
 		body_front.setTextureOffset(0, 69).addBox(-5.0F, -8.0F, -8.0F, 10.0F, 13.0F, 9.0F, 0.0F, false);
 
 		frontleg_left = new AdvancedModelBox(this);
-		frontleg_left.setRotationPoint(3.0F, 5.0F, -5.0F);
+		frontleg_left.setPos(3.0F, 5.0F, -5.0F);
 		body_front.addChild(frontleg_left);
 		frontleg_left.setTextureOffset(17, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
 
 		frontleg_right = new AdvancedModelBox(this);
-		frontleg_right.setRotationPoint(-3.0F, 5.0F, -5.0F);
+		frontleg_right.setPos(-3.0F, 5.0F, -5.0F);
 		body_front.addChild(frontleg_right);
 		frontleg_right.setTextureOffset(17, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, true);
 
 		neck = new AdvancedModelBox(this);
-		neck.setRotationPoint(0.0F, -4.5F, -8.0F);
+		neck.setPos(0.0F, -4.5F, -8.0F);
 		body_front.addChild(neck);
 		setRotationAngle(neck, -0.1745F, 0.0F, 0.0F);
 		neck.setTextureOffset(40, 17).addBox(-3.5F, -2.5F, -6.0F, 7.0F, 8.0F, 7.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
-		head.setRotationPoint(0.0F, 1.0F, -7.0F);
+		head.setPos(0.0F, 1.0F, -7.0F);
 		neck.addChild(head);
 		setRotationAngle(head, 0.2182F, 0.0F, 0.0F);
 		head.setTextureOffset(34, 52).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 5.0F, 0.0F, false);
 
 		beard = new AdvancedModelBox(this);
-		beard.setRotationPoint(0.0F, 3.0F, -1.0F);
+		beard.setPos(0.0F, 3.0F, -1.0F);
 		head.addChild(beard);
 		beard.setTextureOffset(19, 30).addBox(0.0F, -2.0F, -3.0F, 0.0F, 7.0F, 6.0F, 0.0F, false);
 
 		horn_left = new AdvancedModelBox(this);
-		horn_left.setRotationPoint(3.0F, -3.0F, -2.0F);
+		horn_left.setPos(3.0F, -3.0F, -2.0F);
 		head.addChild(horn_left);
 		horn_left.setTextureOffset(31, 37).addBox(0.0F, -6.0F, -3.0F, 10.0F, 6.0F, 8.0F, 0.0F, false);
 
 		horn_right = new AdvancedModelBox(this);
-		horn_right.setRotationPoint(-3.0F, -3.0F, -2.0F);
+		horn_right.setPos(-3.0F, -3.0F, -2.0F);
 		head.addChild(horn_right);
 		horn_right.setTextureOffset(31, 37).addBox(-10.0F, -6.0F, -3.0F, 10.0F, 6.0F, 8.0F, 0.0F, true);
 
 		snout = new AdvancedModelBox(this);
-		snout.setRotationPoint(0.0F, -2.0F, -3.0F);
+		snout.setPos(0.0F, -2.0F, -3.0F);
 		head.addChild(snout);
 		setRotationAngle(snout, 0.1309F, 0.0F, 0.0F);
 		snout.setTextureOffset(33, 0).addBox(-2.0F, 0.0F, -7.0F, 4.0F, 5.0F, 7.0F, 0.0F, false);
 
 		tail = new AdvancedModelBox(this);
-		tail.setRotationPoint(0.0F, -3.25F, 10.75F);
+		tail.setPos(0.0F, -3.25F, 10.75F);
 		body.addChild(tail);
 		setRotationAngle(tail, 0.1745F, 0.0F, 0.0F);
 		tail.setTextureOffset(0, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 12.0F, 0.0F, 0.0F, false);
 
 		backleg_left = new AdvancedModelBox(this);
-		backleg_left.setRotationPoint(2.5F, 3.75F, 8.75F);
+		backleg_left.setPos(2.5F, 3.75F, 8.75F);
 		body.addChild(backleg_left);
 		backleg_left.setTextureOffset(0, 45).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, false);
 
 		backleg_right = new AdvancedModelBox(this);
-		backleg_right.setRotationPoint(-2.5F, 3.75F, 8.75F);
+		backleg_right.setPos(-2.5F, 3.75F, 8.75F);
 		body.addChild(backleg_right);
 		backleg_right.setTextureOffset(0, 45).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 15.0F, 4.0F, 0.0F, true);
 		this.updateDefaultPose();
@@ -178,7 +178,7 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 
 
 	@Override
-	public void setRotationAngles(EntityMoose entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityMoose entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		animate(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		float walkSpeed = 0.7F;
@@ -186,7 +186,7 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 		float idleSpeed = 0.1F;
 		float idleDegree = 0.1F;
 		float runProgress = 5F * limbSwingAmount;
-		float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+		float partialTick = Minecraft.getInstance().getFrameTime();
 		float jostleProgress = entityIn.prevJostleProgress + (entityIn.jostleProgress - entityIn.prevJostleProgress) * partialTick;
 		float jostleAngle = entityIn.prevJostleAngle + (entityIn.getJostleAngle() - entityIn.prevJostleAngle) * partialTick;
 		this.walk(tail, idleSpeed, idleDegree * 2, false, 1F, 0.1F, ageInTicks, 1);
@@ -221,8 +221,8 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 		}
 	}
 
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		if (this.isChild) {
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		if (this.young) {
 			float f = 1.35F;
 			float feet = 1.45F;
 			head.setScale(f, f, f);
@@ -231,30 +231,30 @@ public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
 			frontleg_left.setScale(1, feet, 1);
 			backleg_right.setScale(1, feet, 1);
 			backleg_left.setScale(1, feet, 1);
-			matrixStackIn.push();
+			matrixStackIn.pushPose();
 			matrixStackIn.scale(0.35F, 0.35F, 0.35F);
 			matrixStackIn.translate(0.0D, 2.25D, 0.125D);
-			getParts().forEach((p_228292_8_) -> {
+			parts().forEach((p_228292_8_) -> {
 				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 			});
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 			head.setScale(1, 1, 1);
 			frontleg_right.setScale(1, 1, 1);
 			frontleg_left.setScale(1, 1, 1);
 			backleg_right.setScale(1, 1, 1);
 			backleg_left.setScale(1, 1, 1);
 		} else {
-			matrixStackIn.push();
-			getParts().forEach((p_228290_8_) -> {
+			matrixStackIn.pushPose();
+			parts().forEach((p_228290_8_) -> {
 				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 			});
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 		}
 
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 

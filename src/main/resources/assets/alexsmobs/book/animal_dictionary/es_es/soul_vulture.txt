@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los buitres del alma son los restos marchitos de aves muertas hace mucho tiempo que acechan los valles de arena del alma del Nether. Estas aves no muertas se pueden ver rodeando los innumerables esqueletos gigantes que cubren el paisaje.
+Si se les acerca, Soul Vultures lanzará un asalto que robará la salud a cualquier explorador, donde pueden minar la salud hasta un máximo de cinco veces de su presa. Si mueren después, pueden tener la oportunidad de soltar su corazón infundido por el alma.
+El Soul Heart se puede utilizar para preparar una poción de Soulsteal, que le da al bebedor los mismos poderes que el pájaro.
+<NEWLINE>
+Al igual que sus homólogos de esqueletos marchitos, los Soul Vultures son enemigos naturales de Piglins. También son presa frecuente de las serpientes de hueso abisales.

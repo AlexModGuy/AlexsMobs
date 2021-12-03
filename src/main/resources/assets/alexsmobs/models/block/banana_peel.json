@@ -1,0 +1,57 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "0": "alexsmobs:block/banana_peel",
+    "1": "alexsmobs:block/banana_peel_bottom",
+    "2": "alexsmobs:block/banana_peel_top",
+    "particle": "alexsmobs:block/banana_peel"
+  },
+  "elements": [
+    {
+      "from": [7, 0.1, 7],
+      "to": [9, 3.1, 9],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+      "faces": {
+        "north": {"uv": [2, 2, 4, 5], "texture": "#0"},
+        "east": {"uv": [0, 2, 2, 5], "texture": "#0"},
+        "south": {"uv": [6, 2, 8, 5], "texture": "#0"},
+        "west": {"uv": [4, 2, 6, 5], "texture": "#0"},
+        "up": {"uv": [4, 2, 2, 0], "texture": "#0"},
+        "down": {"uv": [6, 0, 4, 2], "texture": "#0"}
+      }
+    },
+    {
+      "from": [2, 0.1, 2],
+      "to": [14, 0.1, 14],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+      "faces": {
+        "north": {"uv": [2, 14, 14, 14], "texture": "#missing"},
+        "east": {"uv": [-10, 14, 2, 14], "texture": "#missing"},
+        "south": {"uv": [26, 14, 38, 14], "texture": "#missing"},
+        "west": {"uv": [14, 14, 26, 14], "texture": "#missing"},
+        "up": {"uv": [14, 14, 2, 2], "texture": "#2"},
+        "down": {"uv": [14, 14, 2, 2], "texture": "#1"}
+      }
+    },
+    {
+      "from": [8, 3.1, 9],
+      "to": [10, 4.1, 9],
+      "rotation": {"angle": -45, "axis": "y", "origin": [9, 3.6, 9]},
+      "faces": {
+        "north": {"uv": [3, 7, 5, 8], "texture": "#0"},
+        "east": {"uv": [3, 7, 3, 8], "texture": "#missing"},
+        "south": {"uv": [5, 7, 7, 8], "texture": "#0"},
+        "west": {"uv": [5, 7, 5, 8], "texture": "#missing"},
+        "up": {"uv": [5, 7, 3, 7], "texture": "#missing"},
+        "down": {"uv": [7, 7, 5, 7], "texture": "#missing"}
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "group",
+      "origin": [8, 8, 8],
+      "children": [0, 1, 2]
+    }
+  ]
+}

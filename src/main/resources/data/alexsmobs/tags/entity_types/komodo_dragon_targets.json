@@ -2,6 +2,8 @@
   "__comment": "all non-player targets of the komodo dragon mob.",
   "replace": false,
   "values": [
-    "#alexsmobs:passive_land_animals"
+    "#alexsmobs:passive_land_animals",
+    "#alexsmobs:villagers",
+    "alexsmobs:kangaroo"
   ]
 }

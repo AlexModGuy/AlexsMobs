@@ -9,6 +9,14 @@
   "item_renders": [
   ],
   "recipes": [
+    {
+      "recipe": "alexsmobs:hummingbird_feeder",
+      "shapeless": false,
+      "x": 225,
+      "y": 115,
+      "page": 0,
+      "scale": 1.0
+    }
   ],
   "tabula_renders": [
   ],

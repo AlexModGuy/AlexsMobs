@@ -57,6 +57,13 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 8,
+          "functions": [
+          ],
+          "name": "alexsmobs:serrated_shark_tooth"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 60,
           "functions": [
             {
@@ -187,8 +194,13 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 2,
           "name": "alexsmobs:lobster_bucket"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "alexsmobs:music_disc_thime"
         },
         {
           "type": "minecraft:item",

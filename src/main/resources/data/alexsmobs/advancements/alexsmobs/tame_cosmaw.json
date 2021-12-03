@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:cosmaw\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tame_cosmaw.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.tame_cosmaw.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/cosmic_cod",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:cosmaw"
+        }
+      }
+    }
+  }
+}

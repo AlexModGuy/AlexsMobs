@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Um Espectro é o parente distante do Phantom do Overworld e só pode ser encontrado no grande vazio entre as ilhas do fim. Esses seres espectrais não podem ser atacados por nenhum meio normal, exceto por danos mágicos como poções.
+No entanto, não deve haver necessidade de atacá-los, já que os Espectros são completamente passivos, ao contrário de seus primos Phantoms.
+Os Espectros geralmente não se interessam por assuntos mundanos, mas eles encontram um interesse especial em Corações de Alma e seguirão qualquer jogador que tenha um.
+<NEWLINE>
+Se alguém conseguir atrair um Espectro para perto o suficiente, eles podem usar uma Corda para se prender à besta.
+Quando preso por meio de uma corda, o jogador será puxado pelo Espectro. A criatura fantasmagórica então se torna uma maneira rápida e fácil de navegar pelo End, já que ser puxado por um Espectro através do vazio é uma maneira fácil de encontrar novas Ilhas do End para explorar.
+Para se separar do Espectro, simplesmente saia furtivamente ou interaja novamente com a Corda.

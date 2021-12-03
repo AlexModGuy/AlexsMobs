@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "alexsmobs:block/leafcutter_anthill_top",
+    "bottom": "alexsmobs:block/leafcutter_anthill",
+    "side": "alexsmobs:block/leafcutter_anthill"
+  }
+}

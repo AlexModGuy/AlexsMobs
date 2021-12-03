@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Vespas-Caçadoras são vespas parasitóides gigantes que costumam ser encontradas zumbindo acima de biomas desérticos. Embora uma visão aterrorizante, eles têm pouco interesse na maioria das criaturas e são neutros.
+Os Vespas-Caçadoras adoram atacar aranhas. Eles muitas vezes podem ser vistos lançando-se para ferroar aranhas, apenas para voar ao redor e voltar quando a presa foi completamente imobilizada por sua picada. Eles continuarão
+ a arrastar a aranha e enterrá-la no subsolo. Ao atacar, o Vespa-Caçadora pode infligir o efeito Picada Debilitante, que paralisa artrópodes e causa dano aos não-artrópodes até que estejam com metade de sua saúde normal. Os Vespas-Caçadoras podem ser difíceis de combater, pois têm um padrão de voo muito errático e picam com frequência.
+<NEWLINE>
+Vespas-Caçadoras podem ser domadas alimentando-as com 15-25 Olhos de Aranha. Eles podem ser uma defesa formidável contra muitos monstros, e seu ferrão é extremamente benéfico ao lutar contra aranhas ou outros artrópodes. Duas Vespa-Caçadora domadas podem ser procriadas alimentando-as com Olhos de Aranha Fermentados. Uma vez criadas, as vespas vão procurar aranhas para paralisar - só que desta vez, um filhote de larva de Vespa-Caçadora sairá de onde a aranha está enterrada, depois de algum tempo.
+As Vespas-Caçadoras domesticadas podem ser curados com flores.
+<NEWLINE>
+<NEWLINE>
+Se uma Vespa-Caçadora for morta, ela pode derrubar uma Asa de Vespa-Caçadora Esfarrapada. Nove delas podem ser usadas para criar uma Asa de Vespa-Caçadora, que quando dois são combinadas com um Élitros pode criar o Élitros de Vespa-Caçadora. Esta atualização tem 3 pontos de armadura adicionais, mais durabilidade e é encantável. Asas esfarrapadas também podem ser usadas para criar um padrão de banner exclusivo.

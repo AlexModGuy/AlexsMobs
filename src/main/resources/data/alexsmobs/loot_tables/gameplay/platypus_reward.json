@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:barter",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "functions": [
+          ],
+          "name": "minecraft:clay_ball"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 7,
+          "functions": [
+          ],
+          "name": "alexsmobs:maggot"
+        }
+      ]
+    }
+  ]
+}

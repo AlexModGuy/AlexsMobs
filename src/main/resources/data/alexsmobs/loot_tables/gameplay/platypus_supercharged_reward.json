@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:barter",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 2.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "minecraft:clay_ball"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+          ],
+          "name": "alexsmobs:maggot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "functions": [
+          ],
+          "name": "alexsmobs:fedora"
+        }
+      ]
+    }
+  ]
+}

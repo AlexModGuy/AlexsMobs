@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+La Gacela es un pequeño mamífero endémico de las Sabanas del Overworld. Una criatura delicada, la Gacela es bastante timida, y se puede observar forrajeando en grandes manadas. 
+Cuando una Gacela es atacada, todos los miembros de su grupo intentarán huir del peligro, corriendo extremadamente rápido de cualquier amenaza percibida.
+<NEWLINE>
+Las Gacelas ocacionalmente dejan caer sus raros Cuernos cuando son asesinados. Estos Cuernos se pueden preparar con una Poción de
+velocidad II para crear la inusual Poción de velocidad III. Además, ellas también pueden soltar cordero.

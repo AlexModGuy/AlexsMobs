@@ -1,0 +1,20 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Elefanter är gigantiska däggdjur på land som kan hittas strövande savanner i stora hjordar. I de flesta elefantbesättningar finns det tre typer av elefanter: kalvar, brosiga och icke-brosiga.
+De är vanligtvis en eller två brosiga elefanter i en flock, och de är betydligt starkare än andra elefanter. De har också en speciell, förödande stångsattack.
+Elefanter är defensiva mot sina hjordar, och de flesta är beroende av att dessa brosiga individer är de mest skyddande. Elefanter kan attackera på många andra sätt än att stånga, inklusive att använda sina massiva koffertar för att kasta fiender eller att uppfostra och trampa sin motståndare.
+Dessa däggdjur kan ofta ses stå upp och riva löv av träd, i hopp om att få en något sällsynt behandling som kallas akaciablomning. Dessa blommor faller sällan från akaciaträd och kan matas till elefanter för att tämja dem.
+Vilda brosiga elefanter kan inte tämjas, men spädbarn och icke-brosiga elefanter kan. En tam, brosad elefant kan endast erhållas genom att tämja den som en kalv.
+<NEWLINE>
+Tämda elefanter kan åkas genom att interagera med dem. Om en kista används på en elefant kan den få en ganska stor inventering lagrad på ryggen, som kan nås genom att smyga.
+Alla mattor kan också användas på en elefant för att dekorera den. Både kistan och mattan kan tas bort med sax.
+Tämda, brosiga elefanter kan stånga genom att mata dem vete medan de rider på dem. Denna stångsattack påskyndar elefanten och ger stora skador på alla varelser i
+elefantens väg. Elefanter behöver vila efter stångande.
+<NEWLINE>
+Elefanter kan föda upp med akaciablomning efter tämjande. Ibland kan vandrande
+
+ byteshandlare i varma biomer hittas ovanpå
+ byteshandlarelefanter. Dessa elefanter är kista och har en del byte från byteshandlarens resor som kan nås.

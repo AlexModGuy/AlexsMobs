@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los straddlers son parientes gigantes del Strider común del abismo. A diferencia del Strider, los Straddlers solo se pueden encontrar en los deltas de basalto.
+También son mucho más resistentes que sus primos, capaces en tierra y agua, así como en lava. Sin embargo, los Straddlers también son agresivos.
+Cualquier explorador que se acerque demasiado se considera un intruso y es atacado de inmediato. El Straddler usa su pelo largo y enredado para lanzar Stradpoles a sus objetivos, que pueden causar una cantidad decente de daño.
+Si los matan, los Straddlers soltarán basalto y rara vez Straddlite. Este mineral es poco común y se puede usar para fabricar una tabla de montar.
+<NEWLINE>
+Las tablas de pórtico son tablas que se pueden secar que flotan en la lava y se hunden en el agua. Se pueden utilizar para cruzar los grandes océanos de lava del abismo con facilidad. Sin embargo, a diferencia del Strider relativamente seguro, el Straddleboard es propenso a romperse y caer, lo que resulta en un viaje más arriesgado pero más rápido.
+Si alguien que usa un Straddleboard golpea un techo o una pared con demasiada fuerza, es posible que se hunda en una tumba de lava.

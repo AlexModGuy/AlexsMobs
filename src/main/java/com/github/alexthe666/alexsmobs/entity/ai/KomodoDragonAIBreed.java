@@ -1,15 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityKomodoDragon;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.server.level.ServerLevel;
 
 public class KomodoDragonAIBreed extends BreedGoal {
     boolean withPartner;
@@ -21,18 +14,18 @@ public class KomodoDragonAIBreed extends BreedGoal {
         this.komodo = entityKomodoDragon;
     }
 
-    public boolean shouldExecute(){
-        boolean prev = super.shouldExecute();
+    public boolean canUse(){
+        boolean prev = super.canUse();
         withPartner = prev;
         return withPartner || animal.isInLove();
     }
 
-    public boolean shouldContinueExecuting() {
-        return withPartner ? super.shouldContinueExecuting() : selfBreedTime < 60;
+    public boolean canContinueToUse() {
+        return withPartner ? super.canContinueToUse() : selfBreedTime < 60;
     }
 
-    public void resetTask() {
-        super.resetTask();
+    public void stop() {
+        super.stop();
         selfBreedTime = 0;
     }
 
@@ -40,7 +33,7 @@ public class KomodoDragonAIBreed extends BreedGoal {
         if(withPartner){
             super.tick();
         }else{
-            this.animal.getNavigator().clearPath();
+            this.animal.getNavigation().stop();
             ++this.selfBreedTime;
             if (this.selfBreedTime >= 60) {
                 this.spawnParthogenicBaby();
@@ -48,16 +41,16 @@ public class KomodoDragonAIBreed extends BreedGoal {
         }
     }
 
-    protected void spawnBaby() {
-        for(int i = 0; i < 2 + this.animal.getRNG().nextInt(2); i++){
-            this.animal.func_234177_a_((ServerWorld)this.world, this.targetMate);
+    protected void breed() {
+        for(int i = 0; i < 2 + this.animal.getRandom().nextInt(2); i++){
+            this.animal.getBreedOffspring((ServerLevel)this.level, this.partner);
         }
         komodo.slaughterCooldown = 200;
     }
 
     private void spawnParthogenicBaby() {
-        for(int i = 0; i < 2 + this.animal.getRNG().nextInt(2); i++){
-            this.animal.func_234177_a_((ServerWorld)this.world, this.animal);
+        for(int i = 0; i < 2 + this.animal.getRandom().nextInt(2); i++){
+            this.animal.getBreedOffspring((ServerLevel)this.level, this.animal);
         }
         komodo.slaughterCooldown = 200;
     }

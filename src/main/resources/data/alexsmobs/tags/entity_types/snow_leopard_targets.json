@@ -1,0 +1,20 @@
+{
+  "__comment": "all non-player targets of the snow leopard mob.",
+  "replace": false,
+  "values": [
+    "minecraft:cow",
+    "minecraft:chicken",
+    "minecraft:donkey",
+    "minecraft:horse",
+    "minecraft:llama",
+    "minecraft:mule",
+    "minecraft:parrot",
+    "minecraft:pig",
+    "minecraft:rabbit",
+    "minecraft:sheep",
+    "minecraft:goat",
+    "minecraft:trader_llama",
+    "alexsmobs:capuchin_monkey",
+    "alexsmobs:crow"
+  ]
+}

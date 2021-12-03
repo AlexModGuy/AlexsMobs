@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Vithövdade havsörnar är stora, neutrala rovfåglar som finns i trädbevuxna berg biomer. De är frekventa besökare i närliggande sjöar, där de försöker dyka och fånga lax ur vattnet.
+De är också förtjusta i att attackera kaniner på samma sätt. När han attackerar större väsen, föredrar vithövdade havsörnen att cirkulera, hugga med sina klor, och upprepa.
+<NEWLINE>
+På grund av sin kärlek till fisk, kan vithövdade havsörnar lockas och tämjas med fisk olja. En tämjd vithövdad havsörn kan beordras att stanna, följa och vandra, som många andra djur, men de kan också användas för falkenering.
+För att börja med falkenering, måste man tillverka en falkehandske. När den hålls antingen i huvud eller utanför handen, kan den här handsken användas för att plocka upp havsörnar och hålla dem i handen. För att lansera och örna från handen, slå helt enkelt.
+Om den lanseras medan han stirrar på en varelse, kommer örnen att flyga till den här varelsen, attackera, och, om den överlever, återvända till handen. Om ingen varelse har valts kommer örnen helt enkelt att hoppa av handsken.
+<NEWLINE>
+För att förbättra sin falkjakt färdighet, kan man tillverket en falkenering huva. Huven kan placeras på en havsörn, och en havsörn med huva följer dess ägares direkta kommando när den lanseras från en handske.
+Det betyder att havsörnen effektivt kan styras av dess ägare. Om örnen flyger längre än 150 block från ägaren, kommer den att försöka återvända. För att sluta kontrollera örnen, kan ägaren också smyga.
+Huven kan tas bort från havsörnen med sax.
+<NEWLINE>
+Havsörnar skadas ofta av sitt byte när de jagar. En tämjd havsörn kan läka med vilken fisk som helst. Vithövdade havsörnar kan föda upp med ruttet kött.

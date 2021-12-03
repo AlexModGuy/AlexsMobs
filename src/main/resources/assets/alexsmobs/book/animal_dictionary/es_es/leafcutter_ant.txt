@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Las hormigas cortadoras de hojas son pequeños insectos diminutos que a menudo se pueden ver arrancando hojas de los árboles en los biomas de la jungla. Forman colonias masivas de hasta veinte hormigas. Hay dos formas de hormigas cortadoras de hojas: las obreras, que cosechan hojas y se pueden ver fuera del hormiguero, y las reinas, que solo se pueden invocar pisando un hormiguero.
+Las reinas son mucho más grandes y fuertes que una obrera y, por lo general, solo hay una por colonia. Con una reina presente en un hormiguero, existe la posibilidad de que por cada 5 hojas cosechadas se cree otra hormiga obrera, mientras que la colina tiene menos de 10 hormigas.
+<NEWLINE>
+Sin una reina, los hormigueros no pueden repoblar. Estas colonias son mucho más grandes de lo que parecen: debajo del montículo hay una red de cámaras de hormigas cortadoras de hojas, bloques grandes que las hormigas utilizan para convertir sus hojas en hongos.
+Estos bloques de cámara se convertirán en tierra si están bajo la luz solar, sin embargo, pueden extenderse a los bloques de tierra adyacentes cuando se cosechan.
+<NEWLINE>
+Este hongo se llama Gongylidia y es lo único que las hormigas pueden cultivar y comer.
+Aparte de sus usos para las hormigas, también se puede comer, aunque puede que no tenga mucho valor nutricional, tiene mucha saturación.
+Gongylidia se puede obtener interactuando con un bloque de cámara subterráneo cubierto de hongos, pero cuidado: a menos que haya un Shroomlight cerca, las hormigas de la colonia se volverán hostiles.
+Los hongos se pueden alimentar a las hormigas para que las curen y a la reina para aumentar el número de hormigas en la colonia. Gongylidia también se puede alimentar a una hormiga para apaciguar a todas las hormigas en el área cercana. Si se rompe un bloque de la cámara, existe una rara posibilidad de que suelte una pupa de hormiga cortadora de hojas, que se puede usar sobre tierra o hierba para crear una nueva colonia.

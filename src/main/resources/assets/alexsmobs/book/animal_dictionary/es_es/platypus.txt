@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El ornitorrinco es una criatura que parece una combinación de varios otros animales, pero es completamente único por derecho propio. Rara vez se puede encontrar en los biomas fluviales del supramundo.
+Este extraño mamífero tiene espinas venenosas en sus patas, que puede usar para infligir efectos de veneno a cualquier atacante.
+El débil sentido del olfato, el oído y la vista del ornitorrinco lo han llevado a depender de la electricidad para cazar y navegar. Debido a esto, el ornitorrinco se siente atraído naturalmente por la piedra roja cuando se sostiene. Si se alimenta con piedra roja, el ornitorrinco recargará su sensibilidad eléctrica y buscará algunos gusanos en los bloques de arcilla cercanos.
+Cuando busque comida, el ornitorrinco desenterrará varias bolas de arcilla y gusanos, que luego podrá recolectar. Si se alimenta con un bloque de piedra roja completo, la cantidad de elementos desenterrados aumentará considerablemente.
+Al igual que otras pequeñas criaturas acuáticas, el ornitorrinco se puede transportar en un cubo de agua. Se puede criar con colas de langosta, su comida favorita.
+

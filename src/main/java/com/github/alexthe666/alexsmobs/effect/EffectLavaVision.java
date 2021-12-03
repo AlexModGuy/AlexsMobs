@@ -1,28 +1,26 @@
 package com.github.alexthe666.alexsmobs.effect;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 
-public class EffectLavaVision extends Effect {
+public class EffectLavaVision extends MobEffect {
 
     public EffectLavaVision() {
-        super(EffectType.BENEFICIAL, 0XFF6A00);
+        super(MobEffectCategory.BENEFICIAL, 0XFF6A00);
         this.setRegistryName(AlexsMobs.MODID, "lava_vision");
 
     }
 
-    public void performEffect(LivingEntity LivingEntityIn, int amplifier) {
+    public void applyEffectTick(LivingEntity LivingEntityIn, int amplifier) {
     }
 
-    public boolean isReady(int duration, int amplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration > 0;
     }
 
-    public String getName() {
+    public String getDescriptionId() {
         return "alexsmobs.potion.lava_vision";
     }
 

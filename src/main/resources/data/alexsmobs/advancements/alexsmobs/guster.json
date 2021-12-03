@@ -1,0 +1,48 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:guster\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.guster.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.guster.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "killed": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:guster"
+        }
+      }
+    },
+    "killed_by": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:guster"
+        }
+      }
+    },
+    "interact": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:guster"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "killed",
+      "killed_by",
+      "interact"
+    ]
+  ]
+}

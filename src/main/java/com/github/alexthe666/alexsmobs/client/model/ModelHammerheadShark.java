@@ -3,12 +3,12 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7
 // Paste this class into your mod and generate all required imports
 
 
-import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.entity.EntityHammerheadShark;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelHammerheadShark extends AdvancedEntityModel<EntityHammerheadShark> {
 	private final AdvancedModelBox root;
@@ -28,87 +28,87 @@ public class ModelHammerheadShark extends AdvancedEntityModel<EntityHammerheadSh
 	private final AdvancedModelBox tailtopend;
 
 	public ModelHammerheadShark() {
-		textureWidth = 128;
-		textureHeight = 128;
+		texWidth = 128;
+		texHeight = 128;
 
 		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
 		main_body = new AdvancedModelBox(this);
-		main_body.setRotationPoint(0.0F, -6.0F, 0.0F);
+		main_body.setPos(0.0F, -6.0F, 0.0F);
 		root.addChild(main_body);
 		main_body.setTextureOffset(0, 0).addBox(-5.0F, -4.0F, -14.0F, 10.0F, 10.0F, 25.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
-		head.setRotationPoint(0.0F, -1.0F, -14.5F);
+		head.setPos(0.0F, -1.0F, -14.5F);
 		main_body.addChild(head);
 		head.setTextureOffset(40, 55).addBox(-4.0F, -1.0F, -6.5F, 8.0F, 7.0F, 7.0F, 0.0F, false);
 
 		head_hammer = new AdvancedModelBox(this);
-		head_hammer.setRotationPoint(0.0F, 1.5F, -7.0F);
+		head_hammer.setPos(0.0F, 1.5F, -7.0F);
 		head.addChild(head_hammer);
 		head_hammer.setTextureOffset(32, 36).addBox(-11.0F, -1.5F, -3.5F, 22.0F, 3.0F, 7.0F, 0.0F, false);
 
 		finL = new AdvancedModelBox(this);
-		finL.setRotationPoint(6.0F, 6.0F, -6.5F);
+		finL.setPos(6.0F, 6.0F, -6.5F);
 		main_body.addChild(finL);
 		setRotationAngle(finL, 0.0F, -0.2182F, 0.2618F);
 		finL.setTextureOffset(47, 47).addBox(-1.0F, -1.0F, -1.0F, 14.0F, 1.0F, 6.0F, 0.0F, false);
 
 		finR = new AdvancedModelBox(this);
-		finR.setRotationPoint(-6.0F, 6.0F, -6.5F);
+		finR.setPos(-6.0F, 6.0F, -6.5F);
 		main_body.addChild(finR);
 		setRotationAngle(finR, 0.0F, 0.2182F, -0.2618F);
 		finR.setTextureOffset(47, 47).addBox(-13.0F, -1.0F, -1.0F, 14.0F, 1.0F, 6.0F, 0.0F, true);
 
 		topfin = new AdvancedModelBox(this);
-		topfin.setRotationPoint(0.0F, -4.0F, -3.5F);
+		topfin.setPos(0.0F, -4.0F, -3.5F);
 		main_body.addChild(topfin);
 		setRotationAngle(topfin, -0.2182F, 0.0F, 0.0F);
 		topfin.setTextureOffset(0, 0).addBox(-1.0F, -13.0F, -2.0F, 2.0F, 14.0F, 7.0F, 0.0F, false);
 
 		tail1 = new AdvancedModelBox(this);
-		tail1.setRotationPoint(0.0F, -0.3F, 11.75F);
+		tail1.setPos(0.0F, -0.3F, 11.75F);
 		main_body.addChild(tail1);
 		tail1.setTextureOffset(0, 36).addBox(-4.0F, -2.5F, -0.75F, 8.0F, 8.0F, 15.0F, 0.0F, false);
 
 		tail_finL = new AdvancedModelBox(this);
-		tail_finL.setRotationPoint(3.0F, 5.3F, 5.75F);
+		tail_finL.setPos(3.0F, 5.3F, 5.75F);
 		tail1.addChild(tail_finL);
 		setRotationAngle(tail_finL, 0.0F, -0.48F, 1.0036F);
 		tail_finL.setTextureOffset(64, 55).addBox(0.0F, -1.0F, 0.0F, 8.0F, 1.0F, 4.0F, 0.0F, false);
 
 		tail_finR = new AdvancedModelBox(this);
-		tail_finR.setRotationPoint(-3.0F, 5.3F, 5.75F);
+		tail_finR.setPos(-3.0F, 5.3F, 5.75F);
 		tail1.addChild(tail_finR);
 		setRotationAngle(tail_finR, 0.0F, 0.48F, -1.0036F);
 		tail_finR.setTextureOffset(64, 55).addBox(-8.0F, -1.0F, 0.0F, 8.0F, 1.0F, 4.0F, 0.0F, true);
 
 		topfintail = new AdvancedModelBox(this);
-		topfintail.setRotationPoint(0.0F, -2.7F, 9.75F);
+		topfintail.setPos(0.0F, -2.7F, 9.75F);
 		tail1.addChild(topfintail);
 		setRotationAngle(topfintail, -0.2182F, 0.0F, 0.0F);
 		topfintail.setTextureOffset(0, 36).addBox(-0.5F, -4.0237F, -1.7836F, 1.0F, 5.0F, 4.0F, 0.0F, false);
 
 		tail2 = new AdvancedModelBox(this);
-		tail2.setRotationPoint(0.0F, 0.3F, 14.75F);
+		tail2.setPos(0.0F, 0.3F, 14.75F);
 		tail1.addChild(tail2);
 		tail2.setTextureOffset(46, 0).addBox(-2.5F, -2.0F, -0.5F, 5.0F, 6.0F, 14.0F, 0.0F, false);
 
 		tail3 = new AdvancedModelBox(this);
-		tail3.setRotationPoint(0.0F, 0.0F, 12.0F);
+		tail3.setPos(0.0F, 0.0F, 12.0F);
 		tail2.addChild(tail3);
 		
 
 		tailbottomend = new AdvancedModelBox(this);
-		tailbottomend.setRotationPoint(-0.5F, 1.5F, 0.0F);
+		tailbottomend.setPos(-0.5F, 1.5F, 0.0F);
 		tail3.addChild(tailbottomend);
 		setRotationAngle(tailbottomend, -2.7489F, 0.0F, 0.0F);
 		tailbottomend.setTextureOffset(17, 60).addBox(0.0F, -11.5F, -2.5F, 1.0F, 14.0F, 6.0F, 0.0F, false);
 
 		tailtopend = new AdvancedModelBox(this);
-		tailtopend.setRotationPoint(0.0F, -0.5F, 0.0F);
+		tailtopend.setPos(0.0F, -0.5F, 0.0F);
 		tail3.addChild(tailtopend);
 		setRotationAngle(tailtopend, -0.829F, 0.0F, 0.0F);
 		tailtopend.setTextureOffset(0, 60).addBox(-1.0F, -16.5F, -1.5F, 2.0F, 19.0F, 6.0F, 0.0F, false);
@@ -116,7 +116,7 @@ public class ModelHammerheadShark extends AdvancedEntityModel<EntityHammerheadSh
 	}
 
 	@Override
-	public void setRotationAngles(EntityHammerheadShark entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityHammerheadShark entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{main_body, tail1, tail2, tail3};
 		float swimSpeed = 0.4F;
@@ -136,7 +136,7 @@ public class ModelHammerheadShark extends AdvancedEntityModel<EntityHammerheadSh
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 

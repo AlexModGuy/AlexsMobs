@@ -1,0 +1,48 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:straddler\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.straddler.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.straddler.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "killed": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:straddler"
+        }
+      }
+    },
+    "killed_by": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:straddler"
+        }
+      }
+    },
+    "interact": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:straddler"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "killed",
+      "killed_by",
+      "interact"
+    ]
+  ]
+}

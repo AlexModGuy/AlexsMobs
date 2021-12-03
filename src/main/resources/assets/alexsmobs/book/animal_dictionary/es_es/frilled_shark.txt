@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los tiburones con volantes son fósiles vivientes letárgicos que se encuentran en los océanos profundos. Estos tiburones neutrales pasan la mayor parte del tiempo cazando peces gota y calamares, sus presas favoritas.
+Al perseguir calamares, los tiburones volantes aprovechan los niveles de poca luz de las profundidades marinas y los instintos naturales del calamar atrayéndolos con sus dientes muy reflectantes.
+Después de aterrizar algunas presas en sus mandíbulas, el tiburón usará sus dientes dentados especiales para infligir daño junto con el efecto Exsanguination, que agota rápidamente la salud. Ocasionalmente, estos dientes pueden caerse al atacar un calamar.
+<NEWLINE>
+Si uno obtiene algunos dientes de tiburón serrados, puede usarlos, junto con algunos otros elementos acuáticos, para crear el Escudo de las profundidades. Este escudo es un poco más duradero de lo normal, pero también causa el efecto Exanguinación al bloquear ataques cercanos.
+<NEWLINE>
+<NEWLINE>
+Los tiburones con volantes se pueden transportar colocándolos en un cubo de agua. Si un tiburón con volantes está en menos de 10 bloques de presión de agua, se decolorará e incluso más lento de lo normal.

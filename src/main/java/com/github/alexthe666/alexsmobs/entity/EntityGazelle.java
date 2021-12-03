@@ -8,37 +8,39 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHerdPanic {
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+
+public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic {
 
     private int animationTick;
     private Animation currentAnimation;
@@ -47,21 +49,21 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
     public static final Animation ANIMATION_EAT_GRASS = Animation.create(30);
     private boolean hasSpedUp = false;
     private int revengeCooldown = 0;
-    private static final DataParameter<Boolean> RUNNING = EntityDataManager.createKey(EntityGazelle.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(EntityGazelle.class, EntityDataSerializers.BOOLEAN);
 
-    protected EntityGazelle(EntityType type, World worldIn) {
+    protected EntityGazelle(EntityType type, Level worldIn) {
         super(type, worldIn);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AnimalAIHerdPanic(this, 1.1D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.fromItems(Items.WHEAT), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.of(Items.WHEAT), false));
         this.goalSelector.addGoal(5, new AnimalAIWanderRanged(this, 100, 1.0D, 25, 7));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 15.0F));
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 15.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -72,25 +74,25 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
         return AMSoundRegistry.GAZELLE_HURT;
     }
 
-    public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.gazelleSpawnRolls, this.getRNG(), spawnReasonIn) && super.canSpawn(worldIn, spawnReasonIn);
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.gazelleSpawnRolls, this.getRandom(), spawnReasonIn) && super.checkSpawnRules(worldIn, spawnReasonIn);
     }
 
-    public int getMaxSpawnedInChunk() {
+    public int getMaxSpawnClusterSize() {
         return 8;
     }
 
-    public boolean isMaxGroupSize(int sizeIn) {
+    public boolean isMaxGroupSizeReached(int sizeIn) {
         return false;
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
-        boolean prev = super.attackEntityFrom(source, amount);
+    public boolean hurt(DamageSource source, float amount) {
+        boolean prev = super.hurt(source, amount);
         if(prev){
             double range = 15;
-            int fleeTime = 100 + getRNG().nextInt(150);
+            int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
-            List<EntityGazelle> list = this.world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(range, range/2, range));
+            List<? extends EntityGazelle> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range/2, range));
             for(EntityGazelle gaz : list){
                 gaz.revengeCooldown = fleeTime;
 
@@ -100,21 +102,21 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(RUNNING, Boolean.valueOf(false));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(RUNNING, Boolean.valueOf(false));
     }
 
     public boolean isRunning() {
-        return this.dataManager.get(RUNNING).booleanValue();
+        return this.entityData.get(RUNNING).booleanValue();
     }
 
     public void setRunning(boolean running) {
-        this.dataManager.set(RUNNING, Boolean.valueOf(running));
+        this.entityData.set(RUNNING, Boolean.valueOf(running));
     }
 
-    public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem() == Items.WHEAT;
+    public boolean isFood(ItemStack stack) {
+        return stack.getItem() == Items.WHEAT || stack.getItem() == AMItemRegistry.ACACIA_BLOSSOM;
     }
 
     @Override
@@ -129,19 +131,19 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
 
     public void tick() {
         super.tick();
-        if(!world.isRemote && this.getAnimation() == NO_ANIMATION && getRNG().nextInt(70) == 0 && (this.getRevengeTarget() == null || this.getDistance(this.getRevengeTarget()) > 30)){
-            if(world.getBlockState(this.getPosition().down()).isIn(Blocks.GRASS_BLOCK) && getRNG().nextInt(3) == 0){
+        if(!level.isClientSide && this.getAnimation() == NO_ANIMATION && getRandom().nextInt(70) == 0 && (this.getLastHurtByMob() == null || this.distanceTo(this.getLastHurtByMob()) > 30)){
+            if(level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0){
                 this.setAnimation(ANIMATION_EAT_GRASS);
             }else{
-                this.setAnimation(getRNG().nextBoolean()  ? ANIMATION_FLICK_EARS : ANIMATION_FLICK_TAIL);
+                this.setAnimation(getRandom().nextBoolean()  ? ANIMATION_FLICK_EARS : ANIMATION_FLICK_TAIL);
             }
         }
-        if(!this.world.isRemote){
+        if(!this.level.isClientSide){
             if(revengeCooldown >= 0){
                 revengeCooldown--;
             }
-            if(revengeCooldown == 0 && this.getRevengeTarget() != null){
-                this.setRevengeTarget(null);
+            if(revengeCooldown == 0 && this.getLastHurtByMob() != null){
+                this.setLastHurtByMob(null);
             }
             this.setRunning(revengeCooldown > 0);
             if(isRunning() && !hasSpedUp){
@@ -158,13 +160,13 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
         compound.putBoolean("GazelleRunning", this.isRunning());
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
         this.setRunning(compound.getBoolean("GazelleRunning"));
     }
 
@@ -183,13 +185,13 @@ public class EntityGazelle extends AnimalEntity implements IAnimatedEntity, IHer
         return new Animation[]{ANIMATION_FLICK_EARS, ANIMATION_FLICK_TAIL, ANIMATION_EAT_GRASS};
     }
 
-    public static AttributeModifierMap.MutableAttribute bakeAttributes() {
-        return MonsterEntity.func_234295_eP_().createMutableAttribute(Attributes.MAX_HEALTH, 16.0D).createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F);
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return AMEntityRegistry.GAZELLE.create(p_241840_1_);
     }
 

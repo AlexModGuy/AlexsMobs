@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B",
+    "K",
+    "B"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bread"
+    },
+    "K": {
+      "item": "alexsmobs:cooked_kangaroo_meat"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:kangaroo_burger",
+    "count": 1
+  }
+}

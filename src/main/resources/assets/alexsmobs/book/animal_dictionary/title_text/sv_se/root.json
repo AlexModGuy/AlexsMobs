@@ -184,6 +184,20 @@
       "x": 90,
       "y": 110,
       "page": 2
+    },
+    {
+      "linked_page": "elephant.json",
+      "text": "Elefant",
+      "x": 90,
+      "y": 135,
+      "page": 2
+    },
+    {
+      "linked_page": "soul_vulture.json",
+      "text": "Själgam",
+      "x": 90,
+      "y": 160,
+      "page": 2
     }
   ],
   "images": [

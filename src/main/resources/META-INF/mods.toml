@@ -1,22 +1,28 @@
 modLoader="javafml" #mandatory
-loaderVersion="[32,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license="GNU LESSER GENERAL PUBLIC LICENSE"
-issueTrackerURL="https://github.com/Alex-the-666/Rats/issues" #optional
+issueTrackerURL="https://github.com/Alex-the-666/AlexsMobs/issues" #optional
 [[mods]] #mandatory
 modId="alexsmobs" #mandatory
-version="1.3.0" #mandatory
+version="1.14.0" #mandatory
 displayName="Alex's Mobs" #mandatory
 displayURL="https://www.curseforge.com/minecraft/mc-mods/alexsmobs" #optional
 authors="Alexthe666" #optional
 description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
 [[dependencies.alexsmobs]] #optional
-                   # the modid of the dependency
-                   modId="citadel" #mandatory
-                   # Does this dependency have to exist - if not, ordering below must be specified
-                   mandatory=true #mandatory
-                   # The version range of the dependency
-                   versionRange="[1.5.3,)" #mandatory
-                   # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
-                   ordering="AFTER"
-                   # Side this dependency is applied on - BOTH, CLIENT or SERVER
-                   side="BOTH"
+    # the modid of the dependency
+    modId="citadel" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[1.9.5,)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="AFTER"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+[[dependencies.alexsmobs]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36.0.42,)"
+    ordering="NONE"
+    side="BOTH"

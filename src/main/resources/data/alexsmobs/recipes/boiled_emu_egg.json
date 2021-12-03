@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "alexsmobs:emu_egg"
+  },
+  "result": "alexsmobs:boiled_emu_egg",
+  "experience": 0.15,
+  "cookingtime": 200
+}

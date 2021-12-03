@@ -1,0 +1,27 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:straddle_saddle"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.straddle_saddle.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.straddle_saddle.desc"
+        },
+        "frame": "challenge"
+    },
+    "parent": "alexsmobs:alexsmobs/straddler",
+    "criteria": {
+        "straddleboard": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:straddle_saddle"]
+                    }
+                ]
+            }
+        }
+    }
+}

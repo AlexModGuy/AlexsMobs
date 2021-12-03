@@ -8,5 +8,6 @@ They are also cannibalistic, and will attack any other weakened Komodo Dragon, e
 Komodo Dragons have a fondness for Rotten Flesh, and will eat entire stacks of them out of players. If they are fed multiple entire stacks of Rotten Flesh, they can become tamed to a player.
 Tamed Komodos are just as savage as wild Komodos, yet they can be used a formidable mount that is surprisingly quick.
 <NEWLINE>
-Komodo Dragons can also occasionally drip their noxious saliva. This item can be bottled, and then brewed with a Cave Centipede leg in order to make Poisonous Essence.
-This, in turn, can be brewed with a Rattlesnake Rattle in order to create a Potion of Poison Resistance.
+Komodo Dragons can also occasionally drip their noxious saliva. If brewed with a Poison Resistance potion, it can extend the duration.
+This item can be bottled, and then brewed with a Cave Centipede leg to create an alternative to Poisonous Essence in a pinch as well.
+Three Komodo Dragon Spit can also be used to create a slimeball.

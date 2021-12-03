@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Pájaro Solar es una grulla mítica que se puede encontrar sobrevolando las Montañas más altas. Completamente pasivo, el Pájaro Solar
+puede conceder su bendición a cualquier jugador que pueda alcanzarlo. Si es bendecido por un Pájaro Solar, puede encontrarlo más fácil volar con unos élytros,
+y puede flotar tranquilamente hacia arriba y abajo a una velocidad acelerada, precisamente como el Pájaro Solar. Sin embargo, si el Pájaro Solar es atacado, una maldición se aliará,
+causando que el atacante caiga rápidamente y a menudo fatalmente para el suelo.
+ <NEWLINE>
+Siendo criaturas sagradas, Los Pájaros Solares hacen que los no muertos profanos se enciendan instantáneamente en llamas cuando están cerca, como si ellos estubieran bajo el poderoso sol.
+Los Pájaros Solares no pueden ser heridos por cualquier tipo de llama, calor o lava, debido a que son naturalmente encarnaciones de llamas.

@@ -1,23 +1,23 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpentPart;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelBoneSerpentBody extends AdvancedEntityModel<EntityBoneSerpentPart> {
     private final AdvancedModelBox root;
     private final AdvancedModelBox middle_section;
 
     public ModelBoneSerpentBody() {
-        textureWidth = 128;
-        textureHeight = 128;
+        texWidth = 128;
+        texHeight = 128;
         root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+        root.setPos(0.0F, 24.0F, 0.0F);
         middle_section = new AdvancedModelBox(this);
-        middle_section.setRotationPoint(0.0F, -7.75F, 0.0F);
+        middle_section.setPos(0.0F, -7.75F, 0.0F);
         root.addChild(middle_section);
         middle_section.setTextureOffset(2, 50).addBox(-2.0F, -9.25F, -8.0F, 4.0F, 2.0F, 16.0F, 0.0F, false);
         middle_section.setTextureOffset(0, 0).addBox(-9.0F, -7.25F, -8.0F, 18.0F, 15.0F, 16.0F, 0.0F, false);
@@ -25,7 +25,7 @@ public class ModelBoneSerpentBody extends AdvancedEntityModel<EntityBoneSerpentP
     }
 
     @Override
-    public void setRotationAngles(EntityBoneSerpentPart entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityBoneSerpentPart entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
         this.middle_section.rotateAngleX = headPitch * ((float)Math.PI / 180F);
         this.middle_section.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
@@ -39,7 +39,7 @@ public class ModelBoneSerpentBody extends AdvancedEntityModel<EntityBoneSerpentP
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 

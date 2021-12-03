@@ -1,14 +1,14 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.alexsmobs.entity.EntityShoebill;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
     private final AdvancedModelBox root;
@@ -28,27 +28,27 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
     public ModelAnimator animator;
 
     public ModelShoebill() {
-        textureWidth = 64;
-        textureHeight = 64;
+        texWidth = 64;
+        texHeight = 64;
 
         root = new AdvancedModelBox(this);
-        root.setRotationPoint(0.0F, 24.0F, 0.0F);
+        root.setPos(0.0F, 24.0F, 0.0F);
 
 
         body = new AdvancedModelBox(this);
-        body.setRotationPoint(0.0F, -14.0F, 0.0F);
+        body.setPos(0.0F, -14.0F, 0.0F);
         root.addChild(body);
         setRotationAngle(body, 0.9599F, 0.0F, 0.0F);
         body.setTextureOffset(0, 15).addBox(-2.5F, -5.0F, -2.0F, 5.0F, 10.0F, 5.0F, 0.0F, false);
 
         tail = new AdvancedModelBox(this);
-        tail.setRotationPoint(0.0F, 5.0F, 2.5F);
+        tail.setPos(0.0F, 5.0F, 2.5F);
         body.addChild(tail);
         setRotationAngle(tail, -0.3054F, 0.0F, 0.0F);
         tail.setTextureOffset(0, 31).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 5.0F, 3.0F, 0.0F, false);
 
         wing_left_pivot = new AdvancedModelBox(this);
-        wing_left_pivot.setRotationPoint(2.5F, -4.0F, 1.0F);
+        wing_left_pivot.setPos(2.5F, -4.0F, 1.0F);
         body.addChild(wing_left_pivot);
 
 
@@ -57,7 +57,7 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
         wing_left.setTextureOffset(21, 21).addBox(0.0F, 0.0F, -4.0F, 1.0F, 12.0F, 6.0F, 0.0F, false);
 
         wing_right_pivot = new AdvancedModelBox(this);
-        wing_right_pivot.setRotationPoint(-2.5F, -4.0F, 1.0F);
+        wing_right_pivot.setPos(-2.5F, -4.0F, 1.0F);
         body.addChild(wing_right_pivot);
 
         wing_right = new AdvancedModelBox(this);
@@ -65,41 +65,41 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
         wing_right.setTextureOffset(21, 21).addBox(-1.0F, 0.0F, -4.0F, 1.0F, 12.0F, 6.0F, 0.0F, true);
 
         leg_left = new AdvancedModelBox(this);
-        leg_left.setRotationPoint(2.0F, 2.3F, -2.0F);
+        leg_left.setPos(2.0F, 2.3F, -2.0F);
         body.addChild(leg_left);
         setRotationAngle(leg_left, 0.6109F, 0.0F, 0.0F);
         leg_left.setTextureOffset(0, 0).addBox(-2.0F, -3.0F, -11.0F, 3.0F, 3.0F, 11.0F, 0.0F, false);
 
         leg_right = new AdvancedModelBox(this);
-        leg_right.setRotationPoint(-2.0F, 2.3F, -2.0F);
+        leg_right.setPos(-2.0F, 2.3F, -2.0F);
         body.addChild(leg_right);
         setRotationAngle(leg_right, 0.6109F, 0.0F, 0.0F);
         leg_right.setTextureOffset(0, 0).addBox(-1.0F, -3.0F, -11.0F, 3.0F, 3.0F, 11.0F, 0.0F, true);
 
         neck = new AdvancedModelBox(this);
-        neck.setRotationPoint(0.0F, -4.8F, 1.0F);
+        neck.setPos(0.0F, -4.8F, 1.0F);
         body.addChild(neck);
         setRotationAngle(neck, -0.7418F, 0.0F, 0.0F);
         neck.setTextureOffset(35, 0).addBox(-1.5F, -4.0F, -1.5F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
-        head.setRotationPoint(0.0F, -3.8F, -0.3F);
+        head.setPos(0.0F, -3.8F, -0.3F);
         neck.addChild(head);
         head.setTextureOffset(25, 11).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
 
         crest = new AdvancedModelBox(this);
-        crest.setRotationPoint(0.0F, -2.0F, 2.0F);
+        crest.setPos(0.0F, -2.0F, 2.0F);
         head.addChild(crest);
         crest.setTextureOffset(0, 0).addBox(0.0F, -2.0F, -2.0F, 0.0F, 4.0F, 4.0F, 0.0F, false);
 
         beak = new AdvancedModelBox(this);
-        beak.setRotationPoint(0.0F, -2.9F, -2.0F);
+        beak.setPos(0.0F, -2.9F, -2.0F);
         head.addChild(beak);
         setRotationAngle(beak, 0.3491F, 0.0F, 0.0F);
         beak.setTextureOffset(18, 0).addBox(-1.5F, 0.0F, -5.0F, 3.0F, 2.0F, 5.0F, 0.0F, false);
 
         jaw = new AdvancedModelBox(this);
-        jaw.setRotationPoint(0.0F, 2.0F, 0.0F);
+        jaw.setPos(0.0F, 2.0F, 0.0F);
         beak.addChild(jaw);
         setRotationAngle(jaw, -0.1745F, 0.0F, 0.0F);
         jaw.setTextureOffset(41, 36).addBox(-1.5F, 0.0F, -5.0F, 3.0F, 1.0F, 5.0F, -0.1F, false);
@@ -179,7 +179,7 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
     }
 
     @Override
-    public Iterable<ModelRenderer> getParts() {
+    public Iterable<BasicModelPart> parts() {
         return ImmutableList.of(root);
     }
 
@@ -189,7 +189,7 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
     }
 
     @Override
-    public void setRotationAngles(EntityShoebill entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(EntityShoebill entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         float walkSpeed = 0.7F;
         float walkDegree = 0.4F;
@@ -197,7 +197,7 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
         float idleDegree = 0.2F;
         float flapSpeed = 0.4F;
         float flapDegree = 0.2F;
-        float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+        float partialTick = Minecraft.getInstance().getFrameTime();
         float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
         float scaledLimbSwing = Math.min(1.0F, limbSwingAmount * 1.6F);
         float runProgress = Math.max(5F * scaledLimbSwing - flyProgress, 0);

@@ -1,0 +1,7 @@
+{
+  "__comment": "included since some packs have acacia blossoms disabled.",
+  "replace": false,
+  "values": [
+    "alexsmobs:acacia_blossom"
+  ]
+}

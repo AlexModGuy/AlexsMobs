@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "alexsmobs:item/void_worm_beak"
+  }
+}

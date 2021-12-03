@@ -1,31 +1,35 @@
 package com.github.alexthe666.alexsmobs;
 
+import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
-import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
-import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
-import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
+import com.github.alexthe666.alexsmobs.message.*;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.fmllegacy.network.NetworkDirection;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,7 +41,7 @@ public class AlexsMobs {
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
-    public static ItemGroup TAB = new AMItemGroup();
+    public static CreativeModeTab TAB = new AMItemGroup();
     private static int packetsRegistered;
 
     static {
@@ -56,28 +60,36 @@ public class AlexsMobs {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModConfigEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticleEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupEntityModelLayers);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
-        modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.BIOME_SPEC, "alexsmobs-biomes.toml");
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
         MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoadFromJSON);
     }
 
+    private void setupEntityModelLayers(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+        AMModelLayers.register(event);
+    }
+
     @SubscribeEvent
-    public void onModConfigEvent(final ModConfig.ModConfigEvent event) {
+    public void onModConfigEvent(final ModConfigEvent event) {
         final ModConfig config = event.getConfig();
         // Rebake the configs when they change
         if (config.getSpec() == ConfigHolder.COMMON_SPEC) {
             AMConfig.bake(config);
-        } else if (config.getSpec() == ConfigHolder.BIOME_SPEC) {
-            BiomeConfig.bake(config);
         }
+        BiomeConfig.init();
     }
     @SubscribeEvent
     public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
         AMWorldRegistry.onBiomesLoad(event);
+    }
+
+    private void setupParticleEvent(ParticleFactoryRegisterEvent event) {
+        PROXY.setupParticles();
     }
 
     public static <MSG> void sendMSGToServer(MSG message) {
@@ -85,14 +97,14 @@ public class AlexsMobs {
     }
 
     public static <MSG> void sendMSGToAll(MSG message) {
-        for (ServerPlayerEntity player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
+        for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
             sendNonLocal(message, player);
         }
     }
 
-    public static <MSG> void sendNonLocal(MSG msg, ServerPlayerEntity player) {
-        if (player.server.isDedicatedServer() || !player.getName().equals(player.server.getServerOwner())) {
-            NETWORK_WRAPPER.sendTo(msg, player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
+    public static <MSG> void sendNonLocal(MSG msg, ServerPlayer player) {
+        if (player.server.isDedicatedServer() || !player.getName().equals(player.server.getSingleplayerName())) {
+            NETWORK_WRAPPER.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
         }
     }
 
@@ -100,7 +112,18 @@ public class AlexsMobs {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMosquitoMountPlayer.class, MessageMosquitoMountPlayer::write, MessageMosquitoMountPlayer::read, MessageMosquitoMountPlayer.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMosquitoDismount.class, MessageMosquitoDismount::write, MessageMosquitoDismount::read, MessageMosquitoDismount.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageHurtMultipart.class, MessageHurtMultipart::write, MessageHurtMultipart::read, MessageHurtMultipart.Handler::handle);
-
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCrowMountPlayer.class, MessageCrowMountPlayer::write, MessageCrowMountPlayer::read, MessageCrowMountPlayer.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCrowDismount.class, MessageCrowDismount::write, MessageCrowDismount::read, MessageCrowDismount.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMungusBiomeChange.class, MessageMungusBiomeChange::write, MessageMungusBiomeChange::read, MessageMungusBiomeChange.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageKangarooInventorySync.class, MessageKangarooInventorySync::write, MessageKangarooInventorySync::read, MessageKangarooInventorySync.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageKangarooEat.class, MessageKangarooEat::write, MessageKangarooEat::read, MessageKangarooEat.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateCapsid.class, MessageUpdateCapsid::write, MessageUpdateCapsid::read, MessageUpdateCapsid.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSwingArm.class, MessageSwingArm::write, MessageSwingArm::read, MessageSwingArm.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateEagleControls.class, MessageUpdateEagleControls::write, MessageUpdateEagleControls::read, MessageUpdateEagleControls.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSyncEntityPos.class, MessageSyncEntityPos::write, MessageSyncEntityPos::read, MessageSyncEntityPos.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageTarantulaHawkSting.class, MessageTarantulaHawkSting::write, MessageTarantulaHawkSting::read, MessageTarantulaHawkSting.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageStartDancing.class, MessageStartDancing::write, MessageStartDancing::read, MessageStartDancing.Handler::handle);
+        AMAdvancementTriggerRegistry.init();
     }
 
     private void setupClient(FMLClientSetupEvent event) {

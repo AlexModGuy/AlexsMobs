@@ -1,27 +1,36 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.level.Level;
 
-public class DirectPathNavigator extends GroundPathNavigator {
+public class DirectPathNavigator extends GroundPathNavigation {
 
-    private MobEntity mob;
+    private Mob mob;
+    private float yMobOffset = 0;
 
-    public DirectPathNavigator(MobEntity mob, World world) {
-        super(mob, world);
-        this.mob = mob;
+    public DirectPathNavigator(Mob mob, Level world) {
+        this(mob, world, 0);
     }
 
-    public boolean tryMoveToXYZ(double x, double y, double z, double speedIn) {
-        mob.getMoveHelper().setMoveTo(x, y, z, speedIn);
+    public DirectPathNavigator(Mob mob, Level world, float yMobOffset) {
+        super(mob, world);
+        this.mob = mob;
+        this.yMobOffset = yMobOffset;
+    }
+
+    public void tick() {
+        ++this.tick;
+    }
+
+    public boolean moveTo(double x, double y, double z, double speedIn) {
+        mob.getMoveControl().setWantedPosition(x, y, z, speedIn);
         return true;
     }
 
-    public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
-        mob.getMoveHelper().setMoveTo(entityIn.getPosX(), entityIn.getPosY(), entityIn.getPosZ(), speedIn);
+    public boolean moveTo(Entity entityIn, double speedIn) {
+        mob.getMoveControl().setWantedPosition(entityIn.getX(), entityIn.getY() + yMobOffset, entityIn.getZ(), speedIn);
         return true;
     }
 

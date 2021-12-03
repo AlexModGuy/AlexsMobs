@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+As Águias-de-Cabeça-Branca são grandes aves de rapina neutras encontradas em biomas montanhosos arborizados. Elas são visitantes frequentes de lagos próximos, onde tentarão mergulhar e pegar salmões na supercie da água.
+Eles também gostam de atacar coelhos da mesma maneira. Ao atacar criaturas maiores, a águia americana prefere voar em circulos, cortar com suas garras e repetir.
+<NEWLINE>
+Devido ao seu amor pelos peixes, as águias americanas podem ser atraídas e domesticadas com óleo de peixe. Uma águia careca domada pode ser comandada para ficar, seguir e vagar, como muitos outros animais, mas eles também podem ser usados para falcoaria.
+Para começar com a falcoaria, é necessário criar a luva de falcoaria. Quando segurada pela mão principal ou pela mão secundaria, esta luva pode ser usada para pegar águias e segurá-las na mão. Para lançar e águia da mão, simplesmente dê um soco.
+Se for lançada olhando para uma multidão, a águia voará para a multidão, atacará e, se ela sobreviver, retornará para a mão. Se nenhum criatura for selecionado, a águia simplesmente pulará da luva.
+<NEWLINE>
+Para melhorar as habilidades de falcoaria, um Capuz de Falcoaria pode ser confeccionado. O capuz pode ser colocado em uma águia, e uma águia com capuz seguirá o comando direto de seu dono ao ser lançada de uma luva.
+Isso significa que a águia pode ser efetivamente pilotada por seu dono. Se a águia voar a mais de 150 quarteirões de seu dono, ela tentará retornar. Para parar de controlar a águia, o dono também pode agachar-se.
+O capuz pode ser removido da águia com uma tesoura.
+<NEWLINE>
+As águias costumam ser feridas por suas presas durante a caça. Uma águia domesticada pode ser curada com qualquer peixe. As Águias-de-Cabeça-Branca podem ser reproduzidas com carne podre.

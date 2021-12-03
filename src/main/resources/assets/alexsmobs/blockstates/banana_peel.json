@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "alexsmobs:block/banana_peel" },
+      { "model": "alexsmobs:block/banana_peel", "y" : 90 },
+      { "model": "alexsmobs:block/banana_peel", "y" : 180 },
+      { "model": "alexsmobs:block/banana_peel", "y" : 270 }
+    ]
+  }
+}

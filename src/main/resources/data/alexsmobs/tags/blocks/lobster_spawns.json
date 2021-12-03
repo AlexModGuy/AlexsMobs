@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#minecraft:sand",
-    "minecraft:gravel",
+    "#forge:gravel",
     "minecraft:stone",
     "minecraft:water"
   ]

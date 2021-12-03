@@ -1,15 +1,8 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.sounds.SoundEvent;
 
 public class AMArmorMaterial extends CustomArmorMaterial {
 
@@ -21,7 +14,12 @@ public class AMArmorMaterial extends CustomArmorMaterial {
         this.maxDamageFactor = durability;
     }
 
-    public int getDurability(EquipmentSlotType slotIn) {
+    public AMArmorMaterial(String name, int durability, int[] damageReduction, int encantability, SoundEvent sound, float toughness, float knockbackResist) {
+        super(name, durability, damageReduction, encantability, sound, toughness, knockbackResist);
+        this.maxDamageFactor = durability;
+    }
+
+    public int getDurabilityForSlot(EquipmentSlot slotIn) {
         return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
     }
 }

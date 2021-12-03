@@ -3,15 +3,15 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7
 // Paste this class into your mod and generate all required imports
 
 
-import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
 import com.github.alexthe666.alexsmobs.entity.EntityEndergrade;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 	private final AdvancedModelBox root;
@@ -28,104 +28,104 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 	private final AdvancedModelBox tail;
 
 	public ModelEndergrade() {
-		textureWidth = 64;
-		textureHeight = 64;
+		texWidth = 64;
+		texHeight = 64;
 
 		root = new AdvancedModelBox(this);
-		root.setRotationPoint(0.0F, 24.0F, 0.0F);
+		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
 		bodymain = new AdvancedModelBox(this);
-		bodymain.setRotationPoint(0.0F, -9.0F, -1.0F);
+		bodymain.setPos(0.0F, -9.0F, -1.0F);
 		root.addChild(bodymain);
 		bodymain.setTextureOffset(0, 0).addBox(-4.5F, -3.5F, 0.0F, 9.0F, 9.0F, 10.0F, 0.0F, false);
 
 		legbackL = new AdvancedModelBox(this);
-		legbackL.setRotationPoint(3.5F, 3.5F, 7.0F);
+		legbackL.setPos(3.5F, 3.5F, 7.0F);
 		bodymain.addChild(legbackL);
 		legbackL.setTextureOffset(11, 45).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
 		legbackR = new AdvancedModelBox(this);
-		legbackR.setRotationPoint(-3.5F, 3.5F, 7.0F);
+		legbackR.setPos(-3.5F, 3.5F, 7.0F);
 		bodymain.addChild(legbackR);
 		legbackR.setTextureOffset(11, 45).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
 		legmidL = new AdvancedModelBox(this);
-		legmidL.setRotationPoint(3.5F, 3.5F, 1.0F);
+		legmidL.setPos(3.5F, 3.5F, 1.0F);
 		bodymain.addChild(legmidL);
 		legmidL.setTextureOffset(39, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
 		legmidR = new AdvancedModelBox(this);
-		legmidR.setRotationPoint(-3.5F, 3.5F, 1.0F);
+		legmidR.setPos(-3.5F, 3.5F, 1.0F);
 		bodymain.addChild(legmidR);
 		legmidR.setTextureOffset(39, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
 		bodyfront = new AdvancedModelBox(this);
-		bodyfront.setRotationPoint(0.0F, 0.5F, 0.0F);
+		bodyfront.setPos(0.0F, 0.5F, 0.0F);
 		bodymain.addChild(bodyfront);
 		bodyfront.setTextureOffset(25, 29).addBox(-4.0F, -3.5F, -8.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
 		head = new AdvancedModelBox(this);
-		head.setRotationPoint(0.0F, -0.5F, -8.0F);
+		head.setPos(0.0F, -0.5F, -8.0F);
 		bodyfront.addChild(head);
 		head.setTextureOffset(35, 16).addBox(-3.0F, -2.0F, -4.0F, 6.0F, 6.0F, 4.0F, 0.0F, false);
 
 		mouth = new AdvancedModelBox(this);
-		mouth.setRotationPoint(0.0F, 1.5F, -4.5F);
+		mouth.setPos(0.0F, 1.5F, -4.5F);
 		head.addChild(mouth);
 		mouth.setTextureOffset(26, 46).addBox(-1.5F, -1.5F, -2.5F, 3.0F, 3.0F, 3.0F, 0.0F, false);
 
 		legfrontL = new AdvancedModelBox(this);
-		legfrontL.setRotationPoint(3.5F, 3.0F, -5.0F);
+		legfrontL.setPos(3.5F, 3.0F, -5.0F);
 		bodyfront.addChild(legfrontL);
 		legfrontL.setTextureOffset(0, 37).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
 		legfrontR = new AdvancedModelBox(this);
-		legfrontR.setRotationPoint(-3.5F, 3.0F, -5.0F);
+		legfrontR.setPos(-3.5F, 3.0F, -5.0F);
 		bodyfront.addChild(legfrontR);
 		legfrontR.setTextureOffset(0, 37).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
 		tail = new AdvancedModelBox(this);
-		tail.setRotationPoint(0.5F, -1.0F, 9.9F);
+		tail.setPos(0.5F, -1.0F, 9.9F);
 		bodymain.addChild(tail);
 		setRotationAngle(tail, -0.1745F, 0.0F, 0.0F);
 		tail.setTextureOffset(0, 20).addBox(-4.0F, -1.5F, -2.4F, 7.0F, 7.0F, 9.0F, 0.0F, false);
 		this.updateDefaultPose();
 	}
 
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-		if (this.isChild) {
+	public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		if (this.young) {
 			float f = 1.75F;
 			head.setScale(f, f, f);
 			head.setShouldScaleChildren(true);
-			matrixStackIn.push();
+			matrixStackIn.pushPose();
 			matrixStackIn.scale(0.35F, 0.35F, 0.35F);
 			matrixStackIn.translate(0.0D, 2.75D, 0.125D);
-			getParts().forEach((p_228292_8_) -> {
+			parts().forEach((p_228292_8_) -> {
 				p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 			});
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 			head.setScale(1, 1, 1);
 		} else {
-			matrixStackIn.push();
-			getParts().forEach((p_228290_8_) -> {
+			matrixStackIn.pushPose();
+			parts().forEach((p_228290_8_) -> {
 				p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 			});
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 		}
 
 	}
 
 
 	@Override
-	public void setRotationAngles(EntityEndergrade entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(EntityEndergrade entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
 		AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{bodyfront, bodymain, tail};
 		AdvancedModelBox[] legPartsRight = new AdvancedModelBox[]{legfrontR, legmidR, legbackR};
 		AdvancedModelBox[] legPartsLeft = new AdvancedModelBox[]{legfrontL, legmidL, legbackL};
 		float walkSpeed = 1.7F;
 		float walkDegree = 0.7F;
-		float partialTick = Minecraft.getInstance().getRenderPartialTicks();
+		float partialTick = Minecraft.getInstance().getFrameTime();
 		float birdPitch = entityIn.prevTartigradePitch + (entityIn.tartigradePitch - entityIn.prevTartigradePitch) * partialTick;
 		float biteProgress= entityIn.prevBiteProgress + (entityIn.biteProgress - entityIn.prevBiteProgress) * partialTick;
 		this.mouth.setScale(1, 1, 1 + biteProgress * 0.4F);
@@ -140,7 +140,7 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 	}
 
 	@Override
-	public Iterable<ModelRenderer> getParts() {
+	public Iterable<BasicModelPart> parts() {
 		return ImmutableList.of(root);
 	}
 

@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Os corvos são pássaros barulhentos encontrados em florestas e planícies. Essas criaturas são consideradas pragas, pois podem frequentemente ser encontradas cercando campos e prejudicando o crescimento das plantações. Uma simples abóbora entalhada é suficiente para espantar qualquer corvo de um pequeno campo.
+Esses pássaros geralmente se espalham e voam para os céus sempre que alguém se aproxima. Os corvos pegam qualquer alimento que caiba em seus bicos e devoram.
+<NEWLINE>
+Apesar de sua aparência sombria, os corvos podem ser domesticados jogando-lhes algumas sementes de abóbora. Corvos domesticados são criaturas extremamente úteis com uma variedade de usos diferentes. Você pode fazê-los sentar, vagar, seguir ou coletar itens.
+Qualquer corvo domesticado sentado em um bloco de feno lentamente recuperará a saúde. Eles também voarão ao redor deste bloco de feno mais tarde, quando estiverem prontos para coletar itens. Quando um corvo pega um item estando configurado para coletar itens, ele irá procurar por um recipiente, como um baú ou fornalha, com uma moldura de item que corresponda ao item segurado.
+<NEWLINE>
+Se o item na moldura for igual ao que está no bico do corvo, ele o depositará desse lado no recipiente. Quando configurados para seguir, os corvos voarão ao redor de seu dono e, depois de um tempo, tentarão se sentar em seus ombros.
+Os corvos podem ser removidos dos ombros ao esgueirar-se. Quando os Corvos defendem seu dono, eles bicam seu atacante, causando dano baixo o suficiente para não tornar o monstro agressivo. No entanto, os corvos causam dano extra em alvos mortos-vivos.

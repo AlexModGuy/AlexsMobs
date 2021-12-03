@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "alexsmobs:moose_ribs"
+  },
+  "result": "alexsmobs:cooked_moose_ribs",
+  "experience": 0.15,
+  "cookingtime": 200
+}

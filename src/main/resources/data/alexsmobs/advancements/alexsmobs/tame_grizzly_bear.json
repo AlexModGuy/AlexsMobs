@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:salmon"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tame_grizzly_bear.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.tame_grizzly_bear.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/grizzly_bear",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:grizzly_bear"
+        }
+      }
+    }
+  }
+}

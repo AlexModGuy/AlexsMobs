@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:cachalot_whale\", DisplayMobFlags:99}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.save_cachalot_whale.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.save_cachalot_whale.desc"
+    },
+    "frame": "challenge"
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "ambergris": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["alexsmobs:ambergris"]
+          }
+        ]
+      }
+    }
+  }
+}

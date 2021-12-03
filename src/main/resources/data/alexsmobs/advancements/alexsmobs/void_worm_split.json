@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:void_worm_eye"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.void_worm_split.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.void_worm_split.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/void_worm_summon",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:void_worm_split"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ]
+}

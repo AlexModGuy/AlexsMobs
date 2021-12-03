@@ -1,33 +1,320 @@
 package com.github.alexthe666.alexsmobs.config;
 
+import com.github.alexthe666.citadel.config.biome.BiomeEntryType;
+import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
+
 public class DefaultBiomes {
-    public static final String[] GRIZZLY_BEAR = new String[] { "&#overworld+|@forest+|#forest" };
-    public static final String[] ROADRUNNER = new String[] { "&#overworld+|@desert" };
-    public static final String[] BONE_SERPENT = new String[] { "|#nether" };
-    public static final String[] GAZELLE = new String[] { "&#overworld+|@savanna+|#savanna" };
-    public static final String[] CROCODILE = new String[] { "&#overworld+|#swamp+|#river+!#cold"};
-    public static final String[] FLY = new String[] { "&#overworld+!@ocean+!#ocean" };
-    public static final String[] HUMMINGBIRD = new String[] {"&#overworld+|minecraft:flower_forest+|minecraft:sunflower_plains+|#jungle" };
-    public static final String[] ORCA = new String[] { "&#overworld+|#ocean+&#cold" };
-    public static final String[] SUNBIRD = new String[] { "&#overworld+|#mountain" };
-    public static final String[] GORILLA = new String[] {"&#overworld+|#jungle+!minecraft:bamboo_jungle+!minecraft:bamboo_jungle_hills" };
-    public static final String[] CRIMSON_MOSQUITO = new String[] {"|minecraft:crimson_forest"};
-    public static final String[] RATTLESNAKE = new String[] { "&#overworld+|#mesa", "&#overworld+|@desert" };
-    public static final String[] ENDERGRADE = new String[] {"&#end+!minecraft:the_end" };
-    public static final String[] HAMMERHEAD = new String[] { "&#overworld+|#ocean+&#hot" };
-    public static final String[] LOBSTER = new String[] { "&#overworld+|#beach" };
-    public static final String[] KOMODO_DRAGON = new String[] { "&#overworld+|#mesa" };
-    public static final String[] CAPUCHIN_MONKEY = new String[] {"&#overworld+|#jungle+!minecraft:bamboo_jungle+!minecraft:bamboo_jungle_hills" };
-    public static final String[] CENTIPEDE = new String[] { "&#overworld+!#ocean+!#mushroom" };
-    public static final String[] WARPED_TOAD = new String[] {"|minecraft:warped_forest"};
-    public static final String[] MOOSE = new String[] { "&#overworld+|#snowy+&#wasteland", "&#overworld+|#snowy+&#forest"};
-    public static final String[] MIMICUBE = new String[] {"&#end+!minecraft:the_end" };
-    public static final String[] RACCOON = new String[] { "&#overworld+!#savanna+!#@savanna+|@forest+|#forest+|@plains+|#plains" };
-    public static final String[] BLOBFISH = new String[] { "&#overworld+|minecraft:deep_ocean+|minecraft:deep_cold_ocean+|minecraft:deep_frozen_ocean+|minecraft:deep_lukewarm_ocean" };
-    public static final String[] SEAL = new String[] { "&#overworld+|#beach+", "&#overworld+|#ocean+&#snowy"};
-    public static final String[] COCKROACH = new String[] { "&#overworld+!#ocean+!#mushroom" };
-    public static final String[] SHOEBILL = new String[] { "&#overworld+|#swamp+"};
-    public static final String[] ELEPHANT = new String[] { "&#overworld+|@savanna+|#savanna" };
-    public static final String[] SOUL_VULTURE = new String[] {"|minecraft:soul_sand_valley"};
+
+    public static final SpawnBiomeData EMPTY = new SpawnBiomeData();
+
+    public static final SpawnBiomeData GRIZZLY_BEAR = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "forest", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:jungle_egde", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:modified_jungle_edge", 1);
+
+    public static final SpawnBiomeData ROADRUNNER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 1);
+
+    public static final SpawnBiomeData ALL_NETHER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "nether", 0);
+
+    public static final SpawnBiomeData GAZELLE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "savanna", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
+
+    public static final SpawnBiomeData CROCODILE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tropic_beach", 3);
+
+    public static final SpawnBiomeData FLY = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, true, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0);
+
+    public static final SpawnBiomeData HUMMINGBIRD = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:flower_forest", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:sunflower_plains", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 2)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 2);
+
+    public static final SpawnBiomeData ORCA = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "cold", 0);
+
+    public static final SpawnBiomeData SUNBIRD = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mountain", 0);
+
+    public static final SpawnBiomeData GORILLA = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle_hills", 0);
+
+    public static final SpawnBiomeData CRIMSON_MOSQUITO = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:crimson_forest", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_gardens", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:visceral_heap", 2);
+    
+    public static final SpawnBiomeData RATTLESNAKE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 1);
+
+    public static final SpawnBiomeData ENDERGRADE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:the_end", 0);
+
+    public static final SpawnBiomeData HAMMERHEAD = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0);
+
+    public static final SpawnBiomeData LOBSTER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
+
+    public static final SpawnBiomeData KOMODO_DRAGON = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tropic_plains", 1);
+
+    public static final SpawnBiomeData CAPUCHIN_MONKEY = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle_hills", 0);
+
+    public static final SpawnBiomeData CENTIPEDE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mushroom", 0);
+
+    public static final SpawnBiomeData WARPED_TOAD = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:warped_forest", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_gardens", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:warped_desert", 2);
+                
+    public static final SpawnBiomeData MOOSE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "wasteland", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 2);
+
+    public static final SpawnBiomeData MIMICUBE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:the_end", 0);
+
+    public static final SpawnBiomeData RACCOON = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plains", 1);
+
+    public static final SpawnBiomeData DEEP_SEA = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_ocean", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_lukewarm_ocean", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_cold_ocean", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 3);
+
+    public static final SpawnBiomeData SEAL = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 1);
+
+    public static final SpawnBiomeData COCKROACH = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mushroom", 0);
+
+    public static final SpawnBiomeData SHOEBILL = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1);
+
+    public static final SpawnBiomeData ELEPHANT = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "savanna", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
+
+    public static final SpawnBiomeData SOUL_VULTURE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:soul_sand_valley", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:warped_desert", 1);
+    
+    public static final SpawnBiomeData SPECTRE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:the_end", 0);
+
+    public static final SpawnBiomeData SNOW_LEOPARD = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mountain", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 0);
+
+    public static final SpawnBiomeData CROW = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plains", 1);
+
+    public static final SpawnBiomeData ALLIGATOR_SNAPPING_TURTLE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1);
+
+    public static final SpawnBiomeData MUNGUS = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mushroom", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "rare", 0);
+
+    public static final SpawnBiomeData MANTIS_SHRIMP = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0);
+
+    public static final SpawnBiomeData GUSTER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 0);
+
+    public static final SpawnBiomeData STRADDLER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:basalt_deltas", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:withered_abyss", 1);
+
+    public static final SpawnBiomeData SAVANNA_AND_MESA = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
+
+    public static final SpawnBiomeData PLATYPUS = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1);
+
+    public static final SpawnBiomeData DROPBEAR = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:nether_wastes", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:crystalline_chasm", 1);
+    
+    public static final SpawnBiomeData TASMANIAN_DEVIL = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:jungle_egde", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:modified_jungle_edge", 0);
+    
+    public static final SpawnBiomeData CACHALOT_WHALE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "cold", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:lukewarm_ocean", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_ocean", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_lukewarm_ocean", 3);
+
+    public static final SpawnBiomeData BEACHED_CACHALOT_WHALE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
+
+    public static final SpawnBiomeData LEAFCUTTER_ANTHILL = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle_hills", 0);
+
+    public static final SpawnBiomeData ENDERIOPHAGE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:the_end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:end_barrens", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:end_highlands", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:small_end_islands", 0);
+
+    public static final SpawnBiomeData BALD_EAGLE = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mountain", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0);
+
+    public static final SpawnBiomeData TIGER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:bamboo_jungle_hills", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:bamboo_blossom_grove", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:cherry_blossom_grove", 3);
+
+    public static final SpawnBiomeData TARANTULA_HAWK = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
+
+    public static final SpawnBiomeData MIMIC_OCTOPUS = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:deep_warm_ocean", 0);
+
+    public static final SpawnBiomeData SEAGULL = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
+
+    public static final SpawnBiomeData FROSTSTALKER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:ice_spikes", 0);
+
+    public static final SpawnBiomeData TUSKLIN = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:ice_spikes", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "forest", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mountain", 1);
+
+
+    public static final SpawnBiomeData COSMAW = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:the_end", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:small_end_islands", 0);
+
+    public static final SpawnBiomeData TOUCAN = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle_hills", 0);
+
+    public static final SpawnBiomeData MANED_WOLF = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "savanna", 0);
+
+    public static final SpawnBiomeData ANACONDA = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0);
+
+    public static final SpawnBiomeData ANTEATER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0);
+
 
 }

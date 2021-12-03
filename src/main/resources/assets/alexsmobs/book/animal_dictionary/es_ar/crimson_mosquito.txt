@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Mosquito Carmesí es un insecto volador horrible y mutante que se encuentra en los Bosques Carmesí del Nether. Esta bestia voraz 
+buscará casi cualquier animal de Sangre caliente como bocadillo, incluyendo personas. Primero ataca a su presa y se aferra, 
+chupandolos hasta que se seque. Una vez que se ha llenado, comenzará a volar y usará la Sangre de su presa contra él,
+escupiéndola de vuelta al objetivo.
+<NEWLINE>
+Si es asesinado mientras está inflado con Sangre, El mosquito Carmesí puede dejar caer un Saco de Sangre. También puede dejar caer su Probóscide. 
+Ambos materiales se pueden utilizar para fabricar el Rociador de Sangre, un arma única que usa Sangre de Mosquito para infligir daño por efecto de 
+área. El Rociador de Sangre utiliza Sacos de Sangre como munición.
+<NEWLINE>
+Si una Mosca de Overworld, se encuentra en el Nether, puede transformarse en un Mosquito Carmesí.

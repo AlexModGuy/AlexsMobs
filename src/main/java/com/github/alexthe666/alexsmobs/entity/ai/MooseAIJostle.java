@@ -1,41 +1,37 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMoose;
-import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
+
 public class MooseAIJostle extends Goal {
 
-    private static final EntityPredicate JOSTLE_PREDICATE = (new EntityPredicate()).setDistance(16D).allowInvulnerable().allowFriendlyFire().setLineOfSiteRequired();
+    private static final TargetingConditions JOSTLE_PREDICATE = TargetingConditions.forNonCombat().range(16D).ignoreLineOfSight();
     protected EntityMoose targetMoose;
     private EntityMoose moose;
-    private World world;
+    private Level world;
     private float angle;
 
     public MooseAIJostle(EntityMoose moose) {
-        this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.TARGET));
+        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.TARGET));
         this.moose = moose;
-        this.world = moose.world;
+        this.world = moose.level;
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (this.moose.isJostling() || !moose.isAntlered() || this.moose.isChild() || this.moose.getAttackTarget() != null || this.moose.jostleCooldown > 0) {
+    public boolean canUse() {
+        if (this.moose.isJostling() || !moose.isAntlered() || this.moose.isBaby() || this.moose.getTarget() != null || this.moose.jostleCooldown > 0) {
             return false;
         }
-        if(this.moose.instantlyTriggerJostleAI || this.moose.getRNG().nextInt(30) == 0){
+        if(this.moose.instantlyTriggerJostleAI || this.moose.getRandom().nextInt(30) == 0){
             this.moose.instantlyTriggerJostleAI = false;
             if (this.moose.getJostlingPartner() instanceof EntityMoose) {
                 targetMoose = (EntityMoose) moose.getJostlingPartner();
@@ -54,10 +50,10 @@ public class MooseAIJostle extends Goal {
         return false;
     }
 
-    public void startExecuting(){
+    public void start(){
         this.moose.jostleTimer = 0;
         this.angle = 0;
-       setJostleDirection(this.moose.getRNG().nextBoolean());
+       setJostleDirection(this.moose.getRandom().nextBoolean());
     }
 
     public void setJostleDirection(boolean dir){
@@ -65,12 +61,12 @@ public class MooseAIJostle extends Goal {
         this.targetMoose.jostleDirection = dir;
     }
 
-    public void resetTask() {
+    public void stop() {
         this.moose.setJostling(false);
         this.moose.setJostlingPartner(null);
         this.moose.jostleTimer = 0;
         this.angle = 0;
-        this.moose.getNavigator().clearPath();
+        this.moose.getNavigation().stop();
         if (this.targetMoose != null) {
             this.targetMoose.setJostling(false);
             this.targetMoose.setJostlingPartner(null);
@@ -82,44 +78,44 @@ public class MooseAIJostle extends Goal {
 
     public void tick() {
         if(targetMoose != null){
-            this.moose.faceEntity(targetMoose, 360, 180);
+            this.moose.lookAt(targetMoose, 360, 180);
             this.moose.setJostling(true);
-            double dist = this.moose.getDistance(targetMoose);
+            double dist = this.moose.distanceTo(targetMoose);
             if (dist < 3.5F) {
-                this.moose.getNavigator().clearPath();
-                this.moose.getMoveHelper().strafe(-0.5F, 0);
+                this.moose.getNavigation().stop();
+                this.moose.getMoveControl().strafe(-0.5F, 0);
             } else if(dist > 4F) {
                 this.moose.setJostling(false);
-                this.moose.getNavigator().tryMoveToEntityLiving(targetMoose, 1);
+                this.moose.getNavigation().moveTo(targetMoose, 1);
             }else{
-                this.moose.faceEntity(targetMoose, 360, 180);
+                this.moose.lookAt(targetMoose, 360, 180);
                 //perfect jostle condition
                 if(moose.jostleDirection){
                     if(angle < 30){
                         angle++;
                     }
-                    this.moose.getMoveHelper().strafe(0, -0.2F);
+                    this.moose.getMoveControl().strafe(0, -0.2F);
                 }
                 if(!moose.jostleDirection){
                     if(angle > -30){
                         angle--;
                     }
-                    this.moose.getMoveHelper().strafe(0, 0.2F);
+                    this.moose.getMoveControl().strafe(0, 0.2F);
                 }
-                if(this.moose.getRNG().nextInt(55) == 0 && this.moose.isOnGround()){
+                if(this.moose.getRandom().nextInt(55) == 0 && this.moose.isOnGround()){
                     moose.pushBackJostling(targetMoose, 0.2F);
                 }
-                if(this.moose.getRNG().nextInt(25) == 0 && this.moose.isOnGround()) {
+                if(this.moose.getRandom().nextInt(25) == 0 && this.moose.isOnGround()) {
                     moose.playJostleSound();
                 }
                 moose.setJostleAngle(angle);
-                if(this.moose.jostleTimer % 60 == 0 || this.moose.getRNG().nextInt(80) == 0){
+                if(this.moose.jostleTimer % 60 == 0 || this.moose.getRandom().nextInt(80) == 0){
                     this.setJostleDirection(!moose.jostleDirection);
                 }
                 this.moose.jostleTimer++;
                 this.targetMoose.jostleTimer++;
                 if(this.moose.jostleTimer > 1000){
-                    moose.isAirBorne = true;
+                    moose.hasImpulse = true;
                     if(moose.isOnGround()){
                         moose.pushBackJostling(targetMoose, 0.9F);
                     }
@@ -128,10 +124,10 @@ public class MooseAIJostle extends Goal {
                     }
                     this.moose.jostleTimer = 0;
                     this.targetMoose.jostleTimer = 0;
-                    this.moose.jostleCooldown = 500 + this.moose.getRNG().nextInt(2000);
+                    this.moose.jostleCooldown = 500 + this.moose.getRandom().nextInt(2000);
                     this.targetMoose.jostleTimer = 0;
-                    this.targetMoose.jostleCooldown = 500 + this.targetMoose.getRNG().nextInt(2000);
-                    this.resetTask();
+                    this.targetMoose.jostleCooldown = 500 + this.targetMoose.getRandom().nextInt(2000);
+                    this.stop();
                 }
             }
         }
@@ -140,22 +136,22 @@ public class MooseAIJostle extends Goal {
 
 
     @Override
-    public boolean shouldContinueExecuting() {
-        return !this.moose.isChild() && this.moose.isAntlered() && this.moose.getAttackTarget() == null && targetMoose != null && this.targetMoose.isAntlered() && targetMoose.isAlive() && moose.jostleCooldown == 0 && targetMoose.jostleCooldown == 0;
+    public boolean canContinueToUse() {
+        return !this.moose.isBaby() && this.moose.isAntlered() && this.moose.getTarget() == null && targetMoose != null && this.targetMoose.isAntlered() && targetMoose.isAlive() && moose.jostleCooldown == 0 && targetMoose.jostleCooldown == 0;
     }
 
     @Nullable
     private EntityMoose getNearbyMoose() {
-        List<EntityMoose> listOfMeese = this.world.getTargettableEntitiesWithinAABB(EntityMoose.class, JOSTLE_PREDICATE, this.moose, this.moose.getBoundingBox().grow(16.0D));
+        List<EntityMoose> listOfMeese = this.world.getNearbyEntities(EntityMoose.class, JOSTLE_PREDICATE, this.moose, this.moose.getBoundingBox().inflate(16.0D));
         double lvt_2_1_ = 1.7976931348623157E308D;
         EntityMoose lvt_4_1_ = null;
         Iterator var5 = listOfMeese.iterator();
 
         while (var5.hasNext()) {
             EntityMoose lvt_6_1_ = (EntityMoose) var5.next();
-            if (this.moose.canJostleWith(lvt_6_1_) && this.moose.getDistanceSq(lvt_6_1_) < lvt_2_1_) {
+            if (this.moose.canJostleWith(lvt_6_1_) && this.moose.distanceToSqr(lvt_6_1_) < lvt_2_1_) {
                 lvt_4_1_ = lvt_6_1_;
-                lvt_2_1_ = this.moose.getDistanceSq(lvt_6_1_);
+                lvt_2_1_ = this.moose.distanceToSqr(lvt_6_1_);
             }
         }
 

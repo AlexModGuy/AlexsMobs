@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:gorilla\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.tame_gorilla.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.tame_gorilla.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/banana",
+  "criteria": {
+    "tame": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:gorilla"
+        }
+      }
+    }
+  }
+}

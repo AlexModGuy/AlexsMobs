@@ -1,12 +1,11 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
 
 public interface ILootsChests {
 
-    boolean isLootable(IInventory inventory);
+    boolean isLootable(Container inventory);
 
     boolean shouldLootItem(ItemStack stack);
 }

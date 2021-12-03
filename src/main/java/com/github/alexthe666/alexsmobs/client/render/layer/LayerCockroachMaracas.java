@@ -1,107 +1,105 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelCapuchinMonkey;
 import com.github.alexthe666.alexsmobs.client.model.ModelCockroach;
-import com.github.alexthe666.alexsmobs.client.model.ModelSombrero;
-import com.github.alexthe666.alexsmobs.client.render.RenderCapuchinMonkey;
+import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
+import com.github.alexthe666.alexsmobs.client.model.layered.ModelSombrero;
 import com.github.alexthe666.alexsmobs.client.render.RenderCockroach;
-import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 
-public class LayerCockroachMaracas extends LayerRenderer<EntityCockroach, ModelCockroach> {
+public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCockroach> {
 
     private ItemStack stack;
     private ModelSombrero sombrero;
     private static final ResourceLocation SOMBRERO_TEX = new ResourceLocation("alexsmobs:textures/armor/sombrero.png");
 
-    public LayerCockroachMaracas(RenderCockroach render) {
+    public LayerCockroachMaracas(RenderCockroach render, EntityRendererProvider.Context renderManagerIn) {
         super(render);
         stack = new ItemStack(AMItemRegistry.MARACA);
-        this.sombrero = new ModelSombrero(0);
+        this.sombrero = new ModelSombrero(renderManagerIn.bakeLayer(AMModelLayers.SOMBRERO));
 
     }
 
-    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityCockroach entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityCockroach entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(entitylivingbaseIn.hasMaracas()){
-            matrixStackIn.push();
-            if (entitylivingbaseIn.isChild()) {
+            matrixStackIn.pushPose();
+            if (entitylivingbaseIn.isBaby()) {
                 matrixStackIn.scale(0.65F, 0.65F, 0.65F);
                 matrixStackIn.translate(0.0D, 0.815D, 0.125D);
             }
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             translateToHand(0, matrixStackIn);
-            matrixStackIn.translate(-0.45F, 0.0F, -0.1F);
+            matrixStackIn.translate(-0.25F, 0.0F, 0);
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
-            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-90F));
-            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(90F));
-            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entitylivingbaseIn, stack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
-            matrixStackIn.pop();
-            matrixStackIn.push();
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
+            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(60F));
+            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            matrixStackIn.popPose();
+            matrixStackIn.pushPose();
             translateToHand(1, matrixStackIn);
-            matrixStackIn.translate(0.45F, 0.0F, -0.1F);
+            matrixStackIn.translate(0.25F, 0.0F, 0);
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
-            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90F));
-            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(-90F));
-            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entitylivingbaseIn, stack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
-            matrixStackIn.pop();
-            matrixStackIn.push();
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
+            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-120F));
+            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            matrixStackIn.popPose();
+            matrixStackIn.pushPose();
             translateToHand(2, matrixStackIn);
-            matrixStackIn.translate(-0.55F, 0.0F, 0.1F);
+            matrixStackIn.translate(-0.35F, 0.0F, 0);
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
-            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-90F));
-            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(90F));
-            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entitylivingbaseIn, stack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
-            matrixStackIn.pop();
-            matrixStackIn.push();
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
+            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(60F));
+            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            matrixStackIn.popPose();
+            matrixStackIn.pushPose();
             translateToHand(3, matrixStackIn);
-            matrixStackIn.translate(0.55F, 0.0F, 0.1F);
+            matrixStackIn.translate(0.35F, 0.0F, 0);
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
-            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90F));
-            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(-90F));
-            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entitylivingbaseIn, stack, ItemCameraTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
-            matrixStackIn.pop();
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
+            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-120F));
+            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            matrixStackIn.popPose();
             if(!entitylivingbaseIn.isHeadless()){
-                matrixStackIn.push();
+                matrixStackIn.pushPose();
                 translateToHand(4, matrixStackIn);
-                matrixStackIn.translate(0F, -0.45F, -0F);
-                matrixStackIn.rotate(Vector3f.XP.rotationDegrees(40F * entitylivingbaseIn.danceProgress * 0.2F));
-                matrixStackIn.translate(0F, entitylivingbaseIn.danceProgress * -0.015F, entitylivingbaseIn.danceProgress * -0.08F);
+                matrixStackIn.translate(0F, -0.4F, -0.01F);
+                matrixStackIn.translate(0F, entitylivingbaseIn.danceProgress * 0.045F, entitylivingbaseIn.danceProgress * -0.09F);
                 matrixStackIn.scale(0.8F, 0.8F, 0.8F);
-                IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RenderType.getEntityCutoutNoCull(SOMBRERO_TEX));
-                sombrero.render(matrixStackIn, ivertexbuilder, packedLightIn, LivingRenderer.getPackedOverlay(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-                matrixStackIn.pop();
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(60F * entitylivingbaseIn.danceProgress * 0.2F));
+                VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(SOMBRERO_TEX));
+                sombrero.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+                matrixStackIn.popPose();
             }
-            matrixStackIn.pop();
+            matrixStackIn.popPose();
         }
     }
 
-    protected void translateToHand(int hand, MatrixStack matrixStack) {
-        this.getEntityModel().root.translateRotate(matrixStack);
-        this.getEntityModel().body.translateRotate(matrixStack);
+    protected void translateToHand(int hand, PoseStack matrixStack) {
+        this.getParentModel().root.translateAndRotate(matrixStack);
+        this.getParentModel().abdomen.translateAndRotate(matrixStack);
         if (hand == 0) {
-            this.getEntityModel().leg1_right.translateRotate(matrixStack);
+            this.getParentModel().right_leg_front.translateAndRotate(matrixStack);
         } else if (hand == 1) {
-            this.getEntityModel().leg1_left.translateRotate(matrixStack);
+            this.getParentModel().left_leg_front.translateAndRotate(matrixStack);
         } else if (hand == 2) {
-            this.getEntityModel().leg2_right.translateRotate(matrixStack);
+            this.getParentModel().right_leg_mid.translateAndRotate(matrixStack);
         } else if (hand == 3) {
-            this.getEntityModel().leg2_left.translateRotate(matrixStack);
+            this.getParentModel().left_leg_mid.translateAndRotate(matrixStack);
         }else{
-            this.getEntityModel().frontbody.translateRotate(matrixStack);
-            this.getEntityModel().head.translateRotate(matrixStack);
+            this.getParentModel().neck.translateAndRotate(matrixStack);
+            this.getParentModel().head.translateAndRotate(matrixStack);
         }
     }
 }
