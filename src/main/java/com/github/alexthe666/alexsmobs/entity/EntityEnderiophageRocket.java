@@ -16,8 +16,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nullable;
 import java.util.OptionalInt;
@@ -51,7 +51,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         this.entityData.set(DATA_ATTACHED_TO_TARGET, OptionalInt.of(p_i47367_3_.getId()));
     }
 
-    public EntityEnderiophageRocket(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityEnderiophageRocket(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.ENDERIOPHAGE_ROCKET, world);
     }
 

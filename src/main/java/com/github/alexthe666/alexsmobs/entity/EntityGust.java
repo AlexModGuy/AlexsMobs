@@ -19,8 +19,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class EntityGust extends Entity {
     protected static final EntityDataAccessor<Boolean> VERTICAL = SynchedEntityData.defineId(EntityGust.class, EntityDataSerializers.BOOLEAN);
@@ -37,7 +37,7 @@ public class EntityGust extends Entity {
         this(AMEntityRegistry.GUST, worldIn);
     }
 
-    public EntityGust(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityGust(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.GUST, world);
     }
 

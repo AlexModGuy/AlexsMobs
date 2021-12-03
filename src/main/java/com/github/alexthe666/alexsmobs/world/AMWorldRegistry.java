@@ -5,16 +5,25 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
+import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.levelgen.GenerationStep;;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.placement.BiomeFilter;
+import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -26,14 +35,17 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
 
-    public static Feature<NoneFeatureConfiguration> LEAFCUTTER_ANTHILL =  new FeatureLeafcutterAnthill(NoneFeatureConfiguration.CODEC);
-    public static ConfiguredFeature<NoneFeatureConfiguration, ?> LEAFCUTTER_ANTHILL_CF;
+    public static Feature<NoneFeatureConfiguration> LEAFCUTTER_ANTHILL = (Feature<NoneFeatureConfiguration>) new FeatureLeafcutterAnthill(NoneFeatureConfiguration.CODEC).setRegistryName("alexsmobs:leafcutter_hill");
     public static boolean initBiomes = false;
-
+    private static PlacedFeature LEAFCUTTER_ANTHILL_PF;
     @SubscribeEvent
     public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {
-         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, "alexsmobs:leafcutter_hill", LEAFCUTTER_ANTHILL_CF = LEAFCUTTER_ANTHILL.configured(FeatureConfiguration.NONE));
-        event.getRegistry().register(LEAFCUTTER_ANTHILL.setRegistryName("alexsmobs:leafcutter_hill"));
+        event.getRegistry().register(LEAFCUTTER_ANTHILL);
+        ResourceLocation res = new ResourceLocation("alexsmobs:leafcutter_anthill");
+        ConfiguredFeature<?, ?> feature = LEAFCUTTER_ANTHILL.configured(FeatureConfiguration.NONE);
+        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, res, feature);
+        LEAFCUTTER_ANTHILL_PF = feature.placed();
+        Registry.register(BuiltinRegistries.PLACED_FEATURE, res, LEAFCUTTER_ANTHILL_PF);
     }
 
     public static void onBiomesLoad(BiomeLoadingEvent event) {
@@ -171,8 +183,8 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.cachalot_whale_spawns, biome) && AMConfig.cachalotWhaleSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.CACHALOT_WHALE, AMConfig.cachalotWhaleSpawnWeight, 1, 2));
         }
-        if(testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0){
-            event.getGeneration().addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, LEAFCUTTER_ANTHILL_CF);
+        if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
+            event.getGeneration().addFeature(GenerationStep.Decoration.RAW_GENERATION, LEAFCUTTER_ANTHILL_PF).build();
         }
         if (testBiome(BiomeConfig.enderiophage_spawns, biome) && AMConfig.enderiophageSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.ENDERIOPHAGE, AMConfig.enderiophageSpawnWeight, 2, 2));
@@ -224,11 +236,11 @@ public class AMWorldRegistry {
         }
     }
 
-    private static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome){
+    private static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome) {
         boolean result = false;
         try {
             result = BiomeConfig.test(entry, biome);
-        }catch (Exception e){
+        } catch (Exception e) {
             AlexsMobs.LOGGER.warn("could not test biome config for " + entry.getLeft() + ", defaulting to no spawns for mob");
             result = false;
         }

@@ -25,8 +25,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 import org.antlr.v4.runtime.misc.Triple;
 
 import javax.annotation.Nullable;
@@ -49,7 +49,7 @@ public class EntityVoidPortal extends Entity {
         super(entityTypeIn, worldIn);
     }
 
-    public EntityVoidPortal(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityVoidPortal(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.VOID_PORTAL, world);
     }
 

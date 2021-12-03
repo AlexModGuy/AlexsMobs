@@ -35,8 +35,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nullable;
 
@@ -69,7 +69,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         this.blocksBuilding = true;
     }
 
-    public EntityStraddleboard(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityStraddleboard(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.STRADDLEBOARD, world);
     }
 

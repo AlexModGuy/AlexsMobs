@@ -21,8 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class EntityTossedItem extends ThrowableItemProjectile {
 
@@ -40,7 +40,7 @@ public class EntityTossedItem extends ThrowableItemProjectile {
         super(AMEntityRegistry.TOSSED_ITEM, x, y, z, worldIn);
     }
 
-    public EntityTossedItem(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityTossedItem(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.TOSSED_ITEM, world);
     }
 

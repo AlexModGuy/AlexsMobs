@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.ICustomCollisions;
-import net.minecraft.world.level.block.Block;
+import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;

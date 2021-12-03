@@ -16,8 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class EntityCockroachEgg extends ThrowableItemProjectile {
 
@@ -33,7 +33,7 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
         super(AMEntityRegistry.COCKROACH_EGG, x, y, z, worldIn);
     }
 
-    public EntityCockroachEgg(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityCockroachEgg(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.COCKROACH_EGG, world);
     }
 

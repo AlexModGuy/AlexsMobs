@@ -88,7 +88,7 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onFogDensity(EntityViewRenderEvent.RenderFogEvent event) {
-        FogType fogType = event.getInfo().getFluidInCamera();
+        FogType fogType = event.getCamera().getFluidInCamera();
         if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION) && fogType == FogType.LAVA) {
             RenderSystem.setShaderFogStart(-8.0F);
             RenderSystem.setShaderFogEnd(50.0F);
@@ -106,19 +106,19 @@ public class ClientEvents {
             }
         }
         if (event.getEntity().hasEffect(AMEffectRegistry.CLINGING) && event.getEntity().getEyeHeight() < event.getEntity().getBbHeight() * 0.45F || event.getEntity().hasEffect(AMEffectRegistry.DEBILITATING_STING) && event.getEntity().getMobType() == MobType.ARTHROPOD && event.getEntity().getBbWidth() > event.getEntity().getBbHeight()) {
-            event.getMatrixStack().pushPose();
-            event.getMatrixStack().translate(0.0D, event.getEntity().getBbHeight() + 0.1F, 0.0D);
-            event.getMatrixStack().mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            event.getPoseStack().pushPose();
+            event.getPoseStack().translate(0.0D, event.getEntity().getBbHeight() + 0.1F, 0.0D);
+            event.getPoseStack().mulPose(Vector3f.ZP.rotationDegrees(180.0F));
             event.getEntity().yBodyRotO = -event.getEntity().yBodyRotO;
             event.getEntity().yBodyRot = -event.getEntity().yBodyRot;
             event.getEntity().yHeadRotO = -event.getEntity().yHeadRotO;
             event.getEntity().yHeadRot = -event.getEntity().yHeadRot;
         }
         if (event.getEntity().hasEffect(AMEffectRegistry.ENDER_FLU)) {
-            event.getMatrixStack().pushPose();
-            event.getMatrixStack().mulPose(Vector3f.YP.rotationDegrees((float) (Math.cos((double) event.getEntity().tickCount * 7F) * Math.PI * (double) 1.2F)));
+            event.getPoseStack().pushPose();
+            event.getPoseStack().mulPose(Vector3f.YP.rotationDegrees((float) (Math.cos((double) event.getEntity().tickCount * 7F) * Math.PI * (double) 1.2F)));
             float vibrate = 0.05F;
-            event.getMatrixStack().translate((event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate);
+            event.getPoseStack().translate((event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate);
         }
     }
 
@@ -126,10 +126,10 @@ public class ClientEvents {
     @OnlyIn(Dist.CLIENT)
     public void onPostRenderEntity(RenderLivingEvent.Post event) {
         if (event.getEntity().hasEffect(AMEffectRegistry.ENDER_FLU)) {
-            event.getMatrixStack().popPose();
+            event.getPoseStack().popPose();
         }
         if (event.getEntity().hasEffect(AMEffectRegistry.CLINGING) && event.getEntity().getEyeHeight() < event.getEntity().getBbHeight() * 0.45F || event.getEntity().hasEffect(AMEffectRegistry.DEBILITATING_STING) && event.getEntity().getMobType() == MobType.ARTHROPOD && event.getEntity().getBbWidth() > event.getEntity().getBbHeight()) {
-            event.getMatrixStack().popPose();
+            event.getPoseStack().popPose();
             event.getEntity().yBodyRotO = -event.getEntity().yBodyRotO;
             event.getEntity().yBodyRot = -event.getEntity().yBodyRot;
             event.getEntity().yHeadRotO = -event.getEntity().yHeadRotO;
@@ -138,13 +138,13 @@ public class ClientEvents {
         if (VineLassoUtil.hasLassoData(event.getEntity()) && !(event.getEntity() instanceof Player)) {
             Entity lassoedOwner = VineLassoUtil.getLassoedTo(event.getEntity());
             if (lassoedOwner instanceof LivingEntity && lassoedOwner != event.getEntity()) {
-                double d0 = Mth.lerp(event.getPartialRenderTick(), event.getEntity().xOld, event.getEntity().getX());
-                double d1 = Mth.lerp(event.getPartialRenderTick(), event.getEntity().yOld, event.getEntity().getY());
-                double d2 = Mth.lerp(event.getPartialRenderTick(), event.getEntity().zOld, event.getEntity().getZ());
-                event.getMatrixStack().pushPose();
-                event.getMatrixStack().translate(-d0, -d1, -d2);
-                RenderVineLasso.renderVine(event.getEntity(), event.getPartialRenderTick(), event.getMatrixStack(), event.getBuffers(), (LivingEntity) lassoedOwner, ((LivingEntity) lassoedOwner).getMainArm() == HumanoidArm.LEFT, 0.1F);
-                event.getMatrixStack().popPose();
+                double d0 = Mth.lerp(event.getPartialTick(), event.getEntity().xOld, event.getEntity().getX());
+                double d1 = Mth.lerp(event.getPartialTick(), event.getEntity().yOld, event.getEntity().getY());
+                double d2 = Mth.lerp(event.getPartialTick(), event.getEntity().zOld, event.getEntity().getZ());
+                event.getPoseStack().pushPose();
+                event.getPoseStack().translate(-d0, -d1, -d2);
+                RenderVineLasso.renderVine(event.getEntity(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), (LivingEntity) lassoedOwner, ((LivingEntity) lassoedOwner).getMainArm() == HumanoidArm.LEFT, 0.1F);
+                event.getPoseStack().popPose();
             }
         }
     }
@@ -192,7 +192,7 @@ public class ClientEvents {
                 if (entity instanceof EntityBaldEagle) {
                     float yaw = player.yBodyRotO + (player.yBodyRot - player.yBodyRotO) * event.getPartialTicks();
                     ClientProxy.currentUnrenderedEntities.remove(entity.getUUID());
-                    PoseStack matrixStackIn = event.getMatrixStack();
+                    PoseStack matrixStackIn = event.getPoseStack();
                     matrixStackIn.pushPose();
                     matrixStackIn.scale(0.5F, 0.5F, 0.5F);
                     matrixStackIn.translate(leftHand ? -0.8F : 0.8F, -0.6F, -1F);
@@ -202,14 +202,14 @@ public class ClientEvents {
                     } else {
                         matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(90));
                     }
-                    renderEntity(entity, 0, 0, 0, 0, event.getPartialTicks(), matrixStackIn, event.getBuffers(), event.getLight());
+                    renderEntity(entity, 0, 0, 0, 0, event.getPartialTicks(), matrixStackIn, event.getMultiBufferSource(), event.getPackedLight());
                     matrixStackIn.popPose();
                     ClientProxy.currentUnrenderedEntities.add(entity.getUUID());
                 }
             }
         }
         if (Minecraft.getInstance().player.getUseItem().getItem() == AMItemRegistry.DIMENSIONAL_CARVER && event.getItemStack().getItem() == AMItemRegistry.DIMENSIONAL_CARVER) {
-            PoseStack matrixStackIn = event.getMatrixStack();
+            PoseStack matrixStackIn = event.getPoseStack();
             matrixStackIn.pushPose();
             ItemInHandRenderer renderer = Minecraft.getInstance().getItemInHandRenderer();
             InteractionHand hand = MoreObjects.firstNonNull(Minecraft.getInstance().player.swingingArm, InteractionHand.MAIN_HAND);
@@ -262,7 +262,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onRenderWorldLastEvent(RenderWorldLastEvent event) {
+    public void onRenderWorldLastEvent(RenderLevelLastEvent event) {
         AMItemstackRenderer.incrementTick();
         if (!AMConfig.shadersCompat) {
             if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION)) {

@@ -17,10 +17,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class EntitySharkToothArrow extends Arrow {
 
@@ -85,7 +84,7 @@ public class EntitySharkToothArrow extends Arrow {
         return false;
     }
 
-    public EntitySharkToothArrow(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntitySharkToothArrow(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.SHARK_TOOTH_ARROW, world);
     }
 

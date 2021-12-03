@@ -37,17 +37,15 @@ repositories{
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.14.1'
+version = '1.14.2'
 group = 'com.github.alexthe667' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alexsmobs'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.17.1'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-
+    mappings channel: 'official', version: '1.18'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
@@ -121,10 +119,10 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.65'
-    annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
-    compileOnly "curse.maven:citadel3-331936:3537055" // change to 3478179
-    runtimeOnly "curse.maven:citadel3-331936:3537055"
+    minecraft 'net.minecraftforge:forge:1.18-38.0.11'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly "curse.maven:citadel3-331936:3546016" // change to 3478179
+    runtimeOnly "curse.maven:citadel3-331936:3546016"
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -133,7 +131,7 @@ jar {
         attributes([
             "Specification-Title": "alexsmobs",
             "Specification-Vendor": "alexthe667",
-            "Specification-Version": "1.13.1", // We are version 1 of ourselves
+            "Specification-Version": "1.14.2", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"alexthe667",
