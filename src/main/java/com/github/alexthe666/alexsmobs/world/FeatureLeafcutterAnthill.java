@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.world;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
@@ -20,14 +19,15 @@ import java.util.Random;
 
 public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> {
 
-    public FeatureLeafcutterAnthill(Codec<NoneFeatureConfiguration> p_i231953_1_) {
-        super(p_i231953_1_);
+    public FeatureLeafcutterAnthill(Codec<NoneFeatureConfiguration> codec) {
+        super(codec);
+        this.setRegistryName("alexsmobs:leafcutter_ant");
     }
 
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        if (context.random().nextFloat() > 0.005F || !AMWorldRegistry.testBiome(BiomeConfig.leafcutter_anthill_spawns, context.level().getBiome(context.origin()))) {
+        if (context.level().getRandom().nextFloat() > 0.00009F) {
             return false;
         }
         int x = 8;
@@ -38,18 +38,18 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
         if(!context.level().getFluidState(heightPos.below()).isEmpty()){
             return false;
         }
-        int outOfGround = 2 + context.random().nextInt(2);
+        int outOfGround = 2 + context.level().getRandom().nextInt(2);
         for (int i = 0; i < outOfGround; i++) {
             float size = outOfGround - i;
-            int lvt_8_1_ = (int) (Math.floor(size) * context.random().nextFloat()) + 2;
-            int lvt_10_1_ = (int) (Math.floor(size) * context.random().nextFloat()) + 2;
+            int lvt_8_1_ = (int) (Math.floor(size) * context.level().getRandom().nextFloat()) + 2;
+            int lvt_10_1_ = (int) (Math.floor(size) * context.level().getRandom().nextFloat()) + 2;
             float radius = (float) (lvt_8_1_ + lvt_10_1_) * 0.333F;
             Iterator var12 = BlockPos.betweenClosed(heightPos.offset(-lvt_8_1_, 0, -lvt_10_1_), heightPos.offset(lvt_8_1_, 3, lvt_10_1_)).iterator();
             while (var12.hasNext()) {
                 BlockPos lvt_13_1_ = (BlockPos) var12.next();
                 if (lvt_13_1_.distSqr(heightPos) <= (double) (radius * radius)) {
                     BlockState block = Blocks.COARSE_DIRT.defaultBlockState();
-                    if (context.random().nextFloat() < 0.2F) {
+                    if (context.level().getRandom().nextFloat() < 0.2F) {
                         block = Blocks.DIRT.defaultBlockState();
                     }
                     context.level().setBlock(lvt_13_1_, block, 4);
@@ -69,43 +69,43 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
                     for(int k = 0; k < j; ++k) {
                         EntityLeafcutterAnt beeentity = new EntityLeafcutterAnt(AMEntityRegistry.LEAFCUTTER_ANT, context.level().getLevel());
                         beeentity.setQueen(k == 0);
-                        beehivetileentity.tryEnterHive(beeentity, false, context.random().nextInt(599));
+                        beehivetileentity.tryEnterHive(beeentity, false, context.level().getRandom().nextInt(599));
                     }
                 }
 
             }
 
-            if(context.random().nextBoolean()){
+            if(context.level().getRandom().nextBoolean()){
                 context.level().setBlock(heightPos.above(outOfGround).north(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
                 context.level().setBlock(heightPos.above(outOfGround - 1).north(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
                 context.level().setBlock(heightPos.above(outOfGround - 2).north(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
             }
-            if(context.random().nextBoolean()){
+            if(context.level().getRandom().nextBoolean()){
                 context.level().setBlock(heightPos.above(outOfGround).east(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
                 context.level().setBlock(heightPos.above(outOfGround - 1).east(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
                 context.level().setBlock(heightPos.above(outOfGround - 2).east(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
             }
-            if(context.random().nextBoolean()){
+            if(context.level().getRandom().nextBoolean()){
                 context.level().setBlock(heightPos.above(outOfGround).south(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
                 context.level().setBlock(heightPos.above(outOfGround - 1).south(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
                 context.level().setBlock(heightPos.above(outOfGround - 2).south(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
             }
-            if(context.random().nextBoolean()){
+            if(context.level().getRandom().nextBoolean()){
                 context.level().setBlock(heightPos.above(outOfGround).west(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
                 context.level().setBlock(heightPos.above(outOfGround - 1).west(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
                 context.level().setBlock(heightPos.above(outOfGround - 2).west(), Blocks.COARSE_DIRT.defaultBlockState(), 4);
             }
         }
         int i = outOfGround;
-        int down = context.random().nextInt(2) + 1;
+        int down = context.level().getRandom().nextInt(2) + 1;
         while (i > -down) {
             i--;
             context.level().setBlock(heightPos.above(i), AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.defaultBlockState(), 4);
         }
         float size = chunkSeedRandom.nextInt(1) + 1;
-        int lvt_8_1_ = (int) (Math.floor(size) * context.random().nextFloat()) + 1;
-        int lvt_9_1_ = (int) (Math.floor(size) * context.random().nextFloat()) + 1;
-        int lvt_10_1_ = (int) (Math.floor(size) * context.random().nextFloat()) + 1;
+        int lvt_8_1_ = (int) (Math.floor(size) * context.level().getRandom().nextFloat()) + 1;
+        int lvt_9_1_ = (int) (Math.floor(size) * context.level().getRandom().nextFloat()) + 1;
+        int lvt_10_1_ = (int) (Math.floor(size) * context.level().getRandom().nextFloat()) + 1;
         float radius = (float) (lvt_8_1_ + lvt_9_1_ + lvt_10_1_) * 0.333F + 0.5F;
         heightPos = heightPos.below(down + lvt_9_1_).offset(chunkSeedRandom.nextInt(2), 0, chunkSeedRandom.nextInt(2));
         Iterator var12 = BlockPos.betweenClosed(heightPos.offset(-lvt_8_1_, -lvt_9_1_, -lvt_10_1_), heightPos.offset(lvt_8_1_, lvt_9_1_, lvt_10_1_)).iterator();

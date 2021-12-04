@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
+import com.github.alexthe666.citadel.server.generation.GenerationSettingsManager;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -35,18 +36,19 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
 
-    public static Feature<NoneFeatureConfiguration> LEAFCUTTER_ANTHILL = (Feature<NoneFeatureConfiguration>) new FeatureLeafcutterAnthill(NoneFeatureConfiguration.CODEC).setRegistryName("alexsmobs:leafcutter_hill");
-    public static boolean initBiomes = false;
+    public static final Feature<NoneFeatureConfiguration> LEAFCUTTER_ANTHILL = new FeatureLeafcutterAnthill(NoneFeatureConfiguration.CODEC);
+    public static ConfiguredFeature<?, ?> LEAFCUTTER_ANTHILL_CF;
     public static PlacedFeature LEAFCUTTER_ANTHILL_PF;
+
     @SubscribeEvent
     public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {
         event.getRegistry().register(LEAFCUTTER_ANTHILL);
-        ResourceLocation res = new ResourceLocation("alexsmobs:leafcutter_anthill");
-        ConfiguredFeature<?, ?> feature = LEAFCUTTER_ANTHILL.configured(FeatureConfiguration.NONE);
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, res, feature);
-        LEAFCUTTER_ANTHILL_PF = feature.placed();
-        Registry.register(BuiltinRegistries.PLACED_FEATURE, res, LEAFCUTTER_ANTHILL_PF);
+        LEAFCUTTER_ANTHILL_CF = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation("alexsmobs:leafcutter_anthill"), LEAFCUTTER_ANTHILL.configured(FeatureConfiguration.NONE));
+        LEAFCUTTER_ANTHILL_PF = Registry.register(BuiltinRegistries.PLACED_FEATURE, new ResourceLocation("alexsmobs:leafcutter_anthill"), LEAFCUTTER_ANTHILL_CF.placed());
     }
+
+    public static boolean initBiomes = false;
+
 
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         initBiomes = true;
@@ -183,9 +185,6 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.cachalot_whale_spawns, biome) && AMConfig.cachalotWhaleSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.CACHALOT_WHALE, AMConfig.cachalotWhaleSpawnWeight, 1, 2));
         }
-        if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
-        // TODO    event.getGeneration().addFeature(GenerationStep.Decoration.RAW_GENERATION, LEAFCUTTER_ANTHILL_PF).build();
-        }
         if (testBiome(BiomeConfig.enderiophage_spawns, biome) && AMConfig.enderiophageSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.ENDERIOPHAGE, AMConfig.enderiophageSpawnWeight, 2, 2));
         }
@@ -234,9 +233,17 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.anteater, biome) && AMConfig.anteaterSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.ANTEATER, AMConfig.anteaterSpawnWeight, 1, 3));
         }
+        if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
+            GenerationSettingsManager.register(biome.getRegistryName().toString(), LEAFCUTTER_ANTHILL_PF);
+        }
     }
 
-    public static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome) {
+    private static <C extends FeatureConfiguration, F extends Feature<C>> F registerFeature(String name, F eature) {
+        eature.setRegistryName("alexsmobs:leafcutter_hill");
+        return Registry.register(Registry.FEATURE, name, eature);
+    }
+
+    private static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome) {
         boolean result = false;
         try {
             result = BiomeConfig.test(entry, biome);
