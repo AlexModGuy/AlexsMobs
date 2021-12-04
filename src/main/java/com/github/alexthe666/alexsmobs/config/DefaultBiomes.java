@@ -47,7 +47,8 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:flower_forest", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:sunflower_plains", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 2)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 2);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:meadow", 3);
 
     public static final SpawnBiomeData ORCA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -167,9 +168,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mountain", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:snowy_slopes", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:frozen_peaks", 2)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:jagged_peaks", 3);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:snowy_slopes", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:frozen_peaks", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:jagged_peaks", 3);
 
 
     public static final SpawnBiomeData CROW = new SpawnBiomeData()
@@ -255,7 +256,8 @@ public class DefaultBiomes {
     public static final SpawnBiomeData BALD_EAGLE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mountain", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:grove", 1);
 
     public static final SpawnBiomeData TIGER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
