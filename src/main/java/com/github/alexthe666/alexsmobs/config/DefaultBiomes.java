@@ -168,7 +168,11 @@ public class DefaultBiomes {
     public static final SpawnBiomeData SNOW_LEOPARD = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mountain", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:snowy_slopes", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:frozen_peaks", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:jagged_peaks", 3);
+
 
     public static final SpawnBiomeData CROW = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
