@@ -54,7 +54,7 @@ public class AMConfig {
     public static int raccoonSpawnRolls = 0;
     public static int blobfishSpawnWeight = 30;
     public static int blobfishSpawnRolls = 0;
-    public static int blobfishSpawnHeight = 38;
+    public static int blobfishSpawnHeight = 25;
     public static int sealSpawnWeight = 30;
     public static int sealSpawnRolls = 0;
     public static int cockroachSpawnWeight = 4;
