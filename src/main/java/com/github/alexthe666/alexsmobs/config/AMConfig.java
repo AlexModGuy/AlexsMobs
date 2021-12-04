@@ -43,7 +43,7 @@ public class AMConfig {
     public static int capuchinMonkeySpawnRolls = 0;
     public static int caveCentipedeSpawnWeight = 8;
     public static int caveCentipedeSpawnRolls = 1;
-    public static int caveCentipedeSpawnHeight = 30;
+    public static int caveCentipedeSpawnHeight = 0;
     public static int warpedToadSpawnWeight = 80;
     public static int warpedToadSpawnRolls = 0;
     public static int mooseSpawnWeight = 9;

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIFleeLight;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -69,6 +70,7 @@ public class EntityCentipedeHead extends Monster {
         this.goalSelector.addGoal(2, new RandomStrollGoal(this, 1.0D, 13, false));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new AnimalAIFleeLight(this, 1.0D, 75, 5));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 20, true, true, null));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, 20, true, true, null));
@@ -185,11 +187,11 @@ public class EntityCentipedeHead extends Monster {
     }
 
     private boolean shouldReplaceParts() {
-        if(parts == null || parts[0] == null || parts.length != this.getSegmentCount()){
+        if (parts == null || parts[0] == null || parts.length != this.getSegmentCount()) {
             return true;
         }
-        for(int i = 0; i < this.getSegmentCount(); i++){
-            if(parts[i] == null){
+        for (int i = 0; i < this.getSegmentCount(); i++) {
+            if (parts[i] == null) {
                 return true;
             }
         }
@@ -246,7 +248,7 @@ public class EntityCentipedeHead extends Monster {
                     prevPos = part.position();
                 }
             }
-            if(tickCount > 1) {
+            if (tickCount > 1) {
                 if (shouldReplaceParts() && this.getChild() instanceof EntityCentipedeBody) {
                     parts = new EntityCentipedeBody[this.getSegmentCount()];
                     parts[0] = (EntityCentipedeBody) this.getChild();

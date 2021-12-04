@@ -20,6 +20,7 @@ public class AnimalAIFleeLight extends Goal {
     private final double movementSpeed;
     private final Level world;
     private int executeChance = 50;
+    private int lightLevel = 10;
 
     public AnimalAIFleeLight(PathfinderMob p_i1623_1_, double p_i1623_2_) {
         this.creature = p_i1623_1_;
@@ -28,10 +29,19 @@ public class AnimalAIFleeLight extends Goal {
         this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
+    public AnimalAIFleeLight(PathfinderMob p_i1623_1_, double p_i1623_2_, int chance, int level) {
+        this.creature = p_i1623_1_;
+        this.movementSpeed = p_i1623_2_;
+        this.world = p_i1623_1_.level;
+        this.executeChance = chance;
+        this.lightLevel = level;
+        this.setFlags(EnumSet.of(Flag.MOVE));
+    }
+
     public boolean canUse() {
         if (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executeChance) != 0) {
             return false;
-        } else if (this.world.getMaxLocalRawBrightness(this.creature.blockPosition()) < 10) {
+        } else if (this.world.getMaxLocalRawBrightness(this.creature.blockPosition()) < lightLevel) {
             return false;
         } else {
             return this.isPossibleShelter();
@@ -65,7 +75,7 @@ public class AnimalAIFleeLight extends Goal {
 
         for(int lvt_3_1_ = 0; lvt_3_1_ < 10; ++lvt_3_1_) {
             BlockPos lvt_4_1_ = lvt_2_1_.offset(lvt_1_1_.nextInt(20) - 10, lvt_1_1_.nextInt(6) - 3, lvt_1_1_.nextInt(20) - 10);
-            if (this.creature.level.getMaxLocalRawBrightness(lvt_4_1_) < 10) {
+            if (this.creature.level.getMaxLocalRawBrightness(lvt_4_1_) < lightLevel) {
                 return Vec3.atBottomCenterOf(lvt_4_1_);
             }
         }
