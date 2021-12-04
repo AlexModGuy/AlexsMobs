@@ -13,7 +13,9 @@ import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
+import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
+import com.github.alexthe666.citadel.event.EventBiomeGenerationSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -599,4 +601,9 @@ public class ServerEvents {
         }
     }
 
+    @SubscribeEvent
+    public void onBiomeSettings(EventBiomeGenerationSettings event) {
+        System.out.println("Biome Setting!");
+        event.getSettings().features().add(List.of(() -> AMWorldRegistry.LEAFCUTTER_ANTHILL_PF));
+    }
 }

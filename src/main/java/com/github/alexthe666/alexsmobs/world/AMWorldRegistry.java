@@ -37,7 +37,7 @@ public class AMWorldRegistry {
 
     public static Feature<NoneFeatureConfiguration> LEAFCUTTER_ANTHILL = (Feature<NoneFeatureConfiguration>) new FeatureLeafcutterAnthill(NoneFeatureConfiguration.CODEC).setRegistryName("alexsmobs:leafcutter_hill");
     public static boolean initBiomes = false;
-    private static PlacedFeature LEAFCUTTER_ANTHILL_PF;
+    public static PlacedFeature LEAFCUTTER_ANTHILL_PF;
     @SubscribeEvent
     public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {
         event.getRegistry().register(LEAFCUTTER_ANTHILL);
@@ -184,7 +184,7 @@ public class AMWorldRegistry {
             event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.CACHALOT_WHALE, AMConfig.cachalotWhaleSpawnWeight, 1, 2));
         }
         if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
-            event.getGeneration().addFeature(GenerationStep.Decoration.RAW_GENERATION, LEAFCUTTER_ANTHILL_PF).build();
+        // TODO    event.getGeneration().addFeature(GenerationStep.Decoration.RAW_GENERATION, LEAFCUTTER_ANTHILL_PF).build();
         }
         if (testBiome(BiomeConfig.enderiophage_spawns, biome) && AMConfig.enderiophageSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.ENDERIOPHAGE, AMConfig.enderiophageSpawnWeight, 2, 2));
@@ -236,7 +236,7 @@ public class AMWorldRegistry {
         }
     }
 
-    private static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome) {
+    public static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome) {
         boolean result = false;
         try {
             result = BiomeConfig.test(entry, biome);
