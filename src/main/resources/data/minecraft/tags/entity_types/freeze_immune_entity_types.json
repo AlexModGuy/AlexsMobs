@@ -1,7 +1,9 @@
 {
   "replace": false,
   "values": [
+    "alexsmobs:moose",
     "alexsmobs:snow_leopard",
-    "alexsmobs:froststalker"
+    "alexsmobs:froststalker",
+    "alexsmobs:tusklin"
   ]
 }
