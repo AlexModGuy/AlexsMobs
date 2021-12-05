@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelLeafcutterAnt;
+import com.github.alexthe666.alexsmobs.client.render.OctopusColorRegistry;
 import com.github.alexthe666.alexsmobs.client.render.RenderLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
@@ -40,7 +41,7 @@ public class LayerLeafcutterAntLeaf extends RenderLayer<EntityLeafcutterAnt, Adv
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(res));
             int leafColor = Minecraft.getInstance().getItemColors().getColor(new ItemStack(Items.JUNGLE_LEAVES), 0);
             if(entitylivingbaseIn.getHarvestedPos() != null && entitylivingbaseIn.getHarvestedState() != null){
-                leafColor = Minecraft.getInstance().getBlockColors().getColor(entitylivingbaseIn.getHarvestedState(), entitylivingbaseIn.level, entitylivingbaseIn.getHarvestedPos(), 0);
+                leafColor = OctopusColorRegistry.getBlockColor(entitylivingbaseIn.getHarvestedState());
             }
             float f = (float)(leafColor >> 16 & 255) / 255.0F;
             float f1 = (float)(leafColor >> 8 & 255) / 255.0F;
