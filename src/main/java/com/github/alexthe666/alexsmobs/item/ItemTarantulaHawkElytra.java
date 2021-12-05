@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 
 public class ItemTarantulaHawkElytra extends ArmorItem {
 
-    public ItemTarantulaHawkElytra(Item.Properties props, CustomArmorMaterial mat) {
+    public ItemTarantulaHawkElytra(Item.Properties props, AMArmorMaterial mat) {
         super(mat, EquipmentSlot.CHEST, props);
     }
 

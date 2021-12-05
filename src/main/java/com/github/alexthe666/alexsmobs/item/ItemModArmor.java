@@ -32,7 +32,7 @@ public class ItemModArmor extends ArmorItem {
     private Multimap<Attribute, AttributeModifier> attributeMapCroc;
     private Multimap<Attribute, AttributeModifier> attributeMapMoose;
 
-    public ItemModArmor(CustomArmorMaterial armorMaterial, EquipmentSlot slot) {
+    public ItemModArmor(AMArmorMaterial armorMaterial, EquipmentSlot slot) {
         super(armorMaterial, slot, new Item.Properties().tab(AlexsMobs.TAB));
     }
 
@@ -61,7 +61,7 @@ public class ItemModArmor extends ArmorItem {
         }
     }
 
-    private void buildCrocAttributes(CustomArmorMaterial materialIn) {
+    private void buildCrocAttributes(AMArmorMaterial materialIn) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
         builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
@@ -73,7 +73,7 @@ public class ItemModArmor extends ArmorItem {
         attributeMapCroc = builder.build();
     }
 
-    private void buildMooseAttributes(CustomArmorMaterial materialIn) {
+    private void buildMooseAttributes(AMArmorMaterial materialIn) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
         builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
