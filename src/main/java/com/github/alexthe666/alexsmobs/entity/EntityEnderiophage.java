@@ -547,10 +547,10 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > 1 && level.isEmptyBlock(position)) {
+        while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || position.getY() < 1;
+        return !level.getFluidState(position).isEmpty() || position.getY() < -63;
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
@@ -573,11 +573,11 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
 
     private BlockPos getPhageGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
-        while (position.getY() > 1 && level.isEmptyBlock(position)) {
+        while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
-        if (position.getY() < 2) {
-            return position.above(60 + random.nextInt(5));
+        if (position.getY() < -62) {
+            return position.above(120 + random.nextInt(5));
         }
 
         return position;
@@ -592,11 +592,11 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getPhageGround(radialPos);
-        if (ground.getY() == 0) {
-            return Vec3.upFromBottomCenterOf(ground, 50 + random.nextInt(20));
+        if (ground.getY() <= -63) {
+            return Vec3.upFromBottomCenterOf(ground, 110 + random.nextInt(20));
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > 1 && level.isEmptyBlock(ground)) {
+            while (ground.getY() > -63 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
                 ground = ground.below();
             }
         }

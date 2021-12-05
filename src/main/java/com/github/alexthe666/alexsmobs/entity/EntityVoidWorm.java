@@ -648,13 +648,12 @@ public class EntityVoidWorm extends Monster {
 
     private BlockPos getGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
-        while (position.getY() > 1 && level.isEmptyBlock(position)) {
+        while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
-        if (position.getY() < 2) {
-            return position.above(60 + random.nextInt(5));
+        if (position.getY() < -62) {
+            return position.above(120 + random.nextInt(5));
         }
-
         return position;
     }
 
