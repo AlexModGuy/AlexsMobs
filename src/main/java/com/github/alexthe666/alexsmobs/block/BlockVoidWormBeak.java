@@ -37,7 +37,7 @@ public class BlockVoidWormBeak extends BaseEntityBlock {
     private static final VoxelShape AABB_VERTICAL = Block.box(0, 0, 4, 16, 16, 12);
 
     public BlockVoidWormBeak() {
-        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).noCollission());
+        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).noCollission().requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
         this.setRegistryName("alexsmobs:void_worm_beak");
     }
