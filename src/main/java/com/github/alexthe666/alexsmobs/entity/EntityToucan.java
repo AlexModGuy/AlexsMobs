@@ -334,7 +334,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         while (position.getY() < 256 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > 2 && level.isEmptyBlock(position)) {
+        while (position.getY() > 2 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
         return position;
@@ -624,7 +624,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
                 if (this.toucan.isOverLeaves()) {
                     for (int i = 0; i < 15; i++) {
                         BlockPos pos = this.toucan.blockPosition().offset(random.nextInt(16) - 8, random.nextInt(8) - 4, random.nextInt(16) - 8);
-                        if (toucan.level.getBlockState(pos.above()).isAir() && !toucan.level.getBlockState(pos).isAir() && toucan.getWalkTargetValue(pos) >= 0.0F) {
+                        if (!toucan.level.getBlockState(pos.above()).getMaterial().isSolid() && toucan.level.getBlockState(pos).getMaterial().isSolid() && toucan.getWalkTargetValue(pos) >= 0.0F) {
                             return Vec3.atBottomCenterOf(pos);
                         }
                     }
