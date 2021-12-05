@@ -97,7 +97,7 @@ public class EntityCachalotWhale extends Animal {
     public EntityCachalotWhale(EntityType type, Level world) {
         super(type, world);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.moveControl = new AnimalSwimMoveControllerSink(this, 1, 1, 3);
+        this.moveControl = new AnimalSwimMoveControllerSink(this, 1, 1, 6);
         this.lookControl = new SmoothSwimmingLookControl(this, 4);
         this.headPart = new EntityCachalotPart(this, 3.0F, 3.5F);
         this.bodyFrontPart = new EntityCachalotPart(this, 4.0F, 4.0F);
@@ -340,6 +340,7 @@ public class EntityCachalotWhale extends Animal {
     public void aiStep() {
         super.aiStep();
         scaleParts();
+
         if (echoSoundCooldown > 0) {
             echoSoundCooldown--;
         }
