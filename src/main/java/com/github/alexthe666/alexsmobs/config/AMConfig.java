@@ -19,7 +19,7 @@ public class AMConfig {
     public static int crocSpawnRolls = 1;
     public static int flySpawnWeight = 3;
     public static int flySpawnRolls = 1;
-    public static int hummingbirdSpawnWeight = 39;
+    public static int hummingbirdSpawnWeight = 19;
     public static int hummingbirdSpawnRolls = 0;
     public static int orcaSpawnWeight = 2;
     public static int orcaSpawnRolls = 6;

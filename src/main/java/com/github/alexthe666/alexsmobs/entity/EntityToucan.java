@@ -331,10 +331,10 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     public BlockPos getToucanGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
-        while (position.getY() < 256 && !level.getFluidState(position).isEmpty()) {
+        while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > 2 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -62 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
         return position;
@@ -349,11 +349,11 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getToucanGround(radialPos);
-        if (ground.getY() == 0) {
+        if (ground.getY() == -64) {
             return this.position();
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > 2 && level.isEmptyBlock(ground)) {
+            while (ground.getY() > -62 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
                 ground = ground.below();
             }
         }
@@ -478,7 +478,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > 0 && level.isEmptyBlock(position)) {
+        while (position.getY() > -62 && level.isEmptyBlock(position)) {
             position = position.below();
         }
         return !level.getFluidState(position).isEmpty() || level.getBlockState(position).is(Blocks.VINE) || position.getY() <= 0;
@@ -486,7 +486,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     private boolean isOverLeaves() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > 0 && level.isEmptyBlock(position)) {
+        while (position.getY() > -62 && level.isEmptyBlock(position)) {
             position = position.below();
         }
         return level.getBlockState(position).is(BlockTags.LEAVES) || level.getBlockState(position).is(Blocks.VINE);
