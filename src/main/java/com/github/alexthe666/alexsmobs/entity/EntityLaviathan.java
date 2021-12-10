@@ -36,6 +36,7 @@ import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
@@ -660,7 +661,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                 for (int j = 0; j < list.size(); ++j) {
                     Entity entity = list.get(j);
                     if (!entity.hasPassenger(this)) {
-                        if (flag2 && !(entity instanceof Player) && !entity.isPassenger() && entity.getBbWidth() < this.getBbWidth() && !(entity instanceof EntityLaviathan) && !(entity instanceof Monster) && entity instanceof Mob && this.canAddPassenger(entity) && !(entity instanceof WaterAnimal)) {
+                        if (flag2 && !(entity instanceof Player) && !entity.isPassenger() && entity.getBbWidth() < this.getBbWidth() && !(entity instanceof EntityLaviathan) && !(entity instanceof Enemy) && entity instanceof Mob && this.canAddPassenger(entity) && !(entity instanceof WaterAnimal)) {
                             entity.startRiding(this);
                         } else {
                             this.push(entity);
