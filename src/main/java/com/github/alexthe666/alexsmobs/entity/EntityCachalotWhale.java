@@ -623,6 +623,9 @@ public class EntityCachalotWhale extends Animal {
             if (this.isSleeping() && (!isSleepTime() || this.getTarget() != null)) {
                 this.setSleeping(false);
             }
+            if(target instanceof Player && ((Player) target).isCreative()){
+                this.setTarget(null);
+            }
         }
 
         if (this.isAlive() && isCharging()) {
