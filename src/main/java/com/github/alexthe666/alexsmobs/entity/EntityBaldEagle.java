@@ -245,7 +245,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     }
 
     public void travel(Vec3 vec3d) {
-        if (!this.shouldHoodedReturn() && this.hasCap() && this.isTame() && !this.isPassenger()) {
+        if (!this.shouldHoodedReturn() && this.hasCap() && this.isTame() && !this.isPassenger() || this.isSitting()) {
             super.travel(Vec3.ZERO);
             return;
         }
@@ -253,7 +253,8 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     }
 
     public boolean doHurtTarget(Entity entityIn) {
-        if (this.entityData.get(ATTACK_TICK) == 0 && this.attackProgress == 0 && entityIn.isAlive() && this.distanceTo(entityIn) < entityIn.getBbWidth() + 5) {
+        double dist = this.isSitting() ? entityIn.getBbWidth() + 1 : entityIn.getBbWidth() + 5;
+        if (this.entityData.get(ATTACK_TICK) == 0 && this.attackProgress == 0 && entityIn.isAlive() && this.distanceTo(entityIn) < dist) {
             this.entityData.set(ATTACK_TICK, 5);
         }
         return true;
