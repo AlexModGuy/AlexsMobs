@@ -153,7 +153,11 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
     protected boolean findNearestBlock() {
         int i = this.searchRange;
         int j = this.verticalSearchRange;
-        BlockPos blockpos = this.ant.hasHive() ? this.ant.getHivePos() : this.mob.blockPosition();
+        BlockPos blockpos = this.mob.blockPosition();
+        if(ant.hasHive() && ant.getHivePos() != null){
+            blockpos = ant.getHivePos();
+            i *= 2;
+        }
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
         for (int k = this.verticalSearchStart; k <= j; k = k > 0 ? -k : 1 - k) {
