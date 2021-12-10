@@ -317,7 +317,7 @@ public class EntityCachalotWhale extends Animal {
         if (!prev && albino) {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(230.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(45.0D);
-            this.setHealth(160.0F);
+            this.setHealth(230.0F);
         } else {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(160.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(30.0D);
