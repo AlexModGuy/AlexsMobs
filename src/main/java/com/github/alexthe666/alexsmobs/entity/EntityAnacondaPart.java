@@ -100,6 +100,9 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         if (this.tickCount > 1) {
             Entity parent = getParent();
             refreshDimensions();
+            if (parent == null && !level.isClientSide) {
+                this.remove(RemovalReason.DISCARDED);
+            }
             if (parent != null && !level.isClientSide) {
                 if (parent instanceof LivingEntity) {
                     if (!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)) {

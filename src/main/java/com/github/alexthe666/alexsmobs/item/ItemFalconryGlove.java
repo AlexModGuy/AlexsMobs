@@ -95,7 +95,7 @@ public class ItemFalconryGlove extends Item {
                         }else{
                             eagle.getNavigation().stop();
                             eagle.getMoveControl().setWantedPosition(eagle.getX(), eagle.getY(), eagle.getZ(), 0.1F);
-                            if(pointedEntity != null && !eagle.isAlliedTo(pointedEntity)){
+                            if(pointedEntity != null && pointedEntity.isAlive() && !eagle.isAlliedTo(pointedEntity)){
                                 eagle.setFlying(true);
                                 if(pointedEntity instanceof LivingEntity){
                                     eagle.setTarget((LivingEntity) pointedEntity);

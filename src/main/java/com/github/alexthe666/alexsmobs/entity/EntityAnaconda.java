@@ -155,8 +155,8 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (this.getChildId() != null) {
-            compound.putUUID("ChildUUID", this.getChildId());
+        if (compound.hasUUID("ChildUUID")) {
+            this.setChildId(compound.getUUID("ChildUUID"));
         }
         feedings = compound.getInt("Feedings");
         this.setSheddingTime(compound.getInt("ShedTime"));
@@ -166,8 +166,8 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        if (compound.hasUUID("ChildUUID")) {
-            this.setChildId(compound.getUUID("ChildUUID"));
+        if (this.getChildId() != null) {
+            compound.putUUID("ChildUUID", this.getChildId());
         }
         compound.putInt("Feedings", feedings);
         compound.putInt("ShedTime", getSheddingTime());
