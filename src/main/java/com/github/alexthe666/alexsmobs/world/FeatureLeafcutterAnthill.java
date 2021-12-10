@@ -27,7 +27,7 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        if (context.level().getRandom().nextFloat() > 0.00005F) {
+        if (context.level().getRandom().nextFloat() > 0.00002F) {
             return false;
         }
         int x = 8;
