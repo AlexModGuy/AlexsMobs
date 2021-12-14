@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
@@ -531,12 +532,12 @@ public class ServerEvents {
                 motion = new Vec3(d0, d2, d1);
                 event.getEntityLiving().setDeltaMovement(motion);
             }
-
-
         }
-
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
             VineLassoUtil.tickLasso(event.getEntityLiving());
+        }
+        if (RockyChestplateUtil.isWearing(event.getEntityLiving())) {
+            RockyChestplateUtil.tickRockyRolling(event.getEntityLiving());
         }
     }
 

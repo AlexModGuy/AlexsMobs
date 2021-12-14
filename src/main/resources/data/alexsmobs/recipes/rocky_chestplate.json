@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "alexsmobs:rocky_shell"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:rocky_chestplate",
+    "count": 1
+  }
+}

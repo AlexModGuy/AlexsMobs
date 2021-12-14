@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.event;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.ClientProxy;
+import com.github.alexthe666.alexsmobs.client.model.ModelRockyChestplateRolling;
 import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
 import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
@@ -11,8 +12,10 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
+import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.item.ItemModArmor;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
@@ -20,6 +23,7 @@ import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -34,14 +38,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobType;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
@@ -54,10 +58,15 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.Random;
+
 @OnlyIn(Dist.CLIENT)
 public class ClientEvents {
 
     private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("alexsmobs:textures/falconry_radius.png");
+    private static final ResourceLocation ROCKY_CHESTPLATE_TEXTURE = new ResourceLocation("alexsmobs:textures/armor/rocky_chestplate.png");
+    private static final ModelRockyChestplateRolling ROCKY_CHESTPLATE_MODEL = new ModelRockyChestplateRolling();
+
     private boolean previousLavaVision = false;
     private LiquidBlockRenderer previousFluidRenderer;
 
@@ -120,11 +129,31 @@ public class ClientEvents {
             float vibrate = 0.05F;
             event.getPoseStack().translate((event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate);
         }
+        if(RockyChestplateUtil.isRockyRolling(event.getEntity())){
+            event.getPoseStack().pushPose();
+            event.setCanceled(true);
+            float limbSwing = event.getEntity().animationPosition - event.getEntity().animationSpeed * (1.0F - event.getPartialTick());
+            float limbSwingAmount = Mth.lerp(event.getPartialTick(), event.getEntity().animationSpeedOld, event.getEntity().animationSpeed);
+            float yRot = event.getEntity().yBodyRotO + (event.getEntity().yBodyRot - event.getEntity().yBodyRotO) * event.getPartialTick();
+            float roll = event.getEntity().walkDistO + (event.getEntity().walkDist - event.getEntity().walkDistO) * event.getPartialTick();
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(event.getMultiBufferSource(), RenderType.armorCutoutNoCull(ROCKY_CHESTPLATE_TEXTURE), false, event.getEntity().getItemBySlot(EquipmentSlot.CHEST).hasFoil());
+            event.getPoseStack().translate(0.0D, event.getEntity().getBbHeight() - event.getEntity().getBbHeight() * 0.5F, 0.0D);
+            event.getPoseStack().mulPose(Vector3f.YN.rotationDegrees(180F + yRot));
+            event.getPoseStack().mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            event.getPoseStack().mulPose(Vector3f.XP.rotationDegrees(100F * roll));
+            ROCKY_CHESTPLATE_MODEL.setupAnim(event.getEntity(), limbSwing, limbSwingAmount, event.getEntity().tickCount + event.getPartialTick(), 0, 0);
+            ROCKY_CHESTPLATE_MODEL.renderToBuffer(event.getPoseStack(), vertexconsumer, event.getPackedLight(), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            event.getPoseStack().popPose();
+        }
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onPostRenderEntity(RenderLivingEvent.Post event) {
+        if(RockyChestplateUtil.isRockyRolling(event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
         if (event.getEntity().hasEffect(AMEffectRegistry.ENDER_FLU)) {
             event.getPoseStack().popPose();
         }
@@ -323,6 +352,17 @@ public class ClientEvents {
             for (int i = 0; i < length; i++) {
                 Minecraft.getInstance().levelRenderer.viewArea.chunks[i].dirty = true;
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onCameraSetup(EntityViewRenderEvent.CameraSetup event){
+        if(Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE) != null && !Minecraft.getInstance().isPaused()){
+            int duration = Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE).getDuration();
+            float f = (Math.min(10, duration) + Minecraft.getInstance().getFrameTime()) * 0.1F;
+            float intensity = f * Minecraft.getInstance().options.screenEffectScale;
+            Random rng = Minecraft.getInstance().player.getRandom();
+            event.getCamera().move(rng.nextFloat() * 0.1F * intensity, rng.nextFloat() * 0.2F * intensity, rng.nextFloat() * 0.4F * intensity);
         }
     }
 }

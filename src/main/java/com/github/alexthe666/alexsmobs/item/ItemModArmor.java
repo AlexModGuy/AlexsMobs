@@ -59,6 +59,9 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
             tooltip.add(new TranslatableComponent("item.alexsmobs.froststalker_helmet.desc").withStyle(ChatFormatting.AQUA));
         }
+        if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
+            tooltip.add(new TranslatableComponent("item.alexsmobs.rocky_chestplate.desc").withStyle(ChatFormatting.GRAY));
+        }
     }
 
     private void buildCrocAttributes(AMArmorMaterial materialIn) {
@@ -124,6 +127,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/emu_leggings.png";
         } else if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/froststalker_helmet.png";
+        }else if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
+            return "alexsmobs:textures/armor/rocky_chestplate.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }
