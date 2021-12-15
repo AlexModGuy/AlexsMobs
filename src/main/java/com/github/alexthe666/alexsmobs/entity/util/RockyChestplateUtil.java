@@ -54,7 +54,7 @@ public class RockyChestplateUtil {
         boolean update = false;
         int rollCounter = getRollingTicksLeft(roller);
         if(rollCounter == 0){
-            if(roller.isSprinting() && (!(roller instanceof Player) || !((Player) roller).getAbilities().flying)){
+            if(roller.isSprinting()  && !roller.isShiftKeyDown() && (!(roller instanceof Player) || !((Player) roller).getAbilities().flying)){
                 update = true;
                 rollFor(roller, MAX_ROLL_TICKS);
             }
@@ -72,16 +72,19 @@ public class RockyChestplateUtil {
                     }
                 }
             }
+            if(roller.fallDistance > 3.0F){
+                roller.fallDistance -= 0.5F;
+            }
             roller.refreshDimensions();
             Vec3 vec3 = roller.isOnGround() ? roller.getDeltaMovement() : roller.getDeltaMovement().multiply(0.9D, 1D, 0.9D);
             float f = roller.getYRot() * ((float) Math.PI / 180F);
-            float f1 = 0.15F;
+            float f1 = roller.isInWaterOrBubble() ? 0.05F : 0.15F;
             Vec3 rollDelta = new Vec3(vec3.x + (double) (-Mth.sin(f) * f1), 0.0D, vec3.z + (double) (Mth.cos(f) * f1));
             roller.setDeltaMovement(rollDelta.add(0.0D, rollCounter >= MAX_ROLL_TICKS ? 0.27D : vec3.y, 0.0D));
             if(rollCounter > 1 || !roller.isSprinting()){
                 rollFor(roller, rollCounter - 1);
             }
-            if(roller instanceof Player && ((Player) roller).getAbilities().flying){
+            if(roller instanceof Player && ((Player) roller).getAbilities().flying || roller.isShiftKeyDown()){
                 rollCounter = 0;
                 rollFor(roller, 0);
             }

@@ -156,6 +156,8 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.VINE_LASSO, RenderVineLasso::new);
         EntityRenderers.register(AMEntityRegistry.ANTEATER, RenderAnteater::new);
         EntityRenderers.register(AMEntityRegistry.ROCKY_ROLLER, RenderRockyRoller::new);
+        EntityRenderers.register(AMEntityRegistry.FLUTTER, RenderFlutter::new);
+        EntityRenderers.register(AMEntityRegistry.POLLEN_BALL, RenderPollenBall::new);
         //EntityRenderers.register(AMEntityRegistry.JERBOA, RenderJerboa::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{

@@ -46,8 +46,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.awt.*;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -72,7 +70,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.7F).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.25F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ARMOR, 20.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.7F).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
@@ -127,7 +125,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             }
             maxUpStep = 1;
         } else {
-            maxUpStep = 0.5F;
+            maxUpStep = 0.66F;
             this.rollCounter = 0;
         }
         if (rollCooldown > 0) {
@@ -283,11 +281,11 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
     @Override
     public boolean canPassThrough(BlockPos blockPos, BlockState blockstate, VoxelShape voxelShape) {
-        return blockstate.getBlock() instanceof PointedDripstoneBlock || blockstate.isAir();
+        return blockstate.getBlock() instanceof PointedDripstoneBlock;
     }
 
     public boolean isColliding(BlockPos pos, BlockState blockstate) {
-        return !(blockstate.getBlock() instanceof PointedDripstoneBlock || blockstate.isAir()) && super.isColliding(pos, blockstate);
+        return !(blockstate.getBlock() instanceof PointedDripstoneBlock) && super.isColliding(pos, blockstate);
     }
 
     public Vec3 collide(Vec3 vec3) {
@@ -309,13 +307,13 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         private NodeProcessor() {
         }
 
-        public static BlockPathTypes getBlockPathTypeStatic(BlockGetter p_237231_0_, BlockPos.MutableBlockPos p_237231_1_) {
-            int i = p_237231_1_.getX();
-            int j = p_237231_1_.getY();
-            int k = p_237231_1_.getZ();
-            BlockPathTypes pathnodetype = getNodes(p_237231_0_, p_237231_1_);
+        public static BlockPathTypes getBlockPathTypeStatic(BlockGetter level, BlockPos.MutableBlockPos pos) {
+            int i = pos.getX();
+            int j = pos.getY();
+            int k = pos.getZ();
+            BlockPathTypes pathnodetype = getNodes(level, pos);
             if (pathnodetype == BlockPathTypes.OPEN && j >= 1) {
-                BlockPathTypes pathnodetype1 = getNodes(p_237231_0_, p_237231_1_.set(i, j - 1, k));
+                BlockPathTypes pathnodetype1 = getNodes(level, pos.set(i, j - 1, k));
                 pathnodetype = pathnodetype1 != BlockPathTypes.WALKABLE && pathnodetype1 != BlockPathTypes.OPEN && pathnodetype1 != BlockPathTypes.WATER && pathnodetype1 != BlockPathTypes.LAVA ? BlockPathTypes.WALKABLE : BlockPathTypes.OPEN;
                 if (pathnodetype1 == BlockPathTypes.DAMAGE_FIRE) {
                     pathnodetype = BlockPathTypes.DAMAGE_FIRE;
@@ -335,7 +333,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             }
 
             if (pathnodetype == BlockPathTypes.WALKABLE) {
-                pathnodetype = checkNeighbourBlocks(p_237231_0_, p_237231_1_.set(i, j, k), pathnodetype);
+                pathnodetype = checkNeighbourBlocks(level, pos.set(i, j, k), pathnodetype);
             }
 
             return pathnodetype;
@@ -486,131 +484,12 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     class Navigator extends GroundPathNavigatorWide {
 
         public Navigator(Mob mob, Level world) {
-            super(mob, world, 1.2F);
+            super(mob, world, 0.75F);
         }
 
         protected PathFinder createPathFinder(int i) {
             this.nodeEvaluator = new NodeProcessor();
             return new PathFinder(this.nodeEvaluator, i);
         }
-
-        protected boolean canMoveDirectly(Vec3 posVec31, Vec3 posVec32, int sizeX, int sizeY, int sizeZ) {
-            int i = Mth.floor(posVec31.x);
-            int j = Mth.floor(posVec31.z);
-            double d0 = posVec32.x - posVec31.x;
-            double d1 = posVec32.z - posVec31.z;
-            double d2 = d0 * d0 + d1 * d1;
-            if (d2 < 1.0E-8D) {
-                return false;
-            } else {
-                double d3 = 1.0D / Math.sqrt(d2);
-                d0 = d0 * d3;
-                d1 = d1 * d3;
-                sizeX = sizeX + 2;
-                sizeZ = sizeZ + 2;
-                if (!this.isSafeToStandAt(i, Mth.floor(posVec31.y), j, sizeX, sizeY, sizeZ, posVec31, d0, d1)) {
-                    return false;
-                } else {
-                    sizeX = sizeX - 2;
-                    sizeZ = sizeZ - 2;
-                    double d4 = 1.0D / Math.abs(d0);
-                    double d5 = 1.0D / Math.abs(d1);
-                    double d6 = (double) i - posVec31.x;
-                    double d7 = (double) j - posVec31.z;
-                    if (d0 >= 0.0D) {
-                        ++d6;
-                    }
-
-                    if (d1 >= 0.0D) {
-                        ++d7;
-                    }
-
-                    d6 = d6 / d0;
-                    d7 = d7 / d1;
-                    int k = d0 < 0.0D ? -1 : 1;
-                    int l = d1 < 0.0D ? -1 : 1;
-                    int i1 = Mth.floor(posVec32.x);
-                    int j1 = Mth.floor(posVec32.z);
-                    int k1 = i1 - i;
-                    int l1 = j1 - j;
-
-                    while (k1 * k > 0 || l1 * l > 0) {
-                        if (d6 < d7) {
-                            d6 += d4;
-                            i += k;
-                            k1 = i1 - i;
-                        } else {
-                            d7 += d5;
-                            j += l;
-                            l1 = j1 - j;
-                        }
-
-                        if (!this.isSafeToStandAt(i, Mth.floor(posVec31.y), j, sizeX, sizeY, sizeZ, posVec31, d0, d1)) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        private boolean isPositionClear(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3 p_179692_7_, double p_179692_8_, double p_179692_10_) {
-            for (BlockPos blockpos : BlockPos.betweenClosed(new BlockPos(x, y, z), new BlockPos(x + sizeX - 1, y + sizeY - 1, z + sizeZ - 1))) {
-                double d0 = (double) blockpos.getX() + 0.5D - p_179692_7_.x;
-                double d1 = (double) blockpos.getZ() + 0.5D - p_179692_7_.z;
-                if (!(d0 * p_179692_8_ + d1 * p_179692_10_ < 0.0D) && !this.level.getBlockState(blockpos).isPathfindable(this.level, blockpos, PathComputationType.LAND) || EntityRockyRoller.this.canPassThrough(blockpos, level.getBlockState(blockpos), null)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private boolean isSafeToStandAt(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3 vec31, double p_179683_8_, double p_179683_10_) {
-            int i = x - sizeX / 2;
-            int j = z - sizeZ / 2;
-            if (!this.isPositionClear(i, y, j, sizeX, sizeY, sizeZ, vec31, p_179683_8_, p_179683_10_)) {
-                return false;
-            } else {
-                BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-                for (int k = i; k < i + sizeX; ++k) {
-                    for (int l = j; l < j + sizeZ; ++l) {
-                        double d0 = (double) k + 0.5D - vec31.x;
-                        double d1 = (double) l + 0.5D - vec31.z;
-                        if (!(d0 * p_179683_8_ + d1 * p_179683_10_ < 0.0D)) {
-                            BlockPathTypes pathnodetype = this.nodeEvaluator.getBlockPathType(this.level, k, y - 1, l, this.mob, sizeX, sizeY, sizeZ, true, true);
-                            mutable.set(k, y - 1, l);
-                            if (!this.hasValidPathType(pathnodetype) || EntityRockyRoller.this.canPassThrough(mutable, level.getBlockState(mutable), null)) {
-                                return false;
-                            }
-
-                            pathnodetype = this.nodeEvaluator.getBlockPathType(this.level, k, y, l, this.mob, sizeX, sizeY, sizeZ, true, true);
-                            float f = this.mob.getPathfindingMalus(pathnodetype);
-                            if (f < 0.0F || f >= 8.0F) {
-                                return false;
-                            }
-
-                            if (pathnodetype == BlockPathTypes.DAMAGE_FIRE || pathnodetype == BlockPathTypes.DANGER_FIRE || pathnodetype == BlockPathTypes.DAMAGE_OTHER) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-
-                return true;
-            }
-        }
-
-        protected boolean hasValidPathType(BlockPathTypes p_230287_1_) {
-            if (p_230287_1_ == BlockPathTypes.WATER) {
-                return false;
-            } else if (p_230287_1_ == BlockPathTypes.LAVA) {
-                return false;
-            } else {
-                return p_230287_1_ != BlockPathTypes.OPEN;
-            }
-        }
     }
-
 }

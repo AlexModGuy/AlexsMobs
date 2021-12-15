@@ -129,8 +129,8 @@ public class ModelRockyRoller extends AdvancedEntityModel<EntityRockyRoller> {
         float partialTick = ageInTicks - entity.tickCount;
         float rollProgress = entity.prevRollProgress + (entity.rollProgress - entity.prevRollProgress) * partialTick;
         float walkProgress = 5F - rollProgress;
-        float walkSpeed = 1F;
-        float walkDegree = 0.6F;
+        float walkSpeed = 1.2F;
+        float walkDegree = 0.8F;
         float idleSpeed = 0.15F;
         float idleDegree = 0.3F;
         float rollDegree = 0.2F;
