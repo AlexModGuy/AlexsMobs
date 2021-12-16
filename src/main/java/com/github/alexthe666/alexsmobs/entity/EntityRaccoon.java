@@ -182,7 +182,7 @@ public class EntityRaccoon extends TameableEntity implements IAnimatedEntity, IF
 
 
     public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem() == Items.BREAD;
+        return stack.getItem() == Items.BREAD || stack.getItem() == Items.SWEET_BERRIES;
     }
 
     public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
