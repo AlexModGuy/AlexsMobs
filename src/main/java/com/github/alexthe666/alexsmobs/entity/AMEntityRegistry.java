@@ -111,7 +111,8 @@ public class AMEntityRegistry {
     public static final EntityType<EntityRockyRoller> ROCKY_ROLLER = registerEntity(EntityType.Builder.of(EntityRockyRoller::new, MobCategory.MONSTER).sized(1.2F, 1.45F), "rocky_roller");
     public static final EntityType<EntityFlutter> FLUTTER = registerEntity(EntityType.Builder.of(EntityFlutter::new, MobCategory.CREATURE).sized(0.5F, 0.7F), "flutter");
     public static final EntityType<EntityPollenBall> POLLEN_BALL = registerEntity(EntityType.Builder.of(EntityPollenBall::new, MobCategory.MISC).sized(0.35F, 0.35F).setCustomClientFactory(EntityPollenBall::new).fireImmune(), "pollen_ball");
-//public static final EntityType<EntityJerboa> JERBOA = registerEntity(EntityType.Builder.of(EntityJerboa::new, MobCategory.CREATURE).sized(0.5F, 0.5F), "jerboa");
+    public static final EntityType<EntityGeladaMonkey> GELADA_MONKEY = registerEntity(EntityType.Builder.of(EntityGeladaMonkey::new, MobCategory.CREATURE).sized(1.2F, 1.2F), "gelada_monkey");
+    //public static final EntityType<EntityJerboa> JERBOA = registerEntity(EntityType.Builder.of(EntityJerboa::new, MobCategory.CREATURE).sized(0.5F, 0.5F), "jerboa");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -269,6 +270,7 @@ public class AMEntityRegistry {
         event.put(ANTEATER, EntityAnteater.bakeAttributes().build());
         event.put(ROCKY_ROLLER, EntityRockyRoller.bakeAttributes().build());
         event.put(FLUTTER, EntityFlutter.bakeAttributes().build());
+        event.put(GELADA_MONKEY, EntityGeladaMonkey.bakeAttributes().build());
         //event.put(JERBOA, EntityJerboa.bakeAttributes().build());
     }
 

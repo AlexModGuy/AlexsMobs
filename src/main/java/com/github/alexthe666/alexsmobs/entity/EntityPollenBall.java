@@ -250,7 +250,7 @@ public class EntityPollenBall extends Entity {
     protected boolean canHitEntity(Entity p_230298_1_) {
         if (!p_230298_1_.isSpectator() && p_230298_1_.isAlive() && p_230298_1_.isPickable()) {
             Entity entity = this.getShooter();
-            return (entity == null || this.leftOwner || !entity.isPassengerOfSameVehicle(p_230298_1_)) && !(p_230298_1_ instanceof EntityVoidWormShot || p_230298_1_ instanceof EntityVoidWormPart);
+            return (entity == null || this.leftOwner || !entity.isPassengerOfSameVehicle(p_230298_1_)) && (entity == null || p_230298_1_ == null || !p_230298_1_.isAlliedTo(entity));
         } else {
             return false;
         }

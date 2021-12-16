@@ -384,7 +384,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     public void followEntity(TamableAnimal tameable, LivingEntity owner, double followSpeed) {
-        if (this.distanceTo(owner) > 4) {
+        if (this.distanceTo(owner) > 8) {
             this.setFlying(true);
             this.getNavigation().moveTo(owner.getX(), owner.getY() + owner.getBbHeight(), owner.getZ(), followSpeed);
         } else {

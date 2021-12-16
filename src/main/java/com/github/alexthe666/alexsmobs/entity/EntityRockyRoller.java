@@ -109,7 +109,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         }
         if (this.isRolling() && rollCooldown <= 0) {
             this.handleRoll();
-            if (this.isAngry()) {
+            if (this.isAngry() && !this.isAlive()) {
                 for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
                     if (!isAlliedTo(entity) && entity != this) {
                         entity.hurt(DamageSource.mobAttack(this), (isTarget(entity) ? 5.0F : 2.0F) + random.nextFloat() * 2.0F);
@@ -120,7 +120,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
                     }
                 }
             }
-            if (this.rollCounter > 2 && !this.isMoving()) {
+            if (this.rollCounter > 2 && !this.isMoving() || !this.isAlive()) {
                 this.setRolling(false);
             }
             maxUpStep = 1;
