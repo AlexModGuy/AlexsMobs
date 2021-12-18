@@ -37,7 +37,7 @@ repositories{
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.14.4'
+version = '1.14.5'
 group = 'com.github.alexthe667' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alexsmobs'
 
@@ -45,7 +45,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.18'
+    mappings channel: 'official', version: '1.18.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
@@ -119,7 +119,7 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18-38.0.14'
+    minecraft 'net.minecraftforge:forge:1.18.1-39.0.5'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     compileOnly "curse.maven:citadel4-331936:3564339" // change to 3548061
     runtimeOnly "curse.maven:citadel4-331936:3564339"
@@ -131,7 +131,7 @@ jar {
         attributes([
             "Specification-Title": "alexsmobs",
             "Specification-Vendor": "alexthe667",
-            "Specification-Version": "1.14.2", // We are version 1 of ourselves
+            "Specification-Version": "1.14.5", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"alexthe667",
