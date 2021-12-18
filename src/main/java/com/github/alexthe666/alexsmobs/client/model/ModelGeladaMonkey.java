@@ -15,6 +15,7 @@ public class ModelGeladaMonkey extends AdvancedEntityModel<EntityGeladaMonkey> {
 	private final AdvancedModelBox torso;
 	private final AdvancedModelBox neck;
 	private final AdvancedModelBox head;
+	private final AdvancedModelBox mouth;
 	private final AdvancedModelBox left_arm;
 	private final AdvancedModelBox right_arm;
 	private final AdvancedModelBox left_leg;
@@ -56,8 +57,13 @@ public class ModelGeladaMonkey extends AdvancedEntityModel<EntityGeladaMonkey> {
 		head = new AdvancedModelBox(this);
 		head.setRotationPoint(0.0F, -1.0F, -2.0F);
 		neck.addChild(head);
-		head.setTextureOffset(0, 0).addBox(-3.0F, -2.0F, -2.0F, 6.0F, 4.0F, 3.0F, 0.0F, false);
-		head.setTextureOffset(0, 8).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 5.0F, 3.0F, 0.0F, false);
+		head.setTextureOffset(0, 0).addBox(-2.5F, -2.0F, -2.0F, 5.0F, 4.0F, 3.0F, 0.0F, false);
+		
+		mouth = new AdvancedModelBox(this);
+		mouth.setRotationPoint(0.0F, 1.0F, -1.0F);
+		head.addChild(mouth);
+		setRotationAngle(mouth, -1.0908F, 0.0F, 0.0F);
+		mouth.setTextureOffset(0, 8).addBox(-1.5F, -1.5F, -1.2F, 3.0F, 6.0F, 4.0F, 0.0F, false);
 
 		left_arm = new AdvancedModelBox(this);
 		left_arm.setRotationPoint(2.0F, 3.0F, -7.0F);
