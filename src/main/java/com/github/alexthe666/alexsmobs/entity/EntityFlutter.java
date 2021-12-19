@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -9,11 +10,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -179,6 +182,18 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         entityData.set(FLUTTER_PITCH, getFlutterPitch() - pitch);
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.FLUTTER_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.FLUTTER_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.FLUTTER_HURT;
+    }
+
     public void tick() {
         super.tick();
         prevShootProgress = shootProgress;
@@ -206,6 +221,13 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         if (entityData.get(TENTACLING) && tentacleProgress < 5F) {
             tentacleProgress++;
         }
+
+        if(!entityData.get(TENTACLING) && tentacleProgress == 5F){
+            if (squishCooldown == 0 && this.isFlying()) {
+                squishCooldown = 10;
+                this.playSound(AMSoundRegistry.FLUTTER_FLAP, 3F, 1.5F * this.getVoicePitch());
+            }
+        }
         if (!entityData.get(TENTACLING) && tentacleProgress > 0F) {
             tentacleProgress--;
         }
@@ -226,8 +248,8 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             if ((double) f >= 0.95F) {
                 this.entityData.set(TENTACLING, true);
                 if (squishCooldown == 0 && this.isFlying()) {
-                    squishCooldown = 20;
-                    //this.playSound(AMSoundRegistry.ENDERIOFlutter_SQUISH, 3F, this.getVoicePitch());
+                    squishCooldown = 10;
+                    this.playSound(AMSoundRegistry.FLUTTER_FLAP, 3F, 1.5F * this.getVoicePitch());
                 }
                 this.randomMotionSpeed = 0.8F;
             } else {
@@ -299,6 +321,9 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         if (this.entityData.get(SHAKING_HEAD_TICKS) > 0) {
             this.entityData.set(SHAKING_HEAD_TICKS, this.entityData.get(SHAKING_HEAD_TICKS) - 1);
         }
+        if(squishCooldown > 0){
+            squishCooldown--;
+        }
     }
 
     public boolean isFood(ItemStack stack) {
@@ -330,6 +355,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         if (!isTame() && canEatFlower(itemstack)) {
             this.usePlayerItem(player, hand, itemstack);
             this.flowersEaten.add(item.getRegistryName().toString());
+            this.playSound(AMSoundRegistry.FLUTTER_YES, this.getSoundVolume(), this.getVoicePitch());
             if (this.flowersEaten.size() > 3 && getRandom().nextInt(3) == 0 || this.flowersEaten.size() > 6) {
                 this.tame(player);
                 this.level.broadcastEntityEvent(this, (byte) 7);
@@ -338,6 +364,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             }
             return InteractionResult.SUCCESS;
         } else if (!isTame() && ItemTags.FLOWERS.contains(item)) {
+            this.playSound(AMSoundRegistry.FLUTTER_NO, this.getSoundVolume(), this.getVoicePitch());
             this.entityData.set(SHAKING_HEAD_TICKS, 20);
         }
         if (isTame() && ItemTags.FLOWERS.contains(item) && this.getHealth() < this.getMaxHealth()) {

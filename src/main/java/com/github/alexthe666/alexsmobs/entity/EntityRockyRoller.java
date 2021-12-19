@@ -3,12 +3,14 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.entity.ai.MovementControllerCustomCollisions;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -95,6 +97,18 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         this.entityData.define(ROLLING, false);
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.ROCKY_ROLLER_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.ROCKY_ROLLER_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.ROCKY_ROLLER_HURT;
+    }
+
     public void tick() {
         super.tick();
         prevRollProgress = rollProgress;
@@ -109,7 +123,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         }
         if (this.isRolling() && rollCooldown <= 0) {
             this.handleRoll();
-            if (this.isAngry() && !this.isAlive()) {
+            if (this.isAngry() && this.isAlive()) {
                 for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
                     if (!isAlliedTo(entity) && entity != this) {
                         entity.hurt(DamageSource.mobAttack(this), (isTarget(entity) ? 5.0F : 2.0F) + random.nextFloat() * 2.0F);
@@ -179,7 +193,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             }
         }
         if(flag){
-            this.playSound(SoundEvents.BASALT_BREAK, this.getSoundVolume(), this.getVoicePitch());
+            this.playSound(AMSoundRegistry.ROCKY_ROLLER_EARTHQUAKE, this.getSoundVolume(), this.getVoicePitch());
         }
     }
 

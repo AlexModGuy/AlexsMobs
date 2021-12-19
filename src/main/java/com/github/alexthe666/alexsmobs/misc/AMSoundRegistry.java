@@ -290,6 +290,26 @@ public class AMSoundRegistry {
 
     public static final SoundEvent ANTEATER_HURT = createSoundEvent("anteater_hurt");
 
+    public static final SoundEvent ROCKY_ROLLER_IDLE = createSoundEvent("rocky_roller_idle");
+
+    public static final SoundEvent ROCKY_ROLLER_HURT = createSoundEvent("rocky_roller_hurt");
+
+    public static final SoundEvent ROCKY_ROLLER_EARTHQUAKE = createSoundEvent("rocky_roller_earthquake");
+
+    public static final SoundEvent GELADA_MONKEY_IDLE = createSoundEvent("gelada_monkey_idle");
+
+    public static final SoundEvent GELADA_MONKEY_HURT = createSoundEvent("gelada_monkey_hurt");
+
+    public static final SoundEvent FLUTTER_IDLE = createSoundEvent("flutter_idle");
+
+    public static final SoundEvent FLUTTER_HURT = createSoundEvent("flutter_hurt");
+
+    public static final SoundEvent FLUTTER_FLAP = createSoundEvent("flutter_flap");
+
+    public static final SoundEvent FLUTTER_NO = createSoundEvent("flutter_no");
+
+    public static final SoundEvent FLUTTER_YES = createSoundEvent("flutter_yes");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

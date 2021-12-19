@@ -734,6 +734,42 @@
       "offset_y": -8,
       "linked_page": "anteater.json",
       "hover_text": "entity.alexsmobs.anteater"
+    },
+    {
+      "entity": "alexsmobs:rocky_roller",
+      "x": 260,
+      "y": 70,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.0,
+      "offset_x": -4,
+      "offset_y": -4,
+      "linked_page": "rocky_roller.json",
+      "hover_text": "entity.alexsmobs.rocky_roller"
+    },
+    {
+      "entity": "alexsmobs:flutter",
+      "x": 290,
+      "y": 70,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.8,
+      "offset_x": -17,
+      "offset_y": -15,
+      "linked_page": "flutter.json",
+      "hover_text": "entity.alexsmobs.flutter"
+    },
+    {
+      "entity": "alexsmobs:gelada_monkey",
+      "x": 320,
+      "y": 70,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.2,
+      "offset_x": -8,
+      "offset_y": -7,
+      "linked_page": "gelada_monkey.json",
+      "hover_text": "entity.alexsmobs.gelada_monkey"
     }
   ],
   "linked_page_buttons": [

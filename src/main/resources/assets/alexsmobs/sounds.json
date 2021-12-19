@@ -1920,5 +1920,143 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.anteater_hurt"
+  },
+  "rocky_roller_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:rocky_roller_idle_0"
+      },
+      {
+        "name": "alexsmobs:rocky_roller_idle_1"
+      },
+      {
+        "name": "alexsmobs:rocky_roller_idle_2"
+      },
+      {
+        "name": "alexsmobs:rocky_roller_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.rocky_roller_idle"
+  },
+  "rocky_roller_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:rocky_roller_hurt_0"
+      },
+      {
+        "name": "alexsmobs:rocky_roller_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.rocky_roller_hurt"
+  },
+  "rocky_roller_earthquake": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:rocky_roller_earthquake_0"
+      },
+      {
+        "name": "alexsmobs:rocky_roller_earthquake_1"
+      },
+      {
+        "name": "alexsmobs:rocky_roller_earthquake_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.rocky_roller_earthquake"
+  },
+  "gelada_monkey_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:gelada_monkey_idle_0"
+      },
+      {
+        "name": "alexsmobs:gelada_monkey_idle_1"
+      },
+      {
+        "name": "alexsmobs:gelada_monkey_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.gelada_monkey_idle"
+  },
+  "gelada_monkey_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:gelada_monkey_hurt_0"
+      },
+      {
+        "name": "alexsmobs:gelada_monkey_hurt_1"
+      },
+      {
+        "name": "alexsmobs:gelada_monkey_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.gelada_monkey_hurt"
+  },
+  "flutter_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:flutter_idle_1"
+      },
+      {
+        "name": "alexsmobs:flutter_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.flutter_idle"
+  },
+  "flutter_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:flutter_hurt_0"
+      },
+      {
+        "name": "alexsmobs:flutter_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.flutter_hurt"
+  },
+  "flutter_flap": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:flutter_flap_0"
+      },
+      {
+        "name": "alexsmobs:flutter_flap_1"
+      },
+      {
+        "name": "alexsmobs:flutter_flap_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.flutter_flap"
+  },
+  "flutter_no": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:flutter_no_0"
+      },
+      {
+        "name": "alexsmobs:flutter_no_1"
+      },
+      {
+        "name": "alexsmobs:flutter_no_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.flutter_no"
+  },
+  "flutter_yes": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:flutter_yes_0"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.flutter_yes"
   }
 }

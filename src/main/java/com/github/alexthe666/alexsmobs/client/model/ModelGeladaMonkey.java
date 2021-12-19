@@ -28,8 +28,6 @@ public class ModelGeladaMonkey extends AdvancedEntityModel<EntityGeladaMonkey> {
 
 		root = new AdvancedModelBox(this);
 		root.setRotationPoint(0.0F, 24.0F, 0.0F);
-		
-
 		body = new AdvancedModelBox(this);
 		body.setRotationPoint(0.0F, -11.0F, 4.0F);
 		root.addChild(body);
