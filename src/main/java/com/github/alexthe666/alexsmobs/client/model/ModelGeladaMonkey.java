@@ -271,7 +271,7 @@ public class ModelGeladaMonkey extends AdvancedEntityModel<EntityGeladaMonkey> {
 
 	@Override
 	public Iterable<AdvancedModelBox> getAllParts() {
-		return ImmutableList.of(root, body, tail, torso, neck, head, left_arm, left_leg, right_arm, right_leg);
+		return ImmutableList.of(root, body, tail, torso, neck, head, left_arm, left_leg, right_arm, right_leg, mouth);
 	}
 
 

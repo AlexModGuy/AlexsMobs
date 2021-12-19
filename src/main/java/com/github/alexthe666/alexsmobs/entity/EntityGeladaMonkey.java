@@ -210,7 +210,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
                     if (monkey.isLeader()) {
                         this.leaderFightTime++;
                     }
-                    if(leaderFightTime < 10 && random.nextInt(6) == 0 && this.getAnimation() == NO_ANIMATION){
+                    if(leaderFightTime < 10 && random.nextInt(5) == 0 && this.getAnimation() == NO_ANIMATION){
                         this.setAnimation(ANIMATION_CHEST);
                     }
                     if (Math.max(this.leaderFightTime, monkey.leaderFightTime) >= 250) {
