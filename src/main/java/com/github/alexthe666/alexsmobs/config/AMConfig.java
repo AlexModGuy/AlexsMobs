@@ -129,7 +129,13 @@ public class AMConfig {
     public static int anacondaSpawnRolls = 0;
     public static int anteaterSpawnWeight = 7;
     public static int anteaterSpawnRolls = 0;
-
+    public static int rockyRollerSpawnWeight = 40;
+    public static int rockyRollerSpawnRolls = 0;
+    public static int flutterSpawnWeight = 13;
+    public static int flutterSpawnRolls = 0;
+    public static int geladaMonkeySpawnWeight = 3;
+    public static int geladaMonkeySpawnRolls = 0;
+    public static int geladaMonkeySpawnHeight = 100;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -317,6 +323,14 @@ public class AMConfig {
             anacondaSpawnRolls = ConfigHolder.COMMON.anacondaSpawnRolls.get();
             anteaterSpawnWeight = ConfigHolder.COMMON.anteaterSpawnWeight.get();
             anteaterSpawnRolls = ConfigHolder.COMMON.anteaterSpawnRolls.get();
+            rockyRollerSpawnWeight = ConfigHolder.COMMON.rockyRollerSpawnWeight.get();
+            rockyRollerSpawnRolls = ConfigHolder.COMMON.rockyRollerSpawnRolls.get();
+            flutterSpawnWeight = ConfigHolder.COMMON.flutterSpawnWeight.get();
+            flutterSpawnRolls = ConfigHolder.COMMON.flutterSpawnRolls.get();
+            geladaMonkeySpawnWeight = ConfigHolder.COMMON.geladaMonkeySpawnWeight.get();
+            geladaMonkeySpawnRolls = ConfigHolder.COMMON.geladaMonkeySpawnRolls.get();
+            geladaMonkeySpawnHeight = ConfigHolder.COMMON.geladaMonkeySpawnHeight.get();
+
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

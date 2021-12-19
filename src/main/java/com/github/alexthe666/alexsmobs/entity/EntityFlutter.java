@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -35,6 +36,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
@@ -44,6 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Random;
 
 public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAnimal {
 
@@ -80,7 +84,29 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.FLYING_SPEED, 0.8F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, 0.21F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.FLYING_SPEED, 0.8F).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 0.21F);
+    }
+
+
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return !requiresCustomPersistence();
+    }
+
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.isTame() || this.isPotted();
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.flutterSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public static boolean canFlutterSpawnInLight(EntityType<? extends EntityFlutter> p_223325_0_, ServerLevelAccessor p_223325_1_, MobSpawnType p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_) {
+        return checkMobSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
+    }
+
+    public static <T extends Mob> boolean canFlutterSpawn(EntityType<EntityFlutter> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+        BlockState blockstate = iServerWorld.getBlockState(pos.below());
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && blockstate.is(Blocks.MOSS_BLOCK) && pos.getY() <= 64 && canFlutterSpawnInLight(entityType, iServerWorld, reason, pos, random);
     }
 
     protected void registerGoals() {
@@ -383,8 +409,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 return InteractionResult.SUCCESS;
             } else if(this.isPotted() && player.isShiftKeyDown()){
                 ItemStack fish = getFishBucket();
-                itemstack.shrink(1);
-                if (itemstack.isEmpty()) {
+                if (!fish.isEmpty()) {
                     player.setItemInHand(hand, fish);
                 } else if (!player.getInventory().add(fish)) {
                     player.drop(fish, false);
@@ -434,6 +459,15 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         return this.getCommand() == 1;
     }
 
+
+    protected void dropEquipment() {
+        super.dropEquipment();
+        if (this.isPotted()) {
+            if (!this.level.isClientSide) {
+                this.spawnAtLocation(Items.FLOWER_POT);
+            }
+        }
+    }
 
     public boolean isAlliedTo(Entity entityIn) {
         if (this.isTame()) {
@@ -562,7 +596,9 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mobo) {
-        return AMEntityRegistry.FLUTTER.create(level);
+        EntityFlutter baby = AMEntityRegistry.FLUTTER.create(level);
+        baby.setPersistenceRequired();
+        return baby;
     }
 
     public boolean hasEatenFlower(ItemStack stack) {
@@ -695,7 +731,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
 
         public FlyAwayFromTarget(EntityFlutter entityFlutter) {
             this.parentEntity = entityFlutter;
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         public boolean canUse() {

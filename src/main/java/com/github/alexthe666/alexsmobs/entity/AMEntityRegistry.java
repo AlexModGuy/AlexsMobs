@@ -109,7 +109,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityVineLasso> VINE_LASSO = registerEntity(EntityType.Builder.of(EntityVineLasso::new, MobCategory.MISC).sized(0.85F, 0.2F).setCustomClientFactory(EntityVineLasso::new).fireImmune(), "vine_lasso");
     public static final EntityType<EntityAnteater> ANTEATER = registerEntity(EntityType.Builder.of(EntityAnteater::new, MobCategory.CREATURE).sized(1.3F, 1.1F), "anteater");
     public static final EntityType<EntityRockyRoller> ROCKY_ROLLER = registerEntity(EntityType.Builder.of(EntityRockyRoller::new, MobCategory.MONSTER).sized(1.2F, 1.45F), "rocky_roller");
-    public static final EntityType<EntityFlutter> FLUTTER = registerEntity(EntityType.Builder.of(EntityFlutter::new, MobCategory.CREATURE).sized(0.5F, 0.7F), "flutter");
+    public static final EntityType<EntityFlutter> FLUTTER = registerEntity(EntityType.Builder.of(EntityFlutter::new, MobCategory.AMBIENT).sized(0.5F, 0.7F), "flutter");
     public static final EntityType<EntityPollenBall> POLLEN_BALL = registerEntity(EntityType.Builder.of(EntityPollenBall::new, MobCategory.MISC).sized(0.35F, 0.35F).setCustomClientFactory(EntityPollenBall::new).fireImmune(), "pollen_ball");
     public static final EntityType<EntityGeladaMonkey> GELADA_MONKEY = registerEntity(EntityType.Builder.of(EntityGeladaMonkey::new, MobCategory.CREATURE).sized(1.2F, 1.2F), "gelada_monkey");
     //public static final EntityType<EntityJerboa> JERBOA = registerEntity(EntityType.Builder.of(EntityJerboa::new, MobCategory.CREATURE).sized(0.5F, 0.5F), "jerboa");
@@ -179,6 +179,9 @@ public class AMEntityRegistry {
         SpawnPlacements.register(MANED_WOLF, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityManedWolf::checkAnimalSpawnRules);
         SpawnPlacements.register(ANACONDA, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAnaconda::canAnacondaSpawn);
         SpawnPlacements.register(ANTEATER, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityAnteater::canAnteaterSpawn);
+        SpawnPlacements.register(ROCKY_ROLLER, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityRockyRoller::checkMonsterSpawnRules);
+        SpawnPlacements.register(FLUTTER, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityFlutter::canFlutterSpawn);
+        SpawnPlacements.register(GELADA_MONKEY, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGeladaMonkey::checkAnimalSpawnRules);
 
     }
 

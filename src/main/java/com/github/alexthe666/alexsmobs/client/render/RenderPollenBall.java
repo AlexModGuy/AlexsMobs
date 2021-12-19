@@ -35,7 +35,6 @@ public class RenderPollenBall extends EntityRenderer<EntityPollenBall> {
         matrixStackIn.translate(0.0D, (double)-0.25F, 0.0D);
         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 180F));
         matrixStackIn.pushPose();
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         matrixStackIn.translate(0, 0.5F, 0);
         matrixStackIn.scale(1F, 1F, 1F);
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getFullBright(getTextureLocation(entityIn)));

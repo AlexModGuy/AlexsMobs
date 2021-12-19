@@ -74,6 +74,9 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> maned_wolf = Pair.of("alexsmobs:maned_wolf_spawns", DefaultBiomes.MANED_WOLF);
 	public static Pair<String, SpawnBiomeData> anaconda = Pair.of("alexsmobs:anaconda_spawns", DefaultBiomes.ANACONDA);
 	public static Pair<String, SpawnBiomeData> anteater = Pair.of("alexsmobs:anteater_spawns", DefaultBiomes.ANTEATER);
+	public static Pair<String, SpawnBiomeData> rocky_roller = Pair.of("alexsmobs:rocky_roller_spawns", DefaultBiomes.ROCKY_ROLLER);
+	public static Pair<String, SpawnBiomeData> flutter = Pair.of("alexsmobs:flutter_spawns", DefaultBiomes.FLUTTER);
+	public static Pair<String, SpawnBiomeData> gelada_monkey = Pair.of("alexsmobs:gelada_monkey_spawns", DefaultBiomes.MEADOWS);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();
