@@ -7,7 +7,7 @@ modId="alexsmobs" #mandatory
 version="1.15.0" #mandatory
 displayName="Alex's Mobs" #mandatory
 displayURL="https://www.curseforge.com/minecraft/mc-mods/alexsmobs" #optional
-authors="Alexthe666" #optional
+authors="Alexthe668, Carro1001" #optional
 description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
 [[dependencies.alexsmobs]] #optional
     # the modid of the dependency

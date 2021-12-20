@@ -5,6 +5,8 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -318,5 +320,10 @@ public class AMItemRegistry {
         ComposterBlock.COMPOSTABLES.put(AMBlockRegistry.BANANA_PEEL.asItem(), 1F);
         ComposterBlock.COMPOSTABLES.put(ACACIA_BLOSSOM, 0.65F);
         ComposterBlock.COMPOSTABLES.put(GONGYLIDIA, 0.9F);
+    }
+
+    @SubscribeEvent
+    public static void registerPaintings(RegistryEvent.Register<Motive> event) {
+        event.getRegistry().register(new Motive(32, 32).setRegistryName("alexsmobs:nft"));
     }
 }
