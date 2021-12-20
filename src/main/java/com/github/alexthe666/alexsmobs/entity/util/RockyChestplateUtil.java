@@ -50,6 +50,9 @@ public class RockyChestplateUtil {
     }
 
     public static void tickRockyRolling(LivingEntity roller) {
+        if(roller.isInWaterOrBubble()){
+            roller.setDeltaMovement(roller.getDeltaMovement().add(0, -0.015F, 0));
+        }
         CompoundTag tag = CitadelEntityData.getOrCreateCitadelTag(roller);
         boolean update = false;
         int rollCounter = getRollingTicksLeft(roller);
@@ -80,7 +83,8 @@ public class RockyChestplateUtil {
             float f = roller.getYRot() * ((float) Math.PI / 180F);
             float f1 = roller.isInWaterOrBubble() ? 0.05F : 0.15F;
             Vec3 rollDelta = new Vec3(vec3.x + (double) (-Mth.sin(f) * f1), 0.0D, vec3.z + (double) (Mth.cos(f) * f1));
-            roller.setDeltaMovement(rollDelta.add(0.0D, rollCounter >= MAX_ROLL_TICKS ? 0.27D : vec3.y, 0.0D));
+            double rollY = roller.isInWaterOrBubble() ? -0.1F : rollCounter >= MAX_ROLL_TICKS ? 0.27D : vec3.y;
+            roller.setDeltaMovement(rollDelta.add(0.0D, rollY, 0.0D));
             if(rollCounter > 1 || !roller.isSprinting()){
                 rollFor(roller, rollCounter - 1);
             }
