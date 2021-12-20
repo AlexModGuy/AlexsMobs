@@ -325,5 +325,6 @@ public class AMItemRegistry {
     @SubscribeEvent
     public static void registerPaintings(RegistryEvent.Register<Motive> event) {
         event.getRegistry().register(new Motive(32, 32).setRegistryName("alexsmobs:nft"));
+        event.getRegistry().register(new Motive(32, 16).setRegistryName("alexsmobs:dog_poker"));
     }
 }

@@ -63,6 +63,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
     protected EntityRockyRoller(EntityType<? extends Monster> monster, Level level) {
         super(monster, level);
+        this.xpReward = 8;
         this.moveControl = new MovementControllerCustomCollisions(this);
     }
 

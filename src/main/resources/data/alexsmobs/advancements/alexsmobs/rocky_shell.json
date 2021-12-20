@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:rocky_shell"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.rocky_shell.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.rocky_shell.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/rocky_roller",
+    "criteria": {
+        "soul_heart": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:rocky_shell"]
+                    }
+                ]
+            }
+        }
+    }
+}

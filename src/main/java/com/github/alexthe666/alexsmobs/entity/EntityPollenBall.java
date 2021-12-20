@@ -115,6 +115,9 @@ public class EntityPollenBall extends Entity {
         this.updateRotation();
         float f = 0.99F;
         float f1 = 0.06F;
+        if(entity != null && !entity.isAlive()){
+            this.remove(RemovalReason.KILLED);
+        }
         if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
             this.remove(RemovalReason.DISCARDED);
         } else if (this.isInWaterOrBubble()) {

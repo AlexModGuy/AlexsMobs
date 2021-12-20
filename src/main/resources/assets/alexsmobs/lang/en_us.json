@@ -767,5 +767,13 @@
   "advancements.alexsmobs.breed_anteater.title": "Aunt Anteater",
   "advancements.alexsmobs.breed_anteater.desc": "Breed two Anteaters by feeding them pupae.",
   "advancements.alexsmobs.maned_wolf_apple.title": "Hungry For Apples?",
-  "advancements.alexsmobs.maned_wolf_apple.desc": "Feed a Maned Wolf an apple."
+  "advancements.alexsmobs.maned_wolf_apple.desc": "Feed a Maned Wolf an apple.",
+  "advancements.alexsmobs.rocky_roller.title": "KEEP ROLLIN' ROLLIN' ROLLIN'",
+  "advancements.alexsmobs.rocky_roller.desc": "Encounter a Rocky Roller in the dripstone caves.",
+  "advancements.alexsmobs.rocky_shell.title": "Rocks Off!",
+  "advancements.alexsmobs.rocky_shell.desc": "Obtain a Rocky Shell from slaying a Rocky Roller.",
+  "advancements.alexsmobs.rocky_chestplate.title": "You're too Slow!",
+  "advancements.alexsmobs.rocky_chestplate.desc": "Craft a Rock Shell Chestplate to roll into a ball.",
+  "advancements.alexsmobs.tame_flutter.title": "A Picky Fellow",
+  "advancements.alexsmobs.tame_flutter.desc": "Tame a Flutter by giving it multiple kinds of flowers."
 }
