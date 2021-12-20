@@ -12,19 +12,6 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 6,
-          "functions": [
-            {
-              "function": "minecraft:exploration_map",
-              "decoration": "red_x",
-              "zoom": 1,
-              "skip_existing_chunks": false
-            }
-          ],
-          "name": "minecraft:map"
-        },
-        {
-          "type": "minecraft:item",
           "weight": 10,
           "functions": [
             {
