@@ -155,7 +155,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
         for (int l1 = 0; l1 < 10; ++l1) {
             BlockState blockstate = level.getBlockState(blockpos$mutable.set(this.getX(), this.getY() + l1, this.getZ()));
-            if (!blockstate.getFluidState().is(FluidTags.WATER)) {
+            if (!blockstate.getFluidState().is(FluidTags.WATER) && !blockstate.getMaterial().isSolid()) {
                 return false;
             }
         }
