@@ -98,10 +98,14 @@ public class BiomeConfig {
 		init = true;
     }
 
-    public static boolean test(Pair<String, SpawnBiomeData> entry, Biome biome){
+    public static boolean test(Pair<String, SpawnBiomeData> entry, Biome.BiomeCategory category, ResourceLocation name){
     	if(!init){
     		return false;
 		}
-		return biomeConfigValues.get(entry.getKey()).matches(biome);
+		return biomeConfigValues.get(entry.getKey()).matches(category, name);
+	}
+
+	public static boolean test(Pair<String, SpawnBiomeData> spawns, Biome biome) {
+		return test(spawns, biome.getBiomeCategory(), biome.getRegistryName());
 	}
 }
