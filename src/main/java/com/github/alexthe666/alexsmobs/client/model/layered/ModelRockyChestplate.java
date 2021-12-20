@@ -34,10 +34,10 @@ public class ModelRockyChestplate extends HumanoidModel{
                 .texOffs(25, 34).addBox(-2.0F, -0.5F, 6.0F, 4.0F, 13.0F, 4.0F, deformation), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         PartDefinition leftArmRocky = playerLeftArm.addOrReplaceChild("LeftArmRocky", CubeListBuilder.create().texOffs(25, 23).addBox(-1.0F, -5F, -2.1F, 6.0F, 4.0F, 6.0F, deformation)
-                .texOffs(0, 39).addBox(0.0F, -9.1F, -2.1F, 7.0F, 6.0F, 4.0F, deformation), PartPose.offset(-1.0F, 2.0F, 0.0F));
+                .texOffs(0, 39).addBox(0.0F, -7.1F, -1.1F, 7.0F, 6.0F, 4.0F, deformation), PartPose.offset(-1.0F, 2.0F, 0.0F));
 
         PartDefinition rightArmRocky = playerRightArm.addOrReplaceChild("RightArmRocky", CubeListBuilder.create().texOffs(25, 23).mirror().addBox(-5.0F, -5F, -2.1F, 6.0F, 4.0F, 6.0F, deformation).mirror(false)
-                .texOffs(0, 39).mirror().addBox(-7.0F, -9.1F, -2.1F, 7.0F, 6.0F, 4.0F, deformation).mirror(false), PartPose.offset(1.0F, 2.0F, 0.0F));
+                .texOffs(0, 39).mirror().addBox(-7.0F, -7.1F, -1.1F, 7.0F, 6.0F, 4.0F, deformation).mirror(false), PartPose.offset(1.0F, 2.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }

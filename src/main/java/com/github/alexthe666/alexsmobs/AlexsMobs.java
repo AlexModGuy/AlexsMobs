@@ -66,7 +66,6 @@ public class AlexsMobs {
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
-        MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoadFromJSON);
     }
 
     private void setupEntityModelLayers(final EntityRenderersEvent.RegisterLayerDefinitions event) {
