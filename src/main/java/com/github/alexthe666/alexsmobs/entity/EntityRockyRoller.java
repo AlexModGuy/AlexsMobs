@@ -53,7 +53,6 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     public float rollProgress;
     public float prevRollProgress;
     public int rollCounter = 0;
-    @OnlyIn(Dist.CLIENT)
     public float clientRoll = 0;
     private int maxRollTime = 50;
     private Vec3 rollDelta;

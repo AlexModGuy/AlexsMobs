@@ -18,6 +18,7 @@ import java.util.UUID;
 public class RockyChestplateUtil {
 
     private static final String ROCKY_ROLL_TICKS = "RockyRollTicksAlexsMobs";
+    private static final String ROCKY_ROLL_TIMESTAMP = "RockyRollTimestampAlexsMobs";
     private static final String ROCKY_X = "RockyRollXAlexsMobs";
     private static final String ROCKY_Y = "RockyRollYAlexsMobs";
     private static final String ROCKY_Z = "RockyRollZAlexsMobs";
@@ -26,6 +27,9 @@ public class RockyChestplateUtil {
     public static void rollFor(LivingEntity roller, int ticks) {
         CompoundTag lassoedTag = CitadelEntityData.getOrCreateCitadelTag(roller);
         lassoedTag.putInt(ROCKY_ROLL_TICKS, ticks);
+        if(ticks == MAX_ROLL_TICKS){
+            lassoedTag.putInt(ROCKY_ROLL_TIMESTAMP, roller.tickCount);
+        }
         CitadelEntityData.setCitadelTag(roller, lassoedTag);
         if (!roller.level.isClientSide) {
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, roller.getId()));
@@ -36,6 +40,15 @@ public class RockyChestplateUtil {
         CompoundTag lassoedTag = CitadelEntityData.getOrCreateCitadelTag(entity);
         if (lassoedTag.contains(ROCKY_ROLL_TICKS)) {
             return lassoedTag.getInt(ROCKY_ROLL_TICKS);
+        }
+        return 0;
+    }
+
+
+    public static int getRollingTimestamp(LivingEntity entity) {
+        CompoundTag lassoedTag = CitadelEntityData.getOrCreateCitadelTag(entity);
+        if (lassoedTag.contains(ROCKY_ROLL_TIMESTAMP)) {
+            return lassoedTag.getInt(ROCKY_ROLL_TIMESTAMP);
         }
         return 0;
     }
@@ -57,7 +70,7 @@ public class RockyChestplateUtil {
         boolean update = false;
         int rollCounter = getRollingTicksLeft(roller);
         if(rollCounter == 0){
-            if(roller.isSprinting()  && !roller.isShiftKeyDown() && (!(roller instanceof Player) || !((Player) roller).getAbilities().flying)){
+            if(roller.isSprinting()  && !roller.isShiftKeyDown() && (!(roller instanceof Player) || !((Player) roller).getAbilities().flying) && canRollAgain(roller)){
                 update = true;
                 rollFor(roller, MAX_ROLL_TICKS);
             }
@@ -88,7 +101,7 @@ public class RockyChestplateUtil {
             if(rollCounter > 1 || !roller.isSprinting()){
                 rollFor(roller, rollCounter - 1);
             }
-            if(roller instanceof Player && ((Player) roller).getAbilities().flying || roller.isShiftKeyDown()){
+            if((roller instanceof Player && ((Player) roller).getAbilities().flying || roller.isShiftKeyDown()) && canRollAgain(roller)){
                 rollCounter = 0;
                 rollFor(roller, 0);
             }
@@ -100,5 +113,9 @@ public class RockyChestplateUtil {
             CitadelEntityData.setCitadelTag(roller, tag);
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", tag, roller.getId()));
         }
+    }
+
+    private static boolean canRollAgain(LivingEntity roller) {
+        return roller.tickCount - getRollingTimestamp(roller) >= 20;
     }
 }
