@@ -39,7 +39,9 @@ public class ItemFlutterPot extends Item implements DispensibleContainerItem {
         BlockPos blockpos = context.getClickedPos();
         BlockState blockstate = world.getBlockState(blockpos);
         if(!world.isClientSide){
-            this.placeFish((ServerLevel)world, context.getItemInHand(), blockpos);
+            if(this.placeFish((ServerLevel)world, context.getItemInHand(), blockpos) && (context.getPlayer() == null || !context.getPlayer().isCreative())){
+                context.getItemInHand().shrink(1);
+            }
             return InteractionResult.sidedSuccess(world.isClientSide);
         }else{
             return InteractionResult.PASS;
@@ -51,14 +53,16 @@ public class ItemFlutterPot extends Item implements DispensibleContainerItem {
         worldIn.playSound(player, pos, SoundEvents.BUCKET_EMPTY_FISH, SoundSource.NEUTRAL, 1.0F, 1.0F);
     }
 
-    private void placeFish(ServerLevel worldIn, ItemStack stack, BlockPos pos) {
+    private boolean placeFish(ServerLevel worldIn, ItemStack stack, BlockPos pos) {
         Entity entity = AMEntityRegistry.FLUTTER.spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
         if (entity != null && entity instanceof EntityFlutter) {
             CompoundTag compoundnbt = stack.getOrCreateTag();
             if(compoundnbt.contains("FlutterData")){
                 ((EntityFlutter)entity).readAdditionalSaveData(compoundnbt.getCompound("FlutterData"));
             }
+            return true;
         }
+        return false;
     }
 
     @Override
