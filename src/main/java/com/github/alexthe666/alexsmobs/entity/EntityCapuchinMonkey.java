@@ -81,9 +81,9 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     private Animation currentAnimation;
     private int sittingTime = 0;
     private int maxSitTime = 75;
-    private Ingredient temptationItems = Ingredient.fromValues(Stream.of(new Ingredient.TagValue(ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS)), new Ingredient.ItemValue(new ItemStack(Items.EGG))));
     private boolean hasSlowed = false;
     private int rideCooldown = 0;
+    private Ingredient temptItems = null;
 
     protected EntityCapuchinMonkey(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -109,6 +109,13 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.capuchinMonkeySpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public Ingredient getAllFoods(){
+        if(temptItems == null){
+            temptItems = Ingredient.fromValues(Stream.of(new Ingredient.TagValue(ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS)), new Ingredient.ItemValue(new ItemStack(Items.EGG))));
+        }
+        return temptItems;
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -440,13 +447,13 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             }
             return InteractionResult.SUCCESS;
         }
-        if (isTame() && (EntityGorilla.isBanana(itemstack) || temptationItems.test(itemstack) && !isFood(itemstack)) && this.getHealth() < this.getMaxHealth()) {
+        if (isTame() && (EntityGorilla.isBanana(itemstack) || getAllFoods().test(itemstack) && !isFood(itemstack)) && this.getHealth() < this.getMaxHealth()) {
             this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
             this.heal(5);
             return InteractionResult.SUCCESS;
         }
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !EntityGorilla.isBanana(itemstack) && !temptationItems.test(itemstack)) {
+        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !EntityGorilla.isBanana(itemstack) && !getAllFoods().test(itemstack)) {
             if (!this.hasDart() && itemstack.getItem() == AMItemRegistry.ANCIENT_DART) {
                 this.setDart(true);
                 this.usePlayerItem(player, hand, itemstack);
@@ -495,7 +502,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return temptationItems.test(stack) || EntityGorilla.isBanana(stack);
+        return getAllFoods().test(stack) || EntityGorilla.isBanana(stack);
     }
 
     public boolean isFood(ItemStack stack) {
