@@ -37,7 +37,6 @@ public class ItemFlutterPot extends Item implements DispensibleContainerItem {
     public InteractionResult useOn(UseOnContext context) {
         Level world = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
-        BlockState blockstate = world.getBlockState(blockpos);
         if(!world.isClientSide){
             if(this.placeFish((ServerLevel)world, context.getItemInHand(), blockpos) && (context.getPlayer() == null || !context.getPlayer().isCreative())){
                 context.getItemInHand().shrink(1);

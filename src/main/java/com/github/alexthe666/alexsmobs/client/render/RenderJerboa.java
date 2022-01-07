@@ -23,6 +23,6 @@ public class RenderJerboa extends MobRenderer<EntityJerboa, ModelJerboa> {
 
 
     public ResourceLocation getTextureLocation(EntityJerboa entity) {
-        return TEXTURE;
+        return entity.isSleeping() ? TEXTURE_SLEEPING : TEXTURE;
     }
 }

@@ -37,6 +37,7 @@ public class AMEffectRegistry {
     public static final MobEffect DEBILITATING_STING = new EffectDebilitatingSting();
     public static final MobEffect EXSANGUINATION = new EffectExsanguination();
     public static final MobEffect EARTHQUAKE = new EffectEarthquake();
+    public static final MobEffect FLEET_FOOTED = new EffectFleetFooted();
     public static final Potion KNOCKBACK_RESISTANCE_POTION = new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 3600)).setRegistryName("alexsmobs:knockback_resistance");
     public static final Potion LONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 9600)).setRegistryName("alexsmobs:long_knockback_resistance");
     public static final Potion STRONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 1800, 1)).setRegistryName("alexsmobs:strong_knockback_resistance");

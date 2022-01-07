@@ -7,6 +7,8 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class ModelJerboa extends AdvancedEntityModel<EntityJerboa> {
     private final AdvancedModelBox root;
@@ -18,7 +20,6 @@ public class ModelJerboa extends AdvancedEntityModel<EntityJerboa> {
     private final AdvancedModelBox tail;
     private final AdvancedModelBox legs;
     private final AdvancedModelBox feet;
-    private final ModelAnimator animator;
 
     public ModelJerboa() {
         texWidth = 64;
@@ -75,7 +76,6 @@ public class ModelJerboa extends AdvancedEntityModel<EntityJerboa> {
         setRotationAngle(feet, -0.5236F, 0.0F, 0.0F);
         feet.setTextureOffset(19, 9).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 0.0F, 2.0F, 0.0F, false);
         this.updateDefaultPose();
-        animator = ModelAnimator.create();
     }
 
     @Override
@@ -88,16 +88,88 @@ public class ModelJerboa extends AdvancedEntityModel<EntityJerboa> {
         return ImmutableList.of(root, body, leftEar, rightEar, leftArm, rightArm, tail, legs, feet);
     }
 
-    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
+    @Override
+    public void setupAnim(EntityJerboa entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
         this.resetToDefaultPose();
-        animator.update(entity);
+        float partialTicks = ageInTicks - entity.tickCount;
+        float idleSpeed = 0.1F;
+        float idleDegree = 0.2F;
+        float sleepProgress = entity.prevSleepProgress + (entity.sleepProgress - entity.prevSleepProgress) * partialTicks;
+        float reboundProgress = entity.prevReboundProgress + (entity.reboundProgress - entity.prevReboundProgress) * partialTicks;
+        float jumpProgress = Math.max(0, entity.prevJumpProgress + (entity.jumpProgress - entity.prevJumpProgress) * partialTicks - reboundProgress);
+        float begProgress = entity.prevBegProgress + (entity.begProgress - entity.prevBegProgress) * partialTicks;
+        this.walk(leftArm, idleSpeed, idleDegree, true, 2F, 0.3F, ageInTicks, 1);
+        this.walk(rightArm, idleSpeed, idleDegree, true, 2F, 0.3F, ageInTicks, 1);
+        this.walk(tail, idleSpeed, idleDegree * 0.5F, true, 1F, -0.05F, ageInTicks, 1);
+        this.walk(leftEar, idleSpeed, idleDegree * 0.5F, false,0F, 0F, ageInTicks, 1);
+        this.walk(rightEar, idleSpeed, idleDegree * 0.5F, false, 0F, 0F, ageInTicks, 1);
+        progressRotationPrev(legs, jumpProgress, (float)Math.toRadians(65), 0, 0, 5F);
+        progressRotationPrev(body, jumpProgress, (float)Math.toRadians(-5), 0, 0, 5F);
+        progressRotationPrev(tail, jumpProgress, (float)Math.toRadians(-20), 0, 0, 5F);
+        progressPositionPrev(body, jumpProgress, 0, -2, 0, 5F);
+        progressRotationPrev(legs, reboundProgress, (float)Math.toRadians(-30), 0, 0, 5F);
+        progressRotationPrev(body, reboundProgress, (float)Math.toRadians(20), 0, 0, 5F);
+        progressRotationPrev(tail, reboundProgress, (float)Math.toRadians(35), 0, 0, 5F);
+        progressRotationPrev(leftEar, reboundProgress, 0,  (float)Math.toRadians(35), 0, 5F);
+        progressRotationPrev(rightEar, reboundProgress, 0,  (float)Math.toRadians(-35), 0, 5F);
+        progressPositionPrev(body, reboundProgress, 0, -1, 0, 5F);
+        progressPositionPrev(body, sleepProgress, 0, 5F, 0, 5F);
+        progressPositionPrev(legs, sleepProgress, 0, -2.2F, 0, 5F);
+        progressRotationPrev(legs, sleepProgress, (float)Math.toRadians(-30), 0, 0, 5F);
+        progressRotationPrev(tail, sleepProgress, (float)Math.toRadians(50), 0, (float)Math.toRadians(90), 5F);
+        progressRotationPrev(leftEar, sleepProgress, 0,  (float)Math.toRadians(35), 0, 5F);
+        progressRotationPrev(rightEar, sleepProgress, 0,  (float)Math.toRadians(-35), 0, 5F);
+        progressRotationPrev(leftArm, begProgress, (float)Math.toRadians(-15),  0, 0, 5F);
+        progressRotationPrev(rightArm, begProgress, (float)Math.toRadians(-15), 0, 0, 5F);
+
+        if (begProgress > 0) {
+            float f = body.rotateAngleX;
+            this.walk(body, 0.7F, 0.1F, false, 2F, -0.7F, ageInTicks, begProgress * 0.2F);
+            float f1 = body.rotateAngleX - f;
+            this.legs.rotateAngleX -= f1;
+            this.tail.rotateAngleX -= f1;
+            this.legs.rotationPointY += f1 * 3F;
+            this.walk(rightArm, 0.7F, 1.2F, false, 0F, -1.0F, ageInTicks, begProgress * 0.2F);
+            this.flap(rightArm, 0.7F, 0.25F, false, -1F, 0.2F, ageInTicks, begProgress * 0.2F);
+            this.walk(leftArm, 0.7F, 1.2F, false, 0F, -1.0F, ageInTicks, begProgress * 0.2F);
+            this.flap(leftArm, 0.7F, 0.25F, true, -1F, 0.2F, ageInTicks, begProgress * 0.2F);
+        }
+        float headY = netHeadYaw * 0.35F * ((float)Math.PI / 180F);
+        float headZ = headPitch * 0.65F * ((float)Math.PI / 180F);
+        if(Math.max(sleepProgress, begProgress) == 0){
+            this.body.rotateAngleY += headY;
+            this.legs.rotateAngleY -= headY * 0.6F;
+            this.body.rotateAngleX += headZ;
+            this.legs.rotateAngleX -= headZ;
+            this.tail.rotateAngleX -= headZ * 1.2F;
+            if(headPitch > 0){
+                this.body.rotationPointY += Math.abs(headPitch) * 0.015F;
+                this.legs.rotationPointZ -= Math.abs(headPitch) * 0.02F;
+            }else{
+                this.legs.rotationPointY -= Math.abs(headPitch) * 0.0225F;
+                this.legs.rotationPointZ -= Math.abs(headPitch) * 0.015F;
+            }
+        }
 
     }
 
-    @Override
-    public void setupAnim(EntityJerboa entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-        animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-        float sleepProgress = 0;
+    public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (this.young) {
+            float f = 1.75F;
+            matrixStackIn.pushPose();
+            matrixStackIn.scale(0.65F, 0.65F, 0.65F);
+            matrixStackIn.translate(0.0D, 0.815D, 0.125D);
+            parts().forEach((p_228292_8_) -> {
+                p_228292_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+        } else {
+            matrixStackIn.pushPose();
+            parts().forEach((p_228290_8_) -> {
+                p_228290_8_.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.popPose();
+        }
 
     }
 
