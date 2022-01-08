@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -40,6 +41,13 @@ public class EffectFleetFooted extends MobEffect {
             removeEffectAfter = 5;
         }
         if (removeEffectAfter <= 0 || lastDuration < 2) {
+            modifiableattributeinstance.removeModifier(SPRINT_JUMP_SPEED_BONUS);
+        }
+    }
+
+    public void removeAttributeModifiers(LivingEntity livingEntity, AttributeMap attributeMap, int level) {
+        AttributeInstance modifiableattributeinstance = livingEntity.getAttribute(Attributes.MOVEMENT_SPEED);
+        if(modifiableattributeinstance != null && modifiableattributeinstance.hasModifier(SPRINT_JUMP_SPEED_BONUS)){
             modifiableattributeinstance.removeModifier(SPRINT_JUMP_SPEED_BONUS);
         }
     }

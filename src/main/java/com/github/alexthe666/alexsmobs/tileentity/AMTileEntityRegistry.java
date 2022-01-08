@@ -16,6 +16,7 @@ public class AMTileEntityRegistry {
     public static BlockEntityType<TileEntityLeafcutterAnthill> LEAFCUTTER_ANTHILL = registerTileEntity(BlockEntityType.Builder.of(TileEntityLeafcutterAnthill::new, AMBlockRegistry.LEAFCUTTER_ANTHILL), "leafcutter_anthill");
     public static BlockEntityType<TileEntityCapsid> CAPSID = registerTileEntity(BlockEntityType.Builder.of(TileEntityCapsid::new, AMBlockRegistry.CAPSID), "capsid");
     public static BlockEntityType<TileEntityVoidWormBeak> VOID_WORM_BEAK = registerTileEntity(BlockEntityType.Builder.of(TileEntityVoidWormBeak::new, AMBlockRegistry.VOID_WORM_BEAK), "void_worm_beak");
+    public static BlockEntityType<TileEntityTerrapinEgg> TERRAPIN_EGG = registerTileEntity(BlockEntityType.Builder.of(TileEntityTerrapinEgg::new, AMBlockRegistry.TERRAPIN_EGG), "terrapin_egg");
 
     public static BlockEntityType registerTileEntity(BlockEntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
