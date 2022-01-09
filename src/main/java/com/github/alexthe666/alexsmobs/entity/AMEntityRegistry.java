@@ -114,7 +114,8 @@ public class AMEntityRegistry {
     public static final EntityType<EntityGeladaMonkey> GELADA_MONKEY = registerEntity(EntityType.Builder.of(EntityGeladaMonkey::new, MobCategory.CREATURE).sized(1.2F, 1.2F), "gelada_monkey");
     public static final EntityType<EntityJerboa> JERBOA = registerEntity(EntityType.Builder.of(EntityJerboa::new, MobCategory.AMBIENT).sized(0.5F, 0.5F), "jerboa");
     public static final EntityType<EntityTerrapin> TERRAPIN = registerEntity(EntityType.Builder.of(EntityTerrapin::new, MobCategory.WATER_AMBIENT).sized(0.75F, 0.45F), "terrapin");
-
+    //public static final EntityType<EntityKookaburra> KOOKABURRA = registerEntity(EntityType.Builder.of(EntityJerboa::new, MobCategory.CREATURE).sized(0.5F, 0.5F), "kookabura");
+    
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
         return (EntityType) builder.build(entityName).setRegistryName(nameLoc);
