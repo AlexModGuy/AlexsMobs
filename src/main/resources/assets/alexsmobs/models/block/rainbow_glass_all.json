@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "alexsmobs:block/rainbow_glass_all"
+  }
+}

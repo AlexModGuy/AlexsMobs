@@ -97,7 +97,16 @@ public class ItemModFishBucket extends BucketItem {
             if(compoundnbt.contains("TerrapinData")){
                 ((EntityTerrapin)entity).readAdditionalSaveData(compoundnbt.getCompound("TerrapinData"));
             }
-
+        }
+        if (entity != null && entity instanceof EntityCombJelly) {
+            ((EntityCombJelly)entity).setFromBucket(true);
+            CompoundTag compoundnbt = stack.getOrCreateTag();
+            if(compoundnbt.contains("BucketScale")){
+                ((EntityCombJelly) entity).setJellyScale(compoundnbt.getFloat("BucketScale"));
+            }
+            if(compoundnbt.contains("BucketVariantTag")){
+                ((EntityCombJelly) entity).setVariant(compoundnbt.getInt("BucketVariantTag"));
+            }
         }
     }
 
@@ -118,7 +127,14 @@ public class ItemModFishBucket extends BucketItem {
                 tooltip.add((new TranslatableComponent(TerrapinTypes.values()[Mth.clamp(i, 0, TerrapinTypes.values().length - 1)].getTranslationName())).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
             }
         }
-
+        if (this.fishType == AMEntityRegistry.COMB_JELLY) {
+            CompoundTag compoundnbt = stack.getTag();
+            if (compoundnbt != null && compoundnbt.contains("BucketVariantTag", 3)) {
+                int i = compoundnbt.getInt("BucketVariantTag");
+                String s = "entity.alexsmobs.comb_jelly.variant_" + i;
+                tooltip.add((new TranslatableComponent(s)).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+            }
+        }
     }
 
 

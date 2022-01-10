@@ -114,6 +114,7 @@ public class AMEntityRegistry {
     public static final EntityType<EntityGeladaMonkey> GELADA_MONKEY = registerEntity(EntityType.Builder.of(EntityGeladaMonkey::new, MobCategory.CREATURE).sized(1.2F, 1.2F), "gelada_monkey");
     public static final EntityType<EntityJerboa> JERBOA = registerEntity(EntityType.Builder.of(EntityJerboa::new, MobCategory.AMBIENT).sized(0.5F, 0.5F), "jerboa");
     public static final EntityType<EntityTerrapin> TERRAPIN = registerEntity(EntityType.Builder.of(EntityTerrapin::new, MobCategory.WATER_AMBIENT).sized(0.75F, 0.45F), "terrapin");
+    public static final EntityType<EntityCombJelly> COMB_JELLY = registerEntity(EntityType.Builder.of(EntityCombJelly::new, MobCategory.WATER_AMBIENT).sized(0.65F, 0.8F), "comb_jelly");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -278,6 +279,7 @@ public class AMEntityRegistry {
         event.put(GELADA_MONKEY, EntityGeladaMonkey.bakeAttributes().build());
         event.put(JERBOA, EntityJerboa.bakeAttributes().build());
         event.put(TERRAPIN, EntityTerrapin.bakeAttributes().build());
+        event.put(COMB_JELLY, EntityCombJelly.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(Tag entityTag){

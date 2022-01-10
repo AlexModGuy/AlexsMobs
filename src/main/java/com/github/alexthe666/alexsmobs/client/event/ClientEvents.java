@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
 import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
 import com.github.alexthe666.alexsmobs.client.render.RenderVineLasso;
+import com.github.alexthe666.alexsmobs.client.render.layer.LayerRainbow;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
@@ -21,6 +22,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
 import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -46,6 +48,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
@@ -57,8 +60,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.rmi.registry.Registry;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEvents {

@@ -161,6 +161,8 @@ public class AMItemRegistry {
     public static final Item ROCKY_CHESTPLATE = new ItemModArmor(ROCKY_ARMOR_MATERIAL, EquipmentSlot.CHEST).setRegistryName("alexsmobs:rocky_chestplate");
     public static final Item POTTED_FLUTTER = new ItemFlutterPot(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:potted_flutter");
     public static final Item TERRAPIN_BUCKET = new ItemModFishBucket(AMEntityRegistry.TERRAPIN, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:terrapin_bucket");
+    public static final Item COMB_JELLY_BUCKET = new ItemModFishBucket(AMEntityRegistry.COMB_JELLY, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:comb_jelly_bucket");
+    public static final Item RAINBOW_JELLY = new ItemRainbowJelly(new Item.Properties().tab(AlexsMobs.TAB).food(new FoodProperties.Builder().nutrition(1).saturationMod(0.2F).build())).setRegistryName("alexsmobs:rainbow_jelly");
     public static final Item MUSIC_DISC_THIME = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
     public static final Item MUSIC_DISC_DAZE = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_daze");
 
@@ -242,6 +244,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.GELADA_MONKEY, 0XB08C64, 0XFF4F53, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_gelada_monkey"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.JERBOA, 0XDEC58A, 0XDE9D90, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_jerboa"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TERRAPIN, 0X6E6E30, 0X929647, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_terrapin"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.COMB_JELLY, 0XCFE9FE, 0X6EFF8B, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_comb_jelly"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

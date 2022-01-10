@@ -133,9 +133,9 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
         }
         if (this.isSpinning()) {
             this.handleSpin();
-            if (this.isAlive() && spinCounter > 5) {
+            if (this.isAlive() && spinCounter > 5 && !this.isBaby()) {
                 for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
-                    if (!isAlliedTo(entity) && entity != this) {
+                    if (!isAlliedTo(entity) && !(entity instanceof EntityTerrapin)) {
                         entity.hurt(DamageSource.mobAttack(lastLauncher == null ? this : lastLauncher), 4.0F + random.nextFloat() * 4.0F);
                     }
                 }

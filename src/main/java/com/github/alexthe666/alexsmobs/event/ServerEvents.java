@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -26,6 +27,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -358,9 +360,41 @@ public class ServerEvents {
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
+        if (event.getTarget() instanceof LivingEntity && RainbowUtil.getRainbowType((LivingEntity) event.getTarget()) > 0 && (event.getItemStack().getItem() == Items.SPONGE)){
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            RainbowUtil.setRainbowType((LivingEntity) event.getTarget(), 0);
+            if (!event.getPlayer().isCreative()) {
+                event.getItemStack().shrink(1);
+            }
+            ItemStack wetSponge = new ItemStack(Items.WET_SPONGE);
+            if(!event.getPlayer().addItem(wetSponge)){
+                event.getPlayer().drop(wetSponge, true);
+            }
+        }
     }
 
     @SubscribeEvent
+    public void onUseItemAir(PlayerInteractEvent.RightClickEmpty event) {
+
+        ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
+        if(stack.isEmpty()){
+            stack = event.getPlayer().getItemBySlot(EquipmentSlot.MAINHAND);
+        }
+        if (RainbowUtil.getRainbowType(event.getPlayer()) > 0 && (stack.is(Items.SPONGE))){
+            event.getPlayer().swing(InteractionHand.MAIN_HAND);
+            RainbowUtil.setRainbowType(event.getPlayer(), 0);
+            if (!event.getPlayer().isCreative()) {
+                stack.shrink(1);
+            }
+            ItemStack wetSponge = new ItemStack(Items.WET_SPONGE);
+            if(!event.getPlayer().addItem(wetSponge)){
+                event.getPlayer().drop(wetSponge, true);
+            }
+        }
+    }
+
+        @SubscribeEvent
     public void onEntityDrops(LivingDropsEvent event) {
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
             VineLassoUtil.lassoTo(null, event.getEntityLiving());
