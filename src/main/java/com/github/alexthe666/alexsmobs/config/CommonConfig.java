@@ -14,6 +14,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue spidersAttackFlies;
     public final ForgeConfigSpec.BooleanValue wolvesAttackMoose;
     public final ForgeConfigSpec.BooleanValue polarBearsAttackSeals;
+    public final ForgeConfigSpec.BooleanValue catsAndFoxesAttackJerboas;
     public final ForgeConfigSpec.BooleanValue bananasDropFromLeaves;
     public final ForgeConfigSpec.IntValue bananaChance;
     public final ForgeConfigSpec.IntValue grizzlyBearSpawnWeight;
@@ -203,6 +204,7 @@ public class CommonConfig {
         spidersAttackFlies = buildBoolean(builder, "spidersAttackFlies", "all", true, "Whether spiders should target fly mobs.");
         wolvesAttackMoose = buildBoolean(builder, "wolvesAttackMoose", "all", true, "Whether wolves should target moose mobs.");
         polarBearsAttackSeals = buildBoolean(builder, "polarBearsAttackSeals", "all", true, "Whether polar bears should target seal mobs.");
+        catsAndFoxesAttackJerboas = buildBoolean(builder, "catsAndFoxesAttackJerboas", "all", true, "Whether cats, ocelots and foxes should target jerboa mobs.");
         lavaBottleEnabled = buildBoolean(builder, "lavaBottleEnabled", "all", true, "Whether lava can be bottled with a right click of a glass bottle.");
         neutralBoneSerpents = buildBoolean(builder, "neutralBoneSerpents", "all", false, "Whether bone serpents are neutral or hostile.");
         caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, -64, 320, "Maximum world y-level that cave centipedes can spawn at");

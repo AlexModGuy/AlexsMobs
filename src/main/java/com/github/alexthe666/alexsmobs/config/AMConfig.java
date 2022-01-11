@@ -156,6 +156,7 @@ public class AMConfig {
     public static boolean spidersAttackFlies = true;
     public static boolean wolvesAttackMoose = true;
     public static boolean polarBearsAttackSeals = true;
+    public static boolean catsAndFoxesAttackJerboas = true;
     public static boolean giveBookOnStartup = true;
     public static boolean mimicubeSpawnInEndCity = true;
     public static boolean mimicreamRepair = true;
@@ -353,6 +354,7 @@ public class AMConfig {
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
             wolvesAttackMoose = ConfigHolder.COMMON.wolvesAttackMoose.get();
             polarBearsAttackSeals = ConfigHolder.COMMON.polarBearsAttackSeals.get();
+            catsAndFoxesAttackJerboas = ConfigHolder.COMMON.catsAndFoxesAttackJerboas.get();
             bananaChance = ConfigHolder.COMMON.bananaChance.get();
             giveBookOnStartup = ConfigHolder.COMMON.giveBookOnStartup.get();
             mimicubeSpawnInEndCity = ConfigHolder.COMMON.mimicubeSpawnInEndCity.get();

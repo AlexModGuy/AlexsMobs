@@ -770,6 +770,54 @@
       "offset_y": -7,
       "linked_page": "gelada_monkey.json",
       "hover_text": "entity.alexsmobs.gelada_monkey"
+    },
+    {
+      "entity": "alexsmobs:jerboa",
+      "x": 350,
+      "y": 70,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 2.3,
+      "offset_x": -27,
+      "offset_y": -23,
+      "linked_page": "jerboa.json",
+      "hover_text": "entity.alexsmobs.jerboa"
+    },
+    {
+      "entity": "alexsmobs:terrapin",
+      "x": 230,
+      "y": 100,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 2.1,
+      "offset_x": -27,
+      "offset_y": -26,
+      "linked_page": "terrapin.json",
+      "hover_text": "entity.alexsmobs.terrapin"
+    },
+    {
+      "entity": "alexsmobs:comb_jelly",
+      "x": 260,
+      "y": 100,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.5,
+      "offset_x": -11,
+      "offset_y": -10,
+      "linked_page": "comb_jelly.json",
+      "hover_text": "entity.alexsmobs.comb_jelly"
+    },
+    {
+      "entity": "alexsmobs:cosmic_cod",
+      "x": 290,
+      "y": 100,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 2.1,
+      "offset_x": -24,
+      "offset_y": -25,
+      "linked_page": "cosmic_cod.json",
+      "hover_text": "entity.alexsmobs.cosmic_cod"
     }
   ],
   "linked_page_buttons": [
