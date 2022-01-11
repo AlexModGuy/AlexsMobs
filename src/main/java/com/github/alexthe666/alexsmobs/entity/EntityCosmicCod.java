@@ -121,13 +121,17 @@ public class EntityCosmicCod extends Mob {
         return true;
     }
 
-    private void doInitialPosing(LevelAccessor world) {
+    private void doInitialPosing(LevelAccessor world, EntityCosmicCod.GroupData data) {
         BlockPos down = this.blockPosition();
-        while(!world.getFluidState(down).isEmpty() && down.getY() > 1){
+        while(world.isEmptyBlock(down) && down.getY() > -62){
             down = down.below();
         }
-        if(down.getY() <= 1){
-            this.setPos(down.getX() + 0.5F, down.getY() + 70 + random.nextInt(4), down.getZ() + 0.5F);
+        if(down.getY() <= -60){
+            if(data != null && data.groupLeader != null){
+                this.setPos(down.getX() + 0.5F, data.groupLeader.getY() - 1 + random.nextInt(1), down.getZ() + 0.5F);
+            }else{
+                this.setPos(down.getX() + 0.5F, down.getY() + 90 + random.nextInt(60), down.getZ() + 0.5F);
+            }
         }else{
             this.setPos(down.getX() + 0.5F, down.getY() + 1, down.getZ() + 0.5F);
         }
@@ -302,7 +306,15 @@ public class EntityCosmicCod extends Mob {
     }
 
     private int getMaxGroupSize() {
-        return 10;
+        return 15;
+    }
+
+    public int getMaxSpawnClusterSize() {
+        return 7;
+    }
+
+    public boolean isMaxGroupSizeReached(int sizeIn) {
+        return false;
     }
 
     public boolean isGroupLeader() {
@@ -337,13 +349,13 @@ public class EntityCosmicCod extends Mob {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if (reason == MobSpawnType.NATURAL) {
-            doInitialPosing(worldIn);
-        }
         if (spawnDataIn == null) {
             spawnDataIn = new EntityCosmicCod.GroupData(this);
         } else {
             this.createAndSetLeader(((EntityCosmicCod.GroupData) spawnDataIn).groupLeader);
+        }
+        if (reason == MobSpawnType.NATURAL && spawnDataIn instanceof EntityCosmicCod.GroupData) {
+            doInitialPosing(worldIn, (GroupData) spawnDataIn);
         }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }

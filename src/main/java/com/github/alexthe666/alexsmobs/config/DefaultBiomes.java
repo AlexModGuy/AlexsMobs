@@ -332,7 +332,7 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 1);
 
     public static final SpawnBiomeData COSMIC_COD = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:small_end_islands", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0);
 
 
 }

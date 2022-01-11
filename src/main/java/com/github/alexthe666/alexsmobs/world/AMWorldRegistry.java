@@ -254,7 +254,7 @@ public class AMWorldRegistry {
             event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.COMB_JELLY, AMConfig.combJellySpawnWeight, 2, 3));
         }
         if (testBiome(BiomeConfig.cosmic_cod, event.getCategory(), event.getName()) && AMConfig.cosmicCodSpawnWeight > 0) {
-            event.getSpawns().getSpawner(MobCategory.AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.COSMIC_COD, AMConfig.cosmicCodSpawnWeight, 2, 3));
+            event.getSpawns().getSpawner(MobCategory.AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.COSMIC_COD, AMConfig.cosmicCodSpawnWeight, 9, 13));
         }
 
     }

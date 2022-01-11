@@ -138,7 +138,7 @@ public class AMConfig {
     public static int geladaMonkeySpawnHeight = 100;
     public static int jerboaSpawnWeight = 12;
     public static int jerboaSpawnRolls = 2;
-    public static int terrapinSpawnWeight = 10;
+    public static int terrapinSpawnWeight = 4;
     public static int terrapinSpawnRolls = 0;
     public static int combJellySpawnWeight = 5;
     public static int combJellySpawnRolls = 0;
