@@ -86,7 +86,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         float baskProgress = entity.prevBaskProgress + (entity.baskProgress - entity.prevBaskProgress) * partialTick;
         float swimAngle = entity.prevSwimAngle + (entity.getSwimAngle() - entity.prevSwimAngle) * partialTick;
         float diggingProgress = entity.prevDigProgress + (entity.digProgress - entity.prevDigProgress) * partialTick;
-        int baskType = entity.getId() % 5;
+        int baskType = entity.isTearsEasterEgg() ? -1 : entity.getId() % 5;
         progressRotationPrev(body, diggingProgress,  (float) Math.toRadians(70), 0, 0, 5F);
         progressRotationPrev(head, diggingProgress,  (float) Math.toRadians(10), 0, 0, 5F);
         progressRotationPrev(tail, diggingProgress,  (float) Math.toRadians(-10), 0, 0, 5F);
@@ -102,7 +102,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
             this.walk(tail, 0.6F, 0.1F, false, 3F, -0.1F, ageInTicks, amount);
             this.bob(body, 0.3F, 3F, true, ageInTicks, amount);
         }
-        if (baskProgress > 0) {
+        if (baskProgress > 0 && !entity.isTearsEasterEgg()) {
             this.walk(head, 0.05F, 0.2F, true, 1F, -0.1F, ageInTicks, 1);
             if (baskType == 0) {
                 progressRotationPrev(body, baskProgress, 0, 0, (float) Math.toRadians(70), 5F);
@@ -172,6 +172,10 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
             this.walk(tail2, swimSpeed, swimDegree, false, -8F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_right, swimSpeed * 0.5F, swimDegree * 4.5F, true, 3F, 0, limbSwing, limbSwingAmount);
             this.flap(arm_left, swimSpeed * 0.5F, swimDegree * 4.5F, false, 3F, 0, limbSwing, limbSwingAmount);
+        }
+        if(entity.isTearsEasterEgg() && !entity.isInWater()){
+            this.swing(head, 0.1F, 0.6F, true, 3F, 0.0F, ageInTicks, 1);
+            this.walk(head, 0.1F, 0.1F, true, 2F, 0.3F, ageInTicks, 1);
         }
         this.faceTarget(netHeadYaw, headPitch, 1, head);
         float yawAmount = swimAngle / 57.295776F * 0.5F;
