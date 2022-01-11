@@ -1,0 +1,387 @@
+package com.github.alexthe666.alexsmobs.entity;
+
+import com.github.alexthe666.alexsmobs.entity.ai.CosmicCodAIFollowLeader;
+import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ambient.AmbientCreature;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.stream.Stream;
+
+public class EntityCosmicCod extends Mob {
+
+    private static final EntityDataAccessor<Float> FISH_PITCH = SynchedEntityData.defineId(EntityCosmicCod.class, EntityDataSerializers.FLOAT);
+    public float prevFishPitch;
+    private int baitballCooldown = 100 + random.nextInt(100);
+    private int circleTime = 0;
+    private int maxCircleTime = 300;
+    private BlockPos circlePos;
+    private int teleportIn;
+    private EntityCosmicCod groupLeader;
+    private int groupSize = 1;
+
+    protected EntityCosmicCod(EntityType<? extends Mob> mob, Level level) {
+        super(mob, level);
+        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        this.moveControl = new FlightMoveController(this, 1F, false, true);
+    }
+
+    public static AttributeSupplier.Builder bakeAttributes() {
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.35F);
+    }
+
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(0, new AISwimIdle(this));
+        this.goalSelector.addGoal(1, new CosmicCodAIFollowLeader(this));
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(FISH_PITCH, 0F);
+    }
+
+    public boolean isSensitiveToWater() {
+        return true;
+    }
+
+    public void tick() {
+        super.tick();
+        this.prevFishPitch = this.getFishPitch();
+        if (!level.isClientSide) {
+            double ydist = (this.yo - this.getY());//down 0.4 up -0.38
+            float fishDist = (float) ((Math.abs(this.getDeltaMovement().x) + Math.abs(this.getDeltaMovement().z)) * 6F) / getPitchSensitivity();
+            this.incrementFishPitch((float) (ydist) * 10 * getPitchSensitivity());
+            this.setFishPitch(Mth.clamp(this.getFishPitch(), -60, 40));
+            if (this.getFishPitch() > 2) {
+                this.decrementFishPitch(fishDist * Math.abs(this.getFishPitch()) / 90);
+            }
+            if (this.getFishPitch() < -2) {
+                this.incrementFishPitch(fishDist * Math.abs(this.getFishPitch()) / 90);
+            }
+            if (this.getFishPitch() > 2F) {
+                this.decrementFishPitch(1);
+            } else if (this.getFishPitch() < -2F) {
+                this.incrementFishPitch(1);
+            }
+            if (baitballCooldown > 0) {
+                baitballCooldown--;
+            }
+        }
+        if(teleportIn > 0){
+            teleportIn--;
+            if(teleportIn == 0 && !level.isClientSide){
+                double range = 8;
+                AABB bb = new AABB(this.getX() - range, this.getY() - range, this.getZ() - range, this.getX() + range, this.getY() + range, this.getZ() + range);
+                List<EntityCosmicCod> list = this.level.getEntitiesOfClass(EntityCosmicCod.class, bb);
+                Vec3 vec3 = this.teleport();
+                if(vec3 != null){
+                    baitballCooldown = 5;
+                    for(EntityCosmicCod cod : list){
+                        if(cod != this){
+                            System.out.println(cod);
+                            cod.baitballCooldown = 5;
+                            cod.teleport(vec3.x, vec3.y, vec3.z);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void handleEntityEvent(byte msg) {
+        if(msg == 46){
+            this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+        }
+        super.handleEntityEvent(msg);
+    }
+
+    public void resetBaitballCooldown(){
+        baitballCooldown = 120 + random.nextInt(100);
+    }
+
+    public boolean hurt(DamageSource source, float amount) {
+        boolean prev = super.hurt(source, amount);
+        if(prev){
+            teleportIn = 5;
+
+        }
+        return prev;
+    }
+
+    private float getPitchSensitivity() {
+        return 3F;
+    }
+
+    public boolean isNoGravity() {
+        return true;
+    }
+
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    public boolean isPushedByWater() {
+        return false;
+    }
+
+    public float getFishPitch() {
+        return entityData.get(FISH_PITCH).floatValue();
+    }
+
+    public void setFishPitch(float pitch) {
+        entityData.set(FISH_PITCH, pitch);
+    }
+
+    public void incrementFishPitch(float pitch) {
+        entityData.set(FISH_PITCH, getFishPitch() + pitch);
+    }
+
+    public void decrementFishPitch(float pitch) {
+        entityData.set(FISH_PITCH, getFishPitch() - pitch);
+    }
+
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
+        return false;
+    }
+
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    }
+
+    public boolean canBlockPosBeSeen(BlockPos pos) {
+        double x = pos.getX() + 0.5F;
+        double y = pos.getY() + 0.5F;
+        double z = pos.getZ() + 0.5F;
+        HitResult result = this.level.clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        double dist = result.getLocation().distanceToSqr(x, y, z);
+        return dist <= 1.0D || result.getType() == HitResult.Type.MISS;
+    }
+
+    protected Vec3 teleport() {
+        if (!this.level.isClientSide() && this.isAlive()) {
+            double d0 = this.getX() + (this.random.nextDouble() - 0.5D) * 64.0D;
+            double d1 = this.getY() + (double) (this.random.nextInt(64) - 32);
+            double d2 = this.getZ() + (this.random.nextDouble() - 0.5D) * 64.0D;
+            if(this.teleport(d0, d1, d2)){
+                this.circlePos = null;
+                return new Vec3(d0, d1, d2);
+            }
+        }
+        return null;
+    }
+
+    private boolean teleport(double x, double y, double z) {
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
+        BlockState blockstate = this.level.getBlockState(blockpos$mutableblockpos);
+        boolean flag = blockstate.isAir();
+        boolean flag1 = blockstate.getFluidState().is(FluidTags.WATER);
+        if (flag && !flag1) {
+            this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+            net.minecraftforge.event.entity.EntityTeleportEvent.EnderEntity event = net.minecraftforge.event.ForgeEventFactory.onEnderTeleport(this, x, y, z);
+            if (event.isCanceled()) return false;
+            level.broadcastEntityEvent(this, (byte) 46);
+            this.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void leaveGroup() {
+        this.groupLeader.decreaseGroupSize();
+        this.groupLeader = null;
+    }
+
+    protected boolean hasNoLeader() {
+        return !this.hasGroupLeader();
+    }
+
+    public boolean hasGroupLeader() {
+        return this.groupLeader != null && this.groupLeader.isAlive();
+    }
+
+    private void increaseGroupSize() {
+        ++this.groupSize;
+    }
+
+    private void decreaseGroupSize() {
+        --this.groupSize;
+    }
+
+    public boolean canGroupGrow() {
+        return this.isGroupLeader() && this.groupSize < this.getMaxGroupSize();
+    }
+
+    private int getMaxGroupSize() {
+        return 10;
+    }
+
+    public boolean isGroupLeader() {
+        return this.groupSize > 1;
+    }
+
+    public boolean inRangeOfGroupLeader() {
+        return this.distanceToSqr(this.groupLeader) <= 121.0D;
+    }
+
+    public void moveToGroupLeader() {
+        if (this.hasGroupLeader()) {
+            this.getMoveControl().setWantedPosition(this.groupLeader.getX(), this.groupLeader.getY(), this.groupLeader.getZ(), 1.0D);
+        }
+
+    }
+
+    public EntityCosmicCod createAndSetLeader(EntityCosmicCod leader) {
+        this.groupLeader = leader;
+        leader.increaseGroupSize();
+        return leader;
+    }
+
+
+    public void createFromStream(Stream<EntityCosmicCod> stream) {
+        stream.limit(this.getMaxGroupSize() - this.groupSize).filter((fishe) -> {
+            return fishe != this;
+        }).forEach((fishe) -> {
+            fishe.createAndSetLeader(this);
+        });
+    }
+
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        if (spawnDataIn == null) {
+            spawnDataIn = new EntityCosmicCod.GroupData(this);
+        } else {
+            this.createAndSetLeader(((EntityCosmicCod.GroupData) spawnDataIn).groupLeader);
+        }
+        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    public boolean isCircling() {
+        return circlePos != null && circleTime < maxCircleTime;
+    }
+
+
+    protected InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
+        ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
+        if (lvt_3_1_.getItem() == Items.BUCKET && this.isAlive()) {
+            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
+            lvt_3_1_.shrink(1);
+            ItemStack lvt_4_1_ = new ItemStack(AMItemRegistry.COSMIC_COD_BUCKET);
+            if (!this.level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) p_230254_1_, lvt_4_1_);
+            }
+
+            if (lvt_3_1_.isEmpty()) {
+                p_230254_1_.setItemInHand(p_230254_2_, lvt_4_1_);
+            } else if (!p_230254_1_.getInventory().add(lvt_4_1_)) {
+                p_230254_1_.drop(lvt_4_1_, false);
+            }
+
+            this.remove(RemovalReason.DISCARDED);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        } else {
+            return super.mobInteract(p_230254_1_, p_230254_2_);
+        }
+    }
+
+    public static class GroupData extends AgeableMob.AgeableMobGroupData {
+        public final EntityCosmicCod groupLeader;
+
+        public GroupData(EntityCosmicCod groupLeaderIn) {
+            super(0.05F);
+            this.groupLeader = groupLeaderIn;
+        }
+    }
+
+    private class AISwimIdle extends Goal {
+
+        private final EntityCosmicCod cod;
+        float circleDistance = 5;
+        boolean clockwise = false;
+
+        public AISwimIdle(EntityCosmicCod cod) {
+            this.cod = cod;
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.cod.isGroupLeader() || cod.hasNoLeader() || cod.hasGroupLeader() && cod.groupLeader.circlePos != null;
+        }
+
+        public void tick() {
+            if(cod.circleTime > cod.maxCircleTime){
+                cod.circleTime = 0;
+                cod.circlePos = null;
+            }
+            if(cod.circlePos != null && cod.circleTime <= cod.maxCircleTime){
+                cod.circleTime++;
+                Vec3 movePos = getSharkCirclePos(cod.circlePos);
+                cod.getMoveControl().setWantedPosition(movePos.x(), movePos.y(), movePos.z(), 1.0F);
+            }else if (this.cod.isGroupLeader()) {
+                if (cod.baitballCooldown == 0) {
+                    cod.resetBaitballCooldown();
+                    if (cod.circlePos == null || cod.circleTime >= cod.maxCircleTime) {
+                        cod.circleTime = 0;
+                        cod.maxCircleTime = 360 + this.cod.random.nextInt(80);
+                        circleDistance = 1 + this.cod.random.nextFloat();
+                        clockwise = this.cod.random.nextBoolean();
+                        cod.circlePos = cod.blockPosition().above();
+                    }
+                }
+            } else if (cod.random.nextInt(40) == 0 || cod.hasNoLeader()) {
+                Vec3 movepos = cod.position().add(cod.random.nextInt(4) - 2, cod.getY() < 0 ? 1 : cod.random.nextInt(4) - 2, cod.random.nextInt(4) - 2);
+                cod.getMoveControl().setWantedPosition(movepos.x, movepos.y, movepos.z, 1.0F);
+            } else if (cod.hasGroupLeader() && cod.groupLeader.circlePos != null) {
+                if (cod.circlePos == null) {
+                    cod.circlePos = cod.groupLeader.circlePos;
+                    cod.circleTime = cod.groupLeader.circleTime;
+                    cod.maxCircleTime = cod.groupLeader.maxCircleTime;
+                    circleDistance = 1 + this.cod.random.nextFloat();
+                    clockwise = this.cod.random.nextBoolean();
+                }
+            }
+        }
+
+        public Vec3 getSharkCirclePos(BlockPos target) {
+            float prog = 1F - (cod.circleTime / (float) cod.maxCircleTime);
+            float angle = (0.01745329251F * 10 * (clockwise ? -cod.circleTime : cod.circleTime));
+            double extraX = (circleDistance * prog + 0.75F) * Mth.sin((angle));
+            double extraZ =  (circleDistance * prog + 0.75F) * prog * Mth.cos(angle);
+            return new Vec3(target.getX() + 0.5F + extraX, Math.max(target.getY() + cod.random.nextInt(4) - 2, -62), target.getZ() + 0.5F + extraZ);
+        }
+    }
+}
