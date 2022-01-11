@@ -63,6 +63,7 @@ public class ItemCosmicCodBucket extends Item implements DispensibleContainerIte
         Entity entity = AMEntityRegistry.COSMIC_COD.spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
         if (entity != null && entity instanceof EntityCosmicCod) {
             CompoundTag compoundnbt = stack.getOrCreateTag();
+            ((EntityCosmicCod) entity).setFromBucket(true);
             if(compoundnbt.contains("CosmicCodData")){
                 ((EntityFlutter)entity).readAdditionalSaveData(compoundnbt.getCompound("CosmicCodData"));
             }

@@ -81,10 +81,10 @@ public class MooseAIJostle extends Goal {
             this.moose.lookAt(targetMoose, 360, 180);
             this.moose.setJostling(true);
             double dist = this.moose.distanceTo(targetMoose);
-            if (dist < 3.5F) {
+            if (dist < 4F) {
                 this.moose.getNavigation().stop();
                 this.moose.getMoveControl().strafe(-0.5F, 0);
-            } else if(dist > 4F) {
+            } else if(dist > 4.5F) {
                 this.moose.setJostling(false);
                 this.moose.getNavigation().moveTo(targetMoose, 1);
             }else{

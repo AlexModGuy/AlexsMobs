@@ -44,6 +44,7 @@ import java.util.stream.Stream;
 public class EntityCosmicCod extends Mob {
 
     private static final EntityDataAccessor<Float> FISH_PITCH = SynchedEntityData.defineId(EntityCosmicCod.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityCosmicCod.class, EntityDataSerializers.BOOLEAN);
     public float prevFishPitch;
     private int baitballCooldown = 100 + random.nextInt(100);
     private int circleTime = 0;
@@ -73,6 +74,34 @@ public class EntityCosmicCod extends Mob {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(FISH_PITCH, 0F);
+        this.entityData.define(FROM_BUCKET, false);
+    }
+
+
+    private boolean isFromBucket() {
+        return this.entityData.get(FROM_BUCKET);
+    }
+
+    public void setFromBucket(boolean p_203706_1_) {
+        this.entityData.set(FROM_BUCKET, p_203706_1_);
+    }
+
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.isFromBucket();
+    }
+
+    public boolean removeWhenFarAway(double p_213397_1_) {
+        return !this.isFromBucket() && !this.hasCustomName();
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("FromBucket", this.isFromBucket());
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setFromBucket(compound.getBoolean("FromBucket"));
     }
 
     public boolean isSensitiveToWater() {
