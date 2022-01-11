@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.JerboaAIBeg;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -17,6 +18,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -131,6 +133,19 @@ public class EntityJerboa extends Animal {
     public boolean requiresCustomPersistence() {
         return super.requiresCustomPersistence() || this.isBefriended();
     }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.JERBOA_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.JERBOA_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.JERBOA_HURT;
+    }
+
 
     public void tick() {
         super.tick();

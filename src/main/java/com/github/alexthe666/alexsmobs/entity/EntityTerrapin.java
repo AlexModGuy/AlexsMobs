@@ -6,7 +6,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.entity.util.TerrapinTypes;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityTerrapinEgg;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -18,10 +18,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -42,8 +42,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -94,7 +94,13 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ARMOR, 10.0D).add(Attributes.MOVEMENT_SPEED, 0.1F);
     }
 
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.TERRAPIN_HURT;
+    }
 
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.TERRAPIN_HURT;
+    }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.terrapinSpawnRolls, this.getRandom(), spawnReasonIn);
@@ -156,7 +162,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
             if (this.horizontalCollision) {
                 if(changeSpinAngleCooldown == 0){
                     changeSpinAngleCooldown = 10;
-                    float f = getHitDirection().getAxis() == Direction.Axis.X ? this.spinYRot - 180 : 180 - this.spinYRot;
+                    float f = collideDirectionAndSound().getAxis() == Direction.Axis.X ? this.spinYRot - 180 : 180 - this.spinYRot;
                     f += random.nextInt(40) - 20;
                     this.setYRot(f);
                     this.copySpinDelta(f, Vec3.ZERO);
@@ -208,9 +214,13 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
         }
     }
 
-    private Direction getHitDirection(){
+    private Direction collideDirectionAndSound(){
         HitResult raytraceresult = ProjectileUtil.getHitResult(this, entity -> false);
         if(raytraceresult instanceof BlockHitResult){
+            BlockState state = level.getBlockState(((BlockHitResult) raytraceresult).getBlockPos());
+            if(state != null && !this.isSilent()){
+               // this.playSound(state.getSoundType().getBreakSound(), this.getVoicePitch(), 1F);
+            }
             return ((BlockHitResult) raytraceresult).getDirection();
         }
         return Direction.DOWN;
@@ -269,6 +279,12 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
         this.setSkinColor(compound.getInt("SkinColor"));
         this.setHasEgg(compound.getBoolean("HasEgg"));
         this.setFromBucket(compound.getBoolean("Bucketed"));
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        if(!this.isSpinning()){
+            super.playStepSound(pos, state);
+        }
     }
 
     public boolean isFood(ItemStack stack) {

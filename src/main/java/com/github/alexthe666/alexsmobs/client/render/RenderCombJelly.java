@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCombJelly;
+import com.github.alexthe666.alexsmobs.entity.EntityCentipedeHead;
 import com.github.alexthe666.alexsmobs.entity.EntityCombJelly;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -28,6 +29,10 @@ public class RenderCombJelly extends MobRenderer<EntityCombJelly, ModelCombJelly
 
     protected void scale(EntityCombJelly jelly, PoseStack matrixStackIn, float partialTickTime) {
         matrixStackIn.scale(jelly.getJellyScale(), jelly.getJellyScale(), jelly.getJellyScale());
+    }
+
+    protected float getFlipDegrees(EntityCombJelly jelly) {
+        return 0.0F;
     }
 
     @Nullable
