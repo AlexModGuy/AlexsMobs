@@ -51,7 +51,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> straddler = Pair.of("alexsmobs:straddler_spawns", DefaultBiomes.STRADDLER);
 	public static Pair<String, SpawnBiomeData> stradpole = Pair.of("alexsmobs:stradpole_spawns", DefaultBiomes.STRADDLER);
 	public static Pair<String, SpawnBiomeData> emu = Pair.of("alexsmobs:emu_spawns", DefaultBiomes.SAVANNA_AND_MESA);
-	public static Pair<String, SpawnBiomeData> platypus = Pair.of("alexsmobs:platypus_spawns", DefaultBiomes.PLATYPUS);
+	public static Pair<String, SpawnBiomeData> platypus = Pair.of("alexsmobs:platypus_spawns", DefaultBiomes.ICE_FREE_RIVER);
 	public static Pair<String, SpawnBiomeData> dropbear = Pair.of("alexsmobs:dropbear_spawns", DefaultBiomes.DROPBEAR);
 	public static Pair<String, SpawnBiomeData> tasmanianDevil = Pair.of("alexsmobs:tasmanian_devil_spawns", DefaultBiomes.TASMANIAN_DEVIL);
 	public static Pair<String, SpawnBiomeData> kangaroo = Pair.of("alexsmobs:kangaroo_spawns", DefaultBiomes.SAVANNA_AND_MESA);
@@ -61,7 +61,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> enderiophage_spawns = Pair.of("alexsmobs:enderiophage_spawns", DefaultBiomes.ENDERIOPHAGE);
 	public static Pair<String, SpawnBiomeData> baldEagle = Pair.of("alexsmobs:bald_eagle_spawns", DefaultBiomes.BALD_EAGLE);
 	public static Pair<String, SpawnBiomeData> tiger = Pair.of("alexsmobs:tiger_spawns", DefaultBiomes.TIGER);
-	public static Pair<String, SpawnBiomeData> tarantula_hawk = Pair.of("alexsmobs:tarantula_hawk_spawns", DefaultBiomes.TARANTULA_HAWK);
+	public static Pair<String, SpawnBiomeData> tarantula_hawk = Pair.of("alexsmobs:tarantula_hawk_spawns", DefaultBiomes.DESERT);
 	public static Pair<String, SpawnBiomeData> void_worm = Pair.of("alexsmobs:void_worm_spawns", DefaultBiomes.EMPTY);
 	public static Pair<String, SpawnBiomeData> frilled_shark = Pair.of("alexsmobs:frilled_shark_spawns", DefaultBiomes.DEEP_SEA);
 	public static Pair<String, SpawnBiomeData> mimic_octopus = Pair.of("alexsmobs:mimic_octopus_spawns", DefaultBiomes.MIMIC_OCTOPUS);
@@ -77,6 +77,10 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> rocky_roller = Pair.of("alexsmobs:rocky_roller_spawns", DefaultBiomes.ROCKY_ROLLER);
 	public static Pair<String, SpawnBiomeData> flutter = Pair.of("alexsmobs:flutter_spawns", DefaultBiomes.FLUTTER);
 	public static Pair<String, SpawnBiomeData> gelada_monkey = Pair.of("alexsmobs:gelada_monkey_spawns", DefaultBiomes.MEADOWS);
+	public static Pair<String, SpawnBiomeData> jerboa = Pair.of("alexsmobs:jerboa_spawns", DefaultBiomes.DESERT);
+	public static Pair<String, SpawnBiomeData> terrapin = Pair.of("alexsmobs:terrapin_spawns", DefaultBiomes.ICE_FREE_RIVER);
+	public static Pair<String, SpawnBiomeData> comb_jelly = Pair.of("alexsmobs:comb_jelly_spawns", DefaultBiomes.COMB_JELLY);
+	public static Pair<String, SpawnBiomeData> cosmic_cod = Pair.of("alexsmobs:cosmic_cod_spawns", DefaultBiomes.COSMIC_COD);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

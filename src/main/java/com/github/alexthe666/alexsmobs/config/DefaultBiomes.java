@@ -217,7 +217,7 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
 
-    public static final SpawnBiomeData PLATYPUS = new SpawnBiomeData()
+    public static final SpawnBiomeData ICE_FREE_RIVER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0)
@@ -270,7 +270,7 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:bamboo_blossom_grove", 1)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:cherry_blossom_grove", 2);
 
-    public static final SpawnBiomeData TARANTULA_HAWK = new SpawnBiomeData()
+    public static final SpawnBiomeData DESERT = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
 
@@ -326,5 +326,13 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData MEADOWS = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:meadow", 0);
+
+    public static final SpawnBiomeData COMB_JELLY = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:frozen_ocean", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 1);
+
+    public static final SpawnBiomeData COSMIC_COD = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:small_end_islands", 0);
+
 
 }

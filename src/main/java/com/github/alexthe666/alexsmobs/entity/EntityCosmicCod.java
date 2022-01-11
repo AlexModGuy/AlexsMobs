@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.CosmicCodAIFollowLeader;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -24,12 +25,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ambient.AmbientCreature;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -39,6 +42,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 public class EntityCosmicCod extends Mob {
@@ -58,6 +62,15 @@ public class EntityCosmicCod extends Mob {
         super(mob, level);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.moveControl = new FlightMoveController(this, 1F, false, true);
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.cosmicCodSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public static boolean canSpectreSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+        BlockState blockstate = worldIn.getBlockState(pos.below());
+        return true;
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -107,6 +120,19 @@ public class EntityCosmicCod extends Mob {
     public boolean isSensitiveToWater() {
         return true;
     }
+
+    private void doInitialPosing(LevelAccessor world) {
+        BlockPos down = this.blockPosition();
+        while(!world.getFluidState(down).isEmpty() && down.getY() > 1){
+            down = down.below();
+        }
+        if(down.getY() <= 1){
+            this.setPos(down.getX() + 0.5F, down.getY() + 70 + random.nextInt(4), down.getZ() + 0.5F);
+        }else{
+            this.setPos(down.getX() + 0.5F, down.getY() + 1, down.getZ() + 0.5F);
+        }
+    }
+
 
     public void tick() {
         super.tick();
@@ -311,6 +337,9 @@ public class EntityCosmicCod extends Mob {
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        if (reason == MobSpawnType.NATURAL) {
+            doInitialPosing(worldIn);
+        }
         if (spawnDataIn == null) {
             spawnDataIn = new EntityCosmicCod.GroupData(this);
         } else {

@@ -146,6 +146,14 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue geladaMonkeySpawnWeight;
     public final ForgeConfigSpec.IntValue geladaMonkeySpawnRolls;
     public final ForgeConfigSpec.IntValue geladaMonkeySpawnHeight;
+    public final ForgeConfigSpec.IntValue jerboaSpawnRolls;
+    public final ForgeConfigSpec.IntValue jerboaSpawnWeight;
+    public final ForgeConfigSpec.IntValue terrapinSpawnRolls;
+    public final ForgeConfigSpec.IntValue terrapinSpawnWeight;
+    public final ForgeConfigSpec.IntValue combJellySpawnRolls;
+    public final ForgeConfigSpec.IntValue combJellySpawnWeight;
+    public final ForgeConfigSpec.IntValue cosmicCodSpawnRolls;
+    public final ForgeConfigSpec.IntValue cosmicCodSpawnWeight;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -183,6 +191,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> seagullStealingBlacklist;
     public final ForgeConfigSpec.BooleanValue clingingFlipEffect;
     public final ForgeConfigSpec.DoubleValue tusklinShoesBarteringChance;
+    public final ForgeConfigSpec.DoubleValue rainbowGlassFidelity;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -229,6 +238,7 @@ public class CommonConfig {
         seagullStealingBlacklist = builder.comment("List of items that seagulls cannot take from players.").defineList("seagullStealingBlacklist", Lists.newArrayList(), o -> o instanceof String);
         clingingFlipEffect = buildBoolean(builder, "clingingFlipEffect", "all", false, "Whether the Clinging Potion effect should flip the screen. Warning: may cause nausea.");
         tusklinShoesBarteringChance = buildDouble(builder, "tusklinShoesBarteringChance", "all", 0.025F, 0D, 1.0F, "Percent chance of getting Pigshoes from Piglin Bartering. Set to zero to disable.");
+        rainbowGlassFidelity = buildDouble(builder, "rainbowGlassFidelity", "all", 16.0F, 1.0F, 10000.0F, "The visual zoom of the rainbow pattern on the rainbow glass block. Higher number = bigger pattern.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
@@ -357,6 +367,15 @@ public class CommonConfig {
         geladaMonkeySpawnWeight = buildInt(builder, "geladaMonkeySpawnWeight", "spawns", AMConfig.geladaMonkeySpawnWeight, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         geladaMonkeySpawnRolls = buildInt(builder, "geladaMonkeySpawnRolls", "spawns", AMConfig.geladaMonkeySpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         geladaMonkeySpawnHeight = buildInt(builder, "geladaMonkeySpawnRolls", "spawns", AMConfig.geladaMonkeySpawnRolls, -64, 320, "Minimum world y-level that gelada monkeys can spawn at");
+        jerboaSpawnWeight = buildInt(builder, "jerboaSpawnWeight", "spawns", AMConfig.jerboaSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        jerboaSpawnRolls = buildInt(builder, "jerboaSpawnRolls", "spawns", AMConfig.jerboaSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        terrapinSpawnWeight = buildInt(builder, "terrapinSpawnWeight", "spawns", AMConfig.terrapinSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        terrapinSpawnRolls = buildInt(builder, "terrapinSpawnRolls", "spawns", AMConfig.terrapinSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        combJellySpawnWeight = buildInt(builder, "combJellySpawnWeight", "spawns", AMConfig.combJellySpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        combJellySpawnRolls = buildInt(builder, "combJellySpawnRolls", "spawns", AMConfig.combJellySpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        cosmicCodSpawnWeight = buildInt(builder, "cosmicCodSpawnWeight", "spawns", AMConfig.cosmicCodSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        cosmicCodSpawnRolls = buildInt(builder, "cosmicCodSpawnRolls", "spawns", AMConfig.cosmicCodSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "spawns", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
         beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "spawns", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");

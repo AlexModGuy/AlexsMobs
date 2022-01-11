@@ -244,6 +244,18 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.leafcutter_anthill_spawns, event.getCategory(), event.getName()) && AMConfig.leafcutterAnthillSpawnChance > 0) {
             GenerationSettingsManager.register(event.getName().toString(), LEAFCUTTER_ANTHILL_PF);
         }
+        if (testBiome(BiomeConfig.jerboa, event.getCategory(), event.getName()) && AMConfig.jerboaSpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.JERBOA, AMConfig.jerboaSpawnWeight, 1, 3));
+        }
+        if (testBiome(BiomeConfig.terrapin, event.getCategory(), event.getName()) && AMConfig.terrapinSpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.TERRAPIN, AMConfig.terrapinSpawnWeight, 1, 2));
+        }
+        if (testBiome(BiomeConfig.comb_jelly, event.getCategory(), event.getName()) && AMConfig.combJellySpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.COMB_JELLY, AMConfig.combJellySpawnWeight, 2, 3));
+        }
+        if (testBiome(BiomeConfig.cosmic_cod, event.getCategory(), event.getName()) && AMConfig.cosmicCodSpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.COSMIC_COD, AMConfig.cosmicCodSpawnWeight, 2, 3));
+        }
 
     }
 

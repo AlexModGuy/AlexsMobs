@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.util;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSimplexNoise;
 import com.github.alexthe666.citadel.Citadel;
@@ -59,7 +60,7 @@ public class RainbowUtil {
     }
 
     public static int calculateGlassColor(BlockPos pos) {
-        float f = 16.0F;
+        float f = (float)AMConfig.rainbowGlassFidelity;
         float f1 = (float)((AMSimplexNoise.noise((pos.getX() + f) / f, (pos.getY() + f) / f, (pos.getZ() + f) / f) + 1.0F) * 0.5F);
         return Color.HSBtoRGB(f1, 1.0F, 1.0F);
     }

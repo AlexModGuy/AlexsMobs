@@ -84,6 +84,7 @@ public class EntityJerboa extends Animal {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.45F);
     }
 
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -279,16 +280,13 @@ public class EntityJerboa extends Animal {
 
 
     public static boolean isValidLightLevel(ServerLevelAccessor p_223323_0_, BlockPos p_223323_1_, Random p_223323_2_) {
-        if (p_223323_0_.getBrightness(LightLayer.SKY, p_223323_1_) > p_223323_2_.nextInt(32)) {
-            return false;
-        } else {
-            int lvt_3_1_ = p_223323_0_.getLevel().isThundering() ? p_223323_0_.getMaxLocalRawBrightness(p_223323_1_, 10) : p_223323_0_.getMaxLocalRawBrightness(p_223323_1_);
-            return lvt_3_1_ <= p_223323_2_.nextInt(8);
-        }
+        int light = p_223323_0_.getMaxLocalRawBrightness(p_223323_1_);
+        return light <= 4;
+
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
-        return AMEntityRegistry.rollSpawn(AMConfig.cockroachSpawnRolls, this.getRandom(), spawnReasonIn);
+        return AMEntityRegistry.rollSpawn(AMConfig.jerboaSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     public static boolean canMonsterSpawnInLight(EntityType<? extends EntityJerboa> p_223325_0_, ServerLevelAccessor p_223325_1_, MobSpawnType p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_) {
@@ -296,7 +294,7 @@ public class EntityJerboa extends Animal {
     }
 
     public static <T extends Mob> boolean canJerboaSpawn(EntityType<EntityJerboa> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.canSeeSky(pos) && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
+        return reason == MobSpawnType.SPAWNER || iServerWorld.canSeeSky(pos.above()) && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
     }
 
     protected void jumpFromGround() {

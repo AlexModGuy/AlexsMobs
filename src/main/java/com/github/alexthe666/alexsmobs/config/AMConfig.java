@@ -136,6 +136,14 @@ public class AMConfig {
     public static int geladaMonkeySpawnWeight = 3;
     public static int geladaMonkeySpawnRolls = 0;
     public static int geladaMonkeySpawnHeight = 100;
+    public static int jerboaSpawnWeight = 12;
+    public static int jerboaSpawnRolls = 2;
+    public static int terrapinSpawnWeight = 10;
+    public static int terrapinSpawnRolls = 0;
+    public static int combJellySpawnWeight = 5;
+    public static int combJellySpawnRolls = 0;
+    public static int cosmicCodSpawnWeight = 5;
+    public static int cosmicCodSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -195,6 +203,7 @@ public class AMConfig {
             "minecraft:enchanted_golden_apple|minecraft:oak_sapling",
             "alexsmobs:banana|minecraft:jungle_sapling"
     );
+    public static double rainbowGlassFidelity = 16.0F;
 
     public static void bake(ModConfig config) {
         try {
@@ -330,6 +339,14 @@ public class AMConfig {
             geladaMonkeySpawnWeight = ConfigHolder.COMMON.geladaMonkeySpawnWeight.get();
             geladaMonkeySpawnRolls = ConfigHolder.COMMON.geladaMonkeySpawnRolls.get();
             geladaMonkeySpawnHeight = ConfigHolder.COMMON.geladaMonkeySpawnHeight.get();
+            jerboaSpawnWeight = ConfigHolder.COMMON.jerboaSpawnWeight.get();
+            jerboaSpawnRolls = ConfigHolder.COMMON.jerboaSpawnRolls.get();
+            terrapinSpawnWeight = ConfigHolder.COMMON.terrapinSpawnWeight.get();
+            terrapinSpawnRolls = ConfigHolder.COMMON.terrapinSpawnRolls.get();
+            combJellySpawnWeight = ConfigHolder.COMMON.combJellySpawnWeight.get();
+            combJellySpawnRolls = ConfigHolder.COMMON.combJellySpawnRolls.get();
+            cosmicCodSpawnWeight = ConfigHolder.COMMON.cosmicCodSpawnWeight.get();
+            cosmicCodSpawnRolls = ConfigHolder.COMMON.cosmicCodSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -373,6 +390,7 @@ public class AMConfig {
             seagullStealingBlacklist = (List<? extends String>) ConfigHolder.COMMON.seagullStealingBlacklist.get();
             clingingFlipEffect = ConfigHolder.COMMON.clingingFlipEffect.get();
             tusklinShoesBarteringChance = ConfigHolder.COMMON.tusklinShoesBarteringChance.get();
+            rainbowGlassFidelity = ConfigHolder.COMMON.rainbowGlassFidelity.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();
