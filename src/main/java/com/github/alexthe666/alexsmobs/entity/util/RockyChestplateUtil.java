@@ -116,6 +116,6 @@ public class RockyChestplateUtil {
     }
 
     private static boolean canRollAgain(LivingEntity roller) {
-        return roller.tickCount - getRollingTimestamp(roller) >= 20;
+        return roller.tickCount - getRollingTimestamp(roller) >= 20 || Math.abs(roller.tickCount - getRollingTimestamp(roller)) > 100;
     }
 }
