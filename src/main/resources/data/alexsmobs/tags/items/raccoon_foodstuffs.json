@@ -3,6 +3,8 @@
   "values": [
     "minecraft:egg",
     "minecraft:turtle_egg",
+    "alexsmobs:crocodile_egg",
+    "alexsmobs:terrapin_egg",
     "minecraft:sugar"
   ]
 }
