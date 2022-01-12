@@ -463,6 +463,12 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         }
     }
 
+    public void push(Entity entity) {
+        if (!this.isTame() || !(entity instanceof LivingEntity) || !isOwnedBy((LivingEntity) entity)) {
+            super.push(entity);
+        }
+    }
+
     @Override
     public boolean canRiderInteract() {
         return true;
