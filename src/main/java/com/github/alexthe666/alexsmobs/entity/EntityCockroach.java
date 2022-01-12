@@ -64,7 +64,6 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     private static final EntityDataAccessor<Boolean> HEADLESS = SynchedEntityData.defineId(EntityCockroach.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> MARACAS = SynchedEntityData.defineId(EntityCockroach.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<UUID>> NEAREST_MUSICIAN = SynchedEntityData.defineId(EntityCockroach.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Boolean> RAINBOW = SynchedEntityData.defineId(EntityCockroach.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> BREADED = SynchedEntityData.defineId(EntityCockroach.class, EntityDataSerializers.BOOLEAN);
     public int randomWingFlapTick = 0;
     public float prevDanceProgress;
@@ -109,7 +108,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isBreaded() || this.isRainbow() || this.isDancing() || this.hasMaracas() || this.isHeadless();
+        return super.requiresCustomPersistence() || this.isBreaded() || this.isDancing() || this.hasMaracas() || this.isHeadless();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -165,7 +164,6 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Maracas", this.hasMaracas());
-        compound.putBoolean("Rainbow", this.isRainbow());
         compound.putBoolean("Dancing", this.isDancing());
         compound.putBoolean("Breaded", this.isBreaded());
         compound.putInt("EggTime", this.timeUntilNextEgg);
@@ -174,7 +172,6 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setMaracas(compound.getBoolean("Maracas"));
-        this.setRainbow(compound.getBoolean("Rainbow"));
         this.setDancing(compound.getBoolean("Dancing"));
         this.setBreaded(compound.getBoolean("Breaded"));
         if (compound.contains("EggTime")) {
@@ -206,26 +203,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
 
     public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
         ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
-        if ((lvt_3_1_.getItem() == Items.SPONGE || lvt_3_1_.getItem() == Items.WET_SPONGE) && this.isAlive() && this.isRainbow()) {
-            this.setRainbow(false);
-            for (int i = 0; i < 6 + random.nextInt(3); i++) {
-                double d2 = this.random.nextGaussian() * 0.02D;
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(AMItemRegistry.MIMICREAM)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
-            }
-            return InteractionResult.SUCCESS;
-        } else if (lvt_3_1_.getItem() == AMItemRegistry.MIMICREAM && this.isAlive() && !this.isRainbow()) {
-            this.setRainbow(true);
-            for (int i = 0; i < 6 + random.nextInt(3); i++) {
-                double d2 = this.random.nextGaussian() * 0.02D;
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
-            }
-            lvt_3_1_.shrink(1);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else if (lvt_3_1_.getItem() == AMItemRegistry.MARACA && this.isAlive() && !this.hasMaracas()) {
+       if (lvt_3_1_.getItem() == AMItemRegistry.MARACA && this.isAlive() && !this.hasMaracas()) {
             this.setMaracas(true);
             lvt_3_1_.shrink(1);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
@@ -246,7 +224,6 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
         this.entityData.define(HEADLESS, Boolean.valueOf(false));
         this.entityData.define(MARACAS, Boolean.valueOf(false));
         this.entityData.define(NEAREST_MUSICIAN, Optional.empty());
-        this.entityData.define(RAINBOW, Boolean.valueOf(false));
         this.entityData.define(BREADED, Boolean.valueOf(false));
     }
 
@@ -285,14 +262,6 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     @Nullable
     public UUID getNearestMusicianId() {
         return this.entityData.get(NEAREST_MUSICIAN).orElse(null);
-    }
-
-    public boolean isRainbow() {
-        return this.entityData.get(RAINBOW).booleanValue();
-    }
-
-    public void setRainbow(boolean head) {
-        this.entityData.set(RAINBOW, head);
     }
 
     public void tick() {

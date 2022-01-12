@@ -117,7 +117,7 @@ public class ModelTerrapin extends AdvancedEntityModel<EntityTerrapin> {
         float idleDegree = 0.7F;
         float spinProgress = entity.prevSpinProgress + (entity.spinProgress - entity.prevSpinProgress) * partialTick;
         float retreatProgress = Math.max(spinProgress, entity.prevRetreatProgress + (entity.retreatProgress - entity.prevRetreatProgress) * partialTick);
-        float swimProgress = entity.prevSwimProgress + (entity.swimProgress - entity.prevSwimProgress) * partialTick;
+        float swimProgress = (entity.prevSwimProgress + (entity.swimProgress - entity.prevSwimProgress) * partialTick) * (5F - retreatProgress) * 0.2F;
         float standUnderwaterProgress = Math.max(0, (1F - Math.min(limbSwingAmount * 3F, 1F)) * swimProgress - retreatProgress);
         float spinDegree = 0.6F;
         progressRotationPrev(left_arm, swimProgress, (float) Math.toRadians(-20), 0,  (float) Math.toRadians(-70), 5F);
