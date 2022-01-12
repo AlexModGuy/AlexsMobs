@@ -33,6 +33,8 @@ public class RockyChestplateUtil {
         CitadelEntityData.setCitadelTag(roller, lassoedTag);
         if (!roller.level.isClientSide) {
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, roller.getId()));
+        }else{
+            Citadel.sendMSGToServer(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, roller.getId()));
         }
     }
 

@@ -37,6 +37,8 @@ public class RainbowUtil {
         CitadelEntityData.setCitadelTag(fabulous, tag);
         if (!fabulous.level.isClientSide) {
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", tag, fabulous.getId()));
+        }else{
+            Citadel.sendMSGToServer(new PropertiesMessage("CitadelPatreonConfig", tag, fabulous.getId()));
         }
     }
 
