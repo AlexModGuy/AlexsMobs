@@ -1,8 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#minecraft:sand",
-    "#forge:gravel",
+    "#alexsmobs:am_spawns",
     "minecraft:stone",
     "minecraft:water"
   ]

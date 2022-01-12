@@ -3,8 +3,11 @@ package com.github.alexthe666.alexsmobs.block;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import com.google.common.base.Predicates;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -63,7 +66,8 @@ public class BlockLeafcutterAntChamber extends Block {
                         dir = Direction.DOWN;
                     }
                     BlockPos offset = pos.relative(dir);
-                    if(Tags.Blocks.DIRT.contains(worldIn.getBlockState(offset).getBlock()) && !worldIn.canSeeSky(offset)){
+                    Tag<Block> tag = BlockTags.getAllTags().getTag(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON);
+                    if(tag.contains(worldIn.getBlockState(offset).getBlock()) && !worldIn.canSeeSky(offset)){
                         worldIn.setBlockAndUpdate(offset, this.defaultBlockState());
                     }
                 }

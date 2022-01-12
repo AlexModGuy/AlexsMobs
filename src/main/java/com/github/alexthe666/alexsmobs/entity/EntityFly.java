@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -112,7 +113,8 @@ public class EntityFly extends Animal implements FlyingAnimal {
 
 
     public static boolean canFlySpawn(EntityType<EntityFly> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        return reason == MobSpawnType.SPAWNER || pos.getY() > 63 && random.nextInt(4) == 0 && worldIn.getRawBrightness(pos, 0) > 8 && worldIn.getBrightness(LightLayer.BLOCK, pos) == 0 && (BlockTags.SAND.contains(worldIn.getBlockState(pos.below()).getBlock()) || Tags.Blocks.DIRT.contains(worldIn.getBlockState(pos.below()).getBlock()));
+        Tag<Block> tag = BlockTags.getAllTags().getTag(AMTagRegistry.FLY_SPAWNS);
+        return reason == MobSpawnType.SPAWNER || pos.getY() > 63 && random.nextInt(4) == 0 && worldIn.getRawBrightness(pos, 0) > 8 && worldIn.getBrightness(LightLayer.BLOCK, pos) == 0 && tag.contains(worldIn.getBlockState(pos.below()).getBlock());
     }
 
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {

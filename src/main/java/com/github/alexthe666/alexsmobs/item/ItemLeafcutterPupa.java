@@ -4,7 +4,11 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -29,7 +33,8 @@ public class ItemLeafcutterPupa extends Item {
         Level world = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         BlockState blockstate = world.getBlockState(blockpos);
-        if (Tags.Blocks.DIRT.contains(blockstate.getBlock()) && Tags.Blocks.DIRT.contains(world.getBlockState(blockpos.below()).getBlock())) {
+        Tag<Block> tag = BlockTags.getAllTags().getTag(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON);
+        if (tag.contains(blockstate.getBlock()) && tag.contains(world.getBlockState(blockpos.below()).getBlock())) {
             Player playerentity = context.getPlayer();
             world.playSound(playerentity, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             if (!world.isClientSide) {

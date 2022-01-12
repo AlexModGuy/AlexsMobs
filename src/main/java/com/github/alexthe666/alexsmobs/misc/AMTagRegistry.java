@@ -74,5 +74,7 @@ public class AMTagRegistry {
     public static final ResourceLocation KANGAROO_SPAWNS = new ResourceLocation("alexsmobs","kangaroo_spawns");
     public static final ResourceLocation PLATYPUS_SPAWNS = new ResourceLocation("alexsmobs","platypus_spawns");
     public static final ResourceLocation ANACONDA_SPAWNS = new ResourceLocation("alexsmobs","anaconda_spawns");
+    public static final ResourceLocation FLY_SPAWNS = new ResourceLocation("alexsmobs","fly_spawns");
+    public static final ResourceLocation LEAFCUTTER_PUPA_USABLE_ON = new ResourceLocation("alexsmobs","leafcutter_pupa_usable_on");
 
 }
