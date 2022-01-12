@@ -13,6 +13,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
@@ -318,6 +319,13 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         }
     }
 
+    public boolean isColliding(BlockPos pos, BlockState blockstate) {
+        return !(blockstate.getBlock() == Blocks.BAMBOO || blockstate.is(BlockTags.LEAVES)) && super.isColliding(pos, blockstate);
+    }
+
+    public Vec3 collide(Vec3 vec3) {
+        return ICustomCollisions.getAllowedMovementForEntity(this, vec3);
+    }
 
     public void tick() {
         super.tick();
@@ -567,13 +575,13 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         private NodeProcessor() {
         }
 
-        public static BlockPathTypes getBlockPathTypeStatic(BlockGetter p_237231_0_, BlockPos.MutableBlockPos p_237231_1_) {
-            int i = p_237231_1_.getX();
-            int j = p_237231_1_.getY();
-            int k = p_237231_1_.getZ();
-            BlockPathTypes pathnodetype = getNodes(p_237231_0_, p_237231_1_);
+        public static BlockPathTypes getBlockPathTypeStatic(BlockGetter level, BlockPos.MutableBlockPos pos) {
+            int i = pos.getX();
+            int j = pos.getY();
+            int k = pos.getZ();
+            BlockPathTypes pathnodetype = getNodes(level, pos);
             if (pathnodetype == BlockPathTypes.OPEN && j >= 1) {
-                BlockPathTypes pathnodetype1 = getNodes(p_237231_0_, p_237231_1_.set(i, j - 1, k));
+                BlockPathTypes pathnodetype1 = getNodes(level, pos.set(i, j - 1, k));
                 pathnodetype = pathnodetype1 != BlockPathTypes.WALKABLE && pathnodetype1 != BlockPathTypes.OPEN && pathnodetype1 != BlockPathTypes.WATER && pathnodetype1 != BlockPathTypes.LAVA ? BlockPathTypes.WALKABLE : BlockPathTypes.OPEN;
                 if (pathnodetype1 == BlockPathTypes.DAMAGE_FIRE) {
                     pathnodetype = BlockPathTypes.DAMAGE_FIRE;
@@ -593,7 +601,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             }
 
             if (pathnodetype == BlockPathTypes.WALKABLE) {
-                pathnodetype = checkNeighbourBlocks(p_237231_0_, p_237231_1_.set(i, j, k), pathnodetype);
+                pathnodetype = checkNeighbourBlocks(level, pos.set(i, j, k), pathnodetype);
             }
 
             return pathnodetype;
