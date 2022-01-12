@@ -157,6 +157,8 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, EntityAlligatorSnappingTurtle.class, 40, false, false, TARGET_BABY));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal(this, Turtle.class, 40, false, false, TARGET_BABY));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, EntityCrocodile.class, 40, false, false, TARGET_BABY));
+        this.targetSelector.addGoal(7, new EntityAINearestTarget3D(this, EntityTerrapin.class, 100, false, true, null));
+
     }
 
     public boolean isTargetBlocked(Vec3 target) {
@@ -291,7 +293,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
 
     public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
         ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
-         if (lvt_3_1_.getItem() == AMItemRegistry.BLOBFISH && this.isAlive()) {
+         if (lvt_3_1_.getItem() == AMBlockRegistry.TERRAPIN_EGG.asItem() && this.isAlive()) {
              if(this.luckLevel < 10) {
                  luckLevel = Mth.clamp(luckLevel + 1, 0, 10);
                  for (int i = 0; i < 6 + random.nextInt(3); i++) {
