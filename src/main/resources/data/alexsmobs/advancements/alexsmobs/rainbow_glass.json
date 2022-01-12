@@ -1,0 +1,26 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:rainbow_glass"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.rainbow_glass.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.rainbow_glass.desc"
+        }
+    },
+    "parent": "alexsmobs:alexsmobs/rainbow_jelly",
+    "criteria": {
+        "gustmaker": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:rainbow_glass"]
+                    }
+                ]
+            }
+        }
+    }
+}
