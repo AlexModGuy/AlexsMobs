@@ -459,7 +459,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
 
             }
         }else{
-            if(!level.isClientSide){
+            if(!level.isClientSide && this.getControllingPassenger() == null){
                 this.setSprinting(false);
             }
         }
