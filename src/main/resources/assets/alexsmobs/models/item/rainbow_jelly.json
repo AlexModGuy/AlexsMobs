@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alexsmobs:item/rainbow_jelly"
+  }
+}

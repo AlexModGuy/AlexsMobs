@@ -6,6 +6,8 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
+import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
@@ -13,6 +15,7 @@ import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
+import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +27,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -36,8 +40,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
-import net.minecraft.world.entity.animal.PolarBear;
-import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Spider;
@@ -64,7 +67,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -356,9 +359,41 @@ public class ServerEvents {
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
+        if (event.getTarget() instanceof LivingEntity && RainbowUtil.getRainbowType((LivingEntity) event.getTarget()) > 0 && (event.getItemStack().getItem() == Items.SPONGE)){
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            RainbowUtil.setRainbowType((LivingEntity) event.getTarget(), 0);
+            if (!event.getPlayer().isCreative()) {
+                event.getItemStack().shrink(1);
+            }
+            ItemStack wetSponge = new ItemStack(Items.WET_SPONGE);
+            if(!event.getPlayer().addItem(wetSponge)){
+                event.getPlayer().drop(wetSponge, true);
+            }
+        }
     }
 
     @SubscribeEvent
+    public void onUseItemAir(PlayerInteractEvent.RightClickEmpty event) {
+
+        ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
+        if(stack.isEmpty()){
+            stack = event.getPlayer().getItemBySlot(EquipmentSlot.MAINHAND);
+        }
+        if (RainbowUtil.getRainbowType(event.getPlayer()) > 0 && (stack.is(Items.SPONGE))){
+            event.getPlayer().swing(InteractionHand.MAIN_HAND);
+            RainbowUtil.setRainbowType(event.getPlayer(), 0);
+            if (!event.getPlayer().isCreative()) {
+                stack.shrink(1);
+            }
+            ItemStack wetSponge = new ItemStack(Items.WET_SPONGE);
+            if(!event.getPlayer().addItem(wetSponge)){
+                event.getPlayer().drop(wetSponge, true);
+            }
+        }
+    }
+
+        @SubscribeEvent
     public void onEntityDrops(LivingDropsEvent event) {
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
             VineLassoUtil.lassoTo(null, event.getEntityLiving());
@@ -403,6 +438,10 @@ public class ServerEvents {
                 Creeper creeper = (Creeper) event.getEntity();
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntitySnowLeopard.class, 6.0F, 1.0D, 1.2D));
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntityTiger.class, 6.0F, 1.0D, 1.2D));
+            }
+            if (event.getEntity() != null && (event.getEntity() instanceof Fox || event.getEntity() instanceof Cat || event.getEntity() instanceof Ocelot) && AMConfig.catsAndFoxesAttackJerboas) {
+                Mob mb = (Mob) event.getEntity();
+                mb.targetSelector.addGoal(6, new NearestAttackableTargetGoal(mb, EntityJerboa.class, 45, true, true, null));
             }
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
@@ -470,7 +509,7 @@ public class ServerEvents {
         }
         if (AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
             if (event.getStructure() == StructureFeature.NETHER_FOSSIL) {
-                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 2, 3));
+                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 1, 1));
             }
         }
     }
@@ -530,12 +569,12 @@ public class ServerEvents {
                 motion = new Vec3(d0, d2, d1);
                 event.getEntityLiving().setDeltaMovement(motion);
             }
-
-
         }
-
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
             VineLassoUtil.tickLasso(event.getEntityLiving());
+        }
+        if (RockyChestplateUtil.isWearing(event.getEntityLiving())) {
+            RockyChestplateUtil.tickRockyRolling(event.getEntityLiving());
         }
     }
 
@@ -549,7 +588,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onFOVUpdate(FOVUpdateEvent event) {
+    public void onFOVUpdate(FOVModifierEvent event) {
         if (event.getEntity().hasEffect(AMEffectRegistry.FEAR)) {
             event.setNewfov(1.0F);
         }
@@ -584,12 +623,12 @@ public class ServerEvents {
     public void onChestGenerated(LootTableLoadEvent event) {
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(40).setWeight(1);
-            LootPool.Builder builder = new LootPool.Builder().name("am_dart").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 1)).bonusRolls(0, 1);
+            LootPool.Builder builder = new LootPool.Builder().name("am_dart").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 1)).setBonusRolls(UniformGenerator.between(0, 1));
             event.getTable().addPool(builder.build());
         }
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE_DISPENSER)) {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(20).setWeight(3);
-            LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 2)).bonusRolls(0, 1);
+            LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 2)).setBonusRolls(UniformGenerator.between(0, 1));
             event.getTable().addPool(builder.build());
         }
         if (event.getName().equals(BuiltInLootTables.PIGLIN_BARTERING) && AMConfig.tusklinShoesBarteringChance > 0) {
@@ -598,5 +637,4 @@ public class ServerEvents {
             event.getTable().addPool(builder.build());
         }
     }
-
 }

@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.google.common.base.Predicates;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -38,6 +40,8 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -130,6 +134,8 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                 return super.canUse();
             }
         }));
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, EntityCosmicCod.class, 80, true, false, Predicates.alwaysTrue()));
+
     }
 
     protected SoundEvent getAmbientSound() {
@@ -235,6 +241,13 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                 biteProgress = Math.min(5F, biteProgress + 2F);
             } else {
                 if (this.getTarget() != null && this.distanceTo(this.getTarget()) < 3.3D) {
+                    if (this.getTarget() instanceof EntityCosmicCod && !this.isTame()) {
+                        EntityCosmicCod fish = (EntityCosmicCod) this.getTarget();
+                        CompoundTag fishNbt = new CompoundTag();
+                        fish.addAdditionalSaveData(fishNbt);
+                        fishNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
+                        fish.readAdditionalSaveData(fishNbt);
+                    }
                     this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 }
                 this.entityData.set(ATTACK_TICK, this.entityData.get(ATTACK_TICK) - 1);
@@ -548,7 +561,6 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                 }
             }
         }
-
     }
 
     private class AIAttack extends Goal {

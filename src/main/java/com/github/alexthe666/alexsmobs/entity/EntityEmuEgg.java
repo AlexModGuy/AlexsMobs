@@ -12,8 +12,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class EntityEmuEgg extends ThrowableItemProjectile {
 
@@ -29,7 +29,7 @@ public class EntityEmuEgg extends ThrowableItemProjectile {
         super(AMEntityRegistry.EMU_EGG, x, y, z, worldIn);
     }
 
-    public EntityEmuEgg(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityEmuEgg(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.EMU_EGG, world);
     }
 

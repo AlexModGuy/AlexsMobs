@@ -21,6 +21,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
     public static ModelFedora FEDORA_MODEL;
     public static ModelSombrero SOMBRERO_MODEL;
     public static ModelFroststalkerHelmet FROSTSTALKER_HELMET_MODEL;
+    public static ModelRockyChestplate ROCKY_CHESTPLATE_MODEL;
 
     public static void initializeModels() {
         init = true;
@@ -32,6 +33,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         SOMBRERO_MODEL = new ModelSombrero(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SOMBRERO));
         FROSTSTALKER_HELMET_MODEL = new ModelFroststalkerHelmet(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.FROSTSTALKER_HELMET));
         ELYTRA_MODEL = new ModelAMElytra(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.AM_ELYTRA));
+        ROCKY_CHESTPLATE_MODEL = new ModelRockyChestplate(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.ROCKY_CHESTPLATE));
     }
 
     public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
@@ -61,6 +63,9 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         }
         if(itemStack.getItem() == AMItemRegistry.FROSTSTALKER_HELMET){
             return (A)FROSTSTALKER_HELMET_MODEL;
+        }
+        if(itemStack.getItem() == AMItemRegistry.ROCKY_CHESTPLATE){
+            return (A)ROCKY_CHESTPLATE_MODEL;
         }
         return _default;
     }

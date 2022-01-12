@@ -4,6 +4,8 @@ import com.github.alexthe666.alexsmobs.entity.EntityCachalotEcho;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.google.common.base.Predicates;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -43,13 +45,16 @@ public class ItemEcholocator extends Item {
             Random random = new Random();
             for(int i = 0; i < 256; i++){
                 BlockPos checkPos = blockpos.offset(random.nextInt(range) - range/2, random.nextInt(range)/2 - range/2, random.nextInt(range) - range/2);
-                if(world.getBlockState(checkPos).getBlock() == Blocks.CAVE_AIR && world.getMaxLocalRawBrightness(checkPos) < 4){
+                if(isCaveAir(world, checkPos)){
                     return Collections.singletonList(checkPos);
                 }
             }
             return Collections.emptyList();
         }
+    }
 
+    private boolean isCaveAir(Level world, BlockPos checkPos){
+        return world.getBlockState(checkPos).isAir() && world.getBrightness(LightLayer.SKY, checkPos) == 0 && world.getBrightness(LightLayer.BLOCK, checkPos) < 4;
     }
 
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player livingEntityIn, InteractionHand handIn) {
@@ -73,7 +78,7 @@ public class ItemEcholocator extends Item {
                 CompoundTag nbt = stack.getOrCreateTag();
                 if(nbt.contains("CavePos") && nbt.getBoolean("ValidCavePos")){
                     pos = BlockPos.of(nbt.getLong("CavePos"));
-                    if(worldIn.getBlockState(pos).getBlock() != Blocks.CAVE_AIR ||worldIn.getMaxLocalRawBrightness(pos) >= 4 || 1000000 < pos.distSqr(playerPos)){
+                    if(isCaveAir(worldIn, pos) || 1000000 < pos.distSqr(playerPos)){
                         nbt.putBoolean("ValidCavePos", false);
                     }
                 }else{

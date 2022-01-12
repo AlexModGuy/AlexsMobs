@@ -102,7 +102,8 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Squid.class, 40, false, true, null));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EntityMimicOctopus.class, 70, false, true, null));
         this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractSchoolingFish.class, 100, false, true, null));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, Drowned.class, 4, false, true, null));
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, EntityBlobfish.class, 70, false, true, null));
+        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, Drowned.class, 4, false, true, null));
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {

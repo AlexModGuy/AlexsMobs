@@ -78,10 +78,6 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
         return AMEntityRegistry.rollSpawn(AMConfig.blobfishSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean checkFishSpawnRules(EntityType<? extends AbstractFish> p_223363_0_, LevelAccessor p_223363_1_, MobSpawnType p_223363_2_, BlockPos p_223363_3_, Random p_223363_4_) {
-        return p_223363_1_.getBlockState(p_223363_3_).getMaterial() == Material.WATER && p_223363_1_.getBlockState(p_223363_3_.above()).getMaterial() == Material.WATER;
-    }
-
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 8D).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
@@ -159,7 +155,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
         for (int l1 = 0; l1 < 10; ++l1) {
             BlockState blockstate = level.getBlockState(blockpos$mutable.set(this.getX(), this.getY() + l1, this.getZ()));
-            if (!blockstate.getFluidState().is(FluidTags.WATER)) {
+            if (!blockstate.getFluidState().is(FluidTags.WATER) && !blockstate.getMaterial().isSolid()) {
                 return false;
             }
         }

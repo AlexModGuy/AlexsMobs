@@ -245,7 +245,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     }
 
     public void travel(Vec3 vec3d) {
-        if (!this.shouldHoodedReturn() && this.hasCap() && this.isTame() && !this.isPassenger()) {
+        if (!this.shouldHoodedReturn() && this.hasCap() && this.isTame() && !this.isPassenger() || this.isSitting()) {
             super.travel(Vec3.ZERO);
             return;
         }
@@ -253,7 +253,8 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     }
 
     public boolean doHurtTarget(Entity entityIn) {
-        if (this.entityData.get(ATTACK_TICK) == 0 && this.attackProgress == 0 && entityIn.isAlive() && this.distanceTo(entityIn) < entityIn.getBbWidth() + 5) {
+        double dist = this.isSitting() ? entityIn.getBbWidth() + 1 : entityIn.getBbWidth() + 5;
+        if (this.entityData.get(ATTACK_TICK) == 0 && this.attackProgress == 0 && entityIn.isAlive() && this.distanceTo(entityIn) < dist) {
             this.entityData.set(ATTACK_TICK, 5);
         }
         return true;
@@ -635,10 +636,10 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
 
     private BlockPos getCrowGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
-        while (position.getY() < 256 && !level.getFluidState(position).isEmpty()) {
+        while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > 2 && level.isEmptyBlock(position)) {
+        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
         return position;
@@ -653,11 +654,11 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getCrowGround(radialPos);
-        if (ground.getY() == 0) {
+        if (ground.getY() == -64) {
             return this.position();
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > 2 && level.isEmptyBlock(ground)) {
+            while (ground.getY() > -64 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
                 ground = ground.below();
             }
         }
@@ -688,10 +689,10 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > 0 && level.isEmptyBlock(position)) {
+        while (position.getY() > -64 && level.isEmptyBlock(position)) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || position.getY() <= 0;
+        return !level.getFluidState(position).isEmpty() || position.getY() <= -64;
     }
 
     public void positionRider(Entity passenger) {

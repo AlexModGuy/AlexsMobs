@@ -32,7 +32,7 @@ public class ItemModArmor extends ArmorItem {
     private Multimap<Attribute, AttributeModifier> attributeMapCroc;
     private Multimap<Attribute, AttributeModifier> attributeMapMoose;
 
-    public ItemModArmor(CustomArmorMaterial armorMaterial, EquipmentSlot slot) {
+    public ItemModArmor(AMArmorMaterial armorMaterial, EquipmentSlot slot) {
         super(armorMaterial, slot, new Item.Properties().tab(AlexsMobs.TAB));
     }
 
@@ -59,9 +59,12 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
             tooltip.add(new TranslatableComponent("item.alexsmobs.froststalker_helmet.desc").withStyle(ChatFormatting.AQUA));
         }
+        if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
+            tooltip.add(new TranslatableComponent("item.alexsmobs.rocky_chestplate.desc").withStyle(ChatFormatting.GRAY));
+        }
     }
 
-    private void buildCrocAttributes(CustomArmorMaterial materialIn) {
+    private void buildCrocAttributes(AMArmorMaterial materialIn) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
         builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
@@ -73,7 +76,7 @@ public class ItemModArmor extends ArmorItem {
         attributeMapCroc = builder.build();
     }
 
-    private void buildMooseAttributes(CustomArmorMaterial materialIn) {
+    private void buildMooseAttributes(AMArmorMaterial materialIn) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
         builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
@@ -124,6 +127,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/emu_leggings.png";
         } else if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/froststalker_helmet.png";
+        }else if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
+            return "alexsmobs:textures/armor/rocky_chestplate.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }

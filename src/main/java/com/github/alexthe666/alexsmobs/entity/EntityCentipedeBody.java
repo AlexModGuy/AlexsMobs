@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -29,8 +30,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
 
 public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
 
@@ -291,11 +295,12 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
             return false;
         } else {
             float f = 1F;
-            Vec3 vec1 = new Vec3(x, y, z);
-            AABB aabb = AABB.ofSize(vec1, f, 0.1F, f);
-            return this.level.getBlockCollisions(this, aabb, (p_20129_, p_20130_) -> {
-                return p_20129_.isSuffocating(this.level, p_20130_);
-            }).findAny().isPresent();
+            Vec3 vec3 = new Vec3(x, y, z);
+            AABB axisalignedbb = AABB.ofSize(vec3, (double)f, 1.0E-6D, (double)f);
+            return this.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
+                BlockPos blockpos = new BlockPos(vec3);
+                return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
+            });
         }
     }
 

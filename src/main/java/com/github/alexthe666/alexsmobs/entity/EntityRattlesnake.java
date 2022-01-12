@@ -81,8 +81,9 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 15.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Rabbit.class, 15, true, true, null));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
-        this.targetSelector.addGoal(2, new ShortDistanceTarget());
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, EntityJerboa.class, 15, true, true, null));
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)));
+        this.targetSelector.addGoal(4, new ShortDistanceTarget());
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {

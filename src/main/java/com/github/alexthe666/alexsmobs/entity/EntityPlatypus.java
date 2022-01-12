@@ -328,7 +328,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         this.setSensing(compound.getBoolean("Sensing"));
     }
 
-        public void tick() {
+    public void tick() {
         super.tick();
         prevInWaterProgress = inWaterProgress;
         prevDigProgress = digProgress;

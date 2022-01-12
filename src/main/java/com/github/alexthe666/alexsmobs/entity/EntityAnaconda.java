@@ -158,10 +158,10 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         if (compound.hasUUID("ChildUUID")) {
             this.setChildId(compound.getUUID("ChildUUID"));
         }
-        compound.putInt("Feedings", feedings);
-        compound.putInt("ShedTime", getSheddingTime());
-        compound.putBoolean("Yellow", isYellow());
-        compound.putInt("ShedCooldown", shedCooldown);
+        feedings = compound.getInt("Feedings");
+        this.setSheddingTime(compound.getInt("ShedTime"));
+        this.setYellow(compound.getBoolean("Yellow"));
+        shedCooldown = compound.getInt("ShedCooldown");
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -169,10 +169,10 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         if (this.getChildId() != null) {
             compound.putUUID("ChildUUID", this.getChildId());
         }
-        feedings = compound.getInt("Feedings");
-        this.setSheddingTime(compound.getInt("ShedTime"));
-        this.setYellow(compound.getBoolean("Yellow"));
-        shedCooldown = compound.getInt("ShedCooldown");
+        compound.putInt("Feedings", feedings);
+        compound.putInt("ShedTime", getSheddingTime());
+        compound.putBoolean("Yellow", isYellow());
+        compound.putInt("ShedCooldown", shedCooldown);
     }
 
 
@@ -287,7 +287,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 }
                 if (strangleTimer >= 40 && strangleTimer % 20 == 0) {
                     double health = Mth.clamp(this.getTarget().getMaxHealth(), 4, 50);
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float)Math.max(4F, 0.35F * health));
+                    this.getTarget().hurt(DamageSource.mobAttack(this), (float)Math.max(4F, 0.25F * health));
                 }
                 if (this.getTarget() == null || !this.getTarget().isAlive()) {
                     strangleTimer = 0;

@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCockroach;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerCockroachMaracas;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerCockroachRainbow;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,7 +13,6 @@ public class RenderCockroach extends MobRenderer<EntityCockroach, ModelCockroach
 
     public RenderCockroach(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCockroach(), 0.3F);
-        this.addLayer(new LayerCockroachRainbow(this));
         this.addLayer(new LayerCockroachMaracas(this, renderManagerIn));
     }
 

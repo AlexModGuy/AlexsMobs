@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -20,6 +21,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+
+import java.util.function.Predicate;
 
 public class EffectDebilitatingSting extends MobEffect {
 
@@ -81,12 +86,13 @@ public class EffectDebilitatingSting extends MobEffect {
     }
 
     public boolean isEntityInsideOpaqueBlock(Entity entity) {
-        float f = 0.1F;
-        float f1 = entity.getDimensions(entity.getPose()).width * 0.8F;
-        AABB axisalignedbb = AABB.ofSize(new Vec3(entity.getX(), entity.getY(), entity.getZ()), f1, 0.1F, f1);
-        return entity.level.getBlockCollisions(entity, axisalignedbb, (p_241338_1_, p_241338_2_) -> {
-            return p_241338_1_.isSuffocating(entity.level, p_241338_2_);
-        }).findAny().isPresent();
+        Vec3 vec3 = entity.getEyePosition();
+        float f = entity.getDimensions(entity.getPose()).width * 0.8F;
+        AABB axisalignedbb = AABB.ofSize(vec3, (double)f, 1.0E-6D, (double)f);
+        return entity.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
+            BlockPos blockpos = new BlockPos(vec3);
+            return p_185969_.isSuffocating(entity.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(entity.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
+        });
     }
 
     public boolean isDurationEffectTick(int duration, int amplifier) {

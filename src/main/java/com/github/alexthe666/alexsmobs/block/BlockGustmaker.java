@@ -62,10 +62,10 @@ public class BlockGustmaker extends Block {
                 worldIn.addFreshEntity(gust);
             }
             worldIn.setBlock(pos, state.setValue(TRIGGERED, Boolean.valueOf(true)), 2);
-            worldIn.getBlockTicks().scheduleTick(pos, this, 20);
+            worldIn.scheduleTick(pos, this, 20);
         } else if (flag1) {
             if (tickOff) {
-                worldIn.getBlockTicks().scheduleTick(pos, this, 20);
+                worldIn.scheduleTick(pos, this, 20);
                 worldIn.setBlock(pos, state.setValue(TRIGGERED, Boolean.valueOf(false)), 2);
             }
         }

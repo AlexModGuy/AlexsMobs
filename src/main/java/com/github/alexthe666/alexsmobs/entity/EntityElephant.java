@@ -92,7 +92,8 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class EntityElephant extends TamableAnimal implements ITargetsDroppedItems, IAnimatedEntity {
 

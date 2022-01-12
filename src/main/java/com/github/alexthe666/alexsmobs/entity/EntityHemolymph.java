@@ -19,8 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -54,7 +54,7 @@ public class EntityHemolymph extends Entity {
         this.setDeltaMovement(p_i47274_8_, p_i47274_10_, p_i47274_12_);
     }
 
-    public EntityHemolymph(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityHemolymph(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.HEMOLYMPH, world);
     }
 

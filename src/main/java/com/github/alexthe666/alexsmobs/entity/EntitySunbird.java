@@ -80,8 +80,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     }
 
     public static boolean canSunbirdSpawn(EntityType<? extends Mob> typeIn, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        BlockPos blockpos = pos.below();
-        return reason == MobSpawnType.SPAWNER || true;
+        return true;
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -408,7 +407,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, 0, parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
             int distFromGround = (int) parentEntity.getY() - ground.getY();
-            int flightHeight = Math.max(ground.getY(), 180 + parentEntity.getRandom().nextInt(40)) - ground.getY();
+            int flightHeight = Math.max(ground.getY(), 230 + parentEntity.getRandom().nextInt(40)) - ground.getY();
             BlockPos newPos = radialPos.above(distFromGround > 16 ? flightHeight : (int) parentEntity.getY() + parentEntity.getRandom().nextInt(16) + 1);
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(newPos)) && parentEntity.distanceToSqr(Vec3.atCenterOf(newPos)) > 6) {
                 return newPos;

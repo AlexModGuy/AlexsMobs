@@ -2,13 +2,12 @@ package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
-import com.github.alexthe666.citadel.server.message.PacketBufferUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 

@@ -82,7 +82,8 @@ import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class EntityKangaroo extends TamableAnimal implements ContainerListener, IAnimatedEntity, IFollower {
 

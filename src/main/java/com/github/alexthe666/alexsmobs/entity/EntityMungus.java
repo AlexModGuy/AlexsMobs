@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.MungusAITemptMushroom;
 import com.github.alexthe666.alexsmobs.message.MessageMungusBiomeChange;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.core.QuartPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -33,6 +34,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ClipContext;
@@ -43,7 +46,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.ChunkBiomeContainer;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -89,11 +91,10 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
 
     //biome container constants
     private static final int WIDTH_BITS = Mth.ceillog2(16) - 2;
-    private static final int HORIZONTAL_MASK = (1 << WIDTH_BITS) - 1;
     public static final int MAX_SIZE = 1 << WIDTH_BITS + WIDTH_BITS + DimensionType.BITS_FOR_Y - 2;
-
-    private static HashMap<String, String> MUSHROOM_TO_BIOME = new HashMap<>();
-    private static HashMap<String, String> MUSHROOM_TO_BLOCK = new HashMap<>();
+    private static final int HORIZONTAL_MASK = (1 << WIDTH_BITS) - 1;
+    private static final HashMap<String, String> MUSHROOM_TO_BIOME = new HashMap<>();
+    private static final HashMap<String, String> MUSHROOM_TO_BLOCK = new HashMap<>();
     private static boolean initBiomeData = false;
     public float prevSwellProgress = 0;
     public float swellProgress = 0;
@@ -179,11 +180,11 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         } else if (isAlive() && swellProgress > 0F) {
             swellProgress -= 1F;
         }
-        if(entityData.get(EXPLOSION_DISABLED)){
-            if(mosquitoAttackCooldown < 0){
+        if (entityData.get(EXPLOSION_DISABLED)) {
+            if (mosquitoAttackCooldown < 0) {
                 mosquitoAttackCooldown++;
             }
-            if(mosquitoAttackCooldown > 200){
+            if (mosquitoAttackCooldown > 200) {
                 mosquitoAttackCooldown = 0;
                 entityData.set(EXPLOSION_DISABLED, false);
             }
@@ -260,7 +261,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         }
     }
 
-    public void disableExplosion(){
+    public void disableExplosion() {
         this.entityData.set(EXPLOSION_DISABLED, true);
     }
 
@@ -278,21 +279,31 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         return null;
     }
 
+    private PalettedContainer<Biome> getChunkBiomes(LevelChunk chunk) {
+        int i = QuartPos.fromBlock(chunk.getMinBuildHeight());
+        int k = i + QuartPos.fromBlock(chunk.getHeight()) - 1;
+        int l = Mth.clamp(QuartPos.fromBlock((int) this.getY()), i, k);
+        int j = chunk.getSectionIndex(QuartPos.toBlock(l));
+        LevelChunkSection section = chunk.getSection(j);
+        return section == null ? null : section.getBiomes();
+    }
+
 
     private void transformBiome(BlockPos pos, Biome biome) {
         LevelChunk chunk = level.getChunkAt(pos);
-        ChunkBiomeContainer container = chunk.getBiomes();
+        PalettedContainer<Biome> container = getChunkBiomes(chunk);
         if (this.entityData.get(REVERTING)) {
             int lvt_4_1_ = chunk.getPos().getMinBlockX() >> 2;
+            int yChunk = (int)this.getY() >> 2;
             int lvt_5_1_ = chunk.getPos().getMinBlockZ() >> 2;
             ChunkGenerator chunkgenerator = ((ServerLevel) level).getChunkSource().getGenerator();
             Biome b = null;
-            for (int lvt_6_1_ = 0; lvt_6_1_ < container.biomes.length; ++lvt_6_1_) {
-                int lvt_7_1_ = lvt_6_1_ & HORIZONTAL_MASK;
-                int lvt_8_1_ = lvt_6_1_ >> WIDTH_BITS + WIDTH_BITS;
-                int lvt_9_1_ = lvt_6_1_ >> WIDTH_BITS & HORIZONTAL_MASK;
-                b = chunkgenerator.getBiomeSource().getNoiseBiome(lvt_4_1_ + lvt_7_1_, lvt_8_1_, lvt_5_1_ + lvt_9_1_);
-                container.biomes[lvt_6_1_] = b;
+            for(int k = 0; k < 4; ++k) {
+                for(int l = 0; l < 4; ++l) {
+                    for(int i1 = 0; i1 < 4; ++i1) {
+                        container.getAndSetUnchecked(k, l, i1, chunkgenerator.getBiomeSource().getNoiseBiome(lvt_4_1_ + k, yChunk + l, lvt_5_1_ + i1, chunkgenerator.climateSampler()));
+                    }
+                }
             }
             if (b != null && !level.isClientSide) {
                 AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), b.getRegistryName().toString()));
@@ -302,8 +313,12 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                 return;
             }
             if (container != null && !level.isClientSide) {
-                for (int i = 0; i < container.biomes.length; i++) {
-                    container.biomes[i] = biome;
+                for (int biomeX = 0; biomeX < 4; ++biomeX) {
+                    for (int biomeY = 0; biomeY < 4; ++biomeY) {
+                        for (int biomeZ = 0; biomeZ < 4; ++biomeZ) {
+                            container.getAndSetUnchecked(biomeX, biomeY, biomeZ, biome);
+                        }
+                    }
                 }
                 int id = this.getId();
                 AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), biome.getRegistryName().toString()));
@@ -467,7 +482,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                             }
                         }
                         this.playSound(AMSoundRegistry.MUNGUS_LASER_END, this.getVoicePitch(), this.getSoundVolume());
-                        if(flag){
+                        if (flag) {
                             this.playSound(AMSoundRegistry.MUNGUS_LASER_GROW, this.getVoicePitch(), this.getSoundVolume());
                         }
                         this.setBeamTarget(null);
@@ -665,7 +680,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                     EntityMungus.this.getNavigation().moveTo(this.destinationBlock.getX(), this.destinationBlock.getY(), this.destinationBlock.getZ(), 1D);
                 } else {
                     EntityMungus.this.setBeamTarget(this.destinationBlock);
-                    if(!EntityMungus.this.isInLove()){
+                    if (!EntityMungus.this.isInLove()) {
                         EntityMungus.this.getNavigation().stop();
                     }
                 }

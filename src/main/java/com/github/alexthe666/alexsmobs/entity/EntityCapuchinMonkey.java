@@ -10,13 +10,16 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.horse.Llama;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -48,12 +51,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -74,6 +71,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     protected static final EntityDataAccessor<Boolean> DART = SynchedEntityData.defineId(EntityCapuchinMonkey.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityCapuchinMonkey.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityCapuchinMonkey.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityCapuchinMonkey.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DART_TARGET = SynchedEntityData.defineId(EntityCapuchinMonkey.class, EntityDataSerializers.INT);
     public float prevSitProgress;
     public float sitProgress;
@@ -83,9 +81,9 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     private Animation currentAnimation;
     private int sittingTime = 0;
     private int maxSitTime = 75;
-    private Ingredient temptationItems = Ingredient.fromValues(Stream.of(new Ingredient.TagValue(ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS)), new Ingredient.ItemValue(new ItemStack(Items.EGG))));
     private boolean hasSlowed = false;
     private int rideCooldown = 0;
+    private Ingredient temptItems = null;
 
     protected EntityCapuchinMonkey(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -111,6 +109,13 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.capuchinMonkeySpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public Ingredient getAllFoods(){
+        if(temptItems == null){
+            temptItems = Ingredient.fromValues(Stream.of(new Ingredient.TagValue(ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS)), new Ingredient.ItemValue(new ItemStack(Items.EGG))));
+        }
+        return temptItems;
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -185,6 +190,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         compound.putBoolean("HasDart", this.hasDart());
         compound.putBoolean("ForcedToSit", this.forcedSit);
         compound.putInt("Command", this.getCommand());
+        compound.putInt("Variant", this.getVariant());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -193,6 +199,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         this.forcedSit = compound.getBoolean("ForcedToSit");
         this.setCommand(compound.getInt("Command"));
         this.setDart(compound.getBoolean("HasDart"));
+        this.setVariant(compound.getInt("Variant"));
     }
 
     public void tick() {
@@ -374,6 +381,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         this.entityData.define(DART_TARGET, -1);
         this.entityData.define(SITTING, Boolean.valueOf(false));
         this.entityData.define(DART, false);
+        this.entityData.define(VARIANT, 0);
     }
 
     public boolean hasDart() {
@@ -384,10 +392,20 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         this.entityData.set(DART, dart);
     }
 
+    public int getVariant() {
+        return this.entityData.get(VARIANT).intValue();
+    }
+
+    public void setVariant(int variant) {
+        this.entityData.set(VARIANT, Integer.valueOf(variant));
+    }
+
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.CAPUCHIN_MONKEY.create(p_241840_1_);
+        EntityCapuchinMonkey monkey = AMEntityRegistry.CAPUCHIN_MONKEY.create(p_241840_1_);
+        monkey.setVariant(this.getVariant());
+        return monkey;
     }
 
     @Override
@@ -429,13 +447,13 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             }
             return InteractionResult.SUCCESS;
         }
-        if (isTame() && (EntityGorilla.isBanana(itemstack) || temptationItems.test(itemstack) && !isFood(itemstack)) && this.getHealth() < this.getMaxHealth()) {
+        if (isTame() && (EntityGorilla.isBanana(itemstack) || getAllFoods().test(itemstack) && !isFood(itemstack)) && this.getHealth() < this.getMaxHealth()) {
             this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
             this.heal(5);
             return InteractionResult.SUCCESS;
         }
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !EntityGorilla.isBanana(itemstack) && !temptationItems.test(itemstack)) {
+        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !EntityGorilla.isBanana(itemstack) && !getAllFoods().test(itemstack)) {
             if (!this.hasDart() && itemstack.getItem() == AMItemRegistry.ANCIENT_DART) {
                 this.setDart(true);
                 this.usePlayerItem(player, hand, itemstack);
@@ -484,7 +502,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return temptationItems.test(stack) || EntityGorilla.isBanana(stack);
+        return getAllFoods().test(stack) || EntityGorilla.isBanana(stack);
     }
 
     public boolean isFood(ItemStack stack) {
@@ -510,6 +528,31 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                 }
             }
         }
+    }
+
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance diff, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+        int i;
+        if (data instanceof CapuchinGroupData) {
+            i = ((CapuchinGroupData)data).variant;
+        } else {
+            i = this.random.nextInt(4);
+            data = new CapuchinGroupData(i);
+        }
+
+        this.setVariant(i);
+        return super.finalizeSpawn(world, diff, spawnType, data, tag);
+    }
+
+    public class CapuchinGroupData extends AgeableMobGroupData {
+
+        public final int variant;
+
+        CapuchinGroupData(int variant) {
+            super(true);
+            this.variant = variant;
+        }
+
     }
 
 }

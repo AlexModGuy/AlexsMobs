@@ -288,16 +288,19 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(worldPosition, -1, getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-        load(packet.getTag());
+        if (packet != null && packet.getTag() != null) {
+            this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+            ContainerHelper.loadAllItems(packet.getTag(), this.stacks);
+        }
     }
 
     public CompoundTag getUpdateTag() {
-        return this.save(new CompoundTag());
+        return this.saveWithoutMetadata();
     }
 
     @Override

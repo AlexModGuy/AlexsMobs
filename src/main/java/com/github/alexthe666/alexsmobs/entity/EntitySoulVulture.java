@@ -124,6 +124,14 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, AbstractVillager.class, true));
     }
 
+    public int getMaxSpawnClusterSize() {
+        return 1;
+    }
+
+    public boolean isMaxGroupSizeReached(int sizeIn) {
+        return true;
+    }
+
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);

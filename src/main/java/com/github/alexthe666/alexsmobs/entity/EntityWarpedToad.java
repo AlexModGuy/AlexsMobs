@@ -239,9 +239,6 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
     public void setJumping(boolean jumping) {
         super.setJumping(jumping);
-        if (jumping) {
-            //    this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
-        }
     }
 
     public void startJumping() {

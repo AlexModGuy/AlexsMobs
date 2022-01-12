@@ -5,7 +5,8 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.github.alexthe666.citadel.server.item.CustomArmorMaterial;
+import net.minecraft.world.entity.decoration.Motive;
+import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -39,17 +40,18 @@ import net.minecraft.world.item.SpawnEggItem;
 
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMItemRegistry {
-    public static CustomArmorMaterial ROADRUNNER_ARMOR_MATERIAL = new AMArmorMaterial("roadrunner", 18, new int[]{3, 3, 3, 3}, 20, SoundEvents.ARMOR_EQUIP_TURTLE, 0);
-    public static CustomArmorMaterial CROCODILE_ARMOR_MATERIAL = new AMArmorMaterial("crocodile", 22, new int[]{2, 5, 7, 3}, 25, SoundEvents.ARMOR_EQUIP_TURTLE, 1);
-    public static CustomArmorMaterial CENTIPEDE_ARMOR_MATERIAL = new AMArmorMaterial("centipede", 20, new int[]{6, 6, 6, 6}, 22, SoundEvents.ARMOR_EQUIP_TURTLE, 0.5F);
-    public static CustomArmorMaterial MOOSE_ARMOR_MATERIAL = new AMArmorMaterial("moose", 19, new int[]{3, 3, 3, 3}, 21, SoundEvents.ARMOR_EQUIP_TURTLE, 0.5F);
-    public static CustomArmorMaterial RACCOON_ARMOR_MATERIAL = new AMArmorMaterial("raccoon", 17, new int[]{3, 3, 3, 3}, 21, SoundEvents.ARMOR_EQUIP_LEATHER, 2.5F);
-    public static CustomArmorMaterial SOMBRERO_ARMOR_MATERIAL = new AMArmorMaterial("sombrero", 14, new int[]{2, 2, 2, 2}, 30, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
-    public static CustomArmorMaterial SPIKED_TURTLE_SHELL_ARMOR_MATERIAL = new AMArmorMaterial("spiked_turtle_shell", 35, new int[]{3, 3, 3, 3}, 30, SoundEvents.ARMOR_EQUIP_TURTLE, 1F, 0.2F);
-    public static CustomArmorMaterial FEDORA_ARMOR_MATERIAL = new AMArmorMaterial("fedora", 10, new int[]{2, 2, 2, 2}, 30, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
-    public static CustomArmorMaterial EMU_ARMOR_MATERIAL = new AMArmorMaterial("emu", 9, new int[]{4, 4, 4, 4}, 20, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
-    public static CustomArmorMaterial TARANTULA_HAWK_ELYTRA_MATERIAL = new AMArmorMaterial("tarantula_hawk_elytra", 9, new int[]{3, 3, 3, 3}, 5, SoundEvents.ARMOR_EQUIP_LEATHER, 0);
-    public static CustomArmorMaterial FROSTSTALKER_ARMOR_MATERIAL = new AMArmorMaterial("froststalker", 9, new int[]{3, 3, 3, 3}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
+    public static AMArmorMaterial ROADRUNNER_ARMOR_MATERIAL = new AMArmorMaterial("roadrunner", 18, new int[]{3, 3, 3, 3}, 20, SoundEvents.ARMOR_EQUIP_TURTLE, 0);
+    public static AMArmorMaterial CROCODILE_ARMOR_MATERIAL = new AMArmorMaterial("crocodile", 22, new int[]{2, 5, 7, 3}, 25, SoundEvents.ARMOR_EQUIP_TURTLE, 1);
+    public static AMArmorMaterial CENTIPEDE_ARMOR_MATERIAL = new AMArmorMaterial("centipede", 20, new int[]{6, 6, 6, 6}, 22, SoundEvents.ARMOR_EQUIP_TURTLE, 0.5F);
+    public static AMArmorMaterial MOOSE_ARMOR_MATERIAL = new AMArmorMaterial("moose", 19, new int[]{3, 3, 3, 3}, 21, SoundEvents.ARMOR_EQUIP_TURTLE, 0.5F);
+    public static AMArmorMaterial RACCOON_ARMOR_MATERIAL = new AMArmorMaterial("raccoon", 17, new int[]{3, 3, 3, 3}, 21, SoundEvents.ARMOR_EQUIP_LEATHER, 2.5F);
+    public static AMArmorMaterial SOMBRERO_ARMOR_MATERIAL = new AMArmorMaterial("sombrero", 14, new int[]{2, 2, 2, 2}, 30, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
+    public static AMArmorMaterial SPIKED_TURTLE_SHELL_ARMOR_MATERIAL = new AMArmorMaterial("spiked_turtle_shell", 35, new int[]{3, 3, 3, 3}, 30, SoundEvents.ARMOR_EQUIP_TURTLE, 1F, 0.2F);
+    public static AMArmorMaterial FEDORA_ARMOR_MATERIAL = new AMArmorMaterial("fedora", 10, new int[]{2, 2, 2, 2}, 30, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
+    public static AMArmorMaterial EMU_ARMOR_MATERIAL = new AMArmorMaterial("emu", 9, new int[]{4, 4, 4, 4}, 20, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
+    public static AMArmorMaterial TARANTULA_HAWK_ELYTRA_MATERIAL = new AMArmorMaterial("tarantula_hawk_elytra", 9, new int[]{3, 3, 3, 3}, 5, SoundEvents.ARMOR_EQUIP_LEATHER, 0);
+    public static AMArmorMaterial FROSTSTALKER_ARMOR_MATERIAL = new AMArmorMaterial("froststalker", 9, new int[]{3, 3, 3, 3}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
+    public static AMArmorMaterial ROCKY_ARMOR_MATERIAL = new AMArmorMaterial("rocky_roller", 20, new int[]{2, 5, 7, 3}, 10, SoundEvents.ARMOR_EQUIP_TURTLE, 0.5F);
 
     public static final Item TAB_ICON = new ItemTabIcon(new Item.Properties()).setRegistryName("alexsmobs:tab_icon");
     public static final Item ANIMAL_DICTIONARY = new ItemAnimalDictionary(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:animal_dictionary");
@@ -155,6 +157,13 @@ public class AMItemRegistry {
     public static final Item VINE_LASSO_INVENTORY = new Item(new Item.Properties()).setRegistryName("alexsmobs:vine_lasso_inventory");
     public static final Item VINE_LASSO_HAND = new Item(new Item.Properties()).setRegistryName("alexsmobs:vine_lasso_hand");
     public static final Item VINE_LASSO = new ItemVineLasso(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1)).setRegistryName("alexsmobs:vine_lasso");
+    public static final Item ROCKY_SHELL = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:rocky_shell");
+    public static final Item ROCKY_CHESTPLATE = new ItemModArmor(ROCKY_ARMOR_MATERIAL, EquipmentSlot.CHEST).setRegistryName("alexsmobs:rocky_chestplate");
+    public static final Item POTTED_FLUTTER = new ItemFlutterPot(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:potted_flutter");
+    public static final Item TERRAPIN_BUCKET = new ItemModFishBucket(AMEntityRegistry.TERRAPIN, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:terrapin_bucket");
+    public static final Item COMB_JELLY_BUCKET = new ItemModFishBucket(AMEntityRegistry.COMB_JELLY, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:comb_jelly_bucket");
+    public static final Item RAINBOW_JELLY = new ItemRainbowJelly(new Item.Properties().tab(AlexsMobs.TAB).food(new FoodProperties.Builder().nutrition(1).saturationMod(0.2F).build())).setRegistryName("alexsmobs:rainbow_jelly");
+    public static final Item COSMIC_COD_BUCKET = new ItemCosmicCodBucket(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:cosmic_cod_bucket");
     public static final Item MUSIC_DISC_THIME = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
     public static final Item MUSIC_DISC_DAZE = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_daze");
 
@@ -231,7 +240,13 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.MANED_WOLF, 0XBB7A47,0X40271A, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_maned_wolf"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ANACONDA, 0X565C22,0XD3763F, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_anaconda"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ANTEATER, 0X4C3F3A, 0XCCBCB4, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_anteater"));
-        //event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.JERBOA, 0XDEC58A, 0XDE9D90, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_jerboa"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.ROCKY_ROLLER, 0XB0856F, 0X999184, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_rocky_roller"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.FLUTTER, 0X70922D, 0XD07BE3, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_flutter"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.GELADA_MONKEY, 0XB08C64, 0XFF4F53, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_gelada_monkey"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.JERBOA, 0XDEC58A, 0XDE9D90, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_jerboa"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TERRAPIN, 0X6E6E30, 0X929647, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_terrapin"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.COMB_JELLY, 0XCFE9FE, 0X6EFF8B, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_comb_jelly"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.COSMIC_COD, 0X6985C7, 0XE2D1FF, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_cosmic_cod"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -312,5 +327,11 @@ public class AMItemRegistry {
         ComposterBlock.COMPOSTABLES.put(AMBlockRegistry.BANANA_PEEL.asItem(), 1F);
         ComposterBlock.COMPOSTABLES.put(ACACIA_BLOSSOM, 0.65F);
         ComposterBlock.COMPOSTABLES.put(GONGYLIDIA, 0.9F);
+    }
+
+    @SubscribeEvent
+    public static void registerPaintings(RegistryEvent.Register<Motive> event) {
+        event.getRegistry().register(new Motive(32, 32).setRegistryName("alexsmobs:nft"));
+        event.getRegistry().register(new Motive(32, 16).setRegistryName("alexsmobs:dog_poker"));
     }
 }

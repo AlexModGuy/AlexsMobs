@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Comb Jellies are simple gelatinous creatures that are at the very limit of the definition of animal life.
+They can be found at night in frozen oceans, where their flashing prismatic colors constrast against the blue deep.
+Far from intelligent, Comb Jellies simply drift in the water, sifting out microscopic prey. They can be captured with a water bucket and come in multiple colors.
+<NEWLINE>
+If slain, Comb Jellies can drop Rainbow Jelly. This Rainbow Jelly can be used on almost any mob to color it in a flashing rainbow pattern, similar to the Comb Jelly's.
+This rainbow can be removed by using a sponge on the creature. One can also eat the jelly to apply this effect to themselves.
+<NEWLINE>
+Rainbow Jelly can also be crafted with 8 glass to create Rainbow Glass, which changes color based off of its position in the world. Unlike dark glass, Rainbow Glass also emits light.

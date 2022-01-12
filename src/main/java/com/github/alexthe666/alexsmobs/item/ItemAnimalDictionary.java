@@ -51,6 +51,9 @@ public class ItemAnimalDictionary extends Item {
             if(target instanceof EntityVoidWorm || target instanceof EntityVoidWormPart){
                 id = "void_worm";
             }
+            if(target instanceof EntityAnaconda || target instanceof EntityAnacondaPart){
+                id = "anaconda";
+            }
             AlexsMobs.PROXY.openBookGUI(itemStackIn, id);
         }
         return InteractionResult.PASS;

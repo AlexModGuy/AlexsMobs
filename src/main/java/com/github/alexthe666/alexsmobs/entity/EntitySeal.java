@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -164,6 +165,12 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         this.entityData.define(DIGGING, false);
         this.entityData.define(ARCTIC, false);
     }
+
+    public boolean isTearsEasterEgg() {
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        return s != null && s.toLowerCase().contains("he was");
+    }
+
 
     public float getSwimAngle() {
         return this.entityData.get(SWIM_ANGLE);

@@ -25,8 +25,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 import org.antlr.v4.runtime.misc.Triple;
 
 import javax.annotation.Nullable;
@@ -39,7 +39,7 @@ public class EntityVoidPortal extends Entity {
     protected static final EntityDataAccessor<Direction> ATTACHED_FACE = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.DIRECTION);
     protected static final EntityDataAccessor<Integer> LIFESPAN = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Optional<BlockPos>> DESTINATION = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
-    private static final EntityDataAccessor<Optional<UUID>> SISTER_UUID = SynchedEntityData.defineId(EntityVoidWorm.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> SISTER_UUID = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.OPTIONAL_UUID);
     public ResourceKey<Level> exitDimension;
     private boolean madeOpenNoise = false;
     private boolean madeCloseNoise = false;
@@ -49,7 +49,7 @@ public class EntityVoidPortal extends Entity {
         super(entityTypeIn, worldIn);
     }
 
-    public EntityVoidPortal(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityVoidPortal(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.VOID_PORTAL, world);
     }
 

@@ -544,7 +544,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     private BlockPos getCrowGround(BlockPos in){
         BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
-        while (position.getY() > 2 && level.isEmptyBlock(position)) {
+        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
         return position;
@@ -558,11 +558,11 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getCrowGround(radialPos);
-        if (ground.getY() == 0) {
+        if (ground.getY() == -64) {
             return this.position();
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > 2 && level.isEmptyBlock(ground)) {
+            while (ground.getY() > -64 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
                 ground = ground.below();
             }
         }
@@ -574,7 +574,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     private boolean isOverWater() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > 2 && level.isEmptyBlock(position)) {
+        while (position.getY() > -64 && level.isEmptyBlock(position)) {
             position = position.below();
         }
         return !level.getFluidState(position).isEmpty();

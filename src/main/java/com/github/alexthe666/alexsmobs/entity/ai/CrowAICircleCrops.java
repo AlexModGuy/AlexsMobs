@@ -48,7 +48,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
         idleAtFlowerTime = 0;
         circlingTime = 0;
         tryTicks = 0;
-        blockPos = null;
+        blockPos = BlockPos.ZERO;
     }
 
     public double acceptedDistance() {
@@ -56,6 +56,9 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     public void tick() {
+        if(blockPos == null){
+            return;
+        }
         BlockPos blockpos = this.getMoveToTarget();
         if(circlePhase){
             this.tryTicks = 0;

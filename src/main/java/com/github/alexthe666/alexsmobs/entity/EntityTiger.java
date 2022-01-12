@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.alexthe666.citadel.server.entity.collision.ICustomCollisions;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -471,38 +472,6 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         return baby;
     }
 
-    public Vec3 collide(Vec3 vec) {
-        AABB axisalignedbb = this.getBoundingBox();
-        CollisionContext iselectioncontext = CollisionContext.of(this);
-        VoxelShape voxelshape = this.level.getWorldBorder().getCollisionShape();
-        Stream<VoxelShape> stream = Shapes.joinIsNotEmpty(voxelshape, Shapes.create(axisalignedbb.deflate(1.0E-7D)), BooleanOp.AND) ? Stream.empty() : Stream.of(voxelshape);
-        Stream<VoxelShape> stream1 = this.level.getEntityCollisions(this, axisalignedbb.expandTowards(vec), (p_233561_0_) -> {
-            return true;
-        });
-        RewindableStream<VoxelShape> reuseablestream = new RewindableStream<>(Stream.concat(stream1, stream));
-        Vec3 vector3d = vec.lengthSqr() == 0.0D ? vec : collideBoundingBoxHeuristicallyPassable(this, vec, axisalignedbb, this.level, iselectioncontext, reuseablestream);
-        boolean flag = vec.x != vector3d.x;
-        boolean flag1 = vec.y != vector3d.y;
-        boolean flag2 = vec.z != vector3d.z;
-        boolean flag3 = this.onGround || flag1 && vec.y < 0.0D;
-        if (this.maxUpStep > 0.0F && flag3 && (flag || flag2)) {
-            Vec3 vector3d1 = collideBoundingBoxHeuristicallyPassable(this, new Vec3(vec.x, this.maxUpStep, vec.z), axisalignedbb, this.level, iselectioncontext, reuseablestream);
-            Vec3 vector3d2 = collideBoundingBoxHeuristicallyPassable(this, new Vec3(0.0D, this.maxUpStep, 0.0D), axisalignedbb.expandTowards(vec.x, 0.0D, vec.z), this.level, iselectioncontext, reuseablestream);
-            if (vector3d2.y < (double) this.maxUpStep) {
-                Vec3 vector3d3 = collideBoundingBoxHeuristicallyPassable(this, new Vec3(vec.x, 0.0D, vec.z), axisalignedbb.move(vector3d2), this.level, iselectioncontext, reuseablestream).add(vector3d2);
-                if (vector3d3.horizontalDistanceSqr() > vector3d1.horizontalDistanceSqr()) {
-                    vector3d1 = vector3d3;
-                }
-            }
-
-            if (vector3d1.horizontalDistanceSqr() > vector3d.horizontalDistanceSqr()) {
-                return vector3d1.add(collideBoundingBoxHeuristicallyPassable(this, new Vec3(0.0D, -vector3d1.y + vec.y, 0.0D), axisalignedbb.move(vector3d1), this.level, iselectioncontext, reuseablestream));
-            }
-        }
-
-        return vector3d;
-    }
-
     @Override
     public boolean canPassThrough(BlockPos mutablePos, BlockState blockstate, VoxelShape voxelshape) {
         return blockstate.getBlock() == Blocks.BAMBOO || blockstate.is(BlockTags.LEAVES);
@@ -632,7 +601,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
 
         protected static BlockPathTypes getNodes(BlockGetter p_237238_0_, BlockPos p_237238_1_) {
             BlockState blockstate = p_237238_0_.getBlockState(p_237238_1_);
-            BlockPathTypes type = blockstate.getAiPathNodeType(p_237238_0_, p_237238_1_);
+            BlockPathTypes type = blockstate.getBlockPathType(p_237238_0_, p_237238_1_);
             if (type != null) return type;
             Block block = blockstate.getBlock();
             Material material = blockstate.getMaterial();

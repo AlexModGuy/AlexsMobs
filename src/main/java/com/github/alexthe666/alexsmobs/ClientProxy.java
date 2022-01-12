@@ -1,10 +1,9 @@
 package com.github.alexthe666.alexsmobs;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.client.ClientLayerRegistry;
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
-import com.github.alexthe666.alexsmobs.client.model.*;
-import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties;
@@ -16,12 +15,13 @@ import com.github.alexthe666.alexsmobs.client.sound.SoundWormBoss;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
+import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
 import com.github.alexthe666.alexsmobs.item.ItemHemolymphBlaster;
 import com.github.alexthe666.alexsmobs.item.ItemTarantulaHawkElytra;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
-import com.github.alexthe666.citadel.client.CitadelItemRenderProperties;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -35,11 +35,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.FoliageColor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -49,9 +52,7 @@ import java.util.concurrent.Callable;
 
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fmlclient.registry.ClientRegistry;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)
@@ -62,12 +63,16 @@ public class ClientProxy extends CommonProxy {
     public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
     public CameraType prevPOV = CameraType.FIRST_PERSON;
     public static int voidPortalCreationTime = 0;
+    public boolean initializedRainbowBuffers = false;
 
     public void init(){
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerRegistry::onAddLayers);
     }
 
     public void clientInit() {
+        initRainbowBuffers();
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         EntityRenderers.register(AMEntityRegistry.GRIZZLY_BEAR, RenderGrizzlyBear::new);
         EntityRenderers.register(AMEntityRegistry.ROADRUNNER, RenderRoadrunner::new);
@@ -156,7 +161,14 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.ANACONDA_PART, RenderAnacondaPart::new);
         EntityRenderers.register(AMEntityRegistry.VINE_LASSO, RenderVineLasso::new);
         EntityRenderers.register(AMEntityRegistry.ANTEATER, RenderAnteater::new);
-        //EntityRenderers.register(AMEntityRegistry.JERBOA, RenderJerboa::new);
+        EntityRenderers.register(AMEntityRegistry.ROCKY_ROLLER, RenderRockyRoller::new);
+        EntityRenderers.register(AMEntityRegistry.FLUTTER, RenderFlutter::new);
+        EntityRenderers.register(AMEntityRegistry.POLLEN_BALL, RenderPollenBall::new);
+        EntityRenderers.register(AMEntityRegistry.GELADA_MONKEY, RenderGeladaMonkey::new);
+        EntityRenderers.register(AMEntityRegistry.JERBOA, RenderJerboa::new);
+        EntityRenderers.register(AMEntityRegistry.TERRAPIN, RenderTerrapin::new);
+        EntityRenderers.register(AMEntityRegistry.COMB_JELLY, RenderCombJelly::new);
+        EntityRenderers.register(AMEntityRegistry.COSMIC_COD, RenderCosmicCod::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -178,9 +190,15 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.CAPSID, RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.VOID_WORM_BEAK, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.HUMMINGBIRD_FEEDER, RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.RAINBOW_GLASS, RenderType.translucent());
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID, RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK, RenderVoidWormBeak::new);
 
+    }
+
+    private void initRainbowBuffers(){
+        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.COMBJELLY_RAINBOW_GLINT, new BufferBuilder(AMRenderTypes.COMBJELLY_RAINBOW_GLINT.bufferSize()));
+        initializedRainbowBuffers = true;
     }
 
     @SubscribeEvent
@@ -188,6 +206,15 @@ public class ClientProxy extends CommonProxy {
     public static void onItemColors(ColorHandlerEvent.Item event) {
         AlexsMobs.LOGGER.info("loaded in item colorizer");
         event.getItemColors().register((stack, colorIn) -> colorIn < 1 ? -1 : ((DyeableLeatherItem)stack.getItem()).getColor(stack), AMItemRegistry.STRADDLEBOARD);
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void onBlockColors(ColorHandlerEvent.Block event) {
+        AlexsMobs.LOGGER.info("loaded in block colorizer");
+        event.getBlockColors().register((state, tintGetter, pos, tint) -> {
+            return tintGetter != null && pos != null ? RainbowUtil.calculateGlassColor(pos) : -1;
+        }, AMBlockRegistry.RAINBOW_GLASS);
     }
 
     public void openBookGUI(ItemStack itemStackIn) {

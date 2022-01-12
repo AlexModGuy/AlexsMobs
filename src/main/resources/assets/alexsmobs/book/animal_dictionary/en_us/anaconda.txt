@@ -12,4 +12,4 @@ This lasso can be thrown to capture any mob, including hostiles, similar to the 
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Anaconda can be pacified and bred with rabbit meat.
+Anaconda can be pacified and bred with chicken.

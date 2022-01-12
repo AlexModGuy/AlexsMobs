@@ -1,7 +1,7 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Capuchin Monkeys are small primates native to Jungles. Like other primates, they have a fondness for bananas, which can be fed to them to tame them.
+Capuchin Monkeys are small primates native to Jungles. They can come in many colors, depending on their group. Like other primates, they have a fondness for bananas, which can be fed to them to tame them.
 Tame Capuchins are more sophisticated than other tamed creatures, like wolves, being able to follow, stay and wander, along with being able to use both ranged and melee attacks.
 They can also be made to ride their owner's shoulder, which they can also attack from, throwing stones at targets.
 <NEWLINE>

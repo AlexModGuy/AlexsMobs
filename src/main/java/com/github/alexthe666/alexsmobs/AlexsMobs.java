@@ -16,7 +16,6 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -26,10 +25,10 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
-import net.minecraftforge.fmllegacy.network.NetworkRegistry;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
-import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,7 +66,6 @@ public class AlexsMobs {
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
-        MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoadFromJSON);
     }
 
     private void setupEntityModelLayers(final EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -129,6 +127,5 @@ public class AlexsMobs {
     private void setupClient(FMLClientSetupEvent event) {
         PROXY.clientInit();
     }
-
 
 }

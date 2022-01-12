@@ -111,7 +111,9 @@ public class AnimalAILootChests extends MoveToBlockGoal {
     @Override
     public void tick() {
         super.tick();
-        if (this.blockPos != null) {
+    if(this.blockPos == null){
+        return;
+    }else {
             BlockEntity te = this.entity.level.getBlockEntity(this.blockPos);
             if (te instanceof Container) {
                 Container feeder = (Container) te;
@@ -158,7 +160,7 @@ public class AnimalAILootChests extends MoveToBlockGoal {
                 toggleChest((Container) te, false);
             }
         }
-        this.blockPos = null;
+        this.blockPos = BlockPos.ZERO;
         this.hasOpenedChest = false;
     }
 

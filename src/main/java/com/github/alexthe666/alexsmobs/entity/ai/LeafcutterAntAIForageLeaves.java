@@ -15,14 +15,18 @@ import net.minecraft.world.level.LevelReader;
 
 public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
 
-    private EntityLeafcutterAnt ant;
+    private final EntityLeafcutterAnt ant;
     private int idleAtLeavesTime = 0;
     private int randomLeafCheckCooldown = 40;
     private BlockPos logStartPos = null;
     private BlockPos logTopPos = null;
+    private final int searchRange;
+    private final int verticalSearchRange;
 
     public LeafcutterAntAIForageLeaves(EntityLeafcutterAnt LeafcutterAnt) {
         super(LeafcutterAnt, 1D, 15, 3);
+        searchRange = 15;
+        verticalSearchRange = 3;
         this.ant = LeafcutterAnt;
     }
 
@@ -76,13 +80,13 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
             if (logStartPos != null) {
                 double xDif = logStartPos.getX() + 0.5 - ant.getX();
                 double zDif = logStartPos.getZ() + 0.5 - ant.getZ();
-                float f = (float)(Mth.atan2(zDif, xDif) * (double)(180F / (float)Math.PI)) - 90.0F;
+                float f = (float) (Mth.atan2(zDif, xDif) * (double) (180F / (float) Math.PI)) - 90.0F;
                 ant.setYRot(f);
                 ant.yBodyRot = ant.getYRot();
                 Vec3 vec = new Vec3(logStartPos.getX() + 0.5, ant.getY(), logStartPos.getZ() + 0.5);
                 vec = vec.subtract(ant.position());
-                if(ant.isOnGround() || ant.onClimbable())
-                this.ant.setDeltaMovement(vec.normalize().multiply(0.1, 0, 0.1).add(0, ant.getDeltaMovement().y, 0));
+                if (ant.isOnGround() || ant.onClimbable())
+                    this.ant.setDeltaMovement(vec.normalize().multiply(0.1, 0, 0.1).add(0, ant.getDeltaMovement().y, 0));
 
                 this.ant.getNavigation().moveTo(logStartPos.getX(), ant.getY(), logStartPos.getZ(), 1);
                 if (Math.abs(xDif) < 0.6 && Math.abs(zDif) < 0.6) {
@@ -94,7 +98,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
                         return;
                     }
                 }
-            }else {
+            } else {
                 for (int i = 0; i < 15; i++) {
                     BlockPos test = blockPos.offset(6 - ant.getRandom().nextInt(12), -ant.getRandom().nextInt(7), 6 - ant.getRandom().nextInt(12));
                     if (BlockTags.LOGS.contains(ant.level.getBlockState(test).getBlock())) {
@@ -103,7 +107,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
                     }
                 }
             }
-        tryTicks++;
+            tryTicks++;
         } else {
             super.tick();
             logStartPos = null;
@@ -130,7 +134,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
     private void breakLeaves() {
         BlockState blockstate = ant.level.getBlockState(this.blockPos);
         if (BlockTags.getAllTags().getTag(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES).contains(blockstate.getBlock())) {
-            if(net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ant.level, ant)){
+            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ant.level, ant)) {
                 ant.level.destroyBlock(blockPos, false);
                 if (ant.getRandom().nextFloat() > AMConfig.leafcutterAntBreakLeavesChance) {
                     ant.level.setBlockAndUpdate(blockPos, blockstate);
@@ -142,5 +146,34 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
     @Override
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
         return BlockTags.getAllTags().getTag(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES).contains(worldIn.getBlockState(pos).getBlock());
+    }
+
+
+    @Override
+    protected boolean findNearestBlock() {
+        int i = this.searchRange;
+        int j = this.verticalSearchRange;
+        BlockPos blockpos = this.mob.blockPosition();
+        if(ant.hasHive() && ant.getHivePos() != null){
+            blockpos = ant.getHivePos();
+            i *= 2;
+        }
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+
+        for (int k = this.verticalSearchStart; k <= j; k = k > 0 ? -k : 1 - k) {
+            for (int l = 0; l < i; ++l) {
+                for (int i1 = 0; i1 <= l; i1 = i1 > 0 ? -i1 : 1 - i1) {
+                    for (int j1 = i1 < l && i1 > -l ? l : 0; j1 <= l; j1 = j1 > 0 ? -j1 : 1 - j1) {
+                        blockpos$mutableblockpos.setWithOffset(blockpos, i1, k - 1, j1);
+                        if (this.mob.isWithinRestriction(blockpos$mutableblockpos) && this.isValidTarget(this.mob.level, blockpos$mutableblockpos)) {
+                            this.blockPos = blockpos$mutableblockpos;
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

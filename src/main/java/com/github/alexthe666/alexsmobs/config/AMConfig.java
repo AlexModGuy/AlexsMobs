@@ -19,7 +19,7 @@ public class AMConfig {
     public static int crocSpawnRolls = 1;
     public static int flySpawnWeight = 3;
     public static int flySpawnRolls = 1;
-    public static int hummingbirdSpawnWeight = 39;
+    public static int hummingbirdSpawnWeight = 19;
     public static int hummingbirdSpawnRolls = 0;
     public static int orcaSpawnWeight = 2;
     public static int orcaSpawnRolls = 6;
@@ -43,7 +43,7 @@ public class AMConfig {
     public static int capuchinMonkeySpawnRolls = 0;
     public static int caveCentipedeSpawnWeight = 8;
     public static int caveCentipedeSpawnRolls = 1;
-    public static int caveCentipedeSpawnHeight = 30;
+    public static int caveCentipedeSpawnHeight = 0;
     public static int warpedToadSpawnWeight = 80;
     public static int warpedToadSpawnRolls = 0;
     public static int mooseSpawnWeight = 9;
@@ -54,7 +54,7 @@ public class AMConfig {
     public static int raccoonSpawnRolls = 0;
     public static int blobfishSpawnWeight = 30;
     public static int blobfishSpawnRolls = 0;
-    public static int blobfishSpawnHeight = 38;
+    public static int blobfishSpawnHeight = 25;
     public static int sealSpawnWeight = 30;
     public static int sealSpawnRolls = 0;
     public static int cockroachSpawnWeight = 4;
@@ -129,7 +129,21 @@ public class AMConfig {
     public static int anacondaSpawnRolls = 0;
     public static int anteaterSpawnWeight = 7;
     public static int anteaterSpawnRolls = 0;
-
+    public static int rockyRollerSpawnWeight = 40;
+    public static int rockyRollerSpawnRolls = 0;
+    public static int flutterSpawnWeight = 13;
+    public static int flutterSpawnRolls = 0;
+    public static int geladaMonkeySpawnWeight = 3;
+    public static int geladaMonkeySpawnRolls = 0;
+    public static int geladaMonkeySpawnHeight = 100;
+    public static int jerboaSpawnWeight = 12;
+    public static int jerboaSpawnRolls = 2;
+    public static int terrapinSpawnWeight = 4;
+    public static int terrapinSpawnRolls = 0;
+    public static int combJellySpawnWeight = 5;
+    public static int combJellySpawnRolls = 0;
+    public static int cosmicCodSpawnWeight = 5;
+    public static int cosmicCodSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -142,6 +156,7 @@ public class AMConfig {
     public static boolean spidersAttackFlies = true;
     public static boolean wolvesAttackMoose = true;
     public static boolean polarBearsAttackSeals = true;
+    public static boolean catsAndFoxesAttackJerboas = true;
     public static boolean giveBookOnStartup = true;
     public static boolean mimicubeSpawnInEndCity = true;
     public static boolean mimicreamRepair = true;
@@ -189,6 +204,7 @@ public class AMConfig {
             "minecraft:enchanted_golden_apple|minecraft:oak_sapling",
             "alexsmobs:banana|minecraft:jungle_sapling"
     );
+    public static double rainbowGlassFidelity = 16.0F;
 
     public static void bake(ModConfig config) {
         try {
@@ -317,11 +333,28 @@ public class AMConfig {
             anacondaSpawnRolls = ConfigHolder.COMMON.anacondaSpawnRolls.get();
             anteaterSpawnWeight = ConfigHolder.COMMON.anteaterSpawnWeight.get();
             anteaterSpawnRolls = ConfigHolder.COMMON.anteaterSpawnRolls.get();
+            rockyRollerSpawnWeight = ConfigHolder.COMMON.rockyRollerSpawnWeight.get();
+            rockyRollerSpawnRolls = ConfigHolder.COMMON.rockyRollerSpawnRolls.get();
+            flutterSpawnWeight = ConfigHolder.COMMON.flutterSpawnWeight.get();
+            flutterSpawnRolls = ConfigHolder.COMMON.flutterSpawnRolls.get();
+            geladaMonkeySpawnWeight = ConfigHolder.COMMON.geladaMonkeySpawnWeight.get();
+            geladaMonkeySpawnRolls = ConfigHolder.COMMON.geladaMonkeySpawnRolls.get();
+            geladaMonkeySpawnHeight = ConfigHolder.COMMON.geladaMonkeySpawnHeight.get();
+            jerboaSpawnWeight = ConfigHolder.COMMON.jerboaSpawnWeight.get();
+            jerboaSpawnRolls = ConfigHolder.COMMON.jerboaSpawnRolls.get();
+            terrapinSpawnWeight = ConfigHolder.COMMON.terrapinSpawnWeight.get();
+            terrapinSpawnRolls = ConfigHolder.COMMON.terrapinSpawnRolls.get();
+            combJellySpawnWeight = ConfigHolder.COMMON.combJellySpawnWeight.get();
+            combJellySpawnRolls = ConfigHolder.COMMON.combJellySpawnRolls.get();
+            cosmicCodSpawnWeight = ConfigHolder.COMMON.cosmicCodSpawnWeight.get();
+            cosmicCodSpawnRolls = ConfigHolder.COMMON.cosmicCodSpawnRolls.get();
+
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();
             wolvesAttackMoose = ConfigHolder.COMMON.wolvesAttackMoose.get();
             polarBearsAttackSeals = ConfigHolder.COMMON.polarBearsAttackSeals.get();
+            catsAndFoxesAttackJerboas = ConfigHolder.COMMON.catsAndFoxesAttackJerboas.get();
             bananaChance = ConfigHolder.COMMON.bananaChance.get();
             giveBookOnStartup = ConfigHolder.COMMON.giveBookOnStartup.get();
             mimicubeSpawnInEndCity = ConfigHolder.COMMON.mimicubeSpawnInEndCity.get();
@@ -359,6 +392,7 @@ public class AMConfig {
             seagullStealingBlacklist = (List<? extends String>) ConfigHolder.COMMON.seagullStealingBlacklist.get();
             clingingFlipEffect = ConfigHolder.COMMON.clingingFlipEffect.get();
             tusklinShoesBarteringChance = ConfigHolder.COMMON.tusklinShoesBarteringChance.get();
+            rainbowGlassFidelity = ConfigHolder.COMMON.rainbowGlassFidelity.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

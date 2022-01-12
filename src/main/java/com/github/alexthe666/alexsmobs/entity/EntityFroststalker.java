@@ -183,7 +183,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         if(this.level.isWaterAt(pos) && !this.level.isWaterAt(pos.above())){
             this.setPos(this.getX(), this.getY() + 1, this.getZ());
             this.level.setBlockAndUpdate(pos, Blocks.FROSTED_ICE.defaultBlockState());
-            this.level.getBlockTicks().scheduleTick(pos, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
+            this.level.scheduleTick(pos, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
         }
         double d0 = 0.2F;
         Vec3 vec3 = this.getDeltaMovement();
@@ -414,7 +414,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
             int i = Mth.floor(this.getX());
             int j = Mth.floor(this.getY());
             int k = Mth.floor(this.getZ());
-            return this.level.getBiome(new BlockPos(i, 0, k)).getTemperature(new BlockPos(i, j, k)) > 1.0F;
+            return this.level.getBiome(new BlockPos(i, 0, k)).shouldSnowGolemBurn(new BlockPos(i, j, k));
         }
     }
 

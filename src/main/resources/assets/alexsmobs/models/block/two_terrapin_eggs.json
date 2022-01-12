@@ -1,0 +1,6 @@
+{
+  "parent": "alexsmobs:block/template_two_terrapin_eggs",
+  "textures": {
+    "0": "alexsmobs:block/terrapin_egg"
+  }
+}

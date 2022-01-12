@@ -54,7 +54,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.CAPUCHIN_MONKEY, 0.85F));
         list.add(new Pair<>(AMEntityRegistry.CENTIPEDE_HEAD, 0.65F));
         list.add(new Pair<>(AMEntityRegistry.WARPED_TOAD, 0.6F));
-        list.add(new Pair<>(AMEntityRegistry.MOOSE, 0.5F));
+        list.add(new Pair<>(AMEntityRegistry.MOOSE, 0.38F));
         list.add(new Pair<>(AMEntityRegistry.MIMICUBE, 0.95F));
         list.add(new Pair<>(AMEntityRegistry.RACCOON, 0.8F));
         list.add(new Pair<>(AMEntityRegistry.BLOBFISH, 1F));
@@ -96,6 +96,13 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.MANED_WOLF, 0.85F));
         list.add(new Pair<>(AMEntityRegistry.ANACONDA, 1.0F));
         list.add(new Pair<>(AMEntityRegistry.ANTEATER, 0.5F));
+        list.add(new Pair<>(AMEntityRegistry.ROCKY_ROLLER, 0.65F));
+        list.add(new Pair<>(AMEntityRegistry.FLUTTER, 1.15F));
+        list.add(new Pair<>(AMEntityRegistry.GELADA_MONKEY, 0.65F));
+        list.add(new Pair<>(AMEntityRegistry.JERBOA, 1.3F));
+        list.add(new Pair<>(AMEntityRegistry.TERRAPIN, 1.1F));
+        list.add(new Pair<>(AMEntityRegistry.COMB_JELLY, 1.0F));
+        list.add(new Pair<>(AMEntityRegistry.COSMIC_COD, 1.3F));
     });
     public static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
@@ -196,7 +203,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             if(p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }else{
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY), p_239207_2_, 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
         if(itemStackIn.getItem() == AMItemRegistry.VINE_LASSO){
@@ -210,7 +217,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 }
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }else{
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY), p_239207_2_, 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON) {

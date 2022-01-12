@@ -97,7 +97,7 @@ public class EntityCachalotWhale extends Animal {
     public EntityCachalotWhale(EntityType type, Level world) {
         super(type, world);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.moveControl = new AnimalSwimMoveControllerSink(this, 1, 1, 3);
+        this.moveControl = new AnimalSwimMoveControllerSink(this, 1, 1, 6);
         this.lookControl = new SmoothSwimmingLookControl(this, 4);
         this.headPart = new EntityCachalotPart(this, 3.0F, 3.5F);
         this.bodyFrontPart = new EntityCachalotPart(this, 4.0F, 4.0F);
@@ -317,7 +317,7 @@ public class EntityCachalotWhale extends Animal {
         if (!prev && albino) {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(230.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(45.0D);
-            this.setHealth(160.0F);
+            this.setHealth(230.0F);
         } else {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(160.0D);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(30.0D);
@@ -340,6 +340,7 @@ public class EntityCachalotWhale extends Animal {
     public void aiStep() {
         super.aiStep();
         scaleParts();
+
         if (echoSoundCooldown > 0) {
             echoSoundCooldown--;
         }
@@ -567,13 +568,14 @@ public class EntityCachalotWhale extends Animal {
                             this.yBodyRot = yRotO;
                             this.setDeltaMovement(this.getDeltaMovement().multiply(0.8, 1, 0.8));
                         } else {
-                            Vec3 vector3d = this.getDeltaMovement();
-                            Vec3 vector3d1 = new Vec3(target.getX() - this.getX(), target.getY() - this.getY(), target.getZ() - this.getZ());
-                            if (vector3d1.lengthSqr() > 1.0E-7D) {
-                                vector3d1 = vector3d1.normalize().scale(0.9D).add(vector3d.scale(0.8D));
+                            if(this.isInWater() && target.isInWater()){
+                                Vec3 vector3d = this.getDeltaMovement();
+                                Vec3 vector3d1 = new Vec3(target.getX() - this.getX(), target.getY() - this.getY(), target.getZ() - this.getZ());
+                                if (vector3d1.lengthSqr() > 1.0E-7D) {
+                                    vector3d1 = vector3d1.normalize().scale(0.5D).add(vector3d.scale(0.8D));
+                                }
+                                this.setDeltaMovement(vector3d1.x, vector3d1.y, vector3d1.z);
                             }
-                            this.setDeltaMovement(vector3d1.x, vector3d1.y, vector3d1.z);
-
                             this.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0D);
                         }
                         if (this.isCharging()) {
@@ -620,6 +622,9 @@ public class EntityCachalotWhale extends Animal {
             }
             if (this.isSleeping() && (!isSleepTime() || this.getTarget() != null)) {
                 this.setSleeping(false);
+            }
+            if(target instanceof Player && ((Player) target).isCreative()){
+                this.setTarget(null);
             }
         }
 

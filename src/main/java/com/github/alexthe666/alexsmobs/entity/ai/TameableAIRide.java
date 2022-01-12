@@ -35,7 +35,10 @@ public class TameableAIRide extends Goal {
             player = (Player) tameableEntity.getControllingPassenger();
             return true;
         }
-        return false;
+        else{
+        	tameableEntity.setSprinting(false);
+        	return false;
+        	}
     }
 
     @Override
@@ -50,7 +53,8 @@ public class TameableAIRide extends Goal {
         double x = tameableEntity.getX();
         double y = tameableEntity.getY();
         double z = tameableEntity.getZ();
-        if (shouldMoveForward()) {
+        if (shouldMoveForward() && tameableEntity.isVehicle()){
+        	tameableEntity.setSprinting(true);
             Vec3 lookVec = player.getLookAngle();
             if (shouldMoveBackwards()) {
                 lookVec = lookVec.yRot((float) Math.PI);
@@ -61,8 +65,12 @@ public class TameableAIRide extends Goal {
                 y += lookVec.y * 10;
             }
         }
+        else{
+        	tameableEntity.setSprinting(false);
+        	
+        	}
         if(strafe){
-            tameableEntity.xxa = player.xxa * 0.35F;
+            tameableEntity.xxa = player.xxa * 0.15F;
         }
         tameableEntity.maxUpStep = 1;
         tameableEntity.getMoveControl().setWantedPosition(x, y, z, speed);

@@ -31,8 +31,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 
 public class EntityVoidWormShot extends Entity {
     private UUID ownerUUID;
@@ -64,7 +64,7 @@ public class EntityVoidWormShot extends Entity {
         this.setDeltaMovement(p_i47274_8_, p_i47274_10_, p_i47274_12_);
     }
 
-    public EntityVoidWormShot(FMLPlayMessages.SpawnEntity spawnEntity, Level world) {
+    public EntityVoidWormShot(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(AMEntityRegistry.VOID_WORM_SHOT, world);
     }
 
