@@ -69,7 +69,7 @@ public class RenderSpectre extends MobRenderer<EntitySpectre, ModelSpectre> {
         }
 
         public RenderType getRenderType() {
-            return AMRenderTypes.getGhost(TEXTURE);
+            return AMRenderTypes.getSpectreBones(TEXTURE);
         }
     }
 }

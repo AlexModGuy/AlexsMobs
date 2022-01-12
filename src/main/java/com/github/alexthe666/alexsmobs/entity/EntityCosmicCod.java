@@ -178,7 +178,6 @@ public class EntityCosmicCod extends Mob {
                     baitballCooldown = 5;
                     for(EntityCosmicCod cod : list){
                         if(cod != this){
-                            System.out.println(cod);
                             cod.baitballCooldown = 5;
                             cod.teleport(vec3.x, vec3.y, vec3.z);
                         }
