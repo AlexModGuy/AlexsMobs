@@ -431,7 +431,9 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
 
     private void knockbackTarget(LivingEntity entity, float strength, float angle) {
         float rot = getYRot() + angle;
-        entity.knockback(strength, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+        if(entity != null){
+            entity.knockback(strength, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+        }
     }
 
     @Override
