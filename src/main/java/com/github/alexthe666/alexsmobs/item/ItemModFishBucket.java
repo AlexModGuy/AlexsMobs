@@ -93,6 +93,7 @@ public class ItemModFishBucket extends BucketItem {
             ((EntityMimicOctopus)entity).setMoistness(60000);
         }
         if (entity != null && entity instanceof EntityTerrapin) {
+            ((EntityTerrapin)entity).setFromBucket(true);
             CompoundTag compoundnbt = stack.getOrCreateTag();
             if(compoundnbt.contains("TerrapinData")){
                 ((EntityTerrapin)entity).readAdditionalSaveData(compoundnbt.getCompound("TerrapinData"));
