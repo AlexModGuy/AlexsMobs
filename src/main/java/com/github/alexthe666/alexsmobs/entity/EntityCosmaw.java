@@ -334,6 +334,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         ItemStack stack = player.getItemInHand(hand);
         boolean owner = this.isTame() && isOwnedBy(player);
         InteractionResult type = super.mobInteract(player, hand);
+        InteractionResult interactionresult = stack.interactLivingEntity(player, this, hand);
         if (canTargetItem(stack) && this.getMainHandItem().isEmpty()) {
             ItemStack rippedStack = stack.copy();
             rippedStack.setCount(1);
@@ -343,7 +344,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                 fishThrowerID = player.getUUID();
             }
             return InteractionResult.SUCCESS;
-        } else if (owner && !this.isBaby() && type != InteractionResult.CONSUME) {
+        } else if (owner && !this.isBaby() && interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS) {
             this.setCommand(this.getCommand() + 1);
             if (this.getCommand() == 3) {
                 this.setCommand(0);

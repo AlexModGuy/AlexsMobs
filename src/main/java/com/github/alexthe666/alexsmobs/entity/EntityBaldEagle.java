@@ -39,10 +39,12 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
+
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -136,13 +138,13 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, TEMPT_ITEMS.merge(ImmutableList.of(Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TAMEABLES)))), true));
         this.goalSelector.addGoal(7, new TemptGoal(this, 1.1D, Ingredient.of(ItemTags.FISHES), false));
         this.goalSelector.addGoal(8, new AIWanderIdle());
-        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F){
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F) {
             @Override
             public boolean canUse() {
                 return EntityBaldEagle.this.returnControlTime == 0 && super.canUse();
             }
         });
-        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this){
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this) {
             @Override
             public boolean canUse() {
                 return EntityBaldEagle.this.returnControlTime == 0 && super.canUse();
@@ -151,7 +153,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new AnimalAIHurtByTargetNotBaby(this)));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 5, true, true,  AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TARGETS))) {
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 5, true, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TARGETS))) {
             public boolean canUse() {
                 return super.canUse() && !EntityBaldEagle.this.isLaunched() && EntityBaldEagle.this.getCommand() == 0;
             }
@@ -301,7 +303,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     }
 
     public void setFlying(boolean flying) {
-        if(flying && this.isBaby()){
+        if (flying && this.isBaby()) {
             flying = false;
         }
         this.entityData.set(FLYING, flying);
@@ -383,17 +385,17 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                     this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, this.getSoundVolume(), this.getVoicePitch());
                     return InteractionResult.SUCCESS;
                 }
-            }else if(item == Items.SHEARS && this.hasCap()) {
+            } else if (item == Items.SHEARS && this.hasCap()) {
                 this.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-                if(!level.isClientSide){
-                    if(player instanceof ServerPlayer){
-                        itemstack.hurt(1, random, (ServerPlayer)player);
+                if (!level.isClientSide) {
+                    if (player instanceof ServerPlayer) {
+                        itemstack.hurt(1, random, (ServerPlayer) player);
                     }
                 }
                 this.spawnAtLocation(AMItemRegistry.FALCONRY_HOOD);
                 this.setCap(false);
                 return InteractionResult.SUCCESS;
-            }else if (!this.isBaby() && getRidingEagles(player) <= 0 && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE)) {
+            } else if (!this.isBaby() && getRidingEagles(player) <= 0 && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE)) {
                 boardingCooldown = 30;
                 this.setLaunched(false);
                 this.ejectPassengers();
@@ -403,18 +405,22 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                 }
                 return InteractionResult.SUCCESS;
             } else {
-                this.setCommand((this.getCommand() + 1) % 3);
-                if (this.getCommand() == 3) {
-                    this.setCommand(0);
-                }
-                player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
-                boolean sit = this.getCommand() == 2;
-                if (sit) {
-                    this.setOrderedToSit(true);
-                    return InteractionResult.SUCCESS;
-                } else {
-                    this.setOrderedToSit(false);
-                    return InteractionResult.SUCCESS;
+                InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+                if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS) {
+                    this.setCommand((this.getCommand() + 1) % 3);
+
+                    if (this.getCommand() == 3) {
+                        this.setCommand(0);
+                    }
+                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                    boolean sit = this.getCommand() == 2;
+                    if (sit) {
+                        this.setOrderedToSit(true);
+                        return InteractionResult.SUCCESS;
+                    } else {
+                        this.setOrderedToSit(false);
+                        return InteractionResult.SUCCESS;
+                    }
                 }
             }
         }
@@ -550,7 +556,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                 timeFlying++;
                 this.setNoGravity(true);
                 if (this.isSitting() || this.isPassenger() || this.isInLove()) {
-                    if(!isLaunched()){
+                    if (!isLaunched()) {
                         this.setFlying(false);
                     }
                 }
@@ -564,7 +570,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
             if (this.isInWaterOrBubble() && this.isVehicle()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 0.1F, 0));
             }
-            if(this.isSitting() && !this.isLaunched()){
+            if (this.isSitting() && !this.isLaunched()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, -0.1F, 0));
             }
             if (this.getTarget() != null && this.isInWaterOrBubble()) {
@@ -728,7 +734,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
 
     public boolean shouldHoodedReturn() {
         if (this.getOwner() != null) {
-            if (!this.getOwner().isAlive() || this.getOwner().isShiftKeyDown() ) {
+            if (!this.getOwner().isAlive() || this.getOwner().isShiftKeyDown()) {
                 return true;
             }
         }
@@ -746,15 +752,15 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         if (owner != null && this.distanceTo(owner) > 150) {
             returnControlTime = 100;
         }
-        if(Math.abs(xo - this.getX()) > 0.1F || Math.abs(yo - this.getY()) > 0.1F || Math.abs(zo - this.getZ()) > 0.1F){
+        if (Math.abs(xo - this.getX()) > 0.1F || Math.abs(yo - this.getY()) > 0.1F || Math.abs(zo - this.getZ()) > 0.1F) {
             stillTicksCounter = 0;
-        }else{
+        } else {
             stillTicksCounter++;
         }
         int stillTPthreshold = AMConfig.falconryTeleportsBack ? 200 : 6000;
         this.setOrderedToSit(false);
         this.setLaunched(true);
-        if((returnControlTime > 0 && AMConfig.falconryTeleportsBack || stillTicksCounter > stillTPthreshold && this.distanceTo(owner) > 30) && owner != null){
+        if ((returnControlTime > 0 && AMConfig.falconryTeleportsBack || stillTicksCounter > stillTPthreshold && this.distanceTo(owner) > 30) && owner != null) {
             this.copyPosition(owner);
             returnControlTime = 0;
             stillTicksCounter = 0;
@@ -814,7 +820,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     }
 
     private boolean canFalconryAttack(Entity over) {
-        return !(over instanceof ItemEntity) && (!(over instanceof LivingEntity) || !this.isOwnedBy((LivingEntity)over));
+        return !(over instanceof ItemEntity) && (!(over instanceof LivingEntity) || !this.isOwnedBy((LivingEntity) over));
     }
 
     //killEntity
@@ -924,9 +930,9 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                 if (this.eagle.getRandom().nextInt(15) != 0 && !eagle.isFlying()) {
                     return false;
                 }
-                if(this.eagle.isBaby()){
+                if (this.eagle.isBaby()) {
                     this.flightTarget = false;
-                }else if (this.eagle.isInWaterOrBubble()) {
+                } else if (this.eagle.isInWaterOrBubble()) {
                     this.flightTarget = true;
                 } else if (this.eagle.hasCap()) {
                     this.flightTarget = false;

@@ -612,7 +612,8 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             return InteractionResult.SUCCESS;
         }
         InteractionResult type = super.mobInteract(player, hand);
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
             if (this.isSitting()) {
                 this.forcedSit = false;
                 this.setOrderedToSit(false);

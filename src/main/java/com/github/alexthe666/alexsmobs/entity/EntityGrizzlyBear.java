@@ -286,8 +286,8 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             this.playSound(SoundEvents.SNOW_BREAK, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }
-
-        if(type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)){
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)){
             if(!player.isShiftKeyDown() && !this.isBaby()){
                 player.startRiding(this);
                 return InteractionResult.SUCCESS;

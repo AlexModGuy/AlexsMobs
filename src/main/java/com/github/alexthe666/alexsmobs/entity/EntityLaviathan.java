@@ -213,7 +213,8 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             return InteractionResult.SUCCESS;
         }
         InteractionResult type = super.mobInteract(player, hand);
-        if (type != InteractionResult.SUCCESS && !isFood(itemstack) && this.hasBodyGear()) {
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && !isFood(itemstack) && this.hasBodyGear()) {
             if (!this.isBaby()) {
                 if (!player.isShiftKeyDown()) {
                     if (!level.isClientSide) {

@@ -248,7 +248,8 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             pickupItemCooldown = 60;
             return InteractionResult.SUCCESS;
         }
-        if(type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isRaccoonFood(itemstack)){
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isRaccoonFood(itemstack)){
             if(!player.isShiftKeyDown()){
                 this.setCommand(this.getCommand() + 1);
                 if(this.getCommand() == 3){

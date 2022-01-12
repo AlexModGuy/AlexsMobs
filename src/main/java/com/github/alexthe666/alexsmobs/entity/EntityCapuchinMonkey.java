@@ -453,7 +453,8 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             this.heal(5);
             return InteractionResult.SUCCESS;
         }
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !EntityGorilla.isBanana(itemstack) && !getAllFoods().test(itemstack)) {
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !EntityGorilla.isBanana(itemstack) && !getAllFoods().test(itemstack)) {
             if (!this.hasDart() && itemstack.getItem() == AMItemRegistry.ANCIENT_DART) {
                 this.setDart(true);
                 this.usePlayerItem(player, hand, itemstack);

@@ -249,7 +249,8 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
             itemstack.shrink(size);
             return InteractionResult.SUCCESS;
         }
-        if(type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)){
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)){
             if(isFood(itemstack)){
                 this.setInLoveTime(600);
                 this.usePlayerItem(player, hand, itemstack);

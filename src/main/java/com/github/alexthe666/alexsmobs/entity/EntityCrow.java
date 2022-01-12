@@ -266,7 +266,8 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             return InteractionResult.SUCCESS;
         } else {
-            if (type == InteractionResult.PASS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
+            InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+            if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
                 if (isCrowEdible(itemstack) && this.getMainHandItem().isEmpty()) {
                     ItemStack cop = itemstack.copy();
                     cop.setCount(1);

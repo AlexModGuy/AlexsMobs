@@ -399,7 +399,8 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             this.heal(5);
             return InteractionResult.SUCCESS;
         }
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !ItemTags.FLOWERS.contains(item)) {
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !ItemTags.FLOWERS.contains(item)) {
             if (item == Items.FLOWER_POT && !this.isPotted()) {
                 this.setPotted(true);
                 return InteractionResult.SUCCESS;

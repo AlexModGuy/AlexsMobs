@@ -466,7 +466,8 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             return InteractionResult.PASS;
 
         }
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
             if (player.isShiftKeyDown()) {
                 if (this.getMainHandItem().isEmpty()) {
                     ItemStack cop = itemstack.copy();

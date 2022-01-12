@@ -350,7 +350,8 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
             return InteractionResult.PASS;
 
         }
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
             if (player.isShiftKeyDown() || ItemTags.getAllTags().getTag(AMTagRegistry.SHRIMP_RICE_FRYABLES).contains(itemstack.getItem())) {
                 if (this.getMainHandItem().isEmpty()) {
                     ItemStack cop = itemstack.copy();

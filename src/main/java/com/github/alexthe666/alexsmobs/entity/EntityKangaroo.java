@@ -251,7 +251,8 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             this.heal(item.getFoodProperties().getNutrition());
             return InteractionResult.SUCCESS;
         }
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
             if (player.isShiftKeyDown()) {
                 if(!this.isBaby()){
                     this.openGUI(player);

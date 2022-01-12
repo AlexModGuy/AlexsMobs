@@ -324,7 +324,8 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
             return InteractionResult.PASS;
 
         }
-        if (type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
+        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
             this.setCommand(this.getCommand() + 1);
             if (this.getCommand() == 3) {
                 this.setCommand(0);
