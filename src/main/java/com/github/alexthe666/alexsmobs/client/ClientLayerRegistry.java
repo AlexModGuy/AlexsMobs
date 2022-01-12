@@ -38,13 +38,15 @@ public class ClientLayerRegistry {
 
     private static void addLayerIfApplicable(EntityType<? extends LivingEntity> entityType, EntityRenderersEvent.AddLayers event) {
         LivingEntityRenderer renderer = null;
-        try{
-            renderer = event.getRenderer(entityType);
-        }catch (Exception e){
-            AlexsMobs.LOGGER.warn("Could not apply rainbow color layer to " + entityType.getRegistryName() + ", has custom renderer that is not LivingEntityRenderer.");
-        }
-        if(renderer != null){
-            renderer.addLayer(new LayerRainbow(renderer));
+        if(entityType != EntityType.ENDER_DRAGON){
+            try{
+                renderer = event.getRenderer(entityType);
+            }catch (Exception e){
+                AlexsMobs.LOGGER.warn("Could not apply rainbow color layer to " + entityType.getRegistryName() + ", has custom renderer that is not LivingEntityRenderer.");
+            }
+            if(renderer != null){
+                renderer.addLayer(new LayerRainbow(renderer));
+            }
         }
     }
 }
