@@ -409,9 +409,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 return InteractionResult.SUCCESS;
             } else if(this.isPotted() && player.isShiftKeyDown()){
                 ItemStack fish = getFishBucket();
-                if (!fish.isEmpty()) {
-                    player.setItemInHand(hand, fish);
-                } else if (!player.getInventory().add(fish)) {
+                if (!player.addItem(fish)) {
                     player.drop(fish, false);
                 }
                 this.remove(RemovalReason.DISCARDED);
