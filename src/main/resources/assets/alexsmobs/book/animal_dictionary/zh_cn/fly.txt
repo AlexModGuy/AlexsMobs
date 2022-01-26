@@ -1,9 +1,26 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Flies are small, annoying insects common in the overworld. Naturally attracted to dead and dying things, they can be found
-chasing and biting zombies nearly to death. Flies can be breed with rotten flesh, and on death have a possibility to drop
-maggots. Fly Maggots can be used to breed other creatures, like Roadrunners and Capuchin Monkeys, and, in a pinch, used as
- a light snack.
+    苍蝇是一种在主世界很常见且又烦
 <NEWLINE>
-If a fly happens to find itself in the nether, the diminutive little creature will transform into the monstrous Crimson Mosquito.
+人的小昆虫。它们会自然地被死亡的、
+<NEWLINE>
+垂死的东西所吸引。玩家通常可以看到
+<NEWLINE>
+苍蝇在追赶和咬死附近的僵尸。苍蝇可
+<NEWLINE>
+以通过喂养腐肉来进行繁殖。苍蝇在死
+<NEWLINE>
+了之后有一定概率会掉落蛆。苍蝇蛆可
+<NEWLINE>
+以用来繁殖其他生物，例如走鹃和卷尾
+<NEWLINE>
+猴。在必要的时候，还可以作为玩家的
+<NEWLINE>
+小点心。
+<NEWLINE>
+    如果一只苍蝇碰巧发觉自己身处于
+<NEWLINE>
+下界中，那么这只体型微小的生物将会
+<NEWLINE>
+变成令人恐惧的绯红蚊子。

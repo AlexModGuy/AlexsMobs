@@ -2,7 +2,38 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Shoebills are strange, stork-like birds found in swamps. These intimidating looking birds are actually surprisingly timid, and will take wing when attacked.
-They are often seen shaking their large, strange beaks. When left alone, Shoebills can often be seen fishing, catching their favorite food. Often times, Shoebills produce bycatch that are useless to them, but not to everyone.
-Shoebills can be fed Crocodile Eggs to increase the "lure" effect on their catches, and fed Blobfish to increase the "luck" of their catches. Shoebills are so naturally timid that they cannot be bred by people.
-Asides from fish, Shoebills will also attack baby Crocodiles and Turtles, which are also part of their diet.
+    鲸头鹳是一种生性奇怪且长得似鹳
+<NEWLINE>
+的鸟儿，通常生成在沼泽。这种看起来
+<NEWLINE>
+吓人的鸟儿实际上非常胆小，在受到攻
+<NEWLINE>
+击后会拍翅而逃。
+<NEWLINE>
+    它们经常甩动着它们那张较大又奇
+<NEWLINE>
+怪的鸟喙。玩家通常可以看到鲸头鹳独
+<NEWLINE>
+自地在捕鱼，捕抓它们最喜欢的食物。
+<NEWLINE>
+正常情况下，鲸头鹳捕鱼时还会捕捉上
+<NEWLINE>
+其他一些物品。虽然这些物品对它们是
+<NEWLINE>
+没有用的，但并不是对所有人都没有用。
+<NEWLINE>
+    给鲸头鹳喂食鳄鱼蛋后，会给它们
+<NEWLINE>
+的捕捉带来「诱饵」效果，喂食水龟蛋
+<NEWLINE>
+之后则会带来「幸运」效果。由于鲸头
+<NEWLINE>
+鹳的天性过于胆小，所以人们无法对它
+<NEWLINE>
+们饲养繁殖。
+<NEWLINE>
+    除了鱼之外，鲸头鹳还会对小鳄鱼
+<NEWLINE>
+和小海龟发动攻击，因为这也是它们午
+<NEWLINE>
+餐中的一道菜。
