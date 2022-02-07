@@ -66,6 +66,7 @@
 <NEWLINE>
 向上运输物品。此外，衣壳体还可以用
 <NEWLINE>
+<NEWLINE>
 来和铁粒以及末地石合成末影噬菌体火
 <NEWLINE>
 箭，它可以用来代替烟花火箭，来辅助
@@ -73,13 +74,13 @@
 装备着鞘翅的玩家进行飞行。
 <NEWLINE>
     如果将末影之眼放进末地烛上方的
-<NEWLINE>	
+<NEWLINE>
 衣壳体中，它将会转变成末影噬菌体！
-<NEWLINE>	
+<NEWLINE>
 任何自然存在的末影噬菌体即使不是该
-<NEWLINE>	
+<NEWLINE>
 方法进行搭建的，那么也都是由其当前
-<NEWLINE>	
+<NEWLINE>
 的维度所共有的材料来构成的。这也许
-<NEWLINE>	
+<NEWLINE>
 就是这些生物的诞生的原因……

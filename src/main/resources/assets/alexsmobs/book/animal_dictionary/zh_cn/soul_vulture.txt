@@ -2,8 +2,32 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Soul Vultures are the withered remains of long dead birds that haunt the Nether's Soul Sand Valleys. These undead birds can be seen circling the countless giant skeletons that litter the landscape.
-If approached, Soul Vultures will launch a health-stealing assault on any explorer, where they can sap health up to a maximum of five times from their prey. If slain afterwards, they may have a chance to drop their soul-infused heart.
-The Soul Heart can be used to brew a potion of Soulsteal, which gives the drinker the same health-sapping powers as the bird.
+    灵魂鹫是死去很长时间的鸟类的干
 <NEWLINE>
-Like their wither skeleton counterparts, the Soul Vultures are natural enemies of Piglins. They are also frequent prey for the Nether's Bone Serpents.
+骸，经常出没在下界的灵魂沙峡谷。玩
+<NEWLINE>
+家可以看到这些亡灵鸟盘旋在这片土地
+<NEWLINE>
+随处可见的骨架之上。
+<NEWLINE>
+    当探险者接近灵魂鹫时，它会发起
+<NEWLINE>
+攻击并窃取探险者的生命，它们可以从
+<NEWLINE>
+猎物身上汲取生命值且最多可达五次。
+<NEWLINE>
+如果灵魂鹫在这之后被杀死的话，会有
+<NEWLINE>
+一定机会掉落它们灌注入灵魂的心脏。
+<NEWLINE>
+    灵魂之心可以用来酿造灵魂汲取药
+<NEWLINE>
+水，这是一种可以给予饮用者与灵魂鹫
+<NEWLINE>
+类似的汲取生命值能力的药水。
+<NEWLINE>
+    和凋灵骷髅一样，灵魂鹫也是猪灵
+<NEWLINE>
+的天敌。同时，灵魂鹫也常常成为骨蟒
+<NEWLINE>
+的猎物。
