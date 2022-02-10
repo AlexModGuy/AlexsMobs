@@ -272,7 +272,7 @@ public class AMWorldRegistry {
         return Registry.register(Registry.FEATURE, name, eature);
     }
 
-    private static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome.BiomeCategory category, ResourceLocation registryName) {
+    public static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome.BiomeCategory category, ResourceLocation registryName) {
         boolean result = false;
         try {
             result = BiomeConfig.test(entry, category, registryName);
@@ -281,5 +281,9 @@ public class AMWorldRegistry {
             result = false;
         }
         return result;
+    }
+
+    public static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome) {
+        return testBiome(entry, biome.getBiomeCategory(), biome.getRegistryName());
     }
 }

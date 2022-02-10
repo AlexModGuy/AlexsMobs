@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.world;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
@@ -27,7 +28,7 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        if (context.level().getRandom().nextFloat() > 0.00002F) {
+        if (context.level().getRandom().nextFloat() > 0.00002F || !AMWorldRegistry.testBiome(BiomeConfig.leafcutter_anthill_spawns, context.level().getBiome(context.origin()))) {
             return false;
         }
         int x = 8;
