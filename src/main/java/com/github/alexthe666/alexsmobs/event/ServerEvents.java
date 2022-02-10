@@ -18,8 +18,10 @@ import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -79,6 +81,7 @@ import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
@@ -686,6 +689,13 @@ public class ServerEvents {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.PIGSHOES).setQuality(5).setWeight(8);
             LootPool.Builder builder = new LootPool.Builder().name("am_pigshoes").add(item).when(LootItemRandomChanceCondition.randomChance((float) AMConfig.tusklinShoesBarteringChance)).setRolls(ConstantValue.exactly(1));
             event.getTable().addPool(builder.build());
+        }
+    }
+
+    @SubscribeEvent
+    public void onTooltip(ItemTooltipEvent event){
+        if(event.getItemStack().hasTag() && event.getItemStack().getOrCreateTag().contains("BisonFur") && event.getItemStack().getOrCreateTag().getBoolean("BisonFur")){
+            event.getToolTip().add(new TranslatableComponent("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
         }
     }
 }

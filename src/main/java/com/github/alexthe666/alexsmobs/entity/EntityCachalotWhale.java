@@ -473,6 +473,9 @@ public class EntityCachalotWhale extends Animal {
         prevSleepProgress = sleepProgress;
         prevBeachedProgress = beachedProgress;
         prevGrabProgress = grabProgress;
+        if(this.tickCount % 200 == 0){
+            this.heal(2);
+        }
         if (isCharging() && this.chargeProgress < 10F) {
             this.chargeProgress++;
         }

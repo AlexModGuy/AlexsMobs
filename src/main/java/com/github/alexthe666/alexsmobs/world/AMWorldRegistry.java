@@ -259,6 +259,12 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.bunfungus, event.getCategory(), event.getName()) && AMConfig.bunfungusSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.BUNFUNGUS, AMConfig.bunfungusSpawnWeight, 1, 1));
         }
+        if (testBiome(BiomeConfig.bison, event.getCategory(), event.getName()) && AMConfig.bisonSpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.BISON, AMConfig.bisonSpawnWeight, 6, 10));
+        }
+        if (testBiome(BiomeConfig.giant_squid, event.getCategory(), event.getName()) && AMConfig.giantSquidSpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.GIANT_SQUID, AMConfig.giantSquidSpawnWeight, 1, 2));
+        }
     }
 
     private static <C extends FeatureConfiguration, F extends Feature<C>> F registerFeature(String name, F eature) {

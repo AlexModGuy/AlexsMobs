@@ -4,46 +4,56 @@ import com.github.alexthe666.alexsmobs.CommonProxy;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import org.checkerframework.checker.units.qual.C;
 
-public class RecipeBisonUpgrade implements Recipe<CraftingContainer> {
-    private final ResourceLocation id;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RecipeBisonUpgrade extends UpgradeRecipe {
 
     public RecipeBisonUpgrade(ResourceLocation id) {
-        this.id = id;
+        super(id, Ingredient.EMPTY, Ingredient.EMPTY, ItemStack.EMPTY);
     }
 
     @Override
-    public boolean matches(CraftingContainer container, Level lvl) {
+    public boolean matches(Container container, Level lvl) {
         return !createBoots(container).isEmpty();
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer container) {
+    public ItemStack assemble(Container container) {
         return createBoots(container);
     }
 
-    private ItemStack createBoots(CraftingContainer container){
+    private ItemStack createBoots(Container container){
         ItemStack boots = ItemStack.EMPTY;
         if(container.getItem(1).is(AMItemRegistry.BISON_FUR)){
             for (int j = 0; j < container.getContainerSize(); ++j) {
                 ItemStack itemstack1 = container.getItem(j);
-                if (!itemstack1.isEmpty() && itemstack1.getEquipmentSlot() == EquipmentSlot.FEET) {
+                boolean notFurred = !itemstack1.hasTag() || !itemstack1.getOrCreateTag().getBoolean("BisonFur");
+                if (!itemstack1.isEmpty() && notFurred && LivingEntity.getEquipmentSlotForItem(itemstack1) == EquipmentSlot.FEET) {
                     boots = itemstack1;
                 }
             }
         }
         if(!boots.isEmpty()){
             ItemStack stack = boots.copy();
+            CompoundTag tag = stack.getOrCreateTag();
+            tag.putBoolean("BisonFur", true);
+            stack.setTag(tag);
             return stack;
         }
         return ItemStack.EMPTY;
@@ -57,11 +67,6 @@ public class RecipeBisonUpgrade implements Recipe<CraftingContainer> {
     @Override
     public ItemStack getResultItem() {
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
     public ItemStack getToastSymbol() {

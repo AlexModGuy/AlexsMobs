@@ -76,7 +76,7 @@ public class AlexsMobs {
     }
 
     public static boolean isAprilFools() {
-        return isAprilFools;
+        return isAprilFools || AMConfig.superSecretSettings;
     }
 
     private void setupEntityModelLayers(final EntityRenderersEvent.RegisterLayerDefinitions event) {

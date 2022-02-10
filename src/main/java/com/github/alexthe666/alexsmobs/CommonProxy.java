@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.misc.*;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
+import com.github.alexthe666.citadel.server.item.CitadelRecipes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,9 +49,7 @@ public class CommonProxy {
             MIMICREAM_RECIPE.setRegistryName(new ResourceLocation("alexsmobs:mimicream_repair_recipe"));
             event.getRegistry().register(MIMICREAM_RECIPE);
         }
-        BISON_UPGRADE_RECIPE = new SimpleRecipeSerializer<>(RecipeBisonUpgrade::new);
-        BISON_UPGRADE_RECIPE.setRegistryName(new ResourceLocation("alexsmobs:bison_upgrade_recipe"));
-        event.getRegistry().register(BISON_UPGRADE_RECIPE);
+        CitadelRecipes.registerSmithingRecipe(new RecipeBisonUpgrade(new ResourceLocation("alexsmobs:bison_fur_upgrade")));
     }
 
     private static LootItemConditionType registerLootCondition(String registryName, Serializer<? extends LootItemCondition> serializer) {

@@ -157,6 +157,10 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue cosmicCodSpawnWeight;
     public final ForgeConfigSpec.IntValue bunfungusSpawnWeight;
     public final ForgeConfigSpec.IntValue bunfungusSpawnRolls;
+    public final ForgeConfigSpec.IntValue bisonSpawnWeight;
+    public final ForgeConfigSpec.IntValue bisonSpawnRolls;
+    public final ForgeConfigSpec.IntValue giantSquidSpawnWeight;
+    public final ForgeConfigSpec.IntValue giantSquidSpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -196,6 +200,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue tusklinShoesBarteringChance;
     public final ForgeConfigSpec.DoubleValue rainbowGlassFidelity;
     public ForgeConfigSpec.BooleanValue bunfungusTransformation;
+    public ForgeConfigSpec.BooleanValue superSecretSettings;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -383,13 +388,19 @@ public class CommonConfig {
         cosmicCodSpawnRolls = buildInt(builder, "cosmicCodSpawnRolls", "spawns", AMConfig.cosmicCodSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         bunfungusSpawnWeight = buildInt(builder, "bunfungusSpawnWeight", "spawns", AMConfig.bunfungusSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         bunfungusSpawnRolls = buildInt(builder, "bunfungusSpawnRolls", "spawns", AMConfig.bunfungusSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        bisonSpawnWeight = buildInt(builder, "bisonSpawnWeight", "spawns", AMConfig.bisonSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        bisonSpawnRolls = buildInt(builder, "bisonSpawnRolls", "spawns", AMConfig.bisonSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        giantSquidSpawnWeight = buildInt(builder, "giantSquidSpawnWeight", "spawns", AMConfig.giantSquidSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        giantSquidSpawnRolls = buildInt(builder, "giantSquidSpawnRolls", "spawns", AMConfig.giantSquidSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "spawns", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
         beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "spawns", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");
         beachedCachalotWhaleSpawnDelay = buildInt(builder, "beachedCachalotWhaleSpawnDelay", "spawns", AMConfig.beachedCachalotWhaleSpawnDelay, 0, Integer.MAX_VALUE, "Delay (in ticks) between attempts to spawn beached cachalot whales. Default is a single day. Works like wandering traders.");
-        leafcutterAnthillSpawnChance = buildDouble(builder, "leafcutterAnthillSpawnChance", "all", AMConfig.leafcutterAnthillSpawnChance, 0D, 1D, "Percent chance for leafcutter anthills to spawn as world gen in each chunk. Set to zero to disable spawning.");
-   }
+        leafcutterAnthillSpawnChance = buildDouble(builder, "leafcutterAnthillSpawnChance", "spawns", AMConfig.leafcutterAnthillSpawnChance, 0D, 1D, "Percent chance for leafcutter anthills to spawn as world gen in each chunk. Set to zero to disable spawning.");
+        builder.push("dangerZone");
+        superSecretSettings = buildBoolean(builder, "superSecretSettings", "dangerZone", false, "Its been so long...");
+    }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment) {
         return builder.comment(comment).translation(name).define(name, defaultValue);

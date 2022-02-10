@@ -141,11 +141,15 @@ public class AMConfig {
     public static int terrapinSpawnWeight = 4;
     public static int terrapinSpawnRolls = 0;
     public static int combJellySpawnWeight = 5;
-    public static int combJellySpawnRolls = 0;
+    public static int combJellySpawnRolls = 1;
     public static int cosmicCodSpawnWeight = 5;
     public static int cosmicCodSpawnRolls = 0;
     public static int bunfungusSpawnWeight = 1;
     public static int bunfungusSpawnRolls = 0;
+    public static int bisonSpawnWeight = 9;
+    public static int bisonSpawnRolls = 0;
+    public static int giantSquidSpawnWeight = 3;
+    public static int giantSquidSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -208,6 +212,7 @@ public class AMConfig {
     );
     public static double rainbowGlassFidelity = 16.0F;
     public static boolean bunfungusTransformation = true;
+    public static boolean superSecretSettings = false;
 
     public static void bake(ModConfig config) {
         try {
@@ -353,6 +358,10 @@ public class AMConfig {
             cosmicCodSpawnRolls = ConfigHolder.COMMON.cosmicCodSpawnRolls.get();
             bunfungusSpawnWeight = ConfigHolder.COMMON.bunfungusSpawnWeight.get();
             bunfungusSpawnRolls = ConfigHolder.COMMON.bunfungusSpawnRolls.get();
+            bisonSpawnWeight = ConfigHolder.COMMON.bisonSpawnWeight.get();
+            bisonSpawnRolls = ConfigHolder.COMMON.bisonSpawnRolls.get();
+            giantSquidSpawnWeight = ConfigHolder.COMMON.giantSquidSpawnWeight.get();
+            giantSquidSpawnRolls = ConfigHolder.COMMON.giantSquidSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -399,6 +408,7 @@ public class AMConfig {
             tusklinShoesBarteringChance = ConfigHolder.COMMON.tusklinShoesBarteringChance.get();
             rainbowGlassFidelity = ConfigHolder.COMMON.rainbowGlassFidelity.get();
             bunfungusTransformation = ConfigHolder.COMMON.bunfungusTransformation.get();
+            superSecretSettings = ConfigHolder.COMMON.superSecretSettings.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();
