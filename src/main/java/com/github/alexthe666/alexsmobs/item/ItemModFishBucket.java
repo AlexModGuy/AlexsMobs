@@ -84,6 +84,7 @@ public class ItemModFishBucket extends BucketItem {
             if(compoundnbt.contains("FrilledSharkData")){
                 ((EntityFrilledShark)entity).readAdditionalSaveData(compoundnbt.getCompound("FrilledSharkData"));
             }
+            ((EntityFrilledShark) entity).setFromBucket(true);
         }
         if (entity != null && entity instanceof EntityMimicOctopus) {
             CompoundTag compoundnbt = stack.getOrCreateTag();
