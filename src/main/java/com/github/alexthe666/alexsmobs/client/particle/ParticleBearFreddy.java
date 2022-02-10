@@ -28,7 +28,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleBearFreddy extends Particle {
     private final ModelGrizzlyBear model = new ModelGrizzlyBear();
-    private final RenderType renderType = AMRenderTypes.getFullBright(RenderGrizzlyBear.TEXTURE_FREDDY);
 
     ParticleBearFreddy(ClientLevel lvl, double x, double y, double z) {
         super(lvl, x, y, z);
@@ -55,7 +54,7 @@ public class ParticleBearFreddy extends Particle {
         posestack.scale(-scale, -scale, scale);
         posestack.translate(0.0D, 0.5F, 2 + (1F - initalFlip));
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-        VertexConsumer vertexconsumer = multibuffersource$buffersource.getBuffer(AMRenderTypes.getFullBright(RenderGrizzlyBear.TEXTURE_FREDDY));
+        VertexConsumer vertexconsumer = multibuffersource$buffersource.getBuffer(AMRenderTypes.getFreddy(RenderGrizzlyBear.TEXTURE_FREDDY));
         posestack.mulPose(Vector3f.XP.rotationDegrees(initalFlip * 20F - 5F));
         float swing = laterFlip * (float) Math.sin((age + partialTick) * 0.3F) * 20;
         posestack.mulPose(Vector3f.ZP.rotationDegrees((1F - initalFlip) * 45F + swing));

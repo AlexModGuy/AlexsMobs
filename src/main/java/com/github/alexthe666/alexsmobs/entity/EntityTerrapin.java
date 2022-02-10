@@ -521,6 +521,9 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
 
     public InteractionResult mobInteract(Player player, InteractionHand hans) {
         ItemStack itemstack = player.getItemInHand(hans);
+        if (itemstack.getItem() == Items.SEAGRASS){
+            this.setPersistenceRequired();
+        }
         if (itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
             this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
