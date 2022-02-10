@@ -10,7 +10,7 @@ public enum TerrapinTypes {
     GREEN(new ResourceLocation("alexsmobs:textures/entity/terrapin/terrapin_green.png"), 8.0F),
     BLACK(new ResourceLocation("alexsmobs:textures/entity/terrapin/terrapin_black.png"), 11.0F),
     BROWN(new ResourceLocation("alexsmobs:textures/entity/terrapin/terrapin_brown.png"), 10.0F),
-    KOOPA(new ResourceLocation("alexsmobs:textures/entity/terrapin/terrapin_koopa.png"), 0.4F),
+    KOOPA(new ResourceLocation("alexsmobs:textures/entity/terrapin/terrapin_koopa.png"), 0.05F),
     PAINTED(new ResourceLocation("alexsmobs:textures/entity/terrapin/terrapin_painted.png"), 8.0F),
     RED_EARED(new ResourceLocation("alexsmobs:textures/entity/terrapin/terrapin_red_eared.png"), 13.0F),
     OVERLAY(new ResourceLocation("alexsmobs:textures/entity/terrapin/overlay/terrapin_with_overlays.png"), 9.0F);
