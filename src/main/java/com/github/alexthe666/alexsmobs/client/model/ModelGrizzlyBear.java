@@ -24,6 +24,8 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
     public final AdvancedModelBox right_leg;
     public final AdvancedModelBox left_arm;
     public final AdvancedModelBox right_arm;
+    private final AdvancedModelBox hat;
+    private final AdvancedModelBox microphone;
     public final ModelAnimator animator;
 
     public ModelGrizzlyBear() {
@@ -84,6 +86,19 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         right_arm.setPos(-4.5F, 4.0F, -13.0F);
         body.addChild(right_arm);
         right_arm.setTextureOffset(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, true);
+
+        hat = new AdvancedModelBox(this);
+        hat.setRotationPoint(0.0F, -5.0F, -4.0F);
+        head.addChild(hat);
+        hat.setTextureOffset(0, 57).addBox(-3.0F, -1.0F, -1.0F, 6.0F, 1.0F, 6.0F, 0.0F, false);
+        hat.setTextureOffset(0, 48).addBox(-2.0F, -5.0F, 0.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+
+        microphone = new AdvancedModelBox(this);
+        microphone.setRotationPoint(0.0F, 13.0F, -3.0F);
+        right_arm.addChild(microphone);
+        microphone.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 5.0F, 0.0F, false);
+        microphone.setTextureOffset(15, 0).addBox(-1.5F, -1.5F, -6.0F, 3.0F, 3.0F, 3.0F, 0.0F, false);
+
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -188,6 +203,7 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
     @Override
     public void setupAnim(EntityGrizzlyBear entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
+        this.head.setShouldScaleChildren(true);
         animate(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         float walkSpeed = 0.7F;
         float walkDegree = 0.7F;
@@ -204,20 +220,47 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         progressRotationPrev(left_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(10), 0, 10F);
         progressRotationPrev(right_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(-10), 0, 10F);
         progressPositionPrev(head, sitProgress, 0, 4, -1, 10F);
-        this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);
+        if(standProgress > 5F){
+            this.head.rotateAngleZ += netHeadYaw * ((float)Math.PI / 180F);
+        }else{
+            this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);
+        }
         this.head.rotateAngleX += headPitch * ((float)Math.PI / 180F);
-
-        progressRotationPrev(left_leg, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
-        progressRotationPrev(right_leg, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
-        progressPositionPrev(left_leg, standProgress, 0, -4, 4, 10F);
-        progressPositionPrev(right_leg, standProgress, 0, -4, 4, 10F);
-        progressPositionPrev(head, standProgress, 0, 0, 2, 10F);
-        progressPositionPrev(body, standProgress, 0, -1, -5, 10F);
-        progressPositionPrev(head, standProgress, 0, 1, -3, 10F);
-        progressRotationPrev(body, standProgress, (float)Math.toRadians(-80), 0, 0, 10F);
-        progressRotationPrev(left_arm, standProgress, (float)Math.toRadians(35), (float)Math.toRadians(-10), 0, 10F);
-        progressRotationPrev(right_arm, standProgress, (float)Math.toRadians(35), (float)Math.toRadians(10), 0, 10F);
-        progressRotationPrev(head, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
+        if(entityIn.isFreddy()){
+            if(standProgress > 0){
+                this.walk(right_arm, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);
+                this.walk(left_arm, walkSpeed, walkDegree, true, 0F, 0F, limbSwing, limbSwingAmount);
+            }
+            this.head.setScale(1.2F, 1.2F, 1.2F);
+            this.snout.setScale(1.4F, 1F, 1F);
+            progressPositionPrev(snout, 10F, 0, 0, 2, 10F);
+            progressPositionPrev(head, standProgress, 0, -0.5F, -3, 10F);
+            progressPositionPrev(body, standProgress, 0, 0, -5, 10F);
+            progressRotationPrev(body, standProgress, (float)Math.toRadians(-90), 0, 0, 10F);
+            progressRotationPrev(head, standProgress, (float)Math.toRadians(90), 0, 0, 10F);
+            progressRotationPrev(left_arm, standProgress, (float)Math.toRadians(80), (float)Math.toRadians(15), 0, 10F);
+            progressRotationPrev(right_arm, standProgress, (float)Math.toRadians(80), (float)Math.toRadians(-15), 0, 10F);
+            progressPositionPrev(left_arm, standProgress, 2, 0, 0, 10F);
+            progressPositionPrev(right_arm, standProgress, -2, 0, 0, 10F);
+            progressRotationPrev(left_leg, standProgress, (float)Math.toRadians(90), 0, 0, 10F);
+            progressRotationPrev(right_leg, standProgress, (float)Math.toRadians(90), 0, 0, 10F);
+            progressPositionPrev(left_leg, standProgress, 0, -4, 4, 10F);
+            progressPositionPrev(right_leg, standProgress, 0, -4, 4, 10F);
+        }else{
+            this.head.setScale(1F, 1F, 1F);
+            this.snout.setScale(1F, 1F, 1F);
+            progressRotationPrev(left_leg, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
+            progressRotationPrev(right_leg, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
+            progressPositionPrev(left_leg, standProgress, 0, -4, 4, 10F);
+            progressPositionPrev(right_leg, standProgress, 0, -4, 4, 10F);
+            progressPositionPrev(head, standProgress, 0, 0, 2, 10F);
+            progressPositionPrev(body, standProgress, 0, -1, -5, 10F);
+            progressPositionPrev(head, standProgress, 0, 1, -3, 10F);
+            progressRotationPrev(body, standProgress, (float)Math.toRadians(-80), 0, 0, 10F);
+            progressRotationPrev(head, standProgress, (float)Math.toRadians(80), 0, 0, 10F);
+            progressRotationPrev(left_arm, standProgress, (float)Math.toRadians(35), (float)Math.toRadians(-10), 0, 10F);
+            progressRotationPrev(right_arm, standProgress, (float)Math.toRadians(35), (float)Math.toRadians(10), 0, 10F);
+        }
         this.walk(left_leg, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);
         this.bob(left_leg, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
         this.walk(right_leg, walkSpeed, walkDegree, true, 0F, 0F, limbSwing, limbSwingAmount);
@@ -258,9 +301,34 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
                 snout,
                 midbody,
                 left_leg,
-                right_leg);
+                right_leg,
+                microphone,
+                hat);
     }
 
+    public void positionForParticle(float partialTicks, float ageInTicks){
+        this.resetToDefaultPose();
+        float walkSpeed = 0.7F;
+        float walkDegree = 0.7F;
+        this.walk(head, walkSpeed, walkDegree * 0.2F, false, 1F, -0.4F, ageInTicks, 1);
+        this.walk(right_arm, walkSpeed, walkDegree, false, 1F, 0F, ageInTicks, 1);
+        this.walk(left_arm, walkSpeed, walkDegree, true, 1F, 0F, ageInTicks, 1);
+        this.swing(right_arm, walkSpeed, walkDegree, false, 2, -1.7F, ageInTicks, 1);
+        this.swing(left_arm, walkSpeed, walkDegree, false, 2, 1.7F, ageInTicks, 1);
+        progressPositionPrev(snout, 10F, 0, 0, 2, 10F);
+        progressPositionPrev(head, 10F, 0, -0.5F, -3, 10F);
+        progressPositionPrev(body, 10F, 0, 0, -5, 10F);
+        progressRotationPrev(body, 10F, (float)Math.toRadians(-90), 0, 0, 10F);
+        progressRotationPrev(head, 10F, (float)Math.toRadians(90), 0, 0, 10F);
+        progressRotationPrev(left_arm, 10F, (float)Math.toRadians(80), (float)Math.toRadians(15),  0, 10F);
+        progressRotationPrev(right_arm, 10F, (float)Math.toRadians(80), (float)Math.toRadians(-15),  0, 10F);
+        progressPositionPrev(left_arm, 10F, 2, 0, 0, 10F);
+        progressPositionPrev(right_arm, 10F, -2, 0, 0, 10F);
+        progressRotationPrev(left_leg, 10F, (float)Math.toRadians(90), 0, 0, 10F);
+        progressRotationPrev(right_leg, 10F, (float)Math.toRadians(90), 0, 0, 10F);
+        progressPositionPrev(left_leg, 10F, 0, -4, 4, 10F);
+        progressPositionPrev(right_leg, 10F, 0, -4, 4, 10F);
+    }
     public void setRotationAngle(AdvancedModelBox box, float x, float y, float z) {
         box.rotateAngleX = x;
         box.rotateAngleY = y;

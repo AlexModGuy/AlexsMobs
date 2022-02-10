@@ -320,6 +320,15 @@ public class AMSoundRegistry {
 
     public static final SoundEvent COSMIC_COD_HURT = createSoundEvent("cosmic_cod_hurt");
 
+    public static final SoundEvent MOSQUITO_CAPSID_CONVERT = createSoundEvent("mosquito_capsid_convert");
+
+    public static final SoundEvent GIANT_SQUID_GAMES = createSoundEvent("giant_squid_games");
+
+    public static final SoundEvent APRIL_FOOLS_SCREAM = createSoundEvent("april_fools_scream");
+
+    public static final SoundEvent APRIL_FOOLS_POWER_OUTAGE = createSoundEvent("april_fools_power_outage");
+
+    public static final SoundEvent APRIL_FOOLS_MUSIC_BOX = createSoundEvent("april_fools_music_box");
 
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);

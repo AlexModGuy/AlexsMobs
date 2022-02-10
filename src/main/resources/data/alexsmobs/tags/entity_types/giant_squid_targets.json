@@ -1,0 +1,10 @@
+{
+  "__comment": "all non-player, non-guardian targets of the giant squid mob.",
+  "replace": false,
+  "values": [
+    "alexsmobs:blobfish",
+    "minecraft:cod",
+    "minecraft:salmon",
+    "minecraft:tropical_fish"
+  ]
+}

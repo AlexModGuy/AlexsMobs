@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -288,7 +287,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     }
 
     @Override
-    public void onAttackedFromServer(LivingEntity parent, float damage) {
+    public void onAttackedFromServer(LivingEntity parent, float damage, DamageSource damageSource) {
         if (parent.deathTime > 0) {
             this.deathTime = parent.deathTime;
         }

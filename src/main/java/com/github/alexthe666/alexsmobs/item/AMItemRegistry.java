@@ -164,6 +164,10 @@ public class AMItemRegistry {
     public static final Item COMB_JELLY_BUCKET = new ItemModFishBucket(AMEntityRegistry.COMB_JELLY, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:comb_jelly_bucket");
     public static final Item RAINBOW_JELLY = new ItemRainbowJelly(new Item.Properties().tab(AlexsMobs.TAB).food(new FoodProperties.Builder().nutrition(1).saturationMod(0.2F).build())).setRegistryName("alexsmobs:rainbow_jelly");
     public static final Item COSMIC_COD_BUCKET = new ItemCosmicCodBucket(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:cosmic_cod_bucket");
+    public static final Item MUNGAL_SPORES = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:mungal_spores");
+    public static final Item BISON_FUR = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:bison_fur");
+    public static final Item LOST_TENTACLE = new Item(new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:lost_tentacle");
+    public static final Item SQUID_GRAPPLE = new ItemSquidGrapple(new Item.Properties().tab(AlexsMobs.TAB).durability(450)).setRegistryName("alexsmobs:squid_grapple");
     public static final Item MUSIC_DISC_THIME = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_thime");
     public static final Item MUSIC_DISC_DAZE = new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)).setRegistryName("alexsmobs:music_disc_daze");
 
@@ -247,6 +251,9 @@ public class AMItemRegistry {
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.TERRAPIN, 0X6E6E30, 0X929647, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_terrapin"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.COMB_JELLY, 0XCFE9FE, 0X6EFF8B, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_comb_jelly"));
         event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.COSMIC_COD, 0X6985C7, 0XE2D1FF, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_cosmic_cod"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.BUNFUNGUS, 0X6F6D91, 0XC92B29, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_bunfungus"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.BISON, 0X4C3A2E, 0X7A6546, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_bison"));
+        event.getRegistry().register(new SpawnEggItem(AMEntityRegistry.GIANT_SQUID, 0XAB4B4D, 0XD67D6B, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_giant_squid"));
         try {
             for (Field f : AMItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);

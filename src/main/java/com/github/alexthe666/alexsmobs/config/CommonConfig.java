@@ -155,6 +155,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue combJellySpawnWeight;
     public final ForgeConfigSpec.IntValue cosmicCodSpawnRolls;
     public final ForgeConfigSpec.IntValue cosmicCodSpawnWeight;
+    public final ForgeConfigSpec.IntValue bunfungusSpawnWeight;
+    public final ForgeConfigSpec.IntValue bunfungusSpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -193,6 +195,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue clingingFlipEffect;
     public final ForgeConfigSpec.DoubleValue tusklinShoesBarteringChance;
     public final ForgeConfigSpec.DoubleValue rainbowGlassFidelity;
+    public ForgeConfigSpec.BooleanValue bunfungusTransformation;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -241,6 +244,7 @@ public class CommonConfig {
         clingingFlipEffect = buildBoolean(builder, "clingingFlipEffect", "all", false, "Whether the Clinging Potion effect should flip the screen. Warning: may cause nausea.");
         tusklinShoesBarteringChance = buildDouble(builder, "tusklinShoesBarteringChance", "all", 0.025F, 0D, 1.0F, "Percent chance of getting Pigshoes from Piglin Bartering. Set to zero to disable.");
         rainbowGlassFidelity = buildDouble(builder, "rainbowGlassFidelity", "all", 16.0F, 1.0F, 10000.0F, "The visual zoom of the rainbow pattern on the rainbow glass block. Higher number = bigger pattern.");
+        bunfungusTransformation = buildBoolean(builder, "bunfungusTransformation", "all", true, "Whether Rabbits can transform into Bunfungus if fed Mungal spores.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
@@ -377,6 +381,8 @@ public class CommonConfig {
         combJellySpawnRolls = buildInt(builder, "combJellySpawnRolls", "spawns", AMConfig.combJellySpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         cosmicCodSpawnWeight = buildInt(builder, "cosmicCodSpawnWeight", "spawns", AMConfig.cosmicCodSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         cosmicCodSpawnRolls = buildInt(builder, "cosmicCodSpawnRolls", "spawns", AMConfig.cosmicCodSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        bunfungusSpawnWeight = buildInt(builder, "bunfungusSpawnWeight", "spawns", AMConfig.bunfungusSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        bunfungusSpawnRolls = buildInt(builder, "bunfungusSpawnRolls", "spawns", AMConfig.bunfungusSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "spawns", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");

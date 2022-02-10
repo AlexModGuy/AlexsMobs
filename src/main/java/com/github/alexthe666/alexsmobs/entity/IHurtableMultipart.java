@@ -1,12 +1,15 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public interface IHurtableMultipart {
 
-    void onAttackedFromServer(LivingEntity parent, float damage);
+    void onAttackedFromServer(LivingEntity parent, float damage, DamageSource damageSource);
+
+
 
     default Vec3 calcOffsetVec(float offsetZ, float xRot, float yRot){
         return new Vec3(0, 0, offsetZ).xRot(xRot * ((float)Math.PI / 180F)).yRot(-yRot * ((float)Math.PI / 180F));

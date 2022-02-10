@@ -1,0 +1,6 @@
+{
+    "parent": "item/crossbow",
+    "textures": {
+        "layer0": "alexsmobs:item/squid_grapple"
+    }
+}

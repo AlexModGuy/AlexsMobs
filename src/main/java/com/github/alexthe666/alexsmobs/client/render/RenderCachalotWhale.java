@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCachalotWhale;
+import com.github.alexthe666.alexsmobs.client.render.layer.LayerCachalotWhaleCapturedSquid;
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotPart;
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotWhale;
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
@@ -18,6 +19,7 @@ public class RenderCachalotWhale extends MobRenderer<EntityCachalotWhale, ModelC
 
     public RenderCachalotWhale(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelCachalotWhale(), 4.2F);
+        this.addLayer(new LayerCachalotWhaleCapturedSquid(this));
     }
 
     protected void scale(EntityCachalotWhale entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {

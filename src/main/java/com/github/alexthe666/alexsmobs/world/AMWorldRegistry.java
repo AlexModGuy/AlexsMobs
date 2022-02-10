@@ -256,7 +256,9 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.cosmic_cod, event.getCategory(), event.getName()) && AMConfig.cosmicCodSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.COSMIC_COD, AMConfig.cosmicCodSpawnWeight, 9, 13));
         }
-
+        if (testBiome(BiomeConfig.bunfungus, event.getCategory(), event.getName()) && AMConfig.bunfungusSpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.BUNFUNGUS, AMConfig.bunfungusSpawnWeight, 1, 1));
+        }
     }
 
     private static <C extends FeatureConfiguration, F extends Feature<C>> F registerFeature(String name, F eature) {

@@ -81,6 +81,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> terrapin = Pair.of("alexsmobs:terrapin_spawns", DefaultBiomes.ICE_FREE_RIVER);
 	public static Pair<String, SpawnBiomeData> comb_jelly = Pair.of("alexsmobs:comb_jelly_spawns", DefaultBiomes.COMB_JELLY);
 	public static Pair<String, SpawnBiomeData> cosmic_cod = Pair.of("alexsmobs:cosmic_cod_spawns", DefaultBiomes.COSMIC_COD);
+	public static Pair<String, SpawnBiomeData> bunfungus = Pair.of("alexsmobs:bunfungus_spawns", DefaultBiomes.MUNGUS);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

@@ -4,7 +4,9 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
+import com.github.alexthe666.alexsmobs.entity.ai.MungusAIAlertBunfungus;
 import com.github.alexthe666.alexsmobs.entity.ai.MungusAITemptMushroom;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMungusBiomeChange;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -101,6 +103,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     private int beamCounter = 0;
     private int mosquitoAttackCooldown = 0;
     private boolean hasExploded;
+    public int timeUntilNextEgg = this.random.nextInt(24000) + 24000;
 
     protected EntityMungus(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
@@ -165,6 +168,17 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, LivingEntity.class, 15.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false, 10));
+        this.targetSelector.addGoal(2, new MungusAIAlertBunfungus(this, EntityBunfungus.class));
+    }
+
+    public void tick(){
+        super.tick();
+        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextEgg <= 0) {
+            ItemEntity dropped = this.spawnAtLocation(AMItemRegistry.MUNGAL_SPORES);
+            dropped.setDefaultPickUpDelay();
+            this.timeUntilNextEgg = this.random.nextInt(24000) + 24000;
+
+        }
     }
 
     public void baseTick() {
@@ -397,6 +411,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         if (this.getBeamTarget() != null) {
             compound.put("BeamTarget", NbtUtils.writeBlockPos(this.getBeamTarget()));
         }
+        compound.putInt("EggTime", this.timeUntilNextEgg);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -416,6 +431,9 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         this.setSackSwell(compound.getInt("Sack"));
         this.beamCounter = compound.getInt("BeamCounter");
         this.entityData.set(ALT_ORDER_MUSHROOMS, compound.getBoolean("AltMush"));
+        if (compound.contains("EggTime")) {
+            this.timeUntilNextEgg = compound.getInt("EggTime");
+        }
     }
 
     public void aiStep() {
@@ -502,7 +520,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == Items.MUSHROOM_STEW;
+        return stack.getItem() == AMItemRegistry.MUNGAL_SPORES;
     }
 
     @Nullable

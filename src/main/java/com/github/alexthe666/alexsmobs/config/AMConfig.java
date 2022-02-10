@@ -144,6 +144,8 @@ public class AMConfig {
     public static int combJellySpawnRolls = 0;
     public static int cosmicCodSpawnWeight = 5;
     public static int cosmicCodSpawnRolls = 0;
+    public static int bunfungusSpawnWeight = 1;
+    public static int bunfungusSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -205,6 +207,7 @@ public class AMConfig {
             "alexsmobs:banana|minecraft:jungle_sapling"
     );
     public static double rainbowGlassFidelity = 16.0F;
+    public static boolean bunfungusTransformation = true;
 
     public static void bake(ModConfig config) {
         try {
@@ -348,6 +351,8 @@ public class AMConfig {
             combJellySpawnRolls = ConfigHolder.COMMON.combJellySpawnRolls.get();
             cosmicCodSpawnWeight = ConfigHolder.COMMON.cosmicCodSpawnWeight.get();
             cosmicCodSpawnRolls = ConfigHolder.COMMON.cosmicCodSpawnRolls.get();
+            bunfungusSpawnWeight = ConfigHolder.COMMON.bunfungusSpawnWeight.get();
+            bunfungusSpawnRolls = ConfigHolder.COMMON.bunfungusSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -393,6 +398,7 @@ public class AMConfig {
             clingingFlipEffect = ConfigHolder.COMMON.clingingFlipEffect.get();
             tusklinShoesBarteringChance = ConfigHolder.COMMON.tusklinShoesBarteringChance.get();
             rainbowGlassFidelity = ConfigHolder.COMMON.rainbowGlassFidelity.get();
+            bunfungusTransformation = ConfigHolder.COMMON.bunfungusTransformation.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.event;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
@@ -38,12 +39,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.npc.WanderingTrader;
@@ -53,6 +56,7 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -71,6 +75,7 @@ import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -90,14 +95,14 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
 
+    public static final UUID ALEX_UUID = UUID.fromString("71363abe-fd03-49c9-940d-aae8b8209b7c");
+    public static final UUID CARRO_UUID = UUID.fromString("98905d4a-1cbc-41a4-9ded-2300404e2290");
     private static final UUID SAND_SPEED_MODIFIER = UUID.fromString("7E0292F2-9434-48D5-A29F-9583AF7DF28E");
     private static final UUID SNEAK_SPEED_MODIFIER = UUID.fromString("7E0292F2-9434-48D5-A29F-9583AF7DF28F");
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER, "frontier cap speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final Map<ServerLevel, BeachedCachalotWhaleSpawner> BEACHED_CACHALOT_WHALE_SPAWNER_MAP = new HashMap<ServerLevel, BeachedCachalotWhaleSpawner>();
     public static List<Triple<ServerPlayer, ServerLevel, BlockPos>> teleportPlayers = new ArrayList<>();
-    public static final UUID ALEX_UUID = UUID.fromString("71363abe-fd03-49c9-940d-aae8b8209b7c");
-    public static final UUID CARRO_UUID = UUID.fromString("98905d4a-1cbc-41a4-9ded-2300404e2290");
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.WorldTickEvent tick) {
@@ -146,6 +151,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onItemUseLast(LivingEntityUseItemEvent.Finish event) {
+
         if (event.getItem().getItem() == Items.CHORUS_FRUIT && new Random().nextInt(3) == 0 && event.getEntityLiving().hasEffect(AMEffectRegistry.ENDER_FLU)) {
             event.getEntityLiving().removeEffect(AMEffectRegistry.ENDER_FLU);
         }
@@ -176,7 +182,7 @@ public class ServerEvents {
             CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             if (data != null && !data.getBoolean("alexsmobs_has_book")) {
                 ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY));
-                if(event.getPlayer().getUUID() != null && (event.getPlayer().getUUID().equals(ALEX_UUID) || event.getPlayer().getUUID().equals(CARRO_UUID))){
+                if (event.getPlayer().getUUID() != null && (event.getPlayer().getUUID().equals(ALEX_UUID) || event.getPlayer().getUUID().equals(CARRO_UUID))) {
                     ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.BEAR_DUST));
                 }
                 data.putBoolean("alexsmobs_has_book", true);
@@ -359,7 +365,7 @@ public class ServerEvents {
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }
-        if (event.getTarget() instanceof LivingEntity && RainbowUtil.getRainbowType((LivingEntity) event.getTarget()) > 0 && (event.getItemStack().getItem() == Items.SPONGE)){
+        if (event.getTarget() instanceof LivingEntity && RainbowUtil.getRainbowType((LivingEntity) event.getTarget()) > 0 && (event.getItemStack().getItem() == Items.SPONGE)) {
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.SUCCESS);
             RainbowUtil.setRainbowType((LivingEntity) event.getTarget(), 0);
@@ -367,9 +373,31 @@ public class ServerEvents {
                 event.getItemStack().shrink(1);
             }
             ItemStack wetSponge = new ItemStack(Items.WET_SPONGE);
-            if(!event.getPlayer().addItem(wetSponge)){
+            if (!event.getPlayer().addItem(wetSponge)) {
                 event.getPlayer().drop(wetSponge, true);
             }
+        }
+        if (event.getTarget() instanceof Rabbit && event.getItemStack().getItem() == AMItemRegistry.MUNGAL_SPORES && AMConfig.bunfungusTransformation) {
+            Random random = new Random();
+            if (!event.getEntityLiving().level.isClientSide && random.nextFloat() < 0.15F) {
+                EntityBunfungus bunfungus = ((Rabbit)event.getTarget()).convertTo(AMEntityRegistry.BUNFUNGUS, true);
+                if(bunfungus != null){
+                    event.getPlayer().level.addFreshEntity(bunfungus);
+                    bunfungus.setTransformsIn(EntityBunfungus.MAX_TRANSFORM_TIME);
+                }
+            } else {
+                for (int i = 0; i < 2 + random.nextInt(2); i++) {
+                    double d0 = random.nextGaussian() * 0.02D;
+                    double d1 = 0.05F + random.nextGaussian() * 0.02D;
+                    double d2 = random.nextGaussian() * 0.02D;
+                    event.getTarget().level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, event.getTarget().getRandomX(0.7F), event.getTarget().getY(0.6F), event.getTarget().getRandomZ(0.7F), d0, d1, d2);
+                }
+            }
+            if (!event.getPlayer().isCreative()) {
+                event.getItemStack().shrink(1);
+            }
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
         }
     }
 
@@ -377,23 +405,23 @@ public class ServerEvents {
     public void onUseItemAir(PlayerInteractEvent.RightClickEmpty event) {
 
         ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
-        if(stack.isEmpty()){
+        if (stack.isEmpty()) {
             stack = event.getPlayer().getItemBySlot(EquipmentSlot.MAINHAND);
         }
-        if (RainbowUtil.getRainbowType(event.getPlayer()) > 0 && (stack.is(Items.SPONGE))){
+        if (RainbowUtil.getRainbowType(event.getPlayer()) > 0 && (stack.is(Items.SPONGE))) {
             event.getPlayer().swing(InteractionHand.MAIN_HAND);
             RainbowUtil.setRainbowType(event.getPlayer(), 0);
             if (!event.getPlayer().isCreative()) {
                 stack.shrink(1);
             }
             ItemStack wetSponge = new ItemStack(Items.WET_SPONGE);
-            if(!event.getPlayer().addItem(wetSponge)){
+            if (!event.getPlayer().addItem(wetSponge)) {
                 event.getPlayer().drop(wetSponge, true);
             }
         }
     }
 
-        @SubscribeEvent
+    @SubscribeEvent
     public void onEntityDrops(LivingDropsEvent event) {
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
             VineLassoUtil.lassoTo(null, event.getEntityLiving());
@@ -442,6 +470,10 @@ public class ServerEvents {
             if (event.getEntity() != null && (event.getEntity() instanceof Fox || event.getEntity() instanceof Cat || event.getEntity() instanceof Ocelot) && AMConfig.catsAndFoxesAttackJerboas) {
                 Mob mb = (Mob) event.getEntity();
                 mb.targetSelector.addGoal(6, new NearestAttackableTargetGoal(mb, EntityJerboa.class, 45, true, true, null));
+            }
+            if (event.getEntity() != null && event.getEntity() instanceof Rabbit && AMConfig.bunfungusTransformation) {
+                Rabbit rabbit = (Rabbit) event.getEntity();
+                rabbit.goalSelector.addGoal(3, new TemptGoal(rabbit, 1.0D, Ingredient.of(AMItemRegistry.MUNGAL_SPORES), false));
             }
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
@@ -589,7 +621,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onFOVUpdate(FOVModifierEvent event) {
-        if (event.getEntity().hasEffect(AMEffectRegistry.FEAR)) {
+        if (event.getEntity().hasEffect(AMEffectRegistry.FEAR) || event.getEntity().hasEffect(AMEffectRegistry.POWER_DOWN)) {
             event.setNewfov(1.0F);
         }
     }
@@ -620,6 +652,25 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public static void onEntityResize(EntityStruckByLightningEvent event) {
+        if(event.getEntity().getType() == EntityType.SQUID && !event.getEntity().getLevel().isClientSide){
+            ServerLevel level = (ServerLevel) event.getEntity().getLevel();
+            event.setCanceled(true);
+            EntityGiantSquid squid = AMEntityRegistry.GIANT_SQUID.create(level);
+            squid.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity().getYRot(), event.getEntity().getXRot());
+            squid.finalizeSpawn(level, level.getCurrentDifficultyAt(squid.blockPosition()), MobSpawnType.CONVERSION, (SpawnGroupData)null, (CompoundTag)null);
+            if (event.getEntity().hasCustomName()) {
+                squid.setCustomName(event.getEntity().getCustomName());
+                squid.setCustomNameVisible(event.getEntity().isCustomNameVisible());
+            }
+            squid.setBlue(true);
+            squid.setPersistenceRequired();
+            level.addFreshEntityWithPassengers(squid);
+            event.getEntity().discard();
+        }
+    }
+
+        @SubscribeEvent
     public void onChestGenerated(LootTableLoadEvent event) {
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(40).setWeight(1);

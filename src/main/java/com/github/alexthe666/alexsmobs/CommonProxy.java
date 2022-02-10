@@ -29,6 +29,7 @@ public class CommonProxy {
     public static final LootItemConditionType MATCHES_BANANA_CONDTN = registerLootCondition("alexsmobs:matches_banana_tag", new MatchesBananaTagCondition.LootSerializer());
     public static final LootItemConditionType MATCHES_BLOSSOM_CONDTN = registerLootCondition("alexsmobs:matches_blossom_tag", new MatchesBlossomTagCondition.LootSerializer());
     public static SimpleRecipeSerializer MIMICREAM_RECIPE;
+    public static SimpleRecipeSerializer BISON_UPGRADE_RECIPE;
 
     @SubscribeEvent
     public static void registerModifierSerializers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
@@ -47,6 +48,9 @@ public class CommonProxy {
             MIMICREAM_RECIPE.setRegistryName(new ResourceLocation("alexsmobs:mimicream_repair_recipe"));
             event.getRegistry().register(MIMICREAM_RECIPE);
         }
+        BISON_UPGRADE_RECIPE = new SimpleRecipeSerializer<>(RecipeBisonUpgrade::new);
+        BISON_UPGRADE_RECIPE.setRegistryName(new ResourceLocation("alexsmobs:bison_upgrade_recipe"));
+        event.getRegistry().register(BISON_UPGRADE_RECIPE);
     }
 
     private static LootItemConditionType registerLootCondition(String registryName, Serializer<? extends LootItemCondition> serializer) {
@@ -105,5 +109,11 @@ public class CommonProxy {
 
     public Object getArmorRenderProperties() {
         return null;
+    }
+
+    public void spawnSpecialParticle(int i) {
+    }
+
+    public void processVisualFlag(Entity entity, int flag) {
     }
 }

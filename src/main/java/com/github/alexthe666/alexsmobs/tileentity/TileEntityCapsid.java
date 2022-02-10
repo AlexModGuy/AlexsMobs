@@ -6,7 +6,10 @@ import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateCapsid;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -39,6 +42,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class TileEntityCapsid extends BaseContainerBlockEntity implements WorldlyContainer {
     private static final int[] slotsTop = new int[]{0};
@@ -52,6 +56,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
             net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private float yawTarget = 0;
     private int transformProg = 0;
+    private boolean fnaf = false;
     private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityCapsid(BlockPos pos, BlockState state) {
@@ -112,9 +117,14 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
             }
             if(this.getItem(0).getItem() == AMItemRegistry.MOSQUITO_LARVA && level.getBlockState(this.getBlockPos().above()).getBlock() != this.getBlockState().getBlock()) {
                 vibrating = true;
-                if(transformProg > 60) {
+                if(transformProg == 1 && (AlexsMobs.isAprilFools() || new Random().nextInt(100) == 0)){
+                    fnaf = true;
+                    level.playSound(null, this.getBlockPos(), AMSoundRegistry.MOSQUITO_CAPSID_CONVERT, SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
+                if(transformProg > (fnaf ? 160 : 60)) {
                     ItemStack current = this.getItem(0).copy();
                     current.shrink(1);
+                    fnaf = false;
                     if(!current.isEmpty()){
                         ItemEntity itemEntity = new ItemEntity(this.level, this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 0.5F, this.getBlockPos().getZ() + 0.5F, current);
                         if(!level.isClientSide){

@@ -27,6 +27,9 @@ public class AMParticleRegistry {
     public static final SimpleParticleType INVERT_DIG = (SimpleParticleType) new SimpleParticleType(true).setRegistryName("alexsmobs:invert_dig");
     public static final SimpleParticleType TEETH_GLINT = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:teeth_glint");
     public static final SimpleParticleType SMELLY = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:smelly");
+    public static final SimpleParticleType BUNFUNGUS_TRANSFORMATION = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:bunfungus_transformation");
+    public static final SimpleParticleType FUNGUS_BUBBLE = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:fungus_bubble");
+    public static final SimpleParticleType BEAR_FREDDY = (SimpleParticleType) new SimpleParticleType(true).setRegistryName("alexsmobs:bear_freddy");
 
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

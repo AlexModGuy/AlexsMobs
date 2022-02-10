@@ -453,7 +453,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     @Override
-    public void onAttackedFromServer(LivingEntity parent, float damage) {
+    public void onAttackedFromServer(LivingEntity parent, float damage, DamageSource damageSource) {
         if (parent.deathTime > 0) {
             this.deathTime = parent.deathTime;
         }

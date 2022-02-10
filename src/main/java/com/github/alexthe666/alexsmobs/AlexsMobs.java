@@ -32,6 +32,9 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Calendar;
+import java.util.Date;
+
 @Mod(AlexsMobs.MODID)
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID)
 public class AlexsMobs {
@@ -42,6 +45,7 @@ public class AlexsMobs {
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     public static CreativeModeTab TAB = new AMItemGroup();
     private static int packetsRegistered;
+    private static boolean isAprilFools = false;
 
     static {
         NetworkRegistry.ChannelBuilder channel = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("alexsmobs", "main_channel"));
@@ -66,6 +70,13 @@ public class AlexsMobs {
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        isAprilFools = calendar.get(2) + 1 == 4 && calendar.get(5) == 1;
+    }
+
+    public static boolean isAprilFools() {
+        return isAprilFools;
     }
 
     private void setupEntityModelLayers(final EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -121,6 +132,8 @@ public class AlexsMobs {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSyncEntityPos.class, MessageSyncEntityPos::write, MessageSyncEntityPos::read, MessageSyncEntityPos.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageTarantulaHawkSting.class, MessageTarantulaHawkSting::write, MessageTarantulaHawkSting::read, MessageTarantulaHawkSting.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageStartDancing.class, MessageStartDancing::write, MessageStartDancing::read, MessageStartDancing.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageInteractMultipart.class, MessageInteractMultipart::write, MessageInteractMultipart::read, MessageInteractMultipart.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSendVisualFlagFromServer.class, MessageSendVisualFlagFromServer::write, MessageSendVisualFlagFromServer::read, MessageSendVisualFlagFromServer.Handler::handle);
         AMAdvancementTriggerRegistry.init();
     }
 

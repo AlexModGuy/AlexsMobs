@@ -11,6 +11,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderVineLasso;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerRainbow;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.effect.EffectPowerDown;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
@@ -18,14 +19,16 @@ import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemModArmor;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
+import com.github.alexthe666.alexsmobs.misc.AMDamageTypes;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
+import com.github.alexthe666.citadel.client.event.EventGetStarBrightness;
 import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
+import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Vector3f;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
@@ -33,19 +36,18 @@ import net.minecraft.ReportedException;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.ItemInHandRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
@@ -70,12 +72,14 @@ import java.util.stream.Collectors;
 @OnlyIn(Dist.CLIENT)
 public class ClientEvents {
 
-    private static final ResourceLocation RADIUS_TEXTURE = new ResourceLocation("alexsmobs:textures/falconry_radius.png");
+    private static final ResourceLocation STATIC_TEXTURE = new ResourceLocation("alexsmobs:textures/static.png");
     private static final ResourceLocation ROCKY_CHESTPLATE_TEXTURE = new ResourceLocation("alexsmobs:textures/armor/rocky_chestplate.png");
     private static final ModelRockyChestplateRolling ROCKY_CHESTPLATE_MODEL = new ModelRockyChestplateRolling();
 
     private boolean previousLavaVision = false;
     private LiquidBlockRenderer previousFluidRenderer;
+    public long lastStaticTick = -1;
+    public static int renderStaticScreenFor = 0;
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
@@ -103,11 +107,55 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
+    public void onGetStarBrightness(EventGetStarBrightness event) {
+        if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.POWER_DOWN)) {
+            if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN) != null) {
+                MobEffectInstance instance = Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN);
+                EffectPowerDown powerDown = (EffectPowerDown) instance.getEffect();
+                int duration = instance.getDuration();
+                float partialTicks = Minecraft.getInstance().getFrameTime();
+                float f = (Math.min(powerDown.getActiveTime(), duration) + partialTicks) * 0.1F;
+                event.setBrightness(0);
+                event.setResult(Event.Result.ALLOW);
+            }
+
+        }
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onFogColor(EntityViewRenderEvent.FogColors event) {
+        if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.POWER_DOWN)) {
+            if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN) != null) {
+                event.setBlue(0);
+                event.setRed(0);
+                event.setGreen(0);
+            }
+
+        }
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public void onFogDensity(EntityViewRenderEvent.RenderFogEvent event) {
         FogType fogType = event.getCamera().getFluidInCamera();
         if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION) && fogType == FogType.LAVA) {
             RenderSystem.setShaderFogStart(-8.0F);
             RenderSystem.setShaderFogEnd(50.0F);
+        }
+        if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.POWER_DOWN) && fogType == FogType.NONE) {
+            if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN) != null) {
+                float initEnd = event.getFarPlaneDistance();
+                MobEffectInstance instance = Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN);
+                EffectPowerDown powerDown = (EffectPowerDown) instance.getEffect();
+                int duration = instance.getDuration();
+                float partialTicks = Minecraft.getInstance().getFrameTime();
+                float f = Math.min(20, (Math.min(powerDown.getActiveTime() + partialTicks, duration + partialTicks))) * 0.05F;
+                RenderSystem.setShaderFogStart(-8.0F);
+                float f1 = 8.0F + (1 - f) * Math.max(0, initEnd - 8.0F);
+                RenderSystem.setShaderFogEnd(f1);
+            }
+
         }
     }
 
@@ -136,7 +184,7 @@ public class ClientEvents {
             float vibrate = 0.05F;
             event.getPoseStack().translate((event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate);
         }
-        if(RockyChestplateUtil.isRockyRolling(event.getEntity())){
+        if (RockyChestplateUtil.isRockyRolling(event.getEntity())) {
             event.getPoseStack().pushPose();
             event.setCanceled(true);
             float limbSwing = event.getEntity().animationPosition - event.getEntity().animationSpeed * (1.0F - event.getPartialTick());
@@ -157,7 +205,7 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onPostRenderEntity(RenderLivingEvent.Post event) {
-        if(RockyChestplateUtil.isRockyRolling(event.getEntity())) {
+        if (RockyChestplateUtil.isRockyRolling(event.getEntity())) {
             event.setCanceled(true);
             return;
         }
@@ -363,13 +411,56 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public void onCameraSetup(EntityViewRenderEvent.CameraSetup event){
-        if(Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE) != null && !Minecraft.getInstance().isPaused()){
+    public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
+        if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE) != null && !Minecraft.getInstance().isPaused()) {
             int duration = Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE).getDuration();
             float f = (Math.min(10, duration) + Minecraft.getInstance().getFrameTime()) * 0.1F;
             float intensity = f * Minecraft.getInstance().options.screenEffectScale;
             Random rng = Minecraft.getInstance().player.getRandom();
             event.getCamera().move(rng.nextFloat() * 0.1F * intensity, rng.nextFloat() * 0.2F * intensity, rng.nextFloat() * 0.4F * intensity);
         }
+    }
+
+    @SubscribeEvent
+    public void onPostGameOverlay(RenderGameOverlayEvent.Post event) {
+        if (AlexsMobs.isAprilFools()) {
+            if(renderStaticScreenFor > 0){
+                if (Minecraft.getInstance().player.isAlive() && lastStaticTick != Minecraft.getInstance().level.getGameTime()) {
+                    renderStaticScreenFor--;
+                }
+                float staticLevel = (renderStaticScreenFor / 60F);
+                if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
+                    float screenWidth = event.getWindow().getScreenWidth();
+                    float screenHeight = event.getWindow().getScreenHeight();
+                    RenderSystem.disableDepthTest();
+                    RenderSystem.depthMask(false);
+
+                    float ageInTicks = Minecraft.getInstance().level.getGameTime() + event.getPartialTicks();
+                    float staticIndexX = (float) Math.sin(ageInTicks * 0.2F) * 2;
+                    float staticIndexY = (float) Math.cos(ageInTicks * 0.2F + 3F) * 2;
+                    RenderSystem.defaultBlendFunc();
+                    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, staticLevel);
+                    RenderSystem.setShaderTexture(0, STATIC_TEXTURE);
+                    Tesselator tesselator = Tesselator.getInstance();
+                    BufferBuilder bufferbuilder = tesselator.getBuilder();
+                    bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+                    float minU = 10 * staticIndexX * 0.125F;
+                    float maxU = 10 * (0.5F + staticIndexX * 0.125F);
+                    float minV = 10 * staticIndexY * 0.125F;
+                    float maxV = 10 * (0.125F + staticIndexY * 0.125F);
+                    bufferbuilder.vertex(0.0D, screenHeight, -190.0D).uv(minU, maxV).endVertex();
+                    bufferbuilder.vertex(screenWidth, screenHeight, -190.0D).uv(maxU, maxV).endVertex();
+                    bufferbuilder.vertex(screenWidth, 0.0D, -190.0D).uv(maxU, minV).endVertex();
+                    bufferbuilder.vertex(0.0D, 0.0D, -190.0D).uv(minU, minV).endVertex();
+                    tesselator.end();
+                    RenderSystem.depthMask(true);
+                    RenderSystem.enableDepthTest();
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                }
+                lastStaticTick = Minecraft.getInstance().level.getGameTime();
+            }
+        }
+
     }
 }

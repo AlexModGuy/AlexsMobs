@@ -2127,5 +2127,54 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.cosmic_cod_hurt"
+  },
+  "mosquito_capsid_convert": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mosquito_capsid_convert"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mosquito_capsid_convert"
+  },
+  "giant_squid_games": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:giant_squid_games"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.giant_squid_games"
+  },
+  "april_fools_music_box": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "alexsmobs:music_disc/april_fools_music_box",
+        "stream": true
+      }
+    ],
+    "stream": true,
+    "subtitle": "alexsmobs.sound.subtitle.april_fools_music_box"
+  },
+  "april_fools_power_outage": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "alexsmobs:april_fools_power_outage",
+        "stream": true
+      }
+    ],
+    "stream": true,
+    "subtitle": "alexsmobs.sound.subtitle.april_fools_power_outage"
+  },
+  "april_fools_scream": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:april_fools_scream"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.april_fools_scream"
   }
 }

@@ -15,17 +15,17 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 
 public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale> {
-	private final AdvancedModelBox root;
-	private final AdvancedModelBox body;
-	private final AdvancedModelBox top_fin;
-	private final AdvancedModelBox arm_left;
-	private final AdvancedModelBox arm_right;
-	private final AdvancedModelBox tail1;
-	private final AdvancedModelBox tail2;
-	private final AdvancedModelBox tail3;
-	private final AdvancedModelBox head;
-	private final AdvancedModelBox jaw;
-	private final AdvancedModelBox teeth;
+	public final AdvancedModelBox root;
+	public final AdvancedModelBox body;
+	public final AdvancedModelBox top_fin;
+	public final AdvancedModelBox arm_left;
+	public final AdvancedModelBox arm_right;
+	public final AdvancedModelBox tail1;
+	public final AdvancedModelBox tail2;
+	public final AdvancedModelBox tail3;
+	public final AdvancedModelBox head;
+	public final AdvancedModelBox jaw;
+	public final AdvancedModelBox teeth;
 
 	public ModelCachalotWhale() {
 		texWidth = 512;
@@ -106,17 +106,19 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		float chargeProgress = entity.prevChargingProgress + (entity.chargeProgress - entity.prevChargingProgress) * partialTicks;
 		float sleepProgress = entity.prevSleepProgress + (entity.sleepProgress - entity.prevSleepProgress) * partialTicks;
 		float beachedProgress = entity.prevBeachedProgress + (entity.beachedProgress - entity.prevBeachedProgress) * partialTicks;
+		float grabProgress = entity.prevGrabProgress + (entity.grabProgress - entity.prevGrabProgress) * partialTicks;
 		float f = Mth.clamp((float)entity.getMovementOffsets(7, partialTicks)[0] - renderYaw, -50, 50);
 		this.tail1.rotateAngleY += (float) Mth.clamp((float)entity.getMovementOffsets(15, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
 		this.tail2.rotateAngleY += (float) Mth.clamp((float)entity.getMovementOffsets(17, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
 		this.body.rotateAngleX += Math.min(properPitch, sleepProgress * -9) * ((float)Math.PI / 180F);
 		this.body.rotateAngleZ += f * 0.017453292F;
+		this.head.rotateAngleY += Math.sin((entity.grabTime + partialTicks) * 0.3F) * 0.1F * grabProgress;
 		AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{tail1, tail2, tail3};
 		float swimSpeed = 0.2F + 0;
 		float swimDegree = 0.4F;
 		float beachedSpeed = 0.05F;
 		float beachedIdle = 0.4F;
-		progressRotationPrev(jaw, chargeProgress, (float)Math.toRadians(30), 0, 0, 10F);
+		progressRotationPrev(jaw, Math.max(chargeProgress, grabProgress * 0.8F), (float)Math.toRadians(30), 0, 0, 10F);
 		progressRotationPrev(jaw, beachedProgress, (float)Math.toRadians(20), (float)Math.toRadians(5), 0, 10F);
 		progressRotationPrev(body, beachedProgress, 0, 0,  (float)Math.toRadians(80), 10F);
 		progressRotationPrev(tail1, beachedProgress, (float)Math.toRadians(-30), (float)Math.toRadians(10),  0, 10F);

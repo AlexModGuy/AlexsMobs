@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 public class AnimalAIRandomSwimming extends RandomStrollGoal {
     private int xzSpread;
     private boolean submerged;
+    private int ySpread = 3;
 
     public AnimalAIRandomSwimming(Animal creature, double speed, int chance, int xzSpread) {
         super(creature, speed, chance, false);
@@ -26,6 +27,13 @@ public class AnimalAIRandomSwimming extends RandomStrollGoal {
     public AnimalAIRandomSwimming(Animal creature, double speed, int chance, int xzSpread, boolean submerged) {
         super(creature, speed, chance, false);
         this.xzSpread = xzSpread;
+        this.submerged = submerged;
+    }
+
+    public AnimalAIRandomSwimming(Animal creature, double speed, int chance, int xzSpread, int ySpread, boolean submerged) {
+        super(creature, speed, chance, false);
+        this.xzSpread = xzSpread;
+        this.ySpread = ySpread;
         this.submerged = submerged;
     }
 
@@ -57,14 +65,14 @@ public class AnimalAIRandomSwimming extends RandomStrollGoal {
             return DefaultRandomPos.getPosTowards(this.mob, xzSpread, 3, Vec3.atBottomCenterOf(this.mob.getRestrictCenter()), 3);
         }
         if(this.mob.getRandom().nextFloat() < 0.3F){
-            Vec3 vector3d = findSurfaceTarget(this.mob, xzSpread, 7);
+            Vec3 vector3d = findSurfaceTarget(this.mob, xzSpread, ySpread * 2);
             if(vector3d != null){
                 return vector3d;
             }
         }
-        Vec3 vector3d = DefaultRandomPos.getPos(this.mob, xzSpread, 3);
+        Vec3 vector3d = DefaultRandomPos.getPos(this.mob, xzSpread, ySpread);
 
-        for(int i = 0; vector3d != null && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = DefaultRandomPos.getPos(this.mob, 10, 7)) {
+        for(int i = 0; vector3d != null && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = DefaultRandomPos.getPos(this.mob, 10, ySpread)) {
         }
         if(submerged && vector3d != null){
             if(!this.mob.level.getFluidState(new BlockPos(vector3d).above()).is(FluidTags.WATER)){

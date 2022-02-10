@@ -116,6 +116,10 @@ public class AMEntityRegistry {
     public static final EntityType<EntityTerrapin> TERRAPIN = registerEntity(EntityType.Builder.of(EntityTerrapin::new, MobCategory.WATER_AMBIENT).sized(0.75F, 0.45F), "terrapin");
     public static final EntityType<EntityCombJelly> COMB_JELLY = registerEntity(EntityType.Builder.of(EntityCombJelly::new, MobCategory.WATER_AMBIENT).sized(0.65F, 0.8F), "comb_jelly");
     public static final EntityType<EntityCosmicCod> COSMIC_COD = registerEntity(EntityType.Builder.of(EntityCosmicCod::new, MobCategory.AMBIENT).sized(0.85F, 0.4F), "cosmic_cod");
+    public static final EntityType<EntityBunfungus> BUNFUNGUS = registerEntity(EntityType.Builder.of(EntityBunfungus::new, MobCategory.CREATURE).sized(1.85F, 2.1F), "bunfungus");
+    public static final EntityType<EntityBison> BISON = registerEntity(EntityType.Builder.of(EntityBison::new, MobCategory.CREATURE).sized(2.4F, 2.1F), "bison");
+    public static final EntityType<EntityGiantSquid> GIANT_SQUID = registerEntity(EntityType.Builder.of(EntityGiantSquid::new, MobCategory.WATER_CREATURE).sized(0.9F, 1.2F), "giant_squid");
+    public static final EntityType<EntitySquidGrapple> SQUID_GRAPPLE = registerEntity(EntityType.Builder.of(EntitySquidGrapple::new, MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(EntitySquidGrapple::new).fireImmune(), "squid_grapple");
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);
@@ -188,6 +192,7 @@ public class AMEntityRegistry {
         SpawnPlacements.register(JERBOA, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityJerboa::canJerboaSpawn);
         SpawnPlacements.register(TERRAPIN, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityTerrapin::canTerrapinSpawn);
         SpawnPlacements.register(COMB_JELLY, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCombJelly::canCombJellySpawn);
+        SpawnPlacements.register(BUNFUNGUS, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityBunfungus::canBunfungusSpawn);
 
     }
 
@@ -284,6 +289,9 @@ public class AMEntityRegistry {
         event.put(TERRAPIN, EntityTerrapin.bakeAttributes().build());
         event.put(COMB_JELLY, EntityCombJelly.bakeAttributes().build());
         event.put(COSMIC_COD, EntityCosmicCod.bakeAttributes().build());
+        event.put(BUNFUNGUS, EntityBunfungus.bakeAttributes().build());
+        event.put(BISON, EntityBison.bakeAttributes().build());
+        event.put(GIANT_SQUID, EntityGiantSquid.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(Tag entityTag){

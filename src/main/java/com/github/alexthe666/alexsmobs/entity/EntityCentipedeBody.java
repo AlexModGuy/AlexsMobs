@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.entity.util.AnacondaPartIndex;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -313,7 +312,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     }
 
     @Override
-    public void onAttackedFromServer(LivingEntity parent, float damage) {
+    public void onAttackedFromServer(LivingEntity parent, float damage, DamageSource damageSource) {
         if(parent.deathTime > 0){
             this.deathTime = parent.deathTime;
         }

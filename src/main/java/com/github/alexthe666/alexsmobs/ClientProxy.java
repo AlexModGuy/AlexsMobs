@@ -10,10 +10,12 @@ import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties
 import com.github.alexthe666.alexsmobs.client.render.item.CustomArmorRenderProperties;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
 import com.github.alexthe666.alexsmobs.client.render.tile.RenderVoidWormBeak;
+import com.github.alexthe666.alexsmobs.client.sound.SoundBearMusicBox;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.client.sound.SoundWormBoss;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
+import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -35,14 +37,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.FoliageColor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -58,6 +57,7 @@ import net.minecraft.world.item.ItemStack;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
+    public static final Map<Integer, SoundBearMusicBox> BEAR_MUSIC_BOX_SOUND_MAP = new HashMap<>();
     public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
     public static final Map<Integer, SoundWormBoss> WORMBOSS_SOUND_MAP = new HashMap<>();
     public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
@@ -169,6 +169,10 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.TERRAPIN, RenderTerrapin::new);
         EntityRenderers.register(AMEntityRegistry.COMB_JELLY, RenderCombJelly::new);
         EntityRenderers.register(AMEntityRegistry.COSMIC_COD, RenderCosmicCod::new);
+        EntityRenderers.register(AMEntityRegistry.BUNFUNGUS, RenderBunfungus::new);
+        EntityRenderers.register(AMEntityRegistry.BISON, RenderBison::new);
+        EntityRenderers.register(AMEntityRegistry.GIANT_SQUID, RenderGiantSquid::new);
+        EntityRenderers.register(AMEntityRegistry.SQUID_GRAPPLE, RenderSquidGrapple::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER, new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -191,6 +195,8 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.VOID_WORM_BEAK, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.HUMMINGBIRD_FEEDER, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.RAINBOW_GLASS, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_FUR_BLOCK, RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_CARPET, RenderType.cutout());
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID, RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK, RenderVoidWormBeak::new);
 
@@ -289,7 +295,18 @@ public class ClientProxy extends CommonProxy {
                     Minecraft.getInstance().getSoundManager().play(sound);
                 }
             }
-
+        }
+        if(entity instanceof EntityGrizzlyBear && entity.isAlive() && updateKind == 67){
+            SoundBearMusicBox sound;
+            if(BEAR_MUSIC_BOX_SOUND_MAP.get(entity.getId()) == null){
+                sound = new SoundBearMusicBox((EntityGrizzlyBear)entity);
+                BEAR_MUSIC_BOX_SOUND_MAP.put(entity.getId(), sound);
+            }else{
+                sound = BEAR_MUSIC_BOX_SOUND_MAP.get(entity.getId());
+            }
+            if(!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound() && sound.isOnlyMusicBox()){
+                Minecraft.getInstance().getSoundManager().play(sound);
+            }
         }
     }
 
@@ -314,6 +331,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.INVERT_DIG, ParticleInvertDig.Factory::new);
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.TEETH_GLINT, ParticleTeethGlint.Factory::new);
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SMELLY, ParticleSmelly.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, ParticleBunfungusTransformation.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.FUNGUS_BUBBLE, ParticleFungusBubble.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BEAR_FREDDY, new ParticleBearFreddy.Factory());
     }
 
 
@@ -353,5 +373,17 @@ public class ClientProxy extends CommonProxy {
     @Override
     public Object getArmorRenderProperties() {
         return new CustomArmorRenderProperties();
+    }
+
+    public void spawnSpecialParticle(int type){
+        if(type == 0){
+            Minecraft.getInstance().level.addParticle(AMParticleRegistry.BEAR_FREDDY, Minecraft.getInstance().player.getX(), Minecraft.getInstance().player.getY(), Minecraft.getInstance().player.getZ(), 0, 0, 0);
+        }
+    }
+
+    public void processVisualFlag(Entity entity, int flag) {
+        if(entity == Minecraft.getInstance().player && flag == 87){
+            ClientEvents.renderStaticScreenFor = 60;
+        }
     }
 }

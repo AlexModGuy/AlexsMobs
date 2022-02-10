@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -72,6 +73,6 @@ public class MungusAITemptMushroom extends Goal {
     }
 
     protected boolean shouldFollow(ItemStack stack) {
-        return mob.shouldFollowMushroom(stack) || stack.getItem() == Items.MUSHROOM_STEW;
+        return mob.shouldFollowMushroom(stack) || stack.getItem() == AMItemRegistry.MUNGAL_SPORES;
     }
 }
