@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityMimicube;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -143,6 +144,7 @@ public class LayerMimicubeHelmet extends RenderLayer<EntityMimicube, ModelMimicu
 
 
     protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, EquipmentSlot slot, HumanoidModel model) {
-        return net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
+        Model basicModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
+        return basicModel instanceof HumanoidModel ? (HumanoidModel<?>) basicModel : model;
     }
 }

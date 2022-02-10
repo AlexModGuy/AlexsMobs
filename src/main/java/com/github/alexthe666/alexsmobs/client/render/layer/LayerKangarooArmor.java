@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.Map;
 
@@ -254,6 +256,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
 
 
     protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, EquipmentSlot slot, HumanoidModel model) {
-        return net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
+         Model basicModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
+         return basicModel instanceof HumanoidModel ? (HumanoidModel<?>) basicModel : model;
     }
 }

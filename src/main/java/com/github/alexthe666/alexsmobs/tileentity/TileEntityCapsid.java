@@ -228,7 +228,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
         if (!stack.isEmpty() && stack.getCount() > this.getMaxStackSize()) {
             stack.setCount(this.getMaxStackSize());
         }
-        this.save(this.getUpdateTag());
+        this.saveAdditional(this.getUpdateTag());
         if (!level.isClientSide) {
             AlexsMobs.sendMSGToAll(new MessageUpdateCapsid(this.getBlockPos().asLong(), stacks.get(0)));
         }
@@ -242,10 +242,9 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         ContainerHelper.saveAllItems(compound, this.stacks);
-        return compound;
     }
 
     @Override

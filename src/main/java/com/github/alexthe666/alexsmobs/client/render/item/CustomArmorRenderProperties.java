@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.layered.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -36,36 +37,36 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         ROCKY_CHESTPLATE_MODEL = new ModelRockyChestplate(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.ROCKY_CHESTPLATE));
     }
 
-    public <A extends HumanoidModel<?>> A getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, A _default) {
+    public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
         if(!init){
             initializeModels();
         }
         if(itemStack.getItem() == AMItemRegistry.TARANTULA_HAWK_ELYTRA){
-            return (A)ELYTRA_MODEL.withAnimations(entityLiving);
+            return ELYTRA_MODEL.withAnimations(entityLiving);
         }
         if(itemStack.getItem() == AMItemRegistry.ROADDRUNNER_BOOTS){
-            return (A)ROADRUNNER_BOOTS_MODEL;
+            return ROADRUNNER_BOOTS_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.MOOSE_HEADGEAR){
-            return (A)MOOSE_HEADGEAR_MODEL;
+            return MOOSE_HEADGEAR_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.FRONTIER_CAP){
-            return (A)FRONTIER_CAP_MODEL.withAnimations(entityLiving);
+            return FRONTIER_CAP_MODEL.withAnimations(entityLiving);
         }
         if(itemStack.getItem() == AMItemRegistry.FEDORA){
-            return (A)FEDORA_MODEL;
+            return FEDORA_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL){
-            return (A)SPIKED_TURTLE_SHELL_MODEL;
+            return SPIKED_TURTLE_SHELL_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.SOMBRERO){
-            return (A)SOMBRERO_MODEL;
+            return SOMBRERO_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.FROSTSTALKER_HELMET){
-            return (A)FROSTSTALKER_HELMET_MODEL;
+            return FROSTSTALKER_HELMET_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.ROCKY_CHESTPLATE){
-            return (A)ROCKY_CHESTPLATE_MODEL;
+            return ROCKY_CHESTPLATE_MODEL;
         }
         return _default;
     }

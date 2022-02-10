@@ -385,11 +385,11 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
         return listnbt;
     }
 
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    @Override
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         compound.put("Ants", this.getAnts());
         compound.putInt("LeafFeedings", leafFeedings);
-        return compound;
     }
 
     static class Ant {
