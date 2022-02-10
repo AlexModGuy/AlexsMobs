@@ -3,8 +3,32 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Orca is a large, dolphin-like cetacean found in the cold oceans of the Overworld. It can be often seen bobbing up and
- down out of the water, and launching attacks on the native polar bear populations. Unlike their dolphin cousins,
- these whales are not so friendly - hurting one of them could make the entire pod attack you.
+    虎鲸是一种大型的、外观长得很像
 <NEWLINE>
-Swimming with a pod of orcas can grant one the Orca's Might effect. This effect grants increased attack speed. Orca often use their native strength against Drowned and Guardians.
+海豚的鲸目动物，通常发现在主世界的
+<NEWLINE>
+冷水海洋。玩家可以经常看到它们跳跃
+<NEWLINE>
+出水面然后又潜入水中，它们会对北极
+<NEWLINE>
+熊们发起攻击，还会用巨大的尾鳍拍打
+<NEWLINE>
+并杀死鱼群。和它们的亲戚海豚不同，
+<NEWLINE>
+这些鲸鱼并不友好——当玩家伤害到鲸群
+<NEWLINE>
+中的任何一条虎鲸时，可能会受到来自
+<NEWLINE>
+整个鲸群的反击。
+<NEWLINE>
+    一只虎鲸的颜色与外观会因其所在
+<NEWLINE>
+的鲸群来源于东西南北而有所不同。
+<NEWLINE>
+    当玩家与一群虎鲸一起游泳时，会
+<NEWLINE>
+得到「逆戟之力」效果。这种效果会提
+<NEWLINE>
+升玩家的攻击速度。虎鲸经常以它们的
+<NEWLINE>
+逆戟之力来对抗溺尸和守卫者。

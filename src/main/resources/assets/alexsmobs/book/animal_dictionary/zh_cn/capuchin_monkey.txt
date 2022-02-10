@@ -1,9 +1,37 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Capuchin Monkeys are small primates native to Jungles. Like other primates, they have a fondness for bananas, which can be fed to them to tame them.
-Tame Capuchins are more sophisticated than other tamed creatures, like wolves, being able to follow, stay and wander, along with being able to use both ranged and melee attacks.
-They can also be made to ride their owner's shoulder, which they can also attack from, throwing stones at targets.
+    卷尾猴是生成在丛林的小型灵长类
 <NEWLINE>
-Capuchins can be fed a variety of other items. Feeding them eggs can be used to heal them, and they can be bred with maggots, one of their favorite foods.
-Occassionally, they can drop a banana peel when eating a banana. These banana peels can be used to create a unique dish dubbed "Sopa De Macaco", which chefs describe as "Uma Delicia".
+动物。和其他灵长类动物一样，它们也
+<NEWLINE>
+喜欢香蕉，玩家可以用香蕉来驯服它们。
+<NEWLINE>
+    驯服后的卷尾猴会比驯服后的其他
+<NEWLINE>
+生物会更加有用。除了像狼一样可以坐
+<NEWLINE>
+下，徘徊或跟随之外，还可以进行近程
+<NEWLINE>
+攻击和发动远程攻击。
+<NEWLINE>
+    它们也可以坐在主人的肩膀上，向
+<NEWLINE>
+敌人投掷石头来发动攻击。
+<NEWLINE>
+    玩家可以给卷尾猴喂食各种食物。
+<NEWLINE>
+给它们喂食鸡蛋可以治疗它们，以及给
+<NEWLINE>
+它们喂食它们最爱的食物之一的蛆可以
+<NEWLINE>
+繁殖它们。
+<NEWLINE>
+    在卷尾猴吃完香蕉之后，偶尔会掉
+<NEWLINE>
+香蕉皮。这些香蕉皮可以用来合成一道
+<NEWLINE>
+名为「猴儿汤」的独具风味的佳肴，厨
+<NEWLINE>
+师们称这道菜为「顶级美食」。
+
