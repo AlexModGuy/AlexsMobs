@@ -37,10 +37,11 @@ public class ItemCosmicCodBucket extends Item implements DispensibleContainerIte
             if(this.placeFish((ServerLevel)world, context.getItemInHand(), blockpos)){
                 boolean flag = false;
                 if(context.getPlayer() != null){
+                    context.getPlayer().swing(context.getHand());
                     if(context.getPlayer().isCreative()){
                         flag = true;
                     }
-                    if(!context.getPlayer().addItem(new ItemStack(Items.BUCKET))){
+                    if(!flag && !context.getPlayer().addItem(new ItemStack(Items.BUCKET))){
                         context.getPlayer().drop(new ItemStack(Items.BUCKET), true);
                     }
                 }
