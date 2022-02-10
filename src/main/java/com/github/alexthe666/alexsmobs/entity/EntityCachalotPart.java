@@ -1,5 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
+import com.github.alexthe666.alexsmobs.message.MessageInteractMultipart;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
@@ -39,9 +42,13 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
     }
 
     @Override
-    public InteractionResult interact(Player p_19978_, InteractionHand p_19979_) {
-        return this.getParent() == null ? super.interact(p_19978_, p_19979_) : this.getParent().interact(p_19978_, p_19979_);
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        if(level.isClientSide && this.getParent() != null){
+            AlexsMobs.sendMSGToServer(new MessageInteractMultipart(this.getParent().getId(), hand == InteractionHand.OFF_HAND));
+        }
+        return this.getParent() == null ? InteractionResult.PASS : this.getParent().mobInteract(player, hand);
     }
+
 
     protected void collideWithEntity(Entity entityIn) {
         entityIn.push(this);
@@ -52,6 +59,9 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
     }
 
     public boolean hurt(DamageSource source, float amount) {
+        if(level.isClientSide && this.getParent() != null && !this.getParent().isInvulnerableTo(source)){
+            AlexsMobs.sendMSGToServer(new MessageHurtMultipart(this.getId(), this.getParent().getId(), amount, source.msgId));
+        }
         return !this.isInvulnerableTo(source) && this.getParent().attackEntityPartFrom(this, source, amount);
     }
 
