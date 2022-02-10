@@ -837,5 +837,11 @@
   "advancements.alexsmobs.rainbow_jelly.title": "Taste the Rainbow",
   "advancements.alexsmobs.rainbow_jelly.desc": "Obtain Rainbow Jelly from a Comb Jelly. Use a sponge if you don't like what happens...",
   "advancements.alexsmobs.rainbow_glass.title": "Rainbow Road",
-  "advancements.alexsmobs.rainbow_glass.desc": "Craft Rainbow Glass from Rainbow Jelly and Glass."
+  "advancements.alexsmobs.rainbow_glass.desc": "Craft Rainbow Glass from Rainbow Jelly and Glass.",
+  "advancements.alexsmobs.bison_spyglass.title": "Perfect View in the Plains",
+  "advancements.alexsmobs.bison_spyglass.desc": "Observe a Bison through the lens of a Spyglass.",
+  "advancements.alexsmobs.lost_tentacle.title": "A Small Price to Pay...",
+  "advancements.alexsmobs.lost_tentacle.desc": "Obtain a Lost Tentacle from a battle between two titans.",
+  "advancements.alexsmobs.squid_grapple.title": "... for Salvation",
+  "advancements.alexsmobs.squid_grapple.desc": "Craft a Grappling Squok from Lost Tentacles, a crossbow and copper ingots."
 }
