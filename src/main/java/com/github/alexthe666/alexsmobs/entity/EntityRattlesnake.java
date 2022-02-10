@@ -170,9 +170,10 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
         LivingEntity target = this.getTarget();
         if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 8 && target != null && this.distanceTo(target) < 2D){
             boolean meepMeep = target instanceof EntityRoadrunner;
-            target.hurt(DamageSource.mobAttack(this), meepMeep ? 1.0F : (float)getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+            int f = isBaby() ? 2 : 1;
+            target.hurt(DamageSource.mobAttack(this), meepMeep ? 1.0F : f * (float)getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             if(!meepMeep){
-                target.addEffect(new MobEffectInstance(MobEffects.POISON, 300, 2));
+                target.addEffect(new MobEffectInstance(MobEffects.POISON, 300, f * 2));
             }
         }
         if(isRattling()){
