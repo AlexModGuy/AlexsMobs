@@ -8,7 +8,7 @@
       "translate": "advancements.alexsmobs.laviathan_spyglass.title"
     },
     "description": {
-      "translate": "advancements.alexsmobs.laviathan_spyglass.description"
+      "translate": "advancements.alexsmobs.laviathan_spyglass.desc"
     },
     "frame": "challenge",
     "show_toast": true,
