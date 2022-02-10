@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBunfungus;
 import com.github.alexthe666.alexsmobs.entity.EntityFroststalker;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -62,6 +63,7 @@ public class BunfungusAIMelee extends Goal {
                 if (vector3d1.lengthSqr() > 1.0E-7D) {
                     vector3d1 = vector3d1.normalize().scale(0.9D).add(vector3d.scale(0.8D));
                 }
+                this.chungus.onJump();
                 this.chungus.setDeltaMovement(vector3d1.x, 0.6F, vector3d1.z);
                 chungus.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
                 chungus.yBodyRot = chungus.getYRot();

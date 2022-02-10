@@ -2137,15 +2137,6 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.mosquito_capsid_convert"
   },
-  "giant_squid_games": {
-    "category": "neutral",
-    "sounds": [
-      {
-        "name": "alexsmobs:giant_squid_games"
-      }
-    ],
-    "subtitle": "alexsmobs.sound.subtitle.giant_squid_games"
-  },
   "april_fools_music_box": {
     "category": "record",
     "sounds": [
@@ -2176,5 +2167,140 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.april_fools_scream"
+  },
+  "giant_squid_games": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:giant_squid_games"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.giant_squid_games"
+  },
+  "bunfungus_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bunfungus_idle_0"
+      },
+      {
+        "name": "alexsmobs:bunfungus_idle_0"
+      },
+      {
+        "name": "alexsmobs:bunfungus_idle_0"
+      },
+      {
+        "name": "alexsmobs:bunfungus_idle_1"
+      },
+      {
+        "name": "alexsmobs:bunfungus_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bunfungus_idle"
+  },
+  "bunfungus_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bunfungus_hurt_0"
+      },
+      {
+        "name": "alexsmobs:bunfungus_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bunfungus_hurt"
+  },
+  "bunfungus_attack": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bunfungus_attack_0"
+      },
+      {
+        "name": "alexsmobs:bunfungus_attack_1"
+      },
+      {
+        "name": "alexsmobs:bunfungus_attack_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bunfungus_idle"
+  },
+  "bunfungus_jump": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bunfungus_jump_0"
+      },
+      {
+        "name": "alexsmobs:bunfungus_jump_1"
+      },
+      {
+        "name": "alexsmobs:bunfungus_jump_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bunfungus_jump"
+  },
+  "bison_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bison_hurt_0"
+      },
+      {
+        "name": "alexsmobs:bison_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bison_hurt"
+  },
+  "bison_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:bison_idle_0"
+      },
+      {
+        "name": "alexsmobs:bison_idle_1"
+      },
+      {
+        "name": "alexsmobs:bison_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.bison_idle"
+  },
+  "giant_squid_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:giant_squid_hurt_0"
+      },
+      {
+        "name": "alexsmobs:giant_squid_hurt_1"
+      },
+      {
+        "name": "alexsmobs:giant_squid_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.giant_squid_hurt"
+  },
+  "giant_squid_tentacle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:giant_squid_tentacle_0"
+      },
+      {
+        "name": "alexsmobs:giant_squid_tentacle_1"
+      },
+      {
+        "name": "alexsmobs:giant_squid_tentacle_2"
+      },
+      {
+        "name": "alexsmobs:giant_squid_tentacle_3"
+      },
+      {
+        "name": "alexsmobs:giant_squid_tentacle_4"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.giant_squid_tentacle"
   }
 }

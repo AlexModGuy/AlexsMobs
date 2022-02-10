@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntityBunfungus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
@@ -63,6 +64,9 @@ public class AnimalAILeapRandomly extends Goal {
             Vec3 vector3d1 = new Vec3(this.leapToPos.x - this.mob.getX(), 0.0D, this.leapToPos.z - this.mob.getZ());
             if (vector3d1.lengthSqr() > 1.0E-7D) {
                 vector3d1 = vector3d1.normalize().scale(0.9D).add(vector3d.scale(0.8D));
+            }
+            if(this.mob instanceof EntityBunfungus){
+                ((EntityBunfungus) this.mob).onJump();
             }
             this.mob.setDeltaMovement(vector3d1.x, 0.6F, vector3d1.z);
             mob.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));

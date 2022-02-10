@@ -103,6 +103,9 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.TERRAPIN, 1.1F));
         list.add(new Pair<>(AMEntityRegistry.COMB_JELLY, 1.0F));
         list.add(new Pair<>(AMEntityRegistry.COSMIC_COD, 1.3F));
+        list.add(new Pair<>(AMEntityRegistry.BUNFUNGUS, 0.5F));
+        list.add(new Pair<>(AMEntityRegistry.BISON, 0.45F));
+        list.add(new Pair<>(AMEntityRegistry.GIANT_SQUID, 0.3F));
     });
     public static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
@@ -298,6 +301,9 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             }
             if(fakeEntity instanceof EntityCosmaw){
                 matrixStackIn.translate(0, 0.2F, 0);
+            }
+            if(fakeEntity instanceof EntityGiantSquid){
+                matrixStackIn.translate(0, 0.5F, 0.3F);
             }
             if (fakeEntity != null) {
                 MouseHandler mouseHelper = Minecraft.getInstance().mouseHandler;

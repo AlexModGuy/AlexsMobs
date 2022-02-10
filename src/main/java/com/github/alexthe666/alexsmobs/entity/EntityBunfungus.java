@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -13,6 +14,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -65,6 +67,24 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 80.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 0.21F);
+    }
+
+    public void playAmbientSound() {
+        if(!this.isSleeping()){
+            super.playAmbientSound();
+        }
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.BUNFUNGUS_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.BUNFUNGUS_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.BUNFUNGUS_HURT;
     }
 
     public boolean removeWhenFarAway(double p_27598_) {
@@ -187,9 +207,11 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                     this.setSleeping(false);
                 }
                 double dist = this.distanceTo(target);
+                boolean flag = false;
                 if (dist < 3.5D && this.getAnimation() == ANIMATION_BELLY && this.getAnimationTick() == 5) {
                     for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
                         if (entity == target || entity instanceof Monster) {
+                            flag = true;
                             launch(entity);
                             entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                         }
@@ -198,10 +220,14 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                 if (dist < 2.5D && this.getAnimation() == ANIMATION_SLAM && this.getAnimationTick() == 5) {
                     for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
                         if (entity == target || entity instanceof Monster) {
+                            flag = true;
                             entity.knockback(0.2F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
                             entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                         }
                     }
+                }
+                if(flag){
+                    this.playSound(AMSoundRegistry.BUNFUNGUS_ATTACK, this.getSoundVolume(), this.getVoicePitch());
                 }
             }
             if (this.tickCount % 40 == 0) {
@@ -375,5 +401,9 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
 
     public boolean defendsMungusAgainst(LivingEntity lastHurtByMob) {
         return !(lastHurtByMob instanceof Player) || this.isCarroted();
+    }
+
+    public void onJump() {
+        this.playSound(AMSoundRegistry.BUNFUNGUS_JUMP, this.getSoundVolume(), this.getVoicePitch());
     }
 }

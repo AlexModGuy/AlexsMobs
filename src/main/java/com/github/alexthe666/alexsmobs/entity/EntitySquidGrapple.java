@@ -131,11 +131,8 @@ public class EntitySquidGrapple extends Entity {
                 double d1 = this.getY() + vector3d.y;
                 double d2 = this.getZ() + vector3d.z;
                 this.updateRotation();
-                float f = 0.99F;
-                float f1 = 0.06F;
                 this.setDeltaMovement(vector3d.scale(0.99));
-
-                if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
+                if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir) && !this.isInWater()) {
                     this.setDeltaMovement(Vec3.ZERO);
 
                 } else {

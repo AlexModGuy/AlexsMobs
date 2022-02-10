@@ -330,6 +330,22 @@ public class AMSoundRegistry {
 
     public static final SoundEvent APRIL_FOOLS_MUSIC_BOX = createSoundEvent("april_fools_music_box");
 
+    public static final SoundEvent BUNFUNGUS_IDLE = createSoundEvent("bunfungus_idle");
+
+    public static final SoundEvent BUNFUNGUS_HURT = createSoundEvent("bunfungus_hurt");
+
+    public static final SoundEvent BUNFUNGUS_ATTACK = createSoundEvent("bunfungus_attack");
+
+    public static final SoundEvent BUNFUNGUS_JUMP = createSoundEvent("bunfungus_jump");
+
+    public static final SoundEvent BISON_IDLE = createSoundEvent("bison_idle");
+
+    public static final SoundEvent BISON_HURT = createSoundEvent("bison_hurt");
+
+    public static final SoundEvent GIANT_SQUID_HURT = createSoundEvent("giant_squid_hurt");
+
+    public static final SoundEvent GIANT_SQUID_TENTACLE = createSoundEvent("giant_squid_tentacle");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

@@ -12,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.FluidTags;
@@ -103,6 +104,16 @@ public class EntityGiantSquid extends WaterAnimal {
         this.lookControl = new SmoothSwimmingLookControl(this, 4);
         this.moveControl = new AquaticMoveController(this, 1.2F, 5);
     }
+
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.GIANT_SQUID_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.GIANT_SQUID_HURT;
+    }
+
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 38.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.MOVEMENT_SPEED, 0.25F);
