@@ -396,7 +396,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         this.goalSelector.addGoal(5, new LaviathanAIRandomSwimming(this, 1.0D, 22) {
             @Override
             public boolean canUse() {
-                return super.canUse() && !EntityLaviathan.this.hasHeadGear();
+                return super.canUse() && !EntityLaviathan.this.hasHeadGear()  && !EntityLaviathan.this.hasBodyGear();
             }
         });
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
