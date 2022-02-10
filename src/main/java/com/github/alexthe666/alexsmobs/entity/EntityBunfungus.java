@@ -20,6 +20,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -246,6 +249,8 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                 if (!stack.isEmpty()) {
                     stack.shrink(1);
                     this.setCarroted(true);
+                    this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1000));
+                    this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1000, 1));
                     this.heal(4);
                 }
             }else{
@@ -404,6 +409,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     }
 
     public void onJump() {
-        this.playSound(AMSoundRegistry.BUNFUNGUS_JUMP, this.getSoundVolume(), this.getVoicePitch());
+        //sound was too annoying
+        //this.playSound(AMSoundRegistry.BUNFUNGUS_JUMP, this.getSoundVolume(), this.getVoicePitch());
     }
 }

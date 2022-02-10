@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "FFF",
-    "FFF",
-    "FFF"
+    "FF",
+    "FF"
   ],
   "key": {
     "F": {
@@ -11,7 +10,7 @@
     }
   },
   "result": {
-    "item": "alexsmobs:bison_fur_block",
+    "item": "minecraft:brown_wool",
     "count": 1
   }
 }

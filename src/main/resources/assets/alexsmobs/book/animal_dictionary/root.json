@@ -818,6 +818,42 @@
       "offset_y": -25,
       "linked_page": "cosmic_cod.json",
       "hover_text": "entity.alexsmobs.cosmic_cod"
+    },
+    {
+      "entity": "alexsmobs:bunfungus",
+      "x": 320,
+      "y": 100,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.0,
+      "offset_x": -4,
+      "offset_y": 2,
+      "linked_page": "bunfungus.json",
+      "hover_text": "entity.alexsmobs.bunfungus"
+    },
+    {
+      "entity": "alexsmobs:bison",
+      "x": 350,
+      "y": 100,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 0.8,
+      "offset_x": -3,
+      "offset_y": -2,
+      "linked_page": "bison.json",
+      "hover_text": "entity.alexsmobs.bison"
+    },
+    {
+      "entity": "alexsmobs:giant_squid",
+      "x": 230,
+      "y": 130,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 0.9,
+      "offset_x": -1,
+      "offset_y": -6,
+      "linked_page": "giant_squid.json",
+      "hover_text": "entity.alexsmobs.giant_squid"
     }
   ],
   "linked_page_buttons": [

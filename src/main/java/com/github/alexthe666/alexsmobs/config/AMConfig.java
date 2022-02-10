@@ -144,7 +144,7 @@ public class AMConfig {
     public static int combJellySpawnRolls = 1;
     public static int cosmicCodSpawnWeight = 5;
     public static int cosmicCodSpawnRolls = 0;
-    public static int bunfungusSpawnWeight = 1;
+    public static int bunfungusSpawnWeight = 3;
     public static int bunfungusSpawnRolls = 0;
     public static int bisonSpawnWeight = 9;
     public static int bisonSpawnRolls = 0;

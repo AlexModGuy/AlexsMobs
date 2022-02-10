@@ -64,6 +64,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -200,6 +201,25 @@ public class ServerEvents {
         ItemFalconryGlove.onLeftClick(event.getPlayer(), event.getPlayer().getMainHandItem());
         if (event.getWorld().isClientSide) {
             AlexsMobs.sendMSGToServer(new MessageSwingArm());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onStruckByLightning(EntityStruckByLightningEvent event) {
+        if (event.getEntity().getType() == EntityType.SQUID && !event.getEntity().getLevel().isClientSide) {
+            ServerLevel level = (ServerLevel) event.getEntity().getLevel();
+            event.setCanceled(true);
+            EntityGiantSquid squid = AMEntityRegistry.GIANT_SQUID.create(level);
+            squid.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity().getYRot(), event.getEntity().getXRot());
+            squid.finalizeSpawn(level, level.getCurrentDifficultyAt(squid.blockPosition()), MobSpawnType.CONVERSION, null, null);
+            if (event.getEntity().hasCustomName()) {
+                squid.setCustomName(event.getEntity().getCustomName());
+                squid.setCustomNameVisible(event.getEntity().isCustomNameVisible());
+            }
+            squid.setBlue(true);
+            squid.setPersistenceRequired();
+            level.addFreshEntityWithPassengers(squid);
+            event.getEntity().discard();
         }
     }
 
@@ -383,8 +403,8 @@ public class ServerEvents {
         if (event.getTarget() instanceof Rabbit && event.getItemStack().getItem() == AMItemRegistry.MUNGAL_SPORES && AMConfig.bunfungusTransformation) {
             Random random = new Random();
             if (!event.getEntityLiving().level.isClientSide && random.nextFloat() < 0.15F) {
-                EntityBunfungus bunfungus = ((Rabbit)event.getTarget()).convertTo(AMEntityRegistry.BUNFUNGUS, true);
-                if(bunfungus != null){
+                EntityBunfungus bunfungus = ((Rabbit) event.getTarget()).convertTo(AMEntityRegistry.BUNFUNGUS, true);
+                if (bunfungus != null) {
                     event.getPlayer().level.addFreshEntity(bunfungus);
                     bunfungus.setTransformsIn(EntityBunfungus.MAX_TRANSFORM_TIME);
                 }
@@ -590,6 +610,19 @@ public class ServerEvents {
                 }
             }
         }
+        ItemStack boots = event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET);
+        if (!boots.isEmpty() && boots.hasTag() && boots.getOrCreateTag().contains("BisonFur") && boots.getOrCreateTag().getBoolean("BisonFur")) {
+            BlockPos pos = new BlockPos(event.getEntityLiving().getX(), event.getEntity().getY() - 0.5F, event.getEntityLiving().getZ());
+            if (event.getEntityLiving().level.getBlockState(pos).is(Blocks.POWDER_SNOW)) {
+                event.getEntityLiving().setOnGround(true);
+                event.getEntityLiving().setTicksFrozen(0);
+
+            }
+            if (event.getEntityLiving().isInPowderSnow) {
+                float f = 0;
+                event.getEntityLiving().setPos(event.getEntityLiving().getX(), pos.getY() + 1, event.getEntityLiving().getZ());
+            }
+        }
 
         if (event.getEntityLiving().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS) {
             if (event.getEntityLiving().horizontalCollision && !event.getEntityLiving().isInWater()) {
@@ -655,25 +688,6 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void onEntityResize(EntityStruckByLightningEvent event) {
-        if(event.getEntity().getType() == EntityType.SQUID && !event.getEntity().getLevel().isClientSide){
-            ServerLevel level = (ServerLevel) event.getEntity().getLevel();
-            event.setCanceled(true);
-            EntityGiantSquid squid = AMEntityRegistry.GIANT_SQUID.create(level);
-            squid.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity().getYRot(), event.getEntity().getXRot());
-            squid.finalizeSpawn(level, level.getCurrentDifficultyAt(squid.blockPosition()), MobSpawnType.CONVERSION, (SpawnGroupData)null, (CompoundTag)null);
-            if (event.getEntity().hasCustomName()) {
-                squid.setCustomName(event.getEntity().getCustomName());
-                squid.setCustomNameVisible(event.getEntity().isCustomNameVisible());
-            }
-            squid.setBlue(true);
-            squid.setPersistenceRequired();
-            level.addFreshEntityWithPassengers(squid);
-            event.getEntity().discard();
-        }
-    }
-
-        @SubscribeEvent
     public void onChestGenerated(LootTableLoadEvent event) {
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(40).setWeight(1);
@@ -693,9 +707,9 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onTooltip(ItemTooltipEvent event){
-        if(event.getItemStack().hasTag() && event.getItemStack().getOrCreateTag().contains("BisonFur") && event.getItemStack().getOrCreateTag().getBoolean("BisonFur")){
-            event.getToolTip().add(new TranslatableComponent("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
+    public void onTooltip(ItemTooltipEvent event) {
+        if (event.getItemStack().hasTag() && event.getItemStack().getOrCreateTag().contains("BisonFur") && event.getItemStack().getOrCreateTag().getBoolean("BisonFur")) {
+            event.getToolTip().add(new TranslatableComponent("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.AQUA));
         }
     }
 }

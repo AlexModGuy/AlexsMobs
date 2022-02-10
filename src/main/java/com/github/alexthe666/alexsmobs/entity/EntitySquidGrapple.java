@@ -29,7 +29,10 @@ public class EntitySquidGrapple extends Entity {
 
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(EntitySquidGrapple.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Direction> ATTACHED_FACE = SynchedEntityData.defineId(EntitySquidGrapple.class, EntityDataSerializers.DIRECTION);
+    private static final EntityDataAccessor<Boolean> WITHDRAWING = SynchedEntityData.defineId(EntitySquidGrapple.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> ATTACHED_POS = SynchedEntityData.defineId(EntitySquidGrapple.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
+    private int ticksWithdrawing = 0;
+
     public EntitySquidGrapple(EntityType type, Level level) {
         super(type, level);
     }
@@ -99,6 +102,7 @@ public class EntitySquidGrapple extends Entity {
         this.entityData.define(OWNER_UUID, Optional.empty());
         this.entityData.define(ATTACHED_FACE, Direction.DOWN);
         this.entityData.define(ATTACHED_POS, Optional.empty());
+        this.entityData.define(WITHDRAWING, false);
     }
 
     public Entity getOwner() {
@@ -110,15 +114,45 @@ public class EntitySquidGrapple extends Entity {
     }
 
 
+    public boolean isWithdrawing(){
+        return this.entityData.get(WITHDRAWING);
+    }
+
+    public void setWithdrawing(boolean withdrawing){
+        this.entityData.set(WITHDRAWING, withdrawing);
+    }
+
     public void tick() {
         this.xRotO = this.getXRot();
         this.yRotO = this.getYRot();
         Entity entity = this.getOwner();
         if (entity == null || entity.isShiftKeyDown()) {
-            this.discard();
+            this.setWithdrawing(true);
         }
-
-        if (this.level.isClientSide || this.level.hasChunkAt(this.blockPosition())) {
+        if(this.isWithdrawing() && entity != null){
+            super.tick();
+            ticksWithdrawing++;
+            this.setStuckToPos(null);
+            Vec3 withDrawTo = entity.getEyePosition().add(0, -0.2F, 0);
+            if(withDrawTo.distanceTo(this.position()) > 1.2F && ticksWithdrawing < 200){
+                Vec3 move = new Vec3(withDrawTo.x - this.getX(), withDrawTo.y - this.getY(), withDrawTo.z - this.getZ());
+                Vec3 vector3d = move.normalize().scale(1.2D);
+                this.setDeltaMovement(vector3d.scale(0.99));
+                double d0 = this.getX() + vector3d.x;
+                double d1 = this.getY() + vector3d.y;
+                double d2 = this.getZ() + vector3d.z;
+                float f = Mth.sqrt((float) (move.x * move.x + move.z * move.z));
+                if(!level.isClientSide){
+                    this.setYRot(Mth.wrapDegrees((float) (-Mth.atan2(move.x, move.z) * (double) (180F / (float) Math.PI))) - 180);
+                    this.setXRot((float) (Mth.atan2(move.y, f) * (double) (180F / (float) Math.PI)));
+                    this.yRotO = this.getYRot();
+                    this.xRotO = this.getXRot();
+                }
+                this.setPos(d0, d1, d2);
+            }else{
+                this.discard();
+            }
+        }else if (this.level.isClientSide || this.level.hasChunkAt(this.blockPosition())) {
             if(this.getStuckToPos() == null){
                 super.tick();
                 Vec3 vector3d = this.getDeltaMovement();
@@ -183,7 +217,7 @@ public class EntitySquidGrapple extends Entity {
                     }
                 }
                 if(state.isAir()){
-                    this.discard();
+                    this.setWithdrawing(true);
                 }
             }
         } else {

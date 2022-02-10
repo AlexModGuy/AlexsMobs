@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.CommonProxy;
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +41,7 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
 
     private ItemStack createBoots(Container container){
         ItemStack boots = ItemStack.EMPTY;
-        if(container.getItem(1).is(AMItemRegistry.BISON_FUR)){
+        if(container.getItem(1).is(AMBlockRegistry.BISON_FUR_BLOCK.asItem())){
             for (int j = 0; j < container.getContainerSize(); ++j) {
                 ItemStack itemstack1 = container.getItem(j);
                 boolean notFurred = !itemstack1.hasTag() || !itemstack1.getOrCreateTag().getBoolean("BisonFur");

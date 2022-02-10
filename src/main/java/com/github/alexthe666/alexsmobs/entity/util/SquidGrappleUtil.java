@@ -35,7 +35,7 @@ public class SquidGrappleUtil {
         if(tag.contains(indexStr)){
             EntitySquidGrapple hook = getHookEntity(entity.level, tag.getUUID(indexStr));
             if(hook != null && !hook.isRemoved()){
-                hook.discard();
+                hook.setWithdrawing(true);
             }
         }
         tag.putUUID(indexStr, newHookUUID);
