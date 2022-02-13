@@ -7,4 +7,5 @@ Fladdrar har ett nyfiket intresse för vilken blomma som helst och kan tämjas g
 När de är tämda, kan fladdrar fås att stanna, följa med eller vandra. När de försvarar sin ägare från alla hot, kommer fladdran att sväva upp i skyn och skjuta pollenbollar mot angriparen. Dessa pollenbollar kan pricka in på angriparen, vilket gör flera fladder mycket användbara för grottforskare.
 Även om de har låg hälsa, kan fladdrar utrustas med en blomkruka för att ge dem ytterligare rustning. En fladder i en kruka kan också plockas upp genom att smyga. Fladdrar kan läkas med blommor.
 <NEWLINE>
-Eftersom Fladdrar är växter, kan de födas upp med benmjöl. När fladdrar paras bid azaleabuskar eller löv, finns det en chans för azaleabuskarna eller löven att blomma. Om de dödas, kan fladdrar tappa en sporblomning.
+Eftersom Fladdrar är växter, kan de födas upp med benmjöl. När fladdrar paras bid azaleabuskar eller löv, finns det en chans för azaleabuskarna eller löven att blomma. Om de dödas, kan fladdrar tappa en 
+sporblomning.
