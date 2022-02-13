@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.goal.RemoveBlockGoal;
 import net.minecraft.world.entity.TamableAnimal;
@@ -13,6 +14,7 @@ public class TameableAIDestroyTurtleEggs extends RemoveBlockGoal {
 
     public TameableAIDestroyTurtleEggs(TamableAnimal creatureIn, double speed, int yMax) {
         super(Blocks.TURTLE_EGG, creatureIn, speed, yMax);
+        nextStartTick = 800;
     }
 
     public boolean canUse() {
@@ -25,6 +27,11 @@ public class TameableAIDestroyTurtleEggs extends RemoveBlockGoal {
 
         public void playDestroyProgressSound(LevelAccessor worldIn, BlockPos pos) {
         worldIn.playSound(null, pos, SoundEvents.ZOMBIE_DESTROY_EGG, SoundSource.HOSTILE, 0.5F, 0.9F + this.mob.getRandom().nextFloat() * 0.2F);
+    }
+
+    @Override
+    protected int nextStartTick(PathfinderMob mob) {
+        return reducedTickDelay(800 + mob.getRandom().nextInt(800));
     }
 
     public void playBreakSound(Level worldIn, BlockPos pos) {
