@@ -209,9 +209,13 @@ public class EntitySquidGrapple extends Entity {
                 this.setXRot(targetX);
                 this.setYRot(targetY);
                 if(entity != null && entity.distanceTo(this) > 2){
+                    float entitySwing = 1.0F;
+                    if(entity instanceof LivingEntity living){
+                        float detract = living.xxa * living.xxa + living.yya * living.yya + living.zza * living.zza;
+                        entitySwing -= Math.min(1.0F, Math.sqrt(detract) * 0.333F);
+                    }
                     Vec3 move = new Vec3(this.getX() - entity.getX(), this.getY() - (double)entity.getEyeHeight() / 2.0D - entity.getY(), this.getZ() - entity.getZ());
-                    double d0 = move.lengthSqr();
-                    entity.setDeltaMovement(entity.getDeltaMovement().add(move.normalize().scale(0.2D)));
+                    entity.setDeltaMovement(entity.getDeltaMovement().add(move.normalize().scale(0.2D * entitySwing)));
                     if(!entity.isOnGround()){
                        entity.fallDistance = 0.0F;
                     }
