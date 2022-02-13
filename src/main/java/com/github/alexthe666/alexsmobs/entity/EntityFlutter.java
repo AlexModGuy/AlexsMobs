@@ -336,13 +336,13 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         }
         if (this.hasPotStats && !this.isPotted()) {
             this.hasPotStats = false;
-            this.getAttribute(Attributes.ARMOR).setBaseValue(16.0D);
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18D);
+            this.getAttribute(Attributes.ARMOR).setBaseValue(0.21D);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.21D);
         }
         if (!this.hasPotStats && this.isPotted()) {
             this.hasPotStats = true;
-            this.getAttribute(Attributes.ARMOR).setBaseValue(0.21D);
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.21D);
+            this.getAttribute(Attributes.ARMOR).setBaseValue(16.0D);
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18D);
         }
         if (this.entityData.get(SHAKING_HEAD_TICKS) > 0) {
             this.entityData.set(SHAKING_HEAD_TICKS, this.entityData.get(SHAKING_HEAD_TICKS) - 1);
