@@ -75,7 +75,7 @@ public class EntityRoadrunner extends Animal {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, EntityRattlesnake.class, 55, true, true, null));
-        this.targetSelector.addGoal(2, (new HurtByTargetGoal(this, EntityRattlesnake.class)).setAlertOthers());
+        this.targetSelector.addGoal(2, (new HurtByTargetGoal(this, EntityRattlesnake.class, Player.class)).setAlertOthers());
     }
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
