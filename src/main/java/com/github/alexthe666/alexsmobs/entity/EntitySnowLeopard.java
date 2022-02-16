@@ -9,6 +9,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -227,6 +228,22 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
                     this.setSitting(false);
                     this.setSleeping(true);
                 }
+            }
+        }
+        LivingEntity attackTarget = this.getTarget();
+        if (attackTarget != null) {
+            if (distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 0.6D && this.hasLineOfSight(attackTarget)) {
+                if (this.getAnimation() == ANIMATION_ATTACK_L && this.getAnimationTick() == 7) {
+                    doHurtTarget(attackTarget);
+                    float rot = getYRot() + 90;
+                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                }
+                if (this.getAnimation() == ANIMATION_ATTACK_R && this.getAnimationTick() == 7) {
+                    doHurtTarget(attackTarget);
+                    float rot = getYRot() - 90;
+                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                }
+
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);

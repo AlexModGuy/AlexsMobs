@@ -26,6 +26,7 @@ public class SnowLeopardAIMelee extends Goal {
     private LivingEntity target;
     private boolean secondPartOfLeap = false;
     private Vec3 leapPos = null;
+    private int jumpCooldown = 0;
     private boolean stalk = false;
 
     public SnowLeopardAIMelee(EntitySnowLeopard snowLeopard) {
@@ -97,29 +98,33 @@ public class SnowLeopardAIMelee extends Goal {
         secondPartOfLeap = false;
         stalk = false;
         leapPos = null;
+        jumpCooldown = 0;
         this.leopard.setTackling(false);
         this.leopard.setSlSneaking(false);
     }
 
     public void tick() {
+        if(jumpCooldown > 0){
+            jumpCooldown--;
+        }
         if (stalk) {
             if (secondPartOfLeap) {
                 leopard.lookAt(target, 180F, 10F);
                 leopard.yBodyRot = leopard.getYRot();
-                if (leopard.isOnGround()) {
+                if (this.leopard.distanceTo(target) < 3F && this.leopard.hasLineOfSight(target)) {
+                    target.hurt(DamageSource.mobAttack(leopard), (float) (leopard.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 2.5F));
+                    this.stalk = false;
+                    this.secondPartOfLeap = false;
+                }else if (leopard.isOnGround() && jumpCooldown == 0) {
                     this.leopard.setSlSneaking(false);
                     this.leopard.setTackling(true);
+                    jumpCooldown = 10 + leopard.getRandom().nextInt(10);
                     Vec3 vector3d = this.leopard.getDeltaMovement();
                     Vec3 vector3d1 = new Vec3(this.target.getX() - this.leopard.getX(), 0.0D, this.target.getZ() - this.leopard.getZ());
                     if (vector3d1.lengthSqr() > 1.0E-7D) {
                         vector3d1 = vector3d1.normalize().scale(0.9D).add(vector3d.scale(0.8D));
                     }
                     this.leopard.setDeltaMovement(vector3d1.x, vector3d1.y + 0.6F, vector3d1.z);
-                }
-                if (this.leopard.distanceTo(target) < 3F && this.leopard.hasLineOfSight(target)) {
-                    target.hurt(DamageSource.mobAttack(leopard), (float) (leopard.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 2.5F));
-                    this.stalk = false;
-                    this.secondPartOfLeap = false;
                 }
             } else {
                 if (leapPos == null || target.distanceToSqr(leapPos) > 250) {
