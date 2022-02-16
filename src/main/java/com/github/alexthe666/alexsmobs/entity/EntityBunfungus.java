@@ -251,7 +251,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                     this.setCarroted(true);
                     this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1000));
                     this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1000, 1));
-                    this.heal(4);
+                    this.heal(8);
                 }
             }else{
                 for (int i = 0; i < 3; i++) {
