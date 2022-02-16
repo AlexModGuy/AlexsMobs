@@ -43,6 +43,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.awt.*;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -315,64 +317,9 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         return super.hurt(dmg, amount);
     }
 
-    static class NodeProcessor extends WalkNodeEvaluator {
-
-        private NodeProcessor() {
-        }
-
-        public static BlockPathTypes getBlockPathTypeStatic(BlockGetter level, BlockPos.MutableBlockPos pos) {
-            int i = pos.getX();
-            int j = pos.getY();
-            int k = pos.getZ();
-            BlockPathTypes pathnodetype = getNodes(level, pos);
-            if (pathnodetype == BlockPathTypes.OPEN && j >= 1) {
-                BlockPathTypes pathnodetype1 = getNodes(level, pos.set(i, j - 1, k));
-                pathnodetype = pathnodetype1 != BlockPathTypes.WALKABLE && pathnodetype1 != BlockPathTypes.OPEN && pathnodetype1 != BlockPathTypes.WATER && pathnodetype1 != BlockPathTypes.LAVA ? BlockPathTypes.WALKABLE : BlockPathTypes.OPEN;
-                if (pathnodetype1 == BlockPathTypes.DAMAGE_FIRE) {
-                    pathnodetype = BlockPathTypes.DAMAGE_FIRE;
-                }
-
-                if (pathnodetype1 == BlockPathTypes.DAMAGE_CACTUS) {
-                    pathnodetype = BlockPathTypes.DAMAGE_CACTUS;
-                }
-
-                if (pathnodetype1 == BlockPathTypes.DAMAGE_OTHER) {
-                    pathnodetype = BlockPathTypes.DAMAGE_OTHER;
-                }
-
-                if (pathnodetype1 == BlockPathTypes.STICKY_HONEY) {
-                    pathnodetype = BlockPathTypes.STICKY_HONEY;
-                }
-            }
-
-            if (pathnodetype == BlockPathTypes.WALKABLE) {
-                pathnodetype = checkNeighbourBlocks(level, pos.set(i, j, k), pathnodetype);
-            }
-
-            return pathnodetype;
-        }
-
-        protected static BlockPathTypes getNodes(BlockGetter p_237238_0_, BlockPos p_237238_1_) {
-            BlockState blockstate = p_237238_0_.getBlockState(p_237238_1_);
-            BlockPathTypes type = blockstate.getBlockPathType(p_237238_0_, p_237238_1_);
-            if (type != null) return type;
-            Block block = blockstate.getBlock();
-            Material material = blockstate.getMaterial();
-            if (blockstate.isAir()) {
-                return BlockPathTypes.OPEN;
-            } else if (blockstate.getBlock() instanceof PointedDripstoneBlock) {
-                return BlockPathTypes.OPEN;
-            } else {
-                return getBlockPathTypeRaw(p_237238_0_, p_237238_1_);
-            }
-        }
-
-        public BlockPathTypes getBlockPathType(BlockGetter blockaccessIn, int x, int y, int z) {
-            return getBlockPathTypeStatic(blockaccessIn, new BlockPos.MutableBlockPos(x, y, z));
-        }
-
-        protected BlockPathTypes evaluateBlockPathType(BlockGetter world, boolean b1, boolean b2, BlockPos pos, BlockPathTypes nodeType) {
-            return super.evaluateBlockPathType(world, b1, b2, pos, nodeType);
+    static class RockyRollerNodeEvaluator extends WalkNodeEvaluator {
+        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, boolean b1, boolean b2, BlockPos pos, BlockPathTypes typeIn) {
+            return level.getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, b1, b2, pos, typeIn);
         }
     }
 
@@ -501,7 +448,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         }
 
         protected PathFinder createPathFinder(int i) {
-            this.nodeEvaluator = new NodeProcessor();
+            this.nodeEvaluator = new RockyRollerNodeEvaluator();
             return new PathFinder(this.nodeEvaluator, i);
         }
     }

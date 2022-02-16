@@ -49,6 +49,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -570,64 +571,9 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         }
     }
 
-    static class NodeProcessor extends WalkNodeEvaluator {
-
-        private NodeProcessor() {
-        }
-
-        public static BlockPathTypes getBlockPathTypeStatic(BlockGetter level, BlockPos.MutableBlockPos pos) {
-            int i = pos.getX();
-            int j = pos.getY();
-            int k = pos.getZ();
-            BlockPathTypes pathnodetype = getNodes(level, pos);
-            if (pathnodetype == BlockPathTypes.OPEN && j >= 1) {
-                BlockPathTypes pathnodetype1 = getNodes(level, pos.set(i, j - 1, k));
-                pathnodetype = pathnodetype1 != BlockPathTypes.WALKABLE && pathnodetype1 != BlockPathTypes.OPEN && pathnodetype1 != BlockPathTypes.WATER && pathnodetype1 != BlockPathTypes.LAVA ? BlockPathTypes.WALKABLE : BlockPathTypes.OPEN;
-                if (pathnodetype1 == BlockPathTypes.DAMAGE_FIRE) {
-                    pathnodetype = BlockPathTypes.DAMAGE_FIRE;
-                }
-
-                if (pathnodetype1 == BlockPathTypes.DAMAGE_CACTUS) {
-                    pathnodetype = BlockPathTypes.DAMAGE_CACTUS;
-                }
-
-                if (pathnodetype1 == BlockPathTypes.DAMAGE_OTHER) {
-                    pathnodetype = BlockPathTypes.DAMAGE_OTHER;
-                }
-
-                if (pathnodetype1 == BlockPathTypes.STICKY_HONEY) {
-                    pathnodetype = BlockPathTypes.STICKY_HONEY;
-                }
-            }
-
-            if (pathnodetype == BlockPathTypes.WALKABLE) {
-                pathnodetype = checkNeighbourBlocks(level, pos.set(i, j, k), pathnodetype);
-            }
-
-            return pathnodetype;
-        }
-
-        protected static BlockPathTypes getNodes(BlockGetter p_237238_0_, BlockPos p_237238_1_) {
-            BlockState blockstate = p_237238_0_.getBlockState(p_237238_1_);
-            BlockPathTypes type = blockstate.getBlockPathType(p_237238_0_, p_237238_1_);
-            if (type != null) return type;
-            Block block = blockstate.getBlock();
-            Material material = blockstate.getMaterial();
-            if (blockstate.isAir()) {
-                return BlockPathTypes.OPEN;
-            } else if (blockstate.getBlock() == Blocks.BAMBOO) {
-                return BlockPathTypes.OPEN;
-            } else {
-                return getBlockPathTypeRaw(p_237238_0_, p_237238_1_);
-            }
-        }
-
-        public BlockPathTypes getBlockPathType(BlockGetter blockaccessIn, int x, int y, int z) {
-            return getBlockPathTypeStatic(blockaccessIn, new BlockPos.MutableBlockPos(x, y, z));
-        }
-
-        protected BlockPathTypes evaluateBlockPathType(BlockGetter world, boolean b1, boolean b2, BlockPos pos, BlockPathTypes nodeType) {
-            return nodeType == BlockPathTypes.LEAVES || world.getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(world, b1, b2, pos, nodeType);
+    static class TigerNodeEvaluator extends WalkNodeEvaluator {
+        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, boolean b1, boolean b2, BlockPos pos, BlockPathTypes typeIn) {
+            return typeIn == BlockPathTypes.LEAVES || level.getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, b1, b2, pos, typeIn);
         }
     }
 
@@ -638,126 +584,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         }
 
         protected PathFinder createPathFinder(int i) {
-            this.nodeEvaluator = new NodeProcessor();
+            this.nodeEvaluator = new TigerNodeEvaluator();
             return new PathFinder(this.nodeEvaluator, i);
-        }
-
-        protected boolean canMoveDirectly(Vec3 posVec31, Vec3 posVec32, int sizeX, int sizeY, int sizeZ) {
-            int i = Mth.floor(posVec31.x);
-            int j = Mth.floor(posVec31.z);
-            double d0 = posVec32.x - posVec31.x;
-            double d1 = posVec32.z - posVec31.z;
-            double d2 = d0 * d0 + d1 * d1;
-            if (d2 < 1.0E-8D) {
-                return false;
-            } else {
-                double d3 = 1.0D / Math.sqrt(d2);
-                d0 = d0 * d3;
-                d1 = d1 * d3;
-                sizeX = sizeX + 2;
-                sizeZ = sizeZ + 2;
-                if (!this.isSafeToStandAt(i, Mth.floor(posVec31.y), j, sizeX, sizeY, sizeZ, posVec31, d0, d1)) {
-                    return false;
-                } else {
-                    sizeX = sizeX - 2;
-                    sizeZ = sizeZ - 2;
-                    double d4 = 1.0D / Math.abs(d0);
-                    double d5 = 1.0D / Math.abs(d1);
-                    double d6 = (double) i - posVec31.x;
-                    double d7 = (double) j - posVec31.z;
-                    if (d0 >= 0.0D) {
-                        ++d6;
-                    }
-
-                    if (d1 >= 0.0D) {
-                        ++d7;
-                    }
-
-                    d6 = d6 / d0;
-                    d7 = d7 / d1;
-                    int k = d0 < 0.0D ? -1 : 1;
-                    int l = d1 < 0.0D ? -1 : 1;
-                    int i1 = Mth.floor(posVec32.x);
-                    int j1 = Mth.floor(posVec32.z);
-                    int k1 = i1 - i;
-                    int l1 = j1 - j;
-
-                    while (k1 * k > 0 || l1 * l > 0) {
-                        if (d6 < d7) {
-                            d6 += d4;
-                            i += k;
-                            k1 = i1 - i;
-                        } else {
-                            d7 += d5;
-                            j += l;
-                            l1 = j1 - j;
-                        }
-
-                        if (!this.isSafeToStandAt(i, Mth.floor(posVec31.y), j, sizeX, sizeY, sizeZ, posVec31, d0, d1)) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        private boolean isPositionClear(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3 p_179692_7_, double p_179692_8_, double p_179692_10_) {
-            for (BlockPos blockpos : BlockPos.betweenClosed(new BlockPos(x, y, z), new BlockPos(x + sizeX - 1, y + sizeY - 1, z + sizeZ - 1))) {
-                double d0 = (double) blockpos.getX() + 0.5D - p_179692_7_.x;
-                double d1 = (double) blockpos.getZ() + 0.5D - p_179692_7_.z;
-                if (!(d0 * p_179692_8_ + d1 * p_179692_10_ < 0.0D) && !this.level.getBlockState(blockpos).isPathfindable(this.level, blockpos, PathComputationType.LAND) || EntityTiger.this.canPassThrough(blockpos, level.getBlockState(blockpos), null)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private boolean isSafeToStandAt(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3 vec31, double p_179683_8_, double p_179683_10_) {
-            int i = x - sizeX / 2;
-            int j = z - sizeZ / 2;
-            if (!this.isPositionClear(i, y, j, sizeX, sizeY, sizeZ, vec31, p_179683_8_, p_179683_10_)) {
-                return false;
-            } else {
-                BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-                for (int k = i; k < i + sizeX; ++k) {
-                    for (int l = j; l < j + sizeZ; ++l) {
-                        double d0 = (double) k + 0.5D - vec31.x;
-                        double d1 = (double) l + 0.5D - vec31.z;
-                        if (!(d0 * p_179683_8_ + d1 * p_179683_10_ < 0.0D)) {
-                            BlockPathTypes pathnodetype = this.nodeEvaluator.getBlockPathType(this.level, k, y - 1, l, this.mob, sizeX, sizeY, sizeZ, true, true);
-                            mutable.set(k, y - 1, l);
-                            if (!this.hasValidPathType(pathnodetype) || EntityTiger.this.canPassThrough(mutable, level.getBlockState(mutable), null)) {
-                                return false;
-                            }
-
-                            pathnodetype = this.nodeEvaluator.getBlockPathType(this.level, k, y, l, this.mob, sizeX, sizeY, sizeZ, true, true);
-                            float f = this.mob.getPathfindingMalus(pathnodetype);
-                            if (f < 0.0F || f >= 8.0F) {
-                                return false;
-                            }
-
-                            if (pathnodetype == BlockPathTypes.DAMAGE_FIRE || pathnodetype == BlockPathTypes.DANGER_FIRE || pathnodetype == BlockPathTypes.DAMAGE_OTHER) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-
-                return true;
-            }
-        }
-
-        protected boolean hasValidPathType(BlockPathTypes p_230287_1_) {
-            if (p_230287_1_ == BlockPathTypes.WATER) {
-                return false;
-            } else if (p_230287_1_ == BlockPathTypes.LAVA) {
-                return false;
-            } else {
-                return p_230287_1_ != BlockPathTypes.OPEN;
-            }
         }
     }
 
@@ -766,6 +594,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         private int jumpAttemptCooldown = 0;
 
         public AIMelee() {
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
             tiger = EntityTiger.this;
         }
 
@@ -812,7 +641,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                     Vec3 vec = target.position().subtract(tiger.position());
                     tiger.setYRot(-((float) Mth.atan2(vec.x, vec.z)) * (180F / (float) Math.PI));
                     tiger.yBodyRot = tiger.getYRot();
-                    if (tiger.getAnimationTick() == 5 && tiger.onGround) {
+                    if (tiger.getAnimationTick() >= 5 && tiger.getAnimationTick() < 11 && tiger.isOnGround()) {
                         Vec3 vector3d1 = new Vec3(target.getX() - this.tiger.getX(), 0.0D, target.getZ() - this.tiger.getZ());
                         if (vector3d1.lengthSqr() > 1.0E-7D) {
                             vector3d1 = vector3d1.normalize().scale(Math.min(dist, 15) * 0.2F);
@@ -826,14 +655,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                         tiger.setHolding(true);
                     }
                 } else {
-                    if (tiger.isHolding()) {
-                        tiger.getNavigation().stop();
-                    } else {
-                        try{
-                            tiger.getNavigation().moveTo(target, tiger.isStealth() ? 0.75F : 1.0F);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+                    if(target != null){
+                        tiger.getNavigation().moveTo(target, tiger.isStealth() ? 0.75F : 1.0F);
                     }
                 }
             }
