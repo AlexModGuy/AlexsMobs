@@ -6,7 +6,9 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -35,6 +37,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -47,6 +50,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -55,6 +59,7 @@ import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
 public class EntityCachalotWhale extends Animal {
 
@@ -75,6 +80,7 @@ public class EntityCachalotWhale extends Animal {
     public final EntityCachalotPart tail2Part;
     public final EntityCachalotPart tail3Part;
     public final EntityCachalotPart[] whaleParts;
+    private final boolean hasAlbinoAttribute = false;
     public int ringBufferIndex = -1;
     public float prevChargingProgress;
     public float chargeProgress;
@@ -84,6 +90,7 @@ public class EntityCachalotWhale extends Animal {
     public float beachedProgress;
     public float prevGrabProgress;
     public float grabProgress;
+    public int grabTime = 0;
     private boolean receivedEcho = false;
     private boolean waitForEchoFlag = true;
     private int echoTimer = 0;
@@ -96,9 +103,7 @@ public class EntityCachalotWhale extends Animal {
     private int blockBreakCounter;
     private int despawnDelay = 47999;
     private int ambergrisDrops = 0;
-    private final boolean hasAlbinoAttribute = false;
     private int echoSoundCooldown = 0;
-    public int grabTime = 0;
 
     public EntityCachalotWhale(EntityType type, Level world) {
         super(type, world);
@@ -410,9 +415,9 @@ public class EntityCachalotWhale extends Animal {
             }
         }
         float rPitch = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
-        if(this.isGrabbing()){
+        if (this.isGrabbing()) {
             this.setXRot(0);
-        }else{
+        } else {
             this.setXRot(Mth.clamp(rPitch, -90, 90));
         }
         if (this.isOnGround() && !this.isInWaterOrBubble()) {
@@ -473,7 +478,7 @@ public class EntityCachalotWhale extends Animal {
         prevSleepProgress = sleepProgress;
         prevBeachedProgress = beachedProgress;
         prevGrabProgress = grabProgress;
-        if(this.tickCount % 200 == 0){
+        if (this.tickCount % 200 == 0) {
             this.heal(2);
         }
         if (isCharging() && this.chargeProgress < 10F) {
@@ -502,9 +507,9 @@ public class EntityCachalotWhale extends Animal {
         }
         this.yHeadRot = this.getYRot();
         this.yBodyRot = this.getYRot();
-        if(isGrabbing()){
+        if (isGrabbing()) {
             grabTime++;
-        }else{
+        } else {
             grabTime = 0;
         }
         if (!this.isNoAi()) {
@@ -579,34 +584,36 @@ public class EntityCachalotWhale extends Animal {
                 this.setCharging(false);
                 this.setCaughtSquidId(-1);
             } else if (!isBeached() && !isSleeping()) {
-                if(isGrabbing() && this.getTarget().isAlive()){
+                if (isGrabbing() && this.getTarget().isAlive()) {
                     this.setCaughtSquidId(this.getTarget().getId());
                     whaleSpeedMod = 0.1F;
                     float scale = this.isBaby() ? 0.5F : 1F;
-                    float offsetAngle = -(float)Math.cos(grabTime * 0.3F) * 0.1F * grabProgress;
+                    float offsetAngle = -(float) Math.cos(grabTime * 0.3F) * 0.1F * grabProgress;
                     float renderYaw = (float) this.getMovementOffsets(0, 1.0F)[0];
                     Vec3 extraVec = new Vec3(0, 0, -3F).xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-renderYaw * ((float) Math.PI / 180F));
                     Vec3 backOfHead = this.headPart.position().add(extraVec);
                     Vec3 swingVec = new Vec3(isHoldingSquidLeft() ? 1.4F : -1.4F, -0.1, 3F).xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-renderYaw * ((float) Math.PI / 180F)).yRot(offsetAngle);
                     Vec3 mouth = backOfHead.add(swingVec).scale(scale);
                     this.getTarget().setPos(mouth.x, mouth.y, mouth.z);
-                    if(isHoldingSquidLeft()){
-                        this.getTarget().setYRot(this.yBodyRot + 90 - (float)Math.toDegrees(offsetAngle));
-                    }else{
-                        this.getTarget().setYRot(this.yBodyRot - 90 - (float)Math.toDegrees(offsetAngle));
+                    if (isHoldingSquidLeft()) {
+                        this.getTarget().setYRot(this.yBodyRot + 90 - (float) Math.toDegrees(offsetAngle));
+                    } else {
+                        this.getTarget().setYRot(this.yBodyRot - 90 - (float) Math.toDegrees(offsetAngle));
                     }
-                    if(this.getTarget() instanceof EntityGiantSquid){
-                        if(((EntityGiantSquid)this.getTarget()).tickCaptured(this)){
-                          this.setGrabbing(false);
+                    if (this.getTarget() instanceof EntityGiantSquid) {
+                        if (((EntityGiantSquid) this.getTarget()).tickCaptured(this)) {
+                            this.setGrabbing(false);
+                            this.getTarget().setPos(this.getDismountLocationForPassenger(this.getTarget()));
                         }
                     }
                     if (grabTime % 20 == 0 && grabTime > 30) {
                         this.getTarget().hurt(DamageSource.mobAttack(this), 4 + random.nextInt(4));
                     }
-                    if(grabTime > 300){
+                    if (grabTime > 300) {
                         this.setGrabbing(false);
+                        this.getTarget().setPos(this.getDismountLocationForPassenger(this.getTarget()));
                     }
-                }else{
+                } else {
                     this.setCaughtSquidId(-1);
                     this.lookAt(target, 360, 360);
                     waitForEchoFlag = this.getLastHurtByMob() == null || !this.getLastHurtByMob().is(target);
@@ -659,7 +666,7 @@ public class EntityCachalotWhale extends Animal {
                                 this.yBodyRot = yRotO;
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.8, 1, 0.8));
                             } else {
-                                if(this.isInWater() && target.isInWater()){
+                                if (this.isInWater() && target.isInWater()) {
                                     Vec3 vector3d = this.getDeltaMovement();
                                     Vec3 vector3d1 = new Vec3(target.getX() - this.getX(), target.getY() - this.getY(), target.getZ() - this.getZ());
                                     if (vector3d1.lengthSqr() > 1.0E-7D) {
@@ -671,10 +678,10 @@ public class EntityCachalotWhale extends Animal {
                             }
                             if (this.isCharging()) {
                                 if (this.distanceTo(target) < this.getBbWidth() && chargeProgress > 4) {
-                                    if(target instanceof EntityGiantSquid){
+                                    if (target instanceof EntityGiantSquid) {
                                         this.setGrabbing(true);
                                         this.setHoldingSquidLeft(random.nextBoolean());
-                                    }else{
+                                    } else {
                                         target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                                     }
                                     this.setCharging(false);
@@ -720,7 +727,7 @@ public class EntityCachalotWhale extends Animal {
             if (this.isSleeping() && (!isSleepTime() || this.getTarget() != null)) {
                 this.setSleeping(false);
             }
-            if(target instanceof Player && ((Player) target).isCreative()){
+            if (target instanceof Player && ((Player) target).isCreative()) {
                 this.setTarget(null);
             }
         }
@@ -905,6 +912,16 @@ public class EntityCachalotWhale extends Animal {
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.cachalotWhaleSpawnRolls, this.getRandom(), spawnReasonIn);
     }
+
+    public Vec3 getDismountLocationForPassenger(LivingEntity dismount) {
+        Vec3 mouth = this.getMouthVec();
+        BlockPos pos = new BlockPos(mouth);
+        while(!level.isEmptyBlock(pos) && !level.isWaterAt(pos) && pos.getY() < level.getMaxBuildHeight()){
+            pos = pos.above();
+        }
+        return new Vec3(mouth.x, pos.getY() + 0.5F, mouth.z);
+    }
+
 
     class AIBreathe extends Goal {
 

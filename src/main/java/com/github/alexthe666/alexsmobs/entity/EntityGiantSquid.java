@@ -67,6 +67,7 @@ public class EntityGiantSquid extends WaterAnimal {
     private static final EntityDataAccessor<Boolean> GRABBING = SynchedEntityData.defineId(EntityGiantSquid.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CAPTURED = SynchedEntityData.defineId(EntityGiantSquid.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> BLUE = SynchedEntityData.defineId(EntityGiantSquid.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> GRAB_ENTITY = SynchedEntityData.defineId(EntityGiantSquid.class, EntityDataSerializers.INT);
     public final EntityGiantSquidPart mantlePart1;
     public final EntityGiantSquidPart mantlePart2;
     public final EntityGiantSquidPart mantlePart3;
@@ -158,7 +159,18 @@ public class EntityGiantSquid extends WaterAnimal {
         this.entityData.define(GRABBING, false);
         this.entityData.define(CAPTURED, false);
         this.entityData.define(BLUE, false);
+        this.entityData.define(GRAB_ENTITY, -1);
     }
+
+    @Nullable
+    public Entity getGrabbedEntity() {
+        if (!this.level.isClientSide || this.entityData.get(GRAB_ENTITY) == -1) {
+            return this.getTarget();
+        } else {
+            return this.level.getEntity(this.entityData.get(GRAB_ENTITY));
+        }
+    }
+
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -240,16 +252,19 @@ public class EntityGiantSquid extends WaterAnimal {
             capturedProgress -= 0.5F;
         }
         if (this.isGrabbing()) {
-            if (!level.isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
+            Entity target = getGrabbedEntity();
+            if(!level.isClientSide && target != null){
+                this.entityData.set(GRAB_ENTITY, target.getId());
+                if (holdTime % 20 == 0 && holdTime > 30) {
+                    target.hurt(DamageSource.mobAttack(this), 3 + random.nextInt(5));
+                }
+            }
+            if (target != null && target.isAlive()) {
                 this.setXRot(0);
                 float invert = 1F - grabProgress * 0.2F;
-                float radius = 1.0F + this.getTarget().getBbWidth() * 0.5F;
                 Vec3 extraVec = new Vec3(0, 0, 2F + invert * 7F).xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-this.yBodyRot * ((float) Math.PI / 180F));
-                Vec3 minus = new Vec3(this.getX() + extraVec.x - this.getTarget().getX(), this.getY() + extraVec.y - this.getTarget().getY(), this.getZ() + extraVec.z - this.getTarget().getZ());
-                this.getTarget().setDeltaMovement(minus);
-                if (holdTime % 20 == 0 && holdTime > 30) {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), 3 + random.nextInt(5));
-                }
+                Vec3 minus = new Vec3(this.getX() + extraVec.x - target.getX(), this.getY() + extraVec.y - target.getY(), this.getZ() + extraVec.z - target.getZ());
+                target.setDeltaMovement(minus);
             }
             holdTime++;
             if (holdTime > 1000) {
