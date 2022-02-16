@@ -484,6 +484,10 @@ public class EntityGiantSquid extends WaterAnimal {
         entity.animationPosition += entity.animationSpeed;
     }
 
+    public boolean canBeCollidedWith() {
+        return this.isAlive();
+    }
+
     public Vec3 collide(Vec3 movement) {
         if (touchingUnloadedChunk() || !this.isInWaterOrBubble()) {
             return super.collide(movement);
