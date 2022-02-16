@@ -126,8 +126,12 @@ public class EntitySquidGrapple extends Entity {
         this.xRotO = this.getXRot();
         this.yRotO = this.getYRot();
         Entity entity = this.getOwner();
-        if (entity == null || entity.isShiftKeyDown()) {
-            this.setWithdrawing(true);
+        if(!level.isClientSide){
+            if(entity == null || !entity.isAlive()){
+                this.discard();
+            }else if (entity.isShiftKeyDown()) {
+                this.setWithdrawing(true);
+            }
         }
         if(this.isWithdrawing() && entity != null){
             super.tick();
