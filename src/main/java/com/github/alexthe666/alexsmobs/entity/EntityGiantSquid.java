@@ -616,7 +616,7 @@ public class EntityGiantSquid extends WaterAnimal {
             whale.hurt(DamageSource.mobAttack(this), 4 + random.nextInt(4));
             if (random.nextFloat() <= 0.3F) {
                 this.setCaptured(false);
-                if(random.nextFloat() < 0.4F){
+                if(random.nextFloat() < 0.2F){
                     this.spawnAtLocation(AMItemRegistry.LOST_TENTACLE);
                 }
                 return true;
