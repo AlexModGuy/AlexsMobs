@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -109,6 +110,7 @@ public class SnowLeopardAIMelee extends Goal {
         }
         if (stalk) {
             if (secondPartOfLeap) {
+                this.leopard.setTackling(!leopard.isOnGround());
                 leopard.lookAt(target, 180F, 10F);
                 leopard.yBodyRot = leopard.getYRot();
                 if (this.leopard.distanceTo(target) < 3F && this.leopard.hasLineOfSight(target)) {
@@ -117,7 +119,6 @@ public class SnowLeopardAIMelee extends Goal {
                     this.secondPartOfLeap = false;
                 }else if (leopard.isOnGround() && jumpCooldown == 0) {
                     this.leopard.setSlSneaking(false);
-                    this.leopard.setTackling(true);
                     jumpCooldown = 10 + leopard.getRandom().nextInt(10);
                     Vec3 vector3d = this.leopard.getDeltaMovement();
                     Vec3 vector3d1 = new Vec3(this.target.getX() - this.leopard.getX(), 0.0D, this.target.getZ() - this.leopard.getZ());
@@ -131,6 +132,8 @@ public class SnowLeopardAIMelee extends Goal {
                     Vec3 vector3d1 = calculateFarPoint(50);
                     if (vector3d1 != null) {
                         leapPos = vector3d1;
+                    }else{
+                        leapPos = LandRandomPos.getPosTowards(leopard, 10, 10, target.position());
                     }
                 } else {
                     this.leopard.setSlSneaking(true);
