@@ -8,7 +8,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,9 +18,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -30,11 +28,11 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.Tag;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
@@ -53,7 +51,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class EntityLobster extends WaterAnimal implements ISemiAquatic {
+public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketable {
 
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityLobster.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(EntityLobster.class, EntityDataSerializers.INT);
@@ -152,7 +150,9 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic {
         this.entityData.define(FROM_BUCKET, false);
     }
 
-    protected ItemStack getFishBucket(){
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.LOBSTER_BUCKET.get());
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
@@ -160,40 +160,36 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic {
         return stack;
     }
 
-    protected void setBucketData(ItemStack bucket) {
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
             bucket.setHoverName(this.getCustomName());
         }
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
         CompoundTag compoundnbt = bucket.getOrCreateTag();
         compoundnbt.putInt("BucketVariantTag", this.getVariant());
     }
 
-    public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isFromBucket();
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
+        if (compound.contains("BucketVariantTag", 3)) {
+            this.setVariant(compound.getInt("BucketVariantTag"));
+        }
     }
 
-    protected InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
-        ItemStack itemstack = p_230254_1_.getItemInHand(p_230254_2_);
-        if (itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            itemstack.shrink(1);
-            ItemStack itemstack1 = this.getFishBucket();
-            this.setBucketData(itemstack1);
-            if (!this.level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)p_230254_1_, itemstack1);
-            }
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.fromBucket();
+    }
 
-            if (itemstack.isEmpty()) {
-                p_230254_1_.setItemInHand(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.getInventory().add(itemstack1)) {
-                p_230254_1_.drop(itemstack1, false);
-            }
+    public boolean removeWhenFarAway(double p_27492_) {
+        return !this.fromBucket() && !this.hasCustomName();
+    }
 
-            this.remove(RemovalReason.DISCARDED);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(p_230254_1_, p_230254_2_);
-        }
+    @Override
+    @Nonnull
+    protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     public float getWalkTargetValue(BlockPos pos, LevelReader worldIn) {
@@ -249,7 +245,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic {
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", this.getVariant());
-        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("FromBucket", this.fromBucket());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -258,13 +254,20 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic {
         this.setFromBucket(compound.getBoolean("FromBucket"));
     }
 
-
-    private boolean isFromBucket() {
+    @Override
+    public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean p_203706_1_) {
         this.entityData.set(FROM_BUCKET, p_203706_1_);
+    }
+
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
     }
 
     @Nullable

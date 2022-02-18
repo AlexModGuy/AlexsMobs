@@ -6,8 +6,9 @@ import com.github.alexthe666.alexsmobs.entity.ai.BoneSerpentPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -36,6 +37,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Random;
@@ -58,7 +60,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
-public class EntityStradpole extends WaterAnimal {
+public class EntityStradpole extends WaterAnimal implements Bucketable {
 
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityStradpole.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DESPAWN_SOON = SynchedEntityData.defineId(EntityStradpole.class, EntityDataSerializers.BOOLEAN);
@@ -87,7 +89,9 @@ public class EntityStradpole extends WaterAnimal {
         return 2;
     }
 
-    protected ItemStack getFishBucket(){
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.STRADPOLE_BUCKET.get());
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
@@ -95,10 +99,25 @@ public class EntityStradpole extends WaterAnimal {
         return stack;
     }
 
-    protected InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
-        ItemStack itemstack = p_230254_1_.getItemInHand(p_230254_2_);
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        if (this.hasCustomName()) {
+            bucket.setHoverName(this.getCustomName());
+        }
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
+    }
+
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
+    }
+
+    @Override
+    @Nonnull
+    protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         if(itemstack.getItem() == AMItemRegistry.MOSQUITO_LARVA.get()){
-            if(!p_230254_1_.isCreative()){
+            if(!player.isCreative()){
                 itemstack.shrink(1);
             }
             if(random.nextFloat() < 0.45F){
@@ -112,24 +131,20 @@ public class EntityStradpole extends WaterAnimal {
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
         if (itemstack.getItem() == Items.LAVA_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            itemstack.shrink(1);
-            ItemStack itemstack1 = this.getFishBucket();
-            if (!this.level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)p_230254_1_, itemstack1);
+            this.playSound(this.getPickupSound(), 1.0F, 1.0F);
+            ItemStack itemstack1 = this.getBucketItemStack();
+            this.saveToBucketTag(itemstack1);
+            ItemStack itemstack2 = ItemUtils.createFilledResult(itemstack, player, itemstack1, false);
+            player.setItemInHand(hand, itemstack2);
+            Level level = this.level;
+            if (!level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemstack1);
             }
 
-            if (itemstack.isEmpty()) {
-                p_230254_1_.setItemInHand(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.getInventory().add(itemstack1)) {
-                p_230254_1_.drop(itemstack1, false);
-            }
-
-            this.remove(RemovalReason.DISCARDED);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(p_230254_1_, p_230254_2_);
+            this.discard();
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
+        return super.mobInteract(player, hand);
     }
 
 
@@ -146,14 +161,21 @@ public class EntityStradpole extends WaterAnimal {
         this.entityData.define(FROM_BUCKET, false);
     }
 
-    private boolean isFromBucket() {
+    @Override
+    public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean p_203706_1_) {
         this.entityData.set(FROM_BUCKET, p_203706_1_);
     }
 
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
+    }
 
     @Nullable
     public UUID getParentId() {
@@ -169,12 +191,16 @@ public class EntityStradpole extends WaterAnimal {
         if (this.getParentId() != null) {
             compound.putUUID("ParentUUID", this.getParentId());
         }
-        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("FromBucket", this.fromBucket());
         compound.putBoolean("DespawnSoon", this.isDespawnSoon());
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isFromBucket();
+        return super.requiresCustomPersistence() || this.fromBucket();
+    }
+
+    public boolean removeWhenFarAway(double p_27492_) {
+        return !this.fromBucket() && !this.hasCustomName();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {

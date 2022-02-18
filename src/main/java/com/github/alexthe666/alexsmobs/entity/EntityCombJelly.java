@@ -3,15 +3,11 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
@@ -23,21 +19,22 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class EntityCombJelly extends WaterAnimal {
+public class EntityCombJelly extends WaterAnimal implements Bucketable {
 
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityCombJelly.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> JELLYPITCH = SynchedEntityData.defineId(EntityCombJelly.class, EntityDataSerializers.FLOAT);
@@ -59,11 +56,11 @@ public class EntityCombJelly extends WaterAnimal {
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isFromBucket();
+        return super.requiresCustomPersistence() || this.fromBucket();
     }
 
     public boolean removeWhenFarAway(double p_213397_1_) {
-        return !this.isFromBucket() && !this.hasCustomName();
+        return !this.fromBucket() && !this.hasCustomName();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -121,19 +118,29 @@ public class EntityCombJelly extends WaterAnimal {
         this.entityData.set(JELLY_SCALE, scale);
     }
 
-    private boolean isFromBucket() {
+    @Override
+    public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean p_203706_1_) {
         this.entityData.set(FROM_BUCKET, p_203706_1_);
+    }
+
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
-    protected ItemStack getFishBucket(){
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.COMB_JELLY_BUCKET.get());
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
@@ -197,7 +204,7 @@ public class EntityCombJelly extends WaterAnimal {
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("FromBucket", this.fromBucket());
         compound.putFloat("JellyScale", this.getJellyScale());
         compound.putInt("Variant", this.getVariant());
     }
@@ -229,38 +236,32 @@ public class EntityCombJelly extends WaterAnimal {
 
     }
 
-    protected InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
-        ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
-        if (lvt_3_1_.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            lvt_3_1_.shrink(1);
-            ItemStack lvt_4_1_ = this.getFishBucket();
-            this.setBucketData(lvt_4_1_);
-            if (!this.level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) p_230254_1_, lvt_4_1_);
-            }
-
-            if (lvt_3_1_.isEmpty()) {
-                p_230254_1_.setItemInHand(p_230254_2_, lvt_4_1_);
-            } else if (!p_230254_1_.getInventory().add(lvt_4_1_)) {
-                p_230254_1_.drop(lvt_4_1_, false);
-            }
-
-            this.remove(RemovalReason.DISCARDED);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(p_230254_1_, p_230254_2_);
-        }
+    @Override
+    @Nonnull
+    protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
-
-    protected void setBucketData(ItemStack bucket) {
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
             bucket.setHoverName(this.getCustomName());
         }
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
         CompoundTag compoundnbt = bucket.getOrCreateTag();
         compoundnbt.putFloat("BucketScale", this.getJellyScale());
         compoundnbt.putInt("BucketVariantTag", this.getVariant());
+    }
+
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
+        if (compound.contains("BucketScale")){
+            this.setJellyScale(compound.getFloat("BucketScale"));
+        }
+        if (compound.contains("BucketVariantTag")){
+            this.setVariant(compound.getInt("BucketVariantTag"));
+        }
     }
 
     @Nullable

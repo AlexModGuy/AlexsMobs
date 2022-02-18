@@ -34,6 +34,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -49,11 +50,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class EntityTerrapin extends Animal implements ISemiAquatic {
+public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
 
     private static final EntityDataAccessor<Integer> TURTLE_TYPE = SynchedEntityData.defineId(EntityTerrapin.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SHELL_TYPE = SynchedEntityData.defineId(EntityTerrapin.class, EntityDataSerializers.INT);
@@ -266,7 +268,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
         compound.putInt("ShellColor", this.getShellColor());
         compound.putInt("SkinColor", this.getSkinColor());
         compound.putBoolean("HasEgg", this.hasEgg());
-        compound.putBoolean("Bucketed", this.isFromBucket());
+        compound.putBoolean("Bucketed", this.fromBucket());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -291,20 +293,28 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
         return stack.getItem() == Blocks.SEAGRASS.asItem();
     }
 
-    private boolean isFromBucket() {
+    @Override
+    public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
-    public void setFromBucket(boolean bucketed) {
-        this.entityData.set(FROM_BUCKET, bucketed);
+    @Override
+    public void setFromBucket(boolean p_203706_1_) {
+        this.entityData.set(FROM_BUCKET, p_203706_1_);
+    }
+
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isFromBucket();
+        return super.requiresCustomPersistence() || this.fromBucket();
     }
 
     public boolean removeWhenFarAway(double d) {
-        return !this.isFromBucket() && !this.hasCustomName();
+        return !this.fromBucket() && !this.hasCustomName();
     }
 
     private int getTurtleTypeOrdinal() {
@@ -508,43 +518,43 @@ public class EntityTerrapin extends Animal implements ISemiAquatic {
 
     }
 
-    protected ItemStack getFishBucket() {
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.TERRAPIN_BUCKET.get());
-        CompoundTag platTag = new CompoundTag();
-        this.addAdditionalSaveData(platTag);
-        stack.getOrCreateTag().put("TerrapinData", platTag);
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
         }
         return stack;
     }
 
-    public InteractionResult mobInteract(Player player, InteractionHand hans) {
-        ItemStack itemstack = player.getItemInHand(hans);
-        if (itemstack.getItem() == Items.SEAGRASS){
-            this.setPersistenceRequired();
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        if (this.hasCustomName()) {
+            bucket.setHoverName(this.getCustomName());
         }
-        if (itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            itemstack.shrink(1);
-            ItemStack itemstack1 = this.getFishBucket();
-            if (!this.level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, itemstack1);
-            }
+        CompoundTag platTag = new CompoundTag();
+        this.addAdditionalSaveData(platTag);
+        CompoundTag compound = bucket.getOrCreateTag();
+        compound.put("TerrapinData", platTag);
+    }
 
-            if (itemstack.isEmpty()) {
-                player.setItemInHand(hans, itemstack1);
-            } else if (!player.getInventory().add(itemstack1)) {
-                player.drop(itemstack1, false);
-            }
-
-            this.remove(RemovalReason.DISCARDED);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(player, hans);
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        if (compound.contains("TerrapinData")) {
+            this.readAdditionalSaveData(compound.getCompound("TerrapinData"));
         }
     }
 
+    @Override
+    @Nonnull
+    public InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (itemstack.getItem() == Items.SEAGRASS){
+            this.setPersistenceRequired();
+        }
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+    }
 
     public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
         mob.animationSpeedOld = mob.animationSpeed;
