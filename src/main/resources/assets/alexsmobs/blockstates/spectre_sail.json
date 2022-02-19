@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "eastorwest=false,sail=single": {
+      "model": "alexsmobs:block/spectre_sail_single",
+      "y": 0
+    },
+    "eastorwest=false,sail=top": {
+      "model": "alexsmobs:block/spectre_sail_top",
+      "y": 0
+    },
+    "eastorwest=false,sail=middle": {
+      "model": "alexsmobs:block/spectre_sail_middle",
+      "y": 0
+    },
+    "eastorwest=false,sail=bottom": {
+      "model": "alexsmobs:block/spectre_sail_bottom",
+      "y": 0
+    },
+    "eastorwest=true,sail=single": {
+      "model": "alexsmobs:block/spectre_sail_single",
+      "y": 90
+    },
+    "eastorwest=true,sail=top": {
+      "model": "alexsmobs:block/spectre_sail_top",
+      "y": 90
+    },
+    "eastorwest=true,sail=middle": {
+      "model": "alexsmobs:block/spectre_sail_middle",
+      "y": 90
+    },
+    "eastorwest=true,sail=bottom": {
+      "model": "alexsmobs:block/spectre_sail_bottom",
+      "y": 90
+    }
+  }
+}

@@ -32,6 +32,8 @@ public class AMBlockRegistry {
     public static final Block PURPUR_PLANKS_SLAB = new SlabBlock(BlockBehaviour.Properties.copy(PURPUR_PLANKS)).setRegistryName("alexsmobs:purpur_planks_slab");
     public static final Block PURPUR_PLANKS_WALL = new WallBlock(BlockBehaviour.Properties.copy(PURPUR_PLANKS)).setRegistryName("alexsmobs:purpur_planks_wall");
     public static final Block END_PIRATE_DOOR = new BlockEndPirateDoor();
+    public static final Block PHANTOM_SAIL = new BlockEndPirateSail(false);
+    public static final Block SPECTRE_SAIL = new BlockEndPirateSail(true);
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

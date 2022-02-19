@@ -199,6 +199,8 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_FUR_BLOCK, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_CARPET, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_DOOR, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.PHANTOM_SAIL, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.SPECTRE_SAIL, RenderType.translucent());
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID, RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK, RenderVoidWormBeak::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_DOOR, RenderEndPirateDoor::new);
