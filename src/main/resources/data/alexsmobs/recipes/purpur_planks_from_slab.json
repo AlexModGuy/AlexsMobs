@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F",
+    "F"
+  ],
+  "key": {
+    "F": {
+      "item": "alexsmobs:purpur_planks_slab"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:purpur_planks",
+    "count": 1
+  }
+}

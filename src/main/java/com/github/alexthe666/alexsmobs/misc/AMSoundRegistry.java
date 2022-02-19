@@ -346,6 +346,8 @@ public class AMSoundRegistry {
 
     public static final SoundEvent GIANT_SQUID_TENTACLE = createSoundEvent("giant_squid_tentacle");
 
+    public static final SoundEvent END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
+
     private static SoundEvent createSoundEvent(final String soundName) {
         final ResourceLocation soundID = new ResourceLocation(AlexsMobs.MODID, soundName);
         return new SoundEvent(soundID).setRegistryName(soundID);

@@ -2302,5 +2302,20 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.giant_squid_tentacle"
+  },
+  "end_pirate_door": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:end_pirate_door_0"
+      },
+      {
+        "name": "alexsmobs:end_pirate_door_1"
+      },
+      {
+        "name": "alexsmobs:end_pirate_door_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.end_pirate_door"
   }
 }

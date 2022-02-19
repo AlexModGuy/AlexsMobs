@@ -1,9 +1,7 @@
 package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CarpetBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -29,6 +27,11 @@ public class AMBlockRegistry {
     public static final Block RAINBOW_GLASS = new BlockRainbowGlass();
     public static final Block BISON_FUR_BLOCK = new Block(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_BROWN).strength(0.6F, 1.0F).sound(SoundType.WOOL)).setRegistryName("alexsmobs:bison_fur_block");
     public static final Block BISON_CARPET = new BlockBisonCarpet();
+    public static final Block PURPUR_PLANKS = new Block(BlockBehaviour.Properties.of(Material.NETHER_WOOD, MaterialColor.COLOR_PINK).strength(0.5F, 1.0F).sound(SoundType.WOOD)).setRegistryName("alexsmobs:purpur_planks");
+    public static final Block PURPUR_PLANKS_STAIRS = new StairBlock(PURPUR_PLANKS.defaultBlockState(), BlockBehaviour.Properties.copy(PURPUR_PLANKS)).setRegistryName("alexsmobs:purpur_planks_stairs");
+    public static final Block PURPUR_PLANKS_SLAB = new SlabBlock(BlockBehaviour.Properties.copy(PURPUR_PLANKS)).setRegistryName("alexsmobs:purpur_planks_slab");
+    public static final Block PURPUR_PLANKS_WALL = new WallBlock(BlockBehaviour.Properties.copy(PURPUR_PLANKS)).setRegistryName("alexsmobs:purpur_planks_wall");
+    public static final Block END_PIRATE_DOOR = new BlockEndPirateDoor();
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
