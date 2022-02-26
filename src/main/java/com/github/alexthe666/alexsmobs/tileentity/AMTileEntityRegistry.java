@@ -18,6 +18,8 @@ public class AMTileEntityRegistry {
     public static BlockEntityType<TileEntityVoidWormBeak> VOID_WORM_BEAK = registerTileEntity(BlockEntityType.Builder.of(TileEntityVoidWormBeak::new, AMBlockRegistry.VOID_WORM_BEAK), "void_worm_beak");
     public static BlockEntityType<TileEntityTerrapinEgg> TERRAPIN_EGG = registerTileEntity(BlockEntityType.Builder.of(TileEntityTerrapinEgg::new, AMBlockRegistry.TERRAPIN_EGG), "terrapin_egg");
     public static BlockEntityType<TileEntityEndPirateDoor> END_PIRATE_DOOR = registerTileEntity(BlockEntityType.Builder.of(TileEntityEndPirateDoor::new, AMBlockRegistry.END_PIRATE_DOOR), "end_pirate_door");
+    public static BlockEntityType<TileEntityEndPirateAnchor> END_PIRATE_ANCHOR = registerTileEntity(BlockEntityType.Builder.of(TileEntityEndPirateAnchor::new, AMBlockRegistry.END_PIRATE_ANCHOR), "end_pirate_anchor");
+    public static BlockEntityType<TileEntityEndPirateAnchorWinch> END_PIRATE_ANCHOR_WINCH = registerTileEntity(BlockEntityType.Builder.of(TileEntityEndPirateAnchorWinch::new, AMBlockRegistry.END_PIRATE_ANCHOR_WINCH), "end_pirate_anchor_winch");
 
     public static BlockEntityType registerTileEntity(BlockEntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);

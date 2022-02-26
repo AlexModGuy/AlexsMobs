@@ -8,9 +8,7 @@ import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties;
 import com.github.alexthe666.alexsmobs.client.render.item.CustomArmorRenderProperties;
-import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
-import com.github.alexthe666.alexsmobs.client.render.tile.RenderEndPirateDoor;
-import com.github.alexthe666.alexsmobs.client.render.tile.RenderVoidWormBeak;
+import com.github.alexthe666.alexsmobs.client.render.tile.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundBearMusicBox;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.client.sound.SoundWormBoss;
@@ -199,12 +197,15 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_FUR_BLOCK, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_CARPET, RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_DOOR, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_TRAPDOOR, RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.PHANTOM_SAIL, RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.SPECTRE_SAIL, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.ENDER_RESIDUE, RenderType.translucent());
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID, RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK, RenderVoidWormBeak::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_DOOR, RenderEndPirateDoor::new);
-
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR, RenderEndPirateAnchor::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH, RenderEndPirateAnchorWinch::new);
     }
 
     private void initRainbowBuffers(){

@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 
 public class RenderEndPirateDoor<T extends TileEntityEndPirateDoor> implements BlockEntityRenderer<T> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate_door.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/door.png");
     private static final ModelEndPirateDoor DOOR_MODEL = new ModelEndPirateDoor();
 
     public RenderEndPirateDoor(Context rendererDispatcherIn) {
@@ -46,5 +46,10 @@ public class RenderEndPirateDoor<T extends TileEntityEndPirateDoor> implements B
         DOOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
+    }
+
+
+    public int getViewDistance() {
+        return 128;
     }
 }

@@ -30,7 +30,7 @@ public class BlockEndPirateSail extends Block {
     protected static final VoxelShape NS_AABB = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
 
     public BlockEndPirateSail(boolean spectre) {
-        super(Properties.of(Material.GLASS).noOcclusion().emissiveRendering((a, b, c) -> true).sound(SoundType.GLASS).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(0.4F).color(MaterialColor.ICE));
+        super(Properties.of(Material.GLASS).noOcclusion().emissiveRendering((a, b, c) -> true).sound(SoundType.WOOL).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(0.4F).color(MaterialColor.ICE));
         this.setRegistryName(spectre ? "alexsmobs:spectre_sail" : "alexsmobs:phantom_sail");
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(SAIL, SailType.SINGLE));
     }
@@ -52,7 +52,7 @@ public class BlockEndPirateSail extends Block {
         BlockState clickState = levelreader.getBlockState(actualPos);
         BlockState upState = levelreader.getBlockState(u);
         BlockState downState = levelreader.getBlockState(d);
-        boolean axis = context.getClickedFace().getAxis() == Direction.Axis.Y ? context.getHorizontalDirection().getAxis() == Direction.Axis.X : context.getClickedFace().getAxis() == Direction.Axis.X;
+        boolean axis = context.getClickedFace().getAxis() == Direction.Axis.Y ? context.getHorizontalDirection().getAxis() == Direction.Axis.X : context.getClickedFace().getAxis() != Direction.Axis.X;
         if(clickState.getBlock() instanceof BlockEndPirateSail){
             axis = clickState.getValue(EASTORWEST);
         }

@@ -1,5 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchor;
+import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchorWinch;
 import com.github.alexthe666.alexsmobs.client.model.ModelMysteriousWorm;
 import com.github.alexthe666.alexsmobs.client.model.ModelShieldOfTheDeep;
 import com.github.alexthe666.alexsmobs.entity.*;
@@ -112,6 +115,10 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation SHIELD_OF_THE_DEEP_TEXTURE = new ResourceLocation("alexsmobs:textures/armor/shield_of_the_deep.png");
     private static final ModelMysteriousWorm MYTERIOUS_WORM_MODEL = new ModelMysteriousWorm();
     private static final ResourceLocation MYTERIOUS_WORM_TEXTURE = new ResourceLocation("alexsmobs:textures/item/mysterious_worm_model.png");
+    private static final ModelEndPirateAnchor ANCHOR_MODEL = new ModelEndPirateAnchor();
+    private static final ResourceLocation ANCHOR_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/anchor.png");
+    private static final ModelEndPirateAnchorWinch WINCH_MODEL = new ModelEndPirateAnchorWinch();
+    private static final ResourceLocation WINCH_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/anchor_winch.png");
     private Map<String, Entity> renderedEntites = new HashMap();
 
     public AMItemstackRenderer() {
@@ -222,6 +229,23 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             }else{
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
+        }
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR.asItem()){
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(1F, 0F, 0);
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180));
+            matrixStackIn.scale(0.75F, 0.75F, 0.75F);
+            ANCHOR_MODEL.animateStack(itemStackIn);
+            ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(ANCHOR_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
+        }
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR_WINCH.asItem()){
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(1, -1F, 0);
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
+            WINCH_MODEL.animateStack(itemStackIn);
+            WINCH_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(WINCH_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
         }
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON) {
             Entity fakeEntity = null;

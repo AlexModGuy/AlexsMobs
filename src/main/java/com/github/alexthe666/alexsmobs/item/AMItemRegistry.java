@@ -273,7 +273,12 @@ public class AMItemRegistry {
                     if(obj == AMBlockRegistry.STRADDLITE_BLOCK){
                         props.fireResistant();
                     }
-                    BlockItem blockItem = new BlockItem((Block) obj, props);
+                    BlockItem blockItem;
+                    if(obj == AMBlockRegistry.END_PIRATE_ANCHOR || obj == AMBlockRegistry.END_PIRATE_ANCHOR_WINCH){
+                        blockItem = new BlockItemAMRender((Block) obj, props);
+                    }else{
+                        blockItem = new BlockItem((Block) obj, props);
+                    }
                     blockItem.setRegistryName(((Block) obj).getRegistryName());
                     event.getRegistry().register(blockItem);
                 }

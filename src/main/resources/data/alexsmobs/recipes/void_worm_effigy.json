@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "PEP",
+    "EPE"
+  ],
+  "key": {
+    "B": {
+      "item": "alexsmobs:void_worm_beak"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "P": {
+      "item": "minecraft:purpur_block"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:void_worm_effigy",
+    "count": 1
+  }
+}
