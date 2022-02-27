@@ -37,6 +37,7 @@ public class AMBlockRegistry {
     public static final Block END_PIRATE_TRAPDOOR = new TrapDoorBlock(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.TERRACOTTA_PURPLE).lightLevel((state) -> 3).strength(3.0F).sound(SoundType.GLASS).noOcclusion()).setRegistryName("alexsmobs:end_pirate_trapdoor");
     public static final Block END_PIRATE_ANCHOR = new BlockEndPirateAnchor();
     public static final Block END_PIRATE_ANCHOR_WINCH = new BlockEndPirateAnchorWinch();
+    public static final Block END_PIRATE_SHIP_WHEEL = new BlockEndPirateShipWheel();
     public static final Block ENDER_RESIDUE = new BlockEnderResidue();
     public static final Block PHANTOM_SAIL = new BlockEndPirateSail(false);
     public static final Block SPECTRE_SAIL = new BlockEndPirateSail(true);

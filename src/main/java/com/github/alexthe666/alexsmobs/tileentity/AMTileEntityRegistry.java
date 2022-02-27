@@ -20,6 +20,7 @@ public class AMTileEntityRegistry {
     public static BlockEntityType<TileEntityEndPirateDoor> END_PIRATE_DOOR = registerTileEntity(BlockEntityType.Builder.of(TileEntityEndPirateDoor::new, AMBlockRegistry.END_PIRATE_DOOR), "end_pirate_door");
     public static BlockEntityType<TileEntityEndPirateAnchor> END_PIRATE_ANCHOR = registerTileEntity(BlockEntityType.Builder.of(TileEntityEndPirateAnchor::new, AMBlockRegistry.END_PIRATE_ANCHOR), "end_pirate_anchor");
     public static BlockEntityType<TileEntityEndPirateAnchorWinch> END_PIRATE_ANCHOR_WINCH = registerTileEntity(BlockEntityType.Builder.of(TileEntityEndPirateAnchorWinch::new, AMBlockRegistry.END_PIRATE_ANCHOR_WINCH), "end_pirate_anchor_winch");
+    public static BlockEntityType<TileEntityEndPirateShipWheel> END_PIRATE_SHIP_WHEEL = registerTileEntity(BlockEntityType.Builder.of(TileEntityEndPirateShipWheel::new, AMBlockRegistry.END_PIRATE_SHIP_WHEEL), "end_pirate_ship_wheel");
 
     public static BlockEntityType registerTileEntity(BlockEntityType.Builder builder, String entityName){
         ResourceLocation nameLoc = new ResourceLocation(AlexsMobs.MODID, entityName);

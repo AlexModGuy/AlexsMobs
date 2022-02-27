@@ -206,6 +206,7 @@ public class ClientProxy extends CommonProxy {
         BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_DOOR, RenderEndPirateDoor::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR, RenderEndPirateAnchor::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH, RenderEndPirateAnchorWinch::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL, RenderEndPirateShipWheel::new);
     }
 
     private void initRainbowBuffers(){

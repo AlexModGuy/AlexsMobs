@@ -274,7 +274,7 @@ public class AMItemRegistry {
                         props.fireResistant();
                     }
                     BlockItem blockItem;
-                    if(obj == AMBlockRegistry.END_PIRATE_ANCHOR || obj == AMBlockRegistry.END_PIRATE_ANCHOR_WINCH){
+                    if(obj == AMBlockRegistry.END_PIRATE_ANCHOR || obj == AMBlockRegistry.END_PIRATE_ANCHOR_WINCH || obj == AMBlockRegistry.END_PIRATE_SHIP_WHEEL){
                         blockItem = new BlockItemAMRender((Block) obj, props);
                     }else{
                         blockItem = new BlockItem((Block) obj, props);

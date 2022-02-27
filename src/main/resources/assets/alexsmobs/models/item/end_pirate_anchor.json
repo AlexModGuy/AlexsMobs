@@ -1,6 +1,5 @@
 {
   "parent": "builtin/entity",
-  "gui_light": "front",
   "ambientocclusion": true,
   "display": {
     "gui": {

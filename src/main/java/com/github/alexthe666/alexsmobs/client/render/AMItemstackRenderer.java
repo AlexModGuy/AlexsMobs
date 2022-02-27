@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchor;
-import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchorWinch;
-import com.github.alexthe666.alexsmobs.client.model.ModelMysteriousWorm;
-import com.github.alexthe666.alexsmobs.client.model.ModelShieldOfTheDeep;
+import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
@@ -119,6 +116,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation ANCHOR_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/anchor.png");
     private static final ModelEndPirateAnchorWinch WINCH_MODEL = new ModelEndPirateAnchorWinch();
     private static final ResourceLocation WINCH_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/anchor_winch.png");
+    private static final ModelEndPirateShipWheel SHIP_WHEEL_MODEL = new ModelEndPirateShipWheel();
+    private static final ResourceLocation SHIP_WHEEL_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/ship_wheel.png");
     private Map<String, Entity> renderedEntites = new HashMap();
 
     public AMItemstackRenderer() {
@@ -245,6 +244,14 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
             WINCH_MODEL.animateStack(itemStackIn);
             WINCH_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(WINCH_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
+        }
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_SHIP_WHEEL.asItem()){
+            matrixStackIn.pushPose();
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90));
+            matrixStackIn.scale(0.8F, 0.8F, 0.8F);
+            SHIP_WHEEL_MODEL.resetToDefaultPose();
+            SHIP_WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(SHIP_WHEEL_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON) {
