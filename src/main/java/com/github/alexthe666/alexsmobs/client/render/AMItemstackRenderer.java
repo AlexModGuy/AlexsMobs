@@ -118,6 +118,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation WINCH_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/anchor_winch.png");
     private static final ModelEndPirateShipWheel SHIP_WHEEL_MODEL = new ModelEndPirateShipWheel();
     private static final ResourceLocation SHIP_WHEEL_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/ship_wheel.png");
+    private static final ModelEndPirateFlag FLAG_MODEL = new ModelEndPirateFlag();
+    private static final ResourceLocation FLAG_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/flag.png");
     private Map<String, Entity> renderedEntites = new HashMap();
 
     public AMItemstackRenderer() {
