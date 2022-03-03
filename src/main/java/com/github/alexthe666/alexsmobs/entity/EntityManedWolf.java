@@ -36,6 +36,8 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -95,7 +97,18 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false, 30));
-    }
+                }
+            }
+        });
+        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1D, 60));
+        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, EntityTasmanianDevil.class)).setAlertOthers());
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Animal.class, 120, false, false, (p_213487_0_) -> {
+            return p_213487_0_ instanceof Chicken || p_213487_0_ instanceof Rabbit;
+        }));
+        this.targetSelector.addGoal(3, new CreatureAITargetItems(this, false, 30));
 
     protected void defineSynchedData() {
         super.defineSynchedData();
