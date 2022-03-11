@@ -61,7 +61,7 @@ public class ItemCosmicCodBucket extends Item implements DispensibleContainerIte
     }
 
     private boolean placeFish(ServerLevel worldIn, ItemStack stack, BlockPos pos) {
-        Entity entity = AMEntityRegistry.COSMIC_COD.spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
+        Entity entity = AMEntityRegistry.COSMIC_COD.get().spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
         if (entity != null && entity instanceof EntityCosmicCod) {
             CompoundTag compoundnbt = stack.getOrCreateTag();
             ((EntityCosmicCod) entity).setFromBucket(true);

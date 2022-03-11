@@ -469,7 +469,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         boolean whiteOther = p_241840_2_ instanceof EntityTiger && ((EntityTiger) p_241840_2_).isWhite();
-        EntityTiger baby = AMEntityRegistry.TIGER.create(p_241840_1_);
+        EntityTiger baby = AMEntityRegistry.TIGER.get().create(p_241840_1_);
         double whiteChance = 0.1D;
         if (this.isWhite() && whiteOther) {
             whiteChance = 0.8D;

@@ -123,7 +123,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.1D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.of(AMItemRegistry.MARACA, Items.SUGAR), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.of(AMItemRegistry.MARACA.get(), Items.SUGAR), false));
         this.goalSelector.addGoal(4, new AvoidEntityGoal(this, EntityCentipedeHead.class, 16, 1.3D, 1.0D));
         this.goalSelector.addGoal(4, new AvoidEntityGoal(this, Player.class, 8, 1.3D, 1.0D) {
             public boolean canUse() {
@@ -203,14 +203,14 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
 
     public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
         ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
-       if (lvt_3_1_.getItem() == AMItemRegistry.MARACA && this.isAlive() && !this.hasMaracas()) {
+       if (lvt_3_1_.getItem() == AMItemRegistry.MARACA.get() && this.isAlive() && !this.hasMaracas()) {
             this.setMaracas(true);
             lvt_3_1_.shrink(1);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else if (lvt_3_1_.getItem() != AMItemRegistry.MARACA && this.isAlive() && this.hasMaracas()) {
+        } else if (lvt_3_1_.getItem() != AMItemRegistry.MARACA.get() && this.isAlive() && this.hasMaracas()) {
             this.setMaracas(false);
             this.setDancing(false);
-            this.spawnAtLocation(new ItemStack(AMItemRegistry.MARACA));
+            this.spawnAtLocation(new ItemStack(AMItemRegistry.MARACA.get()));
             return InteractionResult.SUCCESS;
         } else {
             return super.mobInteract(p_230254_1_, p_230254_2_);
@@ -317,7 +317,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
             laCucarachaTimer = 0;
         }
         if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextEgg <= 0) {
-           ItemEntity dropped = this.spawnAtLocation(AMItemRegistry.COCKROACH_OOTHECA);
+           ItemEntity dropped = this.spawnAtLocation(AMItemRegistry.COCKROACH_OOTHECA.get());
             dropped.setDefaultPickUpDelay();
             this.timeUntilNextEgg = this.random.nextInt(24000) + 24000;
 
@@ -368,7 +368,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        EntityCockroach roach = AMEntityRegistry.COCKROACH.create(serverWorld);
+        EntityCockroach roach = AMEntityRegistry.COCKROACH.get().create(serverWorld);
         roach.setBreaded(true);
         return roach;
     }
@@ -421,7 +421,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
 
     @Override
     public void onGetItem(ItemEntity e) {
-        if (e.getItem().getItem() == AMItemRegistry.MARACA) {
+        if (e.getItem().getItem() == AMItemRegistry.MARACA.get()) {
             this.setMaracas(true);
         } else {
             if (e.getItem().hasContainerItem()) {

@@ -33,9 +33,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class BlockEndPirateShipWheel extends BaseEntityBlock {
+public class BlockEndPirateShipWheel extends BaseEntityBlock implements AMSpecialRenderBlock{
 
-    public static final DirectionProperty FACING = DirectionalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape SOUTH_AABB = Block.box(-2, -2, 0, 18, 18, 3);
     private static final VoxelShape NORTH_AABB = Block.box(-2, -2, 13, 18, 18, 16);
     private static final VoxelShape EAST_AABB = Block.box(0, -2, -2, 3, 18, 18);
@@ -46,7 +46,6 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock {
     public BlockEndPirateShipWheel() {
         super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).lightLevel((i) -> 3).noCollission().requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
-        this.setRegistryName("alexsmobs:end_pirate_ship_wheel");
     }
 
     public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor level, BlockPos pos, BlockPos p_52801_) {
@@ -82,12 +81,6 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock {
             boolean clockwise = false;
             Vec3 offset = hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
             switch (state.getValue(FACING)){
-                case UP:
-                    clockwise = offset.x >= 0.5F;
-                    break;
-                case DOWN:
-                    clockwise = offset.x <= 0.5F;
-                    break;
                 case NORTH:
                     clockwise = offset.x <= 0.5F;
                     break;
@@ -102,6 +95,7 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock {
                     break;
             }
             wheel.rotate(clockwise);
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
@@ -113,7 +107,7 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock {
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getClickedFace());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {
@@ -130,6 +124,6 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
-        return createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL, TileEntityEndPirateShipWheel::commonTick);
+        return createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL.get(), TileEntityEndPirateShipWheel::commonTick);
     }
 }

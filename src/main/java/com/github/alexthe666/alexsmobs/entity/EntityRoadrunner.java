@@ -139,7 +139,7 @@ public class EntityRoadrunner extends Animal {
             this.wingRotDelta = 1.0F;
         }
         if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextFeather <= 0) {
-            this.spawnAtLocation(AMItemRegistry.ROADRUNNER_FEATHER);
+            this.spawnAtLocation(AMItemRegistry.ROADRUNNER_FEATHER.get());
             this.timeUntilNextFeather = this.random.nextInt(24000) + 24000;
         }
         this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
@@ -179,7 +179,7 @@ public class EntityRoadrunner extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.ROADRUNNER.create(p_241840_1_);
+        return AMEntityRegistry.ROADRUNNER.get().create(p_241840_1_);
     }
 
     public static boolean canRoadrunnerSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {

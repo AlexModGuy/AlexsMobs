@@ -300,7 +300,7 @@ public class EntityVoidWorm extends Monster {
                         tail = true;
                         scale = scale * 0.85F;
                     }
-                    EntityVoidWormPart part = new EntityVoidWormPart(AMEntityRegistry.VOID_WORM_PART, partParent,  1.0F + (scale * (tail ? 0.65F : 0.3F)) + (i == 0 ? 0.8F : 0), 180, i == 0 ? -0.0F : i == segments - tailstart ? -0.3F : 0);
+                    EntityVoidWormPart part = new EntityVoidWormPart(AMEntityRegistry.VOID_WORM_PART.get(), partParent,  1.0F + (scale * (tail ? 0.65F : 0.3F)) + (i == 0 ? 0.8F : 0), 180, i == 0 ? -0.0F : i == segments - tailstart ? -0.3F : 0);
                     part.setParent(partParent);
                     if (updatePostSummon) {
                         part.setPortalTicks(i * 2);
@@ -542,7 +542,7 @@ public class EntityVoidWorm extends Monster {
                 BlockHitResult result1 = (BlockHitResult) result;
                 vec = vec.add(net.minecraft.world.phys.Vec3.atLowerCornerOf(result1.getDirection().getNormal()));
             }
-            EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(level);
+            EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(level);
             portal.setPos(vec.x, vec.y, vec.z);
             Vec3 dirVec = vec.subtract(this.position());
             Direction dir = Direction.getNearest(dirVec.x, dirVec.y, dirVec.z);

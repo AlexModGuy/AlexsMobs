@@ -31,7 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class BlockEndPirateAnchorWinch extends BaseEntityBlock {
+public class BlockEndPirateAnchorWinch extends BaseEntityBlock implements AMSpecialRenderBlock{
 
     public static final BooleanProperty EASTORWEST = BooleanProperty.create("eastorwest");
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -40,7 +40,6 @@ public class BlockEndPirateAnchorWinch extends BaseEntityBlock {
 
     protected BlockEndPirateAnchorWinch() {
         super(Properties.of(Material.STONE, MaterialColor.COLOR_PURPLE).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
-        this.setRegistryName("alexsmobs:end_pirate_anchor_winch");
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(POWERED, Boolean.valueOf(false)));
     }
 
@@ -92,6 +91,6 @@ public class BlockEndPirateAnchorWinch extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState state, BlockEntityType<T> p_152182_) {
-        return createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH, TileEntityEndPirateAnchorWinch::commonTick);
+        return createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), TileEntityEndPirateAnchorWinch::commonTick);
     }
 }

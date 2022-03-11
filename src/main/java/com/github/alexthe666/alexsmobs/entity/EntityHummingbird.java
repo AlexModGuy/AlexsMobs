@@ -230,7 +230,7 @@ public class EntityHummingbird extends Animal {
 
     private List<BlockPos> getNearbyFeeders(BlockPos blockpos, ServerLevel world, int range) {
         PoiManager pointofinterestmanager = world.getPoiManager();
-        Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.HUMMINGBIRD_FEEDER.getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
+        Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.HUMMINGBIRD_FEEDER.get().getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
         return stream.collect(Collectors.toList());
     }
 
@@ -332,7 +332,7 @@ public class EntityHummingbird extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.HUMMINGBIRD.create(serverWorld);
+        return AMEntityRegistry.HUMMINGBIRD.get().create(serverWorld);
     }
 
     public static <T extends Mob> boolean canHummingbirdSpawn(EntityType<EntityHummingbird> hummingbird, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, Random random) {

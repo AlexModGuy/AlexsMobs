@@ -240,10 +240,10 @@ public class ClientEvents {
         LivingEntity player = (LivingEntity) event.getEntityIn();
         float f = Minecraft.getInstance().getFrameTime();
         boolean leftHand = false;
-        boolean usingLasso = player.isUsingItem() && player.getUseItem().is(AMItemRegistry.VINE_LASSO);
-        if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.VINE_LASSO) {
+        boolean usingLasso = player.isUsingItem() && player.getUseItem().is(AMItemRegistry.VINE_LASSO.get());
+        if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.VINE_LASSO.get()) {
             leftHand = player.getMainArm() == HumanoidArm.LEFT;
-        } else if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.VINE_LASSO) {
+        } else if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.VINE_LASSO.get()) {
             leftHand = player.getMainArm() != HumanoidArm.LEFT;
         }
         if (leftHand && event.isLeftHand() && usingLasso) {
@@ -268,9 +268,9 @@ public class ClientEvents {
         if (!Minecraft.getInstance().player.getPassengers().isEmpty() && event.getHand() == InteractionHand.MAIN_HAND) {
             Player player = Minecraft.getInstance().player;
             boolean leftHand = false;
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE) {
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get()) {
                 leftHand = player.getMainArm() == HumanoidArm.LEFT;
-            } else if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE) {
+            } else if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get()) {
                 leftHand = player.getMainArm() != HumanoidArm.LEFT;
             }
             for (Entity entity : player.getPassengers()) {
@@ -293,7 +293,7 @@ public class ClientEvents {
                 }
             }
         }
-        if (Minecraft.getInstance().player.getUseItem().getItem() == AMItemRegistry.DIMENSIONAL_CARVER && event.getItemStack().getItem() == AMItemRegistry.DIMENSIONAL_CARVER) {
+        if (Minecraft.getInstance().player.getUseItem().getItem() == AMItemRegistry.DIMENSIONAL_CARVER.get() && event.getItemStack().getItem() == AMItemRegistry.DIMENSIONAL_CARVER.get()) {
             PoseStack matrixStackIn = event.getPoseStack();
             matrixStackIn.pushPose();
             ItemInHandRenderer renderer = Minecraft.getInstance().getItemInHandRenderer();

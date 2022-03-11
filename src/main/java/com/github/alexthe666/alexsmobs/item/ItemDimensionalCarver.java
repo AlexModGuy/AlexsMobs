@@ -111,7 +111,7 @@ public class ItemDimensionalCarver extends Item {
             }
             if (count == 1 && !player.level.isClientSide) {
                 player.playSound(SoundEvents.GLASS_BREAK, 1, 0.5F);
-                EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(player.level);
+                EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(player.level);
                 portal.setPos(x, y, z);
                 Direction dir = Direction.orderedByNearest(player)[0].getOpposite();
                 if (dir == Direction.UP) {

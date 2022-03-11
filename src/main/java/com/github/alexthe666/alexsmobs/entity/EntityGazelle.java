@@ -116,7 +116,7 @@ public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == Items.WHEAT || stack.getItem() == AMItemRegistry.ACACIA_BLOSSOM;
+        return stack.getItem() == Items.WHEAT || stack.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get();
     }
 
     @Override
@@ -192,7 +192,7 @@ public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.GAZELLE.create(p_241840_1_);
+        return AMEntityRegistry.GAZELLE.get().create(p_241840_1_);
     }
 
     @Override

@@ -33,15 +33,15 @@ public class EntityTossedItem extends ThrowableItemProjectile {
     }
 
     public EntityTossedItem(Level worldIn, LivingEntity throwerIn) {
-        super(AMEntityRegistry.TOSSED_ITEM, throwerIn, worldIn);
+        super(AMEntityRegistry.TOSSED_ITEM.get(), throwerIn, worldIn);
     }
 
     public EntityTossedItem(Level worldIn, double x, double y, double z) {
-        super(AMEntityRegistry.TOSSED_ITEM, x, y, z, worldIn);
+        super(AMEntityRegistry.TOSSED_ITEM.get(), x, y, z, worldIn);
     }
 
     public EntityTossedItem(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.TOSSED_ITEM, world);
+        this(AMEntityRegistry.TOSSED_ITEM.get(), world);
     }
 
     @Override
@@ -138,6 +138,6 @@ public class EntityTossedItem extends ThrowableItemProjectile {
     }
 
     protected Item getDefaultItem() {
-        return isDart() ? AMItemRegistry.ANCIENT_DART : Items.COBBLESTONE;
+        return isDart() ? AMItemRegistry.ANCIENT_DART.get() : Items.COBBLESTONE;
     }
 }

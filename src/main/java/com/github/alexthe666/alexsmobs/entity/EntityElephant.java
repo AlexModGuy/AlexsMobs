@@ -221,7 +221,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         this.goalSelector.addGoal(2, new EntityElephant.PanicGoal());
         this.goalSelector.addGoal(2, new ElephantAIVillagerRide(this, 1D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(AMItemRegistry.ACACIA_BLOSSOM), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(AMItemRegistry.ACACIA_BLOSSOM.get()), false));
         this.goalSelector.addGoal(5, new ElephantAIForageLeaves(this));
         this.goalSelector.addGoal(6, new FollowParentGoal(this, 1D));
         this.goalSelector.addGoal(7, new ElephantAIFollowCaravan(this, 0.5D));
@@ -235,7 +235,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     public boolean isFood(ItemStack stack) {
         Item item = stack.getItem();
-        return isTame() && item == AMItemRegistry.ACACIA_BLOSSOM;
+        return isTame() && item == AMItemRegistry.ACACIA_BLOSSOM.get();
     }
 
     protected void playStepSound(BlockPos pos, BlockState state) {
@@ -327,7 +327,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
             if (this.getAnimation() == ANIMATION_EAT && this.getAnimationTick() == 17) {
                 this.eatItemEffect(this.getMainHandItem());
-                if (this.getMainHandItem().getItem() == AMItemRegistry.ACACIA_BLOSSOM && !this.isTame() && (!isTusked() || isBaby()) && blossomThrowerUUID != null) {
+                if (this.getMainHandItem().getItem() == AMItemRegistry.ACACIA_BLOSSOM.get() && !this.isTame() && (!isTusked() || isBaby()) && blossomThrowerUUID != null) {
                     if (random.nextInt(3) == 0) {
                         this.setTame(true);
                         this.setOwnerUUID(blossomThrowerUUID);
@@ -532,7 +532,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             rippedStack.setCount(1);
             stack.shrink(1);
             this.setItemInHand(InteractionHand.MAIN_HAND, rippedStack);
-            if (rippedStack.getItem() == AMItemRegistry.ACACIA_BLOSSOM) {
+            if (rippedStack.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get()) {
                 blossomThrowerUUID = player.getUUID();
             }
             return InteractionResult.SUCCESS;
@@ -641,7 +641,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        EntityElephant baby = AMEntityRegistry.ELEPHANT.create(serverWorld);
+        EntityElephant baby = AMEntityRegistry.ELEPHANT.get().create(serverWorld);
         baby.setTusked(this.getNearestTusked(level, 15) == null || random.nextInt(2) == 0);
         return baby;
     }
@@ -826,7 +826,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getAllTags().getTag(AMTagRegistry.ELEPHANT_FOODSTUFFS).contains(stack.getItem()) || stack.getItem() == AMItemRegistry.ACACIA_BLOSSOM;
+        return ItemTags.getAllTags().getTag(AMTagRegistry.ELEPHANT_FOODSTUFFS).contains(stack.getItem()) || stack.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get();
     }
 
     @Override
@@ -836,7 +836,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
-        if (duplicate.getItem() == AMItemRegistry.ACACIA_BLOSSOM) {
+        if (duplicate.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get()) {
             blossomThrowerUUID = e.getThrower();
         } else {
             blossomThrowerUUID = null;

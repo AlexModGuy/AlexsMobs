@@ -37,7 +37,6 @@ public class BlockBisonCarpet extends CarpetBlock {
 
     public BlockBisonCarpet() {
         super(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_BROWN).strength(0.6F, 1.0F).sound(SoundType.WOOL));
-        this.setRegistryName("alexsmobs:bison_carpet");
     }
 
     public VoxelShape getVisualShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {

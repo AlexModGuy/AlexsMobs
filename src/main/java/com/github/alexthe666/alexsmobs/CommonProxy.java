@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs;
 
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.misc.*;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import com.github.alexthe666.citadel.server.item.CitadelRecipes;
@@ -44,6 +45,7 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerRecipes(RegistryEvent.Register<RecipeSerializer<?>> event) {
+        AMEffectRegistry.registerRecipes();
         if(AMConfig.mimicreamRepair){
             MIMICREAM_RECIPE = new SimpleRecipeSerializer<>(RecipeMimicreamRepair::new);
             MIMICREAM_RECIPE.setRegistryName(new ResourceLocation("alexsmobs:mimicream_repair_recipe"));

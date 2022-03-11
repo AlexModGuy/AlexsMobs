@@ -88,7 +88,7 @@ public class EntityStradpole extends WaterAnimal {
     }
 
     protected ItemStack getFishBucket(){
-        ItemStack stack = new ItemStack(AMItemRegistry.STRADPOLE_BUCKET);
+        ItemStack stack = new ItemStack(AMItemRegistry.STRADPOLE_BUCKET.get());
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
         }
@@ -97,12 +97,12 @@ public class EntityStradpole extends WaterAnimal {
 
     protected InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
         ItemStack itemstack = p_230254_1_.getItemInHand(p_230254_2_);
-        if(itemstack.getItem() == AMItemRegistry.MOSQUITO_LARVA){
+        if(itemstack.getItem() == AMItemRegistry.MOSQUITO_LARVA.get()){
             if(!p_230254_1_.isCreative()){
                 itemstack.shrink(1);
             }
             if(random.nextFloat() < 0.45F){
-                EntityStraddler straddler = AMEntityRegistry.STRADDLER.create(level);
+                EntityStraddler straddler = AMEntityRegistry.STRADDLER.get().create(level);
                 straddler.copyPosition(this);
                 if(!level.isClientSide){
                     level.addFreshEntity(straddler);

@@ -45,7 +45,6 @@ public class BlockCrocodileEgg extends Block {
     public BlockCrocodileEgg() {
         super(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.SAND).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(HATCH, Integer.valueOf(0)).setValue(EGGS, Integer.valueOf(1)));
-        this.setRegistryName("alexsmobs:crocodile_egg");
     }
 
     public static boolean hasProperHabitat(BlockGetter reader, BlockPos blockReader) {
@@ -112,7 +111,7 @@ public class BlockCrocodileEgg extends Block {
                 worldIn.removeBlock(pos, false);
                 for (int j = 0; j < state.getValue(EGGS); ++j) {
                     worldIn.levelEvent(2001, pos, Block.getId(state));
-                    EntityCrocodile turtleentity = AMEntityRegistry.CROCODILE.create(worldIn);
+                    EntityCrocodile turtleentity = AMEntityRegistry.CROCODILE.get().create(worldIn);
                     turtleentity.setAge(-24000);
                     turtleentity.restrictTo(pos, 20);
                     turtleentity.moveTo((double) pos.getX() + 0.3D + (double) j * 0.2D, pos.getY(), (double) pos.getZ() + 0.3D, 0.0F, 0.0F);

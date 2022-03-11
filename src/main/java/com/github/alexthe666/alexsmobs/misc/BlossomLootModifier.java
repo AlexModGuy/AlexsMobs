@@ -38,7 +38,7 @@ public class BlossomLootModifier extends LootModifier {
             int bananaStep = (int)Math.min(AMConfig.blossomChance * 0.1F, 0);
             int bananaRarity = AMConfig.blossomChance - (bonusLevel * bananaStep);
             if (bananaRarity < 1 || random.nextInt(bananaRarity) == 0) {
-                generatedLoot.add(new ItemStack(AMItemRegistry.ACACIA_BLOSSOM));
+                generatedLoot.add(new ItemStack(AMItemRegistry.ACACIA_BLOSSOM.get()));
             }
         }
         return generatedLoot;

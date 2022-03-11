@@ -272,7 +272,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
 
     private List<BlockPos> getNearbyBeacons(BlockPos blockpos, ServerLevel world, int range) {
         PoiManager pointofinterestmanager = world.getPoiManager();
-        Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.BEACON.getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
+        Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.BEACON.get().getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
         return stream.collect(Collectors.toList());
     }
 

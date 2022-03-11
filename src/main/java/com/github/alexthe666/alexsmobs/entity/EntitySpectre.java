@@ -105,7 +105,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new TemptHeartGoal(this, 1.0D, Ingredient.of(AMItemRegistry.SOUL_HEART), false));
+        this.goalSelector.addGoal(1, new TemptHeartGoal(this, 1.0D, Ingredient.of(AMItemRegistry.SOUL_HEART.get()), false));
         this.goalSelector.addGoal(2, new FlyGoal(this));
     }
 

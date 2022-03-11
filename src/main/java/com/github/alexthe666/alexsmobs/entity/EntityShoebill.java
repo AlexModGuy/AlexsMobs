@@ -293,7 +293,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
 
     public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
         ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
-         if (lvt_3_1_.getItem() == AMBlockRegistry.TERRAPIN_EGG.asItem() && this.isAlive()) {
+         if (lvt_3_1_.getItem() == AMBlockRegistry.TERRAPIN_EGG.get().asItem() && this.isAlive()) {
              if(this.luckLevel < 10) {
                  luckLevel = Mth.clamp(luckLevel + 1, 0, 10);
                  for (int i = 0; i < 6 + random.nextInt(3); i++) {
@@ -311,7 +311,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
                  }
                  return InteractionResult.SUCCESS;
              }
-         } else if (lvt_3_1_.getItem() == AMBlockRegistry.CROCODILE_EGG.asItem() && this.isAlive()) {
+         } else if (lvt_3_1_.getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem() && this.isAlive()) {
              if(this.lureLevel < 10){
                  lureLevel = Mth.clamp(lureLevel + 1, 0, 10);
                  fishingCooldown = Mth.clamp(fishingCooldown - 200, 200, 2400);
@@ -340,12 +340,12 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.SHOEBILL.create(serverWorld);
+        return AMEntityRegistry.SHOEBILL.get().create(serverWorld);
     }
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getAllTags().getTag(AMTagRegistry.SHOEBILL_FOODSTUFFS).contains(stack.getItem()) || stack.getItem() == AMItemRegistry.BLOBFISH && luckLevel < 10 || stack.getItem() == AMBlockRegistry.CROCODILE_EGG.asItem() && lureLevel < 10;
+        return ItemTags.getAllTags().getTag(AMTagRegistry.SHOEBILL_FOODSTUFFS).contains(stack.getItem()) || stack.getItem() == AMItemRegistry.BLOBFISH.get() && luckLevel < 10 || stack.getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem() && lureLevel < 10;
     }
 
     public void resetFishingCooldown(){
@@ -354,10 +354,10 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
     @Override
     public void onGetItem(ItemEntity e) {
         this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
-        if(e.getItem().getItem() == AMItemRegistry.BLOBFISH){
+        if(e.getItem().getItem() == AMItemRegistry.BLOBFISH.get()){
             luckLevel = Mth.clamp(luckLevel + 1, 0, 10);
         }
-        if(e.getItem().getItem() == AMBlockRegistry.CROCODILE_EGG.asItem()){
+        if(e.getItem().getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem()){
             lureLevel = Mth.clamp(lureLevel + 1, 0, 10);
         }
         this.heal(5);

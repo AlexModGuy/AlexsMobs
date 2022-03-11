@@ -35,77 +35,77 @@ import java.util.Map;
 public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
     private static List<Pair<EntityType, Float>> MOB_ICONS = Util.make(Lists.newArrayList(), (list) -> {
-        list.add(new Pair<>(AMEntityRegistry.GRIZZLY_BEAR, 0.6F));
-        list.add(new Pair<>(AMEntityRegistry.ROADRUNNER, 0.8F));
-        list.add(new Pair<>(AMEntityRegistry.BONE_SERPENT, 0.55F));
-        list.add(new Pair<>(AMEntityRegistry.GAZELLE, 0.6F));
-        list.add(new Pair<>(AMEntityRegistry.CROCODILE, 0.3F));
-        list.add(new Pair<>(AMEntityRegistry.FLY, 1.3F));
-        list.add(new Pair<>(AMEntityRegistry.HUMMINGBIRD, 1.5F));
-        list.add(new Pair<>(AMEntityRegistry.ORCA, 0.2F));
-        list.add(new Pair<>(AMEntityRegistry.SUNBIRD, 0.3F));
-        list.add(new Pair<>(AMEntityRegistry.GORILLA, 0.85F));
-        list.add(new Pair<>(AMEntityRegistry.CRIMSON_MOSQUITO, 0.6F));
-        list.add(new Pair<>(AMEntityRegistry.RATTLESNAKE, 0.6F));
-        list.add(new Pair<>(AMEntityRegistry.ENDERGRADE, 0.8F));
-        list.add(new Pair<>(AMEntityRegistry.HAMMERHEAD_SHARK, 0.5F));
-        list.add(new Pair<>(AMEntityRegistry.LOBSTER, 0.85F));
-        list.add(new Pair<>(AMEntityRegistry.KOMODO_DRAGON, 0.5F));
-        list.add(new Pair<>(AMEntityRegistry.CAPUCHIN_MONKEY, 0.85F));
-        list.add(new Pair<>(AMEntityRegistry.CENTIPEDE_HEAD, 0.65F));
-        list.add(new Pair<>(AMEntityRegistry.WARPED_TOAD, 0.6F));
-        list.add(new Pair<>(AMEntityRegistry.MOOSE, 0.38F));
-        list.add(new Pair<>(AMEntityRegistry.MIMICUBE, 0.95F));
-        list.add(new Pair<>(AMEntityRegistry.RACCOON, 0.8F));
-        list.add(new Pair<>(AMEntityRegistry.BLOBFISH, 1F));
-        list.add(new Pair<>(AMEntityRegistry.SEAL, 0.7F));
-        list.add(new Pair<>(AMEntityRegistry.COCKROACH, 1F));
-        list.add(new Pair<>(AMEntityRegistry.SHOEBILL, 0.8F));
-        list.add(new Pair<>(AMEntityRegistry.ELEPHANT, 0.3F));
-        list.add(new Pair<>(AMEntityRegistry.SOUL_VULTURE, 0.8F));
-        list.add(new Pair<>(AMEntityRegistry.SNOW_LEOPARD, 0.7F));
-        list.add(new Pair<>(AMEntityRegistry.SPECTRE, 0.3F));
-        list.add(new Pair<>(AMEntityRegistry.CROW, 1.3F));
-        list.add(new Pair<>(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE, 0.65F));
-        list.add(new Pair<>(AMEntityRegistry.MUNGUS, 0.7F));
-        list.add(new Pair<>(AMEntityRegistry.MANTIS_SHRIMP, 0.7F));
-        list.add(new Pair<>(AMEntityRegistry.GUSTER, 0.55F));
-        list.add(new Pair<>(AMEntityRegistry.WARPED_MOSCO, 0.35F));
-        list.add(new Pair<>(AMEntityRegistry.STRADDLER, 0.38F));
-        list.add(new Pair<>(AMEntityRegistry.STRADPOLE, 0.9F));
-        list.add(new Pair<>(AMEntityRegistry.EMU, 0.7F));
-        list.add(new Pair<>(AMEntityRegistry.PLATYPUS, 1F));
-        list.add(new Pair<>(AMEntityRegistry.DROPBEAR, 0.65F));
-        list.add(new Pair<>(AMEntityRegistry.TASMANIAN_DEVIL, 1.2F));
-        list.add(new Pair<>(AMEntityRegistry.KANGAROO, 0.7F));
-        list.add(new Pair<>(AMEntityRegistry.CACHALOT_WHALE, 0.1F));
-        list.add(new Pair<>(AMEntityRegistry.LEAFCUTTER_ANT, 1.2F));
-        list.add(new Pair<>(AMEntityRegistry.ENDERIOPHAGE, 0.65F));
-        list.add(new Pair<>(AMEntityRegistry.BALD_EAGLE, 0.85F));
-        list.add(new Pair<>(AMEntityRegistry.TIGER, 0.65F));
-        list.add(new Pair<>(AMEntityRegistry.TARANTULA_HAWK, 0.7F));
-        list.add(new Pair<>(AMEntityRegistry.VOID_WORM, 0.3F));
-        list.add(new Pair<>(AMEntityRegistry.FRILLED_SHARK, 0.65F));
-        list.add(new Pair<>(AMEntityRegistry.MIMIC_OCTOPUS, 0.7F));
-        list.add(new Pair<>(AMEntityRegistry.SEAGULL, 1.2F));
-        list.add(new Pair<>(AMEntityRegistry.FROSTSTALKER, 0.8F));
-        list.add(new Pair<>(AMEntityRegistry.TUSKLIN, 0.6F));
-        list.add(new Pair<>(AMEntityRegistry.LAVIATHAN, 0.2F));
-        list.add(new Pair<>(AMEntityRegistry.COSMAW, 0.32F));
-        list.add(new Pair<>(AMEntityRegistry.TOUCAN, 1.3F));
-        list.add(new Pair<>(AMEntityRegistry.MANED_WOLF, 0.85F));
-        list.add(new Pair<>(AMEntityRegistry.ANACONDA, 1.0F));
-        list.add(new Pair<>(AMEntityRegistry.ANTEATER, 0.5F));
-        list.add(new Pair<>(AMEntityRegistry.ROCKY_ROLLER, 0.65F));
-        list.add(new Pair<>(AMEntityRegistry.FLUTTER, 1.15F));
-        list.add(new Pair<>(AMEntityRegistry.GELADA_MONKEY, 0.65F));
-        list.add(new Pair<>(AMEntityRegistry.JERBOA, 1.3F));
-        list.add(new Pair<>(AMEntityRegistry.TERRAPIN, 1.1F));
-        list.add(new Pair<>(AMEntityRegistry.COMB_JELLY, 1.0F));
-        list.add(new Pair<>(AMEntityRegistry.COSMIC_COD, 1.3F));
-        list.add(new Pair<>(AMEntityRegistry.BUNFUNGUS, 0.5F));
-        list.add(new Pair<>(AMEntityRegistry.BISON, 0.45F));
-        list.add(new Pair<>(AMEntityRegistry.GIANT_SQUID, 0.3F));
+        list.add(new Pair<>(AMEntityRegistry.GRIZZLY_BEAR.get(),  0.6F));
+        list.add(new Pair<>(AMEntityRegistry.ROADRUNNER.get(),  0.8F));
+        list.add(new Pair<>(AMEntityRegistry.BONE_SERPENT.get(),  0.55F));
+        list.add(new Pair<>(AMEntityRegistry.GAZELLE.get(),  0.6F));
+        list.add(new Pair<>(AMEntityRegistry.CROCODILE.get(),  0.3F));
+        list.add(new Pair<>(AMEntityRegistry.FLY.get(),  1.3F));
+        list.add(new Pair<>(AMEntityRegistry.HUMMINGBIRD.get(),  1.5F));
+        list.add(new Pair<>(AMEntityRegistry.ORCA.get(),  0.2F));
+        list.add(new Pair<>(AMEntityRegistry.SUNBIRD.get(),  0.3F));
+        list.add(new Pair<>(AMEntityRegistry.GORILLA.get(),  0.85F));
+        list.add(new Pair<>(AMEntityRegistry.CRIMSON_MOSQUITO.get(),  0.6F));
+        list.add(new Pair<>(AMEntityRegistry.RATTLESNAKE.get(),  0.6F));
+        list.add(new Pair<>(AMEntityRegistry.ENDERGRADE.get(),  0.8F));
+        list.add(new Pair<>(AMEntityRegistry.HAMMERHEAD_SHARK.get(),  0.5F));
+        list.add(new Pair<>(AMEntityRegistry.LOBSTER.get(),  0.85F));
+        list.add(new Pair<>(AMEntityRegistry.KOMODO_DRAGON.get(),  0.5F));
+        list.add(new Pair<>(AMEntityRegistry.CAPUCHIN_MONKEY.get(),  0.85F));
+        list.add(new Pair<>(AMEntityRegistry.CENTIPEDE_HEAD.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.WARPED_TOAD.get(),  0.6F));
+        list.add(new Pair<>(AMEntityRegistry.MOOSE.get(),  0.38F));
+        list.add(new Pair<>(AMEntityRegistry.MIMICUBE.get(),  0.95F));
+        list.add(new Pair<>(AMEntityRegistry.RACCOON.get(),  0.8F));
+        list.add(new Pair<>(AMEntityRegistry.BLOBFISH.get(),  1F));
+        list.add(new Pair<>(AMEntityRegistry.SEAL.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.COCKROACH.get(),  1F));
+        list.add(new Pair<>(AMEntityRegistry.SHOEBILL.get(),  0.8F));
+        list.add(new Pair<>(AMEntityRegistry.ELEPHANT.get(),  0.3F));
+        list.add(new Pair<>(AMEntityRegistry.SOUL_VULTURE.get(),  0.8F));
+        list.add(new Pair<>(AMEntityRegistry.SNOW_LEOPARD.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.SPECTRE.get(),  0.3F));
+        list.add(new Pair<>(AMEntityRegistry.CROW.get(),  1.3F));
+        list.add(new Pair<>(AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.MUNGUS.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.MANTIS_SHRIMP.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.GUSTER.get(),  0.55F));
+        list.add(new Pair<>(AMEntityRegistry.WARPED_MOSCO.get(),  0.35F));
+        list.add(new Pair<>(AMEntityRegistry.STRADDLER.get(),  0.38F));
+        list.add(new Pair<>(AMEntityRegistry.STRADPOLE.get(),  0.9F));
+        list.add(new Pair<>(AMEntityRegistry.EMU.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.PLATYPUS.get(),  1F));
+        list.add(new Pair<>(AMEntityRegistry.DROPBEAR.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.TASMANIAN_DEVIL.get(),  1.2F));
+        list.add(new Pair<>(AMEntityRegistry.KANGAROO.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.CACHALOT_WHALE.get(),  0.1F));
+        list.add(new Pair<>(AMEntityRegistry.LEAFCUTTER_ANT.get(),  1.2F));
+        list.add(new Pair<>(AMEntityRegistry.ENDERIOPHAGE.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.BALD_EAGLE.get(),  0.85F));
+        list.add(new Pair<>(AMEntityRegistry.TIGER.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.TARANTULA_HAWK.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.VOID_WORM.get(),  0.3F));
+        list.add(new Pair<>(AMEntityRegistry.FRILLED_SHARK.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.MIMIC_OCTOPUS.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.SEAGULL.get(),  1.2F));
+        list.add(new Pair<>(AMEntityRegistry.FROSTSTALKER.get(),  0.8F));
+        list.add(new Pair<>(AMEntityRegistry.TUSKLIN.get(),  0.6F));
+        list.add(new Pair<>(AMEntityRegistry.LAVIATHAN.get(),  0.2F));
+        list.add(new Pair<>(AMEntityRegistry.COSMAW.get(),  0.32F));
+        list.add(new Pair<>(AMEntityRegistry.TOUCAN.get(),  1.3F));
+        list.add(new Pair<>(AMEntityRegistry.MANED_WOLF.get(),  0.85F));
+        list.add(new Pair<>(AMEntityRegistry.ANACONDA.get(),  1.0F));
+        list.add(new Pair<>(AMEntityRegistry.ANTEATER.get(),  0.5F));
+        list.add(new Pair<>(AMEntityRegistry.ROCKY_ROLLER.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.FLUTTER.get(),  1.15F));
+        list.add(new Pair<>(AMEntityRegistry.GELADA_MONKEY.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.JERBOA.get(),  1.3F));
+        list.add(new Pair<>(AMEntityRegistry.TERRAPIN.get(),  1.1F));
+        list.add(new Pair<>(AMEntityRegistry.COMB_JELLY.get(),  1.0F));
+        list.add(new Pair<>(AMEntityRegistry.COSMIC_COD.get(),  1.3F));
+        list.add(new Pair<>(AMEntityRegistry.BUNFUNGUS.get(),  0.5F));
+        list.add(new Pair<>(AMEntityRegistry.BISON.get(),  0.45F));
+        list.add(new Pair<>(AMEntityRegistry.GIANT_SQUID.get(),  0.3F));
     });
     public static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
@@ -194,14 +194,14 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
     @Override
     public void renderByItem(ItemStack itemStackIn, ItemTransforms.TransformType p_239207_2_, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        if(itemStackIn.getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP){
+        if(itemStackIn.getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP.get()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.4F, -0.75F, 0.5F);
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
             SHIELD_OF_THE_DEEP_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(SHIELD_OF_THE_DEEP_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        if(itemStackIn.getItem() == AMItemRegistry.MYSTERIOUS_WORM){
+        if(itemStackIn.getItem() == AMItemRegistry.MYSTERIOUS_WORM.get()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, -2F, 0);
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
@@ -209,15 +209,15 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             MYTERIOUS_WORM_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(MYTERIOUS_WORM_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE){
+        if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE.get()){
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             if(p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND.get()), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }else{
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY.get()), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
-        if(itemStackIn.getItem() == AMItemRegistry.VINE_LASSO){
+        if(itemStackIn.getItem() == AMItemRegistry.VINE_LASSO.get()){
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             if(p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
                 if(ItemVineLasso.isItemInUse(itemStackIn)){
@@ -226,12 +226,12 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     }
                     matrixStackIn.mulPose(Vector3f.YP.rotation(Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getFrameTime()));
                 }
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND.get()), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }else{
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY.get()), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
-        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR.asItem()){
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR.get().asItem()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(1F, 0F, 0);
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180));
@@ -240,7 +240,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(ANCHOR_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR_WINCH.asItem()){
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR_WINCH.get().asItem()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(1, -1F, 0);
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
@@ -248,7 +248,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             WINCH_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(WINCH_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_SHIP_WHEEL.asItem()){
+        if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_SHIP_WHEEL.get().asItem()){
             matrixStackIn.pushPose();
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90));
             matrixStackIn.scale(0.8F, 0.8F, 0.8F);
@@ -256,7 +256,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             SHIP_WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(SHIP_WHEEL_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON) {
+        if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON.get()) {
             Entity fakeEntity = null;
             int entityIndex = (Minecraft.getInstance().player.tickCount / 40) % (MOB_ICONS.size());
             float scale = 1.0F;

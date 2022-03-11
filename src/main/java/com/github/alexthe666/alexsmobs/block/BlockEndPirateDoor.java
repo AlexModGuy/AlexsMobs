@@ -54,7 +54,6 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
 
     public BlockEndPirateDoor() {
         super(Properties.of(Material.GLASS).noOcclusion().sound(SoundType.GLASS).lightLevel((state) -> 3).requiresCorrectToolForDrops().strength(1.5F));
-        this.setRegistryName("alexsmobs:end_pirate_door");
         this.registerDefaultState(this.stateDefinition.any().setValue(SEGMENT, 0).setValue(OPEN, false).setValue(HINGE, DoorHingeSide.RIGHT).setValue(HORIZONTAL_FACING, Direction.NORTH));
     }
 
@@ -235,7 +234,7 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState state, BlockEntityType<T> p_152182_) {
-        return state.getValue(SEGMENT) == 0 ? createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_DOOR, TileEntityEndPirateDoor::commonTick) : null;
+        return state.getValue(SEGMENT) == 0 ? createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_DOOR.get(), TileEntityEndPirateDoor::commonTick) : null;
     }
 
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {

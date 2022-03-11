@@ -216,7 +216,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
         if (timeUntilAntlerDrop == 0) {
             if (this.isAntlered()) {
                 this.setAntlered(false);
-                this.spawnAtLocation(new ItemStack(AMItemRegistry.MOOSE_ANTLER));
+                this.spawnAtLocation(new ItemStack(AMItemRegistry.MOOSE_ANTLER.get()));
                 timeUntilAntlerDrop = 2 * DAY + this.random.nextInt(3) * DAY;
             } else {
                 this.setAntlered(true);
@@ -412,7 +412,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.MOOSE.create(serverWorld);
+        return AMEntityRegistry.MOOSE.get().create(serverWorld);
     }
 
     public boolean canJostleWith(EntityMoose moose) {

@@ -39,7 +39,6 @@ public class BlockVoidWormBeak extends BaseEntityBlock {
     public BlockVoidWormBeak() {
         super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).noCollission().requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
-        this.setRegistryName("alexsmobs:void_worm_beak");
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
@@ -93,6 +92,6 @@ public class BlockVoidWormBeak extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
-        return createTickerHelper(p_152182_, AMTileEntityRegistry.VOID_WORM_BEAK, TileEntityVoidWormBeak::commonTick);
+        return createTickerHelper(p_152182_, AMTileEntityRegistry.VOID_WORM_BEAK.get(), TileEntityVoidWormBeak::commonTick);
     }
 }

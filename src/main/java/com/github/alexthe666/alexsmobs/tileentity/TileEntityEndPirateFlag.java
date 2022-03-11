@@ -14,7 +14,7 @@ public class TileEntityEndPirateFlag  extends BlockEntity {
     public int ticksExisted;
 
     public TileEntityEndPirateFlag(BlockPos pos, BlockState state) {
-        super(AMTileEntityRegistry.END_PIRATE_FLAG, pos, state);
+        super(AMTileEntityRegistry.END_PIRATE_FLAG.get(), pos, state);
     }
 
     public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityEndPirateFlag entity) {

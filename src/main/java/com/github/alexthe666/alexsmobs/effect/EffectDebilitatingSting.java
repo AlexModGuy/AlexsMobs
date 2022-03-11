@@ -71,7 +71,7 @@ public class EffectDebilitatingSting extends MobEffect {
                     while (!entity.level.isEmptyBlock(surface) && surface.getY() < 256) {
                         surface = surface.above();
                     }
-                    EntityTarantulaHawk baby = AMEntityRegistry.TARANTULA_HAWK.create(entity.level);
+                    EntityTarantulaHawk baby = AMEntityRegistry.TARANTULA_HAWK.get().create(entity.level);
                     baby.setBaby(true);
                     baby.setPos(entity.getX(), surface.getY() + 0.1F, entity.getZ());
                     if (!entity.level.isClientSide) {

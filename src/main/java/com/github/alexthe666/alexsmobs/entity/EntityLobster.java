@@ -153,7 +153,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic {
     }
 
     protected ItemStack getFishBucket(){
-        ItemStack stack = new ItemStack(AMItemRegistry.LOBSTER_BUCKET);
+        ItemStack stack = new ItemStack(AMItemRegistry.LOBSTER_BUCKET.get());
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
         }

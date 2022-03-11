@@ -43,13 +43,13 @@ public class EntitySandShot extends Entity {
     }
 
     public EntitySandShot(Level worldIn, EntityGuster p_i47273_2_) {
-        this(AMEntityRegistry.SAND_SHOT, worldIn);
+        this(AMEntityRegistry.SAND_SHOT.get(), worldIn);
         this.setShooter(p_i47273_2_);
         this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth() + 1.0F) * 0.35D * (double) Mth.sin(p_i47273_2_.yBodyRot * ((float) Math.PI / 180F)), p_i47273_2_.getEyeY() + (double) 0.2F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth() + 1.0F) * 0.35D * (double) Mth.cos(p_i47273_2_.yBodyRot * ((float) Math.PI / 180F)));
     }
 
     public EntitySandShot(Level worldIn, LivingEntity p_i47273_2_, boolean right) {
-        this(AMEntityRegistry.SAND_SHOT, worldIn);
+        this(AMEntityRegistry.SAND_SHOT.get(), worldIn);
         this.setShooter(p_i47273_2_);
         float rot = p_i47273_2_.yHeadRot + (right ? 60 : -60);
         this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getEyeY() - (double) 0.2F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.cos(rot * ((float) Math.PI / 180F)));
@@ -57,13 +57,13 @@ public class EntitySandShot extends Entity {
 
     @OnlyIn(Dist.CLIENT)
     public EntitySandShot(Level worldIn, double x, double y, double z, double p_i47274_8_, double p_i47274_10_, double p_i47274_12_) {
-        this(AMEntityRegistry.SAND_SHOT, worldIn);
+        this(AMEntityRegistry.SAND_SHOT.get(), worldIn);
         this.setPos(x, y, z);
         this.setDeltaMovement(p_i47274_8_, p_i47274_10_, p_i47274_12_);
     }
 
     public EntitySandShot(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.SAND_SHOT, world);
+        this(AMEntityRegistry.SAND_SHOT.get(), world);
     }
 
     protected static float lerpRotation(float p_234614_0_, float p_234614_1_) {

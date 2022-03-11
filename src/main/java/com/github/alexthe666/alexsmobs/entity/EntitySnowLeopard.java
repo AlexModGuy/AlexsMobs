@@ -86,7 +86,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == AMItemRegistry.MOOSE_RIBS || stack.getItem() == AMItemRegistry.COOKED_MOOSE_RIBS;
+        return stack.getItem() == AMItemRegistry.MOOSE_RIBS.get() || stack.getItem() == AMItemRegistry.COOKED_MOOSE_RIBS.get();
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {
@@ -162,7 +162,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.SNOW_LEOPARD.create(serverWorld);
+        return AMEntityRegistry.SNOW_LEOPARD.get().create(serverWorld);
     }
 
     public void tick(){

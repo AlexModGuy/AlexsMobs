@@ -160,7 +160,7 @@ public class EntityCrimsonMosquito extends Monster {
     public static boolean canMosquitoSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.below();
         boolean spawnBlock = worldIn.getBlockState(blockpos).canOcclude();
-        return reason == MobSpawnType.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).isValidSpawn(worldIn, blockpos, typeIn)  && isDarkEnoughToSpawn(worldIn, pos, randomIn) && checkMobSpawnRules(AMEntityRegistry.CRIMSON_MOSQUITO, worldIn, reason, pos, randomIn);
+        return reason == MobSpawnType.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).isValidSpawn(worldIn, blockpos, typeIn)  && isDarkEnoughToSpawn(worldIn, pos, randomIn) && checkMobSpawnRules(AMEntityRegistry.CRIMSON_MOSQUITO.get(), worldIn, reason, pos, randomIn);
     }
 
 
@@ -470,7 +470,7 @@ public class EntityCrimsonMosquito extends Monster {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
                 if(sickTicks > 160){
-                    EntityWarpedMosco mosco = AMEntityRegistry.WARPED_MOSCO.create(level);
+                    EntityWarpedMosco mosco = AMEntityRegistry.WARPED_MOSCO.get().create(level);
                     mosco.copyPosition(this);
                     if(!level.isClientSide){
                         mosco.finalizeSpawn((ServerLevelAccessor)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
@@ -532,7 +532,7 @@ public class EntityCrimsonMosquito extends Monster {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
-        if (item == AMItemRegistry.WARPED_MIXTURE && !this.isSick()) {
+        if (item == AMItemRegistry.WARPED_MIXTURE.get() && !this.isSick()) {
             this.spawnAtLocation(item.getContainerItem(itemstack));
             if (!player.isCreative()) {
                 itemstack.shrink(1);

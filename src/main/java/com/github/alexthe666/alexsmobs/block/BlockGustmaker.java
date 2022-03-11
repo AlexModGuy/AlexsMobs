@@ -28,7 +28,6 @@ public class BlockGustmaker extends Block {
     public BlockGustmaker() {
         super(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(TRIGGERED, Boolean.valueOf(false)));
-        this.setRegistryName("alexsmobs:gustmaker");
     }
 
     public static Vec3 getDispensePosition(BlockPos coords, Direction dir) {

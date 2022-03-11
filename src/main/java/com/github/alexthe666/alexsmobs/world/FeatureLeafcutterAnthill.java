@@ -60,15 +60,15 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
         Random chunkSeedRandom = new Random(pos.asLong());
         outOfGround -= chunkSeedRandom.nextInt(1) + 1;
         heightPos = heightPos.offset(-chunkSeedRandom.nextInt(2), 0, -chunkSeedRandom.nextInt(2));
-        if (context.level().getBlockState(heightPos.above(outOfGround + 1)).getBlock() != AMBlockRegistry.LEAFCUTTER_ANTHILL && context.level().getBlockState(heightPos.above(outOfGround - 1)).getBlock() != AMBlockRegistry.LEAFCUTTER_ANTHILL) {
-            context.level().setBlock(heightPos.above(outOfGround), AMBlockRegistry.LEAFCUTTER_ANTHILL.defaultBlockState(), 4);
+        if (context.level().getBlockState(heightPos.above(outOfGround + 1)).getBlock() != AMBlockRegistry.LEAFCUTTER_ANTHILL.get() && context.level().getBlockState(heightPos.above(outOfGround - 1)).getBlock() != AMBlockRegistry.LEAFCUTTER_ANTHILL.get()) {
+            context.level().setBlock(heightPos.above(outOfGround), AMBlockRegistry.LEAFCUTTER_ANTHILL.get().defaultBlockState(), 4);
             BlockEntity tileentity = context.level().getBlockEntity(heightPos.above(outOfGround));
             if (tileentity instanceof TileEntityLeafcutterAnthill) {
                 TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill)tileentity;
                 int j = 3 + chunkSeedRandom.nextInt(3);
                 if(beehivetileentity.hasNoAnts()){
                     for(int k = 0; k < j; ++k) {
-                        EntityLeafcutterAnt beeentity = new EntityLeafcutterAnt(AMEntityRegistry.LEAFCUTTER_ANT, context.level().getLevel());
+                        EntityLeafcutterAnt beeentity = new EntityLeafcutterAnt(AMEntityRegistry.LEAFCUTTER_ANT.get(), context.level().getLevel());
                         beeentity.setQueen(k == 0);
                         beehivetileentity.tryEnterHive(beeentity, false, context.level().getRandom().nextInt(599));
                     }
@@ -101,7 +101,7 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
         int down = context.level().getRandom().nextInt(2) + 1;
         while (i > -down) {
             i--;
-            context.level().setBlock(heightPos.above(i), AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.defaultBlockState(), 4);
+            context.level().setBlock(heightPos.above(i), AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.get().defaultBlockState(), 4);
         }
         float size = chunkSeedRandom.nextInt(1) + 1;
         int lvt_8_1_ = (int) (Math.floor(size) * context.level().getRandom().nextFloat()) + 1;
@@ -113,7 +113,7 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
         while (var12.hasNext()) {
             BlockPos lvt_13_1_ = (BlockPos) var12.next();
             if (lvt_13_1_.distSqr(heightPos) < (double) (radius * radius)) {
-                BlockState block = AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.defaultBlockState();
+                BlockState block = AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.get().defaultBlockState();
                 context.level().setBlock(lvt_13_1_, block, 4);
             }
         }

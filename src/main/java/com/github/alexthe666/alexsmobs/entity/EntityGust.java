@@ -34,11 +34,11 @@ public class EntityGust extends Entity {
     }
 
     public EntityGust(Level worldIn) {
-        this(AMEntityRegistry.GUST, worldIn);
+        this(AMEntityRegistry.GUST.get(), worldIn);
     }
 
     public EntityGust(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.GUST, world);
+        this(AMEntityRegistry.GUST.get(), world);
     }
 
     public void push(Entity entityIn) {

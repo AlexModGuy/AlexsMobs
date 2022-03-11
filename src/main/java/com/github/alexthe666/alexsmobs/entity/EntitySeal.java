@@ -363,13 +363,13 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == AMItemRegistry.LOBSTER_TAIL;
+        return stack.getItem() == AMItemRegistry.LOBSTER_TAIL.get();
     }
 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        EntitySeal seal = AMEntityRegistry.SEAL.create(serverWorld);
+        EntitySeal seal = AMEntityRegistry.SEAL.get().create(serverWorld);
         seal.setArctic(this.isBiomeArctic(serverWorld, this.blockPosition()));
         return seal;
     }

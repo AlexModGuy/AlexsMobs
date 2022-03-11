@@ -73,6 +73,6 @@ public class MungusAITemptMushroom extends Goal {
     }
 
     protected boolean shouldFollow(ItemStack stack) {
-        return mob.shouldFollowMushroom(stack) || stack.getItem() == AMItemRegistry.MUNGAL_SPORES;
+        return mob.shouldFollowMushroom(stack) || stack.getItem() == AMItemRegistry.MUNGAL_SPORES.get();
     }
 }

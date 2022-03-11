@@ -617,7 +617,7 @@ public class EntityGiantSquid extends WaterAnimal {
             if (random.nextFloat() <= 0.3F) {
                 this.setCaptured(false);
                 if(random.nextFloat() < 0.2F){
-                    this.spawnAtLocation(AMItemRegistry.LOST_TENTACLE);
+                    this.spawnAtLocation(AMItemRegistry.LOST_TENTACLE.get());
                 }
                 return true;
             }

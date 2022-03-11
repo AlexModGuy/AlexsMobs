@@ -30,7 +30,7 @@ public class ItemAnimalEgg extends Item {
         worldIn.playSound((Player)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         if (!worldIn.isClientSide) {
             ThrowableItemProjectile eggentity;
-            if(this == AMItemRegistry.EMU_EGG){
+            if(this == AMItemRegistry.EMU_EGG.get()){
                 eggentity = new EntityEmuEgg(worldIn, playerIn);
             }else{
                 eggentity = new EntityCockroachEgg(worldIn, playerIn);

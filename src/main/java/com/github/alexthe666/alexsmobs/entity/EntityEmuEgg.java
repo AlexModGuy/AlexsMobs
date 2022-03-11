@@ -22,15 +22,15 @@ public class EntityEmuEgg extends ThrowableItemProjectile {
     }
 
     public EntityEmuEgg(Level worldIn, LivingEntity throwerIn) {
-        super(AMEntityRegistry.EMU_EGG, throwerIn, worldIn);
+        super(AMEntityRegistry.EMU_EGG.get(), throwerIn, worldIn);
     }
 
     public EntityEmuEgg(Level worldIn, double x, double y, double z) {
-        super(AMEntityRegistry.EMU_EGG, x, y, z, worldIn);
+        super(AMEntityRegistry.EMU_EGG.get(), x, y, z, worldIn);
     }
 
     public EntityEmuEgg(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.EMU_EGG, world);
+        this(AMEntityRegistry.EMU_EGG.get(), world);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class EntityEmuEgg extends ThrowableItemProjectile {
                     lvt_2_1_ = 4;
                 }
                 for (int lvt_3_1_ = 0; lvt_3_1_ < lvt_2_1_; ++lvt_3_1_) {
-                    EntityEmu lvt_4_1_ = AMEntityRegistry.EMU.create(this.level);
+                    EntityEmu lvt_4_1_ = AMEntityRegistry.EMU.get().create(this.level);
                     if(this.random.nextInt(50) == 0){
                         lvt_4_1_.setVariant(2);
                     }else if(random.nextInt(3) == 0){
@@ -77,6 +77,6 @@ public class EntityEmuEgg extends ThrowableItemProjectile {
     }
 
     protected Item getDefaultItem() {
-        return AMItemRegistry.COCKROACH_OOTHECA;
+        return AMItemRegistry.EMU_EGG.get();
     }
 }

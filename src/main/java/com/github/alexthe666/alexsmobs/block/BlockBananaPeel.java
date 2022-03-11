@@ -21,7 +21,6 @@ public class BlockBananaPeel extends BushBlock {
 
     public BlockBananaPeel() {
         super(BlockBehaviour.Properties.of(Material.PLANT).dynamicShape().sound(SoundType.WET_GRASS).noCollission().requiresCorrectToolForDrops().strength(0.2F).friction(0.9999999999F));
-        this.setRegistryName("alexsmobs:banana_peel");
     }
 
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {

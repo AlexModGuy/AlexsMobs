@@ -50,7 +50,7 @@ public class EntityVoidPortal extends Entity {
     }
 
     public EntityVoidPortal(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.VOID_PORTAL, world);
+        this(AMEntityRegistry.VOID_PORTAL.get(), world);
     }
 
     @Override
@@ -204,7 +204,7 @@ public class EntityVoidPortal extends Entity {
     }
 
     public void createAndSetSister(Level world, Direction dir){
-        EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.create(world);
+        EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(world);
         portal.setAttachmentFacing(dir != null ? dir : this.getAttachmentFacing().getOpposite());
         portal.teleportToWithTicket(this.getDestination().getX() + 0.5f, this.getDestination().getY() + 0.5f, this.getDestination().getZ() + 0.5f);
         portal.link(this);

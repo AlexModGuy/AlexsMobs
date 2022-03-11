@@ -43,7 +43,7 @@ public class TileEntityEndPirateAnchor extends BlockEntity {
     );
 
     public TileEntityEndPirateAnchor(BlockPos pos, BlockState state) {
-        super(AMTileEntityRegistry.END_PIRATE_ANCHOR, pos, state);
+        super(AMTileEntityRegistry.END_PIRATE_ANCHOR.get(), pos, state);
     }
 
     public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityEndPirateAnchor entity) {

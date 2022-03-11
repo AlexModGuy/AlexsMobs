@@ -38,7 +38,7 @@ public class BananaLootModifier extends LootModifier {
             int bananaStep = (int)Math.min(AMConfig.bananaChance * 0.1F, 0);
             int bananaRarity = AMConfig.bananaChance - (bonusLevel * bananaStep);
             if (bananaRarity < 1 || random.nextInt(bananaRarity) == 0) {
-                generatedLoot.add(new ItemStack(AMItemRegistry.BANANA));
+                generatedLoot.add(new ItemStack(AMItemRegistry.BANANA.get()));
             }
         }
         return generatedLoot;

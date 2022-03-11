@@ -107,7 +107,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     private int animationTick;
     private Animation currentAnimation;
     private boolean isUpsideDownNavigator;
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(AMItemRegistry.GONGYLIDIA);
+    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(AMItemRegistry.GONGYLIDIA.get());
     private int haveBabyCooldown = 0;
     public EntityLeafcutterAnt(EntityType type, Level world) {
         super(type, world);
@@ -223,12 +223,12 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
-        if(type != InteractionResult.SUCCESS && item == AMItemRegistry.GONGYLIDIA){
+        if(type != InteractionResult.SUCCESS && item == AMItemRegistry.GONGYLIDIA.get()){
             if(isQueen() && haveBabyCooldown == 0){
                 int babies = 1 + random.nextInt(1);
                 pacifyAllNearby();
                 for(int i = 0; i < babies; i++){
-                    EntityLeafcutterAnt leafcutterAnt = AMEntityRegistry.LEAFCUTTER_ANT.create(level);
+                    EntityLeafcutterAnt leafcutterAnt = AMEntityRegistry.LEAFCUTTER_ANT.get().create(level);
                     leafcutterAnt.copyPosition(this);
                     leafcutterAnt.setAge(-24000);
                     if(!level.isClientSide){
@@ -681,7 +681,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 if (searchCooldown <= 0) {
                     searchCooldown = 400;
                     PoiManager pointofinterestmanager = ((ServerLevel) level).getPoiManager();
-                    Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.getPredicate(), Predicates.alwaysTrue(), EntityLeafcutterAnt.this.blockPosition(), 100, PoiManager.Occupancy.ANY);
+                    Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.get().getPredicate(), Predicates.alwaysTrue(), EntityLeafcutterAnt.this.blockPosition(), 100, PoiManager.Occupancy.ANY);
                     List<BlockPos> listOfHives = stream.collect(Collectors.toList());
                     BlockPos ret = null;
                     for (BlockPos pos : listOfHives) {

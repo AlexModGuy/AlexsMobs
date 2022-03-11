@@ -42,7 +42,6 @@ public class BlockLeafcutterAntChamber extends Block {
 
     public BlockLeafcutterAntChamber() {
         super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(1.3F).randomTicks());
-        this.setRegistryName("alexsmobs:leafcutter_ant_chamber");
         this.registerDefaultState(this.stateDefinition.any().setValue(FUNGUS, 0));
     }
 
@@ -62,7 +61,7 @@ public class BlockLeafcutterAntChamber extends Block {
             if(!worldIn.isClientSide){
                 if(worldIn.random.nextInt(2) == 0){
                     Direction dir = Direction.getRandom(worldIn.random);
-                    if(worldIn.getBlockState(pos.above()).getBlock() == AMBlockRegistry.LEAFCUTTER_ANTHILL){
+                    if(worldIn.getBlockState(pos.above()).getBlock() == AMBlockRegistry.LEAFCUTTER_ANTHILL.get()){
                         dir = Direction.DOWN;
                     }
                     BlockPos offset = pos.relative(dir);
@@ -71,7 +70,7 @@ public class BlockLeafcutterAntChamber extends Block {
                         worldIn.setBlockAndUpdate(offset, this.defaultBlockState());
                     }
                 }
-                popResource(worldIn, pos, new ItemStack(AMItemRegistry.GONGYLIDIA));
+                popResource(worldIn, pos, new ItemStack(AMItemRegistry.GONGYLIDIA.get()));
             }
             return InteractionResult.SUCCESS;
         }
@@ -107,7 +106,7 @@ public class BlockLeafcutterAntChamber extends Block {
         }
         if(!world.isClientSide){
             PoiManager pointofinterestmanager = ((ServerLevel) world).getPoiManager();
-            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.getPredicate(), Predicates.alwaysTrue(), pos, 50, PoiManager.Occupancy.ANY);
+            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.get().getPredicate(), Predicates.alwaysTrue(), pos, 50, PoiManager.Occupancy.ANY);
             List<BlockPos> listOfHives = stream.collect(Collectors.toList());
             for (BlockPos pos2 : listOfHives) {
                 if(world.getBlockEntity(pos2) instanceof TileEntityLeafcutterAnthill){

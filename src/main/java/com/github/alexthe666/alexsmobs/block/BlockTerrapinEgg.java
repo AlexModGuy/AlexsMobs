@@ -60,7 +60,6 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
     public BlockTerrapinEgg() {
         super(Properties.of(Material.EGG, MaterialColor.SAND).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(HATCH, Integer.valueOf(0)).setValue(EGGS, Integer.valueOf(1)));
-        this.setRegistryName("alexsmobs:terrapin_egg");
     }
 
     public static boolean hasProperHabitat(BlockGetter reader, BlockPos blockReader) {
@@ -122,7 +121,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
                 worldIn.removeBlock(pos, false);
                 for (int j = 0; j < state.getValue(EGGS); ++j) {
                     worldIn.levelEvent(2001, pos, Block.getId(state));
-                    EntityTerrapin turtleentity = AMEntityRegistry.TERRAPIN.create(worldIn);
+                    EntityTerrapin turtleentity = AMEntityRegistry.TERRAPIN.get().create(worldIn);
                     turtleentity.setAge(-24000);
                     if(worldIn.getBlockEntity(pos) instanceof TileEntityTerrapinEgg eggTE){
                         eggTE.addAttributesToOffspring(turtleentity, random);
@@ -189,7 +188,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
 
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
         BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        ItemStack stack = new ItemStack(AMBlockRegistry.TERRAPIN_EGG);
+        ItemStack stack = new ItemStack(AMBlockRegistry.TERRAPIN_EGG.get());
         if (blockentity instanceof TileEntityTerrapinEgg) {
             TileEntityTerrapinEgg egg = (TileEntityTerrapinEgg)blockentity;
             CompoundTag tag = stack.getOrCreateTagElement("BlockEntityTag");
@@ -226,7 +225,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
     }
 
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState state2, boolean b) {
-        if (state.is(AMBlockRegistry.TERRAPIN_EGG) && state.getValue(EGGS) <= 1) {
+        if (state.is(AMBlockRegistry.TERRAPIN_EGG.get()) && state.getValue(EGGS) <= 1) {
             super.onRemove(state, level, pos, state2, b);
         }
     }

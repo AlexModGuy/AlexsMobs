@@ -257,7 +257,7 @@ public class EntityBoneSerpent extends Monster {
                 LivingEntity partParent = this;
                 int segments = 7 + getRandom().nextInt(8);
                 for (int i = 0; i < segments; i++) {
-                    EntityBoneSerpentPart part = new EntityBoneSerpentPart(AMEntityRegistry.BONE_SERPENT_PART, partParent, 0.9F, 180, 0);
+                    EntityBoneSerpentPart part = new EntityBoneSerpentPart(AMEntityRegistry.BONE_SERPENT_PART.get(), partParent, 0.9F, 180, 0);
                     part.setParent(partParent);
                     part.setBodyIndex(i);
                     if (partParent == this) {

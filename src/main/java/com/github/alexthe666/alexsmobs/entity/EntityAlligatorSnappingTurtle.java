@@ -394,7 +394,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
         level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
         if (!level.isClientSide()) {
             if (random.nextFloat() < this.getMoss() * 0.05F) {
-                this.spawnAtLocation(AMItemRegistry.SPIKED_SCUTE);
+                this.spawnAtLocation(AMItemRegistry.SPIKED_SCUTE.get());
             } else {
                 this.spawnAtLocation(Items.SEAGRASS);
             }
@@ -409,7 +409,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
         if (!world.isClientSide()) {
             if (random.nextFloat() < this.getMoss() * 0.05F) {
                 this.setMoss(0);
-                return Collections.singletonList(new ItemStack(AMItemRegistry.SPIKED_SCUTE));
+                return Collections.singletonList(new ItemStack(AMItemRegistry.SPIKED_SCUTE.get()));
             } else {
                 this.setMoss(0);
                 return Collections.singletonList(new ItemStack(Items.SEAGRASS));
@@ -421,6 +421,6 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE.create(p_241840_1_);
+        return AMEntityRegistry.ALLIGATOR_SNAPPING_TURTLE.get().create(p_241840_1_);
     }
 }

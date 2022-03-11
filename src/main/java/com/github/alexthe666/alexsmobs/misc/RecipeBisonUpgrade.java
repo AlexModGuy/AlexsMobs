@@ -41,7 +41,7 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
 
     private ItemStack createBoots(Container container){
         ItemStack boots = ItemStack.EMPTY;
-        if(container.getItem(1).is(AMBlockRegistry.BISON_FUR_BLOCK.asItem())){
+        if(container.getItem(1).is(AMBlockRegistry.BISON_FUR_BLOCK.get().asItem())){
             for (int j = 0; j < container.getContainerSize(); ++j) {
                 ItemStack itemstack1 = container.getItem(j);
                 boolean notFurred = !itemstack1.hasTag() || !itemstack1.getOrCreateTag().getBoolean("BisonFur");
@@ -85,6 +85,6 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
     }
 
     public NonNullList<Ingredient> getIngredients() {
-        return NonNullList.of(Ingredient.of(AMItemRegistry.BISON_FUR));
+        return NonNullList.of(Ingredient.of(AMItemRegistry.BISON_FUR.get()));
     }
 }

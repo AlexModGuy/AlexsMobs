@@ -441,7 +441,7 @@ public class EntityJerboa extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        EntityJerboa boa = AMEntityRegistry.JERBOA.create(p_146743_);
+        EntityJerboa boa = AMEntityRegistry.JERBOA.get().create(p_146743_);
         boa.setBefriended(true);
         return boa;
     }

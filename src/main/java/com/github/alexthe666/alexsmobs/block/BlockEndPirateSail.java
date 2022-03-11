@@ -31,7 +31,6 @@ public class BlockEndPirateSail extends Block {
 
     public BlockEndPirateSail(boolean spectre) {
         super(Properties.of(Material.GLASS).noOcclusion().emissiveRendering((a, b, c) -> true).sound(SoundType.WOOL).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(0.4F).color(MaterialColor.ICE));
-        this.setRegistryName(spectre ? "alexsmobs:spectre_sail" : "alexsmobs:phantom_sail");
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(SAIL, SailType.SINGLE));
     }
 

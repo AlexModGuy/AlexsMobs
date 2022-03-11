@@ -146,7 +146,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
             slaughterCooldown--;
         }
         if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilSpit <= 0) {
-            this.spawnAtLocation(AMItemRegistry.KOMODO_SPIT);
+            this.spawnAtLocation(AMItemRegistry.KOMODO_SPIT.get());
             this.timeUntilSpit = this.random.nextInt(12000) + 24000;
         }
         if(riderAttackCooldown > 0){
@@ -284,7 +284,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.KOMODO_DRAGON.create(p_241840_1_);
+        return AMEntityRegistry.KOMODO_DRAGON.get().create(p_241840_1_);
     }
 
     @Override

@@ -187,7 +187,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
     }
 
     protected ItemStack getFishBucket() {
-        ItemStack stack = new ItemStack(AMItemRegistry.FRILLED_SHARK_BUCKET);
+        ItemStack stack = new ItemStack(AMItemRegistry.FRILLED_SHARK_BUCKET.get());
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
         stack.getOrCreateTag().put("FrilledSharkData", platTag);
@@ -274,7 +274,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
             if (this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
                 this.getTarget().addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION, 60, 2));
                 if(random.nextInt(15) == 0 && this.getTarget() instanceof Squid){
-                    this.spawnAtLocation(AMItemRegistry.SERRATED_SHARK_TOOTH);
+                    this.spawnAtLocation(AMItemRegistry.SERRATED_SHARK_TOOTH.get());
                 }
             }
 

@@ -518,7 +518,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.RACCOON.create(serverWorld);
+        return AMEntityRegistry.RACCOON.get().create(serverWorld);
     }
 
     public void travel(Vec3 vec3d) {

@@ -375,7 +375,7 @@ public class EntityCosmicCod extends Mob {
         if (lvt_3_1_.getItem() == Items.BUCKET && this.isAlive()) {
             this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
             lvt_3_1_.shrink(1);
-            ItemStack lvt_4_1_ = new ItemStack(AMItemRegistry.COSMIC_COD_BUCKET);
+            ItemStack lvt_4_1_ = new ItemStack(AMItemRegistry.COSMIC_COD_BUCKET.get());
             if (!this.level.isClientSide) {
                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) p_230254_1_, lvt_4_1_);
             }

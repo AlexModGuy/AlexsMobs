@@ -98,7 +98,7 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
                 itementity.setDefaultPickUpDelay();
                 elephant.level.addFreshEntity(itementity);
                 if(BlockTags.getAllTags().getTag(AMTagRegistry.DROPS_ACACIA_BLOSSOMS).contains(blockstate.getBlock()) && rand.nextInt(30) == 0){
-                    ItemStack banana = new ItemStack(AMItemRegistry.ACACIA_BLOSSOM);
+                    ItemStack banana = new ItemStack(AMItemRegistry.ACACIA_BLOSSOM.get());
                     ItemEntity itementity2 = new ItemEntity(elephant.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
                     itementity2.setDefaultPickUpDelay();
                     elephant.level.addFreshEntity(itementity2);

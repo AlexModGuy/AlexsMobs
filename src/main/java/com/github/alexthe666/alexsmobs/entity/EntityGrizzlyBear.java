@@ -491,7 +491,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             this.setOrderedToSit(false);
         }
         if (!this.level.isClientSide && this.isAlive() && isTame() && !this.isBaby() && --this.timeUntilNextFur <= 0) {
-            this.spawnAtLocation(AMItemRegistry.BEAR_FUR);
+            this.spawnAtLocation(AMItemRegistry.BEAR_FUR.get());
             this.timeUntilNextFur = this.random.nextInt(24000) + 24000;
         }
         if(snowTimer > 0){
@@ -619,7 +619,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.GRIZZLY_BEAR.create(world);
+        return AMEntityRegistry.GRIZZLY_BEAR.get().create(world);
     }
 
     @Override

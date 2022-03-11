@@ -35,7 +35,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     private int anchorPlaceCooldown = 0;
 
     public TileEntityEndPirateAnchorWinch(BlockPos pos, BlockState state) {
-        super(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH, pos, state);
+        super(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), pos, state);
         prevTargetChainLength = targetChainLength;
     }
 
@@ -50,7 +50,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
         }
         int i = 0;
         if (isAnchorTop(level, down) || goBelowAnchor) {
-            if (goBelowAnchor && level.getBlockState(down.below(2)).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR) {
+            if (goBelowAnchor && level.getBlockState(down.below(2)).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR.get()) {
                 i = this.getBlockPos().getY() - 1 - keepMovingBelowAnchor(down.below(2));
             } else {
                 i = this.getBlockPos().getY() - 1 - down.getY();
@@ -74,11 +74,11 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     }
 
     private boolean isAnchorChain(Level level, BlockPos pos) {
-        return level.getBlockState(pos).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR && level.getBlockState(pos).getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.CHAIN;
+        return level.getBlockState(pos).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR.get() && level.getBlockState(pos).getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.CHAIN;
     }
 
     private boolean isAnchorTop(Level level, BlockPos pos) {
-        return level.getBlockState(pos).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR && level.getBlockState(pos.below(2)).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR && level.getBlockState(pos.below(2)).getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.ANCHOR;
+        return level.getBlockState(pos).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR.get() && level.getBlockState(pos.below(2)).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR.get() && level.getBlockState(pos.below(2)).getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.ANCHOR;
     }
 
     private void tick() {
@@ -141,10 +141,10 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     }
 
     public boolean checkAndBreakAnchor(BlockPos down) {
-        if (level.getBlockState(down).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR) {
+        if (level.getBlockState(down).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR.get()) {
             anchorEW = level.getBlockState(down).getValue(BlockEndPirateAnchor.EASTORWEST);
             BlockPos actualAnchorPos = down.below(2);
-            if (level.getBlockState(actualAnchorPos).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR) {
+            if (level.getBlockState(actualAnchorPos).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR.get()) {
                 BlockEndPirateAnchor.removeAnchor(level, actualAnchorPos, level.getBlockState(actualAnchorPos));
                 this.removeChainBlocks();
                 return true;
@@ -156,7 +156,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     public boolean tryPlaceAnchor(int offset) {
         BlockPos at = this.getBlockPos().below(3 + offset);
         if (BlockEndPirateAnchor.isClearForPlacement(this.level, at, anchorEW)) {
-            BlockState anchorState = AMBlockRegistry.END_PIRATE_ANCHOR.defaultBlockState().setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW);
+            BlockState anchorState = AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW);
             this.level.setBlock(at, anchorState, 2);
             BlockEndPirateAnchor.placeAnchor(level, at, anchorState);
             placeChainBlocks(offset);
@@ -170,7 +170,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
         BlockPos at = this.getBlockPos().below(3 + offset);
         BlockPos chainPos = at.above(3);
         while (chainPos.getY() < this.getBlockPos().getY() - 1 && isEmptyBlock(chainPos)) {
-            this.level.setBlock(chainPos, AMBlockRegistry.END_PIRATE_ANCHOR.defaultBlockState().setValue(BlockEndPirateAnchor.PIECE, BlockEndPirateAnchor.PieceType.CHAIN).setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW), 3);
+            this.level.setBlock(chainPos, AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.PIECE, BlockEndPirateAnchor.PieceType.CHAIN).setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW), 3);
             chainPos = chainPos.above();
         }
     }

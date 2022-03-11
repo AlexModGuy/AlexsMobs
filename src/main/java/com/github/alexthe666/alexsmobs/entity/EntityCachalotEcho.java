@@ -38,12 +38,12 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public EntityCachalotEcho(Level worldIn, EntityCachalotWhale p_i47273_2_) {
-        this(AMEntityRegistry.CACHALOT_ECHO, worldIn);
+        this(AMEntityRegistry.CACHALOT_ECHO.get(), worldIn);
         this.setShooter(p_i47273_2_);
     }
 
     public EntityCachalotEcho(Level worldIn, LivingEntity p_i47273_2_, boolean right) {
-        this(AMEntityRegistry.CACHALOT_ECHO, worldIn);
+        this(AMEntityRegistry.CACHALOT_ECHO.get(), worldIn);
         this.setShooter(p_i47273_2_);
         float rot = p_i47273_2_.yHeadRot + (right ? 90 : -90);
         playerLaunched = true;
@@ -53,13 +53,13 @@ public class EntityCachalotEcho extends Entity {
 
     @OnlyIn(Dist.CLIENT)
     public EntityCachalotEcho(Level worldIn, double x, double y, double z, double p_i47274_8_, double p_i47274_10_, double p_i47274_12_) {
-        this(AMEntityRegistry.CACHALOT_ECHO, worldIn);
+        this(AMEntityRegistry.CACHALOT_ECHO.get(), worldIn);
         this.setPos(x, y, z);
         this.setDeltaMovement(p_i47274_8_, p_i47274_10_, p_i47274_12_);
     }
 
     public EntityCachalotEcho(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.CACHALOT_ECHO, world);
+        this(AMEntityRegistry.CACHALOT_ECHO.get(), world);
     }
 
     protected static float lerpRotation(float p_234614_0_, float p_234614_1_) {

@@ -280,7 +280,7 @@ public class EntityCentipedeHead extends Monster {
 
 
     public EntityCentipedeBody createBody(LivingEntity parent, boolean tail) {
-        return tail ? new EntityCentipedeBody(AMEntityRegistry.CENTIPEDE_TAIL, parent, 0.84F, 180, 0) : new EntityCentipedeBody(AMEntityRegistry.CENTIPEDE_BODY, parent, 0.84F, 180, 0);
+        return tail ? new EntityCentipedeBody(AMEntityRegistry.CENTIPEDE_TAIL.get(), parent, 0.84F, 180, 0) : new EntityCentipedeBody(AMEntityRegistry.CENTIPEDE_BODY.get(), parent, 0.84F, 180, 0);
     }
 
     public boolean canBeLeashed(Player player) {

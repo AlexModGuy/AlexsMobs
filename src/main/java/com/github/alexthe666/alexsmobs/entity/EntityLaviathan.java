@@ -177,7 +177,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.is(AMItemRegistry.MOSQUITO_LARVA);
+        return stack.is(AMItemRegistry.MOSQUITO_LARVA.get());
     }
 
     public boolean isPushable() {
@@ -198,14 +198,14 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             this.heal(10);
             return InteractionResult.SUCCESS;
         }
-        if (item == AMItemRegistry.STRADDLE_HELMET && !this.hasHeadGear() && !this.isBaby()) {
+        if (item == AMItemRegistry.STRADDLE_HELMET.get() && !this.hasHeadGear() && !this.isBaby()) {
             if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
             this.setHeadGear(true);
             return InteractionResult.SUCCESS;
         }
-        if (item == AMItemRegistry.STRADDLE_SADDLE && !this.hasBodyGear() && !this.isBaby()) {
+        if (item == AMItemRegistry.STRADDLE_SADDLE.get() && !this.hasBodyGear() && !this.isBaby()) {
             if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
@@ -352,12 +352,12 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         super.dropEquipment();
         if (this.hasBodyGear()) {
             if (!this.level.isClientSide) {
-                this.spawnAtLocation(AMItemRegistry.STRADDLE_SADDLE);
+                this.spawnAtLocation(AMItemRegistry.STRADDLE_SADDLE.get());
             }
         }
         if (this.hasHeadGear()) {
             if (!this.level.isClientSide) {
-                this.spawnAtLocation(AMItemRegistry.STRADDLE_HELMET);
+                this.spawnAtLocation(AMItemRegistry.STRADDLE_HELMET.get());
             }
         }
         this.setBodyGear(false);
@@ -391,7 +391,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         });
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(2, new TameableAIRide(this, 1D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.MAGMA_CREAM, AMItemRegistry.MOSQUITO_LARVA), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.MAGMA_CREAM, AMItemRegistry.MOSQUITO_LARVA.get()), false));
         this.goalSelector.addGoal(4, new AnimalAIFindWaterLava(this, 1.0D));
         this.goalSelector.addGoal(5, new LaviathanAIRandomSwimming(this, 1.0D, 22) {
             @Override
@@ -971,7 +971,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.LAVIATHAN.create(serverWorld);
+        return AMEntityRegistry.LAVIATHAN.get().create(serverWorld);
     }
 
     static class MoveController extends MoveControl {

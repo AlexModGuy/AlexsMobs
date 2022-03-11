@@ -132,7 +132,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == AMItemRegistry.LEAFCUTTER_ANT_PUPA;
+        return stack.getItem() == AMItemRegistry.LEAFCUTTER_ANT_PUPA.get();
     }
 
     @Override
@@ -219,7 +219,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
             this.stopBeingAngry();
             this.heal(4);
             this.setItemInHand(InteractionHand.MAIN_HAND, rippedStack);
-            if (item == AMItemRegistry.LEAFCUTTER_ANT_PUPA) {
+            if (item == AMItemRegistry.LEAFCUTTER_ANT_PUPA.get()) {
                 return type;
             }
             this.usePlayerItem(player, hand, itemstack);
@@ -355,7 +355,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        return AMEntityRegistry.ANTEATER.create(level);
+        return AMEntityRegistry.ANTEATER.get().create(level);
     }
 
     @Override

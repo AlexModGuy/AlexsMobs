@@ -43,7 +43,7 @@ public class ParticleInvertDig extends SimpleAnimatedParticle {
         } else {
             if (creator instanceof Player) {
                 ItemStack item = ((Player) creator).getUseItem();
-                if (item.getItem() == AMItemRegistry.DIMENSIONAL_CARVER) {
+                if (item.getItem() == AMItemRegistry.DIMENSIONAL_CARVER.get()) {
                     this.age = Mth.clamp(lifetime - ((Player) creator).getUseItemRemainingTicks(), 0, lifetime);
                     live = true;
                 }

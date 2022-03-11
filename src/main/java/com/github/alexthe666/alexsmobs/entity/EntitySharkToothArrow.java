@@ -33,7 +33,7 @@ public class EntitySharkToothArrow extends Arrow {
     }
 
     public EntitySharkToothArrow(Level worldIn, LivingEntity shooter) {
-        this(AMEntityRegistry.SHARK_TOOTH_ARROW, shooter.getX(), shooter.getEyeY() - (double)0.1F, shooter.getZ(), worldIn);
+        this(AMEntityRegistry.SHARK_TOOTH_ARROW.get(), shooter.getX(), shooter.getEyeY() - (double)0.1F, shooter.getZ(), worldIn);
         this.setOwner(shooter);
         if (shooter instanceof Player) {
             this.pickup = AbstractArrow.Pickup.ALLOWED;
@@ -85,7 +85,7 @@ public class EntitySharkToothArrow extends Arrow {
     }
 
     public EntitySharkToothArrow(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.SHARK_TOOTH_ARROW, world);
+        this(AMEntityRegistry.SHARK_TOOTH_ARROW.get(), world);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class EntitySharkToothArrow extends Arrow {
 
     @Override
     protected ItemStack getPickupItem() {
-        return new ItemStack(AMItemRegistry.SHARK_TOOTH_ARROW);
+        return new ItemStack(AMItemRegistry.SHARK_TOOTH_ARROW.get());
     }
 
 }

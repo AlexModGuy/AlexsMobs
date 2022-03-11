@@ -41,31 +41,31 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         if(!init){
             initializeModels();
         }
-        if(itemStack.getItem() == AMItemRegistry.TARANTULA_HAWK_ELYTRA){
+        if(itemStack.getItem() == AMItemRegistry.TARANTULA_HAWK_ELYTRA.get()){
             return ELYTRA_MODEL.withAnimations(entityLiving);
         }
-        if(itemStack.getItem() == AMItemRegistry.ROADDRUNNER_BOOTS){
+        if(itemStack.getItem() == AMItemRegistry.ROADDRUNNER_BOOTS.get()){
             return ROADRUNNER_BOOTS_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.MOOSE_HEADGEAR){
+        if(itemStack.getItem() == AMItemRegistry.MOOSE_HEADGEAR.get()){
             return MOOSE_HEADGEAR_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.FRONTIER_CAP){
+        if(itemStack.getItem() == AMItemRegistry.FRONTIER_CAP.get()){
             return FRONTIER_CAP_MODEL.withAnimations(entityLiving);
         }
-        if(itemStack.getItem() == AMItemRegistry.FEDORA){
+        if(itemStack.getItem() == AMItemRegistry.FEDORA.get()){
             return FEDORA_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL){
+        if(itemStack.getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()){
             return SPIKED_TURTLE_SHELL_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.SOMBRERO){
+        if(itemStack.getItem() == AMItemRegistry.SOMBRERO.get()){
             return SOMBRERO_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.FROSTSTALKER_HELMET){
+        if(itemStack.getItem() == AMItemRegistry.FROSTSTALKER_HELMET.get()){
             return FROSTSTALKER_HELMET_MODEL;
         }
-        if(itemStack.getItem() == AMItemRegistry.ROCKY_CHESTPLATE){
+        if(itemStack.getItem() == AMItemRegistry.ROCKY_CHESTPLATE.get()){
             return ROCKY_CHESTPLATE_MODEL;
         }
         return _default;

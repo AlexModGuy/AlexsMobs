@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 public class ItemBloodSprayer extends Item {
 
     public static final Predicate<ItemStack> IS_BLOOD = (stack) -> {
-        return stack.getItem() == AMItemRegistry.BLOOD_SAC;
+        return stack.getItem() == AMItemRegistry.BLOOD_SAC.get();
     };
 
     public ItemBloodSprayer(Item.Properties properties) {

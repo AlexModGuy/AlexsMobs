@@ -39,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class BlockEndPirateAnchor extends BaseEntityBlock {
+public class BlockEndPirateAnchor extends BaseEntityBlock implements AMSpecialRenderBlock {
 
     public static final BooleanProperty EASTORWEST = BooleanProperty.create("eastorwest");
     public static final EnumProperty<BlockEndPirateAnchor.PieceType> PIECE = EnumProperty.create("piece", BlockEndPirateAnchor.PieceType.class);
@@ -49,7 +49,6 @@ public class BlockEndPirateAnchor extends BaseEntityBlock {
 
     protected BlockEndPirateAnchor() {
         super(Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
-        this.setRegistryName("alexsmobs:end_pirate_anchor");
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(PIECE, PieceType.ANCHOR));
     }
 
@@ -197,7 +196,7 @@ public class BlockEndPirateAnchor extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState state, BlockEntityType<T> p_152182_) {
-        return state.getValue(PIECE) == PieceType.ANCHOR ? createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_ANCHOR, TileEntityEndPirateAnchor::commonTick) : null;
+        return state.getValue(PIECE) == PieceType.ANCHOR ? createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_ANCHOR.get(), TileEntityEndPirateAnchor::commonTick) : null;
     }
 
     public RenderShape getRenderShape(BlockState state) {

@@ -38,14 +38,14 @@ public class ItemLeafcutterPupa extends Item {
             Player playerentity = context.getPlayer();
             world.playSound(playerentity, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             if (!world.isClientSide) {
-                world.setBlock(blockpos, AMBlockRegistry.LEAFCUTTER_ANTHILL.defaultBlockState(), 11);
-                world.setBlock(blockpos.below(), AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.defaultBlockState(), 11);
+                world.setBlock(blockpos, AMBlockRegistry.LEAFCUTTER_ANTHILL.get().defaultBlockState(), 11);
+                world.setBlock(blockpos.below(), AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.get().defaultBlockState(), 11);
                 BlockEntity tileentity = world.getBlockEntity(blockpos);
                 if (tileentity instanceof TileEntityLeafcutterAnthill) {
                     TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill)tileentity;
                     int j = Math.min(3, AMConfig.leafcutterAntColonySize);
                     for(int k = 0; k < j; ++k) {
-                        EntityLeafcutterAnt beeentity = new EntityLeafcutterAnt(AMEntityRegistry.LEAFCUTTER_ANT, world);
+                        EntityLeafcutterAnt beeentity = new EntityLeafcutterAnt(AMEntityRegistry.LEAFCUTTER_ANT.get(), world);
                         beeentity.setQueen(k == 0);
                         beehivetileentity.tryEnterHive(beeentity, false, 100);
                     }

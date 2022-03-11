@@ -582,7 +582,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
 
 
     protected ItemStack getFishBucket() {
-        ItemStack stack = new ItemStack(AMItemRegistry.POTTED_FLUTTER);
+        ItemStack stack = new ItemStack(AMItemRegistry.POTTED_FLUTTER.get());
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
         stack.getOrCreateTag().put("FlutterData", platTag);
@@ -595,7 +595,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mobo) {
-        EntityFlutter baby = AMEntityRegistry.FLUTTER.create(level);
+        EntityFlutter baby = AMEntityRegistry.FLUTTER.get().create(level);
         baby.setPersistenceRequired();
         return baby;
     }

@@ -140,7 +140,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     protected void ageBoundaryReached() {
         super.ageBoundaryReached();
         if (!this.isBaby() && this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-            this.spawnAtLocation(new ItemStack(AMItemRegistry.CROCODILE_SCUTE, random.nextInt(1) + 1), 1);
+            this.spawnAtLocation(new ItemStack(AMItemRegistry.CROCODILE_SCUTE.get(), random.nextInt(1) + 1), 1);
         }
     }
 
@@ -596,7 +596,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.CROCODILE.create(p_241840_1_);
+        return AMEntityRegistry.CROCODILE.get().create(p_241840_1_);
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -737,7 +737,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             if (!this.turtle.isInWater() && this.isReachedTarget()) {
                 Level world = this.turtle.level;
                 world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
-                world.setBlock(this.blockPos.above(), AMBlockRegistry.CROCODILE_EGG.defaultBlockState().setValue(BlockCrocodileEgg.EGGS, Integer.valueOf(this.turtle.random.nextInt(1) + 1)), 3);
+                world.setBlock(this.blockPos.above(), AMBlockRegistry.CROCODILE_EGG.get().defaultBlockState().setValue(BlockCrocodileEgg.EGGS, Integer.valueOf(this.turtle.random.nextInt(1) + 1)), 3);
                 this.turtle.setHasEgg(false);
                 this.turtle.setDigging(false);
                 this.turtle.setInLoveTime(600);

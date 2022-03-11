@@ -40,7 +40,6 @@ public class BlockCapsid extends BaseEntityBlock {
     public static final DirectionProperty HORIZONTAL_FACING = HorizontalDirectionalBlock.FACING;
     public BlockCapsid() {
         super(Properties.of(Material.GLASS).noOcclusion().isValidSpawn(BlockCapsid::spawnOption).isRedstoneConductor(BlockCapsid::isntSolid).sound(SoundType.GLASS).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(1.5F));
-        this.setRegistryName("alexsmobs:capsid");
     }
 
     public BlockState rotate(BlockState p_185499_1_, Rotation p_185499_2_) {
@@ -122,6 +121,6 @@ public class BlockCapsid extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
-        return createTickerHelper(p_152182_, AMTileEntityRegistry.CAPSID, TileEntityCapsid::commonTick);
+        return createTickerHelper(p_152182_, AMTileEntityRegistry.CAPSID.get(), TileEntityCapsid::commonTick);
     }
 }

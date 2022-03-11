@@ -53,7 +53,7 @@ public class ItemFlutterPot extends Item implements DispensibleContainerItem {
     }
 
     private boolean placeFish(ServerLevel worldIn, ItemStack stack, BlockPos pos) {
-        Entity entity = AMEntityRegistry.FLUTTER.spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
+        Entity entity = AMEntityRegistry.FLUTTER.get().spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
         if (entity != null && entity instanceof EntityFlutter) {
             CompoundTag compoundnbt = stack.getOrCreateTag();
             if(compoundnbt.contains("FlutterData")){

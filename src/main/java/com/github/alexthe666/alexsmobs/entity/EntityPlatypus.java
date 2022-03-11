@@ -104,7 +104,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
     public boolean isFood(ItemStack stack) {
         Item item = stack.getItem();
-        return item == AMItemRegistry.LOBSTER_TAIL || item == AMItemRegistry.COOKED_LOBSTER_TAIL;
+        return item == AMItemRegistry.LOBSTER_TAIL.get() || item == AMItemRegistry.COOKED_LOBSTER_TAIL.get();
     }
 
 
@@ -121,7 +121,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     }
     
     protected ItemStack getFishBucket() {
-        ItemStack stack = new ItemStack(AMItemRegistry.PLATYPUS_BUCKET);
+        ItemStack stack = new ItemStack(AMItemRegistry.PLATYPUS_BUCKET.get());
         CompoundTag platTag = new CompoundTag();
         this.addAdditionalSaveData(platTag);
         stack.getOrCreateTag().put("PlatypusData", platTag);
@@ -134,7 +134,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
         ItemStack itemstack = p_230254_1_.getItemInHand(p_230254_2_);
         boolean redstone = itemstack.getItem() == Items.REDSTONE || itemstack.getItem() == Items.REDSTONE_BLOCK;
-        if(itemstack.getItem() == AMItemRegistry.FEDORA && !this.hasFedora()){
+        if(itemstack.getItem() == AMItemRegistry.FEDORA.get() && !this.hasFedora()){
             if (!p_230254_1_.isCreative()) {
                 itemstack.shrink(1);
             }
@@ -287,7 +287,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     protected void dropEquipment() {
         super.dropEquipment();
         if (this.hasFedora()) {
-            this.spawnAtLocation(AMItemRegistry.FEDORA);
+            this.spawnAtLocation(AMItemRegistry.FEDORA.get());
         }
 
     }
@@ -424,7 +424,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.PLATYPUS.create(serverWorld);
+        return AMEntityRegistry.PLATYPUS.get().create(serverWorld);
     }
 
     @Override

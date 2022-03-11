@@ -25,7 +25,7 @@ public class TileEntityEndPirateDoor extends BlockEntity {
     public int ticksExisted;
 
     public TileEntityEndPirateDoor(BlockPos pos, BlockState state) {
-        super(AMTileEntityRegistry.END_PIRATE_DOOR, pos, state);
+        super(AMTileEntityRegistry.END_PIRATE_DOOR.get(), pos, state);
         if(state.getBlock() instanceof BlockEndPirateDoor && state.getValue(BlockEndPirateDoor.OPEN)){
             openProgress = 1F;
             prevOpenProgress = 1F;

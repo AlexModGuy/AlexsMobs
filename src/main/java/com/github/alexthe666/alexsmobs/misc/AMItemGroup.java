@@ -23,7 +23,7 @@ public class AMItemGroup extends CreativeModeTab {
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(AMItemRegistry.TAB_ICON);
+        return new ItemStack(AMItemRegistry.TAB_ICON.get());
     }
 
     @OnlyIn(Dist.CLIENT)

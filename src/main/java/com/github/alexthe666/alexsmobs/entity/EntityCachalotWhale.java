@@ -457,7 +457,7 @@ public class EntityCachalotWhale extends Animal {
                     ambergrisDrops++;
                     if (!level.isClientSide) {
                         Vec3 vec = this.getMouthVec();
-                        ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS));
+                        ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS.get()));
                         itementity.setDefaultPickUpDelay();
                         level.addFreshEntity(itementity);
                     }
@@ -701,7 +701,7 @@ public class EntityCachalotWhale extends Animal {
                                     if (random.nextInt(10) == 0) {
                                         if (!level.isClientSide) {
                                             Vec3 vec = this.getMouthVec();
-                                            ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.CACHALOT_WHALE_TOOTH));
+                                            ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.CACHALOT_WHALE_TOOTH.get()));
                                             itementity.setDefaultPickUpDelay();
                                             level.addFreshEntity(itementity);
                                         }
@@ -832,7 +832,7 @@ public class EntityCachalotWhale extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        EntityCachalotWhale whale = AMEntityRegistry.CACHALOT_WHALE.create(serverWorld);
+        EntityCachalotWhale whale = AMEntityRegistry.CACHALOT_WHALE.get().create(serverWorld);
         whale.setAlbino(this.isAlbino());
         return whale;
     }

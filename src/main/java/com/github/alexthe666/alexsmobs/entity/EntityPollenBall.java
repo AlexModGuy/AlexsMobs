@@ -43,14 +43,14 @@ public class EntityPollenBall extends Entity {
     }
 
     public EntityPollenBall(Level worldIn, EntityFlutter flutter) {
-        this(AMEntityRegistry.POLLEN_BALL, worldIn);
+        this(AMEntityRegistry.POLLEN_BALL.get(), worldIn);
         this.setShooter(flutter);
         Vec3 vec3 = flutter.position().add(calcOffsetVec(0.4F * flutter.getScale(), flutter.getFlutterPitch(), flutter.getYRot()));
         this.setPos(vec3.x, vec3.y, vec3.z);
     }
 
     public EntityPollenBall(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.POLLEN_BALL, world);
+        this(AMEntityRegistry.POLLEN_BALL.get(), world);
     }
 
     private  Vec3 calcOffsetVec(float offsetY, float xRot, float yRot){

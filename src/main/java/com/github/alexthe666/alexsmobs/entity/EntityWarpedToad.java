@@ -295,7 +295,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == AMItemRegistry.MOSQUITO_LARVA && isTame();
+        return stack.getItem() == AMItemRegistry.MOSQUITO_LARVA.get() && isTame();
     }
 
 
@@ -303,7 +303,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
-        if (!isTame() && item == AMItemRegistry.MOSQUITO_LARVA) {
+        if (!isTame() && item == AMItemRegistry.MOSQUITO_LARVA.get()) {
             this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (getRandom().nextInt(3) == 0) {
@@ -565,7 +565,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.WARPED_TOAD.create(serverWorld);
+        return AMEntityRegistry.WARPED_TOAD.get().create(serverWorld);
     }
 
     public float getTongueLength() {

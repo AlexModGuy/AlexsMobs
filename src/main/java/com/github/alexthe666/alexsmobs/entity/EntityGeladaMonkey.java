@@ -348,7 +348,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel lvl, AgeableMob mob) {
-        EntityGeladaMonkey baby = AMEntityRegistry.GELADA_MONKEY.create(lvl);
+        EntityGeladaMonkey baby = AMEntityRegistry.GELADA_MONKEY.get().create(lvl);
         baby.setLeader(random.nextInt(2) == 0);
         return baby;
     }

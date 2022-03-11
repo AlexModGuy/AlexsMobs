@@ -39,7 +39,7 @@ public class ItemEcholocator extends Item {
     private List<BlockPos> getNearbyPortals(BlockPos blockpos, ServerLevel world, int range) {
         if(ender){
             PoiManager pointofinterestmanager = world.getPoiManager();
-            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.END_PORTAL_FRAME.getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
+            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.END_PORTAL_FRAME.get().getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
             return stream.collect(Collectors.toList());
         }else{
             Random random = new Random();

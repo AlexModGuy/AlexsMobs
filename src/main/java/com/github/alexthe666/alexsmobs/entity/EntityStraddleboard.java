@@ -70,11 +70,11 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     public EntityStraddleboard(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.STRADDLEBOARD, world);
+        this(AMEntityRegistry.STRADDLEBOARD.get(), world);
     }
 
     public EntityStraddleboard(Level worldIn, double x, double y, double z) {
-        this(AMEntityRegistry.STRADDLEBOARD, worldIn);
+        this(AMEntityRegistry.STRADDLEBOARD.get(), worldIn);
         this.setPos(x, y, z);
         this.setDeltaMovement(Vec3.ZERO);
         this.xo = x;
@@ -96,7 +96,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     protected void defineSynchedData() {
         this.entityData.define(TIME_SINCE_HIT, 0);
-        this.entityData.define(ITEMSTACK, new ItemStack(AMItemRegistry.STRADDLEBOARD));
+        this.entityData.define(ITEMSTACK, new ItemStack(AMItemRegistry.STRADDLEBOARD.get()));
         this.entityData.define(ROCKING_TICKS, 0);
         this.entityData.define(DEFAULT_COLOR, true);
         this.entityData.define(COLOR, 0);
@@ -468,7 +468,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
         if (!level.isClientSide) {
-            EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.create(level);
+            EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.get().create(level);
             CompoundTag tag = new CompoundTag();
             this.addAdditionalSaveData(tag);
             copy.readAdditionalSaveData(tag);

@@ -24,7 +24,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
         ItemStack itemstack = entitylivingbaseIn.getItemBySlot(EquipmentSlot.MAINHAND);
         String name = entitylivingbaseIn.getName().getString().toLowerCase();
         if(name.contains("harambe")){
-            ItemStack haloStack = new ItemStack(AMItemRegistry.HALO);
+            ItemStack haloStack = new ItemStack(AMItemRegistry.HALO.get());
             matrixStackIn.pushPose();
             this.getParentModel().root.translateAndRotate(matrixStackIn);
             this.getParentModel().body.translateAndRotate(matrixStackIn);

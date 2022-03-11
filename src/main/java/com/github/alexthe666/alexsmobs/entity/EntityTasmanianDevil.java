@@ -292,7 +292,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.TASMANIAN_DEVIL.create(serverWorld);
+        return AMEntityRegistry.TASMANIAN_DEVIL.get().create(serverWorld);
     }
 
     @Override

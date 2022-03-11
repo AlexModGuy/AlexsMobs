@@ -57,7 +57,7 @@ public class RockyChestplateUtil {
 
 
     public static boolean isWearing(LivingEntity entity) {
-        return entity.getItemBySlot(EquipmentSlot.CHEST).getItem() == AMItemRegistry.ROCKY_CHESTPLATE;
+        return entity.getItemBySlot(EquipmentSlot.CHEST).getItem() == AMItemRegistry.ROCKY_CHESTPLATE.get();
     }
 
     public static boolean isRockyRolling(LivingEntity entity) {

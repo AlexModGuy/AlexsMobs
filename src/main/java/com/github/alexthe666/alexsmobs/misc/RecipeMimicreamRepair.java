@@ -36,7 +36,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
                 if (itemstack1.isDamageableItem() && !isBlacklisted(itemstack1)) {
                     damageableStack = itemstack1;
                 } else {
-                    if (itemstack1.getItem() == AMItemRegistry.MIMICREAM) {
+                    if (itemstack1.getItem() == AMItemRegistry.MIMICREAM.get()) {
                         mimicreamCount++;
                     }
                 }
@@ -64,7 +64,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
                 if (itemstack1.isDamageableItem() && !isBlacklisted(itemstack1)) {
                     damageableStack = itemstack1;
                 } else {
-                    if (itemstack1.getItem() == AMItemRegistry.MIMICREAM) {
+                    if (itemstack1.getItem() == AMItemRegistry.MIMICREAM.get()) {
                         mimicreamCount++;
                     }
                 }

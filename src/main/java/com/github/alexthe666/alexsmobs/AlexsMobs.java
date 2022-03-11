@@ -1,13 +1,18 @@
 package com.github.alexthe666.alexsmobs;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.*;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
+import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
+import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
@@ -67,6 +72,11 @@ public class AlexsMobs {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticleEvent);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupEntityModelLayers);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
+        AMBlockRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
+        AMEntityRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
+        AMItemRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
+        AMTileEntityRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
+        AMPointOfInterestRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);

@@ -41,14 +41,13 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
 
     public BlockLeafcutterAnthill() {
         super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(0.75F));
-        this.setRegistryName("alexsmobs:leafcutter_anthill");
     }
 
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (worldIn.getBlockEntity(pos) instanceof TileEntityLeafcutterAnthill) {
             TileEntityLeafcutterAnthill hill = (TileEntityLeafcutterAnthill) worldIn.getBlockEntity(pos);
             ItemStack heldItem = player.getItemInHand(handIn);
-            if (heldItem.getItem() == AMItemRegistry.GONGYLIDIA && hill.hasQueen()) {
+            if (heldItem.getItem() == AMItemRegistry.GONGYLIDIA.get() && hill.hasQueen()) {
                 hill.releaseQueens();
                 if (!player.isCreative()) {
                     heldItem.shrink(1);
@@ -152,6 +151,6 @@ public class BlockLeafcutterAnthill extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
-        return p_152180_.isClientSide ? null : createTickerHelper(p_152182_, AMTileEntityRegistry.LEAFCUTTER_ANTHILL, TileEntityLeafcutterAnthill::serverTick);
+        return p_152180_.isClientSide ? null : createTickerHelper(p_152182_, AMTileEntityRegistry.LEAFCUTTER_ANTHILL.get(), TileEntityLeafcutterAnthill::serverTick);
     }
 }

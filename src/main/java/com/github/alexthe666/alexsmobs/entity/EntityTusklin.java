@@ -218,7 +218,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
             this.setSaddled(true);
             return InteractionResult.SUCCESS;
         }
-        if (item == AMItemRegistry.PIGSHOES && this.getShoeStack().isEmpty() && !this.isBaby()) {
+        if (item == AMItemRegistry.PIGSHOES.get() && this.getShoeStack().isEmpty() && !this.isBaby()) {
             this.setShoeStack(itemstack.copy());
             if (!player.isCreative()) {
                 itemstack.shrink(1);
@@ -422,11 +422,11 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     private float getLaunchStrength() {
-        return this.getShoeStack().is(AMItemRegistry.PIGSHOES) ? 0.4F : 0.9F;
+        return this.getShoeStack().is(AMItemRegistry.PIGSHOES.get()) ? 0.4F : 0.9F;
     }
 
     private int getMaxRidingTime() {
-        return this.getShoeStack().is(AMItemRegistry.PIGSHOES) ? 160 : 60;
+        return this.getShoeStack().is(AMItemRegistry.PIGSHOES.get()) ? 160 : 60;
     }
 
     private void knockbackTarget(LivingEntity entity, float strength, float angle) {
@@ -473,6 +473,6 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        return AMEntityRegistry.TUSKLIN.create(level);
+        return AMEntityRegistry.TUSKLIN.get().create(level);
     }
 }

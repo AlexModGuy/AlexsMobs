@@ -321,7 +321,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 for (int i = 0; i < segments; i++) {
                     float prevReqRot = calcPartRotation(i) + getYawForPart(i);
                     float reqRot = calcPartRotation(i + 1) + getYawForPart(i);
-                    EntityAnacondaPart part = new EntityAnacondaPart(AMEntityRegistry.ANACONDA_PART, this);
+                    EntityAnacondaPart part = new EntityAnacondaPart(AMEntityRegistry.ANACONDA_PART.get(), this);
                     part.setParent(partParent);
                     part.copyDataFrom(this);
                     part.setBodyIndex(i);
@@ -376,7 +376,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         if (this.getSheddingTime() > 0) {
             this.setSheddingTime(this.getSheddingTime() - 1);
             if (this.getSheddingTime() == 0) {
-                this.spawnItemAtOffset(new ItemStack(AMItemRegistry.SHED_SNAKE_SKIN), 1 + random.nextFloat(), 0.2F);
+                this.spawnItemAtOffset(new ItemStack(AMItemRegistry.SHED_SNAKE_SKIN.get()), 1 + random.nextFloat(), 0.2F);
                 shedCooldown = 1000 + random.nextInt(2000);
             }
         }
@@ -512,7 +512,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob mob) {
-        EntityAnaconda anaconda = AMEntityRegistry.ANACONDA.create(serverWorld);
+        EntityAnaconda anaconda = AMEntityRegistry.ANACONDA.get().create(serverWorld);
         anaconda.setYellow(this.isYellow());
         return anaconda;
     }

@@ -286,7 +286,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     protected void dropEquipment() {
         super.dropEquipment();
         if (hasDart()) {
-            this.spawnAtLocation(AMItemRegistry.ANCIENT_DART);
+            this.spawnAtLocation(AMItemRegistry.ANCIENT_DART.get());
         }
     }
 
@@ -403,7 +403,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        EntityCapuchinMonkey monkey = AMEntityRegistry.CAPUCHIN_MONKEY.create(p_241840_1_);
+        EntityCapuchinMonkey monkey = AMEntityRegistry.CAPUCHIN_MONKEY.get().create(p_241840_1_);
         monkey.setVariant(this.getVariant());
         return monkey;
     }
@@ -455,7 +455,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !EntityGorilla.isBanana(itemstack) && !getAllFoods().test(itemstack)) {
-            if (!this.hasDart() && itemstack.getItem() == AMItemRegistry.ANCIENT_DART) {
+            if (!this.hasDart() && itemstack.getItem() == AMItemRegistry.ANCIENT_DART.get()) {
                 this.setDart(true);
                 this.usePlayerItem(player, hand, itemstack);
                 return InteractionResult.CONSUME;
@@ -517,7 +517,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
         if (EntityGorilla.isBanana(e.getItem())) {
             if (getRandom().nextInt(4) == 0) {
-                this.spawnAtLocation(new ItemStack(AMBlockRegistry.BANANA_PEEL));
+                this.spawnAtLocation(new ItemStack(AMBlockRegistry.BANANA_PEEL.get()));
             }
             if (e.getThrower() != null && !this.isTame()) {
                 if (getRandom().nextInt(5) == 0) {

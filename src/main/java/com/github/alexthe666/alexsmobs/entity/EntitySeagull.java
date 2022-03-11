@@ -163,7 +163,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         this.targetSelector.addGoal(1, new SeagullAIRevealTreasure(this));
         this.targetSelector.addGoal(2, new SeagullAIStealFromPlayers(this));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(Items.COD, AMItemRegistry.LOBSTER_TAIL, AMItemRegistry.COOKED_LOBSTER_TAIL), false){
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(Items.COD, AMItemRegistry.LOBSTER_TAIL.get(), AMItemRegistry.COOKED_LOBSTER_TAIL.get()), false){
             public boolean canUse(){
                 return !EntitySeagull.this.aiItemFlag && super.canUse();
             }
@@ -452,7 +452,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         stealCooldown += 600 + random.nextInt(1200);
-        if(e.getThrower() != null && (e.getItem().getItem() == AMItemRegistry.LOBSTER_TAIL || e.getItem().getItem() == AMItemRegistry.COOKED_LOBSTER_TAIL)){
+        if(e.getThrower() != null && (e.getItem().getItem() == AMItemRegistry.LOBSTER_TAIL.get() || e.getItem().getItem() == AMItemRegistry.COOKED_LOBSTER_TAIL.get())){
             Player player = level.getPlayerByUUID(e.getThrower());
             if(player != null){
                 setDataFromTreasureMap(player);
@@ -560,7 +560,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.SEAGULL.create(serverWorld);
+        return AMEntityRegistry.SEAGULL.get().create(serverWorld);
     }
 
     public void peck() {

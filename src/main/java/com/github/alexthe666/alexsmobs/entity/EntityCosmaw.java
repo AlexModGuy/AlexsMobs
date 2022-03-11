@@ -112,7 +112,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         this.goalSelector.addGoal(3, new FlyingAIFollowOwner(this, 1.3D, 8.0F, 4.0F, false));
         this.goalSelector.addGoal(4, new AIPickupOwner());
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.2D));
-        this.goalSelector.addGoal(6, new AnimalAITemptDistance(this, 1.1D, Ingredient.of(Items.CHORUS_FRUIT, AMItemRegistry.COSMIC_COD), false, 25) {
+        this.goalSelector.addGoal(6, new AnimalAITemptDistance(this, 1.1D, Ingredient.of(Items.CHORUS_FRUIT, AMItemRegistry.COSMIC_COD.get()), false, 25) {
             public boolean canUse() {
                 return super.canUse() && EntityCosmaw.this.getMainHandItem().isEmpty();
             }
@@ -151,7 +151,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     }
 
     public boolean isFood(ItemStack stack) {
-        return this.isTame() && stack.is(AMItemRegistry.COSMIC_COD);
+        return this.isTame() && stack.is(AMItemRegistry.COSMIC_COD.get());
     }
 
     public boolean isNoGravity() {
@@ -263,7 +263,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                 heldItemTime = 0;
                 this.heal(4);
                 this.playSound(SoundEvents.DOLPHIN_EAT, this.getSoundVolume(), this.getVoicePitch());
-                if (this.getMainHandItem().getItem() == AMItemRegistry.COSMIC_COD && fishThrowerID != null && !this.isTame()) {
+                if (this.getMainHandItem().getItem() == AMItemRegistry.COSMIC_COD.get() && fishThrowerID != null && !this.isTame()) {
                     if (getRandom().nextFloat() < 0.3F) {
                         this.setTame(true);
                         this.setCommand(1);
@@ -340,7 +340,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             rippedStack.setCount(1);
             stack.shrink(1);
             this.setItemInHand(InteractionHand.MAIN_HAND, rippedStack);
-            if (rippedStack.getItem() == AMItemRegistry.COSMIC_COD) {
+            if (rippedStack.getItem() == AMItemRegistry.COSMIC_COD.get()) {
                 fishThrowerID = player.getUUID();
             }
             return InteractionResult.SUCCESS;
@@ -398,7 +398,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        return AMEntityRegistry.COSMAW.create(level);
+        return AMEntityRegistry.COSMAW.get().create(level);
     }
 
     private BlockPos getCosmawGround(BlockPos in) {
@@ -414,7 +414,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.getItem() == AMItemRegistry.COSMIC_COD || stack.getItem() == Items.CHORUS_FRUIT;
+        return stack.getItem() == AMItemRegistry.COSMIC_COD.get() || stack.getItem() == Items.CHORUS_FRUIT;
     }
 
     @Override

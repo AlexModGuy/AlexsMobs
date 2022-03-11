@@ -145,7 +145,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        return AMEntityRegistry.BISON.create(level);
+        return AMEntityRegistry.BISON.get().create(level);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -385,7 +385,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         this.setSheared(true);
         this.feedingsSinceLastShear = 0;
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
-            this.spawnAtLocation(AMItemRegistry.BISON_FUR);
+            this.spawnAtLocation(AMItemRegistry.BISON_FUR.get());
         }
     }
 
@@ -408,7 +408,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
         List<ItemStack> list = new ArrayList<>();
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
-            list.add(new ItemStack(AMItemRegistry.BISON_FUR));
+            list.add(new ItemStack(AMItemRegistry.BISON_FUR.get()));
         }
         this.feedingsSinceLastShear = 0;
         this.setSheared(true);

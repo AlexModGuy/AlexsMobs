@@ -499,7 +499,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.CROW.create(serverWorld);
+        return AMEntityRegistry.CROW.get().create(serverWorld);
     }
 
     public boolean isTargetBlocked(Vec3 target) {

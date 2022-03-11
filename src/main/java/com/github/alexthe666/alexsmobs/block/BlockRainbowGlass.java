@@ -31,7 +31,6 @@ public class BlockRainbowGlass extends AbstractGlassBlock {
 
     protected BlockRainbowGlass() {
         super(Properties.of(Material.GLASS, MaterialColor.COLOR_LIGHT_BLUE).friction(0.97F).strength(0.2F).lightLevel((i) -> 11).sound(SoundType.GLASS).noOcclusion().isValidSpawn(BlockRainbowGlass::noOption).isRedstoneConductor(BlockRainbowGlass::noOption).isSuffocating(BlockRainbowGlass::noOption).isViewBlocking(BlockRainbowGlass::noOption).emissiveRendering(BlockRainbowGlass::yes));
-        this.setRegistryName("alexsmobs:rainbow_glass");
         this.registerDefaultState(this.stateDefinition.any().setValue(UP, Boolean.valueOf(false))
                 .setValue(DOWN, Boolean.valueOf(false))
                 .setValue(EAST, Boolean.valueOf(false))

@@ -27,14 +27,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ItemModFishBucket extends BucketItem {
-    private final EntityType<?> fishType;
 
-    public ItemModFishBucket(EntityType<?> fishTypeIn, Fluid fluid, Item.Properties builder) {
+    public ItemModFishBucket(Supplier<? extends EntityType<?>> fishTypeIn, Fluid fluid, Item.Properties builder) {
         super(fluid, builder.stacksTo(1));
-        this.fishType = fishTypeIn;
-        this.fishTypeSupplier = () -> fishTypeIn;
+        this.fishTypeSupplier = fishTypeIn;
     }
 
     @Override
@@ -49,7 +48,7 @@ public class ItemModFishBucket extends BucketItem {
     }
 
     private void placeFish(ServerLevel worldIn, ItemStack stack, BlockPos pos) {
-        Entity entity = this.fishType.spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
+        Entity entity = this.getFishType().spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
         if (entity != null && entity instanceof EntityLobster) {
             ((EntityLobster)entity).setFromBucket(true);
             CompoundTag compoundnbt = stack.getOrCreateTag();
@@ -114,7 +113,8 @@ public class ItemModFishBucket extends BucketItem {
 
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        if (this.fishType == AMEntityRegistry.LOBSTER) {
+        EntityType fishType = getFishType();
+        if (fishType == AMEntityRegistry.LOBSTER.get()) {
             CompoundTag compoundnbt = stack.getTag();
             if (compoundnbt != null && compoundnbt.contains("BucketVariantTag", 3)) {
                 int i = compoundnbt.getInt("BucketVariantTag");
@@ -122,14 +122,14 @@ public class ItemModFishBucket extends BucketItem {
                 tooltip.add((new TranslatableComponent(s)).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
             }
         }
-        if (this.fishType == AMEntityRegistry.TERRAPIN) {
+        if (fishType == AMEntityRegistry.TERRAPIN.get()) {
             CompoundTag compoundnbt = stack.getTag();
             if (compoundnbt != null && compoundnbt.contains("TerrapinData")) {
                 int i = compoundnbt.getCompound("TerrapinData").getInt("TurtleType");
                 tooltip.add((new TranslatableComponent(TerrapinTypes.values()[Mth.clamp(i, 0, TerrapinTypes.values().length - 1)].getTranslationName())).withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
             }
         }
-        if (this.fishType == AMEntityRegistry.COMB_JELLY) {
+        if (fishType == AMEntityRegistry.COMB_JELLY.get()) {
             CompoundTag compoundnbt = stack.getTag();
             if (compoundnbt != null && compoundnbt.contains("BucketVariantTag", 3)) {
                 int i = compoundnbt.getInt("BucketVariantTag");

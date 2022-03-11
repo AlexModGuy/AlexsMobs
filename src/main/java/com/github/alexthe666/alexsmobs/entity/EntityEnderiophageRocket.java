@@ -31,7 +31,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
     }
 
     public EntityEnderiophageRocket(Level worldIn, double x, double y, double z, ItemStack givenItem) {
-        super(AMEntityRegistry.ENDERIOPHAGE_ROCKET, worldIn);
+        super(AMEntityRegistry.ENDERIOPHAGE_ROCKET.get(), worldIn);
         this.setPos(x, y, z);
         if (!givenItem.isEmpty() && givenItem.hasTag()) {
             this.entityData.set(DATA_ID_FIREWORKS_ITEM, givenItem.copy());
@@ -52,7 +52,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
     }
 
     public EntityEnderiophageRocket(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(AMEntityRegistry.ENDERIOPHAGE_ROCKET, world);
+        this(AMEntityRegistry.ENDERIOPHAGE_ROCKET.get(), world);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
 
     @OnlyIn(Dist.CLIENT)
     public ItemStack getItem() {
-        return new ItemStack(AMItemRegistry.ENDERIOPHAGE_ROCKET);
+        return new ItemStack(AMItemRegistry.ENDERIOPHAGE_ROCKET.get());
     }
 
 }

@@ -366,7 +366,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.ORCA.create(serverWorld);
+        return AMEntityRegistry.ORCA.get().create(serverWorld);
     }
 
     public boolean shouldUseJumpAttack(LivingEntity attackTarget) {

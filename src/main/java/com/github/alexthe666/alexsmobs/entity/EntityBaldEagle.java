@@ -81,7 +81,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityBaldEagle.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityBaldEagle.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> LAUNCHED = SynchedEntityData.defineId(EntityBaldEagle.class, EntityDataSerializers.BOOLEAN);
-    private static final Ingredient TEMPT_ITEMS = Ingredient.of(Items.ROTTEN_FLESH, AMItemRegistry.FISH_OIL);
+    private static final Ingredient TEMPT_ITEMS = Ingredient.of(Items.ROTTEN_FLESH, AMItemRegistry.FISH_OIL.get());
     public float prevAttackProgress;
     public float attackProgress;
     public float prevFlyProgress;
@@ -376,7 +376,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
             }
             return InteractionResult.CONSUME;
         } else if (isTame() && !isFood(itemstack)) {
-            if (!this.isBaby() && item == AMItemRegistry.FALCONRY_HOOD) {
+            if (!this.isBaby() && item == AMItemRegistry.FALCONRY_HOOD.get()) {
                 if (!this.hasCap()) {
                     this.setCap(true);
                     if (!player.isCreative()) {
@@ -392,10 +392,10 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                         itemstack.hurt(1, random, (ServerPlayer) player);
                     }
                 }
-                this.spawnAtLocation(AMItemRegistry.FALCONRY_HOOD);
+                this.spawnAtLocation(AMItemRegistry.FALCONRY_HOOD.get());
                 this.setCap(false);
                 return InteractionResult.SUCCESS;
-            } else if (!this.isBaby() && getRidingEagles(player) <= 0 && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE)) {
+            } else if (!this.isBaby() && getRidingEagles(player) <= 0 && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get() || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get())) {
                 boardingCooldown = 30;
                 this.setLaunched(false);
                 this.ejectPassengers();
@@ -453,9 +453,9 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                 Entity mount = this.getVehicle();
                 if (mount instanceof Player) {
                     float yawAdd = 0;
-                    if (((Player) mount).getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE) {
+                    if (((Player) mount).getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get()) {
                         yawAdd = ((Player) mount).getMainArm() == HumanoidArm.LEFT ? 135 : -135;
-                    } else if (((Player) mount).getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE) {
+                    } else if (((Player) mount).getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get()) {
                         yawAdd = ((Player) mount).getMainArm() == HumanoidArm.LEFT ? -135 : 135;
                     } else {
                         this.setCommand(2);
@@ -612,7 +612,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.BALD_EAGLE.create(p_241840_1_);
+        return AMEntityRegistry.BALD_EAGLE.get().create(p_241840_1_);
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {

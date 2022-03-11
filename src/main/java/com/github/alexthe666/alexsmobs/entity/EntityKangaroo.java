@@ -781,7 +781,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        return AMEntityRegistry.KANGAROO.create(serverWorld);
+        return AMEntityRegistry.KANGAROO.get().create(serverWorld);
     }
 
     public void setMovementSpeed(double newSpeed) {

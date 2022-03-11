@@ -72,7 +72,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     private static final EntityDataAccessor<Boolean> BIPEDAL = SynchedEntityData.defineId(EntityFroststalker.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> TURN_ANGLE = SynchedEntityData.defineId(EntityFroststalker.class, EntityDataSerializers.FLOAT);
     public static final Predicate<Player> VALID_LEADER_PLAYERS = (player) -> {
-        return player.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET);
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET.get());
     };
     public float bipedProgress;
     public float prevBipedProgress;
@@ -174,7 +174,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, EntityFroststalker.class)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.FROSTSTALKER_TARGETS))));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 80, false, true, (livingEntity -> {
-            return !livingEntity.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET);
+            return !livingEntity.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET.get());
         })));
     }
 
@@ -517,7 +517,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
             if (this.getLastHurtByMob() != null && this.getLastHurtByMob().equals(leader)) {
                 return false;
             }
-            return leader.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET);
+            return leader.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET.get());
         } else {
             return leader.isAlive() && leader instanceof EntityFroststalker;
         }
@@ -635,7 +635,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return AMEntityRegistry.FROSTSTALKER.create(p_146743_);
+        return AMEntityRegistry.FROSTSTALKER.get().create(p_146743_);
     }
 
     @Override

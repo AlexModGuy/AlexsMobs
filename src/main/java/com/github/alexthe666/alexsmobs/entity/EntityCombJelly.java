@@ -134,7 +134,7 @@ public class EntityCombJelly extends WaterAnimal {
     }
 
     protected ItemStack getFishBucket(){
-        ItemStack stack = new ItemStack(AMItemRegistry.COMB_JELLY_BUCKET);
+        ItemStack stack = new ItemStack(AMItemRegistry.COMB_JELLY_BUCKET.get());
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
         }

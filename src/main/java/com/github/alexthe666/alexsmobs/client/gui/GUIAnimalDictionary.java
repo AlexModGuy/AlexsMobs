@@ -35,7 +35,7 @@ public class GUIAnimalDictionary extends GuiBasicBook {
             stack.pushPose();
             stack.translate((double)k, (double)l, 0.0D);
             stack.scale(2.75F, 2.75F, 2.75F);
-            this.itemRenderer.renderGuiItem(new ItemStack(AMItemRegistry.TAB_ICON), 25, 14);
+            this.itemRenderer.renderGuiItem(new ItemStack(AMItemRegistry.TAB_ICON.get()), 25, 14);
             this.itemRenderer.blitOffset = 0.0F;
             stack.popPose();
             RenderSystem.applyModelViewMatrix();

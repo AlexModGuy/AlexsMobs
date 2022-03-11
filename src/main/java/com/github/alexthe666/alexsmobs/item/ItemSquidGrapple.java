@@ -74,7 +74,7 @@ public class ItemSquidGrapple extends Item {
     }
 
     public boolean isValidRepairItem(ItemStack s, ItemStack s1) {
-        return s1.is(AMItemRegistry.LOST_TENTACLE);
+        return s1.is(AMItemRegistry.LOST_TENTACLE.get());
     }
 
     public static float getPowerForTime(int p) {

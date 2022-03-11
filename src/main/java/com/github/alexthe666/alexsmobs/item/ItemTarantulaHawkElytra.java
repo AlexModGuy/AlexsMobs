@@ -62,7 +62,7 @@ public class ItemTarantulaHawkElytra extends ArmorItem {
     }
 
     public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == AMItemRegistry.TARANTULA_HAWK_WING_FRAGMENT;
+        return repair.getItem() == AMItemRegistry.TARANTULA_HAWK_WING_FRAGMENT.get();
     }
 
     public EquipmentSlot getEquipmentSlot(ItemStack stack) {

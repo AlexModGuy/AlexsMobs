@@ -17,7 +17,7 @@ public class TileEntityVoidWormBeak extends BlockEntity {
 
 
     public TileEntityVoidWormBeak(BlockPos pos, BlockState state) {
-        super(AMTileEntityRegistry.VOID_WORM_BEAK, pos, state);
+        super(AMTileEntityRegistry.VOID_WORM_BEAK.get(), pos, state);
     }
 
     public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityVoidWormBeak entity) {

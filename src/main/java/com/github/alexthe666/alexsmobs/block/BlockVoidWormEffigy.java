@@ -44,7 +44,6 @@ public class BlockVoidWormEffigy extends Block {
     public BlockVoidWormEffigy() {
         super(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
-        this.setRegistryName("alexsmobs:void_worm_effigy");
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {

@@ -25,7 +25,6 @@ public class BlockEnderResidue extends AbstractGlassBlock {
     public BlockEnderResidue() {
         super(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.COLOR_PURPLE).noOcclusion().hasPostProcess((i, j, k) -> true).emissiveRendering((i, j, k) -> true).lightLevel((i) -> 3).strength(0.2F).sound(SoundType.AMETHYST).randomTicks().noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(AGE, Integer.valueOf(0)));
-        this.setRegistryName("alexsmobs:ender_residue");
     }
 
     public void randomTick(BlockState p_53588_, ServerLevel p_53589_, BlockPos p_53590_, Random p_53591_) {

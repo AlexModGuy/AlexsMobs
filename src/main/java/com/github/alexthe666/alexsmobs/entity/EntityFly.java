@@ -213,7 +213,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
             this.setNoDespawn(true);
             conversionTime++;
             if(conversionTime > 300){
-                EntityCrimsonMosquito mosquito = AMEntityRegistry.CRIMSON_MOSQUITO.create(level);
+                EntityCrimsonMosquito mosquito = AMEntityRegistry.CRIMSON_MOSQUITO.get().create(level);
                 mosquito.copyPosition(this);
                 if(!level.isClientSide){
                     mosquito.finalizeSpawn((ServerLevelAccessor)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
@@ -263,7 +263,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.FLY.create(p_241840_1_);
+        return AMEntityRegistry.FLY.get().create(p_241840_1_);
     }
 
     @Override

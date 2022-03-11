@@ -209,7 +209,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.RATTLESNAKE.create(p_241840_1_);
+        return AMEntityRegistry.RATTLESNAKE.get().create(p_241840_1_);
     }
 
     @Override

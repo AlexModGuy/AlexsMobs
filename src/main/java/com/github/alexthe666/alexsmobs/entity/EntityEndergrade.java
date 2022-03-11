@@ -129,7 +129,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof Player) {
                 Player player = (Player) passenger;
-                if (player.getMainHandItem().getItem() == AMItemRegistry.CHORUS_ON_A_STICK || player.getOffhandItem().getItem() == AMItemRegistry.CHORUS_ON_A_STICK) {
+                if (player.getMainHandItem().getItem() == AMItemRegistry.CHORUS_ON_A_STICK.get() || player.getOffhandItem().getItem() == AMItemRegistry.CHORUS_ON_A_STICK.get()) {
                     return player;
                 }
             }
@@ -272,7 +272,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.ENDERGRADE.create(p_241840_1_);
+        return AMEntityRegistry.ENDERGRADE.get().create(p_241840_1_);
     }
 
     protected void dropEquipment() {

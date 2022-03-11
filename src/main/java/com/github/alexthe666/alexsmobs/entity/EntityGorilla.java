@@ -521,7 +521,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.GORILLA.create(p_241840_1_);
+        return AMEntityRegistry.GORILLA.get().create(p_241840_1_);
     }
 
     public void leaveCaravan() {

@@ -174,7 +174,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     public void tick(){
         super.tick();
         if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextEgg <= 0) {
-            ItemEntity dropped = this.spawnAtLocation(AMItemRegistry.MUNGAL_SPORES);
+            ItemEntity dropped = this.spawnAtLocation(AMItemRegistry.MUNGAL_SPORES.get());
             dropped.setDefaultPickUpDelay();
             this.timeUntilNextEgg = this.random.nextInt(24000) + 24000;
 
@@ -520,7 +520,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == AMItemRegistry.MUNGAL_SPORES;
+        return stack.getItem() == AMItemRegistry.MUNGAL_SPORES.get();
     }
 
     @Nullable
@@ -572,7 +572,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.MUNGUS.create(p_241840_1_);
+        return AMEntityRegistry.MUNGUS.get().create(p_241840_1_);
     }
 
     public boolean isMushroomTarget(BlockPos pos) {

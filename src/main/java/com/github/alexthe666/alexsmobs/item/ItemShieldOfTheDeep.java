@@ -36,7 +36,7 @@ public class ItemShieldOfTheDeep extends Item {
     }
 
     public boolean isValidRepairItem(ItemStack p_82789_1_, ItemStack p_82789_2_) {
-        return AMItemRegistry.SERRATED_SHARK_TOOTH == p_82789_2_.getItem() || super.isValidRepairItem(p_82789_1_, p_82789_2_);
+        return AMItemRegistry.SERRATED_SHARK_TOOTH.get() == p_82789_2_.getItem() || super.isValidRepairItem(p_82789_1_, p_82789_2_);
     }
 
     @Override

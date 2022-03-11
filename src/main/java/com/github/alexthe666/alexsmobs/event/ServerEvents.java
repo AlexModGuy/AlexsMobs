@@ -185,9 +185,9 @@ public class ServerEvents {
             CompoundTag playerData = event.getPlayer().getPersistentData();
             CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             if (data != null && !data.getBoolean("alexsmobs_has_book")) {
-                ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY));
+                ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY.get()));
                 if (event.getPlayer().getUUID() != null && (event.getPlayer().getUUID().equals(ALEX_UUID) || event.getPlayer().getUUID().equals(CARRO_UUID))) {
-                    ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.BEAR_DUST));
+                    ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.BEAR_DUST.get()));
                 }
                 data.putBoolean("alexsmobs_has_book", true);
                 playerData.put(Player.PERSISTED_NBT_TAG, data);
@@ -209,7 +209,7 @@ public class ServerEvents {
         if (event.getEntity().getType() == EntityType.SQUID && !event.getEntity().getLevel().isClientSide) {
             ServerLevel level = (ServerLevel) event.getEntity().getLevel();
             event.setCanceled(true);
-            EntityGiantSquid squid = AMEntityRegistry.GIANT_SQUID.create(level);
+            EntityGiantSquid squid = AMEntityRegistry.GIANT_SQUID.get().create(level);
             squid.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity().getYRot(), event.getEntity().getXRot());
             squid.finalizeSpawn(level, level.getCurrentDifficultyAt(squid.blockPosition()), MobSpawnType.CONVERSION, null, null);
             if (event.getEntity().hasCustomName()) {
@@ -286,7 +286,7 @@ public class ServerEvents {
     @SubscribeEvent
     public void onTradeSetup(VillagerTradesEvent event) {
         if (event.getType() == VillagerProfession.FISHERMAN) {
-            VillagerTrades.ItemListing ambergrisTrade = new EmeraldsForItemsTrade(AMItemRegistry.AMBERGRIS, 20, 3, 4);
+            VillagerTrades.ItemListing ambergrisTrade = new EmeraldsForItemsTrade(AMItemRegistry.AMBERGRIS.get(), 20, 3, 4);
             List l = event.getTrades().get(2);
             l.add(ambergrisTrade);
             event.getTrades().put(2, l);
@@ -298,24 +298,24 @@ public class ServerEvents {
         if (AMConfig.wanderingTraderOffers) {
             List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
             List<VillagerTrades.ItemListing> rareTrades = event.getRareTrades();
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ANIMAL_DICTIONARY, 4, 1, 2, 1));
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ACACIA_BLOSSOM, 3, 2, 2, 1));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ANIMAL_DICTIONARY.get(), 4, 1, 2, 1));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ACACIA_BLOSSOM.get(), 3, 2, 2, 1));
             if (AMConfig.cockroachSpawnWeight > 0) {
-                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.COCKROACH_OOTHECA, 2, 1, 2, 1));
+                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.COCKROACH_OOTHECA.get(), 2, 1, 2, 1));
             }
             if (AMConfig.blobfishSpawnWeight > 0) {
-                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOBFISH_BUCKET, 4, 1, 3, 1));
+                genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOBFISH_BUCKET.get(), 4, 1, 3, 1));
             }
             if (AMConfig.crocodileSpawnWeight > 0) {
-                genericTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.CROCODILE_EGG.asItem(), 6, 1, 2, 1));
+                genericTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.CROCODILE_EGG.get().asItem(), 6, 1, 2, 1));
             }
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BEAR_FUR, 1, 1, 2, 1));
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_SCUTE, 5, 1, 2, 1));
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ROADRUNNER_FEATHER, 1, 2, 2, 2));
-            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.MOSQUITO_LARVA, 1, 3, 5, 1));
-            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.SOMBRERO, 20, 1, 1, 1));
-            rareTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.BANANA_PEEL, 1, 2, 1, 1));
-            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC, 5, 2, 3, 1));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BEAR_FUR.get(), 1, 1, 2, 1));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.CROCODILE_SCUTE.get(), 5, 1, 2, 1));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.ROADRUNNER_FEATHER.get(), 1, 2, 2, 2));
+            genericTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.MOSQUITO_LARVA.get(), 1, 3, 5, 1));
+            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.SOMBRERO.get(), 20, 1, 1, 1));
+            rareTrades.add(new ItemsForEmeraldsTrade(AMBlockRegistry.BANANA_PEEL.get(), 1, 2, 1, 1));
+            rareTrades.add(new ItemsForEmeraldsTrade(AMItemRegistry.BLOOD_SAC.get(), 5, 2, 3, 1));
         }
     }
 
@@ -350,8 +350,8 @@ public class ServerEvents {
                         event.getWorld().playSound(event.getPlayer(), event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
                         event.getPlayer().awardStat(Stats.ITEM_USED.get(Items.GLASS_BOTTLE));
                         event.getPlayer().setSecondsOnFire(6);
-                        if (!event.getPlayer().addItem(new ItemStack(AMItemRegistry.LAVA_BOTTLE))) {
-                            event.getPlayer().spawnAtLocation(new ItemStack(AMItemRegistry.LAVA_BOTTLE));
+                        if (!event.getPlayer().addItem(new ItemStack(AMItemRegistry.LAVA_BOTTLE.get()))) {
+                            event.getPlayer().spawnAtLocation(new ItemStack(AMItemRegistry.LAVA_BOTTLE.get()));
                         }
                         event.getPlayer().swing(event.getHand());
                         if (!event.getPlayer().isCreative()) {
@@ -368,7 +368,7 @@ public class ServerEvents {
     public void onInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
         if (event.getTarget() instanceof LivingEntity && !event.getPlayer().isShiftKeyDown() && VineLassoUtil.hasLassoData((LivingEntity) event.getTarget())) {
             if (!event.getEntity().level.isClientSide) {
-                event.getTarget().spawnAtLocation(new ItemStack(AMItemRegistry.VINE_LASSO));
+                event.getTarget().spawnAtLocation(new ItemStack(AMItemRegistry.VINE_LASSO.get()));
             }
             VineLassoUtil.lassoTo(null, (LivingEntity) event.getTarget());
             event.setCanceled(true);
@@ -400,10 +400,10 @@ public class ServerEvents {
                 event.getPlayer().drop(wetSponge, true);
             }
         }
-        if (event.getTarget() instanceof Rabbit && event.getItemStack().getItem() == AMItemRegistry.MUNGAL_SPORES && AMConfig.bunfungusTransformation) {
+        if (event.getTarget() instanceof Rabbit && event.getItemStack().getItem() == AMItemRegistry.MUNGAL_SPORES.get() && AMConfig.bunfungusTransformation) {
             Random random = new Random();
             if (!event.getEntityLiving().level.isClientSide && random.nextFloat() < 0.15F) {
-                EntityBunfungus bunfungus = ((Rabbit) event.getTarget()).convertTo(AMEntityRegistry.BUNFUNGUS, true);
+                EntityBunfungus bunfungus = ((Rabbit) event.getTarget()).convertTo(AMEntityRegistry.BUNFUNGUS.get(), true);
                 if (bunfungus != null) {
                     event.getPlayer().level.addFreshEntity(bunfungus);
                     bunfungus.setTransformsIn(EntityBunfungus.MAX_TRANSFORM_TIME);
@@ -448,7 +448,7 @@ public class ServerEvents {
     public void onEntityDrops(LivingDropsEvent event) {
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
             VineLassoUtil.lassoTo(null, event.getEntityLiving());
-            event.getDrops().add(new ItemEntity(event.getEntity().level, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), new ItemStack(AMItemRegistry.VINE_LASSO)));
+            event.getDrops().add(new ItemEntity(event.getEntity().level, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), new ItemStack(AMItemRegistry.VINE_LASSO.get())));
         }
     }
 
@@ -459,7 +459,7 @@ public class ServerEvents {
             Biome biome = event.getWorld().getBiome(event.getEntity().blockPosition());
             if (rand.nextFloat() <= AMConfig.elephantTraderSpawnChance && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
                 WanderingTrader traderEntity = (WanderingTrader) event.getEntity();
-                EntityElephant elephant = AMEntityRegistry.ELEPHANT.create(traderEntity.level);
+                EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(traderEntity.level);
                 elephant.copyPosition(traderEntity);
                 if (elephant.canSpawnWithTraderHere()) {
                     elephant.setTrader(true);
@@ -496,7 +496,7 @@ public class ServerEvents {
             }
             if (event.getEntity() != null && event.getEntity() instanceof Rabbit && AMConfig.bunfungusTransformation) {
                 Rabbit rabbit = (Rabbit) event.getEntity();
-                rabbit.goalSelector.addGoal(3, new TemptGoal(rabbit, 1.0D, Ingredient.of(AMItemRegistry.MUNGAL_SPORES), false));
+                rabbit.goalSelector.addGoal(3, new TemptGoal(rabbit, 1.0D, Ingredient.of(AMItemRegistry.MUNGAL_SPORES.get()), false));
             }
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
@@ -505,7 +505,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
-        if (event.getPlayer().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR && event.getTarget() instanceof LivingEntity) {
+        if (event.getPlayer().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR.get() && event.getTarget() instanceof LivingEntity) {
             float f1 = 2;
             ((LivingEntity) event.getTarget()).knockback(f1 * 0.5F, Mth.sin(event.getPlayer().getYRot() * ((float) Math.PI / 180F)), -Mth.cos(event.getPlayer().getYRot() * ((float) Math.PI / 180F)));
         }
@@ -540,7 +540,7 @@ public class ServerEvents {
                 event.setCanceled(true);
                 return;
             }
-            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL) {
+            if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()) {
                 float f1 = 1F;
                 if (attacker.distanceTo(player) < attacker.getBbWidth() + player.getBbWidth() + 0.5F) {
                     attacker.hurt(DamageSource.thorns(player), 1F);
@@ -548,7 +548,7 @@ public class ServerEvents {
                 }
             }
         }
-        if (!event.getEntityLiving().getItemBySlot(EquipmentSlot.LEGS).isEmpty() && event.getEntityLiving().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS) {
+        if (!event.getEntityLiving().getItemBySlot(EquipmentSlot.LEGS).isEmpty() && event.getEntityLiving().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS.get()) {
             if (event.getSource().isProjectile() && event.getEntityLiving().getRandom().nextFloat() < AMConfig.emuPantsDodgeChance) {
                 event.setCanceled(true);
             }
@@ -559,12 +559,12 @@ public class ServerEvents {
     public void onStructureGetSpawnLists(StructureSpawnListGatherEvent event) {
         if (AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
             if (event.getStructure() == StructureFeature.END_CITY) {
-                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE, AMConfig.mimicubeSpawnWeight, 1, 3));
+                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
             }
         }
         if (AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
             if (event.getStructure() == StructureFeature.NETHER_FOSSIL) {
-                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE, AMConfig.soulVultureSpawnWeight, 1, 1));
+                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
             }
         }
     }
@@ -587,24 +587,24 @@ public class ServerEvents {
                 event.getEntityLiving().refreshDimensions();
             }
             AttributeInstance modifiableattributeinstance = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);
-            if (event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS || modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
+            if (event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS.get() || modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
                 boolean sand = event.getEntityLiving().level.getBlockState(getDownPos(event.getEntityLiving().blockPosition(), event.getEntityLiving().level)).is(BlockTags.SAND);
                 if (sand && !modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
                     modifiableattributeinstance.addPermanentModifier(SAND_SPEED_BONUS);
                 }
-                if (event.getEntityLiving().tickCount % 25 == 0 && (event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS || !sand) && modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
+                if (event.getEntityLiving().tickCount % 25 == 0 && (event.getEntityLiving().getItemBySlot(EquipmentSlot.FEET).getItem() != AMItemRegistry.ROADDRUNNER_BOOTS.get() || !sand) && modifiableattributeinstance.hasModifier(SAND_SPEED_BONUS)) {
                     modifiableattributeinstance.removeModifier(SAND_SPEED_BONUS);
                 }
             }
-            if (event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.FRONTIER_CAP || modifiableattributeinstance.hasModifier(SNEAK_SPEED_BONUS)) {
+            if (event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.FRONTIER_CAP.get() || modifiableattributeinstance.hasModifier(SNEAK_SPEED_BONUS)) {
                 if (event.getEntityLiving().isShiftKeyDown() && !modifiableattributeinstance.hasModifier(SNEAK_SPEED_BONUS)) {
                     modifiableattributeinstance.addPermanentModifier(SNEAK_SPEED_BONUS);
                 }
-                if ((!event.getEntityLiving().isShiftKeyDown() || event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() != AMItemRegistry.FRONTIER_CAP) && modifiableattributeinstance.hasModifier(SNEAK_SPEED_BONUS)) {
+                if ((!event.getEntityLiving().isShiftKeyDown() || event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() != AMItemRegistry.FRONTIER_CAP.get()) && modifiableattributeinstance.hasModifier(SNEAK_SPEED_BONUS)) {
                     modifiableattributeinstance.removeModifier(SNEAK_SPEED_BONUS);
                 }
             }
-            if (event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL) {
+            if (event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()) {
                 if (!event.getEntityLiving().isEyeInFluid(FluidTags.WATER)) {
                     event.getEntityLiving().addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 210, 0, false, false, true));
                 }
@@ -624,7 +624,7 @@ public class ServerEvents {
             }
         }
 
-        if (event.getEntityLiving().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS) {
+        if (event.getEntityLiving().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS.get()) {
             if (event.getEntityLiving().horizontalCollision && !event.getEntityLiving().isInWater()) {
                 event.getEntityLiving().fallDistance = 0.0F;
                 Vec3 motion = event.getEntityLiving().getDeltaMovement();
@@ -665,7 +665,7 @@ public class ServerEvents {
     @SubscribeEvent
     public void onLivingAttack(LivingAttackEvent event) {
         if (!event.getEntityLiving().getUseItem().isEmpty() && event.getSource() != null && event.getSource().getEntity() != null) {
-            if (event.getEntityLiving().getUseItem().getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP) {
+            if (event.getEntityLiving().getUseItem().getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP.get()) {
                 Entity attacker = event.getSource().getEntity();
                 if (attacker instanceof LivingEntity) {
                     boolean flag = false;
@@ -690,17 +690,17 @@ public class ServerEvents {
     @SubscribeEvent
     public void onChestGenerated(LootTableLoadEvent event) {
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
-            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(40).setWeight(1);
+            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART.get()).setQuality(40).setWeight(1);
             LootPool.Builder builder = new LootPool.Builder().name("am_dart").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 1)).setBonusRolls(UniformGenerator.between(0, 1));
             event.getTable().addPool(builder.build());
         }
         if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE_DISPENSER)) {
-            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART).setQuality(20).setWeight(3);
+            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART.get()).setQuality(20).setWeight(3);
             LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 2)).setBonusRolls(UniformGenerator.between(0, 1));
             event.getTable().addPool(builder.build());
         }
         if (event.getName().equals(BuiltInLootTables.PIGLIN_BARTERING) && AMConfig.tusklinShoesBarteringChance > 0) {
-            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.PIGSHOES).setQuality(5).setWeight(8);
+            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.PIGSHOES.get()).setQuality(5).setWeight(8);
             LootPool.Builder builder = new LootPool.Builder().name("am_pigshoes").add(item).when(LootItemRandomChanceCondition.randomChance((float) AMConfig.tusklinShoesBarteringChance)).setRolls(ConstantValue.exactly(1));
             event.getTable().addPool(builder.build());
         }

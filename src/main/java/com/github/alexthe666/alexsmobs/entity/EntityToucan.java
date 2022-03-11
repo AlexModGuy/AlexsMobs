@@ -466,7 +466,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        EntityToucan toucan = AMEntityRegistry.TOUCAN.create(level);
+        EntityToucan toucan = AMEntityRegistry.TOUCAN.get().create(level);
         toucan.setVariant(this.getVariant());
         return toucan;
     }

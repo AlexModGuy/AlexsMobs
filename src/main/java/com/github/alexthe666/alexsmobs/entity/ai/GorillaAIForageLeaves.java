@@ -92,7 +92,7 @@ public class GorillaAIForageLeaves extends MoveToBlockGoal {
                 itementity.setDefaultPickUpDelay();
                 gorilla.level.addFreshEntity(itementity);
                 if(BlockTags.getAllTags().getTag(AMTagRegistry.DROPS_BANANAS).contains(blockstate.getBlock()) && rand.nextInt(30) == 0){
-                    ItemStack banana = new ItemStack(AMItemRegistry.BANANA);
+                    ItemStack banana = new ItemStack(AMItemRegistry.BANANA.get());
                     ItemEntity itementity2 = new ItemEntity(gorilla.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
                     itementity2.setDefaultPickUpDelay();
                     gorilla.level.addFreshEntity(itementity2);
