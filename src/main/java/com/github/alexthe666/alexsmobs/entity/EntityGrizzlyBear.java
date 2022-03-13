@@ -11,6 +11,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -72,7 +73,7 @@ import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAnimatedEntity, ITargetsDroppedItems {
+public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAnimatedEntity, ITargetsDroppedItems, IFollower {
 
     public static final Animation ANIMATION_MAUL = Animation.create(20);
     public static final Animation ANIMATION_SNIFF = Animation.create(12);
@@ -84,6 +85,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(EntityGrizzlyBear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SNOWY = SynchedEntityData.defineId(EntityGrizzlyBear.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> APRIL_FOOLS_MODE = SynchedEntityData.defineId(EntityGrizzlyBear.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityGrizzlyBear.class, EntityDataSerializers.INT);
     private static final UniformInt angerLogic = TimeUtil.rangeOfSeconds(20, 39);
     public float prevStandProgress;
     public float prevSitProgress;
@@ -99,7 +101,6 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     private int eatingTime = 0;
     private int angerTime;
     private UUID angerTarget;
-    private int warningSoundTicks;
     private int honeyedTime;
     @Nullable
     private UUID salmonThrowerID = null;
@@ -211,16 +212,17 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new TameableAIRide(this, 1D));
-        this.goalSelector.addGoal(2, new GrizzlyBearAIAprilFools(this));
-        this.goalSelector.addGoal(3, new EntityGrizzlyBear.MeleeAttackGoal());
-        this.goalSelector.addGoal(3, new EntityGrizzlyBear.PanicGoal());
-        this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, TEMPTATION_ITEMS, false));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(4, new GrizzlyBearAIBeehive(this));
-        this.goalSelector.addGoal(5, new GrizzlyBearAIFleeBees(this, 14, 1D, 1D));
-        this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 0.75D));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(2, new TameableAIFollowOwner(this, 1.2D, 5.0F, 2.0F, false));
+        this.goalSelector.addGoal(3, new GrizzlyBearAIAprilFools(this));
+        this.goalSelector.addGoal(4, new EntityGrizzlyBear.MeleeAttackGoal());
+        this.goalSelector.addGoal(4, new EntityGrizzlyBear.PanicGoal());
+        this.goalSelector.addGoal(5, new TameableAITempt(this, 1.1D, TEMPTATION_ITEMS, false));
+        this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(5, new GrizzlyBearAIBeehive(this));
+        this.goalSelector.addGoal(6, new GrizzlyBearAIFleeBees(this, 14, 1D, 1D));
+        this.goalSelector.addGoal(6, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new RandomStrollGoal(this, 0.75D));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
@@ -242,6 +244,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         compound.putBoolean("ForcedToSit", this.forcedSit);
         compound.putBoolean("SnowPerm", this.permSnow);
         compound.putInt("FurTime", this.timeUntilNextFur);
+        compound.putInt("BearCommand", this.getCommand());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -250,6 +253,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         this.setSnowy(compound.getBoolean("Snowy"));
         this.setStanding(compound.getBoolean("Standing"));
         this.setOrderedToSit(compound.getBoolean("BearSitting"));
+        this.setCommand(compound.getInt("BearCommand"));
         this.forcedSit = compound.getBoolean("ForcedToSit");
         this.permSnow = compound.getBoolean("SnowPerm");
         this.timeUntilNextFur = compound.getInt("FurTime");
@@ -309,13 +313,20 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                 player.startRiding(this);
                 return InteractionResult.SUCCESS;
             }else{
-                if(this.isSitting()){
-                    this.forcedSit = false;
-                    this.setOrderedToSit(false);
-                    return InteractionResult.SUCCESS;
-                }else{
+                this.setCommand((this.getCommand() + 1) % 3);
+
+                if (this.getCommand() == 3) {
+                    this.setCommand(0);
+                }
+                player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                boolean sit = this.getCommand() == 2;
+                if (sit) {
                     this.forcedSit = true;
                     this.setOrderedToSit(true);
+                    return InteractionResult.SUCCESS;
+                } else {
+                    this.forcedSit = false;
+                    this.setOrderedToSit(false);
                     return InteractionResult.SUCCESS;
                 }
             }
@@ -565,6 +576,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         this.entityData.define(SNOWY, Boolean.valueOf(false));
         this.entityData.define(EATING, Boolean.valueOf(false));
         this.entityData.define(APRIL_FOOLS_MODE, 0);
+        this.entityData.define(COMMAND, 0);
     }
 
     public boolean isEating() {
@@ -614,6 +626,14 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
      */
     public void setAprilFoolsFlag(int i) {
         this.entityData.set(APRIL_FOOLS_MODE, i);
+    }
+
+    public int getCommand() {
+        return this.entityData.get(COMMAND).intValue();
+    }
+
+    public void setCommand(int command) {
+        this.entityData.set(COMMAND, Integer.valueOf(command));
     }
 
     @Nullable
@@ -696,6 +716,10 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         return getAprilFoolsFlag() > 1;
     }
 
+    @Override
+    public boolean shouldFollow() {
+        return this.getAprilFoolsFlag() == 0 && this.getCommand() == 1;
+    }
 
 
     class HurtByTargetGoal extends net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal {

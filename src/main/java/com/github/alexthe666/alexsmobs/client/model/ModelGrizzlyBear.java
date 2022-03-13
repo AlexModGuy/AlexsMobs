@@ -220,7 +220,7 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         progressRotationPrev(left_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(10), 0, 10F);
         progressRotationPrev(right_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(-10), 0, 10F);
         progressPositionPrev(head, sitProgress, 0, 4, -1, 10F);
-        if(standProgress > 5F){
+        if(Math.max(standProgress, sitProgress) > 5F){
             this.head.rotateAngleZ += netHeadYaw * ((float)Math.PI / 180F);
         }else{
             this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);

@@ -5,6 +5,10 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -55,7 +59,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 
-public class EntityKomodoDragon extends TamableAnimal implements ITargetsDroppedItems {
+public class EntityKomodoDragon extends TamableAnimal implements ITargetsDroppedItems, IFollower {
 
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(Items.ROTTEN_FLESH);
     public int slaughterCooldown = 0;
@@ -64,6 +68,21 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     public static final Predicate<EntityKomodoDragon> HURT_OR_BABY = (p_213616_0_) -> {
         return p_213616_0_.isBaby() || p_213616_0_.getHealth() <= 0.7F * p_213616_0_.getMaxHealth();
     };
+    private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityKomodoDragon.class, EntityDataSerializers.INT);
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(COMMAND, 0);
+    }
+
+    public int getCommand() {
+        return this.entityData.get(COMMAND).intValue();
+    }
+
+    public void setCommand(int command) {
+        this.entityData.set(COMMAND, Integer.valueOf(command));
+    }
 
     public static <T extends Mob> boolean canKomodoDragonSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
         boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.KOMODO_DRAGON_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
@@ -127,12 +146,14 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if (compound.contains("SpitTime")) {
             this.timeUntilSpit = compound.getInt("SpitTime");
         }
+        this.setCommand(compound.getInt("KomodoCommand"));
 
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("SpitTime", this.timeUntilSpit);
+        compound.putInt("KomodoCommand", this.getCommand());
     }
 
     public boolean isFood(ItemStack stack) {
@@ -255,10 +276,24 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
                 this.setInLoveTime(600);
                 this.usePlayerItem(player, hand, itemstack);
                 return InteractionResult.SUCCESS;
-            }
-            if(!player.isShiftKeyDown() && !isFood(itemstack) && !this.isBaby()){
-                player.startRiding(this);
-                return InteractionResult.SUCCESS;
+            }else{
+                if(!player.isShiftKeyDown() && !this.isBaby()){
+                    player.startRiding(this);
+                    return InteractionResult.SUCCESS;
+                }else{
+                    this.setCommand((this.getCommand() + 1) % 3);
+
+                    if (this.getCommand() == 3) {
+                        this.setCommand(0);
+                    }
+                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                    boolean sit = this.getCommand() == 2;
+                    if (sit) {
+                        return InteractionResult.SUCCESS;
+                    } else {
+                        return InteractionResult.SUCCESS;
+                    }
+                }
             }
         }
         return type;
@@ -295,5 +330,10 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     @Override
     public void onGetItem(ItemEntity e) {
         this.heal(10);
+    }
+
+    @Override
+    public boolean shouldFollow() {
+        return this.getCommand() == 1;
     }
 }
