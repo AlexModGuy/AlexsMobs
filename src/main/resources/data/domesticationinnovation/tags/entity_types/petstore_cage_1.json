@@ -1,0 +1,10 @@
+{
+  "#comment": "For the desert pet store cage",
+  "replace": false,
+  "values": [
+    "alexsmobs:capuchin_monkey",
+    "alexsmobs:flutter",
+    "alexsmobs:maned_wolf",
+    "alexsmobs:jerboa"
+  ]
+}
