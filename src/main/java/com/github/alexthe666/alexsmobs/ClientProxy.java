@@ -196,18 +196,18 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.RAINBOW_GLASS.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_FUR_BLOCK.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_CARPET.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_DOOR.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_TRAPDOOR.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.PHANTOM_SAIL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.SPECTRE_SAIL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.ENDER_RESIDUE.get(), RenderType.translucent());
+        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_DOOR.get(), RenderType.translucent());
+        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_TRAPDOOR.get(), RenderType.translucent());
+        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.PHANTOM_SAIL.get(), RenderType.translucent());
+        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.SPECTRE_SAIL.get(), RenderType.translucent());
+        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.ENDER_RESIDUE.get(), RenderType.translucent());
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID.get(), RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK.get(), RenderVoidWormBeak::new);
-        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_DOOR.get(), RenderEndPirateDoor::new);
-        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR.get(), RenderEndPirateAnchor::new);
-        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), RenderEndPirateAnchorWinch::new);
-        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL.get(), RenderEndPirateShipWheel::new);
-        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_FLAG.get(), RenderEndPirateFlag::new);
+        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_DOOR.get(), RenderEndPirateDoor::new);
+        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR.get(), RenderEndPirateAnchor::new);
+        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), RenderEndPirateAnchorWinch::new);
+        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL.get(), RenderEndPirateShipWheel::new);
+        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_FLAG.get(), RenderEndPirateFlag::new);
     }
 
     private void initRainbowBuffers(){
