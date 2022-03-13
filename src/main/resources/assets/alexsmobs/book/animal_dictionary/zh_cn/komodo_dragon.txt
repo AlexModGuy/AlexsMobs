@@ -2,11 +2,45 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Komodo Dragons are the largest lizards in the world, often found in remote badlands biomes. These big lizards see man and beast as food alike, and attack almost anything.
-They are also cannibalistic, and will attack any other weakened Komodo Dragon, especially baby Komodos. These lizards have a terribly poisonous bite which they use to bring their prey down to size.
+    科摩多巨蜥是世界上最大的蜥蜴，
 <NEWLINE>
-Komodo Dragons have a fondness for Rotten Flesh, and will eat entire stacks of them out of players. If they are fed multiple entire stacks of Rotten Flesh, they can become tamed to a player.
-Tamed Komodos are just as savage as wild Komodos, yet they can be used a formidable mount that is surprisingly quick.
+常见于稀疏的丛林生物群系。这些大蜥
 <NEWLINE>
-Komodo Dragons can also occasionally drip their noxious saliva. This item can be bottled, and then brewed with a Cave Centipede leg in order to make Poisonous Essence.
-This, in turn, can be brewed with a Rattlesnake Rattle in order to create a Potion of Poison Resistance.
+蜴看见人或者其他动物就像看见美食一
+<NEWLINE>
+样，会对几乎任何生物发起攻击。
+<NEWLINE>
+    它们还会吃掉自己的同类，会攻击
+<NEWLINE>
+其他虚弱的科摩多巨蜥，尤其是小科摩
+<NEWLINE>
+多巨蜥。这些蜥蜴长着一口令人恐惧的
+<NEWLINE>
+毒牙，它们会用这口毒牙将猎物击败。
+<NEWLINE>
+    科摩多巨蜥非常喜欢腐肉，会经常
+<NEWLINE>
+吃掉玩家身上的一大堆腐肉。当它们被
+<NEWLINE>
+喂食了许许多多的腐肉之后，玩家则可
+<NEWLINE>
+以将它们给驯服。虽然驯服后的科摩多
+<NEWLINE>
+巨蜥和野外的巨蜥一样凶猛，但是它们
+<NEWLINE>
+可以用作为一种速度惊人的强大坐骑。
+<NEWLINE>
+    科摩多巨蜥偶尔会流出它们那有毒
+<NEWLINE>
+的唾液。如果用来酿造抗毒药水的话，
+<NEWLINE>
+那么可以增加该药水的药效时长。科摩
+<NEWLINE>
+多巨蜥唾液可以用玻璃瓶装起来，在紧
+<NEWLINE>
+要关头可选择其来与洞穴蜈蚣腿一起酿
+<NEWLINE>
+<NEWLINE>
+造毒素精华。三个科摩多巨蜥唾液物品
+<NEWLINE>
+可以合成一个黏液球。
