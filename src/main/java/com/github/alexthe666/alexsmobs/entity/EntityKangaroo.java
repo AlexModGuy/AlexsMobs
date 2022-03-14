@@ -205,6 +205,10 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
                 EntityKangaroo.this.entityData.set(POUCH_TICK, 10);
                 EntityKangaroo.this.resetKangarooSlots();
             }
+
+            public boolean stillValid(Player player) {
+                return EntityKangaroo.this.isAlive() && !EntityKangaroo.this.isInsidePortal;
+            }
         };
         kangarooInventory.addListener(this);
         if (animalchest != null) {
@@ -384,7 +388,6 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     public void setVisualFlag(int visualFlag) {
         this.entityData.set(VISUAL_FLAG, Integer.valueOf(visualFlag));
     }
-
 
     @Override
     protected void defineSynchedData() {
