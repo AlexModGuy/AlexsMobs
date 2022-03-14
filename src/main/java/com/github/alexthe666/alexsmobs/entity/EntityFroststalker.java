@@ -172,7 +172,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, LivingEntity.class, 15.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, EntityFroststalker.class)).setAlertOthers());
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.FROSTSTALKER_TARGETS))));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 40, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.FROSTSTALKER_TARGETS)));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 80, false, true, (livingEntity -> {
             return !livingEntity.getItemBySlot(EquipmentSlot.HEAD).is(AMItemRegistry.FROSTSTALKER_HELMET.get());
         })));
@@ -414,7 +414,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
             int i = Mth.floor(this.getX());
             int j = Mth.floor(this.getY());
             int k = Mth.floor(this.getZ());
-            return this.level.getBiome(new BlockPos(i, 0, k)).shouldSnowGolemBurn(new BlockPos(i, j, k));
+            return this.level.getBiome(new BlockPos(i, 0, k)).value().shouldSnowGolemBurn(new BlockPos(i, j, k));
         }
     }
 
@@ -751,7 +751,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         }
 
         private boolean isFire(Level world, BlockPos.MutableBlockPos lvt_4_1_) {
-            return BlockTags.getAllTags().getTag(AMTagRegistry.FROSTSTALKER_FEARS).contains(world.getBlockState(lvt_4_1_).getBlock());
+            return world.getBlockState(lvt_4_1_).is(AMTagRegistry.FROSTSTALKER_FEARS);
         }
 
     }

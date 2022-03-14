@@ -456,7 +456,7 @@ public class ServerEvents {
     public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
         if (event.getEntity() instanceof WanderingTrader && AMConfig.elephantTraderSpawnChance > 0) {
             Random rand = new Random();
-            Biome biome = event.getWorld().getBiome(event.getEntity().blockPosition());
+            Biome biome = event.getWorld().getBiome(event.getEntity().blockPosition()).value();
             if (rand.nextFloat() <= AMConfig.elephantTraderSpawnChance && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
                 WanderingTrader traderEntity = (WanderingTrader) event.getEntity();
                 EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(traderEntity.level);

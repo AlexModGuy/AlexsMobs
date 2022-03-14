@@ -145,7 +145,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
             downPos = downPos.below();
         }
-        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.MANTIS_SHRIMP_SPAWNS).contains(worldIn.getBlockState(downPos).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.MANTIS_SHRIMP_SPAWNS);
         return spawnBlock && downPos.getY() < worldIn.getSeaLevel() + 1;
     }
 
@@ -180,7 +180,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 120, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.MANTIS_SHRIMP_TARGETS))) {
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 120, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.MANTIS_SHRIMP_TARGETS)) {
             public boolean canUse() {
                 return EntityMantisShrimp.this.getCommand() != 3 && !EntityMantisShrimp.this.isSitting() && super.canUse();
             }
@@ -352,7 +352,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
-            if (player.isShiftKeyDown() || ItemTags.getAllTags().getTag(AMTagRegistry.SHRIMP_RICE_FRYABLES).contains(itemstack.getItem())) {
+            if (player.isShiftKeyDown() || itemstack.is(AMTagRegistry.SHRIMP_RICE_FRYABLES)) {
                 if (this.getMainHandItem().isEmpty()) {
                     ItemStack cop = itemstack.copy();
                     cop.setCount(1);

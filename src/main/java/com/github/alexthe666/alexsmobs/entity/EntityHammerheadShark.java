@@ -115,8 +115,7 @@ public class EntityHammerheadShark extends WaterAnimal {
 
     public static <T extends Mob> boolean canHammerheadSharkSpawn(EntityType<EntityHammerheadShark> p_223364_0_, LevelAccessor p_223364_1_, MobSpawnType reason, BlockPos p_223364_3_, Random p_223364_4_) {
         if (p_223364_3_.getY() > 45 && p_223364_3_.getY() < p_223364_1_.getSeaLevel()) {
-            Optional<ResourceKey<Biome>> optional = p_223364_1_.getBiomeName(p_223364_3_);
-            return (!Objects.equals(optional, Optional.of(Biomes.OCEAN)) || !Objects.equals(optional, Optional.of(Biomes.DEEP_OCEAN))) && p_223364_1_.getFluidState(p_223364_3_).is(FluidTags.WATER);
+            return p_223364_1_.getFluidState(p_223364_3_).is(FluidTags.WATER);
         } else {
             return false;
         }

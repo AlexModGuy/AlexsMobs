@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Block;
 
 public class AMTagRegistry {
     public static final TagKey<Item> INSECT_ITEMS = registerItemTag("insect_items");
-   // public static final ResourceLocation FORGE_WOODEN_CHESTS = TagKey<Item>("forge","chests/wooden");
     public static final TagKey<Block> GRIZZLY_BEEHIVE = registerBlockTag("grizzly_beehive");
     public static final TagKey<Item> GRIZZLY_FOODSTUFFS = registerItemTag("grizzly_foodstuffs");
     public static final TagKey<Item> GRIZZLY_HONEY = registerItemTag("grizzly_honey");
@@ -39,7 +38,7 @@ public class AMTagRegistry {
     public static final TagKey<Item> ELEPHANT_FOODSTUFFS = registerItemTag("elephant_foodstuffs");
     public static final TagKey<Block> SOUL_VULTURE_PERCHES = registerBlockTag("soul_vulture_perches");
     public static final TagKey<Block> SOUL_VULTURE_SPAWNS = registerBlockTag("soul_vulture_spawns");
-    public static final TagKey<Item> SNOW_LEOPARD_TARGETS = registerItemTag("snow_leopard_targets");
+    public static final TagKey<EntityType<?>> SNOW_LEOPARD_TARGETS = registerEntityTag("snow_leopard_targets");
     public static final TagKey<EntityType<?>> SCATTERS_CROWS = registerEntityTag("scatters_crows");
     public static final TagKey<Block> CROW_FOODBLOCKS = registerBlockTag("crow_foodblocks");
     public static final TagKey<Item> CROW_FOODSTUFFS = registerItemTag("crow_foodstuffs");

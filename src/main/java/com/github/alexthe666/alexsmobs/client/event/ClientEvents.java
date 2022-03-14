@@ -84,7 +84,7 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onOutlineEntityColor(EventGetOutlineColor event) {
-        if (event.getEntityIn() instanceof ItemEntity && .* {
+        if (event.getEntityIn() instanceof ItemEntity && ((ItemEntity) event.getEntityIn()).getItem().is(AMTagRegistry.VOID_WORM_DROPS)){
             int fromColor = 0;
             int toColor = 0X21E5FF;
             float startR = (float) (fromColor >> 16 & 255) / 255.0F;

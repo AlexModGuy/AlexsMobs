@@ -89,7 +89,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
 
 
     public static boolean canTurtleSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.ALLIGATOR_SNAPPING_TURTLE_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.ALLIGATOR_SNAPPING_TURTLE_SPAWNS);
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 

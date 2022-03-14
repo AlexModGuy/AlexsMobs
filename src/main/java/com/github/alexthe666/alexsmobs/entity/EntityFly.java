@@ -113,8 +113,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
 
 
     public static boolean canFlySpawn(EntityType<EntityFly> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        Tag<Block> tag = BlockTags.getAllTags().getTag(AMTagRegistry.FLY_SPAWNS);
-        return reason == MobSpawnType.SPAWNER || pos.getY() > 63 && random.nextInt(4) == 0 && worldIn.getRawBrightness(pos, 0) > 8 && worldIn.getBrightness(LightLayer.BLOCK, pos) == 0 && tag.contains(worldIn.getBlockState(pos.below()).getBlock());
+        return reason == MobSpawnType.SPAWNER || pos.getY() > 63 && random.nextInt(4) == 0 && worldIn.getRawBrightness(pos, 0) > 8 && worldIn.getBrightness(LightLayer.BLOCK, pos) == 0 && worldIn.getBlockState(pos.below()).is(AMTagRegistry.FLY_SPAWNS);
     }
 
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
@@ -318,16 +317,14 @@ public class EntityFly extends Animal implements FlyingAnimal {
         protected boolean mustUpdate;
         private Entity targetEntity;
         private int cooldown = 0;
-        private Tag tag;
 
         AnnoyZombieGoal() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-            tag = EntityTypeTags.getAllTags().getTag(AMTagRegistry.FLY_TARGETS);
             this.theNearestAttackableTargetSorter = new Sorter(EntityFly.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && tag != null && e.getType().is(tag) && (!(e instanceof LivingEntity) || ((LivingEntity) e).getHealth() >= 2D);
+                    return e.isAlive() && e.getType().is(AMTagRegistry.FLY_TARGETS) && (!(e instanceof LivingEntity) || ((LivingEntity) e).getHealth() >= 2D);
                 }
             };
         }

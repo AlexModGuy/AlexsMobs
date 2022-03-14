@@ -164,7 +164,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
             if(this.getShakingTime() % 5 == 0){
                 this.getNavigation().moveTo(nearestAnthill.getX() + 0.5F, nearestAnthill.getY() + 1F, nearestAnthill.getZ() + 0.5F, 1F);
             }
-            if(nearestAnthill.closerThan(this.position(), 6) && this.getShakingTime() % 20 == 0){
+            if(nearestAnthill.closerToCenterThan(this.position(), 6) && this.getShakingTime() % 20 == 0){
                 ((TileEntityLeafcutterAnthill)level.getBlockEntity(nearestAnthill)).growFungus();
             }
         }
@@ -241,7 +241,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
             updateEars();
         }
         boolean dance = isDancing();
-        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerThan(this.position(), 15) || !this.level.getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15) || !this.level.getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
             this.isJukeboxing = false;
             this.setDancing(false);
             this.jukeboxPosition = null;
