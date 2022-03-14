@@ -2,12 +2,52 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Grizzly Bear is a large, omnivorous mammal found in forest biomes. It can often be found with one or two bear cubs, which
-follow their parent. Any unprepared traveller or hunter should keep their distance from a Grizzly Bear, as although they are
- neutral at a distance, they become hostile when approached. Grizzlies are well known for raiding any beehive with honey,
- tearing it open and feasting on the honeycombs inside. If a Grizzly Bear has been recently sated with honey, it can be
- approached safely. It is believed that feeding a Grizzly Bear salmon after it has eaten honey could result in gaining the
- beast's trust, although few survive any close encounters with these bears. Those that do claim that they can be used as war mounts.
+    灰熊是一种在森林生物群系中可以
 <NEWLINE>
-Occasionally, Grizzly Bears may shed some of their hair. This hair can be used to brew a Knockback Resistance potion, when
-combined with a Strength Potion.
+被发现的大型的杂食性哺乳动物。玩家
+<NEWLINE>
+可以经常看到一两只小灰熊跟着父母。
+<NEWLINE>
+没有做好准备的旅行者或猎人，都应该
+<NEWLINE>
+与灰熊保持距离，虽说灰熊在一定的距
+<NEWLINE>
+离内是中立的，但一靠近它们就会产生
+<NEWLINE>
+敌意。
+<NEWLINE>
+    众所周知，灰熊会为了蜂蜜而去掏
+<NEWLINE>
+每个蜂巢，将蜂巢撕开然后吃掉里面的
+<NEWLINE>
+蜜脾。如果一只灰熊最近吃过蜂蜜，那
+<NEWLINE>
+么玩家就可以安全地接近它。
+<NEWLINE>
+    有人认为在灰熊吃过蜂蜜再给它喂
+<NEWLINE>
+食一只鲑鱼之后，可以获得这种野兽的
+<NEWLINE>
+信任，尽管却很少有人在近距离接触了
+<NEWLINE>
+这些熊之后能可以幸存下来。那些幸存
+<NEWLINE>
+者声称灰熊是战场上有力的座骑。
+<NEWLINE>
+    灰熊偶尔会掉落一些它们的毛发。
+<NEWLINE>
+这种毛发可以用来与力量药水来一起酿
+<NEWLINE>
+造「抗击退药水」。
+<NEWLINE>
+    在雪天里，灰熊的皮毛会被裹上白
+<NEWLINE>
+雪。玩家使用锹就可以将这些雪给清除
+<NEWLINE>
+掉。当然玩家也可以使用雪层来给灰熊
+<NEWLINE>
+裹上。如果灰熊处于雨天、水里或者是
+<NEWLINE>
+炎热的生物群系中，那么身上的雪就会
+<NEWLINE>
+融化掉。
