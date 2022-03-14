@@ -12,6 +12,7 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -124,7 +125,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public static boolean canTarantulaHawkSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        boolean spawnBlock = BlockTags.SAND.contains(worldIn.getBlockState(pos.below()).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(Blocks.SAND);
         return (spawnBlock) && worldIn.getRawBrightness(pos, 0) > 8 || isBiomeNether(worldIn, pos) || AMConfig.fireproofTarantulaHawk;
     }
 
@@ -145,8 +146,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private static boolean isBiomeNether(LevelAccessor worldIn, BlockPos position) {
-        ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, worldIn.getBiome(position).getRegistryName());
-        return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.NETHER);
+        return BiomeDictionary.hasType(worldIn.getBiome(position).unwrapKey().get(), BiomeDictionary.Type.NETHER);
     }
 
     protected void registerGoals() {
@@ -670,7 +670,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 sandAir = sandAir.above();
             }
             BlockState state = world.getBlockState(sandAir.below());
-            if (BlockTags.SAND.contains(state.getBlock())) {
+            if (state.is(BlockTags.SAND)) {
                 return sandAir.below();
             }
         }
@@ -749,7 +749,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             LivingEntity target = hawk.getTarget();
             boolean paralized = target != null && target.getMobType() == MobType.ARTHROPOD && !target.noPhysics && target.hasEffect(AMEffectRegistry.DEBILITATING_STING);
             boolean paralizedWithChild = paralized && target.getEffect(AMEffectRegistry.DEBILITATING_STING).getAmplifier() > 0;
-            if (sandPos == null || !BlockTags.SAND.contains(level.getBlockState(sandPos).getBlock())) {
+            if (sandPos == null || !level.getBlockState(sandPos).is(BlockTags.SAND)) {
                 sandPos = hawk.genSandPos(target.blockPosition());
             }
             if (orbitCooldown > 0) {
@@ -947,7 +947,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         }
 
         public boolean canContinueToUse() {
-            return hawk.isDragging() && digTime < 200 && hawk.getTarget() != null && buryPos != null && BlockTags.SAND.contains(level.getBlockState(buryPos).getBlock());
+            return hawk.isDragging() && digTime < 200 && hawk.getTarget() != null && buryPos != null && level.getBlockState(buryPos).is(BlockTags.SAND);
         }
 
         public void start() {

@@ -23,13 +23,11 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
 
     public FeatureLeafcutterAnthill(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
-        this.setRegistryName("alexsmobs:leafcutter_ant");
     }
-
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        if (context.level().getRandom().nextFloat() > 0.00002F) {
+        if (context.level().getRandom().nextFloat() > 0.0175F) {
             return false;
         }
         int x = 8;

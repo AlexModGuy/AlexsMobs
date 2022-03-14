@@ -175,7 +175,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         this.goalSelector.addGoal(8, new FollowBoatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EntityCachalotWhale.class, 5, false, false, TARGET_BABY));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 200, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.ORCA_TARGETS))));
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 200, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.ORCA_TARGETS)));
     }
 
     @Override
@@ -226,7 +226,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                         BlockState state = level.getBlockState(pos);
                         FluidState fluidState = level.getFluidState(pos);
                         Block block = state.getBlock();
-                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && BlockTags.getAllTags().getTag(AMTagRegistry.ORCA_BREAKABLES).contains(state.getBlock()) && fluidState.isEmpty()) {
+                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && state.is(AMTagRegistry.ORCA_BREAKABLES) && fluidState.isEmpty()) {
                             if (block != Blocks.AIR) {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
@@ -435,8 +435,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
     public static boolean canOrcaSpawn(EntityType<EntityOrca> p_223364_0_, LevelAccessor p_223364_1_, MobSpawnType reason, BlockPos p_223364_3_, Random p_223364_4_) {
         if (p_223364_3_.getY() > 45 && p_223364_3_.getY() < p_223364_1_.getSeaLevel()) {
-            Optional<ResourceKey<Biome>> optional = p_223364_1_.getBiomeName(p_223364_3_);
-            return (!Objects.equals(optional, Optional.of(Biomes.OCEAN)) || !Objects.equals(optional, Optional.of(Biomes.DEEP_OCEAN))) && p_223364_1_.getFluidState(p_223364_3_).is(FluidTags.WATER);
+            return p_223364_1_.getFluidState(p_223364_3_).is(FluidTags.WATER);
         } else {
             return false;
         }

@@ -579,12 +579,11 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
         AIScatter() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-            tag = EntityTypeTags.getAllTags().getTag(AMTagRegistry.SCATTERS_CROWS);
             this.theNearestAttackableTargetSorter = new EntitySeagull.AIScatter.Sorter(EntitySeagull.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && e.getType().is(tag) || e instanceof Player && !((Player) e).isCreative();
+                    return e.isAlive() && e.getType().is(AMTagRegistry.SCATTERS_CROWS) || e instanceof Player && !((Player) e).isCreative();
                 }
             };
         }

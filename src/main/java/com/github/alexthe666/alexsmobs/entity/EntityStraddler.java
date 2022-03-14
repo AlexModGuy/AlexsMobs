@@ -83,7 +83,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
     }
 
     public static boolean canStraddlerSpawn(EntityType animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        boolean spawnBlock = BlockTags.BASE_STONE_NETHER.contains(worldIn.getBlockState(pos.below()).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(BlockTags.BASE_STONE_NETHER);
         return spawnBlock;
     }
 

@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -80,7 +81,7 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
     }
 
     private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-        return blockpos.distSqr(positionVec.x(), blockpos.getY(), positionVec.z(), true) < distance * distance;
+        return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
     }
 
     protected boolean isReachedTarget() {
@@ -90,14 +91,14 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
     private void breakLeaves() {
         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(elephant.level, elephant)) {
             BlockState blockstate = elephant.level.getBlockState(this.blockPos);
-            if (BlockTags.getAllTags().getTag(AMTagRegistry.ELEPHANT_FOODBLOCKS).contains(blockstate.getBlock())) {
+            if (blockstate.is(AMTagRegistry.ELEPHANT_FOODBLOCKS)) {
                 elephant.level.destroyBlock(blockPos, false);
                 Random rand = new Random();
                 ItemStack stack = new ItemStack(blockstate.getBlock().asItem());
                 ItemEntity itementity = new ItemEntity(elephant.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();
                 elephant.level.addFreshEntity(itementity);
-                if(BlockTags.getAllTags().getTag(AMTagRegistry.DROPS_ACACIA_BLOSSOMS).contains(blockstate.getBlock()) && rand.nextInt(30) == 0){
+                if(blockstate.is(AMTagRegistry.DROPS_ACACIA_BLOSSOMS) && rand.nextInt(30) == 0){
                     ItemStack banana = new ItemStack(AMItemRegistry.ACACIA_BLOSSOM.get());
                     ItemEntity itementity2 = new ItemEntity(elephant.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
                     itementity2.setDefaultPickUpDelay();
@@ -110,6 +111,6 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
 
     @Override
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
-        return !elephant.aiItemFlag && BlockTags.getAllTags().getTag(AMTagRegistry.ELEPHANT_FOODBLOCKS).contains(worldIn.getBlockState(pos).getBlock());
+        return !elephant.aiItemFlag && worldIn.getBlockState(pos).is(AMTagRegistry.ELEPHANT_FOODBLOCKS);
     }
 }

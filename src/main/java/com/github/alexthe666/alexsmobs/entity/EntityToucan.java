@@ -761,7 +761,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         }
 
         private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-            return blockpos.distSqr(positionVec.x(), blockpos.getY(), positionVec.z(), true) < distance * distance;
+            return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
         }
 
         private BlockPos getSaplingPlantPos() {

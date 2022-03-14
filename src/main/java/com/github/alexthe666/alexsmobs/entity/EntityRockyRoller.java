@@ -182,7 +182,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
                         }
                         if (isHangingDripstone(blockpos1)) {
                             Vec3 vec3 = Vec3.atBottomCenterOf(blockpos1);
-                            FallingBlockEntity fallingblockentity = new FallingBlockEntity(level, vec3.x, vec3.y, vec3.z, level.getBlockState(blockpos1));
+                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, new BlockPos(vec3), level.getBlockState(blockpos1));
                             this.level.destroyBlock(blockpos1, false);
                             this.level.addFreshEntity(fallingblockentity);
                         }

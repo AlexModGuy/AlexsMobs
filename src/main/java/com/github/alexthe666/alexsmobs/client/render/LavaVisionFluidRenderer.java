@@ -45,22 +45,34 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
         return fluidstate.getType().isSame(state.getType());
     }
 
-    public boolean tesselate(BlockAndTintGetter lightReaderIn, BlockPos posIn, VertexConsumer vertexBuilderIn, FluidState fluidStateIn) {
+    public boolean tesselate(BlockAndTintGetter lightReaderIn, BlockPos posIn, VertexConsumer vertexBuilderIn, BlockState blockstate, FluidState fluidStateIn) {
         try {
             if (fluidStateIn.is(FluidTags.LAVA)) {
                 TextureAtlasSprite[] atextureatlassprite = getFluidSprites(lightReaderIn, posIn, fluidStateIn);
-                BlockState blockstate = lightReaderIn.getBlockState(posIn);
                 int i = fluidStateIn.getType().getAttributes().getColor(lightReaderIn, posIn);
                 float alpha = (float) AMConfig.lavaOpacity;
                 float f = (float) 1;
                 float f1 = 0.7F;
                 float f2 = 0.7F;
+                BlockState fblockstate = lightReaderIn.getBlockState(posIn.relative(Direction.DOWN));
+                FluidState fluidstate = fblockstate.getFluidState();
+                BlockState fblockstate1 = lightReaderIn.getBlockState(posIn.relative(Direction.UP));
+                FluidState fluidstate1 = fblockstate1.getFluidState();
+                BlockState fblockstate2 = lightReaderIn.getBlockState(posIn.relative(Direction.NORTH));
+                FluidState fluidstate2 = fblockstate2.getFluidState();
+                BlockState fblockstate3 = lightReaderIn.getBlockState(posIn.relative(Direction.SOUTH));
+                FluidState fluidstate3 = fblockstate3.getFluidState();
+                BlockState fblockstate4 = lightReaderIn.getBlockState(posIn.relative(Direction.WEST));
+                FluidState fluidstate4 = fblockstate4.getFluidState();
+                BlockState fblockstate5 = lightReaderIn.getBlockState(posIn.relative(Direction.EAST));
+                FluidState fluidstate5 = fblockstate5.getFluidState();
+
                 boolean flag1 = !isAdjacentFluidSameAs(lightReaderIn, posIn, Direction.UP, fluidStateIn);
-                boolean flag2 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.DOWN) && !isFaceOccludedByNeighbor(lightReaderIn, posIn, Direction.DOWN, 0.8888889F);
-                boolean flag3 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.NORTH);
-                boolean flag4 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.SOUTH);
-                boolean flag5 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.WEST);
-                boolean flag6 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.EAST);
+                boolean flag2 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.DOWN, fluidstate) && !isFaceOccludedByNeighbor(lightReaderIn, posIn, Direction.DOWN, 0.8888889F);
+                boolean flag3 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.NORTH, fluidstate1);
+                boolean flag4 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.SOUTH, fluidstate2);
+                boolean flag5 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.WEST, fluidstate3);
+                boolean flag6 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstate, Direction.EAST, fluidstate4);
                 if (!flag1 && !flag2 && !flag6 && !flag5 && !flag3 && !flag4) {
                     return false;
                 } else {
@@ -247,7 +259,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                     return flag7;
                 }
             } else {
-                return super.tesselate(lightReaderIn, posIn, vertexBuilderIn, fluidStateIn);
+                return super.tesselate(lightReaderIn, posIn, vertexBuilderIn, blockstate, fluidStateIn);
             }
         } catch (Exception e) {
             return false;
