@@ -186,6 +186,7 @@ public class AMConfig {
     public static double emuPantsDodgeChance = 0.45F;
     public static boolean straddleboardEnchants = true;
     public static boolean beachedCachalotWhales = true;
+    public static boolean cachalotDestruction = true;
     public static double cachalotVolume = 3;
     public static double leafcutterAntFungusGrowChance = 0.3F;
     public static int leafcutterAntRepopulateFeedings = 25;
@@ -392,6 +393,7 @@ public class AMConfig {
             leafcutterAntColonySize = ConfigHolder.COMMON.leafcutterAntColonySize.get();
             leafcutterAntBreakLeavesChance = ConfigHolder.COMMON.leafcutterAntBreakLeavesChance.get();
             beachedCachalotWhales = ConfigHolder.COMMON.beachedCachalotWhales.get();
+            cachalotDestruction = ConfigHolder.COMMON.cachalotDestruction.get();
             cachalotVolume = ConfigHolder.COMMON.cachalotVolume.get();
             beachedCachalotWhaleSpawnChance = ConfigHolder.COMMON.beachedCachalotWhaleSpawnChance.get();
             beachedCachalotWhaleSpawnDelay = ConfigHolder.COMMON.beachedCachalotWhaleSpawnDelay.get();

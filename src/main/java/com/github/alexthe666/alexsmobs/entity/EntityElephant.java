@@ -189,7 +189,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     private void initElephantInventory() {
         SimpleContainer animalchest = this.elephantInventory;
         this.elephantInventory = new SimpleContainer(54){
-            
+
             public boolean stillValid(Player player) {
                 return EntityElephant.this.isAlive() && !EntityElephant.this.isInsidePortal;
             }

@@ -184,6 +184,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue leafcutterAntColonySize;
     public final ForgeConfigSpec.DoubleValue leafcutterAntBreakLeavesChance;
     public final ForgeConfigSpec.BooleanValue beachedCachalotWhales;
+    public final ForgeConfigSpec.BooleanValue cachalotDestruction;
     public final ForgeConfigSpec.DoubleValue cachalotVolume;
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnChance;
     public final ForgeConfigSpec.IntValue beachedCachalotWhaleSpawnDelay;
@@ -233,6 +234,7 @@ public class CommonConfig {
         straddleboardEnchants = buildBoolean(builder, "straddleboardEnchants", "all", true, "True if straddleboard enchants are enabled.");
         emuTargetSkeletons = buildBoolean(builder, "emuTargetSkeletons", "all", true, "Whether emu should target skeletons.");
         emuPantsDodgeChance = buildDouble(builder, "emuPantsDodgeChance", "all", 0.45D, 0D, 1D, "Percent chance for emu leggings to dodge projectile attacks.");
+        cachalotDestruction = buildBoolean(builder, "cachalotDestruction", "all", true, "Whether cachalots can destroy wood blocks if angry.");
         cachalotVolume = buildDouble(builder, "cachalotVolume", "all", 3D, 0D, 10D, "Relative volume of cachalot whales compared to other animals. Note that irl they are the loudest animal. Turn this down if you find their clicks annoying.");
         leafcutterAntFungusGrowChance = buildDouble(builder, "leafcutterAntFungusGrowChance", "all", 0.3D, 0D, 1D, "Percent chance for fungus to grow per each leaf a leafcutter ant returns to the colony.");
         leafcutterAntRepopulateFeedings = buildInt(builder, "leafcutterAntRepopulateFeedings", "all", AMConfig.leafcutterAntRepopulateFeedings, 2, 100000,"How many feedings of leaves does a leafcutter colony need in order to regain a worker ant, if below half the max members.");
