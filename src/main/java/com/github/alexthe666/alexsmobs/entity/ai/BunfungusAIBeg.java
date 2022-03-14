@@ -61,6 +61,7 @@ public class BunfungusAIBeg extends Goal {
     }
 
     public void tick() {
+        this.jerboa.setSleeping(false);
         this.jerboa.getLookControl().setLookAt(this.closestPlayer, (float)(this.jerboa.getMaxHeadYRot() + 20), (float)this.jerboa.getMaxHeadXRot());
         if (this.jerboa.distanceToSqr(this.closestPlayer) < 12D) {
             this.jerboa.getNavigation().stop();
