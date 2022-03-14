@@ -26,7 +26,7 @@ public class KomodoDragonAIJostle  extends Goal {
 
     @Override
     public boolean canUse() {
-        if (this.komodo.isJostling() || this.komodo.isOrderedToSit() || this.komodo.isVehicle() || this.komodo.shouldFollow() || komodo.isPassenger() || this.komodo.isBaby() || this.komodo.getTarget() != null || this.komodo.jostleCooldown > 0) {
+        if (this.komodo.isJostling() || this.komodo.isInLove() || this.komodo.isOrderedToSit() || this.komodo.isVehicle() || this.komodo.shouldFollow() || komodo.isPassenger() || this.komodo.isBaby() || this.komodo.getTarget() != null || this.komodo.jostleCooldown > 0) {
             return false;
         }
         if(this.komodo.instantlyTriggerJostleAI || this.komodo.getRandom().nextInt(30) == 0){
@@ -134,7 +134,7 @@ public class KomodoDragonAIJostle  extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return !this.komodo.isBaby() && !this.komodo.isVehicle() && !this.komodo.isOrderedToSit() && this.komodo.getTarget() == null && targetKomodoDragon != null && targetKomodoDragon.isAlive() && komodo.jostleCooldown == 0 && targetKomodoDragon.jostleCooldown == 0;
+        return !this.komodo.isBaby() && !this.komodo.isInLove() && !this.komodo.isVehicle() && !this.komodo.isOrderedToSit() && this.komodo.getTarget() == null && targetKomodoDragon != null && targetKomodoDragon.isAlive() && komodo.jostleCooldown == 0 && targetKomodoDragon.jostleCooldown == 0;
     }
 
     @Nullable
