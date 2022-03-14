@@ -15,8 +15,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RenderKomodoDragon extends MobRenderer<EntityKomodoDragon, ModelKomodoDragon> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/komodo_dragon.png");
-    private static final ResourceLocation TEXTURE_SADDLE = new ResourceLocation("alexsmobs:textures/entity/komodo_dragon_maid.png");
-    private static final ResourceLocation TEXTURE_MAID = new ResourceLocation("alexsmobs:textures/entity/komodo_dragon_saddle.png");
+    private static final ResourceLocation TEXTURE_SADDLE = new ResourceLocation("alexsmobs:textures/entity/komodo_dragon_saddle.png");
+    private static final ResourceLocation TEXTURE_MAID = new ResourceLocation("alexsmobs:textures/entity/komodo_dragon_maid.png");
 
     public RenderKomodoDragon(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelKomodoDragon(0.0F), 0.6F);
@@ -24,7 +24,6 @@ public class RenderKomodoDragon extends MobRenderer<EntityKomodoDragon, ModelKom
     }
 
     protected void scale(EntityKomodoDragon entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.scale(1.2F, 1.2F, 1.2F);
     }
 
     public ResourceLocation getTextureLocation(EntityKomodoDragon entity) {

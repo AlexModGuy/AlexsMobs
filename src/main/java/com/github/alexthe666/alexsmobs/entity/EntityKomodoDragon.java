@@ -68,7 +68,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     public static final Predicate<EntityKomodoDragon> HURT_OR_BABY = (p_213616_0_) -> {
         return p_213616_0_.isBaby() || p_213616_0_.getHealth() <= 0.7F * p_213616_0_.getMaxHealth();
     };
-    protected static final EntityDimensions JOSTLING_SIZE = EntityDimensions.scalable(1.35F, 1.95F);
+    protected static final EntityDimensions JOSTLING_SIZE = EntityDimensions.scalable(1.35F, 1.85F);
     private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityKomodoDragon.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> JOSTLING = SynchedEntityData.defineId(EntityKomodoDragon.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> JOSTLE_ANGLE = SynchedEntityData.defineId(EntityKomodoDragon.class, EntityDataSerializers.FLOAT);
@@ -347,6 +347,10 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
             }else if(itemstack.getItem() == Items.SADDLE && !this.isSaddled()){
                 this.usePlayerItem(player, hand, itemstack);
                 this.setSaddled(true);
+                return InteractionResult.SUCCESS;
+            }else if(itemstack.getItem() == Items.SHEARS && this.isSaddled()){
+                this.setSaddled(false);
+                this.spawnAtLocation(Items.SADDLE);
                 return InteractionResult.SUCCESS;
             }else{
                 if(!player.isShiftKeyDown() && !this.isBaby() && this.isSaddled()){
