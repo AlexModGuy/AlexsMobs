@@ -16,6 +16,8 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Fox;
@@ -50,6 +52,7 @@ import net.minecraft.server.level.ServerLevel;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -66,10 +69,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -230,8 +229,8 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         this.targetSelector.addGoal(4, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(5, new EntityGrizzlyBear.AttackPlayerGoal());
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, Fox.class, 10, true, true, null));
-        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, Wolf.class, 10, true, true, null));
+        this.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>(this, Fox.class, false, (Predicate<LivingEntity>)null));
+        this.targetSelector.addGoal(8, new NonTameRandomTargetGoal<>(this, Wolf.class, false, (Predicate<LivingEntity>)null));
         this.targetSelector.addGoal(7, new ResetUniversalAngerTargetGoal<>(this, false));
     }
 
