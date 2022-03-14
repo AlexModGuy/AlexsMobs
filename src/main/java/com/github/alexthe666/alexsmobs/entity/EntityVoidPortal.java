@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -107,14 +108,13 @@ public class EntityVoidPortal extends Entity {
             double particleZ = this.getBoundingBox().minZ + random.nextFloat() * (this.getBoundingBox().maxZ - this.getBoundingBox().minZ);
             level.addParticle(AMParticleRegistry.WORM_PORTAL, particleX, particleY, particleZ, 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian());
         }
-        Tag<EntityType<?>> tag = EntityTypeTags.getAllTags().getTag(AMTagRegistry.VOID_PORTAL_IGNORES);
         List<Entity> entities = this.level.getEntities(this, bb.deflate(0.2F));
         if (!level.isClientSide) {
             MinecraftServer server = level.getServer();
             if (this.getDestination() != null && this.getLifespan() > 20 && tickCount > 20) {
                 BlockPos offsetPos = this.getDestination().relative(this.getAttachmentFacing().getOpposite(), 2);
                 for (Entity e : entities) {
-                    if(e.isOnPortalCooldown() || e.isShiftKeyDown() || e instanceof EntityVoidPortal || e.getParts() != null || tag != null && tag.contains(e.getType())){
+                    if(e.isOnPortalCooldown() || e.isShiftKeyDown() || e instanceof EntityVoidPortal || e.getParts() != null || e.getType().is(AMTagRegistry.VOID_PORTAL_IGNORES)){
                         continue;
                     }
                     if (e instanceof EntityVoidWormPart) {
@@ -251,7 +251,7 @@ public class EntityVoidPortal extends Entity {
             this.setSisterId(compound.getUUID("SisterUUID"));
         }
         if (compound.contains("ExitDimension")) {
-            this.exitDimension = Level.RESOURCE_KEY_CODEC.parse(NbtOps.INSTANCE, compound.get("ExitDimension")).resultOrPartial(LOGGER::error).orElse(Level.OVERWORLD);
+            this.exitDimension = Level.RESOURCE_KEY_CODEC.parse(NbtOps.INSTANCE, compound.get("ExitDimension")).resultOrPartial(AlexsMobs.LOGGER::error).orElse(Level.OVERWORLD);
         }
     }
 
@@ -269,7 +269,7 @@ public class EntityVoidPortal extends Entity {
             compound.putUUID("SisterUUID", this.getSisterId());
         }
         if(this.exitDimension != null){
-            ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.exitDimension.location()).resultOrPartial(LOGGER::error).ifPresent((p_241148_1_) -> {
+            ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.exitDimension.location()).resultOrPartial(AlexsMobs.LOGGER::error).ifPresent((p_241148_1_) -> {
                 compound.put("ExitDimension", p_241148_1_);
             });
         }

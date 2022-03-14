@@ -52,7 +52,7 @@ public class BlockCrocodileEgg extends Block {
     }
 
     public static boolean isProperHabitat(BlockGetter reader, BlockPos pos) {
-        return reader.getBlockState(pos).is(BlockTags.SAND) || BlockTags.getAllTags().getTag(AMTagRegistry.CROCODILE_SPAWNS).contains(reader.getBlockState(pos).getBlock());
+        return reader.getBlockState(pos).is(BlockTags.SAND) || reader.getBlockState(pos).is(AMTagRegistry.CROCODILE_SPAWNS);
     }
 
     public void stepOn(Level worldIn, BlockPos pos, BlockState state, Entity entityIn) {

@@ -36,19 +36,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
 
-    public static final Feature<NoneFeatureConfiguration> LEAFCUTTER_ANTHILL = new FeatureLeafcutterAnthill(NoneFeatureConfiguration.CODEC);
-    public static ConfiguredFeature<?, ?> LEAFCUTTER_ANTHILL_CF;
-    public static PlacedFeature LEAFCUTTER_ANTHILL_PF;
-
-    @SubscribeEvent
-    public static void registerFeature(final RegistryEvent.Register<Feature<?>> event) {
-        event.getRegistry().register(LEAFCUTTER_ANTHILL);
-        LEAFCUTTER_ANTHILL_CF = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation("alexsmobs:leafcutter_anthill"), LEAFCUTTER_ANTHILL.configured(FeatureConfiguration.NONE));
-        LEAFCUTTER_ANTHILL_PF = Registry.register(BuiltinRegistries.PLACED_FEATURE, new ResourceLocation("alexsmobs:leafcutter_anthill"), LEAFCUTTER_ANTHILL_CF.placed());
-    }
-
     public static boolean initBiomes = false;
-
 
     public static void onBiomesLoad(BiomeLoadingEvent event) {
         initBiomes = true;
@@ -242,7 +230,8 @@ public class AMWorldRegistry {
             event.getSpawns().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.GELADA_MONKEY.get(), AMConfig.geladaMonkeySpawnWeight, 9, 16));
         }
         if (testBiome(BiomeConfig.leafcutter_anthill_spawns, event.getCategory(), event.getName()) && AMConfig.leafcutterAnthillSpawnChance > 0) {
-            GenerationSettingsManager.register(event.getName().toString(), LEAFCUTTER_ANTHILL_PF);
+            //TODO
+            // GenerationSettingsManager.register(event.getName().toString(), LEAFCUTTER_ANTHILL_PF);
         }
         if (testBiome(BiomeConfig.jerboa, event.getCategory(), event.getName()) && AMConfig.jerboaSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.JERBOA.get(), AMConfig.jerboaSpawnWeight, 1, 3));
@@ -283,7 +272,4 @@ public class AMWorldRegistry {
         return result;
     }
 
-    public static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome biome) {
-        return testBiome(entry, biome.getBiomeCategory(), biome.getRegistryName());
-    }
 }

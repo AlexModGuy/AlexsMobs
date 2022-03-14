@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.google.common.base.Predicates;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.tags.Tag;
@@ -277,7 +278,7 @@ public class AMEntityRegistry {
         event.put(GIANT_SQUID.get(), EntityGiantSquid.bakeAttributes().build());
     }
 
-    public static Predicate<LivingEntity> buildPredicateFromTag(Tag entityTag){
+    public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){
         if(entityTag == null){
             return Predicates.alwaysFalse();
         }else{
@@ -285,7 +286,7 @@ public class AMEntityRegistry {
         }
     }
 
-    public static Predicate<LivingEntity> buildPredicateFromTagTameable(Tag entityTag, LivingEntity owner){
+    public static Predicate<LivingEntity> buildPredicateFromTagTameable(TagKey<EntityType<?>> entityTag, LivingEntity owner){
         if(entityTag == null){
             return Predicates.alwaysFalse();
         }else{

@@ -135,7 +135,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         this.goalSelector.addGoal(3, new AITackle());
         this.goalSelector.addGoal(4, new AILandOnGlove());
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, TEMPT_ITEMS.merge(ImmutableList.of(Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TAMEABLES)))), true));
+        this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, TEMPT_ITEMS.merge(ImmutableList.of(Ingredient.of(.*;
         this.goalSelector.addGoal(7, new TemptGoal(this, 1.1D, Ingredient.of(ItemTags.FISHES), false));
         this.goalSelector.addGoal(8, new AIWanderIdle());
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F) {
@@ -360,7 +360,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
             }
             this.level.broadcastEntityEvent(this, (byte) 7);
             return InteractionResult.CONSUME;
-        } else if (ItemTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TAMEABLES).contains(itemstack.getItem()) && !this.isTame()) {
+        } else if (.* {
             if (itemstack.hasContainerItem()) {
                 this.spawnAtLocation(itemstack.getContainerItem());
             }

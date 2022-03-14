@@ -591,7 +591,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     }
 
     private boolean isCrowEdible(ItemStack stack) {
-        return stack.getItem().isEdible() || ItemTags.getAllTags().getTag(AMTagRegistry.CROW_FOODSTUFFS).contains(stack.getItem());
+        return stack.getItem().isEdible() || stack.is(AMTagRegistry.CROW_FOODSTUFFS);
     }
 
     public double getMaxDistToItem() {
@@ -751,12 +751,11 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
         AIScatter() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-            tag = EntityTypeTags.getAllTags().getTag(AMTagRegistry.SCATTERS_CROWS);
             this.theNearestAttackableTargetSorter = new AIScatter.Sorter(EntityCrow.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && e.getType().is(tag) || e instanceof Player && !((Player) e).isCreative();
+                    return e.isAlive() && e.getType().is(AMTagRegistry.SCATTERS_CROWS) || e instanceof Player && !((Player) e).isCreative();
                 }
             };
         }
@@ -937,7 +936,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         }
 
         private boolean isPumpkin(Level world, BlockPos.MutableBlockPos lvt_4_1_) {
-            return BlockTags.getAllTags().getTag(AMTagRegistry.CROW_FEARS).contains(world.getBlockState(lvt_4_1_).getBlock());
+            return world.getBlockState(lvt_4_1_).is(AMTagRegistry.CROW_FEARS);
         }
 
     }
