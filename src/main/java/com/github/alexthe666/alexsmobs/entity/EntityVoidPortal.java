@@ -114,7 +114,7 @@ public class EntityVoidPortal extends Entity {
             if (this.getDestination() != null && this.getLifespan() > 20 && tickCount > 20) {
                 BlockPos offsetPos = this.getDestination().relative(this.getAttachmentFacing().getOpposite(), 2);
                 for (Entity e : entities) {
-                    if(e.isOnPortalCooldown() || e.isShiftKeyDown() || e instanceof EntityVoidPortal || tag != null && tag.contains(e.getType())){
+                    if(e.isOnPortalCooldown() || e.isShiftKeyDown() || e instanceof EntityVoidPortal || e.getParts() != null || tag != null && tag.contains(e.getType())){
                         continue;
                     }
                     if (e instanceof EntityVoidWormPart) {
