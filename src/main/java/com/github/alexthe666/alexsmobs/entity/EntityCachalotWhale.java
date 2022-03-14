@@ -682,7 +682,7 @@ public class EntityCachalotWhale extends Animal {
                             }
                             if (this.isCharging()) {
                                 if (this.distanceTo(target) < this.getBbWidth() && chargeProgress > 4) {
-                                    if (target instanceof EntityGiantSquid) {
+                                    if (target instanceof EntityGiantSquid && !this.isBaby()) {
                                         this.setGrabbing(true);
                                         this.setHoldingSquidLeft(random.nextBoolean());
                                     } else {

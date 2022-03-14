@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -359,7 +360,7 @@ public class EntityGiantSquid extends WaterAnimal {
 
     private boolean isHumming() {
         String s = ChatFormatting.stripFormatting(this.getName().getString());
-        return s != null && s.toLowerCase().contains("squid games!!");
+        return s != null && s.toLowerCase().contains("squid games!!") || AlexsMobs.isAprilFools();
     }
 
     public float getRingBuffer(int bufferOffset, float partialTicks, boolean pitch) {
