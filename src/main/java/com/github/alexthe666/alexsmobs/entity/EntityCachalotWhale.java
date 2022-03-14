@@ -124,7 +124,11 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public static <T extends Mob> boolean canCachalotWhaleSpawn(EntityType<T> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
-        return iServerWorld.getFluidState(pos).is(FluidTags.WATER);
+        BlockPos up = pos;
+        while(up.getY() < iServerWorld.getMaxBuildHeight() && iServerWorld.getFluidState(up).is(FluidTags.WATER)){
+            up = up.above();
+        }
+        return iServerWorld.getFluidState(up.below()).is(FluidTags.WATER) && iServerWorld.canSeeSky(up);
     }
 
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
