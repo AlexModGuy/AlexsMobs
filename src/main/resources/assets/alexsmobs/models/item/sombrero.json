@@ -2,5 +2,13 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "alexsmobs:item/sombrero"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "silly": 1
+      },
+      "model": "alexsmobs:item/sombrero_upside_down"
+    }
+  ]
 }

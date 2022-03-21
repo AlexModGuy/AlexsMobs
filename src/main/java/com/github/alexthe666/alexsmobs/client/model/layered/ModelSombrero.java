@@ -28,4 +28,15 @@ public class ModelSombrero extends HumanoidModel {
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
+    public static LayerDefinition createArmorLayerAprilFools(CubeDeformation deformation) {
+        MeshDefinition meshdefinition = HumanoidModel.createMesh(deformation, 0.0F);
+        PartDefinition partdefinition = meshdefinition.getRoot();
+        PartDefinition head = partdefinition.getChild("head");
+
+        head.addOrReplaceChild("sombrero", CubeListBuilder.create().texOffs(0, 64).addBox(-4.0F, 7.0F, -4.0F, 8.0F, 6.0F, 8.0F, deformation), PartPose.offsetAndRotation(0, 0, 0, (float)Math.PI, 0, (float)Math.PI * 0.1F));
+        head.addOrReplaceChild("sombrero2", CubeListBuilder.create().texOffs(22, 73).addBox(-11.0F, 10.0F, -11.0F, 22.0F, 3.0F, 22.0F, deformation), PartPose.offsetAndRotation(0, 0, 0, (float)Math.PI, 0, (float)Math.PI * 0.1F));
+
+        return LayerDefinition.create(meshdefinition, 128, 128);
+    }
+
 }
