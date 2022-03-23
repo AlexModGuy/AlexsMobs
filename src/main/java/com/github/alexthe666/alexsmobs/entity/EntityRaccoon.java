@@ -201,7 +201,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         boolean owner = this.isTame() && isOwnedBy(player);
-        if (owner && itemstack.is(ItemTags.CARPETS)) {
+        if (owner && ItemTags.CARPETS.contains(item)) {
             DyeColor color = EntityElephant.getCarpetColor(itemstack);
             if (color != this.getColor()) {
                 if (this.getColor() != null) {
@@ -308,7 +308,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public static boolean isRaccoonFood(ItemStack stack){
-        return stack.isEdible() || stack.is(AMTagRegistry.RACCOON_FOODSTUFFS);
+        return stack.isEdible() || ItemTags.getAllTags().getTag(AMTagRegistry.RACCOON_FOODSTUFFS).contains(stack.getItem());
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

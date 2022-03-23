@@ -579,7 +579,7 @@ public class EntityVoidWorm extends Monster {
                         BlockState state = level.getBlockState(pos);
                         FluidState fluidState = level.getFluidState(pos);
                         Block block = state.getBlock();
-                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && state.is(AMTagRegistry.VOID_WORM_BREAKABLES) && fluidState.isEmpty()) {
+                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && BlockTags.getAllTags().getTag(AMTagRegistry.VOID_WORM_BREAKABLES).contains(state.getBlock()) && fluidState.isEmpty()) {
                             if (block != Blocks.AIR) {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;

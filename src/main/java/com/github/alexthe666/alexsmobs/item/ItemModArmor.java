@@ -62,9 +62,6 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
             tooltip.add(new TranslatableComponent("item.alexsmobs.rocky_chestplate.desc").withStyle(ChatFormatting.GRAY));
         }
-        if (this.material == AMItemRegistry.SOMBRERO_ARMOR_MATERIAL && AlexsMobs.isAprilFools()) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.sombrero.special_desc").withStyle(ChatFormatting.GRAY));
-        }
     }
 
     private void buildCrocAttributes(AMArmorMaterial materialIn) {

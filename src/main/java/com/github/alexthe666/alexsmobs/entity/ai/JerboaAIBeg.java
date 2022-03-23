@@ -42,7 +42,7 @@ public class JerboaAIBeg extends Goal {
     }
 
     private boolean isFood(ItemStack stack) {
-        return stack.is(Tags.Items.SEEDS) || jerboa.isFood(stack);
+        return Tags.Items.SEEDS.contains(stack.getItem()) || jerboa.isFood(stack);
     }
 
 

@@ -202,7 +202,6 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue rainbowGlassFidelity;
     public ForgeConfigSpec.BooleanValue bunfungusTransformation;
     public ForgeConfigSpec.BooleanValue superSecretSettings;
-    public ForgeConfigSpec.BooleanValue addLootToChests;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -253,7 +252,6 @@ public class CommonConfig {
         tusklinShoesBarteringChance = buildDouble(builder, "tusklinShoesBarteringChance", "all", 0.025F, 0D, 1.0F, "Percent chance of getting Pigshoes from Piglin Bartering. Set to zero to disable.");
         rainbowGlassFidelity = buildDouble(builder, "rainbowGlassFidelity", "all", 16.0F, 1.0F, 10000.0F, "The visual zoom of the rainbow pattern on the rainbow glass block. Higher number = bigger pattern.");
         bunfungusTransformation = buildBoolean(builder, "bunfungusTransformation", "all", true, "Whether Rabbits can transform into Bunfungus if fed Mungal spores.");
-        addLootToChests = buildBoolean(builder, "addLootToChests", "all", true, "True if some Alex's Mobs items should spawn in loot chests.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");

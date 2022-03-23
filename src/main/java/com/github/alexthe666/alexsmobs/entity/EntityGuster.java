@@ -5,7 +5,6 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -97,7 +96,7 @@ public class EntityGuster extends Monster {
     }
 
     public static boolean canGusterSpawn(EntityType animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(BlockTags.SAND);
+        boolean spawnBlock = BlockTags.SAND.contains(worldIn.getBlockState(pos.below()).getBlock()) || BlockTags.SOUL_FIRE_BASE_BLOCKS.contains(worldIn.getBlockState(pos.below()).getBlock());
         return spawnBlock && (!AMConfig.limitGusterSpawnsToWeather || worldIn.getLevelData() != null && (worldIn.getLevelData().isThundering() || worldIn.getLevelData().isRaining()) || isBiomeNether(worldIn, pos));
     }
 
@@ -301,11 +300,13 @@ public class EntityGuster extends Monster {
     }
 
     private static boolean isBiomeRed(LevelAccessor worldIn, BlockPos position) {
-        return BiomeDictionary.hasType(worldIn.getBiome(position).unwrapKey().get(), BiomeDictionary.Type.MESA);
+        ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, worldIn.getBiome(position).getRegistryName());
+        return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.MESA);
     }
 
     private static boolean isBiomeNether(LevelAccessor worldIn, BlockPos position) {
-        return BiomeDictionary.hasType(worldIn.getBiome(position).unwrapKey().get(), BiomeDictionary.Type.NETHER);
+        ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, worldIn.getBiome(position).getRegistryName());
+        return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.NETHER);
     }
 
     public static int getColorForVariant(int variant){

@@ -117,7 +117,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     public static boolean canCrocodileSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.CROCODILE_SPAWNS);
+        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.CROCODILE_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 
@@ -151,7 +151,8 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     private boolean isBiomeDesert(LevelAccessor worldIn, BlockPos position) {
-        boolean sand = BiomeDictionary.hasType(worldIn.getBiome(position).unwrapKey().get(), BiomeDictionary.Type.SANDY);
+        ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, worldIn.getBiome(position).getRegistryName());
+        boolean sand = BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.SANDY);
         return sand;
     }
 
@@ -567,7 +568,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                 return !isBaby() && !isTame() && level.getDifficulty() != Difficulty.PEACEFUL && super.canUse();
             }
         });
-        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.CROCODILE_TARGETS)) {
+        this.targetSelector.addGoal(5, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.CROCODILE_TARGETS))) {
             public boolean canUse() {
                 return !isBaby() && !isTame() && super.canUse();
             }

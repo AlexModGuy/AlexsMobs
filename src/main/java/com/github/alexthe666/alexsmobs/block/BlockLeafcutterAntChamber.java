@@ -65,7 +65,8 @@ public class BlockLeafcutterAntChamber extends Block {
                         dir = Direction.DOWN;
                     }
                     BlockPos offset = pos.relative(dir);
-                    if(worldIn.getBlockState(offset).is(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON) && !worldIn.canSeeSky(offset)){
+                    Tag<Block> tag = BlockTags.getAllTags().getTag(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON);
+                    if(tag.contains(worldIn.getBlockState(offset).getBlock()) && !worldIn.canSeeSky(offset)){
                         worldIn.setBlockAndUpdate(offset, this.defaultBlockState());
                     }
                 }

@@ -5,7 +5,7 @@
       "conditions": [
         {
           "condition": "random_chance_with_looting",
-          "chance": 0.75,
+          "chance": 0.5,
           "looting_multiplier": 0.1
         }
       ],

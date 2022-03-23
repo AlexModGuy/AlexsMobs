@@ -3,9 +3,7 @@ package com.github.alexthe666.alexsmobs.message;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
-import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -67,8 +65,6 @@ public class MessageMungusBiomeChange {
                         Entity entity = player.level.getEntity(message.mungusID);
                         Registry<Biome> registry = player.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
                         Biome biome = registry.get(new ResourceLocation(message.biomeOption));
-                        ResourceKey<Biome> resourceKey = registry.getResourceKey(biome).orElse(null);
-                        Holder<Biome> holder = registry.getHolder(resourceKey).orElse(null);
                         if (AMConfig.mungusBiomeTransformationType == 2) {
                             if (entity instanceof EntityMungus && entity.distanceToSqr(message.posX, entity.getY(), message.posZ) < 1000 && biome != null) {
                                 LevelChunk chunk = player.level.getChunkAt(new BlockPos(message.posX, 0, message.posZ));
@@ -78,11 +74,11 @@ public class MessageMungusBiomeChange {
                                 int j = chunk.getSectionIndex(QuartPos.toBlock(l));
                                 LevelChunkSection section = chunk.getSection(j);
                                 if(section != null){
-                                    PalettedContainer<Holder<Biome>> container = section.getBiomes();
+                                    PalettedContainer<Biome> container = section.getBiomes();
                                     for (int biomeX = 0; biomeX < 4; ++biomeX) {
                                         for (int biomeY = 0; biomeY < 4; ++biomeY) {
                                             for (int biomeZ = 0; biomeZ < 4; ++biomeZ) {
-                                                container.getAndSetUnchecked(biomeX, biomeY, biomeZ, holder);
+                                                container.getAndSetUnchecked(biomeX, biomeY, biomeZ, biome);
                                             }
                                         }
                                     }

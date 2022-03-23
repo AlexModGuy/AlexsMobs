@@ -60,7 +60,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     public static final Predicate<? super Entity> SCORCH_PRED = new com.google.common.base.Predicate<Entity>() {
         @Override
         public boolean apply(@Nullable Entity e) {
-            return e.isAlive() && e.getType().is(AMTagRegistry.SUNBIRD_SCORCH_TARGETS);
+            return e.isAlive() && e.getType().is(EntityTypeTags.getAllTags().getTag(AMTagRegistry.SUNBIRD_SCORCH_TARGETS));
         }
     };
     public float birdPitch = 0;

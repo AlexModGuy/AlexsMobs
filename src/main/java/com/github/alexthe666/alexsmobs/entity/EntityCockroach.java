@@ -268,7 +268,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
         super.tick();
         prevDanceProgress = danceProgress;
         boolean dance = this.isJukeboxing || isDancing();
-        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 3.46D) || !this.level.getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerThan(this.position(), 3.46D) || !this.level.getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
             this.isJukeboxing = false;
             this.jukeboxPosition = null;
         }

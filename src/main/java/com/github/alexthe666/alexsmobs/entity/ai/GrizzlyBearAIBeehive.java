@@ -79,7 +79,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
     }
 
     private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-        return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
+        return blockpos.distSqr(positionVec.x(), blockpos.getY(), positionVec.z(), true) < distance * distance;
     }
 
     protected boolean isReachedTarget() {
@@ -89,7 +89,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
     private void eatHive() {
         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(bear.level, bear)) {
             BlockState blockstate = bear.level.getBlockState(this.blockPos);
-            if (blockstate.is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
+            if (BlockTags.getAllTags().getTag(AMTagRegistry.GRIZZLY_BEEHIVE).contains(blockstate.getBlock())) {
                 if (bear.level.getBlockEntity(this.blockPos) instanceof BeehiveBlockEntity) {
                     Random rand = new Random();
                     BeehiveBlockEntity beehivetileentity = (BeehiveBlockEntity) bear.level.getBlockEntity(this.blockPos);
@@ -123,7 +123,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
 
     @Override
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
-        if (worldIn.getBlockState(pos).is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
+        if (BlockTags.getAllTags().getTag(AMTagRegistry.GRIZZLY_BEEHIVE).contains(worldIn.getBlockState(pos).getBlock())) {
             if (worldIn.getBlockEntity(pos) instanceof BeehiveBlockEntity && worldIn.getBlockState(pos).getBlock() instanceof BeehiveBlock) {
                 int i = worldIn.getBlockState(pos).getValue(BeehiveBlock.HONEY_LEVEL);
                 return i > 0;

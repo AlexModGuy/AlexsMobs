@@ -21,12 +21,14 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public class MatchesBlossomTagCondition implements LootItemCondition {
 
+    private Tag<Block> match;
 
     private MatchesBlossomTagCondition() {
+        match = BlockTags.getAllTags().getTag(AMTagRegistry.DROPS_ACACIA_BLOSSOMS);
     }
 
     public LootItemConditionType getType() {
-        return CommonProxy.matchesBlossom;
+        return CommonProxy.MATCHES_BLOSSOM_CONDTN;
     }
 
     public Set<LootContextParam<?>> getReferencedContextParams() {
@@ -34,8 +36,11 @@ public class MatchesBlossomTagCondition implements LootItemCondition {
     }
 
     public boolean test(LootContext p_test_1_) {
+        if(match == null){
+            match = BlockTags.getAllTags().getTag(AMTagRegistry.DROPS_ACACIA_BLOSSOMS);
+        }
         BlockState block = p_test_1_.getParamOrNull(LootContextParams.BLOCK_STATE);
-        return block != null && block.is(AMTagRegistry.DROPS_ACACIA_BLOSSOMS);
+        return block != null && match != null && match.contains(block.getBlock());
     }
 
     public static class LootSerializer implements Serializer<MatchesBlossomTagCondition> {
