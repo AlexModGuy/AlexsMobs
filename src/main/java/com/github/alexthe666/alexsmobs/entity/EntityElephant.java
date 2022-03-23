@@ -92,8 +92,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ForgeItemTagsProvider;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 
@@ -543,7 +541,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 blossomThrowerUUID = player.getUUID();
             }
             return InteractionResult.SUCCESS;
-        } else if (owner && stack.is(ItemTags.CARPETS)) {
+        } else if (owner && ItemTags.CARPETS.contains(stack.getItem())) {
             DyeColor color = getCarpetColor(stack);
             if (color != this.getColor()) {
                 if (this.getColor() != null) {
@@ -562,7 +560,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
             this.setColor(null);
             return InteractionResult.SUCCESS;
-        } else if (owner && !this.isChested() && stack.is(Tags.Items.CHESTS_WOODEN)) {
+        } else if (owner && !this.isChested() && ItemTags.getAllTags().getTag(AMTagRegistry.FORGE_WOODEN_CHESTS).contains(stack.getItem())) {
             this.setChested(true);
             this.playSound(SoundEvents.DONKEY_CHEST, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
             if (!player.getAbilities().instabuild) {
@@ -833,7 +831,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.is(AMTagRegistry.ELEPHANT_FOODSTUFFS) || stack.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get();
+        return ItemTags.getAllTags().getTag(AMTagRegistry.ELEPHANT_FOODSTUFFS).contains(stack.getItem()) || stack.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get();
     }
 
     @Override

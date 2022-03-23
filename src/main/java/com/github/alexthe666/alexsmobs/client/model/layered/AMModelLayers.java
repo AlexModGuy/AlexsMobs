@@ -21,7 +21,6 @@ public class AMModelLayers {
     public static final ModelLayerLocation SPIKED_TURTLE_SHELL = createLocation("spiked_turtle_shell", "main");
     public static final ModelLayerLocation FEDORA = createLocation("fedora", "main");
     public static final ModelLayerLocation SOMBRERO = createLocation("sombrero", "main");
-    public static final ModelLayerLocation SOMBRERO_GOOFY_FASHION = createLocation("sombrero_goofy_fashion", "main");
     public static final ModelLayerLocation FROSTSTALKER_HELMET = createLocation("froststalker_helmet", "main");
     public static final ModelLayerLocation ROCKY_CHESTPLATE = createLocation("rocky_chestplate", "main");
 
@@ -34,7 +33,6 @@ public class AMModelLayers {
         event.registerLayerDefinition(FEDORA, () -> ModelFedora.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(AM_ELYTRA, () -> ModelAMElytra.createLayer(new CubeDeformation(1.0F)));
         event.registerLayerDefinition(SOMBRERO, () -> ModelSombrero.createArmorLayer(new CubeDeformation(0.5F)));
-        event.registerLayerDefinition(SOMBRERO_GOOFY_FASHION, () -> ModelSombrero.createArmorLayerAprilFools(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(FROSTSTALKER_HELMET, () -> ModelFroststalkerHelmet.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(ROCKY_CHESTPLATE, () -> ModelRockyChestplate.createArmorLayer(new CubeDeformation(0.7F)));
     }

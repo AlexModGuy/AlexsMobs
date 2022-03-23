@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.entity;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -272,7 +271,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         if (compoundtag != null && !compoundtag.isEmpty()) {
             ItemStack itemstack = ItemStack.of(compoundtag);
             if (itemstack.isEmpty()) {
-                AlexsMobs.LOGGER.warn("Unable to load item from: {}", compoundtag);
+                LOGGER.warn("Unable to load item from: {}", compoundtag);
             }
             this.setShoeStack(itemstack);
         }

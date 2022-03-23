@@ -27,7 +27,7 @@ public class ItemPocketSand extends Item {
 
     private Random random = new Random();
     public static final Predicate<ItemStack> IS_SAND = (stack) -> {
-        return stack.is(ItemTags.SAND);
+        return ItemTags.SAND.contains(stack.getItem());
     };
 
     public ItemPocketSand(Properties properties) {

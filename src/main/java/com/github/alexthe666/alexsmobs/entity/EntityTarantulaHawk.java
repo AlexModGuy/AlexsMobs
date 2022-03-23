@@ -12,7 +12,6 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -125,7 +124,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public static boolean canTarantulaHawkSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(Blocks.SAND);
+        boolean spawnBlock = BlockTags.SAND.contains(worldIn.getBlockState(pos.below()).getBlock());
         return (spawnBlock) && worldIn.getRawBrightness(pos, 0) > 8 || isBiomeNether(worldIn, pos) || AMConfig.fireproofTarantulaHawk;
     }
 
@@ -146,7 +145,8 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private static boolean isBiomeNether(LevelAccessor worldIn, BlockPos position) {
-        return BiomeDictionary.hasType(worldIn.getBiome(position).unwrapKey().get(), BiomeDictionary.Type.NETHER);
+        ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, worldIn.getBiome(position).getRegistryName());
+        return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.NETHER);
     }
 
     protected void registerGoals() {
@@ -605,7 +605,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
 
     private BlockPos getCrowGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
-        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
+        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
         return position;
@@ -670,7 +670,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 sandAir = sandAir.above();
             }
             BlockState state = world.getBlockState(sandAir.below());
-            if (state.is(BlockTags.SAND)) {
+            if (BlockTags.SAND.contains(state.getBlock())) {
                 return sandAir.below();
             }
         }
@@ -749,7 +749,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             LivingEntity target = hawk.getTarget();
             boolean paralized = target != null && target.getMobType() == MobType.ARTHROPOD && !target.noPhysics && target.hasEffect(AMEffectRegistry.DEBILITATING_STING);
             boolean paralizedWithChild = paralized && target.getEffect(AMEffectRegistry.DEBILITATING_STING).getAmplifier() > 0;
-            if (sandPos == null || !level.getBlockState(sandPos).is(BlockTags.SAND)) {
+            if (sandPos == null || !BlockTags.SAND.contains(level.getBlockState(sandPos).getBlock())) {
                 sandPos = hawk.genSandPos(target.blockPosition());
             }
             if (orbitCooldown > 0) {
@@ -947,7 +947,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         }
 
         public boolean canContinueToUse() {
-            return hawk.isDragging() && digTime < 200 && hawk.getTarget() != null && buryPos != null && level.getBlockState(buryPos).is(BlockTags.SAND);
+            return hawk.isDragging() && digTime < 200 && hawk.getTarget() != null && buryPos != null && BlockTags.SAND.contains(level.getBlockState(buryPos).getBlock());
         }
 
         public void start() {

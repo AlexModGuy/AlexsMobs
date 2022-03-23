@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.config;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeConfig;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import org.apache.commons.lang3.tuple.Pair;
@@ -113,7 +112,7 @@ public class BiomeConfig {
 		return biomeConfigValues.get(entry.getKey()).matches(category, name);
 	}
 
-	public static boolean test(Pair<String, SpawnBiomeData> spawns, Holder<Biome> biome) {
-		return test(spawns, Biome.getBiomeCategory(biome), biome.value().getRegistryName());
+	public static boolean test(Pair<String, SpawnBiomeData> spawns, Biome biome) {
+		return test(spawns, biome.getBiomeCategory(), biome.getRegistryName());
 	}
 }

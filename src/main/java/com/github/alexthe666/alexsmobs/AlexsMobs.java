@@ -13,7 +13,6 @@ import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
-import com.github.alexthe666.alexsmobs.world.AMFeatureRegistry;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
@@ -78,14 +77,13 @@ public class AlexsMobs {
         AMItemRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
         AMTileEntityRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
         AMPointOfInterestRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
-        AMFeatureRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        isAprilFools = calendar.get(Calendar.MONTH) + 1 == 4 && calendar.get(Calendar.DATE) == 1;
+        isAprilFools = calendar.get(2) + 1 == 4 && calendar.get(5) == 1;
     }
 
     public static boolean isAprilFools() {

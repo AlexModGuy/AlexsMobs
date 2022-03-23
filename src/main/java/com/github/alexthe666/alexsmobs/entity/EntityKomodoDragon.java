@@ -104,7 +104,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     public static <T extends Mob> boolean canKomodoDragonSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.KOMODO_DRAGON_SPAWNS);
+        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.KOMODO_DRAGON_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
     }
 
@@ -132,7 +132,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.targetSelector.addGoal(4, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal(this, EntityKomodoDragon.class, 50, true, false, HURT_OR_BABY));
         this.targetSelector.addGoal(7, new NearestAttackableTargetGoal(this, Player.class, 150, true, true, null));
-        this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.KOMODO_DRAGON_TARGETS)));
+        this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.KOMODO_DRAGON_TARGETS))));
     }
 
     public boolean hurt(DamageSource source, float amount) {

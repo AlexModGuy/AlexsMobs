@@ -21,12 +21,14 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public class MatchesBananaTagCondition implements LootItemCondition {
 
+    private Tag<Block> match;
 
     private MatchesBananaTagCondition() {
+        match = BlockTags.getAllTags().getTag(AMTagRegistry.DROPS_BANANAS);
     }
 
     public LootItemConditionType getType() {
-        return CommonProxy.matchesBanana;
+        return CommonProxy.MATCHES_BANANA_CONDTN;
     }
 
     public Set<LootContextParam<?>> getReferencedContextParams() {
@@ -34,8 +36,11 @@ public class MatchesBananaTagCondition implements LootItemCondition {
     }
 
     public boolean test(LootContext p_test_1_) {
+        if(match == null){
+            match = BlockTags.getAllTags().getTag(AMTagRegistry.DROPS_BANANAS);
+        }
         BlockState block = p_test_1_.getParamOrNull(LootContextParams.BLOCK_STATE);
-        return block != null && block.is(AMTagRegistry.DROPS_BANANAS);
+        return block != null && match != null && match.contains(block.getBlock());
     }
 
     public static class LootSerializer implements Serializer<MatchesBananaTagCondition> {

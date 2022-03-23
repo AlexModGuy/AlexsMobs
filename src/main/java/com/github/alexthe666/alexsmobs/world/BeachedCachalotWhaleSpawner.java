@@ -101,7 +101,8 @@ public class BeachedCachalotWhaleSpawner {
             int k = p_221244_1_.getZ() + this.random.nextInt(p_221244_2_ * 2) - p_221244_2_;
             int l = this.world.getHeight(Types.WORLD_SURFACE, j, k);
             BlockPos blockpos1 = new BlockPos(j, l, k);
-            if (BiomeConfig.test(BiomeConfig.cachalot_whale_beached_spawns, world.getBiome(blockpos1)) && NaturalSpawner.isSpawnPositionOk(Type.ON_GROUND, this.world, blockpos1, EntityType.WANDERING_TRADER)) {
+            Biome biome = world.getBiome(blockpos1);
+            if (BiomeConfig.test(BiomeConfig.cachalot_whale_beached_spawns, biome) && NaturalSpawner.isSpawnPositionOk(Type.ON_GROUND, this.world, blockpos1, EntityType.WANDERING_TRADER)) {
                 blockpos = blockpos1;
                 break;
             }

@@ -57,6 +57,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityGeladaMonkey.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(EntityGeladaMonkey.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GRASS_TIME = SynchedEntityData.defineId(EntityGeladaMonkey.class, EntityDataSerializers.INT);
+    private Tag<Block> grassTag = BlockTags.getAllTags().getTag(AMTagRegistry.GELADA_MONKEY_GRASS);
     public float prevSitProgress;
     public float sitProgress;
     public boolean isGrooming = false;
@@ -425,7 +426,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
         }
 
         public boolean canContinueToUse() {
-            return target != null && EntityGeladaMonkey.this.level.getBlockState(target).is(AMTagRegistry.GELADA_MONKEY_GRASS);
+            return target != null && grassTag.contains(EntityGeladaMonkey.this.level.getBlockState(target).getBlock());
         }
 
         public void tick() {
@@ -449,7 +450,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
                 while (EntityGeladaMonkey.this.level.isEmptyBlock(blockpos1) && blockpos1.getY() > -63) {
                     blockpos1 = blockpos1.below();
                 }
-                if (EntityGeladaMonkey.this.level.getBlockState(blockpos1).is(AMTagRegistry.GELADA_MONKEY_GRASS)) {
+                if (EntityGeladaMonkey.this.level.getBlockState(blockpos1).is(EntityGeladaMonkey.this.grassTag)) {
                     blockpos = blockpos1;
                 }
             }

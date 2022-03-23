@@ -175,7 +175,7 @@ public class SnowLeopardAIMelee extends Goal {
         Random lvt_14_1_ = creature.getRandom();
         boolean lvt_15_2_;
         if (leopard.hasRestriction()) {
-            lvt_15_2_ = leopard.getRestrictCenter().closerToCenterThan(creature.position(), (double) (leopard.getRestrictRadius() + (float) xz) + 1.0D);
+            lvt_15_2_ = leopard.getRestrictCenter().closerThan(creature.position(), (double) (leopard.getRestrictRadius() + (float) xz) + 1.0D);
         } else {
             lvt_15_2_ = false;
         }

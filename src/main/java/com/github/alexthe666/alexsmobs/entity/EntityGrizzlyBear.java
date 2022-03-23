@@ -395,7 +395,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             if(eatingTime > 100){
                 ItemStack stack = this.getItemInHand(InteractionHand.MAIN_HAND);
                 if(!stack.isEmpty()){
-                    if(stack.is(AMTagRegistry.GRIZZLY_HONEY)){
+                    if(ItemTags.getAllTags().getTag(AMTagRegistry.GRIZZLY_HONEY).contains(stack.getItem())){
                         this.setHoneyed(true);
                         this.heal(10);
                         this.honeyedTime = 700;
@@ -537,7 +537,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         } else if (world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, position).getY() > position.getY()) {
             return false;
         } else {
-            return world.getBiome(position).value().getPrecipitation() == Biome.Precipitation.SNOW;
+            return world.getBiome(position).getPrecipitation() == Biome.Precipitation.SNOW;
         }
     }
 
@@ -690,7 +690,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean canTargetItem(ItemStack stack) {
-        return stack.is(AMTagRegistry.GRIZZLY_FOODSTUFFS);
+        return ItemTags.getAllTags().getTag(AMTagRegistry.GRIZZLY_FOODSTUFFS).contains(stack.getItem());
     }
 
     public void onGetItem(ItemEntity targetEntity) {

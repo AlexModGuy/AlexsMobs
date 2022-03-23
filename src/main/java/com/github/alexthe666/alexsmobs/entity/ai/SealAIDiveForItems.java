@@ -144,7 +144,7 @@ public class SealAIDiveForItems extends Goal {
                 seafloor = seafloor.below();
             }
             BlockState state = world.getBlockState(seafloor);
-            if (state.is(AMTagRegistry.SEAL_DIGABLES)) {
+            if (BlockTags.getAllTags().getTag(AMTagRegistry.SEAL_DIGABLES).contains(state.getBlock())) {
                 return seafloor;
             }
         }

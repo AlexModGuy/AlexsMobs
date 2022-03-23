@@ -10,10 +10,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMungusBiomeChange;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -226,60 +223,55 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             float r3 = 6F * (random.nextFloat() - 0.5F);
             this.level.addParticle(ParticleTypes.EXPLOSION, this.getX() + r1, this.getY() + 0.5F + r2, this.getZ() + r3, r1 * 4, r2 * 4, r3 * 4);
         }
-        if(!level.isClientSide){
-            ServerLevel serverLevel = (ServerLevel) level;
-            final int radius = 3;
-            final int j = radius + level.random.nextInt(1);
-            final int k = (radius + level.random.nextInt(1));
-            final int l = radius + level.random.nextInt(1);
-            final float f = (float) (j + k + l) * 0.333F + 0.5F;
-            final float ff = f * f;
-            final double ffDouble = ff;
-            BlockPos center = this.blockPosition();
-            BlockState transformState = Blocks.MYCELIUM.defaultBlockState();
-            Registry<Biome> registry = serverLevel.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
-            Holder<Biome> biome = registry.getOrCreateHolder(Biomes.MUSHROOM_FIELDS);
-            TagKey<Block> transformMatches = AMTagRegistry.MUNGUS_REPLACE_MUSHROOM;
-            if (this.getMushroomState() != null) {
-                String mushroomKey = this.getMushroomState().getBlock().getRegistryName().toString();
-                if (MUSHROOM_TO_BLOCK.containsKey(mushroomKey)) {
-                    Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MUSHROOM_TO_BLOCK.get(mushroomKey)));
-                    if (block != null) {
-                        transformState = block.defaultBlockState();
-                        if (block == Blocks.WARPED_NYLIUM) {
-                            transformMatches = AMTagRegistry.MUNGUS_REPLACE_NETHER;
-                        }
-                        if (block == Blocks.CRIMSON_NYLIUM) {
-                            transformMatches = AMTagRegistry.MUNGUS_REPLACE_NETHER;
-                        }
+        final int radius = 3;
+        final int j = radius + level.random.nextInt(1);
+        final int k = (radius + level.random.nextInt(1));
+        final int l = radius + level.random.nextInt(1);
+        final float f = (float) (j + k + l) * 0.333F + 0.5F;
+        final float ff = f * f;
+        final double ffDouble = ff;
+        BlockPos center = this.blockPosition();
+        BlockState transformState = Blocks.MYCELIUM.defaultBlockState();
+        Biome biome = level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).get(Biomes.MUSHROOM_FIELDS);
+        Tag<Block> transformMatches = BlockTags.getAllTags().getTag(AMTagRegistry.MUNGUS_REPLACE_MUSHROOM);
+        if (this.getMushroomState() != null) {
+            String mushroomKey = this.getMushroomState().getBlock().getRegistryName().toString();
+            if (MUSHROOM_TO_BLOCK.containsKey(mushroomKey)) {
+                Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MUSHROOM_TO_BLOCK.get(mushroomKey)));
+                if (block != null) {
+                    transformState = block.defaultBlockState();
+                    if (block == Blocks.WARPED_NYLIUM) {
+                        transformMatches = BlockTags.getAllTags().getTag(AMTagRegistry.MUNGUS_REPLACE_NETHER);
+                    }
+                    if (block == Blocks.CRIMSON_NYLIUM) {
+                        transformMatches = BlockTags.getAllTags().getTag(AMTagRegistry.MUNGUS_REPLACE_NETHER);
                     }
                 }
-                Holder<Biome> gottenFrom = getBiomeKeyFromShroom();
-                if (gottenFrom != null) {
-                    biome = gottenFrom;
-                }
             }
-            BlockState finalTransformState = transformState;
-            TagKey<Block> finalTransformReplace = transformMatches;
+            if (getBiomeKeyFromShroom() != null) {
+                biome = getBiomeKeyFromShroom();
+            }
+        }
+        BlockState finalTransformState = transformState;
+        Tag<Block> finalTransformReplace = transformMatches;
 
-            if (AMConfig.mungusBiomeTransformationType == 2 && !level.isClientSide) {
-                transformBiome(center, biome);
-            }
-            this.playSound(SoundEvents.GENERIC_EXPLODE, this.getSoundVolume(), this.getVoicePitch());
-            if (!isReverting()) {
-                BlockPos.betweenClosedStream(center.offset(-j, -k, -l), center.offset(j, k, l)).forEach(blockpos -> {
-                    if (blockpos.distSqr(center) <= ffDouble) {
-                        if (level.random.nextFloat() > (float) blockpos.distSqr(center) / ff) {
-                            if (level.getBlockState(blockpos).is(finalTransformReplace) && !level.getBlockState(blockpos.above()).canOcclude()) {
-                                level.setBlockAndUpdate(blockpos, finalTransformState);
-                            }
-                            if (level.random.nextInt(4) == 0 && level.getBlockState(blockpos).getMaterial().isSolid() && level.getFluidState(blockpos.above()).isEmpty() && !level.getBlockState(blockpos.above()).canOcclude()) {
-                                level.setBlockAndUpdate(blockpos.above(), this.getMushroomState());
-                            }
+        if (AMConfig.mungusBiomeTransformationType == 2 && !level.isClientSide) {
+            transformBiome(center, biome);
+        }
+        this.playSound(SoundEvents.GENERIC_EXPLODE, this.getSoundVolume(), this.getVoicePitch());
+        if (!isReverting()) {
+            BlockPos.betweenClosedStream(center.offset(-j, -k, -l), center.offset(j, k, l)).forEach(blockpos -> {
+                if (blockpos.distSqr(center) <= ffDouble) {
+                    if (level.random.nextFloat() > (float) blockpos.distSqr(center) / ff) {
+                        if (level.getBlockState(blockpos).is(finalTransformReplace) && !level.getBlockState(blockpos.above()).canOcclude()) {
+                            level.setBlockAndUpdate(blockpos, finalTransformState);
+                        }
+                        if (level.random.nextInt(4) == 0 && level.getBlockState(blockpos).getMaterial().isSolid() && level.getFluidState(blockpos.above()).isEmpty() && !level.getBlockState(blockpos.above()).canOcclude()) {
+                            level.setBlockAndUpdate(blockpos.above(), this.getMushroomState());
                         }
                     }
-                });
-            }
+                }
+            });
         }
     }
 
@@ -287,7 +279,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         this.entityData.set(EXPLOSION_DISABLED, true);
     }
 
-    private Holder<Biome> getBiomeKeyFromShroom() {
+    private Biome getBiomeKeyFromShroom() {
         Registry<Biome> registry = this.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
         BlockState state = this.getMushroomState();
         if (state == null) {
@@ -296,14 +288,12 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         String blockRegName = state.getBlock().getRegistryName().toString();
         String str = MUSHROOM_TO_BIOME.get(blockRegName);
         if (str != null) {
-            Biome biome = registry.getOptional(new ResourceLocation(str)).orElse(null);
-            ResourceKey<Biome> resourceKey = registry.getResourceKey(biome).orElse(null);
-            return registry.getHolder(resourceKey).orElse(null);
+            return registry.getOptional(new ResourceLocation(str)).orElse(null);
         }
         return null;
     }
 
-    private PalettedContainer<Holder<Biome>> getChunkBiomes(LevelChunk chunk) {
+    private PalettedContainer<Biome> getChunkBiomes(LevelChunk chunk) {
         int i = QuartPos.fromBlock(chunk.getMinBuildHeight());
         int k = i + QuartPos.fromBlock(chunk.getHeight()) - 1;
         int l = Mth.clamp(QuartPos.fromBlock((int) this.getY()), i, k);
@@ -313,9 +303,9 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     }
 
 
-    private void transformBiome(BlockPos pos, Holder<Biome> biome) {
+    private void transformBiome(BlockPos pos, Biome biome) {
         LevelChunk chunk = level.getChunkAt(pos);
-        PalettedContainer<Holder<Biome>> container = getChunkBiomes(chunk);
+        PalettedContainer<Biome> container = getChunkBiomes(chunk);
         if (this.entityData.get(REVERTING)) {
             int lvt_4_1_ = chunk.getPos().getMinBlockX() >> 2;
             int yChunk = (int)this.getY() >> 2;
@@ -345,7 +335,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                     }
                 }
                 int id = this.getId();
-                AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), biome.value().getRegistryName().toString()));
+                AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), biome.getRegistryName().toString()));
             }
         }
 

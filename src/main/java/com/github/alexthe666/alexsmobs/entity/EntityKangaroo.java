@@ -132,7 +132,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public static <T extends Mob> boolean canKangarooSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.KANGAROO_SPAWNS);
+        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.KANGAROO_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
     }
 

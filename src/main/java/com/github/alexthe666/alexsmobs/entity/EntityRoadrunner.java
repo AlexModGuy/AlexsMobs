@@ -70,7 +70,7 @@ public class EntityRoadrunner extends Animal {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.INSECT_ITEMS), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS)), false));
         this.goalSelector.addGoal(5, new AnimalAIWanderRanged(this, 50, 1.0D, 25, 7));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -173,7 +173,7 @@ public class EntityRoadrunner extends Animal {
     }
 
     public boolean isFood(ItemStack stack) {
-        return stack.is(AMTagRegistry.INSECT_ITEMS);
+        return ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS).contains(stack.getItem());
     }
 
     @Nullable
@@ -183,7 +183,7 @@ public class EntityRoadrunner extends Animal {
     }
 
     public static boolean canRoadrunnerSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.ROADRUNNER_SPAWNS);
+        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.ROADRUNNER_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
     }
 

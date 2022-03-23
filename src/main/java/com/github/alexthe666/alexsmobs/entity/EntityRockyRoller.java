@@ -14,7 +14,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -24,7 +23,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -49,7 +47,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.awt.*;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Random;
 
 public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
@@ -74,12 +71,6 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.rockyRollerSpawnRolls, this.getRandom(), spawnReasonIn);
     }
-
-
-    public static boolean checkRockyRollerSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && (worldIn.getBlockState(pos.below()).is(Blocks.POINTED_DRIPSTONE) || worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.DRIPSTONE_BLOCK));
-    }
-
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ARMOR, 20.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.7F).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.25F);
@@ -191,7 +182,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
                         }
                         if (isHangingDripstone(blockpos1)) {
                             Vec3 vec3 = Vec3.atBottomCenterOf(blockpos1);
-                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, new BlockPos(vec3), level.getBlockState(blockpos1));
+                            FallingBlockEntity fallingblockentity = new FallingBlockEntity(level, vec3.x, vec3.y, vec3.z, level.getBlockState(blockpos1));
                             this.level.destroyBlock(blockpos1, false);
                             this.level.addFreshEntity(fallingblockentity);
                         }

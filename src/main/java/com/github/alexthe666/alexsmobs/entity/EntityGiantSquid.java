@@ -196,7 +196,7 @@ public class EntityGiantSquid extends WaterAnimal {
                 return super.canUse();
             }
         });
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 70, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.GIANT_SQUID_TARGETS)) {
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 70, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.GIANT_SQUID_TARGETS))) {
             public boolean canUse() {
                 return  !EntityGiantSquid.this.isInWaterOrBubble() && !EntityGiantSquid.this.isCaptured() && super.canUse();
             }

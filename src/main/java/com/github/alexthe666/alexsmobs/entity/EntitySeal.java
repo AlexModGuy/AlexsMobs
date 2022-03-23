@@ -5,7 +5,6 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -104,9 +103,9 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     public static boolean canSealSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        Holder<Biome> holder = worldIn.getBiome(pos);
-        if (!holder.is(Biomes.FROZEN_OCEAN) && !holder.is(Biomes.DEEP_FROZEN_OCEAN)) {
-            boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.SEAL_SPAWNS);
+        Optional<ResourceKey<Biome>> optional = worldIn.getBiomeName(pos);
+        if (!Objects.equals(optional, Optional.of(Biomes.FROZEN_OCEAN)) && !Objects.equals(optional, Optional.of(Biomes.DEEP_FROZEN_OCEAN))) {
+            boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.SEAL_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
             return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
         } else {
             return worldIn.getRawBrightness(pos, 0) > 8 && worldIn.getBlockState(pos.below()).is(Blocks.ICE);
@@ -126,7 +125,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(9, new AvoidEntityGoal(this, EntityOrca.class, 20F, 1.3D, 1.0D));
-        this.goalSelector.addGoal(10, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.SEAL_FOODSTUFFS), false));
+        this.goalSelector.addGoal(10, new TemptGoal(this, 1.1D, Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.SEAL_FOODSTUFFS)), false));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
     }
 
@@ -341,7 +340,8 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     private boolean isBiomeArctic(LevelAccessor worldIn, BlockPos position) {
-        return BiomeDictionary.hasType(worldIn.getBiome(position).unwrapKey().get(), BiomeDictionary.Type.COLD);
+        ResourceKey<Biome> biomeKey = ResourceKey.create(Registry.BIOME_REGISTRY, worldIn.getBiome(position).getRegistryName());
+        return BiomeDictionary.hasType(biomeKey, BiomeDictionary.Type.COLD);
     }
 
     public void travel(Vec3 travelVector) {
@@ -402,12 +402,12 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return stack.is(AMTagRegistry.SEAL_FOODSTUFFS);
+        return ItemTags.getAllTags().getTag(AMTagRegistry.SEAL_FOODSTUFFS).contains(stack.getItem());
     }
 
     @Override
     public void onGetItem(ItemEntity e) {
-        if (e.getItem().is(ItemTags.FISHES)) {
+        if (ItemTags.getAllTags().getTag(AMTagRegistry.SEAL_FOODSTUFFS).contains(e.getItem().getItem())) {
             fishFeedings++;
             this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (fishFeedings >= 3) {

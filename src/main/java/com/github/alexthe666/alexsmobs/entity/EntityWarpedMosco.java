@@ -124,7 +124,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityCrimsonMosquito.class, EntityWarpedMosco.class));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, true));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 50, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.CRIMSON_MOSQUITO_TARGETS)));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 50, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.CRIMSON_MOSQUITO_TARGETS))));
     }
 
     private void switchNavigator(boolean onLand) {
@@ -213,12 +213,14 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             timeFlying = 0;
             this.setNoGravity(false);
         }
+        Tag<Block> transformMatches = BlockTags.getAllTags().getTag(AMTagRegistry.WARPED_MOSCO_BREAKABLES);
         if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
             boolean flag = false;
             AABB axisalignedbb = this.getBoundingBox().inflate(0.2D);
             for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(axisalignedbb.minX), Mth.floor(axisalignedbb.minY), Mth.floor(axisalignedbb.minZ), Mth.floor(axisalignedbb.maxX), Mth.floor(axisalignedbb.maxY), Mth.floor(axisalignedbb.maxZ))) {
                 BlockState blockstate = this.level.getBlockState(blockpos);
-                if (blockstate.is(AMTagRegistry.WARPED_MOSCO_BREAKABLES)) {
+                Block block = blockstate.getBlock();
+                if (transformMatches.contains(block)) {
                     flag = this.level.destroyBlock(blockpos, true, this) || flag;
                 }
             }

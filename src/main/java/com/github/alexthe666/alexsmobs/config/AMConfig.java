@@ -214,7 +214,6 @@ public class AMConfig {
     public static double rainbowGlassFidelity = 16.0F;
     public static boolean bunfungusTransformation = true;
     public static boolean superSecretSettings = false;
-    public static boolean addLootToChests = true;
 
     public static void bake(ModConfig config) {
         try {
@@ -412,7 +411,6 @@ public class AMConfig {
             rainbowGlassFidelity = ConfigHolder.COMMON.rainbowGlassFidelity.get();
             bunfungusTransformation = ConfigHolder.COMMON.bunfungusTransformation.get();
             superSecretSettings = ConfigHolder.COMMON.superSecretSettings.get();
-            addLootToChests = ConfigHolder.COMMON.addLootToChests.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

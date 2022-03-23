@@ -321,9 +321,7 @@ public class AMItemRegistry {
 
     private static Item registerItemBlock(Block block) {
         Item.Properties props = new Item.Properties();
-        if(block != AMBlockRegistry.SAND_CIRCLE.get() && block != AMBlockRegistry.RED_SAND_CIRCLE.get()){
-            props.tab(AlexsMobs.TAB);
-        }
+        props.tab(AlexsMobs.TAB);
         if(block == AMBlockRegistry.STRADDLITE_BLOCK.get()){
             props.fireResistant();
         }

@@ -91,7 +91,6 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     private static void initFeedingData() {
-        System.out.println(FEEDING_STACKS);
         if (!initFeedingData || FEEDING_DATA.isEmpty()) {
             initFeedingData = true;
             for (String str : AMConfig.toucanFruitMatches) {
@@ -165,7 +164,6 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     protected void registerGoals() {
         super.registerGoals();
-        initFeedingData();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.3D));
         this.goalSelector.addGoal(2, new AIPlantTrees());
@@ -336,7 +334,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
+        while (position.getY() > -62 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
         return position;
@@ -763,7 +761,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         }
 
         private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-            return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
+            return blockpos.distSqr(positionVec.x(), blockpos.getY(), positionVec.z(), true) < distance * distance;
         }
 
         private BlockPos getSaplingPlantPos() {

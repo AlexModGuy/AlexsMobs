@@ -316,7 +316,8 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic {
     }
 
     public static <T extends Mob> boolean canLobsterSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.LOBSTER_SPAWNS);
-        return spawnBlock || worldIn.getFluidState(pos).is(FluidTags.WATER);
+        Tag<Block> tag = BlockTags.getAllTags().getTag(AMTagRegistry.LOBSTER_SPAWNS);
+        boolean spawnBlock = tag != null && tag.contains(worldIn.getBlockState(pos.below()).getBlock());
+        return tag == null || spawnBlock || worldIn.getFluidState(pos).is(FluidTags.WATER);
     }
 }

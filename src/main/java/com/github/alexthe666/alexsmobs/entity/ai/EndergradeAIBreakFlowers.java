@@ -63,7 +63,7 @@ public class EndergradeAIBreakFlowers extends MoveToBlockGoal {
     }
 
     private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-        return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
+        return blockpos.distSqr(positionVec.x(), positionVec.y(), positionVec.z(), true) < distance * distance;
     }
 
     protected boolean isReachedTarget() {

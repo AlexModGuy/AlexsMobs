@@ -134,18 +134,18 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
             downPos = downPos.below();
         }
-        boolean spawnBlock = worldIn.getBlockState(downPos).is(AMTagRegistry.MIMIC_OCTOPUS_SPAWNS);
+        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.MIMIC_OCTOPUS_SPAWNS).contains(worldIn.getBlockState(downPos).getBlock());
         return spawnBlock && downPos.getY() < worldIn.getSeaLevel() + 1;
     }
 
     public static MimicState getStateForItem(ItemStack stack) {
-        if (stack.is(AMTagRegistry.MIMIC_OCTOPUS_CREEPER_ITEMS)) {
+        if (ItemTags.getAllTags().getTag(AMTagRegistry.MIMIC_OCTOPUS_CREEPER_ITEMS).contains(stack.getItem())) {
             return MimicState.CREEPER;
         }
-        if (stack.is(AMTagRegistry.MIMIC_OCTOPUS_GUARDIAN_ITEMS)) {
+        if (ItemTags.getAllTags().getTag(AMTagRegistry.MIMIC_OCTOPUS_GUARDIAN_ITEMS).contains(stack.getItem())) {
             return MimicState.GUARDIAN;
         }
-        if (stack.is(AMTagRegistry.MIMIC_OCTOPUS_PUFFERFISH_ITEMS)) {
+        if (ItemTags.getAllTags().getTag(AMTagRegistry.MIMIC_OCTOPUS_PUFFERFISH_ITEMS).contains(stack.getItem())) {
             return MimicState.PUFFERFISH;
         }
         return null;
@@ -907,14 +907,16 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         private Entity targetEntity;
         private Vec3 flightTarget = null;
         private int cooldown = 0;
+        private Tag tag;
 
         AIFlee() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+            tag = EntityTypeTags.getAllTags().getTag(AMTagRegistry.MIMIC_OCTOPUS_FEARS);
             this.theNearestAttackableTargetSorter = new EntitySorter(EntityMimicOctopus.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && e.getType().is(AMTagRegistry.MIMIC_OCTOPUS_FEARS) || e instanceof Player && !((Player) e).isCreative();
+                    return e.isAlive() && e.getType().is(tag) || e instanceof Player && !((Player) e).isCreative();
                 }
             };
         }
