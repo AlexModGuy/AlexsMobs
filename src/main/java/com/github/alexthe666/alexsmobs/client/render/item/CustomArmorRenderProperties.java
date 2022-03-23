@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render.item;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.model.layered.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.client.Minecraft;
@@ -21,6 +22,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
     public static ModelSpikedTurtleShell SPIKED_TURTLE_SHELL_MODEL;
     public static ModelFedora FEDORA_MODEL;
     public static ModelSombrero SOMBRERO_MODEL;
+    public static ModelSombrero SOMBRERO_GOOFY_MODEL;
     public static ModelFroststalkerHelmet FROSTSTALKER_HELMET_MODEL;
     public static ModelRockyChestplate ROCKY_CHESTPLATE_MODEL;
 
@@ -32,6 +34,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         FEDORA_MODEL = new ModelFedora(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.FEDORA));
         SPIKED_TURTLE_SHELL_MODEL = new ModelSpikedTurtleShell(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SPIKED_TURTLE_SHELL));
         SOMBRERO_MODEL = new ModelSombrero(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SOMBRERO));
+        SOMBRERO_GOOFY_MODEL = new ModelSombrero(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SOMBRERO_GOOFY_FASHION));
         FROSTSTALKER_HELMET_MODEL = new ModelFroststalkerHelmet(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.FROSTSTALKER_HELMET));
         ELYTRA_MODEL = new ModelAMElytra(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.AM_ELYTRA));
         ROCKY_CHESTPLATE_MODEL = new ModelRockyChestplate(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.ROCKY_CHESTPLATE));
@@ -60,7 +63,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
             return SPIKED_TURTLE_SHELL_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.SOMBRERO.get()){
-            return SOMBRERO_MODEL;
+            return AlexsMobs.isAprilFools() ? SOMBRERO_GOOFY_MODEL : SOMBRERO_MODEL;
         }
         if(itemStack.getItem() == AMItemRegistry.FROSTSTALKER_HELMET.get()){
             return FROSTSTALKER_HELMET_MODEL;

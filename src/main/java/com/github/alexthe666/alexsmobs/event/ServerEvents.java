@@ -25,6 +25,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.TicketType;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -67,6 +68,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -285,6 +287,28 @@ public class ServerEvents {
     public void onEntityDespawnAttempt(LivingSpawnEvent.AllowDespawn event) {
         if (event.getEntityLiving().hasEffect(AMEffectRegistry.DEBILITATING_STING) && event.getEntityLiving().getEffect(AMEffectRegistry.DEBILITATING_STING) != null && event.getEntityLiving().getEffect(AMEffectRegistry.DEBILITATING_STING).getAmplifier() > 0) {
             event.setResult(Event.Result.DENY);
+        }
+    }
+
+    @SubscribeEvent
+    public void onUseItemOnBlock(PlayerInteractEvent.RightClickBlock event) {
+        if(AlexsMobs.isAprilFools() && event.getItemStack().is(Items.STICK) && !event.getPlayer().getCooldowns().isOnCooldown(Items.STICK)){
+            BlockState state = event.getPlayer().level.getBlockState(event.getPos());
+            boolean flag = false;
+            if(state.is(Blocks.SAND)){
+                flag = true;
+                event.getPlayer().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.SAND_CIRCLE.get().defaultBlockState());
+            }
+            if(state.is(Blocks.RED_SAND)){
+                flag = true;
+                event.getPlayer().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.RED_SAND_CIRCLE.get().defaultBlockState());
+            }
+            if(flag){
+                event.setCanceled(true);
+                event.getPlayer().playSound(SoundEvents.SAND_BREAK, 1, 1);
+                event.getPlayer().getCooldowns().addCooldown(Items.STICK, 30);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+            }
         }
     }
 
@@ -641,6 +665,41 @@ public class ServerEvents {
                 }
                 motion = new Vec3(d0, d2, d1);
                 event.getEntityLiving().setDeltaMovement(motion);
+            }
+        }
+        if (event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SOMBRERO.get() && !event.getEntityLiving().level.isClientSide && AlexsMobs.isAprilFools() && event.getEntityLiving().isInWaterOrBubble()) {
+            Random random = event.getEntityLiving().getRandom();
+            if(random.nextInt(245) == 0 && !EntitySeaBear.isMobSafe(event.getEntityLiving())){
+                int dist = 32;
+                List<EntitySeaBear> nearbySeabears = event.getEntityLiving().level.getEntitiesOfClass(EntitySeaBear.class, event.getEntityLiving().getBoundingBox().inflate(dist, dist, dist));
+                if(nearbySeabears.isEmpty()){
+                    EntitySeaBear bear = AMEntityRegistry.SEA_BEAR.get().create(event.getEntityLiving().level);
+                    BlockPos at = event.getEntityLiving().blockPosition();
+                    BlockPos farOff = null;
+                    for(int i = 0; i < 15; i++){
+                        int f1 = (int) Math.signum(random.nextFloat() - 0.5F);
+                        int f2 = (int) Math.signum(random.nextFloat() - 0.5F);
+                        BlockPos pos1 = at.offset(f1 * (10 + random.nextInt(dist - 10)), random.nextInt(1), f2 * (10 + random.nextInt(dist - 10)));
+                        BlockState state = event.getEntityLiving().getLevel().getBlockState(pos1);
+                        if(event.getEntityLiving().level.isWaterAt(pos1)){
+                            farOff = pos1;
+                        }
+                    }
+                    if(farOff != null){
+                        bear.setPos(farOff.getX() + 0.5F, farOff.getY() + 0.5F, farOff.getZ() + 0.5F);
+                        bear.setYRot(random.nextFloat() * 360F);
+                        if(!(event.getEntityLiving() instanceof Player) || ((Player) event.getEntityLiving()).isCreative()){
+                            bear.setTarget(event.getEntityLiving());
+                        }
+                        event.getEntityLiving().level.addFreshEntity(bear);
+                    }
+                }else{
+                    if(!(event.getEntityLiving() instanceof Player) || ((Player) event.getEntityLiving()).isCreative()) {
+                        for (EntitySeaBear bear : nearbySeabears) {
+                            bear.setTarget(event.getEntityLiving());
+                        }
+                    }
+                }
             }
         }
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
