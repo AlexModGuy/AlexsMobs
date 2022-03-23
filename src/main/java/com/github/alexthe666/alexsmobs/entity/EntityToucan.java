@@ -91,6 +91,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     private static void initFeedingData() {
+        System.out.println(FEEDING_STACKS);
         if (!initFeedingData || FEEDING_DATA.isEmpty()) {
             initFeedingData = true;
             for (String str : AMConfig.toucanFruitMatches) {
@@ -164,6 +165,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     protected void registerGoals() {
         super.registerGoals();
+        initFeedingData();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.3D));
         this.goalSelector.addGoal(2, new AIPlantTrees());
