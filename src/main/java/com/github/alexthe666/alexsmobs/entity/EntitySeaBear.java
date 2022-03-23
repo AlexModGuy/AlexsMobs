@@ -62,6 +62,14 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
         this.moveControl = new AquaticMoveController(this, 1F, 10);
     }
 
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return !requiresCustomPersistence();
+    }
+
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.hasCustomName();
+    }
+
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 200.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.MOVEMENT_SPEED, 0.325F);
     }
