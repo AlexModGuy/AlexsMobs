@@ -85,7 +85,7 @@ public class AlexsMobs {
         MinecraftForge.EVENT_BUS.register(new ServerEvents());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        isAprilFools = calendar.get(2) + 1 == 4 && calendar.get(5) == 1;
+        isAprilFools = calendar.get(Calendar.MONTH) + 1 == 4 && calendar.get(Calendar.DATE) == 1;
     }
 
     public static boolean isAprilFools() {

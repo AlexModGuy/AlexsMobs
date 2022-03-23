@@ -181,7 +181,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false, 10));
         this.targetSelector.addGoal(2, (new AngerGoal(this)));
         this.targetSelector.addGoal(3, new AttackPlayerGoal());
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, LivingEntity.class, 80, false, false, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.TIGER_TARGETS)) {
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, LivingEntity.class, 220, false, false, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.TIGER_TARGETS)) {
             public boolean canUse() {
                 return !EntityTiger.this.isBaby() && super.canUse();
             }

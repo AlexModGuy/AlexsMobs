@@ -605,7 +605,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
 
     private BlockPos getCrowGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
-        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
