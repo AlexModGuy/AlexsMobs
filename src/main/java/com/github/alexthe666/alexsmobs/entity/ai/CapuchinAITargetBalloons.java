@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +30,7 @@ public class CapuchinAITargetBalloons extends Goal {
     protected int unseenMemoryTicks = 60;
     protected final int targetChance;
     public static final Predicate<Entity> TARGET_BLOON = (balloon) -> {
-        return balloon.getEncodeId() != null && (balloon.getEncodeId().contains("balloom"));
+        return balloon.getEncodeId() != null && (balloon.getType().is(AMTagRegistry.MONKEY_TARGET_WITH_DART) || balloon.getEncodeId().contains("balloom"));
     };
 
     public CapuchinAITargetBalloons(EntityCapuchinMonkey mobIn, boolean checkSight) {

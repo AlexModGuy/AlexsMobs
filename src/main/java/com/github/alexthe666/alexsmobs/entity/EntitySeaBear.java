@@ -75,6 +75,9 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
     }
 
     public static boolean isMobSafe(Entity entity) {
+        if(entity instanceof Player && ((Player) entity).isCreative()){
+            return true;
+        }
         BlockState state = entity.level.getBlockState(entity.blockPosition().below());
         return state.is(AMBlockRegistry.SAND_CIRCLE.get()) || state.is(AMBlockRegistry.RED_SAND_CIRCLE.get());
     }
