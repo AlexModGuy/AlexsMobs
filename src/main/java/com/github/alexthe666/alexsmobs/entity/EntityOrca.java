@@ -174,8 +174,9 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         this.goalSelector.addGoal(6, new OrcaAIMelee(this, 1.2F, true));
         this.goalSelector.addGoal(8, new FollowBoatGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EntityCachalotWhale.class, 5, false, false, TARGET_BABY));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, EntityCachalotWhale.class, 25, false, false, TARGET_BABY));
         this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, LivingEntity.class, 200, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.ORCA_TARGETS))));
+
     }
 
     @Override

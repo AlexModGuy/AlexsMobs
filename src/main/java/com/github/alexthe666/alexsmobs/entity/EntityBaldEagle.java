@@ -153,7 +153,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new AnimalAIHurtByTargetNotBaby(this)));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 5, true, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TARGETS))) {
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 55, true, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TARGETS)) {
             public boolean canUse() {
                 return super.canUse() && !EntityBaldEagle.this.isLaunched() && EntityBaldEagle.this.getCommand() == 0;
             }

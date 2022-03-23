@@ -753,7 +753,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     private void launch(Entity e, boolean huge) {
-        if (e.isOnGround() || e.isInWater()) {
+        if ((e.isOnGround() || e.isInWater()) && !(e instanceof EntityCachalotWhale)) {
             double d0 = e.getX() - this.getX();
             double d1 = e.getZ() - this.getZ();
             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
