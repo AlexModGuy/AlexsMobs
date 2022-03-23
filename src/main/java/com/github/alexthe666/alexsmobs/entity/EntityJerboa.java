@@ -227,7 +227,7 @@ public class EntityJerboa extends Animal {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
-        if ((Tags.Items.SEEDS.contains(item) || isFood(itemstack)) && (this.getHealth() < this.getMaxHealth() || !this.isBefriended())) {
+        if ((itemstack.is(Tags.Items.SEEDS) || isFood(itemstack)) && (this.getHealth() < this.getMaxHealth() || !this.isBefriended())) {
             if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
@@ -236,7 +236,7 @@ public class EntityJerboa extends Animal {
             return InteractionResult.SUCCESS;
         }
         InteractionResult type = super.mobInteract(player, hand);
-        if (type != InteractionResult.SUCCESS && !isFood(itemstack) && Tags.Items.SEEDS.contains(item)) {
+        if (type != InteractionResult.SUCCESS && !isFood(itemstack) && itemstack.is(Tags.Items.SEEDS)) {
             this.setSleeping(false);
             this.playSound(SoundEvents.PARROT_EAT, this.getVoicePitch(), this.getSoundVolume());
             for (int i = 0; i < 6 + random.nextInt(3); i++) {
@@ -271,7 +271,7 @@ public class EntityJerboa extends Animal {
     }
 
     public boolean isFood(ItemStack stack) {
-        return ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS).contains(stack.getItem());
+        return stack.is(AMTagRegistry.INSECT_ITEMS);
     }
 
     public boolean shouldMove() {

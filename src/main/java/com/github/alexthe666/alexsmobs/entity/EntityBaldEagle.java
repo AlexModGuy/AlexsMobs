@@ -135,7 +135,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         this.goalSelector.addGoal(3, new AITackle());
         this.goalSelector.addGoal(4, new AILandOnGlove());
         this.goalSelector.addGoal(5, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, TEMPT_ITEMS.merge(ImmutableList.of(Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TAMEABLES)))), true));
+        this.goalSelector.addGoal(6, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.BALD_EAGLE_TAMEABLES), false));
         this.goalSelector.addGoal(7, new TemptGoal(this, 1.1D, Ingredient.of(ItemTags.FISHES), false));
         this.goalSelector.addGoal(8, new AIWanderIdle());
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 6.0F) {
@@ -153,7 +153,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new AnimalAIHurtByTargetNotBaby(this)));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 5, true, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TARGETS))) {
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 55, true, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.BALD_EAGLE_TARGETS)) {
             public boolean canUse() {
                 return super.canUse() && !EntityBaldEagle.this.isLaunched() && EntityBaldEagle.this.getCommand() == 0;
             }
@@ -360,7 +360,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
             }
             this.level.broadcastEntityEvent(this, (byte) 7);
             return InteractionResult.CONSUME;
-        } else if (ItemTags.getAllTags().getTag(AMTagRegistry.BALD_EAGLE_TAMEABLES).contains(itemstack.getItem()) && !this.isTame()) {
+        } else if (itemstack.is(AMTagRegistry.BALD_EAGLE_TAMEABLES)) {
             if (itemstack.hasContainerItem()) {
                 this.spawnAtLocation(itemstack.getContainerItem());
             }
@@ -465,7 +465,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                     }
                     float birdYaw = yawAdd * 0.5F;
                     this.yBodyRot = Mth.wrapDegrees(((LivingEntity) mount).yBodyRot + birdYaw);
-                    this.setYRot(Mth.wrapDegrees(((LivingEntity) mount).getYRot() + birdYaw));
+                    this.setYRot(Mth.wrapDegrees(mount.getYRot() + birdYaw));
                     this.yHeadRot = Mth.wrapDegrees(((LivingEntity) mount).yHeadRot + birdYaw);
                     float radius = 0.6F;
                     float angle = (0.01745329251F * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));

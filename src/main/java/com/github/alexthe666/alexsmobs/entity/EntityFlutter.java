@@ -389,18 +389,18 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 this.level.broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
-        } else if (!isTame() && ItemTags.FLOWERS.contains(item)) {
+        } else if (!isTame() && itemstack.is(ItemTags.FLOWERS)) {
             this.playSound(AMSoundRegistry.FLUTTER_NO, this.getSoundVolume(), this.getVoicePitch());
             this.entityData.set(SHAKING_HEAD_TICKS, 20);
         }
-        if (isTame() && ItemTags.FLOWERS.contains(item) && this.getHealth() < this.getMaxHealth()) {
+        if (isTame() && itemstack.is(ItemTags.FLOWERS) && this.getHealth() < this.getMaxHealth()) {
             this.usePlayerItem(player, hand, itemstack);
             this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
             this.heal(5);
             return InteractionResult.SUCCESS;
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
-        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !ItemTags.FLOWERS.contains(item)) {
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack) && !itemstack.is(ItemTags.FLOWERS)) {
             if (item == Items.FLOWER_POT && !this.isPotted()) {
                 this.setPotted(true);
                 return InteractionResult.SUCCESS;
@@ -605,7 +605,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     public boolean canEatFlower(ItemStack stack) {
-        return !hasEatenFlower(stack) && ItemTags.FLOWERS.contains(stack.getItem());
+        return !hasEatenFlower(stack) && stack.is(ItemTags.FLOWERS);
     }
 
     private void setupShooting() {

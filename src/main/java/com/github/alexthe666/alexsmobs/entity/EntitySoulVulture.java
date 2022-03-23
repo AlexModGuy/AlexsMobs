@@ -88,7 +88,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
 
     public static boolean canVultureSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
         BlockPos blockpos = pos.below();
-        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.SOUL_VULTURE_SPAWNS).contains(worldIn.getBlockState(blockpos).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(blockpos).is(AMTagRegistry.SOUL_VULTURE_SPAWNS);
         return reason == MobSpawnType.SPAWNER || spawnBlock && checkMobSpawnRules(AMEntityRegistry.SOUL_VULTURE.get(), worldIn, reason, pos, randomIn);
     }
 
@@ -109,7 +109,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
     }
 
     public boolean isPerchBlock(BlockPos pos, BlockState state) {
-        return level.isEmptyBlock(pos.above()) && level.isEmptyBlock(pos.above(2)) && BlockTags.getAllTags().getTag(AMTagRegistry.SOUL_VULTURE_PERCHES).contains(state.getBlock());
+        return level.isEmptyBlock(pos.above()) && level.isEmptyBlock(pos.above(2)) && state.is(AMTagRegistry.SOUL_VULTURE_PERCHES);
     }
 
     protected void registerGoals() {

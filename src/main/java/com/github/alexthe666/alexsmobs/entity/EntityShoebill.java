@@ -147,7 +147,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
         this.goalSelector.addGoal(1, new ShoebillAIFish(this));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(4, new ShoebillAIFlightFlee(this));
-        this.goalSelector.addGoal(5, new TemptGoal(this, 1.1D, Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.SHOEBILL_FOODSTUFFS)), false));
+        this.goalSelector.addGoal(5, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.SHOEBILL_FOODSTUFFS), false));
         this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1D, 1400));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
@@ -345,7 +345,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getAllTags().getTag(AMTagRegistry.SHOEBILL_FOODSTUFFS).contains(stack.getItem()) || stack.getItem() == AMItemRegistry.BLOBFISH.get() && luckLevel < 10 || stack.getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem() && lureLevel < 10;
+        return stack.is(AMTagRegistry.SHOEBILL_FOODSTUFFS) || stack.getItem() == AMItemRegistry.BLOBFISH.get() && luckLevel < 10 || stack.getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem() && lureLevel < 10;
     }
 
     public void resetFishingCooldown(){

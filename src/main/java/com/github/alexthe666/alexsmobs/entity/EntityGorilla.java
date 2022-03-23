@@ -113,7 +113,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     }
 
     public static boolean isBanana(ItemStack stack) {
-        return ItemTags.getAllTags().getTag(AMTagRegistry.BANANAS).contains(stack.getItem());
+        return stack.is(AMTagRegistry.BANANAS);
     }
 
     public static boolean canGorillaSpawn(EntityType<EntityGorilla> gorilla, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, Random random) {
@@ -158,7 +158,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(2, new GorillaAIFollowCaravan(this, 0.8D));
         this.goalSelector.addGoal(3, new GorillaAIChargeLooker(this, 1.6D));
-        this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.BANANAS)), false));
+        this.goalSelector.addGoal(4, new TameableAITempt(this, 1.1D, Ingredient.of(AMTagRegistry.BANANAS), false));
         this.goalSelector.addGoal(4, new AnimalAIRideParent(this, 1.25D));
         this.goalSelector.addGoal(6, new AIWalkIdle(this, 0.8D));
         this.goalSelector.addGoal(5, new GorillaAIForageLeaves(this));
@@ -384,7 +384,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         }
         if (isEating()) {
             eatingTime++;
-            if (!ItemTags.LEAVES.contains(this.getMainHandItem().getItem())) {
+            if (!this.getMainHandItem().is(ItemTags.LEAVES)) {
                 for (int i = 0; i < 3; i++) {
                     double d2 = this.random.nextGaussian() * 0.02D;
                     double d0 = this.random.nextGaussian() * 0.02D;
@@ -497,7 +497,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     }
 
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getAllTags().getTag(AMTagRegistry.GORILLA_FOODSTUFFS).contains(stack.getItem());
+        return stack.is(AMTagRegistry.GORILLA_FOODSTUFFS);
     }
 
     @Override

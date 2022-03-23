@@ -34,6 +34,8 @@ public class AMBlockRegistry {
     public static final RegistryObject<Block> RAINBOW_GLASS = DEF_REG.register("rainbow_glass", () -> new BlockRainbowGlass());
     public static final RegistryObject<Block> BISON_FUR_BLOCK = DEF_REG.register("bison_fur_block", () -> new Block(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_BROWN).strength(0.6F, 1.0F).sound(SoundType.WOOL)));
     public static final RegistryObject<Block> BISON_CARPET = DEF_REG.register("bison_carpet", () -> new BlockBisonCarpet());
+    public static final RegistryObject<Block> SAND_CIRCLE = DEF_REG.register("sand_circle", () -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND)));
+    public static final RegistryObject<Block> RED_SAND_CIRCLE = DEF_REG.register("red_sand_circle", () -> new SandBlock(11098145, BlockBehaviour.Properties.copy(Blocks.RED_SAND)));
     /*
         public static final RegistryObject<Block> PURPUR_PLANKS = DEF_REG.register("purpur_planks", () -> new Block(PURPUR_PLANKS_PROPERTIES));;
     public static final RegistryObject<Block> PURPUR_PLANKS_STAIRS = DEF_REG.register("purpur_planks_stairs", () -> new StairBlock(PURPUR_PLANKS.get().defaultBlockState(), PURPUR_PLANKS_PROPERTIES));;

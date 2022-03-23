@@ -93,7 +93,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
                     ant.setDeltaMovement(ant.getDeltaMovement().multiply(0D, 1D, 0D));
                     this.ant.getMoveControl().setWantedPosition(logStartPos.getX() + 0.5D, ant.getY() + 2, logStartPos.getZ() + 0.5D, 1);
                     BlockPos test = new BlockPos(logStartPos.getX(), ant.getY(), logStartPos.getZ());
-                    if (!BlockTags.LOGS.contains(ant.level.getBlockState(test).getBlock()) && ant.getAttachmentFacing() == Direction.DOWN) {
+                    if (!ant.level.getBlockState(test).is(BlockTags.LOGS) && ant.getAttachmentFacing() == Direction.DOWN) {
                         this.stop();
                         return;
                     }
@@ -101,7 +101,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
             } else {
                 for (int i = 0; i < 15; i++) {
                     BlockPos test = blockPos.offset(6 - ant.getRandom().nextInt(12), -ant.getRandom().nextInt(7), 6 - ant.getRandom().nextInt(12));
-                    if (BlockTags.LOGS.contains(ant.level.getBlockState(test).getBlock())) {
+                    if (ant.level.getBlockState(test).is(BlockTags.LOGS)) {
                         logStartPos = test;
                         break;
                     }
@@ -133,7 +133,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
 
     private void breakLeaves() {
         BlockState blockstate = ant.level.getBlockState(this.blockPos);
-        if (BlockTags.getAllTags().getTag(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES).contains(blockstate.getBlock())) {
+        if (blockstate.is(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES)) {
             if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ant.level, ant)) {
                 ant.level.destroyBlock(blockPos, false);
                 if (ant.getRandom().nextFloat() > AMConfig.leafcutterAntBreakLeavesChance) {
@@ -145,7 +145,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
 
     @Override
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
-        return BlockTags.getAllTags().getTag(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES).contains(worldIn.getBlockState(pos).getBlock());
+        return worldIn.getBlockState(pos).is(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES);
     }
 
 

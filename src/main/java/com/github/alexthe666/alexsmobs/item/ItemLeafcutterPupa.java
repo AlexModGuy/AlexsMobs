@@ -33,8 +33,7 @@ public class ItemLeafcutterPupa extends Item {
         Level world = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         BlockState blockstate = world.getBlockState(blockpos);
-        Tag<Block> tag = BlockTags.getAllTags().getTag(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON);
-        if (tag.contains(blockstate.getBlock()) && tag.contains(world.getBlockState(blockpos.below()).getBlock())) {
+        if (blockstate.is(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON) && world.getBlockState(blockpos.below()).is(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON)) {
             Player playerentity = context.getPlayer();
             world.playSound(playerentity, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             if (!world.isClientSide) {

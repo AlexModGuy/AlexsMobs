@@ -148,9 +148,11 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
         float partialTicksForRender = Minecraft.getInstance().isPaused() || entity instanceof EntityMimicOctopus ? 0 : partialTicks;
-        int tick = Minecraft.getInstance().player.tickCount;
-        if(Minecraft.getInstance().isPaused()){
+        int tick;
+        if(Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()){
             tick = ticksExisted;
+        }else{
+            tick = Minecraft.getInstance().player.tickCount;
         }
         if (follow) {
             float yaw = f * 45.0F;
@@ -194,6 +196,12 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
     @Override
     public void renderByItem(ItemStack itemStackIn, ItemTransforms.TransformType p_239207_2_, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        int tick;
+        if(Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()){
+            tick = ticksExisted;
+        }else{
+            tick = Minecraft.getInstance().player.tickCount;
+        }
         if(itemStackIn.getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP.get()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.4F, -0.75F, 0.5F);
@@ -224,7 +232,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     if(p_239207_2_.firstPerson()){
                         matrixStackIn.translate(p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -0.3F : 0.3F, 0.0f, -0.5f);
                     }
-                    matrixStackIn.mulPose(Vector3f.YP.rotation(Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getFrameTime()));
+                    matrixStackIn.mulPose(Vector3f.YP.rotation(tick + Minecraft.getInstance().getFrameTime()));
                 }
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND.get()), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }else{
@@ -261,7 +269,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         */
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON.get()) {
             Entity fakeEntity = null;
-            int entityIndex = (Minecraft.getInstance().player.tickCount / 40) % (MOB_ICONS.size());
+            int entityIndex = (tick / 40) % (MOB_ICONS.size());
             float scale = 1.0F;
             int flags = 0;
             if (ItemTabIcon.hasCustomEntityDisplay(itemStackIn)) {

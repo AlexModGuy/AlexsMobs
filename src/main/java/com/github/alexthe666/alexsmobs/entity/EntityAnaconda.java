@@ -100,7 +100,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     public static boolean canAnacondaSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.ANACONDA_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.ANACONDA_SPAWNS);
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 
@@ -132,7 +132,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.goalSelector.addGoal(8, new SemiAquaticAIRandomSwimming(this, 1.5D, 7));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 25F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, LivingEntity.class, 60, false, false, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.ANACONDA_TARGETS))));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, LivingEntity.class, 200, false, false, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.ANACONDA_TARGETS)));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, 110, false, true, null) {
             public boolean canUse() {
                 return !isBaby() && level.getDifficulty() != Difficulty.PEACEFUL && !EntityAnaconda.this.isInLove() && super.canUse();

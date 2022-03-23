@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "top": "alexsmobs:block/sand_circle",
+    "side": "block/sand"
+  }
+}

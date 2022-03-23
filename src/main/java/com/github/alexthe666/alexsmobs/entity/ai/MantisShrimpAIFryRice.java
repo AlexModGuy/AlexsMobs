@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 public class MantisShrimpAIFryRice extends MoveToBlockGoal {
 
     private EntityMantisShrimp mantisShrimp;
-    private Tag<Item> tag;
     private boolean wasLitPrior = false;
     private int cookingTicks = 0;
 
@@ -30,7 +29,6 @@ public class MantisShrimpAIFryRice extends MoveToBlockGoal {
         super(entityMantisShrimp, 1, 8);
         this.mantisShrimp = entityMantisShrimp;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        tag = ItemTags.getAllTags().getTag(AMTagRegistry.SHRIMP_RICE_FRYABLES);
     }
 
     public void stop(){
@@ -71,11 +69,11 @@ public class MantisShrimpAIFryRice extends MoveToBlockGoal {
 
     @Override
     public boolean canUse() {
-        return tag.contains(this.mantisShrimp.getMainHandItem().getItem()) && !mantisShrimp.isSitting() && super.canUse();
+        return this.mantisShrimp.getMainHandItem().is(AMTagRegistry.SHRIMP_RICE_FRYABLES) && !mantisShrimp.isSitting() && super.canUse();
     }
 
     public boolean canContinueToUse() {
-        return tag.contains(this.mantisShrimp.getMainHandItem().getItem()) && !mantisShrimp.isSitting() && super.canContinueToUse();
+        return this.mantisShrimp.getMainHandItem().is(AMTagRegistry.SHRIMP_RICE_FRYABLES) && !mantisShrimp.isSitting() && super.canContinueToUse();
     }
 
     public double acceptedDistance() {

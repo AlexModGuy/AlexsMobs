@@ -111,7 +111,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-        return blockpos.distSqr(positionVec.x(), positionVec.y(), positionVec.z(), true) < distance * distance;
+        return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
     }
 
     protected boolean isReachedTarget() {
@@ -137,6 +137,6 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
 
     @Override
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
-        return BlockTags.getAllTags().getTag(AMTagRegistry.CROW_FOODBLOCKS).contains(worldIn.getBlockState(pos).getBlock());
+        return worldIn.getBlockState(pos).is(AMTagRegistry.CROW_FOODBLOCKS);
     }
 }

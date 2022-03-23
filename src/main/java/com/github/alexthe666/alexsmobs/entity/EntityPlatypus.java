@@ -89,9 +89,8 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     }
 
     public static boolean canPlatypusSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        Tag<Block> tag = BlockTags.getAllTags().getTag(AMTagRegistry.PLATYPUS_SPAWNS);
-        boolean spawnBlock = tag != null && tag.contains(worldIn.getBlockState(pos.below()).getBlock());
-        return (tag == null && worldIn.getBlockState(pos.below()).getBlock() == Blocks.DIRT || spawnBlock) && pos.getY() < worldIn.getSeaLevel() + 4;
+        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.PLATYPUS_SPAWNS);
+        return (worldIn.getBlockState(pos.below()).getBlock() == Blocks.DIRT || spawnBlock) && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -191,7 +190,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
                 EntityPlatypus.this.setSensingVisual(false);
             }
         });
-        this.goalSelector.addGoal(5, new TemptGoal(this, 1.1D, Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.PLATYPUS_FOODSTUFFS)), false){
+        this.goalSelector.addGoal(5, new TemptGoal(this, 1.1D, Ingredient.of(AMTagRegistry.PLATYPUS_FOODSTUFFS), false){
             public boolean canUse(){
                 return super.canUse() && !EntityPlatypus.this.isSensing();
             }
@@ -429,7 +428,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return !this.isSensing() && ItemTags.getAllTags().getTag(AMTagRegistry.PLATYPUS_FOODSTUFFS).contains(stack.getItem());
+        return !this.isSensing() && stack.is(AMTagRegistry.PLATYPUS_FOODSTUFFS);
     }
 
     @Override

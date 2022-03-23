@@ -22,8 +22,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.TicketType;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -59,12 +62,14 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -132,6 +137,9 @@ public class ServerEvents {
                 ServerLevel endpointWorld = (ServerLevel) trip.b;
                 BlockPos endpoint = (BlockPos) trip.c;
                 player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.getYRot(), player.getXRot());
+                ChunkPos chunkpos = new ChunkPos(endpoint);
+                endpointWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, player.getId());
+                player.connection.send(new ClientboundSetExperiencePacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
             }
             teleportPlayers.clear();
         }
@@ -426,7 +434,6 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onUseItemAir(PlayerInteractEvent.RightClickEmpty event) {
-
         ItemStack stack = event.getPlayer().getItemInHand(event.getHand());
         if (stack.isEmpty()) {
             stack = event.getPlayer().getItemBySlot(EquipmentSlot.MAINHAND);
@@ -445,6 +452,28 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public void onUseItemOnBlock(PlayerInteractEvent.RightClickBlock event) {
+        if(AlexsMobs.isAprilFools() && event.getItemStack().is(Items.STICK) && !event.getPlayer().getCooldowns().isOnCooldown(Items.STICK)){
+            BlockState state = event.getPlayer().level.getBlockState(event.getPos());
+            boolean flag = false;
+            if(state.is(Blocks.SAND)){
+                flag = true;
+                event.getPlayer().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.SAND_CIRCLE.get().defaultBlockState());
+            }
+            if(state.is(Blocks.RED_SAND)){
+                flag = true;
+                event.getPlayer().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.RED_SAND_CIRCLE.get().defaultBlockState());
+            }
+            if(flag){
+                event.setCanceled(true);
+                event.getPlayer().playSound(SoundEvents.SAND_BREAK, 1, 1);
+                event.getPlayer().getCooldowns().addCooldown(Items.STICK, 30);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onEntityDrops(LivingDropsEvent event) {
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
             VineLassoUtil.lassoTo(null, event.getEntityLiving());
@@ -456,7 +485,7 @@ public class ServerEvents {
     public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
         if (event.getEntity() instanceof WanderingTrader && AMConfig.elephantTraderSpawnChance > 0) {
             Random rand = new Random();
-            Biome biome = event.getWorld().getBiome(event.getEntity().blockPosition());
+            Biome biome = event.getWorld().getBiome(event.getEntity().blockPosition()).value();
             if (rand.nextFloat() <= AMConfig.elephantTraderSpawnChance && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
                 WanderingTrader traderEntity = (WanderingTrader) event.getEntity();
                 EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(traderEntity.level);
@@ -638,6 +667,37 @@ public class ServerEvents {
                 event.getEntityLiving().setDeltaMovement(motion);
             }
         }
+        if (event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SOMBRERO.get() && !event.getEntityLiving().level.isClientSide && AlexsMobs.isAprilFools() && event.getEntityLiving().isInWaterOrBubble()) {
+            Random random = event.getEntityLiving().getRandom();
+            if(random.nextInt(245) == 0 && !EntitySeaBear.isMobSafe(event.getEntityLiving())){
+                int dist = 32;
+                List<EntitySeaBear> nearbySeabears = event.getEntityLiving().level.getEntitiesOfClass(EntitySeaBear.class, event.getEntityLiving().getBoundingBox().inflate(dist, dist, dist));
+                if(nearbySeabears.isEmpty()){
+                    EntitySeaBear bear = AMEntityRegistry.SEA_BEAR.get().create(event.getEntityLiving().level);
+                    BlockPos at = event.getEntityLiving().blockPosition();
+                    BlockPos farOff = null;
+                    for(int i = 0; i < 15; i++){
+                        int f1 = (int) Math.signum(random.nextFloat() - 0.5F);
+                        int f2 = (int) Math.signum(random.nextFloat() - 0.5F);
+                        BlockPos pos1 = at.offset(f1 * (10 + random.nextInt(dist - 10)), random.nextInt(1), f2 * (10 + random.nextInt(dist - 10)));
+                        BlockState state = event.getEntityLiving().getLevel().getBlockState(pos1);
+                        if(event.getEntityLiving().level.isWaterAt(pos1)){
+                            farOff = pos1;
+                        }
+                    }
+                    if(farOff != null){
+                        bear.setPos(farOff.getX() + 0.5F, farOff.getY() + 0.5F, farOff.getZ() + 0.5F);
+                        bear.setYRot(random.nextFloat() * 360F);
+                        bear.setTarget(event.getEntityLiving());
+                        event.getEntityLiving().level.addFreshEntity(bear);
+                    }
+                }else{
+                    for(EntitySeaBear bear : nearbySeabears){
+                        bear.setTarget(event.getEntityLiving());
+                    }
+                }
+            }
+        }
         if (VineLassoUtil.hasLassoData(event.getEntityLiving())) {
             VineLassoUtil.tickLasso(event.getEntityLiving());
         }
@@ -689,15 +749,17 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onChestGenerated(LootTableLoadEvent event) {
-        if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
-            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART.get()).setQuality(40).setWeight(1);
-            LootPool.Builder builder = new LootPool.Builder().name("am_dart").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 1)).setBonusRolls(UniformGenerator.between(0, 1));
-            event.getTable().addPool(builder.build());
-        }
-        if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE_DISPENSER)) {
-            LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART.get()).setQuality(20).setWeight(3);
-            LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 2)).setBonusRolls(UniformGenerator.between(0, 1));
-            event.getTable().addPool(builder.build());
+        if(AMConfig.addLootToChests){
+            if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
+                LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART.get()).setQuality(40).setWeight(1);
+                LootPool.Builder builder = new LootPool.Builder().name("am_dart").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 1)).setBonusRolls(UniformGenerator.between(0, 1));
+                event.getTable().addPool(builder.build());
+            }
+            if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE_DISPENSER)) {
+                LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART.get()).setQuality(20).setWeight(3);
+                LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 2)).setBonusRolls(UniformGenerator.between(0, 1));
+                event.getTable().addPool(builder.build());
+            }
         }
         if (event.getName().equals(BuiltInLootTables.PIGLIN_BARTERING) && AMConfig.tusklinShoesBarteringChance > 0) {
             LootPoolEntryContainer.Builder item = LootItem.lootTableItem(AMItemRegistry.PIGSHOES.get()).setQuality(5).setWeight(8);

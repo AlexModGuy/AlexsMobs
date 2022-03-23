@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
@@ -74,7 +75,7 @@ public class GorillaAIForageLeaves extends MoveToBlockGoal {
     }
 
     private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-        return blockpos.distSqr(positionVec.x(), blockpos.getY(), positionVec.z(), true) < distance * distance;
+        return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
     }
 
     protected boolean isReachedTarget() {
@@ -84,14 +85,14 @@ public class GorillaAIForageLeaves extends MoveToBlockGoal {
     private void breakLeaves() {
         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(gorilla.level, gorilla)) {
             BlockState blockstate = gorilla.level.getBlockState(this.blockPos);
-            if (BlockTags.getAllTags().getTag(AMTagRegistry.GORILLA_BREAKABLES).contains(blockstate.getBlock())) {
+            if (blockstate.is(AMTagRegistry.GORILLA_BREAKABLES)) {
                 gorilla.level.destroyBlock(blockPos, false);
                 Random rand = new Random();
                 ItemStack stack = new ItemStack(blockstate.getBlock().asItem());
                 ItemEntity itementity = new ItemEntity(gorilla.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();
                 gorilla.level.addFreshEntity(itementity);
-                if(BlockTags.getAllTags().getTag(AMTagRegistry.DROPS_BANANAS).contains(blockstate.getBlock()) && rand.nextInt(30) == 0){
+                if(blockstate.is(AMTagRegistry.DROPS_BANANAS) && rand.nextInt(30) == 0){
                     ItemStack banana = new ItemStack(AMItemRegistry.BANANA.get());
                     ItemEntity itementity2 = new ItemEntity(gorilla.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
                     itementity2.setDefaultPickUpDelay();
@@ -105,6 +106,6 @@ public class GorillaAIForageLeaves extends MoveToBlockGoal {
 
     @Override
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
-        return BlockTags.getAllTags().getTag(AMTagRegistry.GORILLA_BREAKABLES).contains(worldIn.getBlockState(pos).getBlock());
+        return worldIn.getBlockState(pos).is(AMTagRegistry.GORILLA_BREAKABLES);
     }
 }

@@ -113,7 +113,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     public Ingredient getAllFoods(){
         if(temptItems == null){
-            temptItems = Ingredient.fromValues(Stream.of(new Ingredient.TagValue(ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS)), new Ingredient.ItemValue(new ItemStack(Items.EGG))));
+            temptItems = Ingredient.fromValues(Stream.of(new Ingredient.TagValue(AMTagRegistry.INSECT_ITEMS), new Ingredient.ItemValue(new ItemStack(Items.EGG))));
         }
         return temptItems;
     }
@@ -136,7 +136,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         this.goalSelector.addGoal(3, new CapuchinAIMelee(this, 1, true));
         this.goalSelector.addGoal(3, new CapuchinAIRangedAttack(this, 1, 20, 15));
         this.goalSelector.addGoal(6, new TameableAIFollowOwner(this, 1.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.merge(ImmutableList.of(Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.BANANAS)))), true) {
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.merge(ImmutableList.of(Ingredient.of(AMTagRegistry.BANANAS))), true) {
             public void tick() {
                 super.tick();
                 if (this.mob.distanceToSqr(this.player) < 6.25D && this.mob.getRandom().nextInt(14) == 0) {
@@ -508,7 +508,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     public boolean isFood(ItemStack stack) {
         Item item = stack.getItem();
-        return isTame() && ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS).contains(stack.getItem());
+        return isTame() && stack.is(AMTagRegistry.INSECT_ITEMS);
     }
 
     @Override

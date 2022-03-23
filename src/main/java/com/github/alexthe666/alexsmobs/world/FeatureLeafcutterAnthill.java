@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import com.mojang.serialization.Codec;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,13 +23,11 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
 
     public FeatureLeafcutterAnthill(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
-        this.setRegistryName("alexsmobs:leafcutter_ant");
     }
-
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        if (context.level().getRandom().nextFloat() > 0.00002F || !AMWorldRegistry.testBiome(BiomeConfig.leafcutter_anthill_spawns, context.level().getBiome(context.origin()))) {
+        if (context.level().getRandom().nextFloat() > 0.0175F) {
             return false;
         }
         int x = 8;

@@ -486,7 +486,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > -62 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
@@ -579,12 +579,11 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
         AIScatter() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-            tag = EntityTypeTags.getAllTags().getTag(AMTagRegistry.SCATTERS_CROWS);
             this.theNearestAttackableTargetSorter = new EntitySeagull.AIScatter.Sorter(EntitySeagull.this);
             this.targetEntitySelector = new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity e) {
-                    return e.isAlive() && e.getType().is(tag) || e instanceof Player && !((Player) e).isCreative();
+                    return e.isAlive() && e.getType().is(AMTagRegistry.SCATTERS_CROWS) || e instanceof Player && !((Player) e).isCreative();
                 }
             };
         }

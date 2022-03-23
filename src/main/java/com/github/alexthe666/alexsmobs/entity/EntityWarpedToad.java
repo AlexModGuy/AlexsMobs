@@ -179,7 +179,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
         this.goalSelector.addGoal(3, new BreedGoal(this, 0.8D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS)), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(AMTagRegistry.INSECT_ITEMS), false));
         this.goalSelector.addGoal(5, new WarpedToadAIRandomSwimming(this, 1.0D, 7));
         this.goalSelector.addGoal(6, new AnimalAIWanderRanged(this, 60, 1.0D, 5, 4));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 10.0F));
@@ -187,7 +187,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 50, false, true, AMEntityRegistry.buildPredicateFromTag(EntityTypeTags.getAllTags().getTag(AMTagRegistry.WARPED_TOAD_TARGETS))));
+        this.targetSelector.addGoal(4, new EntityAINearestTarget3D(this, LivingEntity.class, 50, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.WARPED_TOAD_TARGETS)));
         this.targetSelector.addGoal(5, new HurtByTargetGoal(this));
     }
 
@@ -314,7 +314,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
             }
             return InteractionResult.SUCCESS;
         }
-        if (isTame() && (ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS).contains(itemstack.getItem()))) {
+        if (isTame() && itemstack.is(AMTagRegistry.INSECT_ITEMS)) {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.usePlayerItem(player, hand, itemstack);
                 this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
@@ -550,7 +550,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
     @Override
     public boolean canTargetItem(ItemStack stack) {
-        return ItemTags.getAllTags().getTag(AMTagRegistry.INSECT_ITEMS).contains(stack.getItem());
+        return stack.is(AMTagRegistry.INSECT_ITEMS);
     }
 
     @Override

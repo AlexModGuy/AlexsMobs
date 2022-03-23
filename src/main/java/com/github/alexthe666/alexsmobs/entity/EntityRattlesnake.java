@@ -238,7 +238,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
     }
 
     public static boolean canRattlesnakeSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
-        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.RATTLESNAKE_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
+        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.RATTLESNAKE_SPAWNS);
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
 }
 
