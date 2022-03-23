@@ -215,7 +215,7 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
 
         @Override
         public boolean canUse() {
-            return EntitySeaBear.this.getTarget() != null && EntitySeaBear.this.getTarget().isAlive() && (EntitySeaBear.this.circleCooldown == 0 || EntitySeaBear.this.getAnimation() == ANIMATION_POINT);
+            return EntitySeaBear.this.getTarget() != null && EntitySeaBear.this.getTarget().isInWaterOrBubble() && EntitySeaBear.this.getTarget().isAlive() && (EntitySeaBear.this.circleCooldown == 0 || EntitySeaBear.this.getAnimation() == ANIMATION_POINT);
         }
 
         public void tick() {
