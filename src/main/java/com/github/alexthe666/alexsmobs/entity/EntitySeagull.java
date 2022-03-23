@@ -486,7 +486,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > -62 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
