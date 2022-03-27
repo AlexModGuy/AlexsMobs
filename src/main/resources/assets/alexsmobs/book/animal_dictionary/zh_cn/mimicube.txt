@@ -2,9 +2,54 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Mimicubes are relatives of the slimes of the Overworld and the Magma Cubes of the Nether. These monsters can often be found guarding end cities.
-Unlike their slimy cousins, these gelatinous creatures possess a more powerful magic than almost any other known beast.
-When attacked, Mimicubes will attempt to mimic the weapons and armor of their attacker. This can mean that anyone wearing a helmet and brandishing a sword can find themselves being attacked by a Mimicube with the exact same equipment.
-In this way, the Mimicube can learn to use a shield, sword, bow, crossbow, trident, food and more. Care should be taken when dealing with Mimicubes, as using a powerful shield or sword against one can result in a foe that is difficult to defeat.
-When slain, Mimicubes can drop some of their magical gel, called Mimicream. One can harness the natural shape-shifting magic of the mimicream by using eight mimicream and any damageable item in the crafting grid. With a few limitations, this can effectively create a mimiced, copied tool or equipment, with almost all the enchantments of the original.
-Of course, it is duplicated with zero durability, and must be repaired. This mimicking ability of the cream has resulted in it being widely sought after.
+    复刻怪是主世界史莱姆和下界熔岩
+<NEWLINE>
+怪的亲戚。玩家可以经常看见它们守护
+<NEWLINE>
+着末地城。
+<NEWLINE>
+    不像它们黏糊糊的亲戚一样，这些
+<NEWLINE>
+胶状生物具备着比已知的大多数野兽都
+<NEWLINE>
+更为强大的魔法。
+<NEWLINE>
+    当受到攻击时，复刻怪将会尝试去
+<NEWLINE>
+复刻来自于攻击者的武器和盔甲。这会
+<NEWLINE>
+意味着佩戴着头盔以及挥舞着剑的任何
+<NEWLINE>
+人，都会发现自己会被一个与自己装备
+<NEWLINE>
+完全相同的复刻怪攻击。
+<NEWLINE>
+	如此，复刻怪还会去学习使用盾、
+<NEWLINE>
+剑、弓、弩、三叉戟、吃东西以及更多
+<NEWLINE>
+内容。在与复刻怪进行交涉时需应当小
+<NEWLINE>
+心，因为使用强力的盾或剑去对付它的
+<NEWLINE>
+话，会导致它更难以被击败。
+<NEWLINE>
+    在被复刻怪杀死之后，它会掉落一
+<NEWLINE>
+些被称为「复刻凝胶」的魔法凝胶。玩
+<NEWLINE>
+家可以使用八个复刻凝胶和任何一件可
+<NEWLINE>
+损坏的物品来进行合成，从而驾驭复刻
+<NEWLINE>
+凝胶的自然变形魔法。这可以有效地制
+<NEWLINE>
+造工具与装备的复刻品，并几乎具备原
+<NEWLINE>
+物品的所有附魔，不过有一定的限制。
+<NEWLINE>
+    当然，复刻出来的成品的耐久度为
+<NEWLINE>
+零，需要对其进行修复。复刻凝胶因其
+<NEWLINE>
+的这种复刻能力，受到了众人的青睐。
