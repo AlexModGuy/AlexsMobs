@@ -1,10 +1,32 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Gorilla is a massive ape found in groups in Jungles. Gorillas are peaceful protectors of the Jungle, but that doesn't
- make them defenseless. Gorillas can deal massive damage if provoked. Each group of gorillas has one leader, the Silverback,
- who commands his troop through the jungle. They are two to three times as strong as any other gorilla, and can often be seen
- pounding their chest when anxious. Baby gorillas can often be found on the backs of their parents as they forage.
- <NEWLINE>
- Gorillas can become more trustful and friendly if given bananas. Bananas can be obtained by breaking jungle leaves. If given
- enough bananas, gorillas can be commanded to sit or wander, and will automatically come to the defense of their new friend.
+    大猩猩是丛林中发现的大型群居猿
+<NEWLINE>
+类生物。虽然大猩猩是丛林中的和平卫
+<NEWLINE>
+士，但是这并不代表就能对它们毫无防
+<NEWLINE>
+备。一旦被激怒，大猩猩会造成巨额的
+<NEWLINE>
+伤害。每群大猩猩中都会有一位银背首
+<NEWLINE>
+领，它会指挥它的族人穿梭于丛林中。
+<NEWLINE>
+银背强壮程度是普通大猩猩的两倍到三
+<NEWLINE>
+倍，当它感到焦虑时会捶胸顿足。在大
+<NEWLINE>
+猩猩觅食时，大猩猩幼仔会经常趴在父
+<NEWLINE>
+母的背上。
+<NEWLINE>
+    如果给予大猩猩一些香蕉，它们就
+<NEWLINE>
+会变得更加友好和信任。破坏掉丛林树
+<NEWLINE>
+叶就可以获得香蕉。当给予了大猩猩足
+<NEWLINE>
+够的香蕉之后，它们会听从坐下与徘徊
+<NEWLINE>
+的命令，以及会自动地去保护新朋友。
