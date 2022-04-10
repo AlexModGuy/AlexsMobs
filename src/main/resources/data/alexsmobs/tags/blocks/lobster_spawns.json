@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "#alexsmobs:am_spawns",
-    "minecraft:stone",
+    "#forge:stone",
     "minecraft:water"
   ]
 }
