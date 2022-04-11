@@ -124,14 +124,6 @@ public class ServerEvents {
             spawner.tick();
         }
         if (!tick.world.isClientSide && tick.world instanceof ServerLevel) {
-            ServerLevel serverWorld = (ServerLevel) tick.world;
-            if (BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld) == null) {
-                BEACHED_CACHALOT_WHALE_SPAWNER_MAP.put(serverWorld, new BeachedCachalotWhaleSpawner(serverWorld));
-            }
-            BeachedCachalotWhaleSpawner spawner = BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld);
-            spawner.tick();
-        }
-        if (!tick.world.isClientSide && tick.world instanceof ServerLevel) {
             for (Triple trip : teleportPlayers) {
                 ServerPlayer player = (ServerPlayer) trip.a;
                 ServerLevel endpointWorld = (ServerLevel) trip.b;
