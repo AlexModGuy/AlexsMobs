@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alexsmobs:item/mimic_octopus_bucket"
+    "layer0" : "alexsmobs:item/lower_bucket",
+    "layer1" : "alexsmobs:item/bucket_content/mimic_octopus"
   }
 }
