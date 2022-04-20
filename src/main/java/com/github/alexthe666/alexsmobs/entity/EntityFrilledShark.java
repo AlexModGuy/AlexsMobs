@@ -7,14 +7,10 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -25,9 +21,7 @@ import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -44,11 +38,10 @@ import net.minecraft.world.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -70,7 +63,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
+public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, Bucketable {
 
     public static final Animation ANIMATION_ATTACK = Animation.create(17);
     private static final EntityDataAccessor<Boolean> DEPRESSURIZED = SynchedEntityData.defineId(EntityFrilledShark.class, EntityDataSerializers.BOOLEAN);
@@ -118,26 +111,34 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
         return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
     }
 
-    private boolean isFromBucket() {
+    @Override
+    public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean p_203706_1_) {
         this.entityData.set(FROM_BUCKET, p_203706_1_);
     }
 
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
+    }
+
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("FromBucket", this.fromBucket());
         compound.putBoolean("Depressurized", this.isDepressurized());
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isFromBucket();
+        return super.requiresCustomPersistence() || this.fromBucket();
     }
 
     public boolean removeWhenFarAway(double p_213397_1_) {
-        return !this.isFromBucket() && !this.hasCustomName();
+        return !this.fromBucket() && !this.hasCustomName();
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -186,38 +187,38 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity {
         return SoundEvents.COD_HURT;
     }
 
-    protected ItemStack getFishBucket() {
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.FRILLED_SHARK_BUCKET.get());
-        CompoundTag platTag = new CompoundTag();
-        this.addAdditionalSaveData(platTag);
-        stack.getOrCreateTag().put("FrilledSharkData", platTag);
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
         }
         return stack;
     }
 
-    public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
-        ItemStack itemstack = p_230254_1_.getItemInHand(p_230254_2_);
-        if (itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            itemstack.shrink(1);
-            ItemStack itemstack1 = this.getFishBucket();
-            if (!this.level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) p_230254_1_, itemstack1);
-            }
-
-            if (itemstack.isEmpty()) {
-                p_230254_1_.setItemInHand(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.getInventory().add(itemstack1)) {
-                p_230254_1_.drop(itemstack1, false);
-            }
-
-            this.remove(RemovalReason.DISCARDED);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(p_230254_1_, p_230254_2_);
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        if (this.hasCustomName()) {
+            bucket.setHoverName(this.getCustomName());
         }
+        CompoundTag platTag = new CompoundTag();
+        this.addAdditionalSaveData(platTag);
+        CompoundTag compound = bucket.getOrCreateTag();
+        compound.put("FrilledSharkData", platTag);
+    }
+
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        if (compound.contains("FrilledSharkData")) {
+            this.readAdditionalSaveData(compound.getCompound("FrilledSharkData"));
+        }
+    }
+
+    @Override
+    @Nonnull
+    protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     public void travel(Vec3 travelVector) {

@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -14,9 +14,7 @@ import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.animal.WaterAnimal;
-import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.nbt.CompoundTag;
@@ -27,9 +25,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.DifficultyInstance;
@@ -37,6 +33,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
@@ -53,7 +50,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.SpawnGroupData;
 
-public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
+public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketable {
 
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityBlobfish.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> BLOBFISH_SCALE = SynchedEntityData.defineId(EntityBlobfish.class, EntityDataSerializers.FLOAT);
@@ -103,11 +100,11 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isFromBucket() || isSlimed();
+        return super.requiresCustomPersistence() || this.fromBucket() || isSlimed();
     }
 
     public boolean removeWhenFarAway(double p_213397_1_) {
-        return !this.isFromBucket() && !this.hasCustomName();
+        return !this.fromBucket() && !this.hasCustomName();
     }
 
     public int getMaxSpawnClusterSize() {
@@ -126,18 +123,25 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
         return super.getDimensions(poseIn).scale(this.getBlobfishScale());
     }
 
-
-    private boolean isFromBucket() {
+    @Override
+    public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean p_203706_1_) {
         this.entityData.set(FROM_BUCKET, p_203706_1_);
     }
 
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
+    }
+
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("FromBucket", this.fromBucket());
         compound.putBoolean("Depressurized", this.isDepressurized());
         compound.putBoolean("Slimed", this.isSlimed());
         compound.putFloat("BlobfishScale", this.getBlobfishScale());
@@ -209,8 +213,10 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
 
     }
 
-    protected InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
-        ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
+    @Override
+    @Nonnull
+    protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        ItemStack lvt_3_1_ = player.getItemInHand(hand);
         if (lvt_3_1_.getItem() == Items.SLIME_BALL && this.isAlive() && !this.isSlimed()) {
             this.setSlimed(true);
             for (int i = 0; i < 6 + random.nextInt(3); i++) {
@@ -222,26 +228,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
             lvt_3_1_.shrink(1);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
-        if (lvt_3_1_.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            lvt_3_1_.shrink(1);
-            ItemStack lvt_4_1_ = this.getFishBucket();
-            this.setBucketData(lvt_4_1_);
-            if (!this.level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) p_230254_1_, lvt_4_1_);
-            }
-
-            if (lvt_3_1_.isEmpty()) {
-                p_230254_1_.setItemInHand(p_230254_2_, lvt_4_1_);
-            } else if (!p_230254_1_.getInventory().add(lvt_4_1_)) {
-                p_230254_1_.drop(lvt_4_1_, false);
-            }
-
-            this.remove(RemovalReason.DISCARDED);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(p_230254_1_, p_230254_2_);
-        }
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     protected SoundEvent getSwimSound() {
@@ -251,7 +238,9 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
     protected void playStepSound(BlockPos p_180429_1_, BlockState p_180429_2_) {
     }
 
-    protected ItemStack getFishBucket(){
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.BLOBFISH_BUCKET.get());
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
@@ -259,15 +248,27 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal {
         return stack;
     }
 
-    protected void setBucketData(ItemStack bucket) {
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
         if (this.hasCustomName()) {
             bucket.setHoverName(this.getCustomName());
         }
-        CompoundTag compoundnbt = bucket.getOrCreateTag();
-        compoundnbt.putFloat("BucketScale", this.getBlobfishScale());
-        compoundnbt.putBoolean("Slimed", this.isSlimed());
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
+        CompoundTag compound = bucket.getOrCreateTag();
+        compound.putFloat("BucketScale", this.getBlobfishScale());
+        compound.putBoolean("Slimed", this.isSlimed());
     }
 
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        Bucketable.loadDefaultDataFromBucketTag(this, compound);
+        if (compound.contains("BucketScale")){
+            this.setBlobfishScale(compound.getFloat("BucketScale"));
+        }
+        if (compound.contains("Slimed")){
+            this.setSlimed(compound.getBoolean("Slimed"));
+        }
+    }
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {

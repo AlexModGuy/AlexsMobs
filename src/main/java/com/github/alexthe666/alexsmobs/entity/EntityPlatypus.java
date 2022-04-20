@@ -6,7 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -45,6 +44,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
@@ -67,12 +67,13 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 
-public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDroppedItems {
+public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDroppedItems, Bucketable {
 
     private static final EntityDataAccessor<Boolean> SENSING = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SENSING_VISUAL = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DIGGING = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FEDORA = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityPlatypus.class, EntityDataSerializers.BOOLEAN);
     public float prevInWaterProgress;
     public float inWaterProgress;
     public float prevDigProgress;
@@ -119,23 +120,42 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     protected SoundEvent getDeathSound() {
         return AMSoundRegistry.PLATYPUS_HURT;
     }
-    
-    protected ItemStack getFishBucket() {
+
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(AMItemRegistry.PLATYPUS_BUCKET.get());
-        CompoundTag platTag = new CompoundTag();
-        this.addAdditionalSaveData(platTag);
-        stack.getOrCreateTag().put("PlatypusData", platTag);
         if (this.hasCustomName()) {
             stack.setHoverName(this.getCustomName());
         }
         return stack;
     }
 
-    public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
-        ItemStack itemstack = p_230254_1_.getItemInHand(p_230254_2_);
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        if (this.hasCustomName()) {
+            bucket.setHoverName(this.getCustomName());
+        }
+        CompoundTag platTag = new CompoundTag();
+        this.addAdditionalSaveData(platTag);
+        CompoundTag compound = bucket.getOrCreateTag();
+        compound.put("PlatypusData", platTag);
+    }
+
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        if (compound.contains("PlatypusData")) {
+            this.readAdditionalSaveData(compound.getCompound("PlatypusData"));
+        }
+    }
+
+    @Override
+    @Nonnull
+    public InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         boolean redstone = itemstack.getItem() == Items.REDSTONE || itemstack.getItem() == Items.REDSTONE_BLOCK;
         if(itemstack.getItem() == AMItemRegistry.FEDORA.get() && !this.hasFedora()){
-            if (!p_230254_1_.isCreative()) {
+            if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
             this.setFedora(true);
@@ -143,31 +163,13 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         }
         if (redstone && !this.isSensing()) {
             superCharged = itemstack.getItem() == Items.REDSTONE_BLOCK;
-            if (!p_230254_1_.isCreative()) {
+            if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
             this.setSensing(true);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
-        if (itemstack.getItem() == Items.WATER_BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            itemstack.shrink(1);
-            ItemStack itemstack1 = this.getFishBucket();
-            if (!this.level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) p_230254_1_, itemstack1);
-            }
-
-            if (itemstack.isEmpty()) {
-                p_230254_1_.setItemInHand(p_230254_2_, itemstack1);
-            } else if (!p_230254_1_.getInventory().add(itemstack1)) {
-                p_230254_1_.drop(itemstack1, false);
-            }
-
-            this.remove(RemovalReason.DISCARDED);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(p_230254_1_, p_230254_2_);
-        }
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     protected void registerGoals() {
@@ -282,6 +284,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         this.entityData.define(SENSING, Boolean.valueOf(false));
         this.entityData.define(SENSING_VISUAL, Boolean.valueOf(false));
         this.entityData.define(FEDORA, false);
+        this.entityData.define(FROM_BUCKET, false);
     }
 
     protected void dropEquipment() {
@@ -320,12 +323,40 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Fedora", this.hasFedora());
         compound.putBoolean("Sensing", this.isSensing());
+        compound.putBoolean("FromBucket", this.fromBucket());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setFedora(compound.getBoolean("Fedora"));
         this.setSensing(compound.getBoolean("Sensing"));
+        this.setFromBucket(compound.getBoolean("FromBucket"));
+    }
+
+    @Override
+    public boolean fromBucket() {
+        return this.entityData.get(FROM_BUCKET);
+    }
+
+    @Override
+    public void setFromBucket(boolean p_203706_1_) {
+        this.entityData.set(FROM_BUCKET, p_203706_1_);
+    }
+
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.fromBucket();
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double p_213397_1_) {
+        return !this.fromBucket() && !this.hasCustomName();
     }
 
     public void tick() {

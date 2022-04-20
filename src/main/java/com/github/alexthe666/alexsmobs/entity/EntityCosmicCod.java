@@ -7,7 +7,6 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,13 +23,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ambient.AmbientCreature;
-import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -42,12 +40,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Stream;
 
-public class EntityCosmicCod extends Mob {
+public class EntityCosmicCod extends Mob implements Bucketable {
 
     private static final EntityDataAccessor<Float> FISH_PITCH = SynchedEntityData.defineId(EntityCosmicCod.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(EntityCosmicCod.class, EntityDataSerializers.BOOLEAN);
@@ -96,26 +94,61 @@ public class EntityCosmicCod extends Mob {
         this.entityData.define(FROM_BUCKET, false);
     }
 
-
-    private boolean isFromBucket() {
+    @Override
+    public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
+    @Override
     public void setFromBucket(boolean p_203706_1_) {
         this.entityData.set(FROM_BUCKET, p_203706_1_);
     }
 
+    @Override
+    @Nonnull
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getBucketItemStack() {
+        ItemStack stack = new ItemStack(AMItemRegistry.COSMIC_COD_BUCKET.get());
+        if (this.hasCustomName()) {
+            stack.setHoverName(this.getCustomName());
+        }
+        return stack;
+    }
+
+    @Override
+    public void saveToBucketTag(@Nonnull ItemStack bucket) {
+        if (this.hasCustomName()) {
+            bucket.setHoverName(this.getCustomName());
+        }
+        CompoundTag platTag = new CompoundTag();
+        this.addAdditionalSaveData(platTag);
+        CompoundTag compound = bucket.getOrCreateTag();
+        compound.put("CosmicCodData", platTag);
+    }
+
+    @Override
+    public void loadFromBucketTag(@Nonnull CompoundTag compound) {
+        if (compound.contains("CosmicCodData")) {
+            this.readAdditionalSaveData(compound.getCompound("CosmicCodData"));
+        }
+    }
+
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isFromBucket();
+        return super.requiresCustomPersistence() || this.fromBucket();
     }
 
     public boolean removeWhenFarAway(double p_213397_1_) {
-        return !this.isFromBucket() && !this.hasCustomName();
+        return !this.fromBucket() && !this.hasCustomName();
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("FromBucket", this.isFromBucket());
+        compound.putBoolean("FromBucket", this.fromBucket());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -369,28 +402,25 @@ public class EntityCosmicCod extends Mob {
         return circlePos != null && circleTime < maxCircleTime;
     }
 
-
-    protected InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
-        ItemStack lvt_3_1_ = p_230254_1_.getItemInHand(p_230254_2_);
-        if (lvt_3_1_.getItem() == Items.BUCKET && this.isAlive()) {
-            this.playSound(SoundEvents.BUCKET_FILL_FISH, 1.0F, 1.0F);
-            lvt_3_1_.shrink(1);
-            ItemStack lvt_4_1_ = new ItemStack(AMItemRegistry.COSMIC_COD_BUCKET.get());
-            if (!this.level.isClientSide) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) p_230254_1_, lvt_4_1_);
+    @Override
+    @Nonnull
+    protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (itemstack.getItem() == Items.BUCKET && this.isAlive()) {
+            this.playSound(this.getPickupSound(), 1.0F, 1.0F);
+            ItemStack itemstack1 = this.getBucketItemStack();
+            this.saveToBucketTag(itemstack1);
+            ItemStack itemstack2 = ItemUtils.createFilledResult(itemstack, player, itemstack1, false);
+            player.setItemInHand(hand, itemstack2);
+            Level level = this.level;
+            if (!level.isClientSide) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemstack1);
             }
 
-            if (lvt_3_1_.isEmpty()) {
-                p_230254_1_.setItemInHand(p_230254_2_, lvt_4_1_);
-            } else if (!p_230254_1_.getInventory().add(lvt_4_1_)) {
-                p_230254_1_.drop(lvt_4_1_, false);
-            }
-
-            this.remove(RemovalReason.DISCARDED);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else {
-            return super.mobInteract(p_230254_1_, p_230254_2_);
+            this.discard();
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
+        return super.mobInteract(player, hand);
     }
 
     public static class GroupData extends AgeableMob.AgeableMobGroupData {

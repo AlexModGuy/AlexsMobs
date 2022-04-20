@@ -1,80 +1,50 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityCosmicCod;
-import com.github.alexthe666.alexsmobs.entity.EntityFlutter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.core.Direction;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
-public class ItemCosmicCodBucket extends Item implements DispensibleContainerItem {
+public class ItemCosmicCodBucket extends ItemModFishBucket {
 
-    public ItemCosmicCodBucket(Properties builder) {
-        super(builder.stacksTo(1));
+    public ItemCosmicCodBucket(Item.Properties builder) {
+        super(AMEntityRegistry.COSMIC_COD, Fluids.EMPTY, builder.stacksTo(1));
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
-        Level world = context.getLevel();
-        BlockPos blockpos = context.getClickedPos();
-        if(!world.isClientSide){
-            if(this.placeFish((ServerLevel)world, context.getItemInHand(), blockpos)){
-                boolean flag = false;
-                if(context.getPlayer() != null){
-                    context.getPlayer().swing(context.getHand());
-                    if(context.getPlayer().isCreative()){
-                        flag = true;
-                    }
-                    if(!flag && !context.getPlayer().addItem(new ItemStack(Items.BUCKET))){
-                        context.getPlayer().drop(new ItemStack(Items.BUCKET), true);
-                    }
-                }
-                if(!flag){
-                    context.getItemInHand().shrink(1);
-                }
+    @Nonnull
+    public InteractionResultHolder<ItemStack> use(@Nonnull Level level, Player player, @Nonnull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        BlockHitResult blockhitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
+        InteractionResultHolder<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onBucketUse(player, level, itemstack, blockhitresult);
+        if (ret != null) return ret;
+        if (blockhitresult.getType() == HitResult.Type.MISS) {
+            return InteractionResultHolder.pass(itemstack);
+        } else if (blockhitresult.getType() != HitResult.Type.BLOCK) {
+            return InteractionResultHolder.pass(itemstack);
+        } else {
+            BlockPos blockpos = blockhitresult.getBlockPos();
+            Direction direction = blockhitresult.getDirection();
+            BlockPos blockpos1 = blockpos.relative(direction);
+            if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos1, direction, itemstack)) {
+                this.checkExtraContent(player, level, itemstack, blockpos1);
+                player.awardStat(Stats.ITEM_USED.get(this));
+                return InteractionResultHolder.sidedSuccess(getEmptySuccessItem(itemstack, player), level.isClientSide());
             }
-            return InteractionResult.sidedSuccess(world.isClientSide);
-        }else{
-            return InteractionResult.PASS;
         }
-
+        return super.use(level, player, hand);
     }
 
-    protected void playEmptySound(@Nullable Player player, LevelAccessor worldIn, BlockPos pos) {
-        worldIn.playSound(player, pos, SoundEvents.BUCKET_EMPTY_FISH, SoundSource.NEUTRAL, 1.0F, 1.0F);
-    }
-
-    private boolean placeFish(ServerLevel worldIn, ItemStack stack, BlockPos pos) {
-        Entity entity = AMEntityRegistry.COSMIC_COD.get().spawn(worldIn, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
-        if (entity != null && entity instanceof EntityCosmicCod) {
-            CompoundTag compoundnbt = stack.getOrCreateTag();
-            ((EntityCosmicCod) entity).setFromBucket(true);
-            if(compoundnbt.contains("CosmicCodData")){
-                ((EntityFlutter)entity).readAdditionalSaveData(compoundnbt.getCompound("CosmicCodData"));
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean emptyContents(@org.jetbrains.annotations.Nullable Player p_150821_, Level p_150822_, BlockPos p_150823_, @org.jetbrains.annotations.Nullable BlockHitResult p_150824_) {
-        return false;
-    }
 }
