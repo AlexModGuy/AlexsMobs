@@ -18,7 +18,11 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 2)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 2);
 
     public static final SpawnBiomeData ALL_NETHER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "nether", 0);
@@ -70,13 +74,19 @@ public class DefaultBiomes {
     public static final SpawnBiomeData CRIMSON_MOSQUITO = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:crimson_forest", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_gardens", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:visceral_heap", 2);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:visceral_heap", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "incendium:ash_barrens", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "incendium:infernal_dunes", 4);
 
     public static final SpawnBiomeData RATTLESNAKE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mesa", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 2)
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 2);
 
     public static final SpawnBiomeData ENDERGRADE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
@@ -92,7 +102,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
 
     public static final SpawnBiomeData KOMODO_DRAGON = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:sparse_jungle", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "dense", 0);
 
     public static final SpawnBiomeData CAPUCHIN_MONKEY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -107,8 +119,10 @@ public class DefaultBiomes {
     public static final SpawnBiomeData WARPED_TOAD = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:warped_forest", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:crimson_gardens", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:warped_desert", 2);
-
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:warped_desert", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "incendium:inverted_forest", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "incendium:quartz_flats", 4);
+        
     public static final SpawnBiomeData MOOSE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 0)
@@ -163,7 +177,8 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData SOUL_VULTURE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:soul_sand_valley", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:warped_desert", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "byg:warped_desert", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "incendium:weeping_valley", 2);
 
     public static final SpawnBiomeData SPECTRE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
@@ -209,7 +224,9 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData STRADDLER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:basalt_deltas", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:withered_abyss", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:withered_abyss", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "incendium:volcanic_deltas", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "incendium:withered_forest", 3);
 
     public static final SpawnBiomeData SAVANNA_AND_MESA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -268,12 +285,18 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:bamboo_jungle", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:bamboo_blossom_grove", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:cherry_blossom_grove", 2);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:cherry_blossom_grove", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 4);
 
     public static final SpawnBiomeData DESERT = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0);
-
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 1);
+    
     public static final SpawnBiomeData MIMIC_OCTOPUS = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
@@ -308,7 +331,9 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData MANED_WOLF = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "savanna", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "savanna", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
 
     public static final SpawnBiomeData ANACONDA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -325,8 +350,10 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:lush_caves", 0);
 
     public static final SpawnBiomeData MEADOWS = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:meadow", 0);
-
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plains", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plateau", 0);
+        
     public static final SpawnBiomeData COMB_JELLY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:frozen_ocean", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 1);
