@@ -18,19 +18,19 @@ public class AnimalAIRandomSwimming extends RandomStrollGoal {
     private boolean submerged;
     private int ySpread = 3;
 
-    public AnimalAIRandomSwimming(Animal creature, double speed, int chance, int xzSpread) {
+    public AnimalAIRandomSwimming(PathfinderMob creature, double speed, int chance, int xzSpread) {
         super(creature, speed, chance, false);
         this.xzSpread = xzSpread;
         this.submerged = false;
     }
 
-    public AnimalAIRandomSwimming(Animal creature, double speed, int chance, int xzSpread, boolean submerged) {
+    public AnimalAIRandomSwimming(PathfinderMob creature, double speed, int chance, int xzSpread, boolean submerged) {
         super(creature, speed, chance, false);
         this.xzSpread = xzSpread;
         this.submerged = submerged;
     }
 
-    public AnimalAIRandomSwimming(Animal creature, double speed, int chance, int xzSpread, int ySpread, boolean submerged) {
+    public AnimalAIRandomSwimming(PathfinderMob creature, double speed, int chance, int xzSpread, int ySpread, boolean submerged) {
         super(creature, speed, chance, false);
         this.xzSpread = xzSpread;
         this.ySpread = ySpread;

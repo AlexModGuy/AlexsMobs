@@ -16,6 +16,7 @@ import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
+import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
 import net.minecraft.ChatFormatting;
@@ -134,6 +135,10 @@ public class ServerEvents {
                 player.connection.send(new ClientboundSetExperiencePacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
             }
             teleportPlayers.clear();
+        }
+        AMWorldData data = AMWorldData.get(tick.world);
+        if(data != null){
+            data.tickPupfish();
         }
     }
 
@@ -361,7 +366,6 @@ public class ServerEvents {
                 }
             }
         }
-
     }
 
     @SubscribeEvent

@@ -1,12 +1,13 @@
 package com.github.alexthe666.alexsmobs.item;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotEcho;
+import com.github.alexthe666.alexsmobs.message.MessageSetPupfishChunkOnClient;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.google.common.base.Predicates;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -29,18 +29,27 @@ import java.util.stream.Stream;
 
 public class ItemEcholocator extends Item {
 
-    public boolean ender;
+    public EchoType type;
 
-    public ItemEcholocator(Item.Properties properties, boolean ender) {
+    public ItemEcholocator(Item.Properties properties, EchoType ender) {
         super(properties);
-        this.ender = ender;
+        this.type = ender;
     }
 
     private List<BlockPos> getNearbyPortals(BlockPos blockpos, ServerLevel world, int range) {
-        if(ender){
+        if(type == EchoType.ENDER){
             PoiManager pointofinterestmanager = world.getPoiManager();
             Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.END_PORTAL_FRAME.get().getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
             return stream.collect(Collectors.toList());
+        }else  if(type == EchoType.PUPFISH){
+            AMWorldData data = AMWorldData.get(world);
+            if(data != null && data.getPupfishChunk() != null){
+                AlexsMobs.sendMSGToAll(new MessageSetPupfishChunkOnClient(data.getPupfishChunk().x, data.getPupfishChunk().z));
+                if(!data.isInPupfishChunk(blockpos)){
+                    return Collections.singletonList(data.getPupfishChunk().getMiddleBlockPosition(blockpos.getY()));
+                }
+            }
+            return Collections.emptyList();
         }else{
             Random random = new Random();
             for(int i = 0; i < 256; i++){
@@ -63,12 +72,18 @@ public class ItemEcholocator extends Item {
         if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
             left = true;
         }
-        EntityCachalotEcho whaleEcho = new EntityCachalotEcho(worldIn, livingEntityIn, !left);
+        EntityCachalotEcho whaleEcho = new EntityCachalotEcho(worldIn, livingEntityIn, !left, type == EchoType.PUPFISH);
         if (!worldIn.isClientSide && worldIn instanceof ServerLevel) {
             BlockPos playerPos = livingEntityIn.blockPosition();
             List<BlockPos> portals = getNearbyPortals(playerPos, (ServerLevel) worldIn, 128);
             BlockPos pos = null;
-            if(ender){
+            if(type == EchoType.ENDER){
+                for (BlockPos portalPos : portals) {
+                    if (pos == null || pos.distSqr(playerPos) > portalPos.distSqr(playerPos)) {
+                        pos = portalPos;
+                    }
+                }
+            }else if(type == EchoType.PUPFISH){
                 for (BlockPos portalPos : portals) {
                     if (pos == null || pos.distSqr(playerPos) > portalPos.distSqr(playerPos)) {
                         pos = portalPos;
@@ -111,5 +126,9 @@ public class ItemEcholocator extends Item {
         livingEntityIn.getCooldowns().addCooldown(this, 5);
 
         return InteractionResultHolder.sidedSuccess(stack, worldIn.isClientSide());
+    }
+
+    public enum EchoType {
+        ECHOLOCATION, ENDER, PUPFISH
     }
 }

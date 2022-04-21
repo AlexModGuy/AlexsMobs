@@ -150,6 +150,8 @@ public class AMConfig {
     public static int bisonSpawnRolls = 0;
     public static int giantSquidSpawnWeight = 3;
     public static int giantSquidSpawnRolls = 0;
+    public static int devilsHolePupfishSpawnWeight = 23;
+    public static int devilsHolePupfishSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -211,6 +213,8 @@ public class AMConfig {
             "minecraft:enchanted_golden_apple|minecraft:oak_sapling",
             "alexsmobs:banana|minecraft:jungle_sapling"
     );
+    public static boolean restrictPupfishSpawns = true;
+    public static int pupfishChunkSpawnDistance = 2000;
     public static double rainbowGlassFidelity = 16.0F;
     public static boolean bunfungusTransformation = true;
     public static boolean superSecretSettings = false;
@@ -364,6 +368,8 @@ public class AMConfig {
             bisonSpawnRolls = ConfigHolder.COMMON.bisonSpawnRolls.get();
             giantSquidSpawnWeight = ConfigHolder.COMMON.giantSquidSpawnWeight.get();
             giantSquidSpawnRolls = ConfigHolder.COMMON.giantSquidSpawnRolls.get();
+            devilsHolePupfishSpawnWeight = ConfigHolder.COMMON.devilsHolePupfishSpawnWeight.get();
+            devilsHolePupfishSpawnRolls = ConfigHolder.COMMON.devilsHolePupfishSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -411,6 +417,8 @@ public class AMConfig {
             tusklinShoesBarteringChance = ConfigHolder.COMMON.tusklinShoesBarteringChance.get();
             rainbowGlassFidelity = ConfigHolder.COMMON.rainbowGlassFidelity.get();
             bunfungusTransformation = ConfigHolder.COMMON.bunfungusTransformation.get();
+            restrictPupfishSpawns = ConfigHolder.COMMON.restrictPupfishSpawns.get();
+            pupfishChunkSpawnDistance = ConfigHolder.COMMON.pupfishChunkSpawnDistance.get();
             superSecretSettings = ConfigHolder.COMMON.superSecretSettings.get();
             addLootToChests = ConfigHolder.COMMON.addLootToChests.get();
         } catch (Exception e) {

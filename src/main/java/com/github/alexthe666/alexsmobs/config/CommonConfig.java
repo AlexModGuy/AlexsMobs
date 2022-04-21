@@ -161,6 +161,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue bisonSpawnRolls;
     public final ForgeConfigSpec.IntValue giantSquidSpawnWeight;
     public final ForgeConfigSpec.IntValue giantSquidSpawnRolls;
+    public final ForgeConfigSpec.IntValue devilsHolePupfishSpawnWeight;
+    public final ForgeConfigSpec.IntValue devilsHolePupfishSpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -201,6 +203,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue tusklinShoesBarteringChance;
     public final ForgeConfigSpec.DoubleValue rainbowGlassFidelity;
     public ForgeConfigSpec.BooleanValue bunfungusTransformation;
+    public ForgeConfigSpec.BooleanValue restrictPupfishSpawns;
+    public ForgeConfigSpec.IntValue pupfishChunkSpawnDistance;
     public ForgeConfigSpec.BooleanValue superSecretSettings;
     public ForgeConfigSpec.BooleanValue addLootToChests;
 
@@ -396,12 +400,16 @@ public class CommonConfig {
         bisonSpawnRolls = buildInt(builder, "bisonSpawnRolls", "spawns", AMConfig.bisonSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         giantSquidSpawnWeight = buildInt(builder, "giantSquidSpawnWeight", "spawns", AMConfig.giantSquidSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         giantSquidSpawnRolls = buildInt(builder, "giantSquidSpawnRolls", "spawns", AMConfig.giantSquidSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        devilsHolePupfishSpawnWeight = buildInt(builder, "devilsHolePupfishSpawnWeight", "spawns", AMConfig.devilsHolePupfishSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn (NOTE: this mob spawns are restricted exclusively to one chunk, see below)");
+        devilsHolePupfishSpawnRolls = buildInt(builder, "devilsHolePupfishSpawnRolls", "spawns", AMConfig.devilsHolePupfishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning (NOTE: this mob spawns are restricted exclusively to one chunk, see below)");
 
         builder.push("uniqueSpawning");
-        beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "spawns", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
-        beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "spawns", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");
-        beachedCachalotWhaleSpawnDelay = buildInt(builder, "beachedCachalotWhaleSpawnDelay", "spawns", AMConfig.beachedCachalotWhaleSpawnDelay, 0, Integer.MAX_VALUE, "Delay (in ticks) between attempts to spawn beached cachalot whales. Default is a single day. Works like wandering traders.");
-        leafcutterAnthillSpawnChance = buildDouble(builder, "leafcutterAnthillSpawnChance", "spawns", AMConfig.leafcutterAnthillSpawnChance, 0D, 1D, "Percent chance for leafcutter anthills to spawn as world gen in each chunk. Set to zero to disable spawning.");
+        beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "uniqueSpawning", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
+        beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "uniqueSpawning", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");
+        beachedCachalotWhaleSpawnDelay = buildInt(builder, "beachedCachalotWhaleSpawnDelay", "uniqueSpawning", AMConfig.beachedCachalotWhaleSpawnDelay, 0, Integer.MAX_VALUE, "Delay (in ticks) between attempts to spawn beached cachalot whales. Default is a single day. Works like wandering traders.");
+        leafcutterAnthillSpawnChance = buildDouble(builder, "leafcutterAnthillSpawnChance", "uniqueSpawning", AMConfig.leafcutterAnthillSpawnChance, 0D, 1D, "Percent chance for leafcutter anthills to spawn as world gen in each chunk. Set to zero to disable spawning.");
+        restrictPupfishSpawns = buildBoolean(builder, "restrictPupfishSpawns", "uniqueSpawning", true, "Whether to restrict all pupfish spawns to one chunk (similar to real life) or have them only obey their spawn config.");
+        pupfishChunkSpawnDistance = buildInt(builder, "pupfishChunkSpawnDistance", "uniqueSpawning", AMConfig.pupfishChunkSpawnDistance, 2, 1000000000, "The maximum distance a pupfish spawn chunk is from world spawn(0, 0) in blocks.");
         builder.push("dangerZone");
         superSecretSettings = buildBoolean(builder, "superSecretSettings", "dangerZone", false, "Its been so long...");
     }

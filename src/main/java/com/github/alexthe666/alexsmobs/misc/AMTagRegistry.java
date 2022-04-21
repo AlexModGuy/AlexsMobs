@@ -83,6 +83,7 @@ public class AMTagRegistry {
     public static final TagKey<Block> ANACONDA_SPAWNS = registerBlockTag("anaconda_spawns");
     public static final TagKey<Block> FLY_SPAWNS = registerBlockTag("fly_spawns");
     public static final TagKey<Block> LEAFCUTTER_PUPA_USABLE_ON = registerBlockTag("leafcutter_pupa_usable_on");
+    public static final TagKey<Block> PUPFISH_EATABLES = registerBlockTag("pupfish_eatables");
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
         return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));

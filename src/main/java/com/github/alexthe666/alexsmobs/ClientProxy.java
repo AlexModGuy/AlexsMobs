@@ -63,6 +63,8 @@ public class ClientProxy extends CommonProxy {
     public CameraType prevPOV = CameraType.FIRST_PERSON;
     public static int voidPortalCreationTime = 0;
     public boolean initializedRainbowBuffers = false;
+    private int pupfishChunkX = 0;
+    private int pupfishChunkZ = 0;
 
     public void init(){
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
@@ -173,6 +175,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.GIANT_SQUID.get(),  RenderGiantSquid::new);
         EntityRenderers.register(AMEntityRegistry.SQUID_GRAPPLE.get(),  RenderSquidGrapple::new);
         EntityRenderers.register(AMEntityRegistry.SEA_BEAR.get(),  RenderSeaBear::new);
+        EntityRenderers.register(AMEntityRegistry.DEVILS_HOLE_PUPFISH.get(),  RenderDevilsHolePupfish::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try{
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -189,6 +192,14 @@ public class ClientProxy extends CommonProxy {
             });
             ItemProperties.register(AMItemRegistry.SOMBRERO.get(), new ResourceLocation("silly"), (stack, p_239421_1_, p_239421_2_, j) -> {
                 return AlexsMobs.isAprilFools() ? 1.0F : 0.0F;
+            });
+            ItemProperties.register(AMItemRegistry.PUPFISH_LOCATOR.get(), new ResourceLocation("in_chunk"), (stack, world, entity, j) -> {
+                int x = pupfishChunkX * 16;
+                int z = pupfishChunkZ * 16;
+                if(entity != null && entity.getX() >= x && entity.getX() <= x + 16 && entity.getZ() >= z && entity.getZ() <= z + 16){
+                    return 1.0F;
+                }
+                return 0.0F;
             });
         }catch (Exception e){
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");
@@ -397,5 +408,10 @@ public class ClientProxy extends CommonProxy {
         if(entity == Minecraft.getInstance().player && flag == 87){
             ClientEvents.renderStaticScreenFor = 60;
         }
+    }
+
+    public void setPupfishChunkForItem(int chunkX, int chunkZ) {
+        this.pupfishChunkX = chunkX;
+        this.pupfishChunkZ = chunkZ;
     }
 }
