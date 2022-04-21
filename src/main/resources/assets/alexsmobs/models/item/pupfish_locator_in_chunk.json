@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alexsmobs:item/pupfish_locator_in_chunk"
+  }
+}

@@ -374,4 +374,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_cold_ocean", 2)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 3);
 
+    public static final SpawnBiomeData ALL_OVERWORLD = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+;
+
+
 }

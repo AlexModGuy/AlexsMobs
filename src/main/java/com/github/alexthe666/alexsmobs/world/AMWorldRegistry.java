@@ -265,6 +265,9 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.giant_squid, event.getCategory(), event.getName()) && AMConfig.giantSquidSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.GIANT_SQUID.get(), AMConfig.giantSquidSpawnWeight, 1, 2));
         }
+        if (testBiome(BiomeConfig.devils_hole_pupfish, event.getCategory(), event.getName()) && AMConfig.devilsHolePupfishSpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.DEVILS_HOLE_PUPFISH.get(), AMConfig.devilsHolePupfishSpawnWeight, 5, 12));
+        }
     }
 
     private static <C extends FeatureConfiguration, F extends Feature<C>> F registerFeature(String name, F eature) {

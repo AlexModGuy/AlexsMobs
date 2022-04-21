@@ -28,6 +28,7 @@ import java.util.UUID;
 public class EntityCachalotEcho extends Entity {
     private static final EntityDataAccessor<Boolean> RETURNING = SynchedEntityData.defineId(EntityCachalotEcho.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FASTER_ANIM = SynchedEntityData.defineId(EntityCachalotEcho.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> GREEN = SynchedEntityData.defineId(EntityCachalotEcho.class, EntityDataSerializers.BOOLEAN);
     private UUID ownerUUID;
     private int ownerNetworkId;
     private boolean leftOwner;
@@ -42,11 +43,12 @@ public class EntityCachalotEcho extends Entity {
         this.setShooter(p_i47273_2_);
     }
 
-    public EntityCachalotEcho(Level worldIn, LivingEntity p_i47273_2_, boolean right) {
+    public EntityCachalotEcho(Level worldIn, LivingEntity p_i47273_2_, boolean right, boolean green) {
         this(AMEntityRegistry.CACHALOT_ECHO.get(), worldIn);
         this.setShooter(p_i47273_2_);
         float rot = p_i47273_2_.yHeadRot + (right ? 90 : -90);
         playerLaunched = true;
+        this.setGreen(green);
         this.setFasterAnimation(true);
         this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getY() + 1D, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.cos(rot * ((float) Math.PI / 180F)));
     }
@@ -180,6 +182,7 @@ public class EntityCachalotEcho extends Entity {
     protected void defineSynchedData() {
         this.entityData.define(RETURNING, false);
         this.entityData.define(FASTER_ANIM, false);
+        this.entityData.define(GREEN, false);
     }
 
     public void setShooter(@Nullable Entity entityIn) {
@@ -207,7 +210,7 @@ public class EntityCachalotEcho extends Entity {
         if (this.leftOwner) {
             compound.putBoolean("LeftOwner", true);
         }
-
+        compound.putBoolean("Green", isGreen());
     }
 
     /**
@@ -217,7 +220,7 @@ public class EntityCachalotEcho extends Entity {
         if (compound.hasUUID("Owner")) {
             this.ownerUUID = compound.getUUID("Owner");
         }
-
+        this.setGreen(compound.getBoolean("Green"));
         this.leftOwner = compound.getBoolean("LeftOwner");
     }
 
@@ -311,5 +314,12 @@ public class EntityCachalotEcho extends Entity {
         float f = Mth.sqrt((float)horizontalMag(vector3d));
         this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI))));
         this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI))));
+    }
+
+    public boolean isGreen() {
+        return entityData.get(GREEN);
+    }
+    public void setGreen(boolean bool) {
+        entityData.set(GREEN, bool);
     }
 }

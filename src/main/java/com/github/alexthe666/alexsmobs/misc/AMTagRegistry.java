@@ -61,7 +61,6 @@ public class AMTagRegistry {
     public static final ResourceLocation ANACONDA_TARGETS = new ResourceLocation("alexsmobs", "anaconda_targets");
     public static final ResourceLocation GELADA_MONKEY_GRASS = new ResourceLocation("alexsmobs","gelada_monkey_grass");
     public static final ResourceLocation GIANT_SQUID_TARGETS = new ResourceLocation("alexsmobs", "giant_squid_targets");
-
     public static final ResourceLocation ROADRUNNER_SPAWNS = new ResourceLocation("alexsmobs","roadrunner_spawns");
     public static final ResourceLocation LOBSTER_SPAWNS = new ResourceLocation("alexsmobs","lobster_spawns");
     public static final ResourceLocation MIMIC_OCTOPUS_SPAWNS = new ResourceLocation("alexsmobs","mimic_octopus_spawns");
@@ -77,6 +76,8 @@ public class AMTagRegistry {
     public static final ResourceLocation ANACONDA_SPAWNS = new ResourceLocation("alexsmobs","anaconda_spawns");
     public static final ResourceLocation FLY_SPAWNS = new ResourceLocation("alexsmobs","fly_spawns");
     public static final ResourceLocation LEAFCUTTER_PUPA_USABLE_ON = new ResourceLocation("alexsmobs","leafcutter_pupa_usable_on");
+    public static final ResourceLocation PUPFISH_EATABLES = new ResourceLocation("alexsmobs","pupfish_eatables");
+
 
     public static final ResourceLocation MONKEY_TARGET_WITH_DART = new ResourceLocation("alexsmobs","monkey_target_with_dart");
 

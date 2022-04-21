@@ -19,6 +19,10 @@ public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_1.png");
     private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_2.png");
     private static final ResourceLocation TEXTURE_3 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_3.png");
+    private static final ResourceLocation GREEN_TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_0_green.png");
+    private static final ResourceLocation GREEN_TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_1_green.png");
+    private static final ResourceLocation GREEN_TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_2_green.png");
+    private static final ResourceLocation GREEN_TEXTURE_3 = new ResourceLocation("alexsmobs:textures/entity/cachalot/whale_echo_3_green.png");
 
     public RenderCachalotEcho(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
@@ -34,18 +38,18 @@ public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
         for(int i = 0; i < arcs; i++){
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, 0, -0.5F * i);
-            renderArc(matrixStackIn, bufferIn, (i + 1) * 5, entityIn.isFasterAnimation());
+            renderArc(matrixStackIn, bufferIn, (i + 1) * 5, entityIn.isFasterAnimation(), entityIn.isGreen());
             matrixStackIn.popPose();
         }
         matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    private void renderArc(PoseStack matrixStackIn, MultiBufferSource bufferIn, int age, boolean fast) {
+    private void renderArc(PoseStack matrixStackIn, MultiBufferSource bufferIn, int age, boolean fast, boolean green) {
         matrixStackIn.pushPose();
         ResourceLocation res;
         if(fast){
-            res = getEntityTextureFaster(age);
+            res = getEntityTextureFaster(age, green);
         }else{
             res = getEntityTexture(age);
         }
@@ -85,15 +89,15 @@ public class RenderCachalotEcho extends EntityRenderer<EntityCachalotEcho> {
         }
     }
 
-    public ResourceLocation getEntityTextureFaster(int age) {
+    public ResourceLocation getEntityTextureFaster(int age, boolean green) {
         if (age < 3) {
-            return TEXTURE_0;
+            return green ? GREEN_TEXTURE_0 : TEXTURE_0;
         } else if (age < 6) {
-            return TEXTURE_1;
+            return green ? GREEN_TEXTURE_1 : TEXTURE_1;
         } else if (age < 9) {
-            return TEXTURE_2;
+            return green ? GREEN_TEXTURE_2 : TEXTURE_2;
         } else {
-            return TEXTURE_3;
+            return green ? GREEN_TEXTURE_3 : TEXTURE_3;
         }
     }
 }

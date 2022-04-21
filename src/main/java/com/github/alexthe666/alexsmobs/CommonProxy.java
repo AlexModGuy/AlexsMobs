@@ -117,4 +117,7 @@ public class CommonProxy {
 
     public void processVisualFlag(Entity entity, int flag) {
     }
+
+    public void setPupfishChunkForItem(int chunkX, int chunkZ) {
+    }
 }
