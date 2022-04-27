@@ -126,7 +126,9 @@ public class AMEntityRegistry {
     public static final RegistryObject<EntityType<EntityGiantSquid>> GIANT_SQUID = DEF_REG.register("giant_squid", () -> registerEntity(EntityType.Builder.of(EntityGiantSquid::new, MobCategory.WATER_CREATURE).sized(0.9F, 1.2F), "giant_squid"));
     public static final RegistryObject<EntityType<EntitySquidGrapple>> SQUID_GRAPPLE = DEF_REG.register("squid_grapple", () -> registerEntity(EntityType.Builder.of(EntitySquidGrapple::new, MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(EntitySquidGrapple::new).fireImmune(), "squid_grapple"));
     public static final RegistryObject<EntityType<EntitySeaBear>> SEA_BEAR = DEF_REG.register("sea_bear", () -> registerEntity(EntityType.Builder.of(EntitySeaBear::new, MobCategory.WATER_CREATURE).sized(2.4F, 1.99F), "sea_bear"));
-    public static final RegistryObject<EntityType<EntityDevilsHolePupfish>> DEVILS_HOLE_PUPFISH = DEF_REG.register("devils_hole_pupfish", () -> registerEntity(EntityType.Builder.of(EntityDevilsHolePupfish::new, MobCategory.WATER_AMBIENT).sized(0.6F, 0.4F), "devils_hole_pupfish"));
+    public static final RegistryObject<EntityType<EntityDevilsHolePupfish>> DEVILS_HOLE_PUPFISH = DEF_REG.register("devils_hole_pupfish", () -> registerEntity(EntityType.Builder.of(EntityDevilsHolePupfish::new, MobCategory.UNDERGROUND_WATER_CREATURE).sized(0.6F, 0.4F), "devils_hole_pupfish"));
+    public static final RegistryObject<EntityType<EntityCatfish>> CATFISH = DEF_REG.register("catfish", () -> registerEntity(EntityType.Builder.of(EntityCatfish::new, MobCategory.WATER_AMBIENT).sized(0.9F, 0.6F), "catfish"));
+    public static final RegistryObject<EntityType<EntityFlyingFish>> FLYING_FISH = DEF_REG.register("flying_fish", () -> registerEntity(EntityType.Builder.of(EntityFlyingFish::new, MobCategory.WATER_AMBIENT).sized(0.6F, 0.4F), "flying_fish"));
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return (EntityType) builder.build(entityName);
@@ -203,6 +205,7 @@ public class AMEntityRegistry {
         SpawnPlacements.register(BISON.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityBison::checkAnimalSpawnRules);
         SpawnPlacements.register(GIANT_SQUID.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGiantSquid::canGiantSquidSpawn);
         SpawnPlacements.register(DEVILS_HOLE_PUPFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDevilsHolePupfish::canPupfishSpawn);
+        SpawnPlacements.register(CATFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCatfish::canCatfishSpawn);
         event.put(GRIZZLY_BEAR.get(), EntityGrizzlyBear.bakeAttributes().build());
         event.put(ROADRUNNER.get(), EntityRoadrunner.bakeAttributes().build());
         event.put(BONE_SERPENT.get(), EntityBoneSerpent.bakeAttributes().build());
@@ -281,6 +284,8 @@ public class AMEntityRegistry {
         event.put(GIANT_SQUID.get(), EntityGiantSquid.bakeAttributes().build());
         event.put(SEA_BEAR.get(), EntitySeaBear.bakeAttributes().build());
         event.put(DEVILS_HOLE_PUPFISH.get(), EntityDevilsHolePupfish.bakeAttributes().build());
+        event.put(CATFISH.get(), EntityCatfish.bakeAttributes().build());
+        event.put(FLYING_FISH.get(), EntityFlyingFish.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){

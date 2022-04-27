@@ -2,10 +2,17 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.entity.util.TerrapinTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -55,5 +62,36 @@ public class ItemModFishBucket extends MobBucketItem {
             }
         }
     }
+
+    @Override
+    public void checkExtraContent(@Nullable Player player, Level level, ItemStack stack, BlockPos pos) {
+        if (level instanceof ServerLevel) {
+            this.spawnFish((ServerLevel)level, stack, pos);
+            level.gameEvent(player, GameEvent.ENTITY_PLACE, pos);
+        }
+    }
+
+    private void spawnFish(ServerLevel serverLevel, ItemStack stack, BlockPos pos) {
+        Entity entity = getFishType().spawn(serverLevel, stack, (Player)null, pos, MobSpawnType.BUCKET, true, false);
+        if (entity instanceof Bucketable) {
+            Bucketable bucketable = (Bucketable)entity;
+            bucketable.loadFromBucketTag(stack.getOrCreateTag());
+            bucketable.setFromBucket(true);
+        }
+        addExtraAttributes(entity, stack);
+    }
+
+    private void addExtraAttributes(Entity entity, ItemStack stack) {
+        if(entity instanceof EntityCatfish catfish){
+            if(stack.is(AMItemRegistry.SMALL_CATFISH_BUCKET.get())){
+                catfish.setCatfishSize(0);
+            }else if(stack.is(AMItemRegistry.MEDIUM_CATFISH_BUCKET.get())){
+                catfish.setCatfishSize(1);
+            }else if(stack.is(AMItemRegistry.LARGE_CATFISH_BUCKET.get())){
+                catfish.setCatfishSize(2);
+            }
+        }
+    }
+
 
 }

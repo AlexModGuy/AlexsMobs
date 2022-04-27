@@ -177,6 +177,11 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> SQUID_GRAPPLE = DEF_REG.register("squid_grapple", () -> new ItemSquidGrapple(new Item.Properties().tab(AlexsMobs.TAB).durability(450)));
     public static final RegistryObject<Item> DEVILS_HOLE_PUPFISH_BUCKET = DEF_REG.register("devils_hole_pupfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.DEVILS_HOLE_PUPFISH, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)));
     public static final RegistryObject<Item> PUPFISH_LOCATOR = DEF_REG.register("pupfish_locator", () -> new ItemEcholocator(new Item.Properties().tab(AlexsMobs.TAB).durability(200), ItemEcholocator.EchoType.PUPFISH));
+    public static final RegistryObject<Item> SMALL_CATFISH_BUCKET = DEF_REG.register("small_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)));
+    public static final RegistryObject<Item> MEDIUM_CATFISH_BUCKET = DEF_REG.register("medium_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)));
+    public static final RegistryObject<Item> LARGE_CATFISH_BUCKET = DEF_REG.register("large_catfish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.CATFISH, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)));
+    public static final RegistryObject<Item> RAW_CATFISH = DEF_REG.register("raw_catfish", () -> new Item(new Item.Properties().tab(AlexsMobs.TAB).food(new FoodProperties.Builder().nutrition(2).saturationMod(0.3F).meat().build())));
+    public static final RegistryObject<Item> COOKED_CATFISH = DEF_REG.register("cooked_catfish", () -> new Item(new Item.Properties().tab(AlexsMobs.TAB).food(new FoodProperties.Builder().nutrition(5).saturationMod(0.5F).meat().build())));
     public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)));
 
@@ -264,6 +269,8 @@ public class AMItemRegistry {
         event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.BISON, 0X4C3A2E, 0X7A6546, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_bison"));
         event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.GIANT_SQUID, 0XAB4B4D, 0XD67D6B, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_giant_squid"));
         event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.DEVILS_HOLE_PUPFISH, 0X567BC4, 0X6C4475, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_devils_hole_pupfish"));
+        event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.CATFISH, 0X807757, 0X8A7466, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_catfish"));
+        event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.FLYING_FISH, 0X7BBCED, 0X6881B3, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_flying_fish"));
         event.getRegistry().register(new BannerPatternItem(PATTERN_BEAR, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_bear"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_0, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_0"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_1, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_1"));

@@ -322,4 +322,5 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     public boolean isFlying() {
         return false;
     }
+
 }
