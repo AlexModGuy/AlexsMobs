@@ -85,6 +85,8 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> bison = Pair.of("alexsmobs:bison_spawns", DefaultBiomes.BISON);
 	public static Pair<String, SpawnBiomeData> giant_squid = Pair.of("alexsmobs:giant_squid_spawns", DefaultBiomes.GIANT_SQUID);
 	public static Pair<String, SpawnBiomeData> devils_hole_pupfish = Pair.of("alexsmobs:devils_hole_pupfish", DefaultBiomes.ALL_OVERWORLD);
+	public static Pair<String, SpawnBiomeData> catfish = Pair.of("alexsmobs:catfish", DefaultBiomes.CATFISH);
+	public static Pair<String, SpawnBiomeData> catfish_huge = Pair.of("alexsmobs:catfish_huge", DefaultBiomes.LARGE_CATFISH);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

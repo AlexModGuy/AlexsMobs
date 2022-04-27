@@ -152,6 +152,8 @@ public class AMConfig {
     public static int giantSquidSpawnRolls = 0;
     public static int devilsHolePupfishSpawnWeight = 23;
     public static int devilsHolePupfishSpawnRolls = 0;
+    public static int catfishSpawnWeight = 4;
+    public static int catfishSpawnRolls = 2;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -370,6 +372,8 @@ public class AMConfig {
             giantSquidSpawnRolls = ConfigHolder.COMMON.giantSquidSpawnRolls.get();
             devilsHolePupfishSpawnWeight = ConfigHolder.COMMON.devilsHolePupfishSpawnWeight.get();
             devilsHolePupfishSpawnRolls = ConfigHolder.COMMON.devilsHolePupfishSpawnRolls.get();
+            catfishSpawnWeight = ConfigHolder.COMMON.catfishSpawnWeight.get();
+            catfishSpawnRolls = ConfigHolder.COMMON.catfishSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();

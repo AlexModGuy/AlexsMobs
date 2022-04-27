@@ -375,8 +375,17 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 3);
 
     public static final SpawnBiomeData ALL_OVERWORLD = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-;
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0);
 
+    public static final SpawnBiomeData CATFISH = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 1);
+
+    public static final SpawnBiomeData LARGE_CATFISH = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0);
 
 }

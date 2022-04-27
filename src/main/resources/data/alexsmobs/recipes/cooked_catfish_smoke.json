@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "alexsmobs:raw_catfish"
+  },
+  "result": "alexsmobs:cooked_catfish",
+  "experience": 0.15,
+  "cookingtime": 100
+}

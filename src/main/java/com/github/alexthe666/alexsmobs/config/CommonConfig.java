@@ -163,6 +163,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue giantSquidSpawnRolls;
     public final ForgeConfigSpec.IntValue devilsHolePupfishSpawnWeight;
     public final ForgeConfigSpec.IntValue devilsHolePupfishSpawnRolls;
+    public final ForgeConfigSpec.IntValue catfishSpawnWeight;
+    public final ForgeConfigSpec.IntValue catfishSpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -402,6 +404,8 @@ public class CommonConfig {
         giantSquidSpawnRolls = buildInt(builder, "giantSquidSpawnRolls", "spawns", AMConfig.giantSquidSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         devilsHolePupfishSpawnWeight = buildInt(builder, "devilsHolePupfishSpawnWeight", "spawns", AMConfig.devilsHolePupfishSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn (NOTE: this mob spawns are restricted exclusively to one chunk, see below)");
         devilsHolePupfishSpawnRolls = buildInt(builder, "devilsHolePupfishSpawnRolls", "spawns", AMConfig.devilsHolePupfishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning (NOTE: this mob spawns are restricted exclusively to one chunk, see below)");
+        catfishSpawnWeight = buildInt(builder, "catfishSpawnWeight", "spawns", AMConfig.catfishSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        catfishSpawnRolls = buildInt(builder, "catfishSpawnRolls", "spawns", AMConfig.catfishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "uniqueSpawning", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
