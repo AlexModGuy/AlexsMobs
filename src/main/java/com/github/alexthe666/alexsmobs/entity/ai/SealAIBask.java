@@ -23,7 +23,7 @@ public class SealAIBask extends Goal {
         if (this.seal.isInWaterOrBubble()) {
             return false;
         } else {
-            return seal.getLastHurtByMob() == null && seal.isBasking();
+            return seal.getLastHurtByMob() == null && seal.getTarget() == null && seal.isBasking();
         }
     }
 

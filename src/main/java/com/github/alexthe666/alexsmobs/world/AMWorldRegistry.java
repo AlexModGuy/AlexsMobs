@@ -269,7 +269,10 @@ public class AMWorldRegistry {
             event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.DEVILS_HOLE_PUPFISH.get(), AMConfig.devilsHolePupfishSpawnWeight, 5, 12));
         }
         if (testBiome(BiomeConfig.catfish, event.getCategory(), event.getName()) && AMConfig.catfishSpawnWeight > 0) {
-            event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.CATFISH.get(), AMConfig.catfishSpawnWeight, 1, 3));
+            event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.CATFISH.get(), AMConfig.catfishSpawnWeight, 1, 3));
+        }
+        if (testBiome(BiomeConfig.flying_fish, event.getCategory(), event.getName()) && AMConfig.flyingFishSpawnWeight > 0) {
+            event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.FLYING_FISH.get(), AMConfig.flyingFishSpawnWeight, 3, 6));
         }
     }
 

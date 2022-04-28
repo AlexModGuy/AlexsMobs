@@ -31,6 +31,7 @@ public class ItemModArmor extends ArmorItem {
     private static final UUID[] ARMOR_MODIFIERS = new UUID[]{UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")};
     private Multimap<Attribute, AttributeModifier> attributeMapCroc;
     private Multimap<Attribute, AttributeModifier> attributeMapMoose;
+    private Multimap<Attribute, AttributeModifier> attributeMapFlyingFish;
 
     public ItemModArmor(AMArmorMaterial armorMaterial, EquipmentSlot slot) {
         super(armorMaterial, slot, new Item.Properties().tab(AlexsMobs.TAB));
@@ -65,6 +66,9 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.SOMBRERO_ARMOR_MATERIAL && AlexsMobs.isAprilFools()) {
             tooltip.add(new TranslatableComponent("item.alexsmobs.sombrero.special_desc").withStyle(ChatFormatting.GRAY));
         }
+        if (this.material == AMItemRegistry.FLYING_FISH_MATERIAL) {
+            tooltip.add(new TranslatableComponent("item.alexsmobs.flying_fish_boots.desc").withStyle(ChatFormatting.GRAY));
+        }
     }
 
     private void buildCrocAttributes(AMArmorMaterial materialIn) {
@@ -77,6 +81,15 @@ public class ItemModArmor extends ArmorItem {
             builder.put(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(uuid, "Armor knockback resistance", this.knockbackResistance, AttributeModifier.Operation.ADDITION));
         }
         attributeMapCroc = builder.build();
+    }
+
+    private void buildFlyingFishAttributes(AMArmorMaterial materialIn) {
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
+        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", materialIn.getToughness(), AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(uuid, "Swim speed", 0.5, AttributeModifier.Operation.ADDITION));
+        attributeMapFlyingFish = builder.build();
     }
 
     private void buildMooseAttributes(AMArmorMaterial materialIn) {
@@ -105,6 +118,12 @@ public class ItemModArmor extends ArmorItem {
             }
             return attributeMapMoose;
         }
+        if (getMaterial() == AMItemRegistry.FLYING_FISH_MATERIAL && equipmentSlot == this.slot) {
+            if (attributeMapFlyingFish == null) {
+                buildFlyingFishAttributes(AMItemRegistry.FLYING_FISH_MATERIAL);
+            }
+            return attributeMapFlyingFish;
+        }
         return super.getDefaultAttributeModifiers(equipmentSlot);
     }
 
@@ -132,6 +151,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/froststalker_helmet.png";
         }else if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/rocky_chestplate.png";
+        }else if (this.material == AMItemRegistry.FLYING_FISH_MATERIAL) {
+            return "alexsmobs:textures/armor/flying_fish_boots.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }

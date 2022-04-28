@@ -99,6 +99,9 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.34F);
     }
 
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.fromBucket();
+    }
 
     public static boolean canPupfishSpawn(EntityType<EntityDevilsHolePupfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
         return reason == MobSpawnType.SPAWNER || isPupfishChunk(iServerWorld, pos) && iServerWorld.getFluidState(pos).is(FluidTags.WATER) && isInCave(iServerWorld, pos);

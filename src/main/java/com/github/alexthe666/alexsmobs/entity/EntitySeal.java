@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -125,8 +126,11 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(9, new AvoidEntityGoal(this, EntityOrca.class, 20F, 1.3D, 1.0D));
+
         this.goalSelector.addGoal(10, new TemptGoal(this, 1.1D, Ingredient.of(ItemTags.getAllTags().getTag(AMTagRegistry.SEAL_FOODSTUFFS)), false));
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, EntityFlyingFish.class, 55, true, true, null));
+
     }
 
     private void switchNavigator(boolean onLand) {

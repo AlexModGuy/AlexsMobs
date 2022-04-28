@@ -100,7 +100,7 @@ public class ModelCatfishLarge extends AdvancedEntityModel<EntityCatfish> {
         float idleSpeed = 0.2F;
         float idleDegree = 0.25F;
         float swimSpeed = 0.55F;
-        float swimDegree = 0.5F;
+        float swimDegree = 0.75F;
         AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{body, tail, tail_fin};
         this.chainSwing(tailBoxes, swimSpeed, swimDegree * 0.9F, -2.5F, limbSwing, limbSwingAmount);
         this.swing(head, swimSpeed, swimDegree * 0.2F, true, 2F, 0, limbSwing, limbSwingAmount);

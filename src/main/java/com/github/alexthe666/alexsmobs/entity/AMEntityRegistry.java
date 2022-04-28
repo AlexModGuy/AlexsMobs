@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.google.common.base.Predicates;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.tags.Tag;
@@ -12,7 +13,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 import java.lang.reflect.Field;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -205,6 +205,7 @@ public class AMEntityRegistry {
         SpawnPlacements.register(GIANT_SQUID.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityGiantSquid::canGiantSquidSpawn);
         SpawnPlacements.register(DEVILS_HOLE_PUPFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDevilsHolePupfish::canPupfishSpawn);
         SpawnPlacements.register(CATFISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCatfish::canCatfishSpawn);
+        SpawnPlacements.register(FLYING_FISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WaterAnimal::checkSurfaceWaterAnimalSpawnRules);
         event.put(GRIZZLY_BEAR.get(), EntityGrizzlyBear.bakeAttributes().build());
         event.put(ROADRUNNER.get(), EntityRoadrunner.bakeAttributes().build());
         event.put(BONE_SERPENT.get(), EntityBoneSerpent.bakeAttributes().build());

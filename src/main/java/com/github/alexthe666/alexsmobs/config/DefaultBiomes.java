@@ -388,4 +388,11 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0);
 
+    public static final SpawnBiomeData FLYING_FISH = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "hot", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:deep_ocean", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:deep_lukewarm_ocean", 0);
 }
