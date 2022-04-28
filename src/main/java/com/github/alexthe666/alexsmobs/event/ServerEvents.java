@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectClinging;
 import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.entity.util.FlyingFishBootsUtil;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
@@ -523,6 +524,10 @@ public class ServerEvents {
                 Rabbit rabbit = (Rabbit) event.getEntity();
                 rabbit.goalSelector.addGoal(3, new TemptGoal(rabbit, 1.0D, Ingredient.of(AMItemRegistry.MUNGAL_SPORES.get()), false));
             }
+            if (event.getEntity() != null && event.getEntity() instanceof Dolphin && AMConfig.dolphinsAttackFlyingFish) {
+                Dolphin dolphin = (Dolphin) event.getEntity();
+                dolphin.targetSelector.addGoal(2, new NearestAttackableTargetGoal(dolphin, EntityFlyingFish.class, 70, true, true, null));
+            }
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
         }
@@ -699,6 +704,9 @@ public class ServerEvents {
         }
         if (RockyChestplateUtil.isWearing(event.getEntityLiving())) {
             RockyChestplateUtil.tickRockyRolling(event.getEntityLiving());
+        }
+        if (FlyingFishBootsUtil.isWearing(event.getEntityLiving())) {
+            FlyingFishBootsUtil.tickFlyingFishBoots(event.getEntityLiving());
         }
     }
 

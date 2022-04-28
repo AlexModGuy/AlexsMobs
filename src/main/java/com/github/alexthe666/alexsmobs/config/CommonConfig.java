@@ -15,6 +15,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue wolvesAttackMoose;
     public final ForgeConfigSpec.BooleanValue polarBearsAttackSeals;
     public final ForgeConfigSpec.BooleanValue catsAndFoxesAttackJerboas;
+    public final ForgeConfigSpec.BooleanValue dolphinsAttackFlyingFish;
     public final ForgeConfigSpec.BooleanValue bananasDropFromLeaves;
     public final ForgeConfigSpec.IntValue bananaChance;
     public final ForgeConfigSpec.IntValue grizzlyBearSpawnWeight;
@@ -165,6 +166,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue devilsHolePupfishSpawnRolls;
     public final ForgeConfigSpec.IntValue catfishSpawnWeight;
     public final ForgeConfigSpec.IntValue catfishSpawnRolls;
+    public final ForgeConfigSpec.IntValue flyingFishSpawnWeight;
+    public final ForgeConfigSpec.IntValue flyingFishSpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -221,6 +224,7 @@ public class CommonConfig {
         wolvesAttackMoose = buildBoolean(builder, "wolvesAttackMoose", "all", true, "Whether wolves should target moose mobs.");
         polarBearsAttackSeals = buildBoolean(builder, "polarBearsAttackSeals", "all", true, "Whether polar bears should target seal mobs.");
         catsAndFoxesAttackJerboas = buildBoolean(builder, "catsAndFoxesAttackJerboas", "all", true, "Whether cats, ocelots and foxes should target jerboa mobs.");
+        dolphinsAttackFlyingFish = buildBoolean(builder, "dolphinsAttackFlyingFish", "all", true, "Whether dolphins should target flying fish mobs.");
         lavaBottleEnabled = buildBoolean(builder, "lavaBottleEnabled", "all", true, "Whether lava can be bottled with a right click of a glass bottle.");
         neutralBoneSerpents = buildBoolean(builder, "neutralBoneSerpents", "all", false, "Whether bone serpents are neutral or hostile.");
         caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, -64, 320, "Maximum world y-level that cave centipedes can spawn at");
@@ -406,6 +410,8 @@ public class CommonConfig {
         devilsHolePupfishSpawnRolls = buildInt(builder, "devilsHolePupfishSpawnRolls", "spawns", AMConfig.devilsHolePupfishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning (NOTE: this mob spawns are restricted exclusively to one chunk, see below)");
         catfishSpawnWeight = buildInt(builder, "catfishSpawnWeight", "spawns", AMConfig.catfishSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         catfishSpawnRolls = buildInt(builder, "catfishSpawnRolls", "spawns", AMConfig.catfishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        flyingFishSpawnWeight = buildInt(builder, "flyingFishSpawnWeight", "spawns", AMConfig.flyingFishSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        flyingFishSpawnRolls = buildInt(builder, "flyingFishSpawnRolls", "spawns", AMConfig.flyingFishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "uniqueSpawning", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");

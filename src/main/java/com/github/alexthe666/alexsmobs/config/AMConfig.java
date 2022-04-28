@@ -154,6 +154,8 @@ public class AMConfig {
     public static int devilsHolePupfishSpawnRolls = 0;
     public static int catfishSpawnWeight = 4;
     public static int catfishSpawnRolls = 2;
+    public static int flyingFishSpawnWeight = 8;
+    public static int flyingFishSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -167,6 +169,7 @@ public class AMConfig {
     public static boolean wolvesAttackMoose = true;
     public static boolean polarBearsAttackSeals = true;
     public static boolean catsAndFoxesAttackJerboas = true;
+    public static boolean dolphinsAttackFlyingFish = true;
     public static boolean giveBookOnStartup = true;
     public static boolean mimicubeSpawnInEndCity = true;
     public static boolean mimicreamRepair = true;
@@ -374,6 +377,8 @@ public class AMConfig {
             devilsHolePupfishSpawnRolls = ConfigHolder.COMMON.devilsHolePupfishSpawnRolls.get();
             catfishSpawnWeight = ConfigHolder.COMMON.catfishSpawnWeight.get();
             catfishSpawnRolls = ConfigHolder.COMMON.catfishSpawnRolls.get();
+            flyingFishSpawnWeight = ConfigHolder.COMMON.flyingFishSpawnWeight.get();
+            flyingFishSpawnRolls = ConfigHolder.COMMON.flyingFishSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -381,6 +386,7 @@ public class AMConfig {
             wolvesAttackMoose = ConfigHolder.COMMON.wolvesAttackMoose.get();
             polarBearsAttackSeals = ConfigHolder.COMMON.polarBearsAttackSeals.get();
             catsAndFoxesAttackJerboas = ConfigHolder.COMMON.catsAndFoxesAttackJerboas.get();
+            dolphinsAttackFlyingFish = ConfigHolder.COMMON.dolphinsAttackFlyingFish.get();
             bananaChance = ConfigHolder.COMMON.bananaChance.get();
             giveBookOnStartup = ConfigHolder.COMMON.giveBookOnStartup.get();
             mimicubeSpawnInEndCity = ConfigHolder.COMMON.mimicubeSpawnInEndCity.get();

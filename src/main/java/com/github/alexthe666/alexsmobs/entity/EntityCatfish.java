@@ -103,6 +103,11 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         this.goalSelector.addGoal(6, new AnimalAISwimBottom(this, 1F, 7));
     }
 
+
+    public boolean removeWhenFarAway(double p_27492_) {
+        return !this.fromBucket() && !requiresCustomPersistence() && !this.hasCustomName();
+    }
+
     private void initCatfishInventory() {
         SimpleContainer animalchest = this.catfishInventory;
         int size = this.getCatfishSize() > 2 ? 1 : this.getCatfishSize() == 1 ? 64 : 9;

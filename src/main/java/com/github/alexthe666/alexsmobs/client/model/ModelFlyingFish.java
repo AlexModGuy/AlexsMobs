@@ -86,6 +86,8 @@ public class ModelFlyingFish extends AdvancedEntityModel<EntityFlyingFish> {
         progressPositionPrev(left_pectoralFin, flyProgress, 0, -1, 1, 5F);
         progressPositionPrev(right_pectoralFin, flyProgress, 0, -1, 1, 5F);
         progressRotationPrev(body, landProgress, 0, 0, (float) Math.toRadians(-90), 5F);
+        progressRotation(left_pectoralFin, landProgress, 0, 0,  (float) Math.toRadians(70), 5F);
+        progressRotation(right_pectoralFin, landProgress, 0, 0, (float) Math.toRadians(-80), 5F);
         this.bob(body, idleSpeed, idleDegree, false, ageInTicks, 1);
         this.chainSwing(tailBoxes, idleSpeed, idleDegree * 0.1F, -2.5F, ageInTicks, 1);
         this.flap(left_pelvicFin, idleSpeed, idleDegree, false, 3, 0.05F, ageInTicks, 1);
