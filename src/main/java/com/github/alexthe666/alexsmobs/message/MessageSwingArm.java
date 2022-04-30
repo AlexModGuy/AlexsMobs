@@ -12,19 +12,20 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class MessageSwingArm {
 
-	public static final MessageSwingArm INSTANCE = new MessageSwingArm();
+    public static final MessageSwingArm INSTANCE = new MessageSwingArm();
 
-	private MessageSwingArm() {
-	}
+    private MessageSwingArm() {
+    }
 
     public static MessageSwingArm read(FriendlyByteBuf buf) {
-		return INSTANCE;
+        return INSTANCE;
     }
 
     public static void write(MessageSwingArm message, FriendlyByteBuf buf) {
     }
 
     public static class Handler {
+
         public Handler() {
         }
 
