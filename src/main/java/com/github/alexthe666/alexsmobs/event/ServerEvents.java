@@ -165,10 +165,10 @@ public class ServerEvents {
             BeachedCachalotWhaleSpawner spawner = BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld);
             spawner.tick();
 
-			for (final var trip : teleportPlayers) {
-				ServerPlayer player = trip.a;
-				ServerLevel endpointWorld = trip.b;
-				BlockPos endpoint = trip.c;
+			for (final var triple : teleportPlayers) {
+				ServerPlayer player = triple.a;
+				ServerLevel endpointWorld = triple.b;
+				BlockPos endpoint = triple.c;
                 player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.getYRot(), player.getXRot());
                 ChunkPos chunkpos = new ChunkPos(endpoint);
                 endpointWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, player.getId());
@@ -183,13 +183,13 @@ public class ServerEvents {
     }
 
     protected static BlockHitResult rayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
-        float f = player.getXRot();
-        float f1 = player.getYRot();
+        float x = player.getXRot();
+        float y = player.getYRot();
         Vec3 vector3d = player.getEyePosition(1.0F);
-        float f2 = Mth.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f3 = Mth.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f4 = -Mth.cos(-f * ((float) Math.PI / 180F));
-        float f5 = Mth.sin(-f * ((float) Math.PI / 180F));
+        float f2 = Mth.cos(-y * ((float) Math.PI / 180F) - (float) Math.PI);
+        float f3 = Mth.sin(-y * ((float) Math.PI / 180F) - (float) Math.PI);
+        float f4 = -Mth.cos(-x * ((float) Math.PI / 180F));
+        float f5 = Mth.sin(-x * ((float) Math.PI / 180F));
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
@@ -321,9 +321,9 @@ public class ServerEvents {
     public void onTradeSetup(VillagerTradesEvent event) {
         if (event.getType() == VillagerProfession.FISHERMAN) {
             VillagerTrades.ItemListing ambergrisTrade = new EmeraldsForItemsTrade(AMItemRegistry.AMBERGRIS.get(), 20, 3, 4);
-			final var l = event.getTrades().get(2);
-            l.add(ambergrisTrade);
-            event.getTrades().put(2, l);
+			final var list = event.getTrades().get(2);
+            list.add(ambergrisTrade);
+            event.getTrades().put(2, list);
         }
     }
 
@@ -376,19 +376,20 @@ public class ServerEvents {
             }
         }
         if (event.getItemStack().getItem() == Items.GLASS_BOTTLE && AMConfig.lavaBottleEnabled) {
-            HitResult raytraceresult = rayTrace(event.getWorld(), event.getPlayer(), ClipContext.Fluid.SOURCE_ONLY);
+            final var player = event.getPlayer();
+            HitResult raytraceresult = rayTrace(event.getWorld(), player, ClipContext.Fluid.SOURCE_ONLY);
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
                 BlockPos blockpos = ((BlockHitResult) raytraceresult).getBlockPos();
-                if (event.getWorld().mayInteract(event.getPlayer(), blockpos)) {
+                if (event.getWorld().mayInteract(player, blockpos)) {
                     if (event.getWorld().getFluidState(blockpos).is(FluidTags.LAVA)) {
-                        event.getWorld().playSound(event.getPlayer(), event.getPlayer().getX(), event.getPlayer().getY(), event.getPlayer().getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
-                        event.getPlayer().awardStat(Stats.ITEM_USED.get(Items.GLASS_BOTTLE));
-                        event.getPlayer().setSecondsOnFire(6);
-                        if (!event.getPlayer().addItem(new ItemStack(AMItemRegistry.LAVA_BOTTLE.get()))) {
-                            event.getPlayer().spawnAtLocation(new ItemStack(AMItemRegistry.LAVA_BOTTLE.get()));
+                        event.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                        player.awardStat(Stats.ITEM_USED.get(Items.GLASS_BOTTLE));
+                        player.setSecondsOnFire(6);
+                        if (!player.addItem(new ItemStack(AMItemRegistry.LAVA_BOTTLE.get()))) {
+                            player.spawnAtLocation(new ItemStack(AMItemRegistry.LAVA_BOTTLE.get()));
                         }
-                        event.getPlayer().swing(event.getHand());
-                        if (!event.getPlayer().isCreative()) {
+                        player.swing(event.getHand());
+                        if (!player.isCreative()) {
                             event.getItemStack().shrink(1);
                         }
                     }
