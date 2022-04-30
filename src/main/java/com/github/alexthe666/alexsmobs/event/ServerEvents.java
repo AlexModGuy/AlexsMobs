@@ -183,16 +183,16 @@ public class ServerEvents {
     }
 
     protected static BlockHitResult rayTrace(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
-        float x = player.getXRot();
-        float y = player.getYRot();
+        final float x = player.getXRot();
+        final float y = player.getYRot();
         Vec3 vector3d = player.getEyePosition(1.0F);
-        float f2 = Mth.cos(-y * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f3 = Mth.sin(-y * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f4 = -Mth.cos(-x * ((float) Math.PI / 180F));
-        float f5 = Mth.sin(-x * ((float) Math.PI / 180F));
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
+        final float f2 = Mth.cos(-y * ((float) Math.PI / 180F) - (float) Math.PI);
+        final float f3 = Mth.sin(-y * ((float) Math.PI / 180F) - (float) Math.PI);
+        final float f4 = -Mth.cos(-x * ((float) Math.PI / 180F));
+        final float f5 = Mth.sin(-x * ((float) Math.PI / 180F));
+        final float f6 = f3 * f4;
+        final float f7 = f2 * f4;
+        final double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
 		Vec3 vector3d1 = vector3d.add(f6 * d0, f5 * d0, f7 * d0);
         return worldIn.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }
@@ -366,17 +366,17 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onUseItem(PlayerInteractEvent.RightClickItem event) {
+        final var player = event.getPlayer();
 		if (event.getItemStack().getItem() == Items.WHEAT
-				&& event.getPlayer().getVehicle() instanceof EntityElephant elephant) {
+				&& player.getVehicle() instanceof EntityElephant elephant) {
 			if (elephant.triggerCharge(event.getItemStack())) {
-                event.getPlayer().swing(event.getHand());
-                if (!event.getPlayer().isCreative()) {
+                player.swing(event.getHand());
+                if (!player.isCreative()) {
                     event.getItemStack().shrink(1);
                 }
             }
         }
         if (event.getItemStack().getItem() == Items.GLASS_BOTTLE && AMConfig.lavaBottleEnabled) {
-            final var player = event.getPlayer();
             HitResult raytraceresult = rayTrace(event.getWorld(), player, ClipContext.Fluid.SOURCE_ONLY);
             if (raytraceresult.getType() == HitResult.Type.BLOCK) {
                 BlockPos blockpos = ((BlockHitResult) raytraceresult).getBlockPos();
@@ -447,9 +447,9 @@ public class ServerEvents {
                     }
                 } else {
                     for (int i = 0; i < 2 + random.nextInt(2); i++) {
-                        double d0 = random.nextGaussian() * 0.02D;
-                        double d1 = 0.05F + random.nextGaussian() * 0.02D;
-                        double d2 = random.nextGaussian() * 0.02D;
+                        final double d0 = random.nextGaussian() * 0.02D;
+                        final double d1 = 0.05F + random.nextGaussian() * 0.02D;
+                        final double d2 = random.nextGaussian() * 0.02D;
                         event.getTarget().level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, event.getTarget().getRandomX(0.7F), event.getTarget().getY(0.6F), event.getTarget().getRandomZ(0.7F), d0, d1, d2);
                     }
                 }
@@ -490,8 +490,7 @@ public class ServerEvents {
 			if (state.is(Blocks.SAND)) {
                 flag = true;
                 event.getPlayer().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.SAND_CIRCLE.get().defaultBlockState());
-            }
-			if (state.is(Blocks.RED_SAND)) {
+            } else if (state.is(Blocks.RED_SAND)) {
                 flag = true;
                 event.getPlayer().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.RED_SAND_CIRCLE.get().defaultBlockState());
             }
@@ -569,8 +568,7 @@ public class ServerEvents {
     public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
 		if (event.getTarget() instanceof LivingEntity living) {
             if (event.getPlayer().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR.get()) {
-                final float f1 = 2.0F;
-                living.knockback(f1 * 0.5F, Mth.sin(event.getPlayer().getYRot() * ((float) Math.PI / 180F)),
+                living.knockback(1F, Mth.sin(event.getPlayer().getYRot() * ((float) Math.PI / 180F)),
                         -Mth.cos(event.getPlayer().getYRot() * ((float) Math.PI / 180F)));
             }
             if (event.getPlayer().hasEffect(AMEffectRegistry.TIGERS_BLESSING)
@@ -591,7 +589,7 @@ public class ServerEvents {
     public void onLivingDamageEvent(LivingDamageEvent event) {
 		if (event.getSource().getEntity() instanceof final LivingEntity attacker) {
             if (event.getAmount() > 0 && attacker.hasEffect(AMEffectRegistry.SOULSTEAL) && attacker.getEffect(AMEffectRegistry.SOULSTEAL) != null) {
-                int level = attacker.getEffect(AMEffectRegistry.SOULSTEAL).getAmplifier() + 1;
+                final int level = attacker.getEffect(AMEffectRegistry.SOULSTEAL).getAmplifier() + 1;
 				if (attacker.getHealth() < attacker.getMaxHealth()
 						&& ThreadLocalRandom.current().nextFloat() < (0.25F + (level * 0.25F))) {
                     attacker.heal(Math.min(event.getAmount() / 2F * level, 2 + 2 * level));
@@ -604,10 +602,9 @@ public class ServerEvents {
 					return;
 				}
 				if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()) {
-					float f1 = 1F;
 					if (attacker.distanceTo(player) < attacker.getBbWidth() + player.getBbWidth() + 0.5F) {
 						attacker.hurt(DamageSource.thorns(player), 1F);
-						attacker.knockback(f1 * 0.5F, Mth.sin((attacker.getYRot() + 180) * ((float) Math.PI / 180F)),
+						attacker.knockback(0.5F, Mth.sin((attacker.getYRot() + 180) * ((float) Math.PI / 180F)),
 								-Mth.cos((attacker.getYRot() + 180) * ((float) Math.PI / 180F)));
 					}
                 }
