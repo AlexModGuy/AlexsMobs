@@ -145,9 +145,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-@SuppressWarnings({
-		"static-method", "resource"
-})
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
 
@@ -402,65 +399,65 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
-		if (!(event.getTarget() instanceof LivingEntity living))
-			return;
-		if (!event.getPlayer().isShiftKeyDown() && VineLassoUtil.hasLassoData(living)) {
-            if (!event.getEntity().level.isClientSide) {
-                event.getTarget().spawnAtLocation(new ItemStack(AMItemRegistry.VINE_LASSO.get()));
+		if (event.getTarget() instanceof LivingEntity living) {
+            if (!event.getPlayer().isShiftKeyDown() && VineLassoUtil.hasLassoData(living)) {
+                if (!event.getEntity().level.isClientSide) {
+                    event.getTarget().spawnAtLocation(new ItemStack(AMItemRegistry.VINE_LASSO.get()));
+                }
+                VineLassoUtil.lassoTo(null, living);
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.SUCCESS);
             }
-			VineLassoUtil.lassoTo(null, living);
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.SUCCESS);
-        }
-		if (!(event.getTarget() instanceof Player) && !(event.getTarget() instanceof EntityEndergrade)
-				&& living.hasEffect(AMEffectRegistry.ENDER_FLU)) {
-            if (event.getItemStack().getItem() == Items.CHORUS_FRUIT) {
+            if (!(event.getTarget() instanceof Player) && !(event.getTarget() instanceof EntityEndergrade)
+                    && living.hasEffect(AMEffectRegistry.ENDER_FLU)) {
+                if (event.getItemStack().getItem() == Items.CHORUS_FRUIT) {
+                    if (!event.getPlayer().isCreative()) {
+                        event.getItemStack().shrink(1);
+                    }
+                    event.getTarget().playSound(SoundEvents.GENERIC_EAT, 1.0F, 0.5F + event.getPlayer().getRandom().nextFloat());
+                    if (event.getPlayer().getRandom().nextFloat() < 0.4F) {
+                        living.removeEffect(AMEffectRegistry.ENDER_FLU);
+                        Items.CHORUS_FRUIT.finishUsingItem(event.getItemStack().copy(), event.getWorld(), ((LivingEntity) event.getTarget()));
+                    }
+                    event.setCanceled(true);
+                    event.setCancellationResult(InteractionResult.SUCCESS);
+                }
+            }
+            if (RainbowUtil.getRainbowType(living) > 0 && (event.getItemStack().getItem() == Items.SPONGE)) {
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+                RainbowUtil.setRainbowType(living, 0);
                 if (!event.getPlayer().isCreative()) {
                     event.getItemStack().shrink(1);
                 }
-                event.getTarget().playSound(SoundEvents.GENERIC_EAT, 1.0F, 0.5F + event.getPlayer().getRandom().nextFloat());
-                if (event.getPlayer().getRandom().nextFloat() < 0.4F) {
-					living.removeEffect(AMEffectRegistry.ENDER_FLU);
-                    Items.CHORUS_FRUIT.finishUsingItem(event.getItemStack().copy(), event.getWorld(), ((LivingEntity) event.getTarget()));
+                ItemStack wetSponge = new ItemStack(Items.WET_SPONGE);
+                if (!event.getPlayer().addItem(wetSponge)) {
+                    event.getPlayer().drop(wetSponge, true);
+                }
+            }
+            if (living instanceof Rabbit rabbit && event.getItemStack().getItem() == AMItemRegistry.MUNGAL_SPORES.get()
+                    && AMConfig.bunfungusTransformation) {
+                final var random = ThreadLocalRandom.current();
+                if (!event.getEntityLiving().level.isClientSide && random.nextFloat() < 0.15F) {
+                    final EntityBunfungus bunfungus = rabbit.convertTo(AMEntityRegistry.BUNFUNGUS.get(), true);
+                    if (bunfungus != null) {
+                        event.getPlayer().level.addFreshEntity(bunfungus);
+                        bunfungus.setTransformsIn(EntityBunfungus.MAX_TRANSFORM_TIME);
+                    }
+                } else {
+                    for (int i = 0; i < 2 + random.nextInt(2); i++) {
+                        double d0 = random.nextGaussian() * 0.02D;
+                        double d1 = 0.05F + random.nextGaussian() * 0.02D;
+                        double d2 = random.nextGaussian() * 0.02D;
+                        event.getTarget().level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, event.getTarget().getRandomX(0.7F), event.getTarget().getY(0.6F), event.getTarget().getRandomZ(0.7F), d0, d1, d2);
+                    }
+                }
+                if (!event.getPlayer().isCreative()) {
+                    event.getItemStack().shrink(1);
                 }
                 event.setCanceled(true);
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
-        }
-		if (RainbowUtil.getRainbowType(living) > 0 && (event.getItemStack().getItem() == Items.SPONGE)) {
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.SUCCESS);
-			RainbowUtil.setRainbowType(living, 0);
-            if (!event.getPlayer().isCreative()) {
-                event.getItemStack().shrink(1);
-            }
-            ItemStack wetSponge = new ItemStack(Items.WET_SPONGE);
-            if (!event.getPlayer().addItem(wetSponge)) {
-                event.getPlayer().drop(wetSponge, true);
-            }
-        }
-		if (living instanceof Rabbit rabbit && event.getItemStack().getItem() == AMItemRegistry.MUNGAL_SPORES.get()
-				&& AMConfig.bunfungusTransformation) {
-			final var random = ThreadLocalRandom.current();
-			if (!event.getEntityLiving().level.isClientSide && random.nextFloat() < 0.15F) {
-				final EntityBunfungus bunfungus = rabbit.convertTo(AMEntityRegistry.BUNFUNGUS.get(), true);
-                if (bunfungus != null) {
-                    event.getPlayer().level.addFreshEntity(bunfungus);
-                    bunfungus.setTransformsIn(EntityBunfungus.MAX_TRANSFORM_TIME);
-                }
-            } else {
-                for (int i = 0; i < 2 + random.nextInt(2); i++) {
-                    double d0 = random.nextGaussian() * 0.02D;
-                    double d1 = 0.05F + random.nextGaussian() * 0.02D;
-                    double d2 = random.nextGaussian() * 0.02D;
-                    event.getTarget().level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, event.getTarget().getRandomX(0.7F), event.getTarget().getY(0.6F), event.getTarget().getRandomZ(0.7F), d0, d1, d2);
-                }
-            }
-            if (!event.getPlayer().isCreative()) {
-                event.getItemStack().shrink(1);
-            }
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.SUCCESS);
         }
     }
 
@@ -569,24 +566,23 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
-		if (!(event.getTarget() instanceof LivingEntity living))
-			return;
-		if (event.getPlayer().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR.get()) {
-			final float f1 = 2;
-			living.knockback(f1 * 0.5F, Mth.sin(event.getPlayer().getYRot() * ((float) Math.PI / 180F)),
-					-Mth.cos(event.getPlayer().getYRot() * ((float) Math.PI / 180F)));
-        }
-		if (event.getPlayer().hasEffect(AMEffectRegistry.TIGERS_BLESSING)
-				&& !event.getTarget().isAlliedTo(event.getPlayer()) && !(event.getTarget() instanceof EntityTiger)) {
-            AABB bb = new AABB(event.getPlayer().getX() - 32, event.getPlayer().getY() - 32, event.getPlayer().getZ() - 32, event.getPlayer().getZ() + 32, event.getPlayer().getY() + 32, event.getPlayer().getZ() + 32);
-			final var tigers = event.getPlayer().level.getEntitiesOfClass(EntityTiger.class, bb,
-					EntitySelector.ENTITY_STILL_ALIVE);
-            for (EntityTiger tiger : tigers) {
-                if (!tiger.isBaby()) {
-					tiger.setTarget(living);
+		if (event.getTarget() instanceof LivingEntity living) {
+            if (event.getPlayer().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR.get()) {
+                final float f1 = 2.0F;
+                living.knockback(f1 * 0.5F, Mth.sin(event.getPlayer().getYRot() * ((float) Math.PI / 180F)),
+                        -Mth.cos(event.getPlayer().getYRot() * ((float) Math.PI / 180F)));
+            }
+            if (event.getPlayer().hasEffect(AMEffectRegistry.TIGERS_BLESSING)
+                    && !event.getTarget().isAlliedTo(event.getPlayer()) && !(event.getTarget() instanceof EntityTiger)) {
+                AABB bb = new AABB(event.getPlayer().getX() - 32, event.getPlayer().getY() - 32, event.getPlayer().getZ() - 32, event.getPlayer().getZ() + 32, event.getPlayer().getY() + 32, event.getPlayer().getZ() + 32);
+                final var tigers = event.getPlayer().level.getEntitiesOfClass(EntityTiger.class, bb,
+                        EntitySelector.ENTITY_STILL_ALIVE);
+                for (EntityTiger tiger : tigers) {
+                    if (!tiger.isBaby()) {
+                        tiger.setTarget(living);
+                    }
                 }
             }
-
         }
     }
 
