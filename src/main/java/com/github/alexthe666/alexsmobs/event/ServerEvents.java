@@ -535,27 +535,27 @@ public class ServerEvents {
 				spider.targetSelector.addGoal(4,
 						new NearestAttackableTargetGoal<>(spider, EntityFly.class, 1, true, false, null));
             }
-			if (event.getEntity() instanceof final Wolf wolf && AMConfig.wolvesAttackMoose) {
+			else if (event.getEntity() instanceof final Wolf wolf && AMConfig.wolvesAttackMoose) {
 				wolf.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(wolf, EntityMoose.class, false, null));
             }
-			if (event.getEntity() instanceof final PolarBear bear && AMConfig.polarBearsAttackSeals) {
+            else if (event.getEntity() instanceof final PolarBear bear && AMConfig.polarBearsAttackSeals) {
 				bear.targetSelector.addGoal(6,
 						new NearestAttackableTargetGoal<>(bear, EntitySeal.class, 15, true, true, null));
             }
-			if (event.getEntity() instanceof final Creeper creeper) {
+            else if (event.getEntity() instanceof final Creeper creeper) {
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntitySnowLeopard.class, 6.0F, 1.0D, 1.2D));
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntityTiger.class, 6.0F, 1.0D, 1.2D));
             }
-			if ((event.getEntity() instanceof Fox || event.getEntity() instanceof Cat
+            else if ((event.getEntity() instanceof Fox || event.getEntity() instanceof Cat
 					|| event.getEntity() instanceof Ocelot) && AMConfig.catsAndFoxesAttackJerboas) {
                 Mob mb = (Mob) event.getEntity();
 				mb.targetSelector.addGoal(6,
 						new NearestAttackableTargetGoal<>(mb, EntityJerboa.class, 45, true, true, null));
             }
-			if (event.getEntity() instanceof final Rabbit rabbit && AMConfig.bunfungusTransformation) {
+            else if (event.getEntity() instanceof final Rabbit rabbit && AMConfig.bunfungusTransformation) {
                 rabbit.goalSelector.addGoal(3, new TemptGoal(rabbit, 1.0D, Ingredient.of(AMItemRegistry.MUNGAL_SPORES.get()), false));
             }
-			if (event.getEntity() instanceof final Dolphin dolphin && AMConfig.dolphinsAttackFlyingFish) {
+            else if (event.getEntity() instanceof final Dolphin dolphin && AMConfig.dolphinsAttackFlyingFish) {
 				dolphin.targetSelector.addGoal(2,
 						new NearestAttackableTargetGoal<>(dolphin, EntityFlyingFish.class, 70, true, true, null));
             }
@@ -651,7 +651,7 @@ public class ServerEvents {
 			final var attributes = event.getEntityLiving().getAttribute(Attributes.MOVEMENT_SPEED);
 			if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS.get()
 					|| attributes.hasModifier(SAND_SPEED_BONUS)) {
-				boolean sand = player.level.getBlockState(getDownPos(player.blockPosition(), player.level))
+				final boolean sand = player.level.getBlockState(getDownPos(player.blockPosition(), player.level))
 						.is(BlockTags.SAND);
 				if (sand && !attributes.hasModifier(SAND_SPEED_BONUS)) {
 					attributes.addPermanentModifier(SAND_SPEED_BONUS);
@@ -697,12 +697,9 @@ public class ServerEvents {
             if (event.getEntityLiving().horizontalCollision && !event.getEntityLiving().isInWater()) {
                 event.getEntityLiving().fallDistance = 0.0F;
                 Vec3 motion = event.getEntityLiving().getDeltaMovement();
-                double d0 = Mth.clamp(motion.x, -0.15F, 0.15F);
-                double d1 = Mth.clamp(motion.z, -0.15F, 0.15F);
-                double d2 = 0.1D;
-                if (d2 < 0.0D && !event.getEntityLiving().getFeetBlockState().isScaffolding(event.getEntityLiving()) && event.getEntityLiving().isSuppressingSlidingDownLadder()) {
-                    d2 = 0.0D;
-                }
+                final double d0 = Mth.clamp(motion.x, -0.15F, 0.15F);
+                final double d1 = Mth.clamp(motion.z, -0.15F, 0.15F);
+                final double d2 = 0.0D;
                 motion = new Vec3(d0, d2, d1);
                 event.getEntityLiving().setDeltaMovement(motion);
             }
@@ -710,7 +707,7 @@ public class ServerEvents {
         if (event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SOMBRERO.get() && !event.getEntityLiving().level.isClientSide && AlexsMobs.isAprilFools() && event.getEntityLiving().isInWaterOrBubble()) {
             Random random = event.getEntityLiving().getRandom();
 			if (random.nextInt(245) == 0 && !EntitySeaBear.isMobSafe(event.getEntityLiving())) {
-                int dist = 32;
+                final int dist = 32;
 				final var nearbySeabears = event.getEntityLiving().level.getEntitiesOfClass(EntitySeaBear.class,
 						event.getEntityLiving().getBoundingBox().inflate(dist, dist, dist));
 				if (nearbySeabears.isEmpty()) {
@@ -718,8 +715,8 @@ public class ServerEvents {
 					final BlockPos at = event.getEntityLiving().blockPosition();
                     BlockPos farOff = null;
 					for (int i = 0; i < 15; i++) {
-						int f1 = (int) Math.signum(random.nextInt() - 0.5F);
-						int f2 = (int) Math.signum(random.nextInt() - 0.5F);
+						final int f1 = (int) Math.signum(random.nextInt() - 0.5F);
+                        final int f2 = (int) Math.signum(random.nextInt() - 0.5F);
 						final BlockPos pos1 = at.offset(f1 * (10 + random.nextInt(dist - 10)), random.nextInt(1),
 								f2 * (10 + random.nextInt(dist - 10)));
 						if (event.getEntityLiving().level.isWaterAt(pos1)) {
