@@ -121,6 +121,11 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 6,
+          "name": "alexsmobs:fish_bones"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 1,
           "name": "minecraft:turtle_egg"
         },

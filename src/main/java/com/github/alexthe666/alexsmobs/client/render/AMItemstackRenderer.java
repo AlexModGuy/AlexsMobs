@@ -239,6 +239,14 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY.get()), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
+        if(itemStackIn.getItem() == AMItemRegistry.SKELEWAG_SWORD.get()){
+            matrixStackIn.translate(0.5F, 0.5f, 0.5f);
+            if(p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || p_239207_2_ == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || p_239207_2_ == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.SKELEWAG_SWORD_HAND.get(), 1, itemStackIn.getTag()), p_239207_2_, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+            }else{
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.SKELEWAG_SWORD_INVENTORY.get(), 1, itemStackIn.getTag()), p_239207_2_, p_239207_2_ == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+            }
+        }
         //TODO reimplement
         /*
         if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR.get().asItem()){

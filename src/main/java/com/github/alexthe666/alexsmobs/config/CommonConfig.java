@@ -132,7 +132,6 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue laviathanSpawnRolls;
     public final ForgeConfigSpec.IntValue cosmawSpawnWeight;
     public final ForgeConfigSpec.IntValue cosmawSpawnRolls;
-
     public final ForgeConfigSpec.IntValue toucanSpawnWeight;
     public final ForgeConfigSpec.IntValue toucanSpawnRolls;
     public final ForgeConfigSpec.IntValue manedWolfSpawnWeight;
@@ -168,6 +167,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue catfishSpawnRolls;
     public final ForgeConfigSpec.IntValue flyingFishSpawnWeight;
     public final ForgeConfigSpec.IntValue flyingFishSpawnRolls;
+    public final ForgeConfigSpec.IntValue skelewagSpawnWeight;
+    public final ForgeConfigSpec.IntValue skelewagSpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -210,6 +211,7 @@ public class CommonConfig {
     public ForgeConfigSpec.BooleanValue bunfungusTransformation;
     public ForgeConfigSpec.BooleanValue restrictPupfishSpawns;
     public ForgeConfigSpec.IntValue pupfishChunkSpawnDistance;
+    public ForgeConfigSpec.BooleanValue restrictSkelewagSpawns;
     public ForgeConfigSpec.BooleanValue superSecretSettings;
     public ForgeConfigSpec.BooleanValue addLootToChests;
 
@@ -412,6 +414,8 @@ public class CommonConfig {
         catfishSpawnRolls = buildInt(builder, "catfishSpawnRolls", "spawns", AMConfig.catfishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         flyingFishSpawnWeight = buildInt(builder, "flyingFishSpawnWeight", "spawns", AMConfig.flyingFishSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         flyingFishSpawnRolls = buildInt(builder, "flyingFishSpawnRolls", "spawns", AMConfig.flyingFishSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        skelewagSpawnWeight = buildInt(builder, "skelewagSpawnWeight", "spawns", AMConfig.skelewagSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        skelewagSpawnRolls = buildInt(builder, "skelewagSpawnRolls", "spawns", AMConfig.skelewagSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "uniqueSpawning", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
@@ -420,6 +424,7 @@ public class CommonConfig {
         leafcutterAnthillSpawnChance = buildDouble(builder, "leafcutterAnthillSpawnChance", "uniqueSpawning", AMConfig.leafcutterAnthillSpawnChance, 0D, 1D, "Percent chance for leafcutter anthills to spawn as world gen in each chunk. Set to zero to disable spawning.");
         restrictPupfishSpawns = buildBoolean(builder, "restrictPupfishSpawns", "uniqueSpawning", true, "Whether to restrict all pupfish spawns to one chunk (similar to real life) or have them only obey their spawn config.");
         pupfishChunkSpawnDistance = buildInt(builder, "pupfishChunkSpawnDistance", "uniqueSpawning", AMConfig.pupfishChunkSpawnDistance, 2, 1000000000, "The maximum distance a pupfish spawn chunk is from world spawn(0, 0) in blocks.");
+        restrictSkelewagSpawns = buildBoolean(builder, "restrictSkelewagSpawns", "uniqueSpawning", true, "Whether to restrict all skelewag spawns to shipwreck structures.");
         builder.push("dangerZone");
         superSecretSettings = buildBoolean(builder, "superSecretSettings", "dangerZone", false, "Its been so long...");
     }
