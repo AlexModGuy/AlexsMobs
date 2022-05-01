@@ -15,122 +15,144 @@ import net.minecraft.client.model.geom.ModelPart;
 public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
     private final AdvancedModelBox root;
     private final AdvancedModelBox body;
+    private final AdvancedModelBox left_leg;
+    private final AdvancedModelBox left_foot;
+    private final AdvancedModelBox right_leg;
+    private final AdvancedModelBox right_foot;
+    private final AdvancedModelBox left_arm;
+    private final AdvancedModelBox left_hand;
+    private final AdvancedModelBox right_arm;
+    private final AdvancedModelBox right_hand;
+    private final AdvancedModelBox tail1;
+    private final AdvancedModelBox tail2;
+    private final AdvancedModelBox tail3;
     private final AdvancedModelBox neck;
     private final AdvancedModelBox head;
-    private final AdvancedModelBox snout;
-    private final AdvancedModelBox TeethLTop;
-    private final AdvancedModelBox TeethRTop;
+    private final AdvancedModelBox crown;
+    private final AdvancedModelBox left_upperteeth;
+    private final AdvancedModelBox right_upperteeth;
     private final AdvancedModelBox jaw;
-    private final AdvancedModelBox jaw2;
-    private final AdvancedModelBox TeethLBottom;
-    private final AdvancedModelBox TeethRBottom;
-    private final AdvancedModelBox LLegFront;
-    private final AdvancedModelBox RLegFront;
-    private final AdvancedModelBox LLegBack;
-    private final AdvancedModelBox RLegBack;
-    private final AdvancedModelBox Tail1;
-    private final AdvancedModelBox Tail2;
-    private final AdvancedModelBox Tail3;
+    private final AdvancedModelBox left_lowerteeth;
+    private final AdvancedModelBox right_lowerteeth;
     private ModelAnimator animator;
 
     public ModelCrocodile() {
-        texWidth = 128;
-        texHeight = 128;
+        texWidth = 256;
+        texHeight = 256;
 
         root = new AdvancedModelBox(this);
-        root.setPos(0.0F, 24.0F, 0.0F);
+        root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
         body = new AdvancedModelBox(this);
-        body.setPos(0.0F, -9.375F, 0.125F);
+        body.setRotationPoint(0.0F, -9.0F, 0.0F);
         root.addChild(body);
-        body.setTextureOffset(0, 0).addBox(-8.0F, -4.625F, -14.125F, 16.0F, 11.0F, 35.0F, 0.0F, false);
+        body.setTextureOffset(0, 0).addBox(-8.0F, -7.0F, -13.0F, 16.0F, 12.0F, 27.0F, 0.0F, false);
+
+        left_leg = new AdvancedModelBox(this);
+        left_leg.setRotationPoint(8.0F, 3.0F, 10.0F);
+        body.addChild(left_leg);
+        left_leg.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -5.0F, 5.0F, 8.0F, 8.0F, 0.0F, false);
+
+        left_foot = new AdvancedModelBox(this);
+        left_foot.setRotationPoint(2.0F, 6.0F, -3.0F);
+        left_leg.addChild(left_foot);
+        left_foot.setTextureOffset(45, 42).addBox(-2.0F, -0.01F, -5.0F, 5.0F, 0.0F, 6.0F, 0.0F, false);
+
+        right_leg = new AdvancedModelBox(this);
+        right_leg.setRotationPoint(-8.0F, 3.0F, 10.0F);
+        body.addChild(right_leg);
+        right_leg.setTextureOffset(0, 0).addBox(-3.0F, -2.0F, -5.0F, 5.0F, 8.0F, 8.0F, 0.0F, true);
+
+        right_foot = new AdvancedModelBox(this);
+        right_foot.setRotationPoint(-2.0F, 6.0F, -3.0F);
+        right_leg.addChild(right_foot);
+        right_foot.setTextureOffset(45, 42).addBox(-3.0F, -0.01F, -5.0F, 5.0F, 0.0F, 6.0F, 0.0F, true);
+
+        left_arm = new AdvancedModelBox(this);
+        left_arm.setRotationPoint(9.0F, 1.0F, -9.0F);
+        body.addChild(left_arm);
+        left_arm.setTextureOffset(0, 40).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 10.0F, 4.0F, 0.0F, false);
+
+        left_hand = new AdvancedModelBox(this);
+        left_hand.setRotationPoint(0.0F, 8.0F, 1.0F);
+        left_arm.addChild(left_hand);
+        left_hand.setTextureOffset(0, 17).addBox(-2.0F, -0.01F, -7.0F, 6.0F, 0.0F, 7.0F, 0.0F, false);
+
+        right_arm = new AdvancedModelBox(this);
+        right_arm.setRotationPoint(-9.0F, 1.0F, -9.0F);
+        body.addChild(right_arm);
+        right_arm.setTextureOffset(0, 40).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 10.0F, 4.0F, 0.0F, true);
+
+        right_hand = new AdvancedModelBox(this);
+        right_hand.setRotationPoint(0.0F, 8.0F, 1.0F);
+        right_arm.addChild(right_hand);
+        right_hand.setTextureOffset(0, 17).addBox(-4.0F, -0.01F, -7.0F, 6.0F, 0.0F, 7.0F, 0.0F, true);
+
+        tail1 = new AdvancedModelBox(this);
+        tail1.setRotationPoint(0.0F, 0.0F, 16.0F);
+        body.addChild(tail1);
+        tail1.setTextureOffset(0, 40).addBox(-5.0F, -5.0F, -2.0F, 10.0F, 10.0F, 24.0F, 0.0F, false);
+        tail1.setTextureOffset(45, 51).addBox(-5.0F, -7.0F, -2.0F, 10.0F, 2.0F, 24.0F, 0.0F, false);
+
+        tail2 = new AdvancedModelBox(this);
+        tail2.setRotationPoint(0.0F, 1.0F, 24.0F);
+        tail1.addChild(tail2);
+        tail2.setTextureOffset(62, 15).addBox(-3.0F, -3.0F, -2.0F, 6.0F, 7.0F, 25.0F, 0.0F, false);
+        tail2.setTextureOffset(43, 78).addBox(-2.0F, -5.0F, -2.0F, 4.0F, 2.0F, 20.0F, 0.0F, false);
+
+        tail3 = new AdvancedModelBox(this);
+        tail3.setRotationPoint(0.0F, 0.0F, 18.0F);
+        tail2.addChild(tail3);
+        tail3.setTextureOffset(0, 75).addBox(0.0F, -6.0F, 0.0F, 0.0F, 10.0F, 21.0F, 0.0F, false);
 
         neck = new AdvancedModelBox(this);
-        neck.setPos(0.0F, 1.125F, -14.375F);
+        neck.setRotationPoint(0.0F, 0.0F, -15.0F);
         body.addChild(neck);
-        neck.setTextureOffset(70, 47).addBox(-6.0F, -4.75F, -8.75F, 12.0F, 9.0F, 9.0F, 0.0F, false);
+        neck.setTextureOffset(80, 89).addBox(-6.0F, -5.0F, -10.0F, 12.0F, 10.0F, 12.0F, 0.0F, false);
+        neck.setTextureOffset(60, 0).addBox(-4.0F, -6.0F, -10.0F, 8.0F, 1.0F, 12.0F, 0.0F, false);
 
         head = new AdvancedModelBox(this);
-        head.setPos(0.0F, -0.9167F, -8.4167F);
+        head.setRotationPoint(0.0F, 1.0F, -11.0F);
         neck.addChild(head);
-        head.setTextureOffset(32, 90).addBox(-5.0F, -3.8333F, -9.3333F, 10.0F, 5.0F, 9.0F, 0.0F, false);
+        head.setTextureOffset(72, 78).addBox(-5.0F, -4.0F, -5.0F, 10.0F, 4.0F, 6.0F, 0.0F, false);
+        head.setTextureOffset(60, 14).addBox(-4.0F, -5.0F, -5.0F, 8.0F, 1.0F, 5.0F, 0.0F, false);
+        head.setTextureOffset(22, 78).addBox(-3.0F, -4.0F, -17.0F, 6.0F, 4.0F, 12.0F, 0.0F, false);
 
-        snout = new AdvancedModelBox(this);
-        snout.setPos(0.0F, 1.1667F, -1.3333F);
-        head.addChild(snout);
-        snout.setTextureOffset(0, 0).addBox(-3.0F, -4.0F, -19.0F, 6.0F, 4.0F, 11.0F, 0.0F, false);
+        crown = new AdvancedModelBox(this);
+        crown.setRotationPoint(0.0F, -5.0F, -2.0F);
+        head.addChild(crown);
+        crown.setTextureOffset(49, 54).addBox(-1.5F, -5.0F, -2.0F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
-        TeethLTop = new AdvancedModelBox(this);
-        TeethLTop.setPos(2.1F, -0.4F, -13.4F);
-        snout.addChild(TeethLTop);
-        setRotationAngle(TeethLTop, 0.0F, 0.0F, -0.1309F);
-        TeethLTop.setTextureOffset(0, 16).addBox(-2.1F, 0.1F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, false);
+        left_upperteeth = new AdvancedModelBox(this);
+        left_upperteeth.setRotationPoint(0.0F, 0.0F, -17.0F);
+        head.addChild(left_upperteeth);
+        setRotationAngle(left_upperteeth, 0.0F, 0.0F, -0.0873F);
+        left_upperteeth.setTextureOffset(104, 23).addBox(0.0F, 0.0F, -0.025F, 3.0F, 2.0F, 11.0F, 0.0F, false);
 
-        TeethRTop = new AdvancedModelBox(this);
-        TeethRTop.setPos(-2.1F, -0.4F, -13.4F);
-        snout.addChild(TeethRTop);
-        setRotationAngle(TeethRTop, 0.0F, 0.0F, 0.1309F);
-        TeethRTop.setTextureOffset(0, 16).addBox(-0.9F, 0.1F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, true);
+        right_upperteeth = new AdvancedModelBox(this);
+        right_upperteeth.setRotationPoint(0.0F, 0.0F, -17.0F);
+        head.addChild(right_upperteeth);
+        setRotationAngle(right_upperteeth, 0.0F, 0.0F, 0.0873F);
+        right_upperteeth.setTextureOffset(104, 23).addBox(-3.0F, 0.0F, -0.025F, 3.0F, 2.0F, 11.0F, 0.0F, true);
 
         jaw = new AdvancedModelBox(this);
-        jaw.setPos(0.0F, 0.9167F, -3.0833F);
+        jaw.setRotationPoint(0.0F, 0.0F, 0.0F);
         head.addChild(jaw);
-        jaw.setTextureOffset(0, 78).addBox(-5.5F, -0.75F, -6.05F, 11.0F, 4.0F, 9.0F, 0.0F, false);
+        jaw.setTextureOffset(100, 7).addBox(-5.5F, -2.0F, -6.0F, 11.0F, 5.0F, 7.0F, 0.001F, false);
+        jaw.setTextureOffset(90, 48).addBox(-3.0F, 0.0F, -17.0F, 6.0F, 3.0F, 11.0F, 0.0F, false);
 
-        jaw2 = new AdvancedModelBox(this);
-        jaw2.setPos(0.5F, 6.25F, 1.75F);
-        jaw.addChild(jaw2);
-        jaw2.setTextureOffset(0, 93).addBox(-3.5F, -6.0F, -18.8F, 6.0F, 3.0F, 12.0F, 0.0F, false);
+        left_lowerteeth = new AdvancedModelBox(this);
+        left_lowerteeth.setRotationPoint(0.0F, 0.0F, -17.0F);
+        jaw.addChild(left_lowerteeth);
+        setRotationAngle(left_lowerteeth, 0.0F, 0.0F, 0.0873F);
+        left_lowerteeth.setTextureOffset(105, 67).addBox(0.0F, -2.0F, -0.025F, 3.0F, 2.0F, 11.0F, 0.0F, false);
 
-        TeethLBottom = new AdvancedModelBox(this);
-        TeethLBottom.setPos(1.0F, -6.7F, -13.2F);
-        jaw2.addChild(TeethLBottom);
-        setRotationAngle(TeethLBottom, 0.0F, 0.0F, 0.1309F);
-        TeethLBottom.setTextureOffset(93, 66).addBox(-1.4F, -0.9F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, false);
-
-        TeethRBottom = new AdvancedModelBox(this);
-        TeethRBottom.setPos(-2.0F, -6.7F, -13.2F);
-        jaw2.addChild(TeethRBottom);
-        setRotationAngle(TeethRBottom, 0.0F, 0.0F, -0.1309F);
-        TeethRBottom.setTextureOffset(93, 66).addBox(-1.6F, -0.9F, -5.5F, 3.0F, 2.0F, 11.0F, 0.0F, true);
-
-        LLegFront = new AdvancedModelBox(this);
-        LLegFront.setPos(8.0F, 0.875F, -9.625F);
-        body.addChild(LLegFront);
-        LLegFront.setTextureOffset(0, 47).addBox(-2.0F, -2.5F, -2.5F, 4.0F, 11.0F, 5.0F, 0.0F, false);
-
-        RLegFront = new AdvancedModelBox(this);
-        RLegFront.setPos(-8.0F, 0.875F, -9.625F);
-        body.addChild(RLegFront);
-        RLegFront.setTextureOffset(0, 47).addBox(-2.0F, -2.5F, -2.5F, 4.0F, 11.0F, 5.0F, 0.0F, true);
-
-        LLegBack = new AdvancedModelBox(this);
-        LLegBack.setPos(8.0F, 0.875F, 13.875F);
-        body.addChild(LLegBack);
-        LLegBack.setTextureOffset(65, 99).addBox(-2.0F, -2.5F, -3.0F, 4.0F, 11.0F, 6.0F, 0.0F, false);
-
-        RLegBack = new AdvancedModelBox(this);
-        RLegBack.setPos(-8.0F, 0.875F, 13.875F);
-        body.addChild(RLegBack);
-        RLegBack.setTextureOffset(65, 99).addBox(-2.0F, -2.5F, -3.0F, 4.0F, 11.0F, 6.0F, 0.0F, true);
-
-        Tail1 = new AdvancedModelBox(this);
-        Tail1.setPos(0.0F, 0.875F, 23.375F);
-        body.addChild(Tail1);
-        Tail1.setTextureOffset(0, 47).addBox(-5.0F, -4.5F, -2.5F, 10.0F, 10.0F, 20.0F, 0.0F, false);
-
-        Tail2 = new AdvancedModelBox(this);
-        Tail2.setPos(0.0F, 0.25F, 19.5F);
-        Tail1.addChild(Tail2);
-        Tail2.setTextureOffset(68, 0).addBox(-3.0F, -3.75F, -2.0F, 6.0F, 9.0F, 18.0F, 0.0F, false);
-        Tail2.setTextureOffset(72, 102).addBox(-3.0F, -6.75F, -2.0F, 6.0F, 3.0F, 18.0F, 0.0F, false);
-
-        Tail3 = new AdvancedModelBox(this);
-        Tail3.setPos(0.0F, 1.25F, 17.0F);
-        Tail2.addChild(Tail3);
-        Tail3.setTextureOffset(70, 70).addBox(0.0F, -10.0F, -1.0F, 0.0F, 6.0F, 22.0F, 0.0F, false);
-        Tail3.setTextureOffset(39, 56).addBox(-2.0F, -4.0F, -1.0F, 4.0F, 8.0F, 22.0F, 0.0F, false);
+        right_lowerteeth = new AdvancedModelBox(this);
+        right_lowerteeth.setRotationPoint(0.0F, 0.0F, -17.0F);
+        jaw.addChild(right_lowerteeth);
+        setRotationAngle(right_lowerteeth, 0.0F, 0.0F, -0.0873F);
+        right_lowerteeth.setTextureOffset(105, 67).addBox(-3.0F, -2.0F, -0.025F, 3.0F, 2.0F, 11.0F, 0.0F, true);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }
@@ -149,10 +171,10 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         animator.move(body, 0, 0, -14);
         animator.rotate(head, (float)Math.toRadians(-15), 0, 0);
         animator.rotate(jaw, (float)Math.toRadians(20), 0, 0);
-        animator.rotate(RLegFront, (float)Math.toRadians(45), 0, 0);
-        animator.rotate(LLegFront, (float)Math.toRadians(45), 0, 0);
-        animator.rotate(RLegBack, (float)Math.toRadians(45), 0, 0);
-        animator.rotate(LLegBack, (float)Math.toRadians(45), 0, 0);
+        animator.rotate(right_arm, (float)Math.toRadians(45), 0, 0);
+        animator.rotate(left_arm, (float)Math.toRadians(45), 0, 0);
+        animator.rotate(right_leg, (float)Math.toRadians(45), 0, 0);
+        animator.rotate(left_leg, (float)Math.toRadians(45), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         animator.move(body, 0, 0, 3);
@@ -178,7 +200,6 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         float swimSpeed = 1.0F;
         float swimDegree = 0.2F;
         float partialTick = Minecraft.getInstance().getFrameTime();
-        float groundProgress = entityIn.prevGroundProgress + (entityIn.groundProgress - entityIn.prevGroundProgress) * partialTick;
         float swimProgress = entityIn.prevSwimProgress + (entityIn.swimProgress - entityIn.prevSwimProgress) * partialTick;
         float baskProgress = entityIn.prevBaskingProgress + (entityIn.baskingProgress - entityIn.prevBaskingProgress) * partialTick;
         float grabProgress = entityIn.prevGrabProgress + (entityIn.grabProgress - entityIn.prevGrabProgress) * partialTick;
@@ -189,57 +210,66 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         progressRotationPrev(head, grabProgress, (float) Math.toRadians(-10), 0, 0, 10F);
         if (entityIn.baskingType == 0) {
             progressRotationPrev(body, baskProgress, 0, (float) Math.toRadians(-7), 0, 10F);
-            progressRotationPrev(Tail1, baskProgress, 0, (float) Math.toRadians(30), 0, 10F);
-            progressRotationPrev(Tail2, baskProgress, 0, (float) Math.toRadians(20), 0, 10F);
-            progressRotationPrev(Tail3, baskProgress, 0, (float) Math.toRadians(30), 0, 10F);
+            progressRotationPrev(tail1, baskProgress, 0, (float) Math.toRadians(30), 0, 10F);
+            progressRotationPrev(tail2, baskProgress, 0, (float) Math.toRadians(20), 0, 10F);
+            progressRotationPrev(tail3, baskProgress, 0, (float) Math.toRadians(30), 0, 10F);
             progressRotationPrev(neck, baskProgress, 0, (float) Math.toRadians(-10), 0, 10F);
             progressRotationPrev(head, baskProgress, (float) Math.toRadians(-60), (float) Math.toRadians(-10), 0, 10F);
             progressRotationPrev(jaw, baskProgress, (float) Math.toRadians(60), 0, 0, 10F);
         } else if (entityIn.baskingType == 1) {
             progressRotationPrev(body, baskProgress, 0, (float) Math.toRadians(7), 0, 10F);
-            progressRotationPrev(Tail1, baskProgress, 0, (float) Math.toRadians(-30), 0, 10F);
-            progressRotationPrev(Tail2, baskProgress, 0, (float) Math.toRadians(-20), 0, 10F);
-            progressRotationPrev(Tail3, baskProgress, 0, (float) Math.toRadians(-30), 0, 10F);
+            progressRotationPrev(tail1, baskProgress, 0, (float) Math.toRadians(-30), 0, 10F);
+            progressRotationPrev(tail2, baskProgress, 0, (float) Math.toRadians(-20), 0, 10F);
+            progressRotationPrev(tail3, baskProgress, 0, (float) Math.toRadians(-30), 0, 10F);
             progressRotationPrev(neck, baskProgress, 0, (float) Math.toRadians(10), 0, 10F);
             progressRotationPrev(head, baskProgress, (float) Math.toRadians(-60), (float) Math.toRadians(10), 0, 10F);
             progressRotationPrev(jaw, baskProgress, (float) Math.toRadians(60), 0, 0, 10F);
         }
-        progressPositionPrev(Tail1, baskProgress, 0, 0, -3, 10F);
-        progressPositionPrev(head, baskProgress, 0, 3, -1, 10F);
-        progressPositionPrev(body, groundProgress, 0, 2, 0, 10F);
-        progressPositionPrev(neck, groundProgress, 0, 1, 0, 10F);
-        progressPositionPrev(jaw, groundProgress, 0, 0, 1, 10F);
-        progressPositionPrev(RLegFront, groundProgress, 0, 2, 0, 10F);
-        progressPositionPrev(LLegFront, groundProgress, 0, 2, 0, 10F);
-        progressPositionPrev(RLegBack, groundProgress, 0, 2, 0, 10F);
-        progressPositionPrev(LLegBack, groundProgress, 0, 2, 0, 10F);
-        progressRotationPrev(RLegFront, groundProgress, (float) Math.toRadians(-25), 0, (float) Math.toRadians(60), 10F);
-        progressRotationPrev(LLegFront, groundProgress, (float) Math.toRadians(-25), 0, (float) Math.toRadians(-60), 10F);
-        progressRotationPrev(RLegBack, groundProgress, (float) Math.toRadians(25), 0, (float) Math.toRadians(60), 10F);
-        progressRotationPrev(LLegBack, groundProgress, (float) Math.toRadians(25), 0, (float) Math.toRadians(-60), 10F);
-        progressPositionPrev(RLegFront, swimProgress, 0, 2, 0, 10F);
-        progressRotationPrev(RLegFront, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(90), 10F);
-        progressPositionPrev(LLegFront, swimProgress, 0, 2, 0, 10F);
-        progressRotationPrev(LLegFront, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(-90), 10F);
-        progressPositionPrev(RLegBack, swimProgress, 0, 2, 0, 10F);
-        progressRotationPrev(RLegBack, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(90), 10F);
-        progressPositionPrev(LLegBack, swimProgress, 0, 2, 0, 10F);
-        progressRotationPrev(LLegBack, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(-90), 10F);
-        AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{Tail1, Tail2, Tail3};
+        progressPositionPrev(body, baskProgress, 0, 3, -3, 10F);
+        progressPositionPrev(tail1, baskProgress, 0, 0, -3, 10F);
+        progressPositionPrev(right_leg, baskProgress, 0, -3, 0, 10F);
+        progressPositionPrev(left_leg, baskProgress, 0, -3, 0, 10F);
+        progressPositionPrev(right_arm, baskProgress, 0, -3, 0, 10F);
+        progressPositionPrev(left_arm, baskProgress, 0, -3, 0, 10F);
+        progressPositionPrev(right_arm, swimProgress, 0, 2, 0, 10F);
+        progressRotationPrev(left_arm, baskProgress, 0, 0, (float) Math.toRadians(-30), 10F);
+        progressRotationPrev(left_hand, baskProgress, 0, 0, (float) Math.toRadians(30), 10F);
+        progressRotationPrev(right_arm, baskProgress, 0, 0, (float) Math.toRadians(30), 10F);
+        progressRotationPrev(right_hand, baskProgress, 0, 0, (float) Math.toRadians(-30), 10F);
+        progressRotationPrev(left_leg, baskProgress, 0, 0, (float) Math.toRadians(-30), 10F);
+        progressRotationPrev(left_foot, baskProgress, 0, 0, (float) Math.toRadians(30), 10F);
+        progressRotationPrev(right_leg, baskProgress, 0, 0, (float) Math.toRadians(30), 10F);
+        progressRotationPrev(right_foot, baskProgress, 0, 0, (float) Math.toRadians(-30), 10F);
+
+        progressRotationPrev(right_arm, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(90), 10F);
+        progressPositionPrev(left_arm, swimProgress, 0, 2, 0, 10F);
+        progressRotationPrev(left_arm, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(-90), 10F);
+        progressPositionPrev(right_leg, swimProgress, 0, 2, 0, 10F);
+        progressRotationPrev(right_leg, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(90), 10F);
+        progressRotationPrev(left_leg, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(-90), 10F);
+        progressPositionPrev(left_foot, swimProgress, -2, 0, 0, 10F);
+        progressRotationPrev(left_foot, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
+        progressPositionPrev(right_foot, swimProgress, 2, 0, 0, 10F);
+        progressRotationPrev(right_foot, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
+        progressPositionPrev(left_hand, swimProgress, -1, 0, 0, 10F);
+        progressRotationPrev(left_hand, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
+        progressPositionPrev(right_hand, swimProgress, 1, 0, 0, 10F);
+        progressRotationPrev(right_hand, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
+        AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{tail1, tail2, tail3};
         if (swimAnimate) {
-            this.walk(RLegFront, swimSpeed, swimDegree, false, 0F, -0.25F, limbSwing, limbSwingAmount);
-            this.walk(LLegFront, swimSpeed, swimDegree, false, 0F, -0.25F, limbSwing, limbSwingAmount);
-            this.walk(RLegBack, swimSpeed, swimDegree, true, 0F, 0.25F, limbSwing, limbSwingAmount);
-            this.walk(LLegBack, swimSpeed, swimDegree, true, 0F, 0.25F, limbSwing, limbSwingAmount);
+            this.walk(right_arm, swimSpeed, swimDegree, false, 0F, -0.25F, limbSwing, limbSwingAmount);
+            this.walk(left_arm, swimSpeed, swimDegree, false, 0F, -0.25F, limbSwing, limbSwingAmount);
+            this.walk(right_leg, swimSpeed, swimDegree, true, 0F, 0.25F, limbSwing, limbSwingAmount);
+            this.walk(left_leg, swimSpeed, swimDegree, true, 0F, 0.25F, limbSwing, limbSwingAmount);
             this.swing(body, swimSpeed, swimDegree * 0.7F, false, 3F, 0F, limbSwing, limbSwingAmount);
             this.swing(neck, swimSpeed, swimDegree * 0.5F, true, 2F, 0F, limbSwing, limbSwingAmount);
             this.swing(head, swimSpeed, swimDegree * 0.3F, true, 2F, 0F, limbSwing, limbSwingAmount);
             this.chainSwing(tailBoxes, swimSpeed, swimDegree * 2F, -2.5F, limbSwing, limbSwingAmount);
         } else {
-            this.walk(RLegFront, walkSpeed, walkDegree, false, 0F, 0.25F, limbSwing, limbSwingAmount);
-            this.walk(LLegFront, walkSpeed, walkDegree, true, 0F, -0.25F, limbSwing, limbSwingAmount);
-            this.walk(RLegBack, walkSpeed, walkDegree, true, 0F, 0.25F, limbSwing, limbSwingAmount);
-            this.walk(LLegBack, walkSpeed, walkDegree, false, 0F, -0.25F, limbSwing, limbSwingAmount);
+            this.walk(right_arm, walkSpeed, walkDegree, false, 0F, 0.25F, limbSwing, limbSwingAmount);
+            this.walk(left_arm, walkSpeed, walkDegree, true, 0F, -0.25F, limbSwing, limbSwingAmount);
+            this.walk(right_leg, walkSpeed, walkDegree, true, 0F, 0.25F, limbSwing, limbSwingAmount);
+            this.walk(left_leg, walkSpeed, walkDegree, false, 0F, -0.25F, limbSwing, limbSwingAmount);
             this.swing(body, walkSpeed, walkDegree * 0.1F, false, 3F, 0F, limbSwing, limbSwingAmount);
             this.swing(neck, walkSpeed, walkDegree * 0.1F, false, 2F, 0F, limbSwing, limbSwingAmount);
             this.chainSwing(tailBoxes, walkSpeed, walkDegree * 0.3F, -2.5F, limbSwing, limbSwingAmount);
@@ -258,7 +288,7 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
 
     @Override
     public Iterable<AdvancedModelBox> getAllParts() {
-        return ImmutableList.of(root, body, neck, head, snout, TeethLTop, TeethRTop, jaw, jaw2, TeethLBottom, TeethRBottom, LLegFront, RLegFront, LLegBack, RLegBack, Tail1, Tail2, Tail3);
+        return ImmutableList.of(root, body, neck, head, jaw, left_arm, right_arm, left_leg, right_leg, tail1, tail2, tail3, crown, left_foot, right_foot, left_hand, right_hand, left_upperteeth, right_upperteeth, left_lowerteeth, right_lowerteeth);
     }
 
     public void renderToBuffer(PoseStack matrixStackIn, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {

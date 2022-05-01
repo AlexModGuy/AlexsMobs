@@ -69,6 +69,9 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.FLYING_FISH_MATERIAL) {
             tooltip.add(new TranslatableComponent("item.alexsmobs.flying_fish_boots.desc").withStyle(ChatFormatting.GRAY));
         }
+        if (this.material == AMItemRegistry.NOVELTY_HAT_MATERIAL) {
+            tooltip.add(new TranslatableComponent("item.alexsmobs.novelty_hat.desc").withStyle(ChatFormatting.GRAY));
+        }
     }
 
     private void buildCrocAttributes(AMArmorMaterial materialIn) {
@@ -149,10 +152,12 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/emu_leggings.png";
         } else if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/froststalker_helmet.png";
-        }else if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
+        } else if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
             return "alexsmobs:textures/armor/rocky_chestplate.png";
-        }else if (this.material == AMItemRegistry.FLYING_FISH_MATERIAL) {
+        } else if (this.material == AMItemRegistry.FLYING_FISH_MATERIAL) {
             return "alexsmobs:textures/armor/flying_fish_boots.png";
+        } else if (this.material == AMItemRegistry.NOVELTY_HAT_MATERIAL) {
+            return "alexsmobs:textures/armor/novelty_hat.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }

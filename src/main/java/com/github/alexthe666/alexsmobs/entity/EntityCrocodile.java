@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -668,6 +669,11 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     @Override
     public Animation[] getAnimations() {
         return new Animation[]{ANIMATION_LUNGE, ANIMATION_DEATHROLL};
+    }
+
+    public boolean isCrowned() {
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        return s != null && (s.toLowerCase().contains("crown") || s.toLowerCase().contains("king") || s.toLowerCase().contains("rool"));
     }
 
     static class MateGoal extends BreedGoal {

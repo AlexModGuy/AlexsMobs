@@ -22,13 +22,13 @@ public class ItemSkelewagSword extends SwordItem {
     public ItemSkelewagSword(Item.Properties props) {
         super(Tiers.IRON, 2, 0, props);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)5.5F, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)3.5F, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)0, AttributeModifier.Operation.ADDITION));
         this.skelewagModifiers = builder.build();
     }
 
     public float getDamage() {
-        return 5.5F;
+        return 3.5F;
     }
 
     @Override
