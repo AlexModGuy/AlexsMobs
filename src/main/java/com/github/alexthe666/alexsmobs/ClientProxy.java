@@ -363,6 +363,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, ParticleBunfungusTransformation.Factory::new);
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.FUNGUS_BUBBLE, ParticleFungusBubble.Factory::new);
         Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BEAR_FREDDY, new ParticleBearFreddy.Factory());
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SUNBIRD_FEATHER, ParticleSunbirdFeather.Factory::new);
     }
 
 
