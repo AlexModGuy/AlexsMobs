@@ -84,10 +84,11 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> bunfungus = Pair.of("alexsmobs:bunfungus_spawns", DefaultBiomes.MUNGUS);
 	public static Pair<String, SpawnBiomeData> bison = Pair.of("alexsmobs:bison_spawns", DefaultBiomes.BISON);
 	public static Pair<String, SpawnBiomeData> giant_squid = Pair.of("alexsmobs:giant_squid_spawns", DefaultBiomes.GIANT_SQUID);
-	public static Pair<String, SpawnBiomeData> devils_hole_pupfish = Pair.of("alexsmobs:devils_hole_pupfish", DefaultBiomes.ALL_OVERWORLD);
-	public static Pair<String, SpawnBiomeData> catfish = Pair.of("alexsmobs:catfish", DefaultBiomes.CATFISH);
-	public static Pair<String, SpawnBiomeData> catfish_huge = Pair.of("alexsmobs:catfish_huge", DefaultBiomes.LARGE_CATFISH);
-	public static Pair<String, SpawnBiomeData> flying_fish = Pair.of("alexsmobs:flying_fish", DefaultBiomes.FLYING_FISH);
+	public static Pair<String, SpawnBiomeData> devils_hole_pupfish = Pair.of("alexsmobs:devils_hole_pupfish_spawns", DefaultBiomes.ALL_OVERWORLD);
+	public static Pair<String, SpawnBiomeData> catfish = Pair.of("alexsmobs:catfish_spawns", DefaultBiomes.CATFISH);
+	public static Pair<String, SpawnBiomeData> catfish_huge = Pair.of("alexsmobs:catfish_huge_spawns", DefaultBiomes.LARGE_CATFISH);
+	public static Pair<String, SpawnBiomeData> flying_fish = Pair.of("alexsmobs:flying_fish_spawns", DefaultBiomes.FLYING_FISH);
+	public static Pair<String, SpawnBiomeData> skelewag = Pair.of("alexsmobs:skelewag_spawns", DefaultBiomes.SKELEWAG);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

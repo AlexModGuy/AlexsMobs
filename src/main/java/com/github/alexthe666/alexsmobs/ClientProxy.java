@@ -199,6 +199,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.DEVILS_HOLE_PUPFISH.get(), RenderDevilsHolePupfish::new);
         EntityRenderers.register(AMEntityRegistry.CATFISH.get(), RenderCatfish::new);
         EntityRenderers.register(AMEntityRegistry.FLYING_FISH.get(), RenderFlyingFish::new);
+        EntityRenderers.register(AMEntityRegistry.SKELEWAG.get(), RenderSkelewag::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try {
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -223,6 +224,9 @@ public class ClientProxy extends CommonProxy {
                     return 1.0F;
                 }
                 return 0.0F;
+            });
+            ItemProperties.register(AMItemRegistry.SKELEWAG_SWORD.get(), new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_, j) -> {
+                return p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F;
             });
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");

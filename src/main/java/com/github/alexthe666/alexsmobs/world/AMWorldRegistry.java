@@ -274,6 +274,9 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.flying_fish, event.getCategory(), event.getName()) && AMConfig.flyingFishSpawnWeight > 0) {
             event.getSpawns().getSpawner(MobCategory.WATER_AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.FLYING_FISH.get(), AMConfig.flyingFishSpawnWeight, 3, 6));
         }
+        if (testBiome(BiomeConfig.skelewag, event.getCategory(), event.getName()) && AMConfig.skelewagSpawnWeight > 0 && !AMConfig.restrictSkelewagSpawns) {
+            event.getSpawns().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 2, 3));
+        }
     }
 
     private static <C extends FeatureConfiguration, F extends Feature<C>> F registerFeature(String name, F eature) {

@@ -605,6 +605,12 @@ public class ServerEvents {
                 event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
             }
         }
+        if (AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0) {
+            if (event.getStructure() == StructureFeature.SHIPWRECK) {
+                event.setInsideOnly(false);
+                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
+            }
+        }
     }
 
     @SubscribeEvent
