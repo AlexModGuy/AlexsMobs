@@ -6,21 +6,28 @@ import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
 import com.github.alexthe666.citadel.server.generation.GenerationSettingsManager;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Holder;
+import net.minecraft.data.worldgen.StructureFeatures;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,7 +43,10 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
@@ -269,6 +279,45 @@ public class AMWorldRegistry {
         }
         if (testBiome(BiomeConfig.skelewag, event.getCategory(), event.getName()) && AMConfig.skelewagSpawnWeight > 0 && !AMConfig.restrictSkelewagSpawns) {
             event.getSpawns().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 2, 3));
+        }
+    }
+
+    public static void addStructureSpawns(){
+        if (AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
+            addSpawnToStructure(StructureFeatures.END_CITY.value(), MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
+        }
+        if (AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
+            addSpawnToStructure(StructureFeatures.NETHER_FOSSIL.value(), MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
+        }
+        if (AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0) {
+            addSpawnToStructure(StructureFeatures.SHIPWRECK.value(), MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
+        }
+    }
+
+    private static void addSpawnToStructure(ConfiguredStructureFeature feature, MobCategory category, MobSpawnSettings.SpawnerData spawn){
+        if(feature.spawnOverrides.isEmpty() || feature.spawnOverrides.get(category) == null){
+            WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(spawn);
+            StructureSpawnOverride override = new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, spawns);
+            HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.spawnOverrides);
+            newMap.put(category, override);
+            feature.spawnOverrides = ImmutableMap.copyOf(newMap);
+        }else{
+            StructureSpawnOverride previous = (StructureSpawnOverride) feature.spawnOverrides.get(category);
+            List<MobSpawnSettings.SpawnerData> l = new ArrayList<>(previous.spawns().unwrap());
+            boolean contained = false;
+            for(MobSpawnSettings.SpawnerData data : l){
+                if(data.type.equals(spawn.type)){
+                    contained = true;
+                }
+            }
+            if(!contained){
+                l.add(spawn);
+                WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(l);
+                StructureSpawnOverride override = new StructureSpawnOverride(previous.boundingBox(), spawns);
+                HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.spawnOverrides);
+                newMap.put(category, override);
+                feature.spawnOverrides = ImmutableMap.copyOf(newMap);
+            }
         }
     }
 

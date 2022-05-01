@@ -108,6 +108,7 @@ public class AlexsMobs {
     @SubscribeEvent
     public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
         AMWorldRegistry.onBiomesLoad(event);
+        AMWorldRegistry.addStructureSpawns();
     }
 
     private void setupParticleEvent(ParticleFactoryRegisterEvent event) {

@@ -587,7 +587,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onStructureGetSpawnLists(StructureSpawnListGatherEvent event) {
-        if (AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
+        //EVENT IS UNUSED IN 1.18.2
+      /*  if (AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
             if (event.getStructure() == StructureFeature.END_CITY) {
                 event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
             }
@@ -603,6 +604,8 @@ public class ServerEvents {
                 event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
             }
         }
+
+       */
     }
 
     @SubscribeEvent
