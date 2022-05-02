@@ -136,6 +136,9 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         this.targetSelector.addGoal(1, new CreatureAITargetItems(this, false));
         this.targetSelector.addGoal(3, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(4, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Animal.class, 120, false, false, (p_213487_0_) -> {
+            return p_213487_0_ instanceof Chicken || p_213487_0_ instanceof Turtle || p_213487_0_ instanceof EntityLobster;
+        }));
     }
 
     public boolean isAlliedTo(Entity entityIn) {
@@ -193,7 +196,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
 
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == Items.BREAD;
+        return stack.getItem() == Items.BREAD || stack.getItem() == Items.SWEET_BERRIES;
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
