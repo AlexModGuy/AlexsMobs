@@ -85,8 +85,8 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         return 2;
     }
 
-    public boolean isMaxGroupSizeReached(int p_30035_) {
-        return true;
+    public boolean isMaxGroupSizeReached(int sze) {
+        return sze > 2;
     }
 
     protected void registerGoals() {
@@ -106,14 +106,10 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
 
     private void initCatfishInventory() {
         SimpleContainer animalchest = this.catfishInventory;
-        int size = this.getCatfishSize() > 2 ? 1 : this.getCatfishSize() == 1 ? 64 : 9;
+        int size = this.getCatfishSize() > 2 ? 1 : this.getCatfishSize() == 1 ? 9 : 3;
         this.catfishInventory = new SimpleContainer(size) {
             public boolean stillValid(Player player) {
                 return EntityCatfish.this.isAlive() && !EntityCatfish.this.isInsidePortal;
-            }
-
-            public int getMaxStackSize() {
-                return 1;
             }
         };
         catfishInventory.addListener(this);
@@ -146,7 +142,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     }
 
     public static boolean canCatfishSpawn(EntityType<EntityCatfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getFluidState().is(Fluids.WATER) && random.nextInt(3) == 0;
+        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getFluidState().is(Fluids.WATER) && random.nextInt(1) == 0;
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -404,7 +400,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setCatfishSize(random.nextFloat() < 0.35F ? 1 : 0);
         Biome holder = worldIn.getBiome(this.blockPosition());
-        if(random.nextFloat() < 0.1F && holder != null && BiomeConfig.test(BiomeConfig.catfish_huge, holder)){
+        if(random.nextFloat() < 0.1F && holder != null && BiomeConfig.test(BiomeConfig.catfish_huge, holder) || reason == MobSpawnType.SPAWN_EGG)){
             this.setCatfishSize(2);
         }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);

@@ -5,11 +5,11 @@
   "display": {
     "thirdperson_righthand": {
       "rotation": [0, 0, 60],
-      "translation": [-2, -3, -5]
+      "translation": [-4, -2, -2]
     },
     "thirdperson_lefthand": {
       "rotation": [0, 0, 60],
-      "translation": [-2, -3, -5]
+      "translation": [-4, -2, -2]
     },
     "firstperson_righthand": {
       "rotation": [-70, -20, 40],

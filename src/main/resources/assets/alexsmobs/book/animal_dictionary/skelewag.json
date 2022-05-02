@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
-  "text": "sunbird.txt",
-  "title": "Sunbird",
+  "text": "skelewag.txt",
+  "title": "Skelewag",
   "linked_page_buttons": [
   ],
   "images": [
@@ -14,11 +14,11 @@
   ],
   "entity_renders": [
     {
-      "entity": "alexsmobs:sunbird",
-      "x": 96,
-      "y": 72,
+      "entity": "alexsmobs:skelewag",
+      "x": 75,
+      "y": 86,
       "page" : 0,
-      "scale": 0.415,
+      "scale": 1.1,
       "rot_x": 30,
       "rot_y": 225,
       "rot_z": 0,
