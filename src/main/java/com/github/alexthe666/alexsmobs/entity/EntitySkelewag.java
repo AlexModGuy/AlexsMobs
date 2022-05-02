@@ -51,6 +51,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
 
     protected EntitySkelewag(EntityType<? extends Monster> monster, Level level) {
         super(monster, level);
+        this.xpReward = 10;
         this.moveControl = new AquaticMoveController(this, 1.0F, 15F);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
@@ -77,6 +78,10 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
 
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return level.getFluidState(pos).is(FluidTags.WATER) ? 10.0F + level.getBrightness(pos) - 0.5F : super.getWalkTargetValue(pos, level);
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new TryFindWaterGoal(this));
         this.goalSelector.addGoal(2, new AttackGoal(this));
@@ -97,7 +102,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     public int getMaxSpawnClusterSize() {
-        return 2;
+        return 6;
     }
 
     public boolean isMaxGroupSizeReached(int sizeIn) {

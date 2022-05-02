@@ -43,7 +43,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.FLY.get(),  1.3F));
         list.add(new Pair<>(AMEntityRegistry.HUMMINGBIRD.get(),  1.5F));
         list.add(new Pair<>(AMEntityRegistry.ORCA.get(),  0.2F));
-        list.add(new Pair<>(AMEntityRegistry.SUNBIRD.get(),  0.3F));
+        list.add(new Pair<>(AMEntityRegistry.SUNBIRD.get(),  0.2F));
         list.add(new Pair<>(AMEntityRegistry.GORILLA.get(),  0.85F));
         list.add(new Pair<>(AMEntityRegistry.CRIMSON_MOSQUITO.get(),  0.6F));
         list.add(new Pair<>(AMEntityRegistry.RATTLESNAKE.get(),  0.6F));
@@ -106,6 +106,10 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.BUNFUNGUS.get(),  0.5F));
         list.add(new Pair<>(AMEntityRegistry.BISON.get(),  0.45F));
         list.add(new Pair<>(AMEntityRegistry.GIANT_SQUID.get(),  0.3F));
+        list.add(new Pair<>(AMEntityRegistry.DEVILS_HOLE_PUPFISH.get(),  1.4F));
+        list.add(new Pair<>(AMEntityRegistry.CATFISH.get(),  1.15F));
+        list.add(new Pair<>(AMEntityRegistry.FLYING_FISH.get(),  1.2F));
+        list.add(new Pair<>(AMEntityRegistry.SKELEWAG.get(),  0.5F));
     });
     public static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();

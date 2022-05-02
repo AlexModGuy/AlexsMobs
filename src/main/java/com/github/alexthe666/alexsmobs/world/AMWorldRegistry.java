@@ -13,6 +13,8 @@ import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -282,22 +285,26 @@ public class AMWorldRegistry {
         }
     }
 
-    public static void addStructureSpawns(){
-        if (AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
-            addSpawnToStructure(StructureFeatures.END_CITY.value(), MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
+    public static void addStructureSpawns(MinecraftServer server){
+        Registry<ConfiguredStructureFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
+        ConfiguredStructureFeature endCity = registry.get(BuiltinStructures.END_CITY);
+        ConfiguredStructureFeature netherFossil = registry.get(BuiltinStructures.NETHER_FOSSIL);
+        ConfiguredStructureFeature shipwreck = registry.get(BuiltinStructures.SHIPWRECK);
+        if (endCity != null && AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
+            addSpawnToStructure(endCity, StructureSpawnOverride.BoundingBoxType.PIECE, MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
         }
-        if (AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
-            addSpawnToStructure(StructureFeatures.NETHER_FOSSIL.value(), MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
+        if (netherFossil != null && AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
+            addSpawnToStructure(netherFossil, StructureSpawnOverride.BoundingBoxType.PIECE, MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
         }
-        if (AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0) {
-            addSpawnToStructure(StructureFeatures.SHIPWRECK.value(), MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
+        if (shipwreck != null && AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0) {
+            addSpawnToStructure(shipwreck, StructureSpawnOverride.BoundingBoxType.STRUCTURE, MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
         }
     }
 
-    private static void addSpawnToStructure(ConfiguredStructureFeature feature, MobCategory category, MobSpawnSettings.SpawnerData spawn){
+    private static void addSpawnToStructure(ConfiguredStructureFeature feature, StructureSpawnOverride.BoundingBoxType bbType, MobCategory category, MobSpawnSettings.SpawnerData spawn){
         if(feature.spawnOverrides.isEmpty() || feature.spawnOverrides.get(category) == null){
             WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(spawn);
-            StructureSpawnOverride override = new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, spawns);
+            StructureSpawnOverride override = new StructureSpawnOverride(bbType, spawns);
             HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.spawnOverrides);
             newMap.put(category, override);
             feature.spawnOverrides = ImmutableMap.copyOf(newMap);
@@ -310,14 +317,14 @@ public class AMWorldRegistry {
                     contained = true;
                 }
             }
+            WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(l);
+            StructureSpawnOverride override = new StructureSpawnOverride(previous.boundingBox(), spawns);
+            HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.spawnOverrides);
             if(!contained){
                 l.add(spawn);
-                WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(l);
-                StructureSpawnOverride override = new StructureSpawnOverride(previous.boundingBox(), spawns);
-                HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.spawnOverrides);
-                newMap.put(category, override);
-                feature.spawnOverrides = ImmutableMap.copyOf(newMap);
             }
+            newMap.put(category, override);
+            feature.spawnOverrides = ImmutableMap.copyOf(newMap);
         }
     }
 
