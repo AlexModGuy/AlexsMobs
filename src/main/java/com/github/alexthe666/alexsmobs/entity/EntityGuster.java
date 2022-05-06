@@ -122,6 +122,9 @@ public class EntityGuster extends Monster {
         return false;
     }
 
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    }
+
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
     }
 

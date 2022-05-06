@@ -221,7 +221,6 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
         if(raytraceresult instanceof BlockHitResult){
             BlockState state = level.getBlockState(((BlockHitResult) raytraceresult).getBlockPos());
             if(state != null && !this.isSilent()){
-               // this.playSound(state.getSoundType().getBreakSound(), this.getVoicePitch(), 1F);
             }
             return ((BlockHitResult) raytraceresult).getDirection();
         }
@@ -310,7 +309,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.fromBucket();
+        return super.requiresCustomPersistence() || this.fromBucket() || this.hasCustomName();
     }
 
     public boolean removeWhenFarAway(double d) {
