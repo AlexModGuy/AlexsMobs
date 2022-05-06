@@ -299,6 +299,7 @@ public class AMItemRegistry {
         EMU_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(EMU_FEATHER.get()));
         ROCKY_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(ROCKY_SHELL.get()));
         FLYING_FISH_MATERIAL.setRepairMaterial(Ingredient.of(FLYING_FISH.get()));
+        NOVELTY_HAT_MATERIAL.setRepairMaterial(Ingredient.of(Items.BONE));
         DispenserBlock.registerBehavior(SHARK_TOOTH_ARROW.get(), new AbstractProjectileDispenseBehavior() {
             /**
              * Return the projectile entity spawned by this dispense behavior.

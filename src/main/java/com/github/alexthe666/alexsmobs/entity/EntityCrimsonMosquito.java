@@ -452,6 +452,9 @@ public class EntityCrimsonMosquito extends Monster {
                 loopSoundTick = 0;
             }
         }
+        if(!isPassenger()){
+            drinkTime = 0;
+        }
         if(isPassenger() || drinkTime < 0){
             if(isPassenger() && drinkTime < 0){
                 drinkTime = 0;

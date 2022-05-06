@@ -40,6 +40,11 @@ public class FroststalkerAIMelee extends Goal {
         return false;
     }
 
+    public boolean canContinueToUse() {
+        return target != null && !froststalker.isValidLeader(target);
+    }
+
+    
     public void start() {
         target = froststalker.getTarget();
         willJump = froststalker.getRandom().nextInt(2) == 0;

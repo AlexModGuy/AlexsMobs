@@ -232,8 +232,11 @@ public class ServerEvents {
             if (data != null && !data.getBoolean("alexsmobs_has_book")) {
                 ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY.get()));
                 if (Objects.equals(event.getPlayer().getUUID(), ALEX_UUID)
-                    || Objects.equals(event.getPlayer().getUUID(), CARRO_UUID)) {
+                        || Objects.equals(event.getPlayer().getUUID(), CARRO_UUID)) {
                     ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.BEAR_DUST.get()));
+                }
+                if (Objects.equals(event.getPlayer().getUUID(), ALEX_UUID)) {
+                    ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), new ItemStack(AMItemRegistry.NOVELTY_HAT.get()));
                 }
                 data.putBoolean("alexsmobs_has_book", true);
                 playerData.put(Player.PERSISTED_NBT_TAG, data);
