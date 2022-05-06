@@ -103,8 +103,8 @@ public class EntityCachalotWhale extends Animal {
     private Player rewardPlayer;
     private int blockBreakCounter;
     private int despawnDelay = 47999;
-    private int ambergrisDrops = 0;
     private int echoSoundCooldown = 0;
+    private boolean hasRewardedPlayer = false;
 
     public EntityCachalotWhale(EntityType type, Level world) {
         super(type, world);
@@ -179,8 +179,8 @@ public class EntityCachalotWhale extends Animal {
     public void pushEntities() {
     }
 
-    public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
-        return super.mobInteract(p_230254_1_, p_230254_2_);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        return super.mobInteract(player, hand);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -188,6 +188,7 @@ public class EntityCachalotWhale extends Animal {
         compound.putBoolean("Albino", this.isAlbino());
         compound.putBoolean("Beached", this.isBeached());
         compound.putBoolean("BeachedDespawnFlag", this.isDespawnBeach());
+        compound.putBoolean("GivenReward", this.hasRewardedPlayer);
         compound.putInt("DespawnDelay", this.despawnDelay);
     }
 
@@ -199,6 +200,8 @@ public class EntityCachalotWhale extends Animal {
         if (compound.contains("DespawnDelay", 99)) {
             this.despawnDelay = compound.getInt("DespawnDelay");
         }
+        this.hasRewardedPlayer = compound.getBoolean("GivenReward");
+
     }
 
     @Override
@@ -432,50 +435,37 @@ public class EntityCachalotWhale extends Animal {
         }
         if (this.isBeached()) {
             this.whaleSpeedMod = 0;
-            this.setDeltaMovement(this.getDeltaMovement().multiply(0.5, 0.5, 0.5));
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0.5, 1F, 0.5));
             if (this.isEyeInFluid(FluidTags.WATER)) {
                 Player entity = this.level.getNearestPlayer(REWARD_PLAYER_PREDICATE, this);
                 if (this.getLastHurtByMob() != entity) {
-                    rewardTime = 15;
                     rewardPlayer = entity;
                 }
                 this.despawnDelay = 47999;
                 this.setBeached(false);
             }
         }
-        if (!this.isBeached() && rewardTime > 0) {
-            float dif = 0;
-            if (rewardPlayer != null) {
-                double d0 = rewardPlayer.getX() - this.getX();
-                double d1 = rewardPlayer.getEyeY() - this.getEyeY();
-                double d2 = rewardPlayer.getZ() - this.getZ();
-                double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-                float targetYaw = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                float targetPitch = (float) (-(Mth.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
-                this.setYRot((this.getYRot() + Mth.clamp(targetYaw - this.getYRot(), -2, 2)));
-                this.setXRot((this.getXRot() + Mth.clamp(targetPitch - this.getXRot(), -2, 2)));
-                this.yBodyRot = getYRot();
-                dif = Math.abs(Mth.wrapDegrees(targetYaw) - Mth.wrapDegrees(this.getYRot()));
-            }
-            if (dif < 5) {
-                if (rewardTime % 5 == 0 && ambergrisDrops < 2 + random.nextInt(1) && this.isDespawnBeach()) {
-                    ambergrisDrops++;
-                    if (!level.isClientSide) {
-                        Vec3 vec = this.getMouthVec();
-                        ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS.get()));
-                        itementity.setDefaultPickUpDelay();
-                        level.addFreshEntity(itementity);
-                    }
+        if (rewardPlayer != null && !hasRewardedPlayer && this.isInWaterOrBubble()) {
+            double d0 = rewardPlayer.getX() - this.getX();
+            double d1 = rewardPlayer.getEyeY() - this.getEyeY();
+            double d2 = rewardPlayer.getZ() - this.getZ();
+            double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
+            float targetYaw = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+            float targetPitch = (float) (-(Mth.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
+            this.setYRot((this.getYRot() + Mth.clamp(targetYaw - this.getYRot(), -2, 2)));
+            this.setXRot((this.getXRot() + Mth.clamp(targetPitch - this.getXRot(), -2, 2)));
+            this.yBodyRot = getYRot();
+            this.whaleSpeedMod = 0.1F;
+            this.getMoveControl().setWantedPosition(rewardPlayer.getX(), rewardPlayer.getY(), rewardPlayer.getZ(), 0.5D);
+            if (this.distanceTo(rewardPlayer) < 10F) {
+                if (!level.isClientSide) {
+                    Vec3 vec = this.getMouthVec();
+                    ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS.get(), 2 + random.nextInt(2)));
+                    itementity.setDefaultPickUpDelay();
+                    level.addFreshEntity(itementity);
                 }
-                this.rewardTime--;
-            }
-            if (rewardTime <= 2) {
-                this.setDespawnBeach(false);
-                this.setCharging(false);
-                this.whaleSpeedMod = 1F;
-            } else {
-                this.setCharging(true);
-                this.whaleSpeedMod = 0.2F;
+                hasRewardedPlayer = true;
+                rewardPlayer = null;
             }
         }
 
@@ -588,7 +578,7 @@ public class EntityCachalotWhale extends Animal {
                 whaleSpeedMod = this.isSleeping() ? 0 : 1;
                 this.setCharging(false);
                 this.setCaughtSquidId(-1);
-            } else if (!isBeached() && !isSleeping()) {
+            } else if (!isBeached() && !isSleeping() && rewardPlayer == null) {
                 if (isGrabbing() && this.getTarget().isAlive()) {
                     this.setCaughtSquidId(this.getTarget().getId());
                     whaleSpeedMod = 0.1F;

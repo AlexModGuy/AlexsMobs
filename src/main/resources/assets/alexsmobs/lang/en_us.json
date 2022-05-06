@@ -893,5 +893,17 @@
   "advancements.alexsmobs.lost_tentacle.title": "A Small Price to Pay...",
   "advancements.alexsmobs.lost_tentacle.desc": "Obtain a Lost Tentacle from a battle between two titans.",
   "advancements.alexsmobs.squid_grapple.title": "... for Salvation",
-  "advancements.alexsmobs.squid_grapple.desc": "Craft a Grappling Squok from Lost Tentacles, a crossbow and copper ingots."
+  "advancements.alexsmobs.squid_grapple.desc": "Craft a Grappling Squok from Lost Tentacles, a crossbow and copper ingots.",
+  "advancements.alexsmobs.skelewag.title": "We Just Want our Hat Back",
+  "advancements.alexsmobs.skelewag.desc": "Encounter a Skelewag near a sunken ship.",
+  "advancements.alexsmobs.skelewag_skull.title": "Alright Boneheads, Playtime's Over",
+  "advancements.alexsmobs.skelewag_skull.desc": "Take a sword-like skull from a Skelewag.",
+  "advancements.alexsmobs.novelty_hat.title": "He Was Number One!",
+  "advancements.alexsmobs.novelty_hat.desc": "Obtain a Novelty Hat from a Skelewag.",
+  "advancements.alexsmobs.fish_bones.title": "A Bone to Pick",
+  "advancements.alexsmobs.fish_bones.desc": "Obtain Fish Bones from a Skelewag.",
+  "advancements.alexsmobs.strange_fish_finder.title": "The Quest for the Best",
+  "advancements.alexsmobs.strange_fish_finder.desc": "Craft a Strange Fish Finder from slimeballs, Fish Bones and an Echolocator.",
+  "advancements.alexsmobs.devils_hole_pupfish_bucket.title": "One Chunk Fish",
+  "advancements.alexsmobs.devils_hole_pupfish_bucket.desc": "Capture the rarest fish in a bucket."
 }
