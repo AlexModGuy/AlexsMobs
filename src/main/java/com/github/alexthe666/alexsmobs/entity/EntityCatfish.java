@@ -442,6 +442,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             this.onItemPickup(itemEntity);
             this.take(itemEntity, itemstack.getCount());
             itemEntity.discard();
+            this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
         }
     }
 
@@ -458,6 +459,11 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         }
     }
 
+    public float getVoicePitch() {
+        float f = (3 - this.getCatfishSize()) * 0.33F;
+        return (float) (super.getVoicePitch() * Math.sqrt(f) * 1.2F);
+    }
+
     public boolean swallowEntity(Entity entity) {
         if (this.getCatfishSize() == 2 && entity instanceof Mob mob) {
             this.setHasSwallowedEntity(true);
@@ -465,6 +471,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             CompoundTag tag = new CompoundTag();
             mob.addAdditionalSaveData(tag);
             this.setSwallowedData(tag);
+            this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             return true;
         }
         if (this.getCatfishSize() < 2 && entity instanceof ItemEntity item) {
@@ -539,6 +546,14 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
         BlockHitResult result = this.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         return result.getBlockPos().equals(destinationBlock);
+    }
+
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.COD_DEATH;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.COD_HURT;
     }
 
     @Override

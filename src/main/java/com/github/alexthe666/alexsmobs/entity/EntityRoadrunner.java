@@ -1,10 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
@@ -59,6 +62,7 @@ public class EntityRoadrunner extends Animal {
     public float attackProgress;
     private static final EntityDataAccessor<Integer> ATTACK_TICK = SynchedEntityData.defineId(EntityRoadrunner.class, EntityDataSerializers.INT);
     public int timeUntilNextFeather = this.random.nextInt(24000) + 24000;
+    private boolean hasMeepSpeed = false;
 
     protected EntityRoadrunner(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -95,7 +99,7 @@ public class EntityRoadrunner extends Animal {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.ROADRUNNER_IDLE;
+        return isMeep() || random.nextInt(2000) == 0 ? AMSoundRegistry.ROADRUNNER_MEEP : AMSoundRegistry.ROADRUNNER_IDLE;
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -145,7 +149,7 @@ public class EntityRoadrunner extends Animal {
         this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
         Vec3 vector3d = this.getDeltaMovement();
         if (!this.onGround && vector3d.y < 0.0D) {
-            this.setDeltaMovement(vector3d.multiply(1.0D, 0.6D, 1.0D));
+            this.setDeltaMovement(vector3d.multiply(1.0D, 0.8D, 1.0D));
         }
         this.wingRotation += this.wingRotDelta * 2.0F;
 
@@ -164,8 +168,33 @@ public class EntityRoadrunner extends Animal {
         }
     }
 
+    public void tick(){
+        super.tick();
+        if (isMeep() && !hasMeepSpeed) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(1F);
+            hasMeepSpeed = true;
+        }
+        if (!isMeep() && hasMeepSpeed) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.45F);
+            hasMeepSpeed = false;
+        }
+        if (this.level.isClientSide && this.isMeep() && this.onGround && !this.isInWaterOrBubble() && this.getDeltaMovement().lengthSqr() > 0.03D) {
+            Vec3 vector3d = this.getViewVector(0.0F);
+            float f = Mth.cos(this.getYRot() * ((float) Math.PI / 180F)) * 0.2F;
+            float f1 = Mth.sin(this.getYRot() * ((float) Math.PI / 180F)) * 0.2F;
+            float f2 = 1.2F - this.random.nextFloat() * 0.7F;
+            for (int i = 0; i < 2; ++i) {
+                this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() - vector3d.x * (double) f2 + (double) f, this.getY() + random.nextFloat() * 0.2F, this.getZ() - vector3d.z * (double) f2 + (double) f1, 0.0D, 0.0D, 0.0D);
+                this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() - vector3d.x * (double) f2 - (double) f, this.getY() + random.nextFloat() * 0.2F, this.getZ() - vector3d.z * (double) f2 - (double) f1, 0.0D, 0.0D, 0.0D);
+            }
+        }
+    }
+
     public boolean causeFallDamage(float distance, float damageMultiplier) {
         return false;
+    }
+
+    protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
@@ -187,4 +216,8 @@ public class EntityRoadrunner extends Animal {
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
     }
 
+    public boolean isMeep(){
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        return (s != null && s.toLowerCase().contains("meep")) || AlexsMobs.isAprilFools();
+    }
 }
