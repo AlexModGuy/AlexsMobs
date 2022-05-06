@@ -77,9 +77,9 @@ public class RaccoonAIWash extends Goal {
                     this.raccoon.playSound(SoundEvents.GENERIC_SWIM, 0.7F, 0.5F + raccoon.getRandom().nextFloat());
                 }
                 washTime++;
-                if(washTime > 100 || raccoon.getMainHandItem().getItem() == Items.SUGAR && washTime > 20){
+                if(washTime > 100 || raccoon.isHoldingSugar() && washTime > 20){
                     this.stop();
-                    if(raccoon.getMainHandItem().getItem() != Items.SUGAR){
+                    if(!raccoon.isHoldingSugar()){
                         raccoon.onEatItem();
                     }
                     this.raccoon.postWashItem(raccoon.getMainHandItem());

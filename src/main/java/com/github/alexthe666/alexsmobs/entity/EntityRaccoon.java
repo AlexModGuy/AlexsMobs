@@ -191,7 +191,6 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         return Items.AIR;
     }
 
-
     public boolean isFood(ItemStack stack) {
         return stack.getItem() == Items.BREAD;
     }
@@ -201,7 +200,15 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         boolean owner = this.isTame() && isOwnedBy(player);
-        if (owner && ItemTags.CARPETS.contains(item)) {
+
+        if(this.isTame() && !this.getMainHandItem().isEmpty()){
+            if(!this.level.isClientSide){
+                this.spawnAtLocation(this.getMainHandItem().copy());
+            }
+            this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            pickupItemCooldown = 60;
+            return InteractionResult.SUCCESS;
+        }else if (owner && itemstack.is(ItemTags.CARPETS)) {
             DyeColor color = EntityElephant.getCarpetColor(itemstack);
             if (color != this.getColor()) {
                 if (this.getColor() != null) {
@@ -238,14 +245,6 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                 this.heal(5);
             }
             this.usePlayerItem(player, hand, itemstack);
-            return InteractionResult.SUCCESS;
-        }
-        if(owner && !this.getMainHandItem().isEmpty()){
-            if(!this.level.isClientSide){
-                this.spawnAtLocation(this.getMainHandItem().copy());
-            }
-            this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-            pickupItemCooldown = 60;
             return InteractionResult.SUCCESS;
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
@@ -572,6 +571,10 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         return isRaccoonFood(stack);
     }
 
+    public boolean isHoldingSugar() {
+        return this.getMainHandItem().is(AMTagRegistry.RACOON_DISSOLVES);
+    }
+
     class StrollGoal extends MoveThroughVillageGoal {
         public StrollGoal(int p_i50726_3_) {
             super(EntityRaccoon.this, 1.0D, true, p_i50726_3_, () -> false);
@@ -678,7 +681,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                                     fleeTime = 60 + random.nextInt(60);
                                     raccoon.getNavigation().stop();
                                     lookForWaterBeforeEatingTimer = 120 + random.nextInt(60);
-                                    target.hurt(DamageSource.mobAttack(raccoon), target.getHealth() <= 2 ? 0 : 1);
+                                    target.hurt(DamageSource.GENERIC, 0);
                                     raccoon.stealCooldown = 24000 + random.nextInt(48000);
                                 }
                             }
