@@ -287,6 +287,7 @@ public class AMItemRegistry {
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_1, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_1"));
         event.getRegistry().register(new BannerPatternItem(PATTERN_NEW_MEXICO, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_new_mexico"));
         event.getRegistry().register(new BannerPatternItem(PATTERN_BRAZIL, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_brazil"));
+
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(CROCODILE_SCUTE.get()));
         ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(ROADRUNNER_FEATHER.get()));
         CENTIPEDE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(CENTIPEDE_LEG.get()));
