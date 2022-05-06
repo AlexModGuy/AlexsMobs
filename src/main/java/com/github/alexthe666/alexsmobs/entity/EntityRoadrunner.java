@@ -198,7 +198,9 @@ public class EntityRoadrunner extends Animal {
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
+        if(!this.isMeep()){
+            this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
+        }
     }
 
     public boolean isFood(ItemStack stack) {
