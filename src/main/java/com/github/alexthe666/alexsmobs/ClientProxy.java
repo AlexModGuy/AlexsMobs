@@ -24,6 +24,7 @@ import com.github.alexthe666.alexsmobs.item.ItemTarantulaHawkElytra;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +32,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.CameraType;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -250,6 +252,11 @@ public class ClientProxy extends CommonProxy {
         //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), RenderEndPirateAnchorWinch::new);
         //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL.get(), RenderEndPirateShipWheel::new);
         //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_FLAG.get(), RenderEndPirateFlag::new);
+        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTERN_BEAR, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTERN_BEAR.location(true)));
+        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTER_AUSTRALIA_0, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTER_AUSTRALIA_0.location(true)));
+        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTER_AUSTRALIA_1, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTER_AUSTRALIA_1.location(true)));
+        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTERN_NEW_MEXICO, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTERN_NEW_MEXICO.location(true)));
+        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTERN_BRAZIL, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTERN_BRAZIL.location(true)));
     }
 
     private void initRainbowBuffers() {

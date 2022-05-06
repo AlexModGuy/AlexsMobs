@@ -858,7 +858,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public boolean isPushedByFluid() {
-        return false;
+        return this.isBeached();
     }
 
     public MobType getMobType() {
