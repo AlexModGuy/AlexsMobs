@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
@@ -77,6 +79,17 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         }
     }
 
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.SKELEWAG_IDLE;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.SKELEWAG_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.SKELEWAG_HURT;
+    }
 
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
         return level.getFluidState(pos).is(FluidTags.WATER) ? 10.0F + level.getBrightness(pos) - 0.5F : super.getWalkTargetValue(pos, level);
@@ -153,6 +166,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
             if (this.isOnGround() && random.nextFloat() < 0.2F) {
                 this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                 this.setYRot(this.random.nextFloat() * 360.0F);
+                this.playSound(AMSoundRegistry.SKELEWAG_HURT, this.getSoundVolume(), this.getVoicePitch());
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
