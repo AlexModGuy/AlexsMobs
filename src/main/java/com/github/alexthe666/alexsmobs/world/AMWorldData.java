@@ -159,7 +159,7 @@ public class AMWorldData extends SavedData {
     }
 
     public int getWaterHeight(NoiseBasedChunkGenerator generator, int x, int z, LevelHeightAccessor level) {
-        NoiseSettings noisesettings = generator.settings.value().noiseSettings();
+        NoiseSettings noisesettings = generator.settings.get().noiseSettings();
         int i = Math.max(noisesettings.minY(), level.getMinBuildHeight());
         int j = Math.min(noisesettings.minY() + noisesettings.height(), level.getMaxBuildHeight());
         int k = Mth.intFloorDiv(i, noisesettings.getCellHeight());

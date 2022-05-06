@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -561,7 +562,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         }
 
         private boolean isMossBlock(Level world, BlockPos.MutableBlockPos pos) {
-            return world.getBlockState(pos).is(AMTagRegistry.PUPFISH_EATABLES);
+            return world.getBlockState(pos).is(BlockTags.getAllTags().getTag(AMTagRegistry.PUPFISH_EATABLES));
         }
 
     }

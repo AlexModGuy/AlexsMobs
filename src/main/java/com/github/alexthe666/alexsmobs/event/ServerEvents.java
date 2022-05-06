@@ -319,28 +319,6 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onUseItemOnBlock(PlayerInteractEvent.RightClickBlock event) {
-        if(AlexsMobs.isAprilFools() && event.getItemStack().is(Items.STICK) && !event.getPlayer().getCooldowns().isOnCooldown(Items.STICK)){
-            BlockState state = event.getPlayer().level.getBlockState(event.getPos());
-            boolean flag = false;
-            if(state.is(Blocks.SAND)){
-                flag = true;
-                event.getPlayer().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.SAND_CIRCLE.get().defaultBlockState());
-            }
-            if(state.is(Blocks.RED_SAND)){
-                flag = true;
-                event.getPlayer().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.RED_SAND_CIRCLE.get().defaultBlockState());
-            }
-            if(flag){
-                event.setCanceled(true);
-                event.getPlayer().playSound(SoundEvents.SAND_BREAK, 1, 1);
-                event.getPlayer().getCooldowns().addCooldown(Items.STICK, 30);
-                event.setCancellationResult(InteractionResult.SUCCESS);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void onTradeSetup(VillagerTradesEvent event) {
         if (event.getType() == VillagerProfession.FISHERMAN) {
             VillagerTrades.ItemListing ambergrisTrade = new EmeraldsForItemsTrade(AMItemRegistry.AMBERGRIS.get(), 20, 3, 4);
@@ -537,7 +515,7 @@ public class ServerEvents {
     @SubscribeEvent
     public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
         if (event.getEntity() instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
-            Biome biome = event.getWorld().getBiome(event.getEntity().blockPosition()).value();
+            Biome biome = event.getWorld().getBiome(event.getEntity().blockPosition());
             if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance
                 && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
                 EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(trader.level);
