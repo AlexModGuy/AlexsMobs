@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "item": "alexsmobs:tab_icon",
+            "nbt": "{DisplayEntityType:\"alexsmobs:devils_hole_pupfish\"}"
+        },
+        "title": {
+            "translate": "advancements.alexsmobs.devils_hole_pupfish_bucket.title"
+        },
+        "description": {
+            "translate": "advancements.alexsmobs.devils_hole_pupfish_bucket.desc"
+        },
+        "frame": "challenge"
+    },
+    "parent": "alexsmobs:alexsmobs/strange_fish_finder",
+    "criteria": {
+        "sopa_de_macaco": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["alexsmobs:devils_hole_pupfish_bucket"]
+                    }
+                ]
+            }
+        }
+    }
+}
