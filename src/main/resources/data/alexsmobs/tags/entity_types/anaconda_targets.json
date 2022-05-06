@@ -10,6 +10,9 @@
     "alexsmobs:moose",
     "alexsmobs:gelada_monkey",
     "alexsmobs:terrapin",
-    "minecraft:dolphin"
+    "minecraft:dolphin",
+    "alexsmobs:catfish",
+    "alexsmobs:flying_fish",
+    "alexsmobs:devils_hole_pupfish"
   ]
 }
