@@ -1,7 +1,7 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Djävulens hål tandkarp är en liten fisk som är känd för att vara världens sällsynta fisk, på grund av sin lilla räckvidd. Dessa valpfiskar kan bara leka i underjordiska akviferer i en enda datablock i Övervärlden.
+Djävulens hål tandkarp är en liten fisk som är känd för att vara världens sällsynta fisk, på grund av sin lilla räckvidd. Dessa valpfiskar kan bara leka i underjordiska akviferer i ett enda datablock i Övervärlden.
 För att hitta den bit som djävulens hål tandkarp kallar hem, måste du skapa en konstig fiskhittare, likt så:
 <NEWLINE>
 <NEWLINE>
