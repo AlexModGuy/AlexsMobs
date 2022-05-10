@@ -707,10 +707,11 @@ public class ServerEvents {
             if (event.getEntityLiving().horizontalCollision && !event.getEntityLiving().isInWater()) {
                 event.getEntityLiving().fallDistance = 0.0F;
                 Vec3 motion = event.getEntityLiving().getDeltaMovement();
-                final double d0 = Mth.clamp(motion.x, -0.15F, 0.15F);
-                final double d1 = Mth.clamp(motion.z, -0.15F, 0.15F);
-                final double d2 = 0.0D;
-                motion = new Vec3(d0, d2, d1);
+                double d2 = 0.1D;
+                if (event.getEntityLiving().isShiftKeyDown() || !event.getEntityLiving().getFeetBlockState().isScaffolding(event.getEntityLiving()) && event.getEntityLiving().isSuppressingSlidingDownLadder()) {
+                    d2 = 0.0D;
+                }
+                motion = new Vec3(Mth.clamp(motion.x, -0.15F, 0.15F), d2, Mth.clamp(motion.z, -0.15F, 0.15F));
                 event.getEntityLiving().setDeltaMovement(motion);
             }
         }
