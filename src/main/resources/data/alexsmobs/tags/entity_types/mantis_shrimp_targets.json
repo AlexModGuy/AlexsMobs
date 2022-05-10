@@ -8,6 +8,8 @@
     "minecraft:squid",
     "minecraft:guardian",
     "minecraft:elder_guardian",
-    "minecraft:tropical_fish"
+    "minecraft:tropical_fish",
+    "alexsmobs:catfish",
+    "alexsmobs:flying_fish"
   ]
 }

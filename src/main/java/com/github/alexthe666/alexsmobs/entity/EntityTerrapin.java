@@ -221,7 +221,6 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
         if(raytraceresult instanceof BlockHitResult){
             BlockState state = level.getBlockState(((BlockHitResult) raytraceresult).getBlockPos());
             if(state != null && !this.isSilent()){
-               // this.playSound(state.getSoundType().getBreakSound(), this.getVoicePitch(), 1F);
             }
             return ((BlockHitResult) raytraceresult).getDirection();
         }
@@ -310,7 +309,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.fromBucket();
+        return super.requiresCustomPersistence() || this.fromBucket() || this.hasCustomName();
     }
 
     public boolean removeWhenFarAway(double d) {
@@ -612,6 +611,8 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             this.turtle.setHasEgg(true);
             this.animal.resetLove();
             this.partner.resetLove();
+            this.animal.setAge(6000);
+            this.partner.setAge(6000);
             Random random = this.animal.getRandom();
             if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));

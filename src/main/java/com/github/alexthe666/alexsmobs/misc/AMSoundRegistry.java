@@ -24,6 +24,8 @@ public class AMSoundRegistry {
 
     public static final SoundEvent ROADRUNNER_HURT = createSoundEvent("roadrunner_hurt");
 
+    public static final SoundEvent ROADRUNNER_MEEP = createSoundEvent("roadrunner_meep");
+
     public static final SoundEvent GAZELLE_HURT = createSoundEvent("gazelle_hurt");
 
     public static final SoundEvent CROCODILE_IDLE = createSoundEvent("crocodile_idle");
@@ -345,6 +347,12 @@ public class AMSoundRegistry {
     public static final SoundEvent GIANT_SQUID_HURT = createSoundEvent("giant_squid_hurt");
 
     public static final SoundEvent GIANT_SQUID_TENTACLE = createSoundEvent("giant_squid_tentacle");
+
+    public static final SoundEvent DEVILS_HOLE_PUPFISH_HURT = createSoundEvent("devils_hole_pupfish_hurt");
+
+    public static final SoundEvent SKELEWAG_HURT = createSoundEvent("skelewag_hurt");
+
+    public static final SoundEvent SKELEWAG_IDLE = createSoundEvent("skelewag_idle");
 
     public static final SoundEvent END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
 

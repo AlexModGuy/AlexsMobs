@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Catfish are lethargic fish found in swamps and rivers. Although Catfish from rivers can become quite hefty, only the largest of these fish can be found in swamps.
+<NEWLINE>
+Being bottom feeders, Catfish are not picky with their food. Small and medium Catfish will attempt to vacuum up any item that they see. Large Catfish instead will attempt to eat any mob shorter than a block.
+Small Catfish can only store three stacks of items in their bellies, where as medium Catfish can store nine. Large Catfish can only have one mob in their belly at a time.
+Catfish will regurgitate any item or mob they've eaten if injured or if they encounter a sea pickle, since they hate the taste of pickles.
+<NEWLINE>
+Although they have poor vision, something about the flashing light of a sea lantern draws in Catfish. These can be used to lure Catfish to areas with or without items.
+<NEWLINE>
+All Catfish, even the large ones, can be captured with a water bucket. The contents of the fish's belly will be preserved, so one can effectively use Catfish to transport items or a mob by bucketing them after a feeding.
+Catfish that have eaten items or have been bucketed will not dissapear.

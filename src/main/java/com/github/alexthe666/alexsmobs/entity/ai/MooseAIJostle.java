@@ -80,11 +80,14 @@ public class MooseAIJostle extends Goal {
         if(targetMoose != null){
             this.moose.lookAt(targetMoose, 360, 180);
             this.moose.setJostling(true);
-            double dist = this.moose.distanceTo(targetMoose);
-            if (dist < 4F) {
+            float f = (float)(moose.getX() - targetMoose.getX());
+            float f1 = Math.abs((float)(moose.getY() - targetMoose.getY()));
+            float f2 = (float)(moose.getZ() - targetMoose.getZ());
+            double distXZ = Math.sqrt((f * f + f2 * f2));
+            if (distXZ < 4F) {
                 this.moose.getNavigation().stop();
                 this.moose.getMoveControl().strafe(-0.5F, 0);
-            } else if(dist > 4.5F) {
+            } else if(distXZ > 4.5F) {
                 this.moose.setJostling(false);
                 this.moose.getNavigation().moveTo(targetMoose, 1);
             }else{
@@ -114,7 +117,7 @@ public class MooseAIJostle extends Goal {
                 }
                 this.moose.jostleTimer++;
                 this.targetMoose.jostleTimer++;
-                if(this.moose.jostleTimer > 1000){
+                if(this.moose.jostleTimer > 1000 || f1 > 2.0F){
                     moose.hasImpulse = true;
                     if(moose.isOnGround()){
                         moose.pushBackJostling(targetMoose, 0.9F);

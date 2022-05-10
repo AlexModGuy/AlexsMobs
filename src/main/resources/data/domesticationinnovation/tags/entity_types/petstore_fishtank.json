@@ -2,6 +2,8 @@
   "#comment": "For the plain pet store fish tank",
   "replace": false,
   "values": [
-    "alexsmobs:lobster"
+    "alexsmobs:lobster",
+    "alexsmobs:devils_hole_pupfish",
+    "alexsmobs:flying_fish"
   ]
 }

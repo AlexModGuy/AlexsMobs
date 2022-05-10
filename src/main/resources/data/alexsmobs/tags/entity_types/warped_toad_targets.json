@@ -1,5 +1,5 @@
 {
-  "__comment": "all non-player targets of the crimson mosquito mob.",
+  "__comment": "all non-player targets of the warped toad mob.",
   "replace": false,
   "values": [
     "minecraft:silverfish",

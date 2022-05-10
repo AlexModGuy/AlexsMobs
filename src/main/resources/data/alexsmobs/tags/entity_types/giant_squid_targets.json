@@ -5,6 +5,9 @@
     "alexsmobs:blobfish",
     "minecraft:cod",
     "minecraft:salmon",
-    "minecraft:tropical_fish"
+    "minecraft:tropical_fish",
+    "alexsmobs:catfish",
+    "alexsmobs:flying_fish",
+    "alexsmobs:devils_hole_pupfish"
   ]
 }

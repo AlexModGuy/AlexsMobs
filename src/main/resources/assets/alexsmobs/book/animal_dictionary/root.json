@@ -105,9 +105,9 @@
       "y": 40,
       "page" : 0,
       "scale": 1.2,
-      "entity_scale": 0.45,
+      "entity_scale": 0.4,
       "offset_x": 6,
-      "offset_y": 2,
+      "offset_y": 7,
       "linked_page": "sunbird.json",
       "hover_text": "entity.alexsmobs.sunbird"
     },
@@ -854,6 +854,54 @@
       "offset_y": -6,
       "linked_page": "giant_squid.json",
       "hover_text": "entity.alexsmobs.giant_squid"
+    },
+    {
+      "entity": "alexsmobs:devils_hole_pupfish",
+      "x": 260,
+      "y": 130,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 2.3,
+      "offset_x": -27,
+      "offset_y": -28,
+      "linked_page": "devils_hole_pupfish.json",
+      "hover_text": "entity.alexsmobs.devils_hole_pupfish"
+    },
+    {
+      "entity": "alexsmobs:catfish",
+      "x": 290,
+      "y": 130,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.5,
+      "offset_x": -11,
+      "offset_y": -16,
+      "linked_page": "catfish.json",
+      "hover_text": "entity.alexsmobs.catfish"
+    },
+    {
+      "entity": "alexsmobs:flying_fish",
+      "x": 320,
+      "y": 130,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.8,
+      "offset_x": -17,
+      "offset_y": -19,
+      "linked_page": "flying_fish.json",
+      "hover_text": "entity.alexsmobs.flying_fish"
+    },
+    {
+      "entity": "alexsmobs:skelewag",
+      "x": 350,
+      "y": 130,
+      "page" : 1,
+      "scale": 1.2,
+      "entity_scale": 1.0,
+      "offset_x": -14,
+      "offset_y": -11,
+      "linked_page": "skelewag.json",
+      "hover_text": "entity.alexsmobs.skelewag"
     }
   ],
   "linked_page_buttons": [
