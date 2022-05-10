@@ -126,7 +126,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         while(iServerWorld.getFluidState(pos).is(FluidTags.WATER)){
             pos = pos.above();
         }
-        return !iServerWorld.canSeeSky(pos);
+        return !iServerWorld.canSeeSky(pos) && pos.getY() < iServerWorld.getSeaLevel();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -134,7 +134,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     }
 
     public int getMaxSpawnClusterSize() {
-        return 8;
+        return 6;
     }
 
     public boolean isMaxGroupSizeReached(int sizeIn) {

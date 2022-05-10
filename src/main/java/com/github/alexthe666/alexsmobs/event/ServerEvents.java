@@ -821,8 +821,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
-        final var tag = event.getItemStack().getOrCreateTag();
-        if (tag.contains("BisonFur") && tag.getBoolean("BisonFur")) {
+        CompoundTag tag = event.getItemStack().getTag();
+        if (tag != null && tag.contains("BisonFur") && tag.getBoolean("BisonFur")) {
             event.getToolTip().add(new TranslatableComponent("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.AQUA));
         }
     }
