@@ -12,7 +12,30 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "forest", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:sparse_jungle", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:sparse_jungle", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:alpine_grove", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_valley", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_forest", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_valley", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_grove", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_valley", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:highlands", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shield_clearing", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:valley_clearing", 12)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:alpine_highlands", 13)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cloud_forest", 14)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:forested_highlands", 15)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lush_valley", 16)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shield", 17)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_maple_forest", 18)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_shield", 19)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:temperate_highlands", 20)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:wintry_forest", 21)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:yosemite_lowlands", 22)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:bryce_canyon", 23)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 24);
 
     public static final SpawnBiomeData ROADRUNNER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -22,7 +45,16 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 2)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 2);
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ancient_sands", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_canyon", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_oasis", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_spires", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sandstone_valley", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:warped_mesa", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:white_mesa", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 11);
 
     public static final SpawnBiomeData ALL_NETHER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "nether", 0);
@@ -31,26 +63,59 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "savanna", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:arid_highlands", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:brushland", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:fractured_savanna", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_badlands", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_slopes", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shrubland", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 8);
 
     public static final SpawnBiomeData CROCODILE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tropic_beach", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:warm_river", 5);
 
     public static final SpawnBiomeData FLY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, true, "ocean", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_winter", 4);
 
     public static final SpawnBiomeData HUMMINGBIRD = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:flower_forest", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:sunflower_plains", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 2)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 2)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:meadow", 3);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:meadow", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_valley", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_forest", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_valley", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_grove", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_valley", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_canyon", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_rainforest", 12)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:jungle_mountains", 13)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_jungle", 14)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:tropical_jungle", 15)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_plateau", 16)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:valley_clearing", 17)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 18)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 19)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 20)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 21);
 
     public static final SpawnBiomeData ORCA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -62,12 +127,43 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mountain", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:snowy_slopes", 1)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:frozen_peaks", 2)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:jagged_peaks", 3);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:jagged_peaks", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_valley", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:emerald_peaks", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:painted_mountains", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_mountains", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:scarlet_mountains", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:stony_spires", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:volcanic_crater", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:volcanic_peaks", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 12)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 13)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 14)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_winter", 15)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_badlands", 16)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_slopes", 17)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:yellowstone", 18)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:yosemite_cliffs", 19)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:bryce_canyon", 20)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:jungle_mountains", 21)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:haze_mountain", 22)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:windswept_spires", 23)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_spires", 24)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_canyon", 25)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:basalt_cliffs", 26)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:granite_cliffs", 27)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:white_cliffs", 28);
 
     public static final SpawnBiomeData GORILLA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_canyon", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_rainforest", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:jungle_mountains", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_jungle", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:tropical_jungle", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 6);
 
     public static final SpawnBiomeData CRIMSON_MOSQUITO = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:crimson_forest", 0)
@@ -84,7 +180,16 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 2)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 2);
+            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ancient_sands", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_canyon", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_oasis", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_spires", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sandstone_valley", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:warped_mesa", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:white_mesa", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 11);
 
     public static final SpawnBiomeData ENDERGRADE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
@@ -97,22 +202,44 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData LOBSTER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:gravel_beach", 1);
 
     public static final SpawnBiomeData KOMODO_DRAGON = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "dense", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "dense", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sandstone_valley", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 3);
 
     public static final SpawnBiomeData CAPUCHIN_MONKEY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_canyon", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_rainforest", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:jungle_mountains", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_jungle", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:tropical_jungle", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 6);
 
     public static final SpawnBiomeData CENTIPEDE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mushroom", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mushroom", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/andesite_caves", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/desert_caves", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/diorite_caves", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/granite_caves", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/ice_caves", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/infested_caves", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/thermal_caves", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/crystal_caves", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/frostfire_caves", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/mantle_caves", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/deep_caves", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/tuff_caves", 12);
 
     public static final SpawnBiomeData WARPED_TOAD = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:warped_forest", 0)
@@ -130,8 +257,15 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 1)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:snowy_coniferous_forest", 2)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:snowy_fir_clearing", 3)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "snowy_maple_woods", 4);
-    
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "snowy_maple_woods", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:alpine_grove", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_badlands", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_maple_forest", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_shield", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:wintry_forest", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:wintry_lowlands", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:gravel_desert", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_winter", 12);
 
     public static final SpawnBiomeData MIMICUBE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
@@ -143,7 +277,26 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plains", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plains", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:alpine_grove", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:birch_taiga", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_valley", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_forest", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_valley", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_grove", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_valley", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cold_shrubland", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:highlands", 12)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:hot_shrubland", 13)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_shrubland", 14)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shield_clearing", 15)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:steppe", 16)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:valley_clearing", 17)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:temperate_highlands", 18)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 19)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:mirage_isles", 20);
 
     public static final SpawnBiomeData DEEP_SEA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_ocean", 0)
@@ -152,28 +305,51 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 3)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:ocean", 4);
 
-
     public static final SpawnBiomeData SEAL = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "ocean", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:gravel_beach", 2);
 
     public static final SpawnBiomeData COCKROACH = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "ocean", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mushroom", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mushroom", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/andesite_caves", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/desert_caves", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/diorite_caves", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/granite_caves", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/ice_caves", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/infested_caves", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/thermal_caves", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/crystal_caves", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/frostfire_caves", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/mantle_caves", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/deep_caves", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/tuff_caves", 12);
 
     public static final SpawnBiomeData SHOEBILL = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ice_marsh", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 4);
 
     public static final SpawnBiomeData ELEPHANT = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "savanna", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:arid_highlands", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:brushland", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:fractured_savanna", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_badlands", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_slopes", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shrubland", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 8);
 
     public static final SpawnBiomeData SOUL_VULTURE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:soul_sand_valley", 0)
@@ -190,8 +366,16 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:snowy_slopes", 1)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:frozen_peaks", 2)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:jagged_peaks", 3);
-
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:jagged_peaks", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:frozen_cliffs", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:glacial_chasm", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_badlands", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_maple_forest", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:emerald_peaks", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_mountains", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:scarlet_mountains", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_shield", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_winter", 11);
 
     public static final SpawnBiomeData CROW = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -199,16 +383,51 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plains", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "plains", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cold_shrubland", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:highlands", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:hot_shrubland", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_shrubland", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shield_clearing", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:steppe", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:valley_clearing", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:alpine_grove", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:birch_taiga", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_valley", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_forest", 12)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_valley", 13)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_grove", 14)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_valley", 15)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 16)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 17)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:highlands", 18)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shield_clearing", 19)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:alpine_highlands", 20)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cloud_forest", 21)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:forested_highlands", 22)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lush_valley", 23)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shield", 24)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_maple_forest", 25)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:temperate_highlands", 26)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:wintry_forest", 27)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:yosemite_lowlands", 28)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 29)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 30)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_winter", 31)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:mirage_isles", 32);
 
     public static final SpawnBiomeData ALLIGATOR_SNAPPING_TURTLE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ice_marsh", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 3);
 
     public static final SpawnBiomeData MUNGUS = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mushroom", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "rare", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "rare", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:mirage_isles", 1);
 
     public static final SpawnBiomeData MANTIS_SHRIMP = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -219,7 +438,12 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ancient_sands", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_canyon", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_spires", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ashen_savanna", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/desert_caves", 5);
 
     public static final SpawnBiomeData STRADDLER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:basalt_deltas", 0)
@@ -248,7 +472,17 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "savanna", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:sparse_jungle", 0);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:sparse_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:birch_taiga", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_valley", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:mirage_isles", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_valley", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_forest", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_grove", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_valley", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:temperate_highlands", 10);
 
     public static final SpawnBiomeData CACHALOT_WHALE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -260,12 +494,19 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData BEACHED_CACHALOT_WHALE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:gravel_beach", 1);
 
     public static final SpawnBiomeData LEAFCUTTER_ANTHILL = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_canyon", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_rainforest", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:jungle_mountains", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_jungle", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:tropical_jungle", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 6);
 
     public static final SpawnBiomeData ENDERIOPHAGE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
@@ -278,7 +519,22 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "mountain", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "forest", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:grove", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:grove", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:alpine_grove", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_plateau", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:blooming_valley", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:bryce_canyon", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_winter", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_forest", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:lavender_valley", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_valley", 11)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_grove", 12)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 13)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 14)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:haze_mountain", 15)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:temperate_highlands", 16);
 
     public static final SpawnBiomeData TIGER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -286,7 +542,10 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:bamboo_grove", 1)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:cherry_blossom_grove", 2)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 3)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 4);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_canyon", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_rainforest", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 7);
 
     public static final SpawnBiomeData DESERT = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
@@ -304,19 +563,31 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData SEAGULL = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "beach", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:basalt_cliffs", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:granite_cliffs", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:gravel_beach", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:white_cliffs", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 6);
 
     public static final SpawnBiomeData FROSTSTALKER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:ice_spikes", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:frozen_peaks", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:frozen_peaks", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/frostfire_caves", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:frozen_cliffs", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:glacial_chasm", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_badlands", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:gravel_desert", 6);
 
     public static final SpawnBiomeData TUSKLIN = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:ice_spikes", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "snowy", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "forest", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mountain", 1);
-
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "mountain", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:snowy_badlands", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:gravel_desert", 3);
 
     public static final SpawnBiomeData COSMAW = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "end", 0)
@@ -326,24 +597,51 @@ public class DefaultBiomes {
     public static final SpawnBiomeData TOUCAN = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:bamboo_jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_canyon", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_rainforest", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:jungle_mountains", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_jungle", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:tropical_jungle", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 6);
 
     public static final SpawnBiomeData MANED_WOLF = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "savanna", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "savanna", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:arid_highlands", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:brushland", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:fractured_savanna", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_badlands", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_slopes", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shrubland", 7);
 
     public static final SpawnBiomeData ANACONDA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tundra_bog", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ice_marsh", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_rainforest", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:tropical_jungle", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 6);
 
     public static final SpawnBiomeData ANTEATER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "jungle", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_canyon", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_rainforest", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:jungle_mountains", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_jungle", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:tropical_jungle", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 6);
 
     public static final SpawnBiomeData ROCKY_ROLLER = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:dripstone_caves", 0);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:dripstone_caves", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/andesite_caves", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/diorite_caves", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/granite_caves", 3);
 
     public static final SpawnBiomeData FLUTTER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:lush_caves", 0);
@@ -370,7 +668,11 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:forested_field", 3)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:grassland", 4)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:pasture", 5)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:prairie", 6);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:prairie", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cold_shrubland", 7)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:rocky_shrubland", 8)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:steppe", 9)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:valley_clearing", 10);
 
     public static final SpawnBiomeData GIANT_SQUID = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_ocean", 0)
@@ -386,11 +688,16 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 1);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ice_marsh", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:warm_river", 4);
 
     public static final SpawnBiomeData LARGE_CATFISH = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ice_marsh", 2);
 
     public static final SpawnBiomeData FLYING_FISH = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
