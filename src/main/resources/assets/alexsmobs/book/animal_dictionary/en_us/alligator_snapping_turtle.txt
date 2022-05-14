@@ -2,10 +2,12 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Skorpucha Sępia to masywny, półwodny gad występujący na bagnach całego świata.
-W przeciwieństwie do jej biernych kuzynów Żółwi Morskich, Skorpucha Śępia to zadziorna bestia, która atakuje wszystko co się zbliży swoją ostrą, dziobatą paszczą. Potrafi ugryźć i poruszać się zaskakująco szybko jak na żółwia, najlepiej
-zostaw te stworzenia w spokoju, gdy je spotkasz. Skorpuchy Sępie rzadko się poruszają i powszechnie porastają mchem, który gromadzi się na ich muszlach przez kilka dni pod wodą.
+The Alligator Snapping Turtle is a massive, semi-aquatic reptile found in swamps throughout the overworld.
+Unlike its passive Sea Turtle cousins, the Alligator Snapping Turtle is a fiesty beast that attacks anything
+that steps near its sharp, beaked mouth. Able to bite and move surprisingly fast for a turtle, it is best to
+leave these creatures alone when encountered. Alligator Snapping Turtles rarely move, and it is common for
+moss growth to build up on their shells over several days underwater.
 <NEWLINE>
-Jeśli są porośnięte mchem, mogą zostać ostrzyżone, aby mieć szansę na upuszczenie Kolczastą Żółwią Skorupę. Można ją użyć do ulepszenia skorupy żółwia.
-Kolczasta Żółwia Skorupa ma wbudowaną odporność na odrzucenie i pozwala graczom oddychać pod wodą przez dodatkowe 15 sekund. To również
-może od czasu do czasu odrzucać ataki wręcz. Skorpuchy Sępie można rozmnażać surowym dorszem.
+If mossy, they can be sheared for a chance to drop a Spiked Scute. These can be used to upgrade the Sea Turtle shell helmet.
+The Spiked Turtle Shell helmet has built in knockback resistance and allows players to breathe underwater for 15 extra seconds. It also
+can knock back melee attacks occasionally. Alligator Snapping Turtles can be bred with raw cod.
