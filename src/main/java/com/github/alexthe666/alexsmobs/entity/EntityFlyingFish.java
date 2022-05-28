@@ -65,6 +65,14 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 1F, 12, 5));
     }
 
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.COD_DEATH;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.COD_HURT;
+    }
+
     public boolean requiresCustomPersistence() {
         return super.requiresCustomPersistence() || this.fromBucket();
     }
@@ -143,10 +151,11 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
             f2 = -f2;
         }
         this.setXRot(rotlerp(this.getXRot(), f2, 9));
-        if(!isInWaterOrBubble()){
+        if(!isInWaterOrBubble() && this.isAlive()){
             if (this.isOnGround() && random.nextFloat() < 0.05F) {
                 this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                 this.setYRot(this.random.nextFloat() * 360.0F);
+                this.playSound(SoundEvents.COD_FLOP, this.getSoundVolume(), this.getVoicePitch());
             }
         }
     }

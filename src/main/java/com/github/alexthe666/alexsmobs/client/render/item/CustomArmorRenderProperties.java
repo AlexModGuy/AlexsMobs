@@ -26,6 +26,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
     public static ModelFroststalkerHelmet FROSTSTALKER_HELMET_MODEL;
     public static ModelRockyChestplate ROCKY_CHESTPLATE_MODEL;
     public static ModelFlyingFishBoots FLYING_FISH_BOOTS_MODEL;
+    public static ModelNoveltyHat NOVELTY_HAT_MODEL;
 
     public static void initializeModels() {
         init = true;
@@ -40,6 +41,7 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         ELYTRA_MODEL = new ModelAMElytra(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.AM_ELYTRA));
         ROCKY_CHESTPLATE_MODEL = new ModelRockyChestplate(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.ROCKY_CHESTPLATE));
         FLYING_FISH_BOOTS_MODEL = new ModelFlyingFishBoots(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.FLYING_FISH_BOOTS));
+        NOVELTY_HAT_MODEL = new ModelNoveltyHat(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.NOVELTY_HAT));
     }
 
     public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
@@ -75,6 +77,9 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         }
         if(itemStack.getItem() == AMItemRegistry.FLYING_FISH_BOOTS.get()){
             return FLYING_FISH_BOOTS_MODEL.withAnimations(entityLiving);
+        }
+        if(itemStack.getItem() == AMItemRegistry.NOVELTY_HAT.get()){
+            return NOVELTY_HAT_MODEL;
         }
         return _default;
     }

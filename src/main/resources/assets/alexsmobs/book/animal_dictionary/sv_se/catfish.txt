@@ -1,0 +1,15 @@
+
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Malartade fiskar är slöa fiskar som finns i träsk och åer. Även om malartade fiskar från åer kan bli ganska kraftiga, finns bara den största av dessa fiskar i träsk.
+<NEWLINE>
+Som bottenmatare är malartade fiskar inte kräsna med sin mat. Små och medelstora malartade fiskar kommer att försöka sluka upp alla föremål som de ser. Stora malartade fiskar kommer istället att försöka äta vilken varelse som helst som är kortare än ett block.
+Liten malartad fisk kan bara lagra tre högar med föremål i magen, medan som medelstor malartad fisk kan lagra nio. Stor malartad fisk kan bara ha en varelse i magen åt gången.
+Malartade fiskar kommer att få upp alla föremål eller folkmassa de har ätit om de skadas eller om de stöter på en havsgurka, eftersom de hatar smaken av gurkor.
+<NEWLINE>
+Även om de har dålig syn, är det något med det blinkande ljuset från en havslykta som drar in malartade fiskar. Dessa kan användas för att locka malartade fiskar till områden med eller utan föremål.
+<NEWLINE>
+Alla malartade fiskar, även de stora, kan fångas med en vattenhink. Innehållet i fiskens mage kommer att bevaras, så man kan effektivt använda malartad fisk för att transportera föremål eller en varelse genom att hinka dem efter en matning.
+Malartad fisk som har ätit föremål eller har blivit hinkad försvinner inte.

@@ -1,11 +1,15 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicates;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -63,16 +67,27 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             return e.isAlive() && e.getType().is(AMTagRegistry.SUNBIRD_SCORCH_TARGETS);
         }
     };
+    private static final EntityDataAccessor<Boolean> SCORCHING = SynchedEntityData.defineId(EntitySunbird.class, EntityDataSerializers.BOOLEAN);
     public float birdPitch = 0;
     public float prevBirdPitch = 0;
     private int beaconSearchCooldown = 50;
     private BlockPos beaconPos = null;
     private boolean orbitClockwise = false;
+    private float prevScorchProgress;
+    private float scorchProgress;
+    private int fullScorchTime;
+
 
     protected EntitySunbird(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.moveControl = new MoveHelperController(this);
         orbitClockwise = new Random().nextBoolean();
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SCORCHING, false);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -171,12 +186,11 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     public void tick() {
         super.tick();
         prevBirdPitch = this.birdPitch;
-
+        prevScorchProgress = this.scorchProgress;
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
         this.birdPitch = f2;
-
         if (level.isClientSide) {
-            float radius = 0.35F + random.nextFloat() * 1.85F;
+            float radius = 0.35F + random.nextFloat() * 3.5F;
             float angle = (0.01745329251F * ((random.nextBoolean() ? -85F : 85F) + this.yBodyRot));
             float angleMotion = (0.01745329251F * this.yBodyRot);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
@@ -184,16 +198,11 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
             double extraZMotion = -0.2F * Mth.cos(angleMotion);
             double yRandom = 0.2F + random.nextFloat() * 0.3F;
-            SimpleParticleType type = ParticleTypes.FIREWORK;
-            this.level.addParticle(type, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, 0D, extraZMotion);
+            this.level.addParticle(AMParticleRegistry.SUNBIRD_FEATHER, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, 0D, extraZMotion);
         } else {
             if (this.tickCount % 100 == 0) {
-                List<? extends Entity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getScorchArea(), SCORCH_PRED);
-                for (Entity e : list) {
-                    e.setSecondsOnFire(4);
-                    if (e instanceof Phantom) {
-                        ((Phantom) e).addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE, 200, 0));
-                    }
+                if(!this.isScorching() && !getScorchingMobs().isEmpty()){
+                    this.setScorching(true);
                 }
                 List<Player> playerList = this.level.getEntitiesOfClass(Player.class, this.getScorchArea(), Predicates.alwaysTrue());
                 for (Player e : playerList) {
@@ -229,7 +238,41 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
                 }
             }
         }
+        if (this.isScorching() && scorchProgress < 20F) {
+            scorchProgress++;
+        }
+        if (!this.isScorching() && scorchProgress > 0F) {
+            scorchProgress--;
+        }
+        if (this.isScorching() && scorchProgress == 20F && !level.isClientSide) {
+            if(fullScorchTime > 30){
+                this.setScorching(false);
+            }else if(fullScorchTime % 5 == 0){
+                for (Entity e : getScorchingMobs()) {
+                    e.setSecondsOnFire(4);
+                    if (e instanceof Phantom) {
+                        ((Phantom) e).addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE, 200, 0));
+                    }
+                }
+            }
+            fullScorchTime++;
+        }else{
+            fullScorchTime = 0;
+        }
     }
+
+    private List<LivingEntity> getScorchingMobs(){
+        return this.level.getEntitiesOfClass(LivingEntity.class, this.getScorchArea(), SCORCH_PRED);
+    }
+
+    public boolean isScorching() {
+        return this.entityData.get(SCORCHING).booleanValue();
+    }
+
+    public void setScorching(boolean scorching) {
+        this.entityData.set(SCORCHING, Boolean.valueOf(scorching));
+    }
+
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
@@ -284,6 +327,10 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     @Override
     public boolean isFlying() {
         return true;
+    }
+
+    public float getScorchProgress(float partialTick){
+        return (prevScorchProgress + (scorchProgress - prevScorchProgress) * partialTick) / 20F;
     }
 
     static class MoveHelperController extends MoveControl {

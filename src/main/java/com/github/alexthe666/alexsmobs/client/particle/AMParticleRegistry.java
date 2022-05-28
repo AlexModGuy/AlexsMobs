@@ -30,6 +30,7 @@ public class AMParticleRegistry {
     public static final SimpleParticleType BUNFUNGUS_TRANSFORMATION = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:bunfungus_transformation");
     public static final SimpleParticleType FUNGUS_BUBBLE = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:fungus_bubble");
     public static final SimpleParticleType BEAR_FREDDY = (SimpleParticleType) new SimpleParticleType(true).setRegistryName("alexsmobs:bear_freddy");
+    public static final SimpleParticleType SUNBIRD_FEATHER = (SimpleParticleType) new SimpleParticleType(false).setRegistryName("alexsmobs:sunbird_feather");
 
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {

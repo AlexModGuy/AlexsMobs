@@ -156,6 +156,8 @@ public class AMConfig {
     public static int catfishSpawnRolls = 2;
     public static int flyingFishSpawnWeight = 8;
     public static int flyingFishSpawnRolls = 0;
+    public static int skelewagSpawnWeight = 25;
+    public static int skelewagSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -220,6 +222,7 @@ public class AMConfig {
     );
     public static boolean restrictPupfishSpawns = true;
     public static int pupfishChunkSpawnDistance = 2000;
+    public static boolean restrictSkelewagSpawns = true;
     public static double rainbowGlassFidelity = 16.0F;
     public static boolean bunfungusTransformation = true;
     public static boolean superSecretSettings = false;
@@ -379,6 +382,8 @@ public class AMConfig {
             catfishSpawnRolls = ConfigHolder.COMMON.catfishSpawnRolls.get();
             flyingFishSpawnWeight = ConfigHolder.COMMON.flyingFishSpawnWeight.get();
             flyingFishSpawnRolls = ConfigHolder.COMMON.flyingFishSpawnRolls.get();
+            skelewagSpawnWeight = ConfigHolder.COMMON.skelewagSpawnWeight.get();
+            skelewagSpawnRolls = ConfigHolder.COMMON.skelewagSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -429,6 +434,7 @@ public class AMConfig {
             bunfungusTransformation = ConfigHolder.COMMON.bunfungusTransformation.get();
             restrictPupfishSpawns = ConfigHolder.COMMON.restrictPupfishSpawns.get();
             pupfishChunkSpawnDistance = ConfigHolder.COMMON.pupfishChunkSpawnDistance.get();
+            restrictSkelewagSpawns = ConfigHolder.COMMON.restrictSkelewagSpawns.get();
             superSecretSettings = ConfigHolder.COMMON.superSecretSettings.get();
             addLootToChests = ConfigHolder.COMMON.addLootToChests.get();
         } catch (Exception e) {

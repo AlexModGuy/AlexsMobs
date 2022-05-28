@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,14 +34,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.core.Registry;
 import net.minecraft.world.*;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -48,7 +45,6 @@ import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -73,7 +69,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
 public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, ISemiAquatic {
@@ -669,16 +664,21 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         return new Animation[]{ANIMATION_LUNGE, ANIMATION_DEATHROLL};
     }
 
-    static class MateGoal extends BreedGoal {
-        private final EntityCrocodile turtle;
+    public boolean isCrowned() {
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        return s != null && (s.toLowerCase().contains("crown") || s.toLowerCase().contains("king") || s.toLowerCase().contains("rool"));
+    }
 
-        MateGoal(EntityCrocodile turtle, double speedIn) {
-            super(turtle, speedIn);
-            this.turtle = turtle;
+    static class MateGoal extends BreedGoal {
+        private final EntityCrocodile crocodile;
+
+        MateGoal(EntityCrocodile crocodile, double speedIn) {
+            super(crocodile, speedIn);
+            this.crocodile = crocodile;
         }
 
         public boolean canUse() {
-            return super.canUse() && !this.turtle.hasEgg();
+            return super.canUse() && !this.crocodile.hasEgg();
         }
 
         protected void breed() {
@@ -692,9 +692,12 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                 CriteriaTriggers.BRED_ANIMALS.trigger(serverplayerentity, this.animal, this.partner, this.animal);
             }
 
-            this.turtle.setHasEgg(true);
+            this.crocodile.setHasEgg(true);
             this.animal.resetLove();
             this.partner.resetLove();
+            this.animal.setAge(6000);
+            this.partner.setAge(6000);
+
             Random random = this.animal.getRandom();
             if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));

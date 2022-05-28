@@ -22,6 +22,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -108,6 +109,11 @@ public class AlexsMobs {
     @SubscribeEvent
     public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
         AMWorldRegistry.onBiomesLoad(event);
+    }
+
+    @SubscribeEvent
+    public void onDatapackReload(OnDatapackSyncEvent event) {
+        AMWorldRegistry.addStructureSpawns(event.getPlayerList().getServer());
     }
 
     private void setupParticleEvent(ParticleFactoryRegisterEvent event) {

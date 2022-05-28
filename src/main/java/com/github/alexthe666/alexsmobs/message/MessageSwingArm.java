@@ -1,27 +1,31 @@
 package com.github.alexthe666.alexsmobs.message;
 
+import java.util.function.Supplier;
+
 import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
-import net.minecraft.world.entity.player.Player;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.world.entity.player.Player;
 
-import java.util.function.Supplier;
+import net.minecraftforge.network.NetworkEvent;
 
 public class MessageSwingArm {
 
-    public MessageSwingArm() {
+    public static final MessageSwingArm INSTANCE = new MessageSwingArm();
 
+    private MessageSwingArm() {
     }
 
     public static MessageSwingArm read(FriendlyByteBuf buf) {
-        return new MessageSwingArm();
+        return INSTANCE;
     }
 
     public static void write(MessageSwingArm message, FriendlyByteBuf buf) {
     }
 
     public static class Handler {
+
         public Handler() {
         }
 

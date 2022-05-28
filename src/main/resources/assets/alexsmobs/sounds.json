@@ -71,6 +71,15 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.roadrunner_hurt"
   },
+  "roadrunner_meep": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:roadrunner_meep"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.roadrunner_meep"
+  },
   "gazelle_hurt": {
     "category": "neutral",
     "sounds": [
@@ -1058,6 +1067,18 @@
       },
       {
         "name": "alexsmobs:bear_dust_1"
+      },
+      {
+        "name": "alexsmobs:bear_dust_2"
+      },
+      {
+        "name": "alexsmobs:bear_dust_3"
+      },
+      {
+        "name": "alexsmobs:bear_dust_4"
+      },
+      {
+        "name": "alexsmobs:bear_dust_5"
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.bear_dust"
@@ -2302,6 +2323,39 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.giant_squid_tentacle"
+  },
+  "devils_hole_pupfish_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:devils_hole_pupfish_hurt_0"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.devils_hole_pupfish_hurt"
+  },
+  "skelewag_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skelewag_hurt_0"
+      },
+      {
+        "name": "alexsmobs:skelewag_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skelewag_hurt"
+  },
+  "skelewag_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skelewag_idle_0"
+      },
+      {
+        "name": "alexsmobs:skelewag_idle_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skelewag_idle"
   },
   "end_pirate_door": {
     "category": "neutral",

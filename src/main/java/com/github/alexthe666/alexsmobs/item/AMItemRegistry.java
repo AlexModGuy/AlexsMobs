@@ -57,6 +57,7 @@ public class AMItemRegistry {
     public static AMArmorMaterial FROSTSTALKER_ARMOR_MATERIAL = new AMArmorMaterial("froststalker", 9, new int[]{3, 3, 3, 3}, 15, SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F);
     public static AMArmorMaterial ROCKY_ARMOR_MATERIAL = new AMArmorMaterial("rocky_roller", 20, new int[]{2, 5, 7, 3}, 10, SoundEvents.ARMOR_EQUIP_TURTLE, 0.5F);
     public static AMArmorMaterial FLYING_FISH_MATERIAL = new AMArmorMaterial("flying_fish", 9, new int[]{1, 1, 1, 1}, 8, SoundEvents.ARMOR_EQUIP_LEATHER, 0F);
+    public static AMArmorMaterial NOVELTY_HAT_MATERIAL = new AMArmorMaterial("novelty_hat", 10, new int[]{2, 2, 2, 2}, 30, SoundEvents.ARMOR_EQUIP_LEATHER, 0F);
 
     public static final DeferredRegister<Item> DEF_REG = DeferredRegister.create(ForgeRegistries.ITEMS, AlexsMobs.MODID);
 
@@ -186,6 +187,11 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> FLYING_FISH = DEF_REG.register("flying_fish", () -> new Item(new Item.Properties().tab(AlexsMobs.TAB).food(new FoodProperties.Builder().nutrition(3).saturationMod(0.4F).meat().build())));
     public static final RegistryObject<Item> FLYING_FISH_BOOTS = DEF_REG.register("flying_fish_boots", () -> new ItemModArmor(FLYING_FISH_MATERIAL, EquipmentSlot.FEET));
     public static final RegistryObject<Item> FLYING_FISH_BUCKET = DEF_REG.register("flying_fish_bucket", () -> new ItemModFishBucket(AMEntityRegistry.FLYING_FISH, Fluids.WATER, new Item.Properties().tab(AlexsMobs.TAB)));
+    public static final RegistryObject<Item> FISH_BONES = DEF_REG.register("fish_bones", () -> new Item(new Item.Properties().tab(AlexsMobs.TAB)));
+    public static final RegistryObject<Item> SKELEWAG_SWORD_INVENTORY = DEF_REG.register("skelewag_sword_inventory", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SKELEWAG_SWORD_HAND = DEF_REG.register("skelewag_sword_hand", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> SKELEWAG_SWORD = DEF_REG.register("skelewag_sword", () -> new ItemSkelewagSword(new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).durability(430)));
+    public static final RegistryObject<Item> NOVELTY_HAT = DEF_REG.register("novelty_hat", () -> new ItemModArmor(NOVELTY_HAT_MATERIAL, EquipmentSlot.HEAD));
     public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AlexsMobs.TAB).stacksTo(1).rarity(Rarity.RARE)));
 
@@ -275,11 +281,13 @@ public class AMItemRegistry {
         event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.DEVILS_HOLE_PUPFISH, 0X567BC4, 0X6C4475, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_devils_hole_pupfish"));
         event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.CATFISH, 0X807757, 0X8A7466, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_catfish"));
         event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.FLYING_FISH, 0X7BBCED, 0X6881B3, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_flying_fish"));
+        event.getRegistry().register(new ForgeSpawnEggItem(AMEntityRegistry.SKELEWAG, 0XD9FCB1, 0X3A4F30, new Item.Properties().tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:spawn_egg_skelewag"));
         event.getRegistry().register(new BannerPatternItem(PATTERN_BEAR, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_bear"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_0, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_0"));
         event.getRegistry().register(new BannerPatternItem(PATTER_AUSTRALIA_1, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_australia_1"));
         event.getRegistry().register(new BannerPatternItem(PATTERN_NEW_MEXICO, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_new_mexico"));
         event.getRegistry().register(new BannerPatternItem(PATTERN_BRAZIL, (new Item.Properties()).stacksTo(1).tab(AlexsMobs.TAB)).setRegistryName("alexsmobs:banner_pattern_brazil"));
+
         CROCODILE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(CROCODILE_SCUTE.get()));
         ROADRUNNER_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(ROADRUNNER_FEATHER.get()));
         CENTIPEDE_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(CENTIPEDE_LEG.get()));
@@ -291,6 +299,7 @@ public class AMItemRegistry {
         EMU_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(EMU_FEATHER.get()));
         ROCKY_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(ROCKY_SHELL.get()));
         FLYING_FISH_MATERIAL.setRepairMaterial(Ingredient.of(FLYING_FISH.get()));
+        NOVELTY_HAT_MATERIAL.setRepairMaterial(Ingredient.of(Items.BONE));
         DispenserBlock.registerBehavior(SHARK_TOOTH_ARROW.get(), new AbstractProjectileDispenseBehavior() {
             /**
              * Return the projectile entity spawned by this dispense behavior.

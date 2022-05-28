@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIRandomSwimming;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import net.minecraft.core.BlockPos;
@@ -86,6 +87,15 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         return new WaterBoundPathNavigation(this, worldIn);
     }
 
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.DEVILS_HOLE_PUPFISH_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.DEVILS_HOLE_PUPFISH_HURT;
+    }
+
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new TryFindWaterGoal(this));
@@ -116,7 +126,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         while(iServerWorld.getFluidState(pos).is(FluidTags.WATER)){
             pos = pos.above();
         }
-        return !iServerWorld.canSeeSky(pos);
+        return !iServerWorld.canSeeSky(pos) && pos.getY() < iServerWorld.getSeaLevel();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -124,7 +134,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     }
 
     public int getMaxSpawnClusterSize() {
-        return 8;
+        return 6;
     }
 
     public boolean isMaxGroupSizeReached(int sizeIn) {
@@ -182,6 +192,13 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
                     double motZ = this.random.nextGaussian() * 0.02D;
                     level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), this.getX() + mouth.x, this.getY() + mouth.y, this.getZ() + mouth.z, motX, motY, motZ);
                 }
+            }
+        }
+        if(!isInWaterOrBubble() && this.isAlive()){
+            if (this.isOnGround() && random.nextFloat() < 0.5F) {
+                this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
+                this.setYRot(this.random.nextFloat() * 360.0F);
+                this.playSound(SoundEvents.COD_FLOP, this.getSoundVolume(), this.getVoicePitch());
             }
         }
     }
