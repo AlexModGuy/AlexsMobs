@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.goal.Goal.Flag;
 public class AnimalAIFindWater extends Goal {
     private final PathfinderMob creature;
     private BlockPos targetPos;
-    private int executionChance = 30;
+    private final int executionChance = 30;
 
     public AnimalAIFindWater(PathfinderMob creature) {
         this.creature = creature;
@@ -22,8 +22,8 @@ public class AnimalAIFindWater extends Goal {
     }
 
     public boolean canUse() {
-        if (this.creature.isOnGround() && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER)){
-            if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldEnterWater() && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)){
+        if (this.creature.isOnGround() && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER)) {
+            if (this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldEnterWater() && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)) {
                 targetPos = generateTarget();
                 return targetPos != null;
             }
@@ -32,19 +32,19 @@ public class AnimalAIFindWater extends Goal {
     }
 
     public void start() {
-        if(targetPos != null){
+        if (targetPos != null) {
             this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
     }
 
     public void tick() {
-        if(targetPos != null){
+        if (targetPos != null) {
             this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
     }
 
     public boolean canContinueToUse() {
-        if(this.creature instanceof ISemiAquatic && !((ISemiAquatic) this.creature).shouldEnterWater()){
+        if (this.creature instanceof ISemiAquatic && !((ISemiAquatic) this.creature).shouldEnterWater()) {
             this.creature.getNavigation().stop();
             return false;
         }
@@ -53,15 +53,16 @@ public class AnimalAIFindWater extends Goal {
 
     public BlockPos generateTarget() {
         BlockPos blockpos = null;
-        Random random = new Random();
-        int range = this.creature instanceof ISemiAquatic ? ((ISemiAquatic) this.creature).getWaterSearchRange() : 14;
-        for(int i = 0; i < 15; i++){
-            BlockPos blockpos1 = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);
-            while(this.creature.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1){
-                blockpos1 = blockpos1.below();
+        final Random random = new Random();
+        final int range = this.creature instanceof ISemiAquatic ? ((ISemiAquatic) this.creature).getWaterSearchRange() : 14;
+        for(int i = 0; i < 15; i++) {
+            BlockPos blockPos = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);
+            while (this.creature.level.isEmptyBlock(blockPos) && blockPos.getY() > 1) {
+                blockPos = blockPos.below();
             }
-            if(this.creature.level.getFluidState(blockpos1).is(FluidTags.WATER)){
-                blockpos = blockpos1;
+
+            if (this.creature.level.getFluidState(blockPos).is(FluidTags.WATER)) {
+                blockpos = blockPos;
             }
         }
         return blockpos;

@@ -50,7 +50,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquatic, Shearable, net.minecraftforge.common.IForgeShearable {
 
     public static final Predicate<LivingEntity> TARGET_PRED = (animal) -> {
-        return !(animal instanceof EntityAlligatorSnappingTurtle) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(animal)  && !(animal instanceof ArmorStand) && animal.isAlive();
+        return !(animal instanceof EntityAlligatorSnappingTurtle) && !(animal instanceof ArmorStand) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(animal) && animal.isAlive();
     };
     private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(EntityAlligatorSnappingTurtle.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> MOSS = SynchedEntityData.defineId(EntityAlligatorSnappingTurtle.class, EntityDataSerializers.INT);
@@ -126,8 +126,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
     }
 
     public boolean isFood(ItemStack stack) {
-        Item item = stack.getItem();
-        return item == Items.COD;
+        return stack.getItem() == Items.COD;
     }
 
     public boolean onClimbable() {
@@ -153,33 +152,39 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
         super.tick();
         prevOpenMouthProgress = openMouthProgress;
         prevAttackProgress = attackProgress;
-        boolean attack = this.entityData.get(LUNGE_FLAG);
-        boolean open = this.isWaiting() || this.entityData.get(ATTACK_TARGET_FLAG) && !attack;
-        if (attack && attackProgress < 5) {
-            attackProgress++;
+        final boolean attack = this.entityData.get(LUNGE_FLAG);
+        final boolean open = this.isWaiting() || this.entityData.get(ATTACK_TARGET_FLAG) && !attack;
+
+        if (attack) {
+            if (attackProgress < 5F)
+                attackProgress++;
+        } else {
+            if (attackProgress > 0F)
+                attackProgress--;
         }
-        if (!attack && attackProgress > 0) {
-            attackProgress--;
+
+        if (open) {
+            if (openMouthProgress < 5F)
+                openMouthProgress++;
+        } else {
+            if (openMouthProgress > 0F)
+                openMouthProgress--;
         }
-        if (open && openMouthProgress < 5) {
-            openMouthProgress++;
-        }
-        if (!open && openMouthProgress > 0) {
-            openMouthProgress--;
-        }
-        if (this.attackProgress == 4 && this.isAlive() && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F) {
-            float dmg = this.isBaby() ? 1F : (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
+
+        if (this.attackProgress == 4 && this.getTarget() != null && this.isAlive() && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F) {
+            final float dmg = this.isBaby() ? 1F : (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
             this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
         }
-        if (this.attackProgress > 4) {
+
+        if (this.attackProgress > 4)
             biteTick = 5;
-        }
-        if (biteTick > 0) {
+
+        if (biteTick > 0)
             biteTick--;
-        }
-        if (chaseTime < 0) {
+
+        if (chaseTime < 0)
             chaseTime++;
-        }
+
         if (!this.level.isClientSide) {
             this.setBesideClimbableBlock(this.horizontalCollision && this.isInWater());
             if (this.isWaiting()) {
@@ -201,10 +206,10 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
                 this.entityData.set(ATTACK_TARGET_FLAG, true);
                 this.lookAt(this.getTarget(), 360, 40);
                 this.yBodyRot = this.getYRot();
-                if (this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F && openMouthProgress > 4) {
+                if (openMouthProgress > 4 && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F) {
                     this.entityData.set(LUNGE_FLAG, true);
                 }
-                if (this.distanceTo(this.getTarget()) > (this.getTarget() instanceof Player ? 5 : 10) && chaseTime > 40) {
+                if (chaseTime > 40 && this.distanceTo(this.getTarget()) > (this.getTarget() instanceof Player ? 5 : 10)) {
                     chaseTime = -50;
                     this.setTarget(null);
                     this.setLastHurtByMob(null);
@@ -266,28 +271,27 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
 
 
     protected PathNavigation createNavigation(Level worldIn) {
-        SemiAquaticPathNavigator flyingpathnavigator = new SemiAquaticPathNavigator(this, worldIn) {
+        return new SemiAquaticPathNavigator(EntityAlligatorSnappingTurtle.this, worldIn) {
             public boolean isStableDestination(BlockPos pos) {
                 return this.level.getBlockState(pos).getFluidState().isEmpty();
             }
         };
-        return flyingpathnavigator;
     }
 
     public boolean isWaiting() {
-        return this.entityData.get(WAITING).booleanValue();
+        return this.entityData.get(WAITING);
     }
 
     public void setWaiting(boolean sit) {
-        this.entityData.set(WAITING, Boolean.valueOf(sit));
+        this.entityData.set(WAITING, sit);
     }
 
     public int getMoss() {
-        return this.entityData.get(MOSS).intValue();
+        return this.entityData.get(MOSS);
     }
 
     public void setMoss(int moss) {
-        this.entityData.set(MOSS, Integer.valueOf(moss));
+        this.entityData.set(MOSS, moss);
     }
 
     protected void updateAir(int air) {
@@ -391,8 +395,8 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
 
     @Override
     public void shear(SoundSource category) {
-        level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
-        if (!level.isClientSide()) {
+        this.level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
+        if (!this.level.isClientSide()) {
             if (random.nextFloat() < this.getMoss() * 0.05F) {
                 this.spawnAtLocation(AMItemRegistry.SPIKED_SCUTE.get());
             } else {
