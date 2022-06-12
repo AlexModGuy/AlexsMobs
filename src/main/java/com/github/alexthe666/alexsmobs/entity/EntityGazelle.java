@@ -67,11 +67,11 @@ public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.GAZELLE_HURT;
+        return AMSoundRegistry.GAZELLE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.GAZELLE_HURT;
+        return AMSoundRegistry.GAZELLE_HURT.get();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {

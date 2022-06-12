@@ -14,7 +14,6 @@ public class EffectEnderFlu extends MobEffect {
 
     public EffectEnderFlu() {
         super(MobEffectCategory.HARMFUL, 0X6836AA);
-        this.setRegistryName(AlexsMobs.MODID, "ender_flu");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

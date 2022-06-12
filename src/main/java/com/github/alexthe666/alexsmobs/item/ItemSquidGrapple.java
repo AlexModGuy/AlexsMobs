@@ -53,7 +53,7 @@ public class ItemSquidGrapple extends Item {
         if(livingEntityIn.isFallFlying()){
             return;
         }
-        livingEntityIn.playSound(AMSoundRegistry.GIANT_SQUID_TENTACLE,1.0F, 1.0F + (livingEntityIn.getRandom().nextFloat() - livingEntityIn.getRandom().nextFloat()) * 0.2F);
+        livingEntityIn.playSound(AMSoundRegistry.GIANT_SQUID_TENTACLE.get(),1.0F, 1.0F + (livingEntityIn.getRandom().nextFloat() - livingEntityIn.getRandom().nextFloat()) * 0.2F);
         if (!worldIn.isClientSide) {
             boolean left = false;
             if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
@@ -92,7 +92,7 @@ public class ItemSquidGrapple extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("item.alexsmobs.squid_grapple.desc").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("item.alexsmobs.squid_grapple.desc").withStyle(ChatFormatting.GRAY));
 
     }
 }

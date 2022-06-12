@@ -76,19 +76,19 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_IDLE;
+        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_HURT;
+        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_HURT;
+        return AMSoundRegistry.ALLIGATOR_SNAPPING_TURTLE_HURT.get();
     }
 
 
-    public static boolean canTurtleSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canTurtleSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.ALLIGATOR_SNAPPING_TURTLE_SPAWNS);
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }

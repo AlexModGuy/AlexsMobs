@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -79,22 +80,22 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.BUNFUNGUS_IDLE;
+        return AMSoundRegistry.BUNFUNGUS_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.BUNFUNGUS_HURT;
+        return AMSoundRegistry.BUNFUNGUS_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.BUNFUNGUS_HURT;
+        return AMSoundRegistry.BUNFUNGUS_HURT.get();
     }
 
     public boolean removeWhenFarAway(double p_27598_) {
         return false;
     }
 
-    public static boolean canBunfungusSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canBunfungusSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         return worldIn.getBlockState(pos.below()).canOcclude();
     }
 
@@ -230,7 +231,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                     }
                 }
                 if(flag){
-                    this.playSound(AMSoundRegistry.BUNFUNGUS_ATTACK, this.getSoundVolume(), this.getVoicePitch());
+                    this.playSound(AMSoundRegistry.BUNFUNGUS_ATTACK.get(), this.getSoundVolume(), this.getVoicePitch());
                 }
             }
             if (this.tickCount % 40 == 0) {
@@ -274,7 +275,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                 double d1 = this.random.nextGaussian() * 0.02D;
                 float f1 = (EntityBunfungus.MAX_TRANSFORM_TIME - this.transformsIn()) / (float)EntityBunfungus.MAX_TRANSFORM_TIME;
                 float scale = f1 * 0.5F + 0.15F;
-                this.level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, this.getRandomX(scale), this.getY(this.random.nextDouble() * scale), this.getRandomZ(scale), d0, d1, d2);
+                this.level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), this.getRandomX(scale), this.getY(this.random.nextDouble() * scale), this.getRandomZ(scale), d0, d1, d2);
             }
         }
         if(isSleeping() && level.isClientSide && random.nextFloat() < 0.3F){
@@ -283,7 +284,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
             float angle = (0.01745329251F * this.yBodyRot);
             double extraX = radius * Mth.sin((float) (Math.PI + angle)) + random.nextFloat() * 0.5F - 0.25F;
             double extraZ = radius * Mth.cos(angle) + random.nextFloat() * 0.5F - 0.25F;
-            ParticleOptions data = random.nextFloat() < 0.3F ? AMParticleRegistry.BUNFUNGUS_TRANSFORMATION : AMParticleRegistry.FUNGUS_BUBBLE;
+            ParticleOptions data = random.nextFloat() < 0.3F ? AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get() : AMParticleRegistry.FUNGUS_BUBBLE.get();
             this.level.addParticle(data, this.getX() + extraX, this.getY() + random.nextFloat() * 0.1F, this.getZ() + extraZ, 0, d0, 0);
 
         }

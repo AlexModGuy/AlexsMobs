@@ -14,6 +14,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -76,7 +77,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
 
-    public static boolean checkRockyRollerSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean checkRockyRollerSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && (worldIn.getBlockState(pos.below()).is(Blocks.POINTED_DRIPSTONE) || worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.DRIPSTONE_BLOCK));
     }
 
@@ -108,15 +109,15 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.ROCKY_ROLLER_IDLE;
+        return AMSoundRegistry.ROCKY_ROLLER_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.ROCKY_ROLLER_HURT;
+        return AMSoundRegistry.ROCKY_ROLLER_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.ROCKY_ROLLER_HURT;
+        return AMSoundRegistry.ROCKY_ROLLER_HURT.get();
     }
 
     public void tick() {
@@ -203,7 +204,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             }
         }
         if(flag){
-            this.playSound(AMSoundRegistry.ROCKY_ROLLER_EARTHQUAKE, this.getSoundVolume(), this.getVoicePitch());
+            this.playSound(AMSoundRegistry.ROCKY_ROLLER_EARTHQUAKE.get(), this.getSoundVolume(), this.getVoicePitch());
         }
     }
 

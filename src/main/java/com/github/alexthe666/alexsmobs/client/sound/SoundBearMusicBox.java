@@ -12,7 +12,7 @@ public class SoundBearMusicBox extends AbstractTickableSoundInstance {
     private final EntityGrizzlyBear bear;
 
     public SoundBearMusicBox(EntityGrizzlyBear bear) {
-        super(AMSoundRegistry.APRIL_FOOLS_MUSIC_BOX, SoundSource.RECORDS);
+        super(AMSoundRegistry.APRIL_FOOLS_MUSIC_BOX.get(), SoundSource.RECORDS, bear.getRandom());
         this.bear = bear;
         this.attenuation = Attenuation.LINEAR;
         this.looping = true;

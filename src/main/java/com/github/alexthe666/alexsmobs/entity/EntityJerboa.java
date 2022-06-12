@@ -135,15 +135,15 @@ public class EntityJerboa extends Animal {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.JERBOA_IDLE;
+        return AMSoundRegistry.JERBOA_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.JERBOA_HURT;
+        return AMSoundRegistry.JERBOA_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.JERBOA_HURT;
+        return AMSoundRegistry.JERBOA_HURT.get();
     }
 
 
@@ -308,7 +308,7 @@ public class EntityJerboa extends Animal {
         return isValidLightLevel(p_223325_1_, p_223325_3_, p_223325_4_) && checkMobSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
     }
 
-    public static <T extends Mob> boolean canJerboaSpawn(EntityType<EntityJerboa> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+    public static <T extends Mob> boolean canJerboaSpawn(EntityType<EntityJerboa> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return reason == MobSpawnType.SPAWNER || iServerWorld.canSeeSky(pos.above()) && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
     }
 

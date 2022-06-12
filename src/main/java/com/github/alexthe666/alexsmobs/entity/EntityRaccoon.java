@@ -99,15 +99,15 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.RACCOON_IDLE;
+        return AMSoundRegistry.RACCOON_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.RACCOON_HURT;
+        return AMSoundRegistry.RACCOON_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.RACCOON_HURT;
+        return AMSoundRegistry.RACCOON_HURT.get();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -253,7 +253,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                 if(this.getCommand() == 3){
                     this.setCommand(0);
                 }
-                player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if(sit){
                     this.forcedSit = true;

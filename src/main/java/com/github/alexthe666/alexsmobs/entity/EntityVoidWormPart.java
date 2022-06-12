@@ -288,7 +288,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(AMParticleRegistry.WORM_PORTAL, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
+                this.level.addParticle(AMParticleRegistry.WORM_PORTAL.get(), this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
             }
         }
 

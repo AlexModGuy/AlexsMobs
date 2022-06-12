@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class BeachedCachalotWhaleSpawner {
-    private final Random random = new Random();
+    private final RandomSource random = new Random();
     private final ServerLevel world;
     private int timer;
     private int delay;

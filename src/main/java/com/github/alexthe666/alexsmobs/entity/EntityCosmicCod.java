@@ -69,11 +69,11 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.COSMIC_COD_HURT;
+        return AMSoundRegistry.COSMIC_COD_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.COSMIC_COD_HURT;
+        return AMSoundRegistry.COSMIC_COD_HURT.get();
     }
 
 

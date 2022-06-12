@@ -61,21 +61,21 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
         return AMEntityRegistry.rollSpawn(AMConfig.spectreSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canSpectreSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canSpectreSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockState blockstate = worldIn.getBlockState(pos.below());
         return true;
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SPECTRE_IDLE;
+        return AMSoundRegistry.SPECTRE_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SPECTRE_HURT;
+        return AMSoundRegistry.SPECTRE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SPECTRE_HURT;
+        return AMSoundRegistry.SPECTRE_HURT.get();
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

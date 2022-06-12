@@ -119,7 +119,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
                 vibrating = true;
                 if(transformProg == 1 && (AlexsMobs.isAprilFools() || new Random().nextInt(100) == 0)){
                     fnaf = true;
-                    level.playSound(null, this.getBlockPos(), AMSoundRegistry.MOSQUITO_CAPSID_CONVERT, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound(null, this.getBlockPos(), AMSoundRegistry.MOSQUITO_CAPSID_CONVERT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 }
                 if(transformProg > (fnaf ? 160 : 60)) {
                     ItemStack current = this.getItem(0).copy();
@@ -330,7 +330,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
 
     @Override
     protected Component getDefaultName() {
-        return new TranslatableComponent("block.alexsmobs.capsid");
+        return Component.translatable("block.alexsmobs.capsid");
     }
 
     @Override

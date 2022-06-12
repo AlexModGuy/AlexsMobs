@@ -12,7 +12,6 @@ public class EffectSunbird extends MobEffect {
 
     public EffectSunbird(boolean curse) {
         super(curse ? MobEffectCategory.HARMFUL : MobEffectCategory.BENEFICIAL, 0XFFEAB9);
-        this.setRegistryName(AlexsMobs.MODID, curse ? "sunbird_curse" : "sunbird_blessing");
         this.curse = curse;
     }
 

@@ -94,7 +94,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.4F);
     }
 
-    public static <T extends Mob> boolean canCapuchinSpawn(EntityType<EntityCapuchinMonkey> gorilla, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, Random random) {
+    public static <T extends Mob> boolean canCapuchinSpawn(EntityType<EntityCapuchinMonkey> gorilla, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, RandomSource random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.below());
         return (blockstate.is(BlockTags.LEAVES) || blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(BlockTags.LOGS) || blockstate.is(Blocks.AIR)) && worldIn.getRawBrightness(p_223317_3_, 0) > 8;
     }
@@ -156,15 +156,15 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.CAPUCHIN_MONKEY_IDLE;
+        return AMSoundRegistry.CAPUCHIN_MONKEY_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.CAPUCHIN_MONKEY_HURT;
+        return AMSoundRegistry.CAPUCHIN_MONKEY_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.CAPUCHIN_MONKEY_HURT;
+        return AMSoundRegistry.CAPUCHIN_MONKEY_HURT.get();
     }
 
     public boolean isAlliedTo(Entity entityIn) {
@@ -475,7 +475,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                 if (this.getCommand() == 3) {
                     this.setCommand(0);
                 }
-                player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
                     this.forcedSit = true;

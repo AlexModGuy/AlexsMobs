@@ -89,15 +89,15 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.GELADA_MONKEY_IDLE;
+        return AMSoundRegistry.GELADA_MONKEY_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.GELADA_MONKEY_HURT;
+        return AMSoundRegistry.GELADA_MONKEY_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.GELADA_MONKEY_HURT;
+        return AMSoundRegistry.GELADA_MONKEY_HURT.get();
     }
 
     protected void registerGoals() {
@@ -442,7 +442,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
 
         public BlockPos generateTarget() {
             BlockPos blockpos = null;
-            Random random = new Random();
+            RandomSource random = new Random();
             int range = 7;
             for (int i = 0; i < 15; i++) {
                 BlockPos blockpos1 = EntityGeladaMonkey.this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);

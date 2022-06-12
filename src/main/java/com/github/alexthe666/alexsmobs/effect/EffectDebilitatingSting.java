@@ -33,7 +33,6 @@ public class EffectDebilitatingSting extends MobEffect {
     protected EffectDebilitatingSting() {
         super(MobEffectCategory.NEUTRAL, 0XFFF385);
         this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", -1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
-        this.setRegistryName(AlexsMobs.MODID, "debilitating_sting");
     }
 
     public void removeAttributeModifiers(LivingEntity entityLivingBaseIn, AttributeMap attributeMapIn, int amplifier) {

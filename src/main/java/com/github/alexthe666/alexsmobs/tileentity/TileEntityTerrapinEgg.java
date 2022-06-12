@@ -22,7 +22,7 @@ public class TileEntityTerrapinEgg extends BlockEntity {
         super(AMTileEntityRegistry.TERRAPIN_EGG.get(), pos, state);
     }
 
-    public void addAttributesToOffspring(EntityTerrapin baby, Random random){
+    public void addAttributesToOffspring(EntityTerrapin baby, RandomSource random){
         if(parent1 != null && parent2 != null){
             baby.setTurtleType(random.nextBoolean() ? parent1.type : parent2.type);
             baby.setShellType(random.nextBoolean() ? parent1.shellType : parent2.shellType);

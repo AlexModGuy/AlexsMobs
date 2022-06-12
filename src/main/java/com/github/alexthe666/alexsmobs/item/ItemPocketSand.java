@@ -25,7 +25,7 @@ import net.minecraft.world.entity.HumanoidArm;
 
 public class ItemPocketSand extends Item {
 
-    private Random random = new Random();
+    private RandomSource random = new Random();
     public static final Predicate<ItemStack> IS_SAND = (stack) -> {
         return stack.is(ItemTags.SAND);
     };

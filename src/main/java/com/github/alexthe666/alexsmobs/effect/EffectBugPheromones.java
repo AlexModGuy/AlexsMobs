@@ -9,7 +9,7 @@ public class EffectBugPheromones extends MobEffect {
 
     public EffectBugPheromones() {
         super(MobEffectCategory.BENEFICIAL, 0X78464B);
-        this.setRegistryName(AlexsMobs.MODID, "bug_pheromones");
+        this.setRegistryName(AlexsMobs.MODID, "");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

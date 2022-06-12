@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,9 +28,6 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -89,7 +87,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         return MobType.ARTHROPOD;
     }
 
-    private static Animation getRandomAttack(Random rand) {
+    private static Animation getRandomAttack(RandomSource rand) {
         switch (rand.nextInt(4)) {
             case 0:
                 return ANIMATION_PUNCH_L;
@@ -104,15 +102,15 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.WARPED_MOSCO_IDLE;
+        return AMSoundRegistry.WARPED_MOSCO_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.WARPED_MOSCO_HURT;
+        return AMSoundRegistry.WARPED_MOSCO_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.WARPED_MOSCO_HURT;
+        return AMSoundRegistry.WARPED_MOSCO_HURT.get();
     }
 
     protected void registerGoals() {
@@ -196,7 +194,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         }
         if (isFlying()) {
             if (loopSoundTick == 0) {
-                this.playSound(AMSoundRegistry.MOSQUITO_LOOP, this.getSoundVolume(), this.getVoicePitch() * 0.3F);
+                this.playSound(AMSoundRegistry.MOSQUITO_LOOP.get(), this.getSoundVolume(), this.getVoicePitch() * 0.3F);
             }
             loopSoundTick++;
             if (loopSoundTick > 100) {

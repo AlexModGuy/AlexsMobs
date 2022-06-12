@@ -88,15 +88,15 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SEAL_IDLE;
+        return AMSoundRegistry.SEAL_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SEAL_HURT;
+        return AMSoundRegistry.SEAL_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SEAL_HURT;
+        return AMSoundRegistry.SEAL_HURT.get();
     }
 
 
@@ -104,7 +104,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.18F);
     }
 
-    public static boolean canSealSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canSealSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         Holder<Biome> holder = worldIn.getBiome(pos);
         if (!holder.is(Biomes.FROZEN_OCEAN) && !holder.is(Biomes.DEEP_FROZEN_OCEAN)) {
             boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.SEAL_SPAWNS);

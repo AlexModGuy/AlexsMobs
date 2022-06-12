@@ -9,7 +9,6 @@ public class EffectTigersBlessing extends MobEffect {
 
     protected EffectTigersBlessing() {
         super(MobEffectCategory.BENEFICIAL, 0XFFD75E);
-        this.setRegistryName(AlexsMobs.MODID, "tigers_blessing");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

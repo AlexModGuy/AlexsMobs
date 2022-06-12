@@ -117,7 +117,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 15D).add(Attributes.MOVEMENT_SPEED, 0.25F);
     }
 
-    public static boolean canMungusSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canMungusSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         return worldIn.getBlockState(pos.below()).canOcclude();
     }
 
@@ -145,15 +145,15 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.MUNGUS_IDLE;
+        return AMSoundRegistry.MUNGUS_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.MUNGUS_HURT;
+        return AMSoundRegistry.MUNGUS_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.MUNGUS_HURT;
+        return AMSoundRegistry.MUNGUS_HURT.get();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -509,9 +509,9 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                                 }
                             }
                         }
-                        this.playSound(AMSoundRegistry.MUNGUS_LASER_END, this.getVoicePitch(), this.getSoundVolume());
+                        this.playSound(AMSoundRegistry.MUNGUS_LASER_END.get(), this.getVoicePitch(), this.getSoundVolume());
                         if (flag) {
-                            this.playSound(AMSoundRegistry.MUNGUS_LASER_GROW, this.getVoicePitch(), this.getSoundVolume());
+                            this.playSound(AMSoundRegistry.MUNGUS_LASER_GROW.get(), this.getVoicePitch(), this.getSoundVolume());
                         }
                         this.setBeamTarget(null);
                         beamCounter = -1200;

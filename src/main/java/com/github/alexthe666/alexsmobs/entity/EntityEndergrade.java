@@ -68,7 +68,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
-    public static boolean canEndergradeSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canEndergradeSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return !worldIn.getBlockState(pos.below()).isAir();
     }
 
@@ -138,11 +138,11 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.ENDERGRADE_HURT;
+        return AMSoundRegistry.ENDERGRADE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.ENDERGRADE_HURT;
+        return AMSoundRegistry.ENDERGRADE_HURT.get();
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {

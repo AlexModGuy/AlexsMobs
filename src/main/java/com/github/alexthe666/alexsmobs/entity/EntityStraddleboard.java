@@ -146,7 +146,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
                         p = (Player) this.getControllingPassenger();
                     }
                     if(!level.isClientSide && !this.isRemoved()){
-                        if (this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN) == 0 || p != null && !p.addItem(this.getItemBoard())) {
+                        if (this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN.get()) == 0 || p != null && !p.addItem(this.getItemBoard())) {
                             if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
                                 this.spawnAtLocation(this.getItemBoard());
                             }
@@ -400,7 +400,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         if (controller instanceof Player) {
             Player player = (Player) controller;
             if (this.tickCount % 50 == 0) {
-                if (getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX) > 0) {
+                if (getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX.get()) > 0) {
                     player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
                 }
             }
@@ -656,7 +656,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     public void handleStartJump(int i) {
         jumpOutOfLava = true;
         this.hasImpulse = true;
-        float scaled = i * 0.01F + 0.1F * getEnchant(AMEnchantmentRegistry.STRADDLE_JUMP);
+        float scaled = i * 0.01F + 0.1F * getEnchant(AMEnchantmentRegistry.STRADDLE_JUMP.get());
         this.setDeltaMovement(this.getDeltaMovement().add(0, scaled * 1.5F, 0));
     }
 
@@ -665,7 +665,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     public boolean shouldSerpentFriend() {
-        return getEnchant(AMEnchantmentRegistry.STRADDLE_SERPENTFRIEND) > 0;
+        return getEnchant(AMEnchantmentRegistry.STRADDLE_SERPENTFRIEND.get()) > 0;
     }
 
     @Override

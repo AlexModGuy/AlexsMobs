@@ -89,7 +89,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         switchNavigator(false);
     }
 
-    public static boolean canPlatypusSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canPlatypusSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.PLATYPUS_SPAWNS);
         return (worldIn.getBlockState(pos.below()).getBlock() == Blocks.DIRT || spawnBlock) && pos.getY() < worldIn.getSeaLevel() + 4;
     }
@@ -109,15 +109,15 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.PLATYPUS_IDLE;
+        return AMSoundRegistry.PLATYPUS_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.PLATYPUS_HURT;
+        return AMSoundRegistry.PLATYPUS_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.PLATYPUS_HURT;
+        return AMSoundRegistry.PLATYPUS_HURT.get();
     }
 
     @Override
@@ -406,7 +406,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
                 double actualZ = radius * Mth.cos(angle);
                 double motX = actualX - extraX;
                 double motZ = actualZ - extraZ;
-                this.level.addParticle(AMParticleRegistry.PLATYPUS_SENSE, this.getX() + extraX, this.getBbHeight() * 0.3F + this.getY(), this.getZ() + extraZ, motX * 0.1F, 0, motZ * 0.1F);
+                this.level.addParticle(AMParticleRegistry.PLATYPUS_SENSE.get(), this.getX() + extraX, this.getBbHeight() * 0.3F + this.getY(), this.getZ() + extraZ, motX * 0.1F, 0, motZ * 0.1F);
             }
         }
     }

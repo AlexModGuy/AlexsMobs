@@ -86,22 +86,22 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         return AMEntityRegistry.rollSpawn(AMConfig.soulVultureSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canVultureSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canVultureSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         BlockPos blockpos = pos.below();
         boolean spawnBlock = worldIn.getBlockState(blockpos).is(AMTagRegistry.SOUL_VULTURE_SPAWNS);
         return reason == MobSpawnType.SPAWNER || spawnBlock && checkMobSpawnRules(AMEntityRegistry.SOUL_VULTURE.get(), worldIn, reason, pos, randomIn);
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SOUL_VULTURE_IDLE;
+        return AMSoundRegistry.SOUL_VULTURE_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SOUL_VULTURE_HURT;
+        return AMSoundRegistry.SOUL_VULTURE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SOUL_VULTURE_HURT;
+        return AMSoundRegistry.SOUL_VULTURE_HURT.get();
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -288,7 +288,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             return this.getBlockPosBelowThatAffectsMyMovement();
         }
         BlockPos blockpos = null;
-        Random random = new Random();
+        RandomSource random = new Random();
         int range = 14;
         for (int i = 0; i < 15; i++) {
             BlockPos blockpos1 = this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);

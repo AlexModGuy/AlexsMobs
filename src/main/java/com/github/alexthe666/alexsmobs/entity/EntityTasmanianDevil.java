@@ -79,15 +79,15 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
 
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.TASMANIAN_DEVIL_IDLE;
+        return AMSoundRegistry.TASMANIAN_DEVIL_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.TASMANIAN_DEVIL_HURT;
+        return AMSoundRegistry.TASMANIAN_DEVIL_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.TASMANIAN_DEVIL_HURT;
+        return AMSoundRegistry.TASMANIAN_DEVIL_HURT.get();
     }
     
     protected void registerGoals() {
@@ -205,7 +205,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
             }
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() == 1){
-            this.playSound(AMSoundRegistry.TASMANIAN_DEVIL_ROAR, this.getSoundVolume() * 2F, this.getVoicePitch());
+            this.playSound(AMSoundRegistry.TASMANIAN_DEVIL_ROAR.get(), this.getSoundVolume() * 2F, this.getVoicePitch());
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() > 3){
             scareMobsTime = 40;

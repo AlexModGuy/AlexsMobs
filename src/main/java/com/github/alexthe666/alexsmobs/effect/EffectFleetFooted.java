@@ -25,7 +25,6 @@ public class EffectFleetFooted extends MobEffect {
 
     public EffectFleetFooted() {
         super(MobEffectCategory.BENEFICIAL, 0X685441);
-        this.setRegistryName(AlexsMobs.MODID, "fleet_footed");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

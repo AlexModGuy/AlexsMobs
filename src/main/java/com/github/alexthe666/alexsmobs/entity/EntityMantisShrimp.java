@@ -108,11 +108,11 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.MANTIS_SHRIMP_HURT;
+        return AMSoundRegistry.MANTIS_SHRIMP_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.MANTIS_SHRIMP_HURT;
+        return AMSoundRegistry.MANTIS_SHRIMP_HURT.get();
     }
 
 
@@ -140,7 +140,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         super.killed(world, entity);
     }
 
-    public static boolean canMantisShrimpSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canMantisShrimpSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         BlockPos downPos = pos;
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
             downPos = downPos.below();
@@ -370,9 +370,9 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
                     this.setCommand(0);
                 }
                 if (this.getCommand() == 3) {
-                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.mantis_shrimp.command_3", this.getName()), true);
+                    player.displayClientMessage(Component.translatable("entity.alexsmobs.mantis_shrimp.command_3", this.getName()), true);
                 } else {
-                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                    player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 }
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
@@ -448,7 +448,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
                 this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
             if(punchProgress == 1){
-                this.playSound(AMSoundRegistry.MANTIS_SHRIMP_SNAP, this.getVoicePitch(), this.getSoundVolume());
+                this.playSound(AMSoundRegistry.MANTIS_SHRIMP_SNAP.get(), this.getVoicePitch(), this.getSoundVolume());
             }
             if (punchProgress == 2 && level.isClientSide && this.isInWater()) {
                 for (int i = 0; i < 10 + random.nextInt(8); i++) {

@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
 
 import java.util.Set;
 
@@ -26,7 +25,7 @@ public class MatchesBlossomTagCondition implements LootItemCondition {
     }
 
     public LootItemConditionType getType() {
-        return CommonProxy.matchesBlossom;
+        return AMLootRegistry.matchesBlossom;
     }
 
     public Set<LootContextParam<?>> getReferencedContextParams() {

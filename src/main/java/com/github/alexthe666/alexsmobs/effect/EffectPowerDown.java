@@ -17,7 +17,6 @@ public class EffectPowerDown extends MobEffect {
     protected EffectPowerDown() {
         super(MobEffectCategory.NEUTRAL, 0x00000);
         this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", (double)-1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
-        this.setRegistryName(AlexsMobs.MODID, "power_down");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {
@@ -25,7 +24,7 @@ public class EffectPowerDown extends MobEffect {
             entity.setDeltaMovement(entity.getDeltaMovement().multiply(1, 0, 1));
         }
         if(firstDuration == lastDuration){
-            entity.playSound(AMSoundRegistry.APRIL_FOOLS_POWER_OUTAGE, 1.5F, 1);
+            entity.playSound(AMSoundRegistry.APRIL_FOOLS_POWER_OUTAGE.get(), 1.5F, 1);
         }
     }
 

@@ -112,7 +112,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
     }
 
 
-    public static boolean canFlySpawn(EntityType<EntityFly> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canFlySpawn(EntityType<EntityFly> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return reason == MobSpawnType.SPAWNER || pos.getY() > 63 && random.nextInt(4) == 0 && worldIn.getRawBrightness(pos, 0) > 8 && worldIn.getBrightness(LightLayer.BLOCK, pos) == 0 && worldIn.getBlockState(pos.below()).is(AMTagRegistry.FLY_SPAWNS);
     }
 
@@ -134,7 +134,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
 
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.FLY_IDLE;
+        return AMSoundRegistry.FLY_IDLE.get();
     }
 
     public int getAmbientSoundInterval() {
@@ -142,11 +142,11 @@ public class EntityFly extends Animal implements FlyingAnimal {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.FLY_HURT;
+        return AMSoundRegistry.FLY_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.FLY_HURT;
+        return AMSoundRegistry.FLY_HURT.get();
     }
 
     public int getMaxSpawnClusterSize() {

@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -30,8 +31,7 @@ import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.ServerLevelAccessor;
+\import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
@@ -105,7 +105,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         return s != null && s.toLowerCase().contains("pepe");
     }
 
-    public static boolean canWarpedToadSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canWarpedToadSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         BlockPos blockpos = pos.below();
         boolean spawnBlock = worldIn.getFluidState(blockpos).is(FluidTags.LAVA) || worldIn.getBlockState(blockpos).canOcclude();
         return reason == MobSpawnType.SPAWNER || spawnBlock;
@@ -116,15 +116,15 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.WARPED_TOAD_IDLE;
+        return AMSoundRegistry.WARPED_TOAD_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.WARPED_TOAD_HURT;
+        return AMSoundRegistry.WARPED_TOAD_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.WARPED_TOAD_HURT;
+        return AMSoundRegistry.WARPED_TOAD_HURT.get();
     }
 
     public boolean canBreatheUnderwater() {
@@ -330,7 +330,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
             if (this.getCommand() == 3) {
                 this.setCommand(0);
             }
-            player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+            player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
             boolean sit = this.getCommand() == 2;
             if (sit) {
                 this.setOrderedToSit(true);

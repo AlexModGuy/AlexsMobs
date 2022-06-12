@@ -51,7 +51,6 @@ import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.LevelAccessor;
@@ -173,15 +172,15 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.ELEPHANT_IDLE;
+        return AMSoundRegistry.ELEPHANT_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.ELEPHANT_HURT;
+        return AMSoundRegistry.ELEPHANT_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.ELEPHANT_DIE;
+        return AMSoundRegistry.ELEPHANT_DIE.get();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -247,7 +246,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     protected void playStepSound(BlockPos pos, BlockState state) {
         if (!isBaby()) {
-            this.playSound(AMSoundRegistry.ELEPHANT_WALK, 0.2F, 1.0F);
+            this.playSound(AMSoundRegistry.ELEPHANT_WALK.get(), 0.2F, 1.0F);
         } else {
             super.playStepSound(pos, state);
         }
@@ -434,7 +433,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             this.setAnimation(this.getRandom().nextBoolean() ? ANIMATION_TRUMPET_0 : ANIMATION_TRUMPET_1);
         }
         if (this.getAnimation() == ANIMATION_TRUMPET_0 && this.getAnimationTick() == 8 || this.getAnimation() == ANIMATION_TRUMPET_1 && this.getAnimationTick() == 4) {
-            this.playSound(AMSoundRegistry.ELEPHANT_TRUMPET, this.getSoundVolume(), this.getVoicePitch());
+            this.playSound(AMSoundRegistry.ELEPHANT_TRUMPET.get(), this.getSoundVolume(), this.getVoicePitch());
         }
         if (this.isAlive() && charging) {
             for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
@@ -981,7 +980,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
                 @Override
                 public Component getDisplayName() {
-                    return new TranslatableComponent("entity.alexsmobs.elephant.chest");
+                    return Component.translatable("entity.alexsmobs.elephant.chest");
                 }
             });
         }

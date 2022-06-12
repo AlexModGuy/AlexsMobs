@@ -90,7 +90,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
         super(type, worldIn);
     }
 
-    public static boolean canMooseSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canMooseSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         BlockState blockstate = worldIn.getBlockState(pos.below());
         return (blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(Blocks.SNOW)) || blockstate.is(Blocks.SNOW_BLOCK) && worldIn.getRawBrightness(pos, 0) > 8;
     }
@@ -272,15 +272,15 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.MOOSE_IDLE;
+        return AMSoundRegistry.MOOSE_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.MOOSE_HURT;
+        return AMSoundRegistry.MOOSE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.MOOSE_HURT;
+        return AMSoundRegistry.MOOSE_HURT.get();
     }
 
 
@@ -420,7 +420,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     }
 
     public void playJostleSound() {
-        this.playSound(AMSoundRegistry.MOOSE_JOSTLE, this.getVoicePitch(), this.getSoundVolume());
+        this.playSound(AMSoundRegistry.MOOSE_JOSTLE.get(), this.getVoicePitch(), this.getSoundVolume());
     }
 
 }

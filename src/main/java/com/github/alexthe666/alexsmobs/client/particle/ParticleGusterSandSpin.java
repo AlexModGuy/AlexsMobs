@@ -4,6 +4,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,7 +40,7 @@ public class ParticleGusterSandSpin extends TextureSheetParticle {
         distZ = (float) (z - targetZ);
     }
 
-    public static int selectColor(int variant, Random rand){
+    public static int selectColor(int variant, RandomSource rand){
         if(variant == 2){
             return POSSIBLE_COLORS_SOUL[rand.nextInt(POSSIBLE_COLORS_SOUL.length - 1)];
         }else if(variant == 1){

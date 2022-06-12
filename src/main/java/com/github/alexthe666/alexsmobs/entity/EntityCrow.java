@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -34,12 +35,10 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
@@ -147,7 +146,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         return AMEntityRegistry.rollSpawn(AMConfig.crowSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static <T extends Mob> boolean canCrowSpawn(EntityType<EntityCrow> crow, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, Random random) {
+    public static <T extends Mob> boolean canCrowSpawn(EntityType<EntityCrow> crow, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, RandomSource random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.below());
         return (blockstate.is(BlockTags.LEAVES) || blockstate.is(Blocks.GRASS_BLOCK) || blockstate.is(BlockTags.LOGS) || blockstate.is(Blocks.AIR)) && worldIn.getRawBrightness(p_223317_3_, 0) > 8;
     }
@@ -279,9 +278,9 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                     this.setCommand(0);
                 }
                 if(this.getCommand() == 3){
-                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.crow.command_3", this.getName()), true);
+                    player.displayClientMessage(Component.translatable("entity.alexsmobs.crow.command_3", this.getName()), true);
                 }else{
-                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                    player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 }
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
@@ -513,15 +512,15 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.CROW_IDLE;
+        return AMSoundRegistry.CROW_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.CROW_HURT;
+        return AMSoundRegistry.CROW_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.CROW_HURT;
+        return AMSoundRegistry.CROW_HURT.get();
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {

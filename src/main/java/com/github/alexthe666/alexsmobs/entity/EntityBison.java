@@ -94,15 +94,15 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.BISON_IDLE;
+        return AMSoundRegistry.BISON_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.BISON_HURT;
+        return AMSoundRegistry.BISON_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.BISON_HURT;
+        return AMSoundRegistry.BISON_HURT.get();
     }
 
     protected void playStepSound(BlockPos p_28301_, BlockState p_28302_) {

@@ -144,15 +144,15 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.LAVIATHAN_IDLE;
+        return AMSoundRegistry.LAVIATHAN_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.LAVIATHAN_HURT;
+        return AMSoundRegistry.LAVIATHAN_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.LAVIATHAN_HURT;
+        return AMSoundRegistry.LAVIATHAN_HURT.get();
     }
 
     @Nullable

@@ -12,7 +12,6 @@ public class EffectFear extends MobEffect {
     protected EffectFear() {
         super(MobEffectCategory.NEUTRAL, 0X7474F7);
         this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", (double)-1.0F, AttributeModifier.Operation.MULTIPLY_BASE);
-        this.setRegistryName(AlexsMobs.MODID, "fear");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

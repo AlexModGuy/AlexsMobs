@@ -76,7 +76,7 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return CommonProxy.BISON_UPGRADE_RECIPE;
+        return AMRecipeRegistry.BISON_UPGRADE.get();
     }
 
     @Override

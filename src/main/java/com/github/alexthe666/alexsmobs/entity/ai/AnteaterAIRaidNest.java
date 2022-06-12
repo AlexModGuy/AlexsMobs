@@ -161,7 +161,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
             BlockState blockstate = anteater.level.getBlockState(this.blockPos);
             if (blockstate.is(AMBlockRegistry.LEAFCUTTER_ANTHILL.get())) {
                 if (anteater.level.getBlockEntity(this.blockPos) instanceof TileEntityLeafcutterAnthill) {
-                    Random rand = new Random();
+                    RandomSource rand = new Random();
                     TileEntityLeafcutterAnthill anthill = (TileEntityLeafcutterAnthill) anteater.level.getBlockEntity(this.blockPos);
                     anthill.angerAntsBecauseAnteater(anteater, blockstate, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
                     anteater.level.updateNeighbourForOutputSignal(this.blockPos, blockstate.getBlock());
@@ -179,7 +179,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
             }else if(blockstate.is(AMBlockRegistry.LEAFCUTTER_ANT_CHAMBER.get())){
                 anteater.level.destroyBlock(blockPos, false);
                 if(blockstate.getValue(BlockLeafcutterAntChamber.FUNGUS) >= 5){
-                    Random rand = new Random();
+                    RandomSource rand = new Random();
                     ItemStack stack = new ItemStack(AMItemRegistry.GONGYLIDIA.get());
                     ItemEntity itementity = new ItemEntity(anteater.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                     itementity.setDefaultPickUpDelay();

@@ -85,7 +85,7 @@ public class ItemBloodSprayer extends Item {
                 EntityMosquitoSpit blood = new EntityMosquitoSpit(worldIn, livingEntityIn, !left);
                 Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
                 Vector3f vector3f = new Vector3f(vector3d);
-                Random rand = new Random();
+                RandomSource rand = new Random();
                 livingEntityIn.playSound(SoundEvents.LAVA_POP,1.0F, 1.2F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 blood.shoot((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z(), 1F, 10);
                 if (!worldIn.isClientSide) {

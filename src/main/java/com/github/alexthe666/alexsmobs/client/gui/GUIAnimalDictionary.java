@@ -18,11 +18,11 @@ public class GUIAnimalDictionary extends GuiBasicBook {
     private static final ResourceLocation ROOT = new ResourceLocation("alexsmobs:book/animal_dictionary/root.json");
 
     public GUIAnimalDictionary(ItemStack bookStack) {
-        super(bookStack, new TranslatableComponent("animal_dictionary.title"));
+        super(bookStack, Component.translatable("animal_dictionary.title"));
     }
 
     public GUIAnimalDictionary(ItemStack bookStack, String page) {
-        super(bookStack, new TranslatableComponent("animal_dictionary.title"));
+        super(bookStack, Component.translatable("animal_dictionary.title"));
         this.currentPageJSON = new ResourceLocation(this.getTextFileDirectory() + page + ".json");
     }
 

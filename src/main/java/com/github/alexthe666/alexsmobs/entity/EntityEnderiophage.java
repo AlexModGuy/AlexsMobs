@@ -103,7 +103,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.FOLLOW_RANGE, 16.0D).add(Attributes.MOVEMENT_SPEED, 0.15F).add(Attributes.ATTACK_DAMAGE, 2F);
     }
 
-    public static boolean canEnderiophageSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canEnderiophageSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return true;
     }
 
@@ -319,15 +319,15 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         }
     }
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.ENDERIOPHAGE_HURT;
+        return AMSoundRegistry.ENDERIOPHAGE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.ENDERIOPHAGE_HURT;
+        return AMSoundRegistry.ENDERIOPHAGE_HURT.get();
     }
 
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(AMSoundRegistry.ENDERIOPHAGE_WALK, 0.4F, 1.0F);
+        this.playSound(AMSoundRegistry.ENDERIOPHAGE_WALK.get(), 0.4F, 1.0F);
     }
 
     protected float nextStep() {
@@ -391,7 +391,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 double motX = extraX * 8 + random.nextGaussian() * 0.05F;
                 double motY = -0.1F;
                 double motZ = extraZ + random.nextGaussian() * 0.05F;
-                this.level.addParticle(AMParticleRegistry.DNA, this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ, motX, motY, motZ);
+                this.level.addParticle(AMParticleRegistry.DNA.get(), this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ, motX, motY, motZ);
             }
         }
         prevPhagePitch = this.getPhagePitch();
@@ -421,7 +421,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
             if ((double) f > 0.75D) {
                 if (squishCooldown == 0 && this.isFlying()) {
                     squishCooldown = 20;
-                    this.playSound(AMSoundRegistry.ENDERIOPHAGE_SQUISH, 3F, this.getVoicePitch());
+                    this.playSound(AMSoundRegistry.ENDERIOPHAGE_SQUISH.get(), 3F, this.getVoicePitch());
                 }
                 this.randomMotionSpeed = 1.0F;
             } else {

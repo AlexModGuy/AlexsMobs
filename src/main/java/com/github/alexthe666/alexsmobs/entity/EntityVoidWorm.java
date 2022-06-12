@@ -92,15 +92,15 @@ public class EntityVoidWorm extends Monster {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.VOID_WORM_IDLE;
+        return AMSoundRegistry.VOID_WORM_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.VOID_WORM_HURT;
+        return AMSoundRegistry.VOID_WORM_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.VOID_WORM_HURT;
+        return AMSoundRegistry.VOID_WORM_HURT.get();
     }
 
     protected float getSoundVolume() {
@@ -111,7 +111,7 @@ public class EntityVoidWorm extends Monster {
         return AMEntityRegistry.rollSpawn(AMConfig.voidWormSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canVoidWormSpawn(EntityType animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canVoidWormSpawn(EntityType animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return true;
     }
 

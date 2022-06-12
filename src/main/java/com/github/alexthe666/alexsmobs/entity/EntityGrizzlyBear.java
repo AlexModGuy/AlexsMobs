@@ -140,15 +140,15 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.GRIZZLY_BEAR_IDLE;
+        return AMSoundRegistry.GRIZZLY_BEAR_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.GRIZZLY_BEAR_HURT;
+        return AMSoundRegistry.GRIZZLY_BEAR_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.GRIZZLY_BEAR_DIE;
+        return AMSoundRegistry.GRIZZLY_BEAR_DIE.get();
     }
 
     public void positionRider(Entity passenger) {
@@ -317,7 +317,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                 if (this.getCommand() == 3) {
                     this.setCommand(0);
                 }
-                player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
                     this.forcedSit = true;

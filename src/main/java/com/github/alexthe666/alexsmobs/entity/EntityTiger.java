@@ -123,7 +123,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         this.moveControl = new MovementControllerCustomCollisions(this);
     }
 
-    public static boolean canTigerSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canTigerSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return worldIn.getRawBrightness(pos, 0) > 8;
     }
 
@@ -190,7 +190,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     protected SoundEvent getAmbientSound() {
-        return isStealth() ? super.getAmbientSound() : getRemainingPersistentAngerTime() > 0 ? AMSoundRegistry.TIGER_ANGRY : AMSoundRegistry.TIGER_IDLE;
+        return isStealth() ? super.getAmbientSound() : getRemainingPersistentAngerTime() > 0 ? AMSoundRegistry.TIGER_ANGRY.get() : AMSoundRegistry.TIGER_IDLE.get();
     }
 
     public int getAmbientSoundInterval() {
@@ -198,11 +198,11 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.TIGER_HURT;
+        return AMSoundRegistry.TIGER_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.TIGER_HURT;
+        return AMSoundRegistry.TIGER_HURT.get();
     }
 
 
@@ -423,7 +423,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                 double d2 = this.random.nextGaussian() * 0.1D;
                 double d0 = this.random.nextGaussian() * 0.1D;
                 double d1 = this.random.nextGaussian() * 0.1D;
-                this.level.addParticle(AMParticleRegistry.SHOCKED, e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
+                this.level.addParticle(AMParticleRegistry.SHOCKED.get(), e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
             }
         }
         if(this.getTarget() != null && this.getTarget().hasEffect(AMEffectRegistry.TIGERS_BLESSING)){

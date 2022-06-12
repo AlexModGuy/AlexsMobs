@@ -67,7 +67,7 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
         return AMEntityRegistry.rollSpawn(AMConfig.terrapinSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canCombJellySpawn(EntityType<EntityCombJelly> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canCombJellySpawn(EntityType<EntityCombJelly> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER && isLightLevelOk(pos, iServerWorld);
     }
 
@@ -87,11 +87,11 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.COMB_JELLY_HURT;
+        return AMSoundRegistry.COMB_JELLY_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.COMB_JELLY_HURT;
+        return AMSoundRegistry.COMB_JELLY_HURT.get();
     }
 
     public int getVariant() {

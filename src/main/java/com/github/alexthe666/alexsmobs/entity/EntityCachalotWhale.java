@@ -124,7 +124,7 @@ public class EntityCachalotWhale extends Animal {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 160.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 1.2F).add(Attributes.ATTACK_DAMAGE, 30F);
     }
 
-    public static <T extends Mob> boolean canCachalotWhaleSpawn(EntityType<T> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+    public static <T extends Mob> boolean canCachalotWhaleSpawn(EntityType<T> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockPos up = pos;
         while(up.getY() < iServerWorld.getMaxBuildHeight() && iServerWorld.getFluidState(up).is(FluidTags.WATER)){
             up = up.above();
@@ -151,15 +151,15 @@ public class EntityCachalotWhale extends Animal {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.CACHALOT_WHALE_IDLE;
+        return AMSoundRegistry.CACHALOT_WHALE_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.CACHALOT_WHALE_HURT;
+        return AMSoundRegistry.CACHALOT_WHALE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.CACHALOT_WHALE_HURT;
+        return AMSoundRegistry.CACHALOT_WHALE_HURT.get();
     }
 
     public void scaleParts() {
@@ -318,7 +318,7 @@ public class EntityCachalotWhale extends Animal {
                 double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
                 double motX = this.random.nextGaussian();
                 double motZ = this.random.nextGaussian();
-                this.level.addParticle(AMParticleRegistry.WHALE_SPLASH, this.headPart.getX() + extraX, this.headPart.getY() + this.headPart.getBbHeight(), this.headPart.getZ() + extraZ, motX * 0.1F + this.getDeltaMovement().x, 2F, motZ * 0.1F + this.getDeltaMovement().z);
+                this.level.addParticle(AMParticleRegistry.WHALE_SPLASH.get(), this.headPart.getX() + extraX, this.headPart.getY() + this.headPart.getBbHeight(), this.headPart.getZ() + extraZ, motX * 0.1F + this.getDeltaMovement().x, 2F, motZ * 0.1F + this.getDeltaMovement().z);
             }
         }
     }
@@ -620,7 +620,7 @@ public class EntityCachalotWhale extends Animal {
                         whaleSpeedMod = 0.25F;
                         if (echoTimer % 10 == 0) {
                             if (echoTimer % 40 == 0) {
-                                this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK, this.getSoundVolume(), this.getVoicePitch());
+                                this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK.get(), this.getSoundVolume(), this.getVoicePitch());
                             }
                             EntityCachalotEcho echo = new EntityCachalotEcho(this.level, this);
                             float radius = this.headPart.getBbWidth() * 0.5F;

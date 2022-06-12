@@ -91,7 +91,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
             BlockState blockstate = bear.level.getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
                 if (bear.level.getBlockEntity(this.blockPos) instanceof BeehiveBlockEntity) {
-                    Random rand = new Random();
+                    RandomSource rand = new Random();
                     BeehiveBlockEntity beehivetileentity = (BeehiveBlockEntity) bear.level.getBlockEntity(this.blockPos);
                     beehivetileentity.emptyAllLivingFromHive(null, blockstate, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
                     bear.level.updateNeighbourForOutputSignal(this.blockPos, blockstate.getBlock());

@@ -112,15 +112,15 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SEAGULL_IDLE;
+        return AMSoundRegistry.SEAGULL_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SEAGULL_HURT;
+        return AMSoundRegistry.SEAGULL_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SEAGULL_HURT;
+        return AMSoundRegistry.SEAGULL_HURT.get();
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -181,7 +181,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         return item == Items.COD;
     }
 
-    public static boolean canSeagullSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canSeagullSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return worldIn.getRawBrightness(pos, 0) > 8 && worldIn.getFluidState(pos.below()).isEmpty();
     }
 

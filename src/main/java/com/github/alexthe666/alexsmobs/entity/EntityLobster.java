@@ -83,11 +83,11 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.LOBSTER_HURT;
+        return AMSoundRegistry.LOBSTER_HURT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.LOBSTER_HURT;
+        return AMSoundRegistry.LOBSTER_HURT.get();
     }
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {
@@ -206,7 +206,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
         prevAttackProgress = attackProgress;
         if (this.entityData.get(ATTACK_TICK) > 0) {
             if(attackProgress == 3){
-                this.playSound(AMSoundRegistry.LOBSTER_ATTACK, this.getSoundVolume(), this.getVoicePitch());
+                this.playSound(AMSoundRegistry.LOBSTER_ATTACK.get(), this.getSoundVolume(), this.getVoicePitch());
             }
             if (this.entityData.get(ATTACK_TICK) == 2 && this.getTarget() != null && this.distanceTo(this.getTarget()) < 1.3D) {
                 this.getTarget().hurt(DamageSource.mobAttack(this), 2);
@@ -318,7 +318,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
         return 5;
     }
 
-    public static <T extends Mob> boolean canLobsterSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static <T extends Mob> boolean canLobsterSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.LOBSTER_SPAWNS);
         return spawnBlock || worldIn.getFluidState(pos).is(FluidTags.WATER);
     }

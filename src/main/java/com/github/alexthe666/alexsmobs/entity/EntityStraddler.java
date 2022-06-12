@@ -71,18 +71,18 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.STRADDLER_IDLE;
+        return AMSoundRegistry.STRADDLER_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.STRADDLER_HURT;
+        return AMSoundRegistry.STRADDLER_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.STRADDLER_HURT;
+        return AMSoundRegistry.STRADDLER_HURT.get();
     }
 
-    public static boolean canStraddlerSpawn(EntityType animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canStraddlerSpawn(EntityType animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(BlockTags.BASE_STONE_NETHER);
         return spawnBlock;
     }

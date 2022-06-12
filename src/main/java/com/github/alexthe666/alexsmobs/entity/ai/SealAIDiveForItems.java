@@ -136,7 +136,7 @@ public class SealAIDiveForItems extends Goal {
 
     private BlockPos genSeafloorPos(BlockPos parent) {
         LevelAccessor world = seal.level;
-        Random random = new Random();
+        RandomSource random = new Random();
         int range = 15;
         for (int i = 0; i < 15; i++) {
             BlockPos seafloor = parent.offset(random.nextInt(range) - range / 2, 0, random.nextInt(range) - range / 2);
@@ -152,7 +152,7 @@ public class SealAIDiveForItems extends Goal {
     }
 
     private BlockPos genDigPos() {
-        Random random = new Random();
+        RandomSource random = new Random();
         int range = 15;
         if (seal.isInWater()) {
             return genSeafloorPos(this.seal.blockPosition());

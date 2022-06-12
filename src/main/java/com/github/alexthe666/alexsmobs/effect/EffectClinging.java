@@ -14,7 +14,6 @@ public class EffectClinging extends MobEffect {
 
     public EffectClinging() {
         super(MobEffectCategory.BENEFICIAL, 0XBD4B4B);
-        this.setRegistryName(AlexsMobs.MODID, "clinging");
     }
 
     private static BlockPos getPositionUnderneath(Entity e) {

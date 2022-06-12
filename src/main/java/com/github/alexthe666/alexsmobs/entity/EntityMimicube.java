@@ -329,11 +329,11 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     private SoundEvent getSquishSound() {
-        return AMSoundRegistry.MIMICUBE_JUMP;
+        return AMSoundRegistry.MIMICUBE_JUMP.get();
     }
 
     private SoundEvent getJumpSound() {
-        return AMSoundRegistry.MIMICUBE_JUMP;
+        return AMSoundRegistry.MIMICUBE_JUMP.get();
     }
 
     protected void jumpFromGround() {
@@ -398,11 +398,11 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.MIMICUBE_HURT;
+        return AMSoundRegistry.MIMICUBE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.MIMICUBE_HURT;
+        return AMSoundRegistry.MIMICUBE_HURT.get();
     }
 
 }

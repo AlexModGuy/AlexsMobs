@@ -17,7 +17,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.lang.reflect.Field;
 
 public class AMItemGroup extends CreativeModeTab {
-    public AMItemGroup() {
+
+    public static final AMItemGroup INSTANCE = new AMItemGroup();
+
+    private AMItemGroup() {
         super(AlexsMobs.MODID);
     }
 

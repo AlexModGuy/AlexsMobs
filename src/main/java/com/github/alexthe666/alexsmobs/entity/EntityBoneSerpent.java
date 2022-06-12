@@ -83,15 +83,15 @@ public class EntityBoneSerpent extends Monster {
 
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.BONE_SERPENT_IDLE;
+        return AMSoundRegistry.BONE_SERPENT_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.BONE_SERPENT_HURT;
+        return AMSoundRegistry.BONE_SERPENT_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.BONE_SERPENT_HURT;
+        return AMSoundRegistry.BONE_SERPENT_HURT.get();
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

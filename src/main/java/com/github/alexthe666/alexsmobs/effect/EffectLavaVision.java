@@ -9,7 +9,6 @@ public class EffectLavaVision extends MobEffect {
 
     public EffectLavaVision() {
         super(MobEffectCategory.BENEFICIAL, 0XFF6A00);
-        this.setRegistryName(AlexsMobs.MODID, "lava_vision");
 
     }
 

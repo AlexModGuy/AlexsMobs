@@ -117,7 +117,7 @@ public class EntityGiantSquid extends WaterAnimal {
         return AMEntityRegistry.rollSpawn(AMConfig.giantSquidSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canGiantSquidSpawn(EntityType<EntityGiantSquid> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canGiantSquidSpawn(EntityType<EntityGiantSquid> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
     }
 
@@ -139,11 +139,11 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.GIANT_SQUID_HURT;
+        return AMSoundRegistry.GIANT_SQUID_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.GIANT_SQUID_HURT;
+        return AMSoundRegistry.GIANT_SQUID_HURT.get();
     }
 
 
@@ -344,7 +344,7 @@ public class EntityGiantSquid extends WaterAnimal {
         }
         if (this.isHumming()) {
             if (humTick % 20 == 0) {
-                this.playSound(AMSoundRegistry.GIANT_SQUID_GAMES, this.getSoundVolume(), 1);
+                this.playSound(AMSoundRegistry.GIANT_SQUID_GAMES.get(), this.getSoundVolume(), 1);
                 humTick = 0;
             }
             humTick++;

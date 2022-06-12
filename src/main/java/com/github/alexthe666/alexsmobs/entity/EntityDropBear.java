@@ -91,15 +91,15 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.DROPBEAR_IDLE;
+        return AMSoundRegistry.DROPBEAR_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.DROPBEAR_HURT;
+        return AMSoundRegistry.DROPBEAR_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.DROPBEAR_HURT;
+        return AMSoundRegistry.DROPBEAR_HURT.get();
     }
 
     public boolean doHurtTarget(Entity entityIn) {
@@ -375,7 +375,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
         protected Vec3 getPosition() {
             if (EntityDropBear.this.isUpsideDown()) {
                 for (int i = 0; i < 15; i++) {
-                    Random rand = new Random();
+                    RandomSource rand = new Random();
                     BlockPos randPos = EntityDropBear.this.blockPosition().offset(rand.nextInt(16) - 8, -2, rand.nextInt(16) - 8);
                     BlockPos lowestPos = EntityDropBear.getLowestPos(level, randPos);
                     if (level.getBlockState(lowestPos).isFaceSturdy(level, lowestPos, Direction.DOWN)) {

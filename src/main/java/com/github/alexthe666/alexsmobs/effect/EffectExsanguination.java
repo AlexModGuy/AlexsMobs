@@ -13,7 +13,6 @@ public class EffectExsanguination extends MobEffect {
 
     protected EffectExsanguination() {
         super(MobEffectCategory.HARMFUL, 0XED5151);
-        this.setRegistryName(AlexsMobs.MODID, "exsanguination");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

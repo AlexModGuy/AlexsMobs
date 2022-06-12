@@ -99,7 +99,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
         return isValidLightLevel(p_223325_1_, p_223325_3_, p_223325_4_) && checkMobSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
     }
 
-    public static <T extends Mob> boolean canCockroachSpawn(EntityType<EntityCockroach> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+    public static <T extends Mob> boolean canCockroachSpawn(EntityType<EntityCockroach> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= 64 && canMonsterSpawnInLight(entityType, iServerWorld, reason, pos, random);
     }
 
@@ -112,11 +112,11 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.COCKROACH_HURT;
+        return AMSoundRegistry.COCKROACH_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.COCKROACH_HURT;
+        return AMSoundRegistry.COCKROACH_HURT.get();
     }
 
     protected void registerGoals() {

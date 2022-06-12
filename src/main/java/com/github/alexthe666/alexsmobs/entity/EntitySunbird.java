@@ -10,6 +10,7 @@ import com.google.common.base.Predicates;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -94,7 +95,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.FOLLOW_RANGE, 64.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 1F);
     }
 
-    public static boolean canSunbirdSpawn(EntityType<? extends Mob> typeIn, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canSunbirdSpawn(EntityType<? extends Mob> typeIn, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         return true;
     }
 
@@ -103,15 +104,15 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SUNBIRD_IDLE;
+        return AMSoundRegistry.SUNBIRD_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SUNBIRD_HURT;
+        return AMSoundRegistry.SUNBIRD_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SUNBIRD_HURT;
+        return AMSoundRegistry.SUNBIRD_HURT.get();
     }
 
     protected void registerGoals() {
@@ -198,7 +199,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
             double extraZMotion = -0.2F * Mth.cos(angleMotion);
             double yRandom = 0.2F + random.nextFloat() * 0.3F;
-            this.level.addParticle(AMParticleRegistry.SUNBIRD_FEATHER, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, 0D, extraZMotion);
+            this.level.addParticle(AMParticleRegistry.SUNBIRD_FEATHER.get(), this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, 0D, extraZMotion);
         } else {
             if (this.tickCount % 100 == 0) {
                 if(!this.isScorching() && !getScorchingMobs().isEmpty()){

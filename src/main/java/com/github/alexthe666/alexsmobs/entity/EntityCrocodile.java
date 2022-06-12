@@ -111,7 +111,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         this.baskingType = random.nextInt(1);
     }
 
-    public static boolean canCrocodileSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canCrocodileSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.CROCODILE_SPAWNS);
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
@@ -151,15 +151,15 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     protected SoundEvent getAmbientSound() {
-        return isBaby() ? AMSoundRegistry.CROCODILE_BABY : AMSoundRegistry.CROCODILE_IDLE;
+        return isBaby() ? AMSoundRegistry.CROCODILE_BABY.get() : AMSoundRegistry.CROCODILE_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.CROCODILE_HURT;
+        return AMSoundRegistry.CROCODILE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.CROCODILE_HURT;
+        return AMSoundRegistry.CROCODILE_HURT.get();
     }
 
 
@@ -326,7 +326,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                 } else {
                     this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
-                this.playSound(AMSoundRegistry.CROCODILE_BITE, this.getSoundVolume(), this.getVoicePitch());
+                this.playSound(AMSoundRegistry.CROCODILE_BITE.get(), this.getSoundVolume(), this.getVoicePitch());
 
             }
         }
@@ -698,7 +698,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             this.animal.setAge(6000);
             this.partner.setAge(6000);
 
-            Random random = this.animal.getRandom();
+            RandomSource random = this.animal.getRandom();
             if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
             }

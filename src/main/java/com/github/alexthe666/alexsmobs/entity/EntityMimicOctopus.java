@@ -125,7 +125,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 16D).add(Attributes.ARMOR, 0.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
-    public static boolean canMimicOctopusSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canMimicOctopusSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockPos downPos = pos;
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
             downPos = downPos.below();
@@ -148,15 +148,15 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.MIMIC_OCTOPUS_IDLE;
+        return AMSoundRegistry.MIMIC_OCTOPUS_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.MIMIC_OCTOPUS_HURT;
+        return AMSoundRegistry.MIMIC_OCTOPUS_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.MIMIC_OCTOPUS_HURT;
+        return AMSoundRegistry.MIMIC_OCTOPUS_HURT.get();
     }
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {
@@ -421,7 +421,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                 if (this.getCommand() == 3) {
                     this.setCommand(0);
                 }
-                player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
                     this.setOrderedToSit(true);
@@ -573,7 +573,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                     double d2 = this.random.nextGaussian() * 0.1D;
                     double d0 = this.random.nextGaussian() * 0.1D;
                     double d1 = this.random.nextGaussian() * 0.1D;
-                    this.level.addParticle(AMParticleRegistry.SHOCKED, e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
+                    this.level.addParticle(AMParticleRegistry.SHOCKED.get(), e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
                 }
             }
         }

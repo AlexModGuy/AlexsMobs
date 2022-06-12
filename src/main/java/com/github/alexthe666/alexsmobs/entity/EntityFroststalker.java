@@ -100,22 +100,22 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.FROSTSTALKER_IDLE;
+        return AMSoundRegistry.FROSTSTALKER_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.FROSTSTALKER_HURT;
+        return AMSoundRegistry.FROSTSTALKER_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.FROSTSTALKER_HURT;
+        return AMSoundRegistry.FROSTSTALKER_HURT.get();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.froststalkerSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canFroststalkerSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canFroststalkerSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return worldIn.getRawBrightness(pos, 0) > 8 && (worldIn.getBlockState(pos.below()).is(Blocks.ICE) || worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.SNOW_BLOCK));
     }
 

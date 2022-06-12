@@ -10,7 +10,6 @@ public class EffectOrcaMight extends MobEffect {
 
     public EffectOrcaMight() {
         super(MobEffectCategory.BENEFICIAL, 0X4A4A52);
-        this.setRegistryName(AlexsMobs.MODID, "orcas_might");
         this.addAttributeModifier(Attributes.ATTACK_SPEED, "03C3C89D-7037-4B42-869F-B146BCB64D3A", 3D, AttributeModifier.Operation.ADDITION);
     }
 

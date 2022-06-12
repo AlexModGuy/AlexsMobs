@@ -53,7 +53,7 @@ public class AnimalAIFindWater extends Goal {
 
     public BlockPos generateTarget() {
         BlockPos blockpos = null;
-        final Random random = new Random();
+        final RandomSource random = new Random();
         final int range = this.creature instanceof ISemiAquatic ? ((ISemiAquatic) this.creature).getWaterSearchRange() : 14;
         for(int i = 0; i < 15; i++) {
             BlockPos blockPos = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);

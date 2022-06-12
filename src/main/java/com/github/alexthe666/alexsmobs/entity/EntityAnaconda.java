@@ -78,16 +78,16 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.ANACONDA_HURT;
+        return AMSoundRegistry.ANACONDA_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.ANACONDA_HURT;
+        return AMSoundRegistry.ANACONDA_HURT.get();
     }
 
     protected void playStepSound(BlockPos pos, BlockState state) {
         if (!isBaby()) {
-            this.playSound(AMSoundRegistry.ANACONDA_SLITHER, 1.0F, 1.0F);
+            this.playSound(AMSoundRegistry.ANACONDA_SLITHER.get(), 1.0F, 1.0F);
         } else {
             super.playStepSound(pos, state);
         }
@@ -98,7 +98,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.15F);
     }
 
-    public static boolean canAnacondaSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canAnacondaSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         final boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.ANACONDA_SPAWNS);
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
@@ -574,7 +574,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 if (jumpAttemptCooldown == 0 && snake.distanceTo(target) < 1 + target.getBbWidth() && !snake.isStrangling()) {
                     target.hurt(DamageSource.mobAttack(snake), 4);
                     snake.setStrangling(target.getBbWidth() <= 2.3F);
-                    snake.playSound(AMSoundRegistry.ANACONDA_ATTACK, snake.getSoundVolume(), snake.getVoicePitch());
+                    snake.playSound(AMSoundRegistry.ANACONDA_ATTACK.get(), snake.getSoundVolume(), snake.getVoicePitch());
                     jumpAttemptCooldown = 5 + random.nextInt(5);
                 }
                 if (snake.isStrangling()) {

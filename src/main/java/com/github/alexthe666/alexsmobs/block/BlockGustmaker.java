@@ -41,7 +41,7 @@ public class BlockGustmaker extends Block {
         tickGustmaker(state, worldIn, pos, false);
     }
 
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand) {
+    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource rand) {
         tickGustmaker(state, worldIn, pos, true);
     }
 

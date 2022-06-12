@@ -16,7 +16,7 @@ public class SoundWormBoss extends AbstractTickableSoundInstance {
     private final EntityVoidWorm voidWorm;
     private int ticksExisted = 0;
     public SoundWormBoss(EntityVoidWorm worm) {
-        super(AMSoundRegistry.MUSIC_WORMBOSS, SoundSource.RECORDS);
+        super(AMSoundRegistry.MUSIC_WORMBOSS.get(), SoundSource.RECORDS, worm.getRandom());
         this.voidWorm = worm;
         this.attenuation = Attenuation.NONE;
         this.looping = true;

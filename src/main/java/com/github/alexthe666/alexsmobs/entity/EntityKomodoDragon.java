@@ -103,7 +103,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.entityData.set(COMMAND, Integer.valueOf(command));
     }
 
-    public static <T extends Mob> boolean canKomodoDragonSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static <T extends Mob> boolean canKomodoDragonSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.KOMODO_DRAGON_SPAWNS);
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
     }
@@ -149,15 +149,15 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.KOMODO_DRAGON_IDLE;
+        return AMSoundRegistry.KOMODO_DRAGON_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.KOMODO_DRAGON_HURT;
+        return AMSoundRegistry.KOMODO_DRAGON_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.KOMODO_DRAGON_HURT;
+        return AMSoundRegistry.KOMODO_DRAGON_HURT.get();
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -362,7 +362,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
                     if (this.getCommand() == 3) {
                         this.setCommand(0);
                     }
-                    player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                    player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                     boolean sit = this.getCommand() == 2;
                     if (sit) {
                         this.setOrderedToSit(true);

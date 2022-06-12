@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class RenderCapsid<T extends TileEntityCapsid> implements BlockEntityRenderer<T> {
 
-    private final Random random = new Random();
+    private final RandomSource random = new Random();
     public RenderCapsid(BlockEntityRendererProvider.Context rendererDispatcherIn) {
     }
 

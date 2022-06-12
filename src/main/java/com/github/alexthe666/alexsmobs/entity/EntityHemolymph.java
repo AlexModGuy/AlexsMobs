@@ -83,7 +83,7 @@ public class EntityHemolymph extends Entity {
             float r1 = (random.nextFloat() - 0.5F) * 0.5F;
             float r2 = (random.nextFloat() - 0.5F) * 0.5F;
             float r3 = (random.nextFloat() - 0.5F) * 0.5F;
-            this.level.addParticle(AMParticleRegistry.HEMOLYMPH, this.getX() + r1, this.getY() + r2, this.getZ() + r3, r1 * 0.1F, r2 * 0.1F, r3 * 0.1F);
+            this.level.addParticle(AMParticleRegistry.HEMOLYMPH.get(), this.getX() + r1, this.getY() + r2, this.getZ() + r3, r1 * 0.1F, r2 * 0.1F, r3 * 0.1F);
         }
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();

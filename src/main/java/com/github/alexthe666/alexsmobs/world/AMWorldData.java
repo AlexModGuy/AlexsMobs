@@ -144,7 +144,7 @@ public class AMWorldData extends SavedData {
 
     private void searchForPupfishChunk() {
         if (level != null && level.getChunkSource().getGenerator() instanceof NoiseBasedChunkGenerator chunkGenerator) {
-            Random random = new Random(level.getSeed() + pupfishSeedAddition);
+            RandomSource random = new Random(level.getSeed() + pupfishSeedAddition);
             int randomXCoord = random.nextInt(AMConfig.pupfishChunkSpawnDistance * 2) - AMConfig.pupfishChunkSpawnDistance;
             int randomZCoord = random.nextInt(AMConfig.pupfishChunkSpawnDistance * 2) - AMConfig.pupfishChunkSpawnDistance;
             ChunkPos checkPos = new ChunkPos(randomXCoord >> 4, randomZCoord >> 4);

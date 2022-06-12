@@ -20,7 +20,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -28,33 +27,6 @@ import static com.github.alexthe666.alexsmobs.AlexsMobs.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
-    public static SimpleRecipeSerializer MIMICREAM_RECIPE;
-    public static SimpleRecipeSerializer BISON_UPGRADE_RECIPE;
-    public static LootItemConditionType matchesBanana;
-    public static LootItemConditionType matchesBlossom;
-
-    @SubscribeEvent
-    public static void registerRecipes(RegistryEvent.Register<RecipeSerializer<?>> event) {
-        AMEffectRegistry.registerRecipes();
-        if(AMConfig.mimicreamRepair){
-            MIMICREAM_RECIPE = new SimpleRecipeSerializer<>(RecipeMimicreamRepair::new);
-            MIMICREAM_RECIPE.setRegistryName(new ResourceLocation("alexsmobs:mimicream_repair_recipe"));
-            event.getRegistry().register(MIMICREAM_RECIPE);
-        }
-        CitadelRecipes.registerSmithingRecipe(new RecipeBisonUpgrade(new ResourceLocation("alexsmobs:bison_fur_upgrade")));
-    }
-
-    @SubscribeEvent
-    public static void registerLootData(RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
-        matchesBanana = Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation("alexsmobs:matches_banana_tag"), new LootItemConditionType(new MatchesBananaTagCondition.LootSerializer()));
-        matchesBlossom = Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation("alexsmobs:matches_blossom_tag"), new LootItemConditionType(new MatchesBlossomTagCondition.LootSerializer()));
-        if (AMConfig.bananasDropFromLeaves) {
-            event.getRegistry().register(new BananaLootModifier.Serializer().setRegistryName(new ResourceLocation("alexsmobs:banana_drop")));
-        }
-        if (AMConfig.acaciaBlossomsDropFromLeaves) {
-            event.getRegistry().register(new BlossomLootModifier.Serializer().setRegistryName(new ResourceLocation("alexsmobs:blossom_drop")));
-        }
-    }
 
     public void init() {
     }

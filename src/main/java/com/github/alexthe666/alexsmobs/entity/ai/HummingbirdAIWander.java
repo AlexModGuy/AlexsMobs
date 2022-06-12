@@ -55,7 +55,7 @@ public class HummingbirdAIWander extends Goal {
 
     @Nullable
     private Vec3 getRandomLocation() {
-        Random random = fly.getRandom();
+        RandomSource random = fly.getRandom();
         BlockPos blockpos = null;
         BlockPos origin = fly.getFeederPos() == null ? this.fly.blockPosition() : fly.getFeederPos();
         for(int i = 0; i < 15; i++){

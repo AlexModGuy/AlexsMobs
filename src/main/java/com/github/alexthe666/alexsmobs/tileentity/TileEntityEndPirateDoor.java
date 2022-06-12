@@ -50,7 +50,7 @@ public class TileEntityEndPirateDoor extends BlockEntity {
             opened = getBlockState().getValue(BlockEndPirateDoor.OPEN);
         }
         if(opened && openProgress == 0F || !opened && openProgress == 1F){
-            this.level.playSound((Player)null, this.getBlockPos(), AMSoundRegistry.END_PIRATE_DOOR, SoundSource.BLOCKS, 1F, 1F);
+            this.level.playSound((Player)null, this.getBlockPos(), AMSoundRegistry.END_PIRATE_DOOR.get(), SoundSource.BLOCKS, 1F, 1F);
         }
         if(opened && openProgress < 1F){
             openProgress += 0.25F;

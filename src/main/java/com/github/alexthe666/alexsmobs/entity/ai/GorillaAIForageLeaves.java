@@ -87,7 +87,7 @@ public class GorillaAIForageLeaves extends MoveToBlockGoal {
             BlockState blockstate = gorilla.level.getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.GORILLA_BREAKABLES)) {
                 gorilla.level.destroyBlock(blockPos, false);
-                Random rand = new Random();
+                RandomSource rand = new Random();
                 ItemStack stack = new ItemStack(blockstate.getBlock().asItem());
                 ItemEntity itementity = new ItemEntity(gorilla.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();

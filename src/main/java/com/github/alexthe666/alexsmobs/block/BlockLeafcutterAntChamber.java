@@ -76,7 +76,7 @@ public class BlockLeafcutterAntChamber extends Block {
         return InteractionResult.FAIL;
     }
 
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
             if (!worldIn.isAreaLoaded(pos, 3))
                 return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         if(worldIn.canSeeSky(pos.above())){

@@ -69,7 +69,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         return AMEntityRegistry.rollSpawn(AMConfig.tusklinSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canTusklinSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canTusklinSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return worldIn.getRawBrightness(pos, 0) > 8 && (worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.SNOW_BLOCK));
     }
 
@@ -78,15 +78,15 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.TUSKLIN_IDLE;
+        return AMSoundRegistry.TUSKLIN_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.TUSKLIN_HURT;
+        return AMSoundRegistry.TUSKLIN_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.TUSKLIN_HURT;
+        return AMSoundRegistry.TUSKLIN_HURT.get();
     }
 
     protected PathNavigation createNavigation(Level worldIn) {

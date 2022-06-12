@@ -86,7 +86,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         switchNavigator(true);
     }
 
-    public static boolean canToucanSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
+    public static boolean canToucanSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         return true;
     }
 
@@ -109,15 +109,15 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.TOUCAN_IDLE;
+        return AMSoundRegistry.TOUCAN_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.TOUCAN_HURT;
+        return AMSoundRegistry.TOUCAN_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.TOUCAN_HURT;
+        return AMSoundRegistry.TOUCAN_HURT.get();
     }
 
     public boolean checkSpawnObstruction(LevelReader p_29005_) {

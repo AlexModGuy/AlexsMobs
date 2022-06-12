@@ -37,7 +37,7 @@ public class BoneSerpentAIFindLava extends Goal {
 
     public BlockPos generateTarget() {
         BlockPos blockpos = null;
-        Random random = new Random();
+        RandomSource random = new Random();
         int range = 16;
         for(int i = 0; i < 15; i++){
             BlockPos blockpos1 = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);

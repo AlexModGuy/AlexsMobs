@@ -97,18 +97,18 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.TERRAPIN_HURT;
+        return AMSoundRegistry.TERRAPIN_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.TERRAPIN_HURT;
+        return AMSoundRegistry.TERRAPIN_HURT.get();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
         return AMEntityRegistry.rollSpawn(AMConfig.terrapinSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canTerrapinSpawn(EntityType<EntityTerrapin> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canTerrapinSpawn(EntityType<EntityTerrapin> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getFluidState().is(Fluids.WATER);
     }
 
@@ -613,7 +613,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             this.partner.resetLove();
             this.animal.setAge(6000);
             this.partner.setAge(6000);
-            Random random = this.animal.getRandom();
+            RandomSource random = this.animal.getRandom();
             if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
             }

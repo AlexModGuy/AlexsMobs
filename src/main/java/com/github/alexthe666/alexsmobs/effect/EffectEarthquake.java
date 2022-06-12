@@ -11,7 +11,6 @@ public class EffectEarthquake extends MobEffect {
 
     public EffectEarthquake() {
         super(MobEffectCategory.HARMFUL, 0XF0E9E1);
-        this.setRegistryName(AlexsMobs.MODID, "earthquake");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

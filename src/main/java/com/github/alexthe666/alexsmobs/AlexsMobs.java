@@ -2,16 +2,17 @@ package com.github.alexthe666.alexsmobs;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.config.ConfigHolder;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.*;
-import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
-import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
-import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
+import com.github.alexthe666.alexsmobs.misc.*;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.world.AMFeatureRegistry;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
@@ -24,11 +25,13 @@ import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -51,7 +54,6 @@ public class AlexsMobs {
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
-    public static CreativeModeTab TAB = new AMItemGroup();
     private static int packetsRegistered;
     private static boolean isAprilFools = false;
 
@@ -68,18 +70,27 @@ public class AlexsMobs {
     }
 
     public AlexsMobs() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onModConfigEvent);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticleEvent);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupEntityModelLayers);
+        IEventBus modBusEvent = FMLJavaModLoadingContext.get().getModEventBus();
+        modBusEvent.addListener(this::setup);
+        modBusEvent.addListener(this::setupClient);
+        modBusEvent.addListener(this::onModConfigEvent);
+        modBusEvent.addListener(this::setupParticleEvent);
+        modBusEvent.addListener(this::setupEntityModelLayers);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
-        AMBlockRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
-        AMEntityRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
-        AMItemRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
-        AMTileEntityRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
-        AMPointOfInterestRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
-        AMFeatureRegistry.DEF_REG.register(FMLJavaModLoadingContext.get().getModEventBus());
+        AMBlockRegistry.DEF_REG.register(modBusEvent);
+        AMEntityRegistry.DEF_REG.register(modBusEvent);
+        AMItemRegistry.DEF_REG.register(modBusEvent);
+        AMTileEntityRegistry.DEF_REG.register(modBusEvent);
+        AMPointOfInterestRegistry.DEF_REG.register(modBusEvent);
+        AMFeatureRegistry.DEF_REG.register(modBusEvent);
+        AMSoundRegistry.DEF_REG.register(modBusEvent);
+        AMParticleRegistry.DEF_REG.register(modBusEvent);
+        AMPaintingRegistry.DEF_REG.register(modBusEvent);
+        AMEffectRegistry.EFFECT_DEF_REG.register(modBusEvent);
+        AMEffectRegistry.POTION_DEF_REG.register(modBusEvent);
+        AMEnchantmentRegistry.DEF_REG.register(modBusEvent);
+        AMRecipeRegistry.DEF_REG.register(modBusEvent);
+        AMLootRegistry.DEF_REG.register(modBusEvent);
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
@@ -106,10 +117,6 @@ public class AlexsMobs {
         }
         BiomeConfig.init();
     }
-    @SubscribeEvent
-    public void onBiomeLoadFromJSON(BiomeLoadingEvent event) {
-        AMWorldRegistry.onBiomesLoad(event);
-    }
 
     @SubscribeEvent
     public void onDatapackReload(OnDatapackSyncEvent event) {
@@ -131,9 +138,7 @@ public class AlexsMobs {
     }
 
     public static <MSG> void sendNonLocal(MSG msg, ServerPlayer player) {
-        if (player.server.isDedicatedServer() || !player.getName().equals(player.server.getSingleplayerName())) {
-            NETWORK_WRAPPER.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
-        }
+        NETWORK_WRAPPER.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -154,7 +159,10 @@ public class AlexsMobs {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageInteractMultipart.class, MessageInteractMultipart::write, MessageInteractMultipart::read, MessageInteractMultipart.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSendVisualFlagFromServer.class, MessageSendVisualFlagFromServer::write, MessageSendVisualFlagFromServer::read, MessageSendVisualFlagFromServer.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSetPupfishChunkOnClient.class, MessageSetPupfishChunkOnClient::write, MessageSetPupfishChunkOnClient::read, MessageSetPupfishChunkOnClient.Handler::handle);
+        AMItemRegistry.init();
         AMAdvancementTriggerRegistry.init();
+        AMEffectRegistry.init();
+        AMRecipeRegistry.init();
     }
 
     private void setupClient(FMLClientSetupEvent event) {

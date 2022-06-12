@@ -26,7 +26,7 @@ public class ItemRainbowJelly extends Item{
         int i = RainbowUtil.getRainbowTypeFromStack(stack);
         if(RainbowUtil.getRainbowType(target) != i){
             RainbowUtil.setRainbowType(target, i);
-            Random random = playerIn.getRandom();
+            RandomSource random = playerIn.getRandom();
             for (int j = 0; j < 6 + random.nextInt(3); j++) {
                 double d2 = random.nextGaussian() * 0.02D;
                 double d0 = random.nextGaussian() * 0.02D;

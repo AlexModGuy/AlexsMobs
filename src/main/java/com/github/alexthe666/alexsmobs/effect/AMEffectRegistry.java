@@ -2,11 +2,11 @@ package com.github.alexthe666.alexsmobs.effect;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -18,76 +18,57 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-@Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMEffectRegistry {
-    public static final MobEffect KNOCKBACK_RESISTANCE = new EffectKnockbackResistance();
-    public static final MobEffect LAVA_VISION = new EffectLavaVision();
-    public static final MobEffect SUNBIRD_BLESSING = new EffectSunbird(false);
-    public static final MobEffect SUNBIRD_CURSE = new EffectSunbird(true);
-    public static final MobEffect POISON_RESISTANCE = new EffectPoisonResistance();
-    public static final MobEffect OILED = new EffectOiled();
-    public static final MobEffect ORCAS_MIGHT = new EffectOrcaMight();
-    public static final MobEffect BUG_PHEROMONES = new EffectBugPheromones();
-    public static final MobEffect SOULSTEAL = new EffectSoulsteal();
-    public static final MobEffect CLINGING = new EffectClinging();
-    public static final MobEffect ENDER_FLU = new EffectEnderFlu();
-    public static final MobEffect FEAR = new EffectFear();
-    public static final MobEffect TIGERS_BLESSING = new EffectTigersBlessing();
-    public static final MobEffect DEBILITATING_STING = new EffectDebilitatingSting();
-    public static final MobEffect EXSANGUINATION = new EffectExsanguination();
-    public static final MobEffect EARTHQUAKE = new EffectEarthquake();
-    public static final MobEffect FLEET_FOOTED = new EffectFleetFooted();
-    public static final MobEffect POWER_DOWN = new EffectPowerDown();
-    public static final Potion KNOCKBACK_RESISTANCE_POTION = new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 3600)).setRegistryName("alexsmobs:knockback_resistance");
-    public static final Potion LONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 9600)).setRegistryName("alexsmobs:long_knockback_resistance");
-    public static final Potion STRONG_KNOCKBACK_RESISTANCE_POTION = new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 1800, 1)).setRegistryName("alexsmobs:strong_knockback_resistance");
-    public static final Potion LAVA_VISION_POTION = new Potion(new MobEffectInstance(LAVA_VISION, 3600)).setRegistryName("alexsmobs:lava_vision");
-    public static final Potion LONG_LAVA_VISION_POTION = new Potion(new MobEffectInstance(LAVA_VISION, 9600)).setRegistryName("alexsmobs:long_lava_vision");
-    public static final Potion SPEED_III_POTION = new Potion(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2200, 2)).setRegistryName("alexsmobs:speed_iii");
-    public static final Potion POISON_RESISTANCE_POTION = new Potion(new MobEffectInstance(POISON_RESISTANCE, 3600)).setRegistryName("alexsmobs:poison_resistance");
-    public static final Potion LONG_POISON_RESISTANCE_POTION = new Potion(new MobEffectInstance(POISON_RESISTANCE, 9600)).setRegistryName("alexsmobs:long_poison_resistance");
-    public static final Potion BUG_PHEROMONES_POTION = new Potion(new MobEffectInstance(BUG_PHEROMONES, 3600)).setRegistryName("alexsmobs:bug_pheromones");
-    public static final Potion LONG_BUG_PHEROMONES_POTION = new Potion(new MobEffectInstance(BUG_PHEROMONES, 9600)).setRegistryName("alexsmobs:long_bug_pheromones");
-    public static final Potion SOULSTEAL_POTION = new Potion(new MobEffectInstance(SOULSTEAL, 3600)).setRegistryName("alexsmobs:soulsteal");
-    public static final Potion LONG_SOULSTEAL_POTION = new Potion(new MobEffectInstance(SOULSTEAL, 9600)).setRegistryName("alexsmobs:long_soulsteal");
-    public static final Potion STRONG_SOULSTEAL_POTION = new Potion(new MobEffectInstance(SOULSTEAL, 1800, 1)).setRegistryName("alexsmobs:strong_soulsteal");
-    public static final Potion CLINGING_POTION = new Potion(new MobEffectInstance(CLINGING, 3600)).setRegistryName("alexsmobs:clinging");
-    public static final Potion LONG_CLINGING_POTION = new Potion(new MobEffectInstance(CLINGING, 9600)).setRegistryName("alexsmobs:long_clinging");
+    public static final DeferredRegister<MobEffect> EFFECT_DEF_REG = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, AlexsMobs.MODID);
+    public static final DeferredRegister<Potion> POTION_DEF_REG = DeferredRegister.create(ForgeRegistries.POTIONS, AlexsMobs.MODID);
 
-    @SubscribeEvent
-    public static void registerEffects(RegistryEvent.Register<MobEffect> event) {
-        try {
-            for (Field f : AMEffectRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof MobEffect) {
-                    event.getRegistry().register((MobEffect) obj);
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public static final RegistryObject<MobEffect> KNOCKBACK_RESISTANCE = EFFECT_DEF_REG.register("knockback_resistance", ()-> new EffectKnockbackResistance());
+    public static final RegistryObject<MobEffect> LAVA_VISION = EFFECT_DEF_REG.register("lava_vision", ()-> new EffectLavaVision());
+    public static final RegistryObject<MobEffect> SUNBIRD_BLESSING = EFFECT_DEF_REG.register("sunbird_blessing", ()-> new EffectSunbird(false));
+    public static final RegistryObject<MobEffect> SUNBIRD_CURSE = EFFECT_DEF_REG.register("sunbird_curse", ()-> new EffectSunbird(true));
+    public static final RegistryObject<MobEffect> POISON_RESISTANCE = EFFECT_DEF_REG.register("poison_resistance", ()-> new EffectPoisonResistance());
+    public static final RegistryObject<MobEffect> OILED = EFFECT_DEF_REG.register("oiled", ()-> new EffectOiled());
+    public static final RegistryObject<MobEffect> ORCAS_MIGHT = EFFECT_DEF_REG.register("orcas_might", ()-> new EffectOrcaMight());
+    public static final RegistryObject<MobEffect> BUG_PHEROMONES = EFFECT_DEF_REG.register("bug_pheromones", ()-> new EffectBugPheromones());
+    public static final RegistryObject<MobEffect> SOULSTEAL = EFFECT_DEF_REG.register("soulsteal", ()-> new EffectSoulsteal());
+    public static final RegistryObject<MobEffect> CLINGING = EFFECT_DEF_REG.register("clinging", ()-> new EffectClinging());
+    public static final RegistryObject<MobEffect> ENDER_FLU = EFFECT_DEF_REG.register("ender_flu", ()-> new EffectEnderFlu());
+    public static final RegistryObject<MobEffect> FEAR = EFFECT_DEF_REG.register("fear", ()-> new EffectFear());
+    public static final RegistryObject<MobEffect> TIGERS_BLESSING = EFFECT_DEF_REG.register("tigers_blessing", ()-> new EffectTigersBlessing());
+    public static final RegistryObject<MobEffect> DEBILITATING_STING = EFFECT_DEF_REG.register("debilitating_sting", ()-> new EffectDebilitatingSting());
+    public static final RegistryObject<MobEffect> EXSANGUINATION = EFFECT_DEF_REG.register("exsanguination", ()-> new EffectExsanguination());
+    public static final RegistryObject<MobEffect> EARTHQUAKE = EFFECT_DEF_REG.register("earthquake", ()-> new EffectEarthquake());
+    public static final RegistryObject<MobEffect> FLEET_FOOTED = EFFECT_DEF_REG.register("fleet_footed", ()-> new EffectFleetFooted());
+    public static final RegistryObject<MobEffect> POWER_DOWN = EFFECT_DEF_REG.register("power_down", ()-> new EffectPowerDown());
+    public static final RegistryObject<MobEffect> KNOCKBACK_RESISTANCE_POTION = POTION_DEF_REG.register("knockback_resistance", ()-> new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 3600)));
+    public static final RegistryObject<MobEffect> LONG_KNOCKBACK_RESISTANCE_POTION = POTION_DEF_REG.register("long_knockback_resistance", ()-> new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 9600)));
+    public static final RegistryObject<MobEffect> STRONG_KNOCKBACK_RESISTANCE_POTION = POTION_DEF_REG.register("strong_knockback_resistance", ()-> new Potion(new MobEffectInstance(KNOCKBACK_RESISTANCE, 1800, 1)));
+    public static final RegistryObject<MobEffect> LAVA_VISION_POTION = POTION_DEF_REG.register("lava_vision", ()-> new Potion(new MobEffectInstance(LAVA_VISION, 3600)));
+    public static final RegistryObject<MobEffect> LONG_LAVA_VISION_POTION = POTION_DEF_REG.register("long_lava_vision", ()-> new Potion(new MobEffectInstance(LAVA_VISION, 9600)));
+    public static final RegistryObject<MobEffect> SPEED_III_POTION = POTION_DEF_REG.register("speed_iii", ()-> new Potion(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2200, 2)));
+    public static final RegistryObject<MobEffect> POISON_RESISTANCE_POTION = POTION_DEF_REG.register("poison_resistance", ()-> new Potion(new MobEffectInstance(POISON_RESISTANCE, 3600)));
+    public static final RegistryObject<MobEffect> LONG_POISON_RESISTANCE_POTION = POTION_DEF_REG.register("long_poison_resistance", ()-> new Potion(new MobEffectInstance(POISON_RESISTANCE, 9600)));
+    public static final RegistryObject<MobEffect> BUG_PHEROMONES_POTION = POTION_DEF_REG.register("bug_pheromones", ()-> new Potion(new MobEffectInstance(BUG_PHEROMONES, 3600)));
+    public static final RegistryObject<MobEffect> LONG_BUG_PHEROMONES_POTION = POTION_DEF_REG.register("long_bug_pheromones", ()-> new Potion(new MobEffectInstance(BUG_PHEROMONES, 9600)));
+    public static final RegistryObject<MobEffect> SOULSTEAL_POTION = POTION_DEF_REG.register("soulsteal", ()-> new Potion(new MobEffectInstance(SOULSTEAL, 3600)));
+    public static final RegistryObject<MobEffect> LONG_SOULSTEAL_POTION = POTION_DEF_REG.register("long_soulsteal", ()-> new Potion(new MobEffectInstance(SOULSTEAL, 9600)));
+    public static final RegistryObject<MobEffect> STRONG_SOULSTEAL_POTION = POTION_DEF_REG.register("strong_soulsteal", ()-> new Potion(new MobEffectInstance(SOULSTEAL, 1800, 1)));
+    public static final RegistryObject<MobEffect> CLINGING_POTION = POTION_DEF_REG.register("clinging", ()-> new Potion(new MobEffectInstance(CLINGING, 3600)));
+    public static final RegistryObject<MobEffect> LONG_CLINGING_POTION = POTION_DEF_REG.register("long_clinging", ()-> new Potion(new MobEffectInstance(CLINGING, 9600)));
 
-    @SubscribeEvent
-    public static void registerPotions(RegistryEvent.Register<Potion> event) {
-        try {
-            for (Field f : AMEffectRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Potion) {
-                    event.getRegistry().register((Potion) obj);
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+    public static ItemStack createPotion(RegistryObject<Potion> potion){
+        return  PotionUtils.setPotion(new ItemStack(Items.POTION), potion.get());
     }
 
     public static ItemStack createPotion(Potion potion){
         return  PotionUtils.setPotion(new ItemStack(Items.POTION), potion);
     }
 
-    public static void registerRecipes(){
+    public static void init(){
         BrewingRecipeRegistry.addRecipe(Ingredient.of(createPotion(Potions.STRENGTH)), Ingredient.of(AMItemRegistry.BEAR_FUR.get()), createPotion(KNOCKBACK_RESISTANCE_POTION));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(KNOCKBACK_RESISTANCE_POTION)), Ingredient.of(Items.REDSTONE), createPotion(LONG_KNOCKBACK_RESISTANCE_POTION)));
         BrewingRecipeRegistry.addRecipe(new ProperBrewingRecipe(Ingredient.of(createPotion(KNOCKBACK_RESISTANCE_POTION)), Ingredient.of(Items.GLOWSTONE_DUST), createPotion(STRONG_KNOCKBACK_RESISTANCE_POTION)));

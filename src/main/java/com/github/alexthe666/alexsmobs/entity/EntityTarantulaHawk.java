@@ -46,12 +46,10 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.BiomeDictionary;
-
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
@@ -124,7 +122,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         switchNavigator(false);
     }
 
-    public static boolean canTarantulaHawkSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canTarantulaHawkSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(Blocks.SAND);
         return (spawnBlock) && worldIn.getRawBrightness(pos, 0) > 8 || isBiomeNether(worldIn, pos) || AMConfig.fireproofTarantulaHawk;
     }
@@ -173,11 +171,11 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.TARANTULA_HAWK_HURT;
+        return AMSoundRegistry.TARANTULA_HAWK_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.TARANTULA_HAWK_HURT;
+        return AMSoundRegistry.TARANTULA_HAWK_HURT.get();
     }
 
     public boolean fireImmune() {
@@ -384,7 +382,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             }
             if (isFlying()) {
                 if(timeFlying % 25 == 0){
-                    this.playSound(AMSoundRegistry.TARANTULA_HAWK_WING, this.getSoundVolume(), this.getVoicePitch());
+                    this.playSound(AMSoundRegistry.TARANTULA_HAWK_WING.get(), this.getSoundVolume(), this.getVoicePitch());
                 }
                 timeFlying++;
                 this.setNoGravity(true);
@@ -485,7 +483,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 if (this.getCommand() == 3) {
                     this.setCommand(0);
                 }
-                player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
                     this.setOrderedToSit(true);
@@ -662,7 +660,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
 
     private BlockPos genSandPos(BlockPos parent) {
         LevelAccessor world = this.level;
-        Random random = new Random();
+        RandomSource random = new Random();
         int range = 24;
         for (int i = 0; i < 15; i++) {
             BlockPos sandAir = parent.offset(random.nextInt(range) - range / 2, -5, random.nextInt(range) - range / 2);

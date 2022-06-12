@@ -131,15 +131,15 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.MANED_WOLF_IDLE;
+        return AMSoundRegistry.MANED_WOLF_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.MANED_WOLF_HURT;
+        return AMSoundRegistry.MANED_WOLF_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.MANED_WOLF_HURT;
+        return AMSoundRegistry.MANED_WOLF_HURT.get();
     }
 
     private void attractAnimals() {
@@ -264,7 +264,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = 0.05F + this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(AMParticleRegistry.SMELLY, this.getRandomX(0.7F), this.getY(0.6F), this.getRandomZ(0.7F), d0, d1, d2);
+                this.level.addParticle(AMParticleRegistry.SMELLY.get(), this.getRandomX(0.7F), this.getY(0.6F), this.getRandomZ(0.7F), d0, d1, d2);
             }else{
                 attractAnimals();
                 findAnthill();

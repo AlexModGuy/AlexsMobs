@@ -56,7 +56,7 @@ public class EntityCentipedeHead extends Monster {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 35.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.ARMOR, 6.0D).add(Attributes.ATTACK_DAMAGE, 8.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F).add(Attributes.MOVEMENT_SPEED, 0.22F);
     }
 
-    public static <T extends Mob> boolean canCentipedeSpawn(EntityType<EntityCentipedeHead> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+    public static <T extends Mob> boolean canCentipedeSpawn(EntityType<EntityCentipedeHead> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= AMConfig.caveCentipedeSpawnHeight && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
     }
 
@@ -78,11 +78,11 @@ public class EntityCentipedeHead extends Monster {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.CENTIPEDE_HURT;
+        return AMSoundRegistry.CENTIPEDE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.CENTIPEDE_HURT;
+        return AMSoundRegistry.CENTIPEDE_HURT.get();
     }
 
     public MobType getMobType() {
@@ -90,7 +90,7 @@ public class EntityCentipedeHead extends Monster {
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(AMSoundRegistry.CENTIPEDE_WALK, 1F, 1.0F);
+        this.playSound(AMSoundRegistry.CENTIPEDE_WALK.get(), 1F, 1.0F);
     }
 
     public int getMaxHeadXRot() {
@@ -126,7 +126,7 @@ public class EntityCentipedeHead extends Monster {
                     ((LivingEntity) entityIn).addEffect(new MobEffectInstance(MobEffects.POISON, i * 20, 1));
                 }
             }
-            this.playSound(AMSoundRegistry.CENTIPEDE_ATTACK, this.getSoundVolume(), this.getVoicePitch());
+            this.playSound(AMSoundRegistry.CENTIPEDE_ATTACK.get(), this.getSoundVolume(), this.getVoicePitch());
             return true;
         } else {
             return false;

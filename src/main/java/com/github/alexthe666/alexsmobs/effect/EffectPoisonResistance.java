@@ -10,7 +10,6 @@ public class EffectPoisonResistance extends MobEffect {
 
     public EffectPoisonResistance() {
         super(MobEffectCategory.BENEFICIAL, 0X51FFAF);
-        this.setRegistryName(AlexsMobs.MODID, "poison_resistance");
 
     }
 

@@ -78,7 +78,7 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
     }
 
 
-    public static <T extends Mob> boolean canEmuSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static <T extends Mob> boolean canEmuSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.EMU_SPAWNS);
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
     }
@@ -89,15 +89,15 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
 
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.EMU_IDLE;
+        return AMSoundRegistry.EMU_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.EMU_HURT;
+        return AMSoundRegistry.EMU_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.EMU_HURT;
+        return AMSoundRegistry.EMU_HURT.get();
     }
     
     public int getVariant() {

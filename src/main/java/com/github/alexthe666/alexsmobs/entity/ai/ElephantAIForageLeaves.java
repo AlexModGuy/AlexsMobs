@@ -93,7 +93,7 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
             BlockState blockstate = elephant.level.getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.ELEPHANT_FOODBLOCKS)) {
                 elephant.level.destroyBlock(blockPos, false);
-                Random rand = new Random();
+                RandomSource rand = new Random();
                 ItemStack stack = new ItemStack(blockstate.getBlock().asItem());
                 ItemEntity itementity = new ItemEntity(elephant.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();

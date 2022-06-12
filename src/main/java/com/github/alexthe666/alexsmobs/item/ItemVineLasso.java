@@ -58,7 +58,7 @@ public class ItemVineLasso extends Item {
 
     public void onUseTick(Level worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
         if(count % 7 == 0){
-            livingEntityIn.playSound(AMSoundRegistry.VINE_LASSO,1.0F, 1.0F + (livingEntityIn.getRandom().nextFloat() - livingEntityIn.getRandom().nextFloat()) * 0.2F);
+            livingEntityIn.playSound(AMSoundRegistry.VINE_LASSO.get(),1.0F, 1.0F + (livingEntityIn.getRandom().nextFloat() - livingEntityIn.getRandom().nextFloat()) * 0.2F);
         }
     }
 

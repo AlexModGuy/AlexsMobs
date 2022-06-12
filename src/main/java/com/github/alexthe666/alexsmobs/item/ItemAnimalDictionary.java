@@ -78,6 +78,6 @@ public class ItemAnimalDictionary extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("item.alexsmobs.animal_dictionary.desc").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("item.alexsmobs.animal_dictionary.desc").withStyle(ChatFormatting.GRAY));
     }
 }

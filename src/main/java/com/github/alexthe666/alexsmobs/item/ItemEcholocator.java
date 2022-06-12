@@ -51,7 +51,7 @@ public class ItemEcholocator extends Item {
             }
             return Collections.emptyList();
         }else{
-            Random random = new Random();
+            RandomSource random = new Random();
             for(int i = 0; i < 256; i++){
                 BlockPos checkPos = blockpos.offset(random.nextInt(range) - range/2, random.nextInt(range)/2 - range/2, random.nextInt(range) - range/2);
                 if(isCaveAir(world, checkPos)){
@@ -117,7 +117,7 @@ public class ItemEcholocator extends Item {
                 whaleEcho.tickCount = 15;
                 whaleEcho.shoot(d0, d1, d2, 0.4F, 0.3F);
                 worldIn.addFreshEntity(whaleEcho);
-                worldIn.playSound((Player)null, whaleEcho.getX(), whaleEcho.getY(), whaleEcho.getZ(), AMSoundRegistry.CACHALOT_WHALE_CLICK, SoundSource.PLAYERS, 1.0F, 1.0F);
+                worldIn.playSound((Player)null, whaleEcho.getX(), whaleEcho.getY(), whaleEcho.getZ(), AMSoundRegistry.CACHALOT_WHALE_CLICK.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                 stack.hurtAndBreak(1, livingEntityIn, (player) -> {
                     player.broadcastBreakEvent(livingEntityIn.getUsedItemHand());
                 });

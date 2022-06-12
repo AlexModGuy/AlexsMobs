@@ -10,6 +10,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -80,7 +81,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
         return AMEntityRegistry.rollSpawn(AMConfig.snowLeopardSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static <T extends Mob> boolean canSnowLeopardSpawn(EntityType<EntitySnowLeopard> snowleperd, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, Random random) {
+    public static <T extends Mob> boolean canSnowLeopardSpawn(EntityType<EntitySnowLeopard> snowleperd, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, RandomSource random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.below());
         return (blockstate.is(BlockTags.BASE_STONE_OVERWORLD) || blockstate.is(Blocks.DIRT) || blockstate.is(Blocks.GRASS_BLOCK)) && worldIn.getRawBrightness(p_223317_3_, 0) > 8;
     }
@@ -115,15 +116,15 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SNOW_LEOPARD_IDLE;
+        return AMSoundRegistry.SNOW_LEOPARD_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SNOW_LEOPARD_HURT;
+        return AMSoundRegistry.SNOW_LEOPARD_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SNOW_LEOPARD_HURT;
+        return AMSoundRegistry.SNOW_LEOPARD_HURT.get();
     }
 
     @Override

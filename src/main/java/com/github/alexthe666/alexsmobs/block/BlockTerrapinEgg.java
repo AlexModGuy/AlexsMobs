@@ -110,7 +110,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
 
     }
 
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
         if (this.canGrow(worldIn) && hasProperHabitat(worldIn, pos)) {
             int i = state.getValue(HATCH);
             if (i < 2) {
@@ -218,9 +218,9 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
         if (compoundtag != null && compoundtag.contains("Parent1Data") && compoundtag.contains("Parent2Data")) {
             TerrapinTypes parent1Type = TerrapinTypes.values()[Mth.clamp(compoundtag.getCompound("Parent1Data").getInt("TerrapinType"), 0, TerrapinTypes.values().length - 1)];
             TerrapinTypes parent2Type = TerrapinTypes.values()[Mth.clamp(compoundtag.getCompound("Parent2Data").getInt("TerrapinType"), 0, TerrapinTypes.values().length - 1)];
-            String s1 = new TranslatableComponent(parent1Type.getTranslationName()).getString();
-            String s2 = new TranslatableComponent(parent2Type.getTranslationName()).getString();
-            list.add(new TranslatableComponent("block.alexsmobs.terrapin_egg.desc", s1, s2).withStyle(ChatFormatting.GRAY));
+            String s1 = Component.translatable(parent1Type.getTranslationName()).getString();
+            String s2 = Component.translatable(parent2Type.getTranslationName()).getString();
+            list.add(Component.translatable("block.alexsmobs.terrapin_egg.desc", s1, s2).withStyle(ChatFormatting.GRAY));
         }
     }
 

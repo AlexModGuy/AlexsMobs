@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class ItemMaraca extends Item {
 
-    private Random random = new Random();
+    private RandomSource random = new Random();
 
     public ItemMaraca(Item.Properties property) {
         super(property);
@@ -22,7 +22,7 @@ public class ItemMaraca extends Item {
 
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
-        worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), AMSoundRegistry.MARACA, SoundSource.PLAYERS, 0.5F, (random.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound(null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), AMSoundRegistry.MARACA.get(), SoundSource.PLAYERS, 0.5F, (random.nextFloat() * 0.4F + 0.8F));
         playerIn.getCooldowns().addCooldown(this, 3);
         playerIn.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResultHolder.success(itemstack);

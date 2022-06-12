@@ -90,7 +90,7 @@ public class AnimalAILootChests extends MoveToBlockGoal {
         return true;
     }
 
-    public ItemStack getFoodFromInventory(Container inventory, Random random) {
+    public ItemStack getFoodFromInventory(Container inventory, RandomSource random) {
         List<ItemStack> items = new ArrayList<ItemStack>();
         for (int i = 0; i < inventory.getContainerSize(); i++) {
             ItemStack stack = inventory.getItem(i);

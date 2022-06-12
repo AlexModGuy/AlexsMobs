@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -87,11 +88,11 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.RATTLESNAKE_HURT;
+        return AMSoundRegistry.RATTLESNAKE_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.RATTLESNAKE_HURT;
+        return AMSoundRegistry.RATTLESNAKE_HURT.get();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -165,7 +166,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
             this.setCurled(true);
         }
         if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 4){
-             this.playSound(AMSoundRegistry.RATTLESNAKE_ATTACK, getSoundVolume(), getVoicePitch());
+             this.playSound(AMSoundRegistry.RATTLESNAKE_ATTACK.get(), getSoundVolume(), getVoicePitch());
         }
         LivingEntity target = this.getTarget();
         if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 8 && target != null && this.distanceTo(target) < 2D){
@@ -178,7 +179,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
         }
         if(isRattling()){
             if(loopSoundTick == 0){
-                this.playSound(AMSoundRegistry.RATTLESNAKE_LOOP, this.getSoundVolume() * 0.5F, this.getVoicePitch());
+                this.playSound(AMSoundRegistry.RATTLESNAKE_LOOP.get(), this.getSoundVolume() * 0.5F, this.getVoicePitch());
             }
             loopSoundTick++;
             if(loopSoundTick > 50){
@@ -237,7 +238,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
         return new Animation[]{ANIMATION_BITE};
     }
 
-    public static boolean canRattlesnakeSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canRattlesnakeSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.RATTLESNAKE_SPAWNS);
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
 }

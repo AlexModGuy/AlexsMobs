@@ -50,7 +50,7 @@ public class FlyingFishBootsUtil {
         int boostTime = getBoostTicks(fishy);
         if(boostTime <= 15 && fishy.isInWaterOrBubble() && !fishy.isOnGround()){
             if(fishy.getFluidHeight(FluidTags.WATER) < 0.2F && fishy.jumping &&( !(fishy instanceof Player) || !((Player) fishy).getAbilities().flying)){
-                Random rand = fishy.getRandom();
+                RandomSource rand = fishy.getRandom();
                 boostTime = MIN_BOOST_TIME;
                 Vec3 forward = new Vec3(0, 0.0F, 0.5F + rand.nextFloat() * 1.2F).xRot(-fishy.getXRot() * ((float) Math.PI / 180F)).yRot(-fishy.getYHeadRot() * ((float) Math.PI / 180F));
                 Vec3 delta = fishy.getDeltaMovement().add(forward);

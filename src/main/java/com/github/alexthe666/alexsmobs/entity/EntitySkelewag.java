@@ -71,7 +71,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         return AMEntityRegistry.rollSpawn(AMConfig.skelewagSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canSkelewagSpawn(EntityType<EntitySkelewag> type, ServerLevelAccessor levelAccessor, MobSpawnType p_32352_, BlockPos below, Random random) {
+    public static boolean canSkelewagSpawn(EntityType<EntitySkelewag> type, ServerLevelAccessor levelAccessor, MobSpawnType p_32352_, BlockPos below, RandomSource random) {
         if (!levelAccessor.getFluidState(below.below()).is(FluidTags.WATER)) {
             return false;
         } else {
@@ -80,15 +80,15 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SKELEWAG_IDLE;
+        return AMSoundRegistry.SKELEWAG_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SKELEWAG_HURT;
+        return AMSoundRegistry.SKELEWAG_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SKELEWAG_HURT;
+        return AMSoundRegistry.SKELEWAG_HURT.get();
     }
 
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {

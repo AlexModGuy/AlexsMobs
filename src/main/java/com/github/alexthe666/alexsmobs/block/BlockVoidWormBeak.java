@@ -51,7 +51,7 @@ public class BlockVoidWormBeak extends BaseEntityBlock {
         }
     }
 
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
         if(!worldIn.isClientSide){
             this.updateState(state, worldIn, pos, state.getBlock());
         }

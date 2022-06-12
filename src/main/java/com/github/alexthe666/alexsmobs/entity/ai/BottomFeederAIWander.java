@@ -48,7 +48,7 @@ public class BottomFeederAIWander extends RandomStrollGoal {
     protected Vec3 getPosition() {
         if(this.mob.isInWater()) {
             BlockPos blockpos = null;
-            Random random = new Random();
+            RandomSource random = new Random();
             for (int i = 0; i < 15; i++) {
                 BlockPos blockPos = this.mob.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
                 while ((this.mob.level.isEmptyBlock(blockPos) || this.mob.level.getFluidState(blockPos).is(FluidTags.WATER)) && blockPos.getY() > 1) {

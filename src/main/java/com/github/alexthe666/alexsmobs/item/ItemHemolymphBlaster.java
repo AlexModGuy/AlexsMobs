@@ -85,7 +85,7 @@ public class ItemHemolymphBlaster extends Item {
                 EntityHemolymph blood = new EntityHemolymph(worldIn, livingEntityIn, !left);
                 Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
                 Vector3f vector3f = new Vector3f(vector3d);
-                Random rand = new Random();
+                RandomSource rand = new Random();
                 livingEntityIn.playSound(SoundEvents.LAVA_POP,1.0F, 0.5F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 blood.shoot((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z(), 1F, 3);
                 if (!worldIn.isClientSide) {

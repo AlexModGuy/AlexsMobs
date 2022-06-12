@@ -352,25 +352,25 @@ public class ClientProxy extends CommonProxy {
 
     public void setupParticles() {
         AlexsMobs.LOGGER.debug("Registered particle factories");
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN, ParticleGusterSandSpin.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT, ParticleGusterSandShot.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN_RED, ParticleGusterSandSpin.FactoryRed::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT_RED, ParticleGusterSandShot.FactoryRed::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN_SOUL, ParticleGusterSandSpin.FactorySoul::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT_SOUL, ParticleGusterSandShot.FactorySoul::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.HEMOLYMPH, ParticleHemolymph.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.PLATYPUS_SENSE, ParticlePlatypus.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.WHALE_SPLASH, ParticleWhaleSplash.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.DNA, ParticleDna.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SHOCKED, ParticleSimpleHeart.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.WORM_PORTAL, ParticleWormPortal.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.INVERT_DIG, ParticleInvertDig.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.TEETH_GLINT, ParticleTeethGlint.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SMELLY, ParticleSmelly.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, ParticleBunfungusTransformation.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.FUNGUS_BUBBLE, ParticleFungusBubble.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BEAR_FREDDY, new ParticleBearFreddy.Factory());
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SUNBIRD_FEATHER, ParticleSunbirdFeather.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN.get(), ParticleGusterSandSpin.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT.get(), ParticleGusterSandShot.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN_RED.get(), ParticleGusterSandSpin.FactoryRed::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT_RED.get(), ParticleGusterSandShot.FactoryRed::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN_SOUL.get(), ParticleGusterSandSpin.FactorySoul::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT_SOUL.get(), ParticleGusterSandShot.FactorySoul::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.HEMOLYMPH.get(), ParticleHemolymph.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.PLATYPUS_SENSE.get(), ParticlePlatypus.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.WHALE_SPLASH.get(), ParticleWhaleSplash.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.DNA.get(), ParticleDna.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SHOCKED.get(), ParticleSimpleHeart.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.WORM_PORTAL.get(), ParticleWormPortal.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.INVERT_DIG.get(), ParticleInvertDig.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.TEETH_GLINT.get(), ParticleTeethGlint.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SMELLY.get(), ParticleSmelly.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), ParticleBunfungusTransformation.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.FUNGUS_BUBBLE.get(), ParticleFungusBubble.Factory::new);
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BEAR_FREDDY.get(), new ParticleBearFreddy.Factory());
+        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SUNBIRD_FEATHER.get(), ParticleSunbirdFeather.Factory::new);
     }
 
 
@@ -414,7 +414,7 @@ public class ClientProxy extends CommonProxy {
 
     public void spawnSpecialParticle(int type) {
         if (type == 0) {
-            Minecraft.getInstance().level.addParticle(AMParticleRegistry.BEAR_FREDDY, Minecraft.getInstance().player.getX(), Minecraft.getInstance().player.getY(), Minecraft.getInstance().player.getZ(), 0, 0, 0);
+            Minecraft.getInstance().level.addParticle(AMParticleRegistry.BEAR_FREDDY.get(), Minecraft.getInstance().player.getX(), Minecraft.getInstance().player.getY(), Minecraft.getInstance().player.getZ(), 0, 0, 0);
         }
     }
 

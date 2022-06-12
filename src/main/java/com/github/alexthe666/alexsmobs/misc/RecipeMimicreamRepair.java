@@ -112,7 +112,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
     }
 
     public RecipeSerializer<?> getSerializer() {
-        return CommonProxy.MIMICREAM_RECIPE;
+        return AMRecipeRegistry.MIMICREAM_RECIPE.get();
     }
 
     /**

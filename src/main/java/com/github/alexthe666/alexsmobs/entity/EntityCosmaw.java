@@ -81,7 +81,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         return AMEntityRegistry.rollSpawn(AMConfig.cosmawSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canCosmawSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canCosmawSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return !worldIn.getBlockState(pos.below()).isAir();
     }
 
@@ -139,15 +139,15 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.COSMAW_IDLE;
+        return AMSoundRegistry.COSMAW_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.COSMAW_HURT;
+        return AMSoundRegistry.COSMAW_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.COSMAW_HURT;
+        return AMSoundRegistry.COSMAW_HURT.get();
     }
 
     public boolean isFood(ItemStack stack) {
@@ -349,7 +349,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             if (this.getCommand() == 3) {
                 this.setCommand(0);
             }
-            player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+            player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
             boolean sit = this.getCommand() == 2;
             if (sit) {
                 this.setOrderedToSit(true);

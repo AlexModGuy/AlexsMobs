@@ -151,15 +151,15 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.ORCA_IDLE;
+        return AMSoundRegistry.ORCA_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.ORCA_HURT;
+        return AMSoundRegistry.ORCA_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.ORCA_DIE;
+        return AMSoundRegistry.ORCA_DIE.get();
     }
 
     protected void registerGoals() {

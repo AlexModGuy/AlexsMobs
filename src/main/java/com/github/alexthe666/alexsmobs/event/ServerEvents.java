@@ -717,7 +717,7 @@ public class ServerEvents {
             }
         }
         if (event.getEntityLiving().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SOMBRERO.get() && !event.getEntityLiving().level.isClientSide && AlexsMobs.isAprilFools() && event.getEntityLiving().isInWaterOrBubble()) {
-            Random random = event.getEntityLiving().getRandom();
+            RandomSource random = event.getEntityLiving().getRandom();
             if (random.nextInt(245) == 0 && !EntitySeaBear.isMobSafe(event.getEntityLiving())) {
                 final int dist = 32;
                 final var nearbySeabears = event.getEntityLiving().level.getEntitiesOfClass(EntitySeaBear.class,
@@ -824,7 +824,7 @@ public class ServerEvents {
     public void onTooltip(ItemTooltipEvent event) {
         CompoundTag tag = event.getItemStack().getTag();
         if (tag != null && tag.contains("BisonFur") && tag.getBoolean("BisonFur")) {
-            event.getToolTip().add(new TranslatableComponent("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.AQUA));
+            event.getToolTip().add(Component.translatable("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.AQUA));
         }
     }
 }

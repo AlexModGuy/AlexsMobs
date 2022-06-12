@@ -95,15 +95,15 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.SHOEBILL_HURT;
+        return AMSoundRegistry.SHOEBILL_HURT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.SHOEBILL_HURT;
+        return AMSoundRegistry.SHOEBILL_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.SHOEBILL_HURT;
+        return AMSoundRegistry.SHOEBILL_HURT.get();
     }
 
     public boolean isFood(ItemStack stack) {

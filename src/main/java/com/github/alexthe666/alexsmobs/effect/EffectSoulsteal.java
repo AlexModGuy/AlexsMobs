@@ -9,7 +9,6 @@ public class EffectSoulsteal extends MobEffect {
 
     public EffectSoulsteal() {
         super(MobEffectCategory.BENEFICIAL, 0X93FDFF);
-        this.setRegistryName(AlexsMobs.MODID, "soulsteal");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

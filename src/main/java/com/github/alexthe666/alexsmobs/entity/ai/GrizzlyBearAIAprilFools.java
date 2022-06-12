@@ -100,7 +100,7 @@ public class GrizzlyBearAIAprilFools extends Goal {
                     if(bear.getAprilFoolsFlag() != 5){
                         bear.level.broadcastEntityEvent(bear, (byte) 68);
                         bear.setAprilFoolsFlag(5);
-                        bear.playSound(AMSoundRegistry.APRIL_FOOLS_SCREAM, 3, 1);
+                        bear.playSound(AMSoundRegistry.APRIL_FOOLS_SCREAM.get(), 3, 1);
                         musicBoxTimer = 0;
                     }
                 }

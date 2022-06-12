@@ -89,11 +89,11 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
 
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.DEVILS_HOLE_PUPFISH_HURT;
+        return AMSoundRegistry.DEVILS_HOLE_PUPFISH_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.DEVILS_HOLE_PUPFISH_HURT;
+        return AMSoundRegistry.DEVILS_HOLE_PUPFISH_HURT.get();
     }
 
     protected void registerGoals() {
@@ -113,7 +113,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         return super.requiresCustomPersistence() || this.fromBucket();
     }
 
-    public static boolean canPupfishSpawn(EntityType<EntityDevilsHolePupfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, Random random) {
+    public static boolean canPupfishSpawn(EntityType<EntityDevilsHolePupfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return reason == MobSpawnType.SPAWNER || isPupfishChunk(iServerWorld, pos) && iServerWorld.getFluidState(pos).is(FluidTags.WATER) && isInCave(iServerWorld, pos);
     }
 

@@ -34,7 +34,7 @@ public class ItemModArmor extends ArmorItem {
     private Multimap<Attribute, AttributeModifier> attributeMapFlyingFish;
 
     public ItemModArmor(AMArmorMaterial armorMaterial, EquipmentSlot slot) {
-        super(armorMaterial, slot, new Item.Properties().tab(AlexsMobs.TAB));
+        super(armorMaterial, slot, new Item.Properties().tab(AMItemGroup.INSTANCE));
     }
 
     @Override
@@ -45,32 +45,32 @@ public class ItemModArmor extends ArmorItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (this.material == AMItemRegistry.CENTIPEDE_ARMOR_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.centipede_leggings.desc").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("item.alexsmobs.centipede_leggings.desc").withStyle(ChatFormatting.GRAY));
         }
         if (this.material == AMItemRegistry.EMU_ARMOR_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.emu_leggings.desc").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("item.alexsmobs.emu_leggings.desc").withStyle(ChatFormatting.GRAY));
         }
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         if (this.material == AMItemRegistry.ROADRUNNER_ARMOR_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.roadrunner_boots.desc").withStyle(ChatFormatting.BLUE));
+            tooltip.add(Component.translatable("item.alexsmobs.roadrunner_boots.desc").withStyle(ChatFormatting.BLUE));
         }
         if (this.material == AMItemRegistry.RACCOON_ARMOR_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.frontier_cap.desc").withStyle(ChatFormatting.BLUE));
+            tooltip.add(Component.translatable("item.alexsmobs.frontier_cap.desc").withStyle(ChatFormatting.BLUE));
         }
         if (this.material == AMItemRegistry.FROSTSTALKER_ARMOR_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.froststalker_helmet.desc").withStyle(ChatFormatting.AQUA));
+            tooltip.add(Component.translatable("item.alexsmobs.froststalker_helmet.desc").withStyle(ChatFormatting.AQUA));
         }
         if (this.material == AMItemRegistry.ROCKY_ARMOR_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.rocky_chestplate.desc").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("item.alexsmobs.rocky_chestplate.desc").withStyle(ChatFormatting.GRAY));
         }
         if (this.material == AMItemRegistry.SOMBRERO_ARMOR_MATERIAL && AlexsMobs.isAprilFools()) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.sombrero.special_desc").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("item.alexsmobs.sombrero.special_desc").withStyle(ChatFormatting.GRAY));
         }
         if (this.material == AMItemRegistry.FLYING_FISH_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.flying_fish_boots.desc").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("item.alexsmobs.flying_fish_boots.desc").withStyle(ChatFormatting.GRAY));
         }
         if (this.material == AMItemRegistry.NOVELTY_HAT_MATERIAL) {
-            tooltip.add(new TranslatableComponent("item.alexsmobs.novelty_hat.desc").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("item.alexsmobs.novelty_hat.desc").withStyle(ChatFormatting.GRAY));
         }
     }
 

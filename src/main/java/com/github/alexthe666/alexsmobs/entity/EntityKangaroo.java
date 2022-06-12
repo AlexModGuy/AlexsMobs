@@ -131,7 +131,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
     }
 
-    public static <T extends Mob> boolean canKangarooSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random random) {
+    public static <T extends Mob> boolean canKangarooSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
         boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.KANGAROO_SPAWNS);
         return spawnBlock && worldIn.getRawBrightness(pos, 0) > 8;
     }
@@ -191,11 +191,11 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.KANGAROO_IDLE;
+        return AMSoundRegistry.KANGAROO_IDLE.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.KANGAROO_IDLE;
+        return AMSoundRegistry.KANGAROO_IDLE.get();
     }
 
     private void initKangarooInventory() {
@@ -269,7 +269,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
                 if (this.getCommand() == 3) {
                     this.setCommand(0);
                 }
-                player.displayClientMessage(new TranslatableComponent("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
+                player.displayClientMessage(Component.translatable("entity.alexsmobs.all.command_" + this.getCommand(), this.getName()), true);
                 boolean sit = this.getCommand() == 2;
                 if (sit) {
                     this.entityData.set(FORCED_SIT, true);
@@ -351,7 +351,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
                 @Override
                 public Component getDisplayName() {
-                    return new TranslatableComponent("entity.alexsmobs.kangaroo.pouch");
+                    return Component.translatable("entity.alexsmobs.kangaroo.pouch");
                 }
             });
         }

@@ -4,11 +4,12 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.RegistryObject;
 
-public class BlockItemAMRender extends BlockItem {
+public class BlockItemAMRender extends AMBlockItem {
 
-    public BlockItemAMRender(Block block, Properties props) {
-        super(block, props);
+    public BlockItemAMRender(RegistryObject<Block> blockSupplier, Properties props) {
+        super(blockSupplier, props);
     }
 
     @Override

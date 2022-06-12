@@ -73,7 +73,7 @@ public class EntityEnderiophageRocket extends FireworkRocketEntity {
         if (id == 17) {
             this.level.addParticle(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, 0.005D, this.random.nextGaussian() * 0.05D);
             for(int i = 0; i < this.random.nextInt(15) + 30; ++i) {
-                this.level.addParticle(AMParticleRegistry.DNA, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.25D, this.random.nextGaussian() * 0.25D, this.random.nextGaussian() * 0.25D);
+                this.level.addParticle(AMParticleRegistry.DNA.get(), this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.25D, this.random.nextGaussian() * 0.25D, this.random.nextGaussian() * 0.25D);
             }
             for(int i = 0; i < this.random.nextInt(15) + 15; ++i) {
                 this.level.addParticle(ParticleTypes.END_ROD, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.15D, this.random.nextGaussian() * 0.15D, this.random.nextGaussian() * 0.15D);

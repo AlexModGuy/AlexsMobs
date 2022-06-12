@@ -24,7 +24,7 @@ public enum TerrapinTypes {
         this.weight = weight;
     }
 
-    public static TerrapinTypes getRandomType(Random random) {
+    public static TerrapinTypes getRandomType(RandomSource random) {
         float totalWeight = 0;
         for (TerrapinTypes type : TerrapinTypes.values()) {
             totalWeight += type.weight;
@@ -45,7 +45,7 @@ public enum TerrapinTypes {
         return texture;
     }
 
-    public static int generateRandomColor(Random random){
+    public static int generateRandomColor(RandomSource random){
         return DEFAULT_COLORS[random.nextInt(DEFAULT_COLORS.length) % DEFAULT_COLORS.length];
     }
 
