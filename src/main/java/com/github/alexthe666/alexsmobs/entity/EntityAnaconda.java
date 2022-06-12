@@ -85,7 +85,6 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         return AMSoundRegistry.ANACONDA_HURT;
     }
 
-
     protected void playStepSound(BlockPos pos, BlockState state) {
         if (!isBaby()) {
             this.playSound(AMSoundRegistry.ANACONDA_SLITHER, 1.0F, 1.0F);
@@ -100,7 +99,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     public static boolean canAnacondaSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.ANACONDA_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
+        final boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.ANACONDA_SPAWNS);
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 
@@ -146,8 +145,8 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        if(isFood(itemstack)){
+        final ItemStack itemstack = player.getItemInHand(hand);
+        if (isFood(itemstack)) {
             this.setTarget(null);
         }
         return super.mobInteract(player, hand);
@@ -177,7 +176,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
 
     public void pushEntities() {
-        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         entities.stream().filter(entity -> !(entity instanceof EntityAnacondaPart) && entity.isPushable()).forEach(entity -> entity.push(this));
     }
 
@@ -209,19 +208,19 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     public boolean isStrangling() {
-        return this.entityData.get(STRANGLING).booleanValue();
+        return this.entityData.get(STRANGLING);
     }
 
     public void setStrangling(boolean running) {
-        this.entityData.set(STRANGLING, Boolean.valueOf(running));
+        this.entityData.set(STRANGLING, running);
     }
 
     public boolean isYellow() {
-        return this.entityData.get(YELLOW).booleanValue();
+        return this.entityData.get(YELLOW);
     }
 
     public void setYellow(boolean yellow) {
-        this.entityData.set(YELLOW, Boolean.valueOf(yellow));
+        this.entityData.set(YELLOW, yellow);
     }
 
     public int getMaxHeadXRot() {
@@ -254,40 +253,45 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public void tick() {
         super.tick();
-        if (this.isInWater() && this.isLandNavigator) {
-            switchNavigator(false);
+
+        if (this.isInWater()) {
+            if (this.isLandNavigator)
+                switchNavigator(false);
+        } else {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
         }
-        if (!this.isInWater() && !this.isLandNavigator) {
-            switchNavigator(true);
-        }
+
         this.prevStrangleProgress = strangleProgress;
-        if (this.isStrangling() && strangleProgress < 5F) {
-            strangleProgress += 1;
+        if (this.isStrangling()) {
+            if (strangleProgress < 5F)
+                strangleProgress++;
+        } else {
+            if (strangleProgress > 0F)
+                strangleProgress--;
         }
-        if (!this.isStrangling() && strangleProgress > 0F) {
-            strangleProgress -= 1;
-        }
+
         this.yBodyRot = this.getYRot();
         this.yHeadRot = Mth.clamp(this.yHeadRot, this.yBodyRot - 70, this.yBodyRot + 70);
-        int segments = 7;
+
         if (this.isStrangling()) {
             if (!level.isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
                 this.setXRot(0);
-                LivingEntity e = this.getTarget();
-                float radius = this.getTarget().getBbWidth() * -0.5F;
-                float angle = (0.01745329251F * (e.yBodyRot - 45F));
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                double extraZ = radius * Mth.cos(angle);
-                double extraY = -0.5F;
-                this.setPosRaw(extraX + e.getX(), e.getY(1.0F), extraZ + e.getZ());
-                if(!e.isOnGround()){
-                    e.setDeltaMovement(new Vec3(0, -0.08F, 0));
-                }else{
-                    e.setDeltaMovement(Vec3.ZERO);
+                final LivingEntity target = this.getTarget();
+                final float radius = this.getTarget().getBbWidth() * -0.5F;
+                final float angle = (0.0174532925F * (target.yBodyRot - 45F));
+                final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                final double extraZ = radius * Mth.cos(angle);
+//                double extraY = -0.5F;
+                this.setPosRaw(extraX + target.getX(), target.getY(1.0F), extraZ + target.getZ());
+                if (!target.isOnGround()) {
+                    target.setDeltaMovement(new Vec3(0, -0.08F, 0));
+                } else {
+                    target.setDeltaMovement(Vec3.ZERO);
                 }
                 if (strangleTimer >= 40 && strangleTimer % 20 == 0) {
-                    double health = Mth.clamp(this.getTarget().getMaxHealth(), 4, 50);
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float)Math.max(4F, 0.25F * health));
+                    final double health = Mth.clamp(this.getTarget().getMaxHealth(), 4, 50);
+                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) Math.max(4F, 0.25F * health));
                 }
                 if (this.getTarget() == null || !this.getTarget().isAlive()) {
                     strangleTimer = 0;
@@ -312,15 +316,16 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.ringBuffer[this.ringBufferIndex] = this.getYRot();
 
         if (!level.isClientSide) {
-            Entity child = getChild();
+            final int segments = 7;
+            final Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;
                 parts = new EntityAnacondaPart[segments];
                 AnacondaPartIndex partIndex = AnacondaPartIndex.HEAD;
                 Vec3 prevPos = this.position();
                 for (int i = 0; i < segments; i++) {
-                    float prevReqRot = calcPartRotation(i) + getYawForPart(i);
-                    float reqRot = calcPartRotation(i + 1) + getYawForPart(i);
+                    final float prevReqRot = calcPartRotation(i) + getYawForPart(i);
+                    final float reqRot = calcPartRotation(i + 1) + getYawForPart(i);
                     EntityAnacondaPart part = new EntityAnacondaPart(AMEntityRegistry.ANACONDA_PART.get(), this);
                     part.setParent(partParent);
                     part.copyDataFrom(this);
@@ -351,24 +356,25 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                     i++;
                 }
             }
-            if (!level.isClientSide) {
-                AnacondaPartIndex partIndex = AnacondaPartIndex.HEAD;
-                Vec3 prev = this.position();
-                float xRot = this.getXRot();
-                float yRot = this.getYRot();
-                float headRot = Mth.wrapDegrees(this.getYRot());
-                for (int i = 0; i < segments; i++) {
-                    if (this.parts[i] != null) {
-                        float prevReqRot = calcPartRotation(i) + getYawForPart(i);
-                        float reqRot = calcPartRotation(i + 1) + getYawForPart(i);
-                        parts[i].setStrangleProgress(this.strangleProgress);
-                        parts[i].copyDataFrom(this);
-                        prev = parts[i].tickMultipartPosition(this.getId(), partIndex, prev, xRot, prevReqRot, reqRot, true);
-                        partIndex = parts[i].getPartType();
-                        xRot = parts[i].getXRot();
-                    }
+            AnacondaPartIndex partIndex = AnacondaPartIndex.HEAD;
+            Vec3 prev = this.position();
+            float xRot = this.getXRot();
+//                float yRot = this.getYRot();
+//                float headRot = Mth.wrapDegrees(this.getYRot());
+            for (int i = 0; i < segments; i++) {
+                if (this.parts[i] != null) {
+                    final float prevReqRot = calcPartRotation(i) + getYawForPart(i);
+                    final float reqRot = calcPartRotation(i + 1) + getYawForPart(i);
+                    parts[i].setStrangleProgress(this.strangleProgress);
+                    parts[i].copyDataFrom(this);
+                    prev = parts[i].tickMultipartPosition(this.getId(), partIndex, prev, xRot, prevReqRot, reqRot, true);
+                    partIndex = parts[i].getPartType();
+                    xRot = parts[i].getXRot();
                 }
             }
+
+            if (isInWater()) swimTimer = Math.max(swimTimer + 1, 0);
+            else swimTimer = Math.min(swimTimer - 1, 0);
         }
         if (shedCooldown > 0) {
             shedCooldown--;
@@ -380,24 +386,18 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 shedCooldown = 1000 + random.nextInt(2000);
             }
         }
-        if (!level.isClientSide) {
-            if (isInWater()) {
-                swimTimer = Math.max(swimTimer + 1, 0);
-            } else {
-                swimTimer = Math.min(swimTimer - 1, 0);
-            }
-        }
     }
 
     private boolean shouldReplaceParts() {
-        if(parts == null || parts[0] == null){
+        if (parts == null || parts[0] == null)
             return true;
-        }
-        for(int i = 0; i < 7; i++){
-            if(parts[i] == null){
+
+        for (int i = 0; i < 7; i++) {
+            if (parts[i] == null) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -411,10 +411,10 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         }
 
         partialTicks = 1.0F - partialTicks;
-        int i = this.ringBufferIndex - bufferOffset & 63;
-        int j = this.ringBufferIndex - bufferOffset - 1 & 63;
-        float d0 = this.ringBuffer[i];
-        float d1 = this.ringBuffer[j] - d0;
+        final int i = this.ringBufferIndex - bufferOffset & 63;
+        final int j = this.ringBufferIndex - bufferOffset - 1 & 63;
+        final float d0 = this.ringBuffer[i];
+        final float d1 = this.ringBuffer[j] - d0;
         return Mth.wrapDegrees(d0 + d1 * partialTicks);
     }
 
@@ -461,8 +461,8 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     private float calcPartRotation(int i) {
-        float f = 1 - (this.strangleProgress * 0.2F);
-        float strangleIntensity = (float) (Mth.clamp(strangleTimer * 3, 0, 100F) * (1.0F + 0.2F * Math.sin(0.15F * strangleTimer)));
+        final float f = 1 - (this.strangleProgress * 0.2F);
+        final float strangleIntensity = (float) (Mth.clamp(strangleTimer * 3, 0, 100F) * (1.0F + 0.2F * Math.sin(0.15F * strangleTimer)));
         return (float) (40 * -Math.sin(this.walkDist * 3 - (i))) * f + this.strangleProgress * 0.2F * i * strangleIntensity;
     }
 
@@ -473,12 +473,11 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         } else if (this.level.isClientSide) {
             return null;
         } else {
-            Vec3 vec = new Vec3(0, 0, f).yRot(-f * ((float) Math.PI / 180F));
-            ItemEntity itementity = new ItemEntity(this.level, this.getX() + vec.x, this.getY() + (double) f1, this.getZ() + vec.z, stack);
+            final Vec3 vec = new Vec3(0, 0, f).yRot(-f * ((float) Math.PI / 180F));
+            final ItemEntity itementity = new ItemEntity(this.level, this.getX() + vec.x, this.getY() + (double) f1, this.getZ() + vec.z, stack);
             itementity.setDefaultPickUpDelay();
             if (captureDrops() != null) captureDrops().add(itementity);
-            else
-                this.level.addFreshEntity(itementity);
+            else this.level.addFreshEntity(itementity);
             return itementity;
         }
     }
@@ -490,12 +489,12 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     public boolean shouldLeaveWater() {
-        if (!this.getPassengers().isEmpty()) {
+        if (!this.getPassengers().isEmpty())
             return false;
-        }
-        if (this.getTarget() != null && !this.getTarget().isInWater()) {
+
+        if (this.getTarget() != null && !this.getTarget().isInWater())
             return true;
-        }
+
         return swimTimer > 600 || this.isShedding();
     }
 
@@ -519,13 +518,14 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     @Override
     public void killed(ServerLevel world, LivingEntity entity) {
-        CompoundTag emptyNbt = new CompoundTag();
+        final CompoundTag emptyNbt = new CompoundTag();
         entity.addAdditionalSaveData(emptyNbt);
         emptyNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
         entity.readAdditionalSaveData(emptyNbt);
-        if (this.getChild() instanceof EntityAnacondaPart) {
+
+        if (this.getChild() instanceof EntityAnacondaPart)
             ((EntityAnacondaPart) this.getChild()).setSwell(5);
-        }
+
         super.killed(world, entity);
     }
 
@@ -566,13 +566,12 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         }
 
         public void tick() {
-            if (jumpAttemptCooldown > 0) {
+            if (jumpAttemptCooldown > 0)
                 jumpAttemptCooldown--;
-            }
-            LivingEntity target = snake.getTarget();
+
+            final LivingEntity target = snake.getTarget();
             if (target != null && target.isAlive()) {
-                double dist = snake.distanceTo(target);
-                if (dist < 1 + target.getBbWidth() && !snake.isStrangling() && jumpAttemptCooldown == 0) {
+                if (jumpAttemptCooldown == 0 && snake.distanceTo(target) < 1 + target.getBbWidth() && !snake.isStrangling()) {
                     target.hurt(DamageSource.mobAttack(snake), 4);
                     snake.setStrangling(target.getBbWidth() <= 2.3F);
                     snake.playSound(AMSoundRegistry.ANACONDA_ATTACK, snake.getSoundVolume(), snake.getVoicePitch());

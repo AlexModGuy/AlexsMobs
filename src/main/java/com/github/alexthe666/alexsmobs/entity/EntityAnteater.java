@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -44,6 +45,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -138,9 +140,9 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(ANT_ON_TONGUE, Boolean.valueOf(false));
-        this.entityData.define(LEANING_DOWN, Boolean.valueOf(false));
+        this.entityData.define(STANDING, Boolean.FALSE);
+        this.entityData.define(ANT_ON_TONGUE, Boolean.FALSE);
+        this.entityData.define(LEANING_DOWN, Boolean.FALSE);
         this.entityData.define(ANGER_TIME, 0);
     }
 
@@ -165,19 +167,19 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
-        this.entityData.set(STANDING, Boolean.valueOf(standing));
+        this.entityData.set(STANDING, standing);
     }
 
     public boolean hasAntOnTongue() {
-        return this.entityData.get(ANT_ON_TONGUE).booleanValue();
+        return this.entityData.get(ANT_ON_TONGUE);
     }
 
     public void setAntOnTongue(boolean standing) {
-        this.entityData.set(ANT_ON_TONGUE, Boolean.valueOf(standing));
+        this.entityData.set(ANT_ON_TONGUE, standing);
     }
 
     public boolean canCollideWith(Entity entity) {
@@ -191,7 +193,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     }
 
     public boolean isLeaning() {
-        return this.entityData.get(LEANING_DOWN).booleanValue();
+        return this.entityData.get(LEANING_DOWN);
     }
 
     public void setLeaning(boolean leaning) {
@@ -234,39 +236,48 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
         prevStandProgress = standProgress;
         prevTongueProgress = tongueProgress;
         prevLeaningProgress = leaningProgress;
-        boolean isTongueOut = this.getAnimation() == ANIMATION_TOUNGE_IDLE;
-        if (isStanding() && standProgress < 5F) {
-            standProgress++;
+
+        if (isStanding()) {
+            if (standProgress < 5F)
+                standProgress++;
+        } else {
+            if (standProgress > 0F)
+                standProgress--;
         }
-        if (!isStanding() && standProgress > 0F) {
-            standProgress--;
+
+        final boolean isTongueOut = this.getAnimation() == ANIMATION_TOUNGE_IDLE;
+        if (isTongueOut) {
+            if (tongueProgress < 5F)
+                tongueProgress++;
+        } else {
+            if (tongueProgress > 0F)
+                tongueProgress--;
         }
-        if (isTongueOut && tongueProgress < 5F) {
-            tongueProgress++;
+
+        if (isLeaning()) {
+            if (leaningProgress < 5F)
+                leaningProgress++;
+        } else {
+            if (leaningProgress > 0F)
+                leaningProgress--;
         }
-        if (!isTongueOut && tongueProgress > 0F) {
-            tongueProgress--;
-        }
-        if (isLeaning() && leaningProgress < 20F) {
-            leaningProgress++;
-        }
-        if (!isLeaning() && leaningProgress > 0F) {
-            leaningProgress--;
-        }
+
         if (isStanding() && ++standingTime > maxStandTime) {
             this.setStanding(false);
             standingTime = 0;
             maxStandTime = 75 + random.nextInt(50);
         }
-        if (this.isBaby() && this.isPassenger() && this.getVehicle() instanceof EntityAnteater) {
-            EntityAnteater mount = (EntityAnteater) this.getVehicle();
-            this.setYRot(mount.yBodyRot);
-            this.yHeadRot = mount.yBodyRot;
-            this.yBodyRot = mount.yBodyRot;
+
+        if (this.isPassenger() && this.getVehicle() instanceof final EntityAnteater mount) {
+            if (this.isBaby()) {
+                this.setYRot(mount.yBodyRot);
+                this.yHeadRot = mount.yBodyRot;
+                this.yBodyRot = mount.yBodyRot;
+            } else {
+                this.removeVehicle();
+            }
         }
-        if (this.isPassenger() && this.getVehicle() instanceof EntityAnteater && !this.isBaby()) {
-            this.removeVehicle();
-        }
+
         if (eatAntCooldown > 0) {
             eatAntCooldown--;
         }
@@ -312,25 +323,29 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
         } else {
             heldItemTime = 0;
         }
-        if(!level.isClientSide && getRandom().nextInt(300) == 0){
-            this.setAnimation(ANIMATION_TOUNGE_IDLE);
-        }
-        LivingEntity attackTarget = this.getTarget();
-        if (!level.isClientSide && attackTarget != null) {
-            if (distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 2) {
-                if ((this.getAnimation() == ANIMATION_SLASH_L) && this.getAnimationTick() == 7) {
-                    doHurtTarget(attackTarget);
-                    float rot = getYRot() + 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
-                }
-                if ((this.getAnimation() == ANIMATION_SLASH_R) && this.getAnimationTick() == 7) {
-                    doHurtTarget(attackTarget);
-                    float rot = getYRot() - 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
-                }
 
+        if (!level.isClientSide) {
+            if (getRandom().nextInt(300) == 0)
+                this.setAnimation(ANIMATION_TOUNGE_IDLE);
+
+            final LivingEntity attackTarget = this.getTarget();
+            if (attackTarget != null) {
+                if (distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 2) {
+                    if (this.getAnimationTick() == 7) {
+                        if (this.getAnimation() == ANIMATION_SLASH_L) {
+                            doHurtTarget(attackTarget);
+                            final float rot = getYRot() + 90;
+                            attackTarget.knockback(0.5F, Mth.sin(rot * Maths.piDividedBy180), -Mth.cos(rot * Maths.piDividedBy180));
+                        } else if (this.getAnimation() == ANIMATION_SLASH_R) {
+                            doHurtTarget(attackTarget);
+                            final float rot = getYRot() - 90;
+                            attackTarget.knockback(0.5F, Mth.sin(rot * Maths.piDividedBy180), -Mth.cos(rot * Maths.piDividedBy180));
+                        }
+                    }
+                }
             }
         }
+
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
@@ -346,7 +361,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
 
     public float getTongueStickOut() {
         if (this.tongueProgress > 0F) {
-            double tongueM = Math.min(Math.sin(this.tickCount * 0.15F), 0);
+            final double tongueM = Math.min(Math.sin(this.tickCount * 0.15F), 0);
             return (float) -tongueM * (this.tongueProgress * 0.2F);
         }
         return 0.0F;
@@ -385,7 +400,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
 
     @Override
     public void onGetItem(ItemEntity e) {
-        ItemStack duplicate = e.getItem().copy();
+        final ItemStack duplicate = e.getItem().copy();
         duplicate.setCount(1);
         if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
@@ -404,21 +419,23 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     }
 
     public boolean isPeter() {
-        String s = ChatFormatting.stripFormatting(this.getName().getString());
-        return s != null && (s.toLowerCase().contains("peter") || s.toLowerCase().contains("petr") || s.toLowerCase().contains("zot"));
+        final String name = ChatFormatting.stripFormatting(this.getName().getString());
+        if (name == null)
+            return false;
+
+        final String lowercaseName = name.toLowerCase(Locale.ROOT);
+        return lowercaseName.contains("peter") || lowercaseName.contains("petr") || lowercaseName.contains("zot");
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if (spawnDataIn == null) {
+        if (spawnDataIn == null)
             spawnDataIn = new AgeableMob.AgeableMobGroupData(0.5F);
-        }
+
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
     private class AITargetAnts extends NearestAttackableTargetGoal {
-        private static final Predicate<EntityLeafcutterAnt> QUEEN_ANT = (entity) -> {
-            return !entity.isQueen();
-        };
+        private static final Predicate<EntityLeafcutterAnt> QUEEN_ANT = (entity) -> !entity.isQueen();
 
         public AITargetAnts() {
             super(EntityAnteater.this, EntityLeafcutterAnt.class, 30, true, false, QUEEN_ANT);
@@ -446,26 +463,26 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
         }
 
         public void tick() {
-            LivingEntity enemy = EntityAnteater.this.getTarget();
-            double d0 = this.getAttackReachSqr(enemy);
-            double distToEnemySqr = EntityAnteater.this.distanceTo(enemy);
+            final LivingEntity enemy = EntityAnteater.this.getTarget();
+            final double attackReachSqr = this.getAttackReachSqr(enemy);
+            final double distToEnemySqr = EntityAnteater.this.distanceTo(enemy);
             EntityAnteater.this.lookAt(enemy, 100, 5);
             if (enemy instanceof EntityLeafcutterAnt) {
-                if (distToEnemySqr <= d0 + 1.5F) {
+                if (distToEnemySqr <= attackReachSqr + 1.5F) {
                     EntityAnteater.this.setAnimation(ANIMATION_TOUNGE_IDLE);
                 } else {
                     EntityAnteater.this.lookAt(enemy, 5, 5);
                 }
                 EntityAnteater.this.getNavigation().moveTo(enemy, 1.0D);
             } else {
-                if (distToEnemySqr <= d0) {
+                if (distToEnemySqr <= attackReachSqr) {
                     EntityAnteater.this.getNavigation().moveTo(enemy, 1.0D);
                     EntityAnteater.this.setAnimation(EntityAnteater.this.getRandom().nextBoolean() ? ANIMATION_SLASH_L : ANIMATION_SLASH_R);
                 }
-                double d1 = enemy.getX() - EntityAnteater.this.getX();
-                double d2 = enemy.getZ() - EntityAnteater.this.getZ();
-                double d3 = (double)Mth.sqrt((float) (d1 * d1 + d2 * d2));
-                float f = (float)(Mth.atan2(d2, d1) * (double)(180F / (float)Math.PI)) - 90.0F;
+                final double x = enemy.getX() - EntityAnteater.this.getX();
+                final double z = enemy.getZ() - EntityAnteater.this.getZ();
+//                double d3 = (double)Mth.sqrt((float) (x * x + z * z));
+                final float f = (float) (Mth.atan2(z, x) * Maths.oneEightyDividedByFloatPi) - 90.0F;
                 EntityAnteater.this.setYRot(f);
                 EntityAnteater.this.yBodyRot = f;
                 EntityAnteater.this.setStanding(true);

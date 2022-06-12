@@ -20,7 +20,7 @@ public class SemiAquaticAIRandomSwimming extends RandomStrollGoal {
     }
 
     public boolean canUse() {
-        if (this.mob.isVehicle() || ((ISemiAquatic)mob).shouldStopMoving() || mob.getTarget() != null || !this.mob.isInWater() && !this.mob.isInLava() && this.mob instanceof ISemiAquatic && !((ISemiAquatic) this.mob).shouldEnterWater()) {
+        if (this.mob.isVehicle() || ((ISemiAquatic)this.mob).shouldStopMoving() || this.mob.getTarget() != null || !this.mob.isInWater() && !this.mob.isInLava() && this.mob instanceof ISemiAquatic && !((ISemiAquatic) this.mob).shouldEnterWater()) {
             return false;
         } else {
             if (!this.forceTrigger) {
@@ -28,7 +28,7 @@ public class SemiAquaticAIRandomSwimming extends RandomStrollGoal {
                     return false;
                 }
             }
-            Vec3 vector3d = this.getPosition();
+            final Vec3 vector3d = this.getPosition();
             if (vector3d == null) {
                 return false;
             } else {
@@ -61,7 +61,7 @@ public class SemiAquaticAIRandomSwimming extends RandomStrollGoal {
     }
 
     private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
-        BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
+        final BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
         return this.mob.level.getFluidState(blockpos).is(FluidTags.LAVA) || this.mob.level.getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level.getBlockState(blockpos).getMaterial().blocksMotion();
     }
 
@@ -71,10 +71,10 @@ public class SemiAquaticAIRandomSwimming extends RandomStrollGoal {
 
     protected Vec3 findSurfaceTarget(PathfinderMob creature, int i, int i1) {
         BlockPos upPos = creature.blockPosition();
-        while(creature.level.getFluidState(upPos).is(FluidTags.WATER) || creature.level.getFluidState(upPos).is(FluidTags.LAVA)){
+        while (creature.level.getFluidState(upPos).is(FluidTags.WATER) || creature.level.getFluidState(upPos).is(FluidTags.LAVA)) {
             upPos = upPos.above();
         }
-        if(isAirAbove(upPos.below(), 0, 0, 0) && canJumpTo(upPos.below(), 0, 0, 0)){
+        if (isAirAbove(upPos.below(), 0, 0, 0) && canJumpTo(upPos.below(), 0, 0, 0)) {
             return new Vec3(upPos.getX() + 0.5F, upPos.getY() - 1F, upPos.getZ() + 0.5F);
         }
         return null;
