@@ -156,7 +156,7 @@ public class AMConfig {
     public static int catfishSpawnRolls = 2;
     public static int flyingFishSpawnWeight = 8;
     public static int flyingFishSpawnRolls = 0;
-    public static int skelewagSpawnWeight = 25;
+    public static int skelewagSpawnWeight = 15;
     public static int skelewagSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
@@ -199,7 +199,7 @@ public class AMConfig {
     public static double cachalotVolume = 3;
     public static double leafcutterAntFungusGrowChance = 0.3F;
     public static int leafcutterAntRepopulateFeedings = 25;
-    public static int leafcutterAntColonySize = 20;
+    public static int leafcutterAntColonySize = 10;
     public static double leafcutterAntBreakLeavesChance = 0.2F;
     public static int beachedCachalotWhaleSpawnChance = 5;
     public static int beachedCachalotWhaleSpawnDelay = 24000;
