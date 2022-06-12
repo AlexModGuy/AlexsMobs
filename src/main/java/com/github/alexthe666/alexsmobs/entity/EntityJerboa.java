@@ -56,6 +56,7 @@ import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 public class EntityJerboa extends Animal {
 
@@ -246,7 +247,7 @@ public class EntityJerboa extends Animal {
                 this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemstack), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
             if (random.nextFloat() <= 0.3F) {
-                player.addEffect(new MobEffectInstance(AMEffectRegistry.FLEET_FOOTED, 12000));
+                player.addEffect(new MobEffectInstance(AMEffectRegistry.FLEET_FOOTED.get(), 12000));
             }
             return InteractionResult.SUCCESS;
         }
@@ -260,8 +261,8 @@ public class EntityJerboa extends Animal {
             if (source.getEntity() != null) {
                 if (source.getEntity() instanceof LivingEntity) {
                     LivingEntity hurter = (LivingEntity) source.getEntity();
-                    if (hurter.hasEffect(AMEffectRegistry.FLEET_FOOTED)) {
-                        hurter.removeEffect(AMEffectRegistry.FLEET_FOOTED);
+                    if (hurter.hasEffect(AMEffectRegistry.FLEET_FOOTED.get())) {
+                        hurter.removeEffect(AMEffectRegistry.FLEET_FOOTED.get());
                     }
                 }
             }

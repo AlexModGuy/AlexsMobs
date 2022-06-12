@@ -22,7 +22,7 @@ import net.minecraft.world.level.LevelReader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 public class AnimalAILootChests extends MoveToBlockGoal {
 

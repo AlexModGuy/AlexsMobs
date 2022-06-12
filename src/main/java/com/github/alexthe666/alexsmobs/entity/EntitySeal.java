@@ -42,7 +42,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nullable;
 import java.util.*;

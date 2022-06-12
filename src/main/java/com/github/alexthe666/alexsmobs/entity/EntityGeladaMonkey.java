@@ -16,7 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -442,7 +442,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
 
         public BlockPos generateTarget() {
             BlockPos blockpos = null;
-            RandomSource random = new Random();
+            Random random = new Random();
             int range = 7;
             for (int i = 0; i < 15; i++) {
                 BlockPos blockpos1 = EntityGeladaMonkey.this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);

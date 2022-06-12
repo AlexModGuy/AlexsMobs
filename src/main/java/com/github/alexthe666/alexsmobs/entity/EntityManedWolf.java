@@ -173,7 +173,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     private void findAnthill(){
         if(nearestAnthill == null || !(level.getBlockEntity(nearestAnthill) instanceof TileEntityLeafcutterAnthill)){
             PoiManager pointofinterestmanager = ((ServerLevel) level).getPoiManager();
-            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.get().getPredicate(), Predicates.alwaysTrue(), this.blockPosition(), 10, PoiManager.Occupancy.ANY);
+            Stream<BlockPos> stream = pointofinterestmanager.findAll((poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.getKey())), Predicates.alwaysTrue(), this.blockPosition(), 10, PoiManager.Occupancy.ANY);
             List<BlockPos> listOfHives = stream.collect(Collectors.toList());
             BlockPos nearest = null;
             for (BlockPos pos : listOfHives) {

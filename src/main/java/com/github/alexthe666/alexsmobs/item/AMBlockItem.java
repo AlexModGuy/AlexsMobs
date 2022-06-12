@@ -15,8 +15,8 @@ public class AMBlockItem extends BlockItem {
 
     private final RegistryObject<Block> blockSupplier;
 
-    public AMBlockItem(RegistryObject<Block> blockSupplier, Properties props) {
-        super(null, props);
+    public AMBlockItem(RegistryObject<Block> blockSupplier, Item.Properties props) {
+        super((Block)null, props);
         this.blockSupplier = blockSupplier;
     }
 

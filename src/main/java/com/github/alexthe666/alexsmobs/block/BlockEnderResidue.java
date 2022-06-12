@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,12 +28,12 @@ public class BlockEnderResidue extends AbstractGlassBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(AGE, Integer.valueOf(0)));
     }
 
-    public void randomTick(BlockState p_53588_, ServerLevel p_53589_, BlockPos p_53590_, Random p_53591_) {
+    public void randomTick(BlockState p_53588_, ServerLevel p_53589_, BlockPos p_53590_, RandomSource p_53591_) {
         this.tick(p_53588_, p_53589_, p_53590_, p_53591_);
     }
 
 
-    public void tick(BlockState p_53574_, ServerLevel p_53575_, BlockPos p_53576_, Random p_53577_) {
+    public void tick(BlockState p_53574_, ServerLevel p_53575_, BlockPos p_53576_, RandomSource p_53577_) {
         if ((p_53577_.nextInt(5) == 0)) {
             BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
             for (Direction direction : Direction.values()) {

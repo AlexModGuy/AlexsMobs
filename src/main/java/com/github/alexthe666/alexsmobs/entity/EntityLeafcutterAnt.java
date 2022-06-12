@@ -681,7 +681,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 if (searchCooldown <= 0) {
                     searchCooldown = 400;
                     PoiManager pointofinterestmanager = ((ServerLevel) level).getPoiManager();
-                    Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.get().getPredicate(), Predicates.alwaysTrue(), EntityLeafcutterAnt.this.blockPosition(), 100, PoiManager.Occupancy.ANY);
+                    Stream<BlockPos> stream = pointofinterestmanager.findAll(poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.getKey()), Predicates.alwaysTrue(), EntityLeafcutterAnt.this.blockPosition(), 100, PoiManager.Occupancy.ANY);
                     List<BlockPos> listOfHives = stream.collect(Collectors.toList());
                     BlockPos ret = null;
                     for (BlockPos pos : listOfHives) {

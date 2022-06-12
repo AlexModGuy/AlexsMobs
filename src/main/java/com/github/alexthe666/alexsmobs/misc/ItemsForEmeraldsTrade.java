@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 public class ItemsForEmeraldsTrade  implements VillagerTrades.ItemListing {
     private final ItemStack sellingItem;

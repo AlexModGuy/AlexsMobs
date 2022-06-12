@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class ItemBearDust extends Item {
 
-    private RandomSource random = new Random();
+    private Random random = new Random();
 
     public ItemBearDust(Item.Properties props) {
         super(props);

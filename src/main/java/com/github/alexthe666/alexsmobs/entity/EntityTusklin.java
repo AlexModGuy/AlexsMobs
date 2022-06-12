@@ -45,6 +45,7 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 public class EntityTusklin extends Animal implements IAnimatedEntity {
 

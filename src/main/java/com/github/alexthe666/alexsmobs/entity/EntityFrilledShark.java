@@ -273,7 +273,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.06F, 0.0D, Mth.cos(f1) * 0.06F));
             if (this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
-                this.getTarget().addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION, 60, 2));
+                this.getTarget().addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION.get(), 60, 2));
                 if(random.nextInt(15) == 0 && this.getTarget() instanceof Squid){
                     this.spawnAtLocation(AMItemRegistry.SERRATED_SHARK_TOOTH.get());
                 }

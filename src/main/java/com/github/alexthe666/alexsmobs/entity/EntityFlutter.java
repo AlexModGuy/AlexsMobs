@@ -44,7 +44,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
-
+import net.minecraft.util.RandomSource;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -101,7 +101,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         return AMEntityRegistry.rollSpawn(AMConfig.flutterSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canFlutterSpawnInLight(EntityType<? extends EntityFlutter> p_223325_0_, ServerLevelAccessor p_223325_1_, MobSpawnType p_223325_2_, BlockPos p_223325_3_, Random p_223325_4_) {
+    public static boolean canFlutterSpawnInLight(EntityType<? extends EntityFlutter> p_223325_0_, ServerLevelAccessor p_223325_1_, MobSpawnType p_223325_2_, BlockPos p_223325_3_, RandomSource p_223325_4_) {
         return checkMobSpawnRules(p_223325_0_, p_223325_1_, p_223325_2_, p_223325_3_, p_223325_4_);
     }
 
@@ -602,7 +602,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     public boolean hasEatenFlower(ItemStack stack) {
-        return flowersEaten != null && flowersEaten.contains(stack.getItem().getRegistryName().toString());
+        return flowersEaten != null && flowersEaten.contains(ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
     }
 
     public boolean canEatFlower(ItemStack stack) {

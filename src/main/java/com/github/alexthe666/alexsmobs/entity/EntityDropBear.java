@@ -375,7 +375,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
         protected Vec3 getPosition() {
             if (EntityDropBear.this.isUpsideDown()) {
                 for (int i = 0; i < 15; i++) {
-                    RandomSource rand = new Random();
+                    Random rand = new Random();
                     BlockPos randPos = EntityDropBear.this.blockPosition().offset(rand.nextInt(16) - 8, -2, rand.nextInt(16) - 8);
                     BlockPos lowestPos = EntityDropBear.getLowestPos(level, randPos);
                     if (level.getBlockState(lowestPos).isFaceSturdy(level, lowestPos, Direction.DOWN)) {

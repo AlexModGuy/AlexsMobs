@@ -5,10 +5,8 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
-import com.github.alexthe666.citadel.server.generation.GenerationSettingsManager;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.StructureFeatures;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -23,8 +21,6 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -328,15 +324,10 @@ public class AMWorldRegistry {
         }
     }
 
-    private static <C extends FeatureConfiguration, F extends Feature<C>> F registerFeature(String name, F eature) {
-        eature.setRegistryName("alexsmobs:leafcutter_hill");
-        return Registry.register(Registry.FEATURE, name, eature);
-    }
-
-    public static boolean testBiome(Pair<String, SpawnBiomeData> entry, Biome.BiomeCategory category, ResourceLocation registryName) {
+    public static boolean testBiome(Pair<String, SpawnBiomeData> entry, Holder<Biome> biome, ResourceLocation registryName) {
         boolean result = false;
         try {
-            result = BiomeConfig.test(entry, category, registryName);
+            result = BiomeConfig.test(entry, biome, registryName);
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("could not test biome config for " + entry.getLeft() + ", defaulting to no spawns for mob");
             result = false;

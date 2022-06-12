@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Field;
@@ -111,14 +112,14 @@ public class BiomeConfig {
 		init = true;
     }
 
-    public static boolean test(Pair<String, SpawnBiomeData> entry, Biome.BiomeCategory category, ResourceLocation name){
+    public static boolean test(Pair<String, SpawnBiomeData> entry, Holder<Biome> biome, ResourceLocation name){
     	if(!init){
     		return false;
 		}
-		return biomeConfigValues.get(entry.getKey()).matches(category, name);
+		return biomeConfigValues.get(entry.getKey()).matches(biome, name);
 	}
 
 	public static boolean test(Pair<String, SpawnBiomeData> spawns, Holder<Biome> biome) {
-		return test(spawns, Biome.getBiomeCategory(biome), biome.value().getRegistryName());
+		return test(spawns, biome, ForgeRegistries.BIOMES.getKey(biome.value()));
 	}
 }

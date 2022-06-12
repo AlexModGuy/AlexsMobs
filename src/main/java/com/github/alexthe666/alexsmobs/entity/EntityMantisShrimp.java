@@ -37,7 +37,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.server.level.ServerLevel;
 import javax.annotation.Nullable;
@@ -129,7 +129,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     //killEntity
-    public void killed(ServerLevel world, LivingEntity entity) {
+    public void awardKillScore(LivingEntity entity, int score, DamageSource src) {
         if(entity.getType() == EntityType.SHULKER){
             CompoundTag fishNbt = new CompoundTag();
             entity.addAdditionalSaveData(fishNbt);
@@ -137,7 +137,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
             entity.readAdditionalSaveData(fishNbt);
             entity.spawnAtLocation(Items.SHULKER_SHELL);
         }
-        super.killed(world, entity);
+        super.awardKillScore(entity, score, src);
     }
 
     public static boolean canMantisShrimpSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {

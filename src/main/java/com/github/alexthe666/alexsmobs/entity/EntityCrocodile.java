@@ -39,7 +39,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.*;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nullable;
 import java.util.Random;

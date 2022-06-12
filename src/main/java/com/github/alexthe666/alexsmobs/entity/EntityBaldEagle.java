@@ -824,13 +824,13 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
     }
 
     //killEntity
-    public void killed(ServerLevel world, LivingEntity entity) {
+    public void awardKillScore(LivingEntity entity, int score, DamageSource src) {
         if (this.isLaunched() && this.hasCap() && this.isTame() && this.getOwner() != null) {
             if (this.getOwner() instanceof ServerPlayer && this.distanceTo(this.getOwner()) >= 100) {
                 AMAdvancementTriggerRegistry.BALD_EAGLE_CHALLENGE.trigger((ServerPlayer) this.getOwner());
             }
         }
-        super.killed(world, entity);
+        super.awardKillScore(entity, score, src);
     }
 
 

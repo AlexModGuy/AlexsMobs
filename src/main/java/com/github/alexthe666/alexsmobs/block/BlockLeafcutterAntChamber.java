@@ -7,7 +7,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityLeafcutterAnthill;
 import com.google.common.base.Predicates;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -105,7 +105,7 @@ public class BlockLeafcutterAntChamber extends Block {
         }
         if(!world.isClientSide){
             PoiManager pointofinterestmanager = ((ServerLevel) world).getPoiManager();
-            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.get().getPredicate(), Predicates.alwaysTrue(), pos, 50, PoiManager.Occupancy.ANY);
+            Stream<BlockPos> stream = pointofinterestmanager.findAll((poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.getKey())), Predicates.alwaysTrue(), pos, 50, PoiManager.Occupancy.ANY);
             List<BlockPos> listOfHives = stream.collect(Collectors.toList());
             for (BlockPos pos2 : listOfHives) {
                 if(world.getBlockEntity(pos2) instanceof TileEntityLeafcutterAnthill){

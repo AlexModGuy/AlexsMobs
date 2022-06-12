@@ -9,6 +9,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -747,7 +748,6 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         private Entity targetEntity;
         private Vec3 flightTarget = null;
         private int cooldown = 0;
-        private Tag tag;
 
         AIScatter() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
@@ -1007,7 +1007,6 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         private ItemFrame targetEntity;
         private Vec3 flightTarget = null;
         private int cooldown = 0;
-        private Tag tag;
 
         AIDepositChests() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));

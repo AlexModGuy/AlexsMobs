@@ -64,6 +64,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.util.RandomSource;
 
 public class EntityHummingbird extends Animal {
 
@@ -230,7 +231,7 @@ public class EntityHummingbird extends Animal {
 
     private List<BlockPos> getNearbyFeeders(BlockPos blockpos, ServerLevel world, int range) {
         PoiManager pointofinterestmanager = world.getPoiManager();
-        Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.HUMMINGBIRD_FEEDER.get().getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
+        Stream<BlockPos> stream = pointofinterestmanager.findAll(poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.HUMMINGBIRD_FEEDER.getKey()), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
         return stream.collect(Collectors.toList());
     }
 
@@ -301,7 +302,7 @@ public class EntityHummingbird extends Animal {
             sipCooldown--;
         }
         if(loopSoundTick == 0){
-            this.playSound(AMSoundRegistry.HUMMINGBIRD_LOOP, this.getSoundVolume() * 0.33F, this.getVoicePitch());
+            this.playSound(AMSoundRegistry.HUMMINGBIRD_LOOP.get(), this.getSoundVolume() * 0.33F, this.getVoicePitch());
         }
         loopSoundTick++;
         if(loopSoundTick > 27){

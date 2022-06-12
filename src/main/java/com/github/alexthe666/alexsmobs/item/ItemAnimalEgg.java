@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class ItemAnimalEgg extends Item {
 
-    private RandomSource random = new Random();
+    private Random random = new Random();
 
     public ItemAnimalEgg(Properties properties) {
         super(properties);

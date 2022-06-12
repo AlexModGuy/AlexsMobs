@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +15,7 @@ import java.util.Random;
 
 public class ItemMaraca extends Item {
 
-    private RandomSource random = new Random();
+    private Random random = new Random();
 
     public ItemMaraca(Item.Properties property) {
         super(property);

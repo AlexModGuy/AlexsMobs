@@ -37,7 +37,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.ChatFormatting;
@@ -575,7 +575,6 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         private Entity targetEntity;
         private Vec3 flightTarget = null;
         private int cooldown = 0;
-        private Tag tag;
 
         AIScatter() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));

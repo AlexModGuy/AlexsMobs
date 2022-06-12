@@ -54,6 +54,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -730,7 +731,7 @@ public class EntityGiantSquid extends WaterAnimal {
         }
 
         private BlockPos findTargetPos() {
-            Random r = EntityGiantSquid.this.getRandom();
+            RandomSource r = EntityGiantSquid.this.getRandom();
             for (int i = 0; i < 15; i++) {
                 BlockPos pos = EntityGiantSquid.this.blockPosition().offset(r.nextInt(16) - 8, r.nextInt(32) - 16, r.nextInt(16) - 8);
                 if (EntityGiantSquid.this.level.isWaterAt(pos) && EntityGiantSquid.this.canFitAt(pos)) {

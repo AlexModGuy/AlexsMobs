@@ -42,7 +42,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.tags.*;
 import net.minecraft.util.*;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;

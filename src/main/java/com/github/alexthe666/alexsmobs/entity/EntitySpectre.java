@@ -36,6 +36,7 @@ import net.minecraft.server.level.ServerLevel;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
