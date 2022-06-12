@@ -75,7 +75,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         if (!levelAccessor.getFluidState(below.below()).is(FluidTags.WATER)) {
             return false;
         } else {
-            return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, below, random) && (p_32352_ == MobSpawnType.SPAWNER || levelAccessor.getFluidState(below).is(FluidTags.WATER));
+            return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, below, random) && (p_32352_ == MobSpawnType.SPAWNER || random.nextInt(4) == 0 && levelAccessor.getFluidState(below).is(FluidTags.WATER));
         }
     }
 
@@ -111,15 +111,11 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 6.0D).add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.MAX_HEALTH, 30.0D);
+        return Monster.createMonsterAttributes().add(Attributes.ATTACK_DAMAGE, 5.0D).add(Attributes.MOVEMENT_SPEED, 0.5D).add(Attributes.MAX_HEALTH, 24.0D);
     }
 
     public int getMaxSpawnClusterSize() {
-        return 6;
-    }
-
-    public boolean isMaxGroupSizeReached(int sizeIn) {
-        return false;
+        return 3;
     }
 
     public void tick(){
