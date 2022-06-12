@@ -176,6 +176,9 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         }
     }
 
+    protected Entity.MovementEmission getMovementEmission() {
+        return Entity.MovementEmission.EVENTS;
+    }
 
     public void tick() {
         super.tick();
@@ -319,7 +322,9 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     }
 
     public void leaveGroup() {
-        this.groupLeader.decreaseGroupSize();
+        if(this.groupLeader != null){
+            this.groupLeader.decreaseGroupSize();
+        }
         this.groupLeader = null;
     }
 
