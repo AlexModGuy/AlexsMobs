@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Sumy to letargiczne ryby występujące na bagnach i rzekach. Chociaż sumy z rzek mogą urosnąć dość duże, tylko największe z tych ryb można znaleźć na bagnach.
+<NEWLINE>
+Jako żerujące na dnie, Sumy nie są wybredne w kwestii jedzenia. Mały i średni Sum spróbuje pożreć każdy przedmiot, który zobaczy. Zamiast tego duży sum będzie próbował zjeść każdego moba krótszego niż blok.
+Mały Sum może przechowywać tylko trzy stosy przedmiotów w brzuchu, podczas gdy średni Sum może przechowywać dziewięć. Duży sum może mieć w brzuchu tylko jednego moba na raz.
+Sum zwróci każdy przedmiot lub moba, którego zjadł, jeśli zostanie ranny lub napotka ogórki morskie, ponieważ nienawidzą smaku ogórków.
+<NEWLINE>
+Chociaż mają kiepski wzrok, coś w migającym świetle morskiej latarni przyciąga Sumy. Można ich użyć do zwabienia Sumów do obszarów z przedmiotami lub bez.
+<NEWLINE>
+Wszystkie sumy, nawet te duże, można wiaderkować. Zawartość rybiego brzucha zostanie zachowana, dzięki czemu można skutecznie wykorzystać Suma do transportu przedmiotów lub mobów, zabierając je wiadrem po karmieniu.
+Sumy, które zjadły przedmioty lub zostały zwiaderkowane, nie znikną.
