@@ -44,7 +44,7 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
         if(container.getItem(1).is(AMBlockRegistry.BISON_FUR_BLOCK.get().asItem())){
             for (int j = 0; j < container.getContainerSize(); ++j) {
                 ItemStack itemstack1 = container.getItem(j);
-                boolean notFurred = !itemstack1.hasTag() || !itemstack1.getOrCreateTag().getBoolean("BisonFur");
+                boolean notFurred = !itemstack1.hasTag() || itemstack1.getTag() != null && !itemstack1.getTag().getBoolean("BisonFur");
                 if (!itemstack1.isEmpty() && notFurred && LivingEntity.getEquipmentSlotForItem(itemstack1) == EquipmentSlot.FEET) {
                     boots = itemstack1;
                 }
