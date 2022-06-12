@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.util.AnacondaPartIndex;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
@@ -46,15 +47,15 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     private float prevStrangleProgess;
     private int headEntityId = -1;
     private double prevHeight = 0;
-    public Vec3[] stranglePosition = new Vec3[]{
-            new Vec3(0.5, 0, 0),
-            new Vec3(-0.5, 0, 0),
-            new Vec3(-1, 0, 0),
-            new Vec3(0, 0, 0),
-            new Vec3(1, 0, 0),
-            new Vec3(0, 0, 0),
-            new Vec3(-1, 0, 0),
-    };
+//    public Vec3[] stranglePosition = new Vec3[]{
+//            new Vec3(0.5, 0, 0),
+//            new Vec3(-0.5, 0, 0),
+//            new Vec3(-1, 0, 0),
+//            new Vec3(0, 0, 0),
+//            new Vec3(1, 0, 0),
+//            new Vec3(0, 0, 0),
+//            new Vec3(-1, 0, 0),
+//    };
     private static final EntityDataAccessor<Boolean> YELLOW = SynchedEntityData.defineId(EntityAnacondaPart.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHEDDING = SynchedEntityData.defineId(EntityAnacondaPart.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(EntityAnacondaPart.class, EntityDataSerializers.BOOLEAN);
@@ -97,39 +98,41 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
         if (this.tickCount > 1) {
-            Entity parent = getParent();
+            final Entity parent = getParent();
             refreshDimensions();
-            if (parent == null && !level.isClientSide) {
-                this.remove(RemovalReason.DISCARDED);
-            }
-            if (parent != null && !level.isClientSide) {
-                if (parent instanceof LivingEntity) {
-                    if (!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)) {
-                        AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), 0));
-                        this.hurtTime = ((LivingEntity) parent).hurtTime;
-                        this.deathTime = ((LivingEntity) parent).deathTime;
-                    }
-                }
-                if (parent.isRemoved() && !level.isClientSide) {
+            if (!level.isClientSide) {
+                if (parent == null) {
                     this.remove(RemovalReason.DISCARDED);
                 }
-            } else if (tickCount > 20 && !level.isClientSide) {
-                remove(RemovalReason.DISCARDED);
-            }
-            if (this.getSwell() > 0 && !level.isClientSide) {
-                float swellInc = 0.25F;
-                if (parent instanceof EntityAnaconda || parent instanceof EntityAnacondaPart && ((EntityAnacondaPart) parent).getSwell() == 0) {
-                    if (this.getChild() != null) {
-                        EntityAnacondaPart child = (EntityAnacondaPart) this.getChild();
-                        if (child.getPartType() == AnacondaPartIndex.TAIL){
-                            if(this.getSwell() == swellInc){
-                                this.feedAnaconda();
-                            }
-                        }else{
-                            child.setSwell(child.getSwell() + swellInc);
+                if (parent != null) {
+                    if (parent instanceof final LivingEntity livingEntityParent) {
+                        if (livingEntityParent.hurtTime > 0 || livingEntityParent.deathTime > 0) {
+                            AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), 0));
+                            this.hurtTime = livingEntityParent.hurtTime;
+                            this.deathTime = livingEntityParent.deathTime;
                         }
                     }
-                    this.setSwell(this.getSwell() - swellInc);
+                    if (parent.isRemoved()) {
+                        this.remove(RemovalReason.DISCARDED);
+                    }
+                } else if (tickCount > 20) {
+                    remove(RemovalReason.DISCARDED);
+                }
+                if (this.getSwell() > 0) {
+                    final float swellInc = 0.25F;
+                    if (parent instanceof EntityAnaconda || parent instanceof EntityAnacondaPart && ((EntityAnacondaPart) parent).getSwell() == 0) {
+                        if (this.getChild() != null) {
+                            final EntityAnacondaPart child = (EntityAnacondaPart) this.getChild();
+                            if (child.getPartType() == AnacondaPartIndex.TAIL) {
+                                if (this.getSwell() == swellInc) {
+                                    this.feedAnaconda();
+                                }
+                            } else {
+                                child.setSwell(child.getSwell() + swellInc);
+                            }
+                        }
+                        this.setSwell(this.getSwell() - swellInc);
+                    }
                 }
             }
         }
@@ -137,30 +140,30 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
     private void feedAnaconda() {
         Entity e = this.getParent();
-        while(e != null && e instanceof EntityAnacondaPart){
+        while (e instanceof EntityAnacondaPart) {
             e = ((EntityAnacondaPart) e).getParent();
         }
-        if(e instanceof EntityAnaconda){
+
+        if (e instanceof EntityAnaconda)
             ((EntityAnaconda) e).feed();
-        }
     }
 
     public Vec3 tickMultipartPosition(int headId, AnacondaPartIndex parentIndex, Vec3 parentPosition, float parentXRot, float parentYRot, float ourYRot, boolean doHeight) {
-        Vec3 parentButt = parentPosition.add(calcOffsetVec(-parentIndex.getBackOffset() * this.getScale(), parentXRot, parentYRot));
-        Vec3 ourButt = parentButt.add(calcOffsetVec((-this.getPartType().getBackOffset() - 0.5F * this.getBbWidth()) * this.getScale(), this.getXRot(), ourYRot));
-        Vec3 avg = new Vec3((parentButt.x + ourButt.x) / 2F, (parentButt.y + ourButt.y) / 2F, (parentButt.z + ourButt.z) / 2F);
-        double d0 = parentButt.x - ourButt.x;
-        double d1 = parentButt.y - ourButt.y;
-        double d2 = parentButt.z - ourButt.z;
-        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-        double hgt = doHeight ? (getLowPartHeight(parentButt.x, parentButt.y, parentButt.z) + getHighPartHeight(ourButt.x, ourButt.y, ourButt.z)) : 0;
-        if(Math.abs(hgt - prevHeight) > 0.2F){
+        final Vec3 parentButt = parentPosition.add(calcOffsetVec(-parentIndex.getBackOffset() * this.getScale(), parentXRot, parentYRot));
+        final Vec3 ourButt = parentButt.add(calcOffsetVec((-this.getPartType().getBackOffset() - 0.5F * this.getBbWidth()) * this.getScale(), this.getXRot(), ourYRot));
+        final Vec3 avg = new Vec3((parentButt.x + ourButt.x) / 2F, (parentButt.y + ourButt.y) / 2F, (parentButt.z + ourButt.z) / 2F);
+        final double d0 = parentButt.x - ourButt.x;
+//        final double d1 = parentButt.y - ourButt.y;
+        final double d2 = parentButt.z - ourButt.z;
+        final double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+        final double hgt = doHeight ? (getLowPartHeight(parentButt.x, parentButt.y, parentButt.z) + getHighPartHeight(ourButt.x, ourButt.y, ourButt.z)) : 0;
+        if (Math.abs(hgt - prevHeight) > 0.2F) {
             prevHeight = hgt;
         }
-        double partYDest = Mth.clamp(this.getScale() * prevHeight, -0.6F, 0.6F);
-        float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
-        float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * (double) (180F / (float) Math.PI))));
-        float f2 = this.limitAngle(this.getXRot(), rawAngle, 10F);
+        final double partYDest = Mth.clamp(this.getScale() * prevHeight, -0.6F, 0.6F);
+        final float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
+        final float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * Maths.oneEightyDividedByFloatPi)));
+        final float f2 = this.limitAngle(this.getXRot(), rawAngle, 10F);
         this.setXRot(f2);
         this.setYRot(f);
         this.yHeadRot = f;
@@ -170,28 +173,30 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     }
 
     public double getLowPartHeight(double x, double yIn, double z) {
-        if(isFluidAt(x, yIn, z)){
-            return 0.0;
-        }
+        if (isFluidAt(x, yIn, z))
+            return 0.0D;
+
         double checkAt = 0D;
         while (checkAt > -3D && !isOpaqueBlockAt(x,yIn + checkAt, z)) {
             checkAt -= 0.2D;
         }
+
         return checkAt;
     }
 
     public double getHighPartHeight(double x, double yIn, double z) {
-        if(isFluidAt(x, yIn, z)){
-            return 0.0;
-        }
+        if (isFluidAt(x, yIn, z))
+            return 0.0D;
+
         double checkAt = 0D;
-        while (checkAt <= 3) {
-            if(isOpaqueBlockAt(x, yIn + checkAt, z)) {
+        while (checkAt <= 3D) {
+            if (isOpaqueBlockAt(x, yIn + checkAt, z)) {
                 checkAt += 0.2D;
-            }else{
+            } else {
                 break;
             }
         }
+
         return checkAt;
     }
 
@@ -200,12 +205,12 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         if (this.noPhysics) {
             return false;
         } else {
-            float f = 1F;
-            Vec3 vec3 = new Vec3(x, y, z);
-            AABB axisalignedbb = AABB.ofSize(vec3, (double)f, 1.0E-6D, (double)f);
-            return this.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
+            final double d = 1D;
+            final Vec3 vec3 = new Vec3(x, y, z);
+            final AABB axisAlignedBB = AABB.ofSize(vec3, d, 1.0E-6D, d);
+            return this.level.getBlockStates(axisAlignedBB).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
                 BlockPos blockpos = new BlockPos(vec3);
-                return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
+                return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisAlignedBB), BooleanOp.AND);
             });
         }
     }
@@ -226,10 +231,10 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         }
     }
 
-    public boolean hurtHeadId(DamageSource source, float f){
-        if(headEntityId != -1){
+    public boolean hurtHeadId(DamageSource source, float f) {
+        if (headEntityId != -1) {
             Entity e = level.getEntity(headEntityId);
-            if(e instanceof EntityAnaconda){
+            if (e instanceof EntityAnaconda) {
                return e.hurt(source, f);
             }
         }
@@ -238,9 +243,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
-        Entity parent = getParent();
-        boolean prev = hurtHeadId(source, damage);
-        return prev;
+        return hurtHeadId(source, damage);
     }
 
     @Override
@@ -259,8 +262,8 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
 
     public void pushEntities() {
-        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-        Entity parent = this.getParent();
+        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
+        final Entity parent = this.getParent();
         if (parent != null) {
             entities.stream().filter(entity -> !entity.is(parent) && !(entity instanceof EntityAnacondaPart || entity instanceof EntityAnaconda) && entity.isPushable()).forEach(entity -> entity.push(parent));
         }
@@ -288,19 +291,21 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public void onAttackedFromServer(LivingEntity parent, float damage, DamageSource damageSource) {
-        if (parent.deathTime > 0) {
+        if (parent.deathTime > 0)
             this.deathTime = parent.deathTime;
-        }
-        if (parent.hurtTime > 0) {
+
+        if (parent.hurtTime > 0)
             this.hurtTime = parent.hurtTime;
-        }
     }
 
     public Entity getParent() {
-        UUID id = getParentId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (!level.isClientSide) {
+            final UUID id = getParentId();
+            if (id != null) {
+                return ((ServerLevel) level).getEntity(id);
+            }
         }
+
         return null;
     }
 
@@ -318,10 +323,13 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     }
 
     public Entity getChild() {
-        UUID id = getChildId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (!level.isClientSide) {
+            final UUID id = getChildId();
+            if (id != null) {
+                return ((ServerLevel) level).getEntity(id);
+            }
         }
+
         return null;
     }
 
