@@ -99,7 +99,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     public static boolean canAnacondaSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, Random randomIn) {
-        final boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.ANACONDA_SPAWNS);
+        boolean spawnBlock = BlockTags.getAllTags().getTag(AMTagRegistry.ANACONDA_SPAWNS).contains(worldIn.getBlockState(pos.below()).getBlock());
         return spawnBlock && pos.getY() < worldIn.getSeaLevel() + 4;
     }
 
