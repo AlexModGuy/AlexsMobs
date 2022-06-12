@@ -39,7 +39,7 @@ public class ItemAnimalDictionary extends Item {
             CriteriaTriggers.CONSUME_ITEM.trigger(serverplayerentity, itemStackIn);
             serverplayerentity.awardStat(Stats.ITEM_USED.get(this));
         }
-        if (playerIn.level.isClientSide && Objects.requireNonNull(target.getEncodeId()).contains(AlexsMobs.MODID + ":")) {
+        if (playerIn.level.isClientSide && target.getEncodeId() != null && target.getEncodeId().contains(AlexsMobs.MODID + ":")) {
             usedOnEntity = true;
             String id = target.getEncodeId().replace(AlexsMobs.MODID + ":", "");
             if(target instanceof EntityBoneSerpent || target instanceof EntityBoneSerpentPart){

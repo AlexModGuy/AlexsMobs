@@ -15,6 +15,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -27,6 +29,7 @@ import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -304,6 +307,12 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
 
         this.setVariant(i);
         return super.finalizeSpawn(world, diff, spawnType, data, tag);
+    }
+
+    @Override
+    @Nonnull
+    protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     public class FlyingFishGroupData extends AgeableMob.AgeableMobGroupData {
