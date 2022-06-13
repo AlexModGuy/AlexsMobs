@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "alexsmobs:fly"
+    "alexsmobs:fly",
+    "alexsmobs:cockroach"
   ]
 }
