@@ -266,18 +266,18 @@ public class AMItemRegistry {
         DEF_REG.register("spawn_egg_catfish", () -> new ForgeSpawnEggItem(AMEntityRegistry.CATFISH, 0X807757, 0X8A7466, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         DEF_REG.register("spawn_egg_flying_fish", () -> new ForgeSpawnEggItem(AMEntityRegistry.FLYING_FISH, 0X7BBCED, 0X6881B3, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         DEF_REG.register("spawn_egg_skelewag", () -> new ForgeSpawnEggItem(AMEntityRegistry.SKELEWAG, 0XD9FCB1, 0X3A4F30, new Item.Properties().tab(AMItemGroup.INSTANCE)));
-        registerBanner("bear");
-        registerBanner("australia_0");
-        registerBanner("australia_1");
-        registerBanner("new_mexico");
-        registerBanner("brazil");
+        registerPatternItem("bear");
+        registerPatternItem("australia_0");
+        registerPatternItem("australia_1");
+        registerPatternItem("new_mexico");
+        registerPatternItem("brazil");
     }
 
-    private static void registerBanner(String name) {
+    private static void registerPatternItem(String name) {
         //ResourceKey<BannerPattern> banner = ResourceKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(name));
-        //TagKey<BannerPattern> bannerPatternTagKey = TagKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(AlexsMobs.MODID, "pattern_for_" + name));
         //Registry.register(Registry.BANNER_PATTERN, banner, new BannerPattern(name));
-        //DEF_REG.register("banner_pattern_" + name, () -> new BannerPatternItem(bannerPatternTagKey, (new Item.Properties()).stacksTo(1).tab(AMItemGroup.INSTANCE)));
+        TagKey<BannerPattern> bannerPatternTagKey = TagKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(AlexsMobs.MODID, "pattern_for_" + name));
+        DEF_REG.register("banner_pattern_" + name, () -> new BannerPatternItem(bannerPatternTagKey, (new Item.Properties()).stacksTo(1).tab(AMItemGroup.INSTANCE)));
     }
 
     public static void init() {
