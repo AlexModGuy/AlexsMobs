@@ -298,14 +298,14 @@ public class AMWorldRegistry {
     }
 
     private static void addSpawnToStructure(Structure feature, StructureSpawnOverride.BoundingBoxType bbType, MobCategory category, MobSpawnSettings.SpawnerData spawn){
-        if(feature.settings.spawnOverrides.isEmpty() || feature.settings.spawnOverrides.get(category) == null){
+        if(feature.settings.spawnOverrides().isEmpty() || feature.settings.spawnOverrides().get(category) == null){
             WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(spawn);
             StructureSpawnOverride override = new StructureSpawnOverride(bbType, spawns);
-            HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.settings.spawnOverrides);
+            HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.settings.spawnOverrides());
             newMap.put(category, override);
-            feature.settings.spawnOverrides = ImmutableMap.copyOf(newMap);
+            feature.settings = new Structure.StructureSettings(feature.biomes(), ImmutableMap.copyOf(newMap), feature.step(), feature.terrainAdaptation());
         }else{
-            StructureSpawnOverride previous = (StructureSpawnOverride) feature.settings.spawnOverrides.get(category);
+            StructureSpawnOverride previous = (StructureSpawnOverride) feature.settings.spawnOverrides().get(category);
             List<MobSpawnSettings.SpawnerData> l = new ArrayList<>(previous.spawns().unwrap());
             boolean contained = false;
             for(MobSpawnSettings.SpawnerData data : l){
@@ -315,12 +315,12 @@ public class AMWorldRegistry {
             }
             WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(l);
             StructureSpawnOverride override = new StructureSpawnOverride(previous.boundingBox(), spawns);
-            HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.settings.spawnOverrides);
+            HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.settings.spawnOverrides());
             if(!contained){
                 l.add(spawn);
             }
             newMap.put(category, override);
-            feature.settings.spawnOverrides = ImmutableMap.copyOf(newMap);
+            feature.settings = new Structure.StructureSettings(feature.biomes(), ImmutableMap.copyOf(newMap), feature.step(), feature.terrainAdaptation());
         }
     }
 

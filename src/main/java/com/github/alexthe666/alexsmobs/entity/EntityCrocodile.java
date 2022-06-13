@@ -42,7 +42,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 import java.util.function.Predicate;
 
 import net.minecraft.sounds.SoundEvent;
@@ -146,8 +145,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     private boolean isBiomeDesert(LevelAccessor worldIn, BlockPos position) {
-        boolean sand = BiomeDictionary.hasType(worldIn.getBiome(position).unwrapKey().get(), BiomeDictionary.Type.SANDY);
-        return sand;
+        return worldIn.getBiome(position).is(AMTagRegistry.SPAWNS_DESERT_CROCODILES);
     }
 
     protected SoundEvent getAmbientSound() {

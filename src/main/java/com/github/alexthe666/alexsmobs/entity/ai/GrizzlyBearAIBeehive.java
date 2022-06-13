@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -91,7 +92,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
             BlockState blockstate = bear.level.getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
                 if (bear.level.getBlockEntity(this.blockPos) instanceof BeehiveBlockEntity) {
-                    RandomSource rand = new Random();
+                    final RandomSource rand = this.bear.getRandom();
                     BeehiveBlockEntity beehivetileentity = (BeehiveBlockEntity) bear.level.getBlockEntity(this.blockPos);
                     beehivetileentity.emptyAllLivingFromHive(null, blockstate, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
                     bear.level.updateNeighbourForOutputSignal(this.blockPos, blockstate.getBlock());

@@ -25,7 +25,6 @@ import net.minecraft.world.entity.HumanoidArm;
 
 public class ItemPocketSand extends Item {
 
-    private RandomSource random = new Random();
     public static final Predicate<ItemStack> IS_SAND = (stack) -> {
         return stack.is(ItemTags.SAND);
     };
@@ -54,7 +53,7 @@ public class ItemPocketSand extends Item {
             ammo = new ItemStack(Items.SAND);
         }
         if (!worldIn.isClientSide && !ammo.isEmpty()) {
-            worldIn.playSound((Player)null, livingEntityIn.getX(), livingEntityIn.getY(), livingEntityIn.getZ(), SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 0.5F, 0.4F + (random.nextFloat() * 0.4F + 0.8F));
+            worldIn.playSound((Player)null, livingEntityIn.getX(), livingEntityIn.getY(), livingEntityIn.getZ(), SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 0.5F, 0.4F + (livingEntityIn.getRandom().nextFloat() * 0.4F + 0.8F));
             boolean left = false;
             if (livingEntityIn.getUsedItemHand() == InteractionHand.OFF_HAND && livingEntityIn.getMainArm() == HumanoidArm.RIGHT || livingEntityIn.getUsedItemHand() == InteractionHand.MAIN_HAND && livingEntityIn.getMainArm() == HumanoidArm.LEFT) {
                 left = true;

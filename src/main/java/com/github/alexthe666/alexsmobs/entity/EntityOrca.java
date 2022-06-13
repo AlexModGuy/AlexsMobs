@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -314,8 +315,8 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
             }
         }
-        if (attackTarget != null && attackTarget instanceof Player && attackTarget.hasEffect(AMEffectRegistry.ORCAS_MIGHT)) {
-            attackTarget.removeEffect(AMEffectRegistry.ORCAS_MIGHT);
+        if (attackTarget != null && attackTarget instanceof Player && attackTarget.hasEffect(AMEffectRegistry.ORCAS_MIGHT.get())) {
+            attackTarget.removeEffect(AMEffectRegistry.ORCAS_MIGHT.get());
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
     }
@@ -433,7 +434,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         }
     }
 
-    public static boolean canOrcaSpawn(EntityType<EntityOrca> p_223364_0_, LevelAccessor p_223364_1_, MobSpawnType reason, BlockPos p_223364_3_, Random p_223364_4_) {
+    public static boolean canOrcaSpawn(EntityType<EntityOrca> p_223364_0_, LevelAccessor p_223364_1_, MobSpawnType reason, BlockPos p_223364_3_, RandomSource p_223364_4_) {
         if (p_223364_3_.getY() > 45 && p_223364_3_.getY() < p_223364_1_.getSeaLevel()) {
             return p_223364_1_.getFluidState(p_223364_3_).is(FluidTags.WATER);
         } else {
@@ -482,7 +483,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
             }
 
             if (this.targetPlayer.isSwimming() && this.targetPlayer.level.random.nextInt(6) == 0) {
-                this.targetPlayer.addEffect(new MobEffectInstance(AMEffectRegistry.ORCAS_MIGHT, 1000));
+                this.targetPlayer.addEffect(new MobEffectInstance(AMEffectRegistry.ORCAS_MIGHT.get(), 1000));
             }
         }
     }

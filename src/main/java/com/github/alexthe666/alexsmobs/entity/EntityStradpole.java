@@ -207,7 +207,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
         return AMEntityRegistry.rollSpawn(AMConfig.stradpoleSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
-    public static boolean canStradpoleSpawn(EntityType<EntityStradpole> p_234314_0_, LevelAccessor p_234314_1_, MobSpawnType p_234314_2_, BlockPos p_234314_3_, Random p_234314_4_) {
+    public static boolean canStradpoleSpawn(EntityType<EntityStradpole> p_234314_0_, LevelAccessor p_234314_1_, MobSpawnType p_234314_2_, BlockPos p_234314_3_, RandomSource p_234314_4_) {
         if(p_234314_1_.getFluidState(p_234314_3_).is(FluidTags.LAVA)){
             if(!p_234314_1_.getFluidState(p_234314_3_.below()).is(FluidTags.LAVA)){
 

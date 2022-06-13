@@ -289,7 +289,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             return this.getBlockPosBelowThatAffectsMyMovement();
         }
         BlockPos blockpos = null;
-        RandomSource random = new Random();
+        Random random = new Random();
         int range = 14;
         for (int i = 0; i < 15; i++) {
             BlockPos blockpos1 = this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);

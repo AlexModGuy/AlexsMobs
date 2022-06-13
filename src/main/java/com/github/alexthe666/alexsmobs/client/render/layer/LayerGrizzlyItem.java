@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderGrizzlyBear;
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -20,6 +21,7 @@ public class LayerGrizzlyItem extends RenderLayer<EntityGrizzlyBear, ModelGrizzl
 
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityGrizzlyBear entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack itemstack = entitylivingbaseIn.getItemBySlot(EquipmentSlot.MAINHAND);
+        ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
         matrixStackIn.pushPose();
         if(entitylivingbaseIn.isBaby()){
             matrixStackIn.scale(0.35F, 0.35F, 0.35F);
@@ -34,7 +36,7 @@ public class LayerGrizzlyItem extends RenderLayer<EntityGrizzlyBear, ModelGrizzl
         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(10F));
         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(100F));
         matrixStackIn.scale(1, 1, 1);
-        Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+        renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
     }
 

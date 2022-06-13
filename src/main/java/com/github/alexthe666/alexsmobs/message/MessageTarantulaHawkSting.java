@@ -52,7 +52,7 @@ public class MessageTarantulaHawkSting {
                     Entity entity = player.level.getEntity(message.hawk);
                     Entity spider = player.level.getEntity(message.spider);
                     if (entity instanceof EntityTarantulaHawk && spider instanceof LivingEntity && ((LivingEntity) spider).getMobType() == MobType.ARTHROPOD) {
-                        ((LivingEntity) spider).addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING, EntityTarantulaHawk.STING_DURATION));
+                        ((LivingEntity) spider).addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING.get(), EntityTarantulaHawk.STING_DURATION));
                     }
                 }
             }

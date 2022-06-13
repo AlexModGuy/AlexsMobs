@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -136,7 +137,7 @@ public class SealAIDiveForItems extends Goal {
 
     private BlockPos genSeafloorPos(BlockPos parent) {
         LevelAccessor world = seal.level;
-        RandomSource random = new Random();
+        final RandomSource random = this.seal.getRandom();
         int range = 15;
         for (int i = 0; i < 15; i++) {
             BlockPos seafloor = parent.offset(random.nextInt(range) - range / 2, 0, random.nextInt(range) - range / 2);
@@ -152,7 +153,7 @@ public class SealAIDiveForItems extends Goal {
     }
 
     private BlockPos genDigPos() {
-        RandomSource random = new Random();
+        final RandomSource random = this.seal.getRandom();
         int range = 15;
         if (seal.isInWater()) {
             return genSeafloorPos(this.seal.blockPosition());

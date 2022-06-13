@@ -60,6 +60,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
@@ -818,7 +819,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public boolean isNonMungusWarpedTrigger(Entity entity) {
-        String name = entity.getType().getRegistryName().toString();
-        return !AMConfig.warpedMoscoMobTriggers.isEmpty() && AMConfig.warpedMoscoMobTriggers.contains(name);
+        ResourceLocation mobtype = ForgeRegistries.ENTITIES.getKey(entity.getType());
+        return !AMConfig.warpedMoscoMobTriggers.isEmpty() && mobtype != null && AMConfig.warpedMoscoMobTriggers.contains(mobtype.toString());
     }
 }

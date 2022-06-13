@@ -33,11 +33,13 @@ import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.resources.model.Material;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -252,11 +254,6 @@ public class ClientProxy extends CommonProxy {
         //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), RenderEndPirateAnchorWinch::new);
         //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL.get(), RenderEndPirateShipWheel::new);
         //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_FLAG.get(), RenderEndPirateFlag::new);
-        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTERN_BEAR, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTERN_BEAR.location(true)));
-        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTER_AUSTRALIA_0, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTER_AUSTRALIA_0.location(true)));
-        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTER_AUSTRALIA_1, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTER_AUSTRALIA_1.location(true)));
-        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTERN_NEW_MEXICO, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTERN_NEW_MEXICO.location(true)));
-        Sheets.BANNER_MATERIALS.put(AMItemRegistry.PATTERN_BRAZIL, new Material(Sheets.BANNER_SHEET, AMItemRegistry.PATTERN_BRAZIL.location(true)));
     }
 
     private void initRainbowBuffers() {

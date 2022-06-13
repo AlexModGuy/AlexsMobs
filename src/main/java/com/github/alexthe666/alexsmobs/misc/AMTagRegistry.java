@@ -6,7 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.data.ForgeBiomeTagsProvider;
 
 public class AMTagRegistry {
     public static final TagKey<Item> INSECT_ITEMS = registerItemTag("insect_items");
@@ -85,6 +87,12 @@ public class AMTagRegistry {
     public static final TagKey<Block> LEAFCUTTER_PUPA_USABLE_ON = registerBlockTag("leafcutter_pupa_usable_on");
     public static final TagKey<Block> PUPFISH_EATABLES = registerBlockTag("pupfish_eatables");
 
+    public static final TagKey<Biome> SPAWNS_DESERT_CROCODILES = registerBiomeTag("spawns_desert_crocodiles");
+    public static final TagKey<Biome> SPAWNS_RED_GUSTERS = registerBiomeTag("spawns_red_gusters");
+    public static final TagKey<Biome> SPAWNS_SOUL_GUSTERS = registerBiomeTag("spawns_soul_gusters");
+    public static final TagKey<Biome> SPAWNS_NETHER_TARANTULA_HAWKS = registerBiomeTag("spawns_nether_tarantula_hawks");
+    public static final TagKey<Biome> SPAWNS_WHITE_SEALS = registerBiomeTag("spawns_white_seals");
+
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
         return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
     }
@@ -95,5 +103,9 @@ public class AMTagRegistry {
 
     private static TagKey<Block> registerBlockTag(String name) {
         return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
+    }
+
+    private static TagKey<Biome> registerBiomeTag(String name) {
+        return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
     }
 }

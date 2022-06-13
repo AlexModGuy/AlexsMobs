@@ -45,7 +45,8 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
         return fluidstate.getType().isSame(state.getType());
     }
 
-    public boolean tesselate(BlockAndTintGetter lightReaderIn, BlockPos posIn, VertexConsumer vertexBuilderIn, BlockState blockstateIn, FluidState fluidStateIn) {
+    @Override
+    public void tesselate(BlockAndTintGetter lightReaderIn, BlockPos posIn, VertexConsumer vertexBuilderIn, BlockState blockstateIn, FluidState fluidStateIn) {
         try {
             if (fluidStateIn.is(FluidTags.LAVA)) {
                 boolean flag = fluidStateIn.is(FluidTags.LAVA);
@@ -74,7 +75,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                 boolean flag5 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstateIn, Direction.WEST, fluidstate4);
                 boolean flag6 = shouldRenderFace(lightReaderIn, posIn, fluidStateIn, blockstateIn, Direction.EAST, fluidstate5);
                 if (!flag1 && !flag2 && !flag6 && !flag5 && !flag3 && !flag4) {
-                    return false;
+                    return;
                 } else {
                     boolean flag7 = false;
                     float f3 = lightReaderIn.getShade(Direction.DOWN, true);
@@ -277,13 +278,12 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                         }
                     }
 
-                    return flag7;
+                    return;
                 }
             } else {
-                return super.tesselate(lightReaderIn, posIn, vertexBuilderIn, blockstateIn, fluidStateIn);
+                 super.tesselate(lightReaderIn, posIn, vertexBuilderIn, blockstateIn, fluidStateIn);
             }
         } catch (Exception e) {
-            return false;
         }
     }
 

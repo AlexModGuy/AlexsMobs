@@ -542,7 +542,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 blossomThrowerUUID = player.getUUID();
             }
             return InteractionResult.SUCCESS;
-        } else if (owner && stack.is(ItemTags.CARPETS)) {
+        } else if (owner && stack.is(ItemTags.WOOL_CARPETS)) {
             DyeColor color = getCarpetColor(stack);
             if (color != this.getColor()) {
                 if (this.getColor() != null) {

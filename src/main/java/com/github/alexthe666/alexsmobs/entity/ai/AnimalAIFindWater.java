@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.tags.FluidTags;
@@ -53,7 +54,7 @@ public class AnimalAIFindWater extends Goal {
 
     public BlockPos generateTarget() {
         BlockPos blockpos = null;
-        final RandomSource random = new Random();
+        final RandomSource random = this.creature.getRandom();
         final int range = this.creature instanceof ISemiAquatic ? ((ISemiAquatic) this.creature).getWaterSearchRange() : 14;
         for(int i = 0; i < 15; i++) {
             BlockPos blockPos = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);

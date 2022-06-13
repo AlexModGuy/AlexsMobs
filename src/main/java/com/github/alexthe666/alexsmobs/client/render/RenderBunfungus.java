@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.RabbitModel;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -61,7 +62,8 @@ public class RenderBunfungus extends MobRenderer<EntityBunfungus, ModelBunfungus
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90F));
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
             matrixStackIn.scale(1.15F, 1.15F, 1.15F);
-            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
+            renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             matrixStackIn.popPose();
         }

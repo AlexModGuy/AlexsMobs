@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -90,7 +91,7 @@ public class KangarooAIMelee extends MeleeAttackGoal {
 
     public BlockPos generateWaterPos() {
         BlockPos blockpos = null;
-        RandomSource random = new Random();
+        final RandomSource random = this.kangaroo.getRandom();
         int range = 15;
         for (int i = 0; i < 15; i++) {
             BlockPos blockpos1 = this.kangaroo.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);

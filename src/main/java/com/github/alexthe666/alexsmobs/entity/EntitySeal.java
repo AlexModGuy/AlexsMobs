@@ -343,7 +343,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     private boolean isBiomeArctic(LevelAccessor worldIn, BlockPos position) {
-        return BiomeDictionary.hasType(worldIn.getBiome(position).unwrapKey().get(), BiomeDictionary.Type.COLD);
+        return worldIn.getBiome(position).is(AMTagRegistry.SPAWNS_WHITE_SEALS);
     }
 
     public void travel(Vec3 travelVector) {

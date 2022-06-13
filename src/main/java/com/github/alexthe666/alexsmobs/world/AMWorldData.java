@@ -144,12 +144,12 @@ public class AMWorldData extends SavedData {
 
     private void searchForPupfishChunk() {
         if (level != null && level.getChunkSource().getGenerator() instanceof NoiseBasedChunkGenerator chunkGenerator) {
-            RandomSource random = new Random(level.getSeed() + pupfishSeedAddition);
+            Random random = new Random(level.getSeed() + pupfishSeedAddition);
             int randomXCoord = random.nextInt(AMConfig.pupfishChunkSpawnDistance * 2) - AMConfig.pupfishChunkSpawnDistance;
             int randomZCoord = random.nextInt(AMConfig.pupfishChunkSpawnDistance * 2) - AMConfig.pupfishChunkSpawnDistance;
             ChunkPos checkPos = new ChunkPos(randomXCoord >> 4, randomZCoord >> 4);
             BlockPos center = new BlockPos(checkPos.getMiddleBlockX(), chunkGenerator.getSeaLevel(), checkPos.getMiddleBlockZ());
-            int maxWater = getWaterHeight(chunkGenerator, center.getX(), center.getZ(), level);
+            int maxWater = getWaterHeight(chunkGenerator, level.getChunkSource().randomState(), center.getX(), center.getZ(), level);
             if(maxWater > 31 && maxWater < 63){
                 pupfishChunk = checkPos;
                 AlexsMobs.LOGGER.info("Found Pupfish chunk at " + pupfishChunk.getMaxBlockX() + " ~ " + pupfishChunk.getMinBlockZ() + " after " + pupfishSeedAddition + " tries");
@@ -158,12 +158,12 @@ public class AMWorldData extends SavedData {
         pupfishSeedAddition++;
     }
 
-    public int getWaterHeight(NoiseBasedChunkGenerator generator, int x, int z, LevelHeightAccessor level) {
+    public int getWaterHeight(NoiseBasedChunkGenerator generator, RandomState rand, int x, int z, LevelHeightAccessor level) {
         NoiseSettings noisesettings = generator.settings.value().noiseSettings();
         int i = Math.max(noisesettings.minY(), level.getMinBuildHeight());
         int j = Math.min(noisesettings.minY() + noisesettings.height(), level.getMaxBuildHeight());
         int k = Mth.intFloorDiv(i, noisesettings.getCellHeight());
         int l = Mth.intFloorDiv(j - i, noisesettings.getCellHeight());
-        return generator.iterateNoiseColumn(x, z, (BlockState[])null, IS_WATER, k, l).orElse(level.getMinBuildHeight());
+        return generator.iterateNoiseColumn(level, rand, x, z, null, IS_WATER).orElse(level.getMinBuildHeight());
     }
 }

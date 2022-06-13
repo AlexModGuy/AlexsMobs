@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -23,6 +24,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityGorilla entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         ItemStack itemstack = entitylivingbaseIn.getItemBySlot(EquipmentSlot.MAINHAND);
         String name = entitylivingbaseIn.getName().getString().toLowerCase();
+        ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
         if(name.contains("harambe")){
             ItemStack haloStack = new ItemStack(AMItemRegistry.HALO.get());
             matrixStackIn.pushPose();
@@ -34,7 +36,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
             matrixStackIn.translate(0.0F, -0.7F - f, -0.2F);
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
-            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, haloStack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, haloStack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
         }
         matrixStackIn.pushPose();
@@ -53,7 +55,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
         if(itemstack.getItem() instanceof BlockItem){
             matrixStackIn.scale(2, 2, 2);
         }
-        Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+        renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
     }
 

@@ -31,7 +31,7 @@ public class ItemFishOil extends Item {
     public ItemStack finishUsingItem(ItemStack p_77654_1_, Level p_77654_2_, LivingEntity p_77654_3_) {
         super.finishUsingItem(p_77654_1_, p_77654_2_, p_77654_3_);
         if(AMConfig.fishOilMeme){
-            p_77654_3_.addEffect(new MobEffectInstance(AMEffectRegistry.OILED, 1200, 0));
+            p_77654_3_.addEffect(new MobEffectInstance(AMEffectRegistry.OILED.get(), 1200, 0));
         }
         if (p_77654_3_ instanceof ServerPlayer) {
             ServerPlayer lvt_4_1_ = (ServerPlayer)p_77654_3_;

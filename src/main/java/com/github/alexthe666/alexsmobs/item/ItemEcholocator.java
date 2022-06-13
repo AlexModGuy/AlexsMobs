@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.google.common.base.Predicates;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -39,7 +40,7 @@ public class ItemEcholocator extends Item {
     private List<BlockPos> getNearbyPortals(BlockPos blockpos, ServerLevel world, int range) {
         if(type == EchoType.ENDER){
             PoiManager pointofinterestmanager = world.getPoiManager();
-            Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.END_PORTAL_FRAME.get().getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
+            Stream<BlockPos> stream = pointofinterestmanager.findAll(poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.END_PORTAL_FRAME.getKey()), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
             return stream.collect(Collectors.toList());
         }else  if(type == EchoType.PUPFISH){
             AMWorldData data = AMWorldData.get(world);
@@ -51,7 +52,7 @@ public class ItemEcholocator extends Item {
             }
             return Collections.emptyList();
         }else{
-            RandomSource random = new Random();
+            RandomSource random = world.getRandom();
             for(int i = 0; i < 256; i++){
                 BlockPos checkPos = blockpos.offset(random.nextInt(range) - range/2, random.nextInt(range)/2 - range/2, random.nextInt(range) - range/2);
                 if(isCaveAir(world, checkPos)){

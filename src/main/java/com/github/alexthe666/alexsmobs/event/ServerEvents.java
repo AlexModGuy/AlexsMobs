@@ -9,6 +9,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import org.antlr.v4.runtime.misc.Triple;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
@@ -201,8 +203,8 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onItemUseLast(LivingEntityUseItemEvent.Finish event) {
         if (event.getItem().getItem() == Items.CHORUS_FRUIT && RAND.nextInt(3) == 0
-            && event.getEntityLiving().hasEffect(AMEffectRegistry.ENDER_FLU)) {
-            event.getEntityLiving().removeEffect(AMEffectRegistry.ENDER_FLU);
+            && event.getEntityLiving().hasEffect(AMEffectRegistry.ENDER_FLU.get())) {
+            event.getEntityLiving().removeEffect(AMEffectRegistry.ENDER_FLU.get());
         }
     }
 
@@ -313,7 +315,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onEntityDespawnAttempt(LivingSpawnEvent.AllowDespawn event) {
-        if (event.getEntityLiving().hasEffect(AMEffectRegistry.DEBILITATING_STING) && event.getEntityLiving().getEffect(AMEffectRegistry.DEBILITATING_STING) != null && event.getEntityLiving().getEffect(AMEffectRegistry.DEBILITATING_STING).getAmplifier() > 0) {
+        if (event.getEntityLiving().hasEffect(AMEffectRegistry.DEBILITATING_STING.get()) && event.getEntityLiving().getEffect(AMEffectRegistry.DEBILITATING_STING.get()) != null && event.getEntityLiving().getEffect(AMEffectRegistry.DEBILITATING_STING.get()).getAmplifier() > 0) {
             event.setResult(Event.Result.DENY);
         }
     }
@@ -410,14 +412,14 @@ public class ServerEvents {
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
             if (!(event.getTarget() instanceof Player) && !(event.getTarget() instanceof EntityEndergrade)
-                    && living.hasEffect(AMEffectRegistry.ENDER_FLU)) {
+                    && living.hasEffect(AMEffectRegistry.ENDER_FLU.get())) {
                 if (event.getItemStack().getItem() == Items.CHORUS_FRUIT) {
                     if (!event.getPlayer().isCreative()) {
                         event.getItemStack().shrink(1);
                     }
                     event.getTarget().playSound(SoundEvents.GENERIC_EAT, 1.0F, 0.5F + event.getPlayer().getRandom().nextFloat());
                     if (event.getPlayer().getRandom().nextFloat() < 0.4F) {
-                        living.removeEffect(AMEffectRegistry.ENDER_FLU);
+                        living.removeEffect(AMEffectRegistry.ENDER_FLU.get());
                         Items.CHORUS_FRUIT.finishUsingItem(event.getItemStack().copy(), event.getWorld(), ((LivingEntity) event.getTarget()));
                     }
                     event.setCanceled(true);
@@ -450,7 +452,7 @@ public class ServerEvents {
                         final double d0 = random.nextGaussian() * 0.02D;
                         final double d1 = 0.05F + random.nextGaussian() * 0.02D;
                         final double d2 = random.nextGaussian() * 0.02D;
-                        event.getTarget().level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION, event.getTarget().getRandomX(0.7F), event.getTarget().getY(0.6F), event.getTarget().getRandomZ(0.7F), d0, d1, d2);
+                        event.getTarget().level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), event.getTarget().getRandomX(0.7F), event.getTarget().getY(0.6F), event.getTarget().getRandomZ(0.7F), d0, d1, d2);
                     }
                 }
                 if (!event.getPlayer().isCreative()) {
@@ -571,7 +573,7 @@ public class ServerEvents {
                 living.knockback(1F, Mth.sin(event.getPlayer().getYRot() * ((float) Math.PI / 180F)),
                         -Mth.cos(event.getPlayer().getYRot() * ((float) Math.PI / 180F)));
             }
-            if (event.getPlayer().hasEffect(AMEffectRegistry.TIGERS_BLESSING)
+            if (event.getPlayer().hasEffect(AMEffectRegistry.TIGERS_BLESSING.get())
                     && !event.getTarget().isAlliedTo(event.getPlayer()) && !(event.getTarget() instanceof EntityTiger)) {
                 AABB bb = new AABB(event.getPlayer().getX() - 32, event.getPlayer().getY() - 32, event.getPlayer().getZ() - 32, event.getPlayer().getZ() + 32, event.getPlayer().getY() + 32, event.getPlayer().getZ() + 32);
                 final var tigers = event.getPlayer().level.getEntitiesOfClass(EntityTiger.class, bb,
@@ -588,8 +590,8 @@ public class ServerEvents {
     @SubscribeEvent
     public void onLivingDamageEvent(LivingDamageEvent event) {
         if (event.getSource().getEntity() instanceof final LivingEntity attacker) {
-            if (event.getAmount() > 0 && attacker.hasEffect(AMEffectRegistry.SOULSTEAL) && attacker.getEffect(AMEffectRegistry.SOULSTEAL) != null) {
-                final int level = attacker.getEffect(AMEffectRegistry.SOULSTEAL).getAmplifier() + 1;
+            if (event.getAmount() > 0 && attacker.hasEffect(AMEffectRegistry.SOULSTEAL.get()) && attacker.getEffect(AMEffectRegistry.SOULSTEAL.get()) != null) {
+                final int level = attacker.getEffect(AMEffectRegistry.SOULSTEAL.get()).getAmplifier() + 1;
                 if (attacker.getHealth() < attacker.getMaxHealth()
                     && ThreadLocalRandom.current().nextFloat() < (0.25F + (level * 0.25F))) {
                     attacker.heal(Math.min(event.getAmount() / 2F * level, 2 + 2 * level));
@@ -644,7 +646,7 @@ public class ServerEvents {
     public void onLivingSetTargetEvent(LivingSetAttackTargetEvent event) {
         if (event.getTarget() != null && event.getEntityLiving() instanceof Mob mob) {
             if (mob.getMobType() == MobType.ARTHROPOD) {
-                if (event.getTarget().hasEffect(AMEffectRegistry.BUG_PHEROMONES) && event.getEntityLiving().getLastHurtByMob() != event.getTarget()) {
+                if (event.getTarget().hasEffect(AMEffectRegistry.BUG_PHEROMONES.get()) && event.getEntityLiving().getLastHurtByMob() != event.getTarget()) {
                     mob.setTarget(null);
                 }
             }
@@ -768,8 +770,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onFOVUpdate(FOVModifierEvent event) {
-        if (event.getEntity().hasEffect(AMEffectRegistry.FEAR) || event.getEntity().hasEffect(AMEffectRegistry.POWER_DOWN)) {
-            event.setNewfov(1.0F);
+        if (event.getPlayer().hasEffect(AMEffectRegistry.FEAR.get()) || event.getPlayer().hasEffect(AMEffectRegistry.POWER_DOWN.get())) {
+            event.setNewFov(1.0F);
         }
     }
 
@@ -780,8 +782,8 @@ public class ServerEvents {
                 if (event.getSource().getEntity() instanceof LivingEntity living) {
                     boolean flag = false;
                     if (living.distanceTo(event.getEntityLiving()) <= 4
-                        && !living.hasEffect(AMEffectRegistry.EXSANGUINATION)) {
-                        living.addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION, 60, 2));
+                        && !living.hasEffect(AMEffectRegistry.EXSANGUINATION.get())) {
+                        living.addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION.get(), 60, 2));
                         flag = true;
                     }
                     if (event.getEntityLiving().isInWaterOrBubble()) {

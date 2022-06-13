@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.entity.PathfinderMob;
@@ -93,7 +94,7 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
             BlockState blockstate = elephant.level.getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.ELEPHANT_FOODBLOCKS)) {
                 elephant.level.destroyBlock(blockPos, false);
-                RandomSource rand = new Random();
+                final RandomSource rand = this.elephant.getRandom();
                 ItemStack stack = new ItemStack(blockstate.getBlock().asItem());
                 ItemEntity itementity = new ItemEntity(elephant.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();

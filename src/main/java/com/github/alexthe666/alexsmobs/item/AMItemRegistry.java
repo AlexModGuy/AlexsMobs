@@ -2,12 +2,15 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.block.AMSpecialRenderBlock;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.Services;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.core.Position;
@@ -22,18 +25,15 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import java.util.Objects;
 
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BannerPatternItem;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BowlFoodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.RecordItem;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -156,7 +156,7 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> PIGSHOES = DEF_REG.register("pigshoes", () -> new ItemPigshoes(new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1)));
     public static final RegistryObject<Item> STRADDLE_HELMET = DEF_REG.register("straddle_helmet", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE).fireResistant()));
     public static final RegistryObject<Item> STRADDLE_SADDLE = DEF_REG.register("straddle_saddle", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE).fireResistant()));
-    public static final RegistryObject<Item> COSMIC_COD = DEF_REG.register("cosmic_cod", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE).food(new FoodProperties.Builder().nutrition(6).saturationMod(0.3F).effect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU, 12000), 0.15F).build())));
+    public static final RegistryObject<Item> COSMIC_COD = DEF_REG.register("cosmic_cod", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE).food(new FoodProperties.Builder().nutrition(6).saturationMod(0.3F).effect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU.get(), 12000), 0.15F).build())));
     public static final RegistryObject<Item> SHED_SNAKE_SKIN = DEF_REG.register("shed_snake_skin", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE)));
     public static final RegistryObject<Item> VINE_LASSO_INVENTORY = DEF_REG.register("vine_lasso_inventory", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> VINE_LASSO_HAND = DEF_REG.register("vine_lasso_hand", () -> new Item(new Item.Properties()));
@@ -189,12 +189,6 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> NOVELTY_HAT = DEF_REG.register("novelty_hat", () -> new ItemModArmor(NOVELTY_HAT_MATERIAL, EquipmentSlot.HEAD));
     public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME.get(), new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE.get(), new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE)));
-
-    public static final BannerPattern PATTERN_BEAR = addBanner("bear");
-    public static final BannerPattern PATTER_AUSTRALIA_0 = addBanner("australia_0");
-    public static final BannerPattern PATTER_AUSTRALIA_1 = addBanner("australia_1");
-    public static final BannerPattern PATTERN_NEW_MEXICO = addBanner("new_mexico");
-    public static final BannerPattern PATTERN_BRAZIL = addBanner("brazil");
 
     static {
         DEF_REG.register("spawn_egg_grizzly_bear", () -> new ForgeSpawnEggItem(AMEntityRegistry.GRIZZLY_BEAR, 0X693A2C, 0X976144, new Item.Properties().tab(AMItemGroup.INSTANCE)));
@@ -272,16 +266,18 @@ public class AMItemRegistry {
         DEF_REG.register("spawn_egg_catfish", () -> new ForgeSpawnEggItem(AMEntityRegistry.CATFISH, 0X807757, 0X8A7466, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         DEF_REG.register("spawn_egg_flying_fish", () -> new ForgeSpawnEggItem(AMEntityRegistry.FLYING_FISH, 0X7BBCED, 0X6881B3, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         DEF_REG.register("spawn_egg_skelewag", () -> new ForgeSpawnEggItem(AMEntityRegistry.SKELEWAG, 0XD9FCB1, 0X3A4F30, new Item.Properties().tab(AMItemGroup.INSTANCE)));
-
-        DEF_REG.register("banner_pattern_bear", () -> new BannerPatternItem(PATTERN_BEAR, (new Item.Properties()).stacksTo(1).tab(AMItemGroup.INSTANCE)));
-        DEF_REG.register("banner_pattern_australia_0", () -> new BannerPatternItem(PATTER_AUSTRALIA_0, (new Item.Properties()).stacksTo(1).tab(AMItemGroup.INSTANCE)));
-        DEF_REG.register("banner_pattern_australia_1", () -> new BannerPatternItem(PATTER_AUSTRALIA_1, (new Item.Properties()).stacksTo(1).tab(AMItemGroup.INSTANCE)));
-        DEF_REG.register("banner_pattern_new_mexico", () -> new BannerPatternItem(PATTERN_NEW_MEXICO, (new Item.Properties()).stacksTo(1).tab(AMItemGroup.INSTANCE)));
-        DEF_REG.register("banner_pattern_brazil", () -> new BannerPatternItem(PATTERN_BRAZIL, (new Item.Properties()).stacksTo(1).tab(AMItemGroup.INSTANCE)));
+        registerBanner("bear");
+        registerBanner("australia_0");
+        registerBanner("australia_1");
+        registerBanner("new_mexico");
+        registerBanner("brazil");
     }
 
-    private static BannerPattern addBanner(String name) {
-        return BannerPattern.create(name.toUpperCase(), name, "alexsmobs." + name, true);
+    private static void registerBanner(String name) {
+        ResourceKey<BannerPattern> banner = ResourceKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(name));
+        TagKey<BannerPattern> bannerPatternTagKey = TagKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(AlexsMobs.MODID, "pattern_for_" + name));
+        Registry.register(Registry.BANNER_PATTERN, banner, new BannerPattern(name));
+        DEF_REG.register("banner_pattern_" + name, () -> new BannerPatternItem(bannerPatternTagKey, (new Item.Properties()).stacksTo(1).tab(AMItemGroup.INSTANCE)));
     }
 
     public static void init() {

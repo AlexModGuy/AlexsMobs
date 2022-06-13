@@ -9,6 +9,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -34,6 +35,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
 
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityCockroach entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(entitylivingbaseIn.hasMaracas()){
+            ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
             matrixStackIn.pushPose();
             if (entitylivingbaseIn.isBaby()) {
                 matrixStackIn.scale(0.65F, 0.65F, 0.65F);
@@ -45,7 +47,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
             matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(60F));
-            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             matrixStackIn.pushPose();
             translateToHand(1, matrixStackIn);
@@ -53,7 +55,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
             matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-120F));
-            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             matrixStackIn.pushPose();
             translateToHand(2, matrixStackIn);
@@ -61,7 +63,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
             matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(60F));
-            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             matrixStackIn.pushPose();
             translateToHand(3, matrixStackIn);
@@ -69,7 +71,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
             matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-120F));
-            Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             if(!entitylivingbaseIn.isHeadless()){
                 matrixStackIn.pushPose();

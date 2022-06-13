@@ -360,6 +360,6 @@ public class AMSoundRegistry {
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {
-        return DEF_REG.register(soundName, () -> new SoundEvent(new ResourceLocation(CloudStorage.MODID, soundName)));
+        return DEF_REG.register(soundName, () -> new SoundEvent(new ResourceLocation(AlexsMobs.MODID, soundName)));
     }
 }

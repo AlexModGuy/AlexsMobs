@@ -68,7 +68,7 @@ public class EntityVoidPortal extends Entity {
             }
         }
         if(!madeOpenNoise){
-            this.playSound(AMSoundRegistry.VOID_PORTAL_OPEN, 1.0F, 1 + random.nextFloat() * 0.2F);
+            this.playSound(AMSoundRegistry.VOID_PORTAL_OPEN.get(), 1.0F, 1 + random.nextFloat() * 0.2F);
             madeOpenNoise = true;
         }
         Direction direction2 = this.getAttachmentFacing().getOpposite();

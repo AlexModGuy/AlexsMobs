@@ -13,6 +13,7 @@ import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -63,7 +64,8 @@ public class LayerAnteaterTongueItem extends RenderLayer<EntityAnteater, ModelAn
 
             }else{
                 matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
-                Minecraft.getInstance().getItemInHandRenderer().renderItem(anteater, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+                ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
+                renderer.renderItem(anteater, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             }
             matrixStackIn.popPose();
             matrixStackIn.popPose();

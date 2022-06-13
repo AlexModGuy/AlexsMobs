@@ -170,7 +170,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(6, 8, 6));
         for (LivingEntity e : list) {
             if (!(e instanceof EntityRockyRoller) && e.isAlive()) {
-                e.addEffect(new MobEffectInstance(AMEffectRegistry.EARTHQUAKE, 20, 0, false, false, true));
+                e.addEffect(new MobEffectInstance(AMEffectRegistry.EARTHQUAKE.get(), 20, 0, false, false, true));
                 flag = true;
             }
         }

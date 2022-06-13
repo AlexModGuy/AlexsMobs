@@ -142,10 +142,10 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             if (source.getEntity() != null) {
                 if (source.getEntity() instanceof LivingEntity) {
                     LivingEntity hurter = (LivingEntity) source.getEntity();
-                    if (hurter.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING)) {
-                        hurter.removeEffect(AMEffectRegistry.SUNBIRD_BLESSING);
+                    if (hurter.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING.get())) {
+                        hurter.removeEffect(AMEffectRegistry.SUNBIRD_BLESSING.get());
                     }
-                    hurter.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE, 600, 0));
+                    hurter.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE.get(), 600, 0));
                 }
             }
             return prev;
@@ -207,8 +207,8 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
                 }
                 List<Player> playerList = this.level.getEntitiesOfClass(Player.class, this.getScorchArea(), Predicates.alwaysTrue());
                 for (Player e : playerList) {
-                    if (!e.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING) && !e.hasEffect(AMEffectRegistry.SUNBIRD_CURSE)) {
-                        e.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_BLESSING, 600, 0));
+                    if (!e.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING.get()) && !e.hasEffect(AMEffectRegistry.SUNBIRD_CURSE.get())) {
+                        e.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_BLESSING.get(), 600, 0));
                     }
                 }
             }
@@ -252,7 +252,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
                 for (Entity e : getScorchingMobs()) {
                     e.setSecondsOnFire(4);
                     if (e instanceof Phantom) {
-                        ((Phantom) e).addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE, 200, 0));
+                        ((Phantom) e).addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_CURSE.get(), 200, 0));
                     }
                 }
             }
@@ -316,7 +316,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
 
     private List<BlockPos> getNearbyBeacons(BlockPos blockpos, ServerLevel world, int range) {
         PoiManager pointofinterestmanager = world.getPoiManager();
-        Stream<BlockPos> stream = pointofinterestmanager.findAll(AMPointOfInterestRegistry.BEACON.get().getPredicate(), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
+        Stream<BlockPos> stream = pointofinterestmanager.findAll((poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.BEACON.getKey())), Predicates.alwaysTrue(), blockpos, range, PoiManager.Occupancy.ANY);
         return stream.collect(Collectors.toList());
     }
 

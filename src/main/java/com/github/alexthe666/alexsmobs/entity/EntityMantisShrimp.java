@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -129,13 +130,15 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     //killEntity
-    public void awardKillScore(LivingEntity entity, int score, DamageSource src) {
-        if(entity.getType() == EntityType.SHULKER){
-            CompoundTag fishNbt = new CompoundTag();
-            entity.addAdditionalSaveData(fishNbt);
-            fishNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
-            entity.readAdditionalSaveData(fishNbt);
-            entity.spawnAtLocation(Items.SHULKER_SHELL);
+    public void awardKillScore(Entity entity, int score, DamageSource src) {
+        if(entity instanceof LivingEntity living){
+            if(living.getType() == EntityType.SHULKER){
+                CompoundTag fishNbt = new CompoundTag();
+                living.addAdditionalSaveData(fishNbt);
+                fishNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
+                living.readAdditionalSaveData(fishNbt);
+                living.spawnAtLocation(Items.SHULKER_SHELL);
+            }
         }
         super.awardKillScore(entity, score, src);
     }

@@ -517,16 +517,18 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     }
 
     @Override
-    public void killed(ServerLevel world, LivingEntity entity) {
-        final CompoundTag emptyNbt = new CompoundTag();
-        entity.addAdditionalSaveData(emptyNbt);
-        emptyNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
-        entity.readAdditionalSaveData(emptyNbt);
+    public void awardKillScore(Entity entity, int score, DamageSource src) {
+        if(entity instanceof LivingEntity living){
+            final CompoundTag emptyNbt = new CompoundTag();
+            living.addAdditionalSaveData(emptyNbt);
+            emptyNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
+            living.readAdditionalSaveData(emptyNbt);
 
-        if (this.getChild() instanceof EntityAnacondaPart)
-            ((EntityAnacondaPart) this.getChild()).setSwell(5);
+            if (this.getChild() instanceof EntityAnacondaPart)
+                ((EntityAnacondaPart) this.getChild()).setSwell(5);
 
-        super.killed(world, entity);
+        }
+        super.awardKillScore(entity, score, src);
     }
 
     @Override

@@ -39,8 +39,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.chunk.LevelChunkSection;
-import net.minecraft.world.level.chunk.PalettedContainer;
+import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ClipContext;
@@ -52,8 +51,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -123,7 +120,8 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
 
     public static BlockState getMushroomBlockstate(Item item) {
         if (item instanceof BlockItem) {
-            if (MUSHROOM_TO_BIOME.containsKey(item.getRegistryName().toString())) {
+            ResourceLocation name = ForgeRegistries.ITEMS.getKey(item);
+            if (name != null && MUSHROOM_TO_BIOME.containsKey(name)) {
                 return ((BlockItem) item).getBlock().defaultBlockState();
             }
         }
@@ -190,7 +188,11 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         if (this.isReverting() && AMConfig.mungusBiomeTransformationType == 2) {
             swellProgress += 0.5F;
             if (swellProgress >= 10) {
-                explode();
+                try {
+                    explode();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 swellProgress = 0;
                 this.entityData.set(REVERTING, false);
             }
@@ -214,7 +216,11 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             this.swellProgress++;
             if (this.deathTime == 19 && !hasExploded) {
                 hasExploded = true;
-                explode();
+                try {
+                    explode();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -238,10 +244,10 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             BlockPos center = this.blockPosition();
             BlockState transformState = Blocks.MYCELIUM.defaultBlockState();
             Registry<Biome> registry = serverLevel.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
-            Holder<Biome> biome = registry.getOrCreateHolder(Biomes.MUSHROOM_FIELDS);
+            Holder<Biome> biome = registry.getHolder(Biomes.MUSHROOM_FIELDS).get();
             TagKey<Block> transformMatches = AMTagRegistry.MUNGUS_REPLACE_MUSHROOM;
             if (this.getMushroomState() != null) {
-                String mushroomKey = this.getMushroomState().getBlock().getRegistryName().toString();
+                String mushroomKey = ForgeRegistries.BLOCKS.getKey(this.getMushroomState().getBlock()).toString();
                 if (MUSHROOM_TO_BLOCK.containsKey(mushroomKey)) {
                     Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MUSHROOM_TO_BLOCK.get(mushroomKey)));
                     if (block != null) {
@@ -293,9 +299,9 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         if (state == null) {
             return null;
         }
-        String blockRegName = state.getBlock().getRegistryName().toString();
-        String str = MUSHROOM_TO_BIOME.get(blockRegName);
-        if (str != null) {
+        ResourceLocation blockRegName = ForgeRegistries.BLOCKS.getKey(state.getBlock());
+        if (blockRegName != null && MUSHROOM_TO_BIOME.containsKey(blockRegName.toString())) {
+            String str = MUSHROOM_TO_BIOME.get(blockRegName.toString());
             Biome biome = registry.getOptional(new ResourceLocation(str)).orElse(null);
             ResourceKey<Biome> resourceKey = registry.getResourceKey(biome).orElse(null);
             return registry.getHolder(resourceKey).orElse(null);
@@ -303,7 +309,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         return null;
     }
 
-    private PalettedContainer<Holder<Biome>> getChunkBiomes(LevelChunk chunk) {
+    private PalettedContainerRO<Holder<Biome>> getChunkBiomes(LevelChunk chunk) {
         int i = QuartPos.fromBlock(chunk.getMinBuildHeight());
         int k = i + QuartPos.fromBlock(chunk.getHeight()) - 1;
         int l = Mth.clamp(QuartPos.fromBlock((int) this.getY()), i, k);
@@ -312,25 +318,36 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         return section == null ? null : section.getBiomes();
     }
 
+    private void setChunkBiomes(LevelChunk chunk, PalettedContainer<Holder<Biome>> container) {
+        int i = QuartPos.fromBlock(chunk.getMinBuildHeight());
+        int k = i + QuartPos.fromBlock(chunk.getHeight()) - 1;
+        int l = Mth.clamp(QuartPos.fromBlock((int) this.getY()), i, k);
+        int j = chunk.getSectionIndex(QuartPos.toBlock(l));
+        LevelChunkSection section = chunk.getSection(j);
+        if(section != null){
+            section.biomes = container;
+        }
+    }
+
 
     private void transformBiome(BlockPos pos, Holder<Biome> biome) {
         LevelChunk chunk = level.getChunkAt(pos);
-        PalettedContainer<Holder<Biome>> container = getChunkBiomes(chunk);
+        PalettedContainer<Holder<Biome>> container = getChunkBiomes(chunk).recreate();
         if (this.entityData.get(REVERTING)) {
             int lvt_4_1_ = chunk.getPos().getMinBlockX() >> 2;
             int yChunk = (int)this.getY() >> 2;
             int lvt_5_1_ = chunk.getPos().getMinBlockZ() >> 2;
             ChunkGenerator chunkgenerator = ((ServerLevel) level).getChunkSource().getGenerator();
-            Biome b = null;
             for(int k = 0; k < 4; ++k) {
                 for(int l = 0; l < 4; ++l) {
                     for(int i1 = 0; i1 < 4; ++i1) {
-                        container.getAndSetUnchecked(k, l, i1, chunkgenerator.getBiomeSource().getNoiseBiome(lvt_4_1_ + k, yChunk + l, lvt_5_1_ + i1, chunkgenerator.climateSampler()));
+                        container.getAndSetUnchecked(k, l, i1, ((ServerLevel) level).getUncachedNoiseBiome(lvt_4_1_ + k, yChunk + l, lvt_5_1_ + i1));
                     }
                 }
             }
-            if (b != null && !level.isClientSide) {
-                AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), b.getRegistryName().toString()));
+            setChunkBiomes(chunk, container);
+            if (!level.isClientSide) {
+                //AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), ForgeRegistries.BIOMES.getKey(biome.value()).toString()));
             }
         } else {
             if (biome == null) {
@@ -345,7 +362,8 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                     }
                 }
                 int id = this.getId();
-                AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), biome.value().getRegistryName().toString()));
+                setChunkBiomes(chunk, container);
+                AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), ForgeRegistries.BIOMES.getKey(biome.value()).toString()));
             }
         }
 
@@ -456,7 +474,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                 double d5 = 1.0F;
                 double eyeHeight = this.getY() + 1.0F;
                 if (beamCounter % 20 == 0) {
-                    this.playSound(AMSoundRegistry.MUNGUS_LASER_LOOP, this.getVoicePitch(), this.getSoundVolume());
+                    this.playSound(AMSoundRegistry.MUNGUS_LASER_LOOP.get(), this.getVoicePitch(), this.getSoundVolume());
                 }
                 beamCounter++;
 

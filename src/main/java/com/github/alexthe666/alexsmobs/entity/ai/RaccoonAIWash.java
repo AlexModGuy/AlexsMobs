@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.Items;
 import net.minecraft.tags.FluidTags;
@@ -104,7 +105,7 @@ public class RaccoonAIWash extends Goal {
 
     public BlockPos generateTarget() {
         BlockPos blockpos = null;
-        RandomSource random = new Random();
+        final RandomSource random = this.raccoon.getRandom();
         int range = 32;
         for (int i = 0; i < 15; i++) {
             BlockPos blockpos1 = this.raccoon.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);

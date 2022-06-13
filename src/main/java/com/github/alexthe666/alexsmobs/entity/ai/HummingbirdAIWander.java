@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityHummingbird;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ClipContext;
@@ -55,7 +56,7 @@ public class HummingbirdAIWander extends Goal {
 
     @Nullable
     private Vec3 getRandomLocation() {
-        RandomSource random = fly.getRandom();
+        final RandomSource random = this.fly.getRandom();
         BlockPos blockpos = null;
         BlockPos origin = fly.getFeederPos() == null ? this.fly.blockPosition() : fly.getFeederPos();
         for(int i = 0; i < 15; i++){

@@ -28,7 +28,6 @@ import java.util.Random;
 public class ItemDimensionalCarver extends Item {
 
     public static final int MAX_TIME = 200;
-    private RandomSource random = new Random();
 
     public ItemDimensionalCarver(Item.Properties props) {
         super(props);
@@ -92,6 +91,7 @@ public class ItemDimensionalCarver extends Item {
 
     public void onUsingTick(ItemStack itemstack, LivingEntity player, int count) {
         player.swing(player.getUsedItemHand());
+        RandomSource random = player.getRandom();
         if (count % 5 == 0) {
             player.playSound(SoundEvents.NETHERITE_BLOCK_HIT, 1, 0.5F + random.nextFloat());
         }

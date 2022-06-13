@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
@@ -87,7 +88,7 @@ public class GorillaAIForageLeaves extends MoveToBlockGoal {
             BlockState blockstate = gorilla.level.getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.GORILLA_BREAKABLES)) {
                 gorilla.level.destroyBlock(blockPos, false);
-                RandomSource rand = new Random();
+                final RandomSource rand = this.gorilla.getRandom();
                 ItemStack stack = new ItemStack(blockstate.getBlock().asItem());
                 ItemEntity itementity = new ItemEntity(gorilla.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();

@@ -12,6 +12,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -207,7 +208,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             pickupItemCooldown = 60;
             return InteractionResult.SUCCESS;
-        }else if (owner && itemstack.is(ItemTags.CARPETS)) {
+        }else if (owner && itemstack.is(ItemTags.WOOL_CARPETS)) {
             DyeColor color = EntityElephant.getCarpetColor(itemstack);
             if (color != this.getColor()) {
                 if (this.getColor() != null) {

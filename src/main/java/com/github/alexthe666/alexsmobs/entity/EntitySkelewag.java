@@ -93,7 +93,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-        return level.getFluidState(pos).is(FluidTags.WATER) ? 10.0F + level.getBrightness(pos) - 0.5F : super.getWalkTargetValue(pos, level);
+        return level.getFluidState(pos).is(FluidTags.WATER) ? 10.0F + level.getLightLevelDependentMagicValue(pos) - 0.5F : super.getWalkTargetValue(pos, level);
     }
 
     protected void registerGoals() {
@@ -163,7 +163,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
             if (this.isOnGround() && random.nextFloat() < 0.2F) {
                 this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                 this.setYRot(this.random.nextFloat() * 360.0F);
-                this.playSound(AMSoundRegistry.SKELEWAG_HURT, this.getSoundVolume(), this.getVoicePitch());
+                this.playSound(AMSoundRegistry.SKELEWAG_HURT.get(), this.getSoundVolume(), this.getVoicePitch());
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);

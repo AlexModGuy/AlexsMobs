@@ -17,6 +17,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
+import net.minecraft.world.level.chunk.PalettedContainerRO;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -78,7 +79,7 @@ public class MessageMungusBiomeChange {
                                 int j = chunk.getSectionIndex(QuartPos.toBlock(l));
                                 LevelChunkSection section = chunk.getSection(j);
                                 if(section != null){
-                                    PalettedContainer<Holder<Biome>> container = section.getBiomes();
+                                    PalettedContainer<Holder<Biome>> container = section.getBiomes().recreate();
                                     for (int biomeX = 0; biomeX < 4; ++biomeX) {
                                         for (int biomeY = 0; biomeY < 4; ++biomeY) {
                                             for (int biomeZ = 0; biomeZ < 4; ++biomeZ) {
@@ -86,6 +87,7 @@ public class MessageMungusBiomeChange {
                                             }
                                         }
                                     }
+                                    section.biomes = container;
                                 }
                                 AlexsMobs.PROXY.updateBiomeVisuals(message.posX, message.posZ);
                             }

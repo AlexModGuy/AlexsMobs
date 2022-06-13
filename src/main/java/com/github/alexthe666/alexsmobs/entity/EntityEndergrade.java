@@ -156,12 +156,12 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             this.setSaddled(true);
             return InteractionResult.SUCCESS;
         }
-        if (item == Items.CHORUS_FRUIT && this.hasEffect(AMEffectRegistry.ENDER_FLU)) {
+        if (item == Items.CHORUS_FRUIT && this.hasEffect(AMEffectRegistry.ENDER_FLU.get())) {
             if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
             this.heal(8);
-            this.removeEffect(AMEffectRegistry.ENDER_FLU);
+            this.removeEffect(AMEffectRegistry.ENDER_FLU.get());
             return InteractionResult.SUCCESS;
         }
         InteractionResult type = super.mobInteract(player, hand);

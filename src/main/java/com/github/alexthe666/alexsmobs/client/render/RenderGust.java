@@ -24,24 +24,22 @@ public class RenderGust extends EntityRenderer<EntityGust> {
     }
 
     public void render(EntityGust entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        if(true || Minecraft.getInstance().options.particles == ParticleStatus.MINIMAL){
-            matrixStackIn.pushPose();
-            matrixStackIn.translate(0.0D, (double)0.5F, 0.0D);
-            if(!entityIn.getVertical()){
-                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180F));
-            }else{
-                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180F));
+        matrixStackIn.pushPose();
+        matrixStackIn.translate(0.0D, (double)0.5F, 0.0D);
+        if(!entityIn.getVertical()){
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180F));
+        }else{
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180F));
 
-            }
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
-            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-            VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE));
-            this.model.hideEyes();
-            this.model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-            this.model.animateGust(entityIn, 0, 0, entityIn.tickCount + partialTicks);
-            this.model.showEyes();
-            matrixStackIn.popPose();
         }
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
+        matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+        VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE));
+        this.model.hideEyes();
+        this.model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.animateGust(entityIn, 0, 0, entityIn.tickCount + partialTicks);
+        this.model.showEyes();
+        matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 

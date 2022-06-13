@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.misc;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
@@ -25,7 +26,7 @@ public class EmeraldsForItemsTrade implements VillagerTrades.ItemListing {
         this.priceMultiplier = 0.05F;
     }
 
-    public MerchantOffer getOffer(Entity p_221182_1_, Random p_221182_2_) {
+    public MerchantOffer getOffer(Entity p_221182_1_, RandomSource p_221182_2_) {
         ItemStack lvt_3_1_ = new ItemStack(this.tradeItem, 1);
         return new MerchantOffer(lvt_3_1_, new ItemStack(Items.EMERALD, this.count), this.maxUses, this.xpValue, this.priceMultiplier);
     }

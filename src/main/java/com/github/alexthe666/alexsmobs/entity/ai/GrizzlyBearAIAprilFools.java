@@ -38,7 +38,7 @@ public class GrizzlyBearAIAprilFools extends Goal {
         if(!bear.isBaby() && AlexsMobs.isAprilFools() && runDelay-- <= 0 && bear.getRandom().nextInt(30) == 0){
             runDelay = 400 + bear.getRandom().nextInt(350);
             Player nearestPlayer = bear.level.getNearestPlayer(bear.getX(), bear.getY(), bear.getZ(), maxDistance, entity -> {
-                return bear.hasLineOfSight(entity) &&(!(entity instanceof Player) || !((Player) entity).hasEffect(AMEffectRegistry.POWER_DOWN));
+                return bear.hasLineOfSight(entity) &&(!(entity instanceof Player) || !((Player) entity).hasEffect(AMEffectRegistry.POWER_DOWN.get()));
             });
             if(nearestPlayer != null){
                 target = nearestPlayer;
@@ -82,7 +82,7 @@ public class GrizzlyBearAIAprilFools extends Goal {
                 }
             }else if(bear.getAprilFoolsFlag() < 4) {
                 if(powerOutTimer == 0){
-                    target.addEffect(new MobEffectInstance(AMEffectRegistry.POWER_DOWN, 2 * (maxMusicBoxTime + 100), 0, false, false, true));
+                    target.addEffect(new MobEffectInstance(AMEffectRegistry.POWER_DOWN.get(), 2 * (maxMusicBoxTime + 100), 0, false, false, true));
                 }
                 powerOutTimer++;
                 if (powerOutTimer >= 60) {

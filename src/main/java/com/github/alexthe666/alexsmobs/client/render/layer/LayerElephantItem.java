@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderElephant;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -36,7 +37,8 @@ public class LayerElephantItem extends RenderLayer<EntityElephant, ModelElephant
             matrixStackIn.translate(-0.05F, -0.1F, -0.15F);
             matrixStackIn.scale(2, 2, 2);
         }
-        Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+        ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
+        renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }

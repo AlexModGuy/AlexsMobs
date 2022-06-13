@@ -49,7 +49,7 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
             if (net.minecraftforge.client.ForgeHooksClient.isNameplateInRenderDistance(seal, d0)) {
                 boolean flag = !seal.isDiscrete();
                 float f = seal.getBbHeight() + 0.5F;
-                String[] split = text.getContents().split(" ");
+                String[] split = text.getString(512).split(" ");
                 StringBuilder recombined = new StringBuilder();
                 List<String> strings = new ArrayList<>();
                 for(int wordIndex = 0; wordIndex < split.length; wordIndex++){

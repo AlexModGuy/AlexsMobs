@@ -139,8 +139,9 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     @Nullable
     private BlockState getSaplingFor(ItemStack stack) {
-        if (!stack.isEmpty() && FEEDING_DATA.containsKey(stack.getItem().getRegistryName().toString())) {
-            String str = FEEDING_DATA.get(stack.getItem().getRegistryName().toString());
+        ResourceLocation name = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        if (!stack.isEmpty() && name != null && FEEDING_DATA.containsKey(name.toString())) {
+            String str = FEEDING_DATA.get(name.toString());
             Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(str));
             if (block != null) {
                 return block.defaultBlockState();

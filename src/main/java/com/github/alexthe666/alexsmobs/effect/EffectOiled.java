@@ -10,7 +10,6 @@ public class EffectOiled extends MobEffect {
 
     public EffectOiled() {
         super(MobEffectCategory.BENEFICIAL, 0XFFE89C);
-        this.setRegistryName(AlexsMobs.MODID, "");
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

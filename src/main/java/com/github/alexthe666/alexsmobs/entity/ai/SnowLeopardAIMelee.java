@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySnowLeopard;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -36,7 +37,7 @@ public class SnowLeopardAIMelee extends Goal {
     }
 
     @Nullable
-    private static BlockPos getRandomDelta(Random p_226343_0_, int p_226343_1_, int p_226343_2_, int p_226343_3_, @Nullable Vec3 p_226343_4_, double p_226343_5_) {
+    private static BlockPos getRandomDelta(RandomSource p_226343_0_, int p_226343_1_, int p_226343_2_, int p_226343_3_, @Nullable Vec3 p_226343_4_, double p_226343_5_) {
         if (p_226343_4_ != null && p_226343_5_ < 3.141592653589793D) {
             double lvt_7_2_ = Mth.atan2(p_226343_4_.z, p_226343_4_.x) - 1.5707963705062866D;
             double lvt_9_2_ = lvt_7_2_ + (double) (2.0F * p_226343_0_.nextFloat() - 1.0F) * p_226343_5_;
@@ -172,7 +173,7 @@ public class SnowLeopardAIMelee extends Goal {
     @Nullable
     private Vec3 calculateVantagePoint(LivingEntity creature, int xz, int y, int p_226339_3_, @Nullable Vec3 p_226339_4_, boolean p_226339_5_, double p_226339_6_, ToDoubleFunction<BlockPos> p_226339_8_, boolean p_226339_9_, int p_226339_10_, int p_226339_11_, boolean p_226339_12_) {
         PathNavigation lvt_13_1_ = leopard.getNavigation();
-        Random lvt_14_1_ = creature.getRandom();
+        RandomSource lvt_14_1_ = creature.getRandom();
         boolean lvt_15_2_;
         if (leopard.hasRestriction()) {
             lvt_15_2_ = leopard.getRestrictCenter().closerToCenterThan(creature.position(), (double) (leopard.getRestrictRadius() + (float) xz) + 1.0D);

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntityHemolymph;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -85,7 +86,7 @@ public class ItemHemolymphBlaster extends Item {
                 EntityHemolymph blood = new EntityHemolymph(worldIn, livingEntityIn, !left);
                 Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
                 Vector3f vector3f = new Vector3f(vector3d);
-                RandomSource rand = new Random();
+                RandomSource rand = worldIn.getRandom();
                 livingEntityIn.playSound(SoundEvents.LAVA_POP,1.0F, 0.5F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
                 blood.shoot((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z(), 1F, 3);
                 if (!worldIn.isClientSide) {

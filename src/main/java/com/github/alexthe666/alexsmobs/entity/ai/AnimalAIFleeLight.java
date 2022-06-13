@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.core.BlockPos;
@@ -70,7 +71,7 @@ public class AnimalAIFleeLight extends Goal {
 
     @Nullable
     protected Vec3 findPossibleShelter() {
-        Random lvt_1_1_ = this.creature.getRandom();
+        RandomSource lvt_1_1_ = this.creature.getRandom();
         BlockPos lvt_2_1_ = this.creature.blockPosition();
 
         for(int lvt_3_1_ = 0; lvt_3_1_ < 10; ++lvt_3_1_) {

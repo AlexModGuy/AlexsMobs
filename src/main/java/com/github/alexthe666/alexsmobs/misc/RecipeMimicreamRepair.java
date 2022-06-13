@@ -14,6 +14,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class RecipeMimicreamRepair extends CustomRecipe {
     public RecipeMimicreamRepair(ResourceLocation idIn) {
@@ -47,8 +48,8 @@ public class RecipeMimicreamRepair extends CustomRecipe {
     }
 
     public boolean isBlacklisted(ItemStack stack) {
-        String name = stack.getItem().getRegistryName().toString();
-        return AMConfig.mimicreamBlacklist.contains(name);
+        ResourceLocation name = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        return name != null && AMConfig.mimicreamBlacklist.contains(name.toString());
     }
 
     /**

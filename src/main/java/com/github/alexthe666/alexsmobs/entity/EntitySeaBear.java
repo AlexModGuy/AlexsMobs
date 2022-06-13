@@ -83,15 +83,15 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return AMSoundRegistry.GRIZZLY_BEAR_IDLE;
+        return AMSoundRegistry.GRIZZLY_BEAR_IDLE.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return AMSoundRegistry.GRIZZLY_BEAR_HURT;
+        return AMSoundRegistry.GRIZZLY_BEAR_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return AMSoundRegistry.GRIZZLY_BEAR_DIE;
+        return AMSoundRegistry.GRIZZLY_BEAR_DIE.get();
     }
 
     protected void registerGoals() {

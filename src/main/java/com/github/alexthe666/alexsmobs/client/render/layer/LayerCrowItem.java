@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderCrow;
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -31,7 +32,8 @@ public class LayerCrowItem extends RenderLayer<EntityCrow, ModelCrow> {
         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-2.5F));
         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
         matrixStackIn.scale(0.75F, 0.75F, 0.75F);
-        Minecraft.getInstance().getItemInHandRenderer().renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+        ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
+        renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }
