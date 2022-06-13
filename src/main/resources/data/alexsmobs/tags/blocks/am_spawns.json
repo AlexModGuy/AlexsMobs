@@ -5,6 +5,7 @@
     "#minecraft:dirt",
     "#forge:sand",
     "#forge:gravel",
-    "#minecraft:terracotta"
+    "#minecraft:terracotta",
+    "minecraft:mud"
   ]
 }

@@ -18,6 +18,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
+import static net.minecraft.world.level.storage.loot.predicates.LootItemConditions.WEATHER_CHECK;
+
 public class MatchesBlossomTagCondition implements LootItemCondition {
 
 
@@ -25,7 +27,7 @@ public class MatchesBlossomTagCondition implements LootItemCondition {
     }
 
     public LootItemConditionType getType() {
-        return AMLootRegistry.matchesBlossom;
+        return WEATHER_CHECK;
     }
 
     public Set<LootContextParam<?>> getReferencedContextParams() {

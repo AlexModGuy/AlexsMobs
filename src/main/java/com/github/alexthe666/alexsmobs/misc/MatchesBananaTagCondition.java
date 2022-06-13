@@ -17,6 +17,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
+import static net.minecraft.world.level.storage.loot.predicates.LootItemConditions.WEATHER_CHECK;
+
 public class MatchesBananaTagCondition implements LootItemCondition {
 
 
@@ -24,7 +26,7 @@ public class MatchesBananaTagCondition implements LootItemCondition {
     }
 
     public LootItemConditionType getType() {
-        return AMLootRegistry.matchesBanana;
+        return WEATHER_CHECK;
     }
 
     public Set<LootContextParam<?>> getReferencedContextParams() {

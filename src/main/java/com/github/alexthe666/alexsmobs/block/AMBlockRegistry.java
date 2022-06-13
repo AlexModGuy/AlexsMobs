@@ -64,7 +64,7 @@ public class AMBlockRegistry {
     }
 
     public static RegistryObject<Block> registerBlockAndItem(String name, Supplier<Block> block, Item.Properties blockItemProps, boolean specialRender){
-        RegistryObject<Block> blockObj = registerBlockAndItem(name, block);
+        RegistryObject<Block> blockObj = DEF_REG.register(name, block);
         AMItemRegistry.DEF_REG.register(name, () -> specialRender ?  new BlockItemAMRender(blockObj, blockItemProps) :  new AMBlockItem(blockObj, blockItemProps));
         return blockObj;
     }
