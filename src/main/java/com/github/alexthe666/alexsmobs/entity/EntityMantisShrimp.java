@@ -148,7 +148,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
             downPos = downPos.below();
         }
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.MANTIS_SHRIMP_SPAWNS);
+        boolean spawnBlock = worldIn.getBlockState(downPos).is(AMTagRegistry.MANTIS_SHRIMP_SPAWNS);
         return spawnBlock && downPos.getY() < worldIn.getSeaLevel() + 1;
     }
 

@@ -405,7 +405,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setCatfishSize(random.nextFloat() < 0.35F ? 1 : 0);
         Holder<Biome> holder = worldIn.getBiome(this.blockPosition());
-        if(random.nextFloat() < 0.1F && (holder != null && BiomeConfig.test(BiomeConfig.catfish_huge, holder) || reason == MobSpawnType.SPAWN_EGG)){
+        if(random.nextFloat() < 0.1F && (holder != null && holder.is(AMTagRegistry.SPAWNS_HUGE_CATFISH) || reason == MobSpawnType.SPAWN_EGG)){
             this.setCatfishSize(2);
         }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);

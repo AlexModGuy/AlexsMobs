@@ -353,9 +353,6 @@ public class ClientEvents {
         if (!AMConfig.shadersCompat) {
             if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get())) {
                 if (!previousLavaVision) {
-                    RenderType lavaType = RenderType.translucent();
-                    ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, lavaType);
-                    ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, lavaType);
                     previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
                     Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = new LavaVisionFluidRenderer();
                     updateAllChunks();
@@ -363,9 +360,6 @@ public class ClientEvents {
             } else {
                 if (previousLavaVision) {
                     if (previousFluidRenderer != null) {
-                        RenderType lavaType = RenderType.solid();
-                        ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, lavaType);
-                        ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, lavaType);
                         Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = previousFluidRenderer;
                     }
                     updateAllChunks();
