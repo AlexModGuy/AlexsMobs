@@ -27,6 +27,7 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
     private static final ResourceLocation TEXTURE_GUARDIAN = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_guardian.png");
     private static final ResourceLocation TEXTURE_PUFFERFISH = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_pufferfish.png");
     private static final ResourceLocation TEXTURE_MIMICUBE = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_mimicube.png");
+    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus_eyes.png");
     private static final ResourceLocation GUARDIAN_BEAM_TEXTURE = new ResourceLocation("textures/entity/guardian_beam.png");
     private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(GUARDIAN_BEAM_TEXTURE);
 
@@ -206,6 +207,8 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
             float alphaCurrent = transProgress * 0.2F;
             VertexConsumer current = buffer.getBuffer(AMRenderTypes.entityTranslucent(getFor(entitylivingbaseIn.getMimicState())));
             this.getParentModel().renderToBuffer(matrixStackIn, current, packedLightIn, getOverlayCoords(entitylivingbaseIn, 0), r, g, b, a * alphaCurrent);
+            VertexConsumer eyes = buffer.getBuffer(AMRenderTypes.entityTranslucent(TEXTURE_EYES));
+            this.getParentModel().renderToBuffer(matrixStackIn, eyes, packedLightIn, getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, 1.0F);
         }
 
         public ResourceLocation getFor(EntityMimicOctopus.MimicState state) {

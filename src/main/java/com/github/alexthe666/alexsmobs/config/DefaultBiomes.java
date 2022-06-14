@@ -408,7 +408,9 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData MANTIS_SHRIMP = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_ocean", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_hot/overworld", 0);
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_hot/overworld", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:mangrove_swamp", 1);
+
 
     public static final SpawnBiomeData GUSTER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_hot/overworld", 0)
