@@ -740,6 +740,9 @@
       },
       {
         "name": "alexsmobs:seal_hurt_1"
+      },
+      {
+        "name": "alexsmobs:seal_hurt_2"
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.seal_hurt"

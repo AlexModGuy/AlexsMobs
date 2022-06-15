@@ -20,9 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/seal.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/seal_arctic.png");
-    private static final ResourceLocation TEXTURE_TEARS = new ResourceLocation("alexsmobs:textures/entity/seal_tears.png");
+    private static final ResourceLocation TEXTURE_BROWN_0 = new ResourceLocation("alexsmobs:textures/entity/seal/seal_brown_0.png");
+    private static final ResourceLocation TEXTURE_BROWN_1 = new ResourceLocation("alexsmobs:textures/entity/seal/seal_brown_1.png");
+    private static final ResourceLocation TEXTURE_ARCTIC_0 = new ResourceLocation("alexsmobs:textures/entity/seal/seal_arctic_0.png");
+    private static final ResourceLocation TEXTURE_ARCTIC_1 = new ResourceLocation("alexsmobs:textures/entity/seal/seal_arctic_1.png");
+    private static final ResourceLocation TEXTURE_ARCTIC_BABY = new ResourceLocation("alexsmobs:textures/entity/seal/seal_arctic_baby.png");
+    private static final ResourceLocation TEXTURE_TEARS = new ResourceLocation("alexsmobs:textures/entity/seal/seal_crying.png");
+    private static final ResourceLocation TEXTURE_TONGUE = new ResourceLocation("alexsmobs:textures/entity/seal/seal_tongue.png");
 
     public RenderSeal(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSeal(), 0.45F);
@@ -39,7 +43,10 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
     }
 
     public ResourceLocation getTextureLocation(EntitySeal entity) {
-        return entity.isArctic() ? TEXTURE_1 : TEXTURE_0;
+        if(entity.isArctic()){
+            return entity.isBaby() ? TEXTURE_ARCTIC_BABY : entity.getVariant() == 1 ? TEXTURE_ARCTIC_1 : TEXTURE_ARCTIC_0;
+        }
+        return entity.getVariant() == 1 ? TEXTURE_BROWN_1 : TEXTURE_BROWN_0;
     }
 
     @Override
