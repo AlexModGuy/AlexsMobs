@@ -1,7 +1,4 @@
-package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 4.1.3
-// Exported for Minecraft version 1.15 - 1.16 with MCP mappings
-// Paste this class into your mod and generate all required imports
-
+package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBunfungus;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;

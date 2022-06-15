@@ -12,6 +12,7 @@ public class RenderMantisShrimp extends MobRenderer<EntityMantisShrimp, ModelMan
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_0.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_1.png");
     private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_2.png");
+    private static final ResourceLocation TEXTURE_3 = new ResourceLocation("alexsmobs:textures/entity/mantis_shrimp_3.png");
 
     public RenderMantisShrimp(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMantisShrimp(), 0.6F);
@@ -24,6 +25,6 @@ public class RenderMantisShrimp extends MobRenderer<EntityMantisShrimp, ModelMan
 
 
     public ResourceLocation getTextureLocation(EntityMantisShrimp entity) {
-        return entity.getVariant() == 2 ? TEXTURE_2 : entity.getVariant() == 1 ? TEXTURE_1 : TEXTURE_0;
+        return entity.getVariant() == 3 ? TEXTURE_3 : entity.getVariant() == 2 ? TEXTURE_2 : entity.getVariant() == 1 ? TEXTURE_1 : TEXTURE_0;
     }
 }
