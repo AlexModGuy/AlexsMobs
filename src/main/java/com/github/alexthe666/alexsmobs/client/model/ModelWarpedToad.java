@@ -139,7 +139,7 @@ public class ModelWarpedToad extends AdvancedEntityModel<EntityWarpedToad> {
         this.resetToDefaultPose();
         float partialTick = Minecraft.getInstance().getFrameTime();
         float attackProgress = entity.prevAttackProgress + (entity.attackProgress - entity.prevAttackProgress) * partialTick;
-        float walkSpeed = 0.8f;
+        float walkSpeed = 1.2f;
         float walkDegree = 0.5f;
         float swimSpeed = 0.4f;
         float swimDegree = 0.9f;

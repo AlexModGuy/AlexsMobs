@@ -209,7 +209,6 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         if (isInWater()) {
             this.setXRot(f2 * 2.5F);
         }
-
         if (isInWater() && this.isLandNavigator) {
             switchNavigator(false);
         }
