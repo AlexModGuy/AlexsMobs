@@ -74,15 +74,14 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 8);
 
     public static final SpawnBiomeData CROCODILE = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "swamp", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "river", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, true, "cold", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tropics", 2)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 3)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 4)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:warm_river", 5);
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_swamp", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:mangrove_swamp", 1)
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_river", 2)
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, true, "forge:is_cold", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:tropic_beach", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:warm_river", 6);
 
     public static final SpawnBiomeData FLY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
