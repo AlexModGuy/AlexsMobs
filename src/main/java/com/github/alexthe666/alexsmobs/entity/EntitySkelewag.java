@@ -38,6 +38,7 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.RandomSource;
+import net.minecraftforge.fluids.FluidType;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -217,7 +218,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     @Override
-    public boolean canBeRiddenInWater(Entity rider) {
+    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
         return true;
     }
 

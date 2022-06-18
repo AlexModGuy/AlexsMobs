@@ -139,7 +139,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
-import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -617,29 +616,6 @@ public class ServerEvents {
                 event.setCanceled(true);
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onStructureGetSpawnLists(StructureSpawnListGatherEvent event) {
-        //EVENT IS UNUSED IN 1.18.2
-      /*  if (AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
-            if (event.getStructure() == StructureFeature.END_CITY) {
-                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
-            }
-        }
-        if (AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
-            if (event.getStructure() == StructureFeature.NETHER_FOSSIL) {
-                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
-            }
-        }
-        if (AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0) {
-            if (event.getStructure() == StructureFeature.SHIPWRECK) {
-                event.setInsideOnly(false);
-                event.addEntitySpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
-            }
-        }
-
-       */
     }
 
     @SubscribeEvent

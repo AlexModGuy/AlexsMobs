@@ -61,7 +61,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.MIMICUBE.get(),  0.95F));
         list.add(new Pair<>(AMEntityRegistry.RACCOON.get(),  0.8F));
         list.add(new Pair<>(AMEntityRegistry.BLOBFISH.get(),  1F));
-        list.add(new Pair<>(AMEntityRegistry.SEAL.get(),  0.7F));
+        list.add(new Pair<>(AMEntityRegistry.SEAL.get(),  0.5F));
         list.add(new Pair<>(AMEntityRegistry.COCKROACH.get(),  1F));
         list.add(new Pair<>(AMEntityRegistry.SHOEBILL.get(),  0.8F));
         list.add(new Pair<>(AMEntityRegistry.ELEPHANT.get(),  0.3F));

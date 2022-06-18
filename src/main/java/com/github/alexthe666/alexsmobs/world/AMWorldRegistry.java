@@ -31,6 +31,7 @@ import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
+import net.minecraftforge.common.world.ModifiableStructureInfo;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -52,46 +53,15 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
 
-    public static void addStructureSpawns(MinecraftServer server){
-        Registry<Structure> registry = server.registryAccess().registryOrThrow(Registry.STRUCTURE_REGISTRY);
-        Structure endCity = registry.get(BuiltinStructures.END_CITY);
-        Structure netherFossil = registry.get(BuiltinStructures.NETHER_FOSSIL);
-        Structure shipwreck = registry.get(BuiltinStructures.SHIPWRECK);
-        if (endCity != null && AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
-            addSpawnToStructure(endCity, StructureSpawnOverride.BoundingBoxType.PIECE, MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
+    public static void modifyStructure(Holder<Structure> structure, ModifiableStructureInfo.StructureInfo.Builder builder) {
+        if(structure.is(BuiltinStructures.END_CITY) && AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0){
+            builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.MONSTER).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
         }
-        if (netherFossil != null && AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
-            addSpawnToStructure(netherFossil, StructureSpawnOverride.BoundingBoxType.PIECE, MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
+        if(structure.is(BuiltinStructures.NETHER_FOSSIL) && AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0){
+            builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.MONSTER).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
         }
-        if (shipwreck != null && AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0) {
-            addSpawnToStructure(shipwreck, StructureSpawnOverride.BoundingBoxType.STRUCTURE, MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
-        }
-    }
-
-    private static void addSpawnToStructure(Structure feature, StructureSpawnOverride.BoundingBoxType bbType, MobCategory category, MobSpawnSettings.SpawnerData spawn){
-        if(feature.settings.spawnOverrides().isEmpty() || feature.settings.spawnOverrides().get(category) == null){
-            WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(spawn);
-            StructureSpawnOverride override = new StructureSpawnOverride(bbType, spawns);
-            HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.settings.spawnOverrides());
-            newMap.put(category, override);
-            feature.settings = new Structure.StructureSettings(feature.biomes(), ImmutableMap.copyOf(newMap), feature.step(), feature.terrainAdaptation());
-        }else{
-            StructureSpawnOverride previous = (StructureSpawnOverride) feature.settings.spawnOverrides().get(category);
-            List<MobSpawnSettings.SpawnerData> l = new ArrayList<>(previous.spawns().unwrap());
-            boolean contained = false;
-            for(MobSpawnSettings.SpawnerData data : l){
-                if(data.type.equals(spawn.type)){
-                    contained = true;
-                }
-            }
-            WeightedRandomList<MobSpawnSettings.SpawnerData> spawns = WeightedRandomList.create(l);
-            StructureSpawnOverride override = new StructureSpawnOverride(previous.boundingBox(), spawns);
-            HashMap<MobCategory, StructureSpawnOverride> newMap = new HashMap<>(feature.settings.spawnOverrides());
-            if(!contained){
-                l.add(spawn);
-            }
-            newMap.put(category, override);
-            feature.settings = new Structure.StructureSettings(feature.biomes(), ImmutableMap.copyOf(newMap), feature.step(), feature.terrainAdaptation());
+        if(structure.is(BuiltinStructures.SHIPWRECK) && AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0){
+            builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.MONSTER).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
         }
     }
 

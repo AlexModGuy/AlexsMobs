@@ -16,6 +16,7 @@ import com.github.alexthe666.alexsmobs.misc.*;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.world.AMFeatureRegistry;
 import com.github.alexthe666.alexsmobs.world.AMMobSpawnBiomeModifier;
+import com.github.alexthe666.alexsmobs.world.AMMobSpawnStructureModifier;
 import com.github.alexthe666.alexsmobs.world.AMWorldRegistry;
 import com.github.alexthe666.citadel.server.generation.SpawnProbabilityModifier;
 import com.mojang.serialization.Codec;
@@ -27,6 +28,7 @@ import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.StructureModifier;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -97,9 +99,12 @@ public class AlexsMobs {
         AMRecipeRegistry.DEF_REG.register(modBusEvent);
         AMLootRegistry.DEF_REG.register(modBusEvent);
         AMBannerRegistry.DEF_REG.register(modBusEvent);
-        final DeferredRegister<Codec<? extends BiomeModifier>> serializers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
-        serializers.register(modBusEvent);
-        serializers.register("am_mob_spawns", AMMobSpawnBiomeModifier::makeCodec);
+        final DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
+        biomeModifiers.register(modBusEvent);
+        biomeModifiers.register("am_mob_spawns", AMMobSpawnBiomeModifier::makeCodec);
+        final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
+        structureModifiers.register(modBusEvent);
+        structureModifiers.register("am_structure_spawns", AMMobSpawnStructureModifier::makeCodec);
         modLoadingContext.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "alexsmobs.toml");
         PROXY.init();
         MinecraftForge.EVENT_BUS.register(this);
@@ -125,11 +130,6 @@ public class AlexsMobs {
             AMConfig.bake(config);
         }
         BiomeConfig.init();
-    }
-
-    @SubscribeEvent
-    public void onDatapackReload(OnDatapackSyncEvent event) {
-        AMWorldRegistry.addStructureSpawns(event.getPlayerList().getServer());
     }
 
     private void setupParticleEvent(ParticleFactoryRegisterEvent event) {
