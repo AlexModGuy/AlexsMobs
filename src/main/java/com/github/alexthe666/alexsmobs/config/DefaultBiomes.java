@@ -564,19 +564,17 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 7);
 
     public static final SpawnBiomeData DESERT = new SpawnBiomeData()
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_CATEGORY, false, "desert", 0)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "overworld", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "hot", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "dry", 1)
-            .addBiomeEntry(BiomeEntryType.BIOME_DICT, false, "sandy", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ancient_sands", 2)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_canyon", 3)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_oasis", 4)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_spires", 5)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sandstone_valley", 6)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 7)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:lush_desert", 8);
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_dry/overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_hot/overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_sandy", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, true, "minecraft:is_badlands", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:ancient_sands", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_canyon", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_oasis", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:desert_spires", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sandstone_valley", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:lush_desert", 7);
     
     public static final SpawnBiomeData MIMIC_OCTOPUS = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_hot/overworld", 0)
