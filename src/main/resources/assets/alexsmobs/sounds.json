@@ -2402,6 +2402,36 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.rain_frog_idle"
   },
+  "potoo_call": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:potoo_call_0"
+      },
+      {
+        "name": "alexsmobs:potoo_call_1"
+      },
+      {
+        "name": "alexsmobs:potoo_call_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.potoo_call"
+  },
+  "potoo_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:potoo_hurt_0"
+      },
+      {
+        "name": "alexsmobs:potoo_hurt_1"
+      },
+      {
+        "name": "alexsmobs:potoo_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.potoo_hurt"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [
