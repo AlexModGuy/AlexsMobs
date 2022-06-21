@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Cá nhám hang quỷ là loài cá ít được biết đến là loài cá hiếm nhất thế giới, do phạm vi quá nhỏ của chúng. Những con cá nhộng này chỉ có thể sinh sản trong các tầng chứa nước dưới lòng đất trong một đoạn duy nhất ở Overworld.
+Để tìm được chunk mà cá nhám hang quỷ gọi về nhà, bạn sẽ cần phải chế tạo một Máy tìm cá kỳ lạ, như sau:
+<NEWLINE>
+<NEWLINE>
+Thiết bị này sẽ phát ra sóng âm thanh theo hướng của chunk.
+<NEWLINE>
+Khi bạn tìm thấy cá nhộng, bạn có thể nhận thấy chúng đang đuổi theo từng người xung quanh. Đây là nơi chúng lấy tên của chúng, vì hành vi này gợi nhớ đến những chú chó con đang chơi đùa. Cá nhộng tồn tại bằng cách ăn các chất bẩn bám trên bề mặt của các khối rêu ngập nước.
+Đôi khi trong khi mổ những khối này, chúng có thể làm bong ra một quả bóng chất nhờn. Thỉnh thoảng, chúng sẽ sinh sản với những con cá nhộng khác sau khi ăn rêu.Cá nhám hang quỷ có thể bị xô, giống như hầu hết các loài cá khác.

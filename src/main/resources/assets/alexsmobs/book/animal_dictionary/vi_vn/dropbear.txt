@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Dropbear là một loài thú có túi, trông như quỷ dữ, có nguồn gốc từ Nether Wastes. Sinh vật này thường có thể được tìm thấy đang treo ngược từ trần nhà của Nether, chờ đợi những con mồi không nghi ngờ đi lại bên dưới nó.
+Khi con mồi ở bên dưới, Dropbear sẽ nhảy ra khỏi vị trí của nó và cố gắng nghiền nát mục tiêu bên dưới nó. Sau khi tiếp đất, nó sẽ sử dụng bộ hàm khổng lồ và móng vuốt sắc nhọn của mình để tấn công. Nếu hạ gục con mồi thành công, gấu thả có thể nhảy ngược lên trần của Nether.
+Nếu bị giết, Dropbear sẽ rơi ra Vuốt Dropbear, có thể được sử dụng để tạo ra Đá lửa và Thép mà không cần Thỏi sắt. Nó cũng có thể được sử dụng để pha một lọ Thuốc Bám sát, cho phép người uống đứng và đi trên trần nhà, giống như Dropbear.
