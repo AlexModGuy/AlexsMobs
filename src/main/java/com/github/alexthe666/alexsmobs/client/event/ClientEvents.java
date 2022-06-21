@@ -14,6 +14,7 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectPowerDown;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
+import com.github.alexthe666.alexsmobs.entity.IFalconry;
 import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -263,7 +264,7 @@ public class ClientEvents {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onRenderHand(RenderHandEvent event) {
-        if (Minecraft.getInstance().getCameraEntity() instanceof EntityBaldEagle) {
+        if (Minecraft.getInstance().getCameraEntity() instanceof IFalconry) {
             event.setCanceled(true);
         }
         if (!Minecraft.getInstance().player.getPassengers().isEmpty() && event.getHand() == InteractionHand.MAIN_HAND) {
@@ -275,13 +276,14 @@ public class ClientEvents {
                 leftHand = player.getMainArm() != HumanoidArm.LEFT;
             }
             for (Entity entity : player.getPassengers()) {
-                if (entity instanceof EntityBaldEagle) {
+                if (entity instanceof IFalconry) {
+                    IFalconry falconry = (IFalconry)entity;
                     float yaw = player.yBodyRotO + (player.yBodyRot - player.yBodyRotO) * event.getPartialTick();
                     ClientProxy.currentUnrenderedEntities.remove(entity.getUUID());
                     PoseStack matrixStackIn = event.getPoseStack();
                     matrixStackIn.pushPose();
                     matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-                    matrixStackIn.translate(leftHand ? -0.8F : 0.8F, -0.6F, -1F);
+                    matrixStackIn.translate(leftHand ? -falconry.getHandOffset() : falconry.getHandOffset(), -0.6F, -1F);
                     matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(yaw));
                     if (leftHand) {
                         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90));
@@ -353,9 +355,6 @@ public class ClientEvents {
         if (!AMConfig.shadersCompat) {
             if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get())) {
                 if (!previousLavaVision) {
-                    RenderType lavaType = RenderType.translucent();
-                    ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, lavaType);
-                    ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, lavaType);
                     previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
                     Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = new LavaVisionFluidRenderer();
                     updateAllChunks();
@@ -363,9 +362,6 @@ public class ClientEvents {
             } else {
                 if (previousLavaVision) {
                     if (previousFluidRenderer != null) {
-                        RenderType lavaType = RenderType.solid();
-                        ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, lavaType);
-                        ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, lavaType);
                         Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = previousFluidRenderer;
                     }
                     updateAllChunks();

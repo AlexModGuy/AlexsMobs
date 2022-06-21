@@ -86,12 +86,15 @@ public class AMTagRegistry {
     public static final TagKey<Block> FLY_SPAWNS = registerBlockTag("fly_spawns");
     public static final TagKey<Block> LEAFCUTTER_PUPA_USABLE_ON = registerBlockTag("leafcutter_pupa_usable_on");
     public static final TagKey<Block> PUPFISH_EATABLES = registerBlockTag("pupfish_eatables");
+    public static final TagKey<Block> POTOO_PERCHES = registerBlockTag("potoo_perches");
 
     public static final TagKey<Biome> SPAWNS_DESERT_CROCODILES = registerBiomeTag("spawns_desert_crocodiles");
     public static final TagKey<Biome> SPAWNS_RED_GUSTERS = registerBiomeTag("spawns_red_gusters");
     public static final TagKey<Biome> SPAWNS_SOUL_GUSTERS = registerBiomeTag("spawns_soul_gusters");
     public static final TagKey<Biome> SPAWNS_NETHER_TARANTULA_HAWKS = registerBiomeTag("spawns_nether_tarantula_hawks");
     public static final TagKey<Biome> SPAWNS_WHITE_SEALS = registerBiomeTag("spawns_white_seals");
+    public static final TagKey<Biome> SPAWNS_HUGE_CATFISH = registerBiomeTag("spawns_huge_catfish");
+    public static final TagKey<Biome> SPAWNS_WHITE_MANTIS_SHRIMP = registerBiomeTag("spawns_white_mantis_shrimp");
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
         return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));

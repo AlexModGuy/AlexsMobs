@@ -40,6 +40,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -204,6 +205,8 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.CATFISH.get(), RenderCatfish::new);
         EntityRenderers.register(AMEntityRegistry.FLYING_FISH.get(), RenderFlyingFish::new);
         EntityRenderers.register(AMEntityRegistry.SKELEWAG.get(), RenderSkelewag::new);
+        EntityRenderers.register(AMEntityRegistry.RAIN_FROG.get(), RenderRainFrog::new);
+        EntityRenderers.register(AMEntityRegistry.POTOO.get(), RenderPotoo::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try {
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -242,6 +245,10 @@ public class ClientProxy extends CommonProxy {
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.RAINBOW_GLASS.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_FUR_BLOCK.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_CARPET.get(), RenderType.cutout());
+        //required for lava potion
+        ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, RenderType.translucent());
+
         //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_DOOR.get(), RenderType.translucent());
         //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_TRAPDOOR.get(), RenderType.translucent());
         //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.PHANTOM_SAIL.get(), RenderType.translucent());

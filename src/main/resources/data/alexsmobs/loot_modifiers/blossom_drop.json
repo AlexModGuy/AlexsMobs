@@ -2,7 +2,8 @@
   "type": "alexsmobs:blossom_drop",
   "conditions": [
     {
-      "condition": "alexsmobs:matches_blossom_tag"
+      "condition": "block_state_property",
+      "block":"minecraft:acacia_leaves"
     }
   ]
 }

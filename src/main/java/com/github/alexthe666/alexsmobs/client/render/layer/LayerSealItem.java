@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.item.ItemStack;
 import com.mojang.math.Vector3f;
+import net.minecraft.world.item.Items;
 
 public class LayerSealItem extends RenderLayer<EntitySeal, ModelSeal> {
 
@@ -28,9 +29,9 @@ public class LayerSealItem extends RenderLayer<EntitySeal, ModelSeal> {
         matrixStackIn.pushPose();
         translateToHand(matrixStackIn);
         if(entitylivingbaseIn.isBaby()){
-            matrixStackIn.translate(0.0D, 0, -0.1D);
+            matrixStackIn.translate(0.0D, 0.1F, -0.6D);
         }
-        matrixStackIn.translate(-0.1F, 0.05F, -0.1F);
+        matrixStackIn.translate(-0.1F, 0.15F, -0.6F);
         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-45F));
         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
         ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
@@ -43,7 +44,6 @@ public class LayerSealItem extends RenderLayer<EntitySeal, ModelSeal> {
         this.getParentModel().root.translateAndRotate(matrixStack);
         this.getParentModel().body.translateAndRotate(matrixStack);
         this.getParentModel().head.translateAndRotate(matrixStack);
-        this.getParentModel().snout.translateAndRotate(matrixStack);
 
     }
 }

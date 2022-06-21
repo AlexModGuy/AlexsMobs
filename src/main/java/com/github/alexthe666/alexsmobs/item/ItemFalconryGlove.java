@@ -1,12 +1,12 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
-import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
+import com.github.alexthe666.alexsmobs.entity.IFalconry;
 import com.github.alexthe666.alexsmobs.message.MessageSyncEntityPos;
 import com.google.common.base.Predicate;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -73,39 +73,18 @@ public class ItemFalconryGlove extends Item {
 
             if(!playerIn.getPassengers().isEmpty()){
                 for(Entity entity : playerIn.getPassengers()){
-                    if(entity instanceof EntityBaldEagle){
-                        EntityBaldEagle eagle = (EntityBaldEagle)entity;
-                        eagle.setLaunched(true);
-                        eagle.removeVehicle();
-                        eagle.setOrderedToSit(false);
-                        eagle.setCommand(0);
-                        eagle.moveTo(playerIn.getX(), playerIn.getEyeY(), playerIn.getZ(), eagle.getYRot(), eagle.getXRot());
-                        if(eagle.level.isClientSide){
-                            AlexsMobs.sendMSGToServer(new MessageSyncEntityPos(eagle.getId(), playerIn.getX(), playerIn.getEyeY(), playerIn.getZ()));
+                    if(entity instanceof IFalconry && entity instanceof Animal){
+                        IFalconry falcon = (IFalconry)entity;
+                        Animal animal = (Animal)entity;
+                        animal.removeVehicle();
+                        animal.moveTo(playerIn.getX(), playerIn.getEyeY(), playerIn.getZ(), animal.getYRot(), animal.getXRot());
+                        if(animal.level.isClientSide){
+                            AlexsMobs.sendMSGToServer(new MessageSyncEntityPos(animal.getId(), playerIn.getX(), playerIn.getEyeY(), playerIn.getZ()));
                         }else{
-                            AlexsMobs.sendMSGToAll(new MessageSyncEntityPos(eagle.getId(), playerIn.getX(), playerIn.getEyeY(), playerIn.getZ()));
+                            AlexsMobs.sendMSGToAll(new MessageSyncEntityPos(animal.getId(), playerIn.getX(), playerIn.getEyeY(), playerIn.getZ()));
                         }
-                        if(eagle.hasCap()){
-                            eagle.setFlying(true);
-                            eagle.getMoveControl().setWantedPosition(eagle.getX(), eagle.getY(), eagle.getZ(), 0.1F);
-                            if(eagle.level.isClientSide){
-                                AlexsMobs.sendMSGToServer(new MessageMosquitoDismount(eagle.getId(), playerIn.getId()));
-                            }
-                            AlexsMobs.PROXY.setRenderViewEntity(eagle);
-                        }else{
-                            eagle.getNavigation().stop();
-                            eagle.getMoveControl().setWantedPosition(eagle.getX(), eagle.getY(), eagle.getZ(), 0.1F);
-                            if(pointedEntity != null && pointedEntity.isAlive() && !eagle.isAlliedTo(pointedEntity)){
-                                eagle.setFlying(true);
-                                if(pointedEntity instanceof LivingEntity){
-                                    eagle.setTarget((LivingEntity) pointedEntity);
-                                }
-                            }else{
-                                eagle.setFlying(false);
-                                eagle.setCommand(2);
-                                eagle.setOrderedToSit(true);
-                            }
-                        }
+                        falcon.onLaunch(playerIn, pointedEntity);
+
                     }
                 }
             }

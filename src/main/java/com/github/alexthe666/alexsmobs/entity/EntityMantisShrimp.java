@@ -5,7 +5,9 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -148,7 +150,11 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         while (downPos.getY() > 1 && !worldIn.getFluidState(downPos).isEmpty()) {
             downPos = downPos.below();
         }
-        boolean spawnBlock = worldIn.getBlockState(pos.below()).is(AMTagRegistry.MANTIS_SHRIMP_SPAWNS);
+        boolean spawnBlock = worldIn.getBlockState(downPos).is(AMTagRegistry.MANTIS_SHRIMP_SPAWNS);
+        //limit spawns in mangrove biomes
+        if(worldIn.getBiome(pos).is(AMTagRegistry.SPAWNS_WHITE_MANTIS_SHRIMP) && randomIn.nextFloat() < 0.5F){
+            return false;
+        }
         return spawnBlock && downPos.getY() < worldIn.getSeaLevel() + 1;
     }
 
@@ -547,7 +553,15 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        this.setVariant(this.getRandom().nextInt(3));
+        int i;
+        if(reason == MobSpawnType.SPAWN_EGG){
+            i = this.getRandom().nextInt(4);
+        }else if(worldIn.getBiome(this.blockPosition()).is(AMTagRegistry.SPAWNS_WHITE_MANTIS_SHRIMP)){
+            i = 3;
+        }else{
+            i = this.getRandom().nextInt(3);
+        }
+        this.setVariant(i);
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 

@@ -51,7 +51,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
             if (fluidStateIn.is(FluidTags.LAVA)) {
                 boolean flag = fluidStateIn.is(FluidTags.LAVA);
                 TextureAtlasSprite[] atextureatlassprite = net.minecraftforge.client.ForgeHooksClient.getFluidSprites(lightReaderIn, posIn, fluidStateIn);
-                int i = fluidStateIn.getType().getAttributes().getColor(lightReaderIn, posIn);
+                int i = net.minecraftforge.client.RenderProperties.get(fluidStateIn).getColorTint(fluidStateIn, lightReaderIn, posIn);
                 float alpha = (float) AMConfig.lavaOpacity;
                 float f = (float)(i >> 16 & 255) / 255.0F;
                 float f1 = (float)(i >> 8 & 255) / 255.0F;

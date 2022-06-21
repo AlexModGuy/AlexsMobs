@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -72,7 +73,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 
-public class EntityBaldEagle extends TamableAnimal implements IFollower {
+public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalconry {
 
     private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(EntityBaldEagle.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> TACKLING = SynchedEntityData.defineId(EntityBaldEagle.class, EntityDataSerializers.BOOLEAN);
@@ -395,7 +396,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                 this.spawnAtLocation(AMItemRegistry.FALCONRY_HOOD.get());
                 this.setCap(false);
                 return InteractionResult.SUCCESS;
-            } else if (!this.isBaby() && getRidingEagles(player) <= 0 && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get() || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get())) {
+            } else if (!this.isBaby() && getRidingFalcons(player) <= 0 && (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get() || player.getItemInHand(InteractionHand.OFF_HAND).getItem() == AMItemRegistry.FALCONRY_GLOVE.get())) {
                 boardingCooldown = 30;
                 this.setLaunched(false);
                 this.ejectPassengers();
@@ -432,15 +433,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         return this.getCommand() == 1 && !isLaunched();
     }
 
-    public int getRidingEagles(LivingEntity player) {
-        int crowCount = 0;
-        for (Entity e : player.getPassengers()) {
-            if (e instanceof EntityBaldEagle) {
-                crowCount++;
-            }
-        }
-        return crowCount;
-    }
+
 
     public void rideTick() {
         Entity entity = this.getVehicle();
@@ -819,6 +812,11 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
         this.controlledFlag = true;
     }
 
+
+    public float getHandOffset(){
+        return 0.8F;
+    }
+
     private boolean canFalconryAttack(Entity over) {
         return !(over instanceof ItemEntity) && (!(over instanceof LivingEntity) || !this.isOwnedBy((LivingEntity) over));
     }
@@ -855,6 +853,34 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
                     serverWorld.setChunkForced(pos.x, pos.z, true);
 
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onLaunch(Player player, Entity pointedEntity) {
+        this.setLaunched(true);
+        this.setOrderedToSit(false);
+        this.setCommand(0);
+        if(this.hasCap()){
+            this.setFlying(true);
+            this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.1F);
+            if(this.level.isClientSide){
+                AlexsMobs.sendMSGToServer(new MessageMosquitoDismount(this.getId(), player.getId()));
+            }
+            AlexsMobs.PROXY.setRenderViewEntity(this);
+        }else{
+            this.getNavigation().stop();
+            this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.1F);
+            if(pointedEntity != null && pointedEntity.isAlive() && !this.isAlliedTo(pointedEntity)){
+                this.setFlying(true);
+                if(pointedEntity instanceof LivingEntity){
+                    this.setTarget((LivingEntity) pointedEntity);
+                }
+            }else{
+                this.setFlying(false);
+                this.setCommand(2);
+                this.setOrderedToSit(true);
             }
         }
     }
@@ -1181,7 +1207,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower {
 
                 if (this.eagle.distanceTo(owner) < owner.getBbWidth() + 1.4D) {
                     this.eagle.setLaunched(false);
-                    if (this.eagle.getRidingEagles(owner) <= 0) {
+                    if (this.eagle.getRidingFalcons(owner) <= 0) {
                         this.eagle.startRiding(owner);
                         if (!eagle.level.isClientSide) {
                             AlexsMobs.sendMSGToAll(new MessageMosquitoMountPlayer(eagle.getId(), owner.getId()));

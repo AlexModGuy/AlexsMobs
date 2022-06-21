@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.message;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.EntityStraddleboard;
+import com.github.alexthe666.alexsmobs.entity.IFalconry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.FriendlyByteBuf;
@@ -53,7 +54,7 @@ public class MessageSyncEntityPos {
                 if (player != null) {
                     if (player.level != null) {
                         Entity entity = player.level.getEntity(message.eagleId);
-                        if (entity instanceof EntityBaldEagle || entity instanceof EntityStraddleboard) {
+                        if (entity instanceof IFalconry || entity instanceof EntityStraddleboard) {
                             entity.setPos(message.posX, message.posY, message.posZ);
                             entity.teleportToWithTicket(message.posX, message.posY, message.posZ);
                         }
