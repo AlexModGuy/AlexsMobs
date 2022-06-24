@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0" : "alexsmobs:item/lower_bucket",
+    "layer1" : "alexsmobs:item/bucket_content/mudskipper"
+  }
+}
