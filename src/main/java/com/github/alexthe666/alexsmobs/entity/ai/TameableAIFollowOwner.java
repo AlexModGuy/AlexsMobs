@@ -13,10 +13,7 @@ public class TameableAIFollowOwner extends FollowOwnerGoal {
         this.follower = (IFollower)tameable;
     }
 
-
-
     public boolean canUse(){
-
         return super.canUse() && follower.shouldFollow();
     }
 }
