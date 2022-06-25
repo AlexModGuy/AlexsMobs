@@ -457,4 +457,20 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         return Bucketable.bucketMobPickup(player, hand, this).orElse(type);
     }
 
+    public boolean isAlliedTo(Entity entityIn) {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (entityIn == livingentity) {
+                return true;
+            }
+            if (entityIn instanceof TamableAnimal) {
+                return ((TamableAnimal) entityIn).isOwnedBy(livingentity);
+            }
+            if (livingentity != null) {
+                return livingentity.isAlliedTo(entityIn);
+            }
+        }
+
+        return super.isAlliedTo(entityIn);
+    }
 }

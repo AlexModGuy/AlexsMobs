@@ -148,7 +148,7 @@ public class ModelMudskipper extends AdvancedEntityModel<EntityMudskipper> {
             head.setShouldScaleChildren(true);
             matrixStackIn.pushPose();
             matrixStackIn.scale(0.5F, 0.5F, 0.5F);
-            matrixStackIn.translate(0.0D, 1.5D, 0D);
+            matrixStackIn.translate(0.0D, 1.4D, 0D);
             parts().forEach((p_228292_8_) -> {
                 p_228292_8_.render(matrixStackIn, buffer, packedLight, packedOverlay, red, green, blue, alpha);
             });

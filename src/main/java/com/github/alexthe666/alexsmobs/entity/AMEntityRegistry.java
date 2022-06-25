@@ -134,6 +134,7 @@ public class AMEntityRegistry {
     public static final RegistryObject<EntityType<EntityPotoo>> POTOO = DEF_REG.register("potoo", () -> registerEntity(EntityType.Builder.of(EntityPotoo::new, MobCategory.CREATURE).sized(0.6F, 0.8F), "potoo"));
     public static final RegistryObject<EntityType<EntityMudskipper>> MUDSKIPPER = DEF_REG.register("mudskipper", () -> registerEntity(EntityType.Builder.of(EntityMudskipper::new, MobCategory.CREATURE).sized(0.7F, 0.44F), "mudskipper"));
     public static final RegistryObject<EntityType<EntityMudBall>> MUD_BALL = DEF_REG.register("mud_ball", () -> registerEntity(EntityType.Builder.of(EntityMudBall::new, MobCategory.MISC).sized(0.35F, 0.35F).setCustomClientFactory(EntityMudBall::new).fireImmune(), "mud_ball"));
+    public static final RegistryObject<EntityType<EntityRhinoceros>> RHINOCEROS = DEF_REG.register("rhinoceros", () -> registerEntity(EntityType.Builder.of(EntityRhinoceros::new, MobCategory.CREATURE).sized(2.3F, 2.4F), "rhinoceros"));
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return (EntityType) builder.build(entityName);
@@ -297,6 +298,7 @@ public class AMEntityRegistry {
         event.put(RAIN_FROG.get(), EntityRainFrog.bakeAttributes().build());
         event.put(POTOO.get(), EntityPotoo.bakeAttributes().build());
         event.put(MUDSKIPPER.get(), EntityMudskipper.bakeAttributes().build());
+        event.put(RHINOCEROS.get(), EntityRhinoceros.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){
