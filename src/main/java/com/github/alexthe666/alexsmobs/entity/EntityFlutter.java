@@ -459,7 +459,6 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         return this.getCommand() == 1;
     }
 
-
     protected void dropEquipment() {
         super.dropEquipment();
         if (this.isPotted()) {

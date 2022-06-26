@@ -281,7 +281,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new AIAttack());
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new FollowOwner(this, 1.3D, 4.0F, 2.0F, false));
+        this.goalSelector.addGoal(2, new TameableAIFollowOwnerWater(this, 1.3D, 4.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, Ingredient.of(AMItemRegistry.LOBSTER_TAIL.get(), AMItemRegistry.COOKED_LOBSTER_TAIL.get(), Items.TROPICAL_FISH), false) {
@@ -1027,135 +1027,6 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             double d0 = this.theEntity.distanceToSqr(p_compare_1_);
             double d1 = this.theEntity.distanceToSqr(p_compare_2_);
             return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
-        }
-    }
-
-    public class FollowOwner extends Goal {
-        private final EntityMimicOctopus tameable;
-        private final LevelReader world;
-        private final double followSpeed;
-        private final float maxDist;
-        private final float minDist;
-        private final boolean teleportToLeaves;
-        private LivingEntity owner;
-        private int timeToRecalcPath;
-        private float oldWaterCost;
-
-        public FollowOwner(EntityMimicOctopus p_i225711_1_, double p_i225711_2_, float p_i225711_4_, float p_i225711_5_, boolean p_i225711_6_) {
-            this.tameable = p_i225711_1_;
-            this.world = p_i225711_1_.level;
-            this.followSpeed = p_i225711_2_;
-            this.minDist = p_i225711_4_;
-            this.maxDist = p_i225711_5_;
-            this.teleportToLeaves = p_i225711_6_;
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            LivingEntity lvt_1_1_ = this.tameable.getOwner();
-            if (lvt_1_1_ == null) {
-                return false;
-            } else if (lvt_1_1_.isSpectator()) {
-                return false;
-            } else if (this.tameable.isSitting() || tameable.getCommand() != 1) {
-                return false;
-            } else if (this.tameable.distanceToSqr(lvt_1_1_) < (double) (this.minDist * this.minDist)) {
-                return false;
-            } else if (this.tameable.getTarget() != null && this.tameable.getTarget().isAlive()) {
-                return false;
-            } else {
-                this.owner = lvt_1_1_;
-                return true;
-            }
-        }
-
-        public boolean canContinueToUse() {
-            if (this.tameable.getNavigation().isDone()) {
-                return false;
-            } else if (this.tameable.isSitting() || tameable.getCommand() != 1) {
-                return false;
-            } else if (this.tameable.getTarget() != null && this.tameable.getTarget().isAlive()) {
-                return false;
-            } else {
-                return this.tameable.distanceToSqr(this.owner) > (double) (this.maxDist * this.maxDist);
-            }
-        }
-
-        public void start() {
-            this.timeToRecalcPath = 0;
-            this.oldWaterCost = this.tameable.getPathfindingMalus(BlockPathTypes.WATER);
-            this.tameable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        }
-
-        public void stop() {
-            this.owner = null;
-            this.tameable.getNavigation().stop();
-            this.tameable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
-        }
-
-        public void tick() {
-
-            this.tameable.getLookControl().setLookAt(this.owner, 10.0F, (float) this.tameable.getMaxHeadXRot());
-            if (--this.timeToRecalcPath <= 0) {
-                this.timeToRecalcPath = 10;
-                if (!this.tameable.isLeashed() && !this.tameable.isPassenger()) {
-                    if (this.tameable.distanceToSqr(this.owner) >= 144.0D) {
-                        this.tryToTeleportNearEntity();
-                    } else {
-                        this.tameable.getNavigation().moveTo(this.owner, this.followSpeed);
-                    }
-
-                }
-            }
-        }
-
-        private void tryToTeleportNearEntity() {
-            BlockPos lvt_1_1_ = this.owner.blockPosition();
-
-            for (int lvt_2_1_ = 0; lvt_2_1_ < 10; ++lvt_2_1_) {
-                int lvt_3_1_ = this.getRandomNumber(-3, 3);
-                int lvt_4_1_ = this.getRandomNumber(-1, 1);
-                int lvt_5_1_ = this.getRandomNumber(-3, 3);
-                boolean lvt_6_1_ = this.tryToTeleportToLocation(lvt_1_1_.getX() + lvt_3_1_, lvt_1_1_.getY() + lvt_4_1_, lvt_1_1_.getZ() + lvt_5_1_);
-                if (lvt_6_1_) {
-                    return;
-                }
-            }
-
-        }
-
-        private boolean tryToTeleportToLocation(int p_226328_1_, int p_226328_2_, int p_226328_3_) {
-            if (Math.abs((double) p_226328_1_ - this.owner.getX()) < 2.0D && Math.abs((double) p_226328_3_ - this.owner.getZ()) < 2.0D) {
-                return false;
-            } else if (!this.isTeleportFriendlyBlock(new BlockPos(p_226328_1_, p_226328_2_, p_226328_3_))) {
-                return false;
-            } else {
-                this.tameable.moveTo((double) p_226328_1_ + 0.5D, p_226328_2_, (double) p_226328_3_ + 0.5D, this.tameable.getYRot(), this.tameable.getXRot());
-                this.tameable.getNavigation().stop();
-                return true;
-            }
-        }
-
-        private boolean isTeleportFriendlyBlock(BlockPos p_226329_1_) {
-            BlockPathTypes lvt_2_1_ = WalkNodeEvaluator.getBlockPathTypeStatic(this.world, p_226329_1_.mutable());
-            if (world.getFluidState(p_226329_1_).is(FluidTags.WATER) || !world.getFluidState(p_226329_1_).is(FluidTags.WATER) && world.getFluidState(p_226329_1_.below()).is(FluidTags.WATER)) {
-                return true;
-            }
-            if (lvt_2_1_ != BlockPathTypes.WALKABLE || tameable.getMoistness() < 2000) {
-                return false;
-            } else {
-                BlockState lvt_3_1_ = this.world.getBlockState(p_226329_1_.below());
-                if (!this.teleportToLeaves && lvt_3_1_.getBlock() instanceof LeavesBlock) {
-                    return false;
-                } else {
-                    BlockPos lvt_4_1_ = p_226329_1_.subtract(this.tameable.blockPosition());
-                    return this.world.noCollision(this.tameable, this.tameable.getBoundingBox().move(lvt_4_1_));
-                }
-            }
-        }
-
-        private int getRandomNumber(int p_226327_1_, int p_226327_2_) {
-            return this.tameable.getRandom().nextInt(p_226327_2_ - p_226327_1_ + 1) + p_226327_1_;
         }
     }
 

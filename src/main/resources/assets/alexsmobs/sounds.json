@@ -2432,6 +2432,78 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.potoo_hurt"
   },
+  "mudskipper_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mudskipper_hurt_0"
+      },
+      {
+        "name": "alexsmobs:mudskipper_hurt_1"
+      },
+      {
+        "name": "alexsmobs:mudskipper_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mudskipper_hurt"
+  },
+  "mudskipper_walk": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mudskipper_walk_0"
+      },
+      {
+        "name": "alexsmobs:mudskipper_walk_1"
+      },
+      {
+        "name": "alexsmobs:mudskipper_walk_2"
+      },
+      {
+        "name": "alexsmobs:mudskipper_walk_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mudskipper_walk"
+  },
+  "mudskipper_spit": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:mudskipper_spit_0"
+      },
+      {
+        "name": "alexsmobs:mudskipper_spit_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.mudskipper_spit"
+  },
+  "rhinoceros_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:rhinoceros_hurt_0"
+      },
+      {
+        "name": "alexsmobs:rhinoceros_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.rhinoceros_hurt"
+  },
+  "rhinoceros_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:rhinoceros_idle_0"
+      },
+      {
+        "name": "alexsmobs:rhinoceros_idle_1"
+      },
+      {
+        "name": "alexsmobs:rhinoceros_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.rhinoceros_idle"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [
