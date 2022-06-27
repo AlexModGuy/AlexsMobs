@@ -1,0 +1,32 @@
+{
+  "parent": "alexsmobs:recipes/root",
+  "rewards": {
+    "recipes": [
+      "alexsmobs:vine_lasso"
+    ]
+  },
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "alexsmobs:vine_lasso"
+      }
+    },
+    "has_items": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "alexsmobs:shed_snake_skin" ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_items"
+    ]
+  ]
+}

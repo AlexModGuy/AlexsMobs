@@ -1,0 +1,32 @@
+{
+  "parent": "alexsmobs:recipes/root",
+  "rewards": {
+    "recipes": [
+      "alexsmobs:boiled_emu_egg_smoke"
+    ]
+  },
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "alexsmobs:boiled_emu_egg_smoke"
+      }
+    },
+    "has_items": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "alexsmobs:emu_egg" ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_items"
+    ]
+  ]
+}

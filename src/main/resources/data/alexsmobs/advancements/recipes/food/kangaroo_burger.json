@@ -1,0 +1,32 @@
+{
+  "parent": "alexsmobs:recipes/root",
+  "rewards": {
+    "recipes": [
+      "alexsmobs:kangaroo_burger"
+    ]
+  },
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "alexsmobs:kangaroo_burger"
+      }
+    },
+    "has_items": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "alexsmobs:cooked_kangaroo_meat" ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_items"
+    ]
+  ]
+}

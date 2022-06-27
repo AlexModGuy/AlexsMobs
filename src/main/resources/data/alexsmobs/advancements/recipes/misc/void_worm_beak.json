@@ -1,0 +1,32 @@
+{
+  "parent": "alexsmobs:recipes/root",
+  "rewards": {
+    "recipes": [
+      "alexsmobs:void_worm_beak"
+    ]
+  },
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "alexsmobs:void_worm_beak"
+      }
+    },
+    "has_items": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "alexsmobs:void_worm_mandible" ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_items"
+    ]
+  ]
+}

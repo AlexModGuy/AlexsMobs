@@ -1,0 +1,32 @@
+{
+  "parent": "alexsmobs:recipes/root",
+  "rewards": {
+    "recipes": [
+      "alexsmobs:falconry_hood"
+    ]
+  },
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "alexsmobs:falconry_hood"
+      }
+    },
+    "has_items": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [ "alexsmobs:roadrunner_feather" ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_items"
+    ]
+  ]
+}
