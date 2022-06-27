@@ -106,11 +106,12 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.1D, Ingredient.of(AMItemRegistry.LOBSTER_TAIL.get(), AMItemRegistry.COOKED_LOBSTER_TAIL.get()), false));
         this.goalSelector.addGoal(5, new BreedGoal(this, 0.8D));
-        this.goalSelector.addGoal(6, new MudskipperAIDisplay(this));
-        this.goalSelector.addGoal(7, new SemiAquaticAIRandomSwimming(this, 1.0D, 80));
-        this.goalSelector.addGoal(8, new RandomStrollGoal(this, 1.0D, 120));
-        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new PanicGoal(this, 1D));
+        this.goalSelector.addGoal(7, new MudskipperAIDisplay(this));
+        this.goalSelector.addGoal(8, new SemiAquaticAIRandomSwimming(this, 1.0D, 80));
+        this.goalSelector.addGoal(9, new RandomStrollGoal(this, 1.0D, 120));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(11, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this) {

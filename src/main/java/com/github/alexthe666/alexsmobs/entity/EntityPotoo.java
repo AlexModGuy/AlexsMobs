@@ -88,6 +88,7 @@ public class EntityPotoo extends Animal implements IFalconry {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new TemptGoal(this, 1.0D, Ingredient.of(AMTagRegistry.INSECT_ITEMS), false));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new PanicGoal(this, 1D));
         this.goalSelector.addGoal(4, new AIPerch());
         this.goalSelector.addGoal(5, new AIMelee());
         this.goalSelector.addGoal(6, new AIFlyIdle());
@@ -188,7 +189,7 @@ public class EntityPotoo extends Animal implements IFalconry {
             } else if (isSleeping()) {
                 this.setSleeping(false);
             }
-            if(isPerching() && this.getPerchPos() != null && this.distanceToSqr(Vec3.atCenterOf(this.getPerchPos())) > 2.25F){
+            if(isPerching() && this.getPerchPos() != null && (level.getBlockState(this.getPerchPos()).is(AMTagRegistry.POTOO_PERCHES) || this.distanceToSqr(Vec3.atCenterOf(this.getPerchPos())) > 2.25F)){
                 this.setPerching(false);
             }
         }

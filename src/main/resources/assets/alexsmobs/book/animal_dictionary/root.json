@@ -902,6 +902,66 @@
       "offset_y": -11,
       "linked_page": "skelewag.json",
       "hover_text": "entity.alexsmobs.skelewag"
+    },
+    {
+      "entity": "alexsmobs:rain_frog",
+      "x": 35,
+      "y": 10,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 2.1,
+      "offset_x": -23,
+      "offset_y": -24,
+      "linked_page": "rain_frog.json",
+      "hover_text": "entity.alexsmobs.rain_frog"
+    },
+    {
+      "entity": "alexsmobs:potoo",
+      "x": 65,
+      "y": 10,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 1.6,
+      "offset_x": -12,
+      "offset_y": -13,
+      "linked_page": "potoo.json",
+      "hover_text": "entity.alexsmobs.potoo"
+    },
+    {
+      "entity": "alexsmobs:mudskipper",
+      "x": 95,
+      "y": 10,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 1.8,
+      "offset_x": -20,
+      "offset_y": -21,
+      "linked_page": "mudskipper.json",
+      "hover_text": "entity.alexsmobs.mudskipper"
+    },
+    {
+      "entity": "alexsmobs:rhinoceros",
+      "x": 125,
+      "y": 10,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 0.9,
+      "offset_x": -10,
+      "offset_y": -6,
+      "linked_page": "rhinoceros.json",
+      "hover_text": "entity.alexsmobs.rhinoceros"
+    },
+    {
+      "entity": "alexsmobs:sugar_glider",
+      "x": 155,
+      "y": 10,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 1.7,
+      "offset_x": -18,
+      "offset_y": -18,
+      "linked_page": "sugar_glider.json",
+      "hover_text": "entity.alexsmobs.sugar_glider"
     }
   ],
   "linked_page_buttons": [

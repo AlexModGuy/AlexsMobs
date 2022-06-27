@@ -113,6 +113,11 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.CATFISH.get(),  1.15F));
         list.add(new Pair<>(AMEntityRegistry.FLYING_FISH.get(),  1.2F));
         list.add(new Pair<>(AMEntityRegistry.SKELEWAG.get(),  0.5F));
+        list.add(new Pair<>(AMEntityRegistry.RAIN_FROG.get(),  1.8F));
+        list.add(new Pair<>(AMEntityRegistry.POTOO.get(),  1.2F));
+        list.add(new Pair<>(AMEntityRegistry.MUDSKIPPER.get(),  1.2F));
+        list.add(new Pair<>(AMEntityRegistry.RHINOCEROS.get(),  0.4F));
+        list.add(new Pair<>(AMEntityRegistry.SUGAR_GLIDER.get(),  1.3F));
     });
     public static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();

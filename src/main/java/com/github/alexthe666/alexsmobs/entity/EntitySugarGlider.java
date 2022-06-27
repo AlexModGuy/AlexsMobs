@@ -24,6 +24,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -117,9 +119,10 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.SWEET_BERRIES, Items.HONEYCOMB), false));
         this.goalSelector.addGoal(4, new BreedGoal(this, 0.8D));
         this.goalSelector.addGoal(5, new GlideGoal());
-        this.goalSelector.addGoal(6, new AnimalAIWanderRanged(this, 100, 1.0D, 10, 7));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new PanicGoal(this, 1D));
+        this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 100, 1.0D, 10, 7));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -172,6 +175,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         if (attachChangeProgress > 0F) {
             attachChangeProgress -= 0.25F;
         }
+        boolean glideVisual = this.isGliding() || this.getVehicle() != null && this.getVehicle().fallDistance != 0;
         if (glideProgress < 5F && isGliding()) {
             glideProgress += 2.5F;
         }
@@ -295,6 +299,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             if (this.isPassenger()) {
                 Entity mount = this.getVehicle();
                 if (mount instanceof Player) {
+                    ((LivingEntity) mount).addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 100, 0, true, false));
                     this.yBodyRot = ((LivingEntity) mount).yBodyRot;
                     this.setYRot(mount.getYRot());
                     this.yHeadRot = ((LivingEntity) mount).yHeadRot;
@@ -528,11 +533,18 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     public void followEntity(TamableAnimal tameable, LivingEntity owner, double followSpeed) {
         if (this.distanceTo(owner) < 5 || this.isBaby()) {
-            this.setGliding(false);
+            this.setGliding(!this.isOnGround());
             this.getNavigation().moveTo(owner, followSpeed);
-        } else if ((this.isOnGround() || this.isBesideClimbableBlock()) && !this.isGliding()) {
-            Vec3 fly = owner.position().subtract(EntitySugarGlider.this.position()).normalize().scale(0.5F);
-            this.setDeltaMovement(fly.add(0, 0.4F + random.nextFloat() * 0.7F, 0));
+
+        } else {
+            Vec3 fly = new Vec3(0, 0, 0);
+            float f = 0.5F;
+            if(this.isOnGround()){
+                fly = fly.add(0, 0.4, 0);
+                f = 0.9F;
+            }
+            fly = fly.add(owner.getEyePosition().subtract(EntitySugarGlider.this.position()).normalize().scale(f));
+            this.setDeltaMovement(fly);
             Vec3 move = this.getDeltaMovement();
             double d0 = move.horizontalDistance();
             this.setXRot((float) (-Mth.atan2(move.y, d0) * (double) (180F / (float) Math.PI)));
