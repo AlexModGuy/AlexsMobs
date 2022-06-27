@@ -109,7 +109,6 @@ public class RenderLeafcutterAnt extends MobRenderer<EntityLeafcutterAnt, Advanc
 
     protected void scale(EntityLeafcutterAnt entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
         model = entitylivingbaseIn.isQueen() ? modelQueen : modelAnt;
-        float scale = entitylivingbaseIn.getAntScale();
     }
 
 

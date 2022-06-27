@@ -375,6 +375,10 @@ public class AMSoundRegistry {
 
     public static final RegistryObject<SoundEvent> RHINOCEROS_HURT = createSoundEvent("rhinoceros_hurt");
 
+    public static final RegistryObject<SoundEvent> SUGAR_GLIDER_IDLE = createSoundEvent("sugar_glider_idle");
+
+    public static final RegistryObject<SoundEvent> SUGAR_GLIDER_HURT = createSoundEvent("sugar_glider_hurt");
+
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

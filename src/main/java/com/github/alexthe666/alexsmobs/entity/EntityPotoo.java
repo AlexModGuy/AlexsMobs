@@ -188,6 +188,9 @@ public class EntityPotoo extends Animal implements IFalconry {
             } else if (isSleeping()) {
                 this.setSleeping(false);
             }
+            if(isPerching() && this.getPerchPos() != null && this.distanceToSqr(Vec3.atCenterOf(this.getPerchPos())) > 2.25F){
+                this.setPerching(false);
+            }
         }
         if (this.entityData.get(MOUTH_TICK) > 0) {
             this.entityData.set(MOUTH_TICK, this.entityData.get(MOUTH_TICK) - 1);
@@ -203,13 +206,13 @@ public class EntityPotoo extends Animal implements IFalconry {
             int j = tickCount - lastScreamTimestamp;
             if (getEyeScale(10, 1.0F) == 0F) {
                 if (j > 40) {
-                    this.openMouth(12);
+                    this.openMouth(30);
                     this.playSound(AMSoundRegistry.POTOO_CALL.get());
                     this.gameEvent(GameEvent.ENTITY_ROAR);
                 }
             } else if (getEyeScale(10, 1.0F) < 7) {
                 if (j > 300 && j % 300 == 0 && random.nextInt(4) == 0) {
-                    this.openMouth(12);
+                    this.openMouth(30);
                     this.playSound(AMSoundRegistry.POTOO_CALL.get());
                     this.gameEvent(GameEvent.ENTITY_ROAR);
                 }
