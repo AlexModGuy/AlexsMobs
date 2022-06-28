@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mudskippers are fish that paradoxically spend most of their time walking on land.
+They can be found exclusively within the mangrove swamp biome.
+Occasionally, when two Mudskippers meet, they will raise their fins and begin circling each other in order to establish dominance.
+Mudskippers are equally at home on land as they are in water.
+<NEWLINE>
+A Mudskipper can be tamed by feeding it several Lobster Tails.
+Tamed Mudskippers can be made to stay, follow or wander.
+When its owner is threatened, a Mudskipper will spit a ball of mud from its mouth at its opponent, which inflicts slowness and deals some damage.
+Mudskippers can also strafe in combat.
+<NEWLINE>
+They can be bred with any insect larva or Lobster Tails.

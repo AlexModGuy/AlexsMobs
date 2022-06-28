@@ -20,6 +20,13 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 10,
+          "functions": [
+          ],
+          "name": "minecraft:hanging_roots"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 3,
           "functions": [
           ],
@@ -108,6 +115,20 @@
           "functions": [
           ],
           "name": "alexsmobs:cockroach_ootheca"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 9,
+          "functions": [
+          ],
+          "name": "minecraft:cobweb"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "functions": [
+          ],
+          "name": "minecraft:bamboo"
         },
         {
           "type": "minecraft:item",

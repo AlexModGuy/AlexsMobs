@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
@@ -40,9 +41,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -132,6 +131,24 @@ public class EntityPotoo extends Animal implements IFalconry {
         this.entityData.set(SLEEPING, Boolean.valueOf(sleeping));
     }
 
+    public static boolean canPotooSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
+        return isBrightEnoughToSpawn(worldIn, pos);
+    }
+
+    public boolean checkSpawnObstruction(LevelReader reader) {
+        if (reader.isUnobstructed(this) && !reader.containsAnyLiquid(this.getBoundingBox())) {
+            BlockPos blockpos = this.blockPosition();
+            BlockState blockstate2 = reader.getBlockState(blockpos.below());
+            return blockstate2.is(BlockTags.LEAVES) || blockstate2.is(BlockTags.LOGS);
+        }
+        return false;
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.potooSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+
     public void tick() {
         super.tick();
         this.prevPerchProgress = perchProgress;
@@ -189,8 +206,12 @@ public class EntityPotoo extends Animal implements IFalconry {
             } else if (isSleeping()) {
                 this.setSleeping(false);
             }
-            if(isPerching() && this.getPerchPos() != null && (level.getBlockState(this.getPerchPos()).is(AMTagRegistry.POTOO_PERCHES) || this.distanceToSqr(Vec3.atCenterOf(this.getPerchPos())) > 2.25F)){
-                this.setPerching(false);
+            if(isPerching() && this.getPerchPos() != null) {
+                if ((!level.getBlockState(this.getPerchPos()).is(AMTagRegistry.POTOO_PERCHES) || this.distanceToSqr(Vec3.atCenterOf(this.getPerchPos())) > 2.25F)) {
+                    this.setPerching(false);
+                } else {
+                    slideTowardsPerch();
+                }
             }
         }
         if (this.entityData.get(MOUTH_TICK) > 0) {
@@ -233,6 +254,13 @@ public class EntityPotoo extends Animal implements IFalconry {
         return AMSoundRegistry.POTOO_HURT.get();
     }
 
+    public boolean hurt(DamageSource source, float amount) {
+        boolean prev = super.hurt(source, amount);
+        if (prev && source.getDirectEntity() instanceof LivingEntity) {
+            this.setPerching(false);
+        }
+        return prev;
+    }
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
@@ -345,7 +373,7 @@ public class EntityPotoo extends Animal implements IFalconry {
     public boolean isValidPerchFromSide(BlockPos pos, Direction direction) {
         BlockPos offset = pos.relative(direction);
         BlockState state = level.getBlockState(pos);
-        return state.is(AMTagRegistry.POTOO_PERCHES) && (!level.getBlockState(pos.above()).isCollisionShapeFullBlock(level, pos.above()) || level.isEmptyBlock(pos.above())) && (!level.getBlockState(offset).isCollisionShapeFullBlock(level, offset) || level.isEmptyBlock(offset));
+        return state.is(AMTagRegistry.POTOO_PERCHES) && (!level.getBlockState(pos.above()).isCollisionShapeFullBlock(level, pos.above()) || level.isEmptyBlock(pos.above())) && (!level.getBlockState(offset).isCollisionShapeFullBlock(level, offset) && !level.getBlockState(offset).is(AMTagRegistry.POTOO_PERCHES) || level.isEmptyBlock(offset));
     }
 
     @Nullable
@@ -364,11 +392,17 @@ public class EntityPotoo extends Animal implements IFalconry {
 
     private void slideTowardsPerch() {
         Vec3 block = Vec3.upFromBottomCenterOf(this.getPerchPos(), 1.0F);
+        Vec3 look = block.subtract(this.position()).normalize();
         Vec3 onBlock = block.add(this.getPerchDirection().getStepX() * 0.35F, 0F, this.getPerchDirection().getStepZ() * 0.35F);
-        Vec3 sub = onBlock.subtract(this.position()).normalize().scale(0.25F);
-        if (this.getPerchPos().getY() + 1.2F > this.getY()) {
-            sub = sub.add(0, 0.4F, 0);
-        }
+        Vec3 diff = onBlock.subtract(this.position());
+        float f = (float)diff.length();
+        float f1 = f > 1F ? 0.25F : f * 0.1F;
+        Vec3 sub = diff.normalize().scale(f1);
+        float f2 = -(float) (Mth.atan2(look.x, look.z) * (double) (180F / (float) Math.PI));
+        EntityPotoo.this.setYRot(f2);
+        EntityPotoo.this.yHeadRot = f2;
+        EntityPotoo.this.yBodyRot = f2;
+
         this.setDeltaMovement(this.getDeltaMovement().add(sub));
 
     }
@@ -614,11 +648,13 @@ public class EntityPotoo extends Animal implements IFalconry {
                 Vec3 onBlock = block.add(EntityPotoo.this.getPerchDirection().getStepX() * 0.35F, 0F, EntityPotoo.this.getPerchDirection().getStepZ() * 0.35F);
                 double dist = EntityPotoo.this.distanceToSqr(onBlock);
                 Vec3 dirVec = block.subtract(EntityPotoo.this.position());
-                if (dist > 2.3F || !EntityPotoo.this.isValidPerchFromSide(EntityPotoo.this.getPerchPos(), EntityPotoo.this.getPerchDirection())) {
+                if (perchingTime > 10 && (dist > 2.3F || !EntityPotoo.this.isValidPerchFromSide(EntityPotoo.this.getPerchPos(), EntityPotoo.this.getPerchDirection()))) {
                     EntityPotoo.this.setPerching(false);
                 } else if (dist > 1F) {
                     EntityPotoo.this.slideTowardsPerch();
-                } else {
+                    if (EntityPotoo.this.getPerchPos().getY() + 1.2F > EntityPotoo.this.getBoundingBox().minY) {
+                        EntityPotoo.this.setDeltaMovement(EntityPotoo.this.getDeltaMovement().add(0, 0.2F, 0));
+                    }
                     float f = -(float) (Mth.atan2(dirVec.x, dirVec.z) * (double) (180F / (float) Math.PI));
                     EntityPotoo.this.setYRot(f);
                     EntityPotoo.this.yHeadRot = f;
@@ -630,8 +666,12 @@ public class EntityPotoo extends Animal implements IFalconry {
                 }
                 double distX = perch.getX() + 0.5F - EntityPotoo.this.getX();
                 double distZ = perch.getZ() + 0.5F - EntityPotoo.this.getZ();
-                if (distX * distX + distZ * distZ < 1F) {
+                if (distX * distX + distZ * distZ < 1F || !EntityPotoo.this.isFlying()) {
                     EntityPotoo.this.getNavigation().moveTo(perch.getX() + 0.5F, perch.getY() + 1.5F, perch.getZ() + 0.5F, 1F);
+                    if(EntityPotoo.this.getNavigation().isDone()){
+                        EntityPotoo.this.getMoveControl().setWantedPosition(perch.getX() + 0.5F, perch.getY() + 1.5F, perch.getZ() + 0.5F, 1F);
+
+                    }
                 } else {
                     EntityPotoo.this.getNavigation().moveTo(perch.getX() + 0.5F, perch.getY() + 2.5F, perch.getZ() + 0.5F, 1F);
                 }

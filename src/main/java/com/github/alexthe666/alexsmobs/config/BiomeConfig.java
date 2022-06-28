@@ -90,6 +90,11 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> catfish = Pair.of("alexsmobs:catfish_spawns", DefaultBiomes.CATFISH);
 	public static Pair<String, SpawnBiomeData> flying_fish = Pair.of("alexsmobs:flying_fish_spawns", DefaultBiomes.FLYING_FISH);
 	public static Pair<String, SpawnBiomeData> skelewag = Pair.of("alexsmobs:skelewag_spawns", DefaultBiomes.SKELEWAG);
+	public static Pair<String, SpawnBiomeData> rain_frog = Pair.of("alexsmobs:rain_frog_spawns", DefaultBiomes.DESERT);
+	public static Pair<String, SpawnBiomeData> potoo = Pair.of("alexsmobs:potoo_spawns", DefaultBiomes.POTOO);
+	public static Pair<String, SpawnBiomeData> mudskipper = Pair.of("alexsmobs:mudskipper_spawns", DefaultBiomes.MUDSKIPPER);
+	public static Pair<String, SpawnBiomeData> rhinoceros = Pair.of("alexsmobs:rhinoceros_spawns", DefaultBiomes.RHINOCEROS);
+	public static Pair<String, SpawnBiomeData> sugar_glider = Pair.of("alexsmobs:sugar_glider_spawns", DefaultBiomes.SUGAR_GLIDER);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

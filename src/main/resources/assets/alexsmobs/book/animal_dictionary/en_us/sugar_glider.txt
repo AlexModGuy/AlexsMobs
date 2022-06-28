@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Sugar Gliders are small, arboreal marsupials found in birch forests.
+They will often climb tree logs or leaves and glide to other trees throughout the forest.
+<NEWLINE>
+Sugar Gliders can be tamed by feeding them sweet berries, their favorite food.
+Tamed Sugar Gliders can be made to stay, follow or wander.
+They can also be placed on one's head by sneaking and interacting with them.
+When a Sugar Glider is on its owner's head, they will experience slow falling.
+<NEWLINE>
+Occasionally, tamed Sugar Gliders will forage through leaf blocks for items.
+Usually these are junk such as saplings or sticks, but sometimes valuable items like arrows, Hair of Bear, or Moose Antlers can be found.
+<NEWLINE>
+Sugar Gliders can be bred with honeycombs. Baby Sugar Gliders are incapable of gliding.

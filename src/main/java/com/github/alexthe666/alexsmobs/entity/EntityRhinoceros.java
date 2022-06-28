@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIPanicBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
@@ -36,6 +37,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raider;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -43,6 +45,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -116,6 +119,10 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
 
     protected PathNavigation createNavigation(Level worldIn) {
         return new GroundPathNavigatorWide(this, worldIn);
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.rhinocerosSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     @Override
@@ -204,9 +211,9 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         return AMSoundRegistry.RHINOCEROS_HURT.get();
     }
 
-
     public boolean isFood(ItemStack stack) {
-        return stack.is(Items.WHEAT);
+        Item item = stack.getItem();
+        return item == Items.DEAD_BUSH || item == Items.GRASS;
     }
 
     public String getAppliedPotionId() {

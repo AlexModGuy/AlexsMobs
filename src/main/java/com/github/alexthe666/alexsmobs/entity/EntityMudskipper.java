@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -13,6 +14,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -32,6 +35,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -91,6 +96,19 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         } else {
             super.travel(travelVector);
         }
+    }
+
+    public static <T extends Mob> boolean canMudskipperSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, RandomSource random) {
+        BlockState blockstate = worldIn.getBlockState(p_223317_3_.below());
+        return (blockstate.is(Blocks.MUD) || blockstate.is(Blocks.MUDDY_MANGROVE_ROOTS)) && worldIn.getRawBrightness(p_223317_3_, 0) > 8;
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.mudskipperSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public boolean checkSpawnObstruction(LevelReader worldIn) {
+        return worldIn.isUnobstructed(this);
     }
 
     public boolean canBreatheUnderwater() {
@@ -227,6 +245,14 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         if (!this.isInWater() && !this.isLandNavigator) {
             switchNavigator(true);
         }
+    }
+
+    public boolean hurt(DamageSource source, float amount) {
+        boolean prev = super.hurt(source, amount);
+        if (prev && source.getDirectEntity() instanceof LivingEntity) {
+            this.openMouth(10);
+        }
+        return prev;
     }
 
     public boolean isDisplaying() {
@@ -420,6 +446,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && (item == AMItemRegistry.LOBSTER_TAIL.get() || item == AMItemRegistry.COOKED_LOBSTER_TAIL.get())) {
             this.usePlayerItem(player, hand, itemstack);
+            this.openMouth(10);
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (getRandom().nextInt(2) == 0) {
                 this.tame(player);
@@ -432,12 +459,12 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         if (isTame() && itemstack.is(AMTagRegistry.INSECT_ITEMS)) {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.usePlayerItem(player, hand, itemstack);
+                this.openMouth(10);
                 this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.PASS;
-
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
         if (item != Items.WATER_BUCKET && interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {

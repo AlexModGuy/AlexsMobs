@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Potoos are lazy birds found only within dark forest biomes.
+<NEWLINE>
+They will attempt to remain on their perch and sleep through the day, becoming slightly more active at night.
+The Potoo's survival strategy depends on it fooling its predators and prey that it is part of a tree, so Potoos will look for any leaves or logs to perch on.
+Once perched, they will seldom leave, unless they spot a small insect flying through the air.
+<NEWLINE>
+The Potoo's massive eyes contain pupils that scale with the brightness of their surroundings.
+If the bird is in a location where it is dark enough for monsters to spawn, it will consistently shriek and its pupils will take up most of its eye.
+<NEWLINE>
+Potoos can easily be handled and moved by using a Falconry Glove on them. They can be bred with maggots.

@@ -158,6 +158,16 @@ public class AMConfig {
     public static int flyingFishSpawnRolls = 0;
     public static int skelewagSpawnWeight = 15;
     public static int skelewagSpawnRolls = 0;
+    public static int rainFrogSpawnWeight = 10;
+    public static int rainFrogSpawnRolls = 0;
+    public static int potooSpawnWeight = 15;
+    public static int potooSpawnRolls = 0;
+    public static int mudskipperSpawnWeight = 12;
+    public static int mudskipperSpawnRolls = 0;
+    public static int rhinocerosSpawnWeight = 24;
+    public static int rhinocerosSpawnRolls = 0;
+    public static int sugarGliderSpawnWeight = 15;
+    public static int sugarGliderSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -384,6 +394,17 @@ public class AMConfig {
             flyingFishSpawnRolls = ConfigHolder.COMMON.flyingFishSpawnRolls.get();
             skelewagSpawnWeight = ConfigHolder.COMMON.skelewagSpawnWeight.get();
             skelewagSpawnRolls = ConfigHolder.COMMON.skelewagSpawnRolls.get();
+
+            rainFrogSpawnWeight = ConfigHolder.COMMON.rainFrogSpawnWeight.get();
+            rainFrogSpawnRolls = ConfigHolder.COMMON.rainFrogSpawnRolls.get();
+            potooSpawnWeight = ConfigHolder.COMMON.potooSpawnWeight.get();
+            potooSpawnRolls = ConfigHolder.COMMON.potooSpawnRolls.get();
+            mudskipperSpawnWeight = ConfigHolder.COMMON.mudskipperSpawnWeight.get();
+            mudskipperSpawnRolls = ConfigHolder.COMMON.mudskipperSpawnRolls.get();
+            rhinocerosSpawnWeight = ConfigHolder.COMMON.rhinocerosSpawnWeight.get();
+            rhinocerosSpawnRolls = ConfigHolder.COMMON.rhinocerosSpawnRolls.get();
+            sugarGliderSpawnWeight = ConfigHolder.COMMON.sugarGliderSpawnWeight.get();
+            sugarGliderSpawnRolls = ConfigHolder.COMMON.sugarGliderSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();

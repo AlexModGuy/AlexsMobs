@@ -441,6 +441,9 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             }
             vec3d = Vec3.ZERO;
         }
+        if(this.isInWater() && this.getDeltaMovement().y > 0F){
+            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.5D, 1.0D));
+        }
         super.travel(vec3d);
     }
 

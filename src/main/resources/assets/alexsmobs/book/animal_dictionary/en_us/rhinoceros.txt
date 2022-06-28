@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Rhinoceros are large, armored mammals found in groups within savanna biomes.
+They have large horns on their head which they will use to attack any threat that gets too close.
+Rhinoceros strongly dislike any pillager, and will seek them out on sight.
+These horned and armored animals can inflict large amounts of damage very quickly.
+<NEWLINE>
+These animals are initially skittish around players, but they can be pacified by feeding them wheat.
+If a potion is used on a Rhinoceros, the potion will be applied to its horn. Any creature attacked by the Rhinoceros will then be inflicted with the potion effect.
+These potions will last from 15 to 20 attacks before wearing off. Befriended Rhinoceros can come to the aide of anyone who has fed them wheat, and will roam around any nearby village for safety.
+<NEWLINE>
+Rhinoceros can be bred with tall grass or dead bushes.

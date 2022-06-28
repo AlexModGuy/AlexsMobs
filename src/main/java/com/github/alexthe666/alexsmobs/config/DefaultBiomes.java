@@ -702,4 +702,24 @@ public class DefaultBiomes {
     public static final SpawnBiomeData SKELEWAG = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_overworld", 0)
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_deep_ocean", 0);
+
+    public static final SpawnBiomeData POTOO = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:dark_forest", 0);
+
+    public static final SpawnBiomeData MUDSKIPPER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:mangrove_swamp", 0);
+
+    public static final SpawnBiomeData RHINOCEROS = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_savanna", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:arid_highlands", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:brushland", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:fractured_savanna", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_badlands", 4)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:savanna_slopes", 5)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:shrubland", 6)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:red_oasis", 7);
+
+    public static final SpawnBiomeData SUGAR_GLIDER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:birch_forest", 0)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:old_growth_birch_forest", 1);
 }

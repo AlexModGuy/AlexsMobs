@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -21,6 +22,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -35,6 +38,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -42,8 +46,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -116,8 +119,18 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new FlyingAIFollowOwner(this, 1.0D, 5.0F, 2.0F, true));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.SWEET_BERRIES, Items.HONEYCOMB), false));
-        this.goalSelector.addGoal(4, new BreedGoal(this, 0.8D));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.SWEET_BERRIES, Items.HONEYCOMB), false){
+            public void start(){
+                super.start();
+                EntitySugarGlider.this.entityData.set(ATTACHED_FACE, Direction.DOWN);
+            }
+        });
+        this.goalSelector.addGoal(4, new BreedGoal(this, 0.8D){
+            public void start(){
+                super.start();
+                EntitySugarGlider.this.entityData.set(ATTACHED_FACE, Direction.DOWN);
+            }
+        });
         this.goalSelector.addGoal(5, new GlideGoal());
         this.goalSelector.addGoal(6, new PanicGoal(this, 1D));
         this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 100, 1.0D, 10, 7));
@@ -164,6 +177,22 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         return AMSoundRegistry.SUGAR_GLIDER_HURT.get();
     }
 
+    public static boolean canSugarGliderSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
+        return isBrightEnoughToSpawn(worldIn, pos);
+    }
+
+    public boolean checkSpawnObstruction(LevelReader reader) {
+        if (reader.isUnobstructed(this) && !reader.containsAnyLiquid(this.getBoundingBox())) {
+            BlockPos blockpos = this.blockPosition();
+            BlockState blockstate2 = reader.getBlockState(blockpos.below());
+            return blockstate2.is(BlockTags.LEAVES) || blockstate2.is(BlockTags.LOGS) || blockstate2.is(Blocks.GRASS_BLOCK);
+        }
+        return false;
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.sugarGliderSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
 
     public void tick() {
         super.tick();
@@ -343,6 +372,9 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                 this.getNavigation().stop();
             }
             travelVector = Vec3.ZERO;
+        }
+        if(this.isInWater() && this.getDeltaMovement().y > 0F){
+            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.5D, 1.0D));
         }
         super.travel(travelVector);
     }
@@ -539,7 +571,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         } else {
             Vec3 fly = new Vec3(0, 0, 0);
             float f = 0.5F;
-            if(this.isOnGround()){
+            if (this.isOnGround()) {
                 fly = fly.add(0, 0.4, 0);
                 f = 0.9F;
             }
