@@ -92,7 +92,6 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     private static void initFeedingData() {
-        System.out.println(FEEDING_STACKS);
         if (!initFeedingData || FEEDING_DATA.isEmpty()) {
             initFeedingData = true;
             for (String str : AMConfig.toucanFruitMatches) {
