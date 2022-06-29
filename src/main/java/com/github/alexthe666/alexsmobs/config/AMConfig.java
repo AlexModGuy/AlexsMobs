@@ -25,7 +25,7 @@ public class AMConfig {
     public static int orcaSpawnRolls = 6;
     public static int sunbirdSpawnWeight = 2;
     public static int sunbirdSpawnRolls = 15;
-    public static int gorillaSpawnWeight = 50;
+    public static int gorillaSpawnWeight = 30;
     public static int gorillaSpawnRolls = 0;
     public static int crimsonMosquitoSpawnWeight = 15;
     public static int crimsonMosquitoSpawnRolls = 0;
@@ -39,7 +39,7 @@ public class AMConfig {
     public static int lobsterSpawnRolls = 0;
     public static int komodoDragonSpawnWeight = 16;
     public static int komodoDragonSpawnRolls = 1;
-    public static int capuchinMonkeySpawnWeight = 55;
+    public static int capuchinMonkeySpawnWeight = 30;
     public static int capuchinMonkeySpawnRolls = 0;
     public static int caveCentipedeSpawnWeight = 8;
     public static int caveCentipedeSpawnRolls = 1;
@@ -162,7 +162,7 @@ public class AMConfig {
     public static int rainFrogSpawnRolls = 0;
     public static int potooSpawnWeight = 15;
     public static int potooSpawnRolls = 0;
-    public static int mudskipperSpawnWeight = 12;
+    public static int mudskipperSpawnWeight = 28;
     public static int mudskipperSpawnRolls = 0;
     public static int rhinocerosSpawnWeight = 24;
     public static int rhinocerosSpawnRolls = 0;

@@ -100,7 +100,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
 
     public static <T extends Mob> boolean canMudskipperSpawn(EntityType type, LevelAccessor worldIn, MobSpawnType reason, BlockPos p_223317_3_, RandomSource random) {
         BlockState blockstate = worldIn.getBlockState(p_223317_3_.below());
-        return (blockstate.is(Blocks.MUD) || blockstate.is(Blocks.MUDDY_MANGROVE_ROOTS)) && worldIn.getRawBrightness(p_223317_3_, 0) > 8;
+        return blockstate.is(Blocks.MUD) || blockstate.is(Blocks.MUDDY_MANGROVE_ROOTS);
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -108,7 +108,8 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {
-        return worldIn.isUnobstructed(this);
+        BlockPos pos = new BlockPos(this.getX(), this.getEyeY(), this.getZ());
+        return !worldIn.getBlockState(pos).isSuffocating(worldIn, pos);
     }
 
     public boolean canBreatheUnderwater() {

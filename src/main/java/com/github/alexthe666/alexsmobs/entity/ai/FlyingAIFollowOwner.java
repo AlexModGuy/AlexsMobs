@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
 import com.github.alexthe666.alexsmobs.entity.IFollower;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,7 +54,7 @@ public class FlyingAIFollowOwner extends Goal {
             return false;
         } else if (this.tameable.isOrderedToSit()) {
             return false;
-        } else if (this.tameable.distanceToSqr(livingentity) < (double)(this.minDist * this.minDist)) {
+        } else if (this.tameable.distanceToSqr(livingentity) < (double)(this.minDist * this.minDist) || isInCombat()) {
             return false;
         } else {
             this.owner = livingentity;
@@ -65,11 +66,19 @@ public class FlyingAIFollowOwner extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     public boolean canContinueToUse() {
-        if (this.tameable.isOrderedToSit()) {
+        if (this.tameable.isOrderedToSit() || isInCombat()) {
             return false;
         } else {
             return this.tameable.distanceToSqr(this.owner) > (double)(this.maxDist * this.maxDist);
         }
+    }
+
+    private boolean isInCombat() {
+        Entity owner = tameable.getOwner();
+        if(owner != null){
+            return tameable.distanceTo(owner) < 30 && tameable.getTarget() != null && tameable.getTarget().isAlive();
+        }
+        return false;
     }
 
     /**

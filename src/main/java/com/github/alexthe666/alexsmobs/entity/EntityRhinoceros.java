@@ -130,7 +130,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         super.tick();
         AnimationHandler.INSTANCE.updateAnimations(this);
         if (!level.isClientSide) {
-            if (this.getAnimation() == NO_ANIMATION && this.getTarget() == null) {
+            if (this.getAnimation() == NO_ANIMATION && (this.getTarget() == null || !this.getTarget().isAlive())) {
                 if (this.getDeltaMovement().lengthSqr() < 0.03D && (getRandom().nextInt(500) == 0 && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK))) {
                     this.setAnimation(ANIMATION_EAT_GRASS);
                 } else if (getRandom().nextInt(200) == 0) {

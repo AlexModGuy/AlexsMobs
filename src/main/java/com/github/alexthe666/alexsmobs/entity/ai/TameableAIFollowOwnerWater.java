@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityMimicOctopus;
 import com.github.alexthe666.alexsmobs.entity.IFollower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
@@ -43,7 +44,7 @@ public class TameableAIFollowOwnerWater extends Goal {
             return false;
         } else if (lvt_1_1_.isSpectator()) {
             return false;
-        } else if (!((IFollower)this.tameable).shouldFollow()) {
+        } else if (!((IFollower)this.tameable).shouldFollow() || isInCombat()) {
             return false;
         } else if (this.tameable.distanceToSqr(lvt_1_1_) < (double) (this.minDist * this.minDist)) {
             return false;
@@ -56,7 +57,7 @@ public class TameableAIFollowOwnerWater extends Goal {
     }
 
     public boolean canContinueToUse() {
-        if (this.tameable.getNavigation().isDone()) {
+        if (this.tameable.getNavigation().isDone() || isInCombat()) {
             return false;
         } else if (!((IFollower)this.tameable).shouldFollow()) {
             return false;
@@ -65,6 +66,14 @@ public class TameableAIFollowOwnerWater extends Goal {
         } else {
             return this.tameable.distanceToSqr(this.owner) > (double) (this.maxDist * this.maxDist);
         }
+    }
+
+    private boolean isInCombat() {
+        Entity owner = tameable.getOwner();
+        if(owner != null){
+            return tameable.distanceTo(owner) < 30 && tameable.getTarget() != null && tameable.getTarget().isAlive();
+        }
+        return false;
     }
 
     public void start() {

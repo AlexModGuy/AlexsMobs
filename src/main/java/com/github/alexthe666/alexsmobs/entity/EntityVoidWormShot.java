@@ -89,6 +89,9 @@ public class EntityVoidWormShot extends Entity {
         if (!this.leftOwner) {
             this.leftOwner = this.checkLeftOwner();
         }
+        if (this.tickCount > 400) {
+            this.remove(RemovalReason.DISCARDED);
+        }
         if (this.tickCount > 40) {
             Entity entity = this.getShooter();
             if(isPortalType()){

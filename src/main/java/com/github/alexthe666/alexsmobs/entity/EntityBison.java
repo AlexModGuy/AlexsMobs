@@ -190,7 +190,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             }
         }
         if (!level.isClientSide) {
-            if (this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && this.getTarget() == null) {
+            if (this.getDeltaMovement().lengthSqr() < 0.05D && this.getAnimation() == NO_ANIMATION && (this.getTarget() == null || !this.getTarget().isAlive())) {
                 if ((getRandom().nextInt(600) == 0 && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK))) {
                     this.setAnimation(ANIMATION_EAT);
                 }
