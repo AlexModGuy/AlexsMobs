@@ -60,6 +60,7 @@ public class FroststalkerAIMelee extends Goal {
     public void tick() {
         froststalker.setBipedal(true);
         froststalker.standFor(20);
+        target = froststalker.getTarget();
         boolean flag = false;
         if ((hasJumped || froststalker.isTackling()) && froststalker.isOnGround()) {
             hasJumped = false;
@@ -113,7 +114,7 @@ public class FroststalkerAIMelee extends Goal {
                 }
             }
         }
-        if (!froststalker.isOnGround()) {
+        if (target != null && !froststalker.isOnGround()) {
             froststalker.lookAt(target, 180F, 10F);
             froststalker.yBodyRot = froststalker.getYRot();
         }
