@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Thú mỏ vịt là sinh vật trông giống một sự kết hợp của nhiều con thú khác, nhưng hoàn toàn độc nhất một mình nó. Nó có thể được bắt gặp hiếm hoi ở biome sông của Overworld.
+Loài động vật có vú kỳ lạ này có gai độc ở chân nó, nó có thể dùng để gây hiệu ứng độc lên bất kỳ kẻ địch nào.
+Khứu giác, thính giác và thị lực yếu của Thú mỏ vịt đã khiến nó phải dựa vào điện để săn mồi và điều hướng. Dựa vào điều này, thú mỏ vịt bị thu hút tự nhiên bởi redstone khi cầm nó. Nếu được đút ăn redstone, thus mỏ vịt sẽ hồi lại độ nhạy điện của nó, và sẽ tìm kiếm một vài con giòi trong các khối đất sét gần đó.
+Khi tìm thức ăn, Thú mỏ vịt sẽ đào lên một vài quả cầu đất sét và con giòi, những thứ mà sau đó có thể nhặt. Nếu được đút ăn khối redstone, số lượng vật phẩm được đào lên sẽ tăng lên đáng kể.
+Như những sinh vật dưới nước khác, Thú mỏ vịt có thể được vận chuyển bằng xô nước. Nó có thể đuôc giao phối bằng Đuôi Tôm hùm, thức ăn yêu thích của nó.
+
