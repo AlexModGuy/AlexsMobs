@@ -23,6 +23,6 @@ description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
 [[dependencies.alexsmobs]]
     modId="forge"
     mandatory=true
-    versionRange="[36.0.42,)"
+    versionRange="[41.0.62,)"
     ordering="NONE"
     side="BOTH"

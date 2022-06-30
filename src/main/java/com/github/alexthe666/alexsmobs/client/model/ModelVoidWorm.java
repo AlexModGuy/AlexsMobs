@@ -22,7 +22,7 @@ public class ModelVoidWorm extends AdvancedEntityModel<EntityVoidWorm> {
 	private final AdvancedModelBox topjaw;
 	private final AdvancedModelBox bottomjaw;
 
-	public ModelVoidWorm() {
+	public ModelVoidWorm(float f) {
 		texWidth = 256;
 		texHeight = 256;
 
@@ -33,60 +33,60 @@ public class ModelVoidWorm extends AdvancedEntityModel<EntityVoidWorm> {
 		neck = new AdvancedModelBox(this);
 		neck.setPos(0.0F, -10.0F, 20.0F);
 		root.addChild(neck);
-		neck.setTextureOffset(0, 53).addBox(-10.0F, -10.0F, -28.0F, 20.0F, 20.0F, 28.0F, 0.0F, false);
+		neck.setTextureOffset(0, 53).addBox(-10.0F, -10.0F, -28.0F, 20.0F, 20.0F, 28.0F, f, false);
 
 		topfrills_left = new AdvancedModelBox(this);
 		topfrills_left.setPos(10.0F, -10.0F, -20.0F);
 		neck.addChild(topfrills_left);
 		setRotationAngle(topfrills_left, 0.0F, 0.0F, 0.7854F);
-		topfrills_left.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, 0.0F, false);
+		topfrills_left.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, f, false);
 
 		topfrills_right = new AdvancedModelBox(this);
 		topfrills_right.setPos(-10.0F, -10.0F, -20.0F);
 		neck.addChild(topfrills_right);
 		setRotationAngle(topfrills_right, 0.0F, 0.0F, -0.7854F);
-		topfrills_right.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, 0.0F, true);
+		topfrills_right.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, f, true);
 
 		bottomfrills_left = new AdvancedModelBox(this);
 		bottomfrills_left.setPos(10.0F, 10.0F, -20.0F);
 		neck.addChild(bottomfrills_left);
 		setRotationAngle(bottomfrills_left, 0.0F, 0.0F, 2.3562F);
-		bottomfrills_left.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, 0.0F, false);
+		bottomfrills_left.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, f, false);
 
 		bottomfrills_right = new AdvancedModelBox(this);
 		bottomfrills_right.setPos(-10.0F, 10.0F, -20.0F);
 		neck.addChild(bottomfrills_right);
 		setRotationAngle(bottomfrills_right, 0.0F, 0.0F, -2.3562F);
-		bottomfrills_right.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, 0.0F, true);
+		bottomfrills_right.setTextureOffset(71, 76).addBox(0.0F, -9.0F, -7.0F, 0.0F, 9.0F, 26.0F, f, true);
 
 		head = new AdvancedModelBox(this);
 		head.setPos(0.0F, 0.0F, -28.0F);
 		neck.addChild(head);
-		head.setTextureOffset(0, 0).addBox(-17.0F, -17.0F, -18.0F, 34.0F, 34.0F, 18.0F, 0.0F, false);
-		head.setTextureOffset(25, 102).addBox(17.0F, -5.0F, -14.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
-		head.setTextureOffset(0, 102).addBox(-19.0F, -5.0F, -14.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
+		head.setTextureOffset(0, 0).addBox(-17.0F, -17.0F, -18.0F, 34.0F, 34.0F, 18.0F, f, false);
+		head.setTextureOffset(25, 102).addBox(17.0F, -5.0F, -14.0F, 2.0F, 10.0F, 10.0F, f, false);
+		head.setTextureOffset(0, 102).addBox(-19.0F, -5.0F, -14.0F, 2.0F, 10.0F, 10.0F, f, false);
 
 		eye_bottom_r1 = new AdvancedModelBox(this);
 		eye_bottom_r1.setPos(0.0F, 18.0F, -9.0F);
 		head.addChild(eye_bottom_r1);
 		setRotationAngle(eye_bottom_r1, 0.0F, 0.0F, 1.5708F);
-		eye_bottom_r1.setTextureOffset(0, 53).addBox(-1.0F, -5.0F, -5.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
+		eye_bottom_r1.setTextureOffset(0, 53).addBox(-1.0F, -5.0F, -5.0F, 2.0F, 10.0F, 10.0F, f, false);
 
 		eye_top_r1 = new AdvancedModelBox(this);
 		eye_top_r1.setPos(0.0F, -18.0F, -9.0F);
 		head.addChild(eye_top_r1);
 		setRotationAngle(eye_top_r1, 0.0F, 0.0F, 1.5708F);
-		eye_top_r1.setTextureOffset(69, 54).addBox(-1.0F, -5.0F, -5.0F, 2.0F, 10.0F, 10.0F, 0.0F, false);
+		eye_top_r1.setTextureOffset(69, 54).addBox(-1.0F, -5.0F, -5.0F, 2.0F, 10.0F, 10.0F, f, false);
 
 		topjaw = new AdvancedModelBox(this);
 		topjaw.setPos(0.0F, 3.0F, -18.0F);
 		head.addChild(topjaw);
-		topjaw.setTextureOffset(98, 64).addBox(-5.0F, -10.0F, -16.0F, 10.0F, 10.0F, 16.0F, 0.0F, false);
+		topjaw.setTextureOffset(98, 64).addBox(-5.0F, -10.0F, -16.0F, 10.0F, 10.0F, 16.0F, f, false);
 
 		bottomjaw = new AdvancedModelBox(this);
 		bottomjaw.setPos(0.0F, -3.0F, -17.9F);
 		head.addChild(bottomjaw);
-		bottomjaw.setTextureOffset(89, 37).addBox(-5.0F, 0.0F, -16.0F, 10.0F, 10.0F, 16.0F, -0.1F, false);
+		bottomjaw.setTextureOffset(89, 37).addBox(-5.0F, 0.0F, -16.0F, 10.0F, 10.0F, 16.0F, f - 0.1F, false);
 		this.updateDefaultPose();
 	}
 

@@ -15,7 +15,7 @@ public class ModelVoidWormTail extends AdvancedEntityModel<EntityVoidWormPart> {
 	private final AdvancedModelBox frillsbottom_left;
 	private final AdvancedModelBox frillsbottom_right;
 
-	public ModelVoidWormTail() {
+	public ModelVoidWormTail(float f) {
 		texWidth = 256;
 		texHeight = 256;
 
@@ -26,31 +26,31 @@ public class ModelVoidWormTail extends AdvancedEntityModel<EntityVoidWormPart> {
 		body = new AdvancedModelBox(this);
 		body.setPos(0.0F, -19.0F, -16.0F);
 		root.addChild(body);
-		body.setTextureOffset(0, 0).addBox(-8.0F, -19.0F, 0.0F, 16.0F, 38.0F, 35.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-8.0F, -19.0F, 0.0F, 16.0F, 38.0F, 35.0F, f, false);
 
 		frillstop_left = new AdvancedModelBox(this);
 		frillstop_left.setPos(8.0F, -19.0F, 16.0F);
 		body.addChild(frillstop_left);
 		setRotationAngle(frillstop_left, 0.0F, 0.0F, 0.7854F);
-		frillstop_left.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, false);
+		frillstop_left.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, f, false);
 
 		frillstop_right = new AdvancedModelBox(this);
 		frillstop_right.setPos(-8.0F, -19.0F, 16.0F);
 		body.addChild(frillstop_right);
 		setRotationAngle(frillstop_right, 0.0F, 0.0F, -0.7854F);
-		frillstop_right.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, true);
+		frillstop_right.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, f, true);
 
 		frillsbottom_left = new AdvancedModelBox(this);
 		frillsbottom_left.setPos(8.0F, 19.0F, 16.0F);
 		body.addChild(frillsbottom_left);
 		setRotationAngle(frillsbottom_left, 0.0F, 0.0F, 2.5307F);
-		frillsbottom_left.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, false);
+		frillsbottom_left.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, f, false);
 
 		frillsbottom_right = new AdvancedModelBox(this);
 		frillsbottom_right.setPos(-8.0F, 19.0F, 16.0F);
 		body.addChild(frillsbottom_right);
 		setRotationAngle(frillsbottom_right, 0.0F, 0.0F, -2.5307F);
-		frillsbottom_right.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, 0.0F, true);
+		frillsbottom_right.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, f, true);
 		this.updateDefaultPose();
 	}
 
