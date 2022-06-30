@@ -35,6 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -225,6 +226,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
 
     public void handleEntityEvent(byte msg) {
         if(msg == 46){
+            this.gameEvent(GameEvent.TELEPORT);
             this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
         }
         super.handleEntityEvent(msg);
@@ -412,6 +414,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.getItem() == Items.BUCKET && this.isAlive()) {
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(this.getPickupSound(), 1.0F, 1.0F);
             ItemStack itemstack1 = this.getBucketItemStack();
             this.saveToBucketTag(itemstack1);

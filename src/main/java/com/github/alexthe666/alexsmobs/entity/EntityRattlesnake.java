@@ -24,6 +24,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
@@ -179,6 +180,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
         }
         if(isRattling()){
             if(loopSoundTick == 0){
+                this.gameEvent(GameEvent.ENTITY_ROAR);
                 this.playSound(AMSoundRegistry.RATTLESNAKE_LOOP.get(), this.getSoundVolume() * 0.5F, this.getVoicePitch());
             }
             loopSoundTick++;

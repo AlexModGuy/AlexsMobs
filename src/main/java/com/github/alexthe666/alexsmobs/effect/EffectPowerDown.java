@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class EffectPowerDown extends MobEffect {
 
@@ -25,6 +26,7 @@ public class EffectPowerDown extends MobEffect {
         }
         if(firstDuration == lastDuration){
             entity.playSound(AMSoundRegistry.APRIL_FOOLS_POWER_OUTAGE.get(), 1.5F, 1);
+            entity.gameEvent(GameEvent.ENTITY_ROAR);
         }
     }
 

@@ -42,6 +42,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -286,6 +287,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
         }
         if (ticksAntOnTongue > 10 && this.hasAntOnTongue()) {
             this.heal(6);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             this.setAntOnTongue(false);
         }
@@ -314,6 +316,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
                 heldItemTime = 0;
                 this.heal(4);
                 this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
+                this.gameEvent(GameEvent.EAT);
                 if (this.getMainHandItem().hasContainerItem()) {
                     this.spawnAtLocation(this.getMainHandItem().getContainerItem());
                 }

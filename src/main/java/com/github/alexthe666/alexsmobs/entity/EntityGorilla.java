@@ -30,6 +30,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -331,6 +332,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         if (isTame() && isBanana(itemstack) && this.getHealth() < this.getMaxHealth()) {
             this.heal(5);
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }
@@ -393,6 +395,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
                 }
             }
             if (eatingTime % 5 == 0) {
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.PANDA_EAT, this.getSoundVolume(), this.getVoicePitch());
             }
             if (eatingTime > 100) {

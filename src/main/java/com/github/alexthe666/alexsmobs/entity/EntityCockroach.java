@@ -26,6 +26,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.*;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -386,6 +387,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     public void shear(SoundSource category) {
         this.hurt(DamageSource.GENERIC, 0F);
         level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
+        this.gameEvent(GameEvent.ENTITY_INTERACT);
         this.setHeadless(true);
     }
 
@@ -393,6 +395,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     @Override
     public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, @javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
         world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
+        this.gameEvent(GameEvent.ENTITY_INTERACT);
         this.hurt(DamageSource.GENERIC, 0F);
         if (!world.isClientSide) {
             for (int i = 0; i < 3; i++) {

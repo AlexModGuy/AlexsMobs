@@ -34,6 +34,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
@@ -355,6 +356,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
             if (heldItemTime > 200 && canTargetItem(this.getMainHandItem())) {
                 heldItemTime = 0;
                 this.heal(4);
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
                 if (this.getMainHandItem().hasContainerItem()) {
                     this.spawnAtLocation(this.getMainHandItem().getContainerItem());

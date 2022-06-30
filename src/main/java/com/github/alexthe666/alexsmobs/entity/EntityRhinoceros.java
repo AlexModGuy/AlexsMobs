@@ -49,6 +49,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
@@ -420,6 +421,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         if(!isBaby() && (itemstack.getItem() == Items.POTION || itemstack.getItem() == Items.SPLASH_POTION || itemstack.getItem() == Items.LINGERING_POTION)){
             Potion contained = PotionUtils.getPotion(itemstack);
             if(applyPotion(contained)){
+                this.gameEvent(GameEvent.ENTITY_INTERACT);
                 this.playSound(SoundEvents.DYE_USE);
                 this.usePlayerItem(player, hand, itemstack);
                 ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
@@ -431,6 +433,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         }else if(itemstack.getItem() == Items.WHEAT && !trusts(player.getUUID())){
             addTrustedUUID(player.getUUID());
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.HORSE_EAT);
             return InteractionResult.SUCCESS;
         }

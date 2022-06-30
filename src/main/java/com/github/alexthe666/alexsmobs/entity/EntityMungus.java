@@ -41,6 +41,7 @@ import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.chunk.*;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
@@ -271,6 +272,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             if (AMConfig.mungusBiomeTransformationType == 2 && !level.isClientSide) {
                 transformBiome(center, biome);
             }
+            this.gameEvent(GameEvent.EXPLODE);
             this.playSound(SoundEvents.GENERIC_EXPLODE, this.getSoundVolume(), this.getVoicePitch());
             if (!isReverting()) {
                 BlockPos.betweenClosedStream(center.offset(-j, -k, -l), center.offset(j, k, l)).forEach(blockpos -> {
@@ -392,6 +394,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         if (shouldFollowMushroom(itemstack) && this.getMushroomCount() < 5) {
             this.entityData.set(REVERTING, false);
             BlockState state = getMushroomBlockstate(itemstack.getItem());
+            this.gameEvent(GameEvent.BLOCK_PLACE);
             this.playSound(SoundEvents.FUNGUS_PLACE, this.getSoundVolume(), this.getVoicePitch());
             if (this.getMushroomState() != null && state != null && state.getBlock() != this.getMushroomState().getBlock()) {
                 this.setMushroomCount(0);
@@ -622,6 +625,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             if (this.getMushroomState() != null && state != null && state.getBlock() != this.getMushroomState().getBlock()) {
                 this.setMushroomCount(0);
             }
+            this.gameEvent(GameEvent.BLOCK_PLACE);
             this.playSound(SoundEvents.FUNGUS_PLACE, this.getSoundVolume(), this.getVoicePitch());
             this.setMushroomState(state);
             this.setMushroomCount(this.getMushroomCount() + 1);
@@ -647,6 +651,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
 
     @Override
     public void shear(SoundSource category) {
+        this.gameEvent(GameEvent.ENTITY_INTERACT);
         level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
         if (!level.isClientSide() && this.getMushroomState() != null && this.getMushroomCount() > 0) {
             this.setMushroomCount(this.getMushroomCount() - 1);

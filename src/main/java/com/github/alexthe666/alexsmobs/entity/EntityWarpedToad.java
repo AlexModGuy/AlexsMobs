@@ -29,6 +29,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -238,6 +239,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && item == AMItemRegistry.MOSQUITO_LARVA.get()) {
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (getRandom().nextInt(3) == 0) {
                 this.tame(player);
@@ -250,6 +252,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         if (isTame() && itemstack.is(AMTagRegistry.INSECT_ITEMS)) {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.usePlayerItem(player, hand, itemstack);
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;

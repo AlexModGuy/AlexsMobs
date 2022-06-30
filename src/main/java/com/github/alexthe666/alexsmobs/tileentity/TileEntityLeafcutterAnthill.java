@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -168,6 +169,7 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
                     }
                 }
 
+                this.level.gameEvent(GameEvent.BLOCK_ACTIVATE, this.getBlockPos(), GameEvent.Context.of(this.getBlockState()));
                 this.level.playSound(null, blockpos, SoundEvents.BEEHIVE_EXIT, SoundSource.BLOCKS, 1.0F, 1.0F);
                 return this.level.addFreshEntity(entity);
 
@@ -198,6 +200,7 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
             if (this.level != null) {
 
                 BlockPos blockpos = this.getBlockPos();
+                this.level.gameEvent(GameEvent.BLOCK_ACTIVATE, this.getBlockPos(), GameEvent.Context.of(this.getBlockState()));
                 this.level.playSound(null, blockpos.getX(), blockpos.getY(), blockpos.getZ(), SoundEvents.BEEHIVE_ENTER, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
 

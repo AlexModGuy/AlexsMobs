@@ -22,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -68,6 +69,7 @@ public class EntityVoidPortal extends Entity {
             }
         }
         if(!madeOpenNoise){
+            this.gameEvent(GameEvent.ENTITY_PLACE);
             this.playSound(AMSoundRegistry.VOID_PORTAL_OPEN.get(), 1.0F, 1 + random.nextFloat() * 0.2F);
             madeOpenNoise = true;
         }
@@ -146,6 +148,7 @@ public class EntityVoidPortal extends Entity {
         this.setLifespan(this.getLifespan() - 1);
         if(this.getLifespan() <= 20){
             if(!madeCloseNoise){
+                this.gameEvent(GameEvent.ENTITY_PLACE);
                 this.playSound(AMSoundRegistry.VOID_PORTAL_CLOSE.get(), 1.0F, 1 + random.nextFloat() * 0.2F);
                 madeCloseNoise = true;
             }

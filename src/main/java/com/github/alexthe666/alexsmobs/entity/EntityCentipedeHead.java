@@ -29,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.RandomSource;
 
@@ -128,6 +129,7 @@ public class EntityCentipedeHead extends Monster {
                 }
             }
             this.playSound(AMSoundRegistry.CENTIPEDE_ATTACK.get(), this.getSoundVolume(), this.getVoicePitch());
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             return true;
         } else {
             return false;

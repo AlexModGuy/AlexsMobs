@@ -50,6 +50,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -476,6 +477,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && itemstack.is(Items.SWEET_BERRIES)) {
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.FOX_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (getRandom().nextInt(2) == 0) {
                 this.tame(player);
@@ -488,6 +490,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         if (isTame() && itemstack.is(AMTagRegistry.INSECT_ITEMS)) {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.usePlayerItem(player, hand, itemstack);
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.FOX_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;

@@ -44,6 +44,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.tags.BlockTags;
@@ -239,6 +240,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && item == Items.CARROT) {
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.HORSE_EAT, this.getSoundVolume(), this.getVoicePitch());
             carrotFeedings++;
             if (carrotFeedings > 10 && getRandom().nextInt(2) == 0 || carrotFeedings > 15) {
@@ -251,6 +253,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         }
         if (isTame() && this.getHealth() < this.getMaxHealth() && item.isEdible() && item.getFoodProperties() != null && !item.getFoodProperties().isMeat()) {
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.HORSE_EAT, this.getSoundVolume(), this.getVoicePitch());
             this.heal(item.getFoodProperties().getNutrition());
             return InteractionResult.SUCCESS;
@@ -530,6 +533,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
                         AlexsMobs.sendMSGToAll(new MessageKangarooEat(this.getId(), foodStack));
                         this.heal(foodStack.getItem().getFoodProperties().getNutrition() * 2);
                         foodStack.shrink(1);
+                        this.gameEvent(GameEvent.EAT);
                         this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
                     }
                 }

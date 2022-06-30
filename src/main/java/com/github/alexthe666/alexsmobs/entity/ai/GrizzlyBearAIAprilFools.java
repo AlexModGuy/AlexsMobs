@@ -14,6 +14,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.EnumSet;
 
@@ -100,6 +101,7 @@ public class GrizzlyBearAIAprilFools extends Goal {
                     if(bear.getAprilFoolsFlag() != 5){
                         bear.level.broadcastEntityEvent(bear, (byte) 68);
                         bear.setAprilFoolsFlag(5);
+                        bear.gameEvent(GameEvent.ENTITY_ROAR);
                         bear.playSound(AMSoundRegistry.APRIL_FOOLS_SCREAM.get(), 3, 1);
                         musicBoxTimer = 0;
                     }

@@ -46,6 +46,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -302,6 +303,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             this.permSnow = true;
             this.setSnowy(true);
             this.playSound(SoundEvents.SNOW_PLACE, this.getSoundVolume(), this.getVoicePitch());
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             return InteractionResult.SUCCESS;
         }
         if (item instanceof ShovelItem && this.isSnowy() && !level.isClientSide) {
@@ -311,6 +313,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             }
             this.setSnowy(false);
             this.playSound(SoundEvents.SNOW_BREAK, this.getSoundVolume(), this.getVoicePitch());
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             return InteractionResult.SUCCESS;
         }
         return type;
@@ -382,6 +385,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     @Override
     public void shear(SoundSource category) {
         level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
+        this.gameEvent(GameEvent.ENTITY_INTERACT);
         this.setSheared(true);
         this.feedingsSinceLastShear = 0;
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
@@ -406,6 +410,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     @Override
     public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, @javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
         world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
+        this.gameEvent(GameEvent.ENTITY_INTERACT);
         List<ItemStack> list = new ArrayList<>();
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
             list.add(new ItemStack(AMItemRegistry.BISON_FUR.get()));

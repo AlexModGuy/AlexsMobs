@@ -48,6 +48,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -621,6 +622,7 @@ public class EntityCachalotWhale extends Animal {
                         if (echoTimer % 10 == 0) {
                             if (echoTimer % 40 == 0) {
                                 this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK.get(), this.getSoundVolume(), this.getVoicePitch());
+                                this.gameEvent(GameEvent.ENTITY_ROAR);
                             }
                             EntityCachalotEcho echo = new EntityCachalotEcho(this.level, this);
                             float radius = this.headPart.getBbWidth() * 0.5F;

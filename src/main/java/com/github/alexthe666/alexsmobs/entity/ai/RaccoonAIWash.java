@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -75,6 +76,7 @@ public class RaccoonAIWash extends Goal {
                 this.raccoon.setWashPos(waterPos);
                 this.raccoon.lookForWaterBeforeEatingTimer = 0;
                 if(washTime % 10 == 0){
+                    this.raccoon.gameEvent(GameEvent.BLOCK_ACTIVATE);
                     this.raccoon.playSound(SoundEvents.GENERIC_SWIM, 0.7F, 0.5F + raccoon.getRandom().nextFloat());
                 }
                 washTime++;

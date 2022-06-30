@@ -37,6 +37,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.DifficultyInstance;
@@ -248,6 +249,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                             dismountCooldown = 100;
                             if (mount instanceof EnderMan) {
                                 this.setMissingEye(false);
+                                this.gameEvent(GameEvent.EAT);
                                 this.playSound(SoundEvents.ENDER_EYE_DEATH, this.getSoundVolume(), this.getVoicePitch());
                                 this.heal(5);
                                 ((EnderMan) mount).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 400));
@@ -271,6 +273,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                                             target.addEffect(new MobEffectInstance(AMEffectRegistry.ENDER_FLU.get(), duration, Math.min(level + 1, 4)));
                                         }
                                         this.heal(5);
+                                        this.gameEvent(GameEvent.ENTITY_ROAR);
                                         this.playSound(SoundEvents.ITEM_BREAK, this.getSoundVolume(), this.getVoicePitch());
                                         this.setMissingEye(true);
                                     }

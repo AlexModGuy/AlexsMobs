@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.antlr.v4.runtime.misc.Triple;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
@@ -383,6 +384,7 @@ public class ServerEvents {
                 BlockPos blockpos = ((BlockHitResult) raytraceresult).getBlockPos();
                 if (event.getWorld().mayInteract(player, blockpos)) {
                     if (event.getWorld().getFluidState(blockpos).is(FluidTags.LAVA)) {
+                        player.gameEvent(GameEvent.ITEM_INTERACT_START);
                         event.getWorld().playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
                         player.awardStat(Stats.ITEM_USED.get(Items.GLASS_BOTTLE));
                         player.setSecondsOnFire(6);
@@ -416,6 +418,7 @@ public class ServerEvents {
                     if (!event.getPlayer().isCreative()) {
                         event.getItemStack().shrink(1);
                     }
+                    event.getTarget().gameEvent(GameEvent.EAT);
                     event.getTarget().playSound(SoundEvents.GENERIC_EAT, 1.0F, 0.5F + event.getPlayer().getRandom().nextFloat());
                     if (event.getPlayer().getRandom().nextFloat() < 0.4F) {
                         living.removeEffect(AMEffectRegistry.ENDER_FLU.get());
@@ -497,6 +500,7 @@ public class ServerEvents {
             }
             if (flag) {
                 event.setCanceled(true);
+                event.getPlayer().gameEvent(GameEvent.BLOCK_PLACE);
                 event.getPlayer().playSound(SoundEvents.SAND_BREAK, 1, 1);
                 event.getPlayer().getCooldowns().addCooldown(Items.STICK, 30);
                 event.setCancellationResult(InteractionResult.SUCCESS);

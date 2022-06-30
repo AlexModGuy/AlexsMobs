@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -75,6 +76,7 @@ public class PlatypusAIDigForItems extends Goal {
             digTime++;
             if (digTime % 5 == 0) {
                 SoundEvent sound = platypus.level.getBlockState(digPos).getSoundType().getHitSound();
+                platypus.gameEvent(GameEvent.BLOCK_ACTIVATE);
                 platypus.playSound(sound, 1, 0.5F + platypus.getRandom().nextFloat() * 0.5F);
             }
             int itemDivis = (int) Math.floor(100F / maxDroppedItems);

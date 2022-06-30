@@ -29,6 +29,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
@@ -198,6 +199,7 @@ public class EntityCrimsonMosquito extends Monster {
         float f = Mth.sqrt((float)(d0 * d0 + d2 * d2)) * 0.2F;
         llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 10.0F);
         if (!this.isSilent()) {
+            this.gameEvent(GameEvent.PROJECTILE_SHOOT);
             this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_SPIT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
         if (this.getBloodLevel() > 0) {
@@ -260,6 +262,7 @@ public class EntityCrimsonMosquito extends Monster {
                                 this.setFlying(false);
                                 flightTicks = -150 - random.nextInt(200);
                             }
+                            this.gameEvent(GameEvent.EAT);
                             this.playSound(SoundEvents.HONEY_DRINK, this.getSoundVolume(), this.getVoicePitch());
                             this.setBloodLevel(this.getBloodLevel() + 1);
                             if (this.getBloodLevel() > 3) {
@@ -446,6 +449,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
         if(isFlying()){
             if(loopSoundTick == 0){
+                this.gameEvent(GameEvent.ENTITY_ROAR);
                 this.playSound(AMSoundRegistry.MOSQUITO_LOOP.get(), this.getSoundVolume(), this.getVoicePitch());
             }
             loopSoundTick++;

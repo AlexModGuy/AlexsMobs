@@ -46,6 +46,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -262,6 +263,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             if (heldItemTime > 10 && canTargetItem(this.getMainHandItem())) {
                 heldItemTime = 0;
                 this.heal(4);
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
                 if (this.getMainHandItem().hasContainerItem()) {
                     this.spawnAtLocation(this.getMainHandItem().getContainerItem());

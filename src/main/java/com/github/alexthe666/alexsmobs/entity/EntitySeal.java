@@ -25,6 +25,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -460,6 +461,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     public void onGetItem(ItemEntity e) {
         if (e.getItem().is(ItemTags.FISHES)) {
             fishFeedings++;
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (fishFeedings >= 3) {
                 feederUUID = e.getThrower();

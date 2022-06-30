@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.util.Mth;
@@ -260,6 +261,7 @@ public class EntityVoidWormShot extends Entity {
         } else if (raytraceresult$type == HitResult.Type.BLOCK) {
             this.onHitBlock((BlockHitResult) result);
         }
+        this.gameEvent(GameEvent.ENTITY_DIE);
         this.playSound(SoundEvents.GLASS_BREAK, 1F, 0.5F);
         Entity entity = this.getShooter();
     }

@@ -20,6 +20,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -396,6 +397,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
     @Override
     public void shear(SoundSource category) {
         this.level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
+        this.gameEvent(GameEvent.ENTITY_INTERACT);
         if (!this.level.isClientSide()) {
             if (random.nextFloat() < this.getMoss() * 0.05F) {
                 this.spawnAtLocation(AMItemRegistry.SPIKED_SCUTE.get());
@@ -410,6 +412,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
     @Override
     public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, @javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
         world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
+        this.gameEvent(GameEvent.ENTITY_INTERACT);
         if (!world.isClientSide()) {
             if (random.nextFloat() < this.getMoss() * 0.05F) {
                 this.setMoss(0);

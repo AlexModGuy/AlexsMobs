@@ -31,6 +31,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -243,6 +244,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             tossedItem.shoot(d0, d1 + (double) (f * 0.2F), d2, hasDart() ? 1.15F : 0.75F, 8.0F);
             if (!this.isSilent()) {
                 this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.WITCH_THROW, this.getSoundSource(), 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
+                this.gameEvent(GameEvent.PROJECTILE_SHOOT);
             }
             this.level.addFreshEntity(tossedItem);
             this.setAttackDecision(this.getDartTarget());
@@ -449,6 +451,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         }
         if (isTame() && (EntityGorilla.isBanana(itemstack) || getAllFoods().test(itemstack) && !isFood(itemstack)) && this.getHealth() < this.getMaxHealth()) {
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
             this.heal(5);
             return InteractionResult.SUCCESS;
@@ -514,6 +517,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     @Override
     public void onGetItem(ItemEntity e) {
         this.heal(5);
+        this.gameEvent(GameEvent.EAT);
         this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
         if (EntityGorilla.isBanana(e.getItem())) {
             if (getRandom().nextInt(4) == 0) {

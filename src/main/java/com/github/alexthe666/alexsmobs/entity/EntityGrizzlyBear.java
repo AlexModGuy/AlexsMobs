@@ -41,6 +41,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.DifficultyInstance;
@@ -295,6 +296,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             this.usePlayerItem(player, hand, itemstack);
             this.permSnow = true;
             this.setSnowy(true);
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(SoundEvents.SNOW_PLACE, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }
@@ -304,6 +306,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                 itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer)player : null);
             }
             this.setSnowy(false);
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(SoundEvents.SNOW_BREAK, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }
@@ -391,6 +394,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                 this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
             if(eatingTime % 5 == 0){
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             }
             if(eatingTime > 100){

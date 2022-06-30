@@ -33,6 +33,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
@@ -340,6 +341,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             if (heldItemTime > 60 && isCrowEdible(this.getMainHandItem()) && (!this.isTame() || this.getHealth() < this.getMaxHealth())) {
                 heldItemTime = 0;
                 this.heal(4);
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.PARROT_EAT, this.getSoundVolume(), this.getVoicePitch());
                 if (this.getMainHandItem().getItem() == Items.PUMPKIN_SEEDS && seedThrowerID != null && !this.isTame()) {
                     if (getRandom().nextFloat() < 0.3F) {

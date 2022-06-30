@@ -19,6 +19,7 @@ import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -131,6 +132,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
         if (itemstack.getItem() == Items.LAVA_BUCKET && this.isAlive()) {
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(this.getPickupSound(), 1.0F, 1.0F);
             ItemStack itemstack1 = this.getBucketItemStack();
             this.saveToBucketTag(itemstack1);

@@ -41,6 +41,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -407,6 +408,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                 if (this.isBaby()) {
                     if (level.getBlockState(this.blockPosition()).getMaterial().isReplaceable() && random.nextInt(3) == 0) {
                         level.setBlockAndUpdate(this.blockPosition(), Blocks.BROWN_MUSHROOM.defaultBlockState());
+                        this.gameEvent(GameEvent.BLOCK_DESTROY);
                         this.playSound(SoundEvents.CROP_PLANTED, this.getSoundVolume(), this.getVoicePitch());
                     }
                 }

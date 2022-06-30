@@ -41,6 +41,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -263,6 +264,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             if (heldItemTime > 30 && canTargetItem(this.getMainHandItem())) {
                 heldItemTime = 0;
                 this.heal(4);
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.DOLPHIN_EAT, this.getSoundVolume(), this.getVoicePitch());
                 if (this.getMainHandItem().getItem() == AMItemRegistry.COSMIC_COD.get() && fishThrowerID != null && !this.isTame()) {
                     if (getRandom().nextFloat() < 0.3F) {

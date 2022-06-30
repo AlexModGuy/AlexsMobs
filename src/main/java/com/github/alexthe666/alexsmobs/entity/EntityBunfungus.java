@@ -38,6 +38,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
@@ -243,6 +244,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
         }
         if (this.getAnimation() == ANIMATION_EAT) {
             if (this.getAnimationTick() % 4 == 0) {
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             }
             if (this.getAnimationTick() >= 18) {

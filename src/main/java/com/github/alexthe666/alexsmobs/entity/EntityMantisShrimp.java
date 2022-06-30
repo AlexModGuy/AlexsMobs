@@ -23,6 +23,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -339,6 +340,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && item == Items.TROPICAL_FISH) {
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             fishFeedings++;
             if (fishFeedings > 10 && getRandom().nextInt(6) == 0 || fishFeedings > 30) {
@@ -352,6 +354,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         if (isTame() && itemstack.is(ItemTags.FISHES)) {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.usePlayerItem(player, hand, itemstack);
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;

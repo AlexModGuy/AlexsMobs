@@ -47,6 +47,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -201,6 +202,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         }
         if(inSeaPickle && this.canSpit()){
             if(this.getSpitTime() == 0){
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.PLAYER_BURP, this.getSoundVolume(), this.getVoicePitch());
             }
             if(vomitTo != null){
@@ -439,6 +441,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             this.onItemPickup(itemEntity);
             this.take(itemEntity, itemstack.getCount());
             itemEntity.discard();
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
         }
     }
@@ -471,6 +474,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             CompoundTag tag = new CompoundTag();
             mob.addAdditionalSaveData(tag);
             this.setSwallowedData(tag);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             return true;
         }
@@ -612,6 +616,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
                     if(food instanceof Player){
                         food.hurt(DamageSource.mobAttack(catfish), 12000);
                     }else if (catfish.swallowEntity(food)) {
+                        catfish.gameEvent(GameEvent.EAT);
                         catfish.playSound(SoundEvents.GENERIC_EAT, catfish.getSoundVolume(), catfish.getVoicePitch());
                         food.discard();
                     }

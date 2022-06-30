@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -93,6 +94,7 @@ public class ItemDimensionalCarver extends Item {
         player.swing(player.getUsedItemHand());
         RandomSource random = player.getRandom();
         if (count % 5 == 0) {
+            player.gameEvent(GameEvent.ITEM_INTERACT_START);
             player.playSound(SoundEvents.NETHERITE_BLOCK_HIT, 1, 0.5F + random.nextFloat());
         }
         boolean flag = false;
@@ -110,6 +112,7 @@ public class ItemDimensionalCarver extends Item {
                 }
             }
             if (count == 1 && !player.level.isClientSide) {
+                player.gameEvent(GameEvent.ITEM_INTERACT_START);
                 player.playSound(SoundEvents.GLASS_BREAK, 1, 0.5F);
                 EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(player.level);
                 portal.setPos(x, y, z);

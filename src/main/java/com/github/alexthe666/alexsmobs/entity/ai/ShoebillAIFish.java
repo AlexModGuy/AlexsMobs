@@ -5,6 +5,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -62,6 +63,7 @@ public class ShoebillAIFish extends Goal {
                     bird.setAnimation(EntityShoebill.ANIMATION_FISH);
                 }
                 if(idleTime > 45 && bird.getAnimation() == EntityShoebill.ANIMATION_FISH){
+                    this.bird.gameEvent(GameEvent.ITEM_INTERACT_START);
                     this.bird.playSound(SoundEvents.GENERIC_SPLASH, 0.7F, 0.5F + bird.getRandom().nextFloat());
                     this.bird.resetFishingCooldown();
                     this.spawnFishingLoot();

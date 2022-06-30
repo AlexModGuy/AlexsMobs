@@ -43,6 +43,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.Registry;
@@ -444,6 +445,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         InteractionResult type = super.mobInteract(player, hand);
         if (!isTame() && item == Items.SPIDER_EYE) {
             this.usePlayerItem(player, hand, itemstack);
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             spiderFeedings++;
             if (spiderFeedings >= 15 && getRandom().nextInt(6) == 0 || spiderFeedings > 25) {
@@ -457,6 +459,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         if (isTame() && itemstack.is(ItemTags.FLOWERS)) {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.usePlayerItem(player, hand, itemstack);
+                this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.heal(5);
                 return InteractionResult.SUCCESS;

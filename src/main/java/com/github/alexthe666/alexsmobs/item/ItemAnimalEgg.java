@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.Level;
 
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.Random;
 
@@ -27,6 +28,7 @@ public class ItemAnimalEgg extends Item {
 
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
+        playerIn.gameEvent(GameEvent.ITEM_INTERACT_START);
         worldIn.playSound((Player)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.EGG_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
         if (!worldIn.isClientSide) {
             ThrowableItemProjectile eggentity;

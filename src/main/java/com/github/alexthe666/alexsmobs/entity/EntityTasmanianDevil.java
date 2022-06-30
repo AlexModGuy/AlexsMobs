@@ -26,6 +26,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
@@ -205,6 +206,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
             }
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() == 1){
+            this.gameEvent(GameEvent.ENTITY_ROAR);
             this.playSound(AMSoundRegistry.TASMANIAN_DEVIL_ROAR.get(), this.getSoundVolume() * 2F, this.getVoicePitch());
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() > 3){
@@ -240,6 +242,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (item == Items.ROTTEN_FLESH && this.getAnimation() != ANIMATION_HOWL) {
+            this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.FOX_EAT, this.getSoundVolume(), this.getVoicePitch());
             this.spawnAtLocation(item.getContainerItem(itemstack));
             if (!player.isCreative()) {
@@ -302,6 +305,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
 
     @Override
     public void onGetItem(ItemEntity e) {
+        this.gameEvent(GameEvent.EAT);
         if(e.getItem().getItem() == Items.BONE){
             dropBonemeal();
             this.playSound(SoundEvents.SKELETON_STEP, this.getSoundVolume(), this.getVoicePitch());

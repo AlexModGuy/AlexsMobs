@@ -19,6 +19,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.*;
@@ -165,6 +166,7 @@ public class EntityGuster extends Monster {
         sghot.shoot(d0, d1 + (double) f, d2, 1F, 10.0F);
         sghot.setVariant(this.getVariant());
         if (!this.isSilent()) {
+            this.gameEvent(GameEvent.PROJECTILE_SHOOT);
             this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SAND_BREAK, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
         this.level.addFreshEntity(sghot);

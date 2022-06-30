@@ -48,6 +48,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -310,6 +311,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
             this.setBurrowed(false);
             this.setDisturbed(true);
             this.burrowCooldown += 150 + random.nextInt(120);
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(SoundEvents.SAND_BREAK, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }

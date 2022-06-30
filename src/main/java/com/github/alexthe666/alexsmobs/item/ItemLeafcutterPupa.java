@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.Tags;
 
 import net.minecraft.world.item.Item.Properties;
@@ -32,6 +33,9 @@ public class ItemLeafcutterPupa extends Item {
         BlockState blockstate = world.getBlockState(blockpos);
         if (blockstate.is(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON) && world.getBlockState(blockpos.below()).is(AMTagRegistry.LEAFCUTTER_PUPA_USABLE_ON)) {
             Player playerentity = context.getPlayer();
+            if(playerentity != null){
+                playerentity.gameEvent(GameEvent.BLOCK_PLACE);
+            }
             world.playSound(playerentity, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             if (!world.isClientSide) {
                 world.setBlock(blockpos, AMBlockRegistry.LEAFCUTTER_ANTHILL.get().defaultBlockState(), 11);

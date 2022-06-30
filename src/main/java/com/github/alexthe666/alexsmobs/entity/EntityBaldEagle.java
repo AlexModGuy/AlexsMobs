@@ -35,6 +35,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelAccessor;
@@ -383,10 +384,12 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                     if (!player.isCreative()) {
                         itemstack.shrink(1);
                     }
+                    this.gameEvent(GameEvent.ENTITY_INTERACT);
                     this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, this.getSoundVolume(), this.getVoicePitch());
                     return InteractionResult.SUCCESS;
                 }
             } else if (item == Items.SHEARS && this.hasCap()) {
+                this.gameEvent(GameEvent.ENTITY_INTERACT);
                 this.playSound(SoundEvents.SHEEP_SHEAR, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
                 if (!level.isClientSide) {
                     if (player instanceof ServerPlayer) {

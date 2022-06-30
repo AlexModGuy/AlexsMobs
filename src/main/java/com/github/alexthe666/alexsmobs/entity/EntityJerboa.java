@@ -48,6 +48,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -239,6 +240,7 @@ public class EntityJerboa extends Animal {
         InteractionResult type = super.mobInteract(player, hand);
         if (type != InteractionResult.SUCCESS && !isFood(itemstack) && itemstack.is(Tags.Items.SEEDS)) {
             this.setSleeping(false);
+            this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(SoundEvents.PARROT_EAT, this.getVoicePitch(), this.getSoundVolume());
             for (int i = 0; i < 6 + random.nextInt(3); i++) {
                 double d2 = this.random.nextGaussian() * 0.02D;
