@@ -122,7 +122,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     public static BlockState getMushroomBlockstate(Item item) {
         if (item instanceof BlockItem) {
             ResourceLocation name = ForgeRegistries.ITEMS.getKey(item);
-            if (name != null && MUSHROOM_TO_BIOME.containsKey(name)) {
+            if (name != null && MUSHROOM_TO_BIOME.containsKey(name.toString())) {
                 return ((BlockItem) item).getBlock().defaultBlockState();
             }
         }
