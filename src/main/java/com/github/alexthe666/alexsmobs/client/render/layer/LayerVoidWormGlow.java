@@ -49,16 +49,16 @@ public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLa
         boolean special = isSpecialRenderer(texture);
 
         if (isGlowing(worm) || special) {
-            if(worm instanceof EntityVoidWormPart body){
-                this.layerModel = body.isTail() ? tailModel : bodyModel;
-            }
-            this.layerModel.setupAnim(worm, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             if(special){
+                if(worm instanceof EntityVoidWormPart body){
+                    this.layerModel = body.isTail() ? tailModel : bodyModel;
+                }
+                this.layerModel.setupAnim(worm, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
                 VertexConsumer consumer = VertexMultiConsumer.create(bufferIn.getBuffer(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY), bufferIn.getBuffer(RenderType.entityCutoutNoCull(texture)));
                 this.layerModel.renderToBuffer(matrixStackIn, consumer, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             }else{
                 float f = getAlpha(worm);
-                this.layerModel.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(texture)), 240, LivingEntityRenderer.getOverlayCoords(worm, 1.0F), 1.0F, 1.0F, 1.0F, f);
+                this.getParentModel().renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(texture)), 240, LivingEntityRenderer.getOverlayCoords(worm, 1.0F), 1.0F, 1.0F, 1.0F, f);
             }
         }
     }
