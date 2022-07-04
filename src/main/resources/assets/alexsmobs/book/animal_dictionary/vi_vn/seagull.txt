@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mòng biển là loài chim size M được tìm thấy trên bãi biển. Những con chim này thì đáng chú ý bởi khả năng ăn cắp vặt đồ ăn của nó, cho dù đồ ăn được cầm trên tay hay để trong hotbar.
+Chúng cũng sẽ nhặt và ăn bất kỳ đồ ăn nào ở trên mặt đất. Mòng biển chỉ có thể ăn cắp vặt từ một đến ba phút một lần, vì vậy mặc dù phiền phức nhưng chúng không phải là một mối đe doạ.
+<NEWLINE>
+Tuy nhiên, mòng biển không chỉ là loài chim phiền phức. Nếu bạn có bản đồ kho báu trong tay, bạn có thể ném Đuôi tôm hùm xuống đất. Mòng biển mà ăn cái này sẽ thưởng người cho ăn bằng cách ngồi ngay phía trên kho báu bị chôn vùi.
+Điều này có thể rất giúp ích trong việc nỗ lực định vị kho báu mỗi khi bạn đến đủ gần ký hiệu "X" trên bản đồ. Mòng biển cũng có thể được lai tạo bằng cá tuyết sống.

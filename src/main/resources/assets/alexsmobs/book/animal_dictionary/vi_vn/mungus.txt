@@ -1,0 +1,16 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mungus là sinh vật nấm kỳ lạ được tìm thấy ở Cánh đồng Nấm. Những sinh vật kỳ dị này có họ hàng với Người bảo vệ và Strider, và vẻ ngoài trông giống với chúng.
+Không giống như tổ tiên Người bảo vệ của chúng, Mungus hoàn toàn thụ động. Thỉnh thoảng, chúng có thể được trông thấy với một cây nấm mọc ra từ lớp lông từ khuẩn ti thể bao phủ chúng.
+Nếu được đút ăn nhiều loại nấm khác nhau, nhiều cây nấm sẽ mọc rễ trên người Mungus. Với một hay nhiều cây nấm, Mungus sẽ bắn ra tia tương tự như của Người bảo vệ vào
+những cây nấm cùng loại gần đấy. Chúng sẽ dùng cái này để làm loại nấm đó mọc nhiều hơn, và nếu nấm mọc trên khuẩn ti thể thì nó có thể trở thành cây nấm khổng lồ. Điều này sẽ vắt
+kiệt sức Mungus và làm giảm số nấm trên người nó. Nếu hẹo với năm cây nấm trên lưng, Mungus sẽ phun trào với một vụ nổ dữ dội, và chuyển đổi khu vực xung quanh
+thành biome liên quan đến loại nấm của chúng: Đối với nấm đỏ và nâu, thành Cánh đồng Nấm; và đối với nấm đỏ thẫm và nấm kỳ dị, thành rừng đỏ thẫm và rừng kỳ dị tương ứng.
+Sự biến đổi của một biome có thể được hoàn tác bằng cách đút Mungus ăn khoai tây độc. Mungus có thể được lai tạo bằng Bào tử Mungal, thứ mà thỉnh thoảng rơi ra từ Mungus vài ngày một lần.
+
+
+
+
