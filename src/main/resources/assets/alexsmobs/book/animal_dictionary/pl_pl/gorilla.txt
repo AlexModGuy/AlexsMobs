@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Goryl to masywna małpa występująca w grupach w Dżungli. Goryle są pokojowymi obrońcami dżungli, ale to nie czyni ich
+czyni je bezbronnymi. Goryle mogą zadać ogromne obrażenia, jeśli zostaną sprowokowane. Każda grupa goryli ma jednego przywódcę, Srebrnogrzbietego,
+który dowodzi swoim oddziałem w dżungli. Są dwa do trzech razy silniejsi niż każdy inny goryl i często można ich zobaczyć
+uderzających się w klatkę piersiową, gdy są zdenerwowani. Dzieci goryli często można znaleźć na plecach rodziców, gdy żerują.
+<NEWLINE>
+Goryle mogą stać się bardziej ufne i przyjazne, jeśli poda się im banany. Banany można zdobyć niszcąc liście dżungli. Jeśli podano
+wystarczającej ilości bananów, goryle mogą być zmuszone do siedzenia lub wędrowania i automatycznie przyjdą w obronie swojego nowego przyjaciela.
