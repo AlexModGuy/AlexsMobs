@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Ustonogi to gigantyczne skorupiaki występujące w rafach ciepłych oceanów. Te gigantyczne krewetki są wyposażone w dwie potężne pięści, które mogą poruszać się wystarczająco szybko, aby spalić swoją ofiarę.
+Pięści te mogą również poruszać się wystarczająco szybko, aby odrzucić przeciwników do tyłu i przebić się przez bloki. Chociaż neutralne, nie byłoby mądre, aby je rozgniewać. Ustonog poluje na 
+ryby tropikalne, kałamarnice, warany, a przede wszystkim shulkery, ich ulubiony przysmak.
+<NEWLINE>
+Ustonogi można oswoić karmiąc je 10 do 30 rybami tropikalnymi. Jeśli Ustonog jest poza wodą dłużej niż 5 minut, zacznie wysychać.
+Można temu zapobiec podając oswojonym Ustonogom wiadra z wodą podczas skradania się, dzięki czemu mogą one żyć poza wodą w nieskończoność. Oswojone ustonogi można zmusić do podążania, siedzenia, wędrowania i niszczenia bloków.
+Kiedy skradasz się trzymając blok, możesz dać ten blok Ustonogowi. Ustonog będzie wtedy szukać i łamać wszelkie bloki pasujące do tego trzymanego w pięści, jeśli zostanie jej to zlecone.
+Ustonog może być uleczona dowolnym rodzajem ryby, gdy jest ranna, i może być rozmnażana Ogonem Homara.
