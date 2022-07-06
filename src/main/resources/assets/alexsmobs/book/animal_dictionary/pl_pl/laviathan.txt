@@ -11,6 +11,6 @@ Lewiatany mogą być dosiadane i kontrolowane poprzez stworzenie i wyposażenie 
 <NEWLINE>
 Siodło może pomieścić do czterech pasażerów, a hełm pozwala kontrolować ruchy Lewiatana za pomocą długich lejców. Lewiatany wyposażone w oba te elementy są mniej skłonne do ucieczki i zanurzenia się w lawie.
 <NEWLINE>
-Lewiatany znane są z tego, że są jednymi z najskuteczniejszych łowców Karmazynowych Komarów, często przedostają się na powierzchnię lawy i wypuszczają dym z otworów wentylacyjnych na plecach i głowach. Dym ten wabi owady, które następnie są szybko chwytane w dziób przez Lewiatana.
+Lewiatany znane są z tego, że są jednymi z najskuteczniejszych łowców Szkarłatnych Komarów, często przedostają się na powierzchnię lawy i wypuszczają dym z otworów wentylacyjnych na plecach i głowach. Dym ten wabi owady, które następnie są szybko chwytane w dziób przez Lewiatana.
 <NEWLINE>
-Będąc stworzeniami o konsystencji Lawy, można by się spodziewać, że tym gigantycznym gadom zaszkodzi woda. Jednak obecnie uważa się, że pod wpływem wody bestie te "krzepną" w silniejszą, obsydianową formę. Lewiatany można hodować za pomocą Larwy Karmazynowego Komara i leczyć za pomocą Magmowego Kremu.
+Będąc stworzeniami o konsystencji Lawy, można by się spodziewać, że tym gigantycznym gadom zaszkodzi woda. Jednak obecnie uważa się, że pod wpływem wody bestie te "krzepną" w silniejszą, obsydianową formę. Lewiatany można hodować za pomocą Larwy Szkarłatnego Komara i leczyć za pomocą Magmowego Kremu.
