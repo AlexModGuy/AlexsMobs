@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Kiến xén lá loài côn trùng vô cùng nhỏ bé có thể thường được thấy đang xé lá trên cây ở biome rừng. Chúng tạo thành những đàn kiến khổng lồ lên đến hai mươi con. Có hai giống loài của Kiến xén lá - kiến thợ, là con đi thu hoạch lá và có thể được thấy bên ngoài tổ kiến, và kiến chúa, là con chỉ có thể được triệu hồi bằng cách giẫm lên tổ kiến.
+Kiến chúa thì to và khoẻ hơn kiến thợ, và thường chỉ có một con mỗi thuộc địa. Với sự hiện diện của kiến chúa trong tổ kiến, có cơ hội thu hoạch mỗi lần 5 lá để tạo ra kiến thợ khác, trong khi ngọn đồi có ít hơn 10 con kiến.
+<NEWLINE>
+Không có kiến chúa, Tổ kiến không thể tái tạo. Những thuộc địa này to lớn hơn khi chúng xuất hiện - dưới gò đất có một mạng lưới của Lõi Tổ Kiến xén lá, những khối to được bọn kiến dùng để chuyển đổi lá của chúng thành nấm.
+Khối lõi tổ kiến này sẽ chuyển đổi thành đất nếu ở dưới ánh mặt trời, tuy nhiên chúng có thể lan sang những khối đất liền kề khi thu hoạch.
+<NEWLINE>
+Loại nấm này được gọi là nấm Gongylidia, và nó là thứ duy nhất mà lũ kiến có khả năng farm và ăn.
+Ngoài công dụng của nó đối với kiến, nó cũng có thể ăn được, mặc dù nó không có giá trị dinh dưỡng là mấy, nhưng nó có rất nhiều sự bão hoà.
+Nấm Gongylidia có thể có được bằng cách tương tác với khối lõi tổ kiến bao phủ nấm dưới lòng đất, nhưng hãy cẩn thận: nếu không có Shroomlight gần đấy, bầy kiến sẽ trở nên thù địch.
+Nấm có thể đút cho kiến ăn để chữa trị cho chúng, và cho kiến chúa để củng cố số lượng kiến trong thuộc địa. Nấm Gongylidia cũng có thể đút cho kiến ăn để làm chúng bình tĩnh lại trong khu vực gần đấy. Nếu khối lõi tổ kiến bị vỡ, có cơ hội hiếm hoi rơi ra Trang trại Kiến xén lá, có thể được dùng trên đất hoặc cỏ để tạo ra thuộc địa mới.
