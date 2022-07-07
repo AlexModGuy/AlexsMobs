@@ -50,16 +50,18 @@ public class BlockGustmaker extends Block {
         boolean flag = worldIn.hasNeighborSignal(pos) || worldIn.hasNeighborSignal(pos.below()) || worldIn.hasNeighborSignal(pos.above());
         boolean flag1 = state.getValue(TRIGGERED);
         if (flag && !flag1) {
-            Vec3 dispensePosition = getDispensePosition(pos, state.getValue(FACING));
-            Vec3 gustDir = Vec3.atLowerCornerOf(state.getValue(FACING).getNormal()).multiply(0.1, 0.1, 0.1);
-            EntityGust gust = new EntityGust(worldIn);
-            gust.setGustDir((float) gustDir.x, (float) gustDir.y, (float) gustDir.z);
-            gust.setPos(dispensePosition.x, dispensePosition.y, dispensePosition.z);
-            if(state.getValue(FACING).getAxis() == Direction.Axis.Y){
-                gust.setVertical(true);
-            }
-            if (!worldIn.isClientSide) {
-                worldIn.addFreshEntity(gust);
+            if(worldIn.isLoaded(pos)){
+                Vec3 dispensePosition = getDispensePosition(pos, state.getValue(FACING));
+                Vec3 gustDir = Vec3.atLowerCornerOf(state.getValue(FACING).getNormal()).multiply(0.1, 0.1, 0.1);
+                EntityGust gust = new EntityGust(worldIn);
+                gust.setGustDir((float) gustDir.x, (float) gustDir.y, (float) gustDir.z);
+                gust.setPos(dispensePosition.x, dispensePosition.y, dispensePosition.z);
+                if(state.getValue(FACING).getAxis() == Direction.Axis.Y){
+                    gust.setVertical(true);
+                }
+                if (!worldIn.isClientSide) {
+                    worldIn.addFreshEntity(gust);
+                }
             }
             worldIn.setBlock(pos, state.setValue(TRIGGERED, Boolean.valueOf(true)), 2);
             worldIn.scheduleTick(pos, this, 20);
