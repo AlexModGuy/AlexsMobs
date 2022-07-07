@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Czerw Pustki to starożytne stworzenie, które naturalnie zamieszkuje Pustkę pod Kresem.
+Uważa się, że te Czerwie są rodzajem międzywymiarowego pasożyta, ze względu na ich wrodzoną zdolność do przechodzenia przez rzeczywistość.
+Można go wywabić z pustki, wrzucając Tajemniczego Robaka do Pustki Kresu. Można uzyskać jednego z tych Robakó poprzez umieszczenie Larwy Szkarłatnego Komara w Kapsydach Enderofaga.
+<NEWLINE>
+Czerw Pustki wyposażony jest w wiele niszczycielskich ataków. Po pierwsze, może wystrzelić z pyska do czterech kryształów naprowadzających, które wyszukują ofiary w pobliżu i zadają duże obrażenia. Następnie Czerw próbuje bezpośrednio ugryźć wszystko, co stanie mu na drodze. Na koniec potrafi otworzyć portal z niczego, aby dostać się do ukrytej ofiary.
+Podczas próby zabicia tej bestii należy pamiętać, aby zadać znaczne obrażenia tylko głowie. Jeśli segment ciała zostanie poważnie uszkodzony, przestanie świecić, a jeśli zostanie zniszczony, cały Czerw rozpadnie się na dwie części. Te podzielone Czerwie mają o połowę mniej zdrowia i poruszają się nieco wolniej, ale nadal zadają ogromne obrażenia. Jeśli ktoś nie jest ostrożny, może skończyć całkowicie zalany Czerwiami.
+<NEWLINE>
+Po zabiciu Czerw upuszcza oko i dwie żuchwy. Żuchwy mogą zostać połączone w dziób, który po aktywacji Redstonem gryzie każdego moba w swoich szczękach.
+Oko może zostać użyte wraz z Żuchwami i odrobiną Netherytu do stworzenia magicznego kilofa: Rzeźbiarza Wymiarów.
+<NEWLINE>
+<NEWLINE>
+W odróżnieniu od innych kilofów, Rzeźbiarz Wymiarów nie służy do przebijania się przez bloki, ale raczej przez samą rzeczywistość. Używając tego narzędzia w dowolnym miejscu, można wyrwać portal z powrotem do swojego środowiska. Po drugiej stronie zostanie również otwarty tymczasowy portal powrotny, tylko na minutę. Należy uważać, aby nie nadużywać tego narzędzia, ponieważ ma ono tylko 20 użyć.
