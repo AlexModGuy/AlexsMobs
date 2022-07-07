@@ -319,7 +319,9 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
         }
         if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextEgg <= 0) {
            ItemEntity dropped = this.spawnAtLocation(AMItemRegistry.COCKROACH_OOTHECA.get());
-            dropped.setDefaultPickUpDelay();
+           if(dropped != null){
+               dropped.setDefaultPickUpDelay();
+           }
             this.timeUntilNextEgg = this.random.nextInt(24000) + 24000;
 
         }
