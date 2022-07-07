@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mungusy to dziwne, grzybowe stworzenia występujące na Polach Grzybowych. Te dziwne stworzenia są krewnymi Strażnika i Magmołaza, i są do nich podobne wizualnie.
+W przeciwieństwie do swoich przodków Strażników, Mungusy są całkowicie pasywne. Od czasu do czasu można je zobaczyć z grzybem wyrastającym z pokrywającego je płaszcza grzybni.
+Jeśli poda się im więcej tego samego grzyba, więcej grzybów zakorzeni się na Mungusie. Mając jednego lub więcej grzybów, Mungi wystrzeli promień podobny do promienia Strażnika na pobliskie
+grzyby tego samego typu. Użyje tego do wyhodowania większej ilości tego typu grzybów, a jeśli grzyb przekroczy grzybnię, może stać się gigantycznym grzybem. To
+wykańcza Mungusa i obniża ilość grzybów na nim. Jeśli zostanie zabity z pięcioma grzybami na plecach, Mungus wybuchnie gwałtowną eksplozją i przekształci lokalny obszar w biom zależny od grzybów na nich: 
+Dla czerwonych i brązowych grzybów - Pola Grzybów; a dla karmazynowych i spaczonych grzybów - odpowiednio Szkarłatny i Spaczony Las.
+Przemiana biomu może zostać cofnięta przez nakarmienie Grzyba trującym ziemniakiem. Grzyby mogą być hodowane za pomocą Zarodników Mungalnych, które są upuszczane przez Mungusy co kilka dni.

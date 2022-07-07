@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Zjawa jest dalekim krewnym Fantoma z Overworld i można je znaleźć tylko w wielkiej pustce między wyspami kresu. Te widmowe istoty nie mogą być atakowane żadnymi normalnymi środkami, z wyjątkiem magicznych obrażeń, takich jak mikstury.
+Jednak nie powinno być potrzeby atakowania ich, ponieważ Zjawy są całkowicie pasywne, w przeciwieństwie do ich kuzynów Fantomów.
+Zjawy zazwyczaj nie interesują się sprawami świata, ale szczególnie interesują się Sercami Dusz i będą podążać za każdym graczem posiadającym takie serce.
+<NEWLINE>
+Jeśli ktoś potrafi zwabić Zjawę wystarczająco blisko, może użyć smyczy, aby przyczepić się do bestii.
+Po przyczepieniu się, osoba będzie ciągnięta przez Zjawę. Widmowe stworzenie staje się szybkim i łatwym sposobem na poruszanie się po Kresie, ponieważ bycie ciągniętym przez Zjawę przez pustkę jest łatwym sposobem na znalezienie nowych wysp do zbadania.
+Aby odłączyć się od Zjawy, po prostu skradaj się lub ponownie wejdź w interakcję ze smyczą.

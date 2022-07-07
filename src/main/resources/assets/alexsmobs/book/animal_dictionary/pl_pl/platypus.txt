@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Dziobak to stworzenie, które wygląda jak połączenie kilku innych zwierząt, ale jest całkowicie jedyne w swoim rodzaju. Można go czasami spotkać w rzekach.
+Ten dziwny ssak ma na nogach trujące kolce, które może wykorzystać do zatruwania każdego napastnika.
+Słaby zmysł węchu, słuchu i wzroku dziobaka sprawił, że polowanie i nawigacja opierają się na elektryczności. Z tego powodu dziobak jest naturalnie przyciągany przez redstone, gdy jest trzymany w ręku. Jeśli poda mu się redstone, dziobak naładuje swoją wrażliwość elektryczną i będzie szukał larw w pobliskich blokach gliny.
+W poszukiwaniu jedzenia, dziobak wykopie trochę gliny i larw, które można następnie zebrać. Jeśli nakarmi się go całym blokiem redstone, ilość wykopanych przedmiotów znacznie się zwiększy.
+Podobnie jak inne małe stworzenia wodne, Dziobak może być wiaderkowany. Można go rozmnażać ogonami homara, jego ulubionym pożywieniem.

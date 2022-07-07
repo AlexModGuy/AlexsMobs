@@ -1,0 +1,17 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Słonie to gigantyczne ssaki lądowe, które można znaleźć w wielkich stadach na sawannach. W większości stad słoni występują trzy rodzaje słoni: słoniątka, z kłami i bez kłów.
+Występują zazwyczaj jeden lub dwa słonie z kłami w stadzie i są znacznie silniejsze niż reszta słoni. Mają też specjalny, niszczycielski atak szarży.
+Słonie bronią swoich stad i większość z nich polega na tych osobnikach z kłami, aby były najbardziej obronne. Słonie mogą atakować na wiele innych sposobów niż szarżowanie, w tym używając swoich masywnych trąb do rzucania wrogami lub stając na tylne nogi i depcząc przeciwnika.
+Te ssaki często można zobaczyć, jak stoją i zrywają liście z drzew, w nadziei na uzyskanie nieco rzadkiego przysmaku znanego jako kwiat akacji. Te kwiaty rzadko spadają z akacji i można nimi karmić słonie, aby je oswoić.
+Dzikich słoni z kłami nie da się oswoić, ale niemowlęta i słonie bez kłów tak. Oswojonego słonia z kłami można zdobyć tylko poprzez oswojenie go jako słoniątka.
+<NEWLINE>
+Oswojone słonie można dosiadać poprzez interakcję z nimi. Jeśli skrzynia zostanie użyta na słoniu, może on zyskać duży ekwipunek przechowywany na jego grzbiecie, do którego można się dostać skradając się.
+Do dekoracji słonia można użyć dowolnego dywanu. Zarówno skrzynię, jak i dywan można usunąć za pomocą nożyc.
+Oswojone słonie z kłami można zmusić do szarży, karmiąc je pszenicą podczas jazdy na nich. Ten atak szarży przyspiesza słonia i zadaje duże obrażenia każdemu stworzeniu na
+jego drodze. Słonie potrzebują odpoczynku po szarży.
+<NEWLINE>
+Po oswojeniu słonie można rozmnożyć kwiatami akacji. Czasami wędrownych handlarzy w ciepłych biomach można znaleźć na grzbietach słoni. Te słonie niosą skrzynie zawierające trochę łupów z podróży handlarza, do których można uzyskać dostęp.

@@ -4,8 +4,8 @@
 Wrony to hałaśliwe ptaki występujące w lasach i na równinach. Stworzenia te są uważane za szkodniki, ponieważ często latają nad uprawami i je niszczą. Zwykła wykrawana dynia wystarczy, aby odstraszyć wrony z małego obszaru.
 Ptaki te zwykle rozpraszają się i wzbijają w powietrze, gdy tylko się do nich zbliżysz. Wrony podnoszą każdy pokarm, który zmieszczą w dziobie, a następnie go pożerają.
 <NEWLINE>
-Despite their broody appearance, Crows can actually be tamed by tossing them some Pumpkin Seeds. Tamed crows are extremely useful creatures with a variety of different uses. They can be made to sit, wander, follow or gather items.
-Any tamed crow sitting on a hay block will slowly regain health. They will also fly around this hay block later, when set to gather items. When a crow picks up an item when set to gather items, it will look for a container, like a chest or furnace, with an item frame on it matching the held item.
+Pomimo ich roztargnionego wyglądu, wrony można oswoić, rzucając im kilka nasion dyni. Oswojone wrony to niezwykle przydatne stworzenia o wielu różnych zastosowaniach. Można je zmusić do siedzenia, wędrówki, śledzenia lub zbierania przedmiotów.
+Każda oswojona wrona siedząca na bloku siana powoli odzyskuje zdrowie. Będą także latać wokół tego bloku siana później, gdy zostaną ustawione do zbierania przedmiotów. Kiedy wrona podnosi przedmiot, gdy jest ustawiona do zbierania przedmiotów, szuka pojemnika, takiego jak skrzynia lub piec, z ramką na przedmiot pasującą do trzymanego przedmiotu.
 <NEWLINE>
-If the item in the frame is the same as the one held in the crow's beak, it will deposit it from that side into the container. When set to follow, crows will fly around their owner, and after a while, attempt to sit on their shoulders.
-Crows can be removed from the shoulders by sneaking. When Crows defend their owner, they peck their attacker, dealing low enough damage not to make the monster aggressive. However, crows deal extra damage towards undead targets.
+Jeśli przedmiot w ramce jest taki sam, jak ten trzymany w dziobie wrony, odłoży go z tej strony do pojemnika. Wrony, ustawione na podążanie, będą latać wokół swojego właściciela, a po chwili usiłują usiąść mu na ramionach.
+Wrony można usunąć z ramion, skradając się. Kiedy wrony bronią swojego właściciela, dziobią atakującego, zadając wystarczająco niskie obrażenia, aby potwór nie był agresywny. Jednak wrony zadają dodatkowe obrażenia nieumarłym celom.
