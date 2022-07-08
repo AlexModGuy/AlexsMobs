@@ -16,7 +16,7 @@
     "tame": {
       "trigger": "minecraft:player_interacted_with_entity",
       "conditions": {
-        "items": [
+        "item": [
           {
             "tag": "minecraft:carpets"
           }
