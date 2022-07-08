@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.world.item.Item.Properties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemFalconryGlove extends Item {
 
@@ -26,8 +27,8 @@ public class ItemFalconryGlove extends Item {
     }
 
     @Override
-    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
-        consumer.accept((net.minecraftforge.client.IItemRenderProperties) AlexsMobs.PROXY.getISTERProperties());
+    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions) AlexsMobs.PROXY.getISTERProperties());
     }
 
     public static void onLeftClick(Player playerIn, ItemStack stack) {

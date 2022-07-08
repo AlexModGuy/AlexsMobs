@@ -19,6 +19,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -53,7 +54,7 @@ public class CommonProxy {
     public void updateBiomeVisuals(int x, int z) {
     }
 
-    public void setupParticles() {
+    public void setupParticles(RegisterParticleProvidersEvent registry) {
     }
 
     public void setRenderViewEntity(Entity entity) {

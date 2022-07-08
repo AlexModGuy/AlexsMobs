@@ -62,6 +62,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -126,7 +127,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onFogColor(EntityViewRenderEvent.FogColors event) {
+    public void onFogColor(ViewportEvent.ComputeFogColor event) {
         if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.POWER_DOWN.get())) {
             if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.POWER_DOWN.get()) != null) {
                 event.setBlue(0);
@@ -139,7 +140,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onFogDensity(EntityViewRenderEvent.RenderFogEvent event) {
+    public void onFogDensity(ViewportEvent.RenderFog event) {
         FogType fogType = event.getCamera().getFluidInCamera();
         if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get()) && fogType == FogType.LAVA) {
             RenderSystem.setShaderFogStart(-8.0F);
@@ -340,7 +341,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onRenderNameplate(RenderNameplateEvent event) {
+    public void onRenderNameplate(RenderNameTagEvent event) {
         if (Minecraft.getInstance().getCameraEntity() instanceof EntityBaldEagle && event.getEntity() == Minecraft.getInstance().player) {
             if (Minecraft.getInstance().hasSingleplayerServer()) {
                 event.setResult(Event.Result.DENY);
@@ -409,7 +410,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
+    public void onCameraSetup(ViewportEvent.ComputeCameraAngles event) {
         if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE.get()) != null && !Minecraft.getInstance().isPaused()) {
             int duration = Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE.get()).getDuration();
             float f = (Math.min(10, duration) + Minecraft.getInstance().getFrameTime()) * 0.1F;
@@ -420,14 +421,14 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public void onPostGameOverlay(RenderGameOverlayEvent.Post event) {
+    public void onPostGameOverlay(RenderGuiOverlayEvent.Post event) {
         if (AlexsMobs.isAprilFools()) {
             if(renderStaticScreenFor > 0){
                 if (Minecraft.getInstance().player.isAlive() && lastStaticTick != Minecraft.getInstance().level.getGameTime()) {
                     renderStaticScreenFor--;
                 }
                 float staticLevel = (renderStaticScreenFor / 60F);
-                if (event.getType() == RenderGameOverlayEvent.ElementType.TEXT) {
+                if (event.getOverlay().id().equals(VanillaGuiOverlay.HELMET.id())) {
                     float screenWidth = event.getWindow().getScreenWidth();
                     float screenHeight = event.getWindow().getScreenHeight();
                     RenderSystem.disableDepthTest();

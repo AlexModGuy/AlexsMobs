@@ -10,6 +10,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemShieldOfTheDeep extends Item {
     public ItemShieldOfTheDeep(Item.Properties group) {
@@ -40,7 +41,7 @@ public class ItemShieldOfTheDeep extends Item {
     }
 
     @Override
-    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
-        consumer.accept((net.minecraftforge.client.IItemRenderProperties) AlexsMobs.PROXY.getISTERProperties());
+    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions) AlexsMobs.PROXY.getISTERProperties());
     }
 }

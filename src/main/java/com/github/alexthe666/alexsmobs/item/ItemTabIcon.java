@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 
 import javax.annotation.Nullable;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemTabIcon extends Item {
     public ItemTabIcon(Item.Properties properties) {
@@ -24,8 +25,8 @@ public class ItemTabIcon extends Item {
     }
 
     @Override
-    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
-        consumer.accept((net.minecraftforge.client.IItemRenderProperties)AlexsMobs.PROXY.getISTERProperties());
+    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions)AlexsMobs.PROXY.getISTERProperties());
     }
 
     @Nullable

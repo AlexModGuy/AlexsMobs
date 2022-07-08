@@ -22,6 +22,7 @@ import net.minecraft.util.Mth;
 import com.mojang.math.Matrix4f;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.LightLayer;
+import net.minecraftforge.client.event.RenderNameTagEvent;
 
 import javax.annotation.Nullable;
 
@@ -128,7 +129,7 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
         if (entity != null) {
             this.renderLeash(entityIn, partialTicks, matrixStackIn, bufferIn, entity);
         }
-        net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(entityIn, entityIn.getDisplayName(), this, matrixStackIn, bufferIn, packedLightIn, partialTicks);
+        RenderNameTagEvent renderNameplateEvent = new RenderNameTagEvent(entityIn, entityIn.getDisplayName(), this, matrixStackIn, bufferIn, packedLightIn, partialTicks);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
         if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(entityIn))) {
             this.renderNameTag(entityIn, renderNameplateEvent.getContent(), matrixStackIn, bufferIn, packedLightIn);

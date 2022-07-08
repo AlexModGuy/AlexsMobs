@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemFancyRender extends Item {
 
@@ -10,7 +11,7 @@ public class ItemFancyRender extends Item {
     }
 
     @Override
-    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
-        consumer.accept((net.minecraftforge.client.IItemRenderProperties) AlexsMobs.PROXY.getISTERProperties());
+    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions) AlexsMobs.PROXY.getISTERProperties());
     }
 }

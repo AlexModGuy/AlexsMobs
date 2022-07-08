@@ -43,8 +43,9 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -73,16 +74,16 @@ public class ClientProxy extends CommonProxy {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public static void onItemColors(ColorHandlerEvent.Item event) {
+    public static void onItemColors(RegisterColorHandlersEvent.Item event) {
         AlexsMobs.LOGGER.info("loaded in item colorizer");
-        event.getItemColors().register((stack, colorIn) -> colorIn < 1 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack), AMItemRegistry.STRADDLEBOARD.get());
+        event.register((stack, colorIn) -> colorIn < 1 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack), AMItemRegistry.STRADDLEBOARD.get());
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public static void onBlockColors(ColorHandlerEvent.Block event) {
+    public static void onBlockColors(RegisterColorHandlersEvent.Block event) {
         AlexsMobs.LOGGER.info("loaded in block colorizer");
-        event.getBlockColors().register((state, tintGetter, pos, tint) -> {
+        event.register((state, tintGetter, pos, tint) -> {
             return tintGetter != null && pos != null ? RainbowUtil.calculateGlassColor(pos) : -1;
         }, AMBlockRegistry.RAINBOW_GLASS.get());
     }
@@ -359,27 +360,27 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().levelRenderer.setBlocksDirty(x - 32, 0, x - 32, z + 32, 255, z + 32);
     }
 
-    public void setupParticles() {
+    public void setupParticles(RegisterParticleProvidersEvent registry) {
         AlexsMobs.LOGGER.debug("Registered particle factories");
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN.get(), ParticleGusterSandSpin.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT.get(), ParticleGusterSandShot.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN_RED.get(), ParticleGusterSandSpin.FactoryRed::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT_RED.get(), ParticleGusterSandShot.FactoryRed::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SPIN_SOUL.get(), ParticleGusterSandSpin.FactorySoul::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.GUSTER_SAND_SHOT_SOUL.get(), ParticleGusterSandShot.FactorySoul::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.HEMOLYMPH.get(), ParticleHemolymph.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.PLATYPUS_SENSE.get(), ParticlePlatypus.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.WHALE_SPLASH.get(), ParticleWhaleSplash.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.DNA.get(), ParticleDna.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SHOCKED.get(), ParticleSimpleHeart.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.WORM_PORTAL.get(), ParticleWormPortal.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.INVERT_DIG.get(), ParticleInvertDig.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.TEETH_GLINT.get(), ParticleTeethGlint.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SMELLY.get(), ParticleSmelly.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), ParticleBunfungusTransformation.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.FUNGUS_BUBBLE.get(), ParticleFungusBubble.Factory::new);
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.BEAR_FREDDY.get(), new ParticleBearFreddy.Factory());
-        Minecraft.getInstance().particleEngine.register(AMParticleRegistry.SUNBIRD_FEATHER.get(), ParticleSunbirdFeather.Factory::new);
+        registry.register(AMParticleRegistry.GUSTER_SAND_SPIN.get(), ParticleGusterSandSpin.Factory::new);
+        registry.register(AMParticleRegistry.GUSTER_SAND_SHOT.get(), ParticleGusterSandShot.Factory::new);
+        registry.register(AMParticleRegistry.GUSTER_SAND_SPIN_RED.get(), ParticleGusterSandSpin.FactoryRed::new);
+        registry.register(AMParticleRegistry.GUSTER_SAND_SHOT_RED.get(), ParticleGusterSandShot.FactoryRed::new);
+        registry.register(AMParticleRegistry.GUSTER_SAND_SPIN_SOUL.get(), ParticleGusterSandSpin.FactorySoul::new);
+        registry.register(AMParticleRegistry.GUSTER_SAND_SHOT_SOUL.get(), ParticleGusterSandShot.FactorySoul::new);
+        registry.register(AMParticleRegistry.HEMOLYMPH.get(), ParticleHemolymph.Factory::new);
+        registry.register(AMParticleRegistry.PLATYPUS_SENSE.get(), ParticlePlatypus.Factory::new);
+        registry.register(AMParticleRegistry.WHALE_SPLASH.get(), ParticleWhaleSplash.Factory::new);
+        registry.register(AMParticleRegistry.DNA.get(), ParticleDna.Factory::new);
+        registry.register(AMParticleRegistry.SHOCKED.get(), ParticleSimpleHeart.Factory::new);
+        registry.register(AMParticleRegistry.WORM_PORTAL.get(), ParticleWormPortal.Factory::new);
+        registry.register(AMParticleRegistry.INVERT_DIG.get(), ParticleInvertDig.Factory::new);
+        registry.register(AMParticleRegistry.TEETH_GLINT.get(), ParticleTeethGlint.Factory::new);
+        registry.register(AMParticleRegistry.SMELLY.get(), ParticleSmelly.Factory::new);
+        registry.register(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), ParticleBunfungusTransformation.Factory::new);
+        registry.register(AMParticleRegistry.FUNGUS_BUBBLE.get(), ParticleFungusBubble.Factory::new);
+        registry.register(AMParticleRegistry.BEAR_FREDDY.get(), new ParticleBearFreddy.Factory());
+        registry.register(AMParticleRegistry.SUNBIRD_FEATHER.get(), ParticleSunbirdFeather.Factory::new);
     }
 
 

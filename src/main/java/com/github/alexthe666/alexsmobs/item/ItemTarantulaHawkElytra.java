@@ -17,6 +17,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nullable;
 
@@ -27,8 +28,8 @@ public class ItemTarantulaHawkElytra extends ArmorItem {
     }
 
     @Override
-    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.IItemRenderProperties> consumer) {
-        consumer.accept((net.minecraftforge.client.IItemRenderProperties) AlexsMobs.PROXY.getArmorRenderProperties());
+    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions) AlexsMobs.PROXY.getArmorRenderProperties());
     }
 
     public static boolean isUsable(ItemStack stack) {

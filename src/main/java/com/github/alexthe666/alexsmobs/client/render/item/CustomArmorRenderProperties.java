@@ -9,9 +9,9 @@ import net.minecraft.client.model.Model;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class CustomArmorRenderProperties implements IItemRenderProperties {
+public class CustomArmorRenderProperties implements IClientItemExtensions {
 
     private static boolean init;
 
@@ -44,7 +44,8 @@ public class CustomArmorRenderProperties implements IItemRenderProperties {
         NOVELTY_HAT_MODEL = new ModelNoveltyHat(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.NOVELTY_HAT));
     }
 
-    public HumanoidModel<?> getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
+    @Override
+    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {
         if(!init){
             initializeModels();
         }

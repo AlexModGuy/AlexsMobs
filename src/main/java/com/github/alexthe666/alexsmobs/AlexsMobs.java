@@ -24,7 +24,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.BiomeModifier;
@@ -132,8 +132,8 @@ public class AlexsMobs {
         BiomeConfig.init();
     }
 
-    private void setupParticleEvent(ParticleFactoryRegisterEvent event) {
-        PROXY.setupParticles();
+    private void setupParticleEvent(RegisterParticleProvidersEvent event) {
+        PROXY.setupParticles(event);
     }
 
     public static <MSG> void sendMSGToServer(MSG message) {

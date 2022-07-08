@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import org.antlr.v4.runtime.misc.Triple;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
@@ -120,7 +121,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -749,9 +749,9 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onFOVUpdate(FOVModifierEvent event) {
+    public void onFOVUpdate(ComputeFovModifierEvent event) {
         if (event.getPlayer().hasEffect(AMEffectRegistry.FEAR.get()) || event.getPlayer().hasEffect(AMEffectRegistry.POWER_DOWN.get())) {
-            event.setNewFov(1.0F);
+            event.setNewFovModifier(1.0F);
         }
     }
 
