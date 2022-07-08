@@ -139,6 +139,10 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         return null;
     }
 
+    public boolean isControlledByLocalInstance() {
+        return false;
+    }
+
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return AMSoundRegistry.ENDERGRADE_HURT.get();
     }

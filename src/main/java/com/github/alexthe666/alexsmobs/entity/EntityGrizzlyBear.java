@@ -278,6 +278,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     @Nullable
+    @Override
     public Entity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof Player) {
@@ -335,6 +336,10 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             }
         }
         return type;
+    }
+
+    public boolean isControlledByLocalInstance() {
+        return false;
     }
 
     public void travel(Vec3 vec3d) {

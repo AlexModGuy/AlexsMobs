@@ -136,6 +136,10 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.KOMODO_DRAGON_TARGETS)));
     }
 
+    public boolean isControlledByLocalInstance() {
+        return false;
+    }
+
     public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;

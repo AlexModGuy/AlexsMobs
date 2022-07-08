@@ -127,6 +127,10 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         return this.canAttack(p_21675_);
     }
 
+    public boolean isControlledByLocalInstance() {
+        return false;
+    }
+
     @Nullable
     public Entity getControllingPassenger() {
         if (this.isSaddled()) {

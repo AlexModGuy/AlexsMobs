@@ -36,6 +36,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
@@ -392,7 +393,18 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             }
         });
         this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new TameableAIRide(this, 1D));
+        this.goalSelector.addGoal(2, new TameableAIRide(this, 1D){
+            public double modifyYPosition(double lookVecY) {
+                float waterAt = (float)EntityLaviathan.this.getMaxFluidHeight();
+                float half = EntityLaviathan.this.getBbHeight() * 0.5F;
+                if(waterAt > half){
+                    return Mth.clamp(waterAt - half, 0F, 0.5F);
+                }else if(waterAt < half){
+                    return Mth.clamp(waterAt - half, -0.5F, 0F);
+                }
+                return 0;
+            }
+        });
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.MAGMA_CREAM, AMItemRegistry.MOSQUITO_LARVA.get()), false));
         this.goalSelector.addGoal(4, new AnimalAIFindWaterLava(this, 1.0D));
         this.goalSelector.addGoal(5, new LaviathanAIRandomSwimming(this, 1.0D, 22) {
@@ -434,6 +446,11 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         return false;
     }
 
+    @Override
+    public boolean isControlledByLocalInstance() {
+        return false;
+    }
+
     public boolean hurt(DamageSource source, float amount) {
         boolean prev = super.hurt(source, amount);
         if (prev && source.getEntity() != null) {
@@ -459,6 +476,11 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
     public void travel(Vec3 travelVector) {
         boolean liquid = this.shouldSwim();
+        if(this.getControllingPassenger() != null && liquid){
+            if(this.getDeltaMovement().y < 0){
+                this.setDeltaMovement(this.getDeltaMovement().multiply(1F, 0.3F, 1F));
+            }
+        }
         if (this.isEffectiveAi() && liquid) {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
@@ -606,7 +628,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             }
         }
         if (!level.isClientSide) {
-            if (this.getChillTime() > 0 || this.hasHeadGear() || this.isVehicle() || dismountCooldown > 0) {
+            if (this.getControllingPassenger() == null && (this.getChillTime() > 0 || this.hasHeadGear() || dismountCooldown > 0)) {
                 floatLaviathan();
             }
 
