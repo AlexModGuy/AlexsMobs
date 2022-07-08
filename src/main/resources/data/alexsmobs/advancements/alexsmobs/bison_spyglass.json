@@ -17,28 +17,29 @@
     "hidden": false
   },
   "criteria": {
-    "laviathan_spyglass": {
-      "trigger": "minecraft:using_item",
+    "spyglass_at_bison": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "predicate": {
-              "player": {
-                "looking_at": {
-                  "type": "alexsmobs:bison"
-                }
-              }
-            },
-            "entity": "this"
-          }
-        ],
         "item": {
           "items": [
             "minecraft:spyglass"
           ]
-        }
-      }
+        },
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type_specific": {
+                "type": "player",
+                "looking_at": {
+                  "type": "alexsmobs:bison"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:using_item"
     }
   }
 }
