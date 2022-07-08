@@ -115,7 +115,6 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         progressPositionPrev(leftArm, diggingProgress, -1, 0, -2, 5F);
         progressPositionPrev(rightArm, diggingProgress, 1, 0, -2, 5F);
         this.head.rotationPointZ += (float) (Math.sin(ageInTicks * 0.7F) * (double) 0.5F * bobbingProgress);
-        baskProgress = 0;
         if(diggingProgress > 0){
             float amount = diggingProgress * 0.2F;
             this.swing(rightArm, 0.6F, 0.85F, true, 1F, -0.1F, ageInTicks, amount);
