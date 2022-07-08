@@ -165,7 +165,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("MonkeySitting", this.isSitting());
+        compound.putBoolean("MonkeySitting", this.isOrderedToSit());
         compound.putInt("Command", this.getCommand());
     }
 
@@ -186,7 +186,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         this.goalSelector.addGoal(5, new WarpedToadAIRandomSwimming(this, 1.0D, 7));
         this.goalSelector.addGoal(6, new AnimalAILeapRandomly(this, 50, 7){
             public boolean canUse(){
-                return super.canUse() && !EntityWarpedToad.this.isSitting();
+                return super.canUse() && !EntityWarpedToad.this.isOrderedToSit();
             }
         });
         this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 60, 1.0D, 5, 4));
@@ -200,7 +200,13 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     }
 
     public void travel(Vec3 travelVector) {
-        if (this.isEffectiveAi() && (this.isInWater() || this.isInLava())) {
+        if (this.isOrderedToSit()) {
+            if (this.getNavigation().getPath() != null) {
+                this.getNavigation().stop();
+            }
+            travelVector = Vec3.ZERO;
+            super.travel(travelVector);
+        }else if (this.isEffectiveAi() && (this.isInWater() || this.isInLava())) {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
@@ -355,10 +361,12 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         this.entityData.set(COMMAND, Integer.valueOf(command));
     }
 
-    public boolean isSitting() {
+    @Override
+    public boolean isOrderedToSit() {
         return this.entityData.get(SITTING).booleanValue();
     }
 
+    @Override
     public void setOrderedToSit(boolean sit) {
         this.entityData.set(SITTING, Boolean.valueOf(sit));
     }
@@ -452,10 +460,10 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         if (!isTongueOut() && attackProgress > 0F) {
             attackProgress -= 0.5F;
         }
-        if (isSitting() && sitProgress < 5F) {
+        if (isOrderedToSit() && sitProgress < 5F) {
             sitProgress++;
         }
-        if (!isSitting() && sitProgress > 0F) {
+        if (!isOrderedToSit() && sitProgress > 0F) {
             sitProgress--;
         }
         if (shouldSwim() && this.isLandNavigator) {
@@ -510,17 +518,17 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
     @Override
     public boolean shouldEnterWater() {
-        return swimTimer < -200 && !isSitting() && this.getCommand() != 1;
+        return swimTimer < -200 && !isOrderedToSit() && this.getCommand() != 1;
     }
 
     @Override
     public boolean shouldLeaveWater() {
-        return swimTimer > 600 && !isSitting() && this.getCommand() != 1;
+        return swimTimer > 600 && !isOrderedToSit() && this.getCommand() != 1;
     }
 
     @Override
     public boolean shouldStopMoving() {
-        return isSitting();
+        return isOrderedToSit();
     }
 
     private boolean isTongueOut() {
@@ -616,7 +624,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
                 return false;
             } else if (lvt_1_1_.isSpectator()) {
                 return false;
-            } else if (this.tameable.isSitting() || tameable.getCommand() != 1) {
+            } else if (this.tameable.isOrderedToSit() || tameable.getCommand() != 1) {
                 return false;
             } else if (this.tameable.distanceToSqr(lvt_1_1_) < (double) (this.minDist * this.minDist)) {
                 return false;
@@ -629,7 +637,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         public boolean canContinueToUse() {
             if (this.tameable.getNavigation().isDone()) {
                 return false;
-            } else if (this.tameable.isSitting() || tameable.getCommand() != 1) {
+            } else if (this.tameable.isOrderedToSit() || tameable.getCommand() != 1) {
                 return false;
             } else {
                 return this.tameable.distanceToSqr(this.owner) > (double) (this.maxDist * this.maxDist);

@@ -19,7 +19,7 @@ public class WarpedToadAIRandomSwimming extends RandomStrollGoal {
     }
 
     public boolean canUse() {
-        if (this.mob.isVehicle() || ((EntityWarpedToad)mob).isSitting() || mob.getTarget() != null || !this.mob.isInWater() && !this.mob.isInLava() && this.mob instanceof ISemiAquatic && !((ISemiAquatic) this.mob).shouldEnterWater()) {
+        if (this.mob.isVehicle() || ((EntityWarpedToad)mob).isOrderedToSit() || mob.getTarget() != null || !this.mob.isInWater() && !this.mob.isInLava() && this.mob instanceof ISemiAquatic && !((ISemiAquatic) this.mob).shouldEnterWater()) {
             return false;
         } else {
             if (!this.forceTrigger) {
