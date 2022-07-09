@@ -8,6 +8,7 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.mojang.math.Vector3d;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -608,6 +609,16 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             return pos.above();
         }
         return pos;
+    }
+
+
+    public boolean isRigby() {
+        final String name = ChatFormatting.stripFormatting(this.getName().getString());
+        if (name == null)
+            return false;
+
+        final String lowercaseName = name.toLowerCase(Locale.ROOT);
+        return lowercaseName.contains("rigby");
     }
 
     private class AIStealFromVillagers extends Goal {

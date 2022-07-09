@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/raccoon.png");
+    private static final ResourceLocation TEXTURE_RIGBY = new ResourceLocation("alexsmobs:textures/entity/raccoon_rigby.png");
     private static final ResourceLocation TEXTURE_BANDANA = new ResourceLocation("alexsmobs:textures/entity/raccoon_bandana.png");
 
     public RenderRaccoon(EntityRendererProvider.Context renderManagerIn) {
@@ -32,7 +33,7 @@ public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
 
 
     public ResourceLocation getTextureLocation(EntityRaccoon entity) {
-        return TEXTURE;
+        return entity.isRigby() ? TEXTURE_RIGBY : TEXTURE;
     }
 
     private class BandanaLayer extends RenderLayer<EntityRaccoon, ModelRaccoon> {
