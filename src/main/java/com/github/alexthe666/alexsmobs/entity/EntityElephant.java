@@ -385,7 +385,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
         }
         if (!level.isClientSide && target != null) {
-            if (this.distanceTo(target) > 8 && this.getControllingPassenger() == null && this.isTusked() && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !charging && chargeCooldown == 0) {
+            if (this.distanceTo(target) > this.getBbWidth() * 0.5F + 0.5F && this.getControllingPassenger() == null && this.isTusked() && this.hasLineOfSight(target) && this.getAnimation() == NO_ANIMATION && !charging && chargeCooldown == 0) {
                 this.setAnimation(ANIMATION_CHARGE_PREPARE);
             }
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE && this.getControllingPassenger() == null) {
