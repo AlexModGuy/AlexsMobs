@@ -12,5 +12,5 @@ Podczas potężnych burz Kaszaloty mogą być wyrzucone się na plażach. W tej 
 Nagrodą za to zadanie jest ambra, cenny produkt uboczny kaszlu z żołądka wieloryba. Ambrę można sprzedać rybakom za dużo szmaragdów lub wykorzystać do stworzenia Echolokatora.
 Może być również używany jako potężne paliwo, które może przetopić 64 przedmioty.
 <NEWLINE>
-Echolokatora możesz użyć do ujawnienia pobliskich jaskiń. Po znalezieniu jaskini wyemituje falę dźwiękową w kierunku jaskini. Należy zachować ostrożność wobec tego narzędzia, ponieważ ma ono ograniczoną liczbę zastosowań.
+Echolokatora można użyć do ujawnienia pobliskich jaskiń. Po znalezieniu jaskini wyemituje falę dźwiękową w kierunku jaskini. Należy zachować ostrożność wobec tego narzędzia, ponieważ ma ono ograniczoną liczbę zastosowań.
 Jeśli zostanie wytworzony z 4 pereł Endu, można stworzyć Endolokator, który może ujawnić lokalizację Portalu Kresu, gdy znajduje się w pobliżu twierdzy.
