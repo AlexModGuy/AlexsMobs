@@ -26,7 +26,7 @@ import java.util.Random;
 public class BananaLootModifier extends LootModifier {
 
     public BananaLootModifier(){
-        super(null);
+        super(new LootItemCondition[0]);
     }
 
     public BananaLootModifier(LootItemCondition[] conditionsIn) {

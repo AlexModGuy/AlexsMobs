@@ -30,7 +30,7 @@ import java.util.Random;
 public class BlossomLootModifier extends LootModifier {
 
     public BlossomLootModifier(){
-        super(null);
+        super(new LootItemCondition[0]);
     }
 
     public BlossomLootModifier(LootItemCondition[] conditionsIn) {

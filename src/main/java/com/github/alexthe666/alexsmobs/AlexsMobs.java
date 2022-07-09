@@ -130,10 +130,6 @@ public class AlexsMobs {
         BiomeConfig.init();
     }
 
-    private void setupParticleEvent(RegisterParticleProvidersEvent event) {
-        PROXY.setupParticles(event);
-    }
-
     public static <MSG> void sendMSGToServer(MSG message) {
         NETWORK_WRAPPER.sendToServer(message);
     }
