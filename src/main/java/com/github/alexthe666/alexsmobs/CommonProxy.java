@@ -4,7 +4,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import static com.github.alexthe666.alexsmobs.AlexsMobs.MODID;
@@ -35,9 +34,6 @@ public class CommonProxy {
     }
 
     public void updateBiomeVisuals(int x, int z) {
-    }
-
-    public void setupParticles(RegisterParticleProvidersEvent registry) {
     }
 
     public void setRenderViewEntity(Entity entity) {

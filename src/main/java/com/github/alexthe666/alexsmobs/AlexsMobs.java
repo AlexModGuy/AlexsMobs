@@ -24,7 +24,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.BiomeModifier;
@@ -81,7 +80,6 @@ public class AlexsMobs {
         modBusEvent.addListener(this::setup);
         modBusEvent.addListener(this::setupClient);
         modBusEvent.addListener(this::onModConfigEvent);
-        modBusEvent.addListener(this::setupParticleEvent);
         modBusEvent.addListener(this::setupEntityModelLayers);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         AMBlockRegistry.DEF_REG.register(modBusEvent);

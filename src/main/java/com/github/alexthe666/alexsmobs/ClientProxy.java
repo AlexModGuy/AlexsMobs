@@ -97,6 +97,7 @@ public class ClientProxy extends CommonProxy {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerRegistry::onAddLayers);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::setupParticles);
     }
 
     public void clientInit() {
@@ -360,7 +361,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().levelRenderer.setBlocksDirty(x - 32, 0, x - 32, z + 32, 255, z + 32);
     }
 
-    public void setupParticles(RegisterParticleProvidersEvent registry) {
+    public static void setupParticles(RegisterParticleProvidersEvent registry) {
         AlexsMobs.LOGGER.debug("Registered particle factories");
         registry.register(AMParticleRegistry.GUSTER_SAND_SPIN.get(), ParticleGusterSandSpin.Factory::new);
         registry.register(AMParticleRegistry.GUSTER_SAND_SHOT.get(), ParticleGusterSandShot.Factory::new);
