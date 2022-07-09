@@ -2,7 +2,10 @@ package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.world.AMMobSpawnStructureModifier;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -13,7 +16,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,12 +25,16 @@ import java.util.Random;
 
 public class BananaLootModifier extends LootModifier {
 
+    public BananaLootModifier(){
+        super(null);
+    }
+
     public BananaLootModifier(LootItemCondition[] conditionsIn) {
         super(conditionsIn);
     }
 
     @Override
-    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+    protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context){
         if (AMConfig.bananasDropFromLeaves){
             ItemStack ctxTool = context.getParamOrNull(LootContextParams.TOOL);
             RandomSource random = context.getRandom();
@@ -47,16 +54,14 @@ public class BananaLootModifier extends LootModifier {
         return generatedLoot;
     }
 
-    public static class Serializer extends GlobalLootModifierSerializer<BananaLootModifier> {
+    private static final Codec<BananaLootModifier> CODEC = RecordCodecBuilder.create(inst -> codecStart(inst).apply(inst, BananaLootModifier::new)); ;
 
-        @Override
-        public BananaLootModifier read(ResourceLocation name, JsonObject object, LootItemCondition[] conditionsIn) {
-            return new BananaLootModifier(conditionsIn);
-        }
+    @Override
+    public Codec<? extends IGlobalLootModifier> codec() {
+        return CODEC;
+    }
 
-        @Override
-        public JsonObject write(BananaLootModifier instance) {
-            return null;
-        }
+    public static Codec<BananaLootModifier> makeCodec() {
+        return Codec.unit(BananaLootModifier::new);
     }
 }

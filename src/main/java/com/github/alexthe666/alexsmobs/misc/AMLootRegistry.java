@@ -1,18 +1,19 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class AMLootRegistry {
 
-    public static final DeferredRegister<GlobalLootModifierSerializer<?>> DEF_REG = DeferredRegister.create(ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
-    public static final RegistryObject<GlobalLootModifierSerializer<?>> BANANA_DROP = DEF_REG.register("banana_drop", () -> new BananaLootModifier.Serializer());
-    public static final RegistryObject<GlobalLootModifierSerializer<?>> BLOSSOM_DROP = DEF_REG.register("blossom_drop", () -> new BlossomLootModifier.Serializer());
+    public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> DEF_REG = DeferredRegister.create(ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> BANANA_DROP = DEF_REG.register("banana_drop", BananaLootModifier::makeCodec);
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> BLOSSOM_DROP = DEF_REG.register("blossom_drop", BlossomLootModifier::makeCodec);
 }
