@@ -20,6 +20,8 @@ description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
     ordering="AFTER"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
+[modproperties.alexsmobs]
+    catalogueItemIcon="alexsmobs:bear_dust"
 [[dependencies.alexsmobs]]
     modId="forge"
     mandatory=true
