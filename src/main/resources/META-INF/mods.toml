@@ -26,3 +26,5 @@ description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
     versionRange="[36.0.42,)"
     ordering="NONE"
     side="BOTH"
+[modproperties.alexsmobs]
+    catalogueItemIcon="alexsmobs:cosmic_cod"
