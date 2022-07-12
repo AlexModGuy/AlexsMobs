@@ -357,8 +357,8 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                         this.level.broadcastEntityEvent(this, (byte) 6);
                     }
                 }
-                if (this.getMainHandItem().hasContainerItem()) {
-                    this.spawnAtLocation(this.getMainHandItem().getContainerItem());
+                if (this.getMainHandItem().hasCraftingRemainingItem()) {
+                    this.spawnAtLocation(this.getMainHandItem().getCraftingRemainingItem());
                 }
                 this.getMainHandItem().shrink(1);
             }

@@ -24,7 +24,7 @@ public class ClientLayerRegistry {
     @OnlyIn(Dist.CLIENT)
     public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
         List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(
-                ForgeRegistries.ENTITIES.getValues().stream()
+                ForgeRegistries.ENTITY_TYPES.getValues().stream()
                         .filter(DefaultAttributes::hasSupplier)
                         .map(entityType -> (EntityType<? extends LivingEntity>) entityType)
                         .collect(Collectors.toList()));
@@ -42,7 +42,7 @@ public class ClientLayerRegistry {
             try{
                 renderer = event.getRenderer(entityType);
             }catch (Exception e){
-                AlexsMobs.LOGGER.warn("Could not apply rainbow color layer to " + ForgeRegistries.ENTITIES.getKey(entityType) + ", has custom renderer that is not LivingEntityRenderer.");
+                AlexsMobs.LOGGER.warn("Could not apply rainbow color layer to " + ForgeRegistries.ENTITY_TYPES.getKey(entityType) + ", has custom renderer that is not LivingEntityRenderer.");
             }
             if(renderer != null){
                 renderer.addLayer(new LayerRainbow(renderer));

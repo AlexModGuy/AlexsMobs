@@ -317,8 +317,8 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
                 this.heal(4);
                 this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
                 this.gameEvent(GameEvent.EAT);
-                if (this.getMainHandItem().hasContainerItem()) {
-                    this.spawnAtLocation(this.getMainHandItem().getContainerItem());
+                if (this.getMainHandItem().hasCraftingRemainingItem()) {
+                    this.spawnAtLocation(this.getMainHandItem().getCraftingRemainingItem());
                 }
                 this.stopBeingAngry();
                 this.getMainHandItem().shrink(1);

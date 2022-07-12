@@ -25,7 +25,7 @@ public class AMBlockItem extends BlockItem {
         return blockSupplier.get();
     }
 
-    public boolean canFitInsideContainerItems() {
+    public boolean canFitInsideCraftingRemainingItems() {
         return !(blockSupplier.get() instanceof ShulkerBoxBlock);
     }
 

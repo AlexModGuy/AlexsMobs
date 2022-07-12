@@ -363,8 +363,8 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             this.level.broadcastEntityEvent(this, (byte) 7);
             return InteractionResult.CONSUME;
         } else if (itemstack.is(AMTagRegistry.BALD_EAGLE_TAMEABLES)) {
-            if (itemstack.hasContainerItem()) {
-                this.spawnAtLocation(itemstack.getContainerItem());
+            if (itemstack.hasCraftingRemainingItem()) {
+                this.spawnAtLocation(itemstack.getCraftingRemainingItem());
             }
             if (!player.isCreative()) {
                 itemstack.shrink(1);

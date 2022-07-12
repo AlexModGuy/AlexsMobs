@@ -99,8 +99,8 @@ public class RecipeMimicreamRepair extends CustomRecipe {
 
         for (int i = 0; i < nonnulllist.size(); ++i) {
             ItemStack itemstack = inv.getItem(i);
-            if (itemstack.hasContainerItem()) {
-                nonnulllist.set(i, itemstack.getContainerItem());
+            if (itemstack.hasCraftingRemainingItem()) {
+                nonnulllist.set(i, itemstack.getCraftingRemainingItem());
             } else if (itemstack.getItem().canBeDepleted()) {
                 ItemStack itemstack1 = itemstack.copy();
                 itemstack1.setCount(1);

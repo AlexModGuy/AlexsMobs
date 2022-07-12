@@ -541,7 +541,7 @@ public class EntityCrimsonMosquito extends Monster {
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (item == AMItemRegistry.WARPED_MIXTURE.get() && !this.isSick()) {
-            this.spawnAtLocation(item.getContainerItem(itemstack));
+            this.spawnAtLocation(item.getCraftingRemainingItem(itemstack));
             if (!player.isCreative()) {
                 itemstack.shrink(1);
             }
@@ -823,7 +823,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public boolean isNonMungusWarpedTrigger(Entity entity) {
-        ResourceLocation mobtype = ForgeRegistries.ENTITIES.getKey(entity.getType());
+        ResourceLocation mobtype = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
         return !AMConfig.warpedMoscoMobTriggers.isEmpty() && mobtype != null && AMConfig.warpedMoscoMobTriggers.contains(mobtype.toString());
     }
 }

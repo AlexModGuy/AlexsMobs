@@ -429,8 +429,8 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
         if (e.getItem().getItem() == AMItemRegistry.MARACA.get()) {
             this.setMaracas(true);
         } else {
-            if (e.getItem().hasContainerItem()) {
-                this.spawnAtLocation(e.getItem().getContainerItem().copy());
+            if (e.getItem().hasCraftingRemainingItem()) {
+                this.spawnAtLocation(e.getItem().getCraftingRemainingItem().copy());
             }
             this.heal(5);
             if (e.getItem().getItem() == Items.BREAD || e.getItem().getItem() == Items.SUGAR) {

@@ -12,6 +12,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -35,7 +36,8 @@ public class BananaLootModifier extends LootModifier {
 
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context){
-        if (AMConfig.bananasDropFromLeaves){
+        BlockState state = context.getParamOrNull(LootContextParams.BLOCK_STATE);
+        if (AMConfig.bananasDropFromLeaves && state != null && state.is(AMTagRegistry.DROPS_BANANAS)){
             ItemStack ctxTool = context.getParamOrNull(LootContextParams.TOOL);
             RandomSource random = context.getRandom();
             if(ctxTool != null){

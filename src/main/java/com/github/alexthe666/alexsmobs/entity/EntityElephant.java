@@ -979,7 +979,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
     public void openGUI(Player playerEntity) {
         if (!this.level.isClientSide && (!this.hasPassenger(playerEntity))) {
-            NetworkHooks.openGui((ServerPlayer) playerEntity, new MenuProvider() {
+            NetworkHooks.openScreen((ServerPlayer) playerEntity, new MenuProvider() {
                 @Override
                 public AbstractContainerMenu createMenu(int p_createMenu_1_, Inventory p_createMenu_2_, Player p_createMenu_3_) {
                     return ChestMenu.sixRows(p_createMenu_1_, p_createMenu_2_, elephantInventory);

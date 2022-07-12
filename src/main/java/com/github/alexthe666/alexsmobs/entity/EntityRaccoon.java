@@ -237,8 +237,8 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                 copy.setCount(1);
                 this.setItemInHand(InteractionHand.MAIN_HAND, copy);
                 this.onEatItem();
-                if(itemstack.hasContainerItem()){
-                    this.spawnAtLocation(itemstack.getContainerItem());
+                if(itemstack.hasCraftingRemainingItem()){
+                    this.spawnAtLocation(itemstack.getCraftingRemainingItem());
                 }
                 if(!player.isCreative()){
                     itemstack.shrink(1);
@@ -372,8 +372,8 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                 lookForWaterBeforeEatingTimer--;
             }else if(!isWashing() && canTargetItem(this.getMainHandItem())) {
                 onEatItem();
-                if(this.getMainHandItem().hasContainerItem()){
-                    this.spawnAtLocation(this.getMainHandItem().getContainerItem());
+                if(this.getMainHandItem().hasCraftingRemainingItem()){
+                    this.spawnAtLocation(this.getMainHandItem().getCraftingRemainingItem());
                 }
                 this.getMainHandItem().shrink(1);
             }

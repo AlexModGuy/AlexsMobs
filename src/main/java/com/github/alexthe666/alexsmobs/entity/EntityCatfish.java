@@ -467,7 +467,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     public boolean swallowEntity(Entity entity) {
         if (this.getCatfishSize() == 2 && entity instanceof Mob mob) {
             this.setHasSwallowedEntity(true);
-            ResourceLocation mobtype = ForgeRegistries.ENTITIES.getKey(mob.getType());
+            ResourceLocation mobtype = ForgeRegistries.ENTITY_TYPES.getKey(mob.getType());
             if(mobtype != null){
                 this.setSwallowedEntityType(mobtype.toString());
             }
@@ -493,7 +493,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         this.eatCooldown = 60 + random.nextInt(60);
         if (this.getCatfishSize() == 2) {
             if (this.hasSwallowedEntity()) {
-                EntityType type = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(this.getSwallowedEntityType()));
+                EntityType type = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(this.getSwallowedEntityType()));
                 if (type != null) {
                     Entity entity = type.create(level);
                     if (entity instanceof LivingEntity alive) {
