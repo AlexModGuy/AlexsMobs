@@ -711,7 +711,7 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData MUDSKIPPER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:mangrove_swamp", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:underground_jungle", 1);   
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/underground_jungle", 1);   
 
     public static final SpawnBiomeData RHINOCEROS = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_savanna", 0)
