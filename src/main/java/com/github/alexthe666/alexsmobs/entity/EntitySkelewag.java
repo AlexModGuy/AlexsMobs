@@ -232,6 +232,9 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
             drowned.startRiding(this);
             worldIn.addFreshEntityWithPassengers(drowned);
         }
+        if(reason == MobSpawnType.STRUCTURE){
+            this.restrictTo(this.blockPosition(), 15);
+        }
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
