@@ -564,6 +564,9 @@ public class ServerEvents {
                 dolphin.targetSelector.addGoal(2,
                     new NearestAttackableTargetGoal<>(dolphin, EntityFlyingFish.class, 70, true, true, null));
             }
+            else if (event.getEntity() instanceof final Fox fox) {
+                fox.targetSelector.addGoal(3, new AvoidEntityGoal<>(fox, EntityBunfungus.class, 6.0F, 1.0D, 1.2D));
+            }
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
         }
