@@ -22,6 +22,7 @@ import com.github.alexthe666.alexsmobs.item.ItemModArmor;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.alexsmobs.misc.AMDamageTypes;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
+import com.github.alexthe666.citadel.client.event.EventGetFluidRenderType;
 import com.github.alexthe666.citadel.client.event.EventGetOutlineColor;
 import com.github.alexthe666.citadel.client.event.EventGetStarBrightness;
 import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
@@ -410,6 +411,15 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onGetFluidRenderType(EventGetFluidRenderType event) {
+        if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get()) && (event.getFluidState().is(Fluids.LAVA) || event.getFluidState().is(Fluids.FLOWING_LAVA))) {
+            event.setRenderType(RenderType.translucent());
+            event.setResult(Event.Result.ALLOW);
+        }
+    }
+
+        @SubscribeEvent
     public void onCameraSetup(ViewportEvent.ComputeCameraAngles event) {
         if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE.get()) != null && !Minecraft.getInstance().isPaused()) {
             int duration = Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE.get()).getDuration();

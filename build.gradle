@@ -121,8 +121,8 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19-41.1.0'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    compileOnly "curse.maven:citadel4-331936:3872416"
-    runtimeOnly "curse.maven:citadel4-331936:3872416"
+    compileOnly "curse.maven:citadel4-331936:3902870"
+    runtimeOnly "curse.maven:citadel4-331936:3902870"
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

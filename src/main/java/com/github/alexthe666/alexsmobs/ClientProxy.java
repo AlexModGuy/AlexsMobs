@@ -244,9 +244,6 @@ public class ClientProxy extends CommonProxy {
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");
         }
-        //required for lava potion
-        ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, RenderType.translucent());
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID.get(), RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK.get(), RenderVoidWormBeak::new);
     }
