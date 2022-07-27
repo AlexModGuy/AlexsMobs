@@ -1,5 +1,8 @@
 package com.github.alexthe666.alexsmobs.enchantment;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -23,4 +26,21 @@ public class StraddleEnchantment extends Enchantment {
     public int getMaxLevel() {
         return 1;
     }
+
+    public boolean isTradeable() {
+        return super.isTradeable() && AMConfig.straddleboardEnchants;
+    }
+
+    public boolean isDiscoverable() {
+        return super.isDiscoverable() && AMConfig.straddleboardEnchants;
+    }
+
+    public boolean isAllowedOnBooks() {
+        return super.isAllowedOnBooks() && AMConfig.straddleboardEnchants;
+    }
+
+    public boolean canApplyAtEnchantingTable(ItemStack stack) {
+        return super.canApplyAtEnchantingTable(stack) && AMConfig.straddleboardEnchants;
+    }
+
 }
