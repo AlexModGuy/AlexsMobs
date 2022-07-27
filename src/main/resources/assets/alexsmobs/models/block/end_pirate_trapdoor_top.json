@@ -1,4 +1,5 @@
 {
+    "render_type": "translucent",
     "textures": {
         "texture": "alexsmobs:block/end_pirate_trapdoor",
         "side": "alexsmobs:block/end_pirate_trapdoor_side",

@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/block",
+  "render_type": "cutout",
   "textures": {
     "0": "alexsmobs:block/banana_peel",
     "1": "alexsmobs:block/banana_peel_bottom",

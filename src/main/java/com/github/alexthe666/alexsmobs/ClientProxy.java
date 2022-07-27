@@ -244,30 +244,11 @@ public class ClientProxy extends CommonProxy {
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("Could not load item models for weapons");
         }
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BANANA_PEEL.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.CAPSID.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.VOID_WORM_BEAK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.HUMMINGBIRD_FEEDER.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.RAINBOW_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_FUR_BLOCK.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.BISON_CARPET.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.ENDER_RESIDUE.get(), RenderType.translucent());
         //required for lava potion
         ItemBlockRenderTypes.setRenderLayer(Fluids.LAVA, RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(Fluids.FLOWING_LAVA, RenderType.translucent());
-
-        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_DOOR.get(), RenderType.translucent());
-        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.END_PIRATE_TRAPDOOR.get(), RenderType.translucent());
-        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.PHANTOM_SAIL.get(), RenderType.translucent());
-        //ItemBlockRenderTypes.setRenderLayer(AMBlockRegistry.SPECTRE_SAIL.get(), RenderType.translucent());
-        //
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID.get(), RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK.get(), RenderVoidWormBeak::new);
-        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_DOOR.get(), RenderEndPirateDoor::new);
-        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR.get(), RenderEndPirateAnchor::new);
-        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), RenderEndPirateAnchorWinch::new);
-        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL.get(), RenderEndPirateShipWheel::new);
-        //BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_FLAG.get(), RenderEndPirateFlag::new);
     }
 
     private void initRainbowBuffers() {

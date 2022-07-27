@@ -1,5 +1,6 @@
 {
 	"parent": "minecraft:block/block",
+	"render_type": "cutout",
 	"textures": {
 		"0": "alexsmobs:block/bison_fur",
 		"1": "alexsmobs:block/bison_fur_top",

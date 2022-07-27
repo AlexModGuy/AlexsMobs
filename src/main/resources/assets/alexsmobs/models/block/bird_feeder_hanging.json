@@ -1,6 +1,7 @@
 {
 	"parent": "minecraft:block/block",
 	"ambientocclusion": false,
+	"render_type": "cutout",
 	"texture_size": [32, 32],
 	"textures": {
 		"0": "#texture",
