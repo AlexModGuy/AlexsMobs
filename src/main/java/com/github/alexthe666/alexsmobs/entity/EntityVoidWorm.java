@@ -1,6 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.block.BlockEnderResidue;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
@@ -9,6 +11,7 @@ import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -54,10 +57,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -147,6 +146,43 @@ public class EntityVoidWorm extends Monster {
             itementity.setExtendedLifetime();
         }
         return itementity;
+    }
+
+    @Override
+    protected void dropAllDeathLoot(DamageSource source) {
+
+    }
+
+    private void placeDropsSafely(Collection<ItemEntity> drops) {
+        BlockPos pos = this.blockPosition();
+        while(!level.getBlockState(pos).getMaterial().isReplaceable() && pos.getY() < level.getMaxBuildHeight() - 2){
+            pos = pos.above();
+        }
+        int radius = 2;
+        BlockState residue = AMBlockRegistry.ENDER_RESIDUE.get().defaultBlockState().setValue(BlockEnderResidue.SLOW_DECAY, true);
+        for(int x = -radius; x <= radius; x++){
+            for(int y = -radius; y <= radius; y++){
+                for(int z = -radius; z <= radius; z++){
+                    double sq = x * x + y * y + z * z;
+                    BlockPos pos1 = pos.offset(x, y, z);
+                    BlockState state = level.getBlockState(pos1);
+                    if(sq <= radius * radius && sq >= (radius * radius) - 2.0F && (state.getMaterial().isReplaceable() || state.is(AMBlockRegistry.ENDER_RESIDUE.get()))){
+                        level.setBlockAndUpdate(pos1, residue);
+                    }
+                }
+            }
+        }
+        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        for(ItemEntity drop : drops){
+            drop.setPos(Vec3.atBottomCenterOf(pos));
+            drop.setGlowingTag(true);
+            drop.setNoGravity(true);
+            drop.setDefaultPickUpDelay();
+            drop.setUnlimitedLifetime();
+            drop.setDeltaMovement(Vec3.ZERO);
+            level.addFreshEntity(drop);
+        }
+
     }
 
     @Override
@@ -283,6 +319,8 @@ public class EntityVoidWorm extends Monster {
                 }
             }
             maxUpStep = 2;
+        }else{
+            this.setDeltaMovement(new Vec3(0, 0.03F, 0));
         }
         yBodyRot = getYRot();
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
@@ -344,6 +382,35 @@ public class EntityVoidWorm extends Monster {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(maxHealth);
         if(heal){
             this.heal((float)maxHealth);
+        }
+    }
+
+    protected void tickDeath() {
+        ++this.deathTime;
+        if (this.deathTime == (this.isSplitter() ? 20 : 80) && !this.level.isClientSide()) {
+            DamageSource source = this.getLastDamageSource() == null ? DamageSource.GENERIC : this.getLastDamageSource();
+            Entity entity = source.getEntity();
+
+            int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, entity, source);
+            this.captureDrops(new java.util.ArrayList<>());
+
+            boolean flag = this.lastHurtByPlayerTime > 0;
+            if (this.shouldDropLoot() && this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                this.dropFromLootTable(source, flag);
+                this.dropCustomDeathLoot(source, i, flag);
+            }
+            this.dropEquipment();
+            this.dropExperience();
+
+            Collection<ItemEntity> drops = captureDrops(null);
+
+            if (!net.minecraftforge.common.ForgeHooks.onLivingDrops(this, source, drops, i, lastHurtByPlayerTime > 0)){
+                if(!drops.isEmpty()){
+                    this.placeDropsSafely(drops);
+                }
+            }
+            this.level.broadcastEntityEvent(this, (byte)60);
+            this.remove(Entity.RemovalReason.KILLED);
         }
     }
 
