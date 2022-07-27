@@ -334,14 +334,20 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
 
-        if(item == Items.ROTTEN_FLESH && !isTame()){
-            int size = itemstack.getCount();
-            int tameAmount = 58 + random.nextInt(16);
-            if(size > tameAmount){
-                this.tame(player);
+        if(item == Items.ROTTEN_FLESH){
+            if(!isTame()){
+                int size = itemstack.getCount();
+                int tameAmount = 58 + random.nextInt(16);
+                if(size > tameAmount){
+                    this.tame(player);
+                }
+                itemstack.shrink(size);
+                return InteractionResult.SUCCESS;
+            }else if(this.getHealth() <= this.getMaxHealth()){
+                usePlayerItem(player, hand, itemstack);
+                this.heal(10);
+                return InteractionResult.SUCCESS;
             }
-            itemstack.shrink(size);
-            return InteractionResult.SUCCESS;
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)){
