@@ -100,7 +100,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.fromBucket() || isSlimed();
+        return super.requiresCustomPersistence() || this.hasCustomName() || this.fromBucket() || isSlimed();
     }
 
     public boolean removeWhenFarAway(double p_213397_1_) {

@@ -91,11 +91,11 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
 
 
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return !requiresCustomPersistence();
+        return !requiresCustomPersistence() && !this.hasCustomName();
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isTame() || this.isPotted();
+        return super.requiresCustomPersistence() || this.hasCustomName() || this.isTame() || this.isPotted();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {

@@ -122,7 +122,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
     }
 
     public boolean requiresCustomPersistence() {
-        return this.isNoDespawn() || super.requiresCustomPersistence();
+        return this.isNoDespawn()  || this.hasCustomName() || super.requiresCustomPersistence();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {

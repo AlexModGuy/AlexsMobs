@@ -144,7 +144,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.fromBucket() || this.hasSwallowedEntity() || !this.catfishInventory.isEmpty();
+        return super.requiresCustomPersistence() || this.hasCustomName() || this.fromBucket() || this.hasSwallowedEntity() || !this.catfishInventory.isEmpty();
     }
 
     public static boolean canCatfishSpawn(EntityType<EntityCatfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {

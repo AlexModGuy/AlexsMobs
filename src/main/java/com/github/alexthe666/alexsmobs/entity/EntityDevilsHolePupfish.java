@@ -111,7 +111,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.fromBucket();
+        return super.requiresCustomPersistence() || this.hasCustomName() || this.fromBucket();
     }
 
     public static boolean canPupfishSpawn(EntityType<EntityDevilsHolePupfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {

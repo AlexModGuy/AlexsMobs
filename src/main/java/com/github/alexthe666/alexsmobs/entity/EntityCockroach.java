@@ -109,7 +109,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isBreaded() || this.isDancing() || this.hasMaracas() || this.isHeadless();
+        return super.requiresCustomPersistence() || this.hasCustomName() || this.isBreaded() || this.isDancing() || this.hasMaracas() || this.isHeadless();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
