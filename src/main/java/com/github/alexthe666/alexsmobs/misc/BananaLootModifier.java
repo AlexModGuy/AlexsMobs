@@ -19,7 +19,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
