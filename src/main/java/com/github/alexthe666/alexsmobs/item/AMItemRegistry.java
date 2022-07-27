@@ -6,11 +6,17 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
 import net.minecraft.core.Registry;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Services;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.core.Position;
@@ -24,16 +30,10 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BannerPatternItem;
-import net.minecraft.world.item.BowlFoodItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.RecordItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -338,6 +338,36 @@ public class AMItemRegistry {
                 return entityarrow;
             }
         });
+        DispenseItemBehavior bucketDispenseBehavior = new DefaultDispenseItemBehavior() {
+            private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
+
+            public ItemStack execute(BlockSource blockSource, ItemStack stack) {
+                DispensibleContainerItem dispensiblecontaineritem = (DispensibleContainerItem)stack.getItem();
+                BlockPos blockpos = blockSource.getPos().relative(blockSource.getBlockState().getValue(DispenserBlock.FACING));
+                Level level = blockSource.getLevel();
+                if (dispensiblecontaineritem.emptyContents((Player)null, level, blockpos, (BlockHitResult)null)) {
+                    dispensiblecontaineritem.checkExtraContent((Player)null, level, stack, blockpos);
+                    return new ItemStack(Items.BUCKET);
+                } else {
+                    return this.defaultDispenseItemBehavior.dispense(blockSource, stack);
+                }
+            }
+        };
+        DispenserBlock.registerBehavior(LOBSTER_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(BLOBFISH_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(STRADPOLE_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(PLATYPUS_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(FRILLED_SHARK_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(MIMIC_OCTOPUS_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(TERRAPIN_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(COMB_JELLY_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(COSMIC_COD_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(DEVILS_HOLE_PUPFISH_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(SMALL_CATFISH_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(MEDIUM_CATFISH_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(LARGE_CATFISH_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(FLYING_FISH_BUCKET.get(), bucketDispenseBehavior);
+        DispenserBlock.registerBehavior(MUDSKIPPER_BUCKET.get(), bucketDispenseBehavior);
         ComposterBlock.COMPOSTABLES.put(BANANA.get(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(AMBlockRegistry.BANANA_PEEL.get().asItem(), 1F);
         ComposterBlock.COMPOSTABLES.put(ACACIA_BLOSSOM.get(), 0.65F);
