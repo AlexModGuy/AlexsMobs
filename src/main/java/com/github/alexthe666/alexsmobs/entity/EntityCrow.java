@@ -202,6 +202,10 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             if (entity != null && this.isTame() && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
                 amount = (amount + 1.0F) / 4.0F;
             }
+
+            if(this.isPassenger()){
+                this.stopRiding();
+            }
             boolean prev = super.hurt(source, amount);
             if (prev) {
                 if (!this.getMainHandItem().isEmpty()) {
@@ -498,7 +502,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.CACTUS || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.FALL || source == DamageSource.CACTUS || super.isInvulnerableTo(source);
     }
 
     @Nullable
