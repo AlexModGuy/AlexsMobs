@@ -257,6 +257,9 @@ public class EntityVoidWorm extends Monster {
         return true;
     }
 
+    public int getExperienceReward(){
+        return this.isSplitter() ? 8 : 50;
+    }
 
     public void tick() {
         super.tick();
