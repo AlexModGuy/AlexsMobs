@@ -467,7 +467,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         }
 
         public boolean canUse() {
-            if (EntityRhinoceros.this.isBaby() || EntityRhinoceros.this.isInLove()) {
+            if (EntityRhinoceros.this.isBaby() || EntityRhinoceros.this.isInLove() || EntityRhinoceros.this.trustsAny()) {
                 return false;
             } else {
                 return super.canUse();
@@ -475,8 +475,12 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         }
 
         protected double getFollowDistance() {
-            return 1.5D;
+            return 3.0D;
         }
+    }
+
+    private boolean trustsAny() {
+        return !this.entityData.get(DATA_TRUSTED_ID_0).isEmpty() || !this.entityData.get(DATA_TRUSTED_ID_1).isEmpty();
     }
 
     class DefendTrustedTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {
