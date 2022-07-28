@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Szopy są małymi ssakami pochodzącymi z równin i lasów. Chociaż neutralne, będą błagać o każde jedzenie, jeśli zobaczą je w ręce.
+Często można je zidentyfikować w nocy ze względu na ich świecące oczy.
+Chociaż może to być kuszące, aby karmić te słodkie zwierzęta, często nie ma z tego żadnych korzyści. Szop jest znanym złodziejem, który często kradnie jedzenie ze skrzyń i beczek, i pomimo swojego uroczego wyglądu, może być niezwykle agresywny.
+Jedną z ciekawostek Szopa jest jego "myjące" zachowanie. Po podaniu pożywienia w pobliżu wody, Szop pracz umyje je pod wodą, a następnie zje.
+<NEWLINE>
+Szopy można oswoić tylko wtedy, gdy da się im kurze Jajo w pobliżu wody, gdzie mogą umyć jajo według własnego uznania. Oswojone Szopy można zmusić do siedzenia, podążania i wędrowania.
+Można je rozmnażać chlebem. Oswojone Szopy mogą otrzymać dywan do noszenia jako bandanę, którą można usunąć nożycami. Od czasu do czasu Szopy mogą kraść przedmioty z zapasów mieszkańców wioski.
+Po zabiciu Szopy mają szansę upuścić ogony.
+<NEWLINE>
+<NEWLINE>
+Z tych ogonów można zrobić Czapkę Człowieka z Gór, która daje premię do prędkości podczas skradania się.

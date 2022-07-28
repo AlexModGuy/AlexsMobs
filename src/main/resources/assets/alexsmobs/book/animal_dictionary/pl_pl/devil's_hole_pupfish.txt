@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Karpieniec Diabli to mała ryba znana z tego, że jest najrzadszą rybą na świecie. Ryby te mogą odradzać się tylko w podziemnych warstwach wodonośnych w jednym kawałku w Overworld.
+Aby znaleźć chunk, który Karpieniec nazywa domem, musisz stworzyć Lokalizator Dziwnych Ryb, w ten sposób:
+<NEWLINE>
+<NEWLINE>
+To urządzenie wyśle falę dźwiękową w kierunku chunka.
+<NEWLINE>
+Po znalezieniu Karpieńców możesz zauważyć, że gonią się nawzajem. Karpieńce utrzymują się przy życiu, jedząc błoto z powierzchni zanurzonych, omszałych bloków.
+Czasami podczas dziobania w te bloki mogą usunąć kulę śluzu. Czasami będą rozmnażać się z innymi Karpieńcami po zjedzeniu mchu. Karpieńce Diable można wiaderkować, jak większość innych ryb.

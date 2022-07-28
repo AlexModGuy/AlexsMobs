@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Orka to duży, podobny do delfina waleń występujący w zimnych oceanach Overworld. Często można ją zobaczyć wynurzającą się z wody,
+atakującą populacje niedźwiedzi polarnych. Zabijają również ławice ryb, uderzając je swoimi masywnymi ogonami. W przeciwieństwie do swoich kuzynów delfinów,
+te wieloryby nie są zbyt przyjazne - zranienie jednego z nich może sprawić, że zaatakuje cię całe stado.
+<NEWLINE>
+Kolor i wygląd orki może się różnić w zależności od tego, czy jej stado pochodzi z południa, północy, wschodu czy zachodu.
+<NEWLINE>
+ływanie ze stadem orek może dać efekt Siła Orki. Efekt ten daje zwiększoną prędkość ataku. Orki często wykorzystują swoją siłę przeciwko Utopcom i Strażnikom.

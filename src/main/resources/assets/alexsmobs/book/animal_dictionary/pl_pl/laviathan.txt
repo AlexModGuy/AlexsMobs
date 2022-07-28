@@ -1,0 +1,16 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Lewiatany to gigantyczne, magmowe gady pokryte czernitem, które można znaleźć w wielkich jeziorach lawy w Netherze. Mimo przerażającego wyglądu, Laviathany są całkowicie pasywne i próbują uciekać, jeśli zostaną zranione.
+<NEWLINE>
+Lewiatany mogą być dosiadane i kontrolowane poprzez stworzenie i wyposażenie zarówno Siodła z Okracznytu jak i Hełmu z Okracznytu.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Siodło może pomieścić do czterech pasażerów, a hełm pozwala kontrolować ruchy Lewiatana za pomocą długich lejców. Lewiatany wyposażone w oba te elementy są mniej skłonne do ucieczki i zanurzenia się w lawie.
+<NEWLINE>
+Lewiatany znane są z tego, że są jednymi z najskuteczniejszych łowców Szkarłatnych Komarów, często przedostają się na powierzchnię lawy i wypuszczają dym z otworów wentylacyjnych na plecach i głowach. Dym ten wabi owady, które następnie są szybko chwytane w dziób przez Lewiatana.
+<NEWLINE>
+Będąc stworzeniami o konsystencji Lawy, można by się spodziewać, że tym gigantycznym gadom zaszkodzi woda. Jednak obecnie uważa się, że pod wpływem wody bestie te "krzepną" w silniejszą, obsydianową formę. Lewiatany można hodować za pomocą Larwy Szkarłatnego Komara i leczyć za pomocą Magmowego Kremu.

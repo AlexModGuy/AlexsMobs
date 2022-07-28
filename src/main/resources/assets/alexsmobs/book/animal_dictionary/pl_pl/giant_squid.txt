@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Kałamarnice olbrzymie to duże bezkręgowce występujące tylko w najgłębszych oceanach. Mimo że są przerażające, są neutralne wobec większości, chyba że są to strażnicy lub ryby.
+Te bezkręgowce posiadają największe oko w królestwie zwierząt. Po zabiciu, kałamarnica olbrzymia upuszcza niewiele więcej niż kilka torbieli z atramentem. Jeśli jednak zostanie zaatakowana przez jednego ze swoich jedynych drapieżników, wieloryba Kaszalota, może stracić mackę w wyniku walki.
+Te utracone macki mogą zostać zebrane przez gracza, aby stworzyć Mackokotwiczkę.
+<NEWLINE>
+<NEWLINE>
+Ten chwytak pozwala wystrzelić do czterech macek naraz, zaczepiając się o dowolną powierzchnię i przyciągając ją do siebie. Jest to bardzo przydatne przy eksploracji jaskiń i oceanów.
+<NEWLINE>
+Kałamarnica Olbrzymia może ulec zmianie ciśnienia, jeśli znajdzie się pod mniej niż dziesięć bloków wody, wtedy też zblednieje.
+Jeśli normalna kałamarnica zostanie uderzona przez piorun, może przekształcić się w unikalną niebieską Kałamarnicę Olbrzymią.

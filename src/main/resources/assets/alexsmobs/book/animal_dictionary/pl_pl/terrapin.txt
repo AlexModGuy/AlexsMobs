@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Żółwie Diamentowe lub Żółwie Rzeczne to małe gady, które czasami można spotkać pod wodą w biomach rzecznych wolnych od lodu.
+Są całkowicie pasywne i polegają na swojej skorupie w celu ochrony. Dzikie żółwie mogą być zbierane za pomocą wiadra z wodą.
+<NEWLINE>
+Jeśli naskoczy się na żółwia, cofnie się on do swojej skorupy. Po ponownym skoku żółw będzie się obracał w kierunku skoku, odbijając się rykoszetem od ścian.
+W przypadku zderzenia z innym mobem, szybki żółw zada spore obrażenia. Jednak ten mob może stać się agresywny wobec tego, kto wystrzelił w niego żółwia.
+<NEWLINE>
+Żółwie Diamentowe występują w szerokiej gamie wzorów i kolorów, z których wiele nie występuje w naturze.
+Żółwie te mogą być rozmnarzane trawą morską w celu wyprodukowania 1-4 jaj. Chociaż większość z tych jaj powinna być bezpośrednią krzyżówką rodziców, istnieje szansa, że dziecko żółwia zmutuje w zupełnie przypadkowy kolor.
+Jeśli żółw nie jest zmutowany to jego kolor może być jednym z rodziców lub średnią z dwóch.
