@@ -192,8 +192,8 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> SKELEWAG_SWORD = DEF_REG.register("skelewag_sword", () -> new ItemSkelewagSword(new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).durability(430)));
     public static final RegistryObject<Item> NOVELTY_HAT = DEF_REG.register("novelty_hat", () -> new ItemModArmor(NOVELTY_HAT_MATERIAL, EquipmentSlot.HEAD));
     public static final RegistryObject<Item> MUDSKIPPER_BUCKET = DEF_REG.register("mudskipper_bucket", () -> new ItemModFishBucket(AMEntityRegistry.MUDSKIPPER, Fluids.WATER, new Item.Properties().tab(AMItemGroup.INSTANCE)));
-    public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME.get(), new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE)));
-    public static final RegistryObject<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE.get(), new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE), 191 * 20));
+    public static final RegistryObject<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE), 314 * 20));
 
     public static void initSpawnEggs() {
         DEF_REG.register("spawn_egg_grizzly_bear", () -> new ForgeSpawnEggItem(AMEntityRegistry.GRIZZLY_BEAR, 0X693A2C, 0X976144, new Item.Properties().tab(AMItemGroup.INSTANCE)));
