@@ -1,10 +1,10 @@
 modLoader="javafml" #mandatory
-loaderVersion="[41,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion="[42,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license="GNU LESSER GENERAL PUBLIC LICENSE"
 issueTrackerURL="https://github.com/Alex-the-666/AlexsMobs/issues" #optional
 [[mods]] #mandatory
 modId="alexsmobs" #mandatory
-version="1.19.4" #mandatory
+version="1.19.5" #mandatory
 displayName="Alex's Mobs" #mandatory
 displayURL="https://www.curseforge.com/minecraft/mc-mods/alexs-mobs" #optional
 authors="Alexthe668, Carro1001" #optional
@@ -25,6 +25,6 @@ description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
 [[dependencies.alexsmobs]]
     modId="forge"
     mandatory=true
-    versionRange="[41.1.0,)"
+    versionRange="[42.0.0,)"
     ordering="NONE"
     side="BOTH"
