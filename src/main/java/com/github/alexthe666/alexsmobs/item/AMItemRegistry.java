@@ -276,6 +276,7 @@ public class AMItemRegistry {
         DEF_REG.register("spawn_egg_mudskipper", () -> new ForgeSpawnEggItem(AMEntityRegistry.MUDSKIPPER, 0X60704A, 0X49806C, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         DEF_REG.register("spawn_egg_rhinoceros", () -> new ForgeSpawnEggItem(AMEntityRegistry.RHINOCEROS, 0XA19594, 0X827474, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         DEF_REG.register("spawn_egg_sugar_glider", () -> new ForgeSpawnEggItem(AMEntityRegistry.SUGAR_GLIDER, 0X868181, 0XEBEBE0, new Item.Properties().tab(AMItemGroup.INSTANCE)));
+        DEF_REG.register("spawn_egg_farseer", () -> new ForgeSpawnEggItem(AMEntityRegistry.FARSEER, 0X33374F, 0X91FF59, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         registerPatternItem("bear");
         registerPatternItem("australia_0");
         registerPatternItem("australia_1");
