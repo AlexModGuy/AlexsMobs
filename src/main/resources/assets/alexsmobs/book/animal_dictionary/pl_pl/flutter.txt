@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Trzepotniki to małe, plantoidalne stworzenia występujące w bujnych jaskiniach. Są całkowicie pasywne i unikają większości obrażeń, unosząc się w powietrzu dzięki trzepotaniu swoim ogromnym kwiatem.
+Trzepotniki interesują się każdym kwiatem i można je oswoić, dając im 4-6 kwiatów. Każdy z tych kwiatów musi być inny od siebie, gdyż w przeciwnym razie Trzepotnik będzie niezainteresowany.
+<NEWLINE>
+Po oswojeniu, Trzepotniki mogą zostać zmuszone do pozostania, podążania lub wędrowania. Broniąc swojego właściciela przed zagrożeniem, Trzepotniki unoszą się w niebo i wystrzeliwują kule pyłku w kierunku napastnika. Pyłki te mogą namierzyć napastnika, co sprawia, że kilka Trzepotników jest bardzo przydatnych w jaskiniach.
+Mimo że mają mało zdrowia, można je wyposażyć w doniczkę z kwiatem, aby zyskały dodatkową zbroję. Trzepotnika w doniczce można także podnieść, skradając się. Trzepotniki mogą zostać uleczone za pomocą kwiatów.
+<NEWLINE>
+Ponieważ Trzepotniki są roślinami, można je rozmnażać mączką kostną. Jeśli Trzepotniki będą rozmnażane w pobliżu krzewów lub liści azalii, istnieje szansa, że krzewy lub liście azalii zakwitną. Jeśli Trzepotniki zostaną zabite, mogą upuścić Pylikwiat.
