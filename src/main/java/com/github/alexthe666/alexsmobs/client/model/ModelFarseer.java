@@ -1,8 +1,11 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFarseer;
+import com.github.alexthe666.alexsmobs.entity.EntityFrilledShark;
+import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.phys.Vec3;
@@ -45,6 +48,7 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
     private final AdvancedModelBox rightLowerRFinger3;
     private final AdvancedModelBox rightLowerLFinger2;
     private final AdvancedModelBox rightUpperLFinger2;
+    private final ModelAnimator animator;
 
     public ModelFarseer() {
         texWidth = 128;
@@ -254,19 +258,110 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         setRotationAngle(rightUpperLFinger2, 0.0F, 0.0F, -0.7854F);
         rightUpperLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
         this.updateDefaultPose();
+        animator = ModelAnimator.create();
     }
+
+    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
+        animator.update(entity);
+        animator.setAnimation(EntityFarseer.ANIMATION_EMERGE);
+        animator.startKeyframe(0);
+        animator.move(root, 0, 0, 20);
+        animator.rotate(leftArm, 0, (float) Math.toRadians(80), 0);
+        animator.rotate(leftElbow, (float) Math.toRadians(-20), (float) Math.toRadians(-30), 0);
+        animator.rotate(leftHand, (float) Math.toRadians(-35), (float) Math.toRadians(40), 0);
+        animator.move(leftArm, -1, -5, -6);
+        animator.rotate(rightArm, 0, (float) Math.toRadians(-80), 0);
+        animator.rotate(rightElbow, (float) Math.toRadians(-40), (float) Math.toRadians(70), 0);
+        animator.rotate(rightHand, (float) Math.toRadians(5), (float) Math.toRadians(-60), 0);
+        animator.move(rightArm, 1, -5, -6);
+        animator.rotate(leftArm2, 0, (float) Math.toRadians(60), 0);
+        animator.rotate(leftElbow2, (float) Math.toRadians(40), (float) Math.toRadians(-30), 0);
+        animator.rotate(leftHand2, (float) Math.toRadians(-15), (float) Math.toRadians(40), 0);
+        animator.move(leftArm2, 2, 6, -6);
+        animator.rotate(rightArm2, 0, (float) Math.toRadians(-80), 0);
+        animator.rotate(rightElbow2, (float) Math.toRadians(20), (float) Math.toRadians(50), 0);
+        animator.rotate(rightHand2, (float) Math.toRadians(25), (float) Math.toRadians(-60), 0);
+        animator.move(rightArm2, -2, 5, -4);
+        animator.endKeyframe();
+        animator.setStaticKeyframe(10);
+        animator.startKeyframe(10);
+        animator.move(root, 0, 0, 15);
+        animator.rotate(leftArm, 0, (float) Math.toRadians(70), 0);
+        animator.rotate(leftElbow, (float) Math.toRadians(-20), (float) Math.toRadians(-30), 0);
+        animator.rotate(leftHand, (float) Math.toRadians(-5), (float) Math.toRadians(50), 0);
+        animator.move(leftArm, 1, -5, -1);
+        animator.rotate(rightArm, 0, (float) Math.toRadians(-80), 0);
+        animator.rotate(rightElbow, (float) Math.toRadians(-40), (float) Math.toRadians(60), 0);
+        animator.rotate(rightHand, (float) Math.toRadians(5), (float) Math.toRadians(-70), 0);
+        animator.move(rightArm, -1, -5, -1);
+        animator.rotate(leftArm2, 0, (float) Math.toRadians(60), 0);
+        animator.rotate(leftElbow2, (float) Math.toRadians(30), (float) Math.toRadians(-30), 0);
+        animator.rotate(leftHand2, (float) Math.toRadians(-5), (float) Math.toRadians(40), 0);
+        animator.move(leftArm2, 3, 6, -1);
+        animator.rotate(rightArm2, 0, (float) Math.toRadians(-70), 0);
+        animator.rotate(rightElbow2, (float) Math.toRadians(20), (float) Math.toRadians(50), 0);
+        animator.rotate(rightHand2, (float) Math.toRadians(25), (float) Math.toRadians(-60), 0);
+        animator.move(rightArm2, -3, 5, 1);
+        animator.endKeyframe();
+        animator.startKeyframe(10);
+        animator.move(root, 0, 0, 10);
+        animator.rotate(leftArm, 0, (float) Math.toRadians(60), 0);
+        animator.rotate(leftElbow, (float) Math.toRadians(-20), (float) Math.toRadians(-30), 0);
+        animator.rotate(leftHand, (float) Math.toRadians(-15), (float) Math.toRadians(50), 0);
+        animator.move(leftArm, 2, -5, 4);
+        animator.rotate(rightArm, 0, (float) Math.toRadians(-72), 0);
+        animator.rotate(rightElbow, (float) Math.toRadians(-40), (float) Math.toRadians(60), 0);
+        animator.rotate(rightHand, (float) Math.toRadians(-5), (float) Math.toRadians(-75), 0);
+        animator.move(rightArm, -1, -3, 4);
+        animator.rotate(leftArm2, 0, (float) Math.toRadians(55), 0);
+        animator.rotate(leftElbow2, (float) Math.toRadians(30), (float) Math.toRadians(-30), 0);
+        animator.rotate(leftHand2, (float) Math.toRadians(-15), (float) Math.toRadians(50), 0);
+        animator.move(leftArm2, 5, 6, 4);
+        animator.rotate(rightArm2, 0, (float) Math.toRadians(-60), 0);
+        animator.rotate(rightElbow2, (float) Math.toRadians(20), (float) Math.toRadians(50), 0);
+        animator.rotate(rightHand2, (float) Math.toRadians(5), (float) Math.toRadians(-60), 0);
+        animator.move(rightArm2, -5, 5, 6);
+        animator.endKeyframe();
+        animator.startKeyframe(10);
+        animator.move(root, 0, 0, 5);
+        animator.rotate(leftArm, 0, (float) Math.toRadians(60), 0);
+        animator.rotate(leftElbow, (float) Math.toRadians(-20), (float) Math.toRadians(-40), 0);
+        animator.rotate(leftHand, (float) Math.toRadians(-15), (float) Math.toRadians(85), 0);
+        animator.move(leftArm, 3, -5, 9);
+        animator.rotate(rightArm, 0, (float) Math.toRadians(-72), 0);
+        animator.rotate(rightElbow, (float) Math.toRadians(-40), (float) Math.toRadians(60), 0);
+        animator.rotate(rightHand, (float) Math.toRadians(15), (float) Math.toRadians(-85), 0);
+        animator.move(rightArm, -5, -4, 9);
+        animator.rotate(leftArm2, 0, (float) Math.toRadians(45), 0);
+        animator.rotate(leftElbow2, (float) Math.toRadians(30), (float) Math.toRadians(-40), 0);
+        animator.rotate(leftHand2, (float) Math.toRadians(-5), (float) Math.toRadians(70), 0);
+        animator.move(leftArm2, 8, 4, 7);
+        animator.rotate(rightArm2, 0, (float) Math.toRadians(-50), 0);
+        animator.rotate(rightElbow2, (float) Math.toRadians(20), (float) Math.toRadians(50), 0);
+        animator.rotate(rightHand2, (float) Math.toRadians(25), (float) Math.toRadians(-70), 0);
+        animator.move(rightArm2, -5, 5, 11);
+        animator.endKeyframe();
+        animator.resetKeyframe(10);
+    }
+
 
     @Override
     public void setupAnim(EntityFarseer entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
+        animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         float partialTick = ageInTicks - entity.tickCount;
         float idleSpeed = 0.15F;
-        float idleDegree = 1F;
+        float invPortalDegree = 1F - entity.getFacingCameraAmount(partialTick);
+        float idleDegree = invPortalDegree;
         float angryProgress = entity.prevAngryProgress + (entity.angryProgress - entity.prevAngryProgress) * partialTick;
-        float clasp1Progress = entity.prevClaspProgress[0] + (entity.claspProgress[0] - entity.prevClaspProgress[0]) * partialTick;
-        float clasp2Progress = entity.prevClaspProgress[1] + (entity.claspProgress[1] - entity.prevClaspProgress[1]) * partialTick;
-        float clasp3Progress = entity.prevClaspProgress[2] + (entity.claspProgress[2] - entity.prevClaspProgress[2]) * partialTick;
-        float clasp4Progress = entity.prevClaspProgress[3] + (entity.claspProgress[3] - entity.prevClaspProgress[3]) * partialTick;
+        float strike1Progress = (entity.prevStrikeProgress[0] + (entity.strikeProgress[0] - entity.prevStrikeProgress[0]) * partialTick) * invPortalDegree;
+        float strike2Progress = (entity.prevStrikeProgress[1] + (entity.strikeProgress[1] - entity.prevStrikeProgress[1]) * partialTick) * invPortalDegree;
+        float strike3Progress = (entity.prevStrikeProgress[2] + (entity.strikeProgress[2] - entity.prevStrikeProgress[2]) * partialTick) * invPortalDegree;
+        float strike4Progress = (entity.prevStrikeProgress[3] + (entity.strikeProgress[3] - entity.prevStrikeProgress[3]) * partialTick) * invPortalDegree;
+        float clasp1Progress = Math.max(strike1Progress, (entity.prevClaspProgress[0] + (entity.claspProgress[0] - entity.prevClaspProgress[0]) * partialTick) * invPortalDegree);
+        float clasp2Progress = Math.max(strike2Progress, (entity.prevClaspProgress[1] + (entity.claspProgress[1] - entity.prevClaspProgress[1]) * partialTick) * invPortalDegree);
+        float clasp3Progress = Math.max(strike3Progress, (entity.prevClaspProgress[2] + (entity.claspProgress[2] - entity.prevClaspProgress[2]) * partialTick) * invPortalDegree);
+        float clasp4Progress = Math.max(strike4Progress, (entity.prevClaspProgress[3] + (entity.claspProgress[3] - entity.prevClaspProgress[3]) * partialTick) * invPortalDegree);
         float armYaw = (float) Math.toRadians(entity.getLatencyVar(5, 3, partialTick) - entity.getLatencyVar(0, 3, partialTick));
         Vec3 topArmOffset = entity.getLatencyOffsetVec(4, partialTick).scale(-4.0F);
         Vec3 bottomArmOffset = entity.getLatencyOffsetVec(8, partialTick).scale(-5.0F);
@@ -296,6 +391,22 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         progressRotationPrev(rightLowerRFinger3, clasp4Progress, (float) Math.toRadians(45), 0, 0, 5F);
         progressRotationPrev(rightLowerLFinger2, clasp4Progress, (float) Math.toRadians(45), 0, 0, 5F);
         progressRotationPrev(rightUpperLFinger2, clasp4Progress, (float) Math.toRadians(45), 0, 0, 5F);
+        progressPositionPrev(leftArm, strike1Progress, 4, -4, -9, 5F);
+        progressRotationPrev(leftArm, strike1Progress, 0, (float) Math.toRadians(90), 0, 5F);
+        progressRotationPrev(leftElbow, strike1Progress, 0, (float) Math.toRadians(-70), 0, 5F);
+        progressRotationPrev(leftHand, strike1Progress, 0, (float) Math.toRadians(-10), 0, 5F);
+        progressPositionPrev(rightArm, strike2Progress, -4, -4, -9, 5F);
+        progressRotationPrev(rightArm, strike2Progress, 0, (float) Math.toRadians(-90), 0, 5F);
+        progressRotationPrev(rightElbow, strike2Progress, 0, (float) Math.toRadians(70), 0, 5F);
+        progressRotationPrev(rightHand, strike2Progress, 0, (float) Math.toRadians(10), 0, 5F);
+        progressPositionPrev(leftArm2, strike3Progress, 6, 4, -9, 5F);
+        progressRotationPrev(leftArm2, strike3Progress, 0, (float) Math.toRadians(90), 0, 5F);
+        progressRotationPrev(leftElbow2, strike3Progress, 0, (float) Math.toRadians(-70), 0, 5F);
+        progressRotationPrev(leftHand2, strike3Progress, 0, (float) Math.toRadians(-10), 0, 5F);
+        progressPositionPrev(rightArm2, strike4Progress, -6, 4, -9, 5F);
+        progressRotationPrev(rightArm2, strike4Progress, 0, (float) Math.toRadians(-90), 0, 5F);
+        progressRotationPrev(rightElbow2, strike4Progress, 0, (float) Math.toRadians(70), 0, 5F);
+        progressRotationPrev(rightHand2, strike4Progress, 0, (float) Math.toRadians(10), 0, 5F);
 
         leftArm.rotationPointX += (topArmOffset.x + Math.sin(ageInTicks * idleSpeed + 1.3F)) * idleDegree;
         leftArm.rotationPointY += (topArmOffset.y + Math.sin(ageInTicks * idleSpeed + 1.6F)) * idleDegree;
@@ -346,9 +457,9 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         return ImmutableList.of(root, bodyCube1, head, leftUpperMask, rightUpperMask, leftLowerMask, rightLowerMask, eye, bodyCube2, leftArm, leftElbow, leftHand, leftUpperRFinger, leftLowerRFinger, leftLowerLFinger, leftUpperLFinger, leftArm2, leftElbow2, leftHand2, leftUpperRFinger2, leftLowerRFinger2, leftLowerLFinger2, leftUpperLFinger2, rightArm, rightElbow, rightHand, rightUpperRFinger, rightLowerRFinger2, rightLowerLFinger, rightUpperLFinger, rightArm2, rightElbow2, rightHand2, rightUpperRFinger2, rightLowerRFinger3, rightLowerLFinger2, rightUpperLFinger2);
     }
 
-    public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
-        AdvancedModelBox.rotateAngleX = x;
-        AdvancedModelBox.rotateAngleY = y;
-        AdvancedModelBox.rotateAngleZ = z;
+    public void setRotationAngle(AdvancedModelBox advancedModelBox, float x, float y, float z) {
+        advancedModelBox.rotateAngleX = x;
+        advancedModelBox.rotateAngleY = y;
+        advancedModelBox.rotateAngleZ = z;
     }
 }

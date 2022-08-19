@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelRockyChestplateRolling;
 import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
 import com.github.alexthe666.alexsmobs.client.model.layered.AMModelLayers;
 import com.github.alexthe666.alexsmobs.client.render.AMItemstackRenderer;
+import com.github.alexthe666.alexsmobs.client.render.AMRenderTypes;
 import com.github.alexthe666.alexsmobs.client.render.LavaVisionFluidRenderer;
 import com.github.alexthe666.alexsmobs.client.render.RenderVineLasso;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerRainbow;
@@ -76,7 +77,6 @@ import java.util.stream.Collectors;
 @OnlyIn(Dist.CLIENT)
 public class ClientEvents {
 
-    private static final ResourceLocation STATIC_TEXTURE = new ResourceLocation("alexsmobs:textures/static.png");
     private static final ResourceLocation ROCKY_CHESTPLATE_TEXTURE = new ResourceLocation("alexsmobs:textures/armor/rocky_chestplate.png");
     private static final ModelRockyChestplateRolling ROCKY_CHESTPLATE_MODEL = new ModelRockyChestplateRolling();
 
@@ -450,7 +450,7 @@ public class ClientEvents {
                     RenderSystem.defaultBlendFunc();
                     RenderSystem.setShader(GameRenderer::getPositionTexShader);
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, staticLevel);
-                    RenderSystem.setShaderTexture(0, STATIC_TEXTURE);
+                    RenderSystem.setShaderTexture(0, AMRenderTypes.STATIC_TEXTURE);
                     Tesselator tesselator = Tesselator.getInstance();
                     BufferBuilder bufferbuilder = tesselator.getBuilder();
                     bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
