@@ -9,6 +9,7 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -22,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraftforge.client.ForgeRenderTypes;
 import net.minecraftforge.client.event.RenderNameTagEvent;
 
 import javax.annotation.Nullable;
@@ -36,6 +38,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         new ResourceLocation("alexsmobs:textures/entity/farseer/portal_1.png"),
         new ResourceLocation("alexsmobs:textures/entity/farseer/portal_2.png"),
         new ResourceLocation("alexsmobs:textures/entity/farseer/portal_3.png")};
+    private static final float HALF_SQRT_3 = (float)(Math.sqrt(3.0D) / 2.0D);
 
     public RenderFarseer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelFarseer(), 0.9F);
@@ -45,6 +48,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
     public void render(EntityFarseer entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Pre<EntityFarseer, ModelFarseer>(entityIn, this, partialTicks, matrixStackIn, bufferIn, packedLightIn)))
             return;
+        LivingEntity laserTarget = entityIn.getLaserTarget();
         float faceCameraAmount = entityIn.getFacingCameraAmount(partialTicks);
         Quaternion camera = this.entityRenderDispatcher.cameraOrientation().copy();
         camera.mul(faceCameraAmount);
@@ -149,7 +153,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             Matrix4f matrix4f = posestack$pose.pose();
             Matrix3f matrix3f = posestack$pose.normal();
             int portalTexture = Mth.clamp(entityIn.getPortalFrame(), 0, PORTAL_TEXTURES.length - 1);
-            VertexConsumer portalStatic = VertexMultiConsumer.create(bufferIn.getBuffer(AMRenderTypes.STATIC_OVERLAY), bufferIn.getBuffer(RenderType.entityTranslucent(PORTAL_TEXTURES[portalTexture])));
+            VertexConsumer portalStatic = VertexMultiConsumer.create(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityTranslucent(PORTAL_TEXTURES[portalTexture])));
             float portalAlpha =  entityIn.getPortalOpacity(partialTicks);
             portalVertex(portalStatic, matrix4f, matrix3f, packedLightIn, 0.0F, 0, 0, 1, portalAlpha);
             portalVertex(portalStatic, matrix4f, matrix3f, packedLightIn, 1.0F, 0, 1, 1, portalAlpha);
@@ -157,8 +161,57 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             portalVertex(portalStatic, matrix4f, matrix3f, packedLightIn, 0.0F, 1, 0, 0, portalAlpha);
             matrixStackIn.popPose();
         }
+        //laser target
+        if(laserTarget != null){
+            float laserHeight = entityIn.getEyeHeight();
+            double d0 = Mth.lerp(partialTicks, laserTarget.xo, laserTarget.getX()) - Mth.lerp(partialTicks, entityIn.xo, entityIn.getX());
+            double d1 = Mth.lerp(partialTicks, laserTarget.yo, laserTarget.getY()) + laserTarget.getEyeHeight() - Mth.lerp(partialTicks, entityIn.yo, entityIn.getY()) - laserHeight;
+            double d2 = Mth.lerp(partialTicks, laserTarget.zo, laserTarget.getZ()) - Mth.lerp(partialTicks, entityIn.zo, entityIn.getZ());
+            double d4 = Math.sqrt(d0 * d0 + d2 * d2);
+            float laserY = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+            float laserX = (float) (-(Mth.atan2(d1, d4) * (double) (180F / (float) Math.PI)));
+            VertexConsumer beamStatic = bufferIn.getBuffer(AMRenderTypes.getFarseerBeam());
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0, laserHeight, 0);
+            matrixStackIn.mulPose(Vector3f.YN.rotationDegrees( laserY));
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(laserX));
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90));
+            float length = entityIn.distanceTo(laserTarget);
+            float width = 1F;
+            float strength = 1F;
+            PoseStack.Pose posestack$pose = matrixStackIn.last();
+            Matrix4f matrix4f = posestack$pose.pose();
+            Matrix3f matrix3f = posestack$pose.normal();
+            int j = 255;
+            //apparently its static? should be moving so has to be moved manually through UV
+            long systemTime = Util.getMillis() * 7L;
+            float u = (float)(systemTime % 30000L) / 30000.0F;
+            float v = (float)Math.floor((systemTime % 3000L) / 3000.0F * 4.0F) * 0.25F + (float)Math.sin(systemTime / 30000F) * 0.05F + ((float)(systemTime % 20000L) / 20000.0F * strength);
+            laserOriginVertex(beamStatic, matrix4f, matrix3f, j, u, v);
+            laserLeftCornerVertex(beamStatic, matrix4f, matrix3f, length, width,  u, v);
+            laserRightCornerVertex(beamStatic, matrix4f, matrix3f, length, width,  u, v);
+            laserLeftCornerVertex(beamStatic, matrix4f, matrix3f, length, width,  u, v);
+
+            matrixStackIn.popPose();
+        }
+
     }
 
+    private static void laserOriginVertex(VertexConsumer p_114220_, Matrix4f p_114221_, Matrix3f p_114092_, int p_114222_, float xOffset, float yOffset) {
+        p_114220_.vertex(p_114221_, 0.0F, 0.0F, 0.0F).color(255, 255, 255, 255).uv(xOffset + 0.5F, yOffset).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
+    }
+
+    private static void laserLeftCornerVertex(VertexConsumer p_114215_, Matrix4f p_114216_, Matrix3f p_114092_, float p_114217_, float p_114218_, float xOffset, float yOffset) {
+        p_114215_.vertex(p_114216_, -HALF_SQRT_3 * p_114218_, p_114217_, 0).color(255, 255, 255, 0).uv(xOffset, yOffset + 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
+    }
+
+    private static void laserRightCornerVertex(VertexConsumer p_114224_, Matrix4f p_114225_, Matrix3f p_114092_, float p_114226_, float p_114227_, float xOffset, float yOffset) {
+        p_114224_.vertex(p_114225_, HALF_SQRT_3 * p_114227_, p_114226_, 0).color(255, 255, 255, 0).uv(xOffset + 1, yOffset + 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
+    }
+
+    private static void portalVertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_, float p_114094_, int p_114095_, int p_114096_, int p_114097_, float alpha) {
+        p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(1F, 1F, 1F,  alpha).uv((float)p_114096_, (float)p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
+    }
     @Override
     protected void setupRotations(EntityFarseer farseer, PoseStack matrixStackIn, float f1, float f2, float f3) {
         float invCameraAmount = 1F - farseer.getFacingCameraAmount(Minecraft.getInstance().getFrameTime());
@@ -186,9 +239,6 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
 
     }
 
-    private static void portalVertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_, float p_114094_, int p_114095_, int p_114096_, int p_114097_, float alpha) {
-        p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(1F, 1F, 1F,  alpha).uv((float)p_114096_, (float)p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114093_).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
-    }
 
     @Nullable
     protected RenderType getRenderType(EntityFarseer farseer, boolean normal, boolean invis, boolean outline) {
