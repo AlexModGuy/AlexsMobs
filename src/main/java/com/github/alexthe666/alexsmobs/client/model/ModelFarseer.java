@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFarseer;
-import com.github.alexthe666.alexsmobs.entity.EntityFrilledShark;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -11,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.world.phys.Vec3;
 
 public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
+    public final AdvancedModelBox eye;
     private final AdvancedModelBox root;
     private final AdvancedModelBox bodyCube1;
     private final AdvancedModelBox head;
@@ -18,7 +18,6 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
     private final AdvancedModelBox rightUpperMask;
     private final AdvancedModelBox leftLowerMask;
     private final AdvancedModelBox rightLowerMask;
-    private final AdvancedModelBox eye;
     private final AdvancedModelBox bodyCube2;
     private final AdvancedModelBox leftArm;
     private final AdvancedModelBox leftElbow;
@@ -50,7 +49,7 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
     private final AdvancedModelBox rightUpperLFinger2;
     private final ModelAnimator animator;
 
-    public ModelFarseer() {
+    public ModelFarseer(float scale) {
         texWidth = 128;
         texHeight = 128;
 
@@ -61,53 +60,53 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         bodyCube1 = new AdvancedModelBox(this);
         bodyCube1.setRotationPoint(2.0F, -8.0F, 0.0F);
         root.addChild(bodyCube1);
-        bodyCube1.setTextureOffset(0, 56).addBox(-5.0F, -2.0F, -3.0F, 10.0F, 4.0F, 5.0F, 0.0F, false);
+        bodyCube1.setTextureOffset(0, 56).addBox(-5.0F, -2.0F, -3.0F, 10.0F, 4.0F, 5.0F, scale, false);
 
         head = new AdvancedModelBox(this);
         head.setRotationPoint(0.0F, -15.0F, 0.0F);
         root.addChild(head);
-        head.setTextureOffset(0, 0).addBox(-10.5F, -5.0F, -6.0F, 21.0F, 9.0F, 13.0F, 0.0F, false);
+        head.setTextureOffset(0, 0).addBox(-10.5F, -5.0F, -6.0F, 21.0F, 9.0F, 13.0F, scale, false);
 
         leftUpperMask = new AdvancedModelBox(this);
         leftUpperMask.setRotationPoint(0.0F, -5.0F, 1.0F);
         head.addChild(leftUpperMask);
-        leftUpperMask.setTextureOffset(0, 23).addBox(0.0F, -0.5F, -7.9F, 11.0F, 7.0F, 8.0F, 0.0F, false);
+        leftUpperMask.setTextureOffset(0, 23).addBox(0.0F, -0.5F, -7.9F, 11.0F, 7.0F, 8.0F, scale, false);
 
         rightUpperMask = new AdvancedModelBox(this);
         rightUpperMask.setRotationPoint(0.0F, -5.0F, 1.0F);
         head.addChild(rightUpperMask);
-        rightUpperMask.setTextureOffset(0, 23).addBox(-11.0F, -0.5F, -7.9F, 11.0F, 7.0F, 8.0F, 0.0F, true);
+        rightUpperMask.setTextureOffset(0, 23).addBox(-11.0F, -0.5F, -7.9F, 11.0F, 7.0F, 8.0F, scale, true);
 
         leftLowerMask = new AdvancedModelBox(this);
         leftLowerMask.setRotationPoint(0.0F, 3.0F, 1.0F);
         head.addChild(leftLowerMask);
-        leftLowerMask.setTextureOffset(31, 31).addBox(0.0F, -2.5F, -7.9F, 11.0F, 4.0F, 8.0F, 0.0F, false);
+        leftLowerMask.setTextureOffset(31, 31).addBox(0.0F, -2.5F, -7.9F, 11.0F, 4.0F, 8.0F, scale, false);
 
         rightLowerMask = new AdvancedModelBox(this);
         rightLowerMask.setRotationPoint(0.0F, 3.0F, 1.0F);
         head.addChild(rightLowerMask);
-        rightLowerMask.setTextureOffset(31, 31).addBox(-11.0F, -2.5F, -7.9F, 11.0F, 4.0F, 8.0F, 0.0F, true);
+        rightLowerMask.setTextureOffset(31, 31).addBox(-11.0F, -2.5F, -7.9F, 11.0F, 4.0F, 8.0F, scale, true);
 
         eye = new AdvancedModelBox(this);
         eye.setRotationPoint(0.0F, 4.0F, -1.0F);
         head.addChild(eye);
-        eye.setTextureOffset(56, 0).addBox(-4.5F, -8.0F, -6.0F, 9.0F, 4.0F, 2.0F, 0.0F, false);
+        eye.setTextureOffset(56, 0).addBox(-4.5F, -8.0F, -6.0F, 9.0F, 4.0F, 2.0F, scale, false);
 
         bodyCube2 = new AdvancedModelBox(this);
         bodyCube2.setRotationPoint(1.0F, -2.0F, 1.0F);
         root.addChild(bodyCube2);
-        bodyCube2.setTextureOffset(33, 44).addBox(-6.0F, -3.0F, -3.0F, 10.0F, 5.0F, 6.0F, 0.0F, false);
+        bodyCube2.setTextureOffset(33, 44).addBox(-6.0F, -3.0F, -3.0F, 10.0F, 5.0F, 6.0F, scale, false);
 
         leftArm = new AdvancedModelBox(this);
         leftArm.setRotationPoint(9.0F, -16.5F, 9.0F);
         root.addChild(leftArm);
         setRotationAngle(leftArm, 0.0F, 0.0F, -0.7854F);
-        leftArm.setTextureOffset(31, 23).addBox(-1.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, 0.0F, false);
+        leftArm.setTextureOffset(31, 23).addBox(-1.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, scale, false);
 
         leftElbow = new AdvancedModelBox(this);
         leftElbow.setRotationPoint(15.0F, 0.0F, 0.0F);
         leftArm.addChild(leftElbow);
-        leftElbow.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, 0.0F, false);
+        leftElbow.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, scale, false);
 
         leftHand = new AdvancedModelBox(this);
         leftHand.setRotationPoint(0.0F, 0.0F, -12.0F);
@@ -118,36 +117,36 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         leftUpperRFinger.setRotationPoint(-1.4F, -1.4F, 0.0F);
         leftHand.addChild(leftUpperRFinger);
         setRotationAngle(leftUpperRFinger, 0.0F, 0.0F, -0.7854F);
-        leftUpperRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, false);
+        leftUpperRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
         leftLowerRFinger = new AdvancedModelBox(this);
         leftLowerRFinger.setRotationPoint(-1.4F, 1.4F, 0.0F);
         leftHand.addChild(leftLowerRFinger);
         setRotationAngle(leftLowerRFinger, 0.0F, 0.0F, -2.3562F);
-        leftLowerRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, false);
+        leftLowerRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
         leftLowerLFinger = new AdvancedModelBox(this);
         leftLowerLFinger.setRotationPoint(1.4F, 1.4F, 0.0F);
         leftHand.addChild(leftLowerLFinger);
         setRotationAngle(leftLowerLFinger, 0.0F, 0.0F, 2.3562F);
-        leftLowerLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, false);
+        leftLowerLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
         leftUpperLFinger = new AdvancedModelBox(this);
         leftUpperLFinger.setRotationPoint(1.4F, -1.4F, 0.0F);
         leftHand.addChild(leftUpperLFinger);
         setRotationAngle(leftUpperLFinger, 0.0F, 0.0F, 0.7854F);
-        leftUpperLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, false);
+        leftUpperLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
         leftArm2 = new AdvancedModelBox(this);
         leftArm2.setRotationPoint(6.0F, -13.5F, 9.0F);
         root.addChild(leftArm2);
         setRotationAngle(leftArm2, 0.0F, 0.0F, 0.6545F);
-        leftArm2.setTextureOffset(31, 23).addBox(-1.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, 0.0F, false);
+        leftArm2.setTextureOffset(31, 23).addBox(-1.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, scale, false);
 
         leftElbow2 = new AdvancedModelBox(this);
         leftElbow2.setRotationPoint(15.0F, 0.0F, 0.0F);
         leftArm2.addChild(leftElbow2);
-        leftElbow2.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, 0.0F, false);
+        leftElbow2.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, scale, false);
 
         leftHand2 = new AdvancedModelBox(this);
         leftHand2.setRotationPoint(0.0F, 0.0F, -12.0F);
@@ -158,36 +157,36 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         leftUpperRFinger2.setRotationPoint(-1.4F, -1.4F, 0.0F);
         leftHand2.addChild(leftUpperRFinger2);
         setRotationAngle(leftUpperRFinger2, 0.0F, 0.0F, -0.7854F);
-        leftUpperRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, false);
+        leftUpperRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
         leftLowerRFinger2 = new AdvancedModelBox(this);
         leftLowerRFinger2.setRotationPoint(-1.4F, 1.4F, 0.0F);
         leftHand2.addChild(leftLowerRFinger2);
         setRotationAngle(leftLowerRFinger2, 0.0F, 0.0F, -2.3562F);
-        leftLowerRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, false);
+        leftLowerRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
         leftLowerLFinger2 = new AdvancedModelBox(this);
         leftLowerLFinger2.setRotationPoint(1.4F, 1.4F, 0.0F);
         leftHand2.addChild(leftLowerLFinger2);
         setRotationAngle(leftLowerLFinger2, 0.0F, 0.0F, 2.3562F);
-        leftLowerLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, false);
+        leftLowerLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
         leftUpperLFinger2 = new AdvancedModelBox(this);
         leftUpperLFinger2.setRotationPoint(1.4F, -1.4F, 0.0F);
         leftHand2.addChild(leftUpperLFinger2);
         setRotationAngle(leftUpperLFinger2, 0.0F, 0.0F, 0.7854F);
-        leftUpperLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, false);
+        leftUpperLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
         rightArm = new AdvancedModelBox(this);
         rightArm.setRotationPoint(-9.0F, -16.5F, 9.0F);
         root.addChild(rightArm);
         setRotationAngle(rightArm, 0.0F, 0.0F, 0.7854F);
-        rightArm.setTextureOffset(31, 23).addBox(-15.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, 0.0F, true);
+        rightArm.setTextureOffset(31, 23).addBox(-15.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, scale, true);
 
         rightElbow = new AdvancedModelBox(this);
         rightElbow.setRotationPoint(-15.0F, 0.0F, 0.0F);
         rightArm.addChild(rightElbow);
-        rightElbow.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, 0.0F, true);
+        rightElbow.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, scale, true);
 
         rightHand = new AdvancedModelBox(this);
         rightHand.setRotationPoint(0.0F, 0.0F, -12.0F);
@@ -198,36 +197,36 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         rightUpperRFinger.setRotationPoint(1.4F, -1.4F, 0.0F);
         rightHand.addChild(rightUpperRFinger);
         setRotationAngle(rightUpperRFinger, 0.0F, 0.0F, 0.7854F);
-        rightUpperRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
+        rightUpperRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
         rightLowerRFinger2 = new AdvancedModelBox(this);
         rightLowerRFinger2.setRotationPoint(1.4F, 1.4F, 0.0F);
         rightHand.addChild(rightLowerRFinger2);
         setRotationAngle(rightLowerRFinger2, 0.0F, 0.0F, 2.3562F);
-        rightLowerRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
+        rightLowerRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
         rightLowerLFinger = new AdvancedModelBox(this);
         rightLowerLFinger.setRotationPoint(-1.4F, 1.4F, 0.0F);
         rightHand.addChild(rightLowerLFinger);
         setRotationAngle(rightLowerLFinger, 0.0F, 0.0F, -2.3562F);
-        rightLowerLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
+        rightLowerLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
         rightUpperLFinger = new AdvancedModelBox(this);
         rightUpperLFinger.setRotationPoint(-1.4F, -1.4F, 0.0F);
         rightHand.addChild(rightUpperLFinger);
         setRotationAngle(rightUpperLFinger, 0.0F, 0.0F, -0.7854F);
-        rightUpperLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
+        rightUpperLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
         rightArm2 = new AdvancedModelBox(this);
         rightArm2.setRotationPoint(-6.0F, -13.5F, 9.0F);
         root.addChild(rightArm2);
         setRotationAngle(rightArm2, 0.0F, 0.0F, -0.6545F);
-        rightArm2.setTextureOffset(31, 23).addBox(-15.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, 0.0F, true);
+        rightArm2.setTextureOffset(31, 23).addBox(-15.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, scale, true);
 
         rightElbow2 = new AdvancedModelBox(this);
         rightElbow2.setRotationPoint(-15.0F, 0.0F, 0.0F);
         rightArm2.addChild(rightElbow2);
-        rightElbow2.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, 0.0F, true);
+        rightElbow2.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, scale, true);
 
         rightHand2 = new AdvancedModelBox(this);
         rightHand2.setRotationPoint(0.0F, 0.0F, -12.0F);
@@ -238,25 +237,25 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         rightUpperRFinger2.setRotationPoint(1.4F, -1.4F, 0.0F);
         rightHand2.addChild(rightUpperRFinger2);
         setRotationAngle(rightUpperRFinger2, 0.0F, 0.0F, 0.7854F);
-        rightUpperRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
+        rightUpperRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
         rightLowerRFinger3 = new AdvancedModelBox(this);
         rightLowerRFinger3.setRotationPoint(1.4F, 1.4F, 0.0F);
         rightHand2.addChild(rightLowerRFinger3);
         setRotationAngle(rightLowerRFinger3, 0.0F, 0.0F, 2.3562F);
-        rightLowerRFinger3.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
+        rightLowerRFinger3.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
         rightLowerLFinger2 = new AdvancedModelBox(this);
         rightLowerLFinger2.setRotationPoint(-1.4F, 1.4F, 0.0F);
         rightHand2.addChild(rightLowerLFinger2);
         setRotationAngle(rightLowerLFinger2, 0.0F, 0.0F, -2.3562F);
-        rightLowerLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
+        rightLowerLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
         rightUpperLFinger2 = new AdvancedModelBox(this);
         rightUpperLFinger2.setRotationPoint(-1.4F, -1.4F, 0.0F);
         rightHand2.addChild(rightUpperLFinger2);
         setRotationAngle(rightUpperLFinger2, 0.0F, 0.0F, -0.7854F);
-        rightUpperLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, 0.0F, true);
+        rightUpperLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
         this.updateDefaultPose();
         animator = ModelAnimator.create();
     }

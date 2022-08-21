@@ -42,10 +42,16 @@ public class AMRenderTypes extends RenderType {
         RenderSystem.resetTextureMatrix();
     });
     protected static final RenderStateShard.TexturingStateShard STATIC_PARTICLE_TEXTURING = new RenderStateShard.TexturingStateShard("entity_glint_texturing", () -> {
-        setupStaticTexturing(0.4F, 12L);
+        setupStaticTexturing(0.1F, 12L);
     }, () -> {
         RenderSystem.resetTextureMatrix();
     });
+    protected static final RenderStateShard.TexturingStateShard STATIC_ENTITY_TEXTURING = new RenderStateShard.TexturingStateShard("entity_glint_texturing", () -> {
+        setupStaticTexturing(3F, 12L);
+    }, () -> {
+        RenderSystem.resetTextureMatrix();
+    });
+
 
 
     public static final RenderType COMBJELLY_RAINBOW_GLINT = create("cj_rainbow_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation("alexsmobs:textures/entity/rainbow_jelly_overlays/glint_rainbow.png"), true, false)).setWriteMaskState(COLOR_DEPTH_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(NO_TRANSPARENCY).setTexturingState(COMB_JELLY_TEXTURING).createCompositeState(false));
@@ -58,6 +64,7 @@ public class AMRenderTypes extends RenderType {
     public static final RenderType WEEZER_GLINT = create("weezer_glint", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation("alexsmobs:textures/entity/rainbow_jelly_overlays/glint_weezer.png"), false, false)).setWriteMaskState(COLOR_DEPTH_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTransparencyState(GLINT_TRANSPARENCY).setTexturingState(WEEZER_TEXTURING).setOverlayState(OVERLAY).createCompositeState(true));
     public static final RenderType STATIC_PORTAL = create("static_portal", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(STATIC_TEXTURE, false, false)).setWriteMaskState(COLOR_DEPTH_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTexturingState(STATIC_PORTAL_TEXTURING).setOverlayState(OVERLAY).setTransparencyState(TRANSLUCENT_TRANSPARENCY).createCompositeState(true));
     public static final RenderType STATIC_PARTICLE = create("static_particle", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(STATIC_TEXTURE, false, false)).setWriteMaskState(COLOR_DEPTH_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTexturingState(STATIC_PARTICLE_TEXTURING).setOverlayState(OVERLAY).setTransparencyState(TRANSLUCENT_TRANSPARENCY).createCompositeState(true));
+    public static final RenderType STATIC_ENTITY = create("static_entity", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(STATIC_TEXTURE, false, false)).setWriteMaskState(COLOR_DEPTH_WRITE).setCullState(NO_CULL).setDepthTestState(EQUAL_DEPTH_TEST).setTexturingState(STATIC_ENTITY_TEXTURING).setOverlayState(OVERLAY).setTransparencyState(TRANSLUCENT_TRANSPARENCY).createCompositeState(true));
     public static final RenderType VOID_WORM_PORTAL_OVERLAY = create("void_worm_portal_overlay", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, false, false, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_END_PORTAL_SHADER).setDepthTestState(EQUAL_DEPTH_TEST).setCullState(NO_CULL).setTransparencyState(NO_TRANSPARENCY).setTextureState(MultiTextureStateShard.builder().add(TheEndPortalRenderer.END_SKY_LOCATION, false, false).add(TheEndPortalRenderer.END_PORTAL_LOCATION, false, false).build()).createCompositeState(false));
 
     protected static final RenderStateShard.TransparencyStateShard WORM_TRANSPARANCY = new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {

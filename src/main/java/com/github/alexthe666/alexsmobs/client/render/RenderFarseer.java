@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelFarseer;
 import com.github.alexthe666.alexsmobs.entity.EntityFarseer;
+import com.github.alexthe666.alexsmobs.entity.EntityMimicOctopus;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
@@ -13,6 +14,7 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -23,10 +25,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ForgeRenderTypes;
 import net.minecraftforge.client.event.RenderNameTagEvent;
 
 import javax.annotation.Nullable;
+
+import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
 public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer.png");
@@ -39,10 +45,36 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         new ResourceLocation("alexsmobs:textures/entity/farseer/portal_2.png"),
         new ResourceLocation("alexsmobs:textures/entity/farseer/portal_3.png")};
     private static final float HALF_SQRT_3 = (float)(Math.sqrt(3.0D) / 2.0D);
+    private static final ModelFarseer EYE_MODEL = new ModelFarseer(0.1f);
+    private static final ModelFarseer AFTERIMAGE_MODEL = new ModelFarseer(0.05f);
 
     public RenderFarseer(EntityRendererProvider.Context renderManagerIn) {
-        super(renderManagerIn, new ModelFarseer(), 0.9F);
+        super(renderManagerIn, new ModelFarseer(0.0F), 0.9F);
         this.addLayer(new LayerOverlay());
+    }
+
+    public boolean shouldRender(EntityFarseer livingEntityIn, Frustum camera, double camX, double camY, double camZ) {
+        if (super.shouldRender(livingEntityIn, camera, camX, camY, camZ)) {
+            return true;
+        } else {
+            if (livingEntityIn.hasLaser()) {
+                LivingEntity livingentity = livingEntityIn.getLaserTarget();
+                if (livingentity != null) {
+                    Vec3 vector3d = this.getPosition(livingentity, (double) livingentity.getBbHeight() * 0.5D, 1.0F);
+                    Vec3 vector3d1 = this.getPosition(livingEntityIn, livingEntityIn.getEyeHeight(), 1.0F);
+                    return camera.isVisible(new AABB(vector3d1.x, vector3d1.y, vector3d1.z, vector3d.x, vector3d.y, vector3d.z));
+                }
+            }
+
+            return false;
+        }
+    }
+
+    private Vec3 getPosition(LivingEntity entityLivingBaseIn, double p_177110_2_, float p_177110_4_) {
+        double d0 = Mth.lerp(p_177110_4_, entityLivingBaseIn.xOld, entityLivingBaseIn.getX());
+        double d1 = Mth.lerp(p_177110_4_, entityLivingBaseIn.yOld, entityLivingBaseIn.getY()) + p_177110_2_;
+        double d2 = Mth.lerp(p_177110_4_, entityLivingBaseIn.zOld, entityLivingBaseIn.getZ());
+        return new Vec3(d0, d1, d2);
     }
 
     public void render(EntityFarseer entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
@@ -122,12 +154,13 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         boolean flag1 = !flag && !entityIn.isInvisibleTo(minecraft.player);
         boolean flag2 = minecraft.shouldEntityAppearGlowing(entityIn);
         RenderType rendertype = this.getRenderType(entityIn, flag, flag1, flag2);
+        EYE_MODEL.setupAnim(entityIn, f5, f8, f7, f2, f6);
+        AFTERIMAGE_MODEL.setupAnim(entityIn, f5, f8, f7, f2, f6);
         if (rendertype != null) {
             float portalLevel = entityIn.getFarseerOpacity(partialTicks);
             this.shadowRadius = 0.9F * portalLevel;
-            VertexConsumer ivertexbuilder = bufferIn.getBuffer(rendertype);
             int i = getOverlayCoords(entityIn, this.getWhiteOverlayProgress(entityIn, partialTicks));
-            this.model.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, i, 1.0F, 1.0F, 1.0F, flag1 ? 0.15F : Mth.clamp(portalLevel, 0, 1));
+            this.renderFarseerModel(matrixStackIn, bufferIn, rendertype, partialTicks, packedLightIn, i, flag1 ? 0.15F : Mth.clamp(portalLevel, 0, 1), entityIn);
         }
         if (!entityIn.isSpectator()) {
             for (RenderLayer layerrenderer : this.layers) {
@@ -197,20 +230,54 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
 
     }
 
+    private void renderFarseerModel(PoseStack matrixStackIn, MultiBufferSource source, RenderType defRenderType, float partialTicks, int packedLightIn, int overlayColors, float alphaIn, EntityFarseer entityIn) {
+        if(entityIn.hasLaser()){
+            VertexConsumer staticyInsides = VertexMultiConsumer.create(source.getBuffer(AMRenderTypes.STATIC_ENTITY), source.getBuffer(RenderType.entityTranslucent(TEXTURE_EYE)));
+            EYE_MODEL.renderToBuffer(matrixStackIn, staticyInsides, packedLightIn, NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1F);
+        }
+        Vec3 colorOffset = entityIn.getLatencyOffsetVec(10, partialTicks).scale(-0.2F).add(entityIn.angryShakeVec.scale(0.3F));
+        Vec3 redOffset = colorOffset.add(entityIn.calculateAfterimagePos(partialTicks, false));
+        Vec3 blueOffset = colorOffset.add(entityIn.calculateAfterimagePos(partialTicks, true));
+        float scale = (float) Mth.clamp(colorOffset.length() * 0.1F, 0, 1F);
+        this.model.renderToBuffer(matrixStackIn, source.getBuffer(defRenderType), packedLightIn, overlayColors, 1.0F, 1.0F, 1.0F, alphaIn);
+
+        matrixStackIn.pushPose();
+        matrixStackIn.popPose();
+
+        AFTERIMAGE_MODEL.eye.showModel = false;
+        RenderType afterimage = RenderType.entityTranslucentEmissive(this.getTextureLocation(entityIn));
+        matrixStackIn.pushPose();
+        matrixStackIn.scale(scale + 1F, scale + 1F, scale + 1F);
+        matrixStackIn.pushPose();
+        matrixStackIn.translate(redOffset.x, redOffset.y, redOffset.z);
+        AFTERIMAGE_MODEL.renderToBuffer(matrixStackIn, source.getBuffer(afterimage), 240, overlayColors, 1.0F, 0F, 0F, alphaIn * 0.2F);
+        matrixStackIn.popPose();
+        matrixStackIn.pushPose();
+        matrixStackIn.translate(blueOffset.x, blueOffset.y, blueOffset.z);
+        AFTERIMAGE_MODEL.renderToBuffer(matrixStackIn, source.getBuffer(afterimage), 240, overlayColors, 0F, 0F, 1.0F, alphaIn * 0.2F);
+        matrixStackIn.popPose();
+        matrixStackIn.popPose();
+        AFTERIMAGE_MODEL.eye.showModel = true;
+
+
+
+
+    }
+
     private static void laserOriginVertex(VertexConsumer p_114220_, Matrix4f p_114221_, Matrix3f p_114092_, int p_114222_, float xOffset, float yOffset) {
-        p_114220_.vertex(p_114221_, 0.0F, 0.0F, 0.0F).color(255, 255, 255, 255).uv(xOffset + 0.5F, yOffset).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
+        p_114220_.vertex(p_114221_, 0.0F, 0.0F, 0.0F).color(255, 255, 255, 255).uv(xOffset + 0.5F, yOffset).overlayCoords(NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
     }
 
     private static void laserLeftCornerVertex(VertexConsumer p_114215_, Matrix4f p_114216_, Matrix3f p_114092_, float p_114217_, float p_114218_, float xOffset, float yOffset) {
-        p_114215_.vertex(p_114216_, -HALF_SQRT_3 * p_114218_, p_114217_, 0).color(255, 255, 255, 0).uv(xOffset, yOffset + 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
+        p_114215_.vertex(p_114216_, -HALF_SQRT_3 * p_114218_, p_114217_, 0).color(255, 255, 255, 0).uv(xOffset, yOffset + 1).overlayCoords(NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
     }
 
     private static void laserRightCornerVertex(VertexConsumer p_114224_, Matrix4f p_114225_, Matrix3f p_114092_, float p_114226_, float p_114227_, float xOffset, float yOffset) {
-        p_114224_.vertex(p_114225_, HALF_SQRT_3 * p_114227_, p_114226_, 0).color(255, 255, 255, 0).uv(xOffset + 1, yOffset + 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
+        p_114224_.vertex(p_114225_, HALF_SQRT_3 * p_114227_, p_114226_, 0).color(255, 255, 255, 0).uv(xOffset + 1, yOffset + 1).overlayCoords(NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
     }
 
     private static void portalVertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_, float p_114094_, int p_114095_, int p_114096_, int p_114097_, float alpha) {
-        p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(1F, 1F, 1F,  alpha).uv((float)p_114096_, (float)p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
+        p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(1F, 1F, 1F,  alpha).uv((float)p_114096_, (float)p_114097_).overlayCoords(NO_OVERLAY).uv2(240).normal(p_114092_, 0.0F, -1.0F, 0.0F).endVertex();
     }
     @Override
     protected void setupRotations(EntityFarseer farseer, PoseStack matrixStackIn, float f1, float f2, float f3) {
@@ -267,6 +334,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
                 VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_CLAWS));
                 this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             }
+
         }
     }
 }

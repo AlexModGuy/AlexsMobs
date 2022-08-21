@@ -54,6 +54,9 @@ public class ParticleStaticSpark extends Particle {
 
     public void tick(){
         super.tick();
+        this.xd *= 0.97D;
+        this.yd *= 0.97D;
+        this.zd *= 0.97D;
         if(this.textureIndex > 0){
             if(age % decrement == 0){
                 textureIndex--;
