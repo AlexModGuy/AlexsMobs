@@ -4,11 +4,11 @@
 <NEWLINE>
 Karmazynowy Komar to ohydny, zmutowany latający owad występujący w Karmazynowych Lasach Netheru. Ta żarłoczna bestia będzie
 szukać na przekąskę prawie każdego zwierzęcia o ciepłej krwi, w tym ludzi. Najpierw rzuca się na swoją zdobycz i chwyta się, ssąc
-ją do sucha. Kiedy już się napełni, zacznie latać i użyć przeciwko wszystkim krwi swojej ofiary - plując z powrotem na
+ją do sucha. Kiedy już się napełni, zacznie latać i używać przeciwko wszystkim krwi swojej ofiary - plując z powrotem na
 cel.
 <NEWLINE>
 Jeśli zostanie zabity, gdy jest napompowany krwią, Karmazynowy Komar może upuścić Worek Krwi. Może również upuścić kłujkę. Obydwa
 te materiały mogą być użyte do stworzenia Rozpylacza Krwi, unikalnej broni, która wykorzystuje pluć komara do zadawania obrażeń obszarowych
 szkoda. Rozpylacz krwi używa worków z krwią jako amunicji.
 <NEWLINE>
-If an overworld, garden variety fly happens to find itself in the nether, it can transform into a Crimson Mosquito.
+Jeśli zwykła, ogrodowa mucha znajdzie się w Netherze, może zmienić się w Karmazynowego Komara.
