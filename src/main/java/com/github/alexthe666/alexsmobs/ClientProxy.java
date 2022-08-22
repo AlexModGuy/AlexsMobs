@@ -24,23 +24,16 @@ import com.github.alexthe666.alexsmobs.item.ItemTarantulaHawkElytra;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.CameraType;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -213,6 +206,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.MUD_BALL.get(), RenderMudBall::new);
         EntityRenderers.register(AMEntityRegistry.RHINOCEROS.get(), RenderRhinoceros::new);
         EntityRenderers.register(AMEntityRegistry.SUGAR_GLIDER.get(), RenderSugarGlider::new);
+        EntityRenderers.register(AMEntityRegistry.FARSEER.get(), RenderFarseer::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try {
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -251,6 +245,9 @@ public class ClientProxy extends CommonProxy {
     private void initRainbowBuffers() {
         Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.COMBJELLY_RAINBOW_GLINT, new BufferBuilder(AMRenderTypes.COMBJELLY_RAINBOW_GLINT.bufferSize()));
         Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY, new BufferBuilder(AMRenderTypes.VOID_WORM_PORTAL_OVERLAY.bufferSize()));
+        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.STATIC_PORTAL, new BufferBuilder(AMRenderTypes.STATIC_PORTAL.bufferSize()));
+        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.STATIC_PARTICLE, new BufferBuilder(AMRenderTypes.STATIC_PARTICLE.bufferSize()));
+        Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.STATIC_ENTITY, new BufferBuilder(AMRenderTypes.STATIC_ENTITY.bufferSize()));
         initializedRainbowBuffers = true;
     }
 
@@ -361,6 +358,7 @@ public class ClientProxy extends CommonProxy {
         registry.register(AMParticleRegistry.FUNGUS_BUBBLE.get(), ParticleFungusBubble.Factory::new);
         registry.register(AMParticleRegistry.BEAR_FREDDY.get(), new ParticleBearFreddy.Factory());
         registry.register(AMParticleRegistry.SUNBIRD_FEATHER.get(), ParticleSunbirdFeather.Factory::new);
+        registry.register(AMParticleRegistry.STATIC_SPARK.get(), new ParticleStaticSpark.Factory());
     }
 
 

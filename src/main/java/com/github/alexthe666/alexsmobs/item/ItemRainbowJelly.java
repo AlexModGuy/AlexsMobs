@@ -11,13 +11,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-import java.util.Random;
-
-public class ItemRainbowJelly extends Item{
+public class ItemRainbowJelly extends Item {
 
     public ItemRainbowJelly(Item.Properties tab) {
         super(tab);
@@ -26,7 +23,7 @@ public class ItemRainbowJelly extends Item{
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player playerIn, LivingEntity target, InteractionHand hand) {
         int i = RainbowUtil.getRainbowTypeFromStack(stack);
-        if(RainbowUtil.getRainbowType(target) != i){
+        if (RainbowUtil.getRainbowType(target) != i) {
             RainbowUtil.setRainbowType(target, i);
             RandomSource random = playerIn.getRandom();
             for (int j = 0; j < 6 + random.nextInt(3); j++) {
@@ -37,7 +34,7 @@ public class ItemRainbowJelly extends Item{
             }
             target.gameEvent(GameEvent.ITEM_INTERACT_START);
             target.playSound(SoundEvents.SLIME_SQUISH_SMALL, 1F, target.getVoicePitch());
-            if(!playerIn.isCreative()){
+            if (!playerIn.isCreative()) {
                 stack.shrink(1);
             }
             return InteractionResult.SUCCESS;
@@ -60,5 +57,22 @@ public class ItemRainbowJelly extends Item{
 
     public boolean isFoil(ItemStack stack) {
         return super.isFoil(stack) || RainbowUtil.getRainbowTypeFromStack(stack) > 1;
+    }
+
+    public enum RainbowType {
+        RAINBOW, TRANS, NONBI, BI, ACE, WEEZER, BRAZIL;
+
+
+        public static RainbowType getFromString(String name) {
+            for (RainbowType type : RainbowType.values()) {
+                if (type.name().toLowerCase().equals(name)) {
+                    return type;
+                }
+            }
+            if (name.contains("nonbi") || name.contains("non-bi")) {
+                return NONBI;
+            }
+            return RAINBOW;
+        }
     }
 }

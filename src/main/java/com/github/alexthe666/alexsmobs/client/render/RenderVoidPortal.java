@@ -15,14 +15,14 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 
 public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
-    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/portal/portal_idle_0.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/portal/portal_idle_1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/portal/portal_idle_2.png");
+    private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_0.png");
+    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_1.png");
+    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_2.png");
     private static final ResourceLocation[] TEXTURE_PROGRESS = new ResourceLocation[10];
     public RenderVoidPortal(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
         for(int i = 0; i < 10; i++){
-            TEXTURE_PROGRESS[i] = new ResourceLocation("alexsmobs:textures/entity/portal/portal_grow_" + i + ".png");
+            TEXTURE_PROGRESS[i] = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_grow_" + i + ".png");
         }
     }
 
