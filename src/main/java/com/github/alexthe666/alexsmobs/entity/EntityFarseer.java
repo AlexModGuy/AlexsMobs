@@ -15,8 +15,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -67,11 +69,11 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
     protected EntityFarseer(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-        this.moveControl = new FlightMoveController(this, 0.7F, false, true);
+        this.moveControl = new FlyingMoveControl(this, 20, true);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 24D).add(Attributes.ARMOR, 2.0D).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.MOVEMENT_SPEED, 0.3F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 24D).add(Attributes.ARMOR, 2.0D).add(Attributes.FLYING_SPEED, (double)0.1F).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.MOVEMENT_SPEED, 0.3F);
     }
 
     public boolean isNoGravity() {
@@ -87,13 +89,11 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        PathNavigation navigation = new FlyingPathNavigation(this, level) {
-            public boolean isStableDestination(BlockPos pos) {
-                return !this.level.getBlockState(pos.below(2)).isAir();
-            }
-        };
-        navigation.setCanFloat(false);
-        return navigation;
+        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level);
+        flyingpathnavigation.setCanOpenDoors(false);
+        flyingpathnavigation.setCanFloat(true);
+        flyingpathnavigation.setCanPassDoors(true);
+        return flyingpathnavigation;
     }
 
     protected void registerGoals() {
@@ -103,7 +103,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         this.goalSelector.addGoal(3, new RandomFlyGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, Pig.class, 15, true, true, null));
+        this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, Pig.class, 15, false, false, null));
     }
 
     protected void defineSynchedData() {
@@ -123,6 +123,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     }
 
     public boolean hasLaser() {
+
         return this.entityData.get(LASER_ENTITY_ID) != -1 && this.getAnimation() != EntityFarseer.ANIMATION_EMERGE;
     }
 
@@ -224,11 +225,6 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         }
         LivingEntity target = this.getTarget();
         if (target != null) {
-            if (target.isAlive()) {
-                this.entityData.set(LASER_ENTITY_ID, target.getId());
-            } else {
-                this.entityData.set(LASER_ENTITY_ID, -1);
-            }
             if(this.entityData.get(MELEEING)){
                 if(meleeCooldown == 0){
                     meleeCooldown = 5;
@@ -407,6 +403,26 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
+    public void travel(Vec3 vec3) {
+        if (this.isEffectiveAi() || this.isControlledByLocalInstance()) {
+            if (this.isInWater()) {
+                this.moveRelative(0.02F, vec3);
+                this.move(MoverType.SELF, this.getDeltaMovement());
+                this.setDeltaMovement(this.getDeltaMovement().scale((double)0.8F));
+            } else if (this.isInLava()) {
+                this.moveRelative(0.02F, vec3);
+                this.move(MoverType.SELF, this.getDeltaMovement());
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
+            } else {
+                this.moveRelative(this.getSpeed(), vec3);
+                this.move(MoverType.SELF, this.getDeltaMovement());
+                this.setDeltaMovement(this.getDeltaMovement().scale((double)0.91F));
+            }
+        }
+
+        this.calculateEntityAnimation(this, false);
+    }
+
     private class RandomFlyGoal extends Goal {
         private final EntityFarseer parentEntity;
         private BlockPos target = null;
@@ -539,12 +555,14 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                     if(!canSee && dist > 10){
                         EntityFarseer.this.setAngry(false);
                     }
-                    EntityFarseer.this.entityData.set(LASER_ENTITY_ID, -1);
+                    if(EntityFarseer.this.hasLaser()){
+                        EntityFarseer.this.entityData.set(LASER_ENTITY_ID, -1);
+                    }
                     EntityFarseer.this.entityData.set(MELEEING, dist < 4F);
                     EntityFarseer.this.getNavigation().moveTo(target, 1F);
                     if(dist < 4F){
                         EntityFarseer.this.lookAt(target, 180F, 10F);
-
+                        attackDecision = EntityFarseer.this.getRandom().nextBoolean();
                     }
                 }
             }

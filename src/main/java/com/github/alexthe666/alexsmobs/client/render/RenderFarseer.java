@@ -195,11 +195,13 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             matrixStackIn.popPose();
         }
         //laser target
-        if(laserTarget != null){
+        if(entityIn.hasLaser() && laserTarget != null){
             float laserHeight = entityIn.getEyeHeight();
-            double d0 = Mth.lerp(partialTicks, laserTarget.xo, laserTarget.getX()) - Mth.lerp(partialTicks, entityIn.xo, entityIn.getX());
-            double d1 = Mth.lerp(partialTicks, laserTarget.yo, laserTarget.getY()) + laserTarget.getEyeHeight() - Mth.lerp(partialTicks, entityIn.yo, entityIn.getY()) - laserHeight;
-            double d2 = Mth.lerp(partialTicks, laserTarget.zo, laserTarget.getZ()) - Mth.lerp(partialTicks, entityIn.zo, entityIn.getZ());
+            float angryProgress = entityIn.prevAngryProgress + (entityIn.angryProgress - entityIn.prevAngryProgress) * partialTicks;
+            Vec3 angryShake = entityIn.angryShakeVec.scale(angryProgress * 0.1F);
+            double d0 = Mth.lerp(partialTicks, laserTarget.xo, laserTarget.getX()) - Mth.lerp(partialTicks, entityIn.xo, entityIn.getX()) - angryShake.x;
+            double d1 = Mth.lerp(partialTicks, laserTarget.yo, laserTarget.getY()) + laserTarget.getEyeHeight() - Mth.lerp(partialTicks, entityIn.yo, entityIn.getY()) - angryShake.y - laserHeight;
+            double d2 = Mth.lerp(partialTicks, laserTarget.zo, laserTarget.getZ()) - Mth.lerp(partialTicks, entityIn.zo, entityIn.getZ()) - angryShake.z;
             double d4 = Math.sqrt(d0 * d0 + d2 * d2);
             float laserY = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
             float laserX = (float) (-(Mth.atan2(d1, d4) * (double) (180F / (float) Math.PI)));
@@ -246,15 +248,20 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
 
         AFTERIMAGE_MODEL.eye.showModel = false;
         RenderType afterimage = RenderType.entityTranslucentEmissive(this.getTextureLocation(entityIn));
+        float angryProgress = entityIn.prevAngryProgress + (entityIn.angryProgress - entityIn.prevAngryProgress) * partialTicks;
+        float defAlpha = alphaIn * 0.2F;
+        float afterimageAlpha1 = defAlpha * Math.max(((float) Math.sin((entityIn.tickCount + partialTicks) * 0.2F) + 1F) * 0.3F, angryProgress * 0.2F);
+        float afterimageAlpha2 = defAlpha * Math.max(((float) Math.cos((entityIn.tickCount + partialTicks) * 0.2F) + 1F) * 0.3F, angryProgress * 0.2F);
+
         matrixStackIn.pushPose();
         matrixStackIn.scale(scale + 1F, scale + 1F, scale + 1F);
         matrixStackIn.pushPose();
         matrixStackIn.translate(redOffset.x, redOffset.y, redOffset.z);
-        AFTERIMAGE_MODEL.renderToBuffer(matrixStackIn, source.getBuffer(afterimage), 240, overlayColors, 1.0F, 0F, 0F, alphaIn * 0.2F);
+        AFTERIMAGE_MODEL.renderToBuffer(matrixStackIn, source.getBuffer(afterimage), 240, overlayColors, 1.0F, 0F, 0F, afterimageAlpha1);
         matrixStackIn.popPose();
         matrixStackIn.pushPose();
         matrixStackIn.translate(blueOffset.x, blueOffset.y, blueOffset.z);
-        AFTERIMAGE_MODEL.renderToBuffer(matrixStackIn, source.getBuffer(afterimage), 240, overlayColors, 0F, 0F, 1.0F, alphaIn * 0.2F);
+        AFTERIMAGE_MODEL.renderToBuffer(matrixStackIn, source.getBuffer(afterimage), 240, overlayColors, 0F, 0F, 1.0F, afterimageAlpha2);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
         AFTERIMAGE_MODEL.eye.showModel = true;
