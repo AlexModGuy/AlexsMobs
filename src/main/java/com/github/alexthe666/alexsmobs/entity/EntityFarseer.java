@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
-import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -12,17 +11,15 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Pig;
@@ -47,6 +44,9 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     private static final EntityDataAccessor<Boolean> HAS_EMERGED = SynchedEntityData.defineId(EntityFarseer.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> MELEEING = SynchedEntityData.defineId(EntityFarseer.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> LASER_ENTITY_ID = SynchedEntityData.defineId(EntityFarseer.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> LASER_ATTACK_LVL = SynchedEntityData.defineId(EntityFarseer.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> LASER_DISTANCE = SynchedEntityData.defineId(EntityFarseer.class, EntityDataSerializers.FLOAT);
+    public static int LASER_ATTACK_DURATION = 10;
     public final double[][] positions = new double[64][4];
     public final float[] claspProgress = new float[HANDS];
     public final float[] prevClaspProgress = new float[HANDS];
@@ -57,11 +57,10 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     public float angryProgress;
     public float prevAngryProgress;
     public Vec3 angryShakeVec = Vec3.ZERO;
+    public float prevLaserLvl;
     private float faceCameraProgress;
     private float prevFaceCameraProgress;
     private LivingEntity laserTargetEntity;
-    private int laserTime = 0;
-    public double laserDistance = 0;
     private int claspingHand = -1;
     private int animationTick;
     private Animation currentAnimation;
@@ -69,11 +68,11 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
     protected EntityFarseer(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-        this.moveControl = new FlyingMoveControl(this, 20, true);
+        this.moveControl = new MoveController();
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 24D).add(Attributes.ARMOR, 2.0D).add(Attributes.FLYING_SPEED, (double)0.1F).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.MOVEMENT_SPEED, 0.3F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 24D).add(Attributes.ARMOR, 2.0D).add(Attributes.FLYING_SPEED, 0.5F).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
     public boolean isNoGravity() {
@@ -103,7 +102,9 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         this.goalSelector.addGoal(3, new RandomFlyGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 10));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new EntityAINearestTarget3D(this, Pig.class, 15, false, false, null));
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, 3, false, true, null));
+        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, Pig.class, 15, false, true, null));
     }
 
     protected void defineSynchedData() {
@@ -112,6 +113,8 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         this.entityData.define(MELEEING, false);
         this.entityData.define(ANGRY, false);
         this.entityData.define(LASER_ENTITY_ID, -1);
+        this.entityData.define(LASER_ATTACK_LVL, 0);
+        this.entityData.define(LASER_DISTANCE, 0F);
     }
 
     public boolean isAngry() {
@@ -123,8 +126,22 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     }
 
     public boolean hasLaser() {
-
         return this.entityData.get(LASER_ENTITY_ID) != -1 && this.getAnimation() != EntityFarseer.ANIMATION_EMERGE;
+    }
+
+    public int getLaserAttackLvl() {
+        return this.entityData.get(LASER_ATTACK_LVL);
+    }
+
+    public float getLaserDistance() {
+        return this.entityData.get(LASER_DISTANCE);
+    }
+
+    public void onSyncedDataUpdated(EntityDataAccessor<?> p_32834_) {
+        super.onSyncedDataUpdated(p_32834_);
+        if (LASER_ENTITY_ID.equals(p_32834_)) {
+            this.laserTargetEntity = null;
+        }
     }
 
     @Nullable
@@ -135,9 +152,9 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             if (this.laserTargetEntity != null) {
                 return this.laserTargetEntity;
             } else {
-                Entity lvt_1_1_ = this.level.getEntity(this.entityData.get(LASER_ENTITY_ID));
-                if (lvt_1_1_ instanceof LivingEntity) {
-                    this.laserTargetEntity = (LivingEntity) lvt_1_1_;
+                Entity fromID = this.level.getEntity(this.entityData.get(LASER_ENTITY_ID));
+                if (fromID instanceof LivingEntity) {
+                    this.laserTargetEntity = (LivingEntity) fromID;
                     return this.laserTargetEntity;
                 } else {
                     return null;
@@ -159,6 +176,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     public void tick() {
         super.tick();
         prevFaceCameraProgress = faceCameraProgress;
+        prevLaserLvl = this.getLaserAttackLvl();
         if (this.getAnimation() == ANIMATION_EMERGE) {
             this.setHasEmerged(true);
             faceCameraProgress = 1F;
@@ -225,30 +243,32 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         }
         LivingEntity target = this.getTarget();
         if (target != null) {
-            if(this.entityData.get(MELEEING)){
-                if(meleeCooldown == 0){
+            if (this.entityData.get(MELEEING)) {
+                if (meleeCooldown == 0) {
                     meleeCooldown = 5;
                     int i = random.nextInt(HANDS);
                     this.isStriking[i] = true;
-                    this.level.broadcastEntityEvent(this, (byte)(40 + i));
+                    this.level.broadcastEntityEvent(this, (byte) (40 + i));
                 }
             }
         }
-
-        for(int i = 0; i < HANDS; i++){
-            if(!this.isStriking[i] || this.entityData.get(MELEEING)){
-                if(strikeProgress[i] > 0F){
+        if (meleeCooldown > 0) {
+            meleeCooldown--;
+        }
+        for (int i = 0; i < HANDS; i++) {
+            if (!this.isStriking[i] || !this.entityData.get(MELEEING)) {
+                if (strikeProgress[i] > 0F) {
                     strikeProgress[i]--;
                 }
-            }else if(this.isStriking[i]){
-                if(strikeProgress[i] < 5F){
+            } else if (this.isStriking[i]) {
+                if (strikeProgress[i] < 5F) {
                     strikeProgress[i]++;
                 }
-                if(strikeProgress[i] == 5F){
+                if (strikeProgress[i] == 5F) {
                     isStriking[i] = false;
-                    this.level.broadcastEntityEvent(this, (byte)(44 + i));
-                    if(distanceTo(target) <= 4F){
-                        target.hurt(DamageSource.mobAttack(this), 4);
+                    this.level.broadcastEntityEvent(this, (byte) (44 + i));
+                    if (target != null && distanceTo(target) <= 4F) {
+                        target.hurt(DamageSource.mobAttack(this), 5 + random.nextInt(5));
                     }
                 }
             }
@@ -258,21 +278,24 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             LivingEntity livingentity = this.getLaserTarget();
             if (livingentity != null) {
                 Vec3 hit = this.calculateLaserHit(livingentity.getEyePosition());
-                laserDistance = hit.distanceTo(this.getEyePosition());
+                this.entityData.set(LASER_DISTANCE, (float) hit.distanceTo(this.getEyePosition()));
                 this.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
                 this.getLookControl().tick();
-                double d5 = 1F;
-                double d0 = hit.x;
-                double d1 = hit.y;
-                double d2 = hit.z;
+                double d0 = hit.x - this.getX();
+                double d1 = hit.y - this.getEyeY();
+                double d2 = hit.z - this.getZ();
                 double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                 d0 = d0 / d3;
                 d1 = d1 / d3;
                 d2 = d2 / d3;
+                float progress = this.getLaserAttackLvl() / (float) LASER_ATTACK_DURATION;
                 double d4 = this.random.nextDouble();
-                while (d4 < d3) {
-                    d4 += 2F + this.random.nextDouble();
-                    this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
+                while (d4 < d3 * progress) {
+                    d4 += 0.5F + 2F * this.random.nextDouble();
+                    double width = d4 / (d3 * progress);
+                    double d5 = (random.nextDouble() - 0.5F) * width;
+                    double d6 = (random.nextDouble() - 0.5F) * width;
+                    this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getX() + d0 * d4 + d5, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4 + d6, (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
                 }
             }
         }
@@ -283,10 +306,10 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         if (id >= 40 && id <= 43) {
             int i = id - 40;
             isStriking[i] = true;
-        }else if (id >= 44 && id <= 48) {
+        } else if (id >= 44 && id <= 48) {
             int i = id - 44;
             isStriking[i] = false;
-        }else{
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -392,7 +415,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         return super.isEffectiveAi() && this.getAnimation() != ANIMATION_EMERGE && this.hasEmerged();
     }
 
-    private Vec3 calculateLaserHit(Vec3 target){
+    private Vec3 calculateLaserHit(Vec3 target) {
         Vec3 eyes = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         HitResult hitResult = this.level.clip(new ClipContext(eyes, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         return hitResult.getLocation();
@@ -408,7 +431,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             if (this.isInWater()) {
                 this.moveRelative(0.02F, vec3);
                 this.move(MoverType.SELF, this.getDeltaMovement());
-                this.setDeltaMovement(this.getDeltaMovement().scale((double)0.8F));
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.8F));
             } else if (this.isInLava()) {
                 this.moveRelative(0.02F, vec3);
                 this.move(MoverType.SELF, this.getDeltaMovement());
@@ -416,7 +439,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             } else {
                 this.moveRelative(this.getSpeed(), vec3);
                 this.move(MoverType.SELF, this.getDeltaMovement());
-                this.setDeltaMovement(this.getDeltaMovement().scale((double)0.91F));
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.91F));
             }
         }
 
@@ -499,6 +522,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         private int timeSinceLastSuccessfulAttack = 0;
         private int laserCooldown = 0;
         private int laserUseTime = 0;
+        private int lasersShot = 0;
 
         public AttackGoal() {
         }
@@ -508,7 +532,8 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             return EntityFarseer.this.getTarget() != null && EntityFarseer.this.getTarget().isAlive();
         }
 
-        public void stop(){
+        public void stop() {
+            this.lasersShot = 0;
             this.laserCooldown = 0;
             this.laserUseTime = 0;
             attackDecision = EntityFarseer.this.getRandom().nextBoolean();
@@ -517,54 +542,103 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             EntityFarseer.this.setAngry(false);
         }
 
-        public void tick(){
+        public void tick() {
             super.tick();
             LivingEntity target = EntityFarseer.this.getTarget();
-            if(laserCooldown > 0){
+            if (laserCooldown > 0) {
                 laserCooldown--;
             }
             timeSinceLastSuccessfulAttack++;
-            if(timeSinceLastSuccessfulAttack > 200){
+            if (timeSinceLastSuccessfulAttack > 100) {
                 timeSinceLastSuccessfulAttack = 0;
                 attackDecision = !attackDecision;
             }
-            if(target != null){
-                double dist = EntityFarseer.this.distanceToSqr(target);
-                boolean canSee = EntityFarseer.this.hasLineOfSight(target);
-                if(this.laserCooldown == 0 && attackDecision){
+            if (target != null) {
+                double dist = EntityFarseer.this.distanceTo(target);
+                boolean canLaserHit = willLaserHit(target);
+                if (this.laserCooldown == 0 && attackDecision && canLaserHit && dist > 2F) {
                     EntityFarseer.this.setAngry(true);
                     EntityFarseer.this.entityData.set(LASER_ENTITY_ID, target.getId());
                     laserUseTime++;
-                    if(laserUseTime > 40){
+                    if (laserUseTime > LASER_ATTACK_DURATION) {
                         laserUseTime = 0;
-                        laserCooldown = 40 + random.nextInt(40);
-                        EntityFarseer.this.entityData.set(LASER_ENTITY_ID, -1);
-                        attackDecision = EntityFarseer.this.getRandom().nextBoolean();
+                        if (canLaserHit) {
+                            float healthTenth = target.getMaxHealth() * 0.1F;
+                            target.hurt(DamageSource.MAGIC, Math.max(6, healthTenth));
+                            timeSinceLastSuccessfulAttack = 0;
+                        }
+                        if (lasersShot++ > 3) {
+                            lasersShot = 0;
+                            laserCooldown = 80 + random.nextInt(40);
+                            EntityFarseer.this.entityData.set(LASER_ENTITY_ID, -1);
+                            attackDecision = EntityFarseer.this.getRandom().nextBoolean();
+                        }
                     }
-                    if(laserUseTime % 10 == 0 && canSee){
-                        target.hurt(DamageSource.MAGIC, 2);
-                    }
+                    EntityFarseer.this.entityData.set(LASER_ATTACK_LVL, laserUseTime);
                     EntityFarseer.this.lookAt(target, 180F, 10F);
-                    if(dist < 10F){
+                    if (dist < 17F && canLaserHit) {
                         EntityFarseer.this.getNavigation().stop();
-                        EntityFarseer.this.moveControl.strafe(-0.3F, 0);
-                    }else{
+                    } else {
                         EntityFarseer.this.getNavigation().moveTo(target, 1F);
                     }
-                }else{
-                    if(!canSee && dist > 10){
+                    EntityFarseer.this.entityData.set(MELEEING, false);
+                } else {
+                    if (!canLaserHit && dist > 10) {
                         EntityFarseer.this.setAngry(false);
                     }
-                    if(EntityFarseer.this.hasLaser()){
+                    if (EntityFarseer.this.hasLaser()) {
                         EntityFarseer.this.entityData.set(LASER_ENTITY_ID, -1);
                     }
                     EntityFarseer.this.entityData.set(MELEEING, dist < 4F);
-                    EntityFarseer.this.getNavigation().moveTo(target, 1F);
-                    if(dist < 4F){
-                        EntityFarseer.this.lookAt(target, 180F, 10F);
-                        attackDecision = EntityFarseer.this.getRandom().nextBoolean();
+                    if (dist < 4F) {
+                        timeSinceLastSuccessfulAttack = 0;
+                    }else{
+                        EntityFarseer.this.getNavigation().moveTo(target, 1F);
+                        EntityFarseer.this.moveControl.setWantedPosition(target.getX(), target.getEyeY(), target.getZ(), 1F);
                     }
                 }
+            }
+        }
+
+        private boolean willLaserHit(LivingEntity target) {
+            Vec3 vec = EntityFarseer.this.calculateLaserHit(target.getEyePosition());
+            return vec.distanceTo(target.getEyePosition()) < 1F;
+        }
+    }
+
+    class MoveController extends MoveControl {
+        private final Mob parentEntity;
+
+
+        public MoveController() {
+            super(EntityFarseer.this);
+            this.parentEntity = EntityFarseer.this;
+        }
+
+        public void tick() {
+            float angle = (0.01745329251F * (parentEntity.yBodyRot + 90));
+            float radius = (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
+            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraY = radius * -Math.cos(angle - Math.PI / 2);
+            double extraZ = radius * Mth.cos(angle);
+            Vec3 strafPlus = new Vec3(extraX, extraY, extraZ);
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
+                double d0 = vector3d.length();
+                double width = parentEntity.getBoundingBox().getSize();
+                if (d0 < width) {
+                    this.operation = MoveControl.Operation.WAIT;
+                    parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
+                } else {
+                    Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.05D / d0);
+                    parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d1.add(strafPlus.scale(0.003D * Math.min(d0, 100)))));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    if (EntityFarseer.this.hasLaser()) {
+                        parentEntity.yBodyRot = parentEntity.getYRot();
+                    }
+                }
+            } else if (this.operation == MoveControl.Operation.WAIT) {
+                parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(strafPlus.scale(0.003D)));
             }
         }
     }

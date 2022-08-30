@@ -195,10 +195,11 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             matrixStackIn.popPose();
         }
         //laser target
-        if(entityIn.hasLaser() && laserTarget != null){
+        if(entityIn.hasLaser() && laserTarget != null && !laserTarget.isRemoved()){
+            float laserProgress = (entityIn.prevLaserLvl + (entityIn.getLaserAttackLvl() - entityIn.prevLaserLvl) * partialTicks) / (float)EntityFarseer.LASER_ATTACK_DURATION;
             float laserHeight = entityIn.getEyeHeight();
             float angryProgress = entityIn.prevAngryProgress + (entityIn.angryProgress - entityIn.prevAngryProgress) * partialTicks;
-            Vec3 angryShake = entityIn.angryShakeVec.scale(angryProgress * 0.1F);
+            Vec3 angryShake = Vec3.ZERO;
             double d0 = Mth.lerp(partialTicks, laserTarget.xo, laserTarget.getX()) - Mth.lerp(partialTicks, entityIn.xo, entityIn.getX()) - angryShake.x;
             double d1 = Mth.lerp(partialTicks, laserTarget.yo, laserTarget.getY()) + laserTarget.getEyeHeight() - Mth.lerp(partialTicks, entityIn.yo, entityIn.getY()) - angryShake.y - laserHeight;
             double d2 = Mth.lerp(partialTicks, laserTarget.zo, laserTarget.getZ()) - Mth.lerp(partialTicks, entityIn.zo, entityIn.getZ()) - angryShake.z;
@@ -211,9 +212,9 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             matrixStackIn.mulPose(Vector3f.YN.rotationDegrees( laserY));
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(laserX));
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90));
-            float length = entityIn.distanceTo(laserTarget);
-            float width = 1F;
-            float strength = 1F;
+            float length = entityIn.getLaserDistance() * laserProgress;
+            float width = (1.5F - laserProgress) * 2F;
+            float speed = 1F + laserProgress * laserProgress * 5F;
             PoseStack.Pose posestack$pose = matrixStackIn.last();
             Matrix4f matrix4f = posestack$pose.pose();
             Matrix3f matrix3f = posestack$pose.normal();
@@ -221,7 +222,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             //apparently its static? should be moving so has to be moved manually through UV
             long systemTime = Util.getMillis() * 7L;
             float u = (float)(systemTime % 30000L) / 30000.0F;
-            float v = (float)Math.floor((systemTime % 3000L) / 3000.0F * 4.0F) * 0.25F + (float)Math.sin(systemTime / 30000F) * 0.05F + ((float)(systemTime % 20000L) / 20000.0F * strength);
+            float v = (float)Math.floor((systemTime % 3000L) / 3000.0F * 4.0F) * 0.25F + (float)Math.sin(systemTime / 30000F) * 0.05F + ((float)(systemTime % 20000L) / 20000.0F * speed);
             laserOriginVertex(beamStatic, matrix4f, matrix3f, j, u, v);
             laserLeftCornerVertex(beamStatic, matrix4f, matrix3f, length, width,  u, v);
             laserRightCornerVertex(beamStatic, matrix4f, matrix3f, length, width,  u, v);

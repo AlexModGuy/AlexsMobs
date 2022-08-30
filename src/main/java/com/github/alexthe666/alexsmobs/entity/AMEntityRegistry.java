@@ -142,7 +142,7 @@ public class AMEntityRegistry {
     public static final RegistryObject<EntityType<EntityMudBall>> MUD_BALL = DEF_REG.register("mud_ball", () -> registerEntity(EntityType.Builder.of(EntityMudBall::new, MobCategory.MISC).sized(0.35F, 0.35F).setCustomClientFactory(EntityMudBall::new).fireImmune(), "mud_ball"));
     public static final RegistryObject<EntityType<EntityRhinoceros>> RHINOCEROS = DEF_REG.register("rhinoceros", () -> registerEntity(EntityType.Builder.of(EntityRhinoceros::new, MobCategory.CREATURE).sized(2.3F, 2.4F), "rhinoceros"));
     public static final RegistryObject<EntityType<EntitySugarGlider>> SUGAR_GLIDER = DEF_REG.register("sugar_glider", () -> registerEntity(EntityType.Builder.of(EntitySugarGlider::new, MobCategory.CREATURE).sized(0.8F, 0.45F), "sugar_glider"));
-    public static final RegistryObject<EntityType<EntityFarseer>> FARSEER = DEF_REG.register("farseer", () -> registerEntity(EntityType.Builder.of(EntityFarseer::new, MobCategory.MONSTER).sized(1F, 1.5F).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "farseer"));
+    public static final RegistryObject<EntityType<EntityFarseer>> FARSEER = DEF_REG.register("farseer", () -> registerEntity(EntityType.Builder.of(EntityFarseer::new, MobCategory.MONSTER).sized(0.99F, 1.5F).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "farseer"));
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return (EntityType) builder.build(entityName);
