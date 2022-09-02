@@ -1,7 +1,9 @@
 package com.github.alexthe666.alexsmobs.item;
 
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -38,5 +40,10 @@ public class AMBlockItem extends BlockItem {
                 ItemUtils.onContainerDestroyed(p_150700_, listtag.stream().map(CompoundTag.class::cast).map(ItemStack::of));
             }
         }
+    }
+
+
+    public boolean canBeHurtBy(DamageSource damage) {
+        return super.canBeHurtBy(damage) && (this != AMBlockRegistry.TRANSMUTATION_TABLE.get().asItem() || !damage.isExplosion());
     }
 }

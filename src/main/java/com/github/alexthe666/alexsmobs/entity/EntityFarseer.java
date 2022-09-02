@@ -72,7 +72,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 24D).add(Attributes.ARMOR, 2.0D).add(Attributes.FLYING_SPEED, 0.5F).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.MOVEMENT_SPEED, 0.35F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 50D).add(Attributes.ARMOR, 6.0D).add(Attributes.FLYING_SPEED, 0.5F).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.MOVEMENT_SPEED, 0.35F);
     }
 
     public boolean isNoGravity() {
@@ -84,6 +84,11 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     }
 
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.7F;
     }
 
     @Override
@@ -209,96 +214,97 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         if (!this.isAngry() && angryProgress > 0F) {
             angryProgress--;
         }
-        if (random.nextInt(isAngry() ? 12 : 40) == 0 && claspingHand == -1) {
-            int i = Mth.clamp(random.nextInt(HANDS), 0, 3);
-            if (claspProgress[i] == 0) {
-                claspingHand = i;
+        if (this.isAlive()) {
+            if (random.nextInt(isAngry() ? 12 : 40) == 0 && claspingHand == -1) {
+                int i = Mth.clamp(random.nextInt(HANDS), 0, 3);
+                if (claspProgress[i] == 0) {
+                    claspingHand = i;
+                }
             }
-        }
-        if (claspingHand >= 0) {
-            if (claspProgress[claspingHand] < 5F) {
-                claspProgress[claspingHand]++;
+            if (claspingHand >= 0) {
+                if (claspProgress[claspingHand] < 5F) {
+                    claspProgress[claspingHand]++;
+                } else {
+                    claspingHand = -1;
+                }
             } else {
-                claspingHand = -1;
+                for (int i = 0; i < HANDS; i++) {
+                    if (claspProgress[i] > 0) {
+                        claspProgress[i]--;
+                    }
+                }
             }
-        } else {
+            if (!this.hasEmerged()) {
+                this.setAnimation(ANIMATION_EMERGE);
+            }
+            if (this.getAnimation() == ANIMATION_EMERGE && level.isClientSide) {
+                this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getRandomX(0.75F), this.getRandomY(), this.getRandomZ(0.75F), (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
+            }
+            LivingEntity target = this.getTarget();
+            if (target != null) {
+                if (this.entityData.get(MELEEING)) {
+                    if (meleeCooldown == 0) {
+                        meleeCooldown = 5;
+                        int i = random.nextInt(HANDS);
+                        this.isStriking[i] = true;
+                        this.level.broadcastEntityEvent(this, (byte) (40 + i));
+                    }
+                }
+            }
+            if (meleeCooldown > 0) {
+                meleeCooldown--;
+            }
             for (int i = 0; i < HANDS; i++) {
-                if (claspProgress[i] > 0) {
-                    claspProgress[i]--;
+                if (!this.isStriking[i] || !this.entityData.get(MELEEING)) {
+                    if (strikeProgress[i] > 0F) {
+                        strikeProgress[i]--;
+                    }
+                } else if (this.isStriking[i]) {
+                    if (strikeProgress[i] < 5F) {
+                        strikeProgress[i]++;
+                    }
+                    if (strikeProgress[i] == 5F) {
+                        isStriking[i] = false;
+                        this.level.broadcastEntityEvent(this, (byte) (44 + i));
+                        if (target != null && distanceTo(target) <= 4F) {
+                            target.hurt(DamageSource.mobAttack(this), 5 + random.nextInt(5));
+                        }
+                    }
+                }
+            }
+
+            if (this.hasLaser()) {
+                LivingEntity livingentity = this.getLaserTarget();
+                if (livingentity != null) {
+                    Vec3 hit = this.calculateLaserHit(livingentity.getEyePosition());
+                    this.entityData.set(LASER_DISTANCE, (float) hit.distanceTo(this.getEyePosition()));
+                    this.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
+                    this.getLookControl().tick();
+                    double d0 = hit.x - this.getX();
+                    double d1 = hit.y - this.getEyeY();
+                    double d2 = hit.z - this.getZ();
+                    double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+                    d0 = d0 / d3;
+                    d1 = d1 / d3;
+                    d2 = d2 / d3;
+                    float progress = this.getLaserAttackLvl() / (float) LASER_ATTACK_DURATION;
+                    double d4 = this.random.nextDouble();
+                    while (d4 < d3 * progress) {
+                        d4 += 0.5F + 2F * this.random.nextDouble();
+                        double width = d4 / (d3 * progress);
+                        double d5 = (random.nextDouble() - 0.5F) * width;
+                        double d6 = (random.nextDouble() - 0.5F) * width;
+                        this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getX() + d0 * d4 + d5, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4 + d6, (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
+                    }
                 }
             }
         }
-
         if (this.isAngry()) {
             angryShakeVec = new Vec3(random.nextFloat() - 0.5F, random.nextFloat() - 0.5F, random.nextFloat() - 0.5F);
         } else {
             angryShakeVec = Vec3.ZERO;
         }
-        if (!this.hasEmerged()) {
-            this.setAnimation(ANIMATION_EMERGE);
-        }
         AnimationHandler.INSTANCE.updateAnimations(this);
-        if (this.getAnimation() == ANIMATION_EMERGE && level.isClientSide) {
-            this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getRandomX(0.75F), this.getRandomY(), this.getRandomZ(0.75F), (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
-        }
-        LivingEntity target = this.getTarget();
-        if (target != null) {
-            if (this.entityData.get(MELEEING)) {
-                if (meleeCooldown == 0) {
-                    meleeCooldown = 5;
-                    int i = random.nextInt(HANDS);
-                    this.isStriking[i] = true;
-                    this.level.broadcastEntityEvent(this, (byte) (40 + i));
-                }
-            }
-        }
-        if (meleeCooldown > 0) {
-            meleeCooldown--;
-        }
-        for (int i = 0; i < HANDS; i++) {
-            if (!this.isStriking[i] || !this.entityData.get(MELEEING)) {
-                if (strikeProgress[i] > 0F) {
-                    strikeProgress[i]--;
-                }
-            } else if (this.isStriking[i]) {
-                if (strikeProgress[i] < 5F) {
-                    strikeProgress[i]++;
-                }
-                if (strikeProgress[i] == 5F) {
-                    isStriking[i] = false;
-                    this.level.broadcastEntityEvent(this, (byte) (44 + i));
-                    if (target != null && distanceTo(target) <= 4F) {
-                        target.hurt(DamageSource.mobAttack(this), 5 + random.nextInt(5));
-                    }
-                }
-            }
-        }
-
-        if (this.hasLaser()) {
-            LivingEntity livingentity = this.getLaserTarget();
-            if (livingentity != null) {
-                Vec3 hit = this.calculateLaserHit(livingentity.getEyePosition());
-                this.entityData.set(LASER_DISTANCE, (float) hit.distanceTo(this.getEyePosition()));
-                this.getLookControl().setLookAt(livingentity, 90.0F, 90.0F);
-                this.getLookControl().tick();
-                double d0 = hit.x - this.getX();
-                double d1 = hit.y - this.getEyeY();
-                double d2 = hit.z - this.getZ();
-                double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                d0 = d0 / d3;
-                d1 = d1 / d3;
-                d2 = d2 / d3;
-                float progress = this.getLaserAttackLvl() / (float) LASER_ATTACK_DURATION;
-                double d4 = this.random.nextDouble();
-                while (d4 < d3 * progress) {
-                    d4 += 0.5F + 2F * this.random.nextDouble();
-                    double width = d4 / (d3 * progress);
-                    double d5 = (random.nextDouble() - 0.5F) * width;
-                    double d6 = (random.nextDouble() - 0.5F) * width;
-                    this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getX() + d0 * d4 + d5, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4 + d6, (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
-                }
-            }
-        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -329,12 +335,12 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         double d0 = Mth.lerp(partialTick, this.xOld, this.getX());
         double d1 = Mth.lerp(partialTick, this.yOld, this.getY());
         double d2 = Mth.lerp(partialTick, this.zOld, this.getZ());
-        float renderYaw = (float) this.getLatencyVar(0, 3, partialTick);
+        float renderYaw = (float) this.getLatencyVar(offset, 3, partialTick);
         return new Vec3(this.getLatencyVar(offset, 0, partialTick) - d0, this.getLatencyVar(offset, 1, partialTick) - d1, this.getLatencyVar(offset, 2, partialTick) - d2).yRot(renderYaw * ((float) Math.PI / 180F));
     }
 
-    public Vec3 calculateAfterimagePos(float partialTick, boolean flip) {
-        float f = (partialTick + this.tickCount) * 0.3F;
+    public Vec3 calculateAfterimagePos(float partialTick, boolean flip, float speed) {
+        float f = (partialTick + this.tickCount) * speed;
         float f1 = 0.1F;
         Vec3 v = new Vec3((float) Math.sin(f) * f1, (float) Math.cos(f - Math.PI / 2) * f1, -(float) Math.cos(f) * f1);
         if (flip) {
@@ -446,10 +452,14 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         this.calculateEntityAnimation(this, false);
     }
 
+    public boolean isInvulnerableTo(DamageSource dmg) {
+        return super.isInvulnerableTo(dmg) || this.getAnimation() == ANIMATION_EMERGE;
+    }
+
     private class RandomFlyGoal extends Goal {
         private final EntityFarseer parentEntity;
         private BlockPos target = null;
-
+        private float speed = 0.6F;
         public RandomFlyGoal(EntityFarseer mosquito) {
             this.parentEntity = mosquito;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
@@ -459,7 +469,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             if (this.parentEntity.getNavigation().isDone() && this.parentEntity.getTarget() == null && this.parentEntity.getRandom().nextInt(4) == 0) {
                 target = getBlockInViewFarseer();
                 if (target != null) {
-                    this.parentEntity.getMoveControl().setWantedPosition(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, 1.0D);
+                    this.parentEntity.getMoveControl().setWantedPosition(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, speed);
                     return true;
                 }
             }
@@ -476,7 +486,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
         public void tick() {
             if (target != null) {
-                this.parentEntity.getMoveControl().setWantedPosition(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, 1.0D);
+                this.parentEntity.getMoveControl().setWantedPosition(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D, speed);
                 if (parentEntity.distanceToSqr(Vec3.atCenterOf(target)) < 4D || this.parentEntity.horizontalCollision) {
                     target = null;
                 }
@@ -575,7 +585,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                         }
                     }
                     EntityFarseer.this.entityData.set(LASER_ATTACK_LVL, laserUseTime);
-                    EntityFarseer.this.lookAt(target, 180F, 10F);
+                    EntityFarseer.this.lookAt(target, 180F, 180F);
                     if (dist < 17F && canLaserHit) {
                         EntityFarseer.this.getNavigation().stop();
                     } else {
@@ -592,7 +602,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                     EntityFarseer.this.entityData.set(MELEEING, dist < 4F);
                     if (dist < 4F) {
                         timeSinceLastSuccessfulAttack = 0;
-                    }else{
+                    } else {
                         EntityFarseer.this.getNavigation().moveTo(target, 1F);
                         EntityFarseer.this.moveControl.setWantedPosition(target.getX(), target.getEyeY(), target.getZ(), 1F);
                     }
@@ -626,17 +636,23 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                 Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
                 double d0 = vector3d.length();
                 double width = parentEntity.getBoundingBox().getSize();
-                if (d0 < width) {
-                    this.operation = MoveControl.Operation.WAIT;
-                    parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
-                } else {
-                    Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.05D / d0);
-                    parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d1.add(strafPlus.scale(0.003D * Math.min(d0, 100)))));
+                Vec3 shimmy = Vec3.ZERO;
+                LivingEntity attackTarget = parentEntity.getTarget();
+                if (attackTarget != null) {
+                    if (parentEntity.horizontalCollision) {
+                        shimmy = new Vec3(0, 0.005, 0);
+                    }
+                }
+
+                Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.05D / d0);
+                parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d1.add(strafPlus.scale(0.003D * Math.min(d0, 100)).add(shimmy))));
+                if (d0 >= width) {
                     parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
                     if (EntityFarseer.this.hasLaser()) {
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     }
                 }
+
             } else if (this.operation == MoveControl.Operation.WAIT) {
                 parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(strafPlus.scale(0.003D)));
             }

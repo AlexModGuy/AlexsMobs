@@ -173,6 +173,7 @@ public class ServerEvents {
                 ChunkPos chunkpos = new ChunkPos(endpoint);
                 endpointWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, player.getId());
                 player.connection.send(new ClientboundSetExperiencePacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
+
             }
             teleportPlayers.clear();
         }

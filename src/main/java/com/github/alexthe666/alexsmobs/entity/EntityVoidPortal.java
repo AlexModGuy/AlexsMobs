@@ -22,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
@@ -41,12 +42,15 @@ public class EntityVoidPortal extends Entity {
 
     protected static final EntityDataAccessor<Direction> ATTACHED_FACE = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.DIRECTION);
     protected static final EntityDataAccessor<Integer> LIFESPAN = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Boolean> SET_TO_AIR = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> DESTINATION = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
     private static final EntityDataAccessor<Optional<UUID>> SISTER_UUID = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.OPTIONAL_UUID);
     public ResourceKey<Level> exitDimension;
     private boolean madeOpenNoise = false;
     private boolean madeCloseNoise = false;
     private boolean isDummy = false;
+    private boolean hasClearedObstructions;
+
 
     public EntityVoidPortal(EntityType<?> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
@@ -156,6 +160,9 @@ public class EntityVoidPortal extends Entity {
         if (this.getLifespan() <= 0) {
             this.remove(RemovalReason.DISCARDED);
         }
+        if(tickCount > 1){
+            clearObstructions();
+        }
     }
 
     private void teleportEntityFromDimension(Entity entity, ServerLevel endpointWorld, BlockPos endpoint, boolean b) {
@@ -177,7 +184,22 @@ public class EntityVoidPortal extends Entity {
             }
             entity.remove(RemovalReason.DISCARDED);
         }
+    }
 
+    public void clearObstructions(){
+        if(!hasClearedObstructions){
+            if(isSetToAir()){
+                hasClearedObstructions = true;
+                for (int i = -1; i <= -1; i++){
+                    for (int j = -1; j <= -1; j++){
+                        for (int k = -1; k <= -1; k++){
+                            BlockPos toAir = this.getDestination().offset(i, j, k);
+                            level.destroyBlock(toAir, true);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public Direction getAttachmentFacing() {
@@ -194,6 +216,14 @@ public class EntityVoidPortal extends Entity {
 
     public void setLifespan(int i) {
         this.entityData.set(LIFESPAN, i);
+    }
+
+    public boolean isSetToAir() {
+        return this.entityData.get(SET_TO_AIR);
+    }
+
+    public void setToAir(boolean set) {
+        this.entityData.set(SET_TO_AIR, set);
     }
 
     public BlockPos getDestination() {
@@ -229,12 +259,14 @@ public class EntityVoidPortal extends Entity {
         portal.setLifespan(this.getLifespan());
         this.setDestination(portal.blockPosition());
         portal.setDestination(this.blockPosition());
+        portal.setToAir(this.isSetToAir());
     }
 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(ATTACHED_FACE, Direction.DOWN);
         this.entityData.define(LIFESPAN, 300);
+        this.entityData.define(SET_TO_AIR, false);
         this.entityData.define(SISTER_UUID, Optional.empty());
         this.entityData.define(DESTINATION, Optional.empty());
     }

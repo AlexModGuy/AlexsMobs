@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.item;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidPortal;
@@ -23,6 +24,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.Random;
 
@@ -120,20 +122,8 @@ public class ItemDimensionalCarver extends Item {
                 if (dir == Direction.UP) {
                     dir = Direction.DOWN;
                 }
-                portal.setAttachmentFacing(dir);
-                portal.setLifespan(1200);
-                ResourceKey<Level> respawnDimension = Level.OVERWORLD;
-                BlockPos respawnPosition = player.getSleepingPos().isPresent() ? player.getSleepingPos().get() : player.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, BlockPos.ZERO);
-                if (player instanceof ServerPlayer) {
-                    ServerPlayer serverPlayer = (ServerPlayer) player;
-                    respawnDimension = serverPlayer.getRespawnDimension();
-                    if (serverPlayer.getRespawnPosition() != null) {
-                        respawnPosition = serverPlayer.getRespawnPosition();
-                    }
-                }
+                onPortalOpen(player.level, player, portal, dir);
                 player.level.addFreshEntity(portal);
-                portal.exitDimension = respawnDimension;
-                portal.setDestination(respawnPosition.above(2));
                 itemstack.hurtAndBreak(1, player, (playerIn) -> {
                     player.broadcastBreakEvent(playerIn.getUsedItemHand());
                 });
@@ -153,6 +143,7 @@ public class ItemDimensionalCarver extends Item {
         }
     }
 
+
     public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
         stack.getOrCreateTag().putBoolean("HASBLOCK", false);
         stack.getOrCreateTag().putDouble("BLOCKX", 0);
@@ -164,5 +155,21 @@ public class ItemDimensionalCarver extends Item {
 
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return !oldStack.sameItem(newStack);
+    }
+
+    public void onPortalOpen(Level worldIn, LivingEntity player, EntityVoidPortal portal, Direction dir){
+        portal.setAttachmentFacing(dir);
+        portal.setLifespan(1200);
+        ResourceKey<Level> respawnDimension = Level.OVERWORLD;
+        BlockPos respawnPosition = player.getSleepingPos().isPresent() ? player.getSleepingPos().get() : player.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, BlockPos.ZERO);
+        if (player instanceof ServerPlayer) {
+            ServerPlayer serverPlayer = (ServerPlayer) player;
+            respawnDimension = serverPlayer.getRespawnDimension();
+            if (serverPlayer.getRespawnPosition() != null) {
+                respawnPosition = serverPlayer.getRespawnPosition();
+            }
+        }
+        portal.exitDimension = respawnDimension;
+        portal.setDestination(respawnPosition.above(2));
     }
 }

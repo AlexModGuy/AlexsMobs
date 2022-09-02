@@ -19,6 +19,7 @@ import com.github.alexthe666.alexsmobs.entity.IFalconry;
 import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
 import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.item.ItemDimensionalCarver;
 import com.github.alexthe666.alexsmobs.item.ItemModArmor;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateEagleControls;
 import com.github.alexthe666.alexsmobs.misc.AMDamageTypes;
@@ -298,7 +299,7 @@ public class ClientEvents {
                 }
             }
         }
-        if (Minecraft.getInstance().player.getUseItem().getItem() == AMItemRegistry.DIMENSIONAL_CARVER.get() && event.getItemStack().getItem() == AMItemRegistry.DIMENSIONAL_CARVER.get()) {
+        if (Minecraft.getInstance().player.getUseItem().getItem() instanceof ItemDimensionalCarver && event.getItemStack().getItem() instanceof ItemDimensionalCarver) {
             PoseStack matrixStackIn = event.getPoseStack();
             matrixStackIn.pushPose();
             ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();

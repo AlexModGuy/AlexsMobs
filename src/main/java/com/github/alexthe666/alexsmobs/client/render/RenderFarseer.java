@@ -39,6 +39,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
     private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer_angry.png");
     private static final ResourceLocation TEXTURE_CLAWS = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer_claws.png");
     private static final ResourceLocation TEXTURE_EYE = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer_eye.png");
+    private static final ResourceLocation TEXTURE_SCARS = new ResourceLocation("alexsmobs:textures/entity/farseer/farseer_scars.png");
     private static final ResourceLocation[] PORTAL_TEXTURES = new ResourceLocation[]{
         new ResourceLocation("alexsmobs:textures/entity/farseer/portal_0.png"),
         new ResourceLocation("alexsmobs:textures/entity/farseer/portal_1.png"),
@@ -46,6 +47,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         new ResourceLocation("alexsmobs:textures/entity/farseer/portal_3.png")};
     private static final float HALF_SQRT_3 = (float)(Math.sqrt(3.0D) / 2.0D);
     private static final ModelFarseer EYE_MODEL = new ModelFarseer(0.1f);
+    private static final ModelFarseer SCARS_MODEL = new ModelFarseer(0.05f);
     private static final ModelFarseer AFTERIMAGE_MODEL = new ModelFarseer(0.05f);
 
     public RenderFarseer(EntityRendererProvider.Context renderManagerIn) {
@@ -155,6 +157,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         boolean flag2 = minecraft.shouldEntityAppearGlowing(entityIn);
         RenderType rendertype = this.getRenderType(entityIn, flag, flag1, flag2);
         EYE_MODEL.setupAnim(entityIn, f5, f8, f7, f2, f6);
+        SCARS_MODEL.setupAnim(entityIn, f5, f8, f7, f2, f6);
         AFTERIMAGE_MODEL.setupAnim(entityIn, f5, f8, f7, f2, f6);
         if (rendertype != null) {
             float portalLevel = entityIn.getFarseerOpacity(partialTicks);
@@ -238,10 +241,15 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             VertexConsumer staticyInsides = VertexMultiConsumer.create(source.getBuffer(AMRenderTypes.STATIC_ENTITY), source.getBuffer(RenderType.entityTranslucent(TEXTURE_EYE)));
             EYE_MODEL.renderToBuffer(matrixStackIn, staticyInsides, packedLightIn, NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1F);
         }
-        Vec3 colorOffset = entityIn.getLatencyOffsetVec(10, partialTicks).scale(-0.2F).add(entityIn.angryShakeVec.scale(0.3F));
-        Vec3 redOffset = colorOffset.add(entityIn.calculateAfterimagePos(partialTicks, false));
-        Vec3 blueOffset = colorOffset.add(entityIn.calculateAfterimagePos(partialTicks, true));
-        float scale = (float) Mth.clamp(colorOffset.length() * 0.1F, 0, 1F);
+        VertexConsumer consumer;
+        float hurt = Math.max(entityIn.hurtTime, entityIn.deathTime);
+        float defAlpha = alphaIn * 0.2F;
+        float afterimageSpeed = 0.3F;
+        if(hurt > 0){
+            afterimageSpeed = Math.min(hurt / 20F, 1F) + 0.3F;
+            VertexConsumer staticyScars = VertexMultiConsumer.create(source.getBuffer(AMRenderTypes.STATIC_ENTITY), source.getBuffer(RenderType.entityTranslucent(TEXTURE_SCARS)));
+            SCARS_MODEL.renderToBuffer(matrixStackIn, staticyScars, packedLightIn, overlayColors, 1.0F, 1.0F, 1.0F, 0.3F);
+        }
         this.model.renderToBuffer(matrixStackIn, source.getBuffer(defRenderType), packedLightIn, overlayColors, 1.0F, 1.0F, 1.0F, alphaIn);
 
         matrixStackIn.pushPose();
@@ -249,8 +257,11 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
 
         AFTERIMAGE_MODEL.eye.showModel = false;
         RenderType afterimage = RenderType.entityTranslucentEmissive(this.getTextureLocation(entityIn));
+        Vec3 colorOffset = entityIn.getLatencyOffsetVec(10, partialTicks).scale(-0.2F).add(entityIn.angryShakeVec.scale(0.3F));
+        Vec3 redOffset = colorOffset.add(entityIn.calculateAfterimagePos(partialTicks, false, afterimageSpeed));
+        Vec3 blueOffset = colorOffset.add(entityIn.calculateAfterimagePos(partialTicks, true, afterimageSpeed));
+        float scale = (float) Mth.clamp(colorOffset.length() * 0.1F, 0, 1F);
         float angryProgress = entityIn.prevAngryProgress + (entityIn.angryProgress - entityIn.prevAngryProgress) * partialTicks;
-        float defAlpha = alphaIn * 0.2F;
         float afterimageAlpha1 = defAlpha * Math.max(((float) Math.sin((entityIn.tickCount + partialTicks) * 0.2F) + 1F) * 0.3F, angryProgress * 0.2F);
         float afterimageAlpha2 = defAlpha * Math.max(((float) Math.cos((entityIn.tickCount + partialTicks) * 0.2F) + 1F) * 0.3F, angryProgress * 0.2F);
 
@@ -266,10 +277,6 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         matrixStackIn.popPose();
         matrixStackIn.popPose();
         AFTERIMAGE_MODEL.eye.showModel = true;
-
-
-
-
     }
 
     private static void laserOriginVertex(VertexConsumer p_114220_, Matrix4f p_114221_, Matrix3f p_114092_, int p_114222_, float xOffset, float yOffset) {
@@ -306,7 +313,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
                 f = 1.0F;
             }
 
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(farseer) * invCameraAmount) );
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f * this.getFlipDegrees(farseer) * invCameraAmount) );
         } else if (isEntityUpsideDown(farseer)) {
             matrixStackIn.translate(0.0D, (double)(farseer.getBbHeight() + 0.1F), 0.0D);
             matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F));

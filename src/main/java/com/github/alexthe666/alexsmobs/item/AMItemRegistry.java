@@ -151,6 +151,7 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> VOID_WORM_MANDIBLE = DEF_REG.register("void_worm_mandible", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE)));
     public static final RegistryObject<Item> VOID_WORM_EYE = DEF_REG.register("void_worm_eye", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> DIMENSIONAL_CARVER = DEF_REG.register("dimensional_carver", () -> new ItemDimensionalCarver(new Item.Properties().tab(AMItemGroup.INSTANCE).durability(20).rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> SHATTERED_DIMENSIONAL_CARVER = DEF_REG.register("shattered_dimensional_carver", () -> new ItemShatteredDimensionalCarver(new Item.Properties().tab(AMItemGroup.INSTANCE).durability(4).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SERRATED_SHARK_TOOTH = DEF_REG.register("serrated_shark_tooth", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE)));
     public static final RegistryObject<Item> FRILLED_SHARK_BUCKET = DEF_REG.register("frilled_shark_bucket", () -> new ItemModFishBucket(AMEntityRegistry.FRILLED_SHARK, Fluids.WATER, new Item.Properties().tab(AMItemGroup.INSTANCE)));
     public static final RegistryObject<Item> SHIELD_OF_THE_DEEP = DEF_REG.register("shield_of_the_deep", () -> new ItemShieldOfTheDeep(new Item.Properties().durability(400).rarity(Rarity.UNCOMMON).tab(AMItemGroup.INSTANCE)));
@@ -192,6 +193,7 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> SKELEWAG_SWORD = DEF_REG.register("skelewag_sword", () -> new ItemSkelewagSword(new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).durability(430)));
     public static final RegistryObject<Item> NOVELTY_HAT = DEF_REG.register("novelty_hat", () -> new ItemModArmor(NOVELTY_HAT_MATERIAL, EquipmentSlot.HEAD));
     public static final RegistryObject<Item> MUDSKIPPER_BUCKET = DEF_REG.register("mudskipper_bucket", () -> new ItemModFishBucket(AMEntityRegistry.MUDSKIPPER, Fluids.WATER, new Item.Properties().tab(AMItemGroup.INSTANCE)));
+    public static final RegistryObject<Item> FARSEER_ARM = DEF_REG.register("farseer_arm", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE), 191 * 20));
     public static final RegistryObject<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE), 314 * 20));
 
@@ -282,6 +284,9 @@ public class AMItemRegistry {
         registerPatternItem("australia_1");
         registerPatternItem("new_mexico");
         registerPatternItem("brazil");
+        for(int i = 0; i <= 10; i++){
+            DEF_REG.register("dimensional_carver_shard_" + i, () -> new Item(new Item.Properties()));
+        }
     }
 
     private static void registerPatternItem(String name) {

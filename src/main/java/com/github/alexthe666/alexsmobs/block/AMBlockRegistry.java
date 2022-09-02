@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.item.BlockItemAMRender;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -42,6 +43,7 @@ public class AMBlockRegistry {
     public static final RegistryObject<Block> SAND_CIRCLE = registerBlockAndItem("sand_circle", () -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND)), new Item.Properties(), false);
     public static final RegistryObject<Block> RED_SAND_CIRCLE = registerBlockAndItem("red_sand_circle", () -> new SandBlock(11098145, BlockBehaviour.Properties.copy(Blocks.RED_SAND)), new Item.Properties(), false);
     public static final RegistryObject<Block> ENDER_RESIDUE = registerBlockAndItem("ender_residue", () -> new BlockEnderResidue());
+    public static final RegistryObject<Block> TRANSMUTATION_TABLE = registerBlockAndItem("transmutation_table", () -> new BlockTransmutationTable(), new Item.Properties().tab(AMItemGroup.INSTANCE).rarity(Rarity.EPIC).fireResistant(), true);
 
     /*
         public static final RegistryObject<Block> PURPUR_PLANKS = registerBlockAndItem("purpur_planks", () -> new Block(PURPUR_PLANKS_PROPERTIES));;
