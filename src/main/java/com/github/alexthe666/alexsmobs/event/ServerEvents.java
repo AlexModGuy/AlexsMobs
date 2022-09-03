@@ -9,10 +9,13 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.github.alexthe666.alexsmobs.misc.CapsidRecipeManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import org.antlr.v4.runtime.misc.Triple;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
@@ -169,6 +172,8 @@ public class ServerEvents {
                 ServerPlayer player = triple.a;
                 ServerLevel endpointWorld = triple.b;
                 BlockPos endpoint = triple.c;
+                int heightFromMap = endpointWorld.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, endpoint.getX(), endpoint.getZ());
+                endpoint = new BlockPos(endpoint.getX(), Math.max(heightFromMap, endpoint.getY()), endpoint.getZ());
                 player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.getYRot(), player.getXRot());
                 ChunkPos chunkpos = new ChunkPos(endpoint);
                 endpointWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, player.getId());
@@ -807,5 +812,11 @@ public class ServerEvents {
         if (tag != null && tag.contains("BisonFur") && tag.getBoolean("BisonFur")) {
             event.getToolTip().add(Component.translatable("item.alexsmobs.insulated_with_fur").withStyle(ChatFormatting.AQUA));
         }
+    }
+
+    @SubscribeEvent
+    public void onAddReloadListener(AddReloadListenerEvent event){
+        AlexsMobs.LOGGER.info("Adding datapack listener capsid_recipes");
+        event.addListener(AlexsMobs.PROXY.getCapsidRecipeManager());
     }
 }

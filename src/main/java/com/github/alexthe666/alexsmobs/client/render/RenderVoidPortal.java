@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityCachalotEcho;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidPortal;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -18,11 +19,16 @@ public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_0.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_1.png");
     private static final ResourceLocation TEXTURE_2 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_2.png");
+    private static final ResourceLocation TEXTURE_SHATTERED_0 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_0.png");
+    private static final ResourceLocation TEXTURE_SHATTERED_1 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_1.png");
+    private static final ResourceLocation TEXTURE_SHATTERED_2 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/shattered/portal_idle_2.png");
     private static final ResourceLocation[] TEXTURE_PROGRESS = new ResourceLocation[10];
+    private static final ResourceLocation[] TEXTURE_SHATTERED_PROGRESS = new ResourceLocation[10];
     public RenderVoidPortal(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
         for(int i = 0; i < 10; i++){
             TEXTURE_PROGRESS[i] = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_grow_" + i + ".png");
+            TEXTURE_SHATTERED_PROGRESS[i] = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/shattered/portal_grow_" + i + ".png");
         }
     }
 
@@ -30,24 +36,37 @@ public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(entityIn.getAttachmentFacing().getOpposite().getRotation());
         matrixStackIn.translate(0.5D, 0, 0.5D);
-        ResourceLocation tex;
-        if(entityIn.getLifespan() < 20){
-            tex = getGrowingTexture((int) ((entityIn.getLifespan() * 0.5F) % 10));
-        }else if(entityIn.tickCount < 20){
-            tex = getGrowingTexture((int) ((entityIn.tickCount * 0.5F) % 10));
-        }else{
-            tex = getIdleTexture(entityIn.tickCount % 9);
+        matrixStackIn.scale(2F, 2F, 2F);
+        renderPortal(entityIn, matrixStackIn, bufferIn, false);
+        if(entityIn.isShattered()){
+            float off = 0.01F;
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0F, off, 0F);
+            renderPortal(entityIn, matrixStackIn, bufferIn, true);
+            matrixStackIn.popPose();
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0F, -off, 0F);
+            renderPortal(entityIn, matrixStackIn, bufferIn, true);
+            matrixStackIn.popPose();
         }
-        matrixStackIn.scale(2, 2, 2);
-        renderArc(matrixStackIn, bufferIn, tex);
         matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    private void renderArc(PoseStack matrixStackIn, MultiBufferSource bufferIn, ResourceLocation res) {
+    private void renderPortal(EntityVoidPortal entityIn, PoseStack matrixStackIn, MultiBufferSource bufferIn, boolean shattered){
+        ResourceLocation tex;
+        if(entityIn.getLifespan() < 20){
+            tex = getGrowingTexture((int) ((entityIn.getLifespan() * 0.5F) % 10), shattered);
+        }else if(entityIn.tickCount < 20){
+            tex = getGrowingTexture((int) ((entityIn.tickCount * 0.5F) % 10), shattered);
+        }else{
+            tex = getIdleTexture(entityIn.tickCount % 9, shattered);
+        }
+        VertexConsumer ivertexbuilder = shattered ? VertexMultiConsumer.create(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityCutoutNoCull(tex))) : bufferIn.getBuffer(AMRenderTypes.getFullBright(tex));
+        renderArc(matrixStackIn, ivertexbuilder);
+    }
+    private void renderArc(PoseStack matrixStackIn, VertexConsumer ivertexbuilder) {
         matrixStackIn.pushPose();
-
-        VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getFullBright(res));
         PoseStack.Pose lvt_19_1_ = matrixStackIn.last();
         Matrix4f lvt_20_1_ = lvt_19_1_.pose();
         Matrix3f lvt_21_1_ = lvt_19_1_.normal();
@@ -69,19 +88,19 @@ public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
     }
 
 
-    public ResourceLocation getIdleTexture(int age) {
+    public ResourceLocation getIdleTexture(int age, boolean shattered) {
         if (age < 3) {
-            return TEXTURE_0;
+            return shattered ? TEXTURE_SHATTERED_0 : TEXTURE_0;
         } else if (age < 6) {
-            return TEXTURE_1;
+            return shattered ? TEXTURE_SHATTERED_1 : TEXTURE_1;
         } else if (age < 10) {
-            return TEXTURE_2;
+            return shattered ? TEXTURE_SHATTERED_2 : TEXTURE_2;
         } else {
-            return TEXTURE_0;
+            return shattered ? TEXTURE_SHATTERED_0 : TEXTURE_0;
         }
     }
 
-    public ResourceLocation getGrowingTexture(int age) {
-        return TEXTURE_PROGRESS[Mth.clamp(age, 0, 9)];
+    public ResourceLocation getGrowingTexture(int age, boolean shattered) {
+        return shattered ? TEXTURE_SHATTERED_PROGRESS[Mth.clamp(age, 0, 9)] : TEXTURE_PROGRESS[Mth.clamp(age, 0, 9)];
     }
 }

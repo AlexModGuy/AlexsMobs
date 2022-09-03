@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs;
 
+import com.github.alexthe666.alexsmobs.misc.CapsidRecipe;
+import com.github.alexthe666.alexsmobs.misc.CapsidRecipeManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +12,8 @@ import static com.github.alexthe666.alexsmobs.AlexsMobs.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
+
+    private CapsidRecipeManager capsidRecipeManager;
 
     public void init() {
     }
@@ -70,4 +74,13 @@ public class CommonProxy {
 
     public void setPupfishChunkForItem(int chunkX, int chunkZ) {
     }
+
+    public CapsidRecipeManager getCapsidRecipeManager(){
+        if(capsidRecipeManager == null){
+            capsidRecipeManager = new CapsidRecipeManager();
+        }
+        return capsidRecipeManager;
+    }
+
+
 }

@@ -4,11 +4,10 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.BlockCapsid;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateCapsid;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.CapsidRecipe;
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +25,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.core.Direction;
@@ -39,7 +37,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraft.util.RandomSource;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -51,12 +48,13 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
     public float floatUpProgress;
     public float prevYawSwitchProgress;
     public float yawSwitchProgress;
-    public boolean vibrating = false;
+    public boolean vibratingThisTick = false;
     net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
             net.minecraftforge.items.wrapper.SidedInvWrapper.create(this, Direction.UP, Direction.DOWN);
     private float yawTarget = 0;
-    private int transformProg = 0;
+    private int transformTime = 0;
     private boolean fnaf = false;
+    private CapsidRecipe lastRecipe = null;
     private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityCapsid(BlockPos pos, BlockState state) {
@@ -71,7 +69,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
         prevFloatUpProgress = floatUpProgress;
         prevYawSwitchProgress = yawSwitchProgress;
         ticksExisted++;
-        vibrating = false;
+        vibratingThisTick = false;
         if (!this.getItem(0).isEmpty()) {
             BlockEntity up = level.getBlockEntity(this.worldPosition.above());
             if (up instanceof Container) {
@@ -102,8 +100,8 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
                 floatUpProgress = 0F;
             }
             if(this.getItem(0).getItem() == Items.ENDER_EYE && level.getBlockState(this.getBlockPos().below()).getBlock() == Blocks.END_ROD && level.getBlockState(this.getBlockPos().below()).getValue(EndRodBlock.FACING).getAxis() == Direction.Axis.Y){
-                vibrating = true;
-                if(transformProg > 20){
+                vibratingThisTick = true;
+                if(transformTime > 20){
                     this.setItem(0, ItemStack.EMPTY);
                     this.level.destroyBlock(this.getBlockPos(), false);
                     this.level.destroyBlock(this.getBlockPos().below(), false);
@@ -114,61 +112,33 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
                         level.addFreshEntity(phage);
                     }
                 }
-            }
-            if(this.getItem(0).getItem() == AMItemRegistry.MOSQUITO_LARVA.get() && level.getBlockState(this.getBlockPos().above()).getBlock() != this.getBlockState().getBlock()) {
-                vibrating = true;
-                if(transformProg == 1 && (AlexsMobs.isAprilFools() || new Random().nextInt(100) == 0)){
-                    fnaf = true;
-                    level.playSound(null, this.getBlockPos(), AMSoundRegistry.MOSQUITO_CAPSID_CONVERT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                }
-                if(transformProg > (fnaf ? 160 : 60)) {
-                    ItemStack current = this.getItem(0).copy();
-                    current.shrink(1);
-                    fnaf = false;
-                    if(!current.isEmpty()){
-                        ItemEntity itemEntity = new ItemEntity(this.level, this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 0.5F, this.getBlockPos().getZ() + 0.5F, current);
-                        if(!level.isClientSide){
-                            level.addFreshEntity(itemEntity);
-                        }
+            }else if(!this.getItem(0).isEmpty() && level.getBlockState(this.getBlockPos().above()).getBlock() != this.getBlockState().getBlock()){
+                if(lastRecipe != null && lastRecipe.matches(this.getItem(0))){
+                    floatUpProgress = 0.0F;
+                    vibratingThisTick = true;
+                    if(transformTime == 1 && (AlexsMobs.isAprilFools() || new Random().nextInt(100) == 0)){
+                        fnaf = true;
+                        level.playSound(null, this.getBlockPos(), AMSoundRegistry.MOSQUITO_CAPSID_CONVERT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                     }
-                    this.setItem(0, new ItemStack(AMItemRegistry.MYSTERIOUS_WORM.get()));
-                }
-            }
-            if(this.getItem(0).is(ItemTags.MUSIC_DISCS) && this.getItem(0).getItem() != AMItemRegistry.MUSIC_DISC_DAZE.get() && level.getBlockState(this.getBlockPos().above()).getBlock() != this.getBlockState().getBlock()) {
-                vibrating = true;
-                if(transformProg > 120) {
-                    ItemStack current = this.getItem(0).copy();
-                    current.shrink(1);
-                    if(!current.isEmpty()){
-                        ItemEntity itemEntity = new ItemEntity(this.level, this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 0.5F, this.getBlockPos().getZ() + 0.5F, current);
-                        if(!level.isClientSide){
-                            level.addFreshEntity(itemEntity);
+                    if(transformTime > (fnaf ? Math.max(160, lastRecipe.getTime()) : lastRecipe.getTime())) {
+                        ItemStack current = this.getItem(0).copy();
+                        current.shrink(1);
+                        fnaf = false;
+                        if(!current.isEmpty()){
+                            ItemEntity itemEntity = new ItemEntity(this.level, this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 0.5F, this.getBlockPos().getZ() + 0.5F, current);
+                            if(!level.isClientSide){
+                                level.addFreshEntity(itemEntity);
+                            }
                         }
+                        this.setItem(0, lastRecipe.getResult().copy());
                     }
-                    this.setItem(0, new ItemStack(AMItemRegistry.MUSIC_DISC_DAZE.get()));
                 }
             }
-            if(this.getItem(0).is(Items.COD) && level.getBlockState(this.getBlockPos().above()).getBlock() != this.getBlockState().getBlock()) {
-                vibrating = true;
-                if(transformProg > 120) {
-                    ItemStack current = this.getItem(0).copy();
-                    current.shrink(1);
-                    if(!current.isEmpty()){
-                        ItemEntity itemEntity = new ItemEntity(this.level, this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 0.5F, this.getBlockPos().getZ() + 0.5F, current);
-                        if(!level.isClientSide){
-                            level.addFreshEntity(itemEntity);
-                        }
-                    }
-                    this.setItem(0, new ItemStack(AMItemRegistry.COSMIC_COD.get()));
-                }
-            }
-            } else {
-            floatUpProgress = 0F;
         }
-        if(!vibrating){
-            transformProg = 0;
+        if(!vibratingThisTick){
+            transformTime = 0;
         }else{
-            transformProg++;
+            transformTime++;
         }
     }
 
@@ -224,10 +194,10 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
     public void setItem(int index, ItemStack stack) {
         boolean flag = !stack.isEmpty() && stack.sameItem(this.stacks.get(index)) && ItemStack.tagMatches(stack, this.stacks.get(index));
         this.stacks.set(index, stack);
-
         if (!stack.isEmpty() && stack.getCount() > this.getMaxStackSize()) {
             stack.setCount(this.getMaxStackSize());
         }
+        lastRecipe = AlexsMobs.PROXY.getCapsidRecipeManager().getRecipeFor(stack);
         this.saveAdditional(this.getUpdateTag());
         if (!level.isClientSide) {
             AlexsMobs.sendMSGToAll(new MessageUpdateCapsid(this.getBlockPos().asLong(), stacks.get(0)));

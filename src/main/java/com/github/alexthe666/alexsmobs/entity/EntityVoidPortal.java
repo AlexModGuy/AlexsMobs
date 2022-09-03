@@ -3,9 +3,10 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.item.ItemDimensionalCarver;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
-import net.minecraft.server.level.TicketType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,14 +17,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -42,7 +40,7 @@ public class EntityVoidPortal extends Entity {
 
     protected static final EntityDataAccessor<Direction> ATTACHED_FACE = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.DIRECTION);
     protected static final EntityDataAccessor<Integer> LIFESPAN = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.INT);
-    protected static final EntityDataAccessor<Boolean> SET_TO_AIR = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> SHATTERED = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> DESTINATION = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
     private static final EntityDataAccessor<Optional<UUID>> SISTER_UUID = SynchedEntityData.defineId(EntityVoidPortal.class, EntityDataSerializers.OPTIONAL_UUID);
     public ResourceKey<Level> exitDimension;
@@ -60,6 +58,17 @@ public class EntityVoidPortal extends Entity {
         this(AMEntityRegistry.VOID_PORTAL.get(), world);
     }
 
+    public EntityVoidPortal(Level world, ItemDimensionalCarver item) {
+        this(AMEntityRegistry.VOID_PORTAL.get(), world);
+        if(item == AMItemRegistry.SHATTERED_DIMENSIONAL_CARVER.get()){
+            this.setShattered(true);
+            this.setLifespan(2000);
+        }else{
+            this.setShattered(false);
+            this.setLifespan(1200);
+        }
+    }
+
     @Override
     public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
@@ -69,7 +78,7 @@ public class EntityVoidPortal extends Entity {
         super.tick();
         if (this.tickCount == 1) {
             if(this.getLifespan() == 0){
-                this.setLifespan(100);
+                this.setLifespan(2000);
             }
         }
         if(!madeOpenNoise){
@@ -188,7 +197,7 @@ public class EntityVoidPortal extends Entity {
 
     public void clearObstructions(){
         if(!hasClearedObstructions){
-            if(isSetToAir()){
+            if(isShattered() && this.getDestination() != null){
                 hasClearedObstructions = true;
                 for (int i = -1; i <= -1; i++){
                     for (int j = -1; j <= -1; j++){
@@ -218,12 +227,12 @@ public class EntityVoidPortal extends Entity {
         this.entityData.set(LIFESPAN, i);
     }
 
-    public boolean isSetToAir() {
-        return this.entityData.get(SET_TO_AIR);
+    public boolean isShattered() {
+        return this.entityData.get(SHATTERED);
     }
 
-    public void setToAir(boolean set) {
-        this.entityData.set(SET_TO_AIR, set);
+    public void setShattered(boolean set) {
+        this.entityData.set(SHATTERED, set);
     }
 
     public BlockPos getDestination() {
@@ -240,10 +249,12 @@ public class EntityVoidPortal extends Entity {
     public void createAndSetSister(Level world, Direction dir){
         EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(world);
         portal.setAttachmentFacing(dir != null ? dir : this.getAttachmentFacing().getOpposite());
-        portal.teleportToWithTicket(this.getDestination().getX() + 0.5f, this.getDestination().getY() + 0.5f, this.getDestination().getZ() + 0.5f);
+        BlockPos safeDestination = this.getDestination();
+        portal.teleportToWithTicket(safeDestination.getX() + 0.5f, safeDestination.getY() + 0.5f, safeDestination.getZ() + 0.5f);
         portal.link(this);
         portal.exitDimension = this.level.dimension();
         world.addFreshEntity(portal);
+        portal.setShattered(this.isShattered());
     }
 
     public void setDestination(BlockPos destination, Direction dir) {
@@ -259,14 +270,13 @@ public class EntityVoidPortal extends Entity {
         portal.setLifespan(this.getLifespan());
         this.setDestination(portal.blockPosition());
         portal.setDestination(this.blockPosition());
-        portal.setToAir(this.isSetToAir());
     }
 
     @Override
     protected void defineSynchedData() {
         this.entityData.define(ATTACHED_FACE, Direction.DOWN);
         this.entityData.define(LIFESPAN, 300);
-        this.entityData.define(SET_TO_AIR, false);
+        this.entityData.define(SHATTERED, false);
         this.entityData.define(SISTER_UUID, Optional.empty());
         this.entityData.define(DESTINATION, Optional.empty());
     }
@@ -275,6 +285,9 @@ public class EntityVoidPortal extends Entity {
     protected void readAdditionalSaveData(CompoundTag compound) {
         this.entityData.set(ATTACHED_FACE, Direction.from3DDataValue(compound.getByte("AttachFace")));
         this.setLifespan(compound.getInt("Lifespan"));
+        if(compound.contains("Shattered")){
+            this.setShattered(compound.getBoolean("Shattered"));
+        }
         if (compound.contains("DX")) {
             int i = compound.getInt("DX");
             int j = compound.getInt("DY");
@@ -295,6 +308,7 @@ public class EntityVoidPortal extends Entity {
     protected void addAdditionalSaveData(CompoundTag compound) {
         compound.putByte("AttachFace", (byte) this.entityData.get(ATTACHED_FACE).get3DDataValue());
         compound.putInt("Lifespan", getLifespan());
+        compound.putBoolean("Shattered", isShattered());
         BlockPos blockpos = this.getDestination();
         if (blockpos != null) {
             compound.putInt("DX", blockpos.getX());

@@ -116,14 +116,15 @@ public class ItemDimensionalCarver extends Item {
             if (count == 1 && !player.level.isClientSide) {
                 player.gameEvent(GameEvent.ITEM_INTERACT_START);
                 player.playSound(SoundEvents.GLASS_BREAK, 1, 0.5F);
-                EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(player.level);
+                EntityVoidPortal portal = new EntityVoidPortal(player.level, this);
                 portal.setPos(x, y, z);
                 Direction dir = Direction.orderedByNearest(player)[0].getOpposite();
                 if (dir == Direction.UP) {
                     dir = Direction.DOWN;
                 }
-                onPortalOpen(player.level, player, portal, dir);
+                portal.setAttachmentFacing(dir);
                 player.level.addFreshEntity(portal);
+                onPortalOpen(player.level, player, portal, dir);
                 itemstack.hurtAndBreak(1, player, (playerIn) -> {
                     player.broadcastBreakEvent(playerIn.getUsedItemHand());
                 });
@@ -158,7 +159,6 @@ public class ItemDimensionalCarver extends Item {
     }
 
     public void onPortalOpen(Level worldIn, LivingEntity player, EntityVoidPortal portal, Direction dir){
-        portal.setAttachmentFacing(dir);
         portal.setLifespan(1200);
         ResourceKey<Level> respawnDimension = Level.OVERWORLD;
         BlockPos respawnPosition = player.getSleepingPos().isPresent() ? player.getSleepingPos().get() : player.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, BlockPos.ZERO);

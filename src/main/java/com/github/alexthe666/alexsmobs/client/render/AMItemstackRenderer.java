@@ -309,7 +309,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             for(int i = 0; i < shards.size(); i++){
                 matrixStackIn.pushPose();
                 ItemStack shard = shards.get(i);
-                matrixStackIn.translate((float)Math.sin(f * 0.15F + i * 0.5F) * 0.05F, -(float)Math.cos(f * 0.15F + i * 0.5F) * 0.05F, (float)Math.cos(f * 0.15F + i  * 0.5F + Math.PI / 2F) * 0.025F);
+                matrixStackIn.translate((float)Math.sin(f * 0.15F + i * 1F) * 0.035F, -(float)Math.cos(f * 0.15F + i * 1F) * 0.035F, (float)Math.cos(f * 0.15F + i  * 0.5F + Math.PI / 2F) * 0.025F);
                 Minecraft.getInstance().getItemRenderer().renderStatic(shard, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
                 matrixStackIn.popPose();
             }

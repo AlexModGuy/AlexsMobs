@@ -52,7 +52,7 @@ public class RenderCapsid<T extends TileEntityCapsid> implements BlockEntityRend
             matrixStackIn.mulPose(new Quaternion(Vector3f.YP, entity.getBlockAngle() + yaw, true));
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, -0.1F, 0);
-            if(entity.vibrating && entity.getLevel() != null){
+            if(entity.vibratingThisTick && entity.getLevel() != null){
                 float vibrate = 0.05F;
                 matrixStackIn.translate((entity.getLevel().random.nextFloat() - 0.5F)* vibrate, (entity.getLevel().random.nextFloat() - 0.5F) * vibrate, (entity.getLevel().random.nextFloat() - 0.5F)* vibrate);
             }
