@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.event.ServerEvents;
+import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.*;
 import com.github.alexthe666.alexsmobs.misc.*;
@@ -94,6 +95,7 @@ public class AlexsMobs {
         AMEffectRegistry.EFFECT_DEF_REG.register(modBusEvent);
         AMEffectRegistry.POTION_DEF_REG.register(modBusEvent);
         AMEnchantmentRegistry.DEF_REG.register(modBusEvent);
+        AMMenuRegistry.DEF_REG.register(modBusEvent);
         AMRecipeRegistry.DEF_REG.register(modBusEvent);
         AMLootRegistry.DEF_REG.register(modBusEvent);
         AMBannerRegistry.DEF_REG.register(modBusEvent);

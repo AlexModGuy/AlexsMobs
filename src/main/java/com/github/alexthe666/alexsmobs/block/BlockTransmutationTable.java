@@ -1,10 +1,18 @@
 package com.github.alexthe666.alexsmobs.block;
 
+import com.github.alexthe666.alexsmobs.inventory.MenuTransmutationTable;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityTransmutationTable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -18,6 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -26,6 +35,7 @@ import javax.annotation.Nullable;
 
 public class BlockTransmutationTable extends BaseEntityBlock implements AMSpecialRenderBlock {
 
+    private static final Component CONTAINER_TITLE = Component.translatable("alexsmobs.container.transmutation_table");
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape BASE_AABB = Block.box(1, 0, 1, 15, 5, 15);
     private static final VoxelShape ARMS_NS = Block.box(1, 5, 5.5F, 15, 16, 10.5F);
@@ -62,6 +72,23 @@ public class BlockTransmutationTable extends BaseEntityBlock implements AMSpecia
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
+    }
+
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else {
+            player.openMenu(state.getMenuProvider(level, pos));
+            player.awardStat(Stats.INTERACT_WITH_LOOM);
+            return InteractionResult.CONSUME;
+        }
+    }
+
+    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        BlockEntity te = level.getBlockEntity(pos);
+        return new SimpleMenuProvider((i, inv, player) -> {
+            return new MenuTransmutationTable(i, inv, ContainerLevelAccess.create(level, pos), te instanceof  TileEntityTransmutationTable ? (TileEntityTransmutationTable)te : null);
+        }, CONTAINER_TITLE);
     }
 
     @Nullable

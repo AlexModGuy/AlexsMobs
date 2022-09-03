@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.ClientLayerRegistry;
 import com.github.alexthe666.alexsmobs.client.event.ClientEvents;
 import com.github.alexthe666.alexsmobs.client.gui.GUIAnimalDictionary;
+import com.github.alexthe666.alexsmobs.client.gui.GUITransmutationTable;
 import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties;
@@ -17,6 +18,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
+import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
 import com.github.alexthe666.alexsmobs.item.ItemHemolymphBlaster;
@@ -24,6 +26,7 @@ import com.github.alexthe666.alexsmobs.item.ItemTarantulaHawkElytra;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.*;
@@ -241,6 +244,7 @@ public class ClientProxy extends CommonProxy {
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID.get(), RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK.get(), RenderVoidWormBeak::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.TRANSMUTATION_TABLE.get(), RenderTransmutationTable::new);
+        MenuScreens.register(AMMenuRegistry.TRANSMUTATION_TABLE.get(), GUITransmutationTable::new);
     }
 
     private void initRainbowBuffers() {

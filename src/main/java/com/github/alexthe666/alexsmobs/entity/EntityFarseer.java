@@ -1,7 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.message.MessageSendVisualFlagFromServer;
+import com.github.alexthe666.alexsmobs.misc.AMDamageTypes;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -574,10 +577,12 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                         laserUseTime = 0;
                         if (canLaserHit) {
                             float healthTenth = target.getMaxHealth() * 0.1F;
-                            target.hurt(DamageSource.MAGIC, Math.max(6, healthTenth));
+                            if(target.hurt(AMDamageTypes.causeFarseerDamage(EntityFarseer.this), random.nextInt(2) + Math.max(6, healthTenth)) && !target.isAlive()){
+                                AlexsMobs.sendMSGToAll(new MessageSendVisualFlagFromServer(target.getId(), 87));
+                            }
                             timeSinceLastSuccessfulAttack = 0;
                         }
-                        if (lasersShot++ > 3) {
+                        if (lasersShot++ > 5) {
                             lasersShot = 0;
                             laserCooldown = 80 + random.nextInt(40);
                             EntityFarseer.this.entityData.set(LASER_ENTITY_ID, -1);

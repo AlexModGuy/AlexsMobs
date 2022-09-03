@@ -433,7 +433,6 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onPostGameOverlay(RenderGuiOverlayEvent.Post event) {
-        if (AlexsMobs.isAprilFools()) {
             if(renderStaticScreenFor > 0){
                 if (Minecraft.getInstance().player.isAlive() && lastStaticTick != Minecraft.getInstance().level.getGameTime()) {
                     renderStaticScreenFor--;
@@ -469,8 +468,6 @@ public class ClientEvents {
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 }
                 lastStaticTick = Minecraft.getInstance().level.getGameTime();
-            }
         }
-
     }
 }
