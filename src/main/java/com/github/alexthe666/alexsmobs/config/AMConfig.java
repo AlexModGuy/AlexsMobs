@@ -168,6 +168,8 @@ public class AMConfig {
     public static int rhinocerosSpawnRolls = 0;
     public static int sugarGliderSpawnWeight = 15;
     public static int sugarGliderSpawnRolls = 0;
+    public static int farseerSpawnWeight = 30;
+    public static int farseerSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -232,11 +234,19 @@ public class AMConfig {
     );
     public static boolean restrictPupfishSpawns = true;
     public static int pupfishChunkSpawnDistance = 2000;
+    public static boolean restrictFarseerSpawns = true;
+    public static int farseerBorderSpawnDistance = 100;
     public static boolean restrictSkelewagSpawns = true;
     public static double rainbowGlassFidelity = 16.0F;
     public static boolean bunfungusTransformation = true;
     public static boolean superSecretSettings = false;
     public static boolean addLootToChests = true;
+    public static List<? extends String> transmutationBlacklist = Lists.newArrayList("minecraft:beacon");
+    public static boolean limitTransmutingToLootTables = false;
+    public static boolean transmutingTableExplodes = false;
+    public static int transmutingExperienceCost = 3;
+    public static double transmutingWeightAddStep = 3;
+    public static double transmutingWeightRemoveStep = 4;
 
     public static void bake(ModConfig config) {
         try {
@@ -394,7 +404,6 @@ public class AMConfig {
             flyingFishSpawnRolls = ConfigHolder.COMMON.flyingFishSpawnRolls.get();
             skelewagSpawnWeight = ConfigHolder.COMMON.skelewagSpawnWeight.get();
             skelewagSpawnRolls = ConfigHolder.COMMON.skelewagSpawnRolls.get();
-
             rainFrogSpawnWeight = ConfigHolder.COMMON.rainFrogSpawnWeight.get();
             rainFrogSpawnRolls = ConfigHolder.COMMON.rainFrogSpawnRolls.get();
             potooSpawnWeight = ConfigHolder.COMMON.potooSpawnWeight.get();
@@ -405,6 +414,8 @@ public class AMConfig {
             rhinocerosSpawnRolls = ConfigHolder.COMMON.rhinocerosSpawnRolls.get();
             sugarGliderSpawnWeight = ConfigHolder.COMMON.sugarGliderSpawnWeight.get();
             sugarGliderSpawnRolls = ConfigHolder.COMMON.sugarGliderSpawnRolls.get();
+            farseerSpawnWeight = ConfigHolder.COMMON.farseerSpawnWeight.get();
+            farseerSpawnRolls = ConfigHolder.COMMON.farseerSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -455,9 +466,17 @@ public class AMConfig {
             bunfungusTransformation = ConfigHolder.COMMON.bunfungusTransformation.get();
             restrictPupfishSpawns = ConfigHolder.COMMON.restrictPupfishSpawns.get();
             pupfishChunkSpawnDistance = ConfigHolder.COMMON.pupfishChunkSpawnDistance.get();
+            restrictFarseerSpawns = ConfigHolder.COMMON.restrictFarseerSpawns.get();
+            farseerBorderSpawnDistance = ConfigHolder.COMMON.farseerBorderSpawnDistance.get();
             restrictSkelewagSpawns = ConfigHolder.COMMON.restrictSkelewagSpawns.get();
             superSecretSettings = ConfigHolder.COMMON.superSecretSettings.get();
             addLootToChests = ConfigHolder.COMMON.addLootToChests.get();
+            transmutationBlacklist = (List<? extends String>) ConfigHolder.COMMON.transmutationBlacklist.get();
+            limitTransmutingToLootTables = ConfigHolder.COMMON.limitTransmutingToLootTables.get();
+            transmutingTableExplodes = ConfigHolder.COMMON.transmutingTableExplodes.get();
+            transmutingExperienceCost = ConfigHolder.COMMON.transmutingExperienceCost.get();
+            transmutingWeightAddStep = ConfigHolder.COMMON.transmutingWeightAddStep.get();
+            transmutingWeightRemoveStep = ConfigHolder.COMMON.transmutingWeightRemoveStep.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

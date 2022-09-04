@@ -1,6 +1,9 @@
 package com.github.alexthe666.alexsmobs.block;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.inventory.MenuTransmutationTable;
+import com.github.alexthe666.alexsmobs.message.MessageUpdateTransmutablesToDisplay;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityTransmutationTable;
 import net.minecraft.core.BlockPos;
@@ -80,6 +83,13 @@ public class BlockTransmutationTable extends BaseEntityBlock implements AMSpecia
         } else {
             player.openMenu(state.getMenuProvider(level, pos));
             player.awardStat(Stats.INTERACT_WITH_LOOM);
+            BlockEntity te = level.getBlockEntity(pos);
+            if(te instanceof TileEntityTransmutationTable){
+                TileEntityTransmutationTable table = (TileEntityTransmutationTable)te;
+
+                AlexsMobs.sendMSGToAll(new MessageUpdateTransmutablesToDisplay(player.getId(), table.getPossibility(0), table.getPossibility(1), table.getPossibility(2)));
+
+            }
             return InteractionResult.CONSUME;
         }
     }
@@ -87,7 +97,7 @@ public class BlockTransmutationTable extends BaseEntityBlock implements AMSpecia
     public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         BlockEntity te = level.getBlockEntity(pos);
         return new SimpleMenuProvider((i, inv, player) -> {
-            return new MenuTransmutationTable(i, inv, ContainerLevelAccess.create(level, pos), te instanceof  TileEntityTransmutationTable ? (TileEntityTransmutationTable)te : null);
+            return new MenuTransmutationTable(i, inv, ContainerLevelAccess.create(level, pos), player, te instanceof  TileEntityTransmutationTable ? (TileEntityTransmutationTable)te : null);
         }, CONTAINER_TITLE);
     }
 
@@ -98,7 +108,9 @@ public class BlockTransmutationTable extends BaseEntityBlock implements AMSpecia
 
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 3F, false, Explosion.BlockInteraction.DESTROY);
+        if(AMConfig.transmutingTableExplodes){
+            level.explode(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 3F, false, Explosion.BlockInteraction.DESTROY);
+        }
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 }

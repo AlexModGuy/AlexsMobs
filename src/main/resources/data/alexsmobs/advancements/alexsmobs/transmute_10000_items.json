@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:transmutation_table"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.transmute_10000_items.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.transmute_10000_items.desc"
+    }
+  },
+  "frame": "challenge",
+  "parent": "alexsmobs:alexsmobs/transmutation_table",
+  "criteria": {
+    "ex": {
+      "trigger": "alexsmobs:transmute_10000_items"
+    }
+  },
+  "requirements": [
+    [
+      "ex"
+    ]
+  ]
+}

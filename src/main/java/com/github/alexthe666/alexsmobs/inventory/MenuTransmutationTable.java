@@ -1,10 +1,17 @@
 package com.github.alexthe666.alexsmobs.inventory;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.message.MessageInteractMultipart;
+import com.github.alexthe666.alexsmobs.message.MessageTransmuteFromMenu;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityTransmutationTable;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,10 +20,14 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MenuTransmutationTable extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private long lastSoundTime;
+    private Player player;
+    private Slot transmuteSlot;
+    private TileEntityTransmutationTable table;
 
     public final Container container = new SimpleContainer(1) {
         public void setChanged() {
@@ -26,16 +37,18 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
     };
 
     public MenuTransmutationTable(int i, Inventory inventory) {
-        this(i, inventory, ContainerLevelAccess.NULL, null);
+        this(i, inventory, ContainerLevelAccess.NULL, Minecraft.getInstance().player, null);
     }
 
-    public MenuTransmutationTable(int id, Inventory inventory, final ContainerLevelAccess access, TileEntityTransmutationTable table) {
+    public MenuTransmutationTable(int id, Inventory inventory, final ContainerLevelAccess access, Player player, TileEntityTransmutationTable table) {
         super(AMMenuRegistry.TRANSMUTATION_TABLE.get(), id);
-        System.out.println(table);
+        this.table = table;
+        this.player = player;
         this.access = access;
-        this.addSlot(new Slot(this.container, 0, 83, 83) {
+        this.addSlot(transmuteSlot = new Slot(this.container, 0, 83, 83) {
             public boolean mayPlace(ItemStack stack) {
-                return stack.getMaxStackSize() > 1;
+                ResourceLocation name = ForgeRegistries.ITEMS.getKey(stack.getItem());
+                return stack.getMaxStackSize() > 1 && (name == null || !AMConfig.transmutationBlacklist.contains(name.toString()));
             }
         });
         for (int i = 0; i < 3; ++i) {
@@ -47,7 +60,11 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
         for (int k = 0; k < 9; ++k) {
             this.addSlot(new Slot(inventory, k, 8 + k * 18, 177));
         }
-
+        if(table != null && player != null){
+            if(!table.hasPossibilities()){
+                table.randomizeResults(player);
+            }
+        }
     }
 
     public boolean stillValid(Player player) {
@@ -55,7 +72,11 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
     }
 
     public void slotsChanged(Container container) {
-        ItemStack itemstack = this.container.getItem(0);
+        if(table != null){
+            if(!table.hasPossibilities()){
+                table.randomizeResults(player);
+            }
+        }
     }
 
     public ItemStack quickMoveStack(Player player, int slotIndex) {
@@ -86,6 +107,28 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
         }
 
         return itemstack;
+    }
+
+    public boolean clickMenuButton(Player player, int buttonId) {
+        if(player.level.isClientSide){
+            AlexsMobs.sendMSGToServer(new MessageTransmuteFromMenu(player.getId(), buttonId));
+        }
+        return true;
+    }
+
+
+    public void transmute(Player player, int buttonId){
+        ItemStack from = transmuteSlot.getItem();
+        int cost = AMConfig.transmutingExperienceCost;
+        ItemStack setTo = table.getPossibility(buttonId).copy();
+        double divisible = from.getMaxStackSize() / (double)setTo.getMaxStackSize();
+        if(!player.level.isClientSide && table != null && divisible > 0 && table.hasPossibilities() && !from.isEmpty() && (player.experienceLevel >= cost || player.getAbilities().instabuild)){
+            int newStackSize = (int)Math.floor(from.getCount() / divisible);
+            setTo.setCount(Math.max(newStackSize, 1));
+            transmuteSlot.set(setTo);
+            player.giveExperienceLevels(-cost);
+            table.postTransmute(player, from, setTo);
+        }
     }
 
     public void removed(Player player) {

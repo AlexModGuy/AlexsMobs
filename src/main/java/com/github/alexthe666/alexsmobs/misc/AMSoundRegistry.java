@@ -379,6 +379,16 @@ public class AMSoundRegistry {
 
     public static final RegistryObject<SoundEvent> SUGAR_GLIDER_HURT = createSoundEvent("sugar_glider_hurt");
 
+    public static final RegistryObject<SoundEvent> FARSEER_HURT = createSoundEvent("farseer_hurt");
+
+    public static final RegistryObject<SoundEvent> FARSEER_IDLE = createSoundEvent("farseer_idle");
+
+    public static final RegistryObject<SoundEvent> FARSEER_EMERGE = createSoundEvent("farseer_emerge");
+
+    public static final RegistryObject<SoundEvent> FARSEER_BEAM = createSoundEvent("farseer_beam");
+
+    public static final RegistryObject<SoundEvent> TRANSMUTE_ITEM = createSoundEvent("transmute_item");
+
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

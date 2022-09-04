@@ -16,9 +16,9 @@ public class RenderMimicube extends MobRenderer<EntityMimicube, ModelMimicube> {
 
     public RenderMimicube(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMimicube(), 0.5F);
-        this.addLayer(new LayerMimicubeTexture(this));
         this.addLayer(new LayerMimicubeHelmet(this, renderManagerIn));
         this.addLayer(new LayerMimicubeHeldItem(this));
+        this.addLayer(new LayerMimicubeTexture(this));
     }
 
     protected void scale(EntityMimicube entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {

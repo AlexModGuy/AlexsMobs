@@ -2540,6 +2540,75 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.sugar_glider_idle"
   },
+  "farseer_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:farseer_hurt_0"
+      },
+      {
+        "name": "alexsmobs:farseer_hurt_1"
+      },
+      {
+        "name": "alexsmobs:farseer_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.farseer_hurt"
+  },
+  "farseer_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:farseer_idle_0"
+      },
+      {
+        "name": "alexsmobs:farseer_idle_1"
+      },
+      {
+        "name": "alexsmobs:farseer_idle_2"
+      },
+      {
+        "name": "alexsmobs:farseer_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.farseer_idle"
+  },
+  "farseer_emerge": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:farseer_emerge"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.farseer_emerge"
+  },
+  "farseer_beam": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:farseer_beam_0"
+      },
+      {
+        "name": "alexsmobs:farseer_beam_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.farseer_beam"
+  },
+  "transmute_item": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:transmute_item_0"
+      },
+      {
+        "name": "alexsmobs:transmute_item_1"
+      },
+      {
+        "name": "alexsmobs:transmute_item_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.transmute_item"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [

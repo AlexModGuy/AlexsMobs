@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.misc;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,8 +19,8 @@ public class TransmutationData {
     public void onTransmuteItem(ItemStack beingTransmuted, ItemStack turnedInto){
         double fromWeight = getWeight(beingTransmuted);
         double toWeight = getWeight(turnedInto);
-        putWeight(beingTransmuted, fromWeight + 0.1D);
-        putWeight(turnedInto, toWeight - 0.1D);
+        putWeight(beingTransmuted, fromWeight + calculateAddWeight(beingTransmuted.getCount()));
+        putWeight(turnedInto, toWeight + calculateRemoveWeight(turnedInto.getCount()));
     }
 
     public double getWeight(ItemStack stack){
@@ -31,6 +32,14 @@ public class TransmutationData {
         return 0.0;
     }
 
+    private static double calculateAddWeight(int count){
+        return Math.log(Math.pow(count, AMConfig.transmutingWeightAddStep));
+    }
+
+    private static double calculateRemoveWeight(int count){
+        return -Math.log(Math.pow(count, AMConfig.transmutingWeightRemoveStep));
+    }
+
     public void putWeight(ItemStack stack, double newWeight){
         ItemStack replace = stack;
         for(Map.Entry<ItemStack, Double> entry : itemstackData.entrySet()){
@@ -39,7 +48,7 @@ public class TransmutationData {
                 break;
             }
         }
-        itemstackData.put(replace, Math.min(newWeight, 0.0F));
+        itemstackData.put(replace, Math.max(newWeight, 0.0F));
     }
 
     @Nullable
@@ -53,11 +62,11 @@ public class TransmutationData {
                 double value = -Math.log(random.nextDouble()) / entry.getValue();
                 if (value < bestValue) {
                     bestValue = value;
-                    result = entry.getKey();
+                    result = entry.getKey().copy();
                 }
             }
         }
-        return result.copy();
+        return result;
     }
 
     public CompoundTag saveAsNBT(){
@@ -90,5 +99,13 @@ public class TransmutationData {
             }
         }
         return data;
+    }
+
+    public double getTotalWeight() {
+        double total = 0;
+        for(Map.Entry<ItemStack, Double> entry : itemstackData.entrySet()) {
+            total += entry.getValue();
+        }
+        return total;
     }
 }

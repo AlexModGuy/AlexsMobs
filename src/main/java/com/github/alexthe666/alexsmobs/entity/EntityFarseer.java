@@ -2,18 +2,27 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.message.MessageSendVisualFlagFromServer;
 import com.github.alexthe666.alexsmobs.misc.AMDamageTypes;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -30,6 +39,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -49,7 +61,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     private static final EntityDataAccessor<Integer> LASER_ENTITY_ID = SynchedEntityData.defineId(EntityFarseer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> LASER_ATTACK_LVL = SynchedEntityData.defineId(EntityFarseer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> LASER_DISTANCE = SynchedEntityData.defineId(EntityFarseer.class, EntityDataSerializers.FLOAT);
-    public static int LASER_ATTACK_DURATION = 10;
+    public static final int LASER_ATTACK_DURATION = 10;
     public final double[][] positions = new double[64][4];
     public final float[] claspProgress = new float[HANDS];
     public final float[] prevClaspProgress = new float[HANDS];
@@ -76,6 +88,10 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
     public static AttributeSupplier.Builder bakeAttributes() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 50D).add(Attributes.ARMOR, 6.0D).add(Attributes.FLYING_SPEED, 0.5F).add(Attributes.ATTACK_DAMAGE, 4.5D).add(Attributes.MOVEMENT_SPEED, 0.35F);
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.farseerSpawnRolls, this.getRandom(), spawnReasonIn);
     }
 
     public boolean isNoGravity() {
@@ -113,6 +129,37 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, 3, false, true, null));
         this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, Pig.class, 15, false, true, null));
+    }
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("Emerged", this.hasEmerged());
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setHasEmerged(compound.getBoolean("Emerged"));
+    }
+
+
+    protected SoundEvent getAmbientSound() {
+        return AMSoundRegistry.FARSEER_IDLE.get();
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.FARSEER_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.FARSEER_HURT.get();
+    }
+
+    public static boolean checkFarseerSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && isFarseerArea(worldIn, pos);
+    }
+
+    private static boolean isFarseerArea(ServerLevelAccessor iServerWorld, BlockPos pos) {
+        return !AMConfig.restrictFarseerSpawns || iServerWorld.getWorldBorder().getDistanceToBorder(pos.getX(), pos.getZ()) < AMConfig.farseerBorderSpawnDistance;
     }
 
     protected void defineSynchedData() {
@@ -238,10 +285,20 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                 }
             }
             if (!this.hasEmerged()) {
-                this.setAnimation(ANIMATION_EMERGE);
+                this.setInvisible(true);
+                if(this.level.hasNearbyAlivePlayer(this.getX(), this.getY(), this.getZ(), 9)){
+                    this.setAnimation(ANIMATION_EMERGE);
+                }
+            }else{
+                this.setInvisible(this.hasEffect(MobEffects.INVISIBILITY));
             }
-            if (this.getAnimation() == ANIMATION_EMERGE && level.isClientSide) {
-                this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getRandomX(0.75F), this.getRandomY(), this.getRandomZ(0.75F), (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
+            if (this.getAnimation() == ANIMATION_EMERGE) {
+                if(level.isClientSide){
+                    this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getRandomX(0.75F), this.getRandomY(), this.getRandomZ(0.75F), (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
+                }
+                if(this.getAnimationTick() == 1){
+                    this.playSound(AMSoundRegistry.FARSEER_EMERGE.get(), this.getSoundVolume(), this.getVoicePitch());
+                }
             }
             LivingEntity target = this.getTarget();
             if (target != null) {
@@ -572,6 +629,9 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                 if (this.laserCooldown == 0 && attackDecision && canLaserHit && dist > 2F) {
                     EntityFarseer.this.setAngry(true);
                     EntityFarseer.this.entityData.set(LASER_ENTITY_ID, target.getId());
+                    if(laserUseTime == 0){
+                        EntityFarseer.this.playSound(AMSoundRegistry.FARSEER_BEAM.get(), EntityFarseer.this.getSoundVolume(), EntityFarseer.this.getVoicePitch());
+                    }
                     laserUseTime++;
                     if (laserUseTime > LASER_ATTACK_DURATION) {
                         laserUseTime = 0;
