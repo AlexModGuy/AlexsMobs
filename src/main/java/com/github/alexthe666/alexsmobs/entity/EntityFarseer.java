@@ -128,7 +128,6 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, 3, false, true, null));
-        this.targetSelector.addGoal(3, new EntityAINearestTarget3D(this, Pig.class, 15, false, true, null));
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -588,7 +587,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
     private class AttackGoal extends Goal {
 
-        private boolean attackDecision;
+        private boolean attackDecision = true;
         private int timeSinceLastSuccessfulAttack = 0;
         private int laserCooldown = 0;
         private int laserUseTime = 0;

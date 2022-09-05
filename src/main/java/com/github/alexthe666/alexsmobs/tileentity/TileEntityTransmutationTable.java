@@ -108,6 +108,16 @@ public class TileEntityTransmutationTable  extends BlockEntity {
         rollPossiblity(player, 0);
         rollPossiblity(player, 1);
         rollPossiblity(player, 2);
+        int dataIndex = player.getRandom().nextInt(2);
+        if(playerToData.containsKey(player.getUUID()) && !AMConfig.limitTransmutingToLootTables){
+            TransmutationData data = playerToData.get(player.getUUID());
+            if(player.getRandom().nextFloat() < Math.min(0.01875F * data.getTotalWeight(), 0.2F)){
+                ItemStack stack = data.getRandomItem(player.getRandom());
+                if(stack != null && !stack.isEmpty()){
+                    possiblities[dataIndex] = stack;
+                }
+            }
+        }
         AlexsMobs.sendMSGToAll(new MessageUpdateTransmutablesToDisplay(player.getId(), possiblities[0], possiblities[1], possiblities[2]));
     }
 
@@ -126,19 +136,7 @@ public class TileEntityTransmutationTable  extends BlockEntity {
                 loot = RARE_ITEMS;
                 break;
         }
-        boolean flag = false;
-        if(playerToData.containsKey(player.getUUID()) && !AMConfig.limitTransmutingToLootTables){
-            TransmutationData data = playerToData.get(player.getUUID());
-            if(player.getRandom().nextFloat() < Math.min(0.01875F * data.getTotalWeight(), 0.43F)){
-                possiblities[safeIndex] = data.getRandomItem(player.getRandom());
-                if(possiblities[safeIndex] != null && !possiblities[safeIndex].isEmpty()){
-                    flag = true;
-                }
-            }
-        }
-        if(!flag){
-            possiblities[safeIndex] = createFromLootTable(player, loot);
-        }
+        possiblities[safeIndex] = createFromLootTable(player, loot);
     }
 
     public boolean hasPossibilities(){

@@ -9,8 +9,6 @@ public interface IHurtableMultipart {
 
     void onAttackedFromServer(LivingEntity parent, float damage, DamageSource damageSource);
 
-
-
     default Vec3 calcOffsetVec(float offsetZ, float xRot, float yRot){
         return new Vec3(0, 0, offsetZ).xRot(xRot * ((float)Math.PI / 180F)).yRot(-yRot * ((float)Math.PI / 180F));
     }

@@ -80,7 +80,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
     }
 
     public static BlockPos getLowestPos(LevelAccessor world, BlockPos pos) {
-        while (!world.getBlockState(pos).isFaceSturdy(world, pos, Direction.DOWN) && pos.getY() < 255) {
+        while (!world.getBlockState(pos).isFaceSturdy(world, pos, Direction.DOWN) && pos.getY() < 320) {
             pos = pos.above();
         }
         return pos;
