@@ -157,6 +157,22 @@ public class AMRenderTypes extends RenderType {
         return create("sunbird_shine", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, true, true, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation("alexsmobs:textures/entity/sunbird_shine.png"), true, true)).setLightmapState(LIGHTMAP).setCullState(RenderStateShard.NO_CULL).setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).setOverlayState(OVERLAY).setDepthTestState(LEQUAL_DEPTH_TEST).createCompositeState(true));
     }
 
+
+    public static RenderType getSkulkBoom() {
+        CompositeState renderState = CompositeState.builder()
+                .setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER)
+                .setCullState(NO_CULL)
+                .setTextureState(new TextureStateShard(new ResourceLocation("alexsmobs:textures/particle/skulk_boom.png"), true, true))
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                .setLightmapState(LIGHTMAP)
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(COLOR_WRITE)
+                .setDepthTestState(LEQUAL_DEPTH_TEST)
+                .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                .createCompositeState(false);
+        return create("skulk_boom", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
+    }
+
     private static void setupRainbowTexturing(float in, long time) {
         long i = Util.getMillis() * time;
         float f = (float)(i % 110000L) / 110000.0F;

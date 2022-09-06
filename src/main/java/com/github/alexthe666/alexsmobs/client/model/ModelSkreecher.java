@@ -178,6 +178,9 @@ public class ModelSkreecher extends AdvancedEntityModel<EntitySkreecher> {
         this.flap(rightLeg, 0.8F, 0.5F, true, 0F, -0.45F, ageInTicks, clapProgress * 0.2F);
         this.swing(leftLeg, 0.8F, 0.35F, false, 0F, -0.15F, ageInTicks, clapProgress * 0.2F);
         this.swing(rightLeg, 0.8F, 0.35F, true, 0F, -0.15F, ageInTicks, clapProgress * 0.2F);
+        this.bob(body, idleSpeed * 3F, -idleDegree * 5F, false, ageInTicks, clingSpeed);
+        this.bob(rightArmPivot, idleSpeed * 3F, idleDegree * 8F, false, ageInTicks, clingSpeed);
+        this.bob(leftArmPivot, idleSpeed * 3F, idleDegree * 8F, false, ageInTicks, clingSpeed);
         this.faceTarget(netHeadYaw, headPitch, 1F, head);
     }
 
