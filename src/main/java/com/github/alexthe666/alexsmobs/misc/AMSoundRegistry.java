@@ -389,6 +389,18 @@ public class AMSoundRegistry {
 
     public static final RegistryObject<SoundEvent> TRANSMUTE_ITEM = createSoundEvent("transmute_item");
 
+    public static final RegistryObject<SoundEvent> SKREECHER_HURT = createSoundEvent("skreecher_hurt");
+
+    public static final RegistryObject<SoundEvent> SKREECHER_CALL = createSoundEvent("skreecher_call");
+
+    public static final RegistryObject<SoundEvent> SKREECHER_DETECT = createSoundEvent("skreecher_detect");
+
+    public static final RegistryObject<SoundEvent> SKREECHER_CLAP = createSoundEvent("skreecher_clap");
+
+    public static final RegistryObject<SoundEvent> SCULK_BOOMER = createSoundEvent("sculk_boomer");
+
+    public static final RegistryObject<SoundEvent> SCULK_BOOMER_FART = createSoundEvent("sculk_boomer_fart");
+
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

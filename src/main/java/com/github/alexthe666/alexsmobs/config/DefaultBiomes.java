@@ -730,4 +730,8 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData FARSEER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, true, "minecraft:mushroom_fields", 0);
+
+    public static final SpawnBiomeData SKREECHER = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "alexsmobs:skreechers_can_spawn_wardens", 0);
+
 }

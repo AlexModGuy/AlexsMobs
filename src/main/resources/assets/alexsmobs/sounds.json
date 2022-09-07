@@ -2609,6 +2609,75 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.transmute_item"
   },
+  "skreecher_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skreecher_hurt_0"
+      },
+      {
+        "name": "alexsmobs:skreecher_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skreecher_hurt"
+  },
+  "skreecher_call": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skreecher_call_0"
+      },
+      {
+        "name": "alexsmobs:skreecher_call_1"
+      },
+      {
+        "name": "alexsmobs:skreecher_call_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skreecher_call"
+  },
+  "skreecher_detect": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skreecher_detect_0"
+      },
+      {
+        "name": "alexsmobs:skreecher_detect_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skreecher_detect"
+  },
+  "skreecher_clap": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skreecher_clap"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skreecher_clap"
+  },
+  "sculk_boomer_fart": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:sculk_boomer_fart"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.sculk_boomer_fart"
+  },
+  "sculk_boomer": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:sculk_boomer_0"
+      },
+      {
+        "name": "alexsmobs:sculk_boomer_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.sculk_boomer"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [

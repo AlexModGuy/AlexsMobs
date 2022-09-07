@@ -1,0 +1,8 @@
+{
+    "parent": "block/cube_bottom_top",
+    "textures": {
+        "side": "alexsmobs:block/skulk_boomer_closed",
+        "bottom": "minecraft:block/sculk_catalyst_bottom",
+        "top": "alexsmobs:block/skulk_boomer_top"
+    }
+}

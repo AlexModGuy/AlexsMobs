@@ -181,6 +181,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue sugarGliderSpawnRolls;
     public final ForgeConfigSpec.IntValue farseerSpawnWeight;
     public final ForgeConfigSpec.IntValue farseerSpawnRolls;
+    public final ForgeConfigSpec.IntValue skreecherSpawnWeight;
+    public final ForgeConfigSpec.IntValue skreecherSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -233,6 +235,7 @@ public class CommonConfig {
     public ForgeConfigSpec.IntValue transmutingExperienceCost;
     public ForgeConfigSpec.DoubleValue transmutingWeightAddStep;
     public ForgeConfigSpec.DoubleValue transmutingWeightRemoveStep;
+    public final ForgeConfigSpec.BooleanValue skreechersSummonWarden;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
@@ -291,6 +294,7 @@ public class CommonConfig {
         transmutingExperienceCost = buildInt(builder, "transmutingExperienceCost", "all", AMConfig.transmutingExperienceCost, 0, 100000,"The experience, in levels, that each transmutation of a stack takes in the transmuting table.");
         transmutingWeightAddStep = buildDouble(builder, "transmutingWeightAddStep", "all", 3.0F, 1.0F, 10000.0F, "The step value multiplied by the log of the stack size when transmuting an item, used to determine its weight for appearing in future transmutation possibilities. Higher number = more likely to appear.");
         transmutingWeightRemoveStep = buildDouble(builder, "transmutingWeightRemoveStep", "all", 4.0F, 1.0F, 10000.0F, "The step value that an item looses when selecting it as the transmutation result. Keep this number higher than the one above for balance reasons. Higher number = less likely to appear after transmuting multiple times.");
+        skreechersSummonWarden = buildBoolean(builder, "skreechersSummonWarden", "all", true, "True if skreechers can summon a new warden, when applicable.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
@@ -453,6 +457,8 @@ public class CommonConfig {
         sugarGliderSpawnRolls = buildInt(builder, "sugarGliderSpawnRolls", "spawns", AMConfig.sugarGliderSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         farseerSpawnWeight = buildInt(builder, "farseerSpawnWeight", "spawns", AMConfig.farseerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         farseerSpawnRolls = buildInt(builder, "farseerSpawnRolls", "spawns", AMConfig.farseerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        skreecherSpawnWeight = buildInt(builder, "skreecherSpawnWeight", "spawns", AMConfig.skreecherSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        skreecherSpawnRolls = buildInt(builder, "skreecherSpawnRolls", "spawns", AMConfig.skreecherSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "uniqueSpawning", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
         beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "uniqueSpawning", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");

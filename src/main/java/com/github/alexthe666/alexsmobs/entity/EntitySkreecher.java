@@ -1,7 +1,9 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,8 +14,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -30,7 +35,10 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -94,6 +102,17 @@ public class EntitySkreecher extends Monster {
         });
     }
 
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.skreecherSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
+    public static boolean checkSkreecherSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && (worldIn.getBlockState(pos.below()).is(Blocks.SCULK) || worldIn.getBlockState(pos).is(Blocks.SCULK));
+    }
+
+    public int getMaxSpawnClusterSize() {
+        return 1;
+    }
 
     private void switchNavigator(boolean clinging) {
         if (clinging) {
@@ -117,6 +136,14 @@ public class EntitySkreecher extends Monster {
         this.entityData.define(CLINGING, false);
         this.entityData.define(JUMPING_UP, false);
         this.entityData.define(CLAPPING, false);
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.SKREECHER_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.SKREECHER_HURT.get();
     }
 
     public boolean hurt(DamageSource source, float value){
@@ -200,12 +227,15 @@ public class EntitySkreecher extends Monster {
         if(this.isClapping() && this.isAlive() && clingCooldown <= 0){
             float dir = this.isClinging() ? -0.5F : 0.1F;
             if(clapTick % 8 == 0){
+                this.playSound(AMSoundRegistry.SKREECHER_CLAP.get(), this.getSoundVolume() * 3F, this.getVoicePitch());
                 this.gameEvent(GameEvent.ENTITY_ROAR);
                 angerAllNearbyWardens();
                 this.level.addParticle(AMParticleRegistry.SKULK_BOOM.get(), this.getX(), this.getEyeY(), this.getZ(), 0, dir, 0);
+            }else if(clapTick % 15 == 0){
+                this.playSound(AMSoundRegistry.SKREECHER_CALL.get(), this.getSoundVolume() * 4F, this.getVoicePitch());
             }
             if(clapTick >= 100){
-                if(!hasAttemptedWardenSpawning){
+                if(!hasAttemptedWardenSpawning && AMConfig.skreechersSummonWarden){
                     hasAttemptedWardenSpawning = true;
                     BlockPos spawnAt = this.blockPosition().below();
                     while(spawnAt.getY() > -64 && !level.getBlockState(spawnAt).isFaceSturdy(level, spawnAt, Direction.UP)){
@@ -470,6 +500,10 @@ public class EntitySkreecher extends Monster {
         @Override
         public boolean canUse() {
             return EntitySkreecher.this.getTarget() != null && EntitySkreecher.this.getTarget().isAlive() && EntitySkreecher.this.clingCooldown <= 0;
+        }
+
+        public void start(){
+            EntitySkreecher.this.playSound(AMSoundRegistry.SKREECHER_DETECT.get(), EntitySkreecher.this.getSoundVolume() * 6F, EntitySkreecher.this.getVoicePitch());
         }
 
         public void tick(){

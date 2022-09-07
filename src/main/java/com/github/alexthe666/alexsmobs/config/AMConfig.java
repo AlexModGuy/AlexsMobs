@@ -170,6 +170,8 @@ public class AMConfig {
     public static int sugarGliderSpawnRolls = 0;
     public static int farseerSpawnWeight = 30;
     public static int farseerSpawnRolls = 0;
+    public static int skreecherSpawnWeight = 10;
+    public static int skreecherSpawnRolls = 5;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -208,6 +210,7 @@ public class AMConfig {
     public static boolean straddleboardEnchants = true;
     public static boolean beachedCachalotWhales = true;
     public static boolean cachalotDestruction = true;
+    public static boolean skreechersSummonWarden = true;
     public static double cachalotVolume = 3;
     public static double leafcutterAntFungusGrowChance = 0.3F;
     public static int leafcutterAntRepopulateFeedings = 25;
@@ -416,6 +419,8 @@ public class AMConfig {
             sugarGliderSpawnRolls = ConfigHolder.COMMON.sugarGliderSpawnRolls.get();
             farseerSpawnWeight = ConfigHolder.COMMON.farseerSpawnWeight.get();
             farseerSpawnRolls = ConfigHolder.COMMON.farseerSpawnRolls.get();
+            skreecherSpawnWeight = ConfigHolder.COMMON.skreecherSpawnWeight.get();
+            skreecherSpawnRolls = ConfigHolder.COMMON.skreecherSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -448,6 +453,7 @@ public class AMConfig {
             leafcutterAntBreakLeavesChance = ConfigHolder.COMMON.leafcutterAntBreakLeavesChance.get();
             beachedCachalotWhales = ConfigHolder.COMMON.beachedCachalotWhales.get();
             cachalotDestruction = ConfigHolder.COMMON.cachalotDestruction.get();
+            skreechersSummonWarden = ConfigHolder.COMMON.skreechersSummonWarden.get();
             cachalotVolume = ConfigHolder.COMMON.cachalotVolume.get();
             beachedCachalotWhaleSpawnChance = ConfigHolder.COMMON.beachedCachalotWhaleSpawnChance.get();
             beachedCachalotWhaleSpawnDelay = ConfigHolder.COMMON.beachedCachalotWhaleSpawnDelay.get();

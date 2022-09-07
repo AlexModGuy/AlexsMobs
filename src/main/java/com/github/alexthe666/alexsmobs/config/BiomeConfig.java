@@ -96,6 +96,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> rhinoceros = Pair.of("alexsmobs:rhinoceros_spawns", DefaultBiomes.RHINOCEROS);
 	public static Pair<String, SpawnBiomeData> sugar_glider = Pair.of("alexsmobs:sugar_glider_spawns", DefaultBiomes.SUGAR_GLIDER);
 	public static Pair<String, SpawnBiomeData> farseer = Pair.of("alexsmobs:farseer", DefaultBiomes.FARSEER);
+	public static Pair<String, SpawnBiomeData> skreecher = Pair.of("alexsmobs:skreecher", DefaultBiomes.SKREECHER);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();
