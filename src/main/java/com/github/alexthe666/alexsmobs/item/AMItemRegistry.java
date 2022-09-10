@@ -195,6 +195,7 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> MUDSKIPPER_BUCKET = DEF_REG.register("mudskipper_bucket", () -> new ItemModFishBucket(AMEntityRegistry.MUDSKIPPER, Fluids.WATER, new Item.Properties().tab(AMItemGroup.INSTANCE)));
     public static final RegistryObject<Item> FARSEER_ARM = DEF_REG.register("farseer_arm", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SKREECHER_SOUL = DEF_REG.register("skreecher_soul", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE)));
+    public static final RegistryObject<Item> GHOSTLY_PICKAXE = DEF_REG.register("ghostly_pickaxe", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE)));
     public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE), 191 * 20));
     public static final RegistryObject<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE), 314 * 20));
 
@@ -280,7 +281,8 @@ public class AMItemRegistry {
         DEF_REG.register("spawn_egg_rhinoceros", () -> new ForgeSpawnEggItem(AMEntityRegistry.RHINOCEROS, 0XA19594, 0X827474, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         DEF_REG.register("spawn_egg_sugar_glider", () -> new ForgeSpawnEggItem(AMEntityRegistry.SUGAR_GLIDER, 0X868181, 0XEBEBE0, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         DEF_REG.register("spawn_egg_farseer", () -> new ForgeSpawnEggItem(AMEntityRegistry.FARSEER, 0X33374F, 0X91FF59, new Item.Properties().tab(AMItemGroup.INSTANCE)));
-        DEF_REG.register("spawn_egg_skreecher", () -> new ForgeSpawnEggItem(AMEntityRegistry.SKREECHER, 0X074857, 0X29DFEB, new Item.Properties().tab(AMItemGroup.INSTANCE)));
+        DEF_REG.register("spawn_egg_skreecher", () -> new ForgeSpawnEggItem(AMEntityRegistry.SKREECHER, 0X074857, 0X7FF8FF, new Item.Properties().tab(AMItemGroup.INSTANCE)));
+        DEF_REG.register("spawn_egg_underminer", () -> new ForgeSpawnEggItem(AMEntityRegistry.UNDERMINER, 0XD6E2FF, 0X6C84C4, new Item.Properties().tab(AMItemGroup.INSTANCE)));
         registerPatternItem("bear");
         registerPatternItem("australia_0");
         registerPatternItem("australia_1");

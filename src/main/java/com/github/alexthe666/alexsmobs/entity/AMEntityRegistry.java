@@ -144,6 +144,7 @@ public class AMEntityRegistry {
     public static final RegistryObject<EntityType<EntitySugarGlider>> SUGAR_GLIDER = DEF_REG.register("sugar_glider", () -> registerEntity(EntityType.Builder.of(EntitySugarGlider::new, MobCategory.CREATURE).sized(0.8F, 0.45F), "sugar_glider"));
     public static final RegistryObject<EntityType<EntityFarseer>> FARSEER = DEF_REG.register("farseer", () -> registerEntity(EntityType.Builder.of(EntityFarseer::new, MobCategory.MONSTER).sized(0.99F, 1.5F).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "farseer"));
     public static final RegistryObject<EntityType<EntitySkreecher>> SKREECHER = DEF_REG.register("skreecher", () -> registerEntity(EntityType.Builder.of(EntitySkreecher::new, MobCategory.MONSTER).sized(0.99F, 0.95F).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "skreecher"));
+    public static final RegistryObject<EntityType<EntityUnderminer>> UNDERMINER = DEF_REG.register("underminer", () -> registerEntity(EntityType.Builder.of(EntityUnderminer::new, MobCategory.AMBIENT).sized(0.8F, 1.8F), "underminer"));
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return (EntityType) builder.build(entityName);
@@ -319,6 +320,7 @@ public class AMEntityRegistry {
         event.put(SUGAR_GLIDER.get(), EntitySugarGlider.bakeAttributes().build());
         event.put(FARSEER.get(), EntityFarseer.bakeAttributes().build());
         event.put(SKREECHER.get(), EntitySkreecher.bakeAttributes().build());
+        event.put(UNDERMINER.get(), EntityUnderminer.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){

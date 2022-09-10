@@ -112,7 +112,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return !source.isMagic() && source != DamageSource.OUT_OF_WORLD || super.isInvulnerableTo(source);
+        return !source.isMagic() && source != DamageSource.OUT_OF_WORLD && !source.isCreativePlayer() || super.isInvulnerableTo(source);
     }
 
     @Nullable

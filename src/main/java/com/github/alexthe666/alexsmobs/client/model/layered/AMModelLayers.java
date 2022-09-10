@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.model.layered;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelFroststalker;
 import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -26,9 +27,11 @@ public class AMModelLayers {
     public static final ModelLayerLocation ROCKY_CHESTPLATE = createLocation("rocky_chestplate", "main");
     public static final ModelLayerLocation FLYING_FISH_BOOTS = createLocation("flying_fish_boots", "main");
     public static final ModelLayerLocation NOVELTY_HAT = createLocation("novelty_hat", "main");
+    public static final ModelLayerLocation UNDERMINER = createLocation("underminer", "main");
 
     public static void register(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(SITTING_WANDERING_VILLAGER, () -> LayerDefinition.create(ModelWanderingVillagerRider.createBodyModel(), 64, 64));
+        event.registerLayerDefinition(UNDERMINER, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.05F), 64, 64) );
         event.registerLayerDefinition(ROADRUNNER_BOOTS, () -> ModelRoadrunnerBoots.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(MOOSE_HEADGEAR, () -> ModelMooseHeadgear.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(FRONTIER_CAP, () -> ModelFrontierCap.createArmorLayer(new CubeDeformation(0.5F)));

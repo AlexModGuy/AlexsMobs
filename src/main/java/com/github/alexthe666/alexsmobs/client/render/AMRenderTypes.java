@@ -157,7 +157,6 @@ public class AMRenderTypes extends RenderType {
         return create("sunbird_shine", DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 256, true, true, RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_GLINT_SHADER).setTextureState(new RenderStateShard.TextureStateShard(new ResourceLocation("alexsmobs:textures/entity/sunbird_shine.png"), true, true)).setLightmapState(LIGHTMAP).setCullState(RenderStateShard.NO_CULL).setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).setOverlayState(OVERLAY).setDepthTestState(LEQUAL_DEPTH_TEST).createCompositeState(true));
     }
 
-
     public static RenderType getSkulkBoom() {
         CompositeState renderState = CompositeState.builder()
                 .setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER)
@@ -171,6 +170,38 @@ public class AMRenderTypes extends RenderType {
                 .setLayeringState(VIEW_OFFSET_Z_LAYERING)
                 .createCompositeState(false);
         return create("skulk_boom", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
+    }
+
+    public static RenderType getUnderminer(ResourceLocation texture) {
+        CompositeState renderState = CompositeState.builder()
+                .setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER)
+                .setCullState(NO_CULL)
+                .setTextureState(new TextureStateShard(texture, false, false))
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                .setLightmapState(LIGHTMAP)
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(COLOR_DEPTH_WRITE)
+                .setDepthTestState(LEQUAL_DEPTH_TEST)
+                .setLayeringState(NO_LAYERING)
+                .createCompositeState(false);
+        return create("underminer", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
+    }
+
+
+    public static RenderType getGhostPickaxe(ResourceLocation texture) {
+        CompositeState renderState = CompositeState.builder()
+                .setShaderState(RENDERTYPE_ITEM_ENTITY_TRANSLUCENT_CULL_SHADER)
+                .setCullState(NO_CULL)
+                .setOutputState(ITEM_ENTITY_TARGET)
+                .setTextureState(new TextureStateShard(texture, false, false))
+                .setTransparencyState(RenderStateShard.LIGHTNING_TRANSPARENCY)
+                .setLightmapState(LIGHTMAP)
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(COLOR_DEPTH_WRITE)
+                .setDepthTestState(LEQUAL_DEPTH_TEST)
+                .setLayeringState(NO_LAYERING)
+                .createCompositeState(false);
+        return create("ghost_pickaxe", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
     }
 
     private static void setupRainbowTexturing(float in, long time) {

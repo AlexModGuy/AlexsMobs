@@ -20,6 +20,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -78,7 +80,6 @@ public class EntitySkreecher extends Monster {
         switchNavigator(false);
     }
 
-
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -89,12 +90,6 @@ public class EntitySkreecher extends Monster {
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, LivingEntity.class, 30F));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, true) {
-            protected AABB getTargetSearchArea(double targetDistance) {
-                AABB bb = this.mob.getBoundingBox().inflate(16, 1F, 16);
-                return new AABB(bb.minX, -64, bb.minZ, bb.maxX, 320, bb.maxZ);
-            }
-        });
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Pig.class, true) {
             protected AABB getTargetSearchArea(double targetDistance) {
                 AABB bb = this.mob.getBoundingBox().inflate(16, 1F, 16);
                 return new AABB(bb.minX, -64, bb.minZ, bb.maxX, 320, bb.maxZ);
@@ -256,7 +251,7 @@ public class EntitySkreecher extends Monster {
             }
             clapTick++;
             if(!this.level.isClientSide){
-                if(this.getTarget() != null && this.getTarget().isAlive() && this.hasLineOfSight(this.getTarget())) {
+                if(this.getTarget() != null && this.getTarget().isAlive() && this.hasLineOfSight(this.getTarget()) && !this.getTarget().hasEffect(MobEffects.INVISIBILITY) && !this.hasEffect(MobEffects.BLINDNESS)) {
                     double horizDist = this.getTarget().position().subtract(this.position()).horizontalDistance();
                     if (horizDist > 20) {
                         this.setClapping(false);

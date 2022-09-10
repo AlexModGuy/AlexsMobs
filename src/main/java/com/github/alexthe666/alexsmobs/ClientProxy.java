@@ -9,6 +9,7 @@ import com.github.alexthe666.alexsmobs.client.particle.*;
 import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties;
 import com.github.alexthe666.alexsmobs.client.render.item.CustomArmorRenderProperties;
+import com.github.alexthe666.alexsmobs.client.render.item.GhostlyPickaxeBakedModel;
 import com.github.alexthe666.alexsmobs.client.render.tile.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundBearMusicBox;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
@@ -41,6 +42,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -96,6 +98,7 @@ public class ClientProxy extends CommonProxy {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerRegistry::onAddLayers);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::setupParticles);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBakingCompleted);
     }
 
     public void clientInit() {
@@ -213,6 +216,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.SUGAR_GLIDER.get(), RenderSugarGlider::new);
         EntityRenderers.register(AMEntityRegistry.FARSEER.get(), RenderFarseer::new);
         EntityRenderers.register(AMEntityRegistry.SKREECHER.get(), RenderSkreecher::new);
+        EntityRenderers.register(AMEntityRegistry.UNDERMINER.get(), RenderUnderminer::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try {
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -257,6 +261,16 @@ public class ClientProxy extends CommonProxy {
         Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.STATIC_PARTICLE, new BufferBuilder(AMRenderTypes.STATIC_PARTICLE.bufferSize()));
         Minecraft.getInstance().renderBuffers().fixedBuffers.put(AMRenderTypes.STATIC_ENTITY, new BufferBuilder(AMRenderTypes.STATIC_ENTITY.bufferSize()));
         initializedRainbowBuffers = true;
+    }
+
+    private static void onBakingCompleted(final ModelEvent.BakingCompleted e) {
+        String ghostlyPickaxe = "alexsmobs:ghostly_pickaxe";
+        for (ResourceLocation id : e.getModels().keySet()) {
+            if (id.toString().contains(ghostlyPickaxe)) {
+                e.getModels().put(id, new GhostlyPickaxeBakedModel(e.getModels().get(id)));
+                System.out.println(e.getModels().get(id));
+            }
+        }
     }
 
     public void openBookGUI(ItemStack itemStackIn) {
