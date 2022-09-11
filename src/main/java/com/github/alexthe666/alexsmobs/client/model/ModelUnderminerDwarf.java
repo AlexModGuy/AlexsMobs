@@ -304,13 +304,9 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
             if (humanoidarm == HumanoidArm.LEFT) {
                 this.body.rotateAngleY *= -1.0F;
             }
-
-            this.rightArm.rotationPointZ = Mth.sin(this.body.rotateAngleY) * 5.0F;
-            this.rightArm.rotationPointX = -Mth.cos(this.body.rotateAngleY) * 5.0F;
-            this.leftArm.rotationPointZ = -Mth.sin(this.body.rotateAngleY) * 5.0F;
-            this.leftArm.rotationPointX = Mth.cos(this.body.rotateAngleY) * 5.0F;
-            this.rightArm.rotateAngleY += this.body.rotateAngleY;
-            this.leftArm.rotateAngleY += this.body.rotateAngleY;
+            this.head.rotateAngleY -= this.body.rotateAngleY;
+            this.leftLeg.rotateAngleY -= this.body.rotateAngleY;
+            this.rightLeg.rotateAngleY -= this.body.rotateAngleY;
             this.leftArm.rotateAngleX += this.body.rotateAngleY;
             f = 1.0F - this.attackTime;
             f *= f;

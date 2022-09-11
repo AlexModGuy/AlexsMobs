@@ -31,7 +31,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> lobster = Pair.of("alexsmobs:lobster_spawns", DefaultBiomes.LOBSTER);
 	public static Pair<String, SpawnBiomeData> komodoDragon = Pair.of("alexsmobs:komodo_dragon_spawns", DefaultBiomes.KOMODO_DRAGON);
 	public static Pair<String, SpawnBiomeData> capuchinMonkey = Pair.of("alexsmobs:capuchin_monkey_spawns", DefaultBiomes.CAPUCHIN_MONKEY);
-	public static Pair<String, SpawnBiomeData> caveCentipede = Pair.of("alexsmobs:cave_centipede_spawns", DefaultBiomes.CENTIPEDE);
+	public static Pair<String, SpawnBiomeData> caveCentipede = Pair.of("alexsmobs:cave_centipede_spawns", DefaultBiomes.CAVES);
 	public static Pair<String, SpawnBiomeData> warpedToad = Pair.of("alexsmobs:warped_toad_spawns", DefaultBiomes.WARPED_TOAD);
 	public static Pair<String, SpawnBiomeData> moose = Pair.of("alexsmobs:moose_spawns", DefaultBiomes.MOOSE);
 	public static Pair<String, SpawnBiomeData> mimicube = Pair.of("alexsmobs:mimicube_spawns", DefaultBiomes.MIMICUBE);
@@ -97,6 +97,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> sugar_glider = Pair.of("alexsmobs:sugar_glider_spawns", DefaultBiomes.SUGAR_GLIDER);
 	public static Pair<String, SpawnBiomeData> farseer = Pair.of("alexsmobs:farseer", DefaultBiomes.FARSEER);
 	public static Pair<String, SpawnBiomeData> skreecher = Pair.of("alexsmobs:skreecher", DefaultBiomes.SKREECHER);
+	public static Pair<String, SpawnBiomeData> underminer = Pair.of("alexsmobs:underminer", DefaultBiomes.CAVES);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

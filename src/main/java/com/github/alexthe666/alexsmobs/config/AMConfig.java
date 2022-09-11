@@ -172,6 +172,8 @@ public class AMConfig {
     public static int farseerSpawnRolls = 0;
     public static int skreecherSpawnWeight = 10;
     public static int skreecherSpawnRolls = 5;
+    public static int underminerSpawnWeight = 40;
+    public static int underminerSpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -240,6 +242,7 @@ public class AMConfig {
     public static boolean restrictFarseerSpawns = true;
     public static int farseerBorderSpawnDistance = 100;
     public static boolean restrictSkelewagSpawns = true;
+    public static boolean restrictUnderminerSpawns = true;
     public static double rainbowGlassFidelity = 16.0F;
     public static boolean bunfungusTransformation = true;
     public static boolean superSecretSettings = false;
@@ -421,6 +424,8 @@ public class AMConfig {
             farseerSpawnRolls = ConfigHolder.COMMON.farseerSpawnRolls.get();
             skreecherSpawnWeight = ConfigHolder.COMMON.skreecherSpawnWeight.get();
             skreecherSpawnRolls = ConfigHolder.COMMON.skreecherSpawnRolls.get();
+            underminerSpawnWeight = ConfigHolder.COMMON.underminerSpawnWeight.get();
+            underminerSpawnRolls = ConfigHolder.COMMON.underminerSpawnRolls.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
@@ -475,6 +480,7 @@ public class AMConfig {
             restrictFarseerSpawns = ConfigHolder.COMMON.restrictFarseerSpawns.get();
             farseerBorderSpawnDistance = ConfigHolder.COMMON.farseerBorderSpawnDistance.get();
             restrictSkelewagSpawns = ConfigHolder.COMMON.restrictSkelewagSpawns.get();
+            restrictUnderminerSpawns = ConfigHolder.COMMON.restrictUnderminerSpawns.get();
             superSecretSettings = ConfigHolder.COMMON.superSecretSettings.get();
             addLootToChests = ConfigHolder.COMMON.addLootToChests.get();
             transmutationBlacklist = (List<? extends String>) ConfigHolder.COMMON.transmutationBlacklist.get();

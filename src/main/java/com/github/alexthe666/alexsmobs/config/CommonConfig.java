@@ -183,6 +183,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue farseerSpawnRolls;
     public final ForgeConfigSpec.IntValue skreecherSpawnWeight;
     public final ForgeConfigSpec.IntValue skreecherSpawnRolls;
+    public final ForgeConfigSpec.IntValue underminerSpawnWeight;
+    public final ForgeConfigSpec.IntValue underminerSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -226,6 +228,7 @@ public class CommonConfig {
     public ForgeConfigSpec.IntValue pupfishChunkSpawnDistance;
     public ForgeConfigSpec.BooleanValue restrictSkelewagSpawns;
     public ForgeConfigSpec.BooleanValue restrictFarseerSpawns;
+    public ForgeConfigSpec.BooleanValue restrictUnderminerSpawns;
     public ForgeConfigSpec.IntValue farseerBorderSpawnDistance;
     public ForgeConfigSpec.BooleanValue superSecretSettings;
     public ForgeConfigSpec.BooleanValue addLootToChests;
@@ -459,6 +462,8 @@ public class CommonConfig {
         farseerSpawnRolls = buildInt(builder, "farseerSpawnRolls", "spawns", AMConfig.farseerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         skreecherSpawnWeight = buildInt(builder, "skreecherSpawnWeight", "spawns", AMConfig.skreecherSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         skreecherSpawnRolls = buildInt(builder, "skreecherSpawnRolls", "spawns", AMConfig.skreecherSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        underminerSpawnWeight = buildInt(builder, "underminerSpawnWeight", "spawns", AMConfig.underminerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        underminerSpawnRolls = buildInt(builder, "underminerSpawnRolls", "spawns", AMConfig.underminerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         builder.push("uniqueSpawning");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "uniqueSpawning", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
         beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "uniqueSpawning", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");
@@ -468,6 +473,7 @@ public class CommonConfig {
         pupfishChunkSpawnDistance = buildInt(builder, "pupfishChunkSpawnDistance", "uniqueSpawning", AMConfig.pupfishChunkSpawnDistance, 2, 1000000000, "The maximum distance a pupfish spawn chunk is from world spawn(0, 0) in blocks.");
         restrictSkelewagSpawns = buildBoolean(builder, "restrictSkelewagSpawns", "uniqueSpawning", true, "Whether to restrict all skelewag spawns to shipwreck structures.");
         restrictFarseerSpawns = buildBoolean(builder, "restrictFarseerSpawns", "uniqueSpawning", true, "Whether to restrict all farseer spawns to near the world border.");
+        restrictUnderminerSpawns = buildBoolean(builder, "restrictUnderminerSpawns", "uniqueSpawning", true, "Whether to restrict all underminer spawns to abandoned mineshafts.");
         farseerBorderSpawnDistance = buildInt(builder, "farseerBorderSpawnDistance", "uniqueSpawning", AMConfig.farseerBorderSpawnDistance, 2, 1000000000, "The maximum distance a farseer can spawn from the world border.");
         builder.push("dangerZone");
         superSecretSettings = buildBoolean(builder, "superSecretSettings", "dangerZone", false, "Its been so long...");

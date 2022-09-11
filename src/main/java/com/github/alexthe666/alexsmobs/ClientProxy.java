@@ -268,7 +268,6 @@ public class ClientProxy extends CommonProxy {
         for (ResourceLocation id : e.getModels().keySet()) {
             if (id.toString().contains(ghostlyPickaxe)) {
                 e.getModels().put(id, new GhostlyPickaxeBakedModel(e.getModels().get(id)));
-                System.out.println(e.getModels().get(id));
             }
         }
     }

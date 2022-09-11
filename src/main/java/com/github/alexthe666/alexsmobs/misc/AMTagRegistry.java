@@ -63,6 +63,7 @@ public class AMTagRegistry {
     public static final TagKey<Item> TIGER_BREEDABLES = registerItemTag("tiger_breedables");
     public static final TagKey<Item> BALD_EAGLE_TAMEABLES = registerItemTag("bald_eagle_tameables");
     public static final TagKey<Item> VOID_WORM_DROPS = registerItemTag("void_worm_drops");
+    public static final TagKey<Item> UNDERMINER_ORES = registerItemTag("underminer_ores");
     public static final TagKey<EntityType<?>> FROSTSTALKER_TARGETS = registerEntityTag("froststalker_targets");
     public static final TagKey<Block> FROSTSTALKER_FEARS = registerBlockTag("froststalker_fears");
     public static final TagKey<EntityType<?>> ANACONDA_TARGETS = registerEntityTag("anaconda_targets");

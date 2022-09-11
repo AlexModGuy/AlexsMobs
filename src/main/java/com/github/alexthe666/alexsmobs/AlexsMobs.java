@@ -63,6 +63,7 @@ public class AlexsMobs {
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     private static int packetsRegistered;
     private static boolean isAprilFools = false;
+    private static boolean isHalloween = false;
 
     static {
         NetworkRegistry.ChannelBuilder channel = NetworkRegistry.ChannelBuilder.named(new ResourceLocation("alexsmobs", "main_channel"));
@@ -112,10 +113,15 @@ public class AlexsMobs {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         isAprilFools = calendar.get(Calendar.MONTH) + 1 == 4 && calendar.get(Calendar.DATE) == 1;
+        isHalloween = calendar.get(Calendar.MONTH) + 1 == 10 && calendar.get(Calendar.DATE) >= 29 && calendar.get(Calendar.DATE) <= 31;
     }
 
     public static boolean isAprilFools() {
         return isAprilFools || AMConfig.superSecretSettings;
+    }
+
+    public static boolean isHalloween() {
+        return isHalloween || AMConfig.superSecretSettings;
     }
 
     private void setupEntityModelLayers(final EntityRenderersEvent.RegisterLayerDefinitions event) {

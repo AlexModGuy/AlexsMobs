@@ -401,6 +401,12 @@ public class AMSoundRegistry {
 
     public static final RegistryObject<SoundEvent> SCULK_BOOMER_FART = createSoundEvent("sculk_boomer_fart");
 
+    public static final RegistryObject<SoundEvent> UNDERMINER_IDLE = createSoundEvent("underminer_idle");
+
+    public static final RegistryObject<SoundEvent> UNDERMINER_HURT = createSoundEvent("underminer_hurt");
+
+    public static final RegistryObject<SoundEvent> UNDERMINER_STEP = createSoundEvent("underminer_step");
+
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

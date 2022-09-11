@@ -43,6 +43,7 @@ public class ItemModArmor extends ArmorItem {
         consumer.accept((IClientItemExtensions) AlexsMobs.PROXY.getArmorRenderProperties());
     }
 
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (this.material == AMItemRegistry.CENTIPEDE_ARMOR_MATERIAL) {

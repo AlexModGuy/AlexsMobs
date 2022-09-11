@@ -27,26 +27,28 @@ public class LayerUnderminerItem extends RenderLayer<EntityUnderminer, EntityMod
     }
 
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityUnderminer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        ItemStack itemstack = entitylivingbaseIn.getItemBySlot(EquipmentSlot.MAINHAND);
-        matrixStackIn.pushPose();
-        matrixStackIn.pushPose();
-        float f = entitylivingbaseIn.getMainArm() == HumanoidArm.LEFT ? 0.1F : -0.1F;
-        float f1 = entitylivingbaseIn.isDwarf() ? 0.5F : 0.45F;
-        if(entitylivingbaseIn.isDwarf()){
-            matrixStackIn.translate(0F,  1F, 0F);
-            f *= 0.3F;
-        }else{
-            matrixStackIn.translate(0F,  0.2F, 0);
-        }
-        translateToHand(entitylivingbaseIn.getMainArm(), matrixStackIn);
-        matrixStackIn.translate(f,  f1,  -0.15F);
+        if(!entitylivingbaseIn.isFullyHidden()){
+            ItemStack itemstack = entitylivingbaseIn.getItemBySlot(EquipmentSlot.MAINHAND);
+            matrixStackIn.pushPose();
+            matrixStackIn.pushPose();
+            float f = entitylivingbaseIn.getMainArm() == HumanoidArm.LEFT ? 0.1F : -0.1F;
+            float f1 = entitylivingbaseIn.isDwarf() ? 0.5F : 0.45F;
+            if(entitylivingbaseIn.isDwarf()){
+                matrixStackIn.translate(0F,  1F, 0F);
+                f *= 0.3F;
+            }else{
+                matrixStackIn.translate(0F,  0.2F, 0);
+            }
+            translateToHand(entitylivingbaseIn.getMainArm(), matrixStackIn);
+            matrixStackIn.translate(f,  f1,  -0.15F);
 
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90));
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180));
-        ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
-        renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, bufferIn, packedLightIn);
-        matrixStackIn.popPose();
-        matrixStackIn.popPose();
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180));
+            ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
+            renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, bufferIn, packedLightIn);
+            matrixStackIn.popPose();
+            matrixStackIn.popPose();
+        }
     }
 
     protected void translateToHand(HumanoidArm arm, PoseStack matrixStack) {

@@ -21,12 +21,11 @@ public class EtherealMoveController extends MoveControl {
             Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
             double d0 = vector3d.length();
 
-            parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * speedGeneral * 0.01D / d0)));
+            parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * speedGeneral * 0.025D / d0)));
 
             double yAdd = this.wantedY - parentEntity.getY();
-            parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(0.0D, (double) parentEntity.getSpeed() * speedGeneral * Mth.clamp(yAdd, -1, 1) * 0.6F, 0.0D));
-
-            if(d0 > 1){
+            if(d0 > 0.2F){
+                parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(0.0D, (double) parentEntity.getSpeed() * speedGeneral * Mth.clamp(yAdd, -1, 1) * 0.6F, 0.0D));
                 Vec3 vector3d1 = parentEntity.getDeltaMovement();
                 parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
                 parentEntity.yBodyRot = parentEntity.getYRot();

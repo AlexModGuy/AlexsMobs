@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.github.alexthe666.alexsmobs.item.ItemGhostlyPickaxe;
 import com.github.alexthe666.alexsmobs.misc.CapsidRecipeManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import org.antlr.v4.runtime.misc.Triple;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
@@ -818,5 +820,13 @@ public class ServerEvents {
     public void onAddReloadListener(AddReloadListenerEvent event){
         AlexsMobs.LOGGER.info("Adding datapack listener capsid_recipes");
         event.addListener(AlexsMobs.PROXY.getCapsidRecipeManager());
+    }
+
+    @SubscribeEvent
+    public void onHarvestCheck(PlayerEvent.HarvestCheck event){
+        if(event.getEntity().isHolding(AMItemRegistry.GHOSTLY_PICKAXE.get()) && ItemGhostlyPickaxe.shouldStoreInGhost(event.getEntity(), event.getEntity().getMainHandItem())){
+            //stops drops from being spawned
+            event.setCanHarvest(false);
+        }
     }
 }

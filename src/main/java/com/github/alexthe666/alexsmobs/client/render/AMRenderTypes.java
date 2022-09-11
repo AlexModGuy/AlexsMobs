@@ -12,6 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.Util;
 import net.minecraftforge.client.ForgeRenderTypes;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class AMRenderTypes extends RenderType {
 
     public static final ResourceLocation STATIC_TEXTURE = new ResourceLocation("alexsmobs:textures/static.png");
@@ -202,6 +205,22 @@ public class AMRenderTypes extends RenderType {
                 .setLayeringState(NO_LAYERING)
                 .createCompositeState(false);
         return create("ghost_pickaxe", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
+    }
+
+    public static RenderType getGhostCrumbling(ResourceLocation texture) {
+        CompositeState renderState = CompositeState.builder()
+                .setShaderState(RenderStateShard.RENDERTYPE_ENERGY_SWIRL_SHADER)
+                .setCullState(NO_CULL)
+                .setOutputState(ITEM_ENTITY_TARGET)
+                .setTextureState(new TextureStateShard(texture, false, false))
+                .setTransparencyState(RenderStateShard.LIGHTNING_TRANSPARENCY)
+                .setLightmapState(LIGHTMAP)
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(COLOR_WRITE)
+                .setDepthTestState(LEQUAL_DEPTH_TEST)
+                .setLayeringState(POLYGON_OFFSET_LAYERING)
+                .createCompositeState(false);
+        return create("ghost_crumbling", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
     }
 
     private static void setupRainbowTexturing(float in, long time) {

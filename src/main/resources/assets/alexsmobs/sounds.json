@@ -2678,6 +2678,54 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.sculk_boomer"
   },
+  "underminer_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:underminer_hurt_0"
+      },
+      {
+        "name": "alexsmobs:underminer_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.underminer_hurt"
+  },
+  "underminer_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:underminer_idle_0"
+      },
+      {
+        "name": "alexsmobs:underminer_idle_1"
+      },
+      {
+        "name": "alexsmobs:underminer_idle_2"
+      },
+      {
+        "name": "alexsmobs:underminer_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.underminer_idle"
+  },
+  "underminer_step": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:underminer_step_0"
+      },
+      {
+        "name": "alexsmobs:underminer_step_1"
+      },
+      {
+        "name": "alexsmobs:underminer_step_2"
+      },
+      {
+        "name": "alexsmobs:underminer_step_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.underminer_step"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [
