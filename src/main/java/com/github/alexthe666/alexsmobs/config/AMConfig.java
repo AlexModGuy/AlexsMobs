@@ -171,8 +171,8 @@ public class AMConfig {
     public static int farseerSpawnWeight = 30;
     public static int farseerSpawnRolls = 0;
     public static int skreecherSpawnWeight = 10;
-    public static int skreecherSpawnRolls = 5;
-    public static int underminerSpawnWeight = 10;
+    public static int skreecherSpawnRolls = 1;
+    public static int underminerSpawnWeight = 40;
     public static int underminerSpawnRolls = 3;
 
     public static double lavaOpacity = 0.65F;

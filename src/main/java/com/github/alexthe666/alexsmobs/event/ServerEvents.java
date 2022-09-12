@@ -834,17 +834,9 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onMergeStructureSpawns(EventMergeStructureSpawns event) {
-        if(AMConfig.restrictUnderminerSpawns && event.isStructureTagged(StructureTags.MINESHAFT)){
-            boolean flag = false;
-            for(MobSpawnSettings.SpawnerData data : event.getStructureSpawns().unwrap()){
-                if(data.type == AMEntityRegistry.UNDERMINER.get()){
-                    flag = true;
-                }
-            }
-            if(flag){
-                event.mergeSpawns();
-                event.setResult(Event.Result.ALLOW);
-            }
+        if(AMConfig.restrictUnderminerSpawns && event.getCategory() == MobCategory.MONSTER && event.isStructureTagged(StructureTags.MINESHAFT)){
+            event.mergeSpawns();
+            event.setResult(Event.Result.ALLOW);
         }
     }
 }

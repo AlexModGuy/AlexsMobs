@@ -102,7 +102,8 @@ public class EntitySkreecher extends Monster {
     }
 
     public static boolean checkSkreecherSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && (worldIn.getBlockState(pos.below()).is(Blocks.SCULK) || worldIn.getBlockState(pos).is(Blocks.SCULK));
+        boolean isOnSculk = worldIn.getBlockState(pos.below()).is(Blocks.SCULK);
+        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && isOnSculk;
     }
 
     public int getMaxSpawnClusterSize() {
