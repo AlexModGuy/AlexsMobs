@@ -280,11 +280,11 @@ public class EntityUnderminer extends PathfinderMob {
             if(lastPosition != null && lastPosition.distSqr(this.blockPosition()) > 2.5F && Math.abs(distToFloor) < 0.5){
                 this.playSound(AMSoundRegistry.UNDERMINER_STEP.get(), 1F, 0.75F + random.nextFloat() * 0.25F);
                 lastPosition = this.blockPosition();
-                if(random.nextFloat() < 0.05F && !level.canSeeSky(lastPosition)){
+                if(random.nextFloat() < 0.015F && !level.canSeeSky(lastPosition)){
                     this.playSound(SoundEvents.AMBIENT_CAVE, 3F, 0.75F + random.nextFloat() * 0.25F);
                 }
             }
-            Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 8.0D, true);
+            Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), AMConfig.underminerDisappearDistance, true);
             if(player != null && lastGivenStack == null && (this.getTarget() == null || !this.getTarget().isAlive())){
                 this.setHiding(true);
                 this.lookAt(player, 360F, 360F);

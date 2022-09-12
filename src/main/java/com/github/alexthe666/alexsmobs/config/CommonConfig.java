@@ -238,6 +238,7 @@ public class CommonConfig {
     public ForgeConfigSpec.IntValue transmutingExperienceCost;
     public ForgeConfigSpec.DoubleValue transmutingWeightAddStep;
     public ForgeConfigSpec.DoubleValue transmutingWeightRemoveStep;
+    public ForgeConfigSpec.DoubleValue underminerDisappearDistance;
     public final ForgeConfigSpec.BooleanValue skreechersSummonWarden;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
@@ -298,6 +299,7 @@ public class CommonConfig {
         transmutingWeightAddStep = buildDouble(builder, "transmutingWeightAddStep", "all", 3.0F, 1.0F, 10000.0F, "The step value multiplied by the log of the stack size when transmuting an item, used to determine its weight for appearing in future transmutation possibilities. Higher number = more likely to appear.");
         transmutingWeightRemoveStep = buildDouble(builder, "transmutingWeightRemoveStep", "all", 4.0F, 1.0F, 10000.0F, "The step value that an item looses when selecting it as the transmutation result. Keep this number higher than the one above for balance reasons. Higher number = less likely to appear after transmuting multiple times.");
         skreechersSummonWarden = buildBoolean(builder, "skreechersSummonWarden", "all", true, "True if skreechers can summon a new warden, when applicable.");
+        underminerDisappearDistance = buildDouble(builder, "underminerDisappearDistance", "all", 8.0F, 1.0F, 10000.0F, "The distance in blocks that will cause an underminer to dissapear when approached by a player.");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");

@@ -11,8 +11,10 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -21,9 +23,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ItemGhostlyPickaxe extends PickaxeItem {
 
@@ -144,6 +148,38 @@ public class ItemGhostlyPickaxe extends PickaxeItem {
                 tooltip.add(Component.translatable("container.shulkerBox.more", j - i).withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC));
             }
         }
+    }
+
+    private void dropAllContents(Level level, Vec3 vec3, ItemStack pickaxe){
+        CompoundTag compoundtag = pickaxe.getTag();
+        if (compoundtag != null && compoundtag.contains("Items", 9)) {
+            SimpleContainer container = new SimpleContainer(9);
+            container.fromTag(compoundtag.getList("Items", 10));
+            for (int slot = 0; slot < container.getContainerSize(); slot++) {
+                ItemStack itemstack = container.getItem(slot);
+                if (!itemstack.isEmpty()) {
+                    ItemEntity itemEntity = new ItemEntity(level, vec3.x, vec3.y, vec3.z, itemstack.copy());
+                    if(level.addFreshEntity(itemEntity)){
+                        container.removeItem(slot, itemstack.getCount());
+                    }
+                }
+            }
+            compoundtag.put("Items", container.createTag());
+            pickaxe.setTag(compoundtag);
+        }
+    }
+
+    public void onDestroyed(ItemEntity itemEntity) {
+        dropAllContents(itemEntity.level, itemEntity.position(), itemEntity.getItem());
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+        int i = super.damageItem(stack, amount, entity, onBroken);
+        if(i + stack.getDamageValue() >= stack.getMaxDamage() && entity != null){
+            dropAllContents(entity.level, entity.position(), stack);
+        }
+        return i;
     }
 
     public int getMaxDamage(ItemStack stack) {
