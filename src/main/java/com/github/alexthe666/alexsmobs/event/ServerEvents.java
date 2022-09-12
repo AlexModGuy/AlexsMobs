@@ -11,7 +11,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.github.alexthe666.alexsmobs.item.ItemGhostlyPickaxe;
 import com.github.alexthe666.alexsmobs.misc.CapsidRecipeManager;
+import com.github.alexthe666.citadel.server.event.EventMergeStructureSpawns;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.StructureTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -827,6 +829,22 @@ public class ServerEvents {
         if(event.getEntity().isHolding(AMItemRegistry.GHOSTLY_PICKAXE.get()) && ItemGhostlyPickaxe.shouldStoreInGhost(event.getEntity(), event.getEntity().getMainHandItem())){
             //stops drops from being spawned
             event.setCanHarvest(false);
+        }
+    }
+
+    @SubscribeEvent
+    public void onMergeStructureSpawns(EventMergeStructureSpawns event) {
+        if(AMConfig.restrictUnderminerSpawns && event.isStructureTagged(StructureTags.MINESHAFT)){
+            boolean flag = false;
+            for(MobSpawnSettings.SpawnerData data : event.getStructureSpawns().unwrap()){
+                if(data.type == AMEntityRegistry.UNDERMINER.get()){
+                    flag = true;
+                }
+            }
+            if(flag){
+                event.mergeSpawns();
+                event.setResult(Event.Result.ALLOW);
+            }
         }
     }
 }
