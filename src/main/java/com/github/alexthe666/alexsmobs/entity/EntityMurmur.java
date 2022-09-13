@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -31,7 +33,12 @@ public class EntityMurmur extends Monster {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 48.0D).add(Attributes.ATTACK_DAMAGE, 3.0D).add(Attributes.KNOCKBACK_RESISTANCE, 0.3F).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
-    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 60, 1.0D, 14, 7));
+
+    }
+
+        @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(HEAD_UUID, Optional.empty());
@@ -61,7 +68,6 @@ public class EntityMurmur extends Monster {
         super.tick();
         this.yBodyRot = this.getYRot();
         this.yHeadRot = Mth.clamp(this.yHeadRot, this.yBodyRot - 70, this.yBodyRot + 70);
-
         if (!level.isClientSide) {
             Entity head = getHead();
             if(head == null){
@@ -76,7 +82,28 @@ public class EntityMurmur extends Monster {
         double d0 = Mth.lerp(partialTick, this.xo, this.getX());
         double d1 = Mth.lerp(partialTick, this.yo, this.getY());
         double d2 = Mth.lerp(partialTick, this.zo, this.getZ());
-        return new Vec3(d0, d1 + this.getBbHeight() - 0.4F, d2);
+        return new Vec3(d0, d1 + this.getBbHeight() - 0.4F + calculateWalkBounce(partialTick), d2);
+    }
+
+    public double calculateWalkBounce(float partialTick){
+        float limbSwingAmount = Mth.lerp(partialTick, this.animationSpeedOld, this.animationSpeed);
+        float limbSwing = this.animationPosition - this.animationSpeed * (1.0F - partialTick);
+        return Math.abs(Math.sin(limbSwing * 0.9F) * limbSwingAmount * 0.25F);
+    }
+
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.hasUUID("HeadUUID")) {
+            this.setHeadUUID(compound.getUUID("HeadUUID"));
+        }
+    }
+
+
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        if (this.getHeadUUID() != null) {
+            compound.putUUID("HeadUUID", this.getHeadUUID());
+        }
     }
 
     private LivingEntity createHead() {

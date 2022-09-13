@@ -1,12 +1,10 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityMungus;
 import com.github.alexthe666.alexsmobs.entity.EntityMurmur;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.entity.LivingEntity;
 
 public class ModelMurmurBody extends AdvancedEntityModel<EntityMurmur> {
     private final AdvancedModelBox root;
@@ -48,5 +46,15 @@ public class ModelMurmurBody extends AdvancedEntityModel<EntityMurmur> {
     @Override
     public void setupAnim(EntityMurmur entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
+        float walkSpeed = 0.9F;
+        float walkDegree = 0.6F;
+        float idleSpeed = 0.1F;
+        float idleDegree = 0.1F;
+        this.body.rotationPointY -= Math.abs(Math.sin(0.9F * limbSwing) * limbSwingAmount * 4F);
+        this.walk(arms, walkSpeed * 2F, walkDegree * 0.3F, false, -1, 0.15F, limbSwing, limbSwingAmount);
+        this.swing(arms, walkSpeed * 1F, walkDegree * 0.3F, false, -3F, 0F, limbSwing, limbSwingAmount);
+        progressRotationPrev(this.body, limbSwingAmount, (float)Math.toRadians(15), 0, 0, 1F);
+        progressPositionPrev(this.body, limbSwingAmount, 0, 2F, 4F, 1F);
+        this.walk(arms, idleSpeed, idleDegree, false, -1, 0.15F, ageInTicks, 1);
     }
 }

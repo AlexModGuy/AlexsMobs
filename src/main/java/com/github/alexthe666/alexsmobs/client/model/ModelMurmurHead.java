@@ -1,11 +1,11 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityMurmur;
 import com.github.alexthe666.alexsmobs.entity.EntityMurmurHead;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
     private final AdvancedModelBox root;
@@ -59,5 +59,44 @@ public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
     @Override
     public void setupAnim(EntityMurmurHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
+        float idleSpeed = 0.05F;
+        float idleDegree = 0.1F;
+        float partialTicks = ageInTicks - entity.tickCount;
+        //hair physics
+        if(ageInTicks > 5F){
+            float hairAnimateScale = Math.min(1F, (ageInTicks - 5F) / 10F);
+            double d0 = Mth.lerp((double)partialTicks, entity.prevXHair, entity.xHair) - Mth.lerp((double)partialTicks, entity.xo, entity.getX());
+            double d1 = Mth.lerp((double)partialTicks, entity.prevYHair, entity.yHair) - Mth.lerp((double)partialTicks, entity.yo, entity.getY());
+            double d2 = Mth.lerp((double)partialTicks, entity.prevZHair, entity.zHair) - Mth.lerp((double)partialTicks, entity.zo, entity.getZ());
+            float f = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO);
+            double d3 = (double)Mth.sin(f * ((float)Math.PI / 180F));
+            double d4 = (double)(-Mth.cos(f * ((float)Math.PI / 180F)));
+            float f1 = (float)d1 * 10.0F;
+            f1 = Mth.clamp(f1, -6.0F, 32.0F) * hairAnimateScale;
+            float f2 = (float)(d0 * d3 + d2 * d4) * 100.0F;
+            f2 = Mth.clamp(f2, 0.0F, 150.0F) * hairAnimateScale;
+            float f3 = (float)(d0 * d4 - d2 * d3) * 100.0F;
+            f3 = Mth.clamp(f3, -20.0F, 20.0F) * hairAnimateScale;
+            if (f2 < 0.0F) {
+                f2 = 0.0F;
+            }
+            f1 += Mth.sin(Mth.lerp(partialTicks, entity.walkDistO, entity.walkDist) * 6.0F) * 32.0F * 1F;
+            float hairX = (float)Math.toRadians(6.0F + f2 / 2.0F + f1 - 180);
+            float hairY = (float) Math.toRadians(f3 / 2.0F);
+            float hairZ = (float) Math.toRadians(180.0F - f3 / 2.0F);
+            this.backHair.rotateAngleX -= hairX;
+            this.backHair.rotateAngleY -= hairY;
+            this.backHair.rotateAngleZ -= hairZ;
+            this.rightHair.rotateAngleX -= hairX;
+            this.rightHair.rotateAngleY -= hairY;
+            this.rightHair.rotateAngleZ -= hairZ;
+            this.leftHair.rotateAngleX -= hairX;
+            this.leftHair.rotateAngleY -= hairY;
+            this.leftHair.rotateAngleZ -= hairZ;
+        }
+        this.walk(backHair, idleSpeed, idleDegree * 0.5F, false, 0F, -0.05F, ageInTicks, 1);
+        this.flap(rightHair, idleSpeed, idleDegree * 0.5F, false, 1F, 0.05F, ageInTicks, 1);
+        this.flap(leftHair, idleSpeed, idleDegree * 0.5F, true, 1F, 0.05F, ageInTicks, 1);
+
     }
 }
