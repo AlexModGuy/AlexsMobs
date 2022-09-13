@@ -212,7 +212,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             VertexConsumer beamStatic = bufferIn.getBuffer(AMRenderTypes.getFarseerBeam());
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, laserHeight, 0);
-            matrixStackIn.mulPose(Vector3f.YN.rotationDegrees( laserY));
+            matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(laserY));
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(laserX));
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90));
             float length = entityIn.getLaserDistance() * laserProgress;

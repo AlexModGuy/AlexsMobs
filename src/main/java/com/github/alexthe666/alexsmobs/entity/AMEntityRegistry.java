@@ -145,6 +145,8 @@ public class AMEntityRegistry {
     public static final RegistryObject<EntityType<EntityFarseer>> FARSEER = DEF_REG.register("farseer", () -> registerEntity(EntityType.Builder.of(EntityFarseer::new, MobCategory.MONSTER).sized(0.99F, 1.5F).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "farseer"));
     public static final RegistryObject<EntityType<EntitySkreecher>> SKREECHER = DEF_REG.register("skreecher", () -> registerEntity(EntityType.Builder.of(EntitySkreecher::new, MobCategory.MONSTER).sized(0.99F, 0.95F).setShouldReceiveVelocityUpdates(true).setUpdateInterval(1), "skreecher"));
     public static final RegistryObject<EntityType<EntityUnderminer>> UNDERMINER = DEF_REG.register("underminer", () -> registerEntity(EntityType.Builder.of(EntityUnderminer::new, MobCategory.MONSTER).sized(0.8F, 1.8F), "underminer"));
+    public static final RegistryObject<EntityType<EntityMurmur>> MURMUR = DEF_REG.register("murmur", () -> registerEntity(EntityType.Builder.of(EntityMurmur::new, MobCategory.MONSTER).sized(0.7F, 1.45F), "murmur"));
+    public static final RegistryObject<EntityType<EntityMurmurHead>> MURMUR_HEAD = DEF_REG.register("murmur_head", () -> registerEntity(EntityType.Builder.of(EntityMurmurHead::new, MobCategory.MONSTER).sized(0.55F, 0.55F), "murmur_head"));
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return (EntityType) builder.build(entityName);
@@ -322,6 +324,8 @@ public class AMEntityRegistry {
         event.put(FARSEER.get(), EntityFarseer.bakeAttributes().build());
         event.put(SKREECHER.get(), EntitySkreecher.bakeAttributes().build());
         event.put(UNDERMINER.get(), EntityUnderminer.bakeAttributes().build());
+        event.put(MURMUR.get(), EntityMurmur.bakeAttributes().build());
+        event.put(MURMUR_HEAD.get(), EntityMurmurHead.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){
