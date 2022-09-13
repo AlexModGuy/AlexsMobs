@@ -2,8 +2,42 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Warped Toad is a giant, rare amphibian native to the Warped Forests of the Nether. This neutral mutant frog is covered in glowing shroomlight fungus, which has a chance to drop when it dies.
-Although at home hopping along in the forests, it is also a skilled swimmer in both lava and water. Warped Toads favorite prey are Flies and Crimson Mosquitoes, which they will shoot their tongue out at extremely fast speeds to catch.
-Because these mosquitoes are rare in their native Warped Forests, these toads will do anything for Crimson Mosquito Larva - which can be crafted with a Maggot and a Crimson Mosquito Proboscis.
-Multiple larvae can be used to tame the Warped Toad, which can then be made to wander, stay or follow. The toad will defend its tamer when wandering or following, and can be a useful defense against the giant insects that roam the nether.
-These Toads can be healed with maggots, and bred with the aforementioned mosquito larva.
+    诡异蟾蜍是体型巨大且又稀有的两
+<NEWLINE>
+栖动物，生活在下界的诡异森林中。发
+<NEWLINE>
+光的菌光体覆盖在这种中立的变异青蛙
+<NEWLINE>
+身上，在它死亡时会有一定机会掉落。
+<NEWLINE>
+    虽然它们经常在森林老家里蹦蹦跳
+<NEWLINE>
+跳，但它们在熔岩和水中也是一名出色
+<NEWLINE>
+的游泳运动员。诡异蟾蜍最喜欢的猎物
+<NEWLINE>
+是苍蝇和绯红蚊子，它们会以极快的速
+<NEWLINE>
+度吐出舌头来捕捉猎物。
+<NEWLINE>
+    因为这些蚊子在它们所生存的诡异
+<NEWLINE>
+森林十分稀有。这些蟾蜍会为了绯红孑
+<NEWLINE>
+孓做任何事，绯红孑孓可以通过用蛆和
+<NEWLINE>
+绯红蚊子口器来合成获得。
+<NEWLINE>
+    多只绯红孑孓可以用来驯服诡异蟾
+<NEWLINE>
+蜍，驯服之后就可以命令其游荡、停留
+<NEWLINE>
+或者跟随。诡异蟾蜍在游荡或者跟随时
+<NEWLINE>
+会保护它的主人，并可以有效地抵抗游
+<NEWLINE>
+荡在下界中的巨型昆虫们。
+<NEWLINE>
+    通过喂食蛆可以来治疗这些蟾蜍，
+<NEWLINE>
+喂食上述的绯红孑孓可以繁殖它们。
