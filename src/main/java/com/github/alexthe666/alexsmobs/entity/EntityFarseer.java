@@ -571,12 +571,8 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY(), parentEntity.getZ() + extraZ);
-            BlockPos ground = getFarseerGround(radialPos);
-            if (ground.getY() <= 1) {
-                ground = ground.above(70 + parentEntity.random.nextInt(4));
-            } else {
-                ground = ground.above(2 + parentEntity.random.nextInt(2));
-            }
+            BlockPos ground = getFarseerGround(radialPos).above(2 + parentEntity.random.nextInt(2));
+
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(ground.above()))) {
                 return ground;
             }
@@ -594,6 +590,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         private int lasersShot = 0;
 
         public AttackGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
         @Override

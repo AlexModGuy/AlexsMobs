@@ -51,6 +51,7 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
     private static final ModelUnderminerDwarf DWARF_MODEL = new ModelUnderminerDwarf();
     private static HumanoidModel<EntityUnderminer> NORMAL_MODEL = null;
     private static final List<RenderType> DESTROY_TYPES = ModelBakery.BREAKING_LOCATIONS.stream().map(AMRenderTypes::getGhostCrumbling).collect(Collectors.toList());
+    public static boolean renderWithPickaxe = false;
 
     public RenderUnderminer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, DWARF_MODEL, 0.4F);

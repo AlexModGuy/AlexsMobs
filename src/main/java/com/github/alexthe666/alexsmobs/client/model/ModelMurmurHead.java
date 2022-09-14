@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 
 public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
@@ -56,12 +57,19 @@ public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
         return ImmutableList.of(root);
     }
 
+    public void animateHair(float ageInTicks){
+        float idleSpeed = 0.05F;
+        float idleDegree = 0.1F;
+        this.walk(backHair, idleSpeed, idleDegree * 0.5F, false, 0F, -0.05F, ageInTicks, 1);
+        this.flap(rightHair, idleSpeed, idleDegree * 0.5F, false, 1F, 0.05F, ageInTicks, 1);
+        this.flap(leftHair, idleSpeed, idleDegree * 0.5F, true, 1F, 0.05F, ageInTicks, 1);
+    }
+
     @Override
     public void setupAnim(EntityMurmurHead entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        float idleSpeed = 0.05F;
-        float idleDegree = 0.1F;
         float partialTicks = ageInTicks - entity.tickCount;
+        float angerProgress = entity.prevAngerProgress + (entity.angerProgress - entity.prevAngerProgress) * partialTicks;
         //hair physics
         if(ageInTicks > 5F){
             float hairAnimateScale = Math.min(1F, (ageInTicks - 5F) / 10F);
@@ -94,9 +102,11 @@ public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
             this.leftHair.rotateAngleY -= hairY;
             this.leftHair.rotateAngleZ -= hairZ;
         }
-        this.walk(backHair, idleSpeed, idleDegree * 0.5F, false, 0F, -0.05F, ageInTicks, 1);
-        this.flap(rightHair, idleSpeed, idleDegree * 0.5F, false, 1F, 0.05F, ageInTicks, 1);
-        this.flap(leftHair, idleSpeed, idleDegree * 0.5F, true, 1F, 0.05F, ageInTicks, 1);
+        this.animateHair(ageInTicks);
+        this.faceTarget(netHeadYaw, headPitch, 1, head);
+        progressRotationPrev(this.backHair, angerProgress, (float)Math.toRadians(-20F), 0, 0, 5F);
+        progressRotationPrev(this.rightHair, angerProgress, (float)Math.toRadians(-10F), 0, (float)Math.toRadians(25F), 5F);
+        progressRotationPrev(this.leftHair, angerProgress, (float)Math.toRadians(-10F), 0, (float)Math.toRadians(-25F), 5F);
 
     }
 }

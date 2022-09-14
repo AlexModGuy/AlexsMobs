@@ -1,19 +1,32 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
+import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -34,11 +47,41 @@ public class EntityMurmur extends Monster {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(7, new AnimalAIWanderRanged(this, 60, 1.0D, 14, 7));
-
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new AnimalAIWanderRanged(this, 55, 1.0D, 14, 7));
+        this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
     }
 
-        @Override
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return AMSoundRegistry.MURMUR_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return AMSoundRegistry.MURMUR_HURT.get();
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {
+    }
+
+    public static <T extends Mob> boolean checkMurmurSpawnRules(EntityType<EntityMurmur> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        return reason == MobSpawnType.SPAWNER || !iServerWorld.canSeeSky(pos) && pos.getY() <= AMConfig.murmurSpawnHeight && checkMonsterSpawnRules(entityType, iServerWorld, reason, pos, random);
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return AMEntityRegistry.rollSpawn(AMConfig.murmurSpawnRolls, this.getRandom(), spawnReasonIn) && super.checkSpawnRules(worldIn, spawnReasonIn);
+    }
+
+    public boolean isAlliedTo(Entity entity) {
+        return this.getHeadUUID() != null && entity.getUUID().equals(this.getHeadUUID()) || super.isAlliedTo(entity);
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 1.2F;
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(HEAD_UUID, Optional.empty());
@@ -82,7 +125,17 @@ public class EntityMurmur extends Monster {
         double d0 = Mth.lerp(partialTick, this.xo, this.getX());
         double d1 = Mth.lerp(partialTick, this.yo, this.getY());
         double d2 = Mth.lerp(partialTick, this.zo, this.getZ());
-        return new Vec3(d0, d1 + this.getBbHeight() - 0.4F + calculateWalkBounce(partialTick), d2);
+        double height = this.getBbHeight() - 0.4F + calculateWalkBounce(partialTick);
+        Vec3 rotatedOnDeath = new Vec3(0, height, 0);
+        if(this.deathTime > 0){
+            float f = ((float)this.deathTime + partialTick - 1.0F) / 20.0F * 1.6F;
+            f = Mth.sqrt(f);
+            if (f > 1.0F) {
+                f = 1.0F;
+            }
+            rotatedOnDeath = rotatedOnDeath.add(f * 0.1F, f * 0.4F, 0).zRot((float) (f * Math.PI / 2F)).yRot(-this.yBodyRot * ((float)Math.PI / 180F));
+        }
+        return new Vec3(d0, d1, d2).add(rotatedOnDeath);
     }
 
     public double calculateWalkBounce(float partialTick){
@@ -110,5 +163,13 @@ public class EntityMurmur extends Monster {
         EntityMurmurHead head = new EntityMurmurHead(this);
         level.addFreshEntity(head);
         return head;
+    }
+
+    public boolean isAngry(){
+        Entity entity = this.getHead();
+        if(entity instanceof EntityMurmurHead){
+            return ((EntityMurmurHead)entity).isAngry();
+        }
+        return false;
     }
 }

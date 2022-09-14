@@ -407,6 +407,16 @@ public class AMSoundRegistry {
 
     public static final RegistryObject<SoundEvent> UNDERMINER_STEP = createSoundEvent("underminer_step");
 
+    public static final RegistryObject<SoundEvent> MURMUR_HURT = createSoundEvent("murmur_hurt");
+
+    public static final RegistryObject<SoundEvent> MURMUR_IDLE = createSoundEvent("murmur_idle");
+
+    public static final RegistryObject<SoundEvent> MURMUR_NECK = createSoundEvent("murmur_neck");
+
+    public static final RegistryObject<SoundEvent> MURMUR_ATTACK = createSoundEvent("murmur_attack");
+
+    public static final RegistryObject<SoundEvent> MURMUR_ANGER = createSoundEvent("murmur_anger");
+
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

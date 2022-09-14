@@ -185,6 +185,10 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue skreecherSpawnRolls;
     public final ForgeConfigSpec.IntValue underminerSpawnWeight;
     public final ForgeConfigSpec.IntValue underminerSpawnRolls;
+    public final ForgeConfigSpec.IntValue murmurSpawnWeight;
+    public final ForgeConfigSpec.IntValue murmurSpawnRolls;
+    public final ForgeConfigSpec.IntValue murmurSpawnHeight;
+
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -255,8 +259,6 @@ public class CommonConfig {
         dolphinsAttackFlyingFish = buildBoolean(builder, "dolphinsAttackFlyingFish", "all", true, "Whether dolphins should target flying fish mobs.");
         lavaBottleEnabled = buildBoolean(builder, "lavaBottleEnabled", "all", true, "Whether lava can be bottled with a right click of a glass bottle.");
         neutralBoneSerpents = buildBoolean(builder, "neutralBoneSerpents", "all", false, "Whether bone serpents are neutral or hostile.");
-        caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, -64, 320, "Maximum world y-level that cave centipedes can spawn at");
-        blobfishSpawnHeight = buildInt(builder, "blobfishSpawnHeight", "all", AMConfig.blobfishSpawnHeight, -64, 320, "Maximum world y-level that blobfish can spawn at");
         mimicubeSpawnInEndCity = buildBoolean(builder, "mimicubeSpawnInEndCity", "all", true, "Whether mimicubes spawns should be restricted solely to the end city structure or to whatever biome is specified in their respective biome config.");
         mimicreamRepair = buildBoolean(builder, "mimicreamRepair", "all", true, "Whether mimicream can be used to duplicate items.");
         mimicreamBlacklist = builder.comment("Blacklist for items that mimicream cannot make a copy of. Ex: \"minecraft:stone_sword\", \"alexsmobs:blood_sprayer\"").defineList("mimicreamBlacklist", Lists.newArrayList("alexsmobs:blood_sprayer", "alexsmobs:hemolymph_blaster"), o -> o instanceof String);
@@ -427,7 +429,6 @@ public class CommonConfig {
         flutterSpawnRolls = buildInt(builder, "flutterSpawnRolls", "spawns", AMConfig.flutterSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         geladaMonkeySpawnWeight = buildInt(builder, "geladaMonkeySpawnWeight", "spawns", AMConfig.geladaMonkeySpawnWeight, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         geladaMonkeySpawnRolls = buildInt(builder, "geladaMonkeySpawnRolls", "spawns", AMConfig.geladaMonkeySpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
-        geladaMonkeySpawnHeight = buildInt(builder, "geladaMonkeySpawnRolls", "spawns", AMConfig.geladaMonkeySpawnRolls, -64, 320, "Minimum world y-level that gelada monkeys can spawn at");
         jerboaSpawnWeight = buildInt(builder, "jerboaSpawnWeight", "spawns", AMConfig.jerboaSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         jerboaSpawnRolls = buildInt(builder, "jerboaSpawnRolls", "spawns", AMConfig.jerboaSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         terrapinSpawnWeight = buildInt(builder, "terrapinSpawnWeight", "spawns", AMConfig.terrapinSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
@@ -466,17 +467,23 @@ public class CommonConfig {
         skreecherSpawnRolls = buildInt(builder, "skreecherSpawnRolls", "spawns", AMConfig.skreecherSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         underminerSpawnWeight = buildInt(builder, "underminerSpawnWeight", "spawns", AMConfig.underminerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         underminerSpawnRolls = buildInt(builder, "underminerSpawnRolls", "spawns", AMConfig.underminerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        murmurSpawnWeight = buildInt(builder, "murmurSpawnWeight", "spawns", AMConfig.murmurSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        murmurSpawnRolls = buildInt(builder, "murmurSpawnRolls", "spawns", AMConfig.murmurSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         builder.push("uniqueSpawning");
+        caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, -64, 320, "Maximum world y-level that cave centipedes can spawn at");
+        blobfishSpawnHeight = buildInt(builder, "blobfishSpawnHeight", "all", AMConfig.blobfishSpawnHeight, -64, 320, "Maximum world y-level that blobfish can spawn at");
         beachedCachalotWhales = buildBoolean(builder, "beachedCachalotWhales", "uniqueSpawning", true, "Whether to enable beached cachalot whales to spawn on beaches during thunder storms.");
         beachedCachalotWhaleSpawnChance = buildInt(builder, "beachedCachalotWhaleSpawnChance", "uniqueSpawning", AMConfig.beachedCachalotWhaleSpawnChance, 0, 100, "Percent chance increase for each failed attempt to spawn a beached cachalot whale. Higher value = more spawns.");
         beachedCachalotWhaleSpawnDelay = buildInt(builder, "beachedCachalotWhaleSpawnDelay", "uniqueSpawning", AMConfig.beachedCachalotWhaleSpawnDelay, 0, Integer.MAX_VALUE, "Delay (in ticks) between attempts to spawn beached cachalot whales. Default is a single day. Works like wandering traders.");
         leafcutterAnthillSpawnChance = buildDouble(builder, "leafcutterAnthillSpawnChance", "uniqueSpawning", AMConfig.leafcutterAnthillSpawnChance, 0D, 1D, "Percent chance for leafcutter anthills to spawn as world gen in each chunk. Set to zero to disable spawning.");
+        geladaMonkeySpawnHeight = buildInt(builder, "geladaMonkeySpawnRolls", "spawns", AMConfig.geladaMonkeySpawnRolls, -64, 320, "Minimum world y-level that gelada monkeys can spawn at");
         restrictPupfishSpawns = buildBoolean(builder, "restrictPupfishSpawns", "uniqueSpawning", true, "Whether to restrict all pupfish spawns to one chunk (similar to real life) or have them only obey their spawn config.");
         pupfishChunkSpawnDistance = buildInt(builder, "pupfishChunkSpawnDistance", "uniqueSpawning", AMConfig.pupfishChunkSpawnDistance, 2, 1000000000, "The maximum distance a pupfish spawn chunk is from world spawn(0, 0) in blocks.");
         restrictSkelewagSpawns = buildBoolean(builder, "restrictSkelewagSpawns", "uniqueSpawning", true, "Whether to restrict all skelewag spawns to shipwreck structures.");
         restrictFarseerSpawns = buildBoolean(builder, "restrictFarseerSpawns", "uniqueSpawning", true, "Whether to restrict all farseer spawns to near the world border.");
         restrictUnderminerSpawns = buildBoolean(builder, "restrictUnderminerSpawns", "uniqueSpawning", true, "Whether to restrict all underminer spawns to abandoned mineshafts.");
         farseerBorderSpawnDistance = buildInt(builder, "farseerBorderSpawnDistance", "uniqueSpawning", AMConfig.farseerBorderSpawnDistance, 2, 1000000000, "The maximum distance a farseer can spawn from the world border.");
+        murmurSpawnHeight = buildInt(builder, "murmurSpawnHeight", "all", AMConfig.murmurSpawnHeight, -64, 320, "Maximum world y-level that murmur can spawn at");
         builder.push("dangerZone");
         superSecretSettings = buildBoolean(builder, "superSecretSettings", "dangerZone", false, "Its been so long...");
     }

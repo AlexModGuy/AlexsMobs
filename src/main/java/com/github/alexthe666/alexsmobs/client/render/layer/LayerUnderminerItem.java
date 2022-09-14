@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderRaccoon;
 import com.github.alexthe666.alexsmobs.client.render.RenderUnderminer;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.alexsmobs.entity.EntityUnderminer;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
@@ -29,6 +30,9 @@ public class LayerUnderminerItem extends RenderLayer<EntityUnderminer, EntityMod
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityUnderminer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(!entitylivingbaseIn.isFullyHidden()){
             ItemStack itemstack = entitylivingbaseIn.getItemBySlot(EquipmentSlot.MAINHAND);
+            if(RenderUnderminer.renderWithPickaxe){
+                itemstack = new ItemStack(AMItemRegistry.GHOSTLY_PICKAXE.get());
+            }
             matrixStackIn.pushPose();
             matrixStackIn.pushPose();
             float f = entitylivingbaseIn.getMainArm() == HumanoidArm.LEFT ? 0.1F : -0.1F;

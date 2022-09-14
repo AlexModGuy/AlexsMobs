@@ -98,6 +98,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> farseer = Pair.of("alexsmobs:farseer", DefaultBiomes.FARSEER);
 	public static Pair<String, SpawnBiomeData> skreecher = Pair.of("alexsmobs:skreecher", DefaultBiomes.SKREECHER);
 	public static Pair<String, SpawnBiomeData> underminer = Pair.of("alexsmobs:underminer", DefaultBiomes.CAVES);
+	public static Pair<String, SpawnBiomeData> murmur = Pair.of("alexsmobs:murmur", DefaultBiomes.CAVES);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();

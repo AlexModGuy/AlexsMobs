@@ -122,6 +122,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         list.add(new Pair<>(AMEntityRegistry.FARSEER.get(),  0.6F));
         list.add(new Pair<>(AMEntityRegistry.SKREECHER.get(),  0.77F));
         list.add(new Pair<>(AMEntityRegistry.UNDERMINER.get(),  0.65F));
+        list.add(new Pair<>(AMEntityRegistry.MURMUR.get(),  0.65F));
     });
     public static int ticksExisted = 0;
     private static final ModelShieldOfTheDeep SHIELD_OF_THE_DEEP_MODEL = new ModelShieldOfTheDeep();
@@ -353,7 +354,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             if (ItemTabIcon.hasCustomEntityDisplay(itemStackIn)) {
                 flags = itemStackIn.getTag().getInt("DisplayMobFlags");
                 String index = ItemTabIcon.getCustomDisplayEntityString(itemStackIn);
-                EntityType local = ItemTabIcon.getEntityType(itemStackIn.getTag());
+                EntityType local =  ItemTabIcon.getEntityType(itemStackIn.getTag());
                 scale = getScaleFor(local);
                 if(itemStackIn.getTag().getFloat("DisplayMobScale") > 0){
                     scale = itemStackIn.getTag().getFloat("DisplayMobScale");
@@ -427,6 +428,13 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             if(fakeEntity instanceof EntityGiantSquid){
                 matrixStackIn.translate(0, 0.5F, 0.3F);
             }
+            if(fakeEntity instanceof EntityUnderminer) {
+                RenderUnderminer.renderWithPickaxe = true;
+            }
+            if(fakeEntity instanceof EntityMurmur){
+                RenderMurmurBody.renderWithHead = true;
+                matrixStackIn.translate(0, -0.2F, 0);
+            }
             if (fakeEntity != null) {
                 MouseHandler mouseHelper = Minecraft.getInstance().mouseHandler;
                 double mouseX = (mouseHelper.xpos() * (double) Minecraft.getInstance().getWindow().getGuiScaledWidth()) / (double) Minecraft.getInstance().getWindow().getScreenWidth();
@@ -439,6 +447,12 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     mouseY = 0;
                 }
                 drawEntityOnScreen(matrixStackIn, 0, 0, scale, true, 0, -45, 0, (float) mouseX, (float) mouseY, fakeEntity);
+            }
+            if(fakeEntity instanceof EntityUnderminer) {
+                RenderUnderminer.renderWithPickaxe = false;
+            }
+            if(fakeEntity instanceof EntityMurmur){
+                RenderMurmurBody.renderWithHead = false;
             }
         }
     }

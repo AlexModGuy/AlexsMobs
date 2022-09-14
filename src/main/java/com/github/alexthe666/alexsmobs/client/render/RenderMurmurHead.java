@@ -105,6 +105,6 @@ public class RenderMurmurHead extends MobRenderer<EntityMurmurHead, ModelMurmurH
 
 
     public ResourceLocation getTextureLocation(EntityMurmurHead entity) {
-        return RenderMurmurBody.TEXTURE;
+        return entity.isAngry() ? RenderMurmurBody.TEXTURE_ANGRY : RenderMurmurBody.TEXTURE;
     }
 }

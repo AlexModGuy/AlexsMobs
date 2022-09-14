@@ -174,6 +174,9 @@ public class AMConfig {
     public static int skreecherSpawnRolls = 1;
     public static int underminerSpawnWeight = 40;
     public static int underminerSpawnRolls = 3;
+    public static int murmurSpawnWeight = 4;
+    public static int murmurSpawnRolls = 1;
+    public static int murmurSpawnHeight = -30;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -427,6 +430,9 @@ public class AMConfig {
             skreecherSpawnRolls = ConfigHolder.COMMON.skreecherSpawnRolls.get();
             underminerSpawnWeight = ConfigHolder.COMMON.underminerSpawnWeight.get();
             underminerSpawnRolls = ConfigHolder.COMMON.underminerSpawnRolls.get();
+            murmurSpawnWeight = ConfigHolder.COMMON.murmurSpawnWeight.get();
+            murmurSpawnRolls = ConfigHolder.COMMON.murmurSpawnRolls.get();
+            murmurSpawnHeight = ConfigHolder.COMMON.murmurSpawnHeight.get();
 
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
