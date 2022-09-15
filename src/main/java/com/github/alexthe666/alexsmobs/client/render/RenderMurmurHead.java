@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec3;
 public class RenderMurmurHead extends MobRenderer<EntityMurmurHead, ModelMurmurHead> {
 
     private static final ModelMurmurNeck NECK_MODEL = new ModelMurmurNeck();
-    private static final int MAX_NECK_SEGMENTS = 128;
+    public static final int MAX_NECK_SEGMENTS = 128;
 
     public RenderMurmurHead(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMurmurHead(), 0.3F);
@@ -86,7 +86,7 @@ public class RenderMurmurHead extends MobRenderer<EntityMurmurHead, ModelMurmurH
         return Math.signum(dimension) * Mth.clamp(Math.pow(abs, 0.1), 0.01 * abs, abs);
     }
 
-    private void renderNeckCube(Vec3 from, Vec3 to, PoseStack poseStack, VertexConsumer buffer, int packedLightIn, int overlayCoords, float additionalYaw) {
+    public static void renderNeckCube(Vec3 from, Vec3 to, PoseStack poseStack, VertexConsumer buffer, int packedLightIn, int overlayCoords, float additionalYaw) {
         Vec3 sub = from.subtract(to);
         double d = sub.horizontalDistance();
         float rotY = (float) (Mth.atan2(sub.x, sub.z) * (double) (180F / (float) Math.PI));

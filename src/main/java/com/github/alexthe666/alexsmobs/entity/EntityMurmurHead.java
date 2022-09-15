@@ -153,6 +153,9 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
         return true;
     }
 
+    public MobType getMobType() {
+        return MobType.UNDEAD;
+    }
 
     @Nullable
     public UUID getBodyId() {
@@ -427,7 +430,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
             if(target != null){
                 double dist = Math.sqrt(EntityMurmurHead.this.distanceToSqr(target.getEyePosition()));
                 double bodyDist = body != null ? body.distanceTo(target) : 0.0;
-                if(bodyDist > 16){
+                if(bodyDist > 16 && time > 30){
                     if(body instanceof EntityMurmur){
                         EntityMurmur murmur = (EntityMurmur) body;
                         murmur.setTarget(target);

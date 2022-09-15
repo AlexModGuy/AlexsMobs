@@ -20,10 +20,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.github.alexthe666.alexsmobs.item.ItemBloodSprayer;
-import com.github.alexthe666.alexsmobs.item.ItemHemolymphBlaster;
-import com.github.alexthe666.alexsmobs.item.ItemTarantulaHawkElytra;
+import com.github.alexthe666.alexsmobs.item.*;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.Minecraft;
@@ -219,6 +216,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.UNDERMINER.get(), RenderUnderminer::new);
         EntityRenderers.register(AMEntityRegistry.MURMUR.get(), RenderMurmurBody::new);
         EntityRenderers.register(AMEntityRegistry.MURMUR_HEAD.get(), RenderMurmurHead::new);
+        EntityRenderers.register(AMEntityRegistry.TENDON_SEGMENT.get(), RenderTendonSegment::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try {
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -235,6 +233,9 @@ public class ClientProxy extends CommonProxy {
             });
             ItemProperties.register(AMItemRegistry.SOMBRERO.get(), new ResourceLocation("silly"), (stack, p_239421_1_, p_239421_2_, j) -> {
                 return AlexsMobs.isAprilFools() ? 1.0F : 0.0F;
+            });
+            ItemProperties.register(AMItemRegistry.TENDON_WHIP.get(), new ResourceLocation("active"), (stack, p_239421_1_, holder, j) -> {
+                return ItemTendonWhip.isActive(stack, holder) ? 1.0F : 0.0F;
             });
             ItemProperties.register(AMItemRegistry.PUPFISH_LOCATOR.get(), new ResourceLocation("in_chunk"), (stack, world, entity, j) -> {
                 int x = pupfishChunkX * 16;

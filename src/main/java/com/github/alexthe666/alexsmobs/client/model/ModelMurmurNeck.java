@@ -11,6 +11,7 @@ public class ModelMurmurNeck extends AdvancedEntityModel<LivingEntity> {
     private final AdvancedModelBox neckPivot;
     private final AdvancedModelBox neck;
     private float stretch;
+    public static boolean THIN = false;
 
     public ModelMurmurNeck() {
         texWidth = 128;
@@ -44,7 +45,8 @@ public class ModelMurmurNeck extends AdvancedEntityModel<LivingEntity> {
     public void setAttributes(float f, float rotX, float rotY, float additionalYaw){
         this.resetToDefaultPose();
         this.stretch = f;
-        this.neck.setScale(1.0F, this.stretch, 1.0F);
+        float f1 = THIN ? 0.75F : 1.0F;
+        this.neck.setScale(f1, this.stretch, f1);
         this.neckPivot.rotateAngleX = (float)Math.toRadians(rotX);
         this.neckPivot.rotateAngleY = (float)Math.toRadians(rotY);
         this.neck.rotateAngleY = (float)Math.toRadians(-additionalYaw);

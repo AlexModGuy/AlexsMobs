@@ -196,6 +196,7 @@ public class AMItemRegistry {
     public static final RegistryObject<Item> FARSEER_ARM = DEF_REG.register("farseer_arm", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE).rarity(Rarity.RARE)));
     public static final RegistryObject<Item> SKREECHER_SOUL = DEF_REG.register("skreecher_soul", () -> new Item(new Item.Properties().tab(AMItemGroup.INSTANCE)));
     public static final RegistryObject<Item> GHOSTLY_PICKAXE = DEF_REG.register("ghostly_pickaxe", () -> new ItemGhostlyPickaxe(new Item.Properties().tab(AMItemGroup.INSTANCE)));
+    public static final RegistryObject<Item> TENDON_WHIP = DEF_REG.register("tendon_whip", () -> new ItemTendonWhip(new Item.Properties().tab(AMItemGroup.INSTANCE)));
     public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE), 191 * 20));
     public static final RegistryObject<Item> MUSIC_DISC_DAZE = DEF_REG.register("music_disc_daze", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_DAZE, new Item.Properties().tab(AMItemGroup.INSTANCE).stacksTo(1).rarity(Rarity.RARE), 314 * 20));
 

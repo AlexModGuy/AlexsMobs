@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.ai.AnimalAILeaveWater;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -33,7 +34,7 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EntityMurmur extends Monster {
+public class EntityMurmur extends Monster implements ISemiAquatic {
 
     private static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(EntityMurmur.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> HEAD_ID = SynchedEntityData.defineId(EntityMurmur.class, EntityDataSerializers.INT);
@@ -48,7 +49,8 @@ public class EntityMurmur extends Monster {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new AnimalAIWanderRanged(this, 55, 1.0D, 14, 7));
+        this.goalSelector.addGoal(1, new AnimalAILeaveWater(this));
+        this.goalSelector.addGoal(2, new AnimalAIWanderRanged(this, 55, 1.0D, 14, 7));
         this.targetSelector.addGoal(0, (new HurtByTargetGoal(this)));
     }
 
@@ -76,9 +78,17 @@ public class EntityMurmur extends Monster {
         return this.getHeadUUID() != null && entity.getUUID().equals(this.getHeadUUID()) || super.isAlliedTo(entity);
     }
 
+    public MobType getMobType() {
+        return MobType.UNDEAD;
+    }
+
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
         return dimensions.height * 1.2F;
+    }
+
+    protected float getWaterSlowDown() {
+        return 0.9F;
     }
 
     @Override
@@ -142,6 +152,27 @@ public class EntityMurmur extends Monster {
         float limbSwingAmount = Mth.lerp(partialTick, this.animationSpeedOld, this.animationSpeed);
         float limbSwing = this.animationPosition - this.animationSpeed * (1.0F - partialTick);
         return Math.abs(Math.sin(limbSwing * 0.9F) * limbSwingAmount * 0.25F);
+    }
+
+
+    @Override
+    public boolean shouldEnterWater() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldLeaveWater() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldStopMoving() {
+        return false;
+    }
+
+    @Override
+    public int getWaterSearchRange(){
+        return 5;
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {

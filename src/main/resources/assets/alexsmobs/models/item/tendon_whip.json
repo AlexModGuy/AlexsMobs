@@ -1,0 +1,14 @@
+{
+  "parent": "item/handheld_rod",
+  "textures": {
+    "layer0": "alexsmobs:item/tendon_whip"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "active": 1
+      },
+      "model": "alexsmobs:item/tendon_whip_active"
+    }
+  ]
+}
