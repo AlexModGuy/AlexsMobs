@@ -33,6 +33,7 @@ public class ItemModArmor extends ArmorItem {
     private Multimap<Attribute, AttributeModifier> attributeMapCroc;
     private Multimap<Attribute, AttributeModifier> attributeMapMoose;
     private Multimap<Attribute, AttributeModifier> attributeMapFlyingFish;
+    private Multimap<Attribute, AttributeModifier> attributeMapKimono;
 
     public ItemModArmor(AMArmorMaterial armorMaterial, EquipmentSlot slot) {
         super(armorMaterial, slot, new Item.Properties().tab(AMItemGroup.INSTANCE));
@@ -74,6 +75,9 @@ public class ItemModArmor extends ArmorItem {
         if (this.material == AMItemRegistry.NOVELTY_HAT_MATERIAL) {
             tooltip.add(Component.translatable("item.alexsmobs.novelty_hat.desc").withStyle(ChatFormatting.GRAY));
         }
+        if (this.material == AMItemRegistry.KIMONO_MATERIAL) {
+            tooltip.add(Component.translatable("item.alexsmobs.unsettling_kimono.desc").withStyle(ChatFormatting.GRAY));
+        }
     }
 
     private void buildCrocAttributes(AMArmorMaterial materialIn) {
@@ -109,6 +113,14 @@ public class ItemModArmor extends ArmorItem {
         attributeMapMoose = builder.build();
     }
 
+    private void buildKimonoAttributes(AMArmorMaterial materialIn) {
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
+        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", materialIn.getToughness(), AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(uuid, "Reach distance", 2, AttributeModifier.Operation.ADDITION));
+        attributeMapKimono = builder.build();
+    }
 
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
         if (getMaterial() == AMItemRegistry.CROCODILE_ARMOR_MATERIAL && equipmentSlot == this.slot) {
@@ -128,6 +140,12 @@ public class ItemModArmor extends ArmorItem {
                 buildFlyingFishAttributes(AMItemRegistry.FLYING_FISH_MATERIAL);
             }
             return attributeMapFlyingFish;
+        }
+        if (getMaterial() == AMItemRegistry.KIMONO_MATERIAL && equipmentSlot == this.slot) {
+            if (attributeMapKimono == null) {
+                buildKimonoAttributes(AMItemRegistry.KIMONO_MATERIAL);
+            }
+            return attributeMapKimono;
         }
         return super.getDefaultAttributeModifiers(equipmentSlot);
     }

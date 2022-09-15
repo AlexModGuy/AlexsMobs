@@ -89,7 +89,6 @@ public class EntityUnderminer extends PathfinderMob {
 
     public static <T extends Mob> boolean checkUnderminerSpawnRules(EntityType<EntityUnderminer> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
         BlockState blockstate = iServerWorld.getBlockState(pos.below());
-        System.out.println(pos);
         return reason == MobSpawnType.SPAWNER || pos.getY() <= 64 && Monster.isDarkEnoughToSpawn(iServerWorld, pos, random);
     }
 

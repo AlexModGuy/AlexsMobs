@@ -1,5 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.gui;
 
+import com.github.alexthe666.alexsmobs.client.render.RenderMurmurBody;
+import com.github.alexthe666.alexsmobs.client.render.RenderUnderminer;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.citadel.client.gui.GuiBasicBook;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -40,7 +42,11 @@ public class GUIAnimalDictionary extends GuiBasicBook {
             stack.popPose();
             RenderSystem.applyModelViewMatrix();
         }
+        RenderMurmurBody.renderWithHead = true;
+        RenderUnderminer.renderWithPickaxe = true;
         super.render(matrixStack, x, y, partialTicks);
+        RenderMurmurBody.renderWithHead = false;
+        RenderUnderminer.renderWithPickaxe = false;
     }
 
     protected int getBindingColor() {

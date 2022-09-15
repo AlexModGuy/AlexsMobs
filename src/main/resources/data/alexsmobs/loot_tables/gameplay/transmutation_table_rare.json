@@ -20,8 +20,8 @@
         },
         {
           "type": "minecraft:item",
-          "weight": 4,
-          "name": "minecraft:copper_block"
+          "weight": 12,
+          "name": "minecraft:raw_copper"
         },
         {
           "type": "minecraft:item",

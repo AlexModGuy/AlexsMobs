@@ -7,6 +7,8 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.citadel.client.render.LightningBoltData;
 import com.github.alexthe666.citadel.client.render.LightningRender;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import com.mojang.math.Vector4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -15,6 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -54,9 +57,15 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             Vec3 from = distVec;
             int segmentCount = 0;
             Vec3 currentNeckButt = from;
-            RenderType renderType = RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE);
+            VertexConsumer consumer;
+            if(entity.hasGlint()){
+                consumer = VertexMultiConsumer.create(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutout(RenderMurmurBody.TEXTURE)));
+            }else{
+                consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE));
+            }
             ModelMurmurNeck.THIN = true;
             double remainingDistance = to.distanceTo(from);
+
             while (segmentCount < RenderMurmurHead.MAX_NECK_SEGMENTS && remainingDistance > 0) {
                 remainingDistance = Math.min(from.distanceTo(to), 0.5F);
                 Vec3 linearVec = to.subtract(currentNeckButt);
@@ -64,7 +73,7 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
                 Vec3 smoothedVec = powVec;
                 Vec3 next = smoothedVec.normalize().scale(remainingDistance).add(currentNeckButt);
                 int neckLight = getLightColor(entity, to.add(currentNeckButt).add(x, y, z));
-                RenderMurmurHead.renderNeckCube(currentNeckButt, next, poseStack, buffer.getBuffer(renderType), neckLight, OverlayTexture.NO_OVERLAY, 0);
+                RenderMurmurHead.renderNeckCube(currentNeckButt, next, poseStack, consumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
                 currentNeckButt = next;
                 segmentCount++;
             }
@@ -93,19 +102,19 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             }
             if ((this.entityRenderDispatcher.options == null || this.entityRenderDispatcher.options.getCameraType().isFirstPerson()) && player == Minecraft.getInstance().player) {
                 double d7 = 960.0D / (double)this.entityRenderDispatcher.options.fov().get().intValue();
-                Vec3 vec3 = this.entityRenderDispatcher.camera.getNearPlane().getPointOnPlane((float) i * 0.525F, -0.1F);
+                Vec3 vec3 = this.entityRenderDispatcher.camera.getNearPlane().getPointOnPlane((float) i * 0.6F, -0.7F);
                 vec3 = vec3.scale(d7);
                 vec3 = vec3.yRot(f1 * 0.25F);
                 vec3 = vec3.xRot(-f1 * 0.35F);
                 d4 = Mth.lerp((double) partialTicks, player.xo, player.getX()) + vec3.x;
                 d5 = Mth.lerp((double) partialTicks, player.yo, player.getY()) + vec3.y;
                 d6 = Mth.lerp((double) partialTicks, player.zo, player.getZ()) + vec3.z;
-                f3 = player.getEyeHeight() * 0.5F;
+                f3 = player.getEyeHeight() * 0.4F;
             } else {
-                d4 = Mth.lerp((double) partialTicks, player.xo, player.getX()) - d1 * d2 - d0 * 0.8D;
-                d5 = player.yo + (double) player.getEyeHeight() + (player.getY() - player.yo) * (double) partialTicks - 0.55D;
-                d6 = Mth.lerp((double) partialTicks, player.zo, player.getZ()) - d0 * d2 + d1 * 0.8D;
-                f3 = (player.isCrouching() ? -0.1875F : 0.0F) - player.getEyeHeight() * 0.2F;
+                d4 = Mth.lerp((double) partialTicks, player.xo, player.getX()) - d1 * d2 - d0 * 0.5D;
+                d5 = player.yo + (double) player.getEyeHeight() + (player.getY() - player.yo) * (double) partialTicks - 1D;
+                d6 = Mth.lerp((double) partialTicks, player.zo, player.getZ()) - d0 * d2 + d1 * 0.5D;
+                f3 = (player.isCrouching() ? -0.1875F : 0.0F) - player.getEyeHeight() * 0.25F;
             }
         }
 
@@ -119,7 +128,17 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
 
     private int getLightColor(Entity head, Vec3 vec3) {
         BlockPos blockpos = new BlockPos(vec3);
-        return head.level.hasChunkAt(blockpos) ? LevelRenderer.getLightColor(head.level, blockpos) : 0;
+        if(head.level.hasChunkAt(blockpos)){
+            int i = LevelRenderer.getLightColor(head.level, blockpos);
+            int j = LevelRenderer.getLightColor(head.level, blockpos.above());
+            int k = i & 255;
+            int l = j & 255;
+            int i1 = i >> 16 & 255;
+            int j1 = j >> 16 & 255;
+            return (k > l ? k : l) | (i1 > j1 ? i1 : j1) << 16;
+        }else{
+            return 0;
+        }
     }
 
     @Override

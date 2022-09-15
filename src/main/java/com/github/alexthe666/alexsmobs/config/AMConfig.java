@@ -172,9 +172,9 @@ public class AMConfig {
     public static int farseerSpawnRolls = 0;
     public static int skreecherSpawnWeight = 10;
     public static int skreecherSpawnRolls = 1;
-    public static int underminerSpawnWeight = 40;
-    public static int underminerSpawnRolls = 3;
-    public static int murmurSpawnWeight = 4;
+    public static int underminerSpawnWeight = 50;
+    public static int underminerSpawnRolls = 1;
+    public static int murmurSpawnWeight = 5;
     public static int murmurSpawnRolls = 1;
     public static int murmurSpawnHeight = -30;
 

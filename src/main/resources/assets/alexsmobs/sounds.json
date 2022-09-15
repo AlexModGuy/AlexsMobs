@@ -2804,6 +2804,21 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.murmur_attack"
   },
+  "tendon_whip": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:tendon_whip_0"
+      },
+      {
+        "name": "alexsmobs:tendon_whip_1"
+      },
+      {
+        "name": "alexsmobs:tendon_whip_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.tendon_whip"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [

@@ -41,6 +41,7 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
 
     protected EntityMurmur(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+        this.xpReward = 10;
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

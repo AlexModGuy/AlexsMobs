@@ -20,7 +20,7 @@ import java.util.Optional;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class ItemFalconryGlove extends Item {
+public class ItemFalconryGlove extends Item implements ILeftClick {
 
     public ItemFalconryGlove(Properties properties) {
         super(properties);
@@ -31,7 +31,7 @@ public class ItemFalconryGlove extends Item {
         consumer.accept((IClientItemExtensions) AlexsMobs.PROXY.getISTERProperties());
     }
 
-    public static void onLeftClick(Player playerIn, ItemStack stack) {
+    public boolean onLeftClick(ItemStack stack, LivingEntity playerIn) {
         if(stack.getItem() == AMItemRegistry.FALCONRY_GLOVE.get()){
             boolean flag = false;
             float dist = 128;
@@ -84,12 +84,15 @@ public class ItemFalconryGlove extends Item {
                         }else{
                             AlexsMobs.sendMSGToAll(new MessageSyncEntityPos(animal.getId(), playerIn.getX(), playerIn.getEyeY(), playerIn.getZ()));
                         }
-                        falcon.onLaunch(playerIn, pointedEntity);
-
+                        if(playerIn instanceof Player){
+                            falcon.onLaunch((Player)playerIn, pointedEntity);
+                        }
+                        return true;
                     }
                 }
             }
         }
+        return false;
     }
 
 }

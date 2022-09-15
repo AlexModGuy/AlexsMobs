@@ -9,12 +9,14 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.github.alexthe666.alexsmobs.item.ILeftClick;
 import com.github.alexthe666.alexsmobs.item.ItemGhostlyPickaxe;
-import com.github.alexthe666.alexsmobs.misc.CapsidRecipeManager;
+import com.github.alexthe666.alexsmobs.misc.*;
 import com.github.alexthe666.citadel.server.event.EventMergeStructureSpawns;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.StructureTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
@@ -50,9 +52,6 @@ import com.github.alexthe666.alexsmobs.entity.util.VineLassoUtil;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
 import com.github.alexthe666.alexsmobs.message.MessageSwingArm;
-import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
-import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
-import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
 
@@ -255,9 +254,18 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-        ItemFalconryGlove.onLeftClick(event.getEntity(), event.getEntity().getOffhandItem());
-        ItemFalconryGlove.onLeftClick(event.getEntity(), event.getEntity().getMainHandItem());
-        if (event.getLevel().isClientSide) {
+        boolean flag = false;
+        ItemStack leftItem = event.getEntity().getOffhandItem();
+        ItemStack rightItem = event.getEntity().getMainHandItem();
+        if(leftItem.getItem() instanceof ILeftClick){
+            ((ILeftClick)leftItem.getItem()).onLeftClick(leftItem, event.getEntity());
+            flag = true;
+        }
+        if(rightItem.getItem() instanceof ILeftClick){
+            ((ILeftClick)rightItem.getItem()).onLeftClick(rightItem, event.getEntity());
+            flag = true;
+        }
+        if (event.getLevel().isClientSide && flag) {
             AlexsMobs.sendMSGToServer(MessageSwingArm.INSTANCE);
         }
     }
@@ -637,6 +645,11 @@ public class ServerEvents {
         if (event.getTarget() != null && event.getEntity() instanceof Mob mob) {
             if (mob.getMobType() == MobType.ARTHROPOD) {
                 if (event.getTarget().hasEffect(AMEffectRegistry.BUG_PHEROMONES.get()) && event.getEntity().getLastHurtByMob() != event.getTarget()) {
+                    mob.setTarget(null);
+                }
+            }
+            if (mob.getMobType() == MobType.UNDEAD && !mob.getType().is(AMTagRegistry.IGNORES_KIMONO)) {
+                if (event.getTarget().getItemBySlot(EquipmentSlot.CHEST).is(AMItemRegistry.UNSETTLING_KIMONO.get()) && event.getEntity().getLastHurtByMob() != event.getTarget()) {
                     mob.setTarget(null);
                 }
             }

@@ -2,12 +2,14 @@ package com.github.alexthe666.alexsmobs.message;
 
 import java.util.function.Supplier;
 
+import com.github.alexthe666.alexsmobs.item.ILeftClick;
 import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
 public class MessageSwingArm {
@@ -34,8 +36,14 @@ public class MessageSwingArm {
             context.get().enqueueWork(() -> {
                 Player player = context.get().getSender();
                 if (player != null) {
-                    ItemFalconryGlove.onLeftClick(player, player.getItemInHand(InteractionHand.OFF_HAND));
-                    ItemFalconryGlove.onLeftClick(player, player.getItemInHand(InteractionHand.MAIN_HAND));
+                    ItemStack leftItem = player.getItemInHand(InteractionHand.OFF_HAND);
+                    ItemStack rightItem = player.getItemInHand(InteractionHand.MAIN_HAND);
+                    if(leftItem.getItem() instanceof ILeftClick){
+                        ((ILeftClick)leftItem.getItem()).onLeftClick(leftItem, player);
+                    }
+                    if(rightItem.getItem() instanceof ILeftClick){
+                        ((ILeftClick)rightItem.getItem()).onLeftClick(rightItem, player);
+                    }
                 }
             });
         }

@@ -94,13 +94,23 @@ public class RenderMurmurHead extends MobRenderer<EntityMurmurHead, ModelMurmurH
         poseStack.pushPose();
         poseStack.translate(from.x, from.y, from.z);
         NECK_MODEL.setAttributes((float) sub.length(), rotX, rotY, additionalYaw);
-        NECK_MODEL.renderToBuffer(poseStack, buffer, packedLightIn, overlayCoords, 1, 1F, 1, 1);
+        NECK_MODEL.renderToBuffer(poseStack, buffer, packedLightIn, overlayCoords, 1, 1F, 1, (float) Math.min(sub.length(), 0));
         poseStack.popPose();
     }
 
     private int getLightColor(EntityMurmurHead head, Vec3 vec3) {
         BlockPos blockpos = new BlockPos(vec3);
-        return head.level.hasChunkAt(blockpos) ? LevelRenderer.getLightColor(head.level, blockpos) : 0;
+        if(head.level.hasChunkAt(blockpos)){
+            int i = LevelRenderer.getLightColor(head.level, blockpos);
+            int j = LevelRenderer.getLightColor(head.level, blockpos.above());
+            int k = i & 255;
+            int l = j & 255;
+            int i1 = i >> 16 & 255;
+            int j1 = j >> 16 & 255;
+            return (k > l ? k : l) | (i1 > j1 ? i1 : j1) << 16;
+        }else{
+            return 0;
+        }
     }
 
 

@@ -84,6 +84,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     protected EntityFarseer(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.moveControl = new MoveController();
+        this.xpReward = 20;
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

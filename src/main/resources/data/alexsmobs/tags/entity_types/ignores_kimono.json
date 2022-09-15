@@ -1,0 +1,9 @@
+{
+  "__comment": "all undead mobs that ignore the neutrality effect of the kimono.",
+  "replace": false,
+  "values": [
+    "minecraft:wither",
+    "alexsmobs:murmur",
+    "alexsmobs:murmur_head"
+  ]
+}

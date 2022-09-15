@@ -71,6 +71,10 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
         return flyingpathnavigation;
     }
 
+    public int getExperienceReward() {
+        return 0;
+    }
+
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new AttackGoal());
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -94,7 +98,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.FOLLOW_RANGE, 48.0D).add(Attributes.ATTACK_DAMAGE, 3.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 48.0D).add(Attributes.ATTACK_DAMAGE, 3.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {
@@ -265,7 +269,10 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
     @Override
     public boolean hurt(DamageSource source, float damage) {
         Entity body = this.getBody();
-        if(!isInvulnerableTo(source) && body != null && body.hurt(source, 0.5F * damage)){
+        if(isInvulnerableTo(source)){
+            return false;
+        }
+        if(body != null && body.hurt(source, 0.5F * damage)){
             return true;
         }
         return super.hurt(source, damage);
