@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.world;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.citadel.config.ServerConfig;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +18,7 @@ public class AMMobSpawnBiomeModifier implements BiomeModifier {
 
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         if (phase == Phase.ADD) {
-            AMWorldRegistry.modifyBiome(biome, builder);
+            AMWorldRegistry.addBiomeSpawns(biome, builder);
         }
     }
 

@@ -8,6 +8,7 @@ import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -81,7 +82,7 @@ public class AMWorldRegistry {
         return result;
     }
 
-    public static void modifyBiome(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+    public static void addBiomeSpawns(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         if (testBiome(BiomeConfig.grizzlyBear, biome) && AMConfig.grizzlyBearSpawnWeight > 0) {
             builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.GRIZZLY_BEAR.get(), AMConfig.grizzlyBearSpawnWeight, 2, 3));
         }
@@ -271,13 +272,6 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.gelada_monkey, biome) && AMConfig.geladaMonkeySpawnWeight > 0) {
             builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.GELADA_MONKEY.get(), AMConfig.geladaMonkeySpawnWeight, 9, 16));
         }
-        if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
-            Optional<Holder<PlacedFeature>> optional = BuiltinRegistries.PLACED_FEATURE.getHolder(AMFeatureRegistry.PLACED_ANTHILL);
-            BuiltinRegistries.PLACED_FEATURE.stream().forEach((feature -> System.out.println(feature.feature().unwrapKey())));
-            if(optional.isPresent()){
-                builder.getGenerationSettings().getFeatures(GenerationStep.Decoration.SURFACE_STRUCTURES).add(optional.get());
-            }
-        }
         if (testBiome(BiomeConfig.jerboa, biome) && AMConfig.jerboaSpawnWeight > 0) {
             builder.getMobSpawnSettings().getSpawner(MobCategory.AMBIENT).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.JERBOA.get(), AMConfig.jerboaSpawnWeight, 1, 3));
         }
@@ -337,6 +331,12 @@ public class AMWorldRegistry {
         }
         if (testBiome(BiomeConfig.murmur, biome) && AMConfig.murmurSpawnWeight > 0) {
             builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.MURMUR.get(), AMConfig.murmurSpawnWeight, 1, 1));
+        }
+    }
+
+    public static void addBiomeFeatures(Holder<Biome> biome, HolderSet<PlacedFeature> features, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+        if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
+           features.stream().filter(placedFeatureHolder -> placedFeatureHolder.is(AMFeatureRegistry.PLACED_ANTHILL)).forEach(placedFeatureHolder ->  builder.getGenerationSettings().getFeatures(GenerationStep.Decoration.SURFACE_STRUCTURES).add(placedFeatureHolder));
         }
     }
 }
