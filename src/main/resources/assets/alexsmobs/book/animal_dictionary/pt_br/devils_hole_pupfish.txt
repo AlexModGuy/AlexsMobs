@@ -1,0 +1,11 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Filhotes do Vale da Morte são pequenos peixes conhecidos por serem os peixes mais raros do mundo, devido ao seu pequeno alcance. Esses peixinhos só podem desovar dentro de aquíferos subterrâneos em um única chunk no Overworld.
+Para encontrar a chunk que o Filhote do Vale da Morte chama de lar, você precisará criar um Estranho Localizador de Peixes, assim:
+<NEWLINE>
+<NEWLINE>
+Este dispositivo enviará uma onda sonora na direção da chunk.
+<NEWLINE>
+Depois de encontrar o peixinho, você pode notá-los perseguindo uns aos outros. É daí que eles recebem seu nome, pois o comportamento é uma reminiscência de filhotes brincando. Os filhotes subsistem comendo a sujeira da superfície de blocos musgosos submersos.
+Ocasionalmente, enquanto bicam esses blocos, eles podem expelir uma bola de slime. Ocasionalmente, eles se reproduzem com outros filhotes após se alimentarem de musgo. Filhotes do Vale da Morte pode ser pegos com baldes, como a maioria dos outros peixes.
