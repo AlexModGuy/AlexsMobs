@@ -246,6 +246,7 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         progressRotationPrev(left_arm, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(-90), 10F);
         progressPositionPrev(right_leg, swimProgress, 0, 2, 0, 10F);
         progressRotationPrev(right_leg, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(90), 10F);
+        progressPositionPrev(left_leg, swimProgress, 0, 2, 0, 10F);
         progressRotationPrev(left_leg, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(-90), 10F);
         progressPositionPrev(left_foot, swimProgress, -2, 0, 0, 10F);
         progressRotationPrev(left_foot, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
