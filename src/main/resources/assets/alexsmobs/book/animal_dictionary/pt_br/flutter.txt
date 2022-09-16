@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Florantes são pequenas criaturas plantóides encontradas no bioma das cavernas exuberantes. Eles são completamente passivos e evitam a maioria dos danos flutuando no ar batendo sua flor gigante.
+Florantes têm um interesse curioso em qualquer flor e podem ser domados dando-lhes 4-6 flores. Cada uma dessas flores deve ser diferente uma da outra, caso contrário o Florante ficará desinteressado.
+<NEWLINE>
+Quando domados, os Florantes podem ser feitos para ficar, seguir ou vagar. Ao defender seu dono de qualquer ameaça, o Florante flutuará no céu e atirará bolas de pólen no atacante. Essas bolas de pólen podem atingir o atacante, tornando vários Florantes muito úteis para exploradores de cavernas.
+Embora tenham pouca saúde, os Florantes podem ser equipados com um vaso de flores para dar-lhes armadura adicional. Um Florante em um pote também pode ser pego ao agachar=se. Florantes podem ser curados com flores.
+<NEWLINE>
+Como os Florantes são plantas, eles podem ser procriados com farinha de ossos. Ao reproduzir Florantes perto de arbustos ou folhas de azaléia, há uma chance de os arbustos ou folhas de azaléia florescerem. Se morto, Florante pode soltar uma flor de esporos.
