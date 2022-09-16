@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Os tucanos são pequenos pássaros coloridos com bicos enormes. Eles podem ser encontrados em árvores nos biomas da selva. Os tucanos vêm em uma variedade de cores deslumbrantes.
+<NEWLINE>
+Esses pássaros passivos têm uma afinidade séria por frutas de todos os tipos. Quando alimentado com uma maçã, banana ou outra fruta que vem de uma árvore, há uma chance de um tucano colocar uma muda dessa árvore em algum lugar do mundo com seu bico. Alimentá-lo com uma maçã resultará em uma muda de carvalho, e uma banana resultará em uma muda de selva.
+<NEWLINE>
+Quando alimentado com uma maçã dourada, um tucano se transformará momentaneamente em um tucano dourado e plantará mudas em um ritmo muito mais rápido. Alimentar um tucano com uma Maçã Dourada Encantada resulta em um tucano que não precisa ser alimentado constantemente com frutas para colocar as mudas. Tucanos podem ser procriados com ovos.
