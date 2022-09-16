@@ -312,8 +312,12 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
                 this.hurt(DamageSource.DROWN, 2.0F);
             }
         } else {
-            this.setAirSupply(24000);
+            this.setAirSupply(getMaxAirSupply());
         }
+    }
+
+    public int getMaxAirSupply() {
+        return 600;
     }
 
     public void travel(Vec3 travelVector) {
