@@ -351,12 +351,12 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
 
     @Override
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.fromBucket();
+        return super.requiresCustomPersistence() || this.fromBucket() || this.hasCustomName();
     }
 
     @Override
-    public boolean removeWhenFarAway(double p_213397_1_) {
-        return !this.fromBucket() && !this.hasCustomName();
+    public boolean removeWhenFarAway(double dist) {
+        return !this.fromBucket() && !this.requiresCustomPersistence();
     }
 
     public void tick() {
