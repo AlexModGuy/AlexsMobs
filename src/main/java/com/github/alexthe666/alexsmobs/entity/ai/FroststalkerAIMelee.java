@@ -14,7 +14,6 @@ import java.util.EnumSet;
 public class FroststalkerAIMelee extends Goal {
 
     private final EntityFroststalker froststalker;
-    private LivingEntity target;
     private boolean willJump = false;
     private boolean hasJumped = false;
     private boolean clockwise = false;
@@ -41,12 +40,12 @@ public class FroststalkerAIMelee extends Goal {
     }
 
     public boolean canContinueToUse() {
+        LivingEntity target = froststalker.getTarget();
         return target != null && !froststalker.isValidLeader(target);
     }
 
     
     public void start() {
-        target = froststalker.getTarget();
         willJump = froststalker.getRandom().nextInt(2) == 0;
         hasJumped = false;
         clockwise = froststalker.getRandom().nextBoolean();
@@ -60,7 +59,7 @@ public class FroststalkerAIMelee extends Goal {
     public void tick() {
         froststalker.setBipedal(true);
         froststalker.standFor(20);
-        target = froststalker.getTarget();
+        LivingEntity target = froststalker.getTarget();
         boolean flag = false;
         if ((hasJumped || froststalker.isTackling()) && froststalker.isOnGround()) {
             hasJumped = false;
@@ -70,7 +69,7 @@ public class FroststalkerAIMelee extends Goal {
         if (target != null && target.isAlive()) {
             if (pursuitTime < maxPursuitTime) {
                 pursuitTime++;
-                pursuitPos = getBlockNearTarget();
+                pursuitPos = getBlockNearTarget(target);
 
                 float extraSpeed = 0.2F * Math.max(5F - froststalker.distanceTo(target), 0F);
                 if (pursuitPos != null) {
@@ -86,7 +85,7 @@ public class FroststalkerAIMelee extends Goal {
                     this.froststalker.setTackling(true);
                     hasJumped = true;
                     Vec3 vector3d = this.froststalker.getDeltaMovement();
-                    Vec3 vector3d1 = new Vec3(this.target.getX() - this.froststalker.getX(), 0.0D, this.target.getZ() - this.froststalker.getZ());
+                    Vec3 vector3d1 = new Vec3(target.getX() - this.froststalker.getX(), 0.0D, target.getZ() - this.froststalker.getZ());
                     if (vector3d1.lengthSqr() > 1.0E-7D) {
                         vector3d1 = vector3d1.normalize().scale(0.9D).add(vector3d.scale(0.8D));
                     }
@@ -120,7 +119,7 @@ public class FroststalkerAIMelee extends Goal {
         }
     }
 
-    public BlockPos getBlockNearTarget() {
+    public BlockPos getBlockNearTarget(LivingEntity target) {
         float radius = froststalker.getRandom().nextInt(5) + 3 + target.getBbWidth();
         float neg = froststalker.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = froststalker.yBodyRot;

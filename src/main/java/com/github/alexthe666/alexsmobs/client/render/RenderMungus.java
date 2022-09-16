@@ -32,7 +32,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
     private static final ResourceLocation TEXTURE_BEAM_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/mungus_beam_overlay.png");
     private static final ResourceLocation TEXTURE_SACK_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/mungus_sack.png");
     private static final ResourceLocation TEXTURE_SHOES = new ResourceLocation("alexsmobs:textures/entity/mungus_shoes.png");
-    private static final RenderType beamType = AMRenderTypes.getMungusBeam(BEAM_TEXTURE);
+    private static final RenderType beamType = AMRenderTypes.getEyesNoFog(BEAM_TEXTURE);
 
     public RenderMungus(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelMungus(0), 0.5F);
@@ -149,7 +149,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             float f28 = 0.4999F;
             float f29 = -1.0F + f2;
             float f30 = f4 * 0.5F + f29;
-            VertexConsumer ivertexbuilder = bufferIn.getBuffer(AMRenderTypes.getMungusBeam(BEAM_TEXTURE));
+            VertexConsumer ivertexbuilder = bufferIn.getBuffer(beamType);
             PoseStack.Pose matrixstack$entry = matrixStackIn.last();
             Matrix4f matrix4f = matrixstack$entry.pose();
             Matrix3f matrix3f = matrixstack$entry.normal();
@@ -190,7 +190,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             float alpha = 0.75F + (Mth.cos(ageInTicks * 0.2F) + 1F) * 0.125F;
             this.getParentModel().renderToBuffer(matrixStackIn, lead, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
             if (entitylivingbaseIn.getBeamTarget() != null) {
-                VertexConsumer beam = bufferIn.getBuffer(AMRenderTypes.getMungusBeam(TEXTURE_BEAM_OVERLAY));
+                VertexConsumer beam = bufferIn.getBuffer(AMRenderTypes.getGhost(TEXTURE_BEAM_OVERLAY));
                 float beamAlpha = 0.75F + (Mth.cos(ageInTicks * 1) + 1F) * 0.125F;
                 this.getParentModel().renderToBuffer(matrixStackIn, beam, 240, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0), 1.0F, 1.0F, 1.0F, beamAlpha);
             }
