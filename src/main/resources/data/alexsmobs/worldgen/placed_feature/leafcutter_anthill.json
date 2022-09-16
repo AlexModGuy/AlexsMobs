@@ -1,0 +1,8 @@
+{
+  "feature": "alexsmobs:leafcutter_anthill",
+  "placement": [
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class AMMobSpawnBiomeModifier  implements BiomeModifier {
+public class AMMobSpawnBiomeModifier implements BiomeModifier {
     private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(new ResourceLocation(AlexsMobs.MODID, "am_mob_spawns"), ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
 
     public AMMobSpawnBiomeModifier() {
