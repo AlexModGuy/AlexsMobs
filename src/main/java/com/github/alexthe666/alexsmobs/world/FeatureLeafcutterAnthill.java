@@ -61,6 +61,9 @@ public class FeatureLeafcutterAnthill extends Feature<NoneFeatureConfiguration> 
         heightPos = heightPos.offset(-chunkSeedRandom.nextInt(2), 0, -chunkSeedRandom.nextInt(2));
         if (context.level().getBlockState(heightPos.above(outOfGround + 1)).getBlock() != AMBlockRegistry.LEAFCUTTER_ANTHILL.get() && context.level().getBlockState(heightPos.above(outOfGround - 1)).getBlock() != AMBlockRegistry.LEAFCUTTER_ANTHILL.get()) {
             context.level().setBlock(heightPos.above(outOfGround), AMBlockRegistry.LEAFCUTTER_ANTHILL.get().defaultBlockState(), 4);
+            for(int airs = 1; airs < 3; airs++){
+                context.level().setBlock(heightPos.above(outOfGround + airs), Blocks.AIR.defaultBlockState(), 4);
+            }
             BlockEntity tileentity = context.level().getBlockEntity(heightPos.above(outOfGround));
             if (tileentity instanceof TileEntityLeafcutterAnthill) {
                 TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill)tileentity;
