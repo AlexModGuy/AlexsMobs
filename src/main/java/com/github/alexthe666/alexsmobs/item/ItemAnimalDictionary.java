@@ -58,7 +58,7 @@ public class ItemAnimalDictionary extends Item {
             }
             AlexsMobs.PROXY.openBookGUI(itemStackIn, id);
         }
-        return InteractionResult.PASS;
+        return InteractionResult.CONSUME;
     }
 
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {

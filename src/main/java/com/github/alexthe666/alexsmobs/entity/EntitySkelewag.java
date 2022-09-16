@@ -281,14 +281,17 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         }
 
         public void tick(){
-            double dist = this.fish.distanceTo(this.fish.getTarget());
-            if(dist > 5){
-                isCharging = true;
-            }
-            this.fish.getNavigation().moveTo(this.fish.getTarget(), isCharging ? 1.3F : 0.8F);
-            if(dist < 2.0F + 3.0F + this.fish.getTarget().getBbWidth() / 2){
-                this.fish.setAnimation(isCharging ? ANIMATION_STAB : random.nextBoolean() ? ANIMATION_SLASH : ANIMATION_STAB);
-                isCharging = false;
+            LivingEntity target = this.fish.getTarget();
+            if(target != null){
+                double dist = this.fish.distanceTo(target);
+                if(dist > 5){
+                    isCharging = true;
+                }
+                this.fish.getNavigation().moveTo(target, isCharging ? 1.3F : 0.8F);
+                if(dist < 2.0F + 3.0F + target.getBbWidth() / 2){
+                    this.fish.setAnimation(isCharging ? ANIMATION_STAB : random.nextBoolean() ? ANIMATION_SLASH : ANIMATION_STAB);
+                    isCharging = false;
+                }
             }
         }
 
