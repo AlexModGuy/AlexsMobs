@@ -15,12 +15,12 @@
   "entity_renders": [
     {
       "entity": "alexsmobs:elephant",
-      "x": 116,
-      "y": 90,
+      "x": 92,
+      "y": 120,
       "page" : 0,
-      "scale": 0.5,
+      "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 245,
+      "rot_y": 225,
       "rot_z": 0,
       "follow_cursor": false
     }
