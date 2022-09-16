@@ -582,6 +582,7 @@ public class EntityPotoo extends Animal implements IFalconry {
         private BlockPos perch = null;
         private Direction perchDirection = null;
         private int perchingTime = 0;
+        private int runCooldown = 0;
 
         public AIPerch() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
@@ -592,7 +593,9 @@ public class EntityPotoo extends Animal implements IFalconry {
             if (EntityPotoo.this.getTarget() != null && EntityPotoo.this.getTarget().isAlive()) {
                 return false;
             }
-            if (!EntityPotoo.this.isPerching() && EntityPotoo.this.perchCooldown == 0 && EntityPotoo.this.random.nextInt(25) == 0) {
+            if(runCooldown > 0){
+                runCooldown--;
+            }else if (!EntityPotoo.this.isPerching() && EntityPotoo.this.perchCooldown == 0 && EntityPotoo.this.random.nextInt(35) == 0) {
                 this.perchingTime = 0;
                 if (EntityPotoo.this.getPerchPos() != null && EntityPotoo.this.isValidPerchFromSide(EntityPotoo.this.getPerchPos(), EntityPotoo.this.getPerchDirection())) {
                     perch = EntityPotoo.this.getPerchPos();
@@ -600,6 +603,7 @@ public class EntityPotoo extends Animal implements IFalconry {
                 } else {
                     findPerch();
                 }
+                runCooldown = 120 + EntityPotoo.this.getRandom().nextInt(140);
                 return perch != null && perchDirection != null;
             }
             return false;
