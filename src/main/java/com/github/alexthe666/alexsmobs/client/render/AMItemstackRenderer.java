@@ -447,7 +447,11 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     mouseX = 0;
                     mouseY = 0;
                 }
-                drawEntityOnScreen(matrixStackIn, 0, 0, scale, true, 0, -45, 0, (float) mouseX, (float) mouseY, fakeEntity);
+                try{
+                    drawEntityOnScreen(matrixStackIn, 0, 0, scale, true, 0, -45, 0, (float) mouseX, (float) mouseY, fakeEntity);
+                }catch (Exception e){
+
+                }
             }
             if(fakeEntity instanceof EntityLaviathan){
                 RenderLaviathan.renderWithoutShaking = false;
