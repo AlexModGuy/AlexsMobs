@@ -252,7 +252,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             feedingsSinceLastShear = 0;
             this.setSheared(false);
         }
-        if (!level.isClientSide && this.isCharging() && this.getTarget() == null && this.chargePartner == null) {
+        if (!level.isClientSide && this.isCharging() && (this.getTarget() == null && this.chargePartner == null || this.isInWaterOrBubble())) {
             this.setCharging(false);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -421,7 +421,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     }
 
     public boolean isValidCharging() {
-        return !this.isBaby() && this.isAlive() && chargeCooldown == 0;
+        return !this.isBaby() && this.isAlive() && chargeCooldown == 0 && !this.isInWaterOrBubble();
     }
 
 
