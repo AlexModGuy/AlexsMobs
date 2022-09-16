@@ -121,10 +121,10 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             if(random.nextFloat() < 0.45F){
                 EntityStraddler straddler = AMEntityRegistry.STRADDLER.get().create(level);
                 straddler.copyPosition(this);
-                if(!level.isClientSide){
-                    level.addFreshEntity(straddler);
+                if(!level.isClientSide && level.addFreshEntity(straddler)){
+                    this.remove(RemovalReason.DISCARDED);
+
                 }
-                this.remove(RemovalReason.DISCARDED);
             }
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
