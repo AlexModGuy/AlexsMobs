@@ -690,7 +690,7 @@ public class ServerEvents {
             }
             if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()) {
                 if (!player.isEyeInFluid(FluidTags.WATER)) {
-                    player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 210, 0, false, false, true));
+                    player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 310, 0, false, false, true));
                 }
             }
         }
