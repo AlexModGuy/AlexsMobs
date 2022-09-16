@@ -144,7 +144,11 @@ public class LayerMimicubeHelmet extends RenderLayer<EntityMimicube, ModelMimicu
 
 
     protected HumanoidModel<?> getArmorModelHook(LivingEntity entity, ItemStack itemStack, EquipmentSlot slot, HumanoidModel model) {
-        Model basicModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
-        return basicModel instanceof HumanoidModel ? (HumanoidModel<?>) basicModel : model;
+        try{
+            Model basicModel = net.minecraftforge.client.ForgeHooksClient.getArmorModel(entity, itemStack, slot, model);
+            return basicModel instanceof HumanoidModel ? (HumanoidModel<?>) basicModel : model;
+        }catch (Exception e){
+            return model;
+        }
     }
 }
