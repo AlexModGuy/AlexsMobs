@@ -16,9 +16,9 @@
     {
       "entity": "alexsmobs:grizzly_bear",
       "x": 90,
-      "y": 95,
+      "y": 100,
       "page" : 0,
-      "scale": 1.2,
+      "scale": 1.05,
       "rot_x": 30,
       "rot_y": 225,
       "rot_z": 0,
