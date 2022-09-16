@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Rinocerontes são grandes mamíferos blindados encontrados em grupos dentro de biomas de savana.
+Eles têm grandes chifres na cabeça que usarão para atacar qualquer ameaça que se aproxime demais.
+Os rinocerontes não gostam muito de qualquer Saqueador, e vão procurá-los à vista.
+Esses animais com chifres e armaduras podem causar grandes danos muito rapidamente.
+<NEWLINE>
+Esses animais são inicialmente nervosos com os jogadores, mas podem ser pacificados alimentando-os com trigo.
+Se uma poção for usada em um rinoceronte, a poção será aplicada em seu chifre. Qualquer criatura atacada pelo Rinoceronte será então infligida com o efeito da poção.
+Essas poções durarão de 15 a 20 ataques antes de desaparecerem. Rinocerontes amigos podem ajudar qualquer um que os tenha alimentado com trigo e vagarão por qualquer aldeia próxima por segurança.
+<NEWLINE>
+O rinoceronte pode ser procriado com grama alta ou arbustos mortos.
