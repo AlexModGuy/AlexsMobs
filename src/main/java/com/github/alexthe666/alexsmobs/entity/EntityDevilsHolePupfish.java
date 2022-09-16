@@ -67,7 +67,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     private static final EntityDataAccessor<Float> PUPFISH_SCALE = SynchedEntityData.defineId(EntityDevilsHolePupfish.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> FEEDING_TIME = SynchedEntityData.defineId(EntityDevilsHolePupfish.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BABY_AGE = SynchedEntityData.defineId(EntityDevilsHolePupfish.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Optional<BlockPos>> FEEDING_POS = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
+    private static final EntityDataAccessor<Optional<BlockPos>> FEEDING_POS = SynchedEntityData.defineId(EntityDevilsHolePupfish.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
     public float prevOnLandProgress;
     public float onLandProgress;
     public float prevFeedProgress;

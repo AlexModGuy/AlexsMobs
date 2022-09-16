@@ -47,7 +47,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
 
     public static final Animation ANIMATION_STAB = Animation.create(10);
     public static final Animation ANIMATION_SLASH = Animation.create(25);
-    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityMantisShrimp.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntitySkelewag.class, EntityDataSerializers.INT);
     private int animationTick;
     private Animation currentAnimation;
     public float prevOnLandProgress;
