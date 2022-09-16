@@ -79,6 +79,11 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
                     }
                 }
             }
+            if(closestValid != null){
+                stack.hurtAndBreak(1, playerIn, (player) -> {
+                    player.broadcastBreakEvent(playerIn.getUsedItemHand());
+                });
+            }
             return launchTendonsAt(stack, playerIn, closestValid);
         }
         return false;

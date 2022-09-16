@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -49,6 +52,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -107,6 +112,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     private int dismountCooldown = 0;
     private int headPeakCooldown = 0;
     private boolean hasObsidianArmor;
+    private int blockBreakCounter;
 
     protected EntityLaviathan(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -704,6 +710,43 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
         }
     }
+
+
+    public void customServerAiStep() {
+        super.customServerAiStep();
+        breakBlock();
+    }
+
+    public void breakBlock() {
+        if (this.blockBreakCounter > 0) {
+            --this.blockBreakCounter;
+            return;
+        }
+        boolean flag = false;
+        if (!level.isClientSide && this.isVehicle() && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
+            for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
+                for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
+                    for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
+                        BlockPos pos = new BlockPos(a, b, c);
+                        BlockState state = level.getBlockState(pos);
+                        FluidState fluidState = level.getFluidState(pos);
+                        Block block = state.getBlock();
+                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && state.is(AMTagRegistry.LAVIATHAN_BREAKABLES) && fluidState.isEmpty()) {
+                            if (block != Blocks.AIR) {
+                                this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
+                                flag = true;
+                                level.destroyBlock(pos, true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (flag) {
+            blockBreakCounter = 10;
+        }
+    }
+
 
     public float getLowHeadHeight() {
         float checkAt = 0F;

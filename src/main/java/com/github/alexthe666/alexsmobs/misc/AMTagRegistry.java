@@ -89,6 +89,7 @@ public class AMTagRegistry {
     public static final TagKey<Block> PUPFISH_EATABLES = registerBlockTag("pupfish_eatables");
     public static final TagKey<Block> POTOO_PERCHES = registerBlockTag("potoo_perches");
     public static final TagKey<EntityType<?>> IGNORES_KIMONO = registerEntityTag("ignores_kimono");
+    public static final TagKey<Block> LAVIATHAN_BREAKABLES = registerBlockTag("laviathan_breakables");
 
     public static final TagKey<Biome> SPAWNS_DESERT_CROCODILES = registerBiomeTag("spawns_desert_crocodiles");
     public static final TagKey<Biome> SPAWNS_RED_GUSTERS = registerBiomeTag("spawns_red_gusters");
