@@ -96,6 +96,7 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
             if (!worldIn.isClientSide) {
                 if (closestValid != null) {
                     EntityTendonSegment segment = AMEntityRegistry.TENDON_SEGMENT.get().create(worldIn);
+                    segment.copyPosition(playerIn);
                     worldIn.addFreshEntity(segment);
                     segment.setCreatorEntityUUID(playerIn.getUUID());
                     segment.setFromEntityID(playerIn.getId());

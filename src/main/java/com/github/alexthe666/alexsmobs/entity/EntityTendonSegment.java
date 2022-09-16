@@ -132,7 +132,7 @@ public class EntityTendonSegment  extends Entity {
                 }else if(creator instanceof LivingEntity && this.getProgress() >= MAX_EXTEND_TIME) {
                     Entity closestValid = null;
                     for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8.0D))) {
-                        if (!entity.equals(creator) && !previouslyTouched.contains(entity) && !creator.isAlliedTo(entity) && !entity.isAlliedTo(creator) && entity instanceof Mob && this.hasLineOfSight(entity)) {
+                        if (!entity.equals(creator) && !previouslyTouched.contains(entity) && isValidTarget((LivingEntity) creator, entity) && this.hasLineOfSight(entity)) {
                             if (closestValid == null || this.distanceTo(entity) < this.distanceTo(closestValid)) {
                                 closestValid = entity;
                             }
@@ -152,6 +152,13 @@ public class EntityTendonSegment  extends Entity {
         double d2 = this.getZ() + vector3d.z;
         this.setDeltaMovement(vector3d.scale(0.99F));
         this.setPos(d0, d1, d2);
+    }
+
+    private boolean isValidTarget(LivingEntity creator, Entity entity) {
+        if(!creator.isAlliedTo(entity) && !entity.isAlliedTo(creator) && entity instanceof Mob){
+            return true;
+        }
+        return creator.getLastHurtMob() != null && creator.getLastHurtMob().getUUID().equals(entity.getUUID()) || creator.getLastHurtByMob() != null && creator.getLastHurtByMob().getUUID().equals(entity.getUUID());
     }
 
     private double getDamageFor(LivingEntity creator, LivingEntity entity) {

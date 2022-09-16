@@ -287,8 +287,7 @@ public class EntityVoidWorm extends Monster {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 0.01, 0));
             }
         }
-        if (Math.abs(xo - this.getX()) < 0.01F && Math.abs(yo - this.getY()) < 0.01F && Math.abs(zo - this.getZ()) < 0.01F) {
-            stillTicks++;
+        if (Math.abs(xo - this.getX()) < 0.01F && Math.abs(yo - this.getY()) < 0.01F && Math.abs(zo - this.getZ()) < 0.01F) {            stillTicks++;
         } else {
             stillTicks = 0;
         }
@@ -630,6 +629,7 @@ public class EntityVoidWorm extends Monster {
 
     public void resetPortalLogic() {
         portalTarget = null;
+        stillTicks = 0;
     }
 
     public boolean isPushable() {
@@ -740,12 +740,12 @@ public class EntityVoidWorm extends Monster {
         double d1 = shotAt.y;
         double d2 = shotAt.z;
         float f = Mth.sqrt((float) (d0 * d0 + d2 * d2)) * 0.35F;
+
         shot.shoot(d0, d1 + (double) f, d2, 0.5F, 3.0F);
         if (!this.isSilent()) {
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
             this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.DROWNED_SHOOT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
-        shot.setPortalType(portal);
         this.openMouth(5);
         this.level.addFreshEntity(shot);
     }
@@ -867,13 +867,14 @@ public class EntityVoidWorm extends Monster {
                     if (moveTo == null || EntityVoidWorm.this.distanceToSqr(moveTo) < 16 || EntityVoidWorm.this.horizontalCollision) {
                         moveTo = EntityVoidWorm.this.getBlockInViewAway(target.position(), 0.4F + random.nextFloat() * 0.2F);
                     }
-                    modeTicks++;
-                    if (modeTicks % 50 == 0) {
+                    int interval = EntityVoidWorm.this.getHealth() < EntityVoidWorm.this.getMaxHealth() && !EntityVoidWorm.this.isSplitter() ? 15 : 40;
+                    if (modeTicks % interval == 0) {
                         EntityVoidWorm.this.spit(new Vec3(3, 3, 0), false);
                         EntityVoidWorm.this.spit(new Vec3(-3, 3, 0), false);
                         EntityVoidWorm.this.spit(new Vec3(3, -3, 0), false);
                         EntityVoidWorm.this.spit(new Vec3(-3, -3, 0), false);
                     }
+                    modeTicks++;
                     if (modeTicks > maxCircleTime) {
                         maxCircleTime = 60 + random.nextInt(200);
                         mode = AttackMode.SLAM_RISE;
@@ -935,13 +936,18 @@ public class EntityVoidWorm extends Monster {
         public void tick() {
             if (EntityVoidWorm.this.portalTarget != null) {
                 noPhysics = true;
-                AABB bb = EntityVoidWorm.this.portalTarget.getBoundingBox();
-                double centerX = bb.minX + ((bb.maxX - bb.minX) / 2F);
-                double centerY = bb.minY + ((bb.maxY - bb.minY) / 2F);
-                double centerZ = bb.minZ + ((bb.maxZ - bb.minZ) / 2F);
-                float sped = 0.08F;
-                EntityVoidWorm.this.setDeltaMovement(EntityVoidWorm.this.getDeltaMovement().add(Math.signum(centerX - EntityVoidWorm.this.getX()) * sped, Math.signum(centerY - EntityVoidWorm.this.getY()) * sped, Math.signum(centerZ - EntityVoidWorm.this.getZ()) * sped));
-                EntityVoidWorm.this.getMoveControl().setWantedPosition(centerX, centerY, centerZ, 1);
+                double centerX = EntityVoidWorm.this.portalTarget.getX();
+                double centerY = EntityVoidWorm.this.portalTarget.getY(0.5F);
+                double centerZ = EntityVoidWorm.this.portalTarget.getZ();
+                double d0 = centerX - EntityVoidWorm.this.getX();
+                double d1 = centerY - EntityVoidWorm.this.getY(0.5F);
+                double d2 = centerZ - EntityVoidWorm.this.getZ();
+                Vec3 vec = new Vec3(d0, d1, d2);
+                if(vec.length() > 1F){
+                    vec = vec.normalize();
+                }
+                vec = vec.scale(0.4F);
+                EntityVoidWorm.this.setDeltaMovement(EntityVoidWorm.this.getDeltaMovement().add(vec));
             }
         }
 

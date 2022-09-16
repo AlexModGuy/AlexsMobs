@@ -32,6 +32,7 @@ import net.minecraftforge.network.PlayMessages;
 import org.antlr.v4.runtime.misc.Triple;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -124,7 +125,9 @@ public class EntityVoidPortal extends Entity {
             double particleZ = this.getBoundingBox().minZ + random.nextFloat() * (this.getBoundingBox().maxZ - this.getBoundingBox().minZ);
             level.addParticle(AMParticleRegistry.WORM_PORTAL.get(), particleX, particleY, particleZ, 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian());
         }
-        List<Entity> entities = this.level.getEntities(this, bb.deflate(0.2F));
+        List<Entity> entities = new ArrayList<>();
+        entities.addAll(this.level.getEntities(this, bb.deflate(0.2F)));
+        entities.addAll(this.level.getEntitiesOfClass(EntityVoidWorm.class, bb.inflate(1.5F)));
         if (!level.isClientSide) {
             MinecraftServer server = level.getServer();
             if (this.getDestination() != null && this.getLifespan() > 20 && tickCount > 20) {

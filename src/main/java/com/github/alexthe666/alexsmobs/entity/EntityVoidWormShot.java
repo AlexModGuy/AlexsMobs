@@ -39,7 +39,9 @@ public class EntityVoidWormShot extends Entity {
     private UUID ownerUUID;
     private int ownerNetworkId;
     private boolean leftOwner;
-    private static final EntityDataAccessor<Boolean> PORTALLING = SynchedEntityData.defineId(EntityVoidWormShot.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> STOP_HOMING_PROGRESS = SynchedEntityData.defineId(EntityVoidWormShot.class, EntityDataSerializers.FLOAT);
+    public float prevStopHomingProgress = 0.0F;
+    public static final float HOME_FOR = 40F;
 
     public EntityVoidWormShot(EntityType p_i50162_1_, Level p_i50162_2_) {
         super(p_i50162_1_, p_i50162_2_);
@@ -87,6 +89,7 @@ public class EntityVoidWormShot extends Entity {
     }
 
     public void tick() {
+        this.prevStopHomingProgress = this.getStopHomingProgress();
         if (!this.leftOwner) {
             this.leftOwner = this.checkLeftOwner();
         }
@@ -95,25 +98,22 @@ public class EntityVoidWormShot extends Entity {
         }
         if (this.tickCount > 40) {
             Entity entity = this.getShooter();
-            if(isPortalType()){
-                this.setDeltaMovement(Vec3.ZERO);
-                if (this.tickCount > 60) {
-                    this.remove(RemovalReason.DISCARDED);
+            if(this.getStopHomingProgress() < HOME_FOR){
+                this.setStopHomingProgress(this.getStopHomingProgress() + 1.0F);
+            }
+            float homeScale = 1F - (this.getStopHomingProgress() / HOME_FOR);
+            if (entity instanceof Mob && ((Mob) entity).getTarget() != null && homeScale > 0.0F) {
+                LivingEntity target = ((Mob) entity).getTarget();
+                if(target == null){
+                    this.kill();
                 }
+                double d0 = target.getX() - this.getX();
+                double d1 = target.getEyeY() - this.getY();
+                double d2 = target.getZ() - this.getZ();
+                Vec3 vec = new Vec3(d0, d1, d2).normalize().scale(Math.max(homeScale, 0.5F) * 1.2F);
+                this.setDeltaMovement(vec);
             }else{
-                if (entity instanceof Mob && ((Mob) entity).getTarget() != null) {
-                    LivingEntity target = ((Mob) entity).getTarget();
-                    if(target == null){
-                        this.kill();
-                    }
-                    double d0 = target.getX() - this.getX();
-                    double d1 = target.getY() + target.getBbHeight() * 0.5F - this.getY();
-                    double d2 = target.getZ() - this.getZ();
-                    Vec3 vector3d = new Vec3(d0, d1, d2);
-                    float speed = 0.05F;
-                    shoot(d0, d1, d2, 1, 0);
-                    this.setYRot( -((float) Mth.atan2(d0, d2)) * (180F / (float) Math.PI));
-                }
+                this.setDeltaMovement(this.getDeltaMovement().add(0, -0.09, 0));
             }
         }
         super.tick();
@@ -167,15 +167,15 @@ public class EntityVoidWormShot extends Entity {
     }
 
     protected void defineSynchedData() {
-        this.entityData.define(PORTALLING, false);
+        this.entityData.define(STOP_HOMING_PROGRESS, 0.0F);
     }
 
-    public boolean isPortalType(){
-        return this.entityData.get(PORTALLING);
+    public float getStopHomingProgress() {
+        return this.entityData.get(STOP_HOMING_PROGRESS);
     }
 
-    public void setPortalType(boolean portalType){
-        this.entityData.set(PORTALLING, portalType);
+    public void setStopHomingProgress(float progress) {
+        this.entityData.set(STOP_HOMING_PROGRESS, progress);
     }
 
     public void setShooter(@Nullable Entity entityIn) {
@@ -203,7 +203,7 @@ public class EntityVoidWormShot extends Entity {
         if (this.leftOwner) {
             compound.putBoolean("LeftOwner", true);
         }
-
+        compound.putFloat("HomeTime", this.getStopHomingProgress());
     }
 
     /**
@@ -213,7 +213,7 @@ public class EntityVoidWormShot extends Entity {
         if (compound.hasUUID("Owner")) {
             this.ownerUUID = compound.getUUID("Owner");
         }
-
+        this.setStopHomingProgress(compound.getFloat("HomeTime"));
         this.leftOwner = compound.getBoolean("LeftOwner");
     }
 
@@ -234,7 +234,7 @@ public class EntityVoidWormShot extends Entity {
 
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
-        this.setDeltaMovement(vector3d);
+        this.setDeltaMovement(this.getDeltaMovement().add(vector3d));
         float f = Mth.sqrt((float) vector3d.horizontalDistanceSqr());
         this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
         this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
@@ -242,14 +242,6 @@ public class EntityVoidWormShot extends Entity {
         this.xRotO = this.getXRot();
     }
 
-    public void shootFromRotation(Entity p_234612_1_, float p_234612_2_, float p_234612_3_, float p_234612_4_, float p_234612_5_, float p_234612_6_) {
-        float f = -Mth.sin(p_234612_3_ * ((float) Math.PI / 180F)) * Mth.cos(p_234612_2_ * ((float) Math.PI / 180F));
-        float f1 = -Mth.sin((p_234612_2_ + p_234612_4_) * ((float) Math.PI / 180F));
-        float f2 = Mth.cos(p_234612_3_ * ((float) Math.PI / 180F)) * Mth.cos(p_234612_2_ * ((float) Math.PI / 180F));
-        this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
-        Vec3 vector3d = p_234612_1_.getDeltaMovement();
-        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
-    }
 
     /**
      * Called when this EntityFireball hits a block or entity.
