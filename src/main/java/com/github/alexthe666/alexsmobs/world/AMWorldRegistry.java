@@ -273,6 +273,7 @@ public class AMWorldRegistry {
         }
         if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
             Optional<Holder<PlacedFeature>> optional = BuiltinRegistries.PLACED_FEATURE.getHolder(AMFeatureRegistry.PLACED_ANTHILL);
+            BuiltinRegistries.PLACED_FEATURE.stream().forEach((feature -> System.out.println(feature.feature().unwrapKey())));
             if(optional.isPresent()){
                 builder.getGenerationSettings().getFeatures(GenerationStep.Decoration.SURFACE_STRUCTURES).add(optional.get());
             }
