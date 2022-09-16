@@ -467,7 +467,8 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
                         float angle = (0.01745329251F * (clockwise ? -circlingTime : circlingTime));
                         double extraX = circleDistance * Mth.sin((float) (Math.PI + angle));
                         double extraZ = circleDistance * Mth.cos(angle);
-                        Vec3 vec3 = emergeFrom.add(extraX, 1, extraZ);
+                        double y = Math.max(emergeFrom.y + 2, target.getEyeY());
+                        Vec3 vec3 = new Vec3(emergeFrom.x + extraX, y, emergeFrom.z + extraZ);
                         EntityMurmurHead.this.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, 0.7D);
                     }
                     EntityMurmurHead.this.lookAt(EntityAnchorArgument.Anchor.EYES, moveTo);

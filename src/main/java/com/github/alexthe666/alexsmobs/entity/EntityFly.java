@@ -262,8 +262,10 @@ public class EntityFly extends Animal implements FlyingAnimal {
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
-        return AMEntityRegistry.FLY.get().create(p_241840_1_);
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
+        EntityFly fly = AMEntityRegistry.FLY.get().create(level);
+        fly.setNoDespawn(true);
+        return fly;
     }
 
     @Override
