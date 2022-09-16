@@ -2,8 +2,8 @@
 <NEWLINE>
 <NEWLINE>
 As moscas são insetos pequenos e irritantes comuns no Overworld. Naturalmente atraídos por coisas mortas e moribundas, eles podem ser encontrados
- perseguindo e mordendo zumbis quase até a morte. As moscas podem se reproduzir com carne podre e, ao morrer, têm a possibilidade de soltar larvas.
- As larvas de moscas podem ser usadas para procriar outras criaturas, como Papa-Léguas e Macacos-Pregos, e, em caso de dúvida, podem ser usadas como
- um lanche leve.
+perseguindo e mordendo zumbis quase até a morte. As moscas podem se reproduzir com carne podre e, ao morrer, têm a possibilidade de soltar larvas.
+As larvas de moscas podem ser usadas para procriar outras criaturas, como Papa-Léguas e Macacos-Pregos, e, em caso de dúvida, podem ser usadas como
+um lanche leve.
 <NEWLINE>
 Se por acaso uma mosca se encontrar no Nether, a pequena criatura se transformará no monstruoso Mosquito Carmesim.
