@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Os bagres são peixes letárgicos encontrados em pântanos e rios. Embora o bagre dos rios possa se tornar bastante pesado, o maior desses peixes pode ser encontrado apenas nos pântanos.
+<NEWLINE>
+Vivendo próximos ao fundo do corpo de água, o bagre não é exigente com sua comida. Bagre pequeno e médio tentará aspirar qualquer item que veja. O bagre grande, em vez disso, tentará comer qualquer mob menor que um bloco.
+Bagre pequeno pode armazenar apenas três pilhas de itens em suas barrigas, enquanto bagre médio pode armazenar nove. Bagre grande só pode ter um mob na barriga de cada vez.
+O bagre regurgitará qualquer item ou mob que tenha comido se estiver ferido ou se encontrar um pepino do mar, pois odeia o sabor dos pepinos.
+<NEWLINE>
+Embora eles tenham uma visão ruim, algo sobre a luz piscante de uma lanterna do mar atrai os Bagres. Eles podem ser usados para atrair Bagres para áreas com ou sem itens.<NEWLINE>
+Todos os bagres, mesmo os grandes, podem ser capturados com um balde de água. O conteúdo da barriga do peixe será preservado, então pode-se efetivamente usar o Bagre para transportar itens ou um mob, colocando-os em baldes após uma alimentação.
+O peixe-gato que comeu itens ou foi colocado em balde não desaparecerá.
