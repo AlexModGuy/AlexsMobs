@@ -320,6 +320,9 @@ public class AMItemRegistry {
         FLYING_FISH_MATERIAL.setRepairMaterial(Ingredient.of(FLYING_FISH.get()));
         NOVELTY_HAT_MATERIAL.setRepairMaterial(Ingredient.of(Items.BONE));
         KIMONO_MATERIAL.setRepairMaterial(Ingredient.of(ItemTags.WOOL));
+    }
+
+    public static void initDispenser(){
         DispenserBlock.registerBehavior(SHARK_TOOTH_ARROW.get(), new AbstractProjectileDispenseBehavior() {
             /**
              * Return the projectile entity spawned by this dispense behavior.

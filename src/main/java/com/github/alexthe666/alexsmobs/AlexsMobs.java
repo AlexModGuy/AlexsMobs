@@ -170,7 +170,8 @@ public class AlexsMobs {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSetPupfishChunkOnClient.class, MessageSetPupfishChunkOnClient::write, MessageSetPupfishChunkOnClient::read, MessageSetPupfishChunkOnClient.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateTransmutablesToDisplay.class, MessageUpdateTransmutablesToDisplay::write, MessageUpdateTransmutablesToDisplay::read, MessageUpdateTransmutablesToDisplay.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageTransmuteFromMenu.class, MessageTransmuteFromMenu::write, MessageTransmuteFromMenu::read, MessageTransmuteFromMenu.Handler::handle);
-        AMItemRegistry.init();
+        event.enqueueWork(AMItemRegistry::init);
+        event.enqueueWork(AMItemRegistry::initDispenser);
         AMAdvancementTriggerRegistry.init();
         AMEffectRegistry.init();
         AMRecipeRegistry.init();
