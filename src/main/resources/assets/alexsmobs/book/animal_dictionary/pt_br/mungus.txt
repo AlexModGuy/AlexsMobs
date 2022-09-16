@@ -9,5 +9,4 @@ Se alimentado com mais do mesmo tipo de cogumelo, mais cogumelos criarão raíze
 cogumelos próximos do mesmo tipo. Eles usarão isso para cultivar mais daquele tipo de cogumelo, e se o cogumelo estiver em um Micélio, ele pode se tornar um cogumelo gigante. Isso irá
 exaurir o Mungide e diminuir a quantidade de cogumelos nele. Se mortos com cinco cogumelos nas costas, os Mungides explodirão  violentamente e converterão a
 área local no bioma pertencente a seus cogumelos: Para cogumelos vermelhos e marrons, os Campos de Cogumelos; e Para Fungo carmesim e distorcido, as florestas carmesim e distorcida, respectivamente.
-A conversão de um bioma pode ser desfeita alimentando um Mungide com uma batata venenosa. Mungides podem ser procriados com Sopa de Cogumelhos.
 A conversão de um bioma pode ser desfeita alimentando um Mungide com uma batata venenosa. Mungides podem ser procriados com Esporo de Cogumelos, que ocasionalmente são descartados por Mungides a cada poucos dias.
