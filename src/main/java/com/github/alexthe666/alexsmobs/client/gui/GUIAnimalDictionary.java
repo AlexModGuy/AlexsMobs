@@ -29,7 +29,7 @@ public class GUIAnimalDictionary extends GuiBasicBook {
     }
 
     public void render(PoseStack matrixStack, int x, int y, float partialTicks) {
-        if(this.currentPageJSON == getRootPage() && currentPageCounter == 0){
+        if(this.currentPageJSON.equals(getRootPage()) && currentPageCounter == 0){
             int k = (this.width - this.xSize) / 2;
             int l = (this.height - this.ySize + 128) / 2;
             RenderSystem.applyModelViewMatrix();
