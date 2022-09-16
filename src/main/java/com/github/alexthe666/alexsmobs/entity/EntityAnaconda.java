@@ -69,6 +69,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     private int feedings = 0;
     private boolean isLandNavigator;
     private int swimTimer = -1000;
+    private int passiveFor = 0;
 
     protected EntityAnaconda(EntityType t, Level world) {
         super(t, world);
@@ -134,7 +135,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, LivingEntity.class, 200, false, false, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.ANACONDA_TARGETS)));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, 110, false, true, null) {
             public boolean canUse() {
-                return !isBaby() && level.getDifficulty() != Difficulty.PEACEFUL && !EntityAnaconda.this.isInLove() && super.canUse();
+                return !isBaby() && passiveFor == 0 && level.getDifficulty() != Difficulty.PEACEFUL && !EntityAnaconda.this.isInLove() && super.canUse();
             }
         });
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
@@ -148,6 +149,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         final ItemStack itemstack = player.getItemInHand(hand);
         if (isFood(itemstack)) {
             this.setTarget(null);
+            this.passiveFor = 3600 + random.nextInt(3600);
         }
         return super.mobInteract(player, hand);
     }
@@ -161,6 +163,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.setSheddingTime(compound.getInt("ShedTime"));
         this.setYellow(compound.getBoolean("Yellow"));
         shedCooldown = compound.getInt("ShedCooldown");
+        passiveFor = compound.getInt("PassiveFor");
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -172,6 +175,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         compound.putInt("ShedTime", getSheddingTime());
         compound.putBoolean("Yellow", isYellow());
         compound.putInt("ShedCooldown", shedCooldown);
+        compound.putInt("PassiveFor", passiveFor);
     }
 
 
@@ -253,7 +257,9 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public void tick() {
         super.tick();
-
+        if(this.passiveFor > 0){
+            passiveFor--;
+        }
         if (this.isInWater()) {
             if (this.isLandNavigator)
                 switchNavigator(false);
@@ -534,6 +540,15 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity livingEntity) {
+        boolean prev = super.canAttack(livingEntity);
+        if(prev && passiveFor > 0 && livingEntity instanceof Player && (this.getLastHurtByMob() == null || !this.getLastHurtByMob().getUUID().equals(livingEntity.getUUID()))){
+            return false;
+        }
+        return prev;
     }
 
     public void feed() {
