@@ -16,11 +16,11 @@ public class StraddleEnchantment extends Enchantment {
     }
 
     public int getMinCost(int i) {
-        return 12 + (i + 1) * 9;
+        return 6 + (i + 1) * 6;
     }
 
     public int getMaxCost(int i) {
-        return super.getMinCost(i) + 30;
+        return super.getMinCost(i) + 10;
     }
 
     public int getMaxLevel() {
