@@ -718,6 +718,15 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             }
             if (dist < 16) {
                 approachTime++;
+                if(dist < 4){
+                    Vec3 center = Vec3.upFromBottomCenterOf(hivePos, 1.1F);
+                    Vec3 add = center.subtract(EntityLeafcutterAnt.this.position());
+                    if(add.length() > 1F){
+                        add = add.normalize();
+                    }
+                    add = add.scale(0.2F);
+                    EntityLeafcutterAnt.this.setDeltaMovement(EntityLeafcutterAnt.this.getDeltaMovement().add(add));
+                }
                 if(dist < (approachTime < 200 ? 2 : 10) && EntityLeafcutterAnt.this.getY() >= hivePos.getY()){
                     if(EntityLeafcutterAnt.this.getAttachmentFacing() != Direction.DOWN){
                         EntityLeafcutterAnt.this.setDeltaMovement(EntityLeafcutterAnt.this.getDeltaMovement().add(0, 0.1, 0));
