@@ -144,7 +144,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     }
 
     public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.hasCustomName() || this.fromBucket() || this.hasSwallowedEntity() || !this.catfishInventory.isEmpty();
+        return super.requiresCustomPersistence() || this.hasCustomName() || this.fromBucket() || this.hasSwallowedEntity() || this.catfishInventory != null && !this.catfishInventory.isEmpty();
     }
 
     public static boolean canCatfishSpawn(EntityType<EntityCatfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -437,7 +437,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     @Override
     protected void pickUpItem(ItemEntity itemEntity) {
         ItemStack itemstack = itemEntity.getItem();
-        if (this.getCatfishSize() != 2 && !isFull() && this.catfishInventory.addItem(itemstack).isEmpty()) {
+        if (this.getCatfishSize() != 2 && !isFull() && this.catfishInventory != null && this.catfishInventory.addItem(itemstack).isEmpty()) {
             this.onItemPickup(itemEntity);
             this.take(itemEntity, itemstack.getCount());
             itemEntity.discard();
@@ -447,7 +447,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     }
 
     public boolean isFull() {
-        if (this.getCatfishSize() == 2) {
+        if (this.getCatfishSize() == 2 || this.catfishInventory == null) {
             return this.hasSwallowedEntity();
         } else {
             for (int i = 0; i < this.catfishInventory.getContainerSize(); i++) {
@@ -485,7 +485,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     }
 
     public boolean canSpit() {
-        return this.getCatfishSize() == 2 ? this.hasSwallowedEntity() : !this.catfishInventory.isEmpty();
+        return this.getCatfishSize() == 2 ? this.hasSwallowedEntity() : this.catfishInventory != null && !this.catfishInventory.isEmpty();
     }
 
     public void spit() {
@@ -512,11 +512,13 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         } else {
             ItemStack itemStack = ItemStack.EMPTY;
             int index = -1;
-            for (int i = 0; i < this.catfishInventory.getContainerSize(); i++) {
-                if (!this.catfishInventory.getItem(i).isEmpty()) {
-                    itemStack = this.catfishInventory.getItem(i);
-                    index = i;
-                    break;
+            if(this.catfishInventory != null){
+                for (int i = 0; i < this.catfishInventory.getContainerSize(); i++) {
+                    if (!this.catfishInventory.getItem(i).isEmpty()) {
+                        itemStack = this.catfishInventory.getItem(i);
+                        index = i;
+                        break;
+                    }
                 }
             }
             if (!itemStack.isEmpty()) {
@@ -525,7 +527,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
                 ItemEntity item = new ItemEntity(level, vec3.x, vec3.y, vec3.z, itemStack, vec32.x, vec32.y, vec32.z);
                 item.setDeltaMovement(Vec3.ZERO);
                 item.setPickUpDelay(30);
-                if (level.addFreshEntity(item)) {
+                if (level.addFreshEntity(item) && this.catfishInventory != null) {
                     this.catfishInventory.setItem(index, ItemStack.EMPTY);
                 }
             }
