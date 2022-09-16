@@ -71,7 +71,7 @@ public class AMWorldRegistry {
         return biome.unwrap().map((resourceKey) -> resourceKey.location(), (noKey) -> null);
     }
 
-    private static boolean testBiome(Pair<String, SpawnBiomeData> entry, Holder<Biome> biome) {
+    public static boolean testBiome(Pair<String, SpawnBiomeData> entry, Holder<Biome> biome) {
         boolean result = false;
         try {
             result = BiomeConfig.test(entry, biome, getBiomeName(biome));
