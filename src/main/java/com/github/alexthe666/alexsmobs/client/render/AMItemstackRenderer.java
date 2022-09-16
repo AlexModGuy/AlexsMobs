@@ -420,6 +420,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 matrixStackIn.translate(0, 0.5F, 0);
             }
             if(fakeEntity instanceof EntityLaviathan){
+                RenderLaviathan.renderWithoutShaking = true;
                 matrixStackIn.translate(0, 0.3F, 0);
             }
             if(fakeEntity instanceof EntityCosmaw){
@@ -447,6 +448,9 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     mouseY = 0;
                 }
                 drawEntityOnScreen(matrixStackIn, 0, 0, scale, true, 0, -45, 0, (float) mouseX, (float) mouseY, fakeEntity);
+            }
+            if(fakeEntity instanceof EntityLaviathan){
+                RenderLaviathan.renderWithoutShaking = false;
             }
             if(fakeEntity instanceof EntityUnderminer) {
                 RenderUnderminer.renderWithPickaxe = false;

@@ -34,6 +34,7 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
     private static final float REINS_COLOR_R2 = 58F / 255F;
     private static final float REINS_COLOR_G2 = 40F / 255F;
     private static final float REINS_COLOR_B2 = 34F / 255F;
+    public static boolean renderWithoutShaking = false;
 
     public RenderLaviathan(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelLaviathan(), 4.0F);
@@ -92,7 +93,7 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
     }
 
     protected boolean isShaking(EntityLaviathan entity) {
-        return entity.isInWaterRainOrBubble() && !entity.isObsidian();
+        return entity.isInWaterRainOrBubble() && !entity.isObsidian() && !renderWithoutShaking;
     }
 
     public ResourceLocation getTextureLocation(EntityLaviathan entity) {
