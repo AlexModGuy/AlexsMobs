@@ -65,7 +65,6 @@ public class ModelTendonClaw extends AdvancedEntityModel<EntityTendonSegment> {
         progressRotationPrev(claw3, open, (float) Math.toRadians(45F), 0, 0, 1);
     }
 
-
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {
         AdvancedModelBox.rotateAngleX = x;
         AdvancedModelBox.rotateAngleY = y;

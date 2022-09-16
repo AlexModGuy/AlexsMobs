@@ -14,6 +14,7 @@ import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Services;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -318,6 +319,7 @@ public class AMItemRegistry {
         ROCKY_ARMOR_MATERIAL.setRepairMaterial(Ingredient.of(ROCKY_SHELL.get()));
         FLYING_FISH_MATERIAL.setRepairMaterial(Ingredient.of(FLYING_FISH.get()));
         NOVELTY_HAT_MATERIAL.setRepairMaterial(Ingredient.of(Items.BONE));
+        KIMONO_MATERIAL.setRepairMaterial(Ingredient.of(ItemTags.WOOL));
         DispenserBlock.registerBehavior(SHARK_TOOTH_ARROW.get(), new AbstractProjectileDispenseBehavior() {
             /**
              * Return the projectile entity spawned by this dispense behavior.

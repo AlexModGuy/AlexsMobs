@@ -86,7 +86,7 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             }else{
                 clawConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE));
             }
-            if(entity.hasClaw()){
+            if(entity.hasClaw() || entity.isRetracting()){
                 poseStack.pushPose();
                 poseStack.translate(to.x, to.y, to.z);
                 float rotY = (float) (Mth.atan2(to.x, to.z) * (double) (180F / (float) Math.PI));
@@ -119,7 +119,7 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             }
             if ((this.entityRenderDispatcher.options == null || this.entityRenderDispatcher.options.getCameraType().isFirstPerson()) && player == Minecraft.getInstance().player) {
                 double d7 = 960.0D / (double)this.entityRenderDispatcher.options.fov().get().intValue();
-                Vec3 vec3 = this.entityRenderDispatcher.camera.getNearPlane().getPointOnPlane((float) i * 0.6F, -0.7F);
+                Vec3 vec3 = this.entityRenderDispatcher.camera.getNearPlane().getPointOnPlane((float) i * 0.6F, -1);
                 vec3 = vec3.scale(d7);
                 vec3 = vec3.yRot(f1 * 0.25F);
                 vec3 = vec3.xRot(-f1 * 0.35F);
