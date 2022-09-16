@@ -3,8 +3,10 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-O Orca é um grande cetáceo semelhante a um golfinho encontrado nos oceanos frios do Overworld. Muitas vezes pode ser visto subindo
- e descendo para fora d'água e lançando ataques contra as populações nativas de Ursos Polares. Ao contrário de seus primos golfinhos,
- essas baleias não são tão amigáveis - ferir uma delas pode fazer com que todo o grupo o ataque.
+A Orca é um grande cetáceo semelhante a um golfinho encontrado nos oceanos frios do Overworld. Muitas vezes pode ser visto subindo
+e descendo para fora d'água e lançando ataques contra as populações nativas de Ursos Polares. Ao contrário de seus primos golfinhos,
+essas baleias não são tão amigáveis - ferir uma delas pode fazer com que todo o grupo o ataque.
+<NEWLINE>
+A cor e a aparência de uma orca podem variar dependendo seu grupo ser do sul, norte, leste ou oeste.
 <NEWLINE>
 Nadar com um grupo de orcas pode conceder a um deles o efeito Poder da Orca. Este efeito garante maior velocidade de ataque. Orca freqüentemente usa sua força nativa contra Afogados e Guardiões.
