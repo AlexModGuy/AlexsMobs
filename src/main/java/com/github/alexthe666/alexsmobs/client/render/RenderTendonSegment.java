@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelMurmurNeck;
+import com.github.alexthe666.alexsmobs.client.model.ModelTendonClaw;
 import com.github.alexthe666.alexsmobs.entity.EntityMurmurHead;
 import com.github.alexthe666.alexsmobs.entity.EntityTendonSegment;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -30,6 +31,8 @@ import net.minecraft.world.phys.Vec3;
 
 public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
 
+    private static final ResourceLocation CLAW_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tendon_whip_claw.png");
+    private static final ModelTendonClaw CLAW_MODEL = new ModelTendonClaw();
 
     public RenderTendonSegment(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
@@ -57,15 +60,14 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             Vec3 from = distVec;
             int segmentCount = 0;
             Vec3 currentNeckButt = from;
-            VertexConsumer consumer;
+            VertexConsumer neckConsumer;
             if(entity.hasGlint()){
-                consumer = VertexMultiConsumer.create(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutout(RenderMurmurBody.TEXTURE)));
+                neckConsumer = VertexMultiConsumer.create(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE)));
             }else{
-                consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE));
+                neckConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(RenderMurmurBody.TEXTURE));
             }
             ModelMurmurNeck.THIN = true;
             double remainingDistance = to.distanceTo(from);
-
             while (segmentCount < RenderMurmurHead.MAX_NECK_SEGMENTS && remainingDistance > 0) {
                 remainingDistance = Math.min(from.distanceTo(to), 0.5F);
                 Vec3 linearVec = to.subtract(currentNeckButt);
@@ -73,11 +75,26 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
                 Vec3 smoothedVec = powVec;
                 Vec3 next = smoothedVec.normalize().scale(remainingDistance).add(currentNeckButt);
                 int neckLight = getLightColor(entity, to.add(currentNeckButt).add(x, y, z));
-                RenderMurmurHead.renderNeckCube(currentNeckButt, next, poseStack, consumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
+                RenderMurmurHead.renderNeckCube(currentNeckButt, next, poseStack, neckConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
                 currentNeckButt = next;
                 segmentCount++;
             }
             ModelMurmurNeck.THIN = false;
+            VertexConsumer clawConsumer;
+            if(entity.hasGlint()){
+                clawConsumer = VertexMultiConsumer.create(buffer.getBuffer(AMRenderTypes.entityGlintDirect()), buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE)));
+            }else{
+                clawConsumer = buffer.getBuffer(RenderType.entityCutoutNoCull(CLAW_TEXTURE));
+            }
+            if(entity.hasClaw()){
+                poseStack.pushPose();
+                poseStack.translate(to.x, to.y, to.z);
+                float rotY = (float) (Mth.atan2(to.x, to.z) * (double) (180F / (float) Math.PI));
+                float rotX = (float) (-(Mth.atan2(to.y, to.horizontalDistance()) * (double) (180F / (float) Math.PI)));
+                CLAW_MODEL.setAttributes(rotX, rotY, 1 - progress);
+                CLAW_MODEL.renderToBuffer(poseStack, clawConsumer, getLightColor(entity, to.add(x, y, z)), OverlayTexture.NO_OVERLAY, 1, 1F, 1, 1F);
+                poseStack.popPose();
+            }
         }
         poseStack.popPose();
     }
@@ -111,10 +128,10 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
                 d6 = Mth.lerp((double) partialTicks, player.zo, player.getZ()) + vec3.z;
                 f3 = player.getEyeHeight() * 0.4F;
             } else {
-                d4 = Mth.lerp((double) partialTicks, player.xo, player.getX()) - d1 * d2 - d0 * 0.5D;
+                d4 = Mth.lerp((double) partialTicks, player.xo, player.getX()) - d1 * d2 - d0 * 0.2D;
                 d5 = player.yo + (double) player.getEyeHeight() + (player.getY() - player.yo) * (double) partialTicks - 1D;
-                d6 = Mth.lerp((double) partialTicks, player.zo, player.getZ()) - d0 * d2 + d1 * 0.5D;
-                f3 = (player.isCrouching() ? -0.1875F : 0.0F) - player.getEyeHeight() * 0.25F;
+                d6 = Mth.lerp((double) partialTicks, player.zo, player.getZ()) - d0 * d2 + d1 * 0.2D;
+                f3 = (player.isCrouching() ? -0.1875F : 0.0F) - player.getEyeHeight() * 0.3F;
             }
         }
 

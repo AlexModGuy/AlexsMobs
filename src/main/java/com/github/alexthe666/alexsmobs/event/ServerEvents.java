@@ -845,11 +845,4 @@ public class ServerEvents {
         }
     }
 
-    @SubscribeEvent
-    public void onMergeStructureSpawns(EventMergeStructureSpawns event) {
-        if(AMConfig.restrictUnderminerSpawns && event.getCategory() == MobCategory.MONSTER && event.isStructureTagged(StructureTags.MINESHAFT)){
-            event.mergeSpawns();
-            event.setResult(Event.Result.ALLOW);
-        }
-    }
 }

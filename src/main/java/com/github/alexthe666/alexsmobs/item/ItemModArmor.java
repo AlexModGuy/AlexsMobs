@@ -178,6 +178,8 @@ public class ItemModArmor extends ArmorItem {
             return "alexsmobs:textures/armor/flying_fish_boots.png";
         } else if (this.material == AMItemRegistry.NOVELTY_HAT_MATERIAL) {
             return "alexsmobs:textures/armor/novelty_hat.png";
+        } else if (this.material == AMItemRegistry.KIMONO_MATERIAL) {
+            return "alexsmobs:textures/armor/unsettling_kimono.png";
         }
         return super.getArmorTexture(stack, entity, slot, type);
     }

@@ -4,17 +4,17 @@
       "item": "alexsmobs:transmutation_table"
     },
     "title": {
-      "translate": "advancements.alexsmobs.transmute_10000_items.title"
+      "translate": "advancements.alexsmobs.transmute_1000_items.title"
     },
     "description": {
-      "translate": "advancements.alexsmobs.transmute_10000_items.desc"
+      "translate": "advancements.alexsmobs.transmute_1000_items.desc"
     }
   },
   "frame": "challenge",
   "parent": "alexsmobs:alexsmobs/transmutation_table",
   "criteria": {
     "ex": {
-      "trigger": "alexsmobs:transmute_10000_items"
+      "trigger": "alexsmobs:transmute_1000_items"
     }
   },
   "requirements": [

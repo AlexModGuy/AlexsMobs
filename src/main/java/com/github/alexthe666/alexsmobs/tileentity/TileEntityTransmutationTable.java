@@ -1,9 +1,7 @@
 package com.github.alexthe666.alexsmobs.tileentity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.block.BlockVoidWormBeak;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.entity.EntityAnteater;
 import com.github.alexthe666.alexsmobs.message.MessageUpdateTransmutablesToDisplay;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -16,10 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,7 +23,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.AABB;
 
 import java.util.HashMap;
 import java.util.List;
@@ -164,8 +158,8 @@ public class TileEntityTransmutationTable  extends BlockEntity {
         data.onTransmuteItem(from, to);
         playerToData.put(player.getUUID(), data);
         totalTransmuteCount += from.getCount();
-        if(player instanceof ServerPlayer && totalTransmuteCount > 10000){
-            AMAdvancementTriggerRegistry.TRANSMUTE_10000_ITEMS.trigger((ServerPlayer)player);
+        if(player instanceof ServerPlayer && totalTransmuteCount >= 1000){
+            AMAdvancementTriggerRegistry.TRANSMUTE_1000_ITEMS.trigger((ServerPlayer)player);
         }
         this.level.playSound(null, this.getBlockPos(), AMSoundRegistry.TRANSMUTE_ITEM.get(), SoundSource.BLOCKS, 1F, 0.9F + player.getRandom().nextFloat() * 0.2F);
         this.randomizeResults(player);

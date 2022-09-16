@@ -1,0 +1,75 @@
+{
+  "display": {
+    "icon": {
+      "item": "alexsmobs:tab_icon",
+      "nbt": "{DisplayEntityType:\"alexsmobs:murmur\"}"
+    },
+    "title": {
+      "translate": "advancements.alexsmobs.murmur.title"
+    },
+    "description": {
+      "translate": "advancements.alexsmobs.murmur.desc"
+    }
+  },
+  "parent": "alexsmobs:alexsmobs/root",
+  "criteria": {
+    "killed": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:murmur"
+        }
+      }
+    },
+    "killed_by": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:murmur"
+        }
+      }
+    },
+    "interact": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:murmur"
+        }
+      }
+    },
+    "killed_head": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:murmur_head"
+        }
+      }
+    },
+    "killed_by_head": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:murmur_head"
+        }
+      }
+    },
+    "interact_head": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "entity": {
+          "type": "alexsmobs:murmur_head"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "killed",
+      "killed_by",
+      "interact",
+      "killed_head",
+      "killed_by_head",
+      "interact_head"
+    ]
+  ]
+}

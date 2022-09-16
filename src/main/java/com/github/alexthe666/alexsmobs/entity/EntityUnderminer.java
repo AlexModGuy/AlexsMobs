@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EtherealMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.MonsterAIWalkThroughHallsOfStructure;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.ChatFormatting;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.StructureTags;
@@ -30,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Monster;
@@ -88,8 +91,21 @@ public class EntityUnderminer extends PathfinderMob {
     }
 
     public static <T extends Mob> boolean checkUnderminerSpawnRules(EntityType<EntityUnderminer> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        BlockState blockstate = iServerWorld.getBlockState(pos.below());
-        return reason == MobSpawnType.SPAWNER || pos.getY() <= 64 && Monster.isDarkEnoughToSpawn(iServerWorld, pos, random);
+        if (reason == MobSpawnType.SPAWNER) {
+            return true;
+        }else{
+            int i = iServerWorld.getMaxLocalRawBrightness(pos);
+            int j = 3;
+            if(pos.getY() >= iServerWorld.getSeaLevel()){
+                return false;
+            }else if (AlexsMobs.isHalloween()) {
+                j = 7;
+            } else if (random.nextBoolean()) {
+                return false;
+            }
+
+            return i > random.nextInt(j) ? false : checkMobSpawnRules(entityType, iServerWorld, reason, pos, random);
+        }
     }
 
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
@@ -498,6 +514,11 @@ public class EntityUnderminer extends PathfinderMob {
         }
 
         public void stop() {
+            if(minePretendPos != null && minePretendStartState != null && !minePretendStartState.equals(level.getBlockState(minePretendPos))){
+                for(ServerPlayer serverplayerentity : EntityUnderminer.this.level.getEntitiesOfClass(ServerPlayer.class, EntityUnderminer.this.getBoundingBox().inflate(12.0D, 12.0D, 12.0D))) {
+                    AMAdvancementTriggerRegistry.UNDERMINE_UNDERMINER.trigger(serverplayerentity);
+                }
+            }
             minePretendPos = null;
             minePretendStartState = null;
             mineTime = 0;

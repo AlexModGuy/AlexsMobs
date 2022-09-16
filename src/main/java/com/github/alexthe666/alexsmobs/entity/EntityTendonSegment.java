@@ -10,7 +10,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -41,6 +40,7 @@ public class EntityTendonSegment  extends Entity {
     private static final EntityDataAccessor<Float> PROGRESS = SynchedEntityData.defineId(EntityTendonSegment.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(EntityTendonSegment.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> RETRACTING = SynchedEntityData.defineId(EntityTendonSegment.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_CLAW = SynchedEntityData.defineId(EntityTendonSegment.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> HAS_GLINT = SynchedEntityData.defineId(EntityTendonSegment.class, EntityDataSerializers.BOOLEAN);
     private List<Entity> previouslyTouched = new ArrayList<>();
     private boolean hasTouched = false;
@@ -70,6 +70,7 @@ public class EntityTendonSegment  extends Entity {
         this.entityData.define(PROGRESS, 0F);
         this.entityData.define(DAMAGE, 5F);
         this.entityData.define(RETRACTING, false);
+        this.entityData.define(HAS_CLAW, true);
         this.entityData.define(HAS_GLINT, false);
     }
 
@@ -138,7 +139,7 @@ public class EntityTendonSegment  extends Entity {
                         }
                     }
                     if(closestValid != null){
-                        createLightningAt(closestValid);
+                        createChain(closestValid);
                         hasChained = true;
                     }else{
                         this.setRetracting(true);
@@ -198,7 +199,8 @@ public class EntityTendonSegment  extends Entity {
         }
     }
 
-    private void createLightningAt(Entity closestValid) {
+    private void createChain(Entity closestValid) {
+        this.entityData.set(HAS_CLAW, false);
         EntityTendonSegment child = AMEntityRegistry.TENDON_SEGMENT.get().create(this.level);
         child.previouslyTouched = new ArrayList<>(previouslyTouched);
         child.previouslyTouched.add(closestValid);
@@ -308,6 +310,10 @@ public class EntityTendonSegment  extends Entity {
 
     public void setHasGlint(boolean glint) {
         this.entityData.set(HAS_GLINT, glint);
+    }
+
+    public boolean hasClaw() {
+        return this.entityData.get(HAS_CLAW);
     }
 
     @Override

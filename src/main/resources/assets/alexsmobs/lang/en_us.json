@@ -993,9 +993,19 @@
   "advancements.alexsmobs.shattered_dimensional_carver.title": "Ticket to the End of the World",
   "advancements.alexsmobs.shattered_dimensional_carver.desc": "Shatter a Dimensional Carver by placing it in a Capsid. Instead of opening a portal home, it will now open a portal one million blocks in any direction.",
   "advancements.alexsmobs.farseer.title": "Farland Security",
-  "advancements.alexsmobs.farseer.desc": "Encounter the Farseer, a monstrous defender of the world border",
+  "advancements.alexsmobs.farseer.desc": "Encounter the Farseer, a monstrous defender of the world border.",
   "advancements.alexsmobs.transmutation_table.title": "Reality Can Be Whatever I Want",
-  "advancements.alexsmobs.transmutation_table.desc": "Craft a Transmutation Table to convert materials into almost anything",
-  "advancements.alexsmobs.transmute_10000_items.title": "Nonequivalent Exchange",
-  "advancements.alexsmobs.transmute_10000_items.desc": "Transmute over 10,000 items using the same Transmutation Table"
+  "advancements.alexsmobs.transmutation_table.desc": "Craft a Transmutation Table to convert materials into almost anything.",
+  "advancements.alexsmobs.transmute_1000_items.title": "Nonequivalent Exchange",
+  "advancements.alexsmobs.transmute_1000_items.desc": "Transmute 1000 items using the same Transmutation Table.",
+  "advancements.alexsmobs.underminer.title": "Who Undermines the Underminer?",
+  "advancements.alexsmobs.underminer.desc": "Break the block an Underminer is mining, revealing a hidden ore",
+  "advancements.alexsmobs.ghostly_pickaxe.title": "Ghost! Ghost! Toast?",
+  "advancements.alexsmobs.ghostly_pickaxe.desc": "Obtain a Ghostly Pickaxe from an Underminer.",
+  "advancements.alexsmobs.skreecher.title": "Sculk Cymbal",
+  "advancements.alexsmobs.skreecher.desc": "Encounter the Skreecher, a loud and obnoxious skulk monster.",
+  "advancements.alexsmobs.sculk_boomer.title": "Ok Boomer",
+  "advancements.alexsmobs.sculk_boomer.desc": "Craft a Sculk Boomer using the souls of a few Skreechers.",
+  "advancements.alexsmobs.murmur.title": "Flexible Schedule",
+  "advancements.alexsmobs.murmur.desc": "Encounter the Murmur, which is not as it seems."
 }
