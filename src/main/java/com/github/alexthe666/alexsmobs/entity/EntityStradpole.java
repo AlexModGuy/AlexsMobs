@@ -5,6 +5,8 @@ import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.BoneSerpentPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.item.ItemUtils;
@@ -51,15 +53,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.ToolActions;
 
 public class EntityStradpole extends WaterAnimal implements Bucketable {
 
@@ -338,11 +335,44 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
         Entity entity = this.getParent();
         if (entity instanceof LivingEntity && !level.isClientSide && raytraceresult.getEntity() instanceof LivingEntity) {
             LivingEntity target = (LivingEntity)raytraceresult.getEntity();
-            target.hurt(DamageSource.indirectMobAttack(this, (LivingEntity)entity).setProjectile(), 3.0F);
-            target.knockback(0.7F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
+            if(!target.isBlocking()){
+                target.hurt(DamageSource.indirectMobAttack(this, (LivingEntity)entity).setProjectile(), 3.0F);
+                target.knockback(0.7F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
+            }else{
+                if (this.getTarget() instanceof Player) {
+                    this.damageShieldFor(((Player) this.getTarget()), 3.0F);
+                }
+            }
             this.entityData.set(LAUNCHED, false);
         }
     }
+
+    protected void damageShieldFor(Player holder, float damage) {
+        if (holder.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+            if (!this.level.isClientSide) {
+                holder.awardStat(Stats.ITEM_USED.get(holder.getUseItem().getItem()));
+            }
+
+            if (damage >= 3.0F) {
+                int i = 1 + Mth.floor(damage);
+                InteractionHand hand = holder.getUsedItemHand();
+                holder.getUseItem().hurtAndBreak(i, holder, (p_213833_1_) -> {
+                    p_213833_1_.broadcastBreakEvent(hand);
+                    net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(holder, holder.getUseItem(), hand);
+                });
+                if (holder.getUseItem().isEmpty()) {
+                    if (hand == InteractionHand.MAIN_HAND) {
+                        holder.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                    } else {
+                        holder.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
+                    }
+                    holder.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level.random.nextFloat() * 0.4F);
+                }
+            }
+
+        }
+    }
+
 
     protected boolean canHitEntity(Entity p_230298_1_) {
         return !p_230298_1_.isSpectator() && !(p_230298_1_ instanceof EntityStraddler)&& !(p_230298_1_ instanceof EntityStradpole);
