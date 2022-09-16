@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -191,7 +193,7 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
                     growFungus();
                 }
                 leafFeedings++;
-                if (leafFeedings >= AMConfig.leafcutterAntRepopulateFeedings && this.ants.size() < Mth.ceil(AMConfig.leafcutterAntColonySize * 0.5F) && hasQueen()) {
+                if (leafFeedings >= AMConfig.leafcutterAntRepopulateFeedings && this.getAntsInAreaCount(32D) < Mth.ceil(AMConfig.leafcutterAntColonySize * 0.5F) && hasQueen()) {
                     leafFeedings = 0;
                     this.ants.add(new Ant(new CompoundTag(), 0, 100, false));
                 }
@@ -206,6 +208,14 @@ public class TileEntityLeafcutterAnthill extends BlockEntity {
 
             p_226962_1_.remove(Entity.RemovalReason.DISCARDED);
         }
+    }
+
+    private int getAntsInAreaCount(double size) {
+        int ants = this.getAntCount();
+        Vec3 vec = Vec3.atCenterOf(this.getBlockPos());
+        AABB box = new AABB(vec.add(-size, -size, -size), vec.add(size, size, size));
+        ants += level.getEntitiesOfClass(EntityLeafcutterAnt.class, box).size();
+        return ants;
     }
 
     public boolean hasQueen() {
