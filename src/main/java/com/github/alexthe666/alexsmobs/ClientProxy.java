@@ -73,7 +73,11 @@ public class ClientProxy extends CommonProxy {
     @OnlyIn(Dist.CLIENT)
     public static void onItemColors(RegisterColorHandlersEvent.Item event) {
         AlexsMobs.LOGGER.info("loaded in item colorizer");
-        event.register((stack, colorIn) -> colorIn < 1 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack), AMItemRegistry.STRADDLEBOARD.get());
+        if(AMItemRegistry.STRADDLEBOARD.isPresent()){
+            event.register((stack, colorIn) -> colorIn < 1 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack), AMItemRegistry.STRADDLEBOARD.get());
+        }else{
+            AlexsMobs.LOGGER.warn("Could not add straddleboard item to colorizer...");
+        }
     }
 
     @SubscribeEvent
