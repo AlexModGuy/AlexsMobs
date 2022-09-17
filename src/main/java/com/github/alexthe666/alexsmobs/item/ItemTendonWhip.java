@@ -64,7 +64,7 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
             Level worldIn = playerIn.level;
             Entity closestValid = null;
             Vec3 playerEyes = playerIn.getEyePosition(1.0F);
-            HitResult hitresult = worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(10)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
+            HitResult hitresult = worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(12.0D)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
             if (hitresult instanceof EntityHitResult) {
                 Entity entity = ((EntityHitResult) hitresult).getEntity();
                 if (!entity.equals(playerIn) && !playerIn.isAlliedTo(entity) && !entity.isAlliedTo(playerIn) && entity instanceof Mob && playerIn.hasLineOfSight(entity)) {

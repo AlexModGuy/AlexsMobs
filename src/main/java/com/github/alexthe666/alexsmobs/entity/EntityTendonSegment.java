@@ -108,7 +108,7 @@ public class EntityTendonSegment  extends Entity {
         }
         if (creator instanceof LivingEntity) {
             if (current != null) {
-                Vec3 target = new Vec3(current.getX(), current.getY() + current.getBbHeight() * 0.4F, current.getZ());
+                Vec3 target = new Vec3(current.getX(), current.getY(0.4F), current.getZ());
                 Vec3 lerp = target.subtract(this.position());
                 this.setDeltaMovement(lerp.scale(0.5F));
                 if(!level.isClientSide){
@@ -214,7 +214,7 @@ public class EntityTendonSegment  extends Entity {
         child.setCreatorEntityUUID(this.getCreatorEntityUUID());
         child.setFromEntityID(this.getId());
         child.setToEntityID(closestValid.getId());
-        child.copyPosition(closestValid);
+        child.setPos(closestValid.getX(), closestValid.getY(0.4F), closestValid.getZ());
         child.setTargetsHit(this.getTargetsHit() + 1);
         updateLastTendon(child);
         child.setHasGlint(this.hasGlint());

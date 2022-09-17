@@ -37,7 +37,7 @@ repositories{
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.19.5'
+version = '1.12.0'
 group = 'com.github.alexthe667' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alexsmobs'
 
@@ -121,8 +121,8 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.1-42.0.0'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    compileOnly "curse.maven:citadel4-331936:3985361"
-    runtimeOnly "curse.maven:citadel4-331936:3985361"
+    compileOnly "curse.maven:citadel4-331936:3987892"
+    runtimeOnly "curse.maven:citadel4-331936:3987892"
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
