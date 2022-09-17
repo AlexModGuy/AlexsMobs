@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -38,6 +39,7 @@ public class TileEntityTransmutationTable  extends BlockEntity {
     private int totalTransmuteCount = 0;
     private Map<UUID, TransmutationData> playerToData = new HashMap<>();
     private ItemStack[] possiblities = new ItemStack[3];
+    private static final RandomSource RANDOM = RandomSource.createThreadSafe();
 
     public TileEntityTransmutationTable(BlockPos pos, BlockState state) {
         super(AMTileEntityRegistry.TRANSMUTATION_TABLE.get(), pos, state);
@@ -52,7 +54,7 @@ public class TileEntityTransmutationTable  extends BlockEntity {
             return ItemStack.EMPTY;
         }else{
             LootTable loottable = player.level.getServer().getLootTables().get(loc);
-            List<ItemStack> loots = loottable.getRandomItems((new LootContext.Builder((ServerLevel) player.level)).withParameter(LootContextParams.THIS_ENTITY, player).withRandom(player.level.random).create(LootContextParamSets.EMPTY));
+            List<ItemStack> loots = loottable.getRandomItems((new LootContext.Builder((ServerLevel) player.level)).withParameter(LootContextParams.THIS_ENTITY, player).withRandom(RANDOM).create(LootContextParamSets.EMPTY));
             return loots.isEmpty() ? ItemStack.EMPTY : loots.get(0);
         }
     }
@@ -102,11 +104,11 @@ public class TileEntityTransmutationTable  extends BlockEntity {
         rollPossiblity(player, 0);
         rollPossiblity(player, 1);
         rollPossiblity(player, 2);
-        int dataIndex = player.getRandom().nextInt(2);
+        int dataIndex = RANDOM.nextInt(2);
         if(playerToData.containsKey(player.getUUID()) && !AMConfig.limitTransmutingToLootTables){
             TransmutationData data = playerToData.get(player.getUUID());
-            if(player.getRandom().nextFloat() < Math.min(0.01875F * data.getTotalWeight(), 0.2F)){
-                ItemStack stack = data.getRandomItem(player.getRandom());
+            if(RANDOM.nextFloat() < Math.min(0.01875F * data.getTotalWeight(), 0.2F)){
+                ItemStack stack = data.getRandomItem(RANDOM);
                 if(stack != null && !stack.isEmpty()){
                     possiblities[dataIndex] = stack;
                 }
