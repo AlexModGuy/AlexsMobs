@@ -76,7 +76,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@OnlyIn(Dist.CLIENT)
 public class ClientEvents {
 
     private static final ResourceLocation ROCKY_CHESTPLATE_TEXTURE = new ResourceLocation("alexsmobs:textures/armor/rocky_chestplate.png");
@@ -88,7 +87,6 @@ public class ClientEvents {
     public static int renderStaticScreenFor = 0;
 
     @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
     public void onOutlineEntityColor(EventGetOutlineColor event) {
         if (event.getEntityIn() instanceof ItemEntity && ((ItemEntity) event.getEntityIn()).getItem().is(AMTagRegistry.VOID_WORM_DROPS)){
             int fromColor = 0;
@@ -354,51 +352,53 @@ public class ClientEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onRenderWorldLastEvent(RenderLevelLastEvent event) {
-        AMItemstackRenderer.incrementTick();
-        if (!AMConfig.shadersCompat) {
-            if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get())) {
-                if (!previousLavaVision) {
-                    previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
-                    Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = new LavaVisionFluidRenderer();
-                    updateAllChunks();
-                }
-            } else {
-                if (previousLavaVision) {
-                    if (previousFluidRenderer != null) {
-                        Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = previousFluidRenderer;
+    public void onRenderWorldLastEvent(RenderLevelStageEvent event) {
+        if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY){
+            AMItemstackRenderer.incrementTick();
+            if (!AMConfig.shadersCompat) {
+                if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get())) {
+                    if (!previousLavaVision) {
+                        previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
+                        Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = new LavaVisionFluidRenderer();
+                        updateAllChunks();
                     }
-                    updateAllChunks();
-                }
-            }
-            previousLavaVision = Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get());
-            if (AMConfig.clingingFlipEffect) {
-                if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.CLINGING.get()) && Minecraft.getInstance().player.getEyeHeight() < Minecraft.getInstance().player.getBbHeight() * 0.45F) {
-                    Minecraft.getInstance().gameRenderer.loadEffect(new ResourceLocation("shaders/post/flip.json"));
-                } else if (Minecraft.getInstance().gameRenderer.currentEffect() != null && Minecraft.getInstance().gameRenderer.currentEffect().getName().equals("minecraft:shaders/post/flip.json")) {
-                    Minecraft.getInstance().gameRenderer.shutdownEffect();
-                }
-            }
-        }
-        if (Minecraft.getInstance().getCameraEntity() instanceof EntityBaldEagle) {
-            EntityBaldEagle eagle = (EntityBaldEagle) Minecraft.getInstance().getCameraEntity();
-            LocalPlayer playerEntity = Minecraft.getInstance().player;
-
-            if (((EntityBaldEagle) Minecraft.getInstance().getCameraEntity()).shouldHoodedReturn() || eagle.isRemoved()) {
-                Minecraft.getInstance().setCameraEntity(playerEntity);
-                Minecraft.getInstance().options.setCameraType(CameraType.values()[AlexsMobs.PROXY.getPreviousPOV()]);
-            } else {
-                float rotX = Mth.wrapDegrees(playerEntity.getYRot() + playerEntity.yHeadRot);
-                float rotY = playerEntity.getXRot();
-                Entity over = null;
-                if (Minecraft.getInstance().hitResult instanceof EntityHitResult) {
-                    over = ((EntityHitResult) Minecraft.getInstance().hitResult).getEntity();
                 } else {
-                    Minecraft.getInstance().hitResult = null;
+                    if (previousLavaVision) {
+                        if (previousFluidRenderer != null) {
+                            Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = previousFluidRenderer;
+                        }
+                        updateAllChunks();
+                    }
                 }
-                boolean loadChunks = playerEntity.level.getDayTime() % 10 == 0;
-                ((EntityBaldEagle) Minecraft.getInstance().getCameraEntity()).directFromPlayer(rotX, rotY, false, over);
-                AlexsMobs.NETWORK_WRAPPER.sendToServer(new MessageUpdateEagleControls(Minecraft.getInstance().getCameraEntity().getId(), rotX, rotY, loadChunks, over == null ? -1 : over.getId()));
+                previousLavaVision = Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get());
+                if (AMConfig.clingingFlipEffect) {
+                    if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.CLINGING.get()) && Minecraft.getInstance().player.getEyeHeight() < Minecraft.getInstance().player.getBbHeight() * 0.45F) {
+                        Minecraft.getInstance().gameRenderer.loadEffect(new ResourceLocation("shaders/post/flip.json"));
+                    } else if (Minecraft.getInstance().gameRenderer.currentEffect() != null && Minecraft.getInstance().gameRenderer.currentEffect().getName().equals("minecraft:shaders/post/flip.json")) {
+                        Minecraft.getInstance().gameRenderer.shutdownEffect();
+                    }
+                }
+            }
+            if (Minecraft.getInstance().getCameraEntity() instanceof EntityBaldEagle) {
+                EntityBaldEagle eagle = (EntityBaldEagle) Minecraft.getInstance().getCameraEntity();
+                LocalPlayer playerEntity = Minecraft.getInstance().player;
+
+                if (((EntityBaldEagle) Minecraft.getInstance().getCameraEntity()).shouldHoodedReturn() || eagle.isRemoved()) {
+                    Minecraft.getInstance().setCameraEntity(playerEntity);
+                    Minecraft.getInstance().options.setCameraType(CameraType.values()[AlexsMobs.PROXY.getPreviousPOV()]);
+                } else {
+                    float rotX = Mth.wrapDegrees(playerEntity.getYRot() + playerEntity.yHeadRot);
+                    float rotY = playerEntity.getXRot();
+                    Entity over = null;
+                    if (Minecraft.getInstance().hitResult instanceof EntityHitResult) {
+                        over = ((EntityHitResult) Minecraft.getInstance().hitResult).getEntity();
+                    } else {
+                        Minecraft.getInstance().hitResult = null;
+                    }
+                    boolean loadChunks = playerEntity.level.getDayTime() % 10 == 0;
+                    ((EntityBaldEagle) Minecraft.getInstance().getCameraEntity()).directFromPlayer(rotX, rotY, false, over);
+                    AlexsMobs.NETWORK_WRAPPER.sendToServer(new MessageUpdateEagleControls(Minecraft.getInstance().getCameraEntity().getId(), rotX, rotY, loadChunks, over == null ? -1 : over.getId()));
+                }
             }
         }
     }
