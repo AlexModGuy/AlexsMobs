@@ -2,7 +2,7 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Underminers are rare, ghostly inhabitants of abandoned mineshafts. Due to their ethereal nature, they can walk through walls with ease, and can only be damaged with magic, such as splash potions.
+Podkopywacze are rare, ghostly inhabitants of abandoned mineshafts. Due to their ethereal nature, they can walk through walls with ease, and can only be damaged with magic, such as splash potions.
 Most Underminers will only begin to appear if plenty of time is spent in a mineshaft.
 However, they pose no threat to the living, as long as they are not attacked first. Their mistrust of newcomers is apparent however - they will disappear temporarily if approached. Underminers are content to stalk the halls of the mineshaft, as they have been doing for hundreds of years.
 <NEWLINE>
