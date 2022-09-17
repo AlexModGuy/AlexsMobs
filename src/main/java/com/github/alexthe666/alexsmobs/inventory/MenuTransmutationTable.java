@@ -3,21 +3,15 @@ package com.github.alexthe666.alexsmobs.inventory;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
-import com.github.alexthe666.alexsmobs.message.MessageInteractMultipart;
 import com.github.alexthe666.alexsmobs.message.MessageTransmuteFromMenu;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityTransmutationTable;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,7 +31,7 @@ public class MenuTransmutationTable extends AbstractContainerMenu {
     };
 
     public MenuTransmutationTable(int i, Inventory inventory) {
-        this(i, inventory, ContainerLevelAccess.NULL, Minecraft.getInstance().player, null);
+        this(i, inventory, ContainerLevelAccess.NULL, AlexsMobs.PROXY.getClientSidePlayer(), null);
     }
 
     public MenuTransmutationTable(int id, Inventory inventory, final ContainerLevelAccess access, Player player, TileEntityTransmutationTable table) {
