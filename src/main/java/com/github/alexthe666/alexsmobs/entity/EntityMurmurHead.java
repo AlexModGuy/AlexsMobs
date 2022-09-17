@@ -236,8 +236,13 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
                 LivingEntity headTarget = this.getTarget();
                 LivingEntity bodyTarget = murmur.getTarget();
                 if(headTarget != null && headTarget.isAlive()){
-                    murmur.setTarget(headTarget);
-                }else if(bodyTarget != null && bodyTarget.isAlive()){
+                    if(murmur.canAttack(headTarget)){
+                        murmur.setTarget(headTarget);
+                    }else{
+                        this.setTarget(null);
+                        murmur.setTarget(null);
+                    }
+                }else if(bodyTarget != null && bodyTarget.isAlive() && this.canAttack(bodyTarget)){
                     this.setTarget(bodyTarget);
                 }
                 if (body.isRemoved()) {
