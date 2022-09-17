@@ -1,0 +1,10 @@
+{
+  "__comment": "mobs the bunfungus should not target.",
+  "replace": false,
+  "values": [
+    {
+      "id": "creeperoverhaul:mushroom_creeper",
+      "required": false
+    }
+  ]
+}

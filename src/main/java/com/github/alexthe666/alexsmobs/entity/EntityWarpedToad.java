@@ -165,13 +165,13 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("MonkeySitting", this.isOrderedToSit());
+        compound.putBoolean("ToadSitting", this.isOrderedToSit());
         compound.putInt("Command", this.getCommand());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.setOrderedToSit(compound.getBoolean("MonkeySitting"));
+        this.setOrderedToSit(compound.getBoolean("ToadSitting"));
         this.setCommand(compound.getInt("Command"));
     }
 
