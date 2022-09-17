@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Underminers are rare, ghostly inhabitants of abandoned mineshafts. Due to their ethereal nature, they can walk through walls with ease, and can only be damaged with magic, such as splash potions.
+Most Underminers will only begin to appear if plenty of time is spent in a mineshaft.
+However, they pose no threat to the living, as long as they are not attacked first. Their mistrust of newcomers is apparent however - they will disappear temporarily if approached. Underminers are content to stalk the halls of the mineshaft, as they have been doing for hundreds of years.
+<NEWLINE>
+Underminers can occasionally be seen mining blocks with their ghostly pickaxes. Due to them existing on the spiritual plane, they cannot destroy these blocks, but their actions can reveal hidden ores in the walls of the surrounding mineshaft.
+If a specific ore block is dropped near an underminer, it will cease being invisible and begin to seek out and mine blocks obscuring that specific ore block hidden in the surrounding area - potentially revealing ore veins.
+<NEWLINE>
+If slain using magic, the Underminer may drop its Ghostly Pickaxe. This pickaxe, although immaterial, is decently powerful, yet its true power is that it can store up to 9 stacks of mined block drops within itself - only if its user has a full inventory. Once there is space in the inventory, the items will be returned from the pickaxe. The Ghostly Pickaxe can be repaired with phantom membranes.
