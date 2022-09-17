@@ -4,6 +4,11 @@
 Guaxinins são pequenos mamíferos nativos de planícies e florestas. Embora neutros, eles implorarão por qualquer comida se a virem.
 Eles geralmente podem ser identificados à noite devido aos seus olhos brilhantes.
 Embora possa ser tentador alimentar esses animais fofos, muitas vezes há pouco benefício. O Guaxinim é um ladrão conhecido que costuma roubar comida de baús e barris e, apesar de sua aparência adorável, pode ser extremamente agressivo.
-Uma curiosidade do Guaxinim é seu comportamento de "lavagem". Quando recebe comida perto da água, o guaxinim lava o alimento debaixo d'água e depois o come.Os guaxinins só podem ser domesticados se receberem um ovo de galinha perto da água, onde podem lavar o ovo como quiserem. Guaxinins domesticados podem ser mandados para sentar, seguir e vagar.
-Eles podem ser procriados com pão.
-Quando mortos, os Guaxinins têm a chance de deixar cair o rabo. Essas caudas podem ser usadas para fazer o Chapéu do Raiano, que concede um bônus de velocidade ao esgueirar-se.
+Uma curiosidade do Guaxinim é seu comportamento de "lavagem". Quando recebe comida perto da água, o guaxinim lava o alimento debaixo d'água e depois o come.
+<NEWLINE>
+Os guaxinins só podem ser domesticados se receberem um ovo de galinha perto da água, onde podem lavar o ovo como quiserem. Guaxinins domesticados podem ser mandados para sentar, seguir e vagar.
+Eles podem ser procriados com pão. Guaxinins domesticados podem receber um tapete para usar como bandana, que pode ser removido com tesouras. Ocasionalmente, os Guaxinins podem roubar itens dos inventários dos aldeões.
+Quando mortos, os Guaxinins têm a chance de deixar cair o rabo.
+<NEWLINE>
+<NEWLINE>
+Essas caudas podem ser usadas para fazer o Chapéu do Raiano, que concede um bônus de velocidade ao esgueirar-se.

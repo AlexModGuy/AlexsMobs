@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Jerboas são pequenos mamíferos noturnos que só podem ser encontrados em biomas desérticos à noite.
+Essas pequenas criaturas têm o hábito de dormir durante o dia e pular à noite com suas patas traseiras muito longas.
+Devido ao seu pequeno tamanho, muitas criaturas, incluindo cascavéis, raposas e gatos tentarão caçar Jerboas.
+Apesar de sua natureza tímida, Jerboas vai implorar por sementes. Se receber alguns, eles recompensarão um com o efeito Pé-Leve, que concede um aumento de velocidade ao correr e pular ao mesmo tempo.
+Jerboas pode ser procriado com larvas ou qualquer pequeno inseto. Um Jerboa alimentado com sementes ou larvas não desaparecerá.

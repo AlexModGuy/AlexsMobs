@@ -1,0 +1,23 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+O Perscrutador é um ser que vem de além das dimensões, vivendo em universos ortogonais ao nosso. Eles só podem cruzar seus planetas incompreensíveis nas próprias fronteiras do mundo, o que faz com que os encontros com essas feras sejam extremamente raros.
+<NEWLINE>
+No entanto, isso não significa que eles são impossíveis de encontrar. Com alguma dedicação, pode-se criar um Escultor Dimensional Despedaçado colocando um Escultor Dimensional em um Capsídeo. Ao contrário da variante normal desta ferramenta, o Escultor Despedaçado criará um portal que leva um milhão de blocos em qualquer direção.
+Simplesmente usar esta ferramenta várias vezes na mesma direção pode levar a estar dentro do alcance do Perscrutador.
+<NEWLINE>
+Quando a presa está perto da fronteira do mundo, o Perscrutador tem a chance de abrir um portal e aparecer ao lado dele, surpreendendo-o rapidamente.
+<NEWLINE>
+Se um Perscrutador for encontrado, sem dúvida será extremamente hostil. Eles tentarão dissolver qualquer oponente em pura estática usando suas garras rápidas ou um raio devastador disparado do olho. Se esses ataques não forem desviados ou flanqueados, o Perscrutador provavelmente terá sucesso - Seus ataques perfuram diretamente armaduras e encantamentos.
+<NEWLINE>
+Quando morto, um Perscrutador pode soltar um de seus muitos braços. Estes, juntamente com algumas obsidianas e uma estrela do nether , podem ser usados para criar uma Mesa de Transmutação.
+<NEWLINE>
+<NEWLINE>
+Usando a mesma magia que os Perscrutadores usam para transformar matéria em nada, esta mesa permite transmutar pilhas inteiras de itens em itens diferentes.
+Quando aberta, esta mesa possui um slot que pode ser preenchido com qualquer item empilhável. Feito isso, três possibilidades aparecerão, que podem ser selecionadas para transformar toda a pilha de itens no item selecionado, por um custo de experiência.
+Quando um item é transmutado em outro, há uma pequena chance de que futuras possibilidades de transmutação sejam o item anterior, o que aumenta e diminui com base na frequência com que esse item é transmutado e com que frequência é selecionado, respectivamente.
+<NEWLINE>
+A Mesa de Transmutação pode começar apenas com itens simples e naturais para mudar a forma dos itens, mas pode ser rapidamente preenchida com outros tipos de recursos.
+Se destruída, a Mesa de Transmutação perderá todo o seu conhecimento prévio dos itens, e apenas uma estrela inferior permanecerá, seguida por uma explosão violenta.

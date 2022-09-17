@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Os Cágado, tartarugas de água doce, ou tartarugas fluviais, são pequenos répteis ocasionalmente encontrados submersos em biomas fluviais sem gelo.
+Eles são completamente passivos e dependem de sua concha para proteção. Os Cágados podem ser apanhados com um balde de água.
+<NEWLINE>
+Se pularem encimad de um Cágado, ele se retrairá em sua concha. Se pular novamente, o Cágado irá girar na direção do saltador, ricocheteando nas paredes.
+Se colidir com outro mob, o Cágado rápido causará uma quantidade razoável de dano. No entanto, esse mob pode se tornar agressivo com quem lançou um Cágado nela.
+<NEWLINE>
+Os Cágado vêm em uma vasta gama de padrões e cores, muitas das quais não aparecem na natureza.
+Estes Cágados podem ser procriados com ervas marinhas para produzir 1-4 ovos. Embora a maioria desses ovos deva ser um cruzamento direto entre seus pais, há uma chance de um Cágado bebê mudar uma cor completamente aleatória.
+Se o Cágado não sofrer mutação, suas cores podem ser um de seus pais ou uma média dos dois.

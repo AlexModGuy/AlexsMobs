@@ -1,0 +1,16 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Leviatãs são répteis gigantescos e magmáticos cobertos de Pedra-Negra encontrados nos grandes lagos de lava do Nether. Embora de aparência assustadora, os Leviatãs são completamente passivos e tentam fugir se feridos.
+<NEWLINE>
+Os Leviatãs podem ser montados e controlados quando equipando uma Sela de Basaltita e uma Carapaça de Basaltita.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+A Sela permite até quatro passageiros, e a Carapaça permite controlar o movimento do Leviatã com rédeas longas. Leviatãs equipados com ambos são menos propensos a fugir e submergir na lava.
+<NEWLINE>
+Os Laviatãs são conhecidos por serem um dos predadores mais bem-sucedidos dos mosquitos carmesins, muitas vezes rompendo a superfície da lava e emitindo fumaça de aberturas em suas costas e cabeças. Essa fumaça atrai os insetos, que são rapidamente capturados no bico do Laviatã.
+<NEWLINE>
+Sendo criaturas com a consistência de Lava, seria de esperar que esses répteis gigantes fossem prejudicados pela água. Mas agora acredita-se que, quando expostos à água, essas bestas "solidificam" em uma forma mais forte de obsidiana. Laviatãs podem ser procriados com Larva de Mosquito Carmesim e curados com Creme de Magma.

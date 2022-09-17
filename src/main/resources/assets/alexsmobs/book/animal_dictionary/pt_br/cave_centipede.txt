@@ -6,5 +6,5 @@ Embora lento, este artrópode gigante e pesado pode causar uma quantidade perigo
 <NEWLINE>
 Quando mortos, eles têm a chance de deixar cair uma ou mais de suas pernas.
 Essas pernas podem ser usadas para criar um par de calças que concede ao usuário a habilidade de escalar paredes, junto com uma defesa aprimorada.
-Eles também podem ser fermentados com uma Garrafa de Saliva de Dragão de Komodo para criar uma Essência Venenosa, que quando fermentada com um Chocalho de Cascavel
-pode criar uma Poção de Resistência ao Veneno, que permite ao seu usuário não sofrer os efeitos de ser envenenado.
+Eles também podem ser fermentados com uma Essência Venenosa ou uma Garrafa de Saliva de Dragão de Komodo para criar uma Poção de Resistência a Veneno.
+Isso permite ao seu usuário não sofrer os efeitos de ser envenenado.
