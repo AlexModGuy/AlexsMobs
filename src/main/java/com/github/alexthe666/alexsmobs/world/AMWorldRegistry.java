@@ -5,64 +5,37 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.data.worldgen.features.FeatureUtils;
-import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
-import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.StructureTags;
-import net.minecraft.util.random.WeightedRandomList;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.common.world.ModifiableStructureInfo;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.tuple.Pair;
 
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-
-import java.util.*;
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AMWorldRegistry {
 
     public static void modifyStructure(Holder<Structure> structure, ModifiableStructureInfo.StructureInfo.Builder builder) {
-        if(structure.is(BuiltinStructures.END_CITY) && AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0){
+        if (structure.is(BuiltinStructures.END_CITY) && AMConfig.mimicubeSpawnInEndCity && AMConfig.mimicubeSpawnWeight > 0) {
             builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.MONSTER).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.MIMICUBE.get(), AMConfig.mimicubeSpawnWeight, 1, 3));
         }
-        if(structure.is(BuiltinStructures.NETHER_FOSSIL) && AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0){
+        if (structure.is(BuiltinStructures.NETHER_FOSSIL) && AMConfig.soulVultureSpawnOnFossil && AMConfig.soulVultureSpawnWeight > 0) {
             builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.MONSTER).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.SOUL_VULTURE.get(), AMConfig.soulVultureSpawnWeight, 1, 1));
         }
-        if(structure.is(BuiltinStructures.SHIPWRECK) && AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0){
+        if (structure.is(BuiltinStructures.SHIPWRECK) && AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0) {
             builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.MONSTER).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
         }
-        if(structure.is(StructureTags.MINESHAFT) && AMConfig.restrictUnderminerSpawns && AMConfig.underminerSpawnWeight > 0){
+        if (structure.is(StructureTags.MINESHAFT) && AMConfig.restrictUnderminerSpawns && AMConfig.underminerSpawnWeight > 0) {
             builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.AMBIENT).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.UNDERMINER.get(), AMConfig.underminerSpawnWeight, 1, 1));
         }
     }
@@ -215,6 +188,12 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.cachalot_whale_spawns, biome) && AMConfig.cachalotWhaleSpawnWeight > 0) {
             builder.getMobSpawnSettings().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.CACHALOT_WHALE.get(), AMConfig.cachalotWhaleSpawnWeight, 1, 2));
         }
+        if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
+            Optional<Holder<PlacedFeature>> optional = AMFeatureRegistry.AMPlacedFeatureRegistry.ANTHILL.getHolder();
+            if (optional.isPresent()) {
+                builder.getGenerationSettings().getFeatures(GenerationStep.Decoration.SURFACE_STRUCTURES).add(optional.get());
+            }
+        }
         if (testBiome(BiomeConfig.enderiophage_spawns, biome) && AMConfig.enderiophageSpawnWeight > 0) {
             builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.ENDERIOPHAGE.get(), AMConfig.enderiophageSpawnWeight, 2, 2));
         }
@@ -334,9 +313,4 @@ public class AMWorldRegistry {
         }
     }
 
-    public static void addBiomeFeatures(Holder<Biome> biome, HolderSet<PlacedFeature> features, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-        if (testBiome(BiomeConfig.leafcutter_anthill_spawns, biome) && AMConfig.leafcutterAnthillSpawnChance > 0) {
-           features.stream().filter(placedFeatureHolder -> placedFeatureHolder.is(AMFeatureRegistry.PLACED_ANTHILL)).forEach(placedFeatureHolder ->  builder.getGenerationSettings().getFeatures(GenerationStep.Decoration.SURFACE_STRUCTURES).add(placedFeatureHolder));
-        }
-    }
 }

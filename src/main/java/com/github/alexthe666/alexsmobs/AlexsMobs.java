@@ -87,6 +87,8 @@ public class AlexsMobs {
         AMTileEntityRegistry.DEF_REG.register(modBusEvent);
         AMPointOfInterestRegistry.DEF_REG.register(modBusEvent);
         AMFeatureRegistry.DEF_REG.register(modBusEvent);
+        AMFeatureRegistry.AMConfiguredFeatureRegistry.DEF_REG.register(modBusEvent);
+        AMFeatureRegistry.AMPlacedFeatureRegistry.DEF_REG.register(modBusEvent);
         AMSoundRegistry.DEF_REG.register(modBusEvent);
         AMParticleRegistry.DEF_REG.register(modBusEvent);
         AMPaintingRegistry.DEF_REG.register(modBusEvent);
@@ -100,7 +102,6 @@ public class AlexsMobs {
         final DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
         biomeModifiers.register(modBusEvent);
         biomeModifiers.register("am_mob_spawns", AMMobSpawnBiomeModifier::makeCodec);
-        biomeModifiers.register("am_features", AMFeatureBiomeModifier::makeCodec);
         final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
         structureModifiers.register(modBusEvent);
         structureModifiers.register("am_structure_spawns", AMMobSpawnStructureModifier::makeCodec);
