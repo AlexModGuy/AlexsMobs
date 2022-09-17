@@ -1,0 +1,23 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+The Farseer is a being that is from beyond dimensions, living in universes orthogonal to our own. They can only cross over from their incomprehensible homeworlds at the very borders of the world, which leads to encounters with these beasts being exceedingly rare.
+<NEWLINE>
+However, this does not mean that they are impossible to find. With some dedication, one can create a Shattered Dimensional Carver by placing a Dimensional Carver into a Capsid. Unlike the normal variant of this tool, the shattered carver will create a portal that leads one million blocks in any direction.
+Simply using this tool multiple times in the same direction could lead to being within the range of the Farseer.
+<NEWLINE>
+When prey is near the world border, the Farseer has a chance to tear open a portal and appear right alongside it, quickly surprising it.
+<NEWLINE>
+If a Farseer is encountered, it will be undoubtedly extremely hostile. They will attempt to dissolve any opponent into pure static using their quick claws or a devastating beam fired from the eye. If these attacks are not dodged or outflanked, the Farseer is very likely to succeed - Its attacks peirce straight through armor and enchantments alike.
+<NEWLINE>
+When slain, a Farseer can drop one of its many arms. These, along with some obsidian and a nether star, can be used to craft a Transmutation Table.
+<NEWLINE>
+<NEWLINE>
+Using the same magic that Farseers use to transform matter into nothing, this table allows one to transmute entire stacks of items into different items.
+When opened, this table has a slot that can be filled with any stackable item. Once this is done, three possibilities will appear, which can be selected to transform the entire stack of items into the selected item, for a cost of experience.
+When one item is transmuted into another, there is a slight chance that future transmutation possibilities will be the former item, which increases and decreases based off of how often that item is transmuted, and how often it is selected, respectively.
+<NEWLINE>
+The Transmutation Table may begin with only simple, natural items to change the form of items into, but it can quickly be filled with other kinds of resources.
+If destroyed, the Transmutation Table will lose all of its prior knowledge of items, and only a nether star will remain, followed by a violent explosion.
