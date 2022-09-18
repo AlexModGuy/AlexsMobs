@@ -1,0 +1,17 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Mồm đi chơi xa là loài linh trưởng đột biến gớm ghiếc kì lạ thường bám vào trần của biome deep dark.
+Bởi vì quần xã sinh vật này vốn tối tăm, bạn có thể nhận diện được chúng qua đôi mắt phát sáng khổng lồ của nó.
+<NEWLINE>
+Dù được cho là quái vật thù địch, nhưng Mồm đi chơi xa không tấn công bạn bằng cách thông thường. Thay vào đó, khi chốt được con mồi, nó sẽ bắt đầu phát ra tiếng ồn cực kỳ lớn, vừa rú lên vừa vỗ hai chân của nó lại với nhau.
+Sau vài giây, một tiếng ồn lớn như vậy ở một nơi nhạy cảm với âm thanh nhất định sẽ đánh thức một con cai ngục ngay bên dưới mục tiêu của nó.
+<NEWLINE>
+May mắn thay cho những nhà thám hiểm, Mồm đi chơi xa có lượng máu cực kì giới hạn, và bất kỳ vật nào bắn ra cũng có thể tạm thời vô hiệu hoá việc nó gọi cai ngục - cũng như làm nó mất thăng bằng và lao thẳng xuống đất.
+Phần khó nhất của việc đối đầu với những con quái vật này là chốt chúng trước khi chúng chốt bạn.
+<NEWLINE>
+Nếu bị đánh bại, Mồm đi chơi xa có thể sẽ rơi ra linh hồn của nó. Linh hồn mồm đi chơi xa có thể được dùng để chế tạo Bom Sculk.
+<NEWLINE>
+<NEWLINE>
+Khi bị kích hoạt bằng một cảm biến skulk gần đó, khối này sẽ tạo ra một làn sóng xanh gây sát thương cho mọi sinh vật xung quanh cách nó 3 khối theo phương nằm ngang. Nó có thể bị vô hiệu hoá tạm thời bằng tín hiệu redstone, và quả bom sẽ dừng một chút, làm Bom Sculk có ích cho việc đặt bẫy.

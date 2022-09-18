@@ -1,0 +1,20 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Ma cổ dài là một linh hồn bị tra tấn mà chỉ có thể được tìm thấy ở sâu bên trong lòng đất của overworld, thậm chí còn sâu hơn Rết hang.
+Nó trông như một người vô hại nhưng thực ra lại là một con thây ma với cái cổ oằn tà là vằn, thứ mà có thể kéo dài ra hơn 50 khối.
+Khi Ma cổ dài chốt được nạn nhân, nó sẽ kéo dài cái cổ của mình bay tới gần con mồi để nhìn rõ hơn, sau đó lướt nhanh tới đớp con mồi và nhanh chúng rút lui.
+Nếu đầu của Ma cổ dài bị vỗ thay vì cơ thể của nó, nó sẽ chỉ nhận một nửa sát thương.
+<NEWLINE>
+Nếu bị đánh bại, Ma cổ dài có thể rơi ra len đỏ, Gân đàn hồi hoặc hiếm khi là Kimono bất ổn.
+Gân đàn hồi có thể được ghép lại với móng vuốt Dropbear để tạo thành Roi dây chằng.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Vũ khí cận chiến tầm trung này có thể được vung như một thanh kiếm, và sẽ gây sát thương cho tối đa 3 sinh vật gần đó, với sát thương giảm dần. Nó có thể được sử dụng ở khoảng cách xa hơn 8 khối và có thể tự động tìm mục tiêu.
+Roi có thể được sửa chữa bằng Gân đàn hồi.
+<NEWLINE>
+Kimono bất ổn có thể được sử dụng như áo giáp. Tuy có giáp và độ bền thấp, thay vào đó nó tăng khoảng cách đặt khối của người mặc lên hai khối, và khiến hầu hết các sinh vật thây ma thù địch trở nên trung lập với người mặc - ngoại trừ những con ma cổ dài khác và Wither.
+Nó có thể được sửa chữa bằng len.
