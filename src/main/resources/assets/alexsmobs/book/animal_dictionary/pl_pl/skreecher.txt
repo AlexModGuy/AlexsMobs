@@ -2,16 +2,16 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Skreecher is a strange, hideously-mutated primate found clinging to the ceiling of the deep dark biome.
-Since its native biome is so dark, it can often only be distinguished by its gigantic, glowing eyes.
+Krzykacz jest dziwnym, ohydnie zmutowanym naczelnym, którego można znaleźć trzymającego się sufitu w mrocznej głębii.
+Ponieważ jego rodzimy biom jest tak ciemny, często można go dostrzec przez jego gigantyczne, świecące ślepia.
 <NEWLINE>
-Although considered a hostile monster, the Skreecher cannot fight in any typical sense. Instead, when detecting prey, it will begin to create an extremely loud racket, both by howling and clapping together its two large feet.
-Given a few seconds, such a loud noise in such a sound-sensitive biome is bound to awaken a warden right beneath its target.
+Chociaż Krzykacz jest uważany za wrogiego potwora, nie potrafi walczyć w typowy sposób. Zamiast tego, gdy wykryje ofiarę, zacznie robić niezwykle głośny rumor, zarówno poprzez wycie, jak i klaskanie swoimi dwiema wielkimi stopami.
+W ciągu kilku sekund tak głośny hałas w tak wrażliwym na dźwięki biomie z pewnością obudzi strażnika tuż pod jego celem.
 <NEWLINE>
-Lucky for adventurers, the Skreecher has extremely limited health, and any projectile can temporarily disable it from calling for a warden - along with sending it plummeting towards the ground.
-The most difficult part of facing these beasts is identifying them before they identify you.
+Na szczęście dla poszukiwaczy przygód, Krzykacz ma bardzo ograniczone zdrowie, a każdy pocisk może tymczasowo uniemożliwić mu wezwanie strażnika - wraz z wysłaniem go w kierunku ziemi.
+Najtrudniejszą częścią walki z tymi bestiami jest zauważenie ich, zanim one zauważą ciebie.
 <NEWLINE>
-If slain, a Skreecher has a chance to drop its soul. The Skreecher Soul can be used to craft a Sculk Boomer.
+Jeśli Krzykacz zostanie zabity, ma szansę upuścić swoją duszę. Dusza Krzykacz może zostać użyta do stworzenia Skulkowy Ka-Boom.
 <NEWLINE>
 <NEWLINE>
-When activated by a nearby skulk sensor, this block will emit a loud boom that can nearby mobs that are within 3 horizontal blocks of the boomer. It can be temporarily disabled with a redstone signal, and the booms themselves have a slight cooldown, making the Sculk Boomer useful for traps.
+Po aktywacji przez pobliski skulkowy czujnik, ten blok będzie emitował głośne bum, które może zniszczyć pobliskie stwory znajdujące się w odległości 3 poziomych bloków od Ka-Booma. Można go tymczasowo wyłączyć za pomocą sygnału redstone, a same bumy mają niewielki czas odnowienia, co sprawia, że Skulkowy Ka-Boom jest przydatny do pułapek.
