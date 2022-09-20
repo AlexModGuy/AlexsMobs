@@ -2,11 +2,11 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Podkopywacze are rare, ghostly inhabitants of abandoned mineshafts. Due to their ethereal nature, they can walk through walls with ease, and can only be damaged with magic, such as splash potions.
-Most Underminers will only begin to appear if plenty of time is spent in a mineshaft.
-However, they pose no threat to the living, as long as they are not attacked first. Their mistrust of newcomers is apparent however - they will disappear temporarily if approached. Underminers are content to stalk the halls of the mineshaft, as they have been doing for hundreds of years.
+Podkopywacze to rzadcy, upiorni mieszkańcy opuszczonych szybów kopalnianych. Ze względu na swoją eteryczną naturę, mogą z łatwością przechodzić przez ściany, a zranić ich można jedynie za pomocą magii, np. mikstur miotanych.
+Większość Podkopywaczy pojawia się dopiero wtedy, gdy w kopalni spędza się dużo czasu.
+Nie stanowią one jednak zagrożenia dla żywych, o ile nie zostaną zaatakowane jako pierwsze. Ich nieufność wobec przybyszów jest jednak widoczna - w razie zbliżenia się do nich, chwilowo znikają. Podkopywacze są zadowoleni z przemierzania korytarzy szybu górniczego, tak jak to robią od setek lat.
 <NEWLINE>
-Underminers can occasionally be seen mining blocks with their ghostly pickaxes. Due to them existing on the spiritual plane, they cannot destroy these blocks, but their actions can reveal hidden ores in the walls of the surrounding mineshaft.
-If a specific ore block is dropped near an underminer, it will cease being invisible and begin to seek out and mine blocks obscuring that specific ore block hidden in the surrounding area - potentially revealing ore veins.
+Podkopywaczy można czasem zobaczyć jak wydobywają bloki swoimi Widmowymi Kilofami. Ze względu na to, że istnieją na płaszczyźnie astralnej, nie mogą zniszczyć tych bloków, ale ich działania mogą ujawnić ukryte rudy w ścianach otaczających szyb kopalniany.
+Jeśli określony blok rudy zostanie upuszczony w pobliżu podkopywacza, przestanie on być niewidzialny i zacznie szukać i wydobywać bloki przesłaniające ten konkretny blok rudy ukryty w okolicy - potencjalnie ujawniając żyły rudy.
 <NEWLINE>
-If slain using magic, the Underminer may drop its Ghostly Pickaxe. This pickaxe, although immaterial, is decently powerful, yet its true power is that it can store up to 9 stacks of mined block drops within itself - only if its user has a full inventory. Once there is space in the inventory, the items will be returned from the pickaxe. The Ghostly Pickaxe can be repaired with phantom membranes.
+Jeśli Podkopywacz zostanie zabity za pomocą magii, może upuścić swój Widmowy Kilof. Ten kilof, choć niematerialny, jest dość potężny, ale jego prawdziwą mocą jest to, że może przechowywać w sobie do 9 stacków wydobytych bloków - tylko wtedy, gdy jego użytkownik ma pełny ekwipunek. Gdy w inwentarzu znajdzie się miejsce, przedmioty zostaną zwrócone z kilofa. Widmowy kilof można naprawić za pomocą błon fantoma.
