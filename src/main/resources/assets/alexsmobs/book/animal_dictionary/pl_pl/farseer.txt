@@ -3,21 +3,21 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Farseer is a being that is from beyond dimensions, living in universes orthogonal to our own. They can only cross over from their incomprehensible homeworlds at the very borders of the world, which leads to encounters with these beasts being exceedingly rare.
+Dalekowidzący to istota pochodząca spoza wymiarów, żyjąca we wszechświatach ortogonalnych do naszego własnego. Ze swoich niepojmowalnych ojczyzn mogą się przedostać jedynie na granicach świata, co sprawia, że spotkania z tymi bestiami są niezwykle rzadkie.
 <NEWLINE>
-However, this does not mean that they are impossible to find. With some dedication, one can create a Shattered Dimensional Carver by placing a Dimensional Carver into a Capsid. Unlike the normal variant of this tool, the shattered carver will create a portal that leads one million blocks in any direction.
-Simply using this tool multiple times in the same direction could lead to being within the range of the Farseer.
+Nie oznacza to jednak, że są one niemożliwe do znalezienia. Przy odrobinie poświęcenia można stworzyć Strzaskanego Rzeźbiarza Wymiarów, umieszczając Rzeźbiarza Wymiarów w Kapsydzie. W przeciwieństwie do normalnego wariantu tego narzędzia, Strzaskanegy Rzeźbiarz tworzy portal, który prowadzi milion bloków w dowolnym kierunku.
+Samo użycie tego narzędzia wielokrotnie w tym samym kierunku może doprowadzić do znalezienia się w zasięgu Dalekowidzącego.
 <NEWLINE>
-When prey is near the world border, the Farseer has a chance to tear open a portal and appear right alongside it, quickly surprising it.
+Kiedy ofiara znajduje się w pobliżu granicy świata, Dalekowidzący ma szansę rozerwać portal i pojawić się tuż obok niej, szybko ją zaskakując.
 <NEWLINE>
-If a Farseer is encountered, it will be undoubtedly extremely hostile. They will attempt to dissolve any opponent into pure static using their quick claws or a devastating beam fired from the eye. If these attacks are not dodged or outflanked, the Farseer is very likely to succeed - Its attacks peirce straight through armor and enchantments alike.
+Jeśli napotka się Dalekowidzącego, będzie on niewątpliwie niezwykle wrogo nastawiony. Będą próbować rozpuścić każdego przeciwnika w czystą statykę używając swoich szybkich pazurów lub niszczycielskiej wiązki wystrzelonej z oka. Jeśli nie uda się uniknąć tych ataków, Dalekowidzący ma duże szanse na sukces - jego ataki przebijają się przez zbroje i zaklęcia.
 <NEWLINE>
-When slain, a Farseer can drop one of its many arms. These, along with some obsidian and a nether star, can be used to craft a Transmutation Table.
+Po zabiciu, Dalekowidzący może upuścić jedno ze swoich wielu ramion. Wraz z obsydianem i netherową gwiazdą można z nich wytworzyć Stół Transmutacji.
 <NEWLINE>
 <NEWLINE>
-Using the same magic that Farseers use to transform matter into nothing, this table allows one to transmute entire stacks of items into different items.
-When opened, this table has a slot that can be filled with any stackable item. Once this is done, three possibilities will appear, which can be selected to transform the entire stack of items into the selected item, for a cost of experience.
-When one item is transmuted into another, there is a slight chance that future transmutation possibilities will be the former item, which increases and decreases based off of how often that item is transmuted, and how often it is selected, respectively.
+Używając tej samej magii, której Dalekowidzący używają do przekształcania materii w nicość, ten stół pozwala na transmutację całych stacków przedmiotów w różne przedmioty.
+Po otwarciu, stół ten posiada miejsce, które można wypełnić dowolnym przedmiotem nadającym się stackowania. Gdy to zrobisz, pojawią się trzy możliwości, które można wybrać, aby przekształcić cały stos przedmiotów w wybrany przedmiot, za cenę doświadczenia.
+Kiedy jeden przedmiot zostanie przekształcony w inny, istnieje niewielka szansa, że przyszłe możliwości transmutacji będą dotyczyły tego pierwszego przedmiotu, która wzrasta i maleje w zależności od tego, jak często ten przedmiot jest przekształcany i jak często jest wybierany.
 <NEWLINE>
-The Transmutation Table may begin with only simple, natural items to change the form of items into, but it can quickly be filled with other kinds of resources.
-If destroyed, the Transmutation Table will lose all of its prior knowledge of items, and only a nether star will remain, followed by a violent explosion.
+Stół Transmutacji może zacząć od prostych, naturalnych przedmiotów do zmiany formy, ale szybko może zostać wypełniony innymi rodzajami zasobów.
+W przypadku zniszczenia, Stół Transmutacji straci całą swoją wcześniejszą wiedzę o przedmiotach i pozostanie po nim jedynie netherowa gwiazda, po czym nastąpi gwałtowna eksplozja.
