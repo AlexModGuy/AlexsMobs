@@ -2,7 +2,45 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Moose are giant, herbivorous mammals that dwell in snowy tundras and snowy taigas. These are no timid herbivores, however.
-If attacked, they can use their massive set of antlers to deal dangerous levels of damage. Moose can often be found jostling other moose, antler to antler, for dominance.
-Every seven to ten days, moose have a chance to drop one of their rare, giant antlers. It is said that two of these antlers can be used to create a headdress that can give the wearer special knockback abilities.
-It takes moose three to five days to regrow their horns. Moose are good parents, and will naturally defend their young from any predators, including wolves. Moose can be bred with multiple dandelions, their favorite food.
+    驼鹿是一种大型食草哺乳动物，生
+<NEWLINE>
+活在在积雪的冻原和积雪的针叶林。但
+<NEWLINE>
+是，身为食草动物的它们并不胆怯。
+<NEWLINE>
+    如果受到攻击，它们会用它们那巨
+<NEWLINE>
+大的鹿角来造成数倍危险伤害的反击。
+<NEWLINE>
+驼鹿经常会为了主导权而与其他驼鹿进
+<NEWLINE>
+行斗角。
+<NEWLINE>
+    每七天至十天，驼鹿会有机会掉落
+<NEWLINE>
+一个它们那稀有、巨大的鹿角。据说两
+<NEWLINE>
+个这种鹿角可以用来创造一个头饰，这
+<NEWLINE>
+会给佩戴者带来特别的击退能力。
+<NEWLINE>
+    三天至五天过后，驼鹿的角会再长
+<NEWLINE>
+出来。驼鹿是优秀的父母，会保护它们
+<NEWLINE>
+的孩子免受来自包括狼在内的掠食者的
+<NEWLINE>
+伤害。驼鹿可以通过喂食多朵蒲公英来
+<NEWLINE>
+繁殖它们，这是它们最喜欢的食物。
+<NEWLINE>
+    在雪天中，驼鹿的皮毛会覆上雪。
+<NEWLINE>
+这些雪可以利用锹来铲掉。或者也可以
+<NEWLINE>
+<NEWLINE>
+把雪覆盖在驼鹿身上。如果驼鹿正身处
+<NEWLINE>
+于水里、雨中或是炎热的生物群系中，
+<NEWLINE>
+那么这些雪将会融化掉。
