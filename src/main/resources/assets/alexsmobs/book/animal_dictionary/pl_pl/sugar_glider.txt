@@ -1,0 +1,15 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Lotopałanki to małe, nadrzewne torbacze występujące w lasach brzozowych.
+Często wspinają się po kłodach lub liściach i szybują na inne drzewa w całym lesie.
+<NEWLINE>
+Lotopałanki można oswoić karmiąc je słodkimi jagodami, ich ulubionym pokarmem.
+Oswojonym Lotopałankom można kazać pozostać, podążać lub wędrować.
+Można je również umieścić na głowie poprzez skradanie się i interakcję z nimi.
+Kiedy Lotopałanka znajdzie się na głowie swojego właściciela, doświadczy on powolnego opadania.
+<NEWLINE>
+Od czasu do czasu oswojone Lotopałanki poszukują w blokach liści przedmiotów.
+Zazwyczaj są to śmieci, takie jak sadzonki lub patyki, ale czasami można znaleźć wartościowe przedmioty, takie jak strzały, futro niedźwiedzia lub poroże łosia.
+<NEWLINE>
+Lotopałanki mogą być rozmnarzane plastrami miodu. Małe Lotopałanki nie są zdolne do szybowania.
