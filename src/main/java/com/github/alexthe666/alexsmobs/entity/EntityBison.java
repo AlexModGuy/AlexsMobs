@@ -191,7 +191,8 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             }
         }
         if (!level.isClientSide) {
-            if (this.getDeltaMovement().lengthSqr() < 0.05D && this.getAnimation() == NO_ANIMATION && (this.getTarget() == null || !this.getTarget().isAlive())) {
+            LivingEntity attackTarget = this.getTarget();
+            if (this.getDeltaMovement().lengthSqr() < 0.05D && this.getAnimation() == NO_ANIMATION && (attackTarget == null || !attackTarget.isAlive())) {
                 if ((getRandom().nextInt(600) == 0 && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK))) {
                     this.setAnimation(ANIMATION_EAT);
                 }
@@ -210,27 +211,27 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
                 hasChargedSpeed = false;
             }
-            if (this.getTarget() != null && this.getTarget().isAlive()) {
-                double dist = this.distanceTo(this.getTarget());
-                if(hasLineOfSight(this.getTarget())){
-                    this.lookAt(this.getTarget(), 30, 30);
+            if (attackTarget != null && attackTarget.isAlive() && this.isAlive()) {
+                double dist = this.distanceTo(attackTarget);
+                if(hasLineOfSight(attackTarget)){
+                    this.lookAt(attackTarget, 30, 30);
                     this.yBodyRot = this.getYRot();
                 }
                 if (dist < this.getBbWidth() + 3.0F) {
                     if (this.getAnimation() == NO_ANIMATION) {
                         this.setAnimation(ANIMATION_ATTACK);
                     }
-                    if (this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() > 8 && dist < this.getBbWidth() + 1.0F && this.hasLineOfSight(this.getTarget())) {
+                    if (this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() > 8 && dist < this.getBbWidth() + 1.0F && this.hasLineOfSight(attackTarget)) {
                         float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-                        if (this.getTarget() instanceof Wolf) {
+                        if (attackTarget instanceof Wolf) {
                             dmg = 2;
                         }
-                        launch(this.getTarget(), isCharging());
+                        launch(attackTarget, isCharging());
                         if (isCharging()) {
                             dmg += 3;
                             this.setCharging(false);
                         }
-                        this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
+                        attackTarget.hurt(DamageSource.mobAttack(this), dmg);
                     }
                 } else if (!this.isCharging()) {
                     if (this.getAnimation() == NO_ANIMATION) {
