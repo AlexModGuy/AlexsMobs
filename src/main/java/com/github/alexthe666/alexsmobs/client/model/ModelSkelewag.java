@@ -24,11 +24,11 @@ public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -9.0F, -3.0F);
         root.addChild(body);
         body.setTextureOffset(17, 11).addBox(-1.0F, -1.0F, -16.0F, 2.0F, 2.0F, 20.0F, 0.0F, false);
@@ -39,32 +39,32 @@ public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
         body.setTextureOffset(0, 0).addBox(0.0F, -4.0F, 1.0F, 0.0F, 3.0F, 2.0F, 0.0F, false);
         body.setTextureOffset(45, 34).addBox(-2.0F, 1.0F, -12.0F, 4.0F, 6.0F, 10.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(-0.5F, 0.0F, -17.0F);
         body.addChild(head);
         head.setTextureOffset(23, 54).addBox(-2.0F, -1.0F, -7.0F, 5.0F, 7.0F, 8.0F, 0.0F, false);
         head.setTextureOffset(50, 51).addBox(-0.5F, -1.0F, -19.0F, 2.0F, 2.0F, 12.0F, 0.0F, false);
         head.setTextureOffset(42, 17).addBox(0.0F, -1.0F, -31.0F, 1.0F, 1.0F, 12.0F, 0.0F, false);
 
-        flag = new AdvancedModelBox(this);
+        flag = new AdvancedModelBox(this, "flag");
         flag.setRotationPoint(0.5F, -10.0F, -15.0F);
         body.addChild(flag);
         setRotationAngle(flag, 0.0F, 0.1309F, 0.0F);
         flag.setTextureOffset(0, 0).addBox(0.0F, -5.0F, 0.0F, 0.0F, 12.0F, 18.0F, 0.0F, false);
 
-        left_fin = new AdvancedModelBox(this);
+        left_fin = new AdvancedModelBox(this, "left_fin");
         left_fin.setRotationPoint(2.0F, 7.0F, -10.0F);
         body.addChild(left_fin);
         setRotationAngle(left_fin, 0.0F, 0.0F, 0.7854F);
         left_fin.setTextureOffset(19, 0).addBox(0.0F, 0.0F, -2.0F, 10.0F, 1.0F, 4.0F, 0.0F, false);
 
-        right_fin = new AdvancedModelBox(this);
+        right_fin = new AdvancedModelBox(this, "right_fin");
         right_fin.setRotationPoint(-2.0F, 7.0F, -10.0F);
         body.addChild(right_fin);
         setRotationAngle(right_fin, 0.0F, 0.0F, -0.7854F);
         right_fin.setTextureOffset(19, 0).addBox(-10.0F, 0.0F, -2.0F, 10.0F, 1.0F, 4.0F, 0.0F, true);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, 0.0F, 5.0F);
         body.addChild(tail);
         tail.setTextureOffset(23, 34).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 17.0F, 0.0F, false);
@@ -73,7 +73,7 @@ public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
         tail.setTextureOffset(42, 0).addBox(-2.0F, 1.0F, 2.0F, 4.0F, 5.0F, 11.0F, 0.0F, false);
         tail.setTextureOffset(0, 0).addBox(0.0F, 4.0F, 5.0F, 0.0F, 6.0F, 8.0F, 0.0F, false);
 
-        tail_fin = new AdvancedModelBox(this);
+        tail_fin = new AdvancedModelBox(this, "tail_fin");
         tail_fin.setRotationPoint(0.0F, 0.0F, 15.0F);
         tail.addChild(tail_fin);
         tail_fin.setTextureOffset(0, 31).addBox(0.0F, -12.0F, 0.0F, 0.0F, 25.0F, 11.0F, 0.0F, false);

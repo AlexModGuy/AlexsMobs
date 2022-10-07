@@ -23,42 +23,42 @@ public class ModelMudskipper extends AdvancedEntityModel<EntityMudskipper> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -2.0F, -5.0F);
         root.addChild(head);
         head.setTextureOffset(0, 15).addBox(-3.5F, -3.0F, -4.0F, 7.0F, 5.0F, 6.0F, 0.0F, false);
 
-        eyes = new AdvancedModelBox(this);
+        eyes = new AdvancedModelBox(this, "eyes");
         eyes.setRotationPoint(0.0F, -3.0F, -1.5F);
         head.addChild(eyes);
         eyes.setTextureOffset(19, 0).addBox(-2.5F, -2.0F, -1.5F, 5.0F, 2.0F, 3.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, 0.0F, 3.0F);
         head.addChild(tail);
         tail.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -1.0F, 4.0F, 4.0F, 10.0F, 0.0F, false);
         tail.setTextureOffset(23, 9).addBox(0.0F, -4.0F, 4.0F, 0.0F, 2.0F, 6.0F, 0.0F, false);
 
-        dorsalFin = new AdvancedModelBox(this);
+        dorsalFin = new AdvancedModelBox(this, "dorsalFin");
         dorsalFin.setRotationPoint(0.0F, -2.0F, -2.0F);
         tail.addChild(dorsalFin);
         dorsalFin.setTextureOffset(0, 27).addBox(0.0F, -5.0F, -1.0F, 0.0F, 5.0F, 7.0F, 0.0F, false);
 
-        tailFin = new AdvancedModelBox(this);
+        tailFin = new AdvancedModelBox(this, "tailFin");
         tailFin.setRotationPoint(0.0F, 0.0F, 9.0F);
         tail.addChild(tailFin);
         tailFin.setTextureOffset(20, 20).addBox(0.0F, -3.0F, -1.0F, 0.0F, 6.0F, 7.0F, 0.0F, false);
 
-        leftFin = new AdvancedModelBox(this);
+        leftFin = new AdvancedModelBox(this, "leftFin");
         leftFin.setRotationPoint(2.0F, 2.0F, -1.0F);
         tail.addChild(leftFin);
         leftFin.setTextureOffset(28, 18).addBox(0.0F, 0.0F, 0.0F, 3.0F, 0.0F, 3.0F, 0.0F, false);
 
-        rightFin = new AdvancedModelBox(this);
+        rightFin = new AdvancedModelBox(this, "rightFin");
         rightFin.setRotationPoint(-2.0F, 2.0F, -1.0F);
         tail.addChild(rightFin);
         rightFin.setTextureOffset(28, 18).addBox(-3.0F, 0.0F, 0.0F, 3.0F, 0.0F, 3.0F, 0.0F, true);

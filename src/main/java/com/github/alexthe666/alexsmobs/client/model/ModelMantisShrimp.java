@@ -32,86 +32,86 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 		texWidth = 128;
 		texHeight = 128;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, -14.0F, -5.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-6.0F, -2.0F, 0.0F, 12.0F, 10.0F, 25.0F, 0.0F, false);
 
-		tail = new AdvancedModelBox(this);
+		tail = new AdvancedModelBox(this, "tail");
 		tail.setPos(0.0F, 0.0F, 21.0F);
 		body.addChild(tail);
 		setRotationAngle(tail, -0.2182F, 0.0F, 0.0F);
 		tail.setTextureOffset(50, 0).addBox(-7.0F, 0.0F, 0.0F, 14.0F, 9.0F, 9.0F, 0.0F, false);
 
-		legs_front = new AdvancedModelBox(this);
+		legs_front = new AdvancedModelBox(this, "legs_front");
 		legs_front.setPos(0.0F, 5.0F, -7.0F);
 		body.addChild(legs_front);
 		legs_front.setTextureOffset(0, 61).addBox(-5.0F, 0.0F, 0.0F, 10.0F, 9.0F, 8.0F, 0.0F, false);
 
-		legs_back = new AdvancedModelBox(this);
+		legs_back = new AdvancedModelBox(this, "legs_back");
 		legs_back.setPos(0.0F, 8.0F, 1.0F);
 		body.addChild(legs_back);
 		legs_back.setTextureOffset(0, 36).addBox(-5.0F, 0.0F, 0.0F, 10.0F, 6.0F, 18.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setPos(0.0F, 4.0F, 2.0F);
 		body.addChild(head);
 		setRotationAngle(head, 0.3491F, 0.0F, 0.0F);
 		head.setTextureOffset(49, 53).addBox(-6.0F, -14.0F, -8.0F, 12.0F, 14.0F, 8.0F, 0.1F, false);
 
-		flapper_left = new AdvancedModelBox(this);
+		flapper_left = new AdvancedModelBox(this, "flapper_left");
 		flapper_left.setPos(4.0F, -14.0F, -8.0F);
 		head.addChild(flapper_left);
 		setRotationAngle(flapper_left, -0.48F, 0.2182F, 0.0F);
 		flapper_left.setTextureOffset(50, 19).addBox(0.0F, 0.0F, 0.0F, 14.0F, 5.0F, 0.0F, 0.0F, false);
 
-		flapper_right = new AdvancedModelBox(this);
+		flapper_right = new AdvancedModelBox(this, "flapper_right");
 		flapper_right.setPos(-4.0F, -14.0F, -8.0F);
 		head.addChild(flapper_right);
 		setRotationAngle(flapper_right, -0.48F, -0.2182F, 0.0F);
 		flapper_right.setTextureOffset(50, 19).addBox(-14.0F, 0.0F, 0.0F, 14.0F, 5.0F, 0.0F, 0.0F, true);
 
-		eye_left = new AdvancedModelBox(this);
+		eye_left = new AdvancedModelBox(this, "eye_left");
 		eye_left.setPos(3.0F, -14.0F, -4.0F);
 		head.addChild(eye_left);
 		eye_left.setTextureOffset(0, 15).addBox(-2.0F, -4.0F, -2.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
-		eye_right = new AdvancedModelBox(this);
+		eye_right = new AdvancedModelBox(this, "eye_right");
 		eye_right.setPos(-3.0F, -14.0F, -4.0F);
 		head.addChild(eye_right);
 		eye_right.setTextureOffset(0, 15).addBox(-2.0F, -4.0F, -2.0F, 4.0F, 4.0F, 4.0F, 0.0F, true);
 
-		arm_left = new AdvancedModelBox(this);
+		arm_left = new AdvancedModelBox(this, "arm_left");
 		arm_left.setPos(4.0F, -1.0F, -8.0F);
 		head.addChild(arm_left);
 		arm_left.setTextureOffset(0, 36).addBox(-2.5F, -9.0F, -2.0F, 5.0F, 10.0F, 3.0F, 0.0F, false);
 
-		fist_left = new AdvancedModelBox(this);
+		fist_left = new AdvancedModelBox(this, "fist_left");
 		fist_left.setPos(-1.0F, -7.0F, -1.0F);
 		arm_left.addChild(fist_left);
 		fist_left.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -4.0F, 4.0F, 10.0F, 4.0F, 0.0F, false);
 
-		arm_right = new AdvancedModelBox(this);
+		arm_right = new AdvancedModelBox(this, "arm_right");
 		arm_right.setPos(-4.0F, -1.0F, -8.0F);
 		head.addChild(arm_right);
 		arm_right.setTextureOffset(0, 36).addBox(-2.5F, -9.0F, -2.0F, 5.0F, 10.0F, 3.0F, 0.0F, true);
 
-		fist_right = new AdvancedModelBox(this);
+		fist_right = new AdvancedModelBox(this, "fist_right");
 		fist_right.setPos(1.0F, -7.0F, -1.0F);
 		arm_right.addChild(fist_right);
 		fist_right.setTextureOffset(0, 0).addBox(-3.0F, -1.0F, -4.0F, 4.0F, 10.0F, 4.0F, 0.0F, true);
 
-		whisker_left = new AdvancedModelBox(this);
+		whisker_left = new AdvancedModelBox(this, "whisker_left");
 		whisker_left.setPos(1.0F, -14.0F, -8.0F);
 		head.addChild(whisker_left);
 		setRotationAngle(whisker_left, 0.0F, -0.3927F, 0.0F);
 		whisker_left.setTextureOffset(39, 39).addBox(0.0F, 0.0F, -13.0F, 8.0F, 0.0F, 13.0F, 0.0F, false);
 
-		whisker_right = new AdvancedModelBox(this);
+		whisker_right = new AdvancedModelBox(this, "whisker_right");
 		whisker_right.setPos(-1.0F, -14.0F, -8.0F);
 		head.addChild(whisker_right);
 		setRotationAngle(whisker_right, 0.0F, 0.3927F, 0.0F);

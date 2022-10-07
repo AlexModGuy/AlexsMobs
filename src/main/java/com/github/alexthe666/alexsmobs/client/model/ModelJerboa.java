@@ -25,52 +25,52 @@ public class ModelJerboa extends AdvancedEntityModel<EntityJerboa> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -7.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 19).addBox(-2.5F, -2.0F, -4.0F, 5.0F, 4.0F, 8.0F, 0.0F, false);
 
-        leftEar = new AdvancedModelBox(this);
+        leftEar = new AdvancedModelBox(this, "leftEar");
         leftEar.setRotationPoint(2.0F, -1.0F, -2.0F);
         body.addChild(leftEar);
         setRotationAngle(leftEar, -0.6981F, -0.6545F, 1.0036F);
         leftEar.setTextureOffset(0, 0).addBox(-2.0F, -5.0F, 0.0F, 4.0F, 5.0F, 0.0F, 0.0F, false);
 
-        rightEar = new AdvancedModelBox(this);
+        rightEar = new AdvancedModelBox(this, "rightEar");
         rightEar.setRotationPoint(-2.0F, -1.0F, -2.0F);
         body.addChild(rightEar);
         setRotationAngle(rightEar, -0.6981F, 0.6545F, -1.0036F);
         rightEar.setTextureOffset(0, 0).addBox(-2.0F, -5.0F, 0.0F, 4.0F, 5.0F, 0.0F, 0.0F, true);
 
-        leftArm = new AdvancedModelBox(this);
+        leftArm = new AdvancedModelBox(this, "leftArm");
         leftArm.setRotationPoint(1.0F, 2.0F, -2.0F);
         body.addChild(leftArm);
         setRotationAngle(leftArm, 1.309F, 0.0F, 0.0F);
         leftArm.setTextureOffset(0, 6).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 2.0F, 0.0F, 0.0F, false);
 
-        rightArm = new AdvancedModelBox(this);
+        rightArm = new AdvancedModelBox(this, "rightArm");
         rightArm.setRotationPoint(-1.0F, 2.0F, -2.0F);
         body.addChild(rightArm);
         setRotationAngle(rightArm, 1.309F, 0.0F, 0.0F);
         rightArm.setTextureOffset(0, 6).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 2.0F, 0.0F, 0.0F, true);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, 1.0F, 4.0F);
         body.addChild(tail);
         setRotationAngle(tail, -0.3491F, 0.0F, 0.0F);
         tail.setTextureOffset(0, 0).addBox(-1.5F, -6.0F, 0.0F, 3.0F, 6.0F, 12.0F, 0.0F, false);
 
-        legs = new AdvancedModelBox(this);
+        legs = new AdvancedModelBox(this, "legs");
         legs.setRotationPoint(0.0F, 1.9F, 2.8F);
         body.addChild(legs);
         setRotationAngle(legs, 0.5236F, 0.0F, 0.0F);
         legs.setTextureOffset(19, 0).addBox(-2.0F, 0.0F, -5.0F, 4.0F, 3.0F, 5.0F, 0.0F, false);
 
-        feet = new AdvancedModelBox(this);
+        feet = new AdvancedModelBox(this, "feet");
         feet.setRotationPoint(0.0F, 3.0F, -5.0F);
         legs.addChild(feet);
         setRotationAngle(feet, -0.5236F, 0.0F, 0.0F);

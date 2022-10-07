@@ -22,41 +22,41 @@ public class ModelSpectre extends AdvancedEntityModel<EntitySpectre> {
         texWidth = 256;
         texHeight = 256;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -0.5F, 0.0F);
         root.addChild(body);
         setRotationAngle(body, 0.0F, -0.7854F, 0.0F);
         body.setTextureOffset(43, 0).addBox(-12.0F, -5.5F, -12.0F, 24.0F, 6.0F, 24.0F, 0.0F, false);
 
-        spine = new AdvancedModelBox(this);
+        spine = new AdvancedModelBox(this, "spine");
         spine.setPos(0.0F, -5.5F, 0.0F);
         body.addChild(spine);
         setRotationAngle(spine, 0.0F, 0.7854F, 0.0F);
         spine.setTextureOffset(0, 0).addBox(0.0F, -3.0F, -14.0F, 0.0F, 8.0F, 42.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setPos(0.0F, 1.0F, 28.0F);
         spine.addChild(tail);
         tail.setTextureOffset(76, 31).addBox(0.0F, -6.0F, 0.0F, 0.0F, 11.0F, 27.0F, 0.0F, false);
 
-        wing_left_p = new AdvancedModelBox(this);
+        wing_left_p = new AdvancedModelBox(this, "wing_left_p");
         wing_left_p.setPos(12.0F, -2.5F, -12.0F);
         body.addChild(wing_left_p);
 
-        wing_left = new AdvancedModelBox(this);
+        wing_left = new AdvancedModelBox(this, "wing_left");
         wing_left_p.addChild(wing_left);
         wing_left.setTextureOffset(76, 76).addBox(0.0F, -1.5F, 0.0F, 26.0F, 3.0F, 23.0F, 0.0F, false);
 
-        wing_right_p = new AdvancedModelBox(this);
+        wing_right_p = new AdvancedModelBox(this, "wing_right_p");
         wing_right_p.setPos(-12.0F, -2.5F, 12.0F);
         body.addChild(wing_right_p);
         setRotationAngle(wing_right_p, 0.0F, 1.5708F, 0.0F);
 
-        wing_right = new AdvancedModelBox(this);
+        wing_right = new AdvancedModelBox(this, "wing_right");
         wing_right_p.addChild(wing_right);
         wing_right.setTextureOffset(0, 51).addBox(-26.0F, -1.5F, 0.0F, 26.0F, 3.0F, 23.0F, 0.0F, false);
         this.updateDefaultPose();

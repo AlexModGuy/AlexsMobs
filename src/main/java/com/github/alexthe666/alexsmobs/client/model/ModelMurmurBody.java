@@ -15,17 +15,17 @@ public class ModelMurmurBody extends AdvancedEntityModel<EntityMurmur> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -14.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-7.0F, -13.0F, -5.0F, 14.0F, 14.0F, 10.0F, 0.0F, false);
         body.setTextureOffset(72, 20).addBox(-7.0F, 1.0F, -5.0F, 14.0F, 13.0F, 10.0F, 0.0F, false);
 
-        arms = new AdvancedModelBox(this);
+        arms = new AdvancedModelBox(this, "arms");
         arms.setRotationPoint(0.0F, -8.5F, -1.0F);
         body.addChild(arms);
         arms.rotateAngleX = 0.4363F;

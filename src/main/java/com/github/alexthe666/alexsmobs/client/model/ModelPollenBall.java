@@ -11,7 +11,7 @@ public class ModelPollenBall extends AdvancedEntityModel<Entity> {
 	public ModelPollenBall() {
 		texWidth = 8;
 		texHeight = 8;
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 0.0F, 0.0F);
 		root.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
 		this.updateDefaultPose();

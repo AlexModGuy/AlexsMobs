@@ -19,28 +19,28 @@ public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 		texWidth = 64;
 		texHeight = 64;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, -4.0F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
-		hair_left = new AdvancedModelBox(this);
+		hair_left = new AdvancedModelBox(this, "hair_left");
 		hair_left.setPos(4.0F, -4.0F, 0.0F);
 		body.addChild(hair_left);
 		setRotationAngle(hair_left, 0.0F, 0.0F, 1.1345F);
 		hair_left.setTextureOffset(0, 17).addBox(0.0F, 0.0F, -3.0F, 9.0F, 0.0F, 8.0F, 0.0F, false);
 
-		hair_right = new AdvancedModelBox(this);
+		hair_right = new AdvancedModelBox(this, "hair_right");
 		hair_right.setPos(-4.0F, -4.0F, 0.0F);
 		body.addChild(hair_right);
 		setRotationAngle(hair_right, 0.0F, 0.0F, -1.1345F);
 		hair_right.setTextureOffset(0, 17).addBox(-9.0F, 0.0F, -3.0F, 9.0F, 0.0F, 8.0F, 0.0F, true);
 
-		tail = new AdvancedModelBox(this);
+		tail = new AdvancedModelBox(this, "tail");
 		tail.setPos(0.0F, 0.0F, 4.0F);
 		body.addChild(tail);
 		tail.setTextureOffset(24, 24).addBox(0.0F, -4.0F, 0.0F, 0.0F, 8.0F, 14.0F, 0.0F, false);

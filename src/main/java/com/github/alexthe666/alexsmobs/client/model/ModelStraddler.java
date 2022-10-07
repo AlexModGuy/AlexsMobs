@@ -25,48 +25,48 @@ public class ModelStraddler extends AdvancedEntityModel<EntityStraddler> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -14.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-14.0F, -12.0F, -7.0F, 28.0F, 11.0F, 14.0F, 0.0F, false);
 
-        hair = new AdvancedModelBox(this);
+        hair = new AdvancedModelBox(this, "hair");
         hair.setPos(0.0F, -13.0F, 0.0F);
         body.addChild(hair);
         hair.setTextureOffset(23, 26).addBox(-6.0F, -4.0F, 0.0F, 12.0F, 5.0F, 0.0F, 0.0F, false);
 
-        horn_left = new AdvancedModelBox(this);
+        horn_left = new AdvancedModelBox(this, "horn_left");
         horn_left.setPos(9.5F, -12.0F, -4.0F);
         body.addChild(horn_left);
         horn_left.setTextureOffset(0, 26).addBox(-2.5F, -18.0F, 0.0F, 6.0F, 18.0F, 10.0F, 0.0F, false);
 
-        hair_left = new AdvancedModelBox(this);
+        hair_left = new AdvancedModelBox(this, "hair_left");
         hair_left.setPos(-2.5F, -17.0F, 10.0F);
         horn_left.addChild(hair_left);
         setRotationAngle(hair_left, -0.5672F, -0.2618F, 0.0F);
         hair_left.setTextureOffset(33, 33).addBox(0.0F, 0.0F, 0.0F, 0.0F, 6.0F, 16.0F, 0.0F, false);
 
-        horn_right = new AdvancedModelBox(this);
+        horn_right = new AdvancedModelBox(this, "horn_right");
         horn_right.setPos(-9.5F, -12.0F, -4.0F);
         body.addChild(horn_right);
         horn_right.setTextureOffset(0, 26).addBox(-3.5F, -18.0F, 0.0F, 6.0F, 18.0F, 10.0F, 0.0F, true);
 
-        hair_right = new AdvancedModelBox(this);
+        hair_right = new AdvancedModelBox(this, "hair_right");
         hair_right.setPos(2.5F, -17.0F, 10.0F);
         horn_right.addChild(hair_right);
         setRotationAngle(hair_right, -0.5672F, 0.2618F, 0.0F);
         hair_right.setTextureOffset(33, 33).addBox(0.0F, 0.0F, 0.0F, 0.0F, 6.0F, 16.0F, 0.0F, true);
 
-        leg_left = new AdvancedModelBox(this);
+        leg_left = new AdvancedModelBox(this, "leg_left");
         leg_left.setPos(7.0F, -0.5F, 0.0F);
         body.addChild(leg_left);
         leg_left.setTextureOffset(50, 26).addBox(-3.0F, -0.5F, -3.0F, 6.0F, 15.0F, 6.0F, 0.0F, false);
 
-        leg_right = new AdvancedModelBox(this);
+        leg_right = new AdvancedModelBox(this, "leg_right");
         leg_right.setPos(-7.0F, -0.5F, 0.0F);
         body.addChild(leg_right);
         leg_right.setTextureOffset(50, 26).addBox(-3.0F, -0.5F, -3.0F, 6.0F, 15.0F, 6.0F, 0.0F, true);

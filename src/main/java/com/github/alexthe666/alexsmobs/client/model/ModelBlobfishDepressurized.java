@@ -22,37 +22,37 @@ public class ModelBlobfishDepressurized extends AdvancedEntityModel<EntityBlobfi
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -2.5F, 1.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-4.0F, -3.5F, -9.0F, 8.0F, 6.0F, 9.0F, 0.0F, false);
 
-        nose = new AdvancedModelBox(this);
+        nose = new AdvancedModelBox(this, "nose");
         nose.setPos(0.0F, -0.5F, -9.0F);
         body.addChild(nose);
         nose.setTextureOffset(0, 0).addBox(-1.5F, -1.0F, -1.0F, 3.0F, 2.0F, 1.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setPos(0.0F, 0.75F, 0.0F);
         body.addChild(tail);
         tail.setTextureOffset(0, 16).addBox(-3.0F, -3.25F, 0.0F, 6.0F, 5.0F, 4.0F, 0.0F, false);
 
-        tail_fin = new AdvancedModelBox(this);
+        tail_fin = new AdvancedModelBox(this, "tail_fin");
         tail_fin.setPos(0.0F, -0.25F, 4.0F);
         tail.addChild(tail_fin);
         tail_fin.setTextureOffset(16, 21).addBox(0.0F, -3.0F, 0.0F, 0.0F, 5.0F, 5.0F, 0.0F, false);
 
-        fin_left = new AdvancedModelBox(this);
+        fin_left = new AdvancedModelBox(this, "fin_left");
         fin_left.setPos(4.0F, 2.0F, -4.0F);
         body.addChild(fin_left);
         setRotationAngle(fin_left, -1.5708F, 0.0F, 0.0F);
         fin_left.setTextureOffset(0, 4).addBox(0.0F, -1.5F, 0.0F, 3.0F, 3.0F, 0.0F, 0.0F, false);
 
-        fin_right = new AdvancedModelBox(this);
+        fin_right = new AdvancedModelBox(this, "fin_right");
         fin_right.setPos(-4.0F, 2.0F, -4.0F);
         body.addChild(fin_right);
         setRotationAngle(fin_right, -1.5708F, 0.0F, 0.0F);

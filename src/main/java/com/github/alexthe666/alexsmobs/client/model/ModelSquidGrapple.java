@@ -14,9 +14,9 @@ public class ModelSquidGrapple extends AdvancedEntityModel<Entity> {
 		texWidth = 128;
 		texHeight = 128;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setRotationPoint(0.0F, 24.0F, 0.0F);
-		tentacle = new AdvancedModelBox(this);
+		tentacle = new AdvancedModelBox(this, "tentacle");
 		tentacle.setRotationPoint(0.0F, -1.7F, 0.0F);
 		root.addChild(tentacle);
 		setRotationAngle(tentacle, -1.5708F, 0.0F, 0.0F);

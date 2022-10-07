@@ -31,74 +31,74 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -14.0F, 0.0F);
         root.addChild(body);
         setRotationAngle(body, 0.9599F, 0.0F, 0.0F);
         body.setTextureOffset(0, 15).addBox(-2.5F, -5.0F, -2.0F, 5.0F, 10.0F, 5.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setPos(0.0F, 5.0F, 2.5F);
         body.addChild(tail);
         setRotationAngle(tail, -0.3054F, 0.0F, 0.0F);
         tail.setTextureOffset(0, 31).addBox(-2.0F, 0.0F, -3.0F, 4.0F, 5.0F, 3.0F, 0.0F, false);
 
-        wing_left_pivot = new AdvancedModelBox(this);
+        wing_left_pivot = new AdvancedModelBox(this, "wing_left_pivot");
         wing_left_pivot.setPos(2.5F, -4.0F, 1.0F);
         body.addChild(wing_left_pivot);
 
 
-        wing_left = new AdvancedModelBox(this);
+        wing_left = new AdvancedModelBox(this, "wing_left");
         wing_left_pivot.addChild(wing_left);
         wing_left.setTextureOffset(21, 21).addBox(0.0F, 0.0F, -4.0F, 1.0F, 12.0F, 6.0F, 0.0F, false);
 
-        wing_right_pivot = new AdvancedModelBox(this);
+        wing_right_pivot = new AdvancedModelBox(this, "wing_right_pivot");
         wing_right_pivot.setPos(-2.5F, -4.0F, 1.0F);
         body.addChild(wing_right_pivot);
 
-        wing_right = new AdvancedModelBox(this);
+        wing_right = new AdvancedModelBox(this, "wing_right");
         wing_right_pivot.addChild(wing_right);
         wing_right.setTextureOffset(21, 21).addBox(-1.0F, 0.0F, -4.0F, 1.0F, 12.0F, 6.0F, 0.0F, true);
 
-        leg_left = new AdvancedModelBox(this);
+        leg_left = new AdvancedModelBox(this, "leg_left");
         leg_left.setPos(2.0F, 2.3F, -2.0F);
         body.addChild(leg_left);
         setRotationAngle(leg_left, 0.6109F, 0.0F, 0.0F);
         leg_left.setTextureOffset(0, 0).addBox(-2.0F, -3.0F, -11.0F, 3.0F, 3.0F, 11.0F, 0.0F, false);
 
-        leg_right = new AdvancedModelBox(this);
+        leg_right = new AdvancedModelBox(this, "leg_right");
         leg_right.setPos(-2.0F, 2.3F, -2.0F);
         body.addChild(leg_right);
         setRotationAngle(leg_right, 0.6109F, 0.0F, 0.0F);
         leg_right.setTextureOffset(0, 0).addBox(-1.0F, -3.0F, -11.0F, 3.0F, 3.0F, 11.0F, 0.0F, true);
 
-        neck = new AdvancedModelBox(this);
+        neck = new AdvancedModelBox(this, "neck");
         neck.setPos(0.0F, -4.8F, 1.0F);
         body.addChild(neck);
         setRotationAngle(neck, -0.7418F, 0.0F, 0.0F);
         neck.setTextureOffset(35, 0).addBox(-1.5F, -4.0F, -1.5F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setPos(0.0F, -3.8F, -0.3F);
         neck.addChild(head);
         head.setTextureOffset(25, 11).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
 
-        crest = new AdvancedModelBox(this);
+        crest = new AdvancedModelBox(this, "crest");
         crest.setPos(0.0F, -2.0F, 2.0F);
         head.addChild(crest);
         crest.setTextureOffset(0, 0).addBox(0.0F, -2.0F, -2.0F, 0.0F, 4.0F, 4.0F, 0.0F, false);
 
-        beak = new AdvancedModelBox(this);
+        beak = new AdvancedModelBox(this, "beak");
         beak.setPos(0.0F, -2.9F, -2.0F);
         head.addChild(beak);
         setRotationAngle(beak, 0.3491F, 0.0F, 0.0F);
         beak.setTextureOffset(18, 0).addBox(-1.5F, 0.0F, -5.0F, 3.0F, 2.0F, 5.0F, 0.0F, false);
 
-        jaw = new AdvancedModelBox(this);
+        jaw = new AdvancedModelBox(this, "jaw");
         jaw.setPos(0.0F, 2.0F, 0.0F);
         beak.addChild(jaw);
         setRotationAngle(jaw, -0.1745F, 0.0F, 0.0F);

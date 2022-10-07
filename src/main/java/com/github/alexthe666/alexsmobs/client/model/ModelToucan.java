@@ -25,61 +25,61 @@ public class ModelToucan extends AdvancedEntityModel<EntityToucan> {
     public ModelToucan() {
         texWidth = 64;
         texHeight = 64;
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -4.3F, 0.6F);
         root.addChild(body);
         setRotationAngle(body, -0.3491F, 0.0F, 0.0F);
         body.setTextureOffset(0, 0).addBox(-2.0F, -3.0F, -5.0F, 4.0F, 4.0F, 7.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, -2.0F, 2.0F);
         body.addChild(tail);
         setRotationAngle(tail, 0.3927F, 0.0F, 0.0F);
         tail.setTextureOffset(18, 7).addBox(-1.5F, -1.0F, 0.0F, 3.0F, 2.0F, 5.0F, 0.0F, false);
 
-        left_wing = new AdvancedModelBox(this);
+        left_wing = new AdvancedModelBox(this, "left_wing");
         left_wing.setRotationPoint(2.0F, -2.0F, -3.0F);
         body.addChild(left_wing);
         setRotationAngle(left_wing, 0.1309F, 0.0F, 0.0F);
         left_wing.setTextureOffset(11, 16).addBox(0.0F, -1.0F, -1.0F, 1.0F, 4.0F, 6.0F, 0.0F, false);
 
-        left_wingtip = new AdvancedModelBox(this);
+        left_wingtip = new AdvancedModelBox(this, "left_wingtip");
         left_wingtip.setRotationPoint(0.3F, 0.1F, 3.0F);
         left_wing.addChild(left_wingtip);
         left_wingtip.setTextureOffset(20, 21).addBox(0.0F, -1.0F, -1.0F, 0.0F, 3.0F, 6.0F, 0.0F, false);
 
-        right_wing = new AdvancedModelBox(this);
+        right_wing = new AdvancedModelBox(this, "right_wing");
         right_wing.setRotationPoint(-2.0F, -2.0F, -3.0F);
         body.addChild(right_wing);
         setRotationAngle(right_wing, 0.1309F, 0.0F, 0.0F);
         right_wing.setTextureOffset(11, 16).addBox(-1.0F, -1.0F, -1.0F, 1.0F, 4.0F, 6.0F, 0.0F, true);
 
-        right_wingtip = new AdvancedModelBox(this);
+        right_wingtip = new AdvancedModelBox(this, "right_wingtip");
         right_wingtip.setRotationPoint(-0.3F, 0.1F, 3.0F);
         right_wing.addChild(right_wingtip);
         right_wingtip.setTextureOffset(20, 21).addBox(0.0F, -1.0F, -1.0F, 0.0F, 3.0F, 6.0F, 0.0F, true);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setRotationPoint(1.5F, 1.0F, 1.0F);
         body.addChild(left_leg);
         setRotationAngle(left_leg, 0.3491F, 0.0F, 0.0F);
         left_leg.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 3.0F, 2.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setRotationPoint(-1.5F, 1.0F, 1.0F);
         body.addChild(right_leg);
         setRotationAngle(right_leg, 0.3491F, 0.0F, 0.0F);
         right_leg.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 3.0F, 2.0F, 0.0F, true);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -2.0F, -4.0F);
         body.addChild(head);
         setRotationAngle(head, 0.48F, 0.0F, 0.0F);
         head.setTextureOffset(0, 24).addBox(-1.5F, -4.0F, -2.0F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
-        beak = new AdvancedModelBox(this);
+        beak = new AdvancedModelBox(this, "beak");
         beak.setRotationPoint(0.0F, -4.0F, -1.8F);
         head.addChild(beak);
         beak.setTextureOffset(0, 12).addBox(-1.0F, 0.0F, -6.0F, 2.0F, 3.0F, 6F, 0.0F, false);

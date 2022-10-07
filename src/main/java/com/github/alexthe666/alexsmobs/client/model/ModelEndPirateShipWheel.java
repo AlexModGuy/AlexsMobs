@@ -17,9 +17,9 @@ public class ModelEndPirateShipWheel extends AdvancedEntityModel<Entity> {
         texHeight = 64;
 
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
-        wheel = new AdvancedModelBox(this);
+        wheel = new AdvancedModelBox(this, "wheel");
         wheel.setRotationPoint(0.0F, -2.0F, 0.0F);
         root.addChild(wheel);
         wheel.rotateAngleX = -1.5708F;

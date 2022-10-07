@@ -25,46 +25,46 @@ public class ModelGuster extends AdvancedEntityModel<EntityGuster> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        tornado = new AdvancedModelBox(this);
+        tornado = new AdvancedModelBox(this, "tornado");
         tornado.setPos(0.0F, -4.0F, 0.0F);
         root.addChild(tornado);
         tornado.setTextureOffset(65, 72).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
-        tornado2 = new AdvancedModelBox(this);
+        tornado2 = new AdvancedModelBox(this, "tornado2");
         tornado2.setPos(0.0F, -8.0F, 0.0F);
         tornado.addChild(tornado2);
         tornado2.setTextureOffset(0, 72).addBox(-8.0F, -4.0F, -8.0F, 16.0F, 8.0F, 16.0F, 0.0F, false);
 
-        tornadomid = new AdvancedModelBox(this);
+        tornadomid = new AdvancedModelBox(this, "tornadomid");
         tornadomid.setPos(0.0F, 6.0F, 0.0F);
         tornado2.addChild(tornadomid);
         tornadomid.setTextureOffset(16, 96).addBox(-14.0F, -4.0F, -14.0F, 28.0F, 4.0F, 28.0F, 0.0F, false);
 
-        tornado3 = new AdvancedModelBox(this);
+        tornado3 = new AdvancedModelBox(this, "tornado3");
         tornado3.setPos(0.0F, -8.0F, 0.0F);
         tornado2.addChild(tornado3);
         tornado3.setTextureOffset(0, 39).addBox(-12.0F, -4.0F, -12.0F, 24.0F, 8.0F, 24.0F, 0.0F, false);
 
-        tornado4 = new AdvancedModelBox(this);
+        tornado4 = new AdvancedModelBox(this, "tornado4");
         tornado4.setPos(0.0F, -8.0F, 0.0F);
         tornado3.addChild(tornado4);
         tornado4.setTextureOffset(0, 0).addBox(-15.0F, -4.0F, -15.0F, 30.0F, 8.0F, 30.0F, 0.0F, false);
 
-        eyes = new AdvancedModelBox(this);
+        eyes = new AdvancedModelBox(this, "eyes");
         eyes.setPos(0.0F, -18.0F, -15.0F);
         root.addChild(eyes);
 
 
-        eye_left = new AdvancedModelBox(this);
+        eye_left = new AdvancedModelBox(this, "eye_left");
         eye_left.setPos(4.0F, 0.0F, 0.0F);
         eyes.addChild(eye_left);
         eye_left.setTextureOffset(8, 13).addBox(-3.0F, -4.0F, 0.0F, 6.0F, 8.0F, 0.0F, 0.0F, false);
 
-        eye_right = new AdvancedModelBox(this);
+        eye_right = new AdvancedModelBox(this, "eye_right");
         eye_right.setPos(-4.0F, 0.0F, 0.0F);
         eyes.addChild(eye_right);
         eye_right.setTextureOffset(8, 13).addBox(-3.0F, -4.0F, 0.0F, 6.0F, 8.0F, 0.0F, 0.0F, true);

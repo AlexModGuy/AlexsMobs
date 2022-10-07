@@ -19,36 +19,36 @@ public class ModelDevilsHolePupfish extends AdvancedEntityModel<EntityDevilsHole
         texHeight = 32;
         texWidth = 32;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -2.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-1.5F, -2.0F, -5.0F, 3.0F, 4.0F, 9.0F, 0.0F, false);
 
-        bottom_fin = new AdvancedModelBox(this);
+        bottom_fin = new AdvancedModelBox(this, "bottom_fin");
         bottom_fin.setRotationPoint(0.0F, 2.0F, 1.0F);
         body.addChild(bottom_fin);
         bottom_fin.setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0.0F, 2.0F, 3.0F, 0.0F, false);
 
-        dorsal_fin = new AdvancedModelBox(this);
+        dorsal_fin = new AdvancedModelBox(this, "dorsal_fin");
         dorsal_fin.setRotationPoint(0.0F, -2.0F, 0.0F);
         body.addChild(dorsal_fin);
         dorsal_fin.setTextureOffset(11, 14).addBox(0.0F, -3.0F, -2.0F, 0.0F, 3.0F, 5.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, -1.0F, 4.0F);
         body.addChild(tail);
         tail.setTextureOffset(0, 14).addBox(0.0F, -3.0F, 0.0F, 0.0F, 6.0F, 5.0F, 0.0F, false);
 
-        left_fin = new AdvancedModelBox(this);
+        left_fin = new AdvancedModelBox(this, "left_fin");
         left_fin.setRotationPoint(1.5F, 1.0F, -2.0F);
         body.addChild(left_fin);
         setRotationAngle(left_fin, 0.0F, 0.48F, 0.0F);
         left_fin.setTextureOffset(0, 14).addBox(0.0F, -1.0F, 0.0F, 0.0F, 2.0F, 2.0F, 0.0F, false);
 
-        right_fin = new AdvancedModelBox(this);
+        right_fin = new AdvancedModelBox(this, "right_fin");
         right_fin.setRotationPoint(-1.5F, 1.0F, -2.0F);
         body.addChild(right_fin);
         setRotationAngle(right_fin, 0.0F, -0.48F, 0.0F);

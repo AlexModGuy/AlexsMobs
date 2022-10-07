@@ -34,89 +34,89 @@ public class ModelSunbird extends AdvancedEntityModel<EntitySunbird> {
         texWidth = 256;
         texHeight = 256;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -13.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(106, 38).addBox(-7.0F, -5.0F, -11.0F, 14.0F, 12.0F, 23.0F, 0.0F, false);
 
-        neck = new AdvancedModelBox(this);
+        neck = new AdvancedModelBox(this, "neck");
         neck.setRotationPoint(0.0F, -1.0F, -12.0F);
         body.addChild(neck);
         neck.setTextureOffset(0, 38).addBox(-3.0F, -3.0F, -12.0F, 6.0F, 6.0F, 13.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, 1.0F, -13.0F);
         neck.addChild(head);
         head.setTextureOffset(0, 0).addBox(-4.0F, -5.0F, -7.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
         head.setTextureOffset(12, 17).addBox(-2.0F, -2.0F, -12.0F, 4.0F, 3.0F, 5.0F, 0.0F, false);
         head.setTextureOffset(0, 0).addBox(-1.0F, 1.0F, -12.0F, 2.0F, 1.0F, 1.0F, 0.0F, false);
 
-        hair = new AdvancedModelBox(this);
+        hair = new AdvancedModelBox(this, "hair");
         hair.setRotationPoint(0.0F, -5.0F, 0.0F);
         head.addChild(hair);
         hair.setTextureOffset(0, 17).addBox(0.0F, -8.0F, -9.0F, 0.0F, 8.0F, 11.0F, 0.0F, false);
 
-        left_wing = new AdvancedModelBox(this);
+        left_wing = new AdvancedModelBox(this, "left_wing");
         left_wing.setRotationPoint(8.0F, -3.0F, -8.0F);
         body.addChild(left_wing);
         left_wing.setTextureOffset(0, 119).addBox(-1.0F, -3.0F, -5.2F, 15.0F, 5.0F, 6.0F, 0.0F, false);
 
-        left_wing1 = new AdvancedModelBox(this);
+        left_wing1 = new AdvancedModelBox(this, "left_wing1");
         left_wing1.setRotationPoint(0.0F, -1.0F, 0.0F);
         left_wing.addChild(left_wing1);
         left_wing1.setTextureOffset(103, 80).addBox(-1.0F, 0.0F, -8.0F, 33.0F, 0.0F, 37.0F, 0.0F, false);
 
-        left_wing2 = new AdvancedModelBox(this);
+        left_wing2 = new AdvancedModelBox(this, "left_wing2");
         left_wing2.setRotationPoint(32.0F, 0.0F, 0.0F);
         left_wing1.addChild(left_wing2);
         left_wing2.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -8.0F, 50.0F, 0.0F, 37.0F, 0.0F, false);
 
-        right_wing = new AdvancedModelBox(this);
+        right_wing = new AdvancedModelBox(this, "right_wing");
         right_wing.setRotationPoint(-8.0F, -3.0F, -8.0F);
         body.addChild(right_wing);
         right_wing.setTextureOffset(0, 119).addBox(-14.0F, -3.0F, -5.2F, 15.0F, 5.0F, 6.0F, 0.0F, true);
 
-        right_wing1 = new AdvancedModelBox(this);
+        right_wing1 = new AdvancedModelBox(this, "right_wing1");
         right_wing1.setRotationPoint(0.0F, -1.0F, 0.0F);
         right_wing.addChild(right_wing1);
         right_wing1.setTextureOffset(103, 80).addBox(-32.0F, 0.0F, -8.0F, 33.0F, 0.0F, 37.0F, 0.0F, true);
 
-        right_wing2 = new AdvancedModelBox(this);
+        right_wing2 = new AdvancedModelBox(this, "right_wing2");
         right_wing2.setRotationPoint(-32.0F, 0.0F, 0.0F);
         right_wing1.addChild(right_wing2);
         right_wing2.setTextureOffset(0, 0).addBox(-50.0F, 0.0F, -8.0F, 50.0F, 0.0F, 37.0F, 0.0F, true);
 
-        tail1 = new AdvancedModelBox(this);
+        tail1 = new AdvancedModelBox(this, "tail1");
         tail1.setRotationPoint(0.0F, -5.0F, 12.0F);
         body.addChild(tail1);
         tail1.setTextureOffset(0, 80).addBox(-23.0F, 0.0F, 0.0F, 32.0F, 0.0F, 38.0F, 0.0F, false);
 
-        tail2 = new AdvancedModelBox(this);
+        tail2 = new AdvancedModelBox(this, "tail2");
         tail2.setRotationPoint(-6.0F, 0.0F, 38.0F);
         tail1.addChild(tail2);
         tail2.setTextureOffset(0, 38).addBox(-16.0F, 0.0F, 0.0F, 32.0F, 0.0F, 41.0F, 0.0F, false);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setRotationPoint(3.0F, 8.0F, 8.0F);
         body.addChild(left_leg);
         left_leg.setTextureOffset(0, 58).addBox(-2.0F, -1.0F, -5.0F, 5.0F, 4.0F, 8.0F, 0.0F, false);
 
-        left_foot = new AdvancedModelBox(this);
+        left_foot = new AdvancedModelBox(this, "left_foot");
         left_foot.setRotationPoint(0.5F, 3.0F, -2.0F);
         left_leg.addChild(left_foot);
         setRotationAngle(left_foot, 0.0436F, 0.0F, 0.0F);
         left_foot.setTextureOffset(22, 66).addBox(-2.0F, 0.0F, -5.0F, 4.0F, 3.0F, 5.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setRotationPoint(-3.0F, 8.0F, 8.0F);
         body.addChild(right_leg);
         right_leg.setTextureOffset(0, 58).addBox(-3.0F, -1.0F, -5.0F, 5.0F, 4.0F, 8.0F, 0.0F, true);
 
-        right_foot = new AdvancedModelBox(this);
+        right_foot = new AdvancedModelBox(this, "right_foot");
         right_foot.setRotationPoint(-0.5F, 3.0F, -2.0F);
         right_leg.addChild(right_foot);
         setRotationAngle(right_foot, 0.0436F, 0.0F, 0.0F);

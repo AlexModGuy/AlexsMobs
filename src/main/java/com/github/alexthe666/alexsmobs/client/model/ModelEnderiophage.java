@@ -38,90 +38,90 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -11.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 30).addBox(-4.0F, -2.0F, -4.0F, 8.0F, 3.0F, 8.0F, 0.0F, false);
 
-        mouth = new AdvancedModelBox(this);
+        mouth = new AdvancedModelBox(this, "mouth");
         mouth.setPos(0.0F, 1.0F, 0.0F);
         body.addChild(mouth);
         mouth.setTextureOffset(0, 0).addBox(-1.0F, -5.0F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
 
-        sheath = new AdvancedModelBox(this);
+        sheath = new AdvancedModelBox(this, "sheath");
         sheath.setPos(0.0F, -2.0F, 0.0F);
         body.addChild(sheath);
         sheath.setTextureOffset(50, 43).addBox(-2.0F, -14.0F, -2.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
 
-        collar = new AdvancedModelBox(this);
+        collar = new AdvancedModelBox(this, "collar");
         collar.setPos(0.0F, -14.0F, 0.0F);
         sheath.addChild(collar);
         collar.setTextureOffset(0, 55).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 1.0F, 6.0F, 0.0F, false);
 
-        capsid = new AdvancedModelBox(this);
+        capsid = new AdvancedModelBox(this, "capsid");
         capsid.setPos(0.0F, -1.0F, 0.0F);
         collar.addChild(capsid);
         capsid.setTextureOffset(0, 0).addBox(-7.0F, -15.0F, -7.0F, 14.0F, 15.0F, 14.0F, 0.0F, false);
 
-        eye = new AdvancedModelBox(this);
+        eye = new AdvancedModelBox(this, "eye");
         eye.setPos(0.0F, -8.0F, 0.0F);
         capsid.addChild(eye);
         eye.setTextureOffset(43, 0).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 6.0F, 0.0F, false);
 
-        tailmid_leftPivot = new AdvancedModelBox(this);
+        tailmid_leftPivot = new AdvancedModelBox(this, "tailmid_leftPivot");
         tailmid_leftPivot.setPos(4.0F, -1.0F, 0.0F);
         body.addChild(tailmid_leftPivot);
 
-        tailmid_left = new AdvancedModelBox(this);
+        tailmid_left = new AdvancedModelBox(this, "tailmid_left");
         tailmid_leftPivot.addChild(tailmid_left);
         tailmid_left.setTextureOffset(25, 43).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
-        tailmid_rightPivot = new AdvancedModelBox(this);
+        tailmid_rightPivot = new AdvancedModelBox(this, "tailmid_rightPivot");
         tailmid_rightPivot.setPos(-4.0F, -1.0F, 0.0F);
         body.addChild(tailmid_rightPivot);
 
-        tailmid_right = new AdvancedModelBox(this);
+        tailmid_right = new AdvancedModelBox(this, "tailmid_right");
         tailmid_rightPivot.addChild(tailmid_right);
         tailmid_right.setTextureOffset(25, 43).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
 
-        tailback_leftPivot = new AdvancedModelBox(this);
+        tailback_leftPivot = new AdvancedModelBox(this, "tailback_leftPivot");
         tailback_leftPivot.setPos(4.0F, -1.0F, 4.0F);
         body.addChild(tailback_leftPivot);
         setRotationAngle(tailback_leftPivot, 0.0F, -0.7854F, 0.0F);
 
-        tailback_left = new AdvancedModelBox(this);
+        tailback_left = new AdvancedModelBox(this, "tailback_left");
         tailback_leftPivot.addChild(tailback_left);
         tailback_left.setTextureOffset(33, 30).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
-        tailback_rightPivot = new AdvancedModelBox(this);
+        tailback_rightPivot = new AdvancedModelBox(this, "tailback_rightPivot");
         tailback_rightPivot.setPos(-4.0F, -1.0F, 4.0F);
         body.addChild(tailback_rightPivot);
         setRotationAngle(tailback_rightPivot, 0.0F, 0.7854F, 0.0F);
 
-        tailback_right = new AdvancedModelBox(this);
+        tailback_right = new AdvancedModelBox(this, "tailback_right");
         tailback_rightPivot.addChild(tailback_right);
         tailback_right.setTextureOffset(33, 30).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
 
-        tailfront_leftPivot = new AdvancedModelBox(this);
+        tailfront_leftPivot = new AdvancedModelBox(this, "tailfront_leftPivot");
         tailfront_leftPivot.setPos(4.0F, -1.0F, -4.0F);
         body.addChild(tailfront_leftPivot);
         setRotationAngle(tailfront_leftPivot, 0.0F, 0.6981F, 0.0F);
 
-        tailfront_left = new AdvancedModelBox(this);
+        tailfront_left = new AdvancedModelBox(this, "tailfront_left");
         tailfront_leftPivot.addChild(tailfront_left);
         tailfront_left.setTextureOffset(0, 42).addBox(0.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, false);
 
 
-        tailfront_rightPivot = new AdvancedModelBox(this);
+        tailfront_rightPivot = new AdvancedModelBox(this, "tailfront_rightPivot");
         tailfront_rightPivot.setPos(-4.0F, -1.0F, -4.0F);
         body.addChild(tailfront_rightPivot);
         setRotationAngle(tailfront_rightPivot, 0.0F, -0.6981F, 0.0F);
 
-        tailfront_right = new AdvancedModelBox(this);
+        tailfront_right = new AdvancedModelBox(this, "tailfront_right");
         tailfront_rightPivot.addChild(tailfront_right);
         tailfront_right.setTextureOffset(0, 42).addBox(-12.0F, 0.0F, 0.0F, 12.0F, 12.0F, 0.0F, 0.0F, true);
         this.updateDefaultPose();

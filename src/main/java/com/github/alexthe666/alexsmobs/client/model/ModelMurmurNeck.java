@@ -17,12 +17,12 @@ public class ModelMurmurNeck extends AdvancedEntityModel<LivingEntity> {
     public ModelMurmurNeck() {
         texWidth = 128;
         texHeight = 128;
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 12.0F, 0.0F);
-        neckPivot = new AdvancedModelBox(this);
+        neckPivot = new AdvancedModelBox(this, "neckPivot");
         neckPivot.setRotationPoint(0.0F, 0.0F, 0.0F);
         root.addChild(neckPivot);
-        neck = new AdvancedModelBox(this);
+        neck = new AdvancedModelBox(this, "neck");
         neck.setRotationPoint(0.0F, 0.0F, 0.0F);
         neck.setTextureOffset(0, 60).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 16.0F, 4.0F, 0.0F, false);
         neckPivot.addChild(neck);

@@ -34,45 +34,45 @@ public class ModelFroststalker extends AdvancedEntityModel<EntityFroststalker> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -11.0F, 2.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-3.0F, -4.0F, -10.0F, 6.0F, 7.0F, 16.0F, 0.0F, false);
 
-        tail1 = new AdvancedModelBox(this);
+        tail1 = new AdvancedModelBox(this, "tail1");
         tail1.setRotationPoint(0.0F, -1.0F, 5.0F);
         body.addChild(tail1);
         tail1.setTextureOffset(34, 24).addBox(-2.0F, -3.0F, 1.0F, 4.0F, 5.0F, 9.0F, 0.0F, false);
         tail1.setTextureOffset(0, 41).addBox(-1.0F, -5.0F, 1.0F, 2.0F, 2.0F, 9.0F, 0.0F, false);
 
-        tail2 = new AdvancedModelBox(this);
+        tail2 = new AdvancedModelBox(this, "tail2");
         tail2.setRotationPoint(0.0F, -2.0F, 9.0F);
         tail1.addChild(tail2);
         tail2.setTextureOffset(29, 0).addBox(-1.0F, -1.0F, 1.0F, 2.0F, 3.0F, 11.0F, 0.0F, false);
         tail2.setTextureOffset(21, 29).addBox(0.0F, -7.0F, 1.0F, 0.0F, 8.0F, 12.0F, 0.0F, false);
 
-        icespikesleft = new AdvancedModelBox(this);
+        icespikesleft = new AdvancedModelBox(this, "icespikesleft");
         icespikesleft.setRotationPoint(0.0F, -4.0F, 0.5F);
         body.addChild(icespikesleft);
         setRotationAngle(icespikesleft, 0.0F, -0.3927F, 0.0F);
         icespikesleft.setTextureOffset(35, 39).addBox(0.0F, -6.0F, -5.5F, 0.0F, 6.0F, 11.0F, 0.0F, false);
 
-        icespikesright = new AdvancedModelBox(this);
+        icespikesright = new AdvancedModelBox(this, "icespikesright");
         icespikesright.setRotationPoint(0.0F, -4.0F, 0.5F);
         body.addChild(icespikesright);
         setRotationAngle(icespikesright, 0.0F, 0.3927F, 0.0F);
         icespikesright.setTextureOffset(35, 39).addBox(0.0F, -6.0F, -5.5F, 0.0F, 6.0F, 11.0F, 0.0F, true);
 
-        neck = new AdvancedModelBox(this);
+        neck = new AdvancedModelBox(this, "neck");
         neck.setRotationPoint(0.0F, -2.0F, -8.0F);
         body.addChild(neck);
         neck.setTextureOffset(52, 18).addBox(-1.5F, -4.0F, -3.0F, 3.0F, 6.0F, 5.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -4.0F, -1.0F);
         neck.addChild(head);
         head.setTextureOffset(44, 62).addBox(-2.0F, -4.0F, -2.0F, 4.0F, 4.0F, 5.0F, 0.0F, false);
@@ -80,35 +80,35 @@ public class ModelFroststalker extends AdvancedEntityModel<EntityFroststalker> {
         head.setTextureOffset(17, 50).addBox(-1.0F, -6.0F, 0.0F, 2.0F, 6.0F, 6.0F, 0.0F, false);
         head.setTextureOffset(47, 39).addBox(-2.0F, -1.0F, -9.0F, 4.0F, 2.0F, 7.0F, 0.0F, false);
 
-        horn = new AdvancedModelBox(this);
+        horn = new AdvancedModelBox(this, "horn");
         horn.setRotationPoint(0.0F, -3.0F, -3.0F);
         head.addChild(horn);
         setRotationAngle(horn, -0.3927F, 0.0F, 0.0F);
         horn.setTextureOffset(47, 6).addBox(-1.0F, -2.0F, -8.0F, 2.0F, 2.0F, 9.0F, 0.0F, false);
 
-        jaw = new AdvancedModelBox(this);
+        jaw = new AdvancedModelBox(this, "jaw");
         jaw.setRotationPoint(0.0F, -1.0F, -2.0F);
         head.addChild(jaw);
         jaw.setTextureOffset(40, 79).addBox(-1.5F, 0.0F, -7.0F, 3.0F, 1.0F, 7.0F, 0.0F, false);
 
-        armleft = new AdvancedModelBox(this);
+        armleft = new AdvancedModelBox(this, "armleft");
         armleft.setRotationPoint(3.0F, 2.0F, -7.5F);
         body.addChild(armleft);
         armleft.setTextureOffset(0, 53).addBox(-1.0F, -1.0F, -1.5F, 2.0F, 10.0F, 3.0F, 0.0F, false);
         armleft.setTextureOffset(0, 24).addBox(-3.0F, 7.0F, -1.5F, 2.0F, 2.0F, 2.0F, 0.0F, false);
 
-        armright = new AdvancedModelBox(this);
+        armright = new AdvancedModelBox(this, "armright");
         armright.setRotationPoint(-3.0F, 2.0F, -7.5F);
         body.addChild(armright);
         armright.setTextureOffset(0, 53).addBox(-1.0F, -1.0F, -1.5F, 2.0F, 10.0F, 3.0F, 0.0F, true);
         armright.setTextureOffset(0, 24).addBox(1.0F, 7.0F, -1.5F, 2.0F, 2.0F, 2.0F, 0.0F, true);
 
-        legleft = new AdvancedModelBox(this);
+        legleft = new AdvancedModelBox(this, "legleft");
         legleft.setRotationPoint(1.5F, 2.0F, 3.9F);
         body.addChild(legleft);
         legleft.setTextureOffset(0, 0).addBox(-1.0F, -2.0F, -2.0F, 3.0F, 11.0F, 4.0F, 0.0F, false);
 
-        legright = new AdvancedModelBox(this);
+        legright = new AdvancedModelBox(this, "legright");
         legright.setRotationPoint(-1.5F, 2.0F, 3.9F);
         body.addChild(legright);
         legright.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -2.0F, 3.0F, 11.0F, 4.0F, 0.0F, true);

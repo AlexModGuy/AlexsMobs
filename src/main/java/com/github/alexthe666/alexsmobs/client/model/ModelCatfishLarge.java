@@ -24,69 +24,69 @@ public class ModelCatfishLarge extends AdvancedEntityModel<EntityCatfish> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -8.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-10.0F, -7.0F, -14.0F, 20.0F, 15.0F, 26.0F, 0.0F, false);
 
-        left_fin = new AdvancedModelBox(this);
+        left_fin = new AdvancedModelBox(this, "left_fin");
         left_fin.setRotationPoint(10.0F, 5.0F, -5.0F);
         body.addChild(left_fin);
         setRotationAngle(left_fin, 0.0F, 0.0F, 0.6981F);
         left_fin.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -2.0F, 5.0F, 0.0F, 8.0F, 0.0F, false);
 
-        right_fin = new AdvancedModelBox(this);
+        right_fin = new AdvancedModelBox(this, "right_fin");
         right_fin.setRotationPoint(-10.0F, 5.0F, -5.0F);
         body.addChild(right_fin);
         setRotationAngle(right_fin, 0.0F, 0.0F, -0.6981F);
         right_fin.setTextureOffset(0, 0).addBox(-5.0F, 0.0F, -2.0F, 5.0F, 0.0F, 8.0F, 0.0F, true);
 
-        dorsal_fin = new AdvancedModelBox(this);
+        dorsal_fin = new AdvancedModelBox(this, "dorsal_fin");
         dorsal_fin.setRotationPoint(0.0F, -7.0F, -5.0F);
         body.addChild(dorsal_fin);
         setRotationAngle(dorsal_fin, -0.0873F, 0.0F, 0.0F);
         dorsal_fin.setTextureOffset(0, 0).addBox(0.0F, -7.0F, 0.0F, 0.0F, 7.0F, 8.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, -2.0F, 13.0F);
         body.addChild(tail);
         tail.setTextureOffset(0, 41).addBox(-6.0F, -5.0F, -1.0F, 12.0F, 11.0F, 20.0F, 0.0F, false);
         tail.setTextureOffset(0, 56).addBox(0.0F, 6.0F, -1.0F, 0.0F, 4.0F, 16.0F, 0.0F, false);
         tail.setTextureOffset(16, 18).addBox(0.0F, -7.0F, 4.0F, 0.0F, 2.0F, 5.0F, 0.0F, false);
 
-        tail_fin = new AdvancedModelBox(this);
+        tail_fin = new AdvancedModelBox(this, "tail_fin");
         tail_fin.setRotationPoint(0.0F, 0.0F, 17.0F);
         tail.addChild(tail_fin);
         tail_fin.setTextureOffset(44, 18).addBox(0.0F, -10.0F, -5.0F, 0.0F, 17.0F, 23.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -5.0F, -15.0F);
         body.addChild(head);
         head.setTextureOffset(56, 64).addBox(-9.5F, -2.0F, -7.0F, 19.0F, 13.0F, 8.0F, 0.0F, false);
 
-        left_BigWhisker = new AdvancedModelBox(this);
+        left_BigWhisker = new AdvancedModelBox(this, "left_BigWhisker");
         left_BigWhisker.setRotationPoint(9.5F, 6.0F, -5.0F);
         head.addChild(left_BigWhisker);
         setRotationAngle(left_BigWhisker, 0.0F, -0.4363F, 0.2618F);
         left_BigWhisker.setTextureOffset(66, 0).addBox(0.0F, 0.0F, 0.0F, 15.0F, 8.0F, 0.0F, 0.0F, false);
 
-        right_BigWhisker = new AdvancedModelBox(this);
+        right_BigWhisker = new AdvancedModelBox(this, "right_BigWhisker");
         right_BigWhisker.setRotationPoint(-9.5F, 6.0F, -5.0F);
         head.addChild(right_BigWhisker);
         setRotationAngle(right_BigWhisker, 0.0F, 0.4363F, -0.2618F);
         right_BigWhisker.setTextureOffset(66, 0).addBox(-15.0F, 0.0F, 0.0F, 15.0F, 8.0F, 0.0F, 0.0F, true);
 
-        left_SmallWhisker = new AdvancedModelBox(this);
+        left_SmallWhisker = new AdvancedModelBox(this, "left_SmallWhisker");
         left_SmallWhisker.setRotationPoint(9.5F, 8.0F, -6.0F);
         head.addChild(left_SmallWhisker);
         setRotationAngle(left_SmallWhisker, 0.0F, 0.0436F, 0.3054F);
         left_SmallWhisker.setTextureOffset(0, 15).addBox(0.0F, 0.0F, 0.0F, 7.0F, 6.0F, 0.0F, 0.0F, false);
 
-        right_SmallWhisker = new AdvancedModelBox(this);
+        right_SmallWhisker = new AdvancedModelBox(this, "right_SmallWhisker");
         right_SmallWhisker.setRotationPoint(-9.5F, 8.0F, -6.0F);
         head.addChild(right_SmallWhisker);
         setRotationAngle(right_SmallWhisker, 0.0F, -0.0436F, -0.3054F);

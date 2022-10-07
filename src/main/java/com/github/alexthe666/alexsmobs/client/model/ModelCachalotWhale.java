@@ -31,56 +31,56 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		texWidth = 512;
 		texHeight = 512;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, -30.0F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-21.0F, -30.0F, -60.0F, 42.0F, 60.0F, 112.0F, 0.0F, false);
 
-		top_fin = new AdvancedModelBox(this);
+		top_fin = new AdvancedModelBox(this, "top_fin");
 		top_fin.setPos(0.0F, -34.0F, 42.0F);
 		body.addChild(top_fin);
 		top_fin.setTextureOffset(0, 0).addBox(-3.0F, -4.0F, -10.0F, 6.0F, 8.0F, 20.0F, 0.0F, false);
 
-		arm_left = new AdvancedModelBox(this);
+		arm_left = new AdvancedModelBox(this, "arm_left");
 		arm_left.setPos(21.0F, 26.0F, -38.0F);
 		body.addChild(arm_left);
 		arm_left.setTextureOffset(304, 220).addBox(0.0F, -2.0F, -3.0F, 36.0F, 4.0F, 21.0F, 0.0F, false);
 
-		arm_right = new AdvancedModelBox(this);
+		arm_right = new AdvancedModelBox(this, "arm_right");
 		arm_right.setPos(-21.0F, 26.0F, -38.0F);
 		body.addChild(arm_right);
 		arm_right.setTextureOffset(304, 220).addBox(-36.0F, -2.0F, -3.0F, 36.0F, 4.0F, 21.0F, 0.0F, true);
 
-		tail1 = new AdvancedModelBox(this);
+		tail1 = new AdvancedModelBox(this, "tail1");
 		tail1.setPos(0.0F, -1.0F, 52.0F);
 		body.addChild(tail1);
 		tail1.setTextureOffset(163, 227).addBox(-15.0F, -22.0F, 0.0F, 30.0F, 45.0F, 80.0F, 0.0F, false);
 
-		tail2 = new AdvancedModelBox(this);
+		tail2 = new AdvancedModelBox(this, "tail2");
 		tail2.setPos(0.0F, -1.0F, 80.0F);
 		tail1.addChild(tail2);
 		tail2.setTextureOffset(197, 0).addBox(-9.0F, -14.0F, 0.0F, 18.0F, 28.0F, 65.0F, 0.0F, false);
 
-		tail3 = new AdvancedModelBox(this);
+		tail3 = new AdvancedModelBox(this, "tail3");
 		tail3.setPos(0.0F, 2.0F, 56.0F);
 		tail2.addChild(tail3);
 		tail3.setTextureOffset(158, 173).addBox(-33.0F, -5.0F, -5.0F, 66.0F, 9.0F, 37.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setPos(0.0F, -2.0F, -60.0F);
 		body.addChild(head);
 		head.setTextureOffset(0, 173).addBox(-18.0F, -28.0F, -85.0F, 36.0F, 48.0F, 85.0F, 0.0F, false);
 
-		jaw = new AdvancedModelBox(this);
+		jaw = new AdvancedModelBox(this, "jaw");
 		jaw.setPos(0.0F, 20.0F, 0.0F);
 		head.addChild(jaw);
 		jaw.setTextureOffset(293, 23).addBox(-7.0F, 0.0F, -71.0F, 14.0F, 9.0F, 71.0F, 0.0F, false);
 
-		teeth = new AdvancedModelBox(this);
+		teeth = new AdvancedModelBox(this, "teeth");
 		teeth.setPos(0.0F, 0.0F, -7.0F);
 		jaw.addChild(teeth);
 		teeth.setTextureOffset(32, 370).addBox(-4.0F, -4.0F, -59.0F, 8.0F, 4.0F, 60.0F, 0.0F, false);

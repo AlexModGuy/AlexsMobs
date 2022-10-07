@@ -33,92 +33,92 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 		texWidth = 128;
 		texHeight = 128;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, -9.5F, -0.25F);
 		root.addChild(body);
 		body.setTextureOffset(31, 65).addBox(-3.0F, -3.5F, -3.75F, 6.0F, 6.0F, 6.0F, 0.0F, false);
 
-		wingL = new AdvancedModelBox(this);
+		wingL = new AdvancedModelBox(this, "wingL");
 		wingL.setPos(2.7F, -3.2F, -0.75F);
 		body.addChild(wingL);
 		wingL.setTextureOffset(37, 59).addBox(0.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
 
-		wingR = new AdvancedModelBox(this);
+		wingR = new AdvancedModelBox(this, "wingR");
 		wingR.setPos(-2.7F, -3.2F, -0.75F);
 		body.addChild(wingR);
 		wingR.setTextureOffset(37, 53).addBox(-18.0F, 0.0F, -1.0F, 18.0F, 0.0F, 5.0F, 0.0F, false);
 
-		legsL = new AdvancedModelBox(this);
+		legsL = new AdvancedModelBox(this, "legsL");
 		legsL.setPos(3.0F, 2.5F, -2.75F);
 		body.addChild(legsL);
 		
 
-		legL1 = new AdvancedModelBox(this);
+		legL1 = new AdvancedModelBox(this, "legL1");
 		legL1.setPos(0.0F, 0.0F, 0.0F);
 		legsL.addChild(legL1);
 		setRotationAngle(legL1, 0.0F, 0.5236F, 0.0F);
 		legL1.setTextureOffset(0, 51).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
-		legL2 = new AdvancedModelBox(this);
+		legL2 = new AdvancedModelBox(this, "legL2");
 		legL2.setPos(0.0F, 0.0F, 0.4F);
 		legsL.addChild(legL2);
 		legL2.setTextureOffset(37, 16).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
-		legL3 = new AdvancedModelBox(this);
+		legL3 = new AdvancedModelBox(this, "legL3");
 		legL3.setPos(0.0F, 0.0F, 0.9F);
 		legsL.addChild(legL3);
 		setRotationAngle(legL3, 0.0F, -0.8727F, 0.0F);
 		legL3.setTextureOffset(37, 0).addBox(0.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
-		legsR = new AdvancedModelBox(this);
+		legsR = new AdvancedModelBox(this, "legsR");
 		legsR.setPos(-3.0F, 2.5F, -2.75F);
 		body.addChild(legsR);
 		
 
-		legR1 = new AdvancedModelBox(this);
+		legR1 = new AdvancedModelBox(this, "legR1");
 		legR1.setPos(0.0F, 0.0F, 0.0F);
 		legsR.addChild(legR1);
 		setRotationAngle(legR1, 0.0F, -0.5236F, 0.0F);
 		legR1.setTextureOffset(37, 37).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
-		legR2 = new AdvancedModelBox(this);
+		legR2 = new AdvancedModelBox(this, "legR2");
 		legR2.setPos(0.0F, 0.0F, 0.4F);
 		legsR.addChild(legR2);
 		legR2.setTextureOffset(0, 35).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
-		legR3 = new AdvancedModelBox(this);
+		legR3 = new AdvancedModelBox(this, "legR3");
 		legR3.setPos(0.0F, 0.0F, 0.9F);
 		legsR.addChild(legR3);
 		setRotationAngle(legR3, 0.0F, 0.8727F, 0.0F);
 		legR3.setTextureOffset(0, 19).addBox(-18.0F, -8.0F, 0.0F, 18.0F, 15.0F, 0.0F, 0.0F, false);
 
-		tail = new AdvancedModelBox(this);
+		tail = new AdvancedModelBox(this, "tail");
 		tail.setPos(0.0F, -1.5F, 2.25F);
 		body.addChild(tail);
 		tail.setTextureOffset(48, 83).addBox(-2.0F, -1.4F, 0.0F, 4.0F, 4.0F, 16.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setPos(0.0F, 0.5F, -3.75F);
 		body.addChild(head);
 		head.setTextureOffset(56, 65).addBox(-2.0F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
-		antennaL = new AdvancedModelBox(this);
+		antennaL = new AdvancedModelBox(this, "antennaL");
 		antennaL.setPos(1.0F, -0.1F, -4.0F);
 		head.addChild(antennaL);
 		setRotationAngle(antennaL, 1.2217F, -0.48F, 0.0436F);
 		antennaL.setTextureOffset(5, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
 
-		antennaR = new AdvancedModelBox(this);
+		antennaR = new AdvancedModelBox(this, "antennaR");
 		antennaR.setPos(-1.0F, -0.1F, -4.0F);
 		head.addChild(antennaR);
 		setRotationAngle(antennaR, 1.2217F, 0.48F, -0.0436F);
 		antennaR.setTextureOffset(0, 0).addBox(0.0F, -8.0F, 0.0F, 0.0F, 8.0F, 2.0F, 0.0F, false);
 
-		mouth = new AdvancedModelBox(this);
+		mouth = new AdvancedModelBox(this, "mouth");
 		mouth.setPos(0.0F, 2.0F, -3.5F);
 		head.addChild(mouth);
 		setRotationAngle(mouth, -1.0036F, 0.0F, 0.0F);

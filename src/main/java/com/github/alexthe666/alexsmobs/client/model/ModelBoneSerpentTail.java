@@ -14,9 +14,9 @@ public class ModelBoneSerpentTail extends AdvancedEntityModel<EntityBoneSerpentP
     public ModelBoneSerpentTail() {
         texWidth = 64;
         texHeight = 64;
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setPos(0.0F, -4.75F, 0.0F);
         root.addChild(tail);
         tail.setTextureOffset(0, 0).addBox(-5.0F, -5.25F, -8.0F, 10.0F, 10.0F, 16.0F, 0.0F, false);

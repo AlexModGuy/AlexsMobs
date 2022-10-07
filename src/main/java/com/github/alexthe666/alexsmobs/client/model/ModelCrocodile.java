@@ -40,115 +40,115 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         texWidth = 256;
         texHeight = 256;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -9.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-8.0F, -7.0F, -13.0F, 16.0F, 12.0F, 27.0F, 0.0F, false);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setRotationPoint(8.0F, 3.0F, 10.0F);
         body.addChild(left_leg);
         left_leg.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -5.0F, 5.0F, 8.0F, 8.0F, 0.0F, false);
 
-        left_foot = new AdvancedModelBox(this);
+        left_foot = new AdvancedModelBox(this, "left_foot");
         left_foot.setRotationPoint(2.0F, 6.0F, -3.0F);
         left_leg.addChild(left_foot);
         left_foot.setTextureOffset(45, 42).addBox(-2.0F, -0.01F, -5.0F, 5.0F, 0.0F, 6.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setRotationPoint(-8.0F, 3.0F, 10.0F);
         body.addChild(right_leg);
         right_leg.setTextureOffset(0, 0).addBox(-3.0F, -2.0F, -5.0F, 5.0F, 8.0F, 8.0F, 0.0F, true);
 
-        right_foot = new AdvancedModelBox(this);
+        right_foot = new AdvancedModelBox(this, "right_foot");
         right_foot.setRotationPoint(-2.0F, 6.0F, -3.0F);
         right_leg.addChild(right_foot);
         right_foot.setTextureOffset(45, 42).addBox(-3.0F, -0.01F, -5.0F, 5.0F, 0.0F, 6.0F, 0.0F, true);
 
-        left_arm = new AdvancedModelBox(this);
+        left_arm = new AdvancedModelBox(this, "left_arm");
         left_arm.setRotationPoint(9.0F, 1.0F, -9.0F);
         body.addChild(left_arm);
         left_arm.setTextureOffset(0, 40).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 10.0F, 4.0F, 0.0F, false);
 
-        left_hand = new AdvancedModelBox(this);
+        left_hand = new AdvancedModelBox(this, "left_hand");
         left_hand.setRotationPoint(0.0F, 8.0F, 1.0F);
         left_arm.addChild(left_hand);
         left_hand.setTextureOffset(0, 17).addBox(-2.0F, -0.01F, -7.0F, 6.0F, 0.0F, 7.0F, 0.0F, false);
 
-        right_arm = new AdvancedModelBox(this);
+        right_arm = new AdvancedModelBox(this, "right_arm");
         right_arm.setRotationPoint(-9.0F, 1.0F, -9.0F);
         body.addChild(right_arm);
         right_arm.setTextureOffset(0, 40).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 10.0F, 4.0F, 0.0F, true);
 
-        right_hand = new AdvancedModelBox(this);
+        right_hand = new AdvancedModelBox(this, "right_hand");
         right_hand.setRotationPoint(0.0F, 8.0F, 1.0F);
         right_arm.addChild(right_hand);
         right_hand.setTextureOffset(0, 17).addBox(-4.0F, -0.01F, -7.0F, 6.0F, 0.0F, 7.0F, 0.0F, true);
 
-        tail1 = new AdvancedModelBox(this);
+        tail1 = new AdvancedModelBox(this, "tail1");
         tail1.setRotationPoint(0.0F, 0.0F, 16.0F);
         body.addChild(tail1);
         tail1.setTextureOffset(0, 40).addBox(-5.0F, -5.0F, -2.0F, 10.0F, 10.0F, 24.0F, 0.0F, false);
         tail1.setTextureOffset(45, 51).addBox(-5.0F, -7.0F, -2.0F, 10.0F, 2.0F, 24.0F, 0.0F, false);
 
-        tail2 = new AdvancedModelBox(this);
+        tail2 = new AdvancedModelBox(this, "tail2");
         tail2.setRotationPoint(0.0F, 1.0F, 24.0F);
         tail1.addChild(tail2);
         tail2.setTextureOffset(62, 15).addBox(-3.0F, -3.0F, -2.0F, 6.0F, 7.0F, 25.0F, 0.0F, false);
         tail2.setTextureOffset(43, 78).addBox(-2.0F, -5.0F, -2.0F, 4.0F, 2.0F, 20.0F, 0.0F, false);
 
-        tail3 = new AdvancedModelBox(this);
+        tail3 = new AdvancedModelBox(this, "tail3");
         tail3.setRotationPoint(0.0F, 0.0F, 18.0F);
         tail2.addChild(tail3);
         tail3.setTextureOffset(0, 75).addBox(0.0F, -6.0F, 0.0F, 0.0F, 10.0F, 21.0F, 0.0F, false);
 
-        neck = new AdvancedModelBox(this);
+        neck = new AdvancedModelBox(this, "neck");
         neck.setRotationPoint(0.0F, 0.0F, -15.0F);
         body.addChild(neck);
         neck.setTextureOffset(80, 89).addBox(-6.0F, -5.0F, -10.0F, 12.0F, 10.0F, 12.0F, 0.0F, false);
         neck.setTextureOffset(60, 0).addBox(-4.0F, -6.0F, -10.0F, 8.0F, 1.0F, 12.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, 1.0F, -11.0F);
         neck.addChild(head);
         head.setTextureOffset(72, 78).addBox(-5.0F, -4.0F, -5.0F, 10.0F, 4.0F, 6.0F, 0.0F, false);
         head.setTextureOffset(60, 14).addBox(-4.0F, -5.0F, -5.0F, 8.0F, 1.0F, 5.0F, 0.0F, false);
         head.setTextureOffset(22, 78).addBox(-3.0F, -4.0F, -17.0F, 6.0F, 4.0F, 12.0F, 0.0F, false);
 
-        crown = new AdvancedModelBox(this);
+        crown = new AdvancedModelBox(this, "crown");
         crown.setRotationPoint(0.0F, -5.0F, -2.0F);
         head.addChild(crown);
         crown.setTextureOffset(49, 54).addBox(-1.5F, -5.0F, -2.0F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
-        left_upperteeth = new AdvancedModelBox(this);
+        left_upperteeth = new AdvancedModelBox(this, "left_upperteeth");
         left_upperteeth.setRotationPoint(0.0F, 0.0F, -17.0F);
         head.addChild(left_upperteeth);
         setRotationAngle(left_upperteeth, 0.0F, 0.0F, -0.0873F);
         left_upperteeth.setTextureOffset(104, 23).addBox(0.0F, 0.0F, -0.025F, 3.0F, 2.0F, 11.0F, 0.0F, false);
 
-        right_upperteeth = new AdvancedModelBox(this);
+        right_upperteeth = new AdvancedModelBox(this, "right_upperteeth");
         right_upperteeth.setRotationPoint(0.0F, 0.0F, -17.0F);
         head.addChild(right_upperteeth);
         setRotationAngle(right_upperteeth, 0.0F, 0.0F, 0.0873F);
         right_upperteeth.setTextureOffset(104, 23).addBox(-3.0F, 0.0F, -0.025F, 3.0F, 2.0F, 11.0F, 0.0F, true);
 
-        jaw = new AdvancedModelBox(this);
+        jaw = new AdvancedModelBox(this, "jaw");
         jaw.setRotationPoint(0.0F, 0.0F, 0.0F);
         head.addChild(jaw);
         jaw.setTextureOffset(100, 7).addBox(-5.5F, -2.0F, -6.0F, 11.0F, 5.0F, 7.0F, 0.001F, false);
         jaw.setTextureOffset(90, 48).addBox(-3.0F, 0.0F, -17.0F, 6.0F, 3.0F, 11.0F, 0.0F, false);
 
-        left_lowerteeth = new AdvancedModelBox(this);
+        left_lowerteeth = new AdvancedModelBox(this, "left_lowerteeth");
         left_lowerteeth.setRotationPoint(0.0F, 0.0F, -17.0F);
         jaw.addChild(left_lowerteeth);
         setRotationAngle(left_lowerteeth, 0.0F, 0.0F, 0.0873F);
         left_lowerteeth.setTextureOffset(105, 67).addBox(0.0F, -2.0F, -0.025F, 3.0F, 2.0F, 11.0F, 0.0F, false);
 
-        right_lowerteeth = new AdvancedModelBox(this);
+        right_lowerteeth = new AdvancedModelBox(this, "right_lowerteeth");
         right_lowerteeth.setRotationPoint(0.0F, 0.0F, -17.0F);
         jaw.addChild(right_lowerteeth);
         setRotationAngle(right_lowerteeth, 0.0F, 0.0F, -0.0873F);

@@ -15,11 +15,11 @@ public class ModelEndPirateAnchorChain  extends AdvancedEntityModel<Entity> {
         textureWidth = 32;
         textureHeight = 32;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        chain = new AdvancedModelBox(this);
+        chain = new AdvancedModelBox(this, "chain");
         chain.setRotationPoint(0.0F, -12.5F, 0.0F);
         root.addChild(chain);
         chain.setTextureOffset(0, 7).addBox(-5.5F, 9.5F, -1.5F, 11.0F, 3.0F, 3.0F, 0.0F, false);

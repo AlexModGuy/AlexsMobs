@@ -31,69 +31,69 @@ public class ModelFlutter extends AdvancedEntityModel<EntityFlutter> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -3.9F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 13).addBox(-3.5F, -3.0F, -3.5F, 7.0F, 5.0F, 7.0F, 0.0F, false);
         body.setTextureOffset(0, 0).addBox(-3.5F, -3.0F, -3.5F, 7.0F, 5.0F, 7.0F, -0.2F, false);
 
-        eyes = new AdvancedModelBox(this);
+        eyes = new AdvancedModelBox(this, "eyes");
         eyes.setRotationPoint(0.0F, -1.0F, -3.0F);
         body.addChild(eyes);
         eyes.setTextureOffset(23, 30).addBox(-1.5F, -0.5F, 0.0F, 3.0F, 1.0F, 0.0F, 0.0F, false);
 
-        petals = new AdvancedModelBox(this);
+        petals = new AdvancedModelBox(this, "petals");
         petals.setRotationPoint(0.0F, -3.0F, 0.0F);
         body.addChild(petals);
 
 
-        front_petal = new AdvancedModelBox(this);
+        front_petal = new AdvancedModelBox(this, "front_petal");
         front_petal.setRotationPoint(0.0F, 0.0F, -1.5F);
         petals.addChild(front_petal);
         setRotationAngle(front_petal, 1.1781F, 0.0F, 0.0F);
         front_petal.setTextureOffset(0, 26).addBox(-3.5F, -7.0F, 0.0F, 7.0F, 7.0F, 0.0F, 0.0F, false);
 
-        left_petal = new AdvancedModelBox(this);
+        left_petal = new AdvancedModelBox(this, "left_petal");
         left_petal.setRotationPoint(1.5F, 0.0F, 0.0F);
         petals.addChild(left_petal);
         setRotationAngle(left_petal, 1.1781F, -1.5708F, 0.0F);
         left_petal.setTextureOffset(0, 26).addBox(-3.5F, -7.0F, 0.0F, 7.0F, 7.0F, 0.0F, 0.0F, false);
 
-        right_petal = new AdvancedModelBox(this);
+        right_petal = new AdvancedModelBox(this, "right_petal");
         right_petal.setRotationPoint(-1.5F, 0.0F, 0.0F);
         petals.addChild(right_petal);
         setRotationAngle(right_petal, 1.1781F, 1.5708F, 0.0F);
         right_petal.setTextureOffset(0, 26).addBox(-3.5F, -7.0F, 0.0F, 7.0F, 7.0F, 0.0F, 0.0F, true);
 
-        back_petal = new AdvancedModelBox(this);
+        back_petal = new AdvancedModelBox(this, "back_petal");
         back_petal.setRotationPoint(0.0F, 0.0F, 1.5F);
         petals.addChild(back_petal);
         setRotationAngle(back_petal, 1.1781F, 3.1416F, 0.0F);
         back_petal.setTextureOffset(0, 26).addBox(-3.5F, -7.0F, 0.0F, 7.0F, 7.0F, 0.0F, 0.0F, false);
 
-        left_arm = new AdvancedModelBox(this);
+        left_arm = new AdvancedModelBox(this, "left_arm");
         left_arm.setRotationPoint(3.0F, 1.9F, -3.0F);
         body.addChild(left_arm);
         setRotationAngle(left_arm, 0.0F, -0.7418F, 0.0F);
         left_arm.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setRotationPoint(3.0F, 1.9F, 3.0F);
         body.addChild(left_leg);
         setRotationAngle(left_leg, -3.1416F, -0.7418F, 3.1416F);
         left_leg.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setRotationPoint(-3.0F, 1.9F, 3.0F);
         body.addChild(right_leg);
         setRotationAngle(right_leg, -3.1416F, 0.7418F, -3.1416F);
         right_leg.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, -2.0F, 1.0F, 2.0F, 2.0F, 0.0F, true);
 
-        right_arm = new AdvancedModelBox(this);
+        right_arm = new AdvancedModelBox(this, "right_arm");
         right_arm.setRotationPoint(-3.0F, 1.9F, -3.0F);
         body.addChild(right_arm);
         setRotationAngle(right_arm, 0.0F, 0.7418F, 0.0F);

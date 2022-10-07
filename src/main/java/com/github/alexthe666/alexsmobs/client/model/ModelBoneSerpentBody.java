@@ -14,9 +14,9 @@ public class ModelBoneSerpentBody extends AdvancedEntityModel<EntityBoneSerpentP
     public ModelBoneSerpentBody() {
         texWidth = 128;
         texHeight = 128;
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
-        middle_section = new AdvancedModelBox(this);
+        middle_section = new AdvancedModelBox(this, "middle_section");
         middle_section.setPos(0.0F, -7.75F, 0.0F);
         root.addChild(middle_section);
         middle_section.setTextureOffset(2, 50).addBox(-2.0F, -9.25F, -8.0F, 4.0F, 2.0F, 16.0F, 0.0F, false);

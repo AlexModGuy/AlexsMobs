@@ -16,19 +16,19 @@ public class ModelRockyChestplateRolling extends AdvancedEntityModel<LivingEntit
         texWidth = 64;
         texHeight = 64;
         float f = -6.5F;
-        Body = new AdvancedModelBox(this);
+        Body = new AdvancedModelBox(this, "Body");
         Body.setRotationPoint(0.0F, f, 0.0F);
         Body.setTextureOffset(0, 0).addBox(-5.0F, -0.5F, -3.0F, 10.0F, 13.0F, 9.0F, 0.0F, false);
         Body.setTextureOffset(0, 23).addBox(-4.0F, 0.5F, 6.0F, 8.0F, 11.0F, 4.0F, 0.0F, false);
         Body.setTextureOffset(25, 34).addBox(-2.0F, -0.5F, 6.0F, 4.0F, 13.0F, 4.0F, 0.0F, false);
 
-        LeftArm = new AdvancedModelBox(this);
+        LeftArm = new AdvancedModelBox(this, "LeftArm");
         LeftArm.setRotationPoint(6.0F, 2.0F + f, 1.0F);
         setRotationAngle(LeftArm, 0.0F, 0.0F, 1.5708F);
         LeftArm.setTextureOffset(25, 23).addBox(-3.5F, -1.0F, -4.1F, 6.0F, 4.0F, 6.0F, 0.0F, false);
         LeftArm.setTextureOffset(0, 39).addBox(-3.0F, -3.0F, -3.1F, 7.0F, 6.0F, 4.0F, 0.0F, false);
 
-        RightArm = new AdvancedModelBox(this);
+        RightArm = new AdvancedModelBox(this, "RightArm");
         RightArm.setRotationPoint(-6.0F, 1.0F + f, 1.0F);
         setRotationAngle(RightArm, 0.0F, 0.0F, -1.5708F);
         RightArm.setTextureOffset(25, 23).addBox(-3.5F, -1.0F, -4.1F, 6.0F, 4.0F, 6.0F, 0.0F, true);

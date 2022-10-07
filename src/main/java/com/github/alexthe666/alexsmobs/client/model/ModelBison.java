@@ -33,47 +33,47 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -23.0F, 4.0F);
         root.addChild(body);
         body.setTextureOffset(0, 54).addBox(-9.0F, -11.0F, -1.0F, 18.0F, 20.0F, 19.0F, 0.0F, false);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setRotationPoint(5.8F, 5.0F, 14.0F);
         body.addChild(left_leg);
         left_leg.setTextureOffset(75, 80).addBox(-3.0F, 4.0F, -3.0F, 6.0F, 14.0F, 7.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setRotationPoint(-5.8F, 5.0F, 14.0F);
         body.addChild(right_leg);
         right_leg.setTextureOffset(75, 80).addBox(-3.0F, 4.0F, -3.0F, 6.0F, 14.0F, 7.0F, 0.0F, true);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, -6.0F, 18.0F);
         body.addChild(tail);
 
-        tail_r1 = new AdvancedModelBox(this);
+        tail_r1 = new AdvancedModelBox(this, "tail_r1");
         tail_r1.setRotationPoint(0.0F, 0.0F, 0.0F);
         tail.addChild(tail_r1);
         setRotationAngle(tail_r1, 0.0436F, 0.0F, 0.0F);
         tail_r1.setTextureOffset(0, 54).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 14.0F, 0.0F, 0.0F, false);
 
-        torso = new AdvancedModelBox(this);
+        torso = new AdvancedModelBox(this, "torso");
         torso.setRotationPoint(0.0F, -3.0F, 1.0F);
         body.addChild(torso);
         torso.setTextureOffset(0, 0).addBox(-10.0F, -14.0F, -28.0F, 20.0F, 27.0F, 26.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, 0.0F, -27.0F);
         torso.addChild(head);
         setRotationAngle(head, -0.2618F, 0.0F, 0.0F);
         head.setTextureOffset(76, 54).addBox(-4.0F, 0.0F, -8.0F, 8.0F, 15.0F, 10.0F, 0.0F, false);
         head.setTextureOffset(67, 0).addBox(-6.0F, -6.0F, -9.9F, 12.0F, 10.0F, 12.0F, 0.0F, false);
 
-        horn_r1 = new AdvancedModelBox(this);
+        horn_r1 = new AdvancedModelBox(this, "horn_r1");
         horn_r1.setRotationPoint(-7.0F, 0.5F, -5.0F);
         head.addChild(horn_r1);
         setRotationAngle(horn_r1, 0.3927F, 0.0F, 0.0F);
@@ -82,30 +82,30 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         horn_r1.setTextureOffset(11, 1).addBox(10.0F, -0.5F, -1.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
         horn_r1.setTextureOffset(0, 0).addBox(13.0F, -4.5F, -1.0F, 2.0F, 7.0F, 2.0F, 0.0F, false);
 
-        left_ear = new AdvancedModelBox(this);
+        left_ear = new AdvancedModelBox(this, "left_ear");
         left_ear.setRotationPoint(4.0F, 3.0F, -3.0F);
         head.addChild(left_ear);
         setRotationAngle(left_ear, 0.0F, -0.6981F, 0.4363F);
         left_ear.setTextureOffset(0, 23).addBox(0.0F, -1.0F, 0.0F, 5.0F, 2.0F, 1.0F, 0.0F, false);
 
-        right_ear = new AdvancedModelBox(this);
+        right_ear = new AdvancedModelBox(this, "right_ear");
         right_ear.setRotationPoint(-4.0F, 3.0F, -3.0F);
         head.addChild(right_ear);
         setRotationAngle(right_ear, 0.0F, 0.6981F, -0.4363F);
         right_ear.setTextureOffset(0, 23).addBox(-5.0F, -1.0F, 0.0F, 5.0F, 2.0F, 1.0F, 0.0F, true);
 
-        beard = new AdvancedModelBox(this);
+        beard = new AdvancedModelBox(this, "beard");
         beard.setRotationPoint(0.0F, 15.0F, 1.0F);
         head.addChild(beard);
         setRotationAngle(beard, 0.2182F, 0.0F, 0.0F);
         beard.setTextureOffset(0, 0).addBox(0.0F, -5.0F, -5.0F, 0.0F, 13.0F, 10.0F, 0.0F, false);
 
-        left_arm = new AdvancedModelBox(this);
+        left_arm = new AdvancedModelBox(this, "left_arm");
         left_arm.setRotationPoint(7.8F, 10.0F, -15.0F);
         torso.addChild(left_arm);
         left_arm.setTextureOffset(93, 23).addBox(-3.0F, 3.0F, -3.0F, 5.0F, 13.0F, 5.0F, 0.0F, false);
 
-        right_arm = new AdvancedModelBox(this);
+        right_arm = new AdvancedModelBox(this, "right_arm");
         right_arm.setRotationPoint(-7.8F, 10.0F, -15.0F);
         torso.addChild(right_arm);
         right_arm.setTextureOffset(93, 23).addBox(-2.0F, 3.0F, -3.0F, 5.0F, 13.0F, 5.0F, 0.0F, true);

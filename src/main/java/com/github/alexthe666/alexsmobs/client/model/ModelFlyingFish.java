@@ -20,46 +20,46 @@ public class ModelFlyingFish extends AdvancedEntityModel<EntityFlyingFish> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -2.0F, -2.0F);
         root.addChild(body);
         body.setTextureOffset(11, 16).addBox(-1.5F, -2.0F, -4.0F, 3.0F, 4.0F, 8.0F, 0.0F, false);
         body.setTextureOffset(10, 6).addBox(-1.5F, -2.0F, -5.0F, 3.0F, 3.0F, 1.0F, 0.0F, false);
 
-        left_pectoralFin = new AdvancedModelBox(this);
+        left_pectoralFin = new AdvancedModelBox(this, "left_pectoralFin");
         left_pectoralFin.setRotationPoint(1.5F, 0.0F, -1.0F);
         body.addChild(left_pectoralFin);
         setRotationAngle(left_pectoralFin, -0.7503F, -1.3169F, -0.8498F);
         left_pectoralFin.setTextureOffset(0, 0).addBox(0.0F, 0.0F, -2.0F, 13.0F, 0.0F, 5.0F, 0.0F, false);
 
-        right_pectoralFin = new AdvancedModelBox(this);
+        right_pectoralFin = new AdvancedModelBox(this, "right_pectoralFin");
         right_pectoralFin.setRotationPoint(-1.5F, 0.0F, -1.0F);
         body.addChild(right_pectoralFin);
         setRotationAngle(right_pectoralFin, -0.7503F, 1.3169F, 0.8498F);
         right_pectoralFin.setTextureOffset(0, 0).addBox(-13.0F, 0.0F, -2.0F, 13.0F, 0.0F, 5.0F, 0.0F, true);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, -1.0F, 4.0F);
         body.addChild(tail);
         tail.setTextureOffset(26, 6).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 3.0F, 8.0F, 0.0F, false);
         tail.setTextureOffset(0, 0).addBox(0.0F, -2.0F, 2.0F, 0.0F, 1.0F, 2.0F, 0.0F, false);
 
-        tail_fin = new AdvancedModelBox(this);
+        tail_fin = new AdvancedModelBox(this, "tail_fin");
         tail_fin.setRotationPoint(0.0F, 1.0F, 6.0F);
         tail.addChild(tail_fin);
         tail_fin.setTextureOffset(0, 6).addBox(0.0F, -5.0F, -1.0F, 0.0F, 8.0F, 9.0F, 0.0F, false);
 
-        left_pelvicFin = new AdvancedModelBox(this);
+        left_pelvicFin = new AdvancedModelBox(this, "left_pelvicFin");
         left_pelvicFin.setRotationPoint(1.0F, 2.0F, 1.0F);
         tail.addChild(left_pelvicFin);
         setRotationAngle(left_pelvicFin, 0.0F, 0.0F, -0.5672F);
         left_pelvicFin.setTextureOffset(0, 6).addBox(0.0F, 0.0F, 0.0F, 0.0F, 4.0F, 4.0F, 0.0F, false);
 
-        right_pelvicFin = new AdvancedModelBox(this);
+        right_pelvicFin = new AdvancedModelBox(this, "right_pelvicFin");
         right_pelvicFin.setRotationPoint(-1.0F, 2.0F, 1.0F);
         tail.addChild(right_pelvicFin);
         setRotationAngle(right_pelvicFin, 0.0F, 0.0F, 0.5672F);

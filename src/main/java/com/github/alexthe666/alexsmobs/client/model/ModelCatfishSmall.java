@@ -22,53 +22,53 @@ public class ModelCatfishSmall extends AdvancedEntityModel<EntityCatfish> {
 		texWidth = 64;
 		texHeight = 64;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setRotationPoint(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setRotationPoint(0.0F, -3.0F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-4.0F, -3.0F, -8.0F, 8.0F, 6.0F, 14.0F, 0.0F, false);
 
-		left_barbel = new AdvancedModelBox(this);
+		left_barbel = new AdvancedModelBox(this, "left_barbel");
 		left_barbel.setRotationPoint(4.0F, 1.0F, -6.0F);
 		body.addChild(left_barbel);
 		setRotationAngle(left_barbel, 0.0F, -0.6109F, 0.0F);
 		left_barbel.setTextureOffset(0, 10).addBox(0.0F, 0.0F, 0.0F, 6.0F, 3.0F, 0.0F, 0.0F, false);
 
-		right_barbel = new AdvancedModelBox(this);
+		right_barbel = new AdvancedModelBox(this, "right_barbel");
 		right_barbel.setRotationPoint(-4.0F, 1.0F, -6.0F);
 		body.addChild(right_barbel);
 		setRotationAngle(right_barbel, 0.0F, 0.6109F, 0.0F);
 		right_barbel.setTextureOffset(0, 10).addBox(-6.0F, 0.0F, 0.0F, 6.0F, 3.0F, 0.0F, 0.0F, true);
 
-		dorsal_fin = new AdvancedModelBox(this);
+		dorsal_fin = new AdvancedModelBox(this, "dorsal_fin");
 		dorsal_fin.setRotationPoint(0.0F, -3.0F, -2.0F);
 		body.addChild(dorsal_fin);
 		setRotationAngle(dorsal_fin, -0.1309F, 0.0F, 0.0F);
 		dorsal_fin.setTextureOffset(0, 21).addBox(0.0F, -4.0F, 0.0F, 0.0F, 4.0F, 5.0F, 0.0F, false);
 
-		left_fin = new AdvancedModelBox(this);
+		left_fin = new AdvancedModelBox(this, "left_fin");
 		left_fin.setRotationPoint(4.0F, 2.0F, -3.0F);
 		body.addChild(left_fin);
 		setRotationAngle(left_fin, 0.0F, 0.0F, -0.9163F);
 		left_fin.setTextureOffset(19, 21).addBox(0.0F, 0.0F, -1.0F, 0.0F, 2.0F, 4.0F, 0.0F, false);
 
-		right_fin = new AdvancedModelBox(this);
+		right_fin = new AdvancedModelBox(this, "right_fin");
 		right_fin.setRotationPoint(-4.0F, 2.0F, -3.0F);
 		body.addChild(right_fin);
 		setRotationAngle(right_fin, 0.0F, 0.0F, 0.9163F);
 		right_fin.setTextureOffset(19, 21).addBox(0.0F, 0.0F, -1.0F, 0.0F, 2.0F, 4.0F, 0.0F, true);
 
-		tail = new AdvancedModelBox(this);
+		tail = new AdvancedModelBox(this, "tail");
 		tail.setRotationPoint(0.0F, 0.0F, 7.0F);
 		body.addChild(tail);
 		tail.setTextureOffset(0, 21).addBox(-2.0F, -3.0F, -1.0F, 4.0F, 5.0F, 10.0F, 0.0F, false);
 		tail.setTextureOffset(0, 0).addBox(0.0F, -4.0F, 2.0F, 0.0F, 1.0F, 2.0F, 0.0F, false);
 		tail.setTextureOffset(0, 0).addBox(0.0F, 2.0F, -1.0F, 0.0F, 2.0F, 6.0F, 0.0F, false);
 
-		tail_fin = new AdvancedModelBox(this);
+		tail_fin = new AdvancedModelBox(this, "tail_fin");
 		tail_fin.setRotationPoint(0.0F, 2.0F, 9.0F);
 		tail.addChild(tail_fin);
 		tail_fin.setTextureOffset(19, 27).addBox(0.0F, -7.0F, -2.0F, 0.0F, 9.0F, 10.0F, 0.0F, false);

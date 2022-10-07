@@ -17,14 +17,14 @@ public class ModelEndPirateDoor extends AdvancedEntityModel<Entity> {
     public ModelEndPirateDoor() {
         texWidth = 64;
         texHeight = 64;
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
-        doorRightHinge = new AdvancedModelBox(this);
+        doorRightHinge = new AdvancedModelBox(this, "doorRightHinge");
         doorRightHinge.setRotationPoint(7.0F, -24.0F, -7.0F);
         root.addChild(doorRightHinge);
         doorRightHinge.setTextureOffset(0, 0).addBox(-15.0F, -24.0F, -1.0F, 16.0F, 48.0F, 2.0F, 0.0F, false);
 
-        doorLeftHinge = new AdvancedModelBox(this);
+        doorLeftHinge = new AdvancedModelBox(this, "doorLeftHinge");
         doorLeftHinge.setRotationPoint(-7.0F, -24.0F, -7.0F);
         root.addChild(doorLeftHinge);
         doorLeftHinge.setTextureOffset(0, 0).addBox(-1.0F, -24.0F, -1.0F, 16.0F, 48.0F, 2.0F, 0.0F, true);

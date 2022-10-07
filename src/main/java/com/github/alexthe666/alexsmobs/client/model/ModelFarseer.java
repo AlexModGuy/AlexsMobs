@@ -53,205 +53,205 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        bodyCube1 = new AdvancedModelBox(this);
+        bodyCube1 = new AdvancedModelBox(this, "bodyCube1");
         bodyCube1.setRotationPoint(2.0F, -8.0F, 0.0F);
         root.addChild(bodyCube1);
         bodyCube1.setTextureOffset(0, 56).addBox(-5.0F, -2.0F, -3.0F, 10.0F, 4.0F, 5.0F, scale, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -15.0F, 0.0F);
         root.addChild(head);
         head.setTextureOffset(0, 0).addBox(-10.5F, -5.0F, -6.0F, 21.0F, 9.0F, 13.0F, scale, false);
 
-        leftUpperMask = new AdvancedModelBox(this);
+        leftUpperMask = new AdvancedModelBox(this, "leftUpperMask");
         leftUpperMask.setRotationPoint(0.0F, -5.0F, 1.0F);
         head.addChild(leftUpperMask);
         leftUpperMask.setTextureOffset(0, 23).addBox(0.0F, -0.5F, -7.9F, 11.0F, 7.0F, 8.0F, scale, false);
 
-        rightUpperMask = new AdvancedModelBox(this);
+        rightUpperMask = new AdvancedModelBox(this, "rightUpperMask");
         rightUpperMask.setRotationPoint(0.0F, -5.0F, 1.0F);
         head.addChild(rightUpperMask);
         rightUpperMask.setTextureOffset(0, 23).addBox(-11.0F, -0.5F, -7.9F, 11.0F, 7.0F, 8.0F, scale, true);
 
-        leftLowerMask = new AdvancedModelBox(this);
+        leftLowerMask = new AdvancedModelBox(this, "leftLowerMask");
         leftLowerMask.setRotationPoint(0.0F, 3.0F, 1.0F);
         head.addChild(leftLowerMask);
         leftLowerMask.setTextureOffset(31, 31).addBox(0.0F, -2.5F, -7.9F, 11.0F, 4.0F, 8.0F, scale, false);
 
-        rightLowerMask = new AdvancedModelBox(this);
+        rightLowerMask = new AdvancedModelBox(this, "rightLowerMask");
         rightLowerMask.setRotationPoint(0.0F, 3.0F, 1.0F);
         head.addChild(rightLowerMask);
         rightLowerMask.setTextureOffset(31, 31).addBox(-11.0F, -2.5F, -7.9F, 11.0F, 4.0F, 8.0F, scale, true);
 
-        eye = new AdvancedModelBox(this);
+        eye = new AdvancedModelBox(this, "eye");
         eye.setRotationPoint(0.0F, 4.0F, -1.0F);
         head.addChild(eye);
         eye.setTextureOffset(56, 0).addBox(-4.5F, -8.0F, -6.0F, 9.0F, 4.0F, 2.0F, scale, false);
 
-        bodyCube2 = new AdvancedModelBox(this);
+        bodyCube2 = new AdvancedModelBox(this, "bodyCube2");
         bodyCube2.setRotationPoint(1.0F, -2.0F, 1.0F);
         root.addChild(bodyCube2);
         bodyCube2.setTextureOffset(33, 44).addBox(-6.0F, -3.0F, -3.0F, 10.0F, 5.0F, 6.0F, scale, false);
 
-        leftArm = new AdvancedModelBox(this);
+        leftArm = new AdvancedModelBox(this, "leftArm");
         leftArm.setRotationPoint(9.0F, -16.5F, 9.0F);
         root.addChild(leftArm);
         setRotationAngle(leftArm, 0.0F, 0.0F, -0.7854F);
         leftArm.setTextureOffset(31, 23).addBox(-1.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, scale, false);
 
-        leftElbow = new AdvancedModelBox(this);
+        leftElbow = new AdvancedModelBox(this, "leftElbow");
         leftElbow.setRotationPoint(15.0F, 0.0F, 0.0F);
         leftArm.addChild(leftElbow);
         leftElbow.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, scale, false);
 
-        leftHand = new AdvancedModelBox(this);
+        leftHand = new AdvancedModelBox(this, "leftHand");
         leftHand.setRotationPoint(0.0F, 0.0F, -12.0F);
         leftElbow.addChild(leftHand);
 
 
-        leftUpperRFinger = new AdvancedModelBox(this);
+        leftUpperRFinger = new AdvancedModelBox(this, "leftUpperRFinger");
         leftUpperRFinger.setRotationPoint(-1.4F, -1.4F, 0.0F);
         leftHand.addChild(leftUpperRFinger);
         setRotationAngle(leftUpperRFinger, 0.0F, 0.0F, -0.7854F);
         leftUpperRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
-        leftLowerRFinger = new AdvancedModelBox(this);
+        leftLowerRFinger = new AdvancedModelBox(this, "leftLowerRFinger");
         leftLowerRFinger.setRotationPoint(-1.4F, 1.4F, 0.0F);
         leftHand.addChild(leftLowerRFinger);
         setRotationAngle(leftLowerRFinger, 0.0F, 0.0F, -2.3562F);
         leftLowerRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
-        leftLowerLFinger = new AdvancedModelBox(this);
+        leftLowerLFinger = new AdvancedModelBox(this, "leftLowerLFinger");
         leftLowerLFinger.setRotationPoint(1.4F, 1.4F, 0.0F);
         leftHand.addChild(leftLowerLFinger);
         setRotationAngle(leftLowerLFinger, 0.0F, 0.0F, 2.3562F);
         leftLowerLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
-        leftUpperLFinger = new AdvancedModelBox(this);
+        leftUpperLFinger = new AdvancedModelBox(this, "leftUpperLFinger");
         leftUpperLFinger.setRotationPoint(1.4F, -1.4F, 0.0F);
         leftHand.addChild(leftUpperLFinger);
         setRotationAngle(leftUpperLFinger, 0.0F, 0.0F, 0.7854F);
         leftUpperLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
-        leftArm2 = new AdvancedModelBox(this);
+        leftArm2 = new AdvancedModelBox(this, "leftArm2");
         leftArm2.setRotationPoint(6.0F, -13.5F, 9.0F);
         root.addChild(leftArm2);
         setRotationAngle(leftArm2, 0.0F, 0.0F, 0.6545F);
         leftArm2.setTextureOffset(31, 23).addBox(-1.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, scale, false);
 
-        leftElbow2 = new AdvancedModelBox(this);
+        leftElbow2 = new AdvancedModelBox(this, "leftElbow2");
         leftElbow2.setRotationPoint(15.0F, 0.0F, 0.0F);
         leftArm2.addChild(leftElbow2);
         leftElbow2.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, scale, false);
 
-        leftHand2 = new AdvancedModelBox(this);
+        leftHand2 = new AdvancedModelBox(this, "leftHand2");
         leftHand2.setRotationPoint(0.0F, 0.0F, -12.0F);
         leftElbow2.addChild(leftHand2);
 
 
-        leftUpperRFinger2 = new AdvancedModelBox(this);
+        leftUpperRFinger2 = new AdvancedModelBox(this, "leftUpperRFinger2");
         leftUpperRFinger2.setRotationPoint(-1.4F, -1.4F, 0.0F);
         leftHand2.addChild(leftUpperRFinger2);
         setRotationAngle(leftUpperRFinger2, 0.0F, 0.0F, -0.7854F);
         leftUpperRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
-        leftLowerRFinger2 = new AdvancedModelBox(this);
+        leftLowerRFinger2 = new AdvancedModelBox(this, "leftLowerRFinger2");
         leftLowerRFinger2.setRotationPoint(-1.4F, 1.4F, 0.0F);
         leftHand2.addChild(leftLowerRFinger2);
         setRotationAngle(leftLowerRFinger2, 0.0F, 0.0F, -2.3562F);
         leftLowerRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
-        leftLowerLFinger2 = new AdvancedModelBox(this);
+        leftLowerLFinger2 = new AdvancedModelBox(this, "leftLowerLFinger2");
         leftLowerLFinger2.setRotationPoint(1.4F, 1.4F, 0.0F);
         leftHand2.addChild(leftLowerLFinger2);
         setRotationAngle(leftLowerLFinger2, 0.0F, 0.0F, 2.3562F);
         leftLowerLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
-        leftUpperLFinger2 = new AdvancedModelBox(this);
+        leftUpperLFinger2 = new AdvancedModelBox(this, "leftUpperLFinger2");
         leftUpperLFinger2.setRotationPoint(1.4F, -1.4F, 0.0F);
         leftHand2.addChild(leftUpperLFinger2);
         setRotationAngle(leftUpperLFinger2, 0.0F, 0.0F, 0.7854F);
         leftUpperLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, false);
 
-        rightArm = new AdvancedModelBox(this);
+        rightArm = new AdvancedModelBox(this, "rightArm");
         rightArm.setRotationPoint(-9.0F, -16.5F, 9.0F);
         root.addChild(rightArm);
         setRotationAngle(rightArm, 0.0F, 0.0F, 0.7854F);
         rightArm.setTextureOffset(31, 23).addBox(-15.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, scale, true);
 
-        rightElbow = new AdvancedModelBox(this);
+        rightElbow = new AdvancedModelBox(this, "rightElbow");
         rightElbow.setRotationPoint(-15.0F, 0.0F, 0.0F);
         rightArm.addChild(rightElbow);
         rightElbow.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, scale, true);
 
-        rightHand = new AdvancedModelBox(this);
+        rightHand = new AdvancedModelBox(this, "rightHand");
         rightHand.setRotationPoint(0.0F, 0.0F, -12.0F);
         rightElbow.addChild(rightHand);
 
 
-        rightUpperRFinger = new AdvancedModelBox(this);
+        rightUpperRFinger = new AdvancedModelBox(this, "rightUpperRFinger");
         rightUpperRFinger.setRotationPoint(1.4F, -1.4F, 0.0F);
         rightHand.addChild(rightUpperRFinger);
         setRotationAngle(rightUpperRFinger, 0.0F, 0.0F, 0.7854F);
         rightUpperRFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
-        rightLowerRFinger2 = new AdvancedModelBox(this);
+        rightLowerRFinger2 = new AdvancedModelBox(this, "rightLowerRFinger2");
         rightLowerRFinger2.setRotationPoint(1.4F, 1.4F, 0.0F);
         rightHand.addChild(rightLowerRFinger2);
         setRotationAngle(rightLowerRFinger2, 0.0F, 0.0F, 2.3562F);
         rightLowerRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
-        rightLowerLFinger = new AdvancedModelBox(this);
+        rightLowerLFinger = new AdvancedModelBox(this, "rightLowerLFinger");
         rightLowerLFinger.setRotationPoint(-1.4F, 1.4F, 0.0F);
         rightHand.addChild(rightLowerLFinger);
         setRotationAngle(rightLowerLFinger, 0.0F, 0.0F, -2.3562F);
         rightLowerLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
-        rightUpperLFinger = new AdvancedModelBox(this);
+        rightUpperLFinger = new AdvancedModelBox(this, "rightUpperLFinger");
         rightUpperLFinger.setRotationPoint(-1.4F, -1.4F, 0.0F);
         rightHand.addChild(rightUpperLFinger);
         setRotationAngle(rightUpperLFinger, 0.0F, 0.0F, -0.7854F);
         rightUpperLFinger.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
-        rightArm2 = new AdvancedModelBox(this);
+        rightArm2 = new AdvancedModelBox(this, "rightArm2");
         rightArm2.setRotationPoint(-6.0F, -13.5F, 9.0F);
         root.addChild(rightArm2);
         setRotationAngle(rightArm2, 0.0F, 0.0F, -0.6545F);
         rightArm2.setTextureOffset(31, 23).addBox(-15.0F, -1.5F, -2.0F, 16.0F, 3.0F, 4.0F, scale, true);
 
-        rightElbow2 = new AdvancedModelBox(this);
+        rightElbow2 = new AdvancedModelBox(this, "rightElbow2");
         rightElbow2.setRotationPoint(-15.0F, 0.0F, 0.0F);
         rightArm2.addChild(rightElbow2);
         rightElbow2.setTextureOffset(0, 39).addBox(-1.0F, -1.0F, -13.0F, 2.0F, 2.0F, 14.0F, scale, true);
 
-        rightHand2 = new AdvancedModelBox(this);
+        rightHand2 = new AdvancedModelBox(this, "rightHand2");
         rightHand2.setRotationPoint(0.0F, 0.0F, -12.0F);
         rightElbow2.addChild(rightHand2);
 
 
-        rightUpperRFinger2 = new AdvancedModelBox(this);
+        rightUpperRFinger2 = new AdvancedModelBox(this, "rightUpperRFinger2");
         rightUpperRFinger2.setRotationPoint(1.4F, -1.4F, 0.0F);
         rightHand2.addChild(rightUpperRFinger2);
         setRotationAngle(rightUpperRFinger2, 0.0F, 0.0F, 0.7854F);
         rightUpperRFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
-        rightLowerRFinger3 = new AdvancedModelBox(this);
+        rightLowerRFinger3 = new AdvancedModelBox(this, "rightLowerRFinger3");
         rightLowerRFinger3.setRotationPoint(1.4F, 1.4F, 0.0F);
         rightHand2.addChild(rightLowerRFinger3);
         setRotationAngle(rightLowerRFinger3, 0.0F, 0.0F, 2.3562F);
         rightLowerRFinger3.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
-        rightLowerLFinger2 = new AdvancedModelBox(this);
+        rightLowerLFinger2 = new AdvancedModelBox(this, "rightLowerLFinger2");
         rightLowerLFinger2.setRotationPoint(-1.4F, 1.4F, 0.0F);
         rightHand2.addChild(rightLowerLFinger2);
         setRotationAngle(rightLowerLFinger2, 0.0F, 0.0F, -2.3562F);
         rightLowerLFinger2.setTextureOffset(0, 0).addBox(-1.0F, -6.0F, -3.0F, 2.0F, 7.0F, 4.0F, scale, true);
 
-        rightUpperLFinger2 = new AdvancedModelBox(this);
+        rightUpperLFinger2 = new AdvancedModelBox(this, "rightUpperLFinger2");
         rightUpperLFinger2.setRotationPoint(-1.4F, -1.4F, 0.0F);
         rightHand2.addChild(rightUpperLFinger2);
         setRotationAngle(rightUpperLFinger2, 0.0F, 0.0F, -0.7854F);

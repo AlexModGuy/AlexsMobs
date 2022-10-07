@@ -16,23 +16,23 @@ public class ModelTendonClaw extends AdvancedEntityModel<EntityTendonSegment> {
         texWidth = 16;
         texHeight = 16;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 12.0F, 0.0F);
 
 
-        claw1 = new AdvancedModelBox(this);
+        claw1 = new AdvancedModelBox(this, "claw1");
         claw1.setRotationPoint(0.0F, 0.0F, 0.7F);
         root.addChild(claw1);
         setRotationAngle(claw1, 0.2618F, 0.0F, 0.0F);
         claw1.setTextureOffset(0, 0).addBox(-1.5F, -8.0F, -2.0F, 3.0F, 8.0F, 2.0F, 0.0F, false);
 
-        claw2 = new AdvancedModelBox(this);
+        claw2 = new AdvancedModelBox(this, "claw2");
         claw2.setRotationPoint(0.5F, 0.0F, 1.0F);
         root.addChild(claw2);
         setRotationAngle(claw2, 0.2618F, 0.0F, 2.1817F);
         claw2.setTextureOffset(0, 0).addBox(-1.5F, -8.0F, -2.0F, 3.0F, 8.0F, 2.0F, 0.0F, false);
 
-        claw3 = new AdvancedModelBox(this);
+        claw3 = new AdvancedModelBox(this, "claw3");
         claw3.setRotationPoint(-0.5F, 0.0F, 1.0F);
         root.addChild(claw3);
         setRotationAngle(claw3, 0.2618F, 0.0F, -2.1817F);

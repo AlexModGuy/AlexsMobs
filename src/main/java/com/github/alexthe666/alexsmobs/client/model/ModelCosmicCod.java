@@ -21,37 +21,37 @@ public class ModelCosmicCod extends AdvancedEntityModel<EntityCosmicCod> {
         texWidth = 32;
         texHeight = 32;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -2.0F, -2.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -5.0F, 2.0F, 3.0F, 8.0F, 0.0F, false);
         body.setTextureOffset(15, 15).addBox(0.0F, -3.0F, -2.0F, 0.0F, 2.0F, 5.0F, 0.0F, false);
 
-        left_fin = new AdvancedModelBox(this);
+        left_fin = new AdvancedModelBox(this, "left_fin");
         left_fin.setRotationPoint(1.0F, 2.0F, 0.0F);
         body.addChild(left_fin);
         setRotationAngle(left_fin, 0.0F, 0.0F, -0.829F);
         left_fin.setTextureOffset(0, 12).addBox(0.0F, 0.0F, -1.0F, 0.0F, 2.0F, 2.0F, 0.0F, false);
 
-        right_fin = new AdvancedModelBox(this);
+        right_fin = new AdvancedModelBox(this, "right_fin");
         right_fin.setRotationPoint(-1.0F, 2.0F, 0.0F);
         body.addChild(right_fin);
         setRotationAngle(right_fin, 0.0F, 0.0F, 0.829F);
         right_fin.setTextureOffset(0, 12).addBox(0.0F, 0.0F, -1.0F, 0.0F, 2.0F, 2.0F, 0.0F, true);
 
-        mouth = new AdvancedModelBox(this);
+        mouth = new AdvancedModelBox(this, "mouth");
         mouth.setRotationPoint(0.0F, 1.0F, -5.0F);
         body.addChild(mouth);
         mouth.setTextureOffset(0, 0).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, 0.0F, 3.0F);
         body.addChild(tail);
         tail.setTextureOffset(15, 6).addBox(-0.5F, -1.0F, 0.0F, 1.0F, 2.0F, 6.0F, 0.0F, false);
 
-        tail_tip = new AdvancedModelBox(this);
+        tail_tip = new AdvancedModelBox(this, "tail_tip");
         tail_tip.setRotationPoint(0.0F, 0.0F, 6.0F);
         tail.addChild(tail_tip);
         tail_tip.setTextureOffset(0, 12).addBox(0.0F, -3.0F, -1.0F, 0.0F, 5.0F, 7.0F, 0.0F, false);

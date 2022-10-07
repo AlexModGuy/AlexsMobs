@@ -30,61 +30,61 @@ public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevi
 		texWidth = 64;
 		texHeight = 64;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, -5.5F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-2.5F, -2.5F, -6.0F, 5.0F, 5.0F, 12.0F, 0.0F, false);
 
-		tail = new AdvancedModelBox(this);
+		tail = new AdvancedModelBox(this, "tail");
 		tail.setPos(0.0F, -0.5F, 6.0F);
 		body.addChild(tail);
 		tail.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 10.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setPos(-0.5F, -1.5F, -6.0F);
 		body.addChild(head);
 		head.setTextureOffset(15, 18).addBox(-1.5F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
-		ear_left = new AdvancedModelBox(this);
+		ear_left = new AdvancedModelBox(this, "ear_left");
 		ear_left.setPos(2.5F, -1.0F, -1.0F);
 		head.addChild(ear_left);
 		ear_left.setTextureOffset(2, 9).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 2.0F, 0.0F, 0.0F, false);
 
-		ear_right = new AdvancedModelBox(this);
+		ear_right = new AdvancedModelBox(this, "ear_right");
 		ear_right.setPos(-1.5F, -2.0F, -1.0F);
 		head.addChild(ear_right);
 		ear_right.setTextureOffset(2, 9).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 0.0F, 0.0F, true);
 
-		upper_jaw = new AdvancedModelBox(this);
+		upper_jaw = new AdvancedModelBox(this, "upper_jaw");
 		upper_jaw.setPos(0.5F, 0.0F, -4.0F);
 		head.addChild(upper_jaw);
 		upper_jaw.setTextureOffset(23, 0).addBox(-1.5F, -1.0F, -3.0F, 3.0F, 2.0F, 3.0F, 0.0F, false);
 
-		lower_jaw = new AdvancedModelBox(this);
+		lower_jaw = new AdvancedModelBox(this, "lower_jaw");
 		lower_jaw.setPos(0.5F, 1.0F, -4.0F);
 		head.addChild(lower_jaw);
 		lower_jaw.setTextureOffset(23, 6).addBox(-1.5F, 0.0F, -3.0F, 3.0F, 1.0F, 3.0F, 0.0F, false);
 
-		arm_left = new AdvancedModelBox(this);
+		arm_left = new AdvancedModelBox(this, "arm_left");
 		arm_left.setPos(1.4F, 1.5F, -4.0F);
 		body.addChild(arm_left);
 		arm_left.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, 0.0F, false);
 
-		arm_right = new AdvancedModelBox(this);
+		arm_right = new AdvancedModelBox(this, "arm_right");
 		arm_right.setPos(-1.4F, 1.5F, -4.0F);
 		body.addChild(arm_right);
 		arm_right.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, 0.0F, true);
 
-		leg_left = new AdvancedModelBox(this);
+		leg_left = new AdvancedModelBox(this, "leg_left");
 		leg_left.setPos(1.4F, 2.5F, 4.5F);
 		body.addChild(leg_left);
 		leg_left.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 3.0F, 0.0F, false);
 
-		leg_right = new AdvancedModelBox(this);
+		leg_right = new AdvancedModelBox(this, "leg_right");
 		leg_right.setPos(-1.4F, 2.5F, 4.5F);
 		body.addChild(leg_right);
 		leg_right.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 3.0F, 0.0F, true);

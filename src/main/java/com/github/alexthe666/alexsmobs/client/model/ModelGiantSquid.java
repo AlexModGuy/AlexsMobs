@@ -55,200 +55,200 @@ public class ModelGiantSquid extends AdvancedEntityModel<EntityGiantSquid> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -5.0F, 0.0F);
         root.addChild(head);
         head.setTextureOffset(43, 35).addBox(-5.0F, -9.0F, -5.0F, 10.0F, 14.0F, 10.0F, 0.0F, false);
 
-        beak = new AdvancedModelBox(this);
+        beak = new AdvancedModelBox(this, "beak");
         beak.setRotationPoint(0.0F, 5.0F, 0.0F);
         head.addChild(beak);
         beak.setTextureOffset(41, 0).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 2.0F, 4.0F, 0.0F, false);
 
-        left_FrontTentacle = new AdvancedModelBox(this);
+        left_FrontTentacle = new AdvancedModelBox(this, "left_FrontTentacle");
         left_FrontTentacle.setRotationPoint(1.5F, 5.0F, -4.0F);
         head.addChild(left_FrontTentacle);
         left_FrontTentacle.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        left_FrontTentacleEnd = new AdvancedModelBox(this);
+        left_FrontTentacleEnd = new AdvancedModelBox(this, "left_FrontTentacleEnd");
         left_FrontTentacleEnd.setRotationPoint(0.0F, 20.0F, 0.0F);
         left_FrontTentacle.addChild(left_FrontTentacleEnd);
         left_FrontTentacleEnd.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        left_FrontMidTentacle = new AdvancedModelBox(this);
+        left_FrontMidTentacle = new AdvancedModelBox(this, "left_FrontMidTentacle");
         left_FrontMidTentacle.setRotationPoint(4.0F, 5.0F, -2.0F);
         head.addChild(left_FrontMidTentacle);
         setRotationAngle(left_FrontMidTentacle, 0.0F, -1.5708F, 0.0F);
         left_FrontMidTentacle.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        left_FrontMidTentacleEnd = new AdvancedModelBox(this);
+        left_FrontMidTentacleEnd = new AdvancedModelBox(this, "left_FrontMidTentacleEnd");
         left_FrontMidTentacleEnd.setRotationPoint(0.0F, 20.0F, 0.0F);
         left_FrontMidTentacle.addChild(left_FrontMidTentacleEnd);
         left_FrontMidTentacleEnd.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        right_FrontMidTentacle = new AdvancedModelBox(this);
+        right_FrontMidTentacle = new AdvancedModelBox(this, "right_FrontMidTentacle");
         right_FrontMidTentacle.setRotationPoint(-4.0F, 5.0F, -2.0F);
         head.addChild(right_FrontMidTentacle);
         setRotationAngle(right_FrontMidTentacle, 0.0F, 1.5708F, 0.0F);
         right_FrontMidTentacle.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        right_FrontMidTentacleEnd = new AdvancedModelBox(this);
+        right_FrontMidTentacleEnd = new AdvancedModelBox(this, "right_FrontMidTentacleEnd");
         right_FrontMidTentacleEnd.setRotationPoint(0.0F, 20.0F, 0.0F);
         right_FrontMidTentacle.addChild(right_FrontMidTentacleEnd);
         right_FrontMidTentacleEnd.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        left_BackMidTentacle = new AdvancedModelBox(this);
+        left_BackMidTentacle = new AdvancedModelBox(this, "left_BackMidTentacle");
         left_BackMidTentacle.setRotationPoint(4.0F, 5.0F, 2.0F);
         head.addChild(left_BackMidTentacle);
         setRotationAngle(left_BackMidTentacle, 0.0F, -1.3963F, 0.0F);
         left_BackMidTentacle.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        left_BackMidTentacleEnd = new AdvancedModelBox(this);
+        left_BackMidTentacleEnd = new AdvancedModelBox(this, "left_BackMidTentacleEnd");
         left_BackMidTentacleEnd.setRotationPoint(0.0F, 20.0F, 0.0F);
         left_BackMidTentacle.addChild(left_BackMidTentacleEnd);
         left_BackMidTentacleEnd.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        right_BackMidTentacle = new AdvancedModelBox(this);
+        right_BackMidTentacle = new AdvancedModelBox(this, "right_BackMidTentacle");
         right_BackMidTentacle.setRotationPoint(-4.0F, 5.0F, 2.0F);
         head.addChild(right_BackMidTentacle);
         setRotationAngle(right_BackMidTentacle, 0.0F, 1.3963F, 0.0F);
         right_BackMidTentacle.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        right_BackMidTentacleEnd = new AdvancedModelBox(this);
+        right_BackMidTentacleEnd = new AdvancedModelBox(this, "right_BackMidTentacleEnd");
         right_BackMidTentacleEnd.setRotationPoint(0.0F, 20.0F, 0.0F);
         right_BackMidTentacle.addChild(right_BackMidTentacleEnd);
         right_BackMidTentacleEnd.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        left_BackTentacle = new AdvancedModelBox(this);
+        left_BackTentacle = new AdvancedModelBox(this, "left_BackTentacle");
         left_BackTentacle.setRotationPoint(2.0F, 5.0F, 4.0F);
         head.addChild(left_BackTentacle);
         setRotationAngle(left_BackTentacle, 0.0F, 3.1416F, 0.0F);
         left_BackTentacle.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        left_BackTentacleEnd = new AdvancedModelBox(this);
+        left_BackTentacleEnd = new AdvancedModelBox(this, "left_BackTentacleEnd");
         left_BackTentacleEnd.setRotationPoint(0.0F, 20.0F, 0.0F);
         left_BackTentacle.addChild(left_BackTentacleEnd);
         left_BackTentacleEnd.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        right_BackTentacle = new AdvancedModelBox(this);
+        right_BackTentacle = new AdvancedModelBox(this, "right_BackTentacle");
         right_BackTentacle.setRotationPoint(-2.0F, 5.0F, 4.0F);
         head.addChild(right_BackTentacle);
         setRotationAngle(right_BackTentacle, 0.0F, -3.1416F, 0.0F);
         right_BackTentacle.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        right_BackTentacleEnd = new AdvancedModelBox(this);
+        right_BackTentacleEnd = new AdvancedModelBox(this, "right_BackTentacleEnd");
         right_BackTentacleEnd.setRotationPoint(0.0F, 20.0F, 0.0F);
         right_BackTentacle.addChild(right_BackTentacleEnd);
         right_BackTentacleEnd.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        right_FrontTentacle = new AdvancedModelBox(this);
+        right_FrontTentacle = new AdvancedModelBox(this, "right_FrontTentacle");
         right_FrontTentacle.setRotationPoint(-1.5F, 5.0F, -4.0F);
         head.addChild(right_FrontTentacle);
         right_FrontTentacle.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        right_tentacleEnd = new AdvancedModelBox(this);
+        right_tentacleEnd = new AdvancedModelBox(this, "right_tentacleEnd");
         right_tentacleEnd.setRotationPoint(0.0F, 20.0F, 0.0F);
         right_FrontTentacle.addChild(right_tentacleEnd);
         right_tentacleEnd.setTextureOffset(18, 70).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        left_arm = new AdvancedModelBox(this);
+        left_arm = new AdvancedModelBox(this, "left_arm");
         left_arm.setRotationPoint(3.0F, 5.0F, 0.0F);
         head.addChild(left_arm);
         setRotationAngle(left_arm, 0.0F, -1.5708F, 0.0F);
         left_arm.setTextureOffset(32, 66).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, false);
 
-        left_arm2 = new AdvancedModelBox(this);
+        left_arm2 = new AdvancedModelBox(this, "left_arm2");
         left_arm2.setRotationPoint(0.0F, 20.0F, 0.0F);
         left_arm.addChild(left_arm2);
         left_arm2.setTextureOffset(45, 60).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 35.0F, 2.0F, 0.0F, false);
 
-        left_arm3 = new AdvancedModelBox(this);
+        left_arm3 = new AdvancedModelBox(this, "left_arm3");
         left_arm3.setRotationPoint(0.0F, 35.0F, 0.0F);
         left_arm2.addChild(left_arm3);
         left_arm3.setTextureOffset(45, 60).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 35.0F, 2.0F, 0.0F, false);
 
-        left_arm4 = new AdvancedModelBox(this);
+        left_arm4 = new AdvancedModelBox(this, "left_arm4");
         left_arm4.setRotationPoint(0.0F, 35.0F, 0.0F);
         left_arm3.addChild(left_arm4);
         left_arm4.setTextureOffset(45, 60).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 35.0F, 2.0F, 0.0F, false);
 
-        left_hand = new AdvancedModelBox(this);
+        left_hand = new AdvancedModelBox(this, "left_hand");
         left_hand.setRotationPoint(0.0F, 35.0F, 0.0F);
         left_arm4.addChild(left_hand);
         left_hand.setTextureOffset(54, 60).addBox(-3.0F, 0.0F, -1.3F, 6.0F, 14.0F, 3.0F, 0.0F, false);
 
-        right_arm = new AdvancedModelBox(this);
+        right_arm = new AdvancedModelBox(this, "right_arm");
         right_arm.setRotationPoint(-3.0F, 5.0F, 0.0F);
         head.addChild(right_arm);
         setRotationAngle(right_arm, 0.0F, 1.5708F, 0.0F);
         right_arm.setTextureOffset(32, 66).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 20.0F, 2.0F, 0.0F, true);
 
-        right_arm2 = new AdvancedModelBox(this);
+        right_arm2 = new AdvancedModelBox(this, "right_arm2");
         right_arm2.setRotationPoint(0.0F, 20.0F, 0.0F);
         right_arm.addChild(right_arm2);
         right_arm2.setTextureOffset(45, 60).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 35.0F, 2.0F, 0.0F, true);
 
-        right_arm3 = new AdvancedModelBox(this);
+        right_arm3 = new AdvancedModelBox(this, "right_arm3");
         right_arm3.setRotationPoint(0.0F, 35.0F, 0.0F);
         right_arm2.addChild(right_arm3);
         right_arm3.setTextureOffset(45, 60).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 35.0F, 2.0F, 0.0F, true);
 
-        right_arm4 = new AdvancedModelBox(this);
+        right_arm4 = new AdvancedModelBox(this, "right_arm4");
         right_arm4.setRotationPoint(0.0F, 35.0F, 0.0F);
         right_arm3.addChild(right_arm4);
         right_arm4.setTextureOffset(45, 60).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 35.0F, 2.0F, 0.0F, true);
 
-        right_hand = new AdvancedModelBox(this);
+        right_hand = new AdvancedModelBox(this, "right_hand");
         right_hand.setRotationPoint(0.0F, 35.0F, 0.0F);
         right_arm4.addChild(right_hand);
         right_hand.setTextureOffset(54, 60).addBox(-3.0F, 0.0F, -1.3F, 6.0F, 14.0F, 3.0F, 0.0F, true);
 
-        left_eye = new AdvancedModelBox(this);
+        left_eye = new AdvancedModelBox(this, "left_eye");
         left_eye.setRotationPoint(5.9F, 0.5F, 0.0F);
         head.addChild(left_eye);
         left_eye.setTextureOffset(53, 19).addBox(-1.5F, -3.5F, -3.5F, 3.0F, 7.0F, 7.0F, 0.0F, false);
 
-        left_pupil_pivot = new AdvancedModelBox(this);
+        left_pupil_pivot = new AdvancedModelBox(this, "left_pupil_pivot");
         left_pupil_pivot.setRotationPoint(1.55F, 0.0F, 0.0F);
         left_eye.addChild(left_pupil_pivot);
 
-        left_pupil = new AdvancedModelBox(this);
+        left_pupil = new AdvancedModelBox(this, "left_pupil");
         left_pupil_pivot.addChild(left_pupil);
         left_pupil.setTextureOffset(0, 0).addBox(0.0F, -2.5F, -2.5F, 0.0F, 5.0F, 5.0F, 0.0F, false);
 
-        right_eye = new AdvancedModelBox(this);
+        right_eye = new AdvancedModelBox(this, "right_eye");
         right_eye.setRotationPoint(-5.9F, 0.5F, 0.0F);
         head.addChild(right_eye);
         right_eye.setTextureOffset(53, 19).addBox(-1.5F, -3.5F, -3.5F, 3.0F, 7.0F, 7.0F, 0.0F, true);
 
-        right_pupil_pivot = new AdvancedModelBox(this);
+        right_pupil_pivot = new AdvancedModelBox(this, "right_pupil_pivot");
         right_pupil_pivot.setRotationPoint(-1.55F, 0.0F, 0.0F);
         right_eye.addChild(right_pupil_pivot);
 
-        right_pupil = new AdvancedModelBox(this);
+        right_pupil = new AdvancedModelBox(this, "right_pupil");
         right_pupil_pivot.addChild(right_pupil);
         right_pupil.setTextureOffset(0, 0).addBox(0.0F, -2.5F, -2.5F, 0.0F, 5.0F, 5.0F, 0.0F, true);
 
-        mantle = new AdvancedModelBox(this);
+        mantle = new AdvancedModelBox(this, "mantle");
         mantle.setRotationPoint(0.0F, -5.0F, 0.0F);
         head.addChild(mantle);
         mantle.setTextureOffset(0, 0).addBox(-7.0F, -31.0F, -6.0F, 14.0F, 32.0F, 12.0F, 0.0F, false);
 
-        mantle_end = new AdvancedModelBox(this);
+        mantle_end = new AdvancedModelBox(this, "mantle_end");
         mantle_end.setRotationPoint(0.0F, -31.0F, 0.0F);
         mantle.addChild(mantle_end);
         mantle_end.setTextureOffset(53, 0).addBox(-4.0F, -7.0F, -4.0F, 8.0F, 10.0F, 8.0F, 0.0F, false);
 
-        left_membrane = new AdvancedModelBox(this);
+        left_membrane = new AdvancedModelBox(this, "left_membrane");
         left_membrane.setRotationPoint(0.0F, -2.0F, 0.0F);
         mantle_end.addChild(left_membrane);
         left_membrane.setTextureOffset(0, 45).addBox(0.0F, -12.0F, 0.0F, 17.0F, 24.0F, 0.0F, 0.0F, false);
 
-        right_membrane = new AdvancedModelBox(this);
+        right_membrane = new AdvancedModelBox(this, "right_membrane");
         right_membrane.setRotationPoint(0.0F, -2.0F, 0.0F);
         mantle_end.addChild(right_membrane);
         right_membrane.setTextureOffset(0, 45).addBox(-17.0F, -12.0F, 0.0F, 17.0F, 24.0F, 0.0F, 0.0F, true);

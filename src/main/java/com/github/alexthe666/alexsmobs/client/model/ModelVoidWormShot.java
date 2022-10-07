@@ -17,16 +17,16 @@ public class ModelVoidWormShot extends AdvancedEntityModel<Entity> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        glass = new AdvancedModelBox(this);
+        glass = new AdvancedModelBox(this, "glass");
         glass.setPos(0.0F, -5.0F, 0.0F);
         root.addChild(glass);
         glass.setTextureOffset(0, 21).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
-        cube = new AdvancedModelBox(this);
+        cube = new AdvancedModelBox(this, "cube");
         cube.setPos(0.0F, -5.0F, 0.0F);
         root.addChild(cube);
         cube.setTextureOffset(0, 0).addBox(-5.0F, -5.0F, -5.0F, 10.0F, 10.0F, 10.0F, 0.0F, false);

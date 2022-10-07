@@ -17,13 +17,13 @@ public class ModelVoidWormBeak extends AdvancedEntityModel<Entity> {
     public ModelVoidWormBeak() {
         texWidth = 64;
         texHeight = 64;
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
-        left = new AdvancedModelBox(this);
+        left = new AdvancedModelBox(this, "left");
         left.setPos(0.0F, 0.0F, 0.0F);
         root.addChild(left);
         left.setTextureOffset(0, 0).addBox(-0.1F, -12.9F, -3.5F, 7.0F, 13.0F, 7.0F, -0.1F, false);
-        right = new AdvancedModelBox(this);
+        right = new AdvancedModelBox(this, "right");
         right.setPos(0.0F, 0.0F, 0.0F);
         root.addChild(right);
         right.setTextureOffset(0, 21).addBox(-7.0F, -13.0F, -3.5F, 7.0F, 13.0F, 7.0F, 0.0F, false);

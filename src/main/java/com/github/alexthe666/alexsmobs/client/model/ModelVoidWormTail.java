@@ -19,34 +19,34 @@ public class ModelVoidWormTail extends AdvancedEntityModel<EntityVoidWormPart> {
 		texWidth = 256;
 		texHeight = 256;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, -19.0F, -16.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-8.0F, -19.0F, 0.0F, 16.0F, 38.0F, 35.0F, f, false);
 
-		frillstop_left = new AdvancedModelBox(this);
+		frillstop_left = new AdvancedModelBox(this, "frillstop_left");
 		frillstop_left.setPos(8.0F, -19.0F, 16.0F);
 		body.addChild(frillstop_left);
 		setRotationAngle(frillstop_left, 0.0F, 0.0F, 0.7854F);
 		frillstop_left.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, f, false);
 
-		frillstop_right = new AdvancedModelBox(this);
+		frillstop_right = new AdvancedModelBox(this, "frillstop_right");
 		frillstop_right.setPos(-8.0F, -19.0F, 16.0F);
 		body.addChild(frillstop_right);
 		setRotationAngle(frillstop_right, 0.0F, 0.0F, -0.7854F);
 		frillstop_right.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, f, true);
 
-		frillsbottom_left = new AdvancedModelBox(this);
+		frillsbottom_left = new AdvancedModelBox(this, "frillsbottom_left");
 		frillsbottom_left.setPos(8.0F, 19.0F, 16.0F);
 		body.addChild(frillsbottom_left);
 		setRotationAngle(frillsbottom_left, 0.0F, 0.0F, 2.5307F);
 		frillsbottom_left.setTextureOffset(65, 36).addBox(0.0F, -14.0F, -16.0F, 0.0F, 14.0F, 38.0F, f, false);
 
-		frillsbottom_right = new AdvancedModelBox(this);
+		frillsbottom_right = new AdvancedModelBox(this, "frillsbottom_right");
 		frillsbottom_right.setPos(-8.0F, 19.0F, 16.0F);
 		body.addChild(frillsbottom_right);
 		setRotationAngle(frillsbottom_right, 0.0F, 0.0F, -2.5307F);

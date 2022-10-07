@@ -34,41 +34,41 @@ public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -18.0F, 1.0F);
         root.addChild(body);
         body.setTextureOffset(52, 56).addBox(-8.0F, -7.0F, 0.0F, 16.0F, 15.0F, 15.0F, 0.0F, false);
 
-        leg_left = new AdvancedModelBox(this);
+        leg_left = new AdvancedModelBox(this, "leg_left");
         leg_left.setRotationPoint(6.0F, 8.0F, 13.0F);
         body.addChild(leg_left);
         leg_left.setTextureOffset(58, 0).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 11.0F, 7.0F, 0.0F, false);
 
-        leg_right = new AdvancedModelBox(this);
+        leg_right = new AdvancedModelBox(this, "leg_right");
         leg_right.setRotationPoint(-6.0F, 8.0F, 13.0F);
         body.addChild(leg_right);
         leg_right.setTextureOffset(58, 0).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 11.0F, 7.0F, 0.0F, true);
 
-        torso = new AdvancedModelBox(this);
+        torso = new AdvancedModelBox(this, "torso");
         torso.setRotationPoint(0.0F, 0.0F, -1.0F);
         body.addChild(torso);
         torso.setTextureOffset(0, 0).addBox(-9.0F, -11.0F, -20.0F, 18.0F, 20.0F, 21.0F, 0.0F, false);
         torso.setTextureOffset(0, 0).addBox(0.0F, -16.0F, -20.0F, 0.0F, 5.0F, 10.0F, 0.0F, false);
 
-        arm_left = new AdvancedModelBox(this);
+        arm_left = new AdvancedModelBox(this, "arm_left");
         arm_left.setRotationPoint(5.5F, 10.0F, -14.0F);
         torso.addChild(arm_left);
         arm_left.setTextureOffset(0, 71).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 9.0F, 6.0F, 0.0F, false);
 
-        arm_right = new AdvancedModelBox(this);
+        arm_right = new AdvancedModelBox(this, "arm_right");
         arm_right.setRotationPoint(-5.5F, 10.0F, -14.0F);
         torso.addChild(arm_right);
         arm_right.setTextureOffset(0, 71).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 9.0F, 6.0F, 0.0F, true);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -5.0F, -22.0F);
         torso.addChild(head);
         setRotationAngle(head, 0.5236F, 0.0F, 0.0F);
@@ -76,35 +76,35 @@ public class ModelTusklin extends AdvancedEntityModel<EntityTusklin> {
         head.setTextureOffset(52, 50).addBox(0.0F, 6.0F, -16.0F, 0.0F, 3.0F, 7.0F, 0.0F, false);
         head.setTextureOffset(0, 42).addBox(0.0F, -10.0F, -5.0F, 0.0F, 7.0F, 7.0F, 0.0F, false);
 
-        tusk_left = new AdvancedModelBox(this);
+        tusk_left = new AdvancedModelBox(this, "tusk_left");
         tusk_left.setRotationPoint(8.0F, 2.0F, -13.5F);
         head.addChild(tusk_left);
         tusk_left.setTextureOffset(48, 42).addBox(-1.0F, -11.0F, -1.5F, 2.0F, 11.0F, 3.0F, 0.0F, false);
         tusk_left.setTextureOffset(59, 42).addBox(-1.0F, -11.0F, 1.5F, 2.0F, 3.0F, 4.0F, 0.0F, false);
 
-        tusk_right = new AdvancedModelBox(this);
+        tusk_right = new AdvancedModelBox(this, "tusk_right");
         tusk_right.setRotationPoint(-8.0F, 2.0F, -13.5F);
         head.addChild(tusk_right);
         tusk_right.setTextureOffset(48, 42).addBox(-1.0F, -11.0F, -1.5F, 2.0F, 11.0F, 3.0F, 0.0F, true);
         tusk_right.setTextureOffset(59, 42).addBox(-1.0F, -11.0F, 1.5F, 2.0F, 3.0F, 4.0F, 0.0F, true);
 
-        ear_left = new AdvancedModelBox(this);
+        ear_left = new AdvancedModelBox(this, "ear_left");
         ear_left.setRotationPoint(7.0F, 0.0F, -1.0F);
         head.addChild(ear_left);
         setRotationAngle(ear_left, 0.0F, 0.0F, -0.48F);
 
-        earLeft_r1 = new AdvancedModelBox(this);
+        earLeft_r1 = new AdvancedModelBox(this, "earLeft_r1");
         earLeft_r1.setRotationPoint(1.0F, 0.0F, 2.0F);
         ear_left.addChild(earLeft_r1);
         setRotationAngle(earLeft_r1, -0.3927F, 0.0F, 0.0F);
         earLeft_r1.setTextureOffset(68, 46).addBox(-1.0F, -1.0F, -3.0F, 1.0F, 5.0F, 4.0F, 0.0F, false);
 
-        ear_right = new AdvancedModelBox(this);
+        ear_right = new AdvancedModelBox(this, "ear_right");
         ear_right.setRotationPoint(-7.0F, 0.0F, -1.0F);
         head.addChild(ear_right);
         setRotationAngle(ear_right, 0.0F, 0.0F, 0.48F);
 
-        earLeft_r2 = new AdvancedModelBox(this);
+        earLeft_r2 = new AdvancedModelBox(this, "earLeft_r2");
         earLeft_r2.setRotationPoint(-1.0F, 0.0F, 2.0F);
         ear_right.addChild(earLeft_r2);
         setRotationAngle(earLeft_r2, -0.3927F, 0.0F, 0.0F);

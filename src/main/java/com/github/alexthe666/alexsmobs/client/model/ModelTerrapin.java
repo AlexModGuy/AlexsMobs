@@ -29,66 +29,66 @@ public class ModelTerrapin extends AdvancedEntityModel<EntityTerrapin> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -2.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 14).addBox(-3.5F, -1.0F, -4.0F, 7.0F, 2.0F, 8.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setPos(0.0F, -1.3F, -5.0F);
         body.addChild(head);
         head.setTextureOffset(0, 25).addBox(-1.5F, -1.5F, -4.0F, 3.0F, 3.0F, 5.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setPos(0.0F, 0.5F, 4.0F);
         body.addChild(tail);
         tail.setTextureOffset(28, 26).addBox(-0.5F, -0.5F, 0.0F, 1.0F, 1.0F, 3.0F, 0.0F, false);
 
-        shell = new AdvancedModelBox(this);
+        shell = new AdvancedModelBox(this, "shell");
         shell.setPos(0.0F, 0.0F, 0.0F);
         body.addChild(shell);
         shell.setTextureOffset(0, 0).addBox(-4.5F, -3.0F, -5.0F, 9.0F, 3.0F, 10.0F, 0.0F, false);
 
-        left_arm = new AdvancedModelBox(this);
+        left_arm = new AdvancedModelBox(this, "left_arm");
         left_arm.setPos(4.0F, 0.0F, -3.6F);
         body.addChild(left_arm);
         left_arm.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, false);
 
-        left_hand = new AdvancedModelBox(this);
+        left_hand = new AdvancedModelBox(this, "left_hand");
         left_hand.setPos(0.0F, 2.0F, -1.0F);
         left_arm.addChild(left_hand);
         left_hand.setTextureOffset(28, 22).addBox(-1.0F, -0.01F, -2.0F, 3.0F, 0.0F, 3.0F, 0.0F, false);
 
-        right_arm = new AdvancedModelBox(this);
+        right_arm = new AdvancedModelBox(this, "right_arm");
         right_arm.setPos(-4.0F, 0.0F, -3.6F);
         body.addChild(right_arm);
         right_arm.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 3.0F, 2.0F, 0.0F, true);
 
-        right_hand = new AdvancedModelBox(this);
+        right_hand = new AdvancedModelBox(this, "right_hand");
         right_hand.setPos(0.0F, 2.0F, -1.0F);
         right_arm.addChild(right_hand);
         right_hand.setTextureOffset(28, 22).addBox(-2.0F, 0.0F, -2.0F, 3.0F, 0.0F, 3.0F, 0.0F, true);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setPos(4.0F, 0.0F, 4.4F);
         body.addChild(left_leg);
         left_leg.setTextureOffset(17, 25).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 3.0F, 3.0F, 0.0F, false);
 
-        left_foot = new AdvancedModelBox(this);
+        left_foot = new AdvancedModelBox(this, "left_foot");
         left_foot.setPos(0.0F, 2.0F, 0.0F);
         left_leg.addChild(left_foot);
         left_foot.setTextureOffset(23, 14).addBox(-1.0F, -0.01F, -5.0F, 3.0F, 0.0F, 5.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setPos(-4.0F, 0.0F, 4.4F);
         body.addChild(right_leg);
         right_leg.setTextureOffset(17, 25).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 3.0F, 3.0F, 0.0F, true);
 
-        right_foot = new AdvancedModelBox(this);
+        right_foot = new AdvancedModelBox(this, "right_foot");
         right_foot.setPos(0.0F, 2.0F, 0.0F);
         right_leg.addChild(right_foot);
         right_foot.setTextureOffset(23, 14).addBox(-2.0F, 0.0F, -4.0F, 3.0F, 0.0F, 5.0F, 0.0F, true);

@@ -26,58 +26,58 @@ public class ModelHummingbird extends AdvancedEntityModel<EntityHummingbird> {
         texWidth = 32;
         texHeight = 32;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -0.5F, -0.5F);
         root.addChild(body);
         setRotationAngle(body, 0.2618F, 0.0F, 0.0F);
         body.setTextureOffset(0, 6).addBox(-1.5F, -4.7F, -1.4F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setPos(0.0F, -4.4F, 0.6F);
         body.addChild(head);
         setRotationAngle(head, -0.2182F, 0.0F, 0.0F);
         head.setTextureOffset(10, 12).addBox(-1.5F, -3.1F, -2.1F, 3.0F, 3.0F, 3.0F, 0.1F, false);
         head.setTextureOffset(12, 0).addBox(-0.5F, -2.1F, -5.2F, 1.0F, 1.0F, 3.0F, 0.0F, false);
 
-        wingL = new AdvancedModelBox(this);
+        wingL = new AdvancedModelBox(this, "wingL");
         wingL.setPos(1.5F, -4.5F, 0.5F);
         body.addChild(wingL);
 
 
-        wingL_r1 = new AdvancedModelBox(this);
+        wingL_r1 = new AdvancedModelBox(this, "wingL_r1");
         wingL_r1.setPos(-0.3F, 0.0F, -1.0F);
         wingL.addChild(wingL_r1);
         setRotationAngle(wingL_r1, 0.0F, 0.0F, -0.0873F);
         wingL_r1.setTextureOffset(0, 15).addBox(0.0F, 0.0F, -0.1F, 1.0F, 5.0F, 2.0F, 0.0F, false);
 
-        wingR = new AdvancedModelBox(this);
+        wingR = new AdvancedModelBox(this, "wingR");
         wingR.setPos(-1.5F, -4.5F, 0.5F);
         body.addChild(wingR);
 
 
-        wingR_r1 = new AdvancedModelBox(this);
+        wingR_r1 = new AdvancedModelBox(this, "wingR_r1");
         wingR_r1.setPos(0.3F, 0.0F, -1.0F);
         wingR.addChild(wingR_r1);
         setRotationAngle(wingR_r1, 0.0F, 0.0F, 0.0873F);
         wingR_r1.setTextureOffset(0, 15).addBox(-1.0F, 0.0F, -0.1F, 1.0F, 5.0F, 2.0F, 0.0F, true);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setPos(0.0F, -0.1F, 1.5F);
         body.addChild(tail);
         setRotationAngle(tail, -0.48F, 0.0F, 0.0F);
         tail.setTextureOffset(0, 0).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 0.0F, 5.0F, 0.0F, false);
 
-        legL = new AdvancedModelBox(this);
+        legL = new AdvancedModelBox(this, "legL");
         legL.setPos(0.9F, -0.7F, -1.1F);
         body.addChild(legL);
         setRotationAngle(legL, -0.2618F, 0.0F, 0.0F);
         legL.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 1.0F, 1.0F, 0.0F, false);
 
-        legR = new AdvancedModelBox(this);
+        legR = new AdvancedModelBox(this, "legR");
         legR.setPos(-0.9F, -0.7F, -1.1F);
         body.addChild(legR);
         setRotationAngle(legR, -0.2618F, 0.0F, 0.0F);

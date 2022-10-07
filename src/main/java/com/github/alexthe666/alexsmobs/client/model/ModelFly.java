@@ -21,31 +21,31 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
         texWidth = 32;
         texHeight = 32;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -3.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 6.0F, 0.0F, false);
 
-        legs = new AdvancedModelBox(this);
+        legs = new AdvancedModelBox(this, "legs");
         legs.setPos(0.0F, 2.0F, -2.0F);
         body.addChild(legs);
         legs.setTextureOffset(0, 11).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 1.0F, 5.0F, 0.0F, false);
 
-        left_wing = new AdvancedModelBox(this);
+        left_wing = new AdvancedModelBox(this, "left_wing");
         left_wing.setPos(1.0F, -2.0F, -1.0F);
         body.addChild(left_wing);
         left_wing.setTextureOffset(12, 11).addBox(0.0F, 0.0F, -1.0F, 4.0F, 0.0F, 3.0F, 0.0F, false);
 
-        right_wing = new AdvancedModelBox(this);
+        right_wing = new AdvancedModelBox(this, "right_wing");
         right_wing.setPos(-1.0F, -2.0F, -1.0F);
         body.addChild(right_wing);
         right_wing.setTextureOffset(12, 11).addBox(-4.0F, 0.0F, -1.0F, 4.0F, 0.0F, 3.0F, 0.0F, true);
 
-        mouth = new AdvancedModelBox(this);
+        mouth = new AdvancedModelBox(this, "mouth");
         mouth.setPos(0.0F, 0.0F, -3.0F);
         body.addChild(mouth);
         mouth.setTextureOffset(15, 16).addBox(0.0F, 0.0F, -1.0F, 0.0F, 4.0F, 2.0F, 0.0F, false);        this.updateDefaultPose();

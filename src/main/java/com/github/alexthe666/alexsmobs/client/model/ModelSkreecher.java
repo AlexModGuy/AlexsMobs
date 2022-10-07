@@ -28,82 +28,82 @@ public class ModelSkreecher extends AdvancedEntityModel<EntitySkreecher> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -14.0F, 0.0F);
         root.addChild(body);
         setRotationAngle(body, -0.3927F, 0.0F, 0.0F);
         body.setTextureOffset(0, 26).addBox(-3.0F, -5.0F, -1.5F, 6.0F, 6.0F, 3.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -5.0F, -1.0F);
         body.addChild(head);
         setRotationAngle(head, 0.5236F, 0.0F, 0.0F);
         head.setTextureOffset(0, 13).addBox(-5.0F, -7.0F, -4.2F, 10.0F, 7.0F, 5.0F, -0.1F, false);
 
-        upperJaw = new AdvancedModelBox(this);
+        upperJaw = new AdvancedModelBox(this, "upperJaw");
         upperJaw.setRotationPoint(0.0F, -7.0F, 0.8F);
         head.addChild(upperJaw);
         upperJaw.setTextureOffset(0, 0).addBox(-6.0F, 0.0F, -4.8F, 12.0F, 7.0F, 5.0F, 0.0F, false);
 
-        leftEye = new AdvancedModelBox(this);
+        leftEye = new AdvancedModelBox(this, "leftEye");
         leftEye.setRotationPoint(3.0F, 1.6F, -3.8F);
         upperJaw.addChild(leftEye);
         leftEye.setTextureOffset(34, 16).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
-        rightEye = new AdvancedModelBox(this);
+        rightEye = new AdvancedModelBox(this, "rightEye");
         rightEye.setRotationPoint(-3.0F, 1.6F, -3.8F);
         upperJaw.addChild(rightEye);
         rightEye.setTextureOffset(34, 16).addBox(-2.0F, -2.0F, -3.0F, 4.0F, 4.0F, 4.0F, 0.0F, true);
 
-        leftLeg = new AdvancedModelBox(this);
+        leftLeg = new AdvancedModelBox(this, "leftLeg");
         leftLeg.setRotationPoint(2.0F, 2.0F, 0.0F);
         body.addChild(leftLeg);
         setRotationAngle(leftLeg, 0.0F, -0.3054F, 0.0F);
         leftLeg.setTextureOffset(27, 25).addBox(0.0F, -1.0F, -5.0F, 0.0F, 6.0F, 7.0F, 0.0F, false);
 
-        leftFoot = new AdvancedModelBox(this);
+        leftFoot = new AdvancedModelBox(this, "leftFoot");
         leftFoot.setRotationPoint(0.0F, 2.0F, -4.0F);
         leftLeg.addChild(leftFoot);
         leftFoot.setTextureOffset(1, 48).addBox(-1.0F, 0.0F, -4.0F, 1.0F, 6.0F, 6.0F, 0.0F, false);
 
-        rightLeg = new AdvancedModelBox(this);
+        rightLeg = new AdvancedModelBox(this, "rightLeg");
         rightLeg.setRotationPoint(-2.0F, 2.0F, 0.0F);
         body.addChild(rightLeg);
         setRotationAngle(rightLeg, 0.0F, 0.3054F, 0.0F);
         rightLeg.setTextureOffset(27, 25).addBox(0.0F, -1.0F, -5.0F, 0.0F, 6.0F, 7.0F, 0.0F, true);
 
-        rightFoot = new AdvancedModelBox(this);
+        rightFoot = new AdvancedModelBox(this, "rightFoot");
         rightFoot.setRotationPoint(0.0F, 2.0F, -4.0F);
         rightLeg.addChild(rightFoot);
         rightFoot.setTextureOffset(1, 48).addBox(0.0F, 0.0F, -4.0F, 1.0F, 6.0F, 6.0F, 0.0F, true);
 
-        leftArmPivot = new AdvancedModelBox(this);
+        leftArmPivot = new AdvancedModelBox(this, "leftArmPivot");
         leftArmPivot.setRotationPoint(4.0F, -3.0F, 0.0F);
         body.addChild(leftArmPivot);
 
-        leftArm = new AdvancedModelBox(this);
+        leftArm = new AdvancedModelBox(this, "leftArm");
         leftArmPivot.addChild(leftArm);
         setRotationAngle(leftArm, 1.5708F, -1.1781F, -1.5708F);
         leftArm.setTextureOffset(17, 34).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 16.0F, 2.0F, 0.0F, false);
 
-        leftHand = new AdvancedModelBox(this);
+        leftHand = new AdvancedModelBox(this, "leftHand");
         leftHand.setRotationPoint(0.0F, 15.0F, 0.0F);
         leftArm.addChild(leftHand);
         leftHand.setTextureOffset(31, 9).addBox(-4.0F, -0.1F, -2.0F, 8.0F, 3.0F, 4.0F, 0.0F, false);
 
-        rightArmPivot = new AdvancedModelBox(this);
+        rightArmPivot = new AdvancedModelBox(this, "rightArmPivot");
         rightArmPivot.setRotationPoint(-4.0F, -3.0F, 0.0F);
         body.addChild(rightArmPivot);
 
-        rightArm = new AdvancedModelBox(this);
+        rightArm = new AdvancedModelBox(this, "rightArm");
         rightArmPivot.addChild(rightArm);
         setRotationAngle(rightArm, 1.5708F, 1.1781F, 1.5708F);
         rightArm.setTextureOffset(17, 34).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 16.0F, 2.0F, 0.0F, true);
 
-        rightHand = new AdvancedModelBox(this);
+        rightHand = new AdvancedModelBox(this, "rightHand");
         rightHand.setRotationPoint(0.0F, 15.0F, 0.0F);
         rightArm.addChild(rightHand);
         rightHand.setTextureOffset(31, 9).addBox(-4.0F, -0.1F, -2.0F, 8.0F, 3.0F, 4.0F, 0.0F, true);

@@ -29,84 +29,84 @@ public class ModelRockyRoller extends AdvancedEntityModel<EntityRockyRoller> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -16.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 29).addBox(-9.0F, -8.0F, -10.0F, 18.0F, 16.0F, 20.0F, 0.0F, false);
         body.setTextureOffset(64, 85).addBox(0.0F, 1.0F, -13.0F, 15.0F, 0.0F, 28.0F, 0.0F, false);
         body.setTextureOffset(64, 85).addBox(-15.0F, 1.0F, -13.0F, 15.0F, 0.0F, 28.0F, 0.0F, true);
 
-        HSpikes_r1 = new AdvancedModelBox(this);
+        HSpikes_r1 = new AdvancedModelBox(this, "HSpikes_r1");
         HSpikes_r1.setRotationPoint(-0.5F, -4.0F, 1.0F);
         body.addChild(HSpikes_r1);
         setRotationAngle(HSpikes_r1, 0.0F, 0.0F, 0.0873F);
         HSpikes_r1.setTextureOffset(0, 0).addBox(-14.5F, 0.0F, -14.0F, 15.0F, 0.0F, 28.0F, 0.0F, true);
 
-        HSpikes_r2 = new AdvancedModelBox(this);
+        HSpikes_r2 = new AdvancedModelBox(this, "HSpikes_r2");
         HSpikes_r2.setRotationPoint(0.5F, -4.0F, 1.0F);
         body.addChild(HSpikes_r2);
         setRotationAngle(HSpikes_r2, 0.0F, 0.0F, -0.0873F);
         HSpikes_r2.setTextureOffset(0, 0).addBox(-0.5F, 0.0F, -14.0F, 15.0F, 0.0F, 28.0F, 0.0F, false);
 
-        VSpikes_r1 = new AdvancedModelBox(this);
+        VSpikes_r1 = new AdvancedModelBox(this, "VSpikes_r1");
         VSpikes_r1.setRotationPoint(-6.0F, 4.0F, 1.0F);
         body.addChild(VSpikes_r1);
         setRotationAngle(VSpikes_r1, 0.0F, 0.0F, -0.1745F);
         VSpikes_r1.setTextureOffset(1, 69).addBox(0.0F, -18.0F, -14.0F, 0.0F, 18.0F, 28.0F, 0.0F, false);
 
-        VSpikes_r2 = new AdvancedModelBox(this);
+        VSpikes_r2 = new AdvancedModelBox(this, "VSpikes_r2");
         VSpikes_r2.setRotationPoint(6.0F, 4.0F, 1.0F);
         body.addChild(VSpikes_r2);
         setRotationAngle(VSpikes_r2, 0.0F, 0.0F, 0.1745F);
         VSpikes_r2.setTextureOffset(1, 69).addBox(0.0F, -18.0F, -14.0F, 0.0F, 18.0F, 28.0F, 0.0F, true);
 
-        VSpikes_r3 = new AdvancedModelBox(this);
+        VSpikes_r3 = new AdvancedModelBox(this, "VSpikes_r3");
         VSpikes_r3.setRotationPoint(-2.0F, 2.0F, 1.0F);
         body.addChild(VSpikes_r3);
         setRotationAngle(VSpikes_r3, 0.0F, 0.0F, -0.0436F);
         VSpikes_r3.setTextureOffset(49, 38).addBox(0.0F, -16.0F, -14.0F, 0.0F, 18.0F, 28.0F, 0.0F, true);
 
-        VSpikes_r4 = new AdvancedModelBox(this);
+        VSpikes_r4 = new AdvancedModelBox(this, "VSpikes_r4");
         VSpikes_r4.setRotationPoint(2.0F, 2.0F, 1.0F);
         body.addChild(VSpikes_r4);
         setRotationAngle(VSpikes_r4, 0.0F, 0.0F, 0.0436F);
         VSpikes_r4.setTextureOffset(49, 38).addBox(0.0F, -16.0F, -14.0F, 0.0F, 18.0F, 28.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, 7.0F, 10.0F);
         body.addChild(tail);
         setRotationAngle(tail, -0.6109F, 0.0F, 0.0F);
         tail.setTextureOffset(59, 0).addBox(-2.0F, -2.0F, 0.0F, 4.0F, 4.0F, 12.0F, 0.0F, false);
         tail.setTextureOffset(19, 8).addBox(0.0F, -4.0F, 8.0F, 0.0F, 2.0F, 4.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, 6.0F, -10.6F);
         body.addChild(head);
         setRotationAngle(head, 0.2618F, 0.0F, 0.0F);
         head.setTextureOffset(0, 0).addBox(-3.0F, -3.0F, -4.0F, 6.0F, 6.0F, 5.0F, 0.0F, false);
         head.setTextureOffset(21, 15).addBox(0.0F, -5.0F, -4.0F, 0.0F, 2.0F, 3.0F, 0.0F, false);
 
-        left_arm = new AdvancedModelBox(this);
+        left_arm = new AdvancedModelBox(this, "left_arm");
         left_arm.setRotationPoint(4.0F, 8.0F, -7.0F);
         body.addChild(left_arm);
         left_arm.setTextureOffset(0, 29).addBox(-1.0F, 0.0F, -1.0F, 3.0F, 5.0F, 3.0F, 0.0F, false);
         left_arm.setTextureOffset(18, 0).addBox(0.0F, 3.0F, 2.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
 
-        right_arm = new AdvancedModelBox(this);
+        right_arm = new AdvancedModelBox(this, "right_arm");
         right_arm.setRotationPoint(-4.0F, 8.0F, -7.0F);
         body.addChild(right_arm);
         right_arm.setTextureOffset(0, 29).addBox(-2.0F, 0.0F, -1.0F, 3.0F, 5.0F, 3.0F, 0.0F, true);
         right_arm.setTextureOffset(18, 0).addBox(-2.0F, 3.0F, 2.0F, 2.0F, 2.0F, 2.0F, 0.0F, true);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setRotationPoint(6.0F, 9.0F, 6.0F);
         body.addChild(left_leg);
         left_leg.setTextureOffset(0, 12).addBox(-3.0F, -1.0F, -3.0F, 5.0F, 8.0F, 5.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setRotationPoint(-6.0F, 9.0F, 6.0F);
         body.addChild(right_leg);
         right_leg.setTextureOffset(0, 12).addBox(-2.0F, -1.0F, -3.0F, 5.0F, 8.0F, 5.0F, 0.0F, true);

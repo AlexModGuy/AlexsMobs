@@ -17,28 +17,28 @@ public class ModelAncientDart extends AdvancedEntityModel<Entity> {
 		texWidth = 32;
 		texHeight = 32;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 0.0F, 0.0F);
 
 
-		main = new AdvancedModelBox(this);
+		main = new AdvancedModelBox(this, "main");
 		main.setPos(0.0F, -1.0F, 0.0F);
 		root.addChild(main);
 		main.setTextureOffset(11, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, 0.0F, false);
 		main.setTextureOffset(0, 0).addBox(-0.5F, -0.5F, -5.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
 
-		feathers = new AdvancedModelBox(this);
+		feathers = new AdvancedModelBox(this, "feathers");
 		feathers.setPos(0.0F, 1.0F, 1.0F);
 		main.addChild(feathers);
 
 
-		cube_r1 = new AdvancedModelBox(this);
+		cube_r1 = new AdvancedModelBox(this, "cube_r1");
 		cube_r1.setPos(0.0F, -1.0F, 0.5F);
 		feathers.addChild(cube_r1);
 		setRotationAngle(cube_r1, 0.0F, 0.0F, 0.7854F);
 		cube_r1.setTextureOffset(0, 6).addBox(0.0F, -1.5F, -0.5F, 0.0F, 3.0F, 3.0F, 0.0F, false);
 
-		cube_r2 = new AdvancedModelBox(this);
+		cube_r2 = new AdvancedModelBox(this, "cube_r2");
 		cube_r2.setPos(0.0F, -1.0F, 0.5F);
 		feathers.addChild(cube_r2);
 		setRotationAngle(cube_r2, 0.0F, 0.0F, -0.7854F);

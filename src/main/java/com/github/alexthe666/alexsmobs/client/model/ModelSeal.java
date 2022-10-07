@@ -26,56 +26,56 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -3.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-6.5F, -6.0F, -9.0F, 13.0F, 9.0F, 18.0F, 0.0F, false);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, 1.0F, 9.0F);
         body.addChild(tail);
         tail.setTextureOffset(0, 28).addBox(-4.0F, -4.0F, 0.0F, 8.0F, 6.0F, 14.0F, 0.0F, false);
 
-        leftLeg = new AdvancedModelBox(this);
+        leftLeg = new AdvancedModelBox(this, "leftLeg");
         leftLeg.setRotationPoint(2.0F, -0.2F, 13.4F);
         tail.addChild(leftLeg);
         setRotationAngle(leftLeg, 0.0F, 0.3491F, 0.0F);
         leftLeg.setTextureOffset(45, 0).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 4.0F, 8.0F, 0.0F, false);
 
-        rightLeg = new AdvancedModelBox(this);
+        rightLeg = new AdvancedModelBox(this, "rightLeg");
         rightLeg.setRotationPoint(-2.0F, -0.2F, 13.4F);
         tail.addChild(rightLeg);
         setRotationAngle(rightLeg, 0.0F, -0.3491F, 0.0F);
         rightLeg.setTextureOffset(45, 0).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 4.0F, 8.0F, 0.0F, true);
 
-        leftArm = new AdvancedModelBox(this);
+        leftArm = new AdvancedModelBox(this, "leftArm");
         leftArm.setRotationPoint(7.5F, 2.5F, -4.0F);
         body.addChild(leftArm);
         leftArm.setTextureOffset(31, 28).addBox(-1.0F, -0.5F, -2.0F, 8.0F, 1.0F, 5.0F, 0.0F, false);
         leftArm.setTextureOffset(0, 7).addBox(7.0F, 0.5F, -2.0F, 0.0F, 2.0F, 5.0F, 0.0F, false);
 
-        rightArm = new AdvancedModelBox(this);
+        rightArm = new AdvancedModelBox(this, "rightArm");
         rightArm.setRotationPoint(-7.5F, 2.5F, -4.0F);
         body.addChild(rightArm);
         rightArm.setTextureOffset(31, 28).addBox(-7.0F, -0.5F, -2.0F, 8.0F, 1.0F, 5.0F, 0.0F, true);
         rightArm.setTextureOffset(0, 7).addBox(-7.0F, 0.5F, -2.0F, 0.0F, 2.0F, 5.0F, 0.0F, true);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -1.0F, -5.0F);
         body.addChild(head);
         head.setTextureOffset(35, 39).addBox(-3.5F, -3.0F, -9.0F, 7.0F, 6.0F, 10.0F, 0.0F, false);
         head.setTextureOffset(0, 0).addBox(-2.5F, 0.0F, -12.0F, 5.0F, 3.0F, 3.0F, 0.0F, false);
 
-        leftWhisker = new AdvancedModelBox(this);
+        leftWhisker = new AdvancedModelBox(this, "leftWhisker");
         leftWhisker.setRotationPoint(2.5F, 2.0F, -11.0F);
         head.addChild(leftWhisker);
         setRotationAngle(leftWhisker, 0.0F, -0.2182F, 0.0F);
         leftWhisker.setTextureOffset(0, 7).addBox(0.0F, -2.0F, 0.0F, 2.0F, 3.0F, 0.0F, 0.0F, false);
 
-        rightWhisker = new AdvancedModelBox(this);
+        rightWhisker = new AdvancedModelBox(this, "rightWhisker");
         rightWhisker.setRotationPoint(-2.5F, 2.0F, -11.0F);
         head.addChild(rightWhisker);
         setRotationAngle(rightWhisker, 0.0F, 0.2182F, 0.0F);

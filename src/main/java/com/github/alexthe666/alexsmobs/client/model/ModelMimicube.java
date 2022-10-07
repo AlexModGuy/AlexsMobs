@@ -21,32 +21,32 @@ public class ModelMimicube extends AdvancedEntityModel<EntityMimicube> {
 		texWidth = 64;
 		texHeight = 64;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, 0.0F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-8.0F, -14.0F, -8.0F, 16.0F, 14.0F, 16.0F, 0.0F, false);
 
-		innerbody = new AdvancedModelBox(this);
+		innerbody = new AdvancedModelBox(this, "innerbody");
 		innerbody.setPos(0.0F, -7.0F, 0.0F);
 		root.addChild(innerbody);
 		innerbody.setTextureOffset(0, 31).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
-		mouth = new AdvancedModelBox(this);
+		mouth = new AdvancedModelBox(this, "mouth");
 		mouth.setPos(2.0F, 4.0F, -5.0F);
 		innerbody.addChild(mouth);
 		mouth.setTextureOffset(0, 12).addBox(-2.0F, -2.0F, 0.0F, 2.0F, 2.0F, 1.0F, 0.0F, false);
 
-		eye_left = new AdvancedModelBox(this);
+		eye_left = new AdvancedModelBox(this, "eye_left");
 		eye_left.setPos(3.5F, -1.5F, -4.0F);
 		innerbody.addChild(eye_left);
 		setRotationAngle(eye_left, 0.0F, 0.0F, 0.3054F);
 		eye_left.setTextureOffset(0, 6).addBox(-1.5F, -1.5F, -1.0F, 3.0F, 3.0F, 2.0F, 0.0F, false);
 
-		eye_right = new AdvancedModelBox(this);
+		eye_right = new AdvancedModelBox(this, "eye_right");
 		eye_right.setPos(-3.5F, -0.5F, -4.0F);
 		innerbody.addChild(eye_right);
 		setRotationAngle(eye_right, 0.0F, 0.0F, -0.3927F);

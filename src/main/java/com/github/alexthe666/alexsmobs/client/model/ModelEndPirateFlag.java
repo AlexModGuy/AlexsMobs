@@ -17,20 +17,20 @@ public class ModelEndPirateFlag extends AdvancedEntityModel<Entity> {
     public ModelEndPirateFlag() {
         texWidth = 64;
         texHeight = 64;
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        rod = new AdvancedModelBox(this);
+        rod = new AdvancedModelBox(this, "rod");
         rod.setRotationPoint(0.0F, 0.0F, 0.0F);
         root.addChild(rod);
         rod.setTextureOffset(29, 0).addBox(-1.0F, -16.0F, -1.0F, 2.0F, 16.0F, 2.0F, 0.0F, false);
 
-        flag1 = new AdvancedModelBox(this);
+        flag1 = new AdvancedModelBox(this, "flag1");
         flag1.setRotationPoint(0.0F, -8.0F, 0.0F);
         rod.addChild(flag1);
         flag1.setTextureOffset(0, 17).addBox(1.0F, -8.0F, 0.0F, 14.0F, 16.0F, 0.0F, 0.0F, false);
 
-        flag2 = new AdvancedModelBox(this);
+        flag2 = new AdvancedModelBox(this, "flag2");
         flag2.setRotationPoint(15.0F, 0.0F, 0.0F);
         flag1.addChild(flag2);
         flag2.setTextureOffset(0, 0).addBox(0.0F, -8.0F, 0.0F, 14.0F, 16.0F, 0.0F, 0.0F, false);

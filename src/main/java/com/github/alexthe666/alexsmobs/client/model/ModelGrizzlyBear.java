@@ -32,68 +32,68 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -19.0F, 6.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-7.0F, -7.0F, -19.0F, 14.0F, 15.0F, 28.0F, 0.0F, false);
         body.setTextureOffset(0, 44).addBox(-6.0F, 8.0F, -19.0F, 12.0F, 3.0F, 28.0F, 0.0F, false);
 
-        midbody = new AdvancedModelBox(this);
+        midbody = new AdvancedModelBox(this, "midbody");
         midbody.setPos(0.0F, 0.5F, -4.0F);
         body.addChild(midbody);
         midbody.setTextureOffset(27, 99).addBox(-8.0F, -8.5F, -6.0F, 16.0F, 17.0F, 12.0F, 0.1F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setPos(0.0F, -0.8F, -21.0F);
         body.addChild(head);
         head.setTextureOffset(57, 0).addBox(-5.0F, -5.0F, -6.0F, 10.0F, 10.0F, 8.0F, 0.0F, false);
 
-        snout = new AdvancedModelBox(this);
+        snout = new AdvancedModelBox(this, "snout");
         snout.setPos(0.0F, 0.0F, -6.0F);
         head.addChild(snout);
         snout.setTextureOffset(0, 17).addBox(-2.0F, 0.0F, -5.0F, 4.0F, 5.0F, 5.0F, 0.0F, false);
 
-        left_ear = new AdvancedModelBox(this);
+        left_ear = new AdvancedModelBox(this, "left_ear");
         left_ear.setPos(3.5F, -5.0F, -3.0F);
         head.addChild(left_ear);
         left_ear.setTextureOffset(14, 17).addBox(-1.5F, -2.0F, -1.0F, 3.0F, 2.0F, 2.0F, 0.0F, false);
 
-        right_ear = new AdvancedModelBox(this);
+        right_ear = new AdvancedModelBox(this, "right_ear");
         right_ear.setPos(-3.5F, -5.0F, -3.0F);
         head.addChild(right_ear);
         right_ear.setTextureOffset(14, 17).addBox(-1.5F, -2.0F, -1.0F, 3.0F, 2.0F, 2.0F, 0.0F, true);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setPos(3.8F, 8.0F, 4.0F);
         body.addChild(left_leg);
         left_leg.setTextureOffset(0, 76).addBox(-3.0F, 0.0F, -3.0F, 6.0F, 11.0F, 8.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setPos(-3.8F, 8.0F, 4.0F);
         body.addChild(right_leg);
         right_leg.setTextureOffset(0, 76).addBox(-3.0F, 0.0F, -3.0F, 6.0F, 11.0F, 8.0F, 0.0F, true);
 
-        left_arm = new AdvancedModelBox(this);
+        left_arm = new AdvancedModelBox(this, "left_arm");
         left_arm.setPos(4.5F, 4.0F, -13.0F);
         body.addChild(left_arm);
         left_arm.setTextureOffset(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, false);
 
-        right_arm = new AdvancedModelBox(this);
+        right_arm = new AdvancedModelBox(this, "right_arm");
         right_arm.setPos(-4.5F, 4.0F, -13.0F);
         body.addChild(right_arm);
         right_arm.setTextureOffset(74, 78).addBox(-3.0F, -3.0F, -3.0F, 6.0F, 18.0F, 7.0F, 0.0F, true);
 
-        hat = new AdvancedModelBox(this);
+        hat = new AdvancedModelBox(this, "hat");
         hat.setRotationPoint(0.0F, -5.0F, -4.0F);
         head.addChild(hat);
         hat.setTextureOffset(0, 57).addBox(-3.0F, -1.0F, -1.0F, 6.0F, 1.0F, 6.0F, 0.0F, false);
         hat.setTextureOffset(0, 48).addBox(-2.0F, -5.0F, 0.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
-        microphone = new AdvancedModelBox(this);
+        microphone = new AdvancedModelBox(this, "microphone");
         microphone.setRotationPoint(0.0F, 13.0F, -3.0F);
         right_arm.addChild(microphone);
         microphone.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 5.0F, 0.0F, false);

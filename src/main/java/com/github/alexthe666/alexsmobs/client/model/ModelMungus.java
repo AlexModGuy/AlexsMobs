@@ -27,41 +27,41 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 		texWidth = 64;
 		texHeight = 64;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, -7.0F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-6.0F, -16.0F, -4.0F, 12.0F, 16.0F, 8.0F, f, false);
 
-		hair = new AdvancedModelBox(this);
+		hair = new AdvancedModelBox(this, "hair");
 		hair.setPos(0.0F, -16.0F, 0.0F);
 		body.addChild(hair);
 		hair.setTextureOffset(33, 0).addBox(-5.0F, -5.0F, 0.0F, 10.0F, 5.0F, 0.0F, f, false);
 
-		eye = new AdvancedModelBox(this);
+		eye = new AdvancedModelBox(this, "eye");
 		eye.setPos(0.0F, -11.0F, -4.1F);
 		body.addChild(eye);
 		eye.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 1.0F, f, false);
 
-		leg_left = new AdvancedModelBox(this);
+		leg_left = new AdvancedModelBox(this, "leg_left");
 		leg_left.setPos(3.0F, 0.0F, 0.0F);
 		body.addChild(leg_left);
 		leg_left.setTextureOffset(0, 39).addBox(-2.0F, 0.0F, -3.0F, 5.0F, 7.0F, 6.0F, f, false);
 
-		leg_right = new AdvancedModelBox(this);
+		leg_right = new AdvancedModelBox(this, "leg_right");
 		leg_right.setPos(-3.0F, 0.0F, 0.0F);
 		body.addChild(leg_right);
 		leg_right.setTextureOffset(0, 25).addBox(-3.0F, 0.0F, -3.0F, 5.0F, 7.0F, 6.0F, f, false);
 
-		nose = new AdvancedModelBox(this);
+		nose = new AdvancedModelBox(this, "nose");
 		nose.setPos(0.0F, -9.0F, -4.0F);
 		body.addChild(nose);
 		nose.setTextureOffset(35, 43).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 5.0F, 2.0F, f, false);
 
-		sack = new AdvancedModelBox(this);
+		sack = new AdvancedModelBox(this, "sack");
 		sack.setPos(0.0F, -7.0F, 4.0F);
 		body.addChild(sack);
 		sack.setTextureOffset(23, 25).addBox(-4.0F, -8.0F, 0.0F, 8.0F, 10.0F, 3.0F, f, false);

@@ -18,9 +18,9 @@ public class ModelEndPirateAnchorWinch extends AdvancedEntityModel<Entity> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
-        chains = new AdvancedModelBox(this);
+        chains = new AdvancedModelBox(this, "chains");
         chains.setRotationPoint(0.0F, -8.0F, 0.0F);
         root.addChild(chains);
         chains.setTextureOffset(0, 33).addBox(-8.0F, -5.0F, -5.0F, 16.0F, 10.0F, 10.0F, 0.0F, false);

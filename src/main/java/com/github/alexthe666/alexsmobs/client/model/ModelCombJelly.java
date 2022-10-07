@@ -16,13 +16,13 @@ public class ModelCombJelly extends AdvancedEntityModel<EntityCombJelly> {
     public ModelCombJelly(float f) {
         texWidth = 64;
         texHeight = 64;
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -13.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-5.0F, -2.0F, -5.0F, 10.0F, 15.0F, 10.0F, f, false);
-        inner_body = new AdvancedModelBox(this);
+        inner_body = new AdvancedModelBox(this, "inner_body");
         inner_body.setRotationPoint(0.0F, -3.0F, 0.0F);
         body.addChild(inner_body);
         inner_body.setTextureOffset(40, 6).addBox(-3.0F, -1.0F, -3.0F, 6.0F, 13.0F, 6.0F, f, false);

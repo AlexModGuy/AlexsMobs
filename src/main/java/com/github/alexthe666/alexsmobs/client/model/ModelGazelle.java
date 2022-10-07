@@ -30,72 +30,72 @@ public class ModelGazelle extends AdvancedEntityModel<EntityGazelle> {
     public ModelGazelle() {
         texWidth = 64;
         texHeight = 64;
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, 20.8F, 0.0F);
         body.setTextureOffset(0, 0).addBox(-4.0F, -16.8F, -9.0F, 8.0F, 8.0F, 18.0F, 0.0F, false);
-        neck = new AdvancedModelBox(this);
+        neck = new AdvancedModelBox(this, "neck");
         neck.setPos(0.0F, -14.8F, -8.0F);
         body.addChild(neck);
         setRotationAngle(neck, 0.2618F, 0.0F, 0.0F);
         neck.setTextureOffset(0, 0).addBox(-2.0F, -7.0F, -2.0F, 4.0F, 9.0F, 4.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setPos(0.0F, -7.0F, 0.0F);
         neck.addChild(head);
         setRotationAngle(head, -0.2618F, 0.0F, 0.0F);
         head.setTextureOffset(0, 27).addBox(-2.5F, -4.0F, -3.0F, 5.0F, 5.0F, 5.0F, 0.0F, false);
 
-        earL = new AdvancedModelBox(this);
+        earL = new AdvancedModelBox(this, "earL");
         earL.setPos(1.5F, -3.3F, 0.5F);
         head.addChild(earL);
         setRotationAngle(earL, -0.2618F, -0.5236F, 0.6109F);
         earL.setTextureOffset(0, 38).addBox(-0.5F, -3.7F, -0.5F, 2.0F, 4.0F, 1.0F, 0.0F, false);
 
-        earR = new AdvancedModelBox(this);
+        earR = new AdvancedModelBox(this, "earR");
         earR.setPos(-1.5F, -3.3F, 0.5F);
         head.addChild(earR);
         setRotationAngle(earR, -0.2618F, 0.5236F, -0.6109F);
         earR.setTextureOffset(0, 38).addBox(-1.5F, -3.7F, -0.5F, 2.0F, 4.0F, 1.0F, 0.0F, true);
 
-        snout = new AdvancedModelBox(this);
+        snout = new AdvancedModelBox(this, "snout");
         snout.setPos(0.0F, -0.5F, -2.9F);
         head.addChild(snout);
         snout.setTextureOffset(34, 27).addBox(-1.5F, -1.5F, -3.1F, 3.0F, 3.0F, 3.0F, 0.0F, false);
 
-        hornL = new AdvancedModelBox(this);
+        hornL = new AdvancedModelBox(this, "hornL");
         hornL.setPos(1.3F, -3.4F, -1.9F);
         head.addChild(hornL);
         setRotationAngle(hornL, -0.2618F, 0.0F, 0.2618F);
         hornL.setTextureOffset(35, 0).addBox(-1.0F, -9.0F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, false);
 
-        hornR = new AdvancedModelBox(this);
+        hornR = new AdvancedModelBox(this, "hornR");
         hornR.setPos(-1.3F, -3.4F, -1.9F);
         head.addChild(hornR);
         setRotationAngle(hornR, -0.2618F, 0.0F, -0.2618F);
         hornR.setTextureOffset(35, 0).addBox(-1.0F, -9.0F, -1.0F, 2.0F, 9.0F, 2.0F, 0.0F, true);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setPos(0.0F, -13.8F, 9.0F);
         body.addChild(tail);
         setRotationAngle(tail, 0.3491F, 0.0F, 0.0F);
         tail.setTextureOffset(35, 12).addBox(-2.0F, 0.0F, 0.0F, 4.0F, 5.0F, 0.0F, 0.0F, false);
 
-        frontlegR = new AdvancedModelBox(this);
+        frontlegR = new AdvancedModelBox(this, "frontlegR");
         frontlegR.setPos(2.5F, -6.8F, -6.5F);
         body.addChild(frontlegR);
         frontlegR.setTextureOffset(34, 34).addBox(-6.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, true);
 
-        frontlegL = new AdvancedModelBox(this);
+        frontlegL = new AdvancedModelBox(this, "frontlegL");
         frontlegL.setPos(2.5F, -6.8F, -6.5F);
         body.addChild(frontlegL);
         frontlegL.setTextureOffset(34, 34).addBox(-1.5F, -2.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, false);
 
-        backlegL = new AdvancedModelBox(this);
+        backlegL = new AdvancedModelBox(this, "backlegL");
         backlegL.setPos(2.5F, -7.8F, 7.5F);
         body.addChild(backlegL);
         backlegL.setTextureOffset(21, 27).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, false);
 
-        backlegR = new AdvancedModelBox(this);
+        backlegR = new AdvancedModelBox(this, "backlegR");
         backlegR.setPos(-2.5F, -7.8F, 7.5F);
         body.addChild(backlegR);
         backlegR.setTextureOffset(21, 27).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 12.0F, 3.0F, 0.0F, true);

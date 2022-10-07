@@ -20,15 +20,15 @@ public class ModelAnaconda<T extends LivingEntity> extends AdvancedEntityModel<T
     public ModelAnaconda(AnacondaPartIndex index) {
         texWidth = 128;
         texHeight = 128;
-        part = new AdvancedModelBox(this);
-        root = new AdvancedModelBox(this);
+        part = new AdvancedModelBox(this, "part");
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 21.0F, 0);
         switch (index) {
             case HEAD:
                 part.setRotationPoint(0.0F, 0, 0);
                 part.setTextureOffset(62, 32).addBox(-3.5F, -3.0F, -9.0F, 7.0F, 3.0F, 10.0F, 0.0F, false);
                 part.setTextureOffset(67, 0).addBox(-3.5F, -1.0F, -9.0F, 7.0F, 0.0F, 10.0F, 0.0F, false);
-                jaw = new AdvancedModelBox(this);
+                jaw = new AdvancedModelBox(this, "        jaw");
                 jaw.setRotationPoint(0, 0, 0);
                 jaw.setTextureOffset(52, 55).addBox(-3.5F, -1.0F, -9, 7.0F, 4.0F, 10.0F, 0.0F, false);
                 jaw.setTextureOffset(66, 11).addBox(-3.5F, 0.0F, -9, 7.0F, 0.0F, 10.0F, 0.0F, false);

@@ -30,55 +30,55 @@ public class ModelOrca extends AdvancedEntityModel<EntityOrca> {
         texWidth = 256;
         texHeight = 256;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -1.3333F, -0.0833F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-9.0F, -14.6667F, -16.9167F, 18.0F, 16.0F, 33.0F, 0.0F, false);
 
-        fintop = new AdvancedModelBox(this);
+        fintop = new AdvancedModelBox(this, "fintop");
         fintop.setPos(0.0F, -14.6667F, -2.4167F);
         body.addChild(fintop);
         setRotationAngle(fintop, -0.2182F, 0.0F, 0.0F);
         fintop.setTextureOffset(0, 0).addBox(-1.0F, -16.0F, -1.5F, 2.0F, 18.0F, 8.0F, 0.0F, false);
 
-        fin_left = new AdvancedModelBox(this);
+        fin_left = new AdvancedModelBox(this, "fin_left");
         fin_left.setPos(8.5F, -0.1667F, -8.9167F);
         body.addChild(fin_left);
         setRotationAngle(fin_left, -0.6109F, 1.2217F, 0.0F);
         fin_left.setTextureOffset(0, 92).addBox(-7.5F, -1.5F, -3.0F, 12.0F, 2.0F, 17.0F, 0.0F, false);
 
-        fin_right = new AdvancedModelBox(this);
+        fin_right = new AdvancedModelBox(this, "fin_right");
         fin_right.setPos(-8.5F, -0.1667F, -8.9167F);
         body.addChild(fin_right);
         setRotationAngle(fin_right, -0.6109F, -1.2217F, 0.0F);
         fin_right.setTextureOffset(0, 92).addBox(-4.5F, -1.5F, -3.0F, 12.0F, 2.0F, 17.0F, 0.0F, true);
 
-        tail1 = new AdvancedModelBox(this);
+        tail1 = new AdvancedModelBox(this, "tail1");
         tail1.setPos(0.0F, -5.9167F, 15.5833F);
         body.addChild(tail1);
         tail1.setTextureOffset(70, 0).addBox(-7.0F, -6.75F, 0.5F, 14.0F, 13.0F, 18.0F, 0.0F, false);
 
-        tail2 = new AdvancedModelBox(this);
+        tail2 = new AdvancedModelBox(this, "tail2");
         tail2.setPos(0.0F, 0.25F, 16.5F);
         tail1.addChild(tail2);
         tail2.setTextureOffset(43, 97).addBox(-5.0F, -4.0F, 2.0F, 10.0F, 9.0F, 16.0F, 0.0F, false);
 
-        tailend = new AdvancedModelBox(this);
+        tailend = new AdvancedModelBox(this, "tailend");
         tailend.setPos(0.0F, 0.5F, 16.5F);
         tail2.addChild(tailend);
         tailend.setTextureOffset(0, 50).addBox(-16.0F, -1.0F, -2.5F, 32.0F, 2.0F, 13.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setPos(0.0F, -5.6667F, -16.9167F);
         body.addChild(head);
         head.setTextureOffset(71, 71).addBox(-8.0F, -8.0F, -17.0F, 16.0F, 8.0F, 17.0F, 0.0F, false);
         head.setTextureOffset(96, 97).addBox(-7.0F, 0.0F, -15.0F, 14.0F, 1.0F, 15.0F, 0.0F, false);
 
-        jaw = new AdvancedModelBox(this);
+        jaw = new AdvancedModelBox(this, "jaw");
         jaw.setPos(0.0F, 1.0F, 0.0F);
         head.addChild(jaw);
         jaw.setTextureOffset(73, 50).addBox(-7.0F, -2.0F, -15.0F, 14.0F, 1.0F, 18.0F, 0.0F, false);

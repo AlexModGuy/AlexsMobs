@@ -26,59 +26,59 @@ public class ModelGeladaMonkey extends AdvancedEntityModel<EntityGeladaMonkey> {
 		texWidth = 128;
 		texHeight = 128;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setRotationPoint(0.0F, 24.0F, 0.0F);
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setRotationPoint(0.0F, -11.0F, 4.0F);
 		root.addChild(body);
 		body.setTextureOffset(30, 36).addBox(-3.5F, -3.0F, -5.0F, 7.0F, 7.0F, 9.0F, 0.0F, false);
 
-		tail = new AdvancedModelBox(this);
+		tail = new AdvancedModelBox(this, "tail");
 		tail.setRotationPoint(0.0F, -1.5F, 3.0F);
 		body.addChild(tail);
 		setRotationAngle(tail, 0.5672F, 0.0F, 0.0F);
 		tail.setTextureOffset(0, 0).addBox(-1.5F, -1.5F, 0.0F, 3.0F, 3.0F, 20.0F, 0.0F, false);
 
-		torso = new AdvancedModelBox(this);
+		torso = new AdvancedModelBox(this, "torso");
 		torso.setRotationPoint(0.0F, 0.0F, -4.0F);
 		body.addChild(torso);
 		torso.setTextureOffset(0, 24).addBox(-4.5F, -5.0F, -9.0F, 9.0F, 10.0F, 10.0F, 0.0F, false);
 		torso.setTextureOffset(27, 0).addBox(-4.5F, 5.0F, -9.0F, 9.0F, 3.0F, 10.0F, 0.0F, false);
 
-		neck = new AdvancedModelBox(this);
+		neck = new AdvancedModelBox(this, "neck");
 		neck.setRotationPoint(0.0F, -0.9F, -8.6F);
 		torso.addChild(neck);
 		neck.setTextureOffset(39, 24).addBox(-5.0F, -5.0F, -3.0F, 10.0F, 7.0F, 4.0F, 0.0F, false);
 		neck.setTextureOffset(50, 67).addBox(-8.0F, -5.0F, -2.0F, 16.0F, 11.0F, 0.0F, 0.0F, false);
 		neck.setTextureOffset(25, 60).addBox(-4.0F, -5.0F, -2.4F, 8.0F, 7.0F, 3.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setRotationPoint(0.0F, -1.0F, -2.0F);
 		neck.addChild(head);
 		head.setTextureOffset(0, 0).addBox(-2.5F, -2.0F, -2.0F, 5.0F, 4.0F, 3.0F, 0.0F, false);
 		
-		mouth = new AdvancedModelBox(this);
+		mouth = new AdvancedModelBox(this, "mouth");
 		mouth.setRotationPoint(0.0F, 1.0F, -1.0F);
 		head.addChild(mouth);
 		setRotationAngle(mouth, -1.0908F, 0.0F, 0.0F);
 		mouth.setTextureOffset(0, 8).addBox(-1.5F, -1.5F, -1.2F, 3.0F, 6.0F, 4.0F, 0.0F, false);
 
-		left_arm = new AdvancedModelBox(this);
+		left_arm = new AdvancedModelBox(this, "left_arm");
 		left_arm.setRotationPoint(2.0F, 3.0F, -7.0F);
 		torso.addChild(left_arm);
 		left_arm.setTextureOffset(11, 45).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 8.0F, 2.0F, 0.0F, false);
 
-		right_arm = new AdvancedModelBox(this);
+		right_arm = new AdvancedModelBox(this, "right_arm");
 		right_arm.setRotationPoint(-2.0F, 3.0F, -7.0F);
 		torso.addChild(right_arm);
 		right_arm.setTextureOffset(11, 45).addBox(-1.0F, 0.0F, -1.0F, 2.0F, 8.0F, 2.0F, 0.0F, true);
 
-		left_leg = new AdvancedModelBox(this);
+		left_leg = new AdvancedModelBox(this, "left_leg");
 		left_leg.setRotationPoint(2.3F, 5.0F, 2.0F);
 		body.addChild(left_leg);
 		left_leg.setTextureOffset(0, 45).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 7.0F, 3.0F, 0.0F, false);
 
-		right_leg = new AdvancedModelBox(this);
+		right_leg = new AdvancedModelBox(this, "right_leg");
 		right_leg.setRotationPoint(-2.3F, 5.0F, 2.0F);
 		body.addChild(right_leg);
 		right_leg.setTextureOffset(0, 45).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 7.0F, 3.0F, 0.0F, true);

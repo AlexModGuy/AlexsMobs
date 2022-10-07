@@ -184,7 +184,7 @@ public class ClientEvents {
             MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight()));
             return;
         }
-        if (event.getEntity() instanceof WanderingTrader) {
+        if (event.getEntity() instanceof WanderingTrader && event.getEntity().getType() == EntityType.WANDERING_TRADER) {
             if (event.getEntity().getVehicle() instanceof EntityElephant) {
                 if (!(event.getRenderer().model instanceof ModelWanderingVillagerRider)) {
                     event.getRenderer().model = new ModelWanderingVillagerRider(Minecraft.getInstance().getEntityModels().bakeLayer(AMModelLayers.SITTING_WANDERING_VILLAGER));

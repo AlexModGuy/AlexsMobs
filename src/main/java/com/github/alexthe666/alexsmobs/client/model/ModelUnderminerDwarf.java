@@ -34,42 +34,42 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
         texWidth = 128;
         texHeight = 128;
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, 12.0F, 0.0F);
         body.setTextureOffset(0, 36).addBox(-5.0F, -10.0F, -3.0F, 10.0F, 11.0F, 6.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setRotationPoint(0.0F, -10.02F, 0.0F);
         body.addChild(head);
         head.setTextureOffset(30, 24).addBox(-5.0F, -8.0F, -5.0F, 10.0F, 8.0F, 9.0F, 0.0F, false);
         head.setTextureOffset(0, 15).addBox(-5.0F, -8.0F, -5.0F, 10.0F, 8.0F, 9.0F, 0.1F, false);
 
-        helmet = new AdvancedModelBox(this);
+        helmet = new AdvancedModelBox(this, "helmet");
         helmet.setRotationPoint(0.0F, 0.0F, 0.0F);
         head.addChild(helmet);
         helmet.setTextureOffset(0, 0).addBox(-6.0F, -10.0F, -5.5F, 12.0F, 4.0F, 10.0F, 0.1F, false);
 
-        beard = new AdvancedModelBox(this);
+        beard = new AdvancedModelBox(this, "beard");
         beard.setRotationPoint(0.0F, 0.1F, -4.1F);
         head.addChild(beard);
         beard.setTextureOffset(0, 54).addBox(-5.0F, 0.0F, -1.0F, 10.0F, 9.0F, 2.0F, 0.0F, false);
 
-        leftArm = new AdvancedModelBox(this);
+        leftArm = new AdvancedModelBox(this, "leftArm");
         leftArm.setRotationPoint(7.0F, -9.0F, 0.0F);
         body.addChild(leftArm);
         leftArm.setTextureOffset(45, 0).addBox(-2.0F, -1.0F, -2.5F, 4.0F, 13.0F, 5.0F, 0.0F, false);
 
-        rightArm = new AdvancedModelBox(this);
+        rightArm = new AdvancedModelBox(this, "rightArm");
         rightArm.setRotationPoint(-7.0F, -9.0F, 0.0F);
         body.addChild(rightArm);
         rightArm.setTextureOffset(45, 0).addBox(-2.0F, -1.0F, -2.5F, 4.0F, 13.0F, 5.0F, 0.0F, true);
 
-        leftLeg = new AdvancedModelBox(this);
+        leftLeg = new AdvancedModelBox(this, "leftLeg");
         leftLeg.setRotationPoint(2.0F, 2.0F, 0.0F);
         body.addChild(leftLeg);
         leftLeg.setTextureOffset(33, 42).addBox(-2.0F, -1.0F, -3.0F, 5.0F, 11.0F, 6.0F, 0.0F, false);
 
-        rightLeg = new AdvancedModelBox(this);
+        rightLeg = new AdvancedModelBox(this, "rightLeg");
         rightLeg.setRotationPoint(-2.0F, 2.0F, 0.0F);
         body.addChild(rightLeg);
         rightLeg.setTextureOffset(33, 42).addBox(-3.0F, -1.0F, -3.0F, 5.0F, 11.0F, 6.0F, 0.0F, true);

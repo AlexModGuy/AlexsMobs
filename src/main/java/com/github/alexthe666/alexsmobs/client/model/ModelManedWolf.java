@@ -30,74 +30,74 @@ public class ModelManedWolf extends AdvancedEntityModel<EntityManedWolf> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -17.0F, 2.0F);
         root.addChild(body);
         body.setTextureOffset(0, 0).addBox(-3.0F, -4.0F, -10.0F, 6.0F, 8.0F, 17.0F, 0.0F, false);
         body.setTextureOffset(0, 26).addBox(-3.5F, -4.4F, -10.1F, 7.0F, 5.0F, 8.0F, 0.0F, false);
 
-        neck = new AdvancedModelBox(this);
+        neck = new AdvancedModelBox(this, "neck");
         neck.setRotationPoint(0.0F, -1.0F, -9.0F);
         body.addChild(neck);
         setRotationAngle(neck, -0.6545F, 0.0F, 0.0F);
         neck.setTextureOffset(30, 0).addBox(-2.5F, -3.0F, -6.0F, 5.0F, 5.0F, 7.0F, 0.0F, false);
         neck.setTextureOffset(42, 39).addBox(-1.5F, -6.0F, -5.0F, 3.0F, 3.0F, 6.0F, 0.0F, false);
 
-        head_pivot = new AdvancedModelBox(this);
+        head_pivot = new AdvancedModelBox(this, "head_pivot");
         head_pivot.setRotationPoint(0.0F, -0.8F, -6.0F);
         neck.addChild(head_pivot);
         setRotationAngle(head_pivot, 0.6545F, 0.0F, 0.0F);
 
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head_pivot.addChild(head);
 
         head.setTextureOffset(0, 40).addBox(-3.0F, -2.0F, -4.0F, 6.0F, 5.0F, 5.0F, 0.0F, false);
         head.setTextureOffset(44, 22).addBox(-1.5F, 0.0F, -8.0F, 3.0F, 3.0F, 4.0F, 0.0F, false);
 
-        left_ear_pivot = new AdvancedModelBox(this);
+        left_ear_pivot = new AdvancedModelBox(this, "left_ear_pivot");
         left_ear_pivot.setRotationPoint(2.0F, -2.0F, -1.6F);
         head.addChild(left_ear_pivot);
 
-        right_ear_pivot = new AdvancedModelBox(this);
+        right_ear_pivot = new AdvancedModelBox(this, "right_ear_pivot");
         right_ear_pivot.setRotationPoint(-2.0F, -2.0F, -1.6F);
         head.addChild(right_ear_pivot);
 
-        left_ear = new AdvancedModelBox(this);
+        left_ear = new AdvancedModelBox(this, "left_ear");
         left_ear_pivot.addChild(left_ear);
         setRotationAngle(left_ear, -0.0479F, -0.2129F, 0.2233F);
         left_ear.setTextureOffset(47, 13).addBox(-1.0F, -5.0F, -0.4F, 3.0F, 6.0F, 1.0F, 0.0F, false);
 
-        right_ear = new AdvancedModelBox(this);
+        right_ear = new AdvancedModelBox(this, "right_ear");
         right_ear_pivot.addChild(right_ear);
         setRotationAngle(right_ear, -0.0479F, 0.2129F, -0.2233F);
         right_ear.setTextureOffset(47, 13).addBox(-2.0F, -5.0F, -0.4F, 3.0F, 6.0F, 1.0F, 0.0F, true);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, -2.0F, 7.0F);
         body.addChild(tail);
         tail.setTextureOffset(31, 26).addBox(-2.0F, -1.0F, -1.0F, 4.0F, 14.0F, 4.0F, 0.0F, false);
 
-        left_arm = new AdvancedModelBox(this);
+        left_arm = new AdvancedModelBox(this, "left_arm");
         left_arm.setRotationPoint(1.8F, 5.0F, -8.0F);
         body.addChild(left_arm);
         left_arm.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 13.0F, 2.0F, 0.0F, false);
 
-        right_arm = new AdvancedModelBox(this);
+        right_arm = new AdvancedModelBox(this, "right_arm");
         right_arm.setRotationPoint(-1.8F, 5.0F, -8.0F);
         body.addChild(right_arm);
         right_arm.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 13.0F, 2.0F, 0.0F, true);
 
-        left_leg = new AdvancedModelBox(this);
+        left_leg = new AdvancedModelBox(this, "left_leg");
         left_leg.setRotationPoint(2.0F, 3.0F, 5.0F);
         body.addChild(left_leg);
         left_leg.setTextureOffset(23, 42).addBox(-0.8F, -2.0F, -0.9F, 2.0F, 16.0F, 3.0F, 0.0F, false);
 
-        right_leg = new AdvancedModelBox(this);
+        right_leg = new AdvancedModelBox(this, "right_leg");
         right_leg.setRotationPoint(-2.0F, 3.0F, 5.0F);
         body.addChild(right_leg);
         right_leg.setTextureOffset(23, 42).addBox(-1.2F, -2.0F, -0.9F, 2.0F, 16.0F, 3.0F, 0.0F, true);

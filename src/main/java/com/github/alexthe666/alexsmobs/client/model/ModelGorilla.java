@@ -27,54 +27,54 @@ public class ModelGorilla extends AdvancedEntityModel<EntityGorilla> {
 		texWidth = 128;
 		texHeight = 128;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setRotationPoint(0.0F, -14.0F, 3.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 23).addBox(-4.5F, -4.0F, -3.0F, 9.0F, 9.0F, 7.0F, 0.0F, false);
 
-		chest = new AdvancedModelBox(this);
+		chest = new AdvancedModelBox(this, "chest");
 		chest.setRotationPoint(0.0F, 4.0F, -3.0F);
 		body.addChild(chest);
 		chest.setTextureOffset(0, 0).addBox(-6.5F, -8.0F, -11.0F, 13.0F, 11.0F, 11.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setRotationPoint(0.0F, -8.0F, -11.0F);
 		chest.addChild(head);
 		head.setTextureOffset(22, 48).addBox(-3.0F, -5.0F, -4.0F, 6.0F, 7.0F, 7.0F, 0.0F, false);
 		head.setTextureOffset(38, 0).addBox(-3.0F, -6.0F, -4.0F, 6.0F, 1.0F, 7.0F, 0.0F, false);
 		head.setTextureOffset(0, 40).addBox(-3.0F, -8.0F, -5.0F, 6.0F, 4.0F, 8.0F, 0.0F, false);
 
-		foreheadDK_r1 = new AdvancedModelBox(this);
+		foreheadDK_r1 = new AdvancedModelBox(this, "foreheadDK_r1");
 		foreheadDK_r1.setRotationPoint(0.0F, -6.0F, -2.0F);
 		head.addChild(foreheadDK_r1);
 		setRotationAngle(foreheadDK_r1, 0.0F, 0.2182F, 0.0F);
 		foreheadDK_r1.setTextureOffset(0, 56).addBox(0.0F, -6.0F, -4.0F, 0.0F, 6.0F, 10.0F, 0.0F, false);
 
-		mouth = new AdvancedModelBox(this);
+		mouth = new AdvancedModelBox(this, "mouth");
 		mouth.setRotationPoint(0.0F, 0.0F, -1.0F);
 		head.addChild(mouth);
 		mouth.setTextureOffset(49, 9).addBox(-2.0F, -2.0F, -5.0F, 4.0F, 5.0F, 4.0F, 0.0F, false);
 
-		leftArm = new AdvancedModelBox(this);
+		leftArm = new AdvancedModelBox(this, "leftArm");
 		leftArm.setRotationPoint(6.0F, -6.5F, -9.5F);
 		chest.addChild(leftArm);
 		leftArm.setTextureOffset(33, 23).addBox(-3.0F, -2.5F, -2.5F, 6.0F, 19.0F, 5.0F, 0.0F, false);
 
-		rightArm = new AdvancedModelBox(this);
+		rightArm = new AdvancedModelBox(this, "rightArm");
 		rightArm.setRotationPoint(-6.0F, -6.5F, -9.5F);
 		chest.addChild(rightArm);
 		rightArm.setTextureOffset(33, 23).addBox(-3.0F, -2.5F, -2.5F, 6.0F, 19.0F, 5.0F, 0.0F, true);
 
-		leftLeg = new AdvancedModelBox(this);
+		leftLeg = new AdvancedModelBox(this, "leftLeg");
 		leftLeg.setRotationPoint(3.0F, 4.5F, 2.5F);
 		body.addChild(leftLeg);
 		leftLeg.setTextureOffset(49, 48).addBox(-2.5F, 0.5F, -2.5F, 5.0F, 9.0F, 5.0F, 0.0F, false);
 
-		rightLeg = new AdvancedModelBox(this);
+		rightLeg = new AdvancedModelBox(this, "rightLeg");
 		rightLeg.setRotationPoint(-3.0F, 4.5F, 2.5F);
 		body.addChild(rightLeg);
 		rightLeg.setTextureOffset(49, 48).addBox(-2.5F, 0.5F, -2.5F, 5.0F, 9.0F, 5.0F, 0.0F, true);

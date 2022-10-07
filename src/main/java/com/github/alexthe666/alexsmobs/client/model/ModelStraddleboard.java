@@ -20,39 +20,39 @@ public class ModelStraddleboard extends AdvancedEntityModel<EntityStraddleboard>
 		texWidth = 128;
 		texHeight = 128;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, 0.0F, 0.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-6.0F, -2.0F, -10.0F, 12.0F, 2.0F, 26.0F, 0.0F, false);
 
-		hair_left = new AdvancedModelBox(this);
+		hair_left = new AdvancedModelBox(this, "hair_left");
 		hair_left.setPos(6.0F, -2.0F, 0.0F);
 		body.addChild(hair_left);
 		setRotationAngle(hair_left, 0.0F, 0.0F, 0.8727F);
 		hair_left.setTextureOffset(0, 29).addBox(0.0F, -10.0F, -2.0F, 0.0F, 10.0F, 24.0F, 0.0F, false);
 
-		hair_right = new AdvancedModelBox(this);
+		hair_right = new AdvancedModelBox(this, "hair_right");
 		hair_right.setPos(-6.0F, -2.0F, 0.0F);
 		body.addChild(hair_right);
 		setRotationAngle(hair_right, 0.0F, 0.0F, -0.8727F);
 		hair_right.setTextureOffset(0, 29).addBox(0.0F, -10.0F, -2.0F, 0.0F, 10.0F, 24.0F, 0.0F, true);
 
-		spikes = new AdvancedModelBox(this);
+		spikes = new AdvancedModelBox(this, "spikes");
 		spikes.setPos(0.0F, -1.5F, 13.5F);
 		body.addChild(spikes);
 		spikes.setTextureOffset(25, 29).addBox(-4.0F, -5.5F, -3.5F, 8.0F, 11.0F, 7.0F, 0.0F, false);
 
-		front = new AdvancedModelBox(this);
+		front = new AdvancedModelBox(this, "front");
 		front.setPos(0.0F, 0.0F, -10.0F);
 		body.addChild(front);
 		setRotationAngle(front, -0.1309F, 0.0F, 0.0F);
 		front.setTextureOffset(48, 40).addBox(-5.0F, -2.0F, -8.0F, 10.0F, 2.0F, 8.0F, 0.0F, false);
 
-		spikes_front = new AdvancedModelBox(this);
+		spikes_front = new AdvancedModelBox(this, "spikes_front");
 		spikes_front.setPos(0.0F, -4.0F, -3.5F);
 		front.addChild(spikes_front);
 		spikes_front.setTextureOffset(0, 0).addBox(-2.0F, -2.0F, -2.5F, 4.0F, 4.0F, 5.0F, 0.0F, false);

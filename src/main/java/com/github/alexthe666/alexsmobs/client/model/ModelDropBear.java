@@ -31,73 +31,73 @@ public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
         texWidth = 128;
         texHeight = 128;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setPos(0.0F, 24.0F, 0.0F);
 
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setPos(0.0F, -13.0F, 8.0F);
         root.addChild(body);
         body.setTextureOffset(0, 31).addBox(-6.0F, -8.0F, -7.0F, 12.0F, 13.0F, 13.0F, 0.0F, false);
 
-        leg_left = new AdvancedModelBox(this);
+        leg_left = new AdvancedModelBox(this, "leg_left");
         leg_left.setPos(3.4F, 5.0F, 2.5F);
         body.addChild(leg_left);
         leg_left.setTextureOffset(0, 58).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 8.0F, 5.0F, 0.0F, false);
 
-        leg_right = new AdvancedModelBox(this);
+        leg_right = new AdvancedModelBox(this, "leg_right");
         leg_right.setPos(-3.4F, 5.0F, 2.5F);
         body.addChild(leg_right);
         leg_right.setTextureOffset(0, 58).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 8.0F, 5.0F, 0.0F, true);
 
-        front_body = new AdvancedModelBox(this);
+        front_body = new AdvancedModelBox(this, "front_body");
         front_body.setPos(0.0F, -2.0F, -7.0F);
         body.addChild(front_body);
         front_body.setTextureOffset(0, 0).addBox(-8.0F, -8.0F, -14.0F, 16.0F, 16.0F, 14.0F, 0.0F, false);
 
-        head = new AdvancedModelBox(this);
+        head = new AdvancedModelBox(this, "head");
         head.setPos(0.0F, -1.0F, -14.0F);
         front_body.addChild(head);
         head.setTextureOffset(42, 49).addBox(-5.0F, -5.0F, -9.0F, 10.0F, 8.0F, 9.0F, 0.0F, false);
 
-        nose = new AdvancedModelBox(this);
+        nose = new AdvancedModelBox(this, "nose");
         nose.setPos(0.0F, -0.5F, -9.5F);
         head.addChild(nose);
         nose.setTextureOffset(0, 7).addBox(-1.0F, -1.5F, -0.5F, 2.0F, 3.0F, 1.0F, 0.0F, false);
 
-        ear_left = new AdvancedModelBox(this);
+        ear_left = new AdvancedModelBox(this, "ear_left");
         ear_left.setPos(2.75F, -2.75F, -3.5F);
         head.addChild(ear_left);
         ear_left.setTextureOffset(21, 58).addBox(-0.75F, -5.25F, -1.5F, 6.0F, 6.0F, 3.0F, 0.0F, false);
         ear_left.setTextureOffset(0, 0).addBox(2.25F, 0.75F, -1.5F, 3.0F, 3.0F, 3.0F, 0.0F, false);
 
-        ear_right = new AdvancedModelBox(this);
+        ear_right = new AdvancedModelBox(this, "ear_right");
         ear_right.setPos(-2.75F, -2.75F, -3.5F);
         head.addChild(ear_right);
         ear_right.setTextureOffset(21, 58).addBox(-5.25F, -5.25F, -1.5F, 6.0F, 6.0F, 3.0F, 0.0F, true);
         ear_right.setTextureOffset(0, 0).addBox(-5.25F, 0.75F, -1.5F, 3.0F, 3.0F, 3.0F, 0.0F, true);
 
-        jaw = new AdvancedModelBox(this);
+        jaw = new AdvancedModelBox(this, "jaw");
         jaw.setPos(0.0F, 1.0F, 0.0F);
         head.addChild(jaw);
         jaw.setTextureOffset(47, 0).addBox(-5.0F, 0.0F, -9.0F, 10.0F, 4.0F, 9.0F, 0.0F, false);
 
-        arm_left = new AdvancedModelBox(this);
+        arm_left = new AdvancedModelBox(this, "arm_left");
         arm_left.setPos(6.75F, 3.0F, -8.75F);
         front_body.addChild(arm_left);
         arm_left.setTextureOffset(56, 26).addBox(-1.75F, -3.0F, -2.25F, 5.0F, 14.0F, 5.0F, 0.0F, false);
 
-        claws_left = new AdvancedModelBox(this);
+        claws_left = new AdvancedModelBox(this, "claws_left");
         claws_left.setPos(0.25F, 11.0F, -2.25F);
         arm_left.addChild(claws_left);
         claws_left.setTextureOffset(61, 14).addBox(-3.0F, 0.0F, -2.0F, 6.0F, 2.0F, 5.0F, 0.0F, false);
 
-        arm_right = new AdvancedModelBox(this);
+        arm_right = new AdvancedModelBox(this, "arm_right");
         arm_right.setPos(-6.75F, 3.0F, -8.75F);
         front_body.addChild(arm_right);
         arm_right.setTextureOffset(56, 26).addBox(-3.25F, -3.0F, -2.25F, 5.0F, 14.0F, 5.0F, 0.0F, true);
 
-        claws_right = new AdvancedModelBox(this);
+        claws_right = new AdvancedModelBox(this, "claws_right");
         claws_right.setPos(-0.25F, 11.0F, -2.25F);
         arm_right.addChild(claws_right);
         claws_right.setTextureOffset(61, 14).addBox(-3.0F, 0.0F, -2.0F, 6.0F, 2.0F, 5.0F, 0.0F, true);

@@ -31,61 +31,61 @@ public class ModelEndergrade extends AdvancedEntityModel<EntityEndergrade> {
 		texWidth = 64;
 		texHeight = 64;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		bodymain = new AdvancedModelBox(this);
+		bodymain = new AdvancedModelBox(this, "bodymain");
 		bodymain.setPos(0.0F, -9.0F, -1.0F);
 		root.addChild(bodymain);
 		bodymain.setTextureOffset(0, 0).addBox(-4.5F, -3.5F, 0.0F, 9.0F, 9.0F, 10.0F, 0.0F, false);
 
-		legbackL = new AdvancedModelBox(this);
+		legbackL = new AdvancedModelBox(this, "legbackL");
 		legbackL.setPos(3.5F, 3.5F, 7.0F);
 		bodymain.addChild(legbackL);
 		legbackL.setTextureOffset(11, 45).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
-		legbackR = new AdvancedModelBox(this);
+		legbackR = new AdvancedModelBox(this, "legbackR");
 		legbackR.setPos(-3.5F, 3.5F, 7.0F);
 		bodymain.addChild(legbackR);
 		legbackR.setTextureOffset(11, 45).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
-		legmidL = new AdvancedModelBox(this);
+		legmidL = new AdvancedModelBox(this, "legmidL");
 		legmidL.setPos(3.5F, 3.5F, 1.0F);
 		bodymain.addChild(legmidL);
 		legmidL.setTextureOffset(39, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
-		legmidR = new AdvancedModelBox(this);
+		legmidR = new AdvancedModelBox(this, "legmidR");
 		legmidR.setPos(-3.5F, 3.5F, 1.0F);
 		bodymain.addChild(legmidR);
 		legmidR.setTextureOffset(39, 0).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
-		bodyfront = new AdvancedModelBox(this);
+		bodyfront = new AdvancedModelBox(this, "bodyfront");
 		bodyfront.setPos(0.0F, 0.5F, 0.0F);
 		bodymain.addChild(bodyfront);
 		bodyfront.setTextureOffset(25, 29).addBox(-4.0F, -3.5F, -8.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setPos(0.0F, -0.5F, -8.0F);
 		bodyfront.addChild(head);
 		head.setTextureOffset(35, 16).addBox(-3.0F, -2.0F, -4.0F, 6.0F, 6.0F, 4.0F, 0.0F, false);
 
-		mouth = new AdvancedModelBox(this);
+		mouth = new AdvancedModelBox(this, "mouth");
 		mouth.setPos(0.0F, 1.5F, -4.5F);
 		head.addChild(mouth);
 		mouth.setTextureOffset(26, 46).addBox(-1.5F, -1.5F, -2.5F, 3.0F, 3.0F, 3.0F, 0.0F, false);
 
-		legfrontL = new AdvancedModelBox(this);
+		legfrontL = new AdvancedModelBox(this, "legfrontL");
 		legfrontL.setPos(3.5F, 3.0F, -5.0F);
 		bodyfront.addChild(legfrontL);
 		legfrontL.setTextureOffset(0, 37).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, false);
 
-		legfrontR = new AdvancedModelBox(this);
+		legfrontR = new AdvancedModelBox(this, "legfrontR");
 		legfrontR.setPos(-3.5F, 3.0F, -5.0F);
 		bodyfront.addChild(legfrontR);
 		legfrontR.setTextureOffset(0, 37).addBox(-1.5F, -1.5F, -2.0F, 3.0F, 7.0F, 4.0F, 0.0F, true);
 
-		tail = new AdvancedModelBox(this);
+		tail = new AdvancedModelBox(this, "tail");
 		tail.setPos(0.5F, -1.0F, 9.9F);
 		bodymain.addChild(tail);
 		setRotationAngle(tail, -0.1745F, 0.0F, 0.0F);

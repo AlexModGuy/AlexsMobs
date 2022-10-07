@@ -33,92 +33,92 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -3.0F, 0.0F);
         root.addChild(body);
         body.setTextureOffset(30, 24).addBox(-3.0F, -2.0F, -4.0F, 6.0F, 4.0F, 7.0F, 0.0F, false);
 
-        leftEye = new AdvancedModelBox(this);
+        leftEye = new AdvancedModelBox(this, "leftEye");
         leftEye.setRotationPoint(2.0F, -2.0F, -2.5F);
         body.addChild(leftEye);
         leftEye.setTextureOffset(35, 18).addBox(-1.0F, -1.0F, -1.5F, 2.0F, 1.0F, 3.0F, 0.0F, false);
 
-        leftEyeSpike = new AdvancedModelBox(this);
+        leftEyeSpike = new AdvancedModelBox(this, "leftEyeSpike");
         leftEyeSpike.setRotationPoint(-1.0F, -1.0F, -1.5F);
         leftEye.addChild(leftEyeSpike);
         leftEyeSpike.setTextureOffset(0, 0).addBox(0.0F, -4.0F, 0.0F, 0.0F, 4.0F, 2.0F, 0.0F, false);
 
-        rightEye = new AdvancedModelBox(this);
+        rightEye = new AdvancedModelBox(this, "rightEye");
         rightEye.setRotationPoint(-2.0F, -2.0F, -2.5F);
         body.addChild(rightEye);
         rightEye.setTextureOffset(35, 18).addBox(-1.0F, -1.0F, -1.5F, 2.0F, 1.0F, 3.0F, 0.0F, true);
 
-        rightEyeSpike = new AdvancedModelBox(this);
+        rightEyeSpike = new AdvancedModelBox(this, "rightEyeSpike");
         rightEyeSpike.setRotationPoint(1.0F, -1.0F, -1.5F);
         rightEye.addChild(rightEyeSpike);
         rightEyeSpike.setTextureOffset(0, 0).addBox(0.0F, -4.0F, 0.0F, 0.0F, 4.0F, 2.0F, 0.0F, true);
 
-        leftFrontArm1 = new AdvancedModelBox(this);
+        leftFrontArm1 = new AdvancedModelBox(this, "leftFrontArm1");
         leftFrontArm1.setRotationPoint(2.0F, 2.0F, -4.0F);
         setRotationAngle(leftFrontArm1, 0.0F, 0.6109F, 0.0F);
         leftFrontArm1.setTextureOffset(26, 0).addBox(-1.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, false);
         leftFrontArm1.setTextureOffset(35, 11).addBox(11.0F, -4.0F, -1.0F, 4.0F, 3.0F, 2.0F, 0.0F, false);
 
-        rightFrontArm1 = new AdvancedModelBox(this);
+        rightFrontArm1 = new AdvancedModelBox(this, "rightFrontArm1");
         rightFrontArm1.setRotationPoint(-2.0F, 2.0F, -4.0F);
         setRotationAngle(rightFrontArm1, 0.0F, -0.6109F, 0.0F);
         rightFrontArm1.setTextureOffset(26, 0).addBox(-15.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, true);
         rightFrontArm1.setTextureOffset(35, 11).addBox(-15.0F, -4.0F, -1.0F, 4.0F, 3.0F, 2.0F, 0.0F, true);
 
-        leftFrontArm2 = new AdvancedModelBox(this);
+        leftFrontArm2 = new AdvancedModelBox(this, "leftFrontArm2");
         leftFrontArm2.setRotationPoint(2.0F, 2.0F, -2.3F);
         setRotationAngle(leftFrontArm2, 0.0F, 0.3054F, 0.0F);
         leftFrontArm2.setTextureOffset(0, 26).addBox(-1.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, false);
         leftFrontArm2.setTextureOffset(35, 5).addBox(11.0F, -4.0F, -1.0F, 4.0F, 3.0F, 2.0F, 0.0F, false);
 
-        rightFrontArm2 = new AdvancedModelBox(this);
+        rightFrontArm2 = new AdvancedModelBox(this, "rightFrontArm2");
         rightFrontArm2.setRotationPoint(-2.0F, 2.0F, -2.3F);
         setRotationAngle(rightFrontArm2, 0.0F, -0.3054F, 0.0F);
         rightFrontArm2.setTextureOffset(0, 26).addBox(-15.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, true);
         rightFrontArm2.setTextureOffset(35, 5).addBox(-15.0F, -4.0F, -1.0F, 4.0F, 3.0F, 2.0F, 0.0F, true);
 
-        creeperPivots1 = new AdvancedModelBox(this);
-        creeperPivots2 = new AdvancedModelBox(this);
-        creeperPivots3 = new AdvancedModelBox(this);
-        creeperPivots4 = new AdvancedModelBox(this);
+        creeperPivots1 = new AdvancedModelBox(this, "creeperPivots1");
+        creeperPivots2 = new AdvancedModelBox(this, "creeperPivots2");
+        creeperPivots3 = new AdvancedModelBox(this, "creeperPivots3");
+        creeperPivots4 = new AdvancedModelBox(this, "creeperPivots4");
         body.addChild(creeperPivots1);
         body.addChild(creeperPivots2);
         body.addChild(creeperPivots3);
         body.addChild(creeperPivots4);
 
-        leftBackArm1 = new AdvancedModelBox(this);
+        leftBackArm1 = new AdvancedModelBox(this, "leftBackArm1");
         leftBackArm1.setRotationPoint(2.0F, 2.0F, -1.0F);
         setRotationAngle(leftBackArm1, 0.0F, -0.2182F, 0.0F);
         leftBackArm1.setTextureOffset(0, 21).addBox(-1.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, false);
         leftBackArm1.setTextureOffset(13, 31).addBox(11.0F, -4.0F, -1.0F, 4.0F, 3.0F, 2.0F, 0.0F, false);
 
-        rightBackArm1 = new AdvancedModelBox(this);
+        rightBackArm1 = new AdvancedModelBox(this, "rightBackArm1");
         rightBackArm1.setRotationPoint(-2.0F, 2.0F, -1.0F);
         setRotationAngle(rightBackArm1, 0.0F, 0.2182F, 0.0F);
         rightBackArm1.setTextureOffset(0, 21).addBox(-15.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, true);
         rightBackArm1.setTextureOffset(13, 31).addBox(-15.0F, -4.0F, -1.0F, 4.0F, 3.0F, 2.0F, 0.0F, true);
 
-        leftBackArm2 = new AdvancedModelBox(this);
+        leftBackArm2 = new AdvancedModelBox(this, "leftBackArm2");
         leftBackArm2.setRotationPoint(2.0F, 2.0F, 1.0F);
         setRotationAngle(leftBackArm2, 0.0F, -0.6981F, 0.0F);
         leftBackArm2.setTextureOffset(0, 16).addBox(-1.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, false);
         leftBackArm2.setTextureOffset(0, 31).addBox(11.0F, -4.0F, -1.0F, 4.0F, 3.0F, 2.0F, 0.0F, false);
 
-        rightBackArm2 = new AdvancedModelBox(this);
+        rightBackArm2 = new AdvancedModelBox(this, "rightBackArm2");
         rightBackArm2.setRotationPoint(-2.0F, 2.0F, 1.0F);
         setRotationAngle(rightBackArm2, 0.0F, 0.6981F, 0.0F);
         rightBackArm2.setTextureOffset(0, 16).addBox(-15.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, true);
         rightBackArm2.setTextureOffset(0, 31).addBox(-15.0F, -4.0F, -1.0F, 4.0F, 3.0F, 2.0F, 0.0F, true);
 
-        mantle = new AdvancedModelBox(this);
+        mantle = new AdvancedModelBox(this, "mantle");
         mantle.setRotationPoint(0.0F, -1.0F, 2.0F);
         body.addChild(mantle);
         mantle.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -2.0F, 8.0F, 6.0F, 9.0F, 0.0F, false);

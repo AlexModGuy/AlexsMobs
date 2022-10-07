@@ -34,73 +34,73 @@ public class ModelKomodoDragon extends AdvancedEntityModel<EntityKomodoDragon> {
 		texHeight = 128;
 		texWidth = 128;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setRotationPoint(0.0F, -11.0F, -1.0F);
 		root.addChild(body);
 		body.setTextureOffset(0, 0).addBox(-5.0F, -4.0F, -11.0F, 10.0F, 9.0F, 23.0F, scale, false);
-		neck = new AdvancedModelBox(this);
+		neck = new AdvancedModelBox(this, "neck");
 		neck.setRotationPoint(0.0F, -1.0F, -10.0F);
 		body.addChild(neck);
 		neck.setTextureOffset(0, 60).addBox(-3.5F, -3.0F, -7.0F, 7.0F, 7.0F, 6.0F, scale, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setRotationPoint(0.0F, -1.0F, -7.0F);
 		neck.addChild(head);
 		head.setTextureOffset(44, 0).addBox(-3.5F, -2.0F, -10.0F, 7.0F, 5.0F, 10.0F, scale, false);
 
-		tongue = new AdvancedModelBox(this);
+		tongue = new AdvancedModelBox(this, "tongue");
 		tongue.setRotationPoint(0.0F, 1.0F, -10.0F);
 		head.addChild(tongue);
 		tongue.setTextureOffset(60, 26).addBox(-1.5F, 0.0F, -7.0F, 3.0F, 0.0F, 7.0F, scale, false);
 
-		tail1 = new AdvancedModelBox(this);
+		tail1 = new AdvancedModelBox(this, "tail1");
 		tail1.setRotationPoint(0.0F, -1.0F, 11.0F);
 		body.addChild(tail1);
 		tail1.setTextureOffset(0, 33).addBox(-3.0F, -2.0F, 1.0F, 6.0F, 6.0F, 20.0F, scale, false);
 
-		tail2 = new AdvancedModelBox(this);
+		tail2 = new AdvancedModelBox(this, "tail2");
 		tail2.setRotationPoint(0.0F, 1.0F, 20.0F);
 		tail1.addChild(tail2);
 		tail2.setTextureOffset(35, 42).addBox(-1.5F, -2.0F, 1.0F, 3.0F, 4.0F, 18.0F, scale, false);
 
-		left_shoulder = new AdvancedModelBox(this);
+		left_shoulder = new AdvancedModelBox(this, "left_shoulder");
 		left_shoulder.setRotationPoint(1.5F, 2.0F, -5.5F);
 		body.addChild(left_shoulder);
 
-		left_arm = new AdvancedModelBox(this);
+		left_arm = new AdvancedModelBox(this, "left_arm");
 		left_arm.setRotationPoint(4.5F, 0.0F, -0.5F);
 		left_shoulder.addChild(left_arm);
 		left_arm.setTextureOffset(0, 33).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 12.0F, 4.0F, scale, false);
 		left_arm.setTextureOffset(57, 34).addBox(-4.0F, 8.99F, -5.0F, 8.0F, 0.0F, 7.0F, scale, false);
 
-		right_shoulder = new AdvancedModelBox(this);
+		right_shoulder = new AdvancedModelBox(this, "right_shoulder");
 		right_shoulder.setRotationPoint(-1.5F, 2.0F, -5.5F);
 		body.addChild(right_shoulder);
 
-		right_arm = new AdvancedModelBox(this);
+		right_arm = new AdvancedModelBox(this, "right_arm");
 		right_arm.setRotationPoint(-4.5F, 0.0F, -0.5F);
 		right_shoulder.addChild(right_arm);
 		right_arm.setTextureOffset(0, 33).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 12.0F, 4.0F, scale, true);
 		right_arm.setTextureOffset(57, 34).addBox(-4.0F, 8.99F, -5.0F, 8.0F, 0.0F, 7.0F, scale, true);
 
-		left_hip = new AdvancedModelBox(this);
+		left_hip = new AdvancedModelBox(this, "left_hip");
 		left_hip.setRotationPoint(1.5F, 2.0F, 7.5F);
 		body.addChild(left_hip);
 
-		left_leg = new AdvancedModelBox(this);
+		left_leg = new AdvancedModelBox(this, "left_leg");
 		left_leg.setRotationPoint(2.5F, 0.0F, 0.5F);
 		left_hip.addChild(left_leg);
 		left_leg.setTextureOffset(0, 0).addBox(-1.0F, -3.0F, -2.0F, 4.0F, 12.0F, 5.0F, scale, false);
 		left_leg.setTextureOffset(33, 33).addBox(-3.0F, 8.99F, -5.0F, 8.0F, 0.0F, 7.0F, scale, false);
 
-		right_hip = new AdvancedModelBox(this);
+		right_hip = new AdvancedModelBox(this, "right_hip");
 		right_hip.setRotationPoint(-1.5F, 2.0F, 7.5F);
 		body.addChild(right_hip);
 
-		right_leg = new AdvancedModelBox(this);
+		right_leg = new AdvancedModelBox(this, "right_leg");
 		right_leg.setRotationPoint(-2.5F, 0.0F, 0.5F);
 		right_hip.addChild(right_leg);
 		right_leg.setTextureOffset(0, 0).addBox(-3.0F, -3.0F, -2.0F, 4.0F, 12.0F, 5.0F, scale, true);

@@ -33,76 +33,76 @@ public class ModelSoulVulture extends AdvancedEntityModel<EntitySoulVulture> {
 		texWidth = 64;
 		texHeight = 64;
 
-		root = new AdvancedModelBox(this);
+		root = new AdvancedModelBox(this, "root");
 		root.setPos(0.0F, 24.0F, 0.0F);
 		
 
-		body = new AdvancedModelBox(this);
+		body = new AdvancedModelBox(this, "body");
 		body.setPos(0.0F, -12.0F, 3.5F);
 		root.addChild(body);
 		setRotationAngle(body, -0.4363F, 0.0F, 0.0F);
 		body.setTextureOffset(0, 0).addBox(-4.0F, -4.0F, -10.5F, 8.0F, 8.0F, 17.0F, 0.0F, false);
 
-		heart = new AdvancedModelBox(this);
+		heart = new AdvancedModelBox(this, "heart");
 		heart.setPos(0.0F, 0.0F, -1.0F);
 		body.addChild(heart);
 		heart.setTextureOffset(0, 26).addBox(-2.0F, -2.0F, -6.0F, 4.0F, 4.0F, 5.0F, 0.0F, false);
 
-		leg_left = new AdvancedModelBox(this);
+		leg_left = new AdvancedModelBox(this, "leg_left");
 		leg_left.setPos(2.5F, 4.0F, 0.7F);
 		body.addChild(leg_left);
 		setRotationAngle(leg_left, 0.4363F, 0.0F, 0.0F);
 		leg_left.setTextureOffset(23, 26).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 7.0F, 1.0F, 0.0F, false);
 
-		foot_left = new AdvancedModelBox(this);
+		foot_left = new AdvancedModelBox(this, "foot_left");
 		foot_left.setPos(0.0F, 7.0F, -0.4F);
 		leg_left.addChild(foot_left);
 		foot_left.setTextureOffset(49, 27).addBox(-1.5F, 0.0F, -2.6F, 3.0F, 2.0F, 4.0F, 0.0F, false);
 
-		leg_right = new AdvancedModelBox(this);
+		leg_right = new AdvancedModelBox(this, "leg_right");
 		leg_right.setPos(-2.5F, 4.0F, 0.7F);
 		body.addChild(leg_right);
 		setRotationAngle(leg_right, 0.4363F, 0.0F, 0.0F);
 		leg_right.setTextureOffset(23, 26).addBox(-0.5F, 0.0F, -1.0F, 1.0F, 7.0F, 1.0F, 0.0F, true);
 
-		foot_right = new AdvancedModelBox(this);
+		foot_right = new AdvancedModelBox(this, "foot_right");
 		foot_right.setPos(0.0F, 7.0F, -0.4F);
 		leg_right.addChild(foot_right);
 		foot_right.setTextureOffset(49, 27).addBox(-1.5F, 0.0F, -2.6F, 3.0F, 2.0F, 4.0F, 0.0F, true);
 
-		wing_left = new AdvancedModelBox(this);
+		wing_left = new AdvancedModelBox(this, "wing_left");
 		wing_left.setPos(4.0F, -3.0F, -10.0F);
 		body.addChild(wing_left);
 		wing_left.setTextureOffset(5, 31).addBox(0.0F, -1.0F, -0.5F, 1.0F, 9.0F, 24.0F, 0.0F, false);
 
-		wing_right = new AdvancedModelBox(this);
+		wing_right = new AdvancedModelBox(this, "wing_right");
 		wing_right.setPos(-4.0F, -3.0F, -10.0F);
 		body.addChild(wing_right);
 		wing_right.setTextureOffset(5, 31).addBox(-1.0F, -1.0F, -0.5F, 1.0F, 9.0F, 24.0F, 0.0F, true);
 
-		neck1 = new AdvancedModelBox(this);
+		neck1 = new AdvancedModelBox(this, "neck1");
 		neck1.setPos(0.0F, -1.0F, -10.5F);
 		body.addChild(neck1);
 		setRotationAngle(neck1, 1.1345F, 0.0F, 0.0F);
 		neck1.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -5.0F, 2.0F, 2.0F, 6.0F, 0.0F, false);
 
-		neck2 = new AdvancedModelBox(this);
+		neck2 = new AdvancedModelBox(this, "neck2");
 		neck2.setPos(0.0F, -1.0F, -3.0F);
 		neck1.addChild(neck2);
 		neck2.setTextureOffset(34, 0).addBox(-1.0F, -4.0F, -2.0F, 2.0F, 4.0F, 2.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this);
+		head = new AdvancedModelBox(this, "head");
 		head.setPos(0.0F, -4.0F, -1.5F);
 		neck2.addChild(head);
 		setRotationAngle(head, -0.6981F, 0.0F, 0.0F);
 		head.setTextureOffset(0, 9).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
 
-		beak = new AdvancedModelBox(this);
+		beak = new AdvancedModelBox(this, "beak");
 		beak.setPos(0.0F, -1.4F, -2.0F);
 		head.addChild(beak);
 		beak.setTextureOffset(32, 32).addBox(-1.0F, -1.0F, -4.0F, 2.0F, 2.0F, 4.0F, 0.0F, false);
 
-		tail = new AdvancedModelBox(this);
+		tail = new AdvancedModelBox(this, "tail");
 		tail.setPos(0.0F, -3.0F, 6.5F);
 		body.addChild(tail);
 		setRotationAngle(tail, 0.0436F, 0.0F, 0.0F);

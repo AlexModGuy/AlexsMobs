@@ -24,52 +24,52 @@ public class ModelTransmutationTable extends AdvancedEntityModel<Entity> {
         texWidth = 64;
         texHeight = 64;
 
-        base = new AdvancedModelBox(this);
+        base = new AdvancedModelBox(this, "base");
         base.setRotationPoint(0.0F, 24.0F, 0.0F);
         base.setTextureOffset(0, 0).addBox(-7.0F, -5.0F, -7.0F, 14.0F, 5.0F, 14.0F, scale, false);
 
-        star = new AdvancedModelBox(this);
+        star = new AdvancedModelBox(this, "star");
         star.setRotationPoint(0.0F, -12.5F, 0.0F);
         base.addChild(star);
         star.setTextureOffset(0, 20).addBox(-2.5F, -2.5F, -2.5F, 5.0F, 5.0F, 5.0F, scale, false);
 
-        portal = new AdvancedModelBox(this);
+        portal = new AdvancedModelBox(this, "portal");
         portal.setRotationPoint(0.0F, -12.5F, 0.0F);
         base.addChild(portal);
         portal.setTextureOffset(21, 20).addBox(-4.1F, -4.5F, 0.0F, 9.0F, 9.0F, 0.0F, scale, false);
 
-        leftArm = new AdvancedModelBox(this);
+        leftArm = new AdvancedModelBox(this, "leftArm");
         leftArm.setRotationPoint(6.6F, -3.3F, 0.0F);
         base.addChild(leftArm);
         setRotationAngle(leftArm, 0.0F, 0.0F, 0.3054F);
         leftArm.setTextureOffset(13, 39).addBox(-1.0F, -6.0F, -1.0F, 2.0F, 7.0F, 2.0F, scale, false);
 
-        leftElbow = new AdvancedModelBox(this);
+        leftElbow = new AdvancedModelBox(this, "leftElbow");
         leftElbow.setRotationPoint(-1.0F, -6.0F, 0.0F);
         leftArm.addChild(leftElbow);
         setRotationAngle(leftElbow, 0.0F, 0.0F, 0.4363F);
         leftElbow.setTextureOffset(0, 36).addBox(-3.0F, -2.0F, -1.0F, 5.0F, 2.0F, 2.0F, scale -0.1F, false);
 
-        leftHand = new AdvancedModelBox(this);
+        leftHand = new AdvancedModelBox(this, "leftHand");
         leftHand.setRotationPoint(-3.8F, -0.8F, 0.0F);
         leftElbow.addChild(leftHand);
         setRotationAngle(leftHand, 0.0F, 0.0F, -0.7418F);
         leftHand.setTextureOffset(31, 39).addBox(-1.0F, -3.0F, -1.0F, 2.0F, 6.0F, 2.0F, scale, false);
         leftHand.setTextureOffset(32, 30).addBox(-1.0F, -1.0F, -3.0F, 2.0F, 2.0F, 6.0F, scale, false);
 
-        rightArm = new AdvancedModelBox(this);
+        rightArm = new AdvancedModelBox(this, "rightArm");
         rightArm.setRotationPoint(-6.6F, -3.3F, 0.0F);
         base.addChild(rightArm);
         setRotationAngle(rightArm, 0.0F, 0.0F, -0.3054F);
         rightArm.setTextureOffset(13, 39).addBox(-1.0F, -6.0F, -1.0F, 2.0F, 7.0F, 2.0F, scale, true);
 
-        rightElbow = new AdvancedModelBox(this);
+        rightElbow = new AdvancedModelBox(this, "rightElbow");
         rightElbow.setRotationPoint(1.0F, -6.0F, 0.0F);
         rightArm.addChild(rightElbow);
         setRotationAngle(rightElbow, 0.0F, 0.0F, -0.4363F);
         rightElbow.setTextureOffset(0, 36).addBox(-2.0F, -2.0F, -1.0F, 5.0F, 2.0F, 2.0F, scale -0.1F, true);
 
-        rightHand = new AdvancedModelBox(this);
+        rightHand = new AdvancedModelBox(this, "rightHand");
         rightHand.setRotationPoint(3.8F, -0.8F, 0.0F);
         rightElbow.addChild(rightHand);
         setRotationAngle(rightHand, 0.0F, 0.0F, 0.7418F);
