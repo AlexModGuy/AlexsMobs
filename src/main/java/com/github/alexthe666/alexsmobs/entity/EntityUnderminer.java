@@ -257,10 +257,10 @@ public class EntityUnderminer extends PathfinderMob {
         RandomSource randomsource = level.getRandom();
         this.populateDefaultEquipmentSlots(randomsource, difficultyInstance);
         if(random.nextFloat() < 0.3F){
+            this.setVariant(random.nextInt(2));
             this.setDwarf(false);
         }else{
             this.setDwarf(true);
-            this.setVariant(random.nextInt(2));
         }
         return spawnData;
     }
