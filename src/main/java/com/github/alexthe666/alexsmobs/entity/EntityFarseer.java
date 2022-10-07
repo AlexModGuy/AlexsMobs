@@ -582,6 +582,11 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
     }
 
+
+    private boolean canUseLaser() {
+        return !this.hasEffect(MobEffects.BLINDNESS);
+    }
+
     private class AttackGoal extends Goal {
 
         private boolean attackDecision = true;
@@ -674,7 +679,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
         private boolean willLaserHit(LivingEntity target) {
             Vec3 vec = EntityFarseer.this.calculateLaserHit(target.getEyePosition());
-            return vec.distanceTo(target.getEyePosition()) < 1F;
+            return vec.distanceTo(target.getEyePosition()) < 1F && EntityFarseer.this.canUseLaser();
         }
     }
 
