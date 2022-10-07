@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraftforge.common.data.ForgeBiomeTagsProvider;
 
 public class AMTagRegistry {
@@ -102,6 +103,8 @@ public class AMTagRegistry {
     public static final TagKey<Biome> SPAWNS_WHITE_MANTIS_SHRIMP = registerBiomeTag("spawns_white_mantis_shrimp");
     public static final TagKey<Biome> SKREECHERS_CAN_SPAWN_WARDENS = registerBiomeTag("skreechers_can_spawn_wardens");
 
+    public static final TagKey<Structure> SPAWNS_UNDERMINERS = registerBiomeTag("spawns_underminers");
+
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
         return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
     }
@@ -116,5 +119,9 @@ public class AMTagRegistry {
 
     private static TagKey<Biome> registerBiomeTag(String name) {
         return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
+    }
+
+    private static TagKey<Structure> registerStructureTag(String name) {
+        return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
     }
 }

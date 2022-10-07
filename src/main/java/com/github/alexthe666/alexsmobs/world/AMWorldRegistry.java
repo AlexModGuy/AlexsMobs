@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.config.BiomeConfig;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -35,7 +36,7 @@ public class AMWorldRegistry {
         if (structure.is(BuiltinStructures.SHIPWRECK) && AMConfig.restrictSkelewagSpawns && AMConfig.skelewagSpawnWeight > 0) {
             builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.MONSTER).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.SKELEWAG.get(), AMConfig.skelewagSpawnWeight, 1, 2));
         }
-        if (structure.is(StructureTags.MINESHAFT) && AMConfig.restrictUnderminerSpawns && AMConfig.underminerSpawnWeight > 0) {
+        if (structure.is(AMTagRegistry.SPAWNS_UNDERMINERS) && AMConfig.restrictUnderminerSpawns && AMConfig.underminerSpawnWeight > 0) {
             builder.getStructureSettings().getOrAddSpawnOverrides(MobCategory.AMBIENT).addSpawn(new MobSpawnSettings.SpawnerData(AMEntityRegistry.UNDERMINER.get(), AMConfig.underminerSpawnWeight, 1, 1));
         }
     }
