@@ -1,6 +1,22 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Lobsters are small, aquatic crustaceans that can be found underwater in beach biomes. If attacked, lobsters can pinch any
- aggressive mob nearby, but will not pursue or chase them. Although most commonly red, lobsters can also come in other, rarer colors.
- If slain, Lobsters occasionally drop their delicious tails, which can be cooked. They can also be bucketed like any species of fish.
+    龙虾是小型的水生甲壳纲动物，在
+<NEWLINE>
+沙滩生物群系的水下可以发现。如果受
+<NEWLINE>
+到攻击，龙虾会掐住附近任何来侵略的
+<NEWLINE>
+生物，但不会去追逐侵略者。虽然说红
+<NEWLINE>
+色是龙虾最常见的颜色，但是也会有着
+<NEWLINE>
+其他更稀有的颜色。
+<NEWLINE>
+    在龙虾被杀死之后，会有机会掉落
+<NEWLINE>
+它们那美味的尾巴，龙虾尾可以用来烧
+<NEWLINE>
+制。它们和其他种类的鱼一样，也可以
+<NEWLINE>
+被装进桶里。
