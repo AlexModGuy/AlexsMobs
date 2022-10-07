@@ -1,0 +1,17 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Krzykacz jest dziwnym, ohydnie zmutowanym naczelnym, którego można znaleźć trzymającego się sufitu w mrocznej głębii.
+Ponieważ jego rodzimy biom jest tak ciemny, często można go dostrzec przez jego gigantyczne, świecące ślepia.
+<NEWLINE>
+Chociaż Krzykacz jest uważany za wrogiego potwora, nie potrafi walczyć w typowy sposób. Zamiast tego, gdy wykryje ofiarę, zacznie robić niezwykle głośny rumor, zarówno poprzez wycie, jak i klaskanie swoimi dwiema wielkimi stopami.
+W ciągu kilku sekund tak głośny hałas w tak wrażliwym na dźwięki biomie z pewnością obudzi strażnika tuż pod jego celem.
+<NEWLINE>
+Na szczęście dla poszukiwaczy przygód, Krzykacz ma bardzo ograniczone zdrowie, a każdy pocisk może tymczasowo uniemożliwić mu wezwanie strażnika - wraz z wysłaniem go w kierunku ziemi.
+Najtrudniejszą częścią walki z tymi bestiami jest zauważenie ich, zanim one zauważą ciebie.
+<NEWLINE>
+Jeśli Krzykacz zostanie zabity, ma szansę upuścić swoją duszę. Dusza Krzykacz może zostać użyta do stworzenia Skulkowy Ka-Boom.
+<NEWLINE>
+<NEWLINE>
+Po aktywacji przez pobliski skulkowy czujnik, ten blok będzie emitował głośne bum, które może zniszczyć pobliskie stwory znajdujące się w odległości 3 poziomych bloków od Ka-Booma. Można go tymczasowo wyłączyć za pomocą sygnału redstone, a same bumy mają niewielki czas odnowienia, co sprawia, że Skulkowy Ka-Boom jest przydatny do pułapek.

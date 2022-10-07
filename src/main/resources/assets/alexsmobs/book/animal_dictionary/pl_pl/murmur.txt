@@ -1,0 +1,20 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Murmur jest udręczoną duszą, którą można znaleźć tylko w głębiach overworld, nawet głębiej niż skolopendry.
+To, co wydaje się być nieszkodliwą osobą, jest w rzeczywistości nieumarłym potworem z wężową szyją, którą może sięgnąć dalej niż 50 bloków.
+Kiedy Murmur zauważy ofiarę, wysuwa szyję do góry, aby się jej dobrze przyjrzeć, a następnie szybko sięga się do przodu, aby ugryźć ofiarę i szybko się wycofać.
+Jeśli Murmur zostanie trafiony w głowę, a nie w ciało, otrzyma tylko połowę obrażeń.
+<NEWLINE>
+Jeśli zostanie zabity, Murmur może upuścić czerwoną wełnę, Elastyczne Ścięgno lub, rzadko, Niepokojące Kimono.
+Elastyczne ścięgna można połączyć z Pazurami Spadającego Niedźwiedzia, aby stworzyć Ścięgnisty Bicz.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Ta broń do walki wręcz o średnim zasięgu może być wymachiwana jak miecz i zadaje obrażenia maksymalnie trzem pobliskim stworom, przy czym obrażenia maleją z każdym kolejnym celem. Można go używać z odległości ponad 8 bloków i automatycznie znajduje cel.
+Bicz można naprawić za pomocą elastycznych ścięgien.
+<NEWLINE>
+Niepokojące Kimono może działać jako napierśnik. Mimo że ma niski pancerz i wytrzymałość, zwiększa dystans stawiania bloków noszącego o dwa bloki i sprawia, że większość nieumarłych wrogich mobów jest obojętna na ich obecność - z wyjątkiem innych murmurów i Withera.
+Można je naprawić za pomocą wełny.
