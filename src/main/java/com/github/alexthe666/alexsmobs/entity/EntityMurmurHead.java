@@ -392,13 +392,13 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
                 Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.05D / d0);
                 parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d1.add(strafPlus.scale(0.003D * Math.min(d0, 100)).add(shimmy))));
 
-                if (parentEntity.getTarget() == null && d0 >= width) {
+                if (attackTarget == null && d0 >= width) {
                     Vec3 deltaMovement = parentEntity.getDeltaMovement();
                     parentEntity.setYRot(-((float) Mth.atan2(deltaMovement.x, deltaMovement.z)) * (180F / (float) Math.PI));
                     parentEntity.yBodyRot = parentEntity.getYRot();
                 } else {
-                    double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
-                    double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
+                    double d2 = attackTarget.getX() - parentEntity.getX();
+                    double d1 = attackTarget.getZ() - parentEntity.getZ();
                     parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
                     parentEntity.yBodyRot = parentEntity.getYRot();
                 }
