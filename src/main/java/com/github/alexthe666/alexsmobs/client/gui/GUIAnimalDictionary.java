@@ -17,7 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class GUIAnimalDictionary extends GuiBasicBook {
 
-
     private static final ResourceLocation ROOT = new ResourceLocation("alexsmobs:book/animal_dictionary/root.json");
 
     public GUIAnimalDictionary(ItemStack bookStack) {
