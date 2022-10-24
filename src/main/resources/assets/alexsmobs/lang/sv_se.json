@@ -993,4 +993,14 @@
   "advancements.alexsmobs.transmutation_table.desc": "Tillverka en transformationsbord för att omvandla material till nästan vad som helst",
   "advancements.alexsmobs.transmute_10000_items.title": "Ej motsvarande utbyte",
   "advancements.alexsmobs.transmute_10000_items.desc": "Transmutera över 10000 föremål med samma transmutationstabell"
+  "advancements.alexsmobs.underminer.title": "Vem arbetar så grymt?",
+  "advancements.alexsmobs.underminer.desc": "Bryt blocket som en grymarbetare hackar, och avslöja en gömd malm",
+  "advancements.alexsmobs.ghostly_pickaxe.title": "Spöke! Spöke! Rökte?",
+  "advancements.alexsmobs.ghostly_pickaxe.desc": "Skaffa en spöklik hacka från en grymarbetare.",
+  "advancements.alexsmobs.skreecher.title": "Sculk cymbal",
+  "advancements.alexsmobs.skreecher.desc": "Möt på en bäva, ett högljutt och motbjudande sculkmonster.",
+  "advancements.alexsmobs.sculk_boomer.title": "Ok boomer",
+  "advancements.alexsmobs.sculk_boomer.desc": "Tillverka en sculk boomer med själar av ett fåtal bävar.",
+  "advancements.alexsmobs.murmur.title": "Flexibelt schema",
+  "advancements.alexsmobs.murmur.desc": "Möt på en mumla, vilket inte är som det verkar."
 }
