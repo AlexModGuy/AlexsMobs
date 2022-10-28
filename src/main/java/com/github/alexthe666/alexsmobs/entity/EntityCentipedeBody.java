@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -44,9 +45,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     public EntityDimensions multipartSize;
     protected float radius;
     protected float angleYaw;
-    protected float offsetY;
     protected float damageMultiplier = 1;
-    private float parentYaw = 0;
     private double prevHeight = 0;
     protected EntityCentipedeBody(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -77,20 +76,20 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         isInsidePortal = false;
         this.setDeltaMovement(Vec3.ZERO);
         if (this.tickCount > 1) {
-            Entity parent = getParent();
+            final Entity parent = getParent();
             refreshDimensions();
             if (parent != null && !level.isClientSide) {
-                if (parent instanceof LivingEntity) {
-                    if (!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)) {
+                if (parent instanceof final LivingEntity parentEntity) {
+                    if ((parentEntity.hurtTime > 0 || parentEntity.deathTime > 0)) {
                         AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), 0));
-                        this.hurtTime = ((LivingEntity) parent).hurtTime;
-                        this.deathTime = ((LivingEntity) parent).deathTime;
+                        this.hurtTime = parentEntity.hurtTime;
+                        this.deathTime = parentEntity.deathTime;
                     }
                 }
-                if (parent.isRemoved() && !level.isClientSide) {
+                if (parent.isRemoved()) {
                     this.remove(RemovalReason.DISCARDED);
                 }
-            } else if (tickCount > 20 && !level.isClientSide) {
+            } else if (!level.isClientSide && tickCount > 20) {
                 remove(RemovalReason.DISCARDED);
             }
         }
@@ -136,7 +135,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     }
 
     public Entity getParent() {
-        UUID id = getParentId();
+        final UUID id = getParentId();
         if (id != null && !level.isClientSide) {
             return ((ServerLevel) level).getEntity(id);
         }
@@ -147,9 +146,8 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         this.setParentId(entity.getUUID());
     }
 
-
     public Entity getChild() {
-        UUID id = getChildId();
+        final UUID id = getChildId();
         if (id != null && !level.isClientSide) {
             return ((ServerLevel) level).getEntity(id);
         }
@@ -172,8 +170,8 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
-        Entity parent = getParent();
-        boolean prev = parent != null && parent.hurt(source, damage * this.damageMultiplier);
+        final Entity parent = getParent();
+        final boolean prev = parent != null && parent.hurt(source, damage * this.damageMultiplier);
         if (prev && !level.isClientSide) {
             AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), damage * this.damageMultiplier));
         }
@@ -186,11 +184,10 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     }
 
     public void pushEntities() {
-        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-        Entity parent = this.getParent();
+        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
+        final Entity parent = this.getParent();
         if (parent != null) {
             entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityCentipedeBody) && entity.isPushable()).forEach(entity -> entity.push(parent));
-
         }
     }
 
@@ -223,26 +220,25 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
     }
 
     public Vec3 tickMultipartPosition(int headId, float parentOffset, Vec3 parentPosition, float parentXRot, float ourYRot, boolean doHeight) {
-        float yDif = doHeight ? 1.0F - 0.95F * (float)Math.min(Math.abs(parentPosition.y - this.getY()), 1.0F) : 1F;
-        Vec3 parentFront = parentPosition.add(calcOffsetVec(yDif * parentOffset * this.getScale(), parentXRot, ourYRot));
-        Vec3 parentButt = parentPosition.add(calcOffsetVec(yDif * -parentOffset * this.getScale(), parentXRot, ourYRot));
-        Vec3 ourButt = parentButt.add(calcOffsetVec((yDif * -getBackOffset() - 0.5F * this.getBbWidth()) * this.getScale(), this.getXRot(), ourYRot));
-        Vec3 avg = new Vec3((parentButt.x + ourButt.x) / 2F, (parentButt.y + ourButt.y) / 2F, (parentButt.z + ourButt.z) / 2F);
-        double d0 = parentButt.x - ourButt.x;
-        double d1 = parentButt.y - ourButt.y;
-        double d2 = parentButt.z - ourButt.z;
-        double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-        double hgt = doHeight ? (getLowPartHeight(parentButt.x, parentButt.y, parentButt.z) + getHighPartHeight(ourButt.x, ourButt.y, ourButt.z)) : 0;
+        final float yDif = doHeight ? 1.0F - 0.95F * (float)Math.min(Math.abs(parentPosition.y - this.getY()), 1.0F) : 1F;
+        final Vec3 parentFront = parentPosition.add(calcOffsetVec(yDif * parentOffset * this.getScale(), parentXRot, ourYRot));
+        final Vec3 parentButt = parentPosition.add(calcOffsetVec(yDif * -parentOffset * this.getScale(), parentXRot, ourYRot));
+        final Vec3 ourButt = parentButt.add(calcOffsetVec((yDif * -getBackOffset() - 0.5F * this.getBbWidth()) * this.getScale(), this.getXRot(), ourYRot));
+        final Vec3 avg = new Vec3((parentButt.x + ourButt.x) / 2F, (parentButt.y + ourButt.y) / 2F, (parentButt.z + ourButt.z) / 2F);
+        final double d0 = parentButt.x - ourButt.x;
+        final double d2 = parentButt.z - ourButt.z;
+        final double d3 = Math.sqrt(d0 * d0 + d2 * d2);
+        final double hgt = doHeight ? (getLowPartHeight(parentButt.x, parentButt.y, parentButt.z) + getHighPartHeight(ourButt.x, ourButt.y, ourButt.z)) : 0;
         if(Math.abs(prevHeight - hgt) > 0.2){
             prevHeight = hgt;
         }
         if(!isOpaqueBlockAt(parentFront.x,parentFront.y + 0.4F, parentFront.z) && Math.abs(prevHeight) > 1){
             prevHeight = 0;
         }
-        double partYDest = Mth.clamp(prevHeight, -0.4F, 0.4F);
-        float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
-        float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * (double) (180F / (float) Math.PI))));
-        float f2 = this.limitAngle(this.getXRot(), rawAngle, 10);
+        final double partYDest = Mth.clamp(prevHeight, -0.4F, 0.4F);
+        final float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
+        final float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * Maths.oneEightyDividedByFloatPi)));
+        final float f2 = this.limitAngle(this.getXRot(), rawAngle, 10);
         this.setXRot(f2);
         this.entityData.set(BODY_XROT, f2);
         this.setYRot(f);
@@ -293,11 +289,11 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         if (this.noPhysics) {
             return false;
         } else {
-            float f = 1F;
-            Vec3 vec3 = new Vec3(x, y, z);
-            AABB axisalignedbb = AABB.ofSize(vec3, (double)f, 1.0E-6D, (double)f);
+            final float f = 1F;
+            final Vec3 vec3 = new Vec3(x, y, z);
+            final AABB axisalignedbb = AABB.ofSize(vec3, f, 1.0E-6D, f);
             return this.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
-                BlockPos blockpos = new BlockPos(vec3);
+                final BlockPos blockpos = new BlockPos(vec3);
                 return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
             });
         }

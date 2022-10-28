@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -50,7 +51,7 @@ public class EntityCachalotEcho extends Entity {
         playerLaunched = true;
         this.setGreen(green);
         this.setFasterAnimation(true);
-        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getY() + 1D, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.cos(rot * ((float) Math.PI / 180F)));
+        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.sin(rot * Maths.piDividedBy180), p_i47273_2_.getY() + 1D, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.cos(rot * Maths.piDividedBy180));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -98,51 +99,47 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public void tick() {
-        double yMot = Mth.sqrt((float)(this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z));
-        this.setXRot((float) (Mth.atan2(this.getDeltaMovement().y, yMot) * (double) (180F / (float) Math.PI)));
+        final double yMot = Mth.sqrt((float)(this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z));
+        this.setXRot((float) (Mth.atan2(this.getDeltaMovement().y, yMot) * Maths.oneEightyDividedByFloatPi));
         if (!this.leftOwner) {
             this.leftOwner = this.checkLeftOwner();
         }
         super.tick();
-        Vec3 vector3d = this.getDeltaMovement();
-        HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
-        if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
+        final Vec3 vector3d = this.getDeltaMovement();
+        final HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        if (raytraceresult.getType() != HitResult.Type.MISS) {
             this.onImpact(raytraceresult);
         }
-        Entity shooter = this.getOwner();
-        if(this.isReturning() && shooter instanceof EntityCachalotWhale){
-            EntityCachalotWhale whale = (EntityCachalotWhale)shooter;
+        final Entity shooter = this.getOwner();
+        if (this.isReturning() && shooter instanceof final EntityCachalotWhale whale) {
             if(whale.headPart.distanceTo(this) < whale.headPart.getBbWidth()){
                 remove(RemovalReason.DISCARDED);
                 whale.recieveEcho();
             }
-
         }
-        if(!playerLaunched && !level.isClientSide && !this.isInWaterOrBubble()){
+        if (!playerLaunched && !level.isClientSide && !this.isInWaterOrBubble()) {
             remove(RemovalReason.DISCARDED);
         }
         if (this.tickCount > 100) {
             remove(RemovalReason.DISCARDED);
         }
 
-        double d0 = this.getX() + vector3d.x;
-        double d1 = this.getY() + vector3d.y;
-        double d2 = this.getZ() + vector3d.z;
+        final double d0 = this.getX() + vector3d.x;
+        final double d1 = this.getY() + vector3d.y;
+        final double d2 = this.getZ() + vector3d.z;
 
         this.updateRotation();
-        float f = 0.99F;
-        float f1 = 0.06F;
-        if(playerLaunched){
+        if (playerLaunched) {
             this.noPhysics = true;
         }
         this.setDeltaMovement(vector3d.scale(0.99F));
         this.setNoGravity(true);
         this.setPos(d0, d1, d2);
-        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)) - 90);
+        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * Maths.oneEightyDividedByFloatPi) - 90);
     }
 
     protected void onEntityHit(EntityHitResult result) {
-        Entity entity = this.getOwner();
+        final Entity entity = this.getOwner();
         if (isReturning()) {
             EntityCachalotWhale whale = null;
             if (entity instanceof EntityCachalotWhale) {
@@ -155,12 +152,12 @@ public class EntityCachalotEcho extends Entity {
         } else if (result.getEntity() != entity && !result.getEntity().is(entity)) {
             this.setReturning(true);
             if (entity instanceof EntityCachalotWhale) {
-                Vec3 vec = ((EntityCachalotWhale) entity).getReturnEchoVector();
-                double d0 = vec.x() - this.getX();
-                double d1 = vec.y() - this.getY();
-                double d2 = vec.z() - this.getZ();
+                final Vec3 vec = ((EntityCachalotWhale) entity).getReturnEchoVector();
+                final double d0 = vec.x() - this.getX();
+                final double d1 = vec.y() - this.getY();
+                final double d2 = vec.z() - this.getZ();
                 this.setDeltaMovement(Vec3.ZERO);
-                EntityCachalotEcho echo = new EntityCachalotEcho(this.level, ((EntityCachalotWhale) entity));
+                final EntityCachalotEcho echo = new EntityCachalotEcho(this.level, ((EntityCachalotWhale) entity));
                 echo.copyPosition(this);
                 this.remove(RemovalReason.DISCARDED);
                 echo.setReturning(true);
@@ -173,7 +170,6 @@ public class EntityCachalotEcho extends Entity {
     }
 
     protected void onHitBlock(BlockHitResult p_230299_1_) {
-        BlockState blockstate = this.level.getBlockState(p_230299_1_.getBlockPos());
         if (!this.level.isClientSide && !playerLaunched) {
             this.remove(RemovalReason.DISCARDED);
         }
@@ -240,11 +236,11 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
+        final Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * 0.0075D * (double) inaccuracy, this.random.nextGaussian() * 0.0075D * (double) inaccuracy, this.random.nextGaussian() * 0.0075D * (double) inaccuracy).scale(velocity);
         this.setDeltaMovement(vector3d);
-        float f = Mth.sqrt((float) horizontalMag(vector3d));
-        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
-        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
+        final float f = Mth.sqrt((float) horizontalMag(vector3d));
+        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * Maths.oneEightyDividedByFloatPi));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * Maths.oneEightyDividedByFloatPi));
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
     }
@@ -254,9 +250,11 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public void shootFromRotation(Entity p_234612_1_, float p_234612_2_, float p_234612_3_, float p_234612_4_, float p_234612_5_, float p_234612_6_) {
-        float f = -Mth.sin(p_234612_3_ * ((float) Math.PI / 180F)) * Mth.cos(p_234612_2_ * ((float) Math.PI / 180F));
-        float f1 = -Mth.sin((p_234612_2_ + p_234612_4_) * ((float) Math.PI / 180F));
-        float f2 = Mth.cos(p_234612_3_ * ((float) Math.PI / 180F)) * Mth.cos(p_234612_2_ * ((float) Math.PI / 180F));
+        final float f3 = p_234612_3_ * Maths.piDividedBy180;
+        final float f0 = Mth.cos(p_234612_2_ * Maths.piDividedBy180);
+        final float f = -Mth.sin(f3) * f0;
+        final float f1 = -Mth.sin((p_234612_2_ + p_234612_4_) * Maths.piDividedBy180);
+        final float f2 = Mth.cos(f3) * f0;
         this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
         Vec3 vector3d = p_234612_1_.getDeltaMovement();
         this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
@@ -282,9 +280,9 @@ public class EntityCachalotEcho extends Entity {
     public void lerpMotion(double x, double y, double z) {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            float f = Mth.sqrt((float)(x * x + z * z));
-            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI)));
-            this.setYRot((float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI)));
+            final float f = Mth.sqrt((float)(x * x + z * z));
+            this.setXRot((float) (Mth.atan2(y, f) * Maths.oneEightyDividedByFloatPi));
+            this.setYRot((float) (Mth.atan2(x, z) * Maths.oneEightyDividedByFloatPi));
             this.xRotO = this.getXRot();
             this.yRotO = this.getYRot();
             this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -310,10 +308,10 @@ public class EntityCachalotEcho extends Entity {
     }
 
     protected void updateRotation() {
-        Vec3 vector3d = this.getDeltaMovement();
-        float f = Mth.sqrt((float)horizontalMag(vector3d));
-        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI))));
-        this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI))));
+        final Vec3 vector3d = this.getDeltaMovement();
+        final float f = Mth.sqrt((float)horizontalMag(vector3d));
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * Maths.oneEightyDividedByFloatPi)));
+        this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * Maths.oneEightyDividedByFloatPi)));
     }
 
     public boolean isGreen() {
