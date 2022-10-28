@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIHurtByTargetNotBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIPanicBaby;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -138,9 +139,9 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SHEARED, Boolean.valueOf(false));
-        this.entityData.define(SNOWY, Boolean.valueOf(false));
-        this.entityData.define(CHARGING, Boolean.valueOf(false));
+        this.entityData.define(SHEARED, false);
+        this.entityData.define(SNOWY, false);
+        this.entityData.define(CHARGING, false);
     }
 
     @Nullable
@@ -203,25 +204,28 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                 this.level.levelEvent(2001, down, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
                 this.level.setBlock(down, Blocks.DIRT.defaultBlockState(), 2);
             }
-            if (isCharging() && !hasChargedSpeed) {
-                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.65F);
-                hasChargedSpeed = true;
+
+            if (isCharging()) {
+                if (!hasChargedSpeed) {
+                    this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.65F);
+                    hasChargedSpeed = true;
+                }
+            } else {
+                if (hasChargedSpeed) {
+                    this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
+                    hasChargedSpeed = false;
+                }
             }
-            if (!isCharging() && hasChargedSpeed) {
-                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
-                hasChargedSpeed = false;
-            }
+
             if (attackTarget != null && attackTarget.isAlive() && this.isAlive()) {
-                double dist = this.distanceTo(attackTarget);
-                if(hasLineOfSight(attackTarget)){
+                final double dist = this.distanceTo(attackTarget);
+                if (hasLineOfSight(attackTarget)) {
                     this.lookAt(attackTarget, 30, 30);
                     this.yBodyRot = this.getYRot();
                 }
                 if (dist < this.getBbWidth() + 3.0F) {
-                    if (this.getAnimation() == NO_ANIMATION) {
-                        this.setAnimation(ANIMATION_ATTACK);
-                    }
-                    if (this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() > 8 && dist < this.getBbWidth() + 1.0F && this.hasLineOfSight(attackTarget)) {
+                    final Animation animation = this.getAnimation();
+                    if (animation == NO_ANIMATION || animation == ANIMATION_ATTACK && this.getAnimationTick() > 8 && dist < this.getBbWidth() + 1.0F && this.hasLineOfSight(attackTarget)) {
                         float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                         if (attackTarget instanceof Wolf) {
                             dmg = 2;
@@ -234,10 +238,8 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                         attackTarget.hurt(DamageSource.mobAttack(this), dmg);
                     }
                 } else if (!this.isCharging()) {
-                    if (this.getAnimation() == NO_ANIMATION) {
-                        this.setAnimation(ANIMATION_PREPARE_CHARGE);
-                    }
-                    if (this.getAnimation() == ANIMATION_PREPARE_CHARGE) {
+                    final Animation animation = this.getAnimation();
+                    if (animation == NO_ANIMATION || animation == ANIMATION_PREPARE_CHARGE) {
                         this.getNavigation().stop();
                         if (this.getAnimationTick() > 30) {
                             this.setCharging(true);
@@ -275,14 +277,14 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     }
 
     private void launch(Entity launch, boolean huge) {
-        float rot = 180F + this.getYRot();
-        float hugeScale = huge ? 4F : 0.6F;
-        float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
-        float x = Mth.sin(rot * ((float) Math.PI / 180F));
-        float z = -Mth.cos(rot * ((float) Math.PI / 180F));
+        final float rot = 180F + this.getYRot();
+        final float hugeScale = huge ? 4F : 0.6F;
+        final float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
+        final float x = Mth.sin(rot * Maths.piDividedBy180);
+        final float z = -Mth.cos(rot * Maths.piDividedBy180);
         launch.hasImpulse = true;
-        Vec3 vec3 = this.getDeltaMovement();
-        Vec3 vec31 = vec3.add((new Vec3(x, 0.0D, z)).normalize().scale(strength));
+        final Vec3 vec3 = this.getDeltaMovement();
+        final Vec3 vec31 = vec3.add((new Vec3(x, 0.0D, z)).normalize().scale(strength));
         launch.setDeltaMovement(vec31.x, huge ? 1F : 0.5F, vec31.z);
         launch.setOnGround(false);
     }
@@ -291,31 +293,34 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     private void knockbackTarget(LivingEntity entity, float strength, float angle) {
         float rot = getYRot() + angle;
         if(entity != null){
-            entity.knockback(strength, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+            entity.knockback(strength, Mth.sin(rot * Maths.piDividedBy180), -Mth.cos(rot * Maths.piDividedBy180));
         }
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        Item item = itemstack.getItem();
-        InteractionResult type = super.mobInteract(player, hand);
-        if (item == Items.SNOW && !this.isSnowy() && !level.isClientSide) {
-            this.usePlayerItem(player, hand, itemstack);
-            this.permSnow = true;
-            this.setSnowy(true);
-            this.playSound(SoundEvents.SNOW_PLACE, this.getSoundVolume(), this.getVoicePitch());
-            this.gameEvent(GameEvent.ENTITY_INTERACT);
-            return InteractionResult.SUCCESS;
-        }
-        if (item instanceof ShovelItem && this.isSnowy() && !level.isClientSide) {
-            this.permSnow = false;
-            if (!player.isCreative()) {
-                itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer) player : null);
+        final ItemStack itemstack = player.getItemInHand(hand);
+        final Item item = itemstack.getItem();
+        final InteractionResult type = super.mobInteract(player, hand);
+        if (!level.isClientSide) {
+            if (item == Items.SNOW && !this.isSnowy()) {
+                this.usePlayerItem(player, hand, itemstack);
+                this.permSnow = true;
+                this.setSnowy(true);
+                this.playSound(SoundEvents.SNOW_PLACE, this.getSoundVolume(), this.getVoicePitch());
+                this.gameEvent(GameEvent.ENTITY_INTERACT);
+                return InteractionResult.SUCCESS;
             }
-            this.setSnowy(false);
-            this.playSound(SoundEvents.SNOW_BREAK, this.getSoundVolume(), this.getVoicePitch());
-            this.gameEvent(GameEvent.ENTITY_INTERACT);
-            return InteractionResult.SUCCESS;
+
+            if (item instanceof ShovelItem && this.isSnowy()) {
+                this.permSnow = false;
+                if (!player.isCreative()) {
+                    itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer) player : null);
+                }
+                this.setSnowy(false);
+                this.playSound(SoundEvents.SNOW_BREAK, this.getSoundVolume(), this.getVoicePitch());
+                this.gameEvent(GameEvent.ENTITY_INTERACT);
+                return InteractionResult.SUCCESS;
+            }
         }
         return type;
     }
@@ -335,10 +340,9 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
-                        BlockPos pos = new BlockPos(a, b, c);
-                        BlockState state = level.getBlockState(pos);
-                        FluidState fluidState = level.getFluidState(pos);
-                        Block block = state.getBlock();
+                        final BlockPos pos = new BlockPos(a, b, c);
+                        final BlockState state = level.getBlockState(pos);
+                        final Block block = state.getBlock();
                         if (block == Blocks.SNOW && state.getValue(SnowLayerBlock.LAYERS) <= 1) {
                             this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                             flag = true;
@@ -395,11 +399,11 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     }
 
     public boolean isCharging() {
-        return this.entityData.get(CHARGING).booleanValue();
+        return this.entityData.get(CHARGING);
     }
 
     public void setCharging(boolean charging) {
-        this.entityData.set(CHARGING, Boolean.valueOf(charging));
+        this.entityData.set(CHARGING, charging);
     }
 
     @Override
@@ -412,7 +416,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, @javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
         world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
         this.gameEvent(GameEvent.ENTITY_INTERACT);
-        List<ItemStack> list = new ArrayList<>();
+        final List<ItemStack> list = new ArrayList<>(6);
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
             list.add(new ItemStack(AMItemRegistry.BISON_FUR.get()));
         }
@@ -465,8 +469,8 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                     return true;
                 } else if (random.nextInt(100) == 0) {
                     EntityBison furthest = null;
-                    for (EntityBison bison : EntityBison.this.level.getEntitiesOfClass(EntityBison.class, EntityBison.this.getBoundingBox().inflate(15F))) {
-                        if (!bison.isBaby() && bison.chargeCooldown == 0 && !bison.is(EntityBison.this)) {
+                    for (final EntityBison bison : EntityBison.this.level.getEntitiesOfClass(EntityBison.class, EntityBison.this.getBoundingBox().inflate(15F))) {
+                        if (bison.chargeCooldown == 0 && !bison.isBaby() && !bison.is(EntityBison.this)) {
                             if (furthest == null || EntityBison.this.distanceTo(furthest) < EntityBison.this.distanceTo(bison)) {
                                 furthest = bison;
                             }
@@ -491,18 +495,15 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             EntityBison.this.lookAt(EntityBison.this.chargePartner, 30, 30);
             EntityBison.this.yBodyRot = EntityBison.this.getYRot();
             if (!EntityBison.this.isCharging()) {
-                if (EntityBison.this.getAnimation() == NO_ANIMATION) {
-                    EntityBison.this.setAnimation(ANIMATION_PREPARE_CHARGE);
-                }
-                if (EntityBison.this.getAnimation() == ANIMATION_PREPARE_CHARGE && EntityBison.this.getAnimationTick() > 35) {
+                final Animation bisonAnimation = EntityBison.this.getAnimation();
+                if (bisonAnimation == NO_ANIMATION || bisonAnimation == ANIMATION_PREPARE_CHARGE && EntityBison.this.getAnimationTick() > 35) {
                     EntityBison.this.setCharging(true);
                 }
             } else {
-                float dist = EntityBison.this.distanceTo(EntityBison.this.chargePartner);
-                float startFlingAnimAt = EntityBison.this.getBbWidth() + 3.0F;
-                float flingAnimAt = EntityBison.this.getBbWidth() + 1.0F;
+                final float dist = EntityBison.this.distanceTo(EntityBison.this.chargePartner);
                 EntityBison.this.getNavigation().moveTo(EntityBison.this.chargePartner, 1.0F);
                 if (EntityBison.this.hasLineOfSight(EntityBison.this.chargePartner)) {
+                    final float flingAnimAt = EntityBison.this.getBbWidth() + 1.0F;
                     if (dist < flingAnimAt && EntityBison.this.getAnimation() == ANIMATION_ATTACK) {
                         if (EntityBison.this.getAnimationTick() > 8) {
                             boolean flag = false;
@@ -516,11 +517,13 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                             }
                             if (flag) {
                                 EntityBison.this.resetChargeCooldown();
-                                return;
                             }
                         }
-                    } else if (dist < startFlingAnimAt && EntityBison.this.getAnimation() != ANIMATION_ATTACK) {
-                        EntityBison.this.setAnimation(ANIMATION_ATTACK);
+                    } else {
+                        final float startFlingAnimAt = EntityBison.this.getBbWidth() + 3.0F;
+                        if (dist < startFlingAnimAt && EntityBison.this.getAnimation() != ANIMATION_ATTACK) {
+                            EntityBison.this.setAnimation(ANIMATION_ATTACK);
+                        }
                     }
                 }
             }

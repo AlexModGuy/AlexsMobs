@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
@@ -257,9 +258,11 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     public boolean doHurtTarget(Entity entityIn) {
-        double dist = this.isSitting() ? entityIn.getBbWidth() + 1 : entityIn.getBbWidth() + 5;
-        if (this.entityData.get(ATTACK_TICK) == 0 && this.attackProgress == 0 && entityIn.isAlive() && this.distanceTo(entityIn) < dist) {
-            this.entityData.set(ATTACK_TICK, 5);
+        if (this.attackProgress == 0 && this.entityData.get(ATTACK_TICK) == 0 && entityIn.isAlive()) {
+            final double dist = this.isSitting() ? entityIn.getBbWidth() + 1 : entityIn.getBbWidth() + 5;
+            if (this.distanceTo(entityIn) < dist) {
+                this.entityData.set(ATTACK_TICK, 5);
+            }
         }
         return true;
     }
@@ -272,24 +275,24 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         this.entityData.define(TACKLING, false);
         this.entityData.define(LAUNCHED, false);
         this.entityData.define(ATTACK_TICK, 0);
-        this.entityData.define(COMMAND, Integer.valueOf(0));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(COMMAND, 0);
+        this.entityData.define(SITTING, false);
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.entityData.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, command);
     }
 
     public boolean isLaunched() {
@@ -464,7 +467,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                     this.setYRot(Mth.wrapDegrees(mount.getYRot() + birdYaw));
                     this.yHeadRot = Mth.wrapDegrees(((LivingEntity) mount).yHeadRot + birdYaw);
                     float radius = 0.6F;
-                    float angle = (0.01745329251F * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));
+                    float angle = (0.0174532925F * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));
                     double extraX = radius * Mth.sin((float) (Math.PI + angle));
                     double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() * 0.45F, mount.getY()), mount.getZ() + extraZ);
@@ -488,38 +491,47 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         this.prevFlapAmount = flapAmount;
         this.prevSwoopProgress = swoopProgress;
         this.prevSitProgress = sitProgress;
-        float yMot = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+        float yMot = (float) -((float) this.getDeltaMovement().y * Maths.oneEightyDividedByFloatPi);
         this.birdPitch = yMot;
-        if (isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        if (isFlying()) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
+
+        if (isTackling()) {
+            if (tackleProgress < 5F)
+                tackleProgress++;
+        } else {
+            if (tackleProgress > 0F)
+                tackleProgress--;
         }
-        if (isTackling() && tackleProgress < 5F) {
-            tackleProgress++;
+
+        final boolean sit = isSitting() || this.isPassenger();
+        if (sit) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (!isTackling() && tackleProgress > 0F) {
-            tackleProgress--;
-        }
-        boolean sit = isSitting() || this.isPassenger();
-        if (sit && sitProgress < 5F) {
-            sitProgress++;
-        }
-        if (!sit && sitProgress > 0F) {
-            sitProgress--;
-        }
+
         if (this.isLaunched()) {
             launchTime++;
         } else {
             launchTime = 0;
         }
+
         if (lastPlayerControlTime > 0) {
             lastPlayerControlTime--;
         }
         if (lastPlayerControlTime <= 0) {
             controlledFlag = false;
         }
+
         if (yMot < 0.1F) {
             flapAmount = Math.min(-yMot * 0.2F, 1F);
             if (swoopProgress > 0) {
@@ -535,19 +547,24 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 swoopProgress = Math.min(yMot * 0.2F, swoopProgress + 1);
             }
         }
+
         if (this.isTackling()) {
             flapAmount = Math.min(2, flapAmount + 0.2F);
         }
+
         if (!level.isClientSide) {
-            if (isFlying() && this.isLandNavigator) {
-                switchNavigator(false);
+            if (isFlying()) {
+                if (this.isLandNavigator)
+                    switchNavigator(false);
+            } else {
+                if (!this.isLandNavigator)
+                    switchNavigator(true);
             }
-            if (!isFlying() && !this.isLandNavigator) {
-                switchNavigator(true);
-            }
-            if (this.isTackling() && !this.isVehicle() && (this.getTarget() == null || !this.getTarget().isAlive()) && tackleCapCooldown == 0) {
+
+            if (tackleCapCooldown == 0 && this.isTackling() && !this.isVehicle() && (this.getTarget() == null || !this.getTarget().isAlive())) {
                 this.setTackling(false);
             }
+
             if (isFlying()) {
                 timeFlying++;
                 this.setNoGravity(true);
@@ -563,22 +580,28 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 timeFlying = 0;
                 this.setNoGravity(false);
             }
+
             if (this.isInWaterOrBubble() && this.isVehicle()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 0.1F, 0));
             }
+
             if (this.isSitting() && !this.isLaunched()) {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, -0.1F, 0));
             }
+
             if (this.getTarget() != null && this.isInWaterOrBubble()) {
                 timeFlying = 0;
                 this.setFlying(true);
             }
-            if (isFlying() && this.onGround && !this.isInWaterOrBubble() && this.timeFlying > 30) {
+
+            if (this.onGround && this.timeFlying > 30 && isFlying() && !this.isInWaterOrBubble()) {
                 this.setFlying(false);
             }
         }
-        if (this.entityData.get(ATTACK_TICK) > 0) {
-            if (this.entityData.get(ATTACK_TICK) == 2 && this.getTarget() != null && this.distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + 2D) {
+
+        final int attackTick = this.entityData.get(ATTACK_TICK);
+        if (attackTick > 0) {
+            if (attackTick == 2 && this.getTarget() != null && this.distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + 2D) {
                 this.getTarget().hurt(DamageSource.mobAttack(this), 2);
             }
             this.entityData.set(ATTACK_TICK, this.entityData.get(ATTACK_TICK) - 1);
@@ -590,10 +613,12 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 attackProgress--;
             }
         }
+
         if (this.isPassenger()) {
             this.setFlying(false);
             this.setTackling(false);
         }
+
         if (boardingCooldown > 0) {
             boardingCooldown--;
         }
@@ -619,17 +644,17 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
-        float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
-        BlockPos ground = getCrowGround(radialPos);
-        int distFromGround = (int) this.getY() - ground.getY();
-        int flightHeight = 7 + this.getRandom().nextInt(10);
-        BlockPos newPos = ground.above(distFromGround > 8 ? flightHeight : this.getRandom().nextInt(7) + 4);
+        final float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraZ = radius * Mth.cos(angle);
+        final BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        final BlockPos ground = getCrowGround(radialPos);
+        final int distFromGround = (int) this.getY() - ground.getY();
+        final int flightHeight = 7 + this.getRandom().nextInt(10);
+        final BlockPos newPos = ground.above(distFromGround > 8 ? flightHeight : this.getRandom().nextInt(7) + 4);
         if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
             return Vec3.atCenterOf(newPos);
         }
@@ -648,13 +673,13 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     public Vec3 getBlockGrounding(Vec3 fleePos) {
-        float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24);
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        final float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24);
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraZ = radius * Mth.cos(angle);
+        final BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getCrowGround(radialPos);
         if (ground.getY() == -64) {
             return this.position();
@@ -677,11 +702,11 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     private Vec3 getOrbitVec(Vec3 vector3d, float gatheringCircleDist) {
-        float angle = (0.01745329251F * (float) this.orbitDist * (orbitClockwise ? -tickCount : tickCount));
-        double extraX = gatheringCircleDist * Mth.sin((angle));
-        double extraZ = gatheringCircleDist * Mth.cos(angle);
+        final float angle = (0.0174532925F * (float) this.orbitDist * (orbitClockwise ? -tickCount : tickCount));
+        final double extraX = gatheringCircleDist * Mth.sin((angle));
+        final double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (this.orbitPos != null) {
-            Vec3 pos = new Vec3(orbitPos.getX() + extraX, orbitPos.getY() + random.nextInt(2) - 2, orbitPos.getZ() + extraZ);
+            final Vec3 pos = new Vec3(orbitPos.getX() + extraX, orbitPos.getY() + random.nextInt(2) - 2, orbitPos.getZ() + extraZ);
             if (this.level.isEmptyBlock(new BlockPos(pos))) {
                 return pos;
             }
@@ -699,16 +724,16 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
 
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
-            float radius = 0.3F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
+            final float radius = 0.3F;
+            final float angle = (0.0174532925F * this.yBodyRot);
+            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraZ = radius * Mth.cos(angle);
             passenger.setYRot(this.yBodyRot + 90F);
             if (passenger instanceof LivingEntity) {
                 LivingEntity living = (LivingEntity) passenger;
                 living.yBodyRot = this.yBodyRot + 90F;
             }
-            double extraY = 0;
+            float extraY = 0F;
             if (passenger instanceof AbstractFish && !passenger.isInWaterOrBubble()) {
                 extraY = 0.1F;
             }
@@ -734,7 +759,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 return true;
             }
         }
-        return !this.isAlive() || launchTime > 12000 || this.isInsidePortal || this.portalTime > 0 || this.isRemoved();
+        return !this.isAlive() || this.isInsidePortal || launchTime > 12000 || this.portalTime > 0 || this.isRemoved();
     }
 
     public void remove(RemovalReason reason) {
@@ -744,7 +769,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     public void directFromPlayer(float rotationYaw, float rotationPitch, boolean loadChunk, Entity over) {
-        Entity owner = this.getOwner();
+        final Entity owner = this.getOwner();
         if (owner != null && this.distanceTo(owner) > 150) {
             returnControlTime = 100;
         }
@@ -756,7 +781,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         int stillTPthreshold = AMConfig.falconryTeleportsBack ? 200 : 6000;
         this.setOrderedToSit(false);
         this.setLaunched(true);
-        if ((returnControlTime > 0 && AMConfig.falconryTeleportsBack || stillTicksCounter > stillTPthreshold && this.distanceTo(owner) > 30) && owner != null) {
+        if (owner != null && (returnControlTime > 0 && AMConfig.falconryTeleportsBack || stillTicksCounter > stillTPthreshold && this.distanceTo(owner) > 30)) {
             this.copyPosition(owner);
             returnControlTime = 0;
             stillTicksCounter = 0;
@@ -764,9 +789,6 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         }
         if (!level.isClientSide) {
             if (returnControlTime > 0 && owner != null) {
-                double d0 = this.getX() - owner.getX();
-                double d2 = this.getZ() - owner.getZ();
-                float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) + 90.0F;
                 this.getLookControl().setLookAt(owner, 30, 30);
             } else {
                 this.yBodyRot = rotationYaw;
@@ -777,13 +799,13 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             if (rotationPitch < 10 && this.isOnGround()) {
                 this.setFlying(true);
             }
-            float yawOffset = rotationYaw + 90;
-            float rad = 3F;
-            float speed = 1.2F;
+            final float yawOffset = rotationYaw + 90;
+            final float rad = 3F;
+            final float speed = 1.2F;
             if (returnControlTime > 0) {
                 this.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + 10, owner.getZ(), speed);
             } else {
-                this.getMoveControl().setWantedPosition(this.getX() + rad * 1.5F * Math.cos(yawOffset * (Math.PI / 180.0F)), this.getY() - rad * Math.sin(rotationPitch * (Math.PI / 180.0F)), this.getZ() + rad * Math.sin(yawOffset * (Math.PI / 180.0F)), speed);
+                this.getMoveControl().setWantedPosition(this.getX() + rad * 1.5F * Math.cos(yawOffset * Maths.piDividedBy180), this.getY() - rad * Math.sin(rotationPitch * Maths.piDividedBy180), this.getZ() + rad * Math.sin(yawOffset * Maths.piDividedBy180), speed);
             }
             if (loadChunk) {
                 loadChunkOnServer(this.blockPosition());
@@ -791,9 +813,9 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             this.setLastHurtByMob(null);
             this.setTarget(null);
             if (over == null) {
-                List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate(3.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
+                final List<Entity> list = this.level.getEntities(this, this.getBoundingBox().inflate(3.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
                 Entity closest = null;
-                for (Entity e : list) {
+                for (final Entity e : list) {
                     if (closest == null || this.distanceTo(e) < this.distanceTo(closest)) {
                         closest = e;
                     }
@@ -801,11 +823,11 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 over = closest;
             }
         }
-        if (over != null && !this.isAlliedTo(over) && over != owner && canFalconryAttack(over)) {
+        if (over != null && over != owner && !this.isAlliedTo(over) && canFalconryAttack(over)) {
             if (tackleCapCooldown == 0 && this.distanceTo(over) <= over.getBbWidth() + 4D) {
                 this.setTackling(true);
                 if (this.distanceTo(over) <= over.getBbWidth() + 2D) {
-                    float speedDamage = (float) Math.ceil(Mth.clamp(this.getDeltaMovement().length() + 0.2, 0, 1.2D) * 3.333);
+                    final float speedDamage = (float) Math.ceil(Mth.clamp(this.getDeltaMovement().length() + 0.2, 0, 1.2D) * 3.333);
                     over.hurt(DamageSource.mobAttack(this), 5 + speedDamage + random.nextInt(2));
                     tackleCapCooldown = 22;
                 }
@@ -839,7 +861,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
-            Entity entity = source.getEntity();
+            final Entity entity = source.getEntity();
             if (entity != null && this.isTame() && !(entity instanceof Player) && !(entity instanceof AbstractArrow) && this.isLaunched()) {
                 amount = (amount + 1.0F) / 4.0F;
             }
@@ -865,22 +887,22 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         this.setLaunched(true);
         this.setOrderedToSit(false);
         this.setCommand(0);
-        if(this.hasCap()){
+        if (this.hasCap()) {
             this.setFlying(true);
             this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.1F);
-            if(this.level.isClientSide){
+            if (this.level.isClientSide) {
                 AlexsMobs.sendMSGToServer(new MessageMosquitoDismount(this.getId(), player.getId()));
             }
             AlexsMobs.PROXY.setRenderViewEntity(this);
-        }else{
+        } else {
             this.getNavigation().stop();
             this.getMoveControl().setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.1F);
-            if(pointedEntity != null && pointedEntity.isAlive() && !this.isAlliedTo(pointedEntity)){
+            if (pointedEntity != null && pointedEntity.isAlive() && !this.isAlliedTo(pointedEntity)) {
                 this.setFlying(true);
-                if(pointedEntity instanceof LivingEntity){
-                    this.setTarget((LivingEntity) pointedEntity);
+                if (pointedEntity instanceof final LivingEntity pointedLivingEntity) {
+                    this.setTarget(pointedLivingEntity);
                 }
-            }else{
+            } else {
                 this.setFlying(false);
                 this.setCommand(2);
                 this.setOrderedToSit(true);
@@ -898,23 +920,17 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
 
         public void tick() {
             if (this.operation == MoveControl.Operation.MOVE_TO) {
-                Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
-                double d5 = vector3d.length();
+                final Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
+                final double d5 = vector3d.length();
                 if (d5 < 0.3) {
                     this.operation = MoveControl.Operation.WAIT;
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
                 } else {
-                    double d0 = this.wantedX - this.parentEntity.getX();
-                    double d1 = this.wantedY - this.parentEntity.getY();
-                    double d2 = this.wantedZ - this.parentEntity.getZ();
-                    double d3 = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d5)));
-                    Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    final Vec3 vector3d1 = parentEntity.getDeltaMovement();
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (float) Maths.oneEightyDividedByFloatPi);
                     parentEntity.yBodyRot = parentEntity.getYRot();
-
                 }
-
             }
         }
 
@@ -1012,7 +1028,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             if (flightTarget) {
                 eagle.getMoveControl().setWantedPosition(x, y, z, 1F);
             } else {
-                if (eagle.isFlying() && !eagle.onGround) {
+                if (!eagle.onGround && eagle.isFlying()) {
                     if (!eagle.isInWaterOrBubble()) {
                         eagle.setDeltaMovement(eagle.getDeltaMovement().multiply(1.2F, 0.6F, 1.2F));
                     }
@@ -1020,13 +1036,13 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                     this.eagle.getNavigation().moveTo(this.x, this.y, this.z, 1F);
                 }
             }
-            if (!flightTarget && isFlying() && eagle.onGround) {
+            if (!flightTarget && eagle.onGround && isFlying()) {
                 eagle.setFlying(false);
                 orbitTime = 0;
                 eagle.orbitPos = null;
                 orbitResetCooldown = -400 - random.nextInt(400);
             }
-            if (isFlying() && (!level.isEmptyBlock(eagle.getBlockPosBelowThatAffectsMyMovement()) || eagle.onGround) && !eagle.isInWaterOrBubble() && eagle.timeFlying > 30) {
+            if (eagle.timeFlying > 30 && isFlying() && (!level.isEmptyBlock(eagle.getBlockPosBelowThatAffectsMyMovement()) || eagle.onGround) && !eagle.isInWaterOrBubble()) {
                 eagle.setFlying(false);
                 orbitTime = 0;
                 eagle.orbitPos = null;
@@ -1109,7 +1125,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         }
 
         public void tick() {
-            LivingEntity target = eagle.getTarget();
+            final LivingEntity target = eagle.getTarget();
             boolean smallPrey = target != null && target.getBbHeight() < 1F && target.getBbWidth() < 0.7F && !(target instanceof EntityBaldEagle) || target instanceof AbstractFish;
             if (eagle.orbitPos != null && circleTime < maxCircleTime) {
                 circleTime++;
@@ -1117,24 +1133,24 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 eagle.setFlying(true);
                 if (target != null) {
                     int i = 0;
-                    int up = 2 + eagle.getRandom().nextInt(4);
+                    final int up = 2 + eagle.getRandom().nextInt(4);
                     eagle.orbitPos = target.blockPosition().above((int) (target.getBbHeight()));
                     while (eagle.level.isEmptyBlock(eagle.orbitPos) && i < up) {
                         i++;
                         eagle.orbitPos = eagle.orbitPos.above();
                     }
                 }
-                Vec3 vec = eagle.getOrbitVec(Vec3.ZERO, 4 + random.nextInt(2));
+                final Vec3 vec = eagle.getOrbitVec(Vec3.ZERO, 4 + random.nextInt(2));
                 if (vec != null) {
                     eagle.getMoveControl().setWantedPosition(vec.x, vec.y, vec.z, 1.2F);
                 }
             } else if (target != null) {
                 if (eagle.isFlying() || eagle.isInWaterOrBubble()) {
-                    double d0 = eagle.getX() - target.getX();
-                    double d2 = eagle.getZ() - target.getZ();
-                    double xzDist = Math.sqrt(d0 * d0 + d2 * d2);
+                    final double d0 = eagle.getX() - target.getX();
+                    final double d2 = eagle.getZ() - target.getZ();
+                    final double xzDist = Math.sqrt(d0 * d0 + d2 * d2);
                     double yAddition = target.getBbHeight();
-                    if (xzDist > 15) {
+                    if (xzDist > 15D) {
                         yAddition = 3D;
                     }
                     eagle.setTackling(true);
@@ -1147,10 +1163,10 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                         if (smallPrey) {
                             eagle.setFlying(true);
                             eagle.timeFlying = 0;
-                            float radius = 0.3F;
-                            float angle = (0.01745329251F * eagle.yBodyRot);
-                            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                            double extraZ = radius * Mth.cos(angle);
+                            final float radius = 0.3F;
+                            final float angle = (0.0174532925F * eagle.yBodyRot);
+                            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                            final double extraZ = radius * Mth.cos(angle);
                             target.setYRot(eagle.yBodyRot + 90F);
                             if (target instanceof LivingEntity) {
                                 LivingEntity living = target;
@@ -1195,17 +1211,17 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             if (eagle.getDeltaMovement().lengthSqr() < 0.03D) {
                 seperateTime++;
             }
-            LivingEntity owner = eagle.getOwner();
+            final LivingEntity owner = eagle.getOwner();
             if (owner != null) {
                 if (seperateTime > 200) {
                     seperateTime = 0;
                     eagle.copyPosition(owner);
                 }
                 eagle.setFlying(true);
-                double d0 = eagle.getX() - owner.getX();
-                double d2 = eagle.getZ() - owner.getZ();
-                double xzDist = Math.sqrt(d0 * d0 + d2 * d2);
-                double yAdd = xzDist > 14 ? 5 : 0;
+                final double d0 = eagle.getX() - owner.getX();
+                final double d2 = eagle.getZ() - owner.getZ();
+                final double xzDist = Math.sqrt(d0 * d0 + d2 * d2);
+                final double yAdd = xzDist > 14 ? 5 : 0;
                 eagle.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + yAdd + owner.getEyeHeight(), owner.getZ(), 1);
 
                 if (this.eagle.distanceTo(owner) < owner.getBbWidth() + 1.4D) {
