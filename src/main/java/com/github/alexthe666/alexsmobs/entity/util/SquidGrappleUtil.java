@@ -1,23 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity.util;
 
-import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.EntitySquidGrapple;
-import com.github.alexthe666.alexsmobs.misc.AMSimplexNoise;
-import com.github.alexthe666.citadel.Citadel;
 import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
-import com.github.alexthe666.citadel.server.message.PropertiesMessage;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.SingleThreadedRandomSource;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
-import java.awt.*;
-import java.util.Locale;
 import java.util.UUID;
 
 public class SquidGrappleUtil {

@@ -1,11 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelAnaconda;
-import com.github.alexthe666.alexsmobs.client.model.ModelBoneSerpentBody;
-import com.github.alexthe666.alexsmobs.client.model.ModelBoneSerpentTail;
-import com.github.alexthe666.alexsmobs.entity.EntityAnaconda;
 import com.github.alexthe666.alexsmobs.entity.EntityAnacondaPart;
-import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpentPart;
 import com.github.alexthe666.alexsmobs.entity.util.AnacondaPartIndex;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,13 +9,9 @@ import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.PlayerModelPart;
-import net.minecraft.world.phys.Vec3;
 
 public class RenderAnacondaPart extends LivingEntityRenderer<EntityAnacondaPart, AdvancedEntityModel<EntityAnacondaPart>> {
     private ModelAnaconda<EntityAnacondaPart> neckModel = new ModelAnaconda<>(AnacondaPartIndex.NECK);

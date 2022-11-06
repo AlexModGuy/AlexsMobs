@@ -5,7 +5,6 @@ import com.github.alexthe666.alexsmobs.client.render.layer.LayerCrimsonMosquitoB
 import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 

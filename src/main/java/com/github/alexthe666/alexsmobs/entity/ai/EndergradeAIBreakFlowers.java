@@ -1,12 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityEndergrade;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 
 public class EndergradeAIBreakFlowers extends MoveToBlockGoal {
 

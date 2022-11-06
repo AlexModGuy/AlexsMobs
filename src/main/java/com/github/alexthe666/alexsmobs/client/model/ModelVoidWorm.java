@@ -1,12 +1,10 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
-import com.github.alexthe666.alexsmobs.tileentity.TileEntityVoidWormBeak;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 
 public class ModelVoidWorm extends AdvancedEntityModel<EntityVoidWorm> {

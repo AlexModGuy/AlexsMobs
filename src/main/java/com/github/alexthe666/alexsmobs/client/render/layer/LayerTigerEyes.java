@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelTiger;
-import com.github.alexthe666.alexsmobs.client.model.ModelTiger;
 import com.github.alexthe666.alexsmobs.client.render.RenderTiger;
-import com.github.alexthe666.alexsmobs.client.render.RenderTiger;
-import com.github.alexthe666.alexsmobs.entity.EntityTiger;
 import com.github.alexthe666.alexsmobs.entity.EntityTiger;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -12,8 +9,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LightLayer;
 
 public class LayerTigerEyes  extends RenderLayer<EntityTiger, ModelTiger> {

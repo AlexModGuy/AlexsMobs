@@ -10,8 +10,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraftforge.fml.common.Mod;
 
 public class ModelMoose extends AdvancedEntityModel<EntityMoose> {
     private final AdvancedModelBox root;

@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.phys.Vec3;

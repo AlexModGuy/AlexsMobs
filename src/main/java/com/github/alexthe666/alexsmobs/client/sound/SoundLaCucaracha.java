@@ -8,8 +8,6 @@ import net.minecraft.sounds.SoundSource;
 
 import java.util.Map;
 
-import net.minecraft.client.resources.sounds.SoundInstance.Attenuation;
-
 public class SoundLaCucaracha extends AbstractTickableSoundInstance {
     private final EntityCockroach cockroach;
 

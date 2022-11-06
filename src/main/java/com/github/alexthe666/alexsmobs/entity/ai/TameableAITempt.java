@@ -1,10 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class TameableAITempt extends TemptGoal {

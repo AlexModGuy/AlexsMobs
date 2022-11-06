@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCombJelly;
-import com.github.alexthe666.alexsmobs.entity.EntityCentipedeHead;
 import com.github.alexthe666.alexsmobs.entity.EntityCombJelly;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

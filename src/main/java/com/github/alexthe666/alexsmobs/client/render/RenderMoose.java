@@ -1,8 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelMoose;
-import com.github.alexthe666.alexsmobs.client.model.ModelMoose;
-import com.github.alexthe666.alexsmobs.entity.EntityMoose;
 import com.github.alexthe666.alexsmobs.entity.EntityMoose;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -13,7 +11,6 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
 public class RenderMoose extends MobRenderer<EntityMoose, ModelMoose> {
     private static final ResourceLocation TEXTURE_ANTLERED = new ResourceLocation("alexsmobs:textures/entity/moose_antlered.png");

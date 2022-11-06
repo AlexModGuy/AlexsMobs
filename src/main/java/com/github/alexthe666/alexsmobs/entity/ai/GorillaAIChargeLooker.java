@@ -5,7 +5,6 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;

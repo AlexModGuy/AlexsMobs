@@ -1,7 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.*;
-import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
+import com.github.alexthe666.alexsmobs.client.model.ModelCatfishLarge;
+import com.github.alexthe666.alexsmobs.client.model.ModelCatfishMedium;
+import com.github.alexthe666.alexsmobs.client.model.ModelCatfishSmall;
 import com.github.alexthe666.alexsmobs.entity.EntityCatfish;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.EntityModel;

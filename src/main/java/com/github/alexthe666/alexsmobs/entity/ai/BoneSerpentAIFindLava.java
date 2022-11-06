@@ -1,13 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.core.BlockPos;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 public class BoneSerpentAIFindLava extends Goal {
     private final EntityBoneSerpent creature;

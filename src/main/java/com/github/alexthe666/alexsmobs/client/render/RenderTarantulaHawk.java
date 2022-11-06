@@ -2,16 +2,14 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelTarantulaHawk;
 import com.github.alexthe666.alexsmobs.client.model.ModelTarantulaHawkBaby;
-import com.github.alexthe666.alexsmobs.entity.EntityFly;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
-import com.github.alexthe666.alexsmobs.entity.EntityTiger;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
 
 import javax.annotation.Nullable;
 

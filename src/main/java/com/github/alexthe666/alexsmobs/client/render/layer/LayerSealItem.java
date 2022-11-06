@@ -4,14 +4,13 @@ import com.github.alexthe666.alexsmobs.client.model.ModelSeal;
 import com.github.alexthe666.alexsmobs.client.render.RenderSeal;
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.item.ItemStack;
-import com.mojang.math.Vector3f;
-import net.minecraft.world.item.Items;
 
 public class LayerSealItem extends RenderLayer<EntitySeal, ModelSeal> {
 

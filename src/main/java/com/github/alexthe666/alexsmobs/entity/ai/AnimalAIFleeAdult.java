@@ -1,11 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;

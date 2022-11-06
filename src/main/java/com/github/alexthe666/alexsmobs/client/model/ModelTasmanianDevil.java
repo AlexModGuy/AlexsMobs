@@ -1,4 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.model;
+
 import com.github.alexthe666.alexsmobs.entity.EntityTasmanianDevil;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
@@ -9,7 +10,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevil> {
 	private final AdvancedModelBox root;

@@ -5,13 +5,10 @@ import com.github.alexthe666.alexsmobs.client.render.AMRenderTypes;
 import com.github.alexthe666.alexsmobs.client.render.RenderSoulVulture;
 import com.github.alexthe666.alexsmobs.entity.EntitySoulVulture;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
 public class LayerSoulVultureGlow extends RenderLayer<EntitySoulVulture, ModelSoulVulture> {
     private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/soul_vulture/soul_vulture_glow.png");

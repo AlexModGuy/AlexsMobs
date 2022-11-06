@@ -1,16 +1,12 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBison;
-import com.github.alexthe666.alexsmobs.entity.EntityBlobfish;
-import com.github.alexthe666.alexsmobs.entity.EntityMoose;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-
-import net.minecraft.client.Minecraft;
 
 public class ModelBison extends AdvancedEntityModel<EntityBison> {
     private final AdvancedModelBox root;

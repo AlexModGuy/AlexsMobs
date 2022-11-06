@@ -1,8 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityKomodoDragon;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
 
 public class KomodoDragonAIBreed extends BreedGoal {
     boolean withPartner;

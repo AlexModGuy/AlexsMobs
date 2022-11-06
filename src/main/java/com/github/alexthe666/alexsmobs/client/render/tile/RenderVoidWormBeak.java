@@ -1,16 +1,13 @@
 package com.github.alexthe666.alexsmobs.client.render.tile;
 
 import com.github.alexthe666.alexsmobs.block.BlockVoidWormBeak;
-import com.github.alexthe666.alexsmobs.client.model.ModelVoidWorm;
 import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormBeak;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityVoidWormBeak;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 

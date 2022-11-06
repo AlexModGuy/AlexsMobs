@@ -1,9 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelAnaconda;
-import com.github.alexthe666.alexsmobs.client.model.ModelBoneSerpentHead;
 import com.github.alexthe666.alexsmobs.entity.EntityAnaconda;
-import com.github.alexthe666.alexsmobs.entity.EntityBoneSerpent;
 import com.github.alexthe666.alexsmobs.entity.util.AnacondaPartIndex;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

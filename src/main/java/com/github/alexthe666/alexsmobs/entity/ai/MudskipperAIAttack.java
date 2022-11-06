@@ -1,9 +1,8 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.entity.EntityMudBall;
 import com.github.alexthe666.alexsmobs.entity.EntityMudskipper;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;

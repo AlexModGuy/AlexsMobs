@@ -6,14 +6,13 @@ import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.Random;
 import java.util.UUID;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemMysteriousWorm extends Item {
     public ItemMysteriousWorm(Properties props) {

@@ -4,12 +4,9 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableStructureInfo;
 import net.minecraftforge.common.world.StructureModifier;
-import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 

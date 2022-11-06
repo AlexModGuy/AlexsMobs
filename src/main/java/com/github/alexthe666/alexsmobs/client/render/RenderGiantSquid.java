@@ -1,14 +1,10 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelAnteater;
 import com.github.alexthe666.alexsmobs.client.model.ModelGiantSquid;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerAnteaterBaby;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerAnteaterTongueItem;
-import com.github.alexthe666.alexsmobs.entity.*;
+import com.github.alexthe666.alexsmobs.entity.EntityGiantSquid;
+import com.github.alexthe666.alexsmobs.entity.EntityGiantSquidPart;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -17,7 +13,6 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 
 public class RenderGiantSquid extends MobRenderer<EntityGiantSquid, ModelGiantSquid> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/giant_squid.png");

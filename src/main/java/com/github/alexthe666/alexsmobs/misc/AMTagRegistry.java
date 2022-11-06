@@ -9,7 +9,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraftforge.common.data.ForgeBiomeTagsProvider;
 
 public class AMTagRegistry {
     public static final TagKey<Item> INSECT_ITEMS = registerItemTag("insect_items");

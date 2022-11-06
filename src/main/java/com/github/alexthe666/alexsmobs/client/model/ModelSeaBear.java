@@ -1,8 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
-import com.github.alexthe666.alexsmobs.entity.EntityFrilledShark;
 import com.github.alexthe666.alexsmobs.entity.EntitySeaBear;
-import com.github.alexthe666.alexsmobs.entity.EntitySeagull;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;

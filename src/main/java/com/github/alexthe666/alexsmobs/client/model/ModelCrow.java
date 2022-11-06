@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 	public final AdvancedModelBox root;

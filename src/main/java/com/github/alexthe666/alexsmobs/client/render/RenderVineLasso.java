@@ -1,7 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.entity.EntityCachalotEcho;
-import com.github.alexthe666.alexsmobs.entity.EntityLaviathan;
 import com.github.alexthe666.alexsmobs.entity.EntityVineLasso;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

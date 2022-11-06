@@ -36,7 +36,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class BlockCrocodileEgg extends Block {
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;

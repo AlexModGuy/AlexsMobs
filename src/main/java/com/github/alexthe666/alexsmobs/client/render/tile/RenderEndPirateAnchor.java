@@ -1,21 +1,15 @@
 package com.github.alexthe666.alexsmobs.client.render.tile;
 
 import com.github.alexthe666.alexsmobs.block.BlockEndPirateAnchor;
-import com.github.alexthe666.alexsmobs.block.BlockEndPirateDoor;
 import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchor;
-import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchorChain;
-import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateDoor;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateAnchor;
-import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateDoor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 
 public class RenderEndPirateAnchor<T extends TileEntityEndPirateAnchor> implements BlockEntityRenderer<T> {
 

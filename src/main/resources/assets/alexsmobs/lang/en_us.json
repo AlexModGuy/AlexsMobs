@@ -1059,5 +1059,6 @@
   "advancements.alexsmobs.stink_ray.title": "I SAID DART GUN!",
   "advancements.alexsmobs.stink_ray.desc": "Craft a Stink Ray.",
   "advancements.alexsmobs.banana_slug.title": "Convergent Evolution...",
-  "advancements.alexsmobs.banana_slug.desc": "Encounter a Banana Slug. Not so appetising."
+  "advancements.alexsmobs.banana_slug.desc": "Encounter a Banana Slug. Not so appetising.",
+  "alexsmobs.gui.capsid_transformation": "Transformation"
 }

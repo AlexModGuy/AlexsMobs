@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelMimicube;
-import com.github.alexthe666.alexsmobs.client.render.AMRenderTypes;
 import com.github.alexthe666.alexsmobs.client.render.RenderMimicube;
 import com.github.alexthe666.alexsmobs.entity.EntityMimicube;
 import com.mojang.blaze3d.vertex.PoseStack;

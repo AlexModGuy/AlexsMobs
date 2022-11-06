@@ -9,8 +9,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
 
-import java.util.Random;
-
 public class EmeraldsForItemsTrade implements VillagerTrades.ItemListing {
     private final Item tradeItem;
     private final int count;

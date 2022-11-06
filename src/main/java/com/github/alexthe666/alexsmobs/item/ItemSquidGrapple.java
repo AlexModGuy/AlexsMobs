@@ -1,13 +1,11 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySquidGrapple;
-import com.github.alexthe666.alexsmobs.entity.EntityVineLasso;
 import com.github.alexthe666.alexsmobs.entity.util.SquidGrappleUtil;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.HumanoidArm;

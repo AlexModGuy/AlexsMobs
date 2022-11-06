@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs;
 
-import com.github.alexthe666.alexsmobs.misc.CapsidRecipe;
 import com.github.alexthe666.alexsmobs.misc.CapsidRecipeManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

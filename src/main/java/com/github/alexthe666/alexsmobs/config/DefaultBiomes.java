@@ -2,8 +2,6 @@ package com.github.alexthe666.alexsmobs.config;
 
 import com.github.alexthe666.citadel.config.biome.BiomeEntryType;
 import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
-import net.minecraft.tags.BiomeTags;
-import net.minecraftforge.common.data.ForgeBiomeTagsProvider;
 
 public class DefaultBiomes {
 

@@ -1,17 +1,16 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormShot;
-import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWormShot;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 
 import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 

@@ -2,12 +2,11 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.google.common.base.Predicate;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.ai.util.RandomPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.level.pathfinder.Path;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;

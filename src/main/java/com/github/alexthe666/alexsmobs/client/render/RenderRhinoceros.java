@@ -1,10 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelMudskipper;
-import com.github.alexthe666.alexsmobs.client.model.ModelRaccoon;
 import com.github.alexthe666.alexsmobs.client.model.ModelRhinoceros;
-import com.github.alexthe666.alexsmobs.entity.EntityMudskipper;
-import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.alexsmobs.entity.EntityRhinoceros;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,8 +9,6 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.item.DyeColor;
 
 public class RenderRhinoceros extends MobRenderer<EntityRhinoceros, ModelRhinoceros> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/rhinoceros.png");

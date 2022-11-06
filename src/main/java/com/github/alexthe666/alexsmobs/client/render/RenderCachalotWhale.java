@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.client.model.ModelCachalotWhale;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerCachalotWhaleCapturedSquid;
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotPart;
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotWhale;
-import com.github.alexthe666.alexsmobs.entity.EntityMungus;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

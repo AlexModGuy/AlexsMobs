@@ -1,13 +1,9 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelCockroach;
 import com.github.alexthe666.alexsmobs.client.model.ModelMurmurBody;
 import com.github.alexthe666.alexsmobs.client.model.ModelMurmurHead;
 import com.github.alexthe666.alexsmobs.client.model.ModelMurmurNeck;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerCockroachMaracas;
-import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
 import com.github.alexthe666.alexsmobs.entity.EntityMurmur;
-import com.github.alexthe666.alexsmobs.entity.EntityMurmurHead;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

@@ -1,8 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.*;
+import com.github.alexthe666.alexsmobs.client.model.ModelBison;
+import com.github.alexthe666.alexsmobs.client.model.ModelBisonBaby;
 import com.github.alexthe666.alexsmobs.entity.EntityBison;
-import com.github.alexthe666.alexsmobs.entity.EntityMoose;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -1,10 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class GroundPathNavigatorWide extends GroundPathNavigation {
     private float distancemodifier = 0.75F;

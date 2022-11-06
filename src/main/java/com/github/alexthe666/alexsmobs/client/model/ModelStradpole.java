@@ -6,7 +6,6 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 	private final AdvancedModelBox root;

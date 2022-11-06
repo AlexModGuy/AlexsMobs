@@ -18,7 +18,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.TimeUtil;
@@ -47,7 +46,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Locale;
-import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 

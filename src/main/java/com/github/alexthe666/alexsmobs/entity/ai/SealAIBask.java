@@ -5,8 +5,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
-
 public class SealAIBask extends Goal {
     private final EntitySeal seal;
 

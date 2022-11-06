@@ -1,17 +1,14 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class AnimalAIFleeLight extends Goal {
     protected final PathfinderMob creature;

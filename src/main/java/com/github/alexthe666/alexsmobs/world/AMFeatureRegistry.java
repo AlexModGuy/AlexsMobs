@@ -3,8 +3,6 @@ package com.github.alexthe666.alexsmobs.world;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -12,7 +10,6 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.minecraft.core.Holder;
 
 public class AMFeatureRegistry {
     public static final DeferredRegister<Feature<?>> DEF_REG = DeferredRegister.create(ForgeRegistries.FEATURES, AlexsMobs.MODID);

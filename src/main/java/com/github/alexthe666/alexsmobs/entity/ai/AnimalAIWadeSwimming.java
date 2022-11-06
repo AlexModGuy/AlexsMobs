@@ -1,12 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.tags.FluidTags;
 
 import java.util.EnumSet;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class AnimalAIWadeSwimming  extends Goal {
     private final Mob entity;

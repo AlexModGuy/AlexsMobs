@@ -1,15 +1,11 @@
 package com.github.alexthe666.alexsmobs.client.particle;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.world.entity.ai.village.poi.PoiType;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.lang.reflect.Field;
 
 public class AMParticleRegistry {
 

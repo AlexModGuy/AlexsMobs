@@ -6,7 +6,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
-import org.apache.logging.log4j.Level;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;

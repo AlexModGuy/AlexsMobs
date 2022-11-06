@@ -5,21 +5,15 @@ import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormTail;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerVoidWormGlow;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWormPart;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexMultiConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import com.mojang.math.Vector3f;
-import net.minecraftforge.client.ForgeRenderTypes;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 
 public class RenderVoidWormBody extends LivingEntityRenderer<EntityVoidWormPart, EntityModel<EntityVoidWormPart>> {
     private static final ResourceLocation TEXTURE_BODY = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_body.png");

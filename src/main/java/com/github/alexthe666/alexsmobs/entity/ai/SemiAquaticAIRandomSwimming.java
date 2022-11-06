@@ -1,14 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.ai.util.RandomPos;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;

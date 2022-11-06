@@ -2,8 +2,6 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelMurmurHead;
 import com.github.alexthe666.alexsmobs.client.model.ModelMurmurNeck;
-import com.github.alexthe666.alexsmobs.entity.EntityCentipedeBody;
-import com.github.alexthe666.alexsmobs.entity.EntityMurmur;
 import com.github.alexthe666.alexsmobs.entity.EntityMurmurHead;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,7 +14,6 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 

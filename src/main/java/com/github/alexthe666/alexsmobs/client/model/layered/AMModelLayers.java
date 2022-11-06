@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.model.layered;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelFroststalker;
 import com.github.alexthe666.alexsmobs.client.model.ModelWanderingVillagerRider;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;

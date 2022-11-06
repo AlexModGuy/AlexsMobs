@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.client.model.ModelHummingbird;
 import com.github.alexthe666.alexsmobs.entity.EntityHummingbird;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 

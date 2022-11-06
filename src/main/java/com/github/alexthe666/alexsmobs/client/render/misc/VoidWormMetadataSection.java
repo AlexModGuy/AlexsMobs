@@ -1,16 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render.misc;
 
 import com.google.gson.JsonObject;
-import net.minecraft.client.resources.metadata.animation.VillagerMetaDataSection;
-import net.minecraft.client.resources.metadata.animation.VillagerMetadataSectionSerializer;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import net.minecraft.util.GsonHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class VoidWormMetadataSection {
     public static final VoidWormMetadataSection.Serializer SERIALIZER = new VoidWormMetadataSection.Serializer();

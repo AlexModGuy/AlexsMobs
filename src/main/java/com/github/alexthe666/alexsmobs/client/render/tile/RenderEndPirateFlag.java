@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render.tile;
 
 import com.github.alexthe666.alexsmobs.block.BlockEndPirateFlag;
-import com.github.alexthe666.alexsmobs.block.BlockEndPirateShipWheel;
 import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateFlag;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateFlag;
 import com.mojang.blaze3d.vertex.PoseStack;

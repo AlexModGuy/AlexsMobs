@@ -1,8 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelBunfungus;
 import com.github.alexthe666.alexsmobs.client.model.ModelKomodoDragon;
-import com.github.alexthe666.alexsmobs.entity.EntityBunfungus;
 import com.github.alexthe666.alexsmobs.entity.EntityKomodoDragon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

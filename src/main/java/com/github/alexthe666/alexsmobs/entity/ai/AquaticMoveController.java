@@ -1,13 +1,12 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntityDevilsHolePupfish;
 import com.github.alexthe666.alexsmobs.entity.EntityGiantSquid;
 import com.github.alexthe666.alexsmobs.entity.EntityWarpedToad;
 import com.github.alexthe666.alexsmobs.entity.ISemiAquatic;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.util.Mth;
 
 public class AquaticMoveController extends MoveControl {
     private final PathfinderMob entity;

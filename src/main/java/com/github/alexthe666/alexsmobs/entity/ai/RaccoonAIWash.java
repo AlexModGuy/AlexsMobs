@@ -1,21 +1,17 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.item.Items;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
-import java.util.Random;
-
-import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class RaccoonAIWash extends Goal {
     private final EntityRaccoon raccoon;

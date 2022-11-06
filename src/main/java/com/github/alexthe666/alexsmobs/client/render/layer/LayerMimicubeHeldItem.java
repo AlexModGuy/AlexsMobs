@@ -4,15 +4,15 @@ import com.github.alexthe666.alexsmobs.client.model.ModelMimicube;
 import com.github.alexthe666.alexsmobs.client.render.RenderMimicube;
 import com.github.alexthe666.alexsmobs.entity.EntityMimicube;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
-import net.minecraft.util.Mth;
-import com.mojang.math.Vector3f;
 
 public class LayerMimicubeHeldItem extends RenderLayer<EntityMimicube, ModelMimicube> {
 

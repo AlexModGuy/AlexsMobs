@@ -12,13 +12,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
-
-import net.minecraft.world.item.Item.Properties;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ItemFalconryGlove extends Item implements ILeftClick {
 

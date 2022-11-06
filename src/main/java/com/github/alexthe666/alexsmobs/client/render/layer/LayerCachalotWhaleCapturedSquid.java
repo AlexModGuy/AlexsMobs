@@ -2,10 +2,7 @@ package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.ClientProxy;
 import com.github.alexthe666.alexsmobs.client.model.ModelCachalotWhale;
-import com.github.alexthe666.alexsmobs.client.model.ModelCachalotWhale;
 import com.github.alexthe666.alexsmobs.client.render.RenderCachalotWhale;
-import com.github.alexthe666.alexsmobs.client.render.RenderCachalotWhale;
-import com.github.alexthe666.alexsmobs.entity.EntityCachalotWhale;
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotWhale;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;

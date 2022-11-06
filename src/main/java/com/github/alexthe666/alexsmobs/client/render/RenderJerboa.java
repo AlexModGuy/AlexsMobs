@@ -1,8 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelGazelle;
 import com.github.alexthe666.alexsmobs.client.model.ModelJerboa;
-import com.github.alexthe666.alexsmobs.entity.EntityGazelle;
 import com.github.alexthe666.alexsmobs.entity.EntityJerboa;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

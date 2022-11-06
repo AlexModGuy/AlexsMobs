@@ -10,7 +10,6 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.geom.ModelPart;
 
 public class ModelTarantulaHawk extends AdvancedEntityModel<EntityTarantulaHawk> {
     private final AdvancedModelBox root;

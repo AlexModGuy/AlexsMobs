@@ -1,14 +1,10 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
 import com.github.alexthe666.alexsmobs.entity.EntityVineLasso;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.mojang.math.Vector3f;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;

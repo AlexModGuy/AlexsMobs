@@ -1,16 +1,13 @@
 package com.github.alexthe666.alexsmobs.message;
 
-import java.util.function.Supplier;
-
 import com.github.alexthe666.alexsmobs.item.ILeftClick;
-import com.github.alexthe666.alexsmobs.item.ItemFalconryGlove;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 public class MessageSwingArm {
 

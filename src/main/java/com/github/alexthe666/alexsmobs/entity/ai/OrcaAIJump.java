@@ -1,14 +1,13 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityOrca;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.goal.JumpGoal;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.goal.JumpGoal;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
 public class OrcaAIJump extends JumpGoal {

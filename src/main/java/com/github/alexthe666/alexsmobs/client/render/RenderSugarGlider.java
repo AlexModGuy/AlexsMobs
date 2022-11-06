@@ -1,20 +1,13 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelCosmicCod;
 import com.github.alexthe666.alexsmobs.client.model.ModelSugarGlider;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerBasicGlow;
-import com.github.alexthe666.alexsmobs.entity.EntityCosmicCod;
-import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
-import com.github.alexthe666.alexsmobs.entity.EntityPotoo;
 import com.github.alexthe666.alexsmobs.entity.EntitySugarGlider;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -23,8 +16,6 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 

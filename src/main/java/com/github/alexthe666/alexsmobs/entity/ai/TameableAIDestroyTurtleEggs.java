@@ -1,14 +1,14 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.entity.ai.goal.RemoveBlockGoal;
-import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.goal.RemoveBlockGoal;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 
 public class TameableAIDestroyTurtleEggs extends RemoveBlockGoal {
 

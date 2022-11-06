@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.client.model.ModelBananaSlug;
 import com.github.alexthe666.alexsmobs.entity.EntityBananaSlug;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.MultiBufferSource;

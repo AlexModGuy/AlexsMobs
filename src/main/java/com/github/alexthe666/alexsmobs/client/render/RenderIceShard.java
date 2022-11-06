@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.entity.EntityHemolymph;
 import com.github.alexthe666.alexsmobs.entity.EntityIceShard;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

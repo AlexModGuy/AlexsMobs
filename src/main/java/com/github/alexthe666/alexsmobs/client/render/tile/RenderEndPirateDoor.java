@@ -1,11 +1,8 @@
 package com.github.alexthe666.alexsmobs.client.render.tile;
 
 import com.github.alexthe666.alexsmobs.block.BlockEndPirateDoor;
-import com.github.alexthe666.alexsmobs.block.BlockVoidWormBeak;
 import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateDoor;
-import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormBeak;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateDoor;
-import com.github.alexthe666.alexsmobs.tileentity.TileEntityVoidWormBeak;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;

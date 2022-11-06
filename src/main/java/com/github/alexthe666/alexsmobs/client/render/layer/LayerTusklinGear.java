@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render.layer;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelTusklin;
-import com.github.alexthe666.alexsmobs.client.model.ModelTusklin;
 import com.github.alexthe666.alexsmobs.client.render.RenderTusklin;
-import com.github.alexthe666.alexsmobs.client.render.RenderTusklin;
-import com.github.alexthe666.alexsmobs.entity.EntityTusklin;
 import com.github.alexthe666.alexsmobs.entity.EntityTusklin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -1,12 +1,9 @@
 package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
-import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateAnchor;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateAnchorWinch;
-import com.github.alexthe666.alexsmobs.tileentity.TileEntityTerrapinEgg;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;

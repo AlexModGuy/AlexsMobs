@@ -1,10 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.util;
 
 import com.github.alexthe666.alexsmobs.entity.EntityLaviathan;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class LaviathanNeckSolver {
     private int yawTimer;

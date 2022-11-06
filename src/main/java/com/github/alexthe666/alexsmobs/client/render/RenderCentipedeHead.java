@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelCaveCentipede;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerCentipedeHeadEyes;
-import com.github.alexthe666.alexsmobs.entity.EntityCentipedeBody;
 import com.github.alexthe666.alexsmobs.entity.EntityCentipedeHead;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.mojang.blaze3d.vertex.PoseStack;

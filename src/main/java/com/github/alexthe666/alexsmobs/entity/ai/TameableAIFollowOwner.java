@@ -2,8 +2,8 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.IFollower;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 
 public class TameableAIFollowOwner extends FollowOwnerGoal {
 

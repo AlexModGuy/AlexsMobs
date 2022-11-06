@@ -1,22 +1,19 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.entity.EntityGust;
 import com.github.alexthe666.alexsmobs.entity.EntityGuster;
 import com.github.alexthe666.alexsmobs.entity.EntitySandShot;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
+import com.mojang.math.Vector3f;
+import net.minecraft.client.model.LlamaSpitModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.model.LlamaSpitModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.data.models.model.ModelLocationUtils;
-import net.minecraft.world.entity.projectile.LlamaSpit;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.entity.projectile.LlamaSpit;
 
 public class RenderSandShot extends EntityRenderer<EntitySandShot> {
     private static final ResourceLocation SAND_SHOT = new ResourceLocation("alexsmobs:textures/entity/sand_shot.png");

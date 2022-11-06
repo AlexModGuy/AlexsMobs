@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
-import com.github.alexthe666.alexsmobs.entity.EntitySeagull;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
 

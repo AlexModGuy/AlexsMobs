@@ -1,13 +1,10 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFroststalker;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.datafixers.DataFixUtils;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 

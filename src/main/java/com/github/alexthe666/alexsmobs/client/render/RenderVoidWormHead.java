@@ -1,17 +1,13 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelVoidWorm;
-import com.github.alexthe666.alexsmobs.client.render.layer.LayerBasicGlow;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerVoidWormGlow;
-import com.github.alexthe666.alexsmobs.entity.EntityCombJelly;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
-import com.github.alexthe666.alexsmobs.entity.EntityVoidWormPart;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;

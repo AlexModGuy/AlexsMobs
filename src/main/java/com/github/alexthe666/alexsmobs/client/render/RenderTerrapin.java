@@ -1,26 +1,17 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
-import com.github.alexthe666.alexsmobs.client.model.ModelFrilledShark;
-import com.github.alexthe666.alexsmobs.client.model.ModelJerboa;
 import com.github.alexthe666.alexsmobs.client.model.ModelTerrapin;
-import com.github.alexthe666.alexsmobs.entity.EntityAnacondaPart;
-import com.github.alexthe666.alexsmobs.entity.EntityFrilledShark;
-import com.github.alexthe666.alexsmobs.entity.EntityJerboa;
 import com.github.alexthe666.alexsmobs.entity.EntityTerrapin;
 import com.github.alexthe666.alexsmobs.entity.util.TerrapinTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
-
-import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
 public class RenderTerrapin extends MobRenderer<EntityTerrapin, ModelTerrapin> {
 
