@@ -45,9 +45,7 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 3) {
-            double d0 = 0.08D;
-
-            for(int i = 0; i < 8; ++i) {
+            for (int i = 0; i < 8; ++i) {
                 this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), this.getX(), this.getY(), this.getZ(), ((double)this.random.nextFloat() - 0.5D) * 0.08D, ((double)this.random.nextFloat() - 0.5D) * 0.08D, ((double)this.random.nextFloat() - 0.5D) * 0.08D);
             }
         }
@@ -59,8 +57,8 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
         if (!this.level.isClientSide) {
             this.level.broadcastEntityEvent(this, (byte)3);
             int i = random.nextInt(3);
-            for(int j = 0; j < i; ++j) {
-                EntityCockroach croc = AMEntityRegistry.COCKROACH.get().create(this.level);
+            for (int j = 0; j < i; ++j) {
+                final EntityCockroach croc = AMEntityRegistry.COCKROACH.get().create(this.level);
                 croc.setAge(-24000);
                 croc.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                 croc.finalizeSpawn((ServerLevel)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);

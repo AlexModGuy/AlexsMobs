@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.level.block.state.BlockState;
@@ -216,13 +217,13 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     @Override
     @Nonnull
     protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
-        ItemStack lvt_3_1_ = player.getItemInHand(hand);
+        final ItemStack lvt_3_1_ = player.getItemInHand(hand);
         if (lvt_3_1_.getItem() == Items.SLIME_BALL && this.isAlive() && !this.isSlimed()) {
             this.setSlimed(true);
             for (int i = 0; i < 6 + random.nextInt(3); i++) {
-                double d2 = this.random.nextGaussian() * 0.02D;
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
+                final double d2 = this.random.nextGaussian() * 0.02D;
+                final double d0 = this.random.nextGaussian() * 0.02D;
+                final double d1 = this.random.nextGaussian() * 0.02D;
                 this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
             lvt_3_1_.shrink(1);
@@ -281,24 +282,27 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
         this.prevSquishFactor = this.squishFactor;
         this.squishFactor += (this.squishAmount - this.squishFactor) * 0.5F;
 
-        float f2 = (float) -((float) this.getDeltaMovement().y * 2.2F * (double) (180F / (float) Math.PI));
+        final float f2 = (float) -((float) this.getDeltaMovement().y * 2.2F * Maths.oneEightyDividedByFloatPi);
         this.setXRot(f2);
         if (!isInWater()) {
-            if (this.onGround && !this.wasOnGround) {
-                this.squishAmount = -0.35F;
-            } else if (!this.onGround && this.wasOnGround) {
-                this.squishAmount = 2F;
+            if (this.onGround) {
+                if (!this.wasOnGround)
+                    this.squishAmount = -0.35F;
+            } else {
+                if (this.wasOnGround)
+                    this.squishAmount = 2F;
             }
         }
         this.wasOnGround = this.onGround;
 
         this.alterSquishAmount();
-        boolean clear = hasClearance();
-        if (this.isDepressurized() && clear) {
-            this.setDepressurized(false);
-        }
-        if(!isDepressurized() && !clear){
-            this.setDepressurized(true);
+        final boolean clear = hasClearance();
+        if (clear) {
+            if (this.isDepressurized())
+                this.setDepressurized(false);
+        } else {
+            if (!isDepressurized())
+                this.setDepressurized(true);
         }
     }
 

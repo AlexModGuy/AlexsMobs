@@ -150,10 +150,10 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(JUMP_ACTIVE, Boolean.valueOf(false));
-        this.entityData.define(SLEEPING, Boolean.valueOf(false));
-        this.entityData.define(BEGGING, Boolean.valueOf(false));
-        this.entityData.define(CARROTED, Boolean.valueOf(false));
+        this.entityData.define(JUMP_ACTIVE, false);
+        this.entityData.define(SLEEPING, false);
+        this.entityData.define(BEGGING, false);
+        this.entityData.define(CARROTED, false);
         this.entityData.define(TRANSFORMS_IN, 0);
     }
 
@@ -171,9 +171,11 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
         prevSleepProgress = sleepProgress;
         prevInterestedProgress = interestedProgress;
         prevTransformTime = this.transformsIn();
+
         if (!level.isClientSide) {
             this.entityData.set(JUMP_ACTIVE, !this.isOnGround());
         }
+
         if (this.entityData.get(JUMP_ACTIVE) && !isInWaterOrBubble()) {
             if (jumpProgress < 5F) {
                 jumpProgress += 0.5F;
@@ -194,45 +196,51 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                 jumpProgress = Math.max(jumpProgress - 1F, 0);
             }
         }
-        if (this.isSleepingPose() && sleepProgress < 5F) {
-            sleepProgress++;
+
+        if (this.isSleepingPose()) {
+            if (sleepProgress < 5F)
+                sleepProgress++;
+        } else {
+            if (sleepProgress > 0F)
+                sleepProgress--;
         }
-        if (!this.isSleepingPose() && sleepProgress > 0F) {
-            sleepProgress--;
+
+        if (this.isBegging()) {
+            if (interestedProgress < 5F)
+                interestedProgress++;
+        } else {
+            if (interestedProgress > 0F)
+                interestedProgress--;
         }
-        if (this.isBegging() && interestedProgress < 5F) {
-            interestedProgress++;
-        }
-        if (!this.isBegging() && interestedProgress > 0F) {
-            interestedProgress--;
-        }
-        LivingEntity target = this.getTarget();
+
         if (!level.isClientSide) {
+            final LivingEntity target = this.getTarget();
             if (target != null && target.isAlive()) {
-                if(this.isSleeping()){
+                if (this.isSleeping()) {
                     this.setSleeping(false);
                 }
-                double dist = this.distanceTo(target);
+                final double dist = this.distanceTo(target);
                 boolean flag = false;
-                if (dist < 3.5D && this.getAnimation() == ANIMATION_BELLY && this.getAnimationTick() == 5) {
-                    for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
-                        if ((entity == target || entity instanceof Monster) && !entity.getType().is(AMTagRegistry.BUNFUNGUS_IGNORE_AOE_ATTACKS)) {
-                            flag = true;
-                            launch(entity);
-                            entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                if (this.getAnimationTick() == 5) {
+                    if (dist < 3.5D && this.getAnimation() == ANIMATION_BELLY) {
+                        for (final LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
+                            if ((entity == target || entity instanceof Monster) && !entity.getType().is(AMTagRegistry.BUNFUNGUS_IGNORE_AOE_ATTACKS)) {
+                                flag = true;
+                                launch(entity);
+                                entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                            }
+                        }
+                    } else if (dist < 2.5D && this.getAnimation() == ANIMATION_SLAM) {
+                        for (final LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
+                            if ((entity == target || entity instanceof Monster) && !entity.getType().is(AMTagRegistry.BUNFUNGUS_IGNORE_AOE_ATTACKS)) {
+                                flag = true;
+                                entity.knockback(0.2F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
+                                entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                            }
                         }
                     }
                 }
-                if (dist < 2.5D && this.getAnimation() == ANIMATION_SLAM && this.getAnimationTick() == 5) {
-                    for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
-                        if ((entity == target || entity instanceof Monster) && !entity.getType().is(AMTagRegistry.BUNFUNGUS_IGNORE_AOE_ATTACKS)) {
-                            flag = true;
-                            entity.knockback(0.2F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
-                            entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-                        }
-                    }
-                }
-                if(flag){
+                if (flag) {
                     this.playSound(AMSoundRegistry.BUNFUNGUS_ATTACK.get(), this.getSoundVolume(), this.getVoicePitch());
                 }
             }
@@ -257,41 +265,43 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                     this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 1000, 1));
                     this.heal(8);
                 }
-            }else{
+            } else {
                 for (int i = 0; i < 3; i++) {
-                    double d2 = this.random.nextGaussian() * 0.02D;
-                    double d0 = this.random.nextGaussian() * 0.02D;
-                    double d1 = this.random.nextGaussian() * 0.02D;
+                    final double d2 = this.random.nextGaussian() * 0.02D;
+                    final double d0 = this.random.nextGaussian() * 0.02D;
+                    final double d1 = this.random.nextGaussian() * 0.02D;
                     this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
                 }
             }
         }
-        if(!level.isClientSide){
-            if(this.transformsIn() > 0){
+        if (!level.isClientSide) {
+            if (this.transformsIn() > 0) {
                 this.setTransformsIn(this.transformsIn() - 1);
             }
         }
-        if(isRabbitForm() && level.isClientSide){
-            for (int i = 0; i < 3; i++) {
-                double d2 = this.random.nextGaussian() * 0.02D;
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                float f1 = (EntityBunfungus.MAX_TRANSFORM_TIME - this.transformsIn()) / (float)EntityBunfungus.MAX_TRANSFORM_TIME;
-                float scale = f1 * 0.5F + 0.15F;
-                this.level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), this.getRandomX(scale), this.getY(this.random.nextDouble() * scale), this.getRandomZ(scale), d0, d1, d2);
-            }
-        }
-        if(isSleeping() && level.isClientSide && random.nextFloat() < 0.3F){
-            double d0 = this.random.nextGaussian() * 0.02D;
-            float radius = this.getBbWidth() * (0.7F + random.nextFloat() * 0.1F);
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle)) + random.nextFloat() * 0.5F - 0.25F;
-            double extraZ = radius * Mth.cos(angle) + random.nextFloat() * 0.5F - 0.25F;
-            ParticleOptions data = random.nextFloat() < 0.3F ? AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get() : AMParticleRegistry.FUNGUS_BUBBLE.get();
-            this.level.addParticle(data, this.getX() + extraX, this.getY() + random.nextFloat() * 0.1F, this.getZ() + extraZ, 0, d0, 0);
 
-        }
-        if (!this.level.isClientSide) {
+        if (level.isClientSide) {
+            if (isRabbitForm()){
+                for (int i = 0; i < 3; i++) {
+                    final double d2 = this.random.nextGaussian() * 0.02D;
+                    final double d0 = this.random.nextGaussian() * 0.02D;
+                    final double d1 = this.random.nextGaussian() * 0.02D;
+                    final float f1 = (EntityBunfungus.MAX_TRANSFORM_TIME - this.transformsIn()) / (float)EntityBunfungus.MAX_TRANSFORM_TIME;
+                    final float scale = f1 * 0.5F + 0.15F;
+                    this.level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), this.getRandomX(scale), this.getY(this.random.nextDouble() * scale), this.getRandomZ(scale), d0, d1, d2);
+                }
+            }
+
+            if (isSleeping() && random.nextFloat() < 0.3F) {
+                final double d0 = this.random.nextGaussian() * 0.02D;
+                final float radius = this.getBbWidth() * (0.7F + random.nextFloat() * 0.1F);
+                final float angle = (0.0174532925F * this.yBodyRot);
+                final double extraX = radius * Mth.sin((float) (Math.PI + angle)) + random.nextFloat() * 0.5F - 0.25F;
+                final double extraZ = radius * Mth.cos(angle) + random.nextFloat() * 0.5F - 0.25F;
+                ParticleOptions data = random.nextFloat() < 0.3F ? AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get() : AMParticleRegistry.FUNGUS_BUBBLE.get();
+                this.level.addParticle(data, this.getX() + extraX, this.getY() + random.nextFloat() * 0.1F, this.getZ() + extraZ, 0, d0, 0);
+            }
+        } else {
             if (this.level.isDay() && this.getTarget() == null && !this.isBegging() && !this.isInWaterOrBubble()) {
                 if (tickCount % 10 == 0 && this.getRandom().nextInt(300) == 0) {
                     this.setSleeping(true);
@@ -305,20 +315,20 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
 
     private void launch(LivingEntity target) {
         if (target.isOnGround()) {
-            double d0 = target.getX() - this.getX();
-            double d1 = target.getZ() - this.getZ();
-            double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
-            float f = 6 + random.nextFloat() * 2;
+            final double d0 = target.getX() - this.getX();
+            final double d1 = target.getZ() - this.getZ();
+            final double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+            final float f = 6 + random.nextFloat() * 2;
             target.push(d0 / d2 * f, 0.6F + random.nextFloat() * 0.7F, d1 / d2 * f);
         }
     }
 
     public boolean isSleeping() {
-        return this.entityData.get(SLEEPING).booleanValue();
+        return this.entityData.get(SLEEPING);
     }
 
     public void setSleeping(boolean sleeping) {
-        this.entityData.set(SLEEPING, Boolean.valueOf(sleeping));
+        this.entityData.set(SLEEPING, sleeping);
     }
 
     public boolean isSleepingPose() {
@@ -326,7 +336,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     }
 
     public boolean isCarroted() {
-        return this.entityData.get(CARROTED).booleanValue();
+        return this.entityData.get(CARROTED);
     }
 
     public void setCarroted(boolean head) {
@@ -334,15 +344,15 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     }
 
     public boolean isBegging() {
-        return this.entityData.get(BEGGING).booleanValue() && this.getAnimation() != ANIMATION_EAT;
+        return this.entityData.get(BEGGING) && this.getAnimation() != ANIMATION_EAT;
     }
 
     public void setBegging(boolean begging) {
-        this.entityData.set(BEGGING, Boolean.valueOf(begging));
+        this.entityData.set(BEGGING, begging);
     }
 
     public int transformsIn() {
-        return Math.min(this.entityData.get(TRANSFORMS_IN).intValue(), MAX_TRANSFORM_TIME);
+        return Math.min(this.entityData.get(TRANSFORMS_IN), MAX_TRANSFORM_TIME);
     }
 
     public boolean isRabbitForm() {
@@ -354,9 +364,9 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        InteractionResult type = super.mobInteract(player, hand);
-        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        final ItemStack itemstack = player.getItemInHand(hand);
+        final InteractionResult type = super.mobInteract(player, hand);
+        final InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
             if (isCarrot(itemstack) && this.getMainHandItem().isEmpty()) {
                 ItemStack cop = itemstack.copy();

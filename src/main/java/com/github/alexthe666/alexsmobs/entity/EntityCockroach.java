@@ -149,8 +149,9 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
             if (this.getHealth() <= 1.0F && amount > 0 && !this.isHeadless() && this.getRandom().nextInt(3) == 0) {
                 this.setHeadless(true);
                 if (!level.isClientSide) {
+                    final ServerLevel serverLevel = (ServerLevel) this.level;
                     for (int i = 0; i < 3; i++) {
-                        ((ServerLevel) this.level).sendParticles(ParticleTypes.SNEEZE, this.getRandomX(0.52F), this.getY(1D), this.getRandomZ(0.52F), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                        serverLevel.sendParticles(ParticleTypes.SNEEZE, this.getRandomX(0.52F), this.getY(1D), this.getRandomZ(0.52F), 1, 0.0D, 0.0D, 0.0D, 0.0D);
                     }
                 }
             }
@@ -221,11 +222,11 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DANCING, Boolean.valueOf(false));
-        this.entityData.define(HEADLESS, Boolean.valueOf(false));
-        this.entityData.define(MARACAS, Boolean.valueOf(false));
+        this.entityData.define(DANCING, false);
+        this.entityData.define(HEADLESS, false);
+        this.entityData.define(MARACAS, false);
         this.entityData.define(NEAREST_MUSICIAN, Optional.empty());
-        this.entityData.define(BREADED, Boolean.valueOf(false));
+        this.entityData.define(BREADED, false);
     }
 
     public boolean isDancing() {
@@ -268,7 +269,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     public void tick() {
         super.tick();
         prevDanceProgress = danceProgress;
-        boolean dance = this.isJukeboxing || isDancing();
+        final boolean dance = this.isJukeboxing || isDancing();
         if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 3.46D) || !this.level.getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
             this.isJukeboxing = false;
             this.jukeboxPosition = null;
@@ -276,12 +277,15 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
         if (this.getEyeHeight() > this.getBbHeight()) {
             this.refreshDimensions();
         }
-        if (dance && danceProgress < 5F) {
-            danceProgress++;
+
+        if (dance) {
+            if (danceProgress < 5F)
+                danceProgress++;
+        } else {
+            if (danceProgress > 0F)
+                danceProgress--;
         }
-        if (!dance && danceProgress > 0F) {
-            danceProgress--;
-        }
+
         if (!this.onGround || random.nextInt(200) == 0) {
             randomWingFlapTick = 5 + random.nextInt(15);
         }
@@ -351,7 +355,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     public Entity getNearestMusician() {
-        UUID id = getNearestMusicianId();
+        final UUID id = getNearestMusicianId();
         if (id != null && !level.isClientSide) {
             return ((ServerLevel) level).getEntity(id);
         }
@@ -371,7 +375,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableEntity) {
-        EntityCockroach roach = AMEntityRegistry.COCKROACH.get().create(serverWorld);
+        final EntityCockroach roach = AMEntityRegistry.COCKROACH.get().create(serverWorld);
         roach.setBreaded(true);
         return roach;
     }

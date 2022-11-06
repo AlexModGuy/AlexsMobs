@@ -185,14 +185,14 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         super.tick();
         this.prevFishPitch = this.getFishPitch();
         if (!level.isClientSide) {
-            double ydist = (this.yo - this.getY());//down 0.4 up -0.38
-            float fishDist = (float) ((Math.abs(this.getDeltaMovement().x) + Math.abs(this.getDeltaMovement().z)) * 6F) / getPitchSensitivity();
+            final double ydist = (this.yo - this.getY());//down 0.4 up -0.38
+            final float fishDist = (float) ((Math.abs(this.getDeltaMovement().x) + Math.abs(this.getDeltaMovement().z)) * 6F) / getPitchSensitivity();
             this.incrementFishPitch((float) (ydist) * 10 * getPitchSensitivity());
             this.setFishPitch(Mth.clamp(this.getFishPitch(), -60, 40));
-            if (this.getFishPitch() > 2) {
+            if (this.getFishPitch() > 2F) {
                 this.decrementFishPitch(fishDist * Math.abs(this.getFishPitch()) / 90);
             }
-            if (this.getFishPitch() < -2) {
+            if (this.getFishPitch() < -2F) {
                 this.incrementFishPitch(fishDist * Math.abs(this.getFishPitch()) / 90);
             }
             if (this.getFishPitch() > 2F) {
@@ -207,14 +207,14 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         if(teleportIn > 0){
             teleportIn--;
             if(teleportIn == 0 && !level.isClientSide){
-                double range = 8;
-                AABB bb = new AABB(this.getX() - range, this.getY() - range, this.getZ() - range, this.getX() + range, this.getY() + range, this.getZ() + range);
-                List<EntityCosmicCod> list = this.level.getEntitiesOfClass(EntityCosmicCod.class, bb);
-                Vec3 vec3 = this.teleport();
-                if(vec3 != null){
+                final double range = 8;
+                final AABB bb = new AABB(this.getX() - range, this.getY() - range, this.getZ() - range, this.getX() + range, this.getY() + range, this.getZ() + range);
+                final List<EntityCosmicCod> list = this.level.getEntitiesOfClass(EntityCosmicCod.class, bb);
+                final Vec3 vec3 = this.teleport();
+                if (vec3 != null) {
                     baitballCooldown = 5;
-                    for(EntityCosmicCod cod : list){
-                        if(cod != this){
+                    for (final EntityCosmicCod cod : list) {
+                        if (cod != this) {
                             cod.baitballCooldown = 5;
                             cod.teleport(vec3.x, vec3.y, vec3.z);
                         }
@@ -225,7 +225,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     }
 
     public void handleEntityEvent(byte msg) {
-        if(msg == 46){
+        if (msg == 46) {
             this.gameEvent(GameEvent.TELEPORT);
             this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
         }
@@ -285,20 +285,20 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     }
 
     public boolean canBlockPosBeSeen(BlockPos pos) {
-        double x = pos.getX() + 0.5F;
-        double y = pos.getY() + 0.5F;
-        double z = pos.getZ() + 0.5F;
-        HitResult result = this.level.clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-        double dist = result.getLocation().distanceToSqr(x, y, z);
+        final double x = pos.getX() + 0.5F;
+        final double y = pos.getY() + 0.5F;
+        final double z = pos.getZ() + 0.5F;
+        final HitResult result = this.level.clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        final double dist = result.getLocation().distanceToSqr(x, y, z);
         return dist <= 1.0D || result.getType() == HitResult.Type.MISS;
     }
 
     protected Vec3 teleport() {
         if (!this.level.isClientSide() && this.isAlive()) {
-            double d0 = this.getX() + (this.random.nextDouble() - 0.5D) * 64.0D;
-            double d1 = this.getY() + (double) (this.random.nextInt(64) - 32);
-            double d2 = this.getZ() + (this.random.nextDouble() - 0.5D) * 64.0D;
-            if(this.teleport(d0, d1, d2)){
+            final double d0 = this.getX() + (this.random.nextDouble() - 0.5D) * 64.0D;
+            final double d1 = this.getY() + (double) (this.random.nextInt(64) - 32);
+            final double d2 = this.getZ() + (this.random.nextDouble() - 0.5D) * 64.0D;
+            if (this.teleport(d0, d1, d2)) {
                 this.circlePos = null;
                 return new Vec3(d0, d1, d2);
             }
@@ -307,11 +307,10 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     }
 
     private boolean teleport(double x, double y, double z) {
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
-        BlockState blockstate = this.level.getBlockState(blockpos$mutableblockpos);
-        boolean flag = blockstate.isAir();
-        boolean flag1 = blockstate.getFluidState().is(FluidTags.WATER);
-        if (flag && !flag1) {
+        final BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
+        final BlockState blockstate = this.level.getBlockState(blockpos$mutableblockpos);
+        final boolean flag = blockstate.isAir();
+        if (flag && !blockstate.getFluidState().is(FluidTags.WATER)) {
             this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
             net.minecraftforge.event.entity.EntityTeleportEvent.EnderEntity event = net.minecraftforge.event.ForgeEventFactory.onEnderTeleport(this, x, y, z);
             if (event.isCanceled()) return false;
@@ -412,15 +411,15 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     @Override
     @Nonnull
     protected InteractionResult mobInteract(@Nonnull Player player, @Nonnull InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
+        final ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.getItem() == Items.BUCKET && this.isAlive()) {
             this.gameEvent(GameEvent.ENTITY_INTERACT);
             this.playSound(this.getPickupSound(), 1.0F, 1.0F);
-            ItemStack itemstack1 = this.getBucketItemStack();
+            final ItemStack itemstack1 = this.getBucketItemStack();
             this.saveToBucketTag(itemstack1);
-            ItemStack itemstack2 = ItemUtils.createFilledResult(itemstack, player, itemstack1, false);
+            final ItemStack itemstack2 = ItemUtils.createFilledResult(itemstack, player, itemstack1, false);
             player.setItemInHand(hand, itemstack2);
-            Level level = this.level;
+            final Level level = this.level;
             if (!level.isClientSide) {
                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemstack1);
             }
@@ -476,7 +475,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
                     }
                 }
             } else if (cod.random.nextInt(40) == 0 || cod.hasNoLeader()) {
-                Vec3 movepos = cod.position().add(cod.random.nextInt(4) - 2, cod.getY() < 0 ? 1 : cod.random.nextInt(4) - 2, cod.random.nextInt(4) - 2);
+                final Vec3 movepos = cod.position().add(cod.random.nextInt(4) - 2, cod.getY() < 0 ? 1 : cod.random.nextInt(4) - 2, cod.random.nextInt(4) - 2);
                 cod.getMoveControl().setWantedPosition(movepos.x, movepos.y, movepos.z, 1.0F);
             } else if (cod.hasGroupLeader() && cod.groupLeader.circlePos != null) {
                 if (cod.circlePos == null) {
@@ -490,10 +489,10 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         }
 
         public Vec3 getSharkCirclePos(BlockPos target) {
-            float prog = 1F - (cod.circleTime / (float) cod.maxCircleTime);
-            float angle = (0.01745329251F * 10 * (clockwise ? -cod.circleTime : cod.circleTime));
-            double extraX = (circleDistance * prog + 0.75F) * Mth.sin((angle));
-            double extraZ =  (circleDistance * prog + 0.75F) * prog * Mth.cos(angle);
+            final float prog = 1F - (cod.circleTime / (float) cod.maxCircleTime);
+            final float angle = (0.0174532925F * 10 * (clockwise ? -cod.circleTime : cod.circleTime));
+            final double extraX = (circleDistance * prog + 0.75F) * Mth.sin((angle));
+            final double extraZ =  (circleDistance * prog + 0.75F) * prog * Mth.cos(angle);
             return new Vec3(target.getX() + 0.5F + extraX, Math.max(target.getY() + cod.random.nextInt(4) - 2, -62), target.getZ() + 0.5F + extraZ);
         }
     }

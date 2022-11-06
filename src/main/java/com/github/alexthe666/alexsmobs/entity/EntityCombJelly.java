@@ -160,45 +160,47 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
         if (this.isInWater() && onLandProgress > 0F) {
             onLandProgress--;
         }
-        if(!this.isInWater() && !level.isClientSide) {
-            this.setNoGravity(false);
-        }
-        if(this.isInWater() && !level.isClientSide){
-            this.setNoGravity(true);
-            if(moveTarget == null || this.random.nextInt(120) == 0 || this.distanceToSqr(moveTarget.getX() + 0.5F, moveTarget.getY() + 0.5F, moveTarget.getZ() + 0.5F) < 5 || tickCount % 10 == 0 && !canBlockPosBeSeen(moveTarget)){
-                BlockPos randPos = this.blockPosition().offset(random.nextInt(10) - 5, random.nextInt(6) - 3, random.nextInt(10) - 5);
-                if(level.getFluidState(randPos).is(Fluids.WATER) && level.getFluidState(randPos.above()).is(Fluids.WATER)){
-                    moveTarget = randPos;
+
+        if (!level.isClientSide) {
+            if (this.isInWater()) {
+                this.setNoGravity(true);
+                if(moveTarget == null || this.random.nextInt(120) == 0 || this.distanceToSqr(moveTarget.getX() + 0.5F, moveTarget.getY() + 0.5F, moveTarget.getZ() + 0.5F) < 5 || tickCount % 10 == 0 && !canBlockPosBeSeen(moveTarget)){
+                    BlockPos randPos = this.blockPosition().offset(random.nextInt(10) - 5, random.nextInt(6) - 3, random.nextInt(10) - 5);
+                    if(level.getFluidState(randPos).is(Fluids.WATER) && level.getFluidState(randPos.above()).is(Fluids.WATER)){
+                        moveTarget = randPos;
+                    }
                 }
-            }
-            if(this.getFluidHeight(FluidTags.WATER) < this.getBbHeight()){
-                moveTarget = null;
-                this.setDeltaMovement(this.getDeltaMovement().add(0, -0.02, 0));
-            }
-            if(moveTarget != null){
-                double d0 = moveTarget.getX() + 0.5F - this.getX();
-                double d1 = moveTarget.getY() + 0.5F - this.getY();
-                double d2 = moveTarget.getZ() + 0.5F - this.getZ();
-                double d3 = (double) Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
-                float f = (float)(Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
-                this.setYRot(rotlerp(this.getYRot(), f, 1));
-                this.yBodyRot = this.getYRot();
-                float movSpeed = 0.004F;
-                Vec3 movingVec = new Vec3(d0/d3, d1/d3, d2/d3).normalize();
-                this.setDeltaMovement(this.getDeltaMovement().add(movingVec.scale(movSpeed)));
-            }
-            float dist = (float) ((Math.abs(this.getDeltaMovement().x()) + Math.abs(this.getDeltaMovement().z())) * 30);
-            this.incrementJellyPitch(dist);
-            if (this.horizontalCollision) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0, 0.2F, 0));
-            }
-            if (this.getJellyPitch() > 0F) {
-                float decrease = Math.min(0.5F, this.getJellyPitch());
-                this.decrementJellyPitch(decrease);
-            }
-            if (this.getJellyPitch() < 0F) {
-                float decrease = Math.min(0.5F, -this.getJellyPitch());
-                this.incrementJellyPitch(decrease);
+                if(this.getFluidHeight(FluidTags.WATER) < this.getBbHeight()){
+                    moveTarget = null;
+                    this.setDeltaMovement(this.getDeltaMovement().add(0, -0.02, 0));
+                }
+                if(moveTarget != null){
+                    final double d0 = moveTarget.getX() + 0.5F - this.getX();
+                    final double d1 = moveTarget.getY() + 0.5F - this.getY();
+                    final double d2 = moveTarget.getZ() + 0.5F - this.getZ();
+                    final double d3 = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
+                    final float f = (float)(Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
+                    this.setYRot(rotlerp(this.getYRot(), f, 1));
+                    this.yBodyRot = this.getYRot();
+                    final float movSpeed = 0.004F;
+                    final Vec3 movingVec = new Vec3(d0/d3, d1/d3, d2/d3).normalize();
+                    this.setDeltaMovement(this.getDeltaMovement().add(movingVec.scale(movSpeed)));
+                }
+                final float dist = (float) ((Math.abs(this.getDeltaMovement().x()) + Math.abs(this.getDeltaMovement().z())) * 30);
+                this.incrementJellyPitch(dist);
+                if (this.horizontalCollision) {
+                    this.setDeltaMovement(this.getDeltaMovement().add(0, 0.2F, 0));
+                }
+                if (this.getJellyPitch() > 0F) {
+                    float decrease = Math.min(0.5F, this.getJellyPitch());
+                    this.decrementJellyPitch(decrease);
+                }
+                if (this.getJellyPitch() < 0F) {
+                    float decrease = Math.min(0.5F, -this.getJellyPitch());
+                    this.incrementJellyPitch(decrease);
+                }
+            } else {
+                this.setNoGravity(false);
             }
         }
     }
@@ -218,11 +220,11 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
     }
 
     public boolean canBlockPosBeSeen(BlockPos pos) {
-        double x = pos.getX() + 0.5F;
-        double y = pos.getY() + 0.5F;
-        double z = pos.getZ() + 0.5F;
-        HitResult result = this.level.clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-        double dist = result.getLocation().distanceToSqr(x, y, z);
+        final double x = pos.getX() + 0.5F;
+        final double y = pos.getY() + 0.5F;
+        final double z = pos.getZ() + 0.5F;
+        final HitResult result = this.level.clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        final double dist = result.getLocation().distanceToSqr(x, y, z);
         return dist <= 1.0D || result.getType() == HitResult.Type.MISS;
     }
 
