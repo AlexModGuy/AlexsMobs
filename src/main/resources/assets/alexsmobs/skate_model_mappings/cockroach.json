@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:cockroach",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["right_leg_front", "right_leg_mid", "right_leg_back"],
+  "left_leg": ["left_leg_front", "left_leg_mid", "left_leg_back"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.6,
+  "face_forwards": true
+}

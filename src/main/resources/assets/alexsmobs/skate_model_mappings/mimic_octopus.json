@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:mimic_octopus",
+  "body": ["body"],
+  "head": ["body"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["rightFrontArm1", "rightFrontArm2", "rightBackArm1", "rightBackArm2"],
+  "left_leg": ["leftFrontArm1", "leftFrontArm2", "leftBackArm1", "leftBackArm2"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.3,
+  "face_forwards": true
+}

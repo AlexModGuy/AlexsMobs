@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:warped_mosco",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": ["shoulder_right"],
+  "left_arm": ["shoulder_left"],
+  "right_leg": ["legback_right", "legfront_right"],
+  "left_leg": ["legback_left", "legfront_left"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.6,
+  "face_forwards": false
+}

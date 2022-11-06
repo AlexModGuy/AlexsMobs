@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:gorilla",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": ["rightArm"],
+  "left_arm": ["leftArm"],
+  "right_leg": ["leftLeg"],
+  "left_leg": ["rightLeg"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.8,
+  "face_forwards": false
+}

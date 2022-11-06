@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:mudskipper",
+  "body": ["root"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["rightFin"],
+  "left_leg": ["leftFin"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.4,
+  "face_forwards": true
+}

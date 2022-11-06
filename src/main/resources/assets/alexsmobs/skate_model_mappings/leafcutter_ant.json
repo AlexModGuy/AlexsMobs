@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:leafcutter_ant",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["legmid_right", "legback_right", "legfront_right"],
+  "left_leg": ["legmid_left", "legback_left", "legfront_left"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.4,
+  "face_forwards": true
+}

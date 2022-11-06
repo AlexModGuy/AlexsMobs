@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:crow",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["leg_right"],
+  "left_leg": ["leg_left"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.7,
+  "face_forwards": false
+}

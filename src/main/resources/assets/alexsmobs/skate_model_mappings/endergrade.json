@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:endergrade",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["legbackR", "legmidR", "legfrontR"],
+  "left_leg": ["legbackL", "legmidL", "legfrontL"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.6,
+  "face_forwards": true
+}

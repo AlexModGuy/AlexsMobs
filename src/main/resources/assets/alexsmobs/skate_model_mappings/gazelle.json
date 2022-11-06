@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:gazelle",
+  "body": ["body"],
+  "head": ["neck"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["frontlegR", "backlegR"],
+  "left_leg": ["frontlegL", "backlegL"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.6,
+  "face_forwards": true
+}

@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:crimson_mosquito",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["legR1", "legR2", "legR3"],
+  "left_leg": ["legL1", "legL2", "legL3"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.5,
+  "face_forwards": true
+}

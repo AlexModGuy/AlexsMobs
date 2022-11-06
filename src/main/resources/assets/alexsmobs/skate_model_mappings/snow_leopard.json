@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:snow_leopard",
+  "body": ["body"],
+  "head": ["neck"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["leg_front_right", "leg_back_right"],
+  "left_leg": ["leg_front_left", "leg_back_left"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.65,
+  "face_forwards": true
+}

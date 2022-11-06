@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:underminer",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": ["rightArm"],
+  "left_arm": ["leftArm"],
+  "right_leg": ["rightLeg"],
+  "left_leg": ["leftLeg"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 1.0,
+  "face_forwards": false
+}

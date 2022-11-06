@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:potoo",
+  "body": ["body"],
+  "head": [],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["right_foot"],
+  "left_leg": ["left_foot"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.7,
+  "face_forwards": false
+}

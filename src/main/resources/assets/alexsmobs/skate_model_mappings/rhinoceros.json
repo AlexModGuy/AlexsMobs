@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:rhinoceros",
+  "body": ["body"],
+  "head": ["head"],
+  "right_arm": [],
+  "left_arm": [],
+  "right_leg": ["rightLeg", "rightArm"],
+  "left_leg": ["leftLeg", "leftArm"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.5,
+  "face_forwards": true
+}

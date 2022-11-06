@@ -1,0 +1,12 @@
+{
+  "entity_type": "alexsmobs:froststalker",
+  "body": ["body"],
+  "head": ["neck"],
+  "right_arm": ["armright"],
+  "left_arm": ["armleft"],
+  "right_leg": ["legright"],
+  "left_leg": ["legleft"],
+  "animation_speed_modifier": 1.0,
+  "animation_strength_modifier": 0.8,
+  "face_forwards": false
+}
