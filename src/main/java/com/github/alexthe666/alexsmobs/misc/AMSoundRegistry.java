@@ -419,6 +419,24 @@ public class AMSoundRegistry {
 
     public static final RegistryObject<SoundEvent> TENDON_WHIP = createSoundEvent("tendon_whip");
 
+    public static final RegistryObject<SoundEvent> SKUNK_HURT = createSoundEvent("skunk_hurt");
+
+    public static final RegistryObject<SoundEvent> SKUNK_IDLE = createSoundEvent("skunk_idle");
+
+    public static final RegistryObject<SoundEvent> SKUNK_SPRAY = createSoundEvent("skunk_spray");
+
+    public static final RegistryObject<SoundEvent> STINK_RAY = createSoundEvent("stink_ray");
+
+    public static final RegistryObject<SoundEvent> BANANA_SLUG_HURT = createSoundEvent("banana_slug_hurt");
+
+    public static final RegistryObject<SoundEvent> BANANA_SLUG_SLIME_EXPAND = createSoundEvent("banana_slug_slime_expand");
+
+    public static final RegistryObject<SoundEvent> BLUE_JAY_IDLE = createSoundEvent("blue_jay_idle");
+
+    public static final RegistryObject<SoundEvent> BLUE_JAY_HURT = createSoundEvent("blue_jay_hurt");
+
+    public static final RegistryObject<SoundEvent> BLUE_JAY_SONG = createSoundEvent("blue_jay_song");
+
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

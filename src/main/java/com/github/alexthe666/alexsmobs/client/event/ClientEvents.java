@@ -14,6 +14,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.effect.EffectPowerDown;
 import com.github.alexthe666.alexsmobs.entity.EntityBaldEagle;
+import com.github.alexthe666.alexsmobs.entity.EntityBlueJay;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.github.alexthe666.alexsmobs.entity.IFalconry;
 import com.github.alexthe666.alexsmobs.entity.util.RockyChestplateUtil;
@@ -57,6 +58,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluids;
@@ -67,6 +69,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -88,6 +91,13 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onOutlineEntityColor(EventGetOutlineColor event) {
+        if(event.getEntityIn() instanceof Enemy && AlexsMobs.PROXY.getSingingBlueJayId() != -1){
+            Entity entity = event.getEntityIn().level.getEntity(AlexsMobs.PROXY.getSingingBlueJayId());
+            if(entity instanceof EntityBlueJay jay && jay.isAlive() && jay.isMakingMonstersBlue()){
+                event.setColor(0X4B95FE);
+                event.setResult(Event.Result.ALLOW);
+            }
+        }
         if (event.getEntityIn() instanceof ItemEntity && ((ItemEntity) event.getEntityIn()).getItem().is(AMTagRegistry.VOID_WORM_DROPS)){
             int fromColor = 0;
             int toColor = 0X21E5FF;
@@ -354,7 +364,6 @@ public class ClientEvents {
     @OnlyIn(Dist.CLIENT)
     public void onRenderWorldLastEvent(RenderLevelStageEvent event) {
         if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY){
-            AMItemstackRenderer.incrementTick();
             if (!AMConfig.shadersCompat) {
                 if (Minecraft.getInstance().player.hasEffect(AMEffectRegistry.LAVA_VISION.get())) {
                     if (!previousLavaVision) {
@@ -421,7 +430,14 @@ public class ClientEvents {
         }
     }
 
-        @SubscribeEvent
+    @SubscribeEvent
+    public void clientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            AMItemstackRenderer.incrementTick();
+        }
+    }
+
+    @SubscribeEvent
     public void onCameraSetup(ViewportEvent.ComputeCameraAngles event) {
         if (Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE.get()) != null && !Minecraft.getInstance().isPaused()) {
             int duration = Minecraft.getInstance().player.getEffect(AMEffectRegistry.EARTHQUAKE.get()).getDuration();

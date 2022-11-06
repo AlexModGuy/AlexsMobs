@@ -188,6 +188,13 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue murmurSpawnWeight;
     public final ForgeConfigSpec.IntValue murmurSpawnRolls;
     public final ForgeConfigSpec.IntValue murmurSpawnHeight;
+    public final ForgeConfigSpec.IntValue skunkSpawnWeight;
+    public final ForgeConfigSpec.IntValue skunkSpawnRolls;
+    public final ForgeConfigSpec.IntValue bananaSlugSpawnWeight;
+    public final ForgeConfigSpec.IntValue bananaSlugSpawnRolls;
+
+    public final ForgeConfigSpec.IntValue blueJaySpawnWeight;
+    public final ForgeConfigSpec.IntValue blueJaySpawnRolls;
 
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
@@ -469,6 +476,12 @@ public class CommonConfig {
         underminerSpawnRolls = buildInt(builder, "underminerSpawnRolls", "spawns", AMConfig.underminerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         murmurSpawnWeight = buildInt(builder, "murmurSpawnWeight", "spawns", AMConfig.murmurSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         murmurSpawnRolls = buildInt(builder, "murmurSpawnRolls", "spawns", AMConfig.murmurSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        skunkSpawnWeight = buildInt(builder, "skunkSpawnWeight", "spawns", AMConfig.skunkSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        skunkSpawnRolls = buildInt(builder, "skunkSpawnRolls", "spawns", AMConfig.skunkSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        bananaSlugSpawnWeight = buildInt(builder, "bananaSlugSpawnWeight", "spawns", AMConfig.bananaSlugSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        bananaSlugSpawnRolls = buildInt(builder, "bananaSlugSpawnRolls", "spawns", AMConfig.bananaSlugSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        blueJaySpawnWeight = buildInt(builder, "blueJaySpawnWeight", "spawns", AMConfig.blueJaySpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        blueJaySpawnRolls = buildInt(builder, "blueJaySpawnRolls", "spawns", AMConfig.blueJaySpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         builder.push("uniqueSpawning");
         caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, -64, 320, "Maximum world y-level that cave centipedes can spawn at");
         blobfishSpawnHeight = buildInt(builder, "blobfishSpawnHeight", "all", AMConfig.blobfishSpawnHeight, -64, 320, "Maximum world y-level that blobfish can spawn at");

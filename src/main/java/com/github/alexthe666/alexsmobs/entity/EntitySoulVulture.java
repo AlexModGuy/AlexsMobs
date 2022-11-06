@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
+import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
@@ -80,7 +81,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
 
     @Nullable
     protected ResourceLocation getDefaultLootTable() {
-        return this.getSoulLevel() > 2 ? SOUL_LOOT : super.getDefaultLootTable();
+        return hasSoulHeart() ? SOUL_LOOT : super.getDefaultLootTable();
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -267,6 +268,20 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         } else {
             this.setNoGravity(false);
         }
+        if (level.isClientSide  && hasSoulHeart()) {
+            float radius = 0.25F + random.nextFloat() * 1F;
+            float fly = this.flyProgress * 0.2F;
+            float wingSpread = 15F + 65 * fly + random.nextInt(5);
+            float angle = (0.01745329251F * ((random.nextBoolean() ? -1 : 1) * (wingSpread + 180) + this.yBodyRot));
+            float angleMotion = (0.01745329251F * this.yBodyRot);
+            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraZ = radius * Mth.cos(angle);
+            double mov = this.getDeltaMovement().length();
+            double extraXMotion = -mov * Mth.sin((float) (Math.PI + angleMotion));
+            double extraZMotion = -mov * Mth.cos(angleMotion);
+            double yRandom = 0.2F + random.nextFloat() * 0.3F;
+            this.level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, random.nextFloat() * 0.1F, extraZMotion);
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -316,6 +331,10 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
 
     public boolean shouldSwoop(){
         return this.getTarget() != null && this.tackleCooldown == 0;
+    }
+
+    public boolean hasSoulHeart() {
+        return getSoulLevel() > 2;
     }
 
     class AICirclePerch extends Goal {

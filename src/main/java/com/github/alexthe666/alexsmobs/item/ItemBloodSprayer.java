@@ -76,6 +76,10 @@ public class ItemBloodSprayer extends Item {
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return !oldStack.sameItem(newStack);
     }
+    
+    public boolean isBarVisible(ItemStack itemStack) {
+        return super.isBarVisible(itemStack) && isUsable(itemStack);
+    }
 
     public void onUseTick(Level worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
         if(isUsable(stack)) {

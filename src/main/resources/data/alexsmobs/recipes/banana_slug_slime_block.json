@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FFF",
+    "FFF",
+    "FFF"
+  ],
+  "key": {
+    "F": {
+      "item": "alexsmobs:banana_slug_slime"
+    }
+  },
+  "result": {
+    "item": "alexsmobs:banana_slug_slime_block",
+    "count": 1
+  }
+}

@@ -89,4 +89,8 @@ public class CommonProxy {
     public ItemStack getDisplayTransmuteResult(int slot) {
         return ItemStack.EMPTY;
     }
+
+    public int getSingingBlueJayId() {
+        return -1;
+    }
 }

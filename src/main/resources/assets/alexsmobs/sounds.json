@@ -2819,6 +2819,138 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.tendon_whip"
   },
+  "skunk_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skunk_hurt_0"
+      },
+      {
+        "name": "alexsmobs:skunk_hurt_1"
+      },
+      {
+        "name": "alexsmobs:skunk_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skunk_hurt"
+  },
+  "skunk_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skunk_idle_0"
+      },
+      {
+        "name": "alexsmobs:skunk_idle_1"
+      },
+      {
+        "name": "alexsmobs:skunk_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skunk_idle"
+  },
+  "skunk_spray": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:skunk_spray_0"
+      },
+      {
+        "name": "alexsmobs:skunk_spray_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.skunk_spray"
+  },
+  "stink_ray": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:stink_ray_0"
+      },
+      {
+        "name": "alexsmobs:stink_ray_1"
+      },
+      {
+        "name": "alexsmobs:stink_ray_2"
+      },
+      {
+        "name": "alexsmobs:stink_ray_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.stink_ray"
+  },
+  "banana_slug_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:banana_slug_hurt_0"
+      },
+      {
+        "name": "alexsmobs:banana_slug_hurt_1"
+      },
+      {
+        "name": "alexsmobs:banana_slug_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.banana_slug_hurt"
+  },
+  "banana_slug_slime_expand": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:banana_slug_slime_expand_0"
+      },
+      {
+        "name": "alexsmobs:banana_slug_slime_expand_1"
+      },
+      {
+        "name": "alexsmobs:banana_slug_hurt_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.banana_slug_slime_expand_2"
+  },
+  "blue_jay_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:blue_jay_idle_0"
+      },
+      {
+        "name": "alexsmobs:blue_jay_idle_1"
+      },
+      {
+        "name": "alexsmobs:blue_jay_idle_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.blue_jay_idle"
+  },
+  "blue_jay_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:blue_jay_hurt_0"
+      },
+      {
+        "name": "alexsmobs:blue_jay_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.blue_jay_hurt"
+  },
+  "blue_jay_song": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:blue_jay_song_0"
+      },
+      {
+        "name": "alexsmobs:blue_jay_song_1"
+      },
+      {
+        "name": "alexsmobs:blue_jay_song_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.blue_jay_song"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [

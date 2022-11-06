@@ -82,6 +82,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
                         }
                     }
                     yawTarget = 0F;
+                    floatUpProgress = 0F;
                     yawSwitchProgress = 0F;
                 } else {
                     if (up instanceof TileEntityCapsid) {

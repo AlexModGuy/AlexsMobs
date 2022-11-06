@@ -14,10 +14,7 @@ import com.github.alexthe666.alexsmobs.client.render.tile.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundBearMusicBox;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.client.sound.SoundWormBoss;
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
-import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
-import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
-import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
+import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.entity.util.RainbowUtil;
 import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
 import com.github.alexthe666.alexsmobs.item.*;
@@ -67,6 +64,7 @@ public class ClientProxy extends CommonProxy {
     public boolean initializedRainbowBuffers = false;
     private int pupfishChunkX = 0;
     private int pupfishChunkZ = 0;
+    private int singingBlueJayId = -1;
     private ItemStack[] transmuteStacks = new ItemStack[3];
 
     @SubscribeEvent
@@ -222,6 +220,10 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(AMEntityRegistry.MURMUR.get(), RenderMurmurBody::new);
         EntityRenderers.register(AMEntityRegistry.MURMUR_HEAD.get(), RenderMurmurHead::new);
         EntityRenderers.register(AMEntityRegistry.TENDON_SEGMENT.get(), RenderTendonSegment::new);
+        EntityRenderers.register(AMEntityRegistry.SKUNK.get(), RenderSkunk::new);
+        EntityRenderers.register(AMEntityRegistry.FART.get(), RenderFart::new);
+        EntityRenderers.register(AMEntityRegistry.BANANA_SLUG.get(), RenderBananaSlug::new);
+        EntityRenderers.register(AMEntityRegistry.BLUE_JAY.get(), RenderBlueJay::new);
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
         try {
             ItemProperties.register(AMItemRegistry.BLOOD_SPRAYER.get(), new ResourceLocation("empty"), (stack, p_239428_1_, p_239428_2_, j) -> {
@@ -360,6 +362,12 @@ public class ClientProxy extends CommonProxy {
                 Minecraft.getInstance().getSoundManager().play(sound);
             }
         }
+        if (entity instanceof EntityBlueJay && entity.isAlive() && updateKind == 67) {
+            singingBlueJayId = entity.getId();
+        }
+        if (entity instanceof EntityBlueJay && entity.isAlive() && updateKind == 68) {
+            singingBlueJayId = -1;
+        }
     }
 
     public void updateBiomeVisuals(int x, int z) {
@@ -389,6 +397,7 @@ public class ClientProxy extends CommonProxy {
         registry.register(AMParticleRegistry.SUNBIRD_FEATHER.get(), ParticleSunbirdFeather.Factory::new);
         registry.register(AMParticleRegistry.STATIC_SPARK.get(), new ParticleStaticSpark.Factory());
         registry.register(AMParticleRegistry.SKULK_BOOM.get(), new ParticleSkulkBoom.Factory());
+        registry.register(AMParticleRegistry.BIRD_SONG.get(), ParticleBirdSong.Factory::new);
     }
 
 
@@ -455,4 +464,9 @@ public class ClientProxy extends CommonProxy {
         ItemStack stack = transmuteStacks[Mth.clamp(slot, 0, 2)];
         return stack == null ? ItemStack.EMPTY : stack;
     }
+
+    public int getSingingBlueJayId() {
+        return singingBlueJayId;
+    }
+
 }

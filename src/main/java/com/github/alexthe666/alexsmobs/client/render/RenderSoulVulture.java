@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderSoulVulture extends MobRenderer<EntitySoulVulture, ModelSoulVulture> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/soul_vulture.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/soul_vulture/soul_vulture.png");
 
     public RenderSoulVulture(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelSoulVulture(), 0.3F);

@@ -95,6 +95,9 @@ public class AMMobIcons {
         list.add(new Pair<>(AMEntityRegistry.SKREECHER.get(), 0.77F));
         list.add(new Pair<>(AMEntityRegistry.UNDERMINER.get(), 0.65F));
         list.add(new Pair<>(AMEntityRegistry.MURMUR.get(), 0.65F));
+        list.add(new Pair<>(AMEntityRegistry.SKUNK.get(), 1F));
+        list.add(new Pair<>(AMEntityRegistry.BANANA_SLUG.get(), 1.5F));
+        list.add(new Pair<>(AMEntityRegistry.BLUE_JAY.get(), 1.4F));
     });
 
     public static List<Pair<EntityType, Float>> getMobIcons() {

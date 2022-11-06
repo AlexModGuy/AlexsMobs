@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Banana Slugs are small molluscs that can only be found in old growth tall forests, where their fungal food is plentiful.
+They can often be found sticking to the sides of blocks or slowly making their way through the undergrowth.
+Occasionally, a Banana Slug will drop some of its slime whilst moving around the world, which can be collected.
+This slime can be used to create a Banana Slug Slime Block.
+<NEWLINE>
+The slime of this particular slug is one of the most absorbent materials in the natural world. When a block if it touches water, it will instantly turn much of the water into crystallized mucus.
+If the slime block is broken after this, the crystallized mucus blocks will begin to decay as well. These mucus crystals are fragile and will only drop themselves if mined with silk touch.
+This makes the Banana Slug Slime Block particularly useful for draining large bodies of water.
+<NEWLINE>
+Banana Slugs can be bred with brown mushrooms, and come in a variety of different colors, not all banana-yellow.

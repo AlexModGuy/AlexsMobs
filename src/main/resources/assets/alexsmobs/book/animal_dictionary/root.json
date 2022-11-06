@@ -1010,6 +1010,42 @@
       "offset_y": 1,
       "linked_page": "murmur.json",
       "hover_text": "entity.alexsmobs.murmur"
+    },
+    {
+      "entity": "alexsmobs:skunk",
+      "x": 155,
+      "y": 40,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 1.3,
+      "offset_x": -8,
+      "offset_y": -11,
+      "linked_page": "skunk.json",
+      "hover_text": "entity.alexsmobs.skunk"
+    },
+    {
+      "entity": "alexsmobs:banana_slug",
+      "x": 35,
+      "y": 70,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 1.8,
+      "offset_x": -19,
+      "offset_y": -20,
+      "linked_page": "banana_slug.json",
+      "hover_text": "entity.alexsmobs.banana_slug"
+    },
+    {
+      "entity": "alexsmobs:blue_jay",
+      "x": 65,
+      "y": 70,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 2,
+      "offset_x": -22,
+      "offset_y": -20,
+      "linked_page": "blue_jay.json",
+      "hover_text": "entity.alexsmobs.blue_jay"
     }
   ],
   "linked_page_buttons": [

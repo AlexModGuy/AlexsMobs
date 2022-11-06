@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.item.ItemStinkRay;
 import com.github.alexthe666.alexsmobs.item.ItemTabIcon;
 import com.github.alexthe666.alexsmobs.item.ItemVineLasso;
 import com.google.common.collect.Lists;
@@ -230,6 +231,16 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 matrixStackIn.translate((float)Math.sin(f * 0.15F + i * 1F) * 0.035F, -(float)Math.cos(f * 0.15F + i * 1F) * 0.035F, (float)Math.cos(f * 0.15F + i  * 0.5F + Math.PI / 2F) * 0.025F);
                 Minecraft.getInstance().getItemRenderer().renderStatic(shard, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
                 matrixStackIn.popPose();
+            }
+        }
+        if(itemStackIn.getItem() == AMItemRegistry.STINK_RAY.get()){
+            matrixStackIn.translate(0.5F, 0.5f, 0.5f);
+            ItemStack hand = new ItemStack(ItemStinkRay.isUsable(itemStackIn) ? AMItemRegistry.STINK_RAY_HAND.get() : AMItemRegistry.STINK_RAY_EMPTY_HAND.get());
+            ItemStack inventory = new ItemStack(ItemStinkRay.isUsable(itemStackIn) ? AMItemRegistry.STINK_RAY_INVENTORY.get() : AMItemRegistry.STINK_RAY_EMPTY_INVENTORY.get());
+            if(transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+                Minecraft.getInstance().getItemRenderer().renderStatic(hand, transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+            }else{
+                Minecraft.getInstance().getItemRenderer().renderStatic(inventory, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
         //TODO reimplement

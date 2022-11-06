@@ -354,7 +354,6 @@ public class EntitySkreecher extends Monster {
         };
         flyingpathnavigation.setCanOpenDoors(false);
         flyingpathnavigation.setCanFloat(false);
-        flyingpathnavigation.setCanPassDoors(true);
         return flyingpathnavigation;
     }
 

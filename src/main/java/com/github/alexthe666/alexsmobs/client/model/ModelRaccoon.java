@@ -9,8 +9,10 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.world.phys.Vec3;
 
 public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
     public AdvancedModelBox root;
@@ -247,5 +249,17 @@ public class ModelRaccoon extends AdvancedEntityModel<EntityRaccoon> {
             matrixStackIn.popPose();
         }
 
+    }
+
+    public Vec3 getRidingPosition(Vec3 offsetIn){
+        PoseStack armStack = new PoseStack();
+        armStack.pushPose();
+        root.translateAndRotate(armStack);
+        body.translateAndRotate(armStack);
+        Vector4f armOffsetVec = new Vector4f((float) offsetIn.x, (float) offsetIn.y, (float) offsetIn.z, 1.0F);
+        armOffsetVec.transform(armStack.last().pose());
+        Vec3 vec3 = new Vec3(armOffsetVec.x(), armOffsetVec.y(), armOffsetVec.z());
+        armStack.popPose();
+        return vec3;
     }
 }

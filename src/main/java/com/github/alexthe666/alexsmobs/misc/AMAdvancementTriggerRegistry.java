@@ -17,6 +17,8 @@ public class AMAdvancementTriggerRegistry {
     public static AMAdvancementTrigger TRANSMUTE_1000_ITEMS = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:transmute_1000_items"));
     public static AMAdvancementTrigger UNDERMINE_UNDERMINER = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:undermine_underminer"));
 
+    public static AMAdvancementTrigger SKUNK_SPRAY = new AMAdvancementTrigger(new ResourceLocation("alexsmobs:skunk_spray"));
+
     public static void init(){
         CriteriaTriggers.register(MOSQUITO_SICK);
         CriteriaTriggers.register(EMU_DODGE);
@@ -29,6 +31,7 @@ public class AMAdvancementTriggerRegistry {
         CriteriaTriggers.register(LAVIATHAN_FOUR_PASSENGERS);
         CriteriaTriggers.register(TRANSMUTE_1000_ITEMS);
         CriteriaTriggers.register(UNDERMINE_UNDERMINER);
+        CriteriaTriggers.register(SKUNK_SPRAY);
     }
 
 }

@@ -177,6 +177,12 @@ public class AMConfig {
     public static int murmurSpawnWeight = 5;
     public static int murmurSpawnRolls = 1;
     public static int murmurSpawnHeight = -30;
+    public static int skunkSpawnWeight = 7;
+    public static int skunkSpawnRolls = 0;
+    public static int bananaSlugSpawnWeight = 14;
+    public static int bananaSlugSpawnRolls = 0;
+    public static int blueJaySpawnWeight = 16;
+    public static int blueJaySpawnRolls = 0;
 
     public static double lavaOpacity = 0.65F;
     public static boolean lavaBottleEnabled = true;
@@ -433,7 +439,12 @@ public class AMConfig {
             murmurSpawnWeight = ConfigHolder.COMMON.murmurSpawnWeight.get();
             murmurSpawnRolls = ConfigHolder.COMMON.murmurSpawnRolls.get();
             murmurSpawnHeight = ConfigHolder.COMMON.murmurSpawnHeight.get();
-
+            skunkSpawnWeight = ConfigHolder.COMMON.skunkSpawnWeight.get();
+            skunkSpawnRolls = ConfigHolder.COMMON.skunkSpawnRolls.get();
+            bananaSlugSpawnWeight = ConfigHolder.COMMON.bananaSlugSpawnWeight.get();
+            bananaSlugSpawnRolls = ConfigHolder.COMMON.bananaSlugSpawnRolls.get();
+            blueJaySpawnRolls = ConfigHolder.COMMON.blueJaySpawnRolls.get();
+            blueJaySpawnWeight = ConfigHolder.COMMON.blueJaySpawnWeight.get();
             lavaBottleEnabled = ConfigHolder.COMMON.lavaBottleEnabled.get();
             bananasDropFromLeaves = ConfigHolder.COMMON.bananasDropFromLeaves.get();
             spidersAttackFlies = ConfigHolder.COMMON.spidersAttackFlies.get();

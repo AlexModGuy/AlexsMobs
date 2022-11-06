@@ -33,6 +33,10 @@ public class ItemHemolymphBlaster extends Item {
         return isUsable(stack) ? Integer.MAX_VALUE : 0;
     }
 
+    public boolean isBarVisible(ItemStack itemStack) {
+        return super.isBarVisible(itemStack) && isUsable(itemStack);
+    }
+
     public UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.BOW;
     }

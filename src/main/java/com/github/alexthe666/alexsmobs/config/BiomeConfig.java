@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BiomeConfig {
-	public static Pair<String, SpawnBiomeData> grizzlyBear = Pair.of("alexsmobs:grizzly_bear_spawns", DefaultBiomes.GRIZZLY_BEAR);
+	public static Pair<String, SpawnBiomeData> grizzlyBear = Pair.of("alexsmobs:grizzly_bear_spawns", DefaultBiomes.ALL_FOREST);
 	public static Pair<String, SpawnBiomeData> roadrunner = Pair.of("alexsmobs:roadrunner_spawns", DefaultBiomes.ROADRUNNER);
 	public static Pair<String, SpawnBiomeData> boneSerpent = Pair.of("alexsmobs:bone_serpent_spawns", DefaultBiomes.ALL_NETHER);
 	public static Pair<String, SpawnBiomeData> gazelle = Pair.of("alexsmobs:gazelle_spawns", DefaultBiomes.GAZELLE);
@@ -99,6 +99,9 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> skreecher = Pair.of("alexsmobs:skreecher", DefaultBiomes.SKREECHER);
 	public static Pair<String, SpawnBiomeData> underminer = Pair.of("alexsmobs:underminer", DefaultBiomes.CAVES);
 	public static Pair<String, SpawnBiomeData> murmur = Pair.of("alexsmobs:murmur", DefaultBiomes.CAVES);
+	public static Pair<String, SpawnBiomeData> skunk = Pair.of("alexsmobs:skunk_spawns", DefaultBiomes.SKUNK);
+	public static Pair<String, SpawnBiomeData> banana_slug = Pair.of("alexsmobs:banana_slug_spawns", DefaultBiomes.BANANA_SLUG);
+	public static Pair<String, SpawnBiomeData> blue_jay = Pair.of("alexsmobs:blue_jay_spawns", DefaultBiomes.ALL_FOREST);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();
