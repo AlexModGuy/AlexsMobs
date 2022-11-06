@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -104,7 +105,11 @@ public class VineLassoUtil {
                 double d0 = (lassoedOwner.getX() - lassoed.getX()) / (double)distance;
                 double d1 = (lassoedOwner.getY() - lassoed.getY()) / (double)distance;
                 double d2 = (lassoedOwner.getZ() - lassoed.getZ()) / (double)distance;
-                lassoed.setDeltaMovement(lassoed.getDeltaMovement().add(Math.copySign(d0 * d0 * 0.4D, d0), Math.copySign(d1 * d1 * 0.4D, d1), Math.copySign(d2 * d2 * 0.4D, d2)));
+                double yd = Math.copySign(d1 * d1 * 0.4D, d1);
+                if(lassoed instanceof Player){
+                    yd = 0;
+                }
+                lassoed.setDeltaMovement(lassoed.getDeltaMovement().add(Math.copySign(d0 * d0 * 0.4D, d0), yd, Math.copySign(d2 * d2 * 0.4D, d2)));
             }
         }
     }

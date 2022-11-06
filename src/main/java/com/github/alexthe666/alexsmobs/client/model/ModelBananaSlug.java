@@ -22,32 +22,32 @@ public class ModelBananaSlug extends AdvancedEntityModel<EntityBananaSlug> {
         texWidth = 64;
         texHeight = 64;
 
-        root = new AdvancedModelBox(this);
+        root = new AdvancedModelBox(this, "root");
         root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-        body = new AdvancedModelBox(this);
+        body = new AdvancedModelBox(this, "body");
         body.setRotationPoint(0.0F, -2.0F, -2.0F);
         root.addChild(body);
         body.setTextureOffset(18, 23).addBox(-2.5F, -2.0F, -4.0F, 5.0F, 4.0F, 7.0F, 0.0F, false);
 
-        goo = new AdvancedModelBox(this);
+        goo = new AdvancedModelBox(this, "goo");
         goo.setRotationPoint(0.0F, 2.0F, 0.0F);
         body.addChild(goo);
         goo.setTextureOffset(0, 0).addBox(-2.5F, -0.001F, 0.0F, 5.0F, 0.0F, 17.0F, 0.0F, false);
 
-        leftAntenna = new AdvancedModelBox(this);
+        leftAntenna = new AdvancedModelBox(this, "leftAntenna");
         leftAntenna.setRotationPoint(2.0F, -1.0F, -4.0F);
         body.addChild(leftAntenna);
         setRotationAngle(leftAntenna, 0.0F, 0.0F, -0.0873F);
         leftAntenna.setTextureOffset(0, 0).addBox(0.0F, -1.0F, -5.0F, 0.0F, 3.0F, 5.0F, 0.0F, false);
 
-        rightAntenna = new AdvancedModelBox(this);
+        rightAntenna = new AdvancedModelBox(this, "rightAntenna");
         rightAntenna.setRotationPoint(-2.0F, -1.0F, -4.0F);
         body.addChild(rightAntenna);
         setRotationAngle(rightAntenna, 0.0F, 0.0F, 0.0873F);
         rightAntenna.setTextureOffset(0, 0).addBox(0.0F, -1.0F, -5.0F, 0.0F, 3.0F, 5.0F, 0.0F, true);
 
-        tail = new AdvancedModelBox(this);
+        tail = new AdvancedModelBox(this, "tail");
         tail.setRotationPoint(0.0F, 0.0F, 3.0F);
         body.addChild(tail);
         tail.setTextureOffset(0, 18).addBox(-2.0F, -1.0F, 0.0F, 4.0F, 3.0F, 8.0F, 0.0F, false);
