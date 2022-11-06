@@ -63,8 +63,9 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     private int entityToLaunchId = -1;
     private int conversionTime = 0;
 
-    protected EntityTusklin(EntityType<? extends Animal> p_27557_, Level p_27558_) {
-        super(p_27557_, p_27558_);
+    protected EntityTusklin(EntityType<? extends Animal> type, Level level) {
+        super(type, level);
+        maxUpStep = 1.1F;
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -390,7 +391,9 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                         }
                     }
                 }
-                maxUpStep = 2;
+                maxUpStep = 2F;
+            }else{
+                maxUpStep = 1.1F;
             }
             if (this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + this.getBbWidth() + 1.8F) {
                 if (this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 6) {

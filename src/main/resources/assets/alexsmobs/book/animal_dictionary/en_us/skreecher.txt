@@ -14,4 +14,4 @@ The most difficult part of facing these beasts is identifying them before they i
 If slain, a Skreecher has a chance to drop its soul. The Skreecher Soul can be used to craft a Sculk Boomer.
 <NEWLINE>
 <NEWLINE>
-When activated by a nearby skulk sensor, this block will emit a loud boom that can nearby mobs that are within 3 horizontal blocks of the boomer. It can be temporarily disabled with a redstone signal, and the booms themselves have a slight cooldown, making the Sculk Boomer useful for traps.
+When activated by a nearby skulk sensor, this block will emit a loud boom that can damage nearby mobs that are within 3 horizontal blocks of the boomer. It can be temporarily disabled with a redstone signal, and the booms themselves have a slight cooldown, making the Sculk Boomer useful for traps.

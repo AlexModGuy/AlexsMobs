@@ -206,11 +206,13 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             }
 
             if (isCharging()) {
+                this.maxUpStep = 1.1F;
                 if (!hasChargedSpeed) {
                     this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.65F);
                     hasChargedSpeed = true;
                 }
             } else {
+                this.maxUpStep = 0.6F;
                 if (hasChargedSpeed) {
                     this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
                     hasChargedSpeed = false;

@@ -444,7 +444,9 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                     launch(entity, true);
                 }
             }
-            maxUpStep = 2;
+            maxUpStep = 2F;
+        }else{
+            maxUpStep = 0.6F;
         }
         if (!isTame() && isTrader()) {
             if (!this.level.isClientSide) {
