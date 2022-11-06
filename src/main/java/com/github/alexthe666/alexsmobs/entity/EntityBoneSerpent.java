@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -197,7 +198,7 @@ public class EntityBoneSerpent extends Monster {
 
 
     public void pushEntities() {
-        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         entities.stream().filter(entity -> !(entity instanceof EntityBoneSerpentPart) && entity.isPushable()).forEach(entity -> entity.push(this));
     }
 
@@ -239,24 +240,26 @@ public class EntityBoneSerpent extends Monster {
     public void tick() {
         super.tick();
         isInsidePortal = false;
-        boolean ground = !this.isInLava() && !this.isInWater() && this.isOnGround();
+        final boolean ground = !this.isInLava() && !this.isInWater() && this.isOnGround();
         if (jumpCooldown > 0) {
             jumpCooldown--;
-            float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+            final float f2 = (float) -((float) this.getDeltaMovement().y * Maths.oneEightyDividedByFloatPi);
             this.setXRot(f2);
 
         }
-        if (!ground && this.isLandNavigator) {
-            switchNavigator(false);
+        if (ground) {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
+        } else {
+            if (this.isLandNavigator)
+                switchNavigator(false);
         }
-        if (ground && !this.isLandNavigator) {
-            switchNavigator(true);
-        }
+
         if (!level.isClientSide) {
-            Entity child = getChild();
+            final Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;
-                int segments = 7 + getRandom().nextInt(8);
+                final int segments = 7 + getRandom().nextInt(8);
                 for (int i = 0; i < segments; i++) {
                     EntityBoneSerpentPart part = new EntityBoneSerpentPart(AMEntityRegistry.BONE_SERPENT_PART.get(), partParent, 0.9F, 180, 0);
                     part.setParent(partParent);
@@ -272,36 +275,35 @@ public class EntityBoneSerpent extends Monster {
                     level.addFreshEntity(part);
                 }
             }
-        }
-        if(!level.isClientSide){
-            if(boardCheckCooldown <= 0){
+
+            if (boardCheckCooldown <= 0) {
                 boardCheckCooldown = 100 + random.nextInt(150);
-                List<EntityStraddleboard> list = this.level.getEntitiesOfClass(EntityStraddleboard.class, this.getBoundingBox().inflate(100, 15, 100), STRADDLEBOARD_FRIENDLY);
+                final List<EntityStraddleboard> list = this.level.getEntitiesOfClass(EntityStraddleboard.class, this.getBoundingBox().inflate(100, 15, 100), STRADDLEBOARD_FRIENDLY);
                 EntityStraddleboard closestBoard = null;
-                for(EntityStraddleboard board : list){
-                    if(closestBoard == null || this.distanceTo(closestBoard) > this.distanceTo(board)){
+                for (final EntityStraddleboard board : list) {
+                    if (closestBoard == null || this.distanceTo(closestBoard) > this.distanceTo(board)) {
                         closestBoard = board;
                     }
                 }
                 boardToBoast = closestBoard;
-            }else{
+            } else {
                 boardCheckCooldown--;
             }
-            if(boardToBoast != null){
-                if(this.distanceTo(boardToBoast) > 200){
+
+            if (boardToBoast != null) {
+                if (this.distanceTo(boardToBoast) > 200) {
                     boardToBoast = null;
-                }else{
-                    if((this.isInLava() || this.isInWater()) && this.distanceTo(boardToBoast) < 15 && jumpCooldown == 0){
-                        float up = 0.7F + this.getRandom().nextFloat() * 0.8F;
-                        Vec3 vector3d1 = this.getLookAngle();
-                        this.setDeltaMovement(this.getDeltaMovement().add((double) vector3d1.x() * 0.6D, up, (double) vector3d1.y() * 0.6D));
+                } else {
+                    if (jumpCooldown == 0 && (this.isInLava() || this.isInWater()) && this.distanceTo(boardToBoast) < 15) {
+                        final float up = 0.7F + this.getRandom().nextFloat() * 0.8F;
+                        final Vec3 vector3d1 = this.getLookAngle();
+                        this.setDeltaMovement(this.getDeltaMovement().add(vector3d1.x() * 0.6D, up, vector3d1.y() * 0.6D));
                         this.getNavigation().stop();
                         this.jumpCooldown = this.getRandom().nextInt(300) + 100;
                     }
-                    if(this.distanceTo(boardToBoast) > 5){
+                    if (this.distanceTo(boardToBoast) > 5) {
                         this.getNavigation().moveTo(boardToBoast, 1.5F);
-
-                    }else{
+                    } else {
                         this.getNavigation().stop();
                     }
                 }
@@ -312,7 +314,6 @@ public class EntityBoneSerpent extends Monster {
     public boolean canBreatheUnderwater() {
         return true;
     }
-
 
     static class BoneSerpentMoveController extends MoveControl {
         private final EntityBoneSerpent dolphin;
@@ -328,26 +329,26 @@ public class EntityBoneSerpent extends Monster {
             }
 
             if (this.operation == MoveControl.Operation.MOVE_TO && !this.dolphin.getNavigation().isDone()) {
-                double d0 = this.wantedX - this.dolphin.getX();
-                double d1 = this.wantedY - this.dolphin.getY();
-                double d2 = this.wantedZ - this.dolphin.getZ();
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                final double d0 = this.wantedX - this.dolphin.getX();
+                final double d1 = this.wantedY - this.dolphin.getY();
+                final double d2 = this.wantedZ - this.dolphin.getZ();
+                final double d3 = d0 * d0 + d1 * d1 + d2 * d2;
                 if (d3 < (double) 2.5000003E-7F) {
                     this.mob.setZza(0.0F);
                 } else {
-                    float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+                    float f = (float) (Mth.atan2(d2, d0) * Maths.oneEightyDividedByFloatPi) - 90.0F;
                     this.dolphin.setYRot(this.rotlerp(this.dolphin.getYRot(), f, 10.0F));
                     this.dolphin.yBodyRot = this.dolphin.getYRot();
                     this.dolphin.yHeadRot = this.dolphin.getYRot();
                     float f1 = (float) (this.speedModifier * this.dolphin.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     if (this.dolphin.isInWater() || this.dolphin.isInLava()) {
                         this.dolphin.setSpeed(f1 * 0.02F);
-                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
+                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * Maths.oneEightyDividedByFloatPi));
                         f2 = Mth.clamp(Mth.wrapDegrees(f2), -85.0F, 85.0F);
                         this.dolphin.setDeltaMovement(this.dolphin.getDeltaMovement().add(0.0D, (double) this.dolphin.getSpeed() * d1 * 0.6D, 0.0D));
                         this.dolphin.setXRot(this.rotlerp(this.dolphin.getXRot(), f2, 1.0F));
-                        float f3 = Mth.cos(this.dolphin.getXRot() * ((float) Math.PI / 180F));
-                        float f4 = Mth.sin(this.dolphin.getXRot() * ((float) Math.PI / 180F));
+                        final float f3 = Mth.cos(this.dolphin.getXRot() * Maths.piDividedBy180);
+                        final float f4 = Mth.sin(this.dolphin.getXRot() * Maths.piDividedBy180);
                         this.dolphin.zza = f3 * f1;
                         this.dolphin.yya = -f4 * f1;
                     } else {

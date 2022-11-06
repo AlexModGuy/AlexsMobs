@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -54,7 +55,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         super(t, parent.level);
         this.setParent(parent);
         this.radius = radius;
-        this.angleYaw = (angleYaw + 90.0F) * ((float) Math.PI / 180.0F);
+        this.angleYaw = (angleYaw + 90.0F) * Maths.piDividedBy180;
         this.offsetY = offsetY;
     }
 
@@ -113,7 +114,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     public void setInitialPartPos(Entity parent) {
-        this.setPos(parent.xo + this.radius * Math.cos(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw));
+        this.setPos(parent.xo + this.radius * Math.cos(parent.getYRot() * Maths.piDividedBy180 + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.getYRot() * Maths.piDividedBy180 + this.angleYaw));
     }
 
     @Override
@@ -124,12 +125,11 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
             refreshDimensions();
             if (parent != null && !level.isClientSide) {
                 this.setNoGravity(true);
-                this.setPos(parent.xo + this.radius * Math.cos(parent.yRotO * (Math.PI / 180.0F) + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.yRotO * (Math.PI / 180.0F) + this.angleYaw));
-                double d0 = parent.getX() - this.getX();
-                double d1 = parent.getY() - this.getY();
-                double d2 = parent.getZ() - this.getZ();
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
+                this.setPos(parent.xo + this.radius * Math.cos(parent.yRotO * Maths.piDividedBy180 + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.yRotO * Maths.piDividedBy180 + this.angleYaw));
+                final double d0 = parent.getX() - this.getX();
+                final double d1 = parent.getY() - this.getY();
+                final double d2 = parent.getZ() - this.getZ();
+                final float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * Maths.oneEightyDividedByFloatPi));
                 this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F));
                 this.markHurt();
                 this.setYRot(parent.yRotO);
@@ -186,11 +186,10 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     public void pushEntities() {
-        List<net.minecraft.world.entity.Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List<net.minecraft.world.entity.Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         Entity parent = this.getParent();
         if (parent != null) {
             entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityBoneSerpentPart) && entity.isPushable()).forEach(entity -> entity.push(parent));
-
         }
     }
 
@@ -202,8 +201,8 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
-        Entity parent = getParent();
-        boolean prev = parent != null && parent.hurt(source, damage * this.damageMultiplier);
+        final Entity parent = getParent();
+        final boolean prev = parent != null && parent.hurt(source, damage * this.damageMultiplier);
         if (prev && !level.isClientSide) {
             AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), damage * this.damageMultiplier));
         }
@@ -226,11 +225,11 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     public boolean isTail() {
-        return this.entityData.get(TAIL).booleanValue();
+        return this.entityData.get(TAIL);
     }
 
     public void setTail(boolean tail) {
-        this.entityData.set(TAIL, Boolean.valueOf(tail));
+        this.entityData.set(TAIL, tail);
     }
 
     public int getBodyIndex() {
