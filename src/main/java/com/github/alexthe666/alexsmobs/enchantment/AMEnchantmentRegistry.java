@@ -1,17 +1,13 @@
 package com.github.alexthe666.alexsmobs.enchantment;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.ItemStraddleboard;
-import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.lang.reflect.Field;
 
 public class AMEnchantmentRegistry {
 
