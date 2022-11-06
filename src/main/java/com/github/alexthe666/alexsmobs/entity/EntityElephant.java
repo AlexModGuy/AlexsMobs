@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -529,6 +530,9 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 }
                 this.gameEvent(GameEvent.ENTITY_INTERACT);
                 this.playSound(SoundEvents.LLAMA_SWAG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+                if(!level.isClientSide && player instanceof ServerPlayer serverPlayer){
+                    AMAdvancementTriggerRegistry.ELEPHANT_SWAG.trigger(serverPlayer);
+                }
                 stack.shrink(1);
                 this.setColor(color);
                 return InteractionResult.SUCCESS;
