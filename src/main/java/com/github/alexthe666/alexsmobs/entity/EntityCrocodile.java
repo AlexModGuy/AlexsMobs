@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.block.BlockCrocodileEgg;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -230,48 +231,61 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         this.prevSwimProgress = swimProgress;
         this.prevBaskingProgress = baskingProgress;
         this.prevGrabProgress = grabProgress;
-        boolean ground = !this.isInWater();
-        boolean groundAnimate = !this.isInWater();
-        boolean basking = groundAnimate && this.isSitting();
-        boolean grabbing = !this.getPassengers().isEmpty();
+
+        final boolean ground = !this.isInWater();
+        final boolean groundAnimate = !this.isInWater();
+        final boolean basking = groundAnimate && this.isSitting();
+        final boolean grabbing = !this.getPassengers().isEmpty();
+
         if (!ground && this.isLandNavigator) {
             switchNavigator(false);
         }
         if (ground && !this.isLandNavigator) {
             switchNavigator(true);
         }
-        if (groundAnimate && this.groundProgress < 10F) {
-            this.groundProgress++;
+
+        if (groundAnimate) {
+            if (this.groundProgress < 10F)
+                this.groundProgress++;
+
+            if (this.swimProgress > 0F)
+                this.swimProgress--;
+        } else {
+            if (this.groundProgress > 0F)
+                this.groundProgress--;
+
+            if (this.swimProgress < 10F)
+                this.swimProgress++;
         }
-        if (!groundAnimate && this.groundProgress > 0F) {
-            this.groundProgress--;
+
+        if (basking) {
+            if (this.baskingProgress < 10F)
+                this.baskingProgress++;
+        } else {
+            if (this.baskingProgress > 0F)
+                this.baskingProgress--;
         }
-        if (!groundAnimate && this.swimProgress < 10F) {
-            this.swimProgress++;
+
+        if (grabbing) {
+            if (this.grabProgress < 10F)
+                this.grabProgress++;
+        } else {
+            if (this.grabProgress > 0F)
+                this.grabProgress--;
         }
-        if (groundAnimate && this.swimProgress > 0F) {
-            this.swimProgress--;
+
+        if (this.getTarget() == null) {
+            if (hasSpedUp) {
+                hasSpedUp = false;
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
+            }
+        } else {
+            if (!hasSpedUp) {
+                hasSpedUp = true;
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28F);
+            }
         }
-        if (basking && this.baskingProgress < 10F) {
-            this.baskingProgress++;
-        }
-        if (!basking && this.baskingProgress > 0F) {
-            this.baskingProgress--;
-        }
-        if (grabbing && this.grabProgress < 10F) {
-            this.grabProgress++;
-        }
-        if (!grabbing && this.grabProgress > 0F) {
-            this.grabProgress--;
-        }
-        if (this.getTarget() != null && !hasSpedUp) {
-            hasSpedUp = true;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.28F);
-        }
-        if (this.getTarget() == null && hasSpedUp) {
-            hasSpedUp = false;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
-        }
+
         if (!this.level.isClientSide) {
             this.setBesideClimbableBlock(this.horizontalCollision);
         }
@@ -289,53 +303,54 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                 ticksSinceInWater++;
                 swimTimer--;
             }
-        }
-        if (!level.isClientSide && !this.isInWater() && this.isOnGround()) {
-            if (!this.isTame()) {
-                if (!this.isSitting() && baskingTimer == 0 && this.getTarget() == null && this.getNavigation().isDone()) {
-                    this.setOrderedToSit(true);
-                    this.baskingTimer = 1000 + random.nextInt(750);
-                }
-                if (this.isSitting() && (baskingTimer <= 0 || this.getTarget() != null || swimTimer < -1000)) {
-                    this.setOrderedToSit(false);
-                    this.baskingTimer = -2000 - random.nextInt(750);
-                }
-                if (this.isSitting() && baskingTimer > 0) {
-                    baskingTimer--;
-                }
-            }
-        }
-        if (!level.isClientSide && this.getStunTicks() == 0 && this.isAlive() && this.getTarget() != null && this.getAnimation() == ANIMATION_LUNGE  && (level.getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player)) && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
-            float f1 = this.getYRot() * ((float) Math.PI / 180F);
-            this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
-            if (this.distanceTo(this.getTarget()) < 3.5F && this.hasLineOfSight(this.getTarget())) {
-                boolean flag = this.getTarget().isBlocking();
-                if (!flag) {
-                    if (this.getTarget().getBbWidth() < this.getBbWidth() && this.getPassengers().isEmpty() && !this.getTarget().isShiftKeyDown()) {
-                        this.getTarget().startRiding(this, true);
-                    }
-                }
-                if (flag) {
-                    if (this.getTarget() instanceof Player) {
-                        this.damageShieldFor(((Player) this.getTarget()), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-                    }
-                    if (this.getStunTicks() == 0) {
-                        this.setStunTicks(25 + random.nextInt(20));
-                    }
-                } else {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-                }
-                this.playSound(AMSoundRegistry.CROCODILE_BITE.get(), this.getSoundVolume(), this.getVoicePitch());
 
-            }
-        }
-        if (!level.isClientSide && this.isAlive() && this.getTarget() != null && this.isInWater() && (level.getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player))) {
-            if (this.getTarget().getVehicle() != null && this.getTarget().getVehicle() == this) {
-                if (this.getAnimation() == NO_ANIMATION) {
-                    this.setAnimation(ANIMATION_DEATHROLL);
+            if (!this.isInWater() && this.isOnGround()) {
+                if (!this.isTame()) {
+                    if (!this.isSitting() && baskingTimer == 0 && this.getTarget() == null && this.getNavigation().isDone()) {
+                        this.setOrderedToSit(true);
+                        this.baskingTimer = 1000 + random.nextInt(750);
+                    }
+                    if (this.isSitting() && (baskingTimer <= 0 || this.getTarget() != null || swimTimer < -1000)) {
+                        this.setOrderedToSit(false);
+                        this.baskingTimer = -2000 - random.nextInt(750);
+                    }
+                    if (this.isSitting() && baskingTimer > 0) {
+                        baskingTimer--;
+                    }
                 }
-                if (this.getAnimation() == ANIMATION_DEATHROLL && this.getAnimationTick() % 10 == 0 && this.distanceTo(this.getTarget()) < 5D) {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), 5);
+            }
+            if (this.getStunTicks() == 0 && this.isAlive() && this.getTarget() != null && this.getAnimation() == ANIMATION_LUNGE && (level.getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player)) && this.getAnimationTick() > 5 && this.getAnimationTick() < 9) {
+                final float f1 = this.getYRot() * Maths.piDividedBy180;
+                this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
+                if (this.distanceTo(this.getTarget()) < 3.5F && this.hasLineOfSight(this.getTarget())) {
+                    boolean flag = this.getTarget().isBlocking();
+                    if (!flag) {
+                        if (this.getTarget().getBbWidth() < this.getBbWidth() && this.getPassengers().isEmpty() && !this.getTarget().isShiftKeyDown()) {
+                            this.getTarget().startRiding(this, true);
+                        }
+                    }
+                    if (flag) {
+                        if (this.getTarget() instanceof final Player player) {
+                            this.damageShieldFor(player, (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                        }
+                        if (this.getStunTicks() == 0) {
+                            this.setStunTicks(25 + random.nextInt(20));
+                        }
+                    } else {
+                        this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    }
+                    this.playSound(AMSoundRegistry.CROCODILE_BITE.get(), this.getSoundVolume(), this.getVoicePitch());
+
+                }
+            }
+            if (this.isAlive() && this.getTarget() != null && this.isInWater() && (level.getDifficulty() != Difficulty.PEACEFUL || !(this.getTarget() instanceof Player))) {
+                if (this.getTarget().getVehicle() != null && this.getTarget().getVehicle() == this) {
+                    if (this.getAnimation() == NO_ANIMATION) {
+                        this.setAnimation(ANIMATION_DEATHROLL);
+                    }
+                    if (this.getAnimation() == ANIMATION_DEATHROLL && this.getAnimationTick() % 10 == 0 && this.distanceTo(this.getTarget()) < 5D) {
+                        this.getTarget().hurt(DamageSource.mobAttack(this), 5);
+                    }
                 }
             }
         }
@@ -348,13 +363,13 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         if (this.getStunTicks() > 0) {
             this.setStunTicks(this.getStunTicks() - 1);
             if (level.isClientSide) {
-                float angle = (0.01745329251F * this.yBodyRot);
-                double headX = 1.5F * getScale() * Mth.sin((float) (Math.PI + angle));
-                double headZ = 1.5F * getScale() * Mth.cos(angle);
+                final float angle = (0.0174532925F * this.yBodyRot);
+                final double headX = 1.5F * getScale() * Mth.sin((float) (Math.PI + angle));
+                final double headZ = 1.5F * getScale() * Mth.cos(angle);
                 for (int i = 0; i < 5; i++) {
-                    float innerAngle = (0.01745329251F * (this.yBodyRot + tickCount * 5) * (i + 1));
-                    double extraX = 0.5F * Mth.sin((float) (Math.PI + innerAngle));
-                    double extraZ = 0.5F * Mth.cos(innerAngle);
+                    final float innerAngle = (0.0174532925F * (this.yBodyRot + tickCount * 5) * (i + 1));
+                    final double extraX = 0.5F * Mth.sin((float) (Math.PI + innerAngle));
+                    final double extraZ = 0.5F * Mth.cos(innerAngle);
                     level.addParticle(ParticleTypes.CRIT, true, this.getX() + headX + extraX, this.getEyeY() + 0.5F, this.getZ() + headZ + extraZ, 0, 0, 0);
                 }
             }
@@ -423,10 +438,10 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             this.yBodyRot = Mth.wrapDegrees(this.getYRot() - 180F);
         }
         if (this.hasPassenger(passenger)) {
-            float radius = 2F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
+            final float radius = 2F;
+            final float angle = (0.0174532925F * this.yBodyRot);
+            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + 0.1F, this.getZ() + extraZ);
             passengerTimer++;
             if (this.isAlive() && passengerTimer > 0 && passengerTimer % 40 == 0) {
@@ -593,9 +608,9 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        Item item = itemstack.getItem();
-        if (itemstack.getItem() == Items.NAME_TAG) {
+        final ItemStack itemstack = player.getItemInHand(hand);
+        final Item item = itemstack.getItem();
+        if (item == Items.NAME_TAG) {
             return super.mobInteract(player, hand);
         }
         if (isTame() && item.isEdible() && item.getFoodProperties() != null && item.getFoodProperties().isMeat() && this.getHealth() < this.getMaxHealth()) {
@@ -605,18 +620,17 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }
-        InteractionResult type = super.mobInteract(player, hand);
-        InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
+        final InteractionResult type = super.mobInteract(player, hand);
+        final InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && !isFood(itemstack)) {
             if (this.isSitting()) {
                 this.forcedSit = false;
                 this.setOrderedToSit(false);
-                return InteractionResult.SUCCESS;
             } else {
                 this.forcedSit = true;
                 this.setOrderedToSit(true);
-                return InteractionResult.SUCCESS;
             }
+            return InteractionResult.SUCCESS;
         }
         return type;
     }
@@ -698,8 +712,8 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             this.animal.setAge(6000);
             this.partner.setAge(6000);
 
-            RandomSource random = this.animal.getRandom();
             if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                final RandomSource random = this.animal.getRandom();
                 this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
             }
 
@@ -733,11 +747,11 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
 
         public void tick() {
             super.tick();
-            BlockPos blockpos = this.turtle.blockPosition();
             turtle.setOrderedToSit(false);
             turtle.baskingTimer = -100;
             if (!this.turtle.isInWater() && this.isReachedTarget()) {
-                Level world = this.turtle.level;
+                final BlockPos blockpos = this.turtle.blockPosition();
+                final Level world = this.turtle.level;
                 turtle.gameEvent(GameEvent.BLOCK_PLACE);
                 world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
                 world.setBlock(this.blockPos.above(), AMBlockRegistry.CROCODILE_EGG.get().defaultBlockState().setValue(BlockCrocodileEgg.EGGS, Integer.valueOf(this.turtle.random.nextInt(1) + 1)), 3);

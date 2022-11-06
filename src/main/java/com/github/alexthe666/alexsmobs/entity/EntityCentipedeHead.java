@@ -118,15 +118,16 @@ public class EntityCentipedeHead extends Monster {
     public boolean doHurtTarget(Entity entityIn) {
         if (super.doHurtTarget(entityIn)) {
             if (entityIn instanceof LivingEntity) {
-                int i = 3;
-                if (this.level.getDifficulty() == Difficulty.NORMAL) {
+                final int i;
+                final Difficulty difficulty = this.level.getDifficulty();
+                if (difficulty == Difficulty.NORMAL) {
                     i = 10;
-                } else if (this.level.getDifficulty() == Difficulty.HARD) {
+                } else if (difficulty == Difficulty.HARD) {
                     i = 20;
+                } else {
+                    i = 3;
                 }
-                if (i > 0) {
-                    ((LivingEntity) entityIn).addEffect(new MobEffectInstance(MobEffects.POISON, i * 20, 1));
-                }
+                ((LivingEntity) entityIn).addEffect(new MobEffectInstance(MobEffects.POISON, i * 20, 1));
             }
             this.playSound(AMSoundRegistry.CENTIPEDE_ATTACK.get(), this.getSoundVolume(), this.getVoicePitch());
             this.gameEvent(GameEvent.ENTITY_INTERACT);
@@ -154,7 +155,7 @@ public class EntityCentipedeHead extends Monster {
     }
 
     public Entity getChild() {
-        UUID id = getChildId();
+        final UUID id = getChildId();
         if (id != null && !level.isClientSide) {
             return ((ServerLevel) level).getEntity(id);
         }
@@ -162,7 +163,7 @@ public class EntityCentipedeHead extends Monster {
     }
 
     public void pushEntities() {
-        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         entities.stream().filter(entity -> !(entity instanceof EntityCentipedeBody) && entity.isPushable()).forEach(entity -> entity.push(this));
     }
 
@@ -226,22 +227,22 @@ public class EntityCentipedeHead extends Monster {
         this.ringBuffer[this.ringBufferIndex] = this.getYRot();
 
         if (!level.isClientSide) {
-            Entity child = getChild();
+            final Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;
                 parts = new EntityCentipedeBody[this.getSegmentCount()];
                 Vec3 prevPos = this.position();
                 float backOffset = 0.45F;
                 for (int i = 0; i < this.getSegmentCount(); i++) {
-                    EntityCentipedeBody part = createBody(partParent, i == this.getSegmentCount() - 1);
+                    final EntityCentipedeBody part = createBody(partParent, i == this.getSegmentCount() - 1);
                     part.setParent(partParent);
                     part.setBodyIndex(i);
                     if (partParent == this) {
                         this.setChildId(part.getUUID());
                         this.entityData.set(CHILD_ID, part.getId());
                     }
-                    if (partParent instanceof EntityCentipedeBody) {
-                        ((EntityCentipedeBody) partParent).setChildId(part.getUUID());
+                    if (partParent instanceof final EntityCentipedeBody body) {
+                        body.setChildId(part.getUUID());
                     }
                     part.setPos(part.tickMultipartPosition(this.getId(), backOffset, prevPos, this.getXRot(), getYawForPart(i), false));
                     level.addFreshEntity(part);
@@ -267,7 +268,7 @@ public class EntityCentipedeHead extends Monster {
                 float backOffset = 0.45F;
                 for (int i = 0; i < this.getSegmentCount(); i++) {
                     if (this.parts[i] != null) {
-                        float reqRot = getYawForPart(i);
+                        final float reqRot = getYawForPart(i);
                         prev = parts[i].tickMultipartPosition(this.getId(), backOffset, prev, xRot, reqRot, true);
                         xRot = parts[i].getXRot();
                         backOffset = parts[i].getBackOffset();
@@ -300,10 +301,10 @@ public class EntityCentipedeHead extends Monster {
         }
 
         partialTicks = 1.0F - partialTicks;
-        int i = this.ringBufferIndex - bufferOffset & 63;
-        int j = this.ringBufferIndex - bufferOffset - 1 & 63;
-        float d0 = this.ringBuffer[i];
-        float d1 = this.ringBuffer[j] - d0;
+        final int i = this.ringBufferIndex - bufferOffset & 63;
+        final int j = this.ringBufferIndex - bufferOffset - 1 & 63;
+        final float d0 = this.ringBuffer[i];
+        final float d1 = this.ringBuffer[j] - d0;
         return Mth.wrapDegrees(d0 + d1 * partialTicks);
     }
 }

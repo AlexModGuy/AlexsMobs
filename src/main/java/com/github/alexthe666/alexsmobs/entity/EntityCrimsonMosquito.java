@@ -192,11 +192,11 @@ public class EntityCrimsonMosquito extends Monster {
         if(this.isSick()){
             return;
         }
-        EntityMosquitoSpit llamaspitentity = new EntityMosquitoSpit(this.level, this);
-        double d0 = target.getX() - this.getX();
-        double d1 = target.getY(0.3333333333333333D) - llamaspitentity.getY();
-        double d2 = target.getZ() - this.getZ();
-        float f = Mth.sqrt((float)(d0 * d0 + d2 * d2)) * 0.2F;
+        final EntityMosquitoSpit llamaspitentity = new EntityMosquitoSpit(this.level, this);
+        final double d0 = target.getX() - this.getX();
+        final double d1 = target.getY(0.3333333333333333D) - llamaspitentity.getY();
+        final double d2 = target.getZ() - this.getZ();
+        final float f = Mth.sqrt((float)(d0 * d0 + d2 * d2)) * 0.2F;
         llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 10.0F);
         if (!this.isSilent()) {
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
@@ -224,61 +224,64 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public void rideTick() {
-        Entity entity = this.getVehicle();
+        final Entity entity = this.getVehicle();
         if (this.isPassenger() && !entity.isAlive()) {
             this.stopRiding();
         } else {
             this.setDeltaMovement(0, 0, 0);
             this.tick();
             if (this.isPassenger()) {
-                Entity mount = this.getVehicle();
-                if (mount instanceof LivingEntity) {
-                    this.yBodyRot = ((LivingEntity) mount).yBodyRot;
-                    this.setYRot( ((LivingEntity) mount).getYRot());
-                    this.yHeadRot = ((LivingEntity) mount).yHeadRot;
-                    this.yRotO = ((LivingEntity) mount).yHeadRot;
-                    float radius = 1F;
-                    float angle = (0.01745329251F * ((LivingEntity) mount).yBodyRot);
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                    double extraZ = radius * Mth.cos(angle);
+                final Entity mount = this.getVehicle();
+                if (mount instanceof final LivingEntity livingEntity) {
+                    this.yBodyRot = livingEntity.yBodyRot;
+                    this.setYRot( livingEntity.getYRot());
+                    this.yHeadRot = livingEntity.yHeadRot;
+                    this.yRotO = livingEntity.yHeadRot;
+                    final float radius = 1F;
+                    final float angle = (0.0174532925F * livingEntity.yBodyRot);
+                    final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    final double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getEyeHeight() * 0.25F, mount.getY()), mount.getZ() + extraZ);
                     if (!mount.isAlive() || mount instanceof Player && ((Player) mount).isCreative()) {
                         this.removeVehicle();
                     }
-                    if (drinkTime % 20 == 0 && !level.isClientSide && this.isAlive()) {
-                        boolean mungus = AMConfig.warpedMoscoTransformation &&  mount instanceof EntityMungus && ((EntityMungus)mount).isWarpedMoscoReady();
-                        boolean sick = this.isNonMungusWarpedTrigger(mount);
-                        if(mount.hurt(DamageSource.mobAttack(this), mungus ? 7F : 2.0F)){
-                            if(mungus){
-                                ((EntityMungus) mount).disableExplosion();
-                            }
-                            if(sick || mungus){
-                                if(!this.isSick() && !level.isClientSide){
-                                    for(ServerPlayer serverplayerentity : this.level.getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(40.0D, 25.0D, 40.0D))) {
-                                        AMAdvancementTriggerRegistry.MOSQUITO_SICK.trigger(serverplayerentity);
-                                    }
+                    if (!level.isClientSide) {
+                        if (drinkTime % 20 == 0 && this.isAlive()) {
+                            final boolean mungus = AMConfig.warpedMoscoTransformation &&  mount instanceof EntityMungus && ((EntityMungus)mount).isWarpedMoscoReady();
+                            if(mount.hurt(DamageSource.mobAttack(this), mungus ? 7F : 2.0F)){
+                                if(mungus){
+                                    ((EntityMungus) mount).disableExplosion();
                                 }
-                                this.setSick(true);
-                                this.setFlying(false);
-                                flightTicks = -150 - random.nextInt(200);
-                            }
-                            this.gameEvent(GameEvent.EAT);
-                            this.playSound(SoundEvents.HONEY_DRINK, this.getSoundVolume(), this.getVoicePitch());
-                            this.setBloodLevel(this.getBloodLevel() + 1);
-                            if (this.getBloodLevel() > 3) {
-                                this.removeVehicle();
-                                AlexsMobs.sendMSGToAll(new MessageMosquitoDismount(this.getId(), mount.getId()));
-                                this.setFlying(false);
-                                this.flightTicks = -15;
+                                final boolean sick = this.isNonMungusWarpedTrigger(mount);
+                                if(sick || mungus){
+                                    if(!this.isSick()) {
+                                        for(ServerPlayer serverplayerentity : this.level.getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(40.0D, 25.0D, 40.0D))) {
+                                            AMAdvancementTriggerRegistry.MOSQUITO_SICK.trigger(serverplayerentity);
+                                        }
+                                    }
+                                    this.setSick(true);
+                                    this.setFlying(false);
+                                    flightTicks = -150 - random.nextInt(200);
+                                }
+                                this.gameEvent(GameEvent.EAT);
+                                this.playSound(SoundEvents.HONEY_DRINK, this.getSoundVolume(), this.getVoicePitch());
+                                this.setBloodLevel(this.getBloodLevel() + 1);
+                                if (this.getBloodLevel() > 3) {
+                                    this.removeVehicle();
+                                    AlexsMobs.sendMSGToAll(new MessageMosquitoDismount(this.getId(), mount.getId()));
+                                    this.setFlying(false);
+                                    this.flightTicks = -15;
+                                }
                             }
                         }
-                    }
-                    if(drinkTime > 81 && !level.isClientSide){
-                        drinkTime = -20 - random.nextInt(20);
-                        this.removeVehicle();
-                        AlexsMobs.sendMSGToAll(new MessageMosquitoDismount(this.getId(), mount.getId()));
-                        this.setFlying(false);
-                        this.flightTicks = -15;
+
+                        if (drinkTime > 81) {
+                            drinkTime = -20 - random.nextInt(20);
+                            this.removeVehicle();
+                            AlexsMobs.sendMSGToAll(new MessageMosquitoDismount(this.getId(), mount.getId()));
+                            this.setFlying(false);
+                            this.flightTicks = -15;
+                        }
                     }
                 }
 
@@ -290,12 +293,12 @@ public class EntityCrimsonMosquito extends Monster {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(FLYING, Boolean.valueOf(false));
-        this.entityData.define(SHOOTING, Boolean.valueOf(false));
-        this.entityData.define(SICK, Boolean.valueOf(false));
+        this.entityData.define(FLYING, false);
+        this.entityData.define(SHOOTING, false);
+        this.entityData.define(SICK, false);
         this.entityData.define(BLOOD_LEVEL, 0);
-        this.entityData.define(SHRINKING, Boolean.valueOf(false));
-        this.entityData.define(FROM_FLY, Boolean.valueOf(false));
+        this.entityData.define(SHRINKING, false);
+        this.entityData.define(FROM_FLY, false);
         this.entityData.define(MOSQUITO_SCALE, 1F);
         this.entityData.define(LURING_LAVIATHAN, -1);
     }
@@ -362,40 +365,46 @@ public class EntityCrimsonMosquito extends Monster {
 
     public void tick() {
         super.tick();
-        boolean shooting = entityData.get(SHOOTING);
+        final boolean shooting = entityData.get(SHOOTING);
         if (prevFlying != this.isFlying()) {
             this.refreshDimensions();
         }
-        if (shooting && shootProgress < 5) {
-            shootProgress += 1;
+
+        if (shooting) {
+            if (shootProgress < 5F)
+                shootProgress++;
+        } else {
+            if (shootProgress > 0F)
+                shootProgress--;
         }
-        if (!shooting && shootProgress > 0) {
-            shootProgress -= 1;
+
+        if (this.isFlying()) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (this.isFlying() && flyProgress < 5) {
-            flyProgress += 1;
-        }
-        if (!this.isFlying() && flyProgress > 0) {
-            flyProgress -= 1;
-        }
-        if (!level.isClientSide && this.isPassenger()) {
-            this.setFlying(false);
-        }
+
         if (!level.isClientSide) {
+            if (this.isPassenger())
+                this.setFlying(false);
+
             if (isFlying()) {
                 this.setNoGravity(true);
             } else {
                 this.setNoGravity(false);
             }
-            if(hasLuringLaviathan()){
+
+            if (hasLuringLaviathan()) {
                 this.setTarget(null);
-                Entity entity = this.level.getEntity(this.getLuringLaviathan());
-                if(entity instanceof EntityLaviathan && ((EntityLaviathan) entity).isChilling()){
+                final Entity entity = this.level.getEntity(this.getLuringLaviathan());
+                if (entity instanceof EntityLaviathan && ((EntityLaviathan) entity).isChilling()) {
                     Vec3 vec = ((EntityLaviathan)entity).getLureMosquitoPos();
                     this.setFlying(true);
                     this.lookAt(entity, 10, 10);
                     this.getMoveControl().setWantedPosition(vec.x, vec.y, vec.z, 0.7F);
-                }else{
+                } else {
                     this.setLuringLaviathan(-1);
                 }
             }
@@ -415,7 +424,7 @@ public class EntityCrimsonMosquito extends Monster {
         if (flightTicks < 0) {
             flightTicks++;
         }
-        if (isFlying() & !level.isClientSide) {
+        if (!level.isClientSide && isFlying()) {
             flightTicks++;
             if (flightTicks > 200 && (this.getTarget() == null || !this.getTarget().isAlive())) {
                 BlockPos above = this.getGroundPosition(this.blockPosition().above());
@@ -457,14 +466,14 @@ public class EntityCrimsonMosquito extends Monster {
                 loopSoundTick = 0;
             }
         }
-        if(!isPassenger()){
-            drinkTime = 0;
-        }
-        if(isPassenger() || drinkTime < 0){
-            if(isPassenger() && drinkTime < 0){
+
+        if (isPassenger()) {
+            if (drinkTime < 0)
                 drinkTime = 0;
-            }
+
             drinkTime++;
+        } else {
+            drinkTime = 0;
         }
         prevFlyProgress = flyProgress;
         prevShootProgress = shootProgress;
@@ -608,16 +617,16 @@ public class EntityCrimsonMosquito extends Monster {
         }
 
         public BlockPos getBlockInViewMosquito() {
-            float radius = 1 + parentEntity.getRandom().nextInt(5);
-            float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
-            float renderYawOffset = parentEntity.yBodyRot;
-            float angle = (0.01745329251F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
-            BlockPos ground = parentEntity.getGroundPosition(radialPos);
-            int up = parentEntity.isSick() ? 2 : 6;
-            BlockPos newPos = ground.above(1 + parentEntity.getRandom().nextInt(up));
+            final float radius = 1 + parentEntity.getRandom().nextInt(5);
+            final float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
+            final float renderYawOffset = parentEntity.yBodyRot;
+            final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
+            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraZ = radius * Mth.cos(angle);
+            final BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
+            final BlockPos ground = parentEntity.getGroundPosition(radialPos);
+            final int up = parentEntity.isSick() ? 2 : 6;
+            final BlockPos newPos = ground.above(1 + parentEntity.getRandom().nextInt(up));
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(newPos)) && parentEntity.distanceToSqr(Vec3.atCenterOf(newPos)) > 6) {
                 return newPos;
             }
@@ -640,25 +649,12 @@ public class EntityCrimsonMosquito extends Monster {
             }
             if (parentEntity.isFlying()) {
                 if (this.operation == Operation.STRAFE) {
-                    Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
-                    double d0 = vector3d.length();
+                    final Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
+                    final double d0 = vector3d.length();
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(0, vector3d.scale(this.speedModifier * 0.05D / d0).y(), 0));
-                    float f = (float) this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
-                    float f1 = (float) this.speedModifier * f;
-                    float f2 = this.strafeForwards;
-                    float f3 = this.strafeRight;
-                    float f4 = Mth.sqrt(f2 * f2 + f3 * f3);
-                    if (f4 < 1.0F) {
-                        f4 = 1.0F;
-                    }
+                    final float f = (float) this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
+                    final float f1 = (float) this.speedModifier * f;
 
-                    f4 = f1 / f4;
-                    f2 = f2 * f4;
-                    f3 = f3 * f4;
-                    float f5 = Mth.sin(this.mob.getYRot() * ((float) Math.PI / 180F));
-                    float f6 = Mth.cos(this.mob.getYRot() * ((float) Math.PI / 180F));
-                    float f7 = f2 * f6 - f3 * f5;
-                    float f8 = f3 * f6 + f2 * f5;
                     this.strafeForwards = 1.0F;
                     this.strafeRight = 0.0F;
 
@@ -667,20 +663,20 @@ public class EntityCrimsonMosquito extends Monster {
                     this.mob.setXxa(this.strafeRight);
                     this.operation = MoveControl.Operation.WAIT;
                 } else if (this.operation == MoveControl.Operation.MOVE_TO) {
-                    Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
-                    double d0 = vector3d.length();
+                    final Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
+                    final double d0 = vector3d.length();
                     if (d0 < parentEntity.getBoundingBox().getSize()) {
                         this.operation = MoveControl.Operation.WAIT;
                         parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
                     } else {
                         parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                         if (parentEntity.getTarget() == null) {
-                            Vec3 vector3d1 = parentEntity.getDeltaMovement();
+                            final Vec3 vector3d1 = parentEntity.getDeltaMovement();
                             parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
                             parentEntity.yBodyRot = parentEntity.getYRot();
                         } else {
-                            double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
-                            double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
+                            final double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
+                            final double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
                             parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
                             parentEntity.yBodyRot = parentEntity.getYRot();
                         }
@@ -806,13 +802,11 @@ public class EntityCrimsonMosquito extends Monster {
         }
 
         public BlockPos getBlockInTargetsViewMosquito(LivingEntity target) {
-            float radius = 4 + parentEntity.getRandom().nextInt(5);
-            float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
-            float angle = (0.01745329251F * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
-            BlockPos ground = radialPos;
+            final float radius = 4 + parentEntity.getRandom().nextInt(5);
+            final float angle = (0.0174532925F * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
+            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraZ = radius * Mth.cos(angle);
+            final BlockPos ground = new BlockPos(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
             if (parentEntity.distanceToSqr(Vec3.atCenterOf(ground)) > 30) {
                 if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(ground)) && parentEntity.distanceToSqr(Vec3.atCenterOf(ground)) > 6) {
                     return ground;
@@ -823,7 +817,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public boolean isNonMungusWarpedTrigger(Entity entity) {
-        ResourceLocation mobtype = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
-        return !AMConfig.warpedMoscoMobTriggers.isEmpty() && mobtype != null && AMConfig.warpedMoscoMobTriggers.contains(mobtype.toString());
+        final ResourceLocation mobtype = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
+        return mobtype != null && !AMConfig.warpedMoscoMobTriggers.isEmpty() && AMConfig.warpedMoscoMobTriggers.contains(mobtype.toString());
     }
 }
