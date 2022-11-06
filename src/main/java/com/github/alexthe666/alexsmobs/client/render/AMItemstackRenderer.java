@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.model.*;
 import com.github.alexthe666.alexsmobs.entity.*;
@@ -16,6 +17,7 @@ import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -33,9 +35,11 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
@@ -59,6 +63,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
 
     private Map<String, Entity> renderedEntites = new HashMap();
+    private List<EntityType> blockedRenderEntities = new ArrayList<>();
 
     public AMItemstackRenderer() {
         super(null, null);
@@ -77,8 +82,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         return 1.0F;
     }
 
-    private static List<ItemStack> getDimensionalCarverShards(){
-        if(DIMENSIONAL_CARVER_SHARDS == null || DIMENSIONAL_CARVER_SHARDS.isEmpty()){
+    private static List<ItemStack> getDimensionalCarverShards() {
+        if (DIMENSIONAL_CARVER_SHARDS == null || DIMENSIONAL_CARVER_SHARDS.isEmpty()) {
             DIMENSIONAL_CARVER_SHARDS = Util.make(Lists.newArrayList(), (list) -> {
                 list.add(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("alexsmobs:dimensional_carver_shard_0"))));
                 list.add(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("alexsmobs:dimensional_carver_shard_1"))));
@@ -106,9 +111,9 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
         float partialTicksForRender = Minecraft.getInstance().isPaused() || entity instanceof EntityMimicOctopus ? 0 : partialTicks;
         int tick;
-        if(Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()){
+        if (Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()) {
             tick = ticksExisted;
-        }else{
+        } else {
             tick = Minecraft.getInstance().player.tickCount;
         }
         if (follow) {
@@ -154,12 +159,12 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     @Override
     public void renderByItem(ItemStack itemStackIn, ItemTransforms.TransformType transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         int tick;
-        if(Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()){
+        if (Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()) {
             tick = ticksExisted;
-        }else{
+        } else {
             tick = Minecraft.getInstance().player.tickCount;
         }
-        if(itemStackIn.getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP.get()){
+        if (itemStackIn.getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP.get()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.4F, -0.75F, 0.5F);
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
@@ -167,7 +172,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             SHIELD_OF_THE_DEEP_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        if(itemStackIn.getItem() == AMItemRegistry.MYSTERIOUS_WORM.get()){
+        if (itemStackIn.getItem() == AMItemRegistry.MYSTERIOUS_WORM.get()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, -2F, 0);
             matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
@@ -175,41 +180,41 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             MYTERIOUS_WORM_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(MYTERIOUS_WORM_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        if(itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE.get()){
+        if (itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE.get()) {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
-            if(transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+            if (transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND.get()), transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
-            }else{
+            } else {
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY.get()), transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
-        if(itemStackIn.getItem() == AMItemRegistry.VINE_LASSO.get()){
+        if (itemStackIn.getItem() == AMItemRegistry.VINE_LASSO.get()) {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
-            if(transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
-                if(ItemVineLasso.isItemInUse(itemStackIn)){
-                    if(transformType.firstPerson()){
+            if (transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
+                if (ItemVineLasso.isItemInUse(itemStackIn)) {
+                    if (transformType.firstPerson()) {
                         matrixStackIn.translate(transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -0.3F : 0.3F, 0.0f, -0.5f);
                     }
                     matrixStackIn.mulPose(Vector3f.YP.rotation(tick + Minecraft.getInstance().getFrameTime()));
                 }
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND.get()), transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
-            }else{
+            } else {
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY.get()), transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
-        if(itemStackIn.getItem() == AMItemRegistry.SKELEWAG_SWORD.get()){
+        if (itemStackIn.getItem() == AMItemRegistry.SKELEWAG_SWORD.get()) {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             ItemStack spriteItem = new ItemStack(AMItemRegistry.SKELEWAG_SWORD_INVENTORY.get());
             ItemStack handItem = new ItemStack(AMItemRegistry.SKELEWAG_SWORD_HAND.get());
             spriteItem.setTag(itemStackIn.getTag());
             handItem.setTag(itemStackIn.getTag());
-            if(transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+            if (transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
                 Minecraft.getInstance().getItemRenderer().renderStatic(handItem, transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
-            }else{
+            } else {
                 Minecraft.getInstance().getItemRenderer().renderStatic(spriteItem, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
-        if(itemStackIn.getItem() == AMBlockRegistry.TRANSMUTATION_TABLE.get().asItem()){
+        if (itemStackIn.getItem() == AMBlockRegistry.TRANSMUTATION_TABLE.get().asItem()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 1.6F, 0.5F);
             matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180));
@@ -221,25 +226,25 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             TRANSMUTATION_TABLE_OVERLAY_MODEL.renderToBuffer(matrixStackIn, staticyOverlay, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        if(itemStackIn.getItem() == AMItemRegistry.SHATTERED_DIMENSIONAL_CARVER.get()){
+        if (itemStackIn.getItem() == AMItemRegistry.SHATTERED_DIMENSIONAL_CARVER.get()) {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             float f = tick + Minecraft.getInstance().getFrameTime();
             List<ItemStack> shards = getDimensionalCarverShards();
-            for(int i = 0; i < shards.size(); i++){
+            for (int i = 0; i < shards.size(); i++) {
                 matrixStackIn.pushPose();
                 ItemStack shard = shards.get(i);
-                matrixStackIn.translate((float)Math.sin(f * 0.15F + i * 1F) * 0.035F, -(float)Math.cos(f * 0.15F + i * 1F) * 0.035F, (float)Math.cos(f * 0.15F + i  * 0.5F + Math.PI / 2F) * 0.025F);
+                matrixStackIn.translate((float) Math.sin(f * 0.15F + i * 1F) * 0.035F, -(float) Math.cos(f * 0.15F + i * 1F) * 0.035F, (float) Math.cos(f * 0.15F + i * 0.5F + Math.PI / 2F) * 0.025F);
                 Minecraft.getInstance().getItemRenderer().renderStatic(shard, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
                 matrixStackIn.popPose();
             }
         }
-        if(itemStackIn.getItem() == AMItemRegistry.STINK_RAY.get()){
+        if (itemStackIn.getItem() == AMItemRegistry.STINK_RAY.get()) {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             ItemStack hand = new ItemStack(ItemStinkRay.isUsable(itemStackIn) ? AMItemRegistry.STINK_RAY_HAND.get() : AMItemRegistry.STINK_RAY_EMPTY_HAND.get());
             ItemStack inventory = new ItemStack(ItemStinkRay.isUsable(itemStackIn) ? AMItemRegistry.STINK_RAY_INVENTORY.get() : AMItemRegistry.STINK_RAY_EMPTY_INVENTORY.get());
-            if(transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+            if (transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
                 Minecraft.getInstance().getItemRenderer().renderStatic(hand, transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
-            }else{
+            } else {
                 Minecraft.getInstance().getItemRenderer().renderStatic(inventory, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
@@ -277,40 +282,54 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             int entityIndex = (tick / 40) % (mobIcons.size());
             float scale = 1.0F;
             int flags = 0;
-            if (ItemTabIcon.hasCustomEntityDisplay(itemStackIn)) {
-                flags = itemStackIn.getTag().getInt("DisplayMobFlags");
-                String index = ItemTabIcon.getCustomDisplayEntityString(itemStackIn);
-                EntityType local =  ItemTabIcon.getEntityType(itemStackIn.getTag());
-                scale = getScaleFor(local, mobIcons);
-                if(itemStackIn.getTag().getFloat("DisplayMobScale") > 0){
-                    scale = itemStackIn.getTag().getFloat("DisplayMobScale");
-                }
-                if (this.renderedEntites.get(index) == null) {
-                    Entity entity = local.create(Minecraft.getInstance().level);
-                    if (entity instanceof EntityBlobfish) {
-                        ((EntityBlobfish) entity).setDepressurized(true);
+            ClientLevel level = Minecraft.getInstance().level;
+            if (level != null) {
+                if (ItemTabIcon.hasCustomEntityDisplay(itemStackIn)) {
+                    flags = itemStackIn.getTag().getInt("DisplayMobFlags");
+                    String index = ItemTabIcon.getCustomDisplayEntityString(itemStackIn);
+                    EntityType local = ItemTabIcon.getEntityType(itemStackIn.getTag());
+                    scale = getScaleFor(local, mobIcons);
+                    if (itemStackIn.getTag().getFloat("DisplayMobScale") > 0) {
+                        scale = itemStackIn.getTag().getFloat("DisplayMobScale");
                     }
-                    this.renderedEntites.put(local.getDescriptionId(), entity);
-                    fakeEntity = entity;
-                } else {
-                    fakeEntity = this.renderedEntites.get(local.getDescriptionId());
-                }
-            } else {
-                EntityType type = mobIcons.get(entityIndex).getFirst();
-                scale = mobIcons.get(entityIndex).getSecond();
-                if (type != null) {
-                    if (this.renderedEntites.get(type.getDescriptionId()) == null) {
-                        Entity entity = type.create(Minecraft.getInstance().level);
-                        if (entity instanceof EntityBlobfish) {
-                            ((EntityBlobfish) entity).setDepressurized(true);
+                    if (this.renderedEntites.get(index) == null && !blockedRenderEntities.contains(local)) {
+                        try {
+                            Entity entity = local.create(level);
+                            if (entity instanceof EntityBlobfish) {
+                                ((EntityBlobfish) entity).setDepressurized(true);
+                            }
+                            this.renderedEntites.put(local.getDescriptionId(), entity);
+                            fakeEntity = entity;
+                        } catch (Exception e) {
+                            blockedRenderEntities.add(local);
+                            AlexsMobs.LOGGER.error("Could not render item for entity: " + local);
                         }
-                        this.renderedEntites.put(type.getDescriptionId(), entity);
-                        fakeEntity = entity;
                     } else {
-                        fakeEntity = this.renderedEntites.get(type.getDescriptionId());
+                        fakeEntity = this.renderedEntites.get(local.getDescriptionId());
+                    }
+                } else {
+                    EntityType type = mobIcons.get(entityIndex).getFirst();
+                    scale = mobIcons.get(entityIndex).getSecond();
+                    if (type != null) {
+                        if (this.renderedEntites.get(type.getDescriptionId()) == null && !blockedRenderEntities.contains(type)) {
+                            try {
+                                Entity entity = type.create(level);
+                                if (entity instanceof EntityBlobfish) {
+                                    ((EntityBlobfish) entity).setDepressurized(true);
+                                }
+                                this.renderedEntites.put(type.getDescriptionId(), entity);
+                                fakeEntity = entity;
+                            } catch (Exception e) {
+                                blockedRenderEntities.add(type);
+                                AlexsMobs.LOGGER.error("Could not render item for entity: " + type);
+                            }
+                        } else {
+                            fakeEntity = this.renderedEntites.get(type.getDescriptionId());
+                        }
                     }
                 }
             }
+
             if (fakeEntity instanceof EntityCockroach) {
                 if (flags == 99) {
                     matrixStackIn.translate(0, 0.25F, 0);
@@ -339,26 +358,26 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     ((EntityBaldEagle) fakeEntity).setCap(false);
                 }
             }
-            if(fakeEntity instanceof EntityVoidWorm){
+            if (fakeEntity instanceof EntityVoidWorm) {
                 matrixStackIn.translate(0, 0.5F, 0);
             }
-            if(fakeEntity instanceof EntityMimicOctopus){
+            if (fakeEntity instanceof EntityMimicOctopus) {
                 matrixStackIn.translate(0, 0.5F, 0);
             }
-            if(fakeEntity instanceof EntityLaviathan){
+            if (fakeEntity instanceof EntityLaviathan) {
                 RenderLaviathan.renderWithoutShaking = true;
                 matrixStackIn.translate(0, 0.3F, 0);
             }
-            if(fakeEntity instanceof EntityCosmaw){
+            if (fakeEntity instanceof EntityCosmaw) {
                 matrixStackIn.translate(0, 0.2F, 0);
             }
-            if(fakeEntity instanceof EntityGiantSquid){
+            if (fakeEntity instanceof EntityGiantSquid) {
                 matrixStackIn.translate(0, 0.5F, 0.3F);
             }
-            if(fakeEntity instanceof EntityUnderminer) {
+            if (fakeEntity instanceof EntityUnderminer) {
                 RenderUnderminer.renderWithPickaxe = true;
             }
-            if(fakeEntity instanceof EntityMurmur){
+            if (fakeEntity instanceof EntityMurmur) {
                 RenderMurmurBody.renderWithHead = true;
                 matrixStackIn.translate(0, -0.2F, 0);
             }
@@ -373,19 +392,19 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     mouseX = 0;
                     mouseY = 0;
                 }
-                try{
+                try {
                     drawEntityOnScreen(matrixStackIn, 0, 0, scale, true, 0, -45, 0, (float) mouseX, (float) mouseY, fakeEntity);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
-            if(fakeEntity instanceof EntityLaviathan){
+            if (fakeEntity instanceof EntityLaviathan) {
                 RenderLaviathan.renderWithoutShaking = false;
             }
-            if(fakeEntity instanceof EntityUnderminer) {
+            if (fakeEntity instanceof EntityUnderminer) {
                 RenderUnderminer.renderWithPickaxe = false;
             }
-            if(fakeEntity instanceof EntityMurmur){
+            if (fakeEntity instanceof EntityMurmur) {
                 RenderMurmurBody.renderWithHead = false;
             }
         }
