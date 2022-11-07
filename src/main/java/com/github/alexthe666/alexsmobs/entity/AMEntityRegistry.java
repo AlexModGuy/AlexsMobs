@@ -140,12 +140,12 @@ public class AMEntityRegistry {
     public static final RegistryObject<EntityType<EntityMurmurHead>> MURMUR_HEAD = DEF_REG.register("murmur_head", () -> registerEntity(EntityType.Builder.of(EntityMurmurHead::new, MobCategory.MONSTER).sized(0.55F, 0.55F), "murmur_head"));
     public static final RegistryObject<EntityType<EntityTendonSegment>> TENDON_SEGMENT = DEF_REG.register("tendon_segment", () -> registerEntity(EntityType.Builder.of(EntityTendonSegment::new, MobCategory.MISC).sized(0.1F, 0.1F).setCustomClientFactory(EntityTendonSegment::new).fireImmune(), "tendon_segment"));
     public static final RegistryObject<EntityType<EntitySkunk>> SKUNK = DEF_REG.register("skunk", () -> registerEntity(EntityType.Builder.of(EntitySkunk::new, MobCategory.CREATURE).sized(0.85F, 0.65F), "skunk"));
-
     public static final RegistryObject<EntityType<EntityFart>> FART = DEF_REG.register("fart", () -> registerEntity(EntityType.Builder.of(EntityFart::new, MobCategory.MISC).sized(0.7F, 0.3F).setCustomClientFactory(EntityFart::new).fireImmune(), "fart"));
     public static final RegistryObject<EntityType<EntityBananaSlug>> BANANA_SLUG = DEF_REG.register("banana_slug", () -> registerEntity(EntityType.Builder.of(EntityBananaSlug::new, MobCategory.CREATURE).sized(0.8F, 0.4F), "banana_slug"));
-
     public static final RegistryObject<EntityType<EntityBlueJay>> BLUE_JAY = DEF_REG.register("blue_jay", () -> registerEntity(EntityType.Builder.of(EntityBlueJay::new, MobCategory.CREATURE).sized(0.5F, 0.6F), "blue_jay"));
-
+    
+    //public static final RegistryObject<EntityType<EntityFlamingo>> FLAMINGO = DEF_REG.register("flamingo", () -> registerEntity(EntityType.Builder.of(EntityFlamingo::new, MobCategory.CREATURE).sized(0.8F, 1.5F).setUpdateInterval(1), "flamingo"));
+    
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return (EntityType) builder.build(entityName);
     }
@@ -331,6 +331,9 @@ public class AMEntityRegistry {
         event.put(SKUNK.get(), EntitySkunk.bakeAttributes().build());
         event.put(BANANA_SLUG.get(), EntityBananaSlug.bakeAttributes().build());
         event.put(BLUE_JAY.get(), EntityBlueJay.bakeAttributes().build());
+        //SpawnPlacements.register(FLAMINGO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        //event.put(FLAMINGO.get(), EntityFlamingo.bakeAttributes().build());
+        
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){
