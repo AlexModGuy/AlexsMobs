@@ -1,10 +1,32 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-The Cave Centipede is a rare, subterranean arthropod that can be found deep in caves. It is hostile towards anyone who would find themselves in its domain.
-Although slow, this cumbersome and giant arthropod can deal a dangerous amount of damage and has a poisonous bite.
+    洞穴蜈蚣是一种罕见的、生活在地
 <NEWLINE>
-When slain, they have a chance to drop one or more of their legs.
-These legs can be used to craft a pair of leggings that grants its wearer the ability to climb walls, along with increased defense.
-They can also be brewed with a Bottle of Komodo Dragon Spit in order to create a Poisonous Essence, which when brewed with a Rattlesnake
-Rattle can create a Potion of Poison Resistance, that enables its user not to suffer the effects of being poisoned.
+下的节肢动物，可以在地底深处的洞穴
+<NEWLINE>
+之中发现。它对任何找到它们领地的人
+<NEWLINE>
+都会抱有敌意。
+<NEWLINE>
+    虽然这种笨重且体型巨大的节肢生
+<NEWLINE>
+物速度缓慢，但是它造成的伤害却十分
+<NEWLINE>
+危险，且还会附带着有毒的嘶咬。
+<NEWLINE>
+    在洞穴蜈蚣被杀死之后，会有一定
+<NEWLINE>
+的机会掉落一条或者更多条它们的腿。
+<NEWLINE>
+这些腿可以用来合成一条护腿，可以使
+<NEWLINE>
+穿戴者拥有攀爬墙壁的能力，并且有着
+<NEWLINE>
+高额的防御力。
+<NEWLINE>
+    洞穴蜈蚣腿还能用来和毒素精华或
+<NEWLINE>
+者科莫多巨蜥唾液一起酿造抗毒药水。
+<NEWLINE>
+它能让饮用者免遭中毒效果的侵害。
