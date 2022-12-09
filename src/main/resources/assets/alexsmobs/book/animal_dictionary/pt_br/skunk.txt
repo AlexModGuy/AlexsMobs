@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Gambás são mamíferos que ocasionalmente podem ser encontrados vagando pelas florestas. Eles são naturalmente muito ariscos e tentarão fugir de qualquer grande predador que encontrarem.
+Se perseguido implacavelmente pela floresta ou ferido de alguma forma, o Gambá se defenderá lançando um spray nocivo em todo o perseguidor, causando náusea.
+<NEWLINE>
+Parte desse spray pode até permanecer no mundo, agarrando-se às superfícies que o Gambá borrifou. Pode ser engarrafado para obter Fedor Engarrafado, que é usado como combustível para o Raio Fedorento.
+<NEWLINE>
+O Raio Fadorento é uma ferramenta excepcionalmente poderosa que pode ser usada para distrair enxames de mobs hostis ou neutros. Se disparado contra uma criatura, criaturas neutras e hostis próximas irão culpá-la pelo cheiro horrendo e começar a mirar nela, enquanto animais passivos tentarão fugir.
+Assim, o Raio Fedorento pode ser usado para causar estragos rapidamente entre um grupo de mobs. Cada garrafa consumida fornece apenas cinco usos.
+<NEWLINE>
+Gambás podem ser procriados com bagas doces. Se um gambá for infligido com um efeito de poção durante a pulverização, ele criará uma nuvem persistente do efeito nas proximidades. Apenas gambás adultos podem pulverizar.
