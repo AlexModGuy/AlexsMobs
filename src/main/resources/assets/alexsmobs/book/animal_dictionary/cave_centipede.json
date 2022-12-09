@@ -20,7 +20,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 160,
+      "rot_y": 300,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -31,7 +31,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 170,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -42,7 +42,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 190,
+      "rot_y": 250,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -53,14 +53,14 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 200,
+      "rot_y": 240,
       "rot_z": 0,
       "follow_cursor": false
     },
     {
       "entity": "alexsmobs:centipede_head",
-      "x": 148,
-      "y": 75,
+      "x": 145,
+      "y": 76,
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,

@@ -52,7 +52,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -76,7 +76,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
@@ -100,7 +100,7 @@
       "page" : 0,
       "scale": 0.8,
       "rot_x": 30,
-      "rot_y": 180,
+      "rot_y": 270,
       "rot_z": 0,
       "follow_cursor": false
     },
