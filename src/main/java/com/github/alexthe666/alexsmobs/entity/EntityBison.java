@@ -223,8 +223,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                     this.yBodyRot = this.getYRot();
                 }
                 if (dist < this.getBbWidth() + 3.0F) {
-                    final Animation animation = this.getAnimation();
-                    if (animation == NO_ANIMATION || animation == ANIMATION_ATTACK && this.getAnimationTick() > 8 && dist < this.getBbWidth() + 1.0F && this.hasLineOfSight(attackTarget)) {
+                    if (this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() > 8 && dist < this.getBbWidth() + 1.0F && this.hasLineOfSight(attackTarget)) {
                         float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                         if (attackTarget instanceof Wolf) {
                             dmg = 2;
