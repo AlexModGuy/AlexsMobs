@@ -256,8 +256,9 @@ public class EntitySkunk extends Animal {
         @Override
         public void tick(){
             EntitySkunk.this.getNavigation().stop();
-            double d0 = EntitySkunk.this.getX() - EntitySkunk.this.sprayAt.x;
-            double d2 = EntitySkunk.this.getZ() - EntitySkunk.this.sprayAt.z;
+            Vec3 sprayAt = getSprayAt();
+            double d0 = EntitySkunk.this.getX() - sprayAt.x;
+            double d2 = EntitySkunk.this.getZ() - sprayAt.z;
             float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
             EntitySkunk.this.setSprayYaw(f);
             if(EntitySkunk.this.sprayProgress >= 5F){
@@ -300,6 +301,18 @@ public class EntitySkunk extends Animal {
                     }
                 }
                 actualSprayTime++;
+            }
+        }
+
+        private Vec3 getSprayAt() {
+            Entity last = EntitySkunk.this.getLastHurtByMob();
+            if(EntitySkunk.this.sprayAt != null){
+                return EntitySkunk.this.sprayAt;
+            }else if(last != null){
+                return last.position();
+            }else{
+                Vec3 modelBack = new Vec3(0, 0.4F, -1).xRot(-EntitySkunk.this.getXRot() * ((float)Math.PI / 180F)).yRot(-EntitySkunk.this.getYRot() * ((float)Math.PI / 180F));
+                return EntitySkunk.this.position().add(modelBack);
             }
         }
 
