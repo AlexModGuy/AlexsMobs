@@ -52,7 +52,7 @@ public class ItemDimensionalCarver extends Item {
 
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
-        if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
+        if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
             return InteractionResultHolder.fail(itemstack);
         } else {
             playerIn.startUsingItem(handIn);

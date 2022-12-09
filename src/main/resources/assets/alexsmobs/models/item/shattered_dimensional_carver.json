@@ -2,6 +2,9 @@
   "parent": "builtin/entity",
   "gui_light": "front",
   "ambientocclusion": true,
+  "textures": {
+    "particle": "alexsmobs:item/dimensional_carver"
+  },
   "display": {
     "thirdperson_righthand": {
       "translation": [0, 0, 0]
