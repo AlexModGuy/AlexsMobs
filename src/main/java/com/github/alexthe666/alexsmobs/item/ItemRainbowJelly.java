@@ -64,13 +64,18 @@ public class ItemRainbowJelly extends Item {
 
 
         public static RainbowType getFromString(String name) {
-            for (RainbowType type : RainbowType.values()) {
-                if (type.name().toLowerCase().equals(name)) {
-                    return type;
-                }
-            }
             if (name.contains("nonbi") || name.contains("non-bi")) {
                 return NONBI;
+            }else if (name.contains("trans")) {
+                return TRANS;
+            }else if (name.contains("bi")) {
+                return BI;
+            }else if (name.contains("asexual") || name.contains("ace")) {
+                return ACE;
+            }else if (name.contains("weezer")) {
+                return WEEZER;
+            }else if (name.contains("brazil")) {
+                return BRAZIL;
             }
             return RAINBOW;
         }

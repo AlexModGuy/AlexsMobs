@@ -8,6 +8,7 @@ import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.github.alexthe666.citadel.server.message.PropertiesMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -39,7 +40,7 @@ public class RainbowUtil {
 
     public static int getRainbowTypeFromStack(ItemStack stack){
         String name = stack.getDisplayName().getString().toLowerCase(Locale.ROOT);
-        return ItemRainbowJelly.RainbowType.getFromString(name.substring(1, name.length() - 1)).ordinal() + 1;
+        return ItemRainbowJelly.RainbowType.getFromString(name).ordinal() + 1;
     }
 
     public static int calculateGlassColor(BlockPos pos) {

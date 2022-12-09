@@ -134,9 +134,9 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
                 f8 = 1.0F;
             }
         }
-        if(entityIn.isDwarf()){
+        if (entityIn.isDwarf()) {
             this.model = DWARF_MODEL;
-        }else{
+        } else {
             this.model = NORMAL_MODEL;
         }
         this.model.prepareMobModel(entityIn, f5, f8, partialTicks);
@@ -152,7 +152,7 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
             this.shadowRadius = 0.9F * alpha;
             int i = getOverlayCoords(entityIn, this.getWhiteOverlayProgress(entityIn, partialTicks));
             this.renderUnderminerModel(matrixStackIn, bufferIn, rendertype, partialTicks, packedLightIn, i, flag1 ? 0.15F : Mth.clamp(alpha, 0, 1), entityIn);
-        }else{
+        } else {
             this.shadowRadius = 0;
         }
         if (!entityIn.isSpectator()) {
@@ -170,15 +170,14 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<EntityUnderminer, EntityModel<EntityUnderminer>>(entityIn, this, partialTicks, matrixStackIn, bufferIn, packedLightIn));
 
         BlockPos miningPos = entityIn.getMiningPos();
-        if(miningPos != null){
+        if (miningPos != null) {
             matrixStackIn.pushPose();
             double d0 = Mth.lerp(partialTicks, entityIn.xo, entityIn.getX());
             double d1 = Mth.lerp(partialTicks, entityIn.yo, entityIn.getY());
             double d2 = Mth.lerp(partialTicks, entityIn.zo, entityIn.getZ());
 
-            matrixStackIn.translate((double)miningPos.getX() - d0, (double)miningPos.getY() - d1, (double)miningPos.getZ() - d2);
-            int progress = (int)Math.round((DESTROY_TYPES.size() - 1) * (float)Mth.clamp(entityIn.getMiningProgress(), 0F, 1.0F));
-            List<RenderType> DESTROY_TYPES = BREAKING_LOCATIONS.stream().map(AMRenderTypes::getGhostCrumbling).collect(Collectors.toList());
+            matrixStackIn.translate((double) miningPos.getX() - d0, (double) miningPos.getY() - d1, (double) miningPos.getZ() - d2);
+            int progress = (int) Math.round((DESTROY_TYPES.size() - 1) * (float) Mth.clamp(entityIn.getMiningProgress(), 0F, 1.0F));
             PoseStack.Pose posestack$pose = matrixStackIn.last();
             VertexConsumer vertexconsumer1 = new SheetedDecalTextureGenerator(bufferIn.getBuffer(DESTROY_TYPES.get(progress)), posestack$pose.pose(), posestack$pose.normal());
 
