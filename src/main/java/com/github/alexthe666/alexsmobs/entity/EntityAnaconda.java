@@ -284,8 +284,9 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 final float angle = (0.0174532925F * (target.yBodyRot - 45F));
                 final double extraX = radius * Mth.sin((float) (Math.PI + angle));
                 final double extraZ = radius * Mth.cos(angle);
-//                double extraY = -0.5F;
-                this.setPosRaw(extraX + target.getX(), target.getY(1.0F), extraZ + target.getZ());
+                Vec3 targetVec = new Vec3(extraX + target.getX(), target.getY(1.0F), extraZ + target.getZ());
+                Vec3 moveVec = targetVec.subtract(this.position()).scale(1F);
+                this.setDeltaMovement(moveVec);
                 if (!target.isOnGround()) {
                     target.setDeltaMovement(new Vec3(0, -0.08F, 0));
                 } else {
@@ -586,7 +587,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
             if (target != null && target.isAlive()) {
                 if (jumpAttemptCooldown == 0 && snake.distanceTo(target) < 1 + target.getBbWidth() && !snake.isStrangling()) {
                     target.hurt(DamageSource.mobAttack(snake), 4);
-                    snake.setStrangling(target.getBbWidth() <= 2.3F);
+                    snake.setStrangling(target.getBbWidth() <= 2.0F && !(target instanceof EntityAnaconda));
                     snake.playSound(AMSoundRegistry.ANACONDA_ATTACK.get(), snake.getSoundVolume(), snake.getVoicePitch());
                     jumpAttemptCooldown = 5 + random.nextInt(5);
                 }

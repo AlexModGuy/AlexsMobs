@@ -85,7 +85,7 @@ public class EntityFart extends Entity {
                 level.addParticle(AMParticleRegistry.SMELLY.get(), living.getRandomX(1.0F), living.getRandomY(), living.getRandomZ(1.0F), 0, 0, 0);
             }
             for (Mob nearby : level.getEntitiesOfClass(Mob.class, living.getBoundingBox().inflate(15))) {
-                if(nearby == living || nearby.getId() == living.getId() ||nearby.getUUID().equals(living.getUUID()) || nearby.isAlliedTo(living) || living.isAlliedTo(nearby)){
+                if(nearby == living || nearby.getId() == living.getId() ||nearby.getUUID().equals(living.getUUID()) || nearby.isAlliedTo(living) || living.isAlliedTo(nearby) || living instanceof IHurtableMultipart){
                     continue;
                 }else{
                     nearby.setLastHurtByMob(living);
