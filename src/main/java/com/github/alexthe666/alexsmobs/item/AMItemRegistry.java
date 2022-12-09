@@ -6,6 +6,8 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.*;
 import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import com.github.alexthe666.citadel.Citadel;
+import com.github.alexthe666.citadel.server.block.LecternBooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Position;
@@ -334,6 +336,7 @@ public class AMItemRegistry {
         FLYING_FISH_MATERIAL.setRepairMaterial(Ingredient.of(FLYING_FISH.get()));
         NOVELTY_HAT_MATERIAL.setRepairMaterial(Ingredient.of(Items.BONE));
         KIMONO_MATERIAL.setRepairMaterial(Ingredient.of(ItemTags.WOOL));
+        LecternBooks.BOOKS.put(ANIMAL_DICTIONARY.getId(), new LecternBooks.BookData(0X606B26, 0XFDF8ED));
     }
 
     public static void initDispenser(){
