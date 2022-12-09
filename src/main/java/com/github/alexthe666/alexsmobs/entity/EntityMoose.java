@@ -76,6 +76,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
 
     protected EntityMoose(EntityType type, Level worldIn) {
         super(type, worldIn);
+        this.maxUpStep = 1.1F;
     }
 
     public static boolean canMooseSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
@@ -212,7 +213,6 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
             }
         }
         if (this.getTarget() != null && this.getTarget().isAlive()) {
-            this.maxUpStep = 1.1F;
             if (this.isJostling()) {
                 this.setJostling(false);
             }
@@ -227,8 +227,6 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
                 getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
                 this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
             }
-        }else{
-            this.maxUpStep = 0.6F;
         }
         if(snowTimer > 0){
             snowTimer--;

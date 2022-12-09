@@ -135,6 +135,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     protected EntityElephant(EntityType type, Level world) {
         super(type, world);
         initElephantInventory();
+        this.maxUpStep = 1.1F;
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -421,7 +422,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
             maxUpStep = 2F;
         }else{
-            maxUpStep = 0.6F;
+            maxUpStep = 1.1F;
         }
         if (!isTame() && isTrader()) {
             if (!this.level.isClientSide) {
