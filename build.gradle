@@ -37,7 +37,7 @@ repositories{
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.21.0'
+version = '1.21.1'
 group = 'com.github.alexthe667' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'alexsmobs'
 
@@ -119,7 +119,7 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.1-42.0.0'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.0'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     compileOnly fg.deobf("curse.maven:citadel-331936:4132623")
     runtimeOnly fg.deobf("curse.maven:citadel-331936:4132623")
