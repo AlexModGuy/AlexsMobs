@@ -49,6 +49,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraftforge.common.ForgeMod;
 
 import java.util.Set;
 
@@ -142,10 +143,16 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
     private void floatStrider() {
         if (this.isInLava()) {
             CollisionContext lvt_1_1_ = CollisionContext.of(this);
-            if (lvt_1_1_.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition().below(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
+            double d1 = this.getFluidTypeHeight(ForgeMod.LAVA_TYPE.get());
+            if(d1 <= 0.5F && d1 > 0){
+                if(this.getDeltaMovement().y < 0){
+                    this.setDeltaMovement(this.getDeltaMovement().multiply(1, 0, 1));
+                }
+                this.onGround = true;
+            }else if (lvt_1_1_.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition().below(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
                 this.onGround = true;
             } else {
-                this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, random.nextFloat() * 0.5, 0.0D));
+                this.setDeltaMovement(0, Math.min((d1 - 0.5F), 1) * 0.2F, 0);
             }
         }
 

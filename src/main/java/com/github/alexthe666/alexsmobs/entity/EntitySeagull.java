@@ -740,11 +740,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
             if (flightTarget) {
                 eagle.getMoveControl().setWantedPosition(x, y, z, 1F);
             } else {
-                if (eagle.isFlying() && !eagle.onGround) {
-                    if (!eagle.isInWaterOrBubble()) {
-                        //  eagle.setMotion(eagle.getMotion().mul(1F, 0.6F, 1F));
-                    }
-                } else {
+                if (!eagle.isFlying() || eagle.onGround) {
                     this.eagle.getNavigation().moveTo(this.x, this.y, this.z, 1F);
                 }
             }
@@ -787,7 +783,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
         public boolean canContinueToUse() {
             if (flightTarget) {
-                return eagle.isFlying() && eagle.distanceToSqr(x, y, z) > 4F;
+                return eagle.isFlying() && eagle.distanceToSqr(x, y, z) > 5F;
             } else {
                 return (!this.eagle.getNavigation().isDone()) && !this.eagle.isVehicle();
             }
