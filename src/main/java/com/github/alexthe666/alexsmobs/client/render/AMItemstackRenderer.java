@@ -229,6 +229,13 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             float f = tick + Minecraft.getInstance().getFrameTime();
             List<ItemStack> shards = getDimensionalCarverShards();
+            matrixStackIn.pushPose();
+            if(transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+                matrixStackIn.translate(-0.2F, 0, 0);
+                matrixStackIn.scale(1.3F, 1.3F, 1.3F);
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180));
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(60));
+            }
             for (int i = 0; i < shards.size(); i++) {
                 matrixStackIn.pushPose();
                 ItemStack shard = shards.get(i);
@@ -236,6 +243,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 Minecraft.getInstance().getItemRenderer().renderStatic(shard, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
                 matrixStackIn.popPose();
             }
+            matrixStackIn.popPose();
         }
         if (itemStackIn.getItem() == AMItemRegistry.STINK_RAY.get()) {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
