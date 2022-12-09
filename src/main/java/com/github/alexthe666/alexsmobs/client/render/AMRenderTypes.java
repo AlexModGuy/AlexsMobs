@@ -131,7 +131,6 @@ public class AMRenderTypes extends RenderType {
         return create("spectre_bones", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, RenderType.CompositeState.builder().setTextureState(lvt_1_1_).setShaderState(RENDERTYPE_EYES_SHADER).setTransparencyState(GHOST_TRANSPARANCY).setDepthTestState(LEQUAL_DEPTH_TEST).setWriteMaskState(COLOR_DEPTH_WRITE).setCullState(NO_CULL).setLightmapState(NO_LIGHTMAP).setOverlayState(OVERLAY).createCompositeState(false));
     }
 
-
     public static RenderType getGhost(ResourceLocation p_228652_0_) {
         TextureStateShard lvt_1_1_ = new TextureStateShard(p_228652_0_, false, false);
         return create("ghost_am", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 262144, false, true, RenderType.CompositeState.builder().setTextureState(lvt_1_1_).setShaderState(RENDERTYPE_EYES_SHADER).setWriteMaskState(COLOR_DEPTH_WRITE).setDepthTestState(EQUAL_DEPTH_TEST).setLightmapState(NO_LIGHTMAP).setOverlayState(OVERLAY).setTransparencyState(GHOST_TRANSPARANCY).setCullState(RenderStateShard.NO_CULL).createCompositeState(true));
@@ -199,19 +198,8 @@ public class AMRenderTypes extends RenderType {
     }
 
     public static RenderType getGhostCrumbling(ResourceLocation texture) {
-        CompositeState renderState = CompositeState.builder()
-                .setShaderState(RenderStateShard.RENDERTYPE_ENERGY_SWIRL_SHADER)
-                .setCullState(NO_CULL)
-                .setOutputState(ITEM_ENTITY_TARGET)
-                .setTextureState(new TextureStateShard(texture, false, false))
-                .setTransparencyState(RenderStateShard.LIGHTNING_TRANSPARENCY)
-                .setLightmapState(LIGHTMAP)
-                .setOverlayState(OVERLAY)
-                .setWriteMaskState(COLOR_WRITE)
-                .setDepthTestState(LEQUAL_DEPTH_TEST)
-                .setLayeringState(POLYGON_OFFSET_LAYERING)
-                .createCompositeState(false);
-        return create("ghost_crumbling", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
+        TextureStateShard lvt_1_1_ = new TextureStateShard(texture, false, false);
+        return create("ghost_crumbling_am", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 262144, false, true, RenderType.CompositeState.builder().setTextureState(lvt_1_1_).setShaderState(RenderStateShard.RENDERTYPE_ENERGY_SWIRL_SHADER).setTransparencyState(LIGHTNING_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).setLayeringState(VIEW_OFFSET_Z_LAYERING).setDepthTestState(LEQUAL_DEPTH_TEST).setCullState(RenderStateShard.NO_CULL).createCompositeState(true));
     }
 
     private static void setupRainbowTexturing(float in, long time) {

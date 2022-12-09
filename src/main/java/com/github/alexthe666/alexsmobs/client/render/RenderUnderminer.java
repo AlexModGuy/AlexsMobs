@@ -41,7 +41,7 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
     }).collect(Collectors.toList());
     private static final ModelUnderminerDwarf DWARF_MODEL = new ModelUnderminerDwarf();
     private static HumanoidModel<EntityUnderminer> NORMAL_MODEL = null;
-    private static final List<RenderType> DESTROY_TYPES = ModelBakery.BREAKING_LOCATIONS.stream().map(AMRenderTypes::getGhostCrumbling).collect(Collectors.toList());
+    private static final List<RenderType> DESTROY_TYPES = BREAKING_LOCATIONS.stream().map(AMRenderTypes::getGhostCrumbling).collect(Collectors.toList());
     public static boolean renderWithPickaxe = false;
 
     public RenderUnderminer(EntityRendererProvider.Context renderManagerIn) {
@@ -177,10 +177,11 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
             double d2 = Mth.lerp(partialTicks, entityIn.zo, entityIn.getZ());
 
             matrixStackIn.translate((double)miningPos.getX() - d0, (double)miningPos.getY() - d1, (double)miningPos.getZ() - d2);
-            PoseStack.Pose posestack$pose = matrixStackIn.last();
-
             int progress = (int)Math.round((DESTROY_TYPES.size() - 1) * (float)Mth.clamp(entityIn.getMiningProgress(), 0F, 1.0F));
-            VertexConsumer vertexconsumer1 = new SheetedDecalTextureGenerator(Minecraft.getInstance().renderBuffers().crumblingBufferSource().getBuffer(DESTROY_TYPES.get(progress)), posestack$pose.pose(), posestack$pose.normal());
+            List<RenderType> DESTROY_TYPES = BREAKING_LOCATIONS.stream().map(AMRenderTypes::getGhostCrumbling).collect(Collectors.toList());
+            PoseStack.Pose posestack$pose = matrixStackIn.last();
+            VertexConsumer vertexconsumer1 = new SheetedDecalTextureGenerator(bufferIn.getBuffer(DESTROY_TYPES.get(progress)), posestack$pose.pose(), posestack$pose.normal());
+
             net.minecraftforge.client.model.data.ModelData modelData = entityIn.level.getModelDataManager().getAt(miningPos);
             Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(entityIn.level.getBlockState(miningPos), miningPos, entityIn.level, matrixStackIn, vertexconsumer1, modelData == null ? net.minecraftforge.client.model.data.ModelData.EMPTY : modelData);
             matrixStackIn.popPose();
