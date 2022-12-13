@@ -433,6 +433,11 @@ public class AMSoundRegistry {
 
     public static final RegistryObject<SoundEvent> BLUE_JAY_SONG = createSoundEvent("blue_jay_song");
 
+    public static final RegistryObject<SoundEvent> CAIMAN_IDLE = createSoundEvent("caiman_idle");
+
+    public static final RegistryObject<SoundEvent> CAIMAN_HURT = createSoundEvent("caiman_hurt");
+
+    public static final RegistryObject<SoundEvent> CAIMAN_SPLASH = createSoundEvent("caiman_splash");
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

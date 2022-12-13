@@ -5,15 +5,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraftforge.registries.RegistryObject;
 
-public class AMBlockItem extends BlockItem {
+public class AMBlockItem extends BlockItem implements CustomTabBehavior {
 
     private final RegistryObject<Block> blockSupplier;
 
@@ -45,5 +42,14 @@ public class AMBlockItem extends BlockItem {
 
     public boolean canBeHurtBy(DamageSource damage) {
         return super.canBeHurtBy(damage) && (this != AMBlockRegistry.TRANSMUTATION_TABLE.get().asItem() || !damage.isExplosion());
+    }
+
+    @Override
+    public void fillItemCategory(CreativeModeTab.Output contents) {
+        if(blockSupplier.equals(AMBlockRegistry.SAND_CIRCLE) || blockSupplier.equals(AMBlockRegistry.RED_SAND_CIRCLE)){
+
+        }else{
+            contents.accept(this);
+        }
     }
 }

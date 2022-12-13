@@ -303,6 +303,7 @@ public class AMItemRegistry {
         DEF_REG.register("spawn_egg_skunk", () -> new ForgeSpawnEggItem(AMEntityRegistry.SKUNK, 0X222D36, 0XE4E5F2, new Item.Properties()));
         DEF_REG.register("spawn_egg_banana_slug", () -> new ForgeSpawnEggItem(AMEntityRegistry.BANANA_SLUG, 0XFFD045, 0XFFF173, new Item.Properties()));
         DEF_REG.register("spawn_egg_blue_jay", () -> new ForgeSpawnEggItem(AMEntityRegistry.BLUE_JAY, 0X5FB7FE, 0X293B42, new Item.Properties()));
+        DEF_REG.register("spawn_egg_caiman", () -> new ForgeSpawnEggItem(AMEntityRegistry.CAIMAN, 0X5C5631, 0XBBC45C, new Item.Properties()));
         registerPatternItem("bear");
         registerPatternItem("australia_0");
         registerPatternItem("australia_1");

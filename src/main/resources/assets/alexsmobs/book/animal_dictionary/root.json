@@ -1046,6 +1046,18 @@
       "offset_y": -20,
       "linked_page": "blue_jay.json",
       "hover_text": "entity.alexsmobs.blue_jay"
+    },
+    {
+      "entity": "alexsmobs:caiman",
+      "x": 95,
+      "y": 70,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 1.1,
+      "offset_x": -8,
+      "offset_y": -8,
+      "linked_page": "caiman.json",
+      "hover_text": "entity.alexsmobs.caiman"
     }
   ],
   "linked_page_buttons": [

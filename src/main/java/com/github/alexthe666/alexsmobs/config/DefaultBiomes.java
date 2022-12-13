@@ -712,7 +712,7 @@ public class DefaultBiomes {
     public static final SpawnBiomeData POTOO = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:dark_forest", 0);
 
-    public static final SpawnBiomeData MUDSKIPPER = new SpawnBiomeData()
+    public static final SpawnBiomeData MANGROVE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:mangrove_swamp", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cave/underground_jungle", 1);   
 

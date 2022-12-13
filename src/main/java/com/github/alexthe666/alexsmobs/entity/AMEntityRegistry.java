@@ -143,6 +143,7 @@ public class AMEntityRegistry {
     public static final RegistryObject<EntityType<EntityFart>> FART = DEF_REG.register("fart", () -> registerEntity(EntityType.Builder.of(EntityFart::new, MobCategory.MISC).sized(0.7F, 0.3F).setCustomClientFactory(EntityFart::new).fireImmune(), "fart"));
     public static final RegistryObject<EntityType<EntityBananaSlug>> BANANA_SLUG = DEF_REG.register("banana_slug", () -> registerEntity(EntityType.Builder.of(EntityBananaSlug::new, MobCategory.CREATURE).sized(0.8F, 0.4F), "banana_slug"));
     public static final RegistryObject<EntityType<EntityBlueJay>> BLUE_JAY = DEF_REG.register("blue_jay", () -> registerEntity(EntityType.Builder.of(EntityBlueJay::new, MobCategory.CREATURE).sized(0.5F, 0.6F), "blue_jay"));
+    public static final RegistryObject<EntityType<EntityCaiman>> CAIMAN = DEF_REG.register("caiman", () -> registerEntity(EntityType.Builder.of(EntityCaiman::new, MobCategory.CREATURE).sized(1.3F, 0.6F), "caiman"));
 
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return (EntityType) builder.build(entityName);
@@ -235,6 +236,7 @@ public class AMEntityRegistry {
         SpawnPlacements.register(SKUNK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntitySkunk::checkAnimalSpawnRules);
         SpawnPlacements.register(BANANA_SLUG.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityBananaSlug::checkBananaSlugSpawnRules);
         SpawnPlacements.register(BLUE_JAY.get(), spawnsOnLeaves, Heightmap.Types.MOTION_BLOCKING, EntityBlueJay::checkBlueJaySpawnRules);
+        SpawnPlacements.register(CAIMAN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCaiman::canCaimanSpawn);
         event.put(GRIZZLY_BEAR.get(), EntityGrizzlyBear.bakeAttributes().build());
         event.put(ROADRUNNER.get(), EntityRoadrunner.bakeAttributes().build());
         event.put(BONE_SERPENT.get(), EntityBoneSerpent.bakeAttributes().build());
@@ -329,6 +331,7 @@ public class AMEntityRegistry {
         event.put(SKUNK.get(), EntitySkunk.bakeAttributes().build());
         event.put(BANANA_SLUG.get(), EntityBananaSlug.bakeAttributes().build());
         event.put(BLUE_JAY.get(), EntityBlueJay.bakeAttributes().build());
+        event.put(CAIMAN.get(), EntityCaiman.bakeAttributes().build());
     }
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){

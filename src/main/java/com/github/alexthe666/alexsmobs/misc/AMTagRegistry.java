@@ -32,6 +32,7 @@ public class AMTagRegistry {
     public static final TagKey<EntityType<?>> VOID_PORTAL_IGNORES = registerEntityTag("void_portal_ignores");
 
     public static final TagKey<EntityType<?>> SKUNK_FEARS = registerEntityTag("skunk_fears");
+    public static final TagKey<EntityType<?>> CAIMAN_TARGETS = registerEntityTag("caiman_targets");
 
     public static final TagKey<Item> BANANAS = registerItemTag("bananas");
     public static final TagKey<Item> RACCOON_FOODSTUFFS = registerItemTag("raccoon_foodstuffs");

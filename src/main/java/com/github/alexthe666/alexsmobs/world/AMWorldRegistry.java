@@ -313,6 +313,9 @@ public class AMWorldRegistry {
         if (testBiome(BiomeConfig.blue_jay, biome) && AMConfig.blueJaySpawnWeight > 0) {
             builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.BLUE_JAY.get(), AMConfig.blueJaySpawnWeight, 2, 4));
         }
+        if (testBiome(BiomeConfig.caiman, biome) && AMConfig.caimanSpawnWeight > 0) {
+            builder.getMobSpawnSettings().getSpawner(MobCategory.CREATURE).add(new MobSpawnSettings.SpawnerData(AMEntityRegistry.CAIMAN.get(), AMConfig.caimanSpawnWeight, 2, 4));
+        }
     }
 
     public static void addLeafcutterAntSpawns(Holder<Biome> biome, HolderSet<PlacedFeature> features, ModifiableBiomeInfo.BiomeInfo.Builder builder) {

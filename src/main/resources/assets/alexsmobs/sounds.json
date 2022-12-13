@@ -2951,6 +2951,51 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.blue_jay_song"
   },
+  "caiman_idle": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:caiman_idle_0"
+      },
+      {
+        "name": "alexsmobs:caiman_idle_1"
+      },
+      {
+        "name": "alexsmobs:caiman_idle_2"
+      },
+      {
+        "name": "alexsmobs:caiman_idle_3"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.caiman_idle"
+  },
+  "caiman_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:caiman_hurt_0"
+      },
+      {
+        "name": "alexsmobs:caiman_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.caiman_hurt"
+  },
+  "caiman_splash": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:caiman_splash_0"
+      },
+      {
+        "name": "alexsmobs:caiman_splash_1"
+      },
+      {
+        "name": "alexsmobs:caiman_splash_2"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.caiman_splash"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [

@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.block;
 
-import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -9,10 +8,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ambient.Bat;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -33,19 +31,22 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockCrocodileEgg extends Block {
+public class BlockReptileEgg extends Block {
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;
     public static final IntegerProperty EGGS = BlockStateProperties.EGGS;
     private static final VoxelShape ONE_EGG_SHAPE = Block.box(3.0D, 0.0D, 3.0D, 12.0D, 7.0D, 12.0D);
     private static final VoxelShape MULTI_EGG_SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
+    private RegistryObject<EntityType> births;
 
-    public BlockCrocodileEgg() {
+    public BlockReptileEgg(RegistryObject births) {
         super(BlockBehaviour.Properties.of(Material.EGG, MaterialColor.SAND).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(HATCH, Integer.valueOf(0)).setValue(EGGS, Integer.valueOf(1)));
+        this.births = births;
     }
 
     public static boolean hasProperHabitat(BlockGetter reader, BlockPos blockReader) {
@@ -74,10 +75,10 @@ public class BlockCrocodileEgg extends Block {
             if (!worldIn.isClientSide && worldIn.random.nextInt(chances) == 0) {
                 AABB bb = new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).inflate(25, 25, 25);
                 if (trampler instanceof LivingEntity) {
-                    List<EntityCrocodile> list = worldIn.getEntitiesOfClass(EntityCrocodile.class, bb, EntitySelector.LIVING_ENTITY_STILL_ALIVE);
-                    for (EntityCrocodile croc : list) {
-                        if (!croc.isTame() || !croc.isOwnedBy((LivingEntity) trampler)) {
-                            croc.setTarget((LivingEntity) trampler);
+                    List<Mob> list = worldIn.getEntitiesOfClass(Mob.class, bb, living -> living.isAlive() && living.getType() == births.get());
+                    for (Mob living : list) {
+                        if (!(living instanceof TamableAnimal) || !((TamableAnimal)living).isTame() || !((TamableAnimal)living).isOwnedBy((LivingEntity) trampler)) {
+                            living.setTarget((LivingEntity) trampler);
                         }
                     }
                 }
@@ -115,18 +116,22 @@ public class BlockCrocodileEgg extends Block {
                 worldIn.removeBlock(pos, false);
                 for (int j = 0; j < state.getValue(EGGS); ++j) {
                     worldIn.levelEvent(2001, pos, Block.getId(state));
-                    EntityCrocodile turtleentity = AMEntityRegistry.CROCODILE.get().create(worldIn);
-                    turtleentity.setAge(-24000);
-                    turtleentity.restrictTo(pos, 20);
-                    turtleentity.moveTo((double) pos.getX() + 0.3D + (double) j * 0.2D, pos.getY(), (double) pos.getZ() + 0.3D, 0.0F, 0.0F);
+                    Entity fromType = births.get().create(worldIn);
+                    if(fromType instanceof Animal animal){
+                        animal.setAge(-24000);
+                        animal.restrictTo(pos, 20);
+                    }
+                    fromType.moveTo((double) pos.getX() + 0.3D + (double) j * 0.2D, pos.getY(), (double) pos.getZ() + 0.3D, 0.0F, 0.0F);
                     if (!worldIn.isClientSide) {
                         Player closest = worldIn.getNearestPlayer(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 20, EntitySelector.NO_SPECTATORS);
                         if (closest != null) {
-                            turtleentity.setTame(true);
-                            turtleentity.setOrderedToSit(true);
-                            turtleentity.tame(closest);
+                            if(fromType instanceof TamableAnimal tamableAnimal){
+                                tamableAnimal.setTame(true);
+                                tamableAnimal.setOrderedToSit(true);
+                                tamableAnimal.tame(closest);
+                            }
                         }
-                        worldIn.addFreshEntity(turtleentity);
+                        worldIn.addFreshEntity(fromType);
                     }
                 }
             }

@@ -92,7 +92,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> skelewag = Pair.of("alexsmobs:skelewag_spawns", DefaultBiomes.SKELEWAG);
 	public static Pair<String, SpawnBiomeData> rain_frog = Pair.of("alexsmobs:rain_frog_spawns", DefaultBiomes.DESERT);
 	public static Pair<String, SpawnBiomeData> potoo = Pair.of("alexsmobs:potoo_spawns", DefaultBiomes.POTOO);
-	public static Pair<String, SpawnBiomeData> mudskipper = Pair.of("alexsmobs:mudskipper_spawns", DefaultBiomes.MUDSKIPPER);
+	public static Pair<String, SpawnBiomeData> mudskipper = Pair.of("alexsmobs:mudskipper_spawns", DefaultBiomes.MANGROVE);
 	public static Pair<String, SpawnBiomeData> rhinoceros = Pair.of("alexsmobs:rhinoceros_spawns", DefaultBiomes.RHINOCEROS);
 	public static Pair<String, SpawnBiomeData> sugar_glider = Pair.of("alexsmobs:sugar_glider_spawns", DefaultBiomes.SUGAR_GLIDER);
 	public static Pair<String, SpawnBiomeData> farseer = Pair.of("alexsmobs:farseer", DefaultBiomes.FARSEER);
@@ -102,6 +102,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> skunk = Pair.of("alexsmobs:skunk_spawns", DefaultBiomes.SKUNK);
 	public static Pair<String, SpawnBiomeData> banana_slug = Pair.of("alexsmobs:banana_slug_spawns", DefaultBiomes.BANANA_SLUG);
 	public static Pair<String, SpawnBiomeData> blue_jay = Pair.of("alexsmobs:blue_jay_spawns", DefaultBiomes.ALL_FOREST);
+	public static Pair<String, SpawnBiomeData> caiman = Pair.of("alexsmobs:caiman_spawns", DefaultBiomes.MANGROVE);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();
