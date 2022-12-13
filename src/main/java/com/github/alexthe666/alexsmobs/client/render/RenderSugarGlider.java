@@ -3,8 +3,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelSugarGlider;
 import com.github.alexthe666.alexsmobs.entity.EntitySugarGlider;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -18,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import org.joml.Quaternionf;
 
 public class RenderSugarGlider extends MobRenderer<EntitySugarGlider, ModelSugarGlider> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/sugar_glider.png");
@@ -47,23 +47,23 @@ public class RenderSugarGlider extends MobRenderer<EntitySugarGlider, ModelSugar
             if(entityLiving.prevAttachDir == entityLiving.getAttachmentFacing() && entityLiving.getAttachmentFacing().getAxis() == Direction.Axis.Y){
                 yawMul = 1.0F;
             }
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees ( (180.0F - yawMul * rotationYaw)));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees ( (180.0F - yawMul * rotationYaw)));
 
             if(entityLiving.getAttachmentFacing() == Direction.DOWN){
                 matrixStackIn.translate(0.0D, trans, 0.0D);
                 if(entityLiving.yo <= entityLiving.getY()){
-                    matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90 * prevProg));
+                    matrixStackIn.mulPose(Axis.XP.rotationDegrees(90 * prevProg));
                 }else{
-                    matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90 * prevProg));
+                    matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90 * prevProg));
                 }
                 matrixStackIn.translate(0.0D, -trans, 0.0D);
             }
 
             matrixStackIn.translate(0.0D, trans, 0.0D);
-            Quaternion current = rotate(entityLiving.getAttachmentFacing()).getRotation();
+            Quaternionf current = rotate(entityLiving.getAttachmentFacing()).getRotation();
             current.mul(1F - prevProg);
             matrixStackIn.mulPose(current);
-            //Quaternion prev = rotate(entityLiving.prevAttachDir).getRotation();
+            //Quaternionf prev = rotate(entityLiving.prevAttachDir).getRotation();
             //prev.mul(prevProg);
             //matrixStackIn.mulPose(prev);
             matrixStackIn.translate(0.0D, -trans, 0.0D);
@@ -76,17 +76,17 @@ public class RenderSugarGlider extends MobRenderer<EntitySugarGlider, ModelSugar
                 f = 1.0F;
             }
 
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
         } else if (entityLiving.isAutoSpinAttack()) {
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F - entityLiving.getXRot()));
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90.0F - entityLiving.getXRot()));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
         } else if (pose == Pose.SLEEPING) {
 
         } else if (entityLiving.hasCustomName() ) {
             String s = ChatFormatting.stripFormatting(entityLiving.getName().getString());
             if (("Dinnerbone".equals(s) || "Grumm".equals(s))) {
                 matrixStackIn.translate(0.0D, (double)(entityLiving.getBbHeight() + 0.1F), 0.0D);
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F));
             }
         }
     }

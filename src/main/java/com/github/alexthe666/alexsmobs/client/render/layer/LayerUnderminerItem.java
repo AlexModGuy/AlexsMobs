@@ -5,7 +5,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderUnderminer;
 import com.github.alexthe666.alexsmobs.entity.EntityUnderminer;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
@@ -42,8 +42,8 @@ public class LayerUnderminerItem extends RenderLayer<EntityUnderminer, EntityMod
             translateToHand(entitylivingbaseIn.getMainArm(), matrixStackIn);
             matrixStackIn.translate(f,  f1,  -0.15F);
 
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90));
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180));
             ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
             renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();

@@ -5,7 +5,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelVoidWormTail;
 import com.github.alexthe666.alexsmobs.client.render.layer.LayerVoidWormGlow;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWormPart;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -56,7 +56,7 @@ public class RenderVoidWormBody extends LivingEntityRenderer<EntityVoidWormPart,
     protected void setupRotations(EntityVoidWormPart entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
         Pose pose = entityLiving.getPose();
         if (pose != Pose.SLEEPING) {
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityLiving.getWormYaw(partialTicks)));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityLiving.getWormYaw(partialTicks)));
         }
         if (entityLiving.deathTime > 0) {
             float f = ((float) entityLiving.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
@@ -64,7 +64,7 @@ public class RenderVoidWormBody extends LivingEntityRenderer<EntityVoidWormPart,
             if (f > 1.0F) {
                 f = 1.0F;
             }
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
         }
 
     }

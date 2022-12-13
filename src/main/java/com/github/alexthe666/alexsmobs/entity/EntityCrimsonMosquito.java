@@ -201,7 +201,7 @@ public class EntityCrimsonMosquito extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
+        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL  || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
     }
 
     public boolean hurt(DamageSource source, float amount) {

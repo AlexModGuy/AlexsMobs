@@ -284,7 +284,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
     }
 
     public boolean isInvulnerableTo(DamageSource damageSource) {
-        return super.isInvulnerableTo(damageSource) || damageSource == DamageSource.IN_WALL || damageSource == DamageSource.FALLING_BLOCK;
+        return super.isInvulnerableTo(damageSource) || damageSource == DamageSource.IN_WALL;
     }
 
     private void moveHair() {

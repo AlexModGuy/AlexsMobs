@@ -11,6 +11,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -401,7 +402,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         super.readAdditionalSaveData(compound);
         BlockState blockstate = null;
         if (compound.contains("SaplingState", 10)) {
-            blockstate = NbtUtils.readBlockState(compound.getCompound("SaplingState"));
+            blockstate = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("SaplingState"));
             if (blockstate.isAir()) {
                 blockstate = null;
             }

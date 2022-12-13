@@ -1,60 +1,33 @@
 package com.github.alexthe666.alexsmobs.misc;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
-import com.github.alexthe666.alexsmobs.enchantment.AMEnchantmentRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.EnchantedBookItem;
+import com.github.alexthe666.alexsmobs.item.CustomTabBehavior;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.CreativeModeTabEvent;
+import net.minecraftforge.registries.RegistryObject;
 
-import java.lang.reflect.Field;
+public class AMItemGroup {
 
-public class AMItemGroup extends CreativeModeTab {
+    public static final ResourceLocation TAB = new ResourceLocation("alexsmobs:alexsmobs");
 
-    public static final AMItemGroup INSTANCE = new AMItemGroup();
-
-    private AMItemGroup() {
-        super(AlexsMobs.MODID);
-    }
-
-    @Override
-    public ItemStack makeIcon() {
+    private static ItemStack makeIcon() {
         return new ItemStack(AMItemRegistry.TAB_ICON.get());
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void fillItemList(NonNullList<ItemStack> items) {
-        super.fillItemList(items);
-        try {
-            for (Field f : AMEffectRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Potion) {
-                    ItemStack potionStack = AMEffectRegistry.createPotion((Potion)obj);
-                    items.add(potionStack);
+    public static void registerTab(CreativeModeTabEvent.Register event){
+        event.registerCreativeModeTab(TAB, builder -> builder.title(Component.translatable("itemGroup.alexsmobs")).icon(AMItemGroup::makeIcon).displayItems((flags, output, isOp) -> {
+            for(RegistryObject<Item> item : AMItemRegistry.DEF_REG.getEntries()){
+                if(item.get() instanceof CustomTabBehavior customTabBehavior){
+                    customTabBehavior.fillItemCategory(output);
+                }else{
+                    output.accept(item.get());
                 }
             }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            for (Field f : AMEnchantmentRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Enchantment ) {
-                    Enchantment enchant = (Enchantment)obj;
-                    if(enchant.isAllowedOnBooks()){
-                        items.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchant, enchant.getMaxLevel())));
-                    }
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        }));
+
     }
+
 }

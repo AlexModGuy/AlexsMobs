@@ -2,21 +2,24 @@ package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.UpgradeRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 
 public class RecipeBisonUpgrade extends UpgradeRecipe {
+
+    public RecipeBisonUpgrade(ResourceLocation id, CraftingBookCategory category) {
+        this(id);
+    }
 
     public RecipeBisonUpgrade(ResourceLocation id) {
         super(id, Ingredient.EMPTY, Ingredient.EMPTY, ItemStack.EMPTY);
@@ -79,5 +82,18 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
 
     public NonNullList<Ingredient> getIngredients() {
         return NonNullList.of(Ingredient.of(AMItemRegistry.BISON_FUR.get()));
+    }
+
+    public static class Serializer implements RecipeSerializer<RecipeBisonUpgrade> {
+        public RecipeBisonUpgrade fromJson(ResourceLocation resourceLocation, JsonObject json) {
+            return new RecipeBisonUpgrade(resourceLocation);
+        }
+
+        public RecipeBisonUpgrade fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buf) {
+            return new RecipeBisonUpgrade(resourceLocation);
+        }
+
+        public void toNetwork(FriendlyByteBuf buf, RecipeBisonUpgrade recipeBisonUpgrade) {
+        }
     }
 }

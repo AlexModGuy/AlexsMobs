@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -65,7 +66,7 @@ public class EntityLaviathanPart extends PartEntity<EntityLaviathan> {
         return this == entityIn || this.getParent() == entityIn;
     }
 
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         throw new UnsupportedOperationException();
     }
 

@@ -5,7 +5,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchorChain;
 import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateAnchorWinch;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateAnchorWinch;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -28,14 +28,14 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
         boolean east = tileEntityIn.getBlockState().getValue(BlockEndPirateAnchorWinch.EASTORWEST);
         matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         matrixStackIn.pushPose();
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180.0F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(180.0F));
         if (east) {
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F));
         }
         boolean flag = false;
         matrixStackIn.pushPose();
         if (!tileEntityIn.isAnchorEW()) {
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F));
         }
         float bottomOfChain = tileEntityIn.getChainLength(partialTicks);
         for (float i = 0; i < tileEntityIn.getChainLengthForRender(); i += 0.5F) {
@@ -46,7 +46,7 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
                 float leftovers = 1F - bottomOfChain % 0.5F;
             }
             if (flag) {
-                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F));
             }
             if (moveDown <= 1F) {
                 float modulatedScale = 0.5F + moveDown * 0.5F;
@@ -69,9 +69,9 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F,  -1.5F - bottomOfChain, 0.5F);
             matrixStackIn.pushPose();
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180.0F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(180.0F));
             if (tileEntityIn.isAnchorEW()) {
-                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F));
             }
             RenderEndPirateAnchor.ANCHOR_MODEL.resetToDefaultPose();
             RenderEndPirateAnchor.ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutout(RenderEndPirateAnchor.TEXTURE_ANCHOR)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);

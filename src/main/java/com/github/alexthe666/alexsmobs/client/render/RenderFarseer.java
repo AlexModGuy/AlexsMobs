@@ -5,10 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityFarseer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,6 +23,10 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderNameTagEvent;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
@@ -81,8 +82,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             return;
         LivingEntity laserTarget = entityIn.getLaserTarget();
         float faceCameraAmount = entityIn.getFacingCameraAmount(partialTicks);
-        Quaternion camera = this.entityRenderDispatcher.cameraOrientation().copy();
-        camera.mul(faceCameraAmount);
+        Quaternionf camera = this.entityRenderDispatcher.cameraOrientation();
 
         matrixStackIn.pushPose();
         this.model.attackTime = this.getAttackAnim(entityIn, partialTicks);
@@ -124,9 +124,9 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         }
 
         float f7 = this.getBob(entityIn, partialTicks);
-        matrixStackIn.mulPose(camera);
         if(faceCameraAmount != 0){
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+            matrixStackIn.mulPose(camera);
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
         }
         this.setupRotations(entityIn, matrixStackIn, f7, f, partialTicks);
         matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
@@ -181,7 +181,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             matrixStackIn.pushPose();
             matrixStackIn.scale(3.0F, 3.0F, 3.0F);
             matrixStackIn.mulPose(camera);
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
             PoseStack.Pose posestack$pose = matrixStackIn.last();
             Matrix4f matrix4f = posestack$pose.pose();
             Matrix3f matrix3f = posestack$pose.normal();
@@ -209,9 +209,9 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
             VertexConsumer beamStatic = bufferIn.getBuffer(AMRenderTypes.getFarseerBeam());
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, laserHeight, 0);
-            matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(laserY));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(laserX));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90));
+            matrixStackIn.mulPose(Axis.YN.rotationDegrees(laserY));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(laserX));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(90));
             float length = entityIn.getLaserDistance() * laserProgress;
             float width = (1.5F - laserProgress) * 2F;
             float speed = 1F + laserProgress * laserProgress * 5F;
@@ -300,7 +300,7 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         }
 
         if (!farseer.hasPose(Pose.SLEEPING)) {
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((180.0F - f2 * invCameraAmount)));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees((180.0F - f2 * invCameraAmount)));
         }
 
         if (farseer.deathTime > 0) {
@@ -310,10 +310,10 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
                 f = 1.0F;
             }
 
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f * this.getFlipDegrees(farseer) * invCameraAmount) );
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(f * this.getFlipDegrees(farseer) * invCameraAmount) );
         } else if (isEntityUpsideDown(farseer)) {
             matrixStackIn.translate(0.0D, (double)(farseer.getBbHeight() + 0.1F), 0.0D);
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F));
         }
 
     }

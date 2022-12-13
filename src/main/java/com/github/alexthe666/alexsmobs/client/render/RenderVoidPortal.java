@@ -4,8 +4,6 @@ import com.github.alexthe666.alexsmobs.entity.EntityVoidPortal;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,6 +11,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class RenderVoidPortal extends EntityRenderer<EntityVoidPortal> {
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("alexsmobs:textures/entity/void_worm/portal/portal_idle_0.png");

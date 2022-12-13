@@ -681,7 +681,7 @@ public class EntityCachalotWhale extends Animal {
                                     this.setCharging(false);
                                     if (target.getVehicle() instanceof final Boat boat) {
                                         for (int i = 0; i < 3; ++i) {
-                                            this.spawnAtLocation(boat.getBoatType().getPlanks());
+                                            this.spawnAtLocation(boat.getVariant().getPlanks());
                                         }
                                         for (int j = 0; j < 2; ++j) {
                                             this.spawnAtLocation(Items.STICK);

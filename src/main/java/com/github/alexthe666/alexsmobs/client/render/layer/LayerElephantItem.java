@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelElephant;
 import com.github.alexthe666.alexsmobs.client.render.RenderElephant;
 import com.github.alexthe666.alexsmobs.entity.EntityElephant;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,7 +31,7 @@ public class LayerElephantItem extends RenderLayer<EntityElephant, ModelElephant
             matrixStackIn.translate(0.0D, 0.2F, -0.22D);
         }
         matrixStackIn.translate(-0.0, 1.0F, 0.15F);
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(180F));
         matrixStackIn.scale(1.3F, 1.3F, 1.3F);
         if(Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(itemstack).isGui3d()){
             matrixStackIn.translate(-0.05F, -0.1F, -0.15F);

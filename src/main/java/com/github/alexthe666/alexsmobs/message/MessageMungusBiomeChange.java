@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -65,7 +66,7 @@ public class MessageMungusBiomeChange {
                 if (player != null) {
                     if (player.level != null) {
                         Entity entity = player.level.getEntity(message.mungusID);
-                        Registry<Biome> registry = player.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+                        Registry<Biome> registry = player.level.registryAccess().registryOrThrow(Registries.BIOME);
                         Biome biome = registry.get(new ResourceLocation(message.biomeOption));
                         ResourceKey<Biome> resourceKey = registry.getResourceKey(biome).orElse(null);
                         Holder<Biome> holder = registry.getHolder(resourceKey).orElse(null);

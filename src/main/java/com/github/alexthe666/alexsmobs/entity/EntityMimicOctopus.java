@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -172,7 +173,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         this.setFromBucket(compound.getBoolean("FromBucket"));
         BlockState blockstate = null;
         if (compound.contains("MimickedBlockState", 10)) {
-            blockstate = NbtUtils.readBlockState(compound.getCompound("MimickedBlockState"));
+            blockstate = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("MimickedBlockState"));
             if (blockstate.isAir()) {
                 blockstate = null;
             }
@@ -869,7 +870,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     private void creeperExplode() {
-        Explosion explosion = new Explosion(level, this,  DamageSource.mobAttack(this), (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Explosion.BlockInteraction.NONE);
+        Explosion explosion = new Explosion(level, this,  DamageSource.mobAttack(this), (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Explosion.BlockInteraction.KEEP);
         explosion.explode();
         explosion.finalizeExplosion(true);
     }

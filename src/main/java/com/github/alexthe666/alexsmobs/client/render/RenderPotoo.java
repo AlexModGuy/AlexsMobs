@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelPotoo;
 import com.github.alexthe666.alexsmobs.entity.EntityPotoo;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -50,14 +50,14 @@ public class RenderPotoo extends MobRenderer<EntityPotoo, ModelPotoo> {
                         matrixStackIn.translate(-0.3F, -0.7F, 0.5F);
                         ((HumanoidModel) ((LivingEntityRenderer) playerRender).getModel()).leftArm.translateAndRotate(matrixStackIn);
                         matrixStackIn.translate(-0.1F, 0.6F, -0.1F);
-                        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(55F));
-                        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(70F));
+                        matrixStackIn.mulPose(Axis.XP.rotationDegrees(55F));
+                        matrixStackIn.mulPose(Axis.YP.rotationDegrees(70F));
                     }else{
                         matrixStackIn.translate(0.3F, -0.7F, 0.5F);
                         ((HumanoidModel) ((LivingEntityRenderer) playerRender).getModel()).rightArm.translateAndRotate(matrixStackIn);
                         matrixStackIn.translate(0.1F, 0.6F, -0.1F);
-                        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(55F));
-                        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-70F));
+                        matrixStackIn.mulPose(Axis.XP.rotationDegrees(55F));
+                        matrixStackIn.mulPose(Axis.YP.rotationDegrees(-70F));
                     }
                 }
             }

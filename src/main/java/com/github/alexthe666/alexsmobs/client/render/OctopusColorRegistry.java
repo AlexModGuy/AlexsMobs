@@ -52,8 +52,8 @@ public class OctopusColorRegistry {
         float green = 0;
         float blue = 0;
         float count = 0;
-        int uMax = image.getWidth();
-        int vMax = image.getHeight();
+        int uMax = image.contents().width();
+        int vMax = image.contents().height();
         for (float i = 0; i < uMax; i++)
             for (float j = 0; j < vMax; j++) {
                 int alpha = image.getPixelRGBA(0, (int) i, (int) j) >> 24 & 0xFF;

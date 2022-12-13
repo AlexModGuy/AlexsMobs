@@ -322,7 +322,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
     }
 
     public void travel(Vec3 vec3d) {

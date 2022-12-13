@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.item;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.EntityVineLasso;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
-import com.mojang.math.Vector3f;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -70,8 +69,7 @@ public class ItemVineLasso extends Item {
             int power = this.getUseDuration(stack) - i;
             EntityVineLasso lasso = new EntityVineLasso(worldIn, livingEntityIn);
             Vec3 vector3d = livingEntityIn.getViewVector(1.0F);
-            Vector3f vector3f = new Vector3f(vector3d);
-            lasso.shoot((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z(), getPowerForTime(power), 1);
+            lasso.shoot((double) vector3d.x(), (double) vector3d.y(), (double) vector3d.z(), getPowerForTime(power), 1);
             if (!worldIn.isClientSide) {
                 worldIn.addFreshEntity(lasso);
             }

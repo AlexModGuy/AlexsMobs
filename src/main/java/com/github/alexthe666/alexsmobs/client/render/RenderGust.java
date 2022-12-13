@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelGuster;
 import com.github.alexthe666.alexsmobs.entity.EntityGust;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -25,12 +25,12 @@ public class RenderGust extends EntityRenderer<EntityGust> {
         matrixStackIn.pushPose();
         matrixStackIn.translate(0.0D, (double)0.5F, 0.0D);
         if(!entityIn.getVertical()){
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(180F));
         }else{
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-180F));
 
         }
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot()) - 90.0F));
         matrixStackIn.scale(0.5F, 0.5F, 0.5F);
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE));
         this.model.hideEyes();

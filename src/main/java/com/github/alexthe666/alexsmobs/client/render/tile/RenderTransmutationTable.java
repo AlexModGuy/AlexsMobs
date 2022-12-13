@@ -7,9 +7,7 @@ import com.github.alexthe666.alexsmobs.tileentity.TileEntityTransmutationTable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -17,6 +15,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class RenderTransmutationTable<T extends TileEntityTransmutationTable> implements BlockEntityRenderer<T> {
 
@@ -45,7 +45,7 @@ public class RenderTransmutationTable<T extends TileEntityTransmutationTable> im
         float ageInTicks = partialTicks + tileEntityIn.ticksExisted;
         
         matrixStackIn.mulPose(dir.getOpposite().getRotation());
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
         matrixStackIn.pushPose();
         MODEL.animate(tileEntityIn, partialTicks);
         MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1, 1, 1);

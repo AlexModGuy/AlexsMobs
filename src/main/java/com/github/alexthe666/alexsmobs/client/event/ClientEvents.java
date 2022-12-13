@@ -29,7 +29,7 @@ import com.github.alexthe666.citadel.client.event.EventPosePlayerHand;
 import com.google.common.base.MoreObjects;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
@@ -173,9 +173,9 @@ public class ClientEvents {
             float roll = event.getEntity().walkDistO + (event.getEntity().walkDist - event.getEntity().walkDistO) * event.getPartialTick();
             VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(event.getMultiBufferSource(), RenderType.armorCutoutNoCull(ROCKY_CHESTPLATE_TEXTURE), false, event.getEntity().getItemBySlot(EquipmentSlot.CHEST).hasFoil());
             event.getPoseStack().translate(0.0D, event.getEntity().getBbHeight() - event.getEntity().getBbHeight() * 0.5F, 0.0D);
-            event.getPoseStack().mulPose(Vector3f.YN.rotationDegrees(180F + yRot));
-            event.getPoseStack().mulPose(Vector3f.ZP.rotationDegrees(180.0F));
-            event.getPoseStack().mulPose(Vector3f.XP.rotationDegrees(100F * roll));
+            event.getPoseStack().mulPose(Axis.YN.rotationDegrees(180F + yRot));
+            event.getPoseStack().mulPose(Axis.ZP.rotationDegrees(180.0F));
+            event.getPoseStack().mulPose(Axis.XP.rotationDegrees(100F * roll));
             ROCKY_CHESTPLATE_MODEL.setupAnim(event.getEntity(), limbSwing, limbSwingAmount, event.getEntity().tickCount + event.getPartialTick(), 0, 0);
             ROCKY_CHESTPLATE_MODEL.renderToBuffer(event.getPoseStack(), vertexconsumer, event.getPackedLight(), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             event.getPoseStack().popPose();
@@ -192,7 +192,7 @@ public class ClientEvents {
         if (event.getEntity().hasEffect(AMEffectRegistry.CLINGING.get()) && event.getEntity().getEyeHeight() < event.getEntity().getBbHeight() * 0.45F || event.getEntity().hasEffect(AMEffectRegistry.DEBILITATING_STING.get()) && event.getEntity().getMobType() == MobType.ARTHROPOD && event.getEntity().getBbWidth() > event.getEntity().getBbHeight()) {
             event.getPoseStack().pushPose();
             event.getPoseStack().translate(0.0D, event.getEntity().getBbHeight() + 0.1F, 0.0D);
-            event.getPoseStack().mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            event.getPoseStack().mulPose(Axis.ZP.rotationDegrees(180.0F));
             event.getEntity().yBodyRotO = -event.getEntity().yBodyRotO;
             event.getEntity().yBodyRot = -event.getEntity().yBodyRot;
             event.getEntity().yHeadRotO = -event.getEntity().yHeadRotO;
@@ -200,7 +200,7 @@ public class ClientEvents {
         }
         if (event.getEntity().hasEffect(AMEffectRegistry.ENDER_FLU.get())) {
             event.getPoseStack().pushPose();
-            event.getPoseStack().mulPose(Vector3f.YP.rotationDegrees((float) (Math.cos((double) event.getEntity().tickCount * 7F) * Math.PI * (double) 1.2F)));
+            event.getPoseStack().mulPose(Axis.YP.rotationDegrees((float) (Math.cos((double) event.getEntity().tickCount * 7F) * Math.PI * (double) 1.2F)));
             float vibrate = 0.05F;
             event.getPoseStack().translate((event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate, (event.getEntity().getRandom().nextFloat() - 0.5F) * vibrate);
         }
@@ -284,11 +284,11 @@ public class ClientEvents {
                     matrixStackIn.pushPose();
                     matrixStackIn.scale(0.5F, 0.5F, 0.5F);
                     matrixStackIn.translate(leftHand ? -falconry.getHandOffset() : falconry.getHandOffset(), -0.6F, -1F);
-                    matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(yaw));
+                    matrixStackIn.mulPose(Axis.YP.rotationDegrees(yaw));
                     if (leftHand) {
-                        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90));
+                        matrixStackIn.mulPose(Axis.YP.rotationDegrees(90));
                     } else {
-                        matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(90));
+                        matrixStackIn.mulPose(Axis.YN.rotationDegrees(90));
                     }
                     renderEntity(entity, 0, 0, 0, 0, event.getPartialTick(), matrixStackIn, event.getMultiBufferSource(), event.getPackedLight());
                     matrixStackIn.popPose();

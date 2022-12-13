@@ -15,8 +15,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
@@ -34,6 +33,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.joml.Quaternionf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,8 +106,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         matrixstack.scale(scale, scale, scale);
         entity.setOnGround(false);
         float partialTicks = Minecraft.getInstance().getFrameTime();
-        Quaternion quaternion = Vector3f.ZP.rotationDegrees(180.0F);
-        Quaternion quaternion1 = Vector3f.XP.rotationDegrees(20.0F);
+        Quaternionf quaternion = Axis.ZP.rotationDegrees(180.0F);
+        Quaternionf quaternion1 = Axis.XP.rotationDegrees(20.0F);
         float partialTicksForRender = Minecraft.getInstance().isPaused() || entity instanceof EntityMimicOctopus ? 0 : partialTicks;
         int tick;
         if (Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()) {
@@ -126,16 +126,16 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 ((LivingEntity) entity).yHeadRotO = yaw;
             }
 
-            quaternion1 = Vector3f.XP.rotationDegrees(f1 * 20.0F);
+            quaternion1 = Axis.XP.rotationDegrees(f1 * 20.0F);
             quaternion.mul(quaternion1);
         }
 
         matrixstack.mulPose(quaternion);
-        matrixstack.mulPose(Vector3f.XP.rotationDegrees((float) (-xRot)));
-        matrixstack.mulPose(Vector3f.YP.rotationDegrees((float) yRot));
-        matrixstack.mulPose(Vector3f.ZP.rotationDegrees((float) zRot));
+        matrixstack.mulPose(Axis.XP.rotationDegrees((float) (-xRot)));
+        matrixstack.mulPose(Axis.YP.rotationDegrees((float) yRot));
+        matrixstack.mulPose(Axis.ZP.rotationDegrees((float) zRot));
         EntityRenderDispatcher entityrenderdispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        quaternion1.conj();
+        quaternion1.conjugate();
         entityrenderdispatcher.overrideCameraOrientation(quaternion1);
         entityrenderdispatcher.setRenderShadow(false);
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
@@ -166,7 +166,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         if (itemStackIn.getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP.get()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.4F, -0.75F, 0.5F);
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(-180));
             VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(SHIELD_OF_THE_DEEP_TEXTURE), false, itemStackIn.hasFoil());
             SHIELD_OF_THE_DEEP_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
@@ -174,7 +174,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         if (itemStackIn.getItem() == AMItemRegistry.MYSTERIOUS_WORM.get()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, -2F, 0);
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(-180));
             MYTERIOUS_WORM_MODEL.animateStack(itemStackIn);
             MYTERIOUS_WORM_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(MYTERIOUS_WORM_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
@@ -194,7 +194,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                     if (transformType.firstPerson()) {
                         matrixStackIn.translate(transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -0.3F : 0.3F, 0.0f, -0.5f);
                     }
-                    matrixStackIn.mulPose(Vector3f.YP.rotation(tick + Minecraft.getInstance().getFrameTime()));
+                    matrixStackIn.mulPose(Axis.YP.rotation(tick + Minecraft.getInstance().getFrameTime()));
                 }
                 Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND.get()), transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             } else {
@@ -216,7 +216,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         if (itemStackIn.getItem() == AMBlockRegistry.TRANSMUTATION_TABLE.get().asItem()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 1.6F, 0.5F);
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-180));
             TRANSMUTATION_TABLE_MODEL.resetToDefaultPose();
             TRANSMUTATION_TABLE_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TRANSMUTATION_TABLE_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             TRANSMUTATION_TABLE_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucentEmissive(TRANSMUTATION_TABLE_GLOW_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -233,8 +233,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             if(transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
                 matrixStackIn.translate(-0.2F, 0, 0);
                 matrixStackIn.scale(1.3F, 1.3F, 1.3F);
-                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180));
-                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(60));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(180));
+                matrixStackIn.mulPose(Axis.XP.rotationDegrees(60));
             }
             for (int i = 0; i < shards.size(); i++) {
                 matrixStackIn.pushPose();
@@ -260,7 +260,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR.get().asItem()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(1F, 0F, 0);
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-180));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-180));
             matrixStackIn.scale(0.75F, 0.75F, 0.75F);
             ANCHOR_MODEL.animateStack(itemStackIn);
             ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(ANCHOR_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -269,14 +269,14 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR_WINCH.get().asItem()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(1, -1F, 0);
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(-180));
             WINCH_MODEL.animateStack(itemStackIn);
             WINCH_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(WINCH_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
         if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_SHIP_WHEEL.get().asItem()){
             matrixStackIn.pushPose();
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90));
             matrixStackIn.scale(0.8F, 0.8F, 0.8F);
             SHIP_WHEEL_MODEL.resetToDefaultPose();
             SHIP_WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(SHIP_WHEEL_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -340,7 +340,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             if (fakeEntity instanceof EntityCockroach) {
                 if (flags == 99) {
                     matrixStackIn.translate(0, 0.25F, 0);
-                    matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-80));
+                    matrixStackIn.mulPose(Axis.XP.rotationDegrees(-80));
                     ((EntityCockroach) fakeEntity).setMaracas(true);
                 } else {
                     ((EntityCockroach) fakeEntity).setMaracas(false);
@@ -393,8 +393,8 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 double mouseX = (mouseHelper.xpos() * (double) Minecraft.getInstance().getWindow().getGuiScaledWidth()) / (double) Minecraft.getInstance().getWindow().getScreenWidth();
                 double mouseY = mouseHelper.ypos() * (double) Minecraft.getInstance().getWindow().getGuiScaledHeight() / (double) Minecraft.getInstance().getWindow().getScreenHeight();
                 matrixStackIn.translate(0.5F, 0F, 0);
-                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180F));
-                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180F));
+                matrixStackIn.mulPose(Axis.XP.rotationDegrees(180F));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(180F));
                 if (transformType != ItemTransforms.TransformType.GUI) {
                     mouseX = 0;
                     mouseY = 0;

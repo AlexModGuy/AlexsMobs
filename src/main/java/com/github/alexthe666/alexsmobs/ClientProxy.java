@@ -46,6 +46,7 @@ import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -90,17 +91,13 @@ public class ClientProxy extends CommonProxy {
         }, AMBlockRegistry.RAINBOW_GLASS.get());
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public static Callable<BlockEntityWithoutLevelRenderer> getTEISR() {
-        return AMItemstackRenderer::new;
-    }
-
     public void init() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onItemColors);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBlockColors);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerRegistry::onAddLayers);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::setupParticles);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::onBakingCompleted);
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(ClientProxy::onBakingCompleted);
+        bus.addListener(ClientProxy::onItemColors);
+        bus.addListener(ClientProxy::onBlockColors);
+        bus.addListener(ClientLayerRegistry::onAddLayers);
+        bus.addListener(ClientProxy::setupParticles);
     }
 
     public void clientInit() {
@@ -275,7 +272,7 @@ public class ClientProxy extends CommonProxy {
         initializedRainbowBuffers = true;
     }
 
-    private static void onBakingCompleted(final ModelEvent.BakingCompleted e) {
+    private static void onBakingCompleted(final ModelEvent.ModifyBakingResult e) {
         String ghostlyPickaxe = "alexsmobs:ghostly_pickaxe";
         for (ResourceLocation id : e.getModels().keySet()) {
             if (id.toString().contains(ghostlyPickaxe)) {

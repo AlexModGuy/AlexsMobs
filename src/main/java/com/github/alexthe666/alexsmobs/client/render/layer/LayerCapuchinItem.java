@@ -6,7 +6,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderCapuchinMonkey;
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -50,7 +50,7 @@ public class LayerCapuchinItem extends RenderLayer<EntityCapuchinMonkey, ModelCa
             matrixStackIn.translate(0, 0.5F, 0F);
             matrixStackIn.scale(1.2F, 1.2F, 1.2F);
             matrixStackIn.pushPose();
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(f));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(f));
             VertexConsumer ivertexbuilder = bufferIn.getBuffer(DART_MODEL.renderType(DART_TEXTURE));
             DART_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
@@ -69,8 +69,8 @@ public class LayerCapuchinItem extends RenderLayer<EntityCapuchinMonkey, ModelCa
                 translateToHand(false, matrixStackIn);
                 matrixStackIn.translate(0.125F, 0.5F, 0.1F);
             }
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-2.5F));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(-2.5F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90F));
             ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
             renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();

@@ -92,11 +92,6 @@ public class TileEntitySculkBoomer extends BlockEntity implements GameEventListe
     }
 
     @Override
-    public boolean handleEventsImmediately() {
-        return true;
-    }
-
-    @Override
     public PositionSource getListenerSource() {
         return blockPosSource;
     }
@@ -107,10 +102,10 @@ public class TileEntitySculkBoomer extends BlockEntity implements GameEventListe
     }
 
     @Override
-    public boolean handleGameEvent(ServerLevel serverLevel, GameEvent.Message message) {
-        if(message.gameEvent() == GameEvent.SCULK_SENSOR_TENDRILS_CLICKING && !isOccluded(serverLevel, Vec3.atCenterOf(this.getBlockPos()), message.source())){
-            double distance = message.source().distanceTo(Vec3.atCenterOf(this.getBlockPos()));
-            serverLevel.sendParticles(new VibrationParticleOption(new BlockPositionSource(this.getBlockPos()), Mth.floor(distance)), message.source().x, message.source().y, message.source().z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+    public boolean handleGameEvent(ServerLevel serverLevel, GameEvent event, GameEvent.Context message, Vec3 from) {
+        if(event == GameEvent.SCULK_SENSOR_TENDRILS_CLICKING && !isOccluded(serverLevel, Vec3.atCenterOf(this.getBlockPos()), from)){
+            double distance = from.distanceTo(Vec3.atCenterOf(this.getBlockPos()));
+            serverLevel.sendParticles(new VibrationParticleOption(new BlockPositionSource(this.getBlockPos()), Mth.floor(distance)), from.x, from.y, from.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
             if(screamTime == 0){
                 screamTime = -20;
             }

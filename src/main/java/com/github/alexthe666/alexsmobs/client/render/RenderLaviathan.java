@@ -5,7 +5,6 @@ import com.github.alexthe666.alexsmobs.entity.EntityLaviathan;
 import com.github.alexthe666.alexsmobs.entity.EntityLaviathanPart;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,6 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
 
 public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/laviathan.png");

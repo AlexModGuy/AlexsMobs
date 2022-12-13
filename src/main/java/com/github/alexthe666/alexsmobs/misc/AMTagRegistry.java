@@ -1,7 +1,7 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -109,22 +109,22 @@ public class AMTagRegistry {
     public static final TagKey<Structure> SPAWNS_UNDERMINERS = registerStructureTag("spawns_underminers");
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
-        return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(AlexsMobs.MODID, name));
     }
 
     private static TagKey<Item> registerItemTag(String name) {
-        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.ITEM, new ResourceLocation(AlexsMobs.MODID, name));
     }
 
     private static TagKey<Block> registerBlockTag(String name) {
-        return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.BLOCK, new ResourceLocation(AlexsMobs.MODID, name));
     }
 
     private static TagKey<Biome> registerBiomeTag(String name) {
-        return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.BIOME, new ResourceLocation(AlexsMobs.MODID, name));
     }
 
     private static TagKey<Structure> registerStructureTag(String name) {
-        return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(AlexsMobs.MODID, name));
+        return TagKey.create(Registries.STRUCTURE, new ResourceLocation(AlexsMobs.MODID, name));
     }
 }

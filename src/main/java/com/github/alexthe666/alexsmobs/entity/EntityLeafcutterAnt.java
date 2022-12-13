@@ -12,6 +12,7 @@ import com.google.common.base.Predicates;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -482,7 +483,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         this.setAntScale(compound.getFloat("AntScale"));
         BlockState blockstate = null;
         if (compound.contains("HarvestedLeafState", 10)) {
-            blockstate = NbtUtils.readBlockState(compound.getCompound("HarvestedLeafState"));
+            blockstate = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("HarvestedLeafState"));
             if (blockstate.isAir()) {
                 blockstate = null;
             }

@@ -6,7 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.EntityMimicube;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -78,7 +78,7 @@ public class LayerMimicubeHelmet extends RenderLayer<EntityMimicube, ModelMimicu
                 matrixStackIn.scale(1F + 0.3F * (1 - helmetSwap), 1F + 0.3F * (1 - helmetSwap), 1F + 0.3F * (1 - helmetSwap));
                 boolean flag1 = itemstack.hasFoil();
                 int clampedLight = helmetSwap > 0 ? (int) (-100 * helmetSwap) : packedLightIn;
-                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(360 * helmetSwap));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(360 * helmetSwap));
                 if (armoritem instanceof net.minecraft.world.item.DyeableLeatherItem) { // Allow this for anything, not only cloth
                     int i = ((net.minecraft.world.item.DyeableLeatherItem) armoritem).getColor(itemstack);
                     float f = (float) (i >> 16 & 255) / 255.0F;

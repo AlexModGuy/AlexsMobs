@@ -2,8 +2,6 @@ package com.github.alexthe666.alexsmobs.client.render.tile;
 
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -14,6 +12,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Quaternionf;
 
 import java.util.Random;
 
@@ -49,7 +48,7 @@ public class RenderCapsid<T extends TileEntityCapsid> implements BlockEntityRend
             int j = this.getModelCount(stack);
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F + floatProgress, 0.5F);
-            matrixStackIn.mulPose(new Quaternion(Vector3f.YP, entity.getBlockAngle() + yaw, true));
+            matrixStackIn.mulPose((new Quaternionf()).rotateY((float) Math.toRadians(entity.getBlockAngle() + yaw)));
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, -0.1F, 0);
             if(entity.vibratingThisTick && entity.getLevel() != null){

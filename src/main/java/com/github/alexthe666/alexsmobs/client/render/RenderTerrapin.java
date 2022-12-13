@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelTerrapin;
 import com.github.alexthe666.alexsmobs.entity.EntityTerrapin;
 import com.github.alexthe666.alexsmobs.entity.util.TerrapinTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -54,7 +54,7 @@ public class RenderTerrapin extends MobRenderer<EntityTerrapin, ModelTerrapin> {
         }
         Pose pose = entity.getPose();
         if (pose != Pose.SLEEPING && !entity.isSpinning()) {
-            stack.mulPose(Vector3f.YP.rotationDegrees(180.0F - yawIn));
+            stack.mulPose(Axis.YP.rotationDegrees(180.0F - yawIn));
         }
 
         if (entity.deathTime > 0) {
@@ -64,14 +64,14 @@ public class RenderTerrapin extends MobRenderer<EntityTerrapin, ModelTerrapin> {
                 f = 1.0F;
             }
 
-            stack.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(entity)));
+            stack.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees(entity)));
         } else if (entity.isAutoSpinAttack()) {
-            stack.mulPose(Vector3f.XP.rotationDegrees(-90.0F - entity.getXRot()));
-            stack.mulPose(Vector3f.YP.rotationDegrees(((float)entity.tickCount + partialTickTime) * -75.0F));
+            stack.mulPose(Axis.XP.rotationDegrees(-90.0F - entity.getXRot()));
+            stack.mulPose(Axis.YP.rotationDegrees(((float)entity.tickCount + partialTickTime) * -75.0F));
         } else if (pose == Pose.SLEEPING) {
         } else if (isEntityUpsideDown(entity)) {
             stack.translate(0.0D, (double)(entity.getBbHeight() + 0.1F), 0.0D);
-            stack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
         }
     }
 

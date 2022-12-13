@@ -114,7 +114,7 @@ public class EntityRoadrunner extends Animal {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.CACTUS || source == DamageSource.ANVIL || super.isInvulnerableTo(source);
+        return source == DamageSource.CACTUS || source.msgId.equals("anvil") || super.isInvulnerableTo(source);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

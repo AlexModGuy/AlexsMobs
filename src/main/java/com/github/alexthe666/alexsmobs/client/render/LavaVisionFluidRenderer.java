@@ -150,8 +150,8 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
 
                         float f49 = (f18 + f19 + f20 + f21) / 4.0F;
                         float f50 = (f22 + f23 + f24 + f25) / 4.0F;
-                        float f51 = (float)atextureatlassprite[0].getWidth() / (atextureatlassprite[0].getU1() - atextureatlassprite[0].getU0());
-                        float f52 = (float)atextureatlassprite[0].getHeight() / (atextureatlassprite[0].getV1() - atextureatlassprite[0].getV0());
+                        float f51 = (float)atextureatlassprite[0].contents().width() / (atextureatlassprite[0].getU1() - atextureatlassprite[0].getU0());
+                        float f52 = (float)atextureatlassprite[0].contents().height() / (atextureatlassprite[0].getV1() - atextureatlassprite[0].getV0());
                         float f53 = 4.0F / Math.max(f52, f51);
                         f18 = Mth.lerp(f53, f18, f49);
                         f19 = Mth.lerp(f53, f19, f49);

@@ -15,7 +15,7 @@ public class ButtonTransmute extends Button {
     private final Screen parent;
 
     public ButtonTransmute(Screen parent, int x, int y, OnPress onPress) {
-        super(x, y, 117, 19, CommonComponents.EMPTY, onPress);
+        super(x, y, 117, 19, CommonComponents.EMPTY, onPress, DEFAULT_NARRATION);
         this.parent = parent;
     }
 
@@ -31,11 +31,11 @@ public class ButtonTransmute extends Button {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, GUITransmutationTable.TEXTURE);
-            this.blit(poseStack, this.x, this.y, 0, 201, 117, 19);
+            this.blit(poseStack, this.getX(), this.getY(), 0, 201, 117, 19);
             color = 0XC7FFD0;
         }
         poseStack.pushPose();
-        drawString(poseStack, Minecraft.getInstance().font, Component.translatable("alexsmobs.container.transmutation_table.cost").append(" " + cost), this.x + 21, this.y + (this.height - 8) / 2, color);
+        drawString(poseStack, Minecraft.getInstance().font, Component.translatable("alexsmobs.container.transmutation_table.cost").append(" " + cost), this.getX() + 21, this.getY() + (this.height - 8) / 2, color);
         poseStack.popPose();
     }
 

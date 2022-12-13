@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.block.BlockEndPirateFlag;
 import com.github.alexthe666.alexsmobs.client.model.ModelEndPirateFlag;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateFlag;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -35,8 +35,8 @@ public class RenderEndPirateFlag<T extends TileEntityEndPirateFlag> implements B
             matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         }
         matrixStackIn.mulPose(dir.getOpposite().getRotation());
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
-        matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(dir.getAxis() == Direction.Axis.Y ? -90.0F : 90.0F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
+        matrixStackIn.mulPose(Axis.YN.rotationDegrees(dir.getAxis() == Direction.Axis.Y ? -90.0F : 90.0F));
         matrixStackIn.pushPose();
         FLAG_MODEL.renderFlag(tileEntityIn, partialTicks);
         FLAG_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);

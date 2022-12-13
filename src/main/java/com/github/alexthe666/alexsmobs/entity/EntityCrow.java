@@ -56,8 +56,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -488,7 +488,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.FALL || source == DamageSource.CACTUS || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL  || source == DamageSource.FALL || source == DamageSource.CACTUS || super.isInvulnerableTo(source);
     }
 
     @Nullable
@@ -1022,7 +1022,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                     BlockPos hangingPosition = e.getPos().relative(e.getDirection().getOpposite());
                     BlockEntity entity = e.level.getBlockEntity(hangingPosition);
                     if(entity != null){
-                        LazyOptional<IItemHandler> handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, e.getDirection().getOpposite());
+                        LazyOptional<IItemHandler> handler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, e.getDirection().getOpposite());
                         if(handler != null && handler.isPresent()){
                             return e.getItem().sameItem(EntityCrow.this.getMainHandItem());
                         }
@@ -1095,7 +1095,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                         final BlockPos hangingPosition = targetEntity.getPos().relative(targetEntity.getDirection().getOpposite());
                         final BlockEntity entity = targetEntity.level.getBlockEntity(hangingPosition);
                         final Direction deposit = targetEntity.getDirection();
-                        final LazyOptional<IItemHandler> handler = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, deposit);
+                        final LazyOptional<IItemHandler> handler = entity.getCapability(ForgeCapabilities.ITEM_HANDLER, deposit);
                         if(handler.orElse(null) != null && cooldown == 0) {
                             ItemStack duplicate = EntityCrow.this.getItemInHand(InteractionHand.MAIN_HAND).copy();
                             ItemStack insertSimulate = ItemHandlerHelper.insertItem(handler.orElse(null), duplicate, true);

@@ -4,9 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelSunbird;
 import com.github.alexthe666.alexsmobs.entity.EntitySunbird;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -15,6 +13,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class RenderSunbird extends MobRenderer<EntitySunbird, ModelSunbird> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/sunbird.png");
@@ -38,9 +38,9 @@ public class RenderSunbird extends MobRenderer<EntitySunbird, ModelSunbird> {
             poseStack.pushPose();
             poseStack.translate(0, entity.getBbHeight() * 0.5F, 0);
             poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
             poseStack.pushPose();
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(ageInTicks * 8F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(ageInTicks * 8F));
             poseStack.translate(-scale * 0.5F, -scale * 0.5F, 0);
             PoseStack.Pose posestack$pose = poseStack.last();
             Matrix4f matrix4f = posestack$pose.pose();

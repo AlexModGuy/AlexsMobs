@@ -181,7 +181,7 @@ public class EntityVoidWorm extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.LAVA || source == DamageSource.OUT_OF_WORLD || source.isFire() || super.isInvulnerableTo(source);
+        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL  || source == DamageSource.LAVA || source == DamageSource.OUT_OF_WORLD || source.isFire() || super.isInvulnerableTo(source);
     }
 
     @Override

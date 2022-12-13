@@ -6,7 +6,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderAnteater;
 import com.github.alexthe666.alexsmobs.entity.EntityAnteater;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -53,7 +53,7 @@ public class LayerAnteaterTongueItem extends RenderLayer<EntityAnteater, ModelAn
                 matrixStackIn.popPose();
 
             }else{
-                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
+                matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
                 ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
                 renderer.renderItem(anteater, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             }

@@ -4,9 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelMimicOctopus;
 import com.github.alexthe666.alexsmobs.entity.EntityMimicOctopus;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -19,6 +17,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMimicOctopus> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/mimic_octopus.png");
@@ -56,8 +56,8 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
             vector3d2 = vector3d2.normalize();
             float f5 = (float) Math.acos(vector3d2.y);
             float f6 = (float) Math.atan2(vector3d2.z, vector3d2.x);
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
             int i = 1;
             float f7 = f1 * 0.05F * -1.5F;
             float f8 = f * f;

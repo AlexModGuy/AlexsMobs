@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
-import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
@@ -31,7 +30,7 @@ public class ItemModArmor extends ArmorItem {
     private Multimap<Attribute, AttributeModifier> attributeMapKimono;
 
     public ItemModArmor(AMArmorMaterial armorMaterial, EquipmentSlot slot) {
-        super(armorMaterial, slot, new Item.Properties().tab(AMItemGroup.INSTANCE));
+        super(armorMaterial, slot, new Item.Properties());
     }
 
     @Override

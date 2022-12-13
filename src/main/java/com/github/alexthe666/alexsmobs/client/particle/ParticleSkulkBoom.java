@@ -3,10 +3,7 @@ package com.github.alexthe666.alexsmobs.client.particle;
 import com.github.alexthe666.alexsmobs.client.render.AMRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -21,6 +18,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class ParticleSkulkBoom extends Particle {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/particle/skulk_boom.png");
@@ -61,19 +62,22 @@ public class ParticleSkulkBoom extends Particle {
         float f = (float)(Mth.lerp((double)partialTick, this.xo, this.x) - vec3.x());
         float f1 = (float)(Mth.lerp((double)partialTick, this.yo, this.y) - vec3.y());
         float f2 = (float)(Mth.lerp((double)partialTick, this.zo, this.z) - vec3.z());
-        Quaternion quaternion = Vector3f.XP.rotationDegrees(90F);
+        Quaternionf quaternion = Axis.XP.rotationDegrees(90F);
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
         VertexConsumer portalStatic = multibuffersource$buffersource.getBuffer(AMRenderTypes.getSkulkBoom());
         PoseStack posestack = new PoseStack();
         PoseStack.Pose posestack$pose = posestack.last();
         Matrix4f matrix4f = posestack$pose.pose();
         Matrix3f matrix3f = posestack$pose.normal();
-        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
         float f4 = prevSize + partialTick * (size - prevSize);
         float alphaLerp = prevAlpha + partialTick * (alpha - prevAlpha);
+        Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
+        vector3f1.rotate(quaternion);
+        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+
         for(int i = 0; i < 4; ++i) {
             Vector3f vector3f = avector3f[i];
-            vector3f.transform(quaternion);
+            vector3f.rotate(quaternion);
             vector3f.mul(f4);
             vector3f.add(f, f1, f2);
         }

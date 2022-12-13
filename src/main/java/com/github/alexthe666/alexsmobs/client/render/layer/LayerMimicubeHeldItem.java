@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelMimicube;
 import com.github.alexthe666.alexsmobs.client.render.RenderMimicube;
 import com.github.alexthe666.alexsmobs.entity.EntityMimicube;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -33,15 +33,15 @@ public class LayerMimicubeHeldItem extends RenderLayer<EntityMimicube, ModelMimi
             translateToHand(false, matrixStackIn);
             matrixStackIn.translate(-0.5F, 0.1F - bob1, -0.1F);
             matrixStackIn.scale(0.9F * (1F - rightSwap), 0.9F * (1F - rightSwap), 0.9F * (1F - rightSwap));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180));
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(180));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180));
             if(itemRight.getItem() instanceof ShieldItem){
                 matrixStackIn.translate(-0.1F,  0, -0.4F);
-                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(90));
             }
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-10));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(360 * rightSwap));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-40 * attackprogress));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-10));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(360 * rightSwap));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-40 * attackprogress));
             Minecraft.getInstance().getItemRenderer().renderStatic(itemRight, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, rightSwap > 0 ? (int) (-100 * rightSwap) : packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), matrixStackIn, bufferIn, 0);
             matrixStackIn.popPose();
         }
@@ -50,15 +50,15 @@ public class LayerMimicubeHeldItem extends RenderLayer<EntityMimicube, ModelMimi
             translateToHand(false, matrixStackIn);
             matrixStackIn.translate(0.45F,  0.1F - bob2, -0.1F);
             matrixStackIn.scale(0.9F * (1F - leftSwap), 0.9F * (1F - leftSwap), 0.9F * (1F - leftSwap));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180));
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(180));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180));
             int clampedLight = (int) Math.floor(packedLightIn * (1F - leftSwap));
             if(itemLeft.getItem() instanceof ShieldItem){
                 matrixStackIn.translate(-0.2F,  0, -0.4F);
-                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90));
+                matrixStackIn.mulPose(Axis.YP.rotationDegrees(90));
             }
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(10));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(360 * leftSwap));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(10));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(360 * leftSwap));
             Minecraft.getInstance().getItemRenderer().renderStatic(itemLeft, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, leftSwap > 0 ? (int) (-100 * leftSwap) : packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), matrixStackIn, bufferIn, 0);
             matrixStackIn.popPose();
         }

@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelSeal;
 import com.github.alexthe666.alexsmobs.client.render.RenderSeal;
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,8 +31,8 @@ public class LayerSealItem extends RenderLayer<EntitySeal, ModelSeal> {
             matrixStackIn.translate(0.0D, 0.1F, -0.6D);
         }
         matrixStackIn.translate(-0.1F, 0.15F, -0.6F);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-45F));
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(-45F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90F));
         ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
         renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();

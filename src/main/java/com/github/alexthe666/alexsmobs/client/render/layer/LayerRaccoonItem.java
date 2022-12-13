@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelRaccoon;
 import com.github.alexthe666.alexsmobs.client.render.RenderRaccoon;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,12 +31,12 @@ public class LayerRaccoonItem extends RenderLayer<EntityRaccoon, ModelRaccoon> {
         translateToHand(inHand, matrixStackIn);
         if(inHand){
             matrixStackIn.translate(0.2F, 0.4F, 0F);
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F * entitylivingbaseIn.washProgress * 0.2F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F * entitylivingbaseIn.washProgress * 0.2F));
         }else {
             matrixStackIn.translate(0, 0.1F, -0.35F);
         }
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-2.5F));
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(-2.5F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90F));
         ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
         renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();

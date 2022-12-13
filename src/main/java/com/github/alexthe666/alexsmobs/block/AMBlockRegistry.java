@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.item.AMBlockItem;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.item.BlockItemAMRender;
-import com.github.alexthe666.alexsmobs.misc.AMItemGroup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
@@ -28,7 +27,7 @@ public class AMBlockRegistry {
     public static final RegistryObject<Block> HUMMINGBIRD_FEEDER = registerBlockAndItem("hummingbird_feeder", () -> new BlockHummingbirdFeeder());
     public static final RegistryObject<Block> CROCODILE_EGG = registerBlockAndItem("crocodile_egg", () -> new BlockCrocodileEgg());
     public static final RegistryObject<Block> GUSTMAKER = registerBlockAndItem("gustmaker", () -> new BlockGustmaker());
-    public static final RegistryObject<Block> STRADDLITE_BLOCK = registerBlockAndItem("straddlite_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(1.0F, 1200.0F).sound(SoundType.ANCIENT_DEBRIS)), new Item.Properties().tab(AMItemGroup.INSTANCE).fireResistant(), false);
+    public static final RegistryObject<Block> STRADDLITE_BLOCK = registerBlockAndItem("straddlite_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(1.0F, 1200.0F).sound(SoundType.ANCIENT_DEBRIS)), new Item.Properties().fireResistant(), false);
     public static final RegistryObject<Block> LEAFCUTTER_ANTHILL = registerBlockAndItem("leafcutter_anthill", () -> new BlockLeafcutterAnthill());
     public static final RegistryObject<Block> LEAFCUTTER_ANT_CHAMBER = registerBlockAndItem("leafcutter_ant_chamber", () -> new BlockLeafcutterAntChamber());
     public static final RegistryObject<Block> CAPSID = registerBlockAndItem("capsid", () -> new BlockCapsid());
@@ -41,7 +40,7 @@ public class AMBlockRegistry {
     public static final RegistryObject<Block> SAND_CIRCLE = registerBlockAndItem("sand_circle", () -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND)), new Item.Properties(), false);
     public static final RegistryObject<Block> RED_SAND_CIRCLE = registerBlockAndItem("red_sand_circle", () -> new SandBlock(11098145, BlockBehaviour.Properties.copy(Blocks.RED_SAND)), new Item.Properties(), false);
     public static final RegistryObject<Block> ENDER_RESIDUE = registerBlockAndItem("ender_residue", () -> new BlockEnderResidue());
-    public static final RegistryObject<Block> TRANSMUTATION_TABLE = registerBlockAndItem("transmutation_table", () -> new BlockTransmutationTable(), new Item.Properties().tab(AMItemGroup.INSTANCE).rarity(Rarity.EPIC).fireResistant(), true);
+    public static final RegistryObject<Block> TRANSMUTATION_TABLE = registerBlockAndItem("transmutation_table", () -> new BlockTransmutationTable(), new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
     public static final RegistryObject<Block> SCULK_BOOMER = registerBlockAndItem("sculk_boomer", () -> new BlockSculkBoomer());
     public static final RegistryObject<Block> SKUNK_SPRAY = DEF_REG.register("skunk_spray", () -> new BlockSkunkSpray());
 
@@ -66,7 +65,7 @@ public class AMBlockRegistry {
      */
 
     public static RegistryObject<Block> registerBlockAndItem(String name, Supplier<Block> block){
-        return registerBlockAndItem(name, block, new Item.Properties().tab(AMItemGroup.INSTANCE), false);
+        return registerBlockAndItem(name, block, new Item.Properties(), false);
     }
 
     public static RegistryObject<Block> registerBlockAndItem(String name, Supplier<Block> block, Item.Properties blockItemProps, boolean specialRender){

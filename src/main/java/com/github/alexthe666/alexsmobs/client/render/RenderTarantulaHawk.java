@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelTarantulaHawk;
 import com.github.alexthe666.alexsmobs.client.model.ModelTarantulaHawkBaby;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -32,7 +32,7 @@ public class RenderTarantulaHawk extends MobRenderer<EntityTarantulaHawk, Entity
             this.model = MODEL;
             matrixStackIn.scale(0.9F, 0.9F, 0.9F);
             float f = entitylivingbaseIn.prevDragProgress + (entitylivingbaseIn.dragProgress - entitylivingbaseIn.prevDragProgress) * partialTickTime;
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f * 180 * 0.2F));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(f * 180 * 0.2F));
         }
     }
 

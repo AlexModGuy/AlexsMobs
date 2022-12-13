@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelCaveCentipede;
 import com.github.alexthe666.alexsmobs.entity.EntityCentipedeBody;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -32,8 +32,8 @@ public class RenderCentipedeBody extends MobRenderer<EntityCentipedeBody, Advanc
 
         Pose pose = entity.getPose();
         if (pose != Pose.SLEEPING) {
-            stack.mulPose(Vector3f.YP.rotationDegrees(180.0F - newYaw));
-            stack.mulPose(Vector3f.XP.rotationDegrees(entity.getXRot()));
+            stack.mulPose(Axis.YP.rotationDegrees(180.0F - newYaw));
+            stack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
         }
 
         if (entity.deathTime > 0) {
@@ -43,12 +43,12 @@ public class RenderCentipedeBody extends MobRenderer<EntityCentipedeBody, Advanc
                 f = 1.0F;
             }
             stack.translate(0, f * 1.15F, 0);
-            stack.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(entity)));
+            stack.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees(entity)));
         } else if (entity.hasCustomName()) {
             String s = ChatFormatting.stripFormatting(entity.getName().getString());
             if (("Dinnerbone".equals(s) || "Grumm".equals(s))) {
                 stack.translate(0.0D, (double) (entity.getBbHeight() + 0.1F), 0.0D);
-                stack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+                stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
             }
         }
     }

@@ -4,9 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelMungus;
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,6 +23,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/mungus.png");
@@ -50,13 +50,13 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
 
     protected void setupRotations(EntityMungus entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
         if (entityLiving.deathTime > 0) {
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - rotationYaw));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - rotationYaw));
             float f = ((float) entityLiving.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
             f = Mth.sqrt(f);
             if (f > 1.0F) {
                 f = 1.0F;
             }
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(f * -90));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(f * -90));
         } else {
             super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
         }
@@ -119,8 +119,8 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             vector3d2 = vector3d2.normalize();
             float f5 = (float) Math.acos(vector3d2.y);
             float f6 = (float) Math.atan2(vector3d2.z, vector3d2.x);
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
             int i = 1;
             float f7 = f1 * 0.05F * 1.5F;
             float f8 = 1F;
@@ -247,7 +247,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             if (mushroomCount >= 3) {
                 matrixStackIn.pushPose();
                 matrixStackIn.translate(0.76F, -0.4F, 0.1D);
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90F));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(90F));
                 matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
                 matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
                 blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
@@ -256,7 +256,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             if (mushroomCount >= 4) {
                 matrixStackIn.pushPose();
                 matrixStackIn.translate(-0.76F, -1.0F, 0.1D);
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-60F));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-60F));
                 matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
                 matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
                 blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);
@@ -265,7 +265,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             if (mushroomCount >= 5) {
                 matrixStackIn.pushPose();
                 matrixStackIn.translate(-0.76F, -0.1F, 0.1D);
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-100F));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-100F));
                 matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
                 matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
                 blockrendererdispatcher.renderSingleBlock(blockstate, matrixStackIn, bufferIn, packedLightIn, i);

@@ -5,7 +5,6 @@ import com.github.alexthe666.alexsmobs.client.render.layer.LayerTigerEyes;
 import com.github.alexthe666.alexsmobs.entity.EntityTiger;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -23,6 +22,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderNameTagEvent;
+import org.joml.Matrix4f;
 
 import javax.annotation.Nullable;
 
@@ -141,7 +141,7 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
         p_115464_.pushPose();
         Vec3 vec3 = p_115466_.getRopeHoldPosition(p_115463_);
         double d0 = (double)(Mth.lerp(p_115463_, p_115462_.yBodyRot, p_115462_.yBodyRotO) * ((float)Math.PI / 180F)) + (Math.PI / 2D);
-        Vec3 vec31 = p_115462_.getLeashOffset();
+        Vec3 vec31 = p_115462_.getLeashOffset(p_115463_);
         double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
         double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;
         double d3 = Mth.lerp((double)p_115463_, p_115462_.xo, p_115462_.getX()) + d1;

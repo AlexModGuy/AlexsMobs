@@ -5,7 +5,7 @@ import com.github.alexthe666.alexsmobs.client.render.RenderGorilla;
 import com.github.alexthe666.alexsmobs.entity.EntityGorilla;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -34,7 +34,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
             this.getParentModel().head.translateAndRotate(matrixStackIn);
             float f = 0.1F * (float) Math.sin((entitylivingbaseIn.tickCount + partialTicks) * 0.1F) + (entitylivingbaseIn.isBaby() ? 0.2F : 0F);
             matrixStackIn.translate(0.0F, -0.7F - f, -0.2F);
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
             renderer.renderItem(entitylivingbaseIn, haloStack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
@@ -50,8 +50,8 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
             translateToHand(false, matrixStackIn);
             matrixStackIn.translate(-0.4F, 0.75F, -0.0F);
         }
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-2.5F));
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90F));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(-2.5F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90F));
         if(itemstack.getItem() instanceof BlockItem){
             matrixStackIn.scale(2, 2, 2);
         }

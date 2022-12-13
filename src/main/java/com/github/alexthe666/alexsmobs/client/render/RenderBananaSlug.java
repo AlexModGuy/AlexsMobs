@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelBananaSlug;
 import com.github.alexthe666.alexsmobs.entity.EntityBananaSlug;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -39,24 +39,24 @@ public class RenderBananaSlug extends MobRenderer<EntityBananaSlug, ModelBananaS
 
     private void rotateForAngle(PoseStack matrixStackIn, Direction rotate, float f){
         if(rotate.getAxis() != Direction.Axis.Y){
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F * f));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F * f));
         }
         switch (rotate) {
             case DOWN:
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F * f));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F * f));
                 break;
             case UP:
                 break;
             case NORTH:
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F * f));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F * f));
                 break;
             case SOUTH:
                 break;
             case WEST:
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90F * f));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(90F * f));
                 break;
             case EAST:
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-90F * f));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-90F * f));
                 break;
         }
     }
@@ -78,7 +78,7 @@ public class RenderBananaSlug extends MobRenderer<EntityBananaSlug, ModelBananaS
             if(entityLiving.prevAttachDir == entityLiving.getAttachmentFacing() && entityLiving.getAttachmentFacing().getAxis() == Direction.Axis.Y){
                 yawMul = 1.0F;
             }
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees ( (180.0F - yawMul * rotationYaw)));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees ( (180.0F - yawMul * rotationYaw)));
             matrixStackIn.translate(0.0D, trans, 0.0D);
             float prevProg = 1F - progress;
             rotateForAngle(matrixStackIn, rotate(entityLiving.prevAttachDir), prevProg);
@@ -86,7 +86,7 @@ public class RenderBananaSlug extends MobRenderer<EntityBananaSlug, ModelBananaS
             if(entityLiving.getAttachmentFacing() != Direction.DOWN){
                 matrixStackIn.translate(0.0D, trans, 0.0D);
                 if(entityLiving.getDeltaMovement().y <= -0.001F){
-                    matrixStackIn.mulPose(Vector3f.YN.rotationDegrees(180 * progress));
+                    matrixStackIn.mulPose(Axis.YN.rotationDegrees(180 * progress));
                 }
                 matrixStackIn.translate(0.0D, -trans, 0.0D);
             }
@@ -100,17 +100,17 @@ public class RenderBananaSlug extends MobRenderer<EntityBananaSlug, ModelBananaS
                 f = 1.0F;
             }
 
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
         } else if (entityLiving.isAutoSpinAttack()) {
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F - entityLiving.getXRot()));
-            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90.0F - entityLiving.getXRot()));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
         } else if (pose == Pose.SLEEPING) {
 
         } else if (entityLiving.hasCustomName() ) {
             String s = ChatFormatting.stripFormatting(entityLiving.getName().getString());
             if (("Dinnerbone".equals(s) || "Grumm".equals(s))) {
                 matrixStackIn.translate(0.0D, (double)(entityLiving.getBbHeight() + 0.1F), 0.0D);
-                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F));
             }
         }
     }

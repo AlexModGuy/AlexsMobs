@@ -334,7 +334,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL || super.isInvulnerableTo(source);
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {

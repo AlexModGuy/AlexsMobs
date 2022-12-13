@@ -275,7 +275,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALLING_STALACTITE || super.isInvulnerableTo(source);
+        return source.equals("fallingStalactite") || super.isInvulnerableTo(source);
     }
 
     public int getMaxFallDistance() {

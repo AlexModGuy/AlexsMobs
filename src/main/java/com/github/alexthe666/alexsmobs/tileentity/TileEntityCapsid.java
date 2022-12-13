@@ -33,8 +33,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -74,7 +74,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
             BlockEntity up = level.getBlockEntity(this.worldPosition.above());
             if (up instanceof Container) {
                 if (floatUpProgress >= 1) {
-                    LazyOptional<IItemHandler> handler = level.getBlockEntity(this.worldPosition.above()).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+                    LazyOptional<IItemHandler> handler = level.getBlockEntity(this.worldPosition.above()).getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.UP);
                     if (handler.orElse(null) != null) {
                         if (ItemHandlerHelper.insertItem(handler.orElse(null), this.getItem(0), true).isEmpty()) {
                             ItemHandlerHelper.insertItem(handler.orElse(null), this.getItem(0).copy(), false);
@@ -329,7 +329,7 @@ public class TileEntityCapsid extends BaseContainerBlockEntity implements Worldl
 
     @Override
     public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
-        if (!this.remove && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (!this.remove && facing != null && capability == ForgeCapabilities.ITEM_HANDLER) {
             if (facing == Direction.DOWN)
                 return handlers[0].cast();
             else

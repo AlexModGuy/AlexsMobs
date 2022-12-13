@@ -15,6 +15,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -228,7 +229,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             final double ffDouble = ff;
             BlockPos center = this.blockPosition();
             BlockState transformState = Blocks.MYCELIUM.defaultBlockState();
-            Registry<Biome> registry = serverLevel.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+            Registry<Biome> registry = serverLevel.getServer().registryAccess().registryOrThrow(Registries.BIOME);
             Holder<Biome> biome = registry.getHolder(Biomes.MUSHROOM_FIELDS).get();
             TagKey<Block> transformMatches = AMTagRegistry.MUNGUS_REPLACE_MUSHROOM;
             if (this.getMushroomState() != null) {
@@ -280,7 +281,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     }
 
     private Holder<Biome> getBiomeKeyFromShroom() {
-        Registry<Biome> registry = this.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+        Registry<Biome> registry = this.level.registryAccess().registryOrThrow(Registries.BIOME);
         BlockState state = this.getMushroomState();
         if (state == null) {
             return null;
@@ -433,7 +434,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         super.readAdditionalSaveData(compound);
         BlockState blockstate = null;
         if (compound.contains("MushroomState", 10)) {
-            blockstate = NbtUtils.readBlockState(compound.getCompound("MushroomState"));
+            blockstate = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("MushroomState"));
             if (blockstate.isAir()) {
                 blockstate = null;
             }

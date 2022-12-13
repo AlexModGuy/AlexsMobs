@@ -7,8 +7,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
@@ -26,6 +25,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Quaternionf;
 
 import java.util.Map;
 
@@ -71,7 +71,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
             translateToHead(matrixStackIn);
             float f = 0.1F * (float) Math.sin((roo.tickCount + partialTicks) * 0.1F) + (roo.isBaby() ? 0.2F : 0F);
             matrixStackIn.translate(0.0F, -0.75F - f, -0.2F);
-            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90F));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
             ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
             renderer.renderItem(roo, haloStack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
@@ -111,8 +111,8 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
                 }else{
                     translateToHead(matrixStackIn);
                     matrixStackIn.translate(0, -0.2, -0.1F);
-                    matrixStackIn.mulPose(new Quaternion(Vector3f.XP, 180, true));
-                    matrixStackIn.mulPose(new Quaternion(Vector3f.YP, 180, true));
+                    matrixStackIn.mulPose((new Quaternionf()).rotateX((float)Math.PI));
+                    matrixStackIn.mulPose((new Quaternionf()).rotateY((float)Math.PI));
                     matrixStackIn.scale(1.0F, 1.0F, 1.0F);
                     Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
                 }

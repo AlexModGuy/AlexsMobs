@@ -4,14 +4,14 @@ import com.github.alexthe666.alexsmobs.client.model.ModelStraddleboard;
 import com.github.alexthe666.alexsmobs.entity.EntityStraddleboard;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.joml.Quaternionf;
 
 import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
@@ -32,20 +32,20 @@ public class RenderStraddleboard extends EntityRenderer<EntityStraddleboard> {
     @Override
     public void render(EntityStraddleboard entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
-        matrixStackIn.mulPose(new Quaternion(Vector3f.XP, 180F, true));
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot())));
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
+        matrixStackIn.mulPose(new Quaternionf().rotateY(180F * ((float)Math.PI / 180F)));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot())));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         matrixStackIn.pushPose();
         boolean lava = entityIn.isInLava() || entityIn.isVehicle();
         float f2 = entityIn.getRockingAngle(partialTicks);
         if (!Mth.equal(f2, 0.0F)) {
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(entityIn.getRockingAngle(partialTicks)));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(entityIn.getRockingAngle(partialTicks)));
         }
         int k = entityIn.getColor();
         float r = (float)(k >> 16 & 255) / 255.0F;
         float g = (float)(k >> 8 & 255) / 255.0F;
         float b = (float)(k & 255) / 255.0F;
-        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(entityIn.prevBoardRot + partialTicks * (entityIn.boardRot - entityIn.prevBoardRot)));
+        matrixStackIn.mulPose(Axis.ZP.rotationDegrees(entityIn.prevBoardRot + partialTicks * (entityIn.boardRot - entityIn.prevBoardRot)));
         matrixStackIn.translate(0, -1.5F - Math.abs(entityIn.boardRot * 0.007F) - (lava ? 0.25F : 0), 0);
         BOARD_MODEL.animateBoard(entityIn, entityIn.tickCount + partialTicks);
         VertexConsumer ivertexbuilder2 = bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_OVERLAY));

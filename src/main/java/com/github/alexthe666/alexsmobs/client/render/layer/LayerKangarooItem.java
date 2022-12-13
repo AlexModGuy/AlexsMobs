@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelKangaroo;
 import com.github.alexthe666.alexsmobs.client.render.RenderKangaroo;
 import com.github.alexthe666.alexsmobs.entity.EntityKangaroo;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,8 +31,8 @@ public class LayerKangarooItem extends RenderLayer<EntityKangaroo, ModelKangaroo
         translateToHand(matrixStackIn, left);
         matrixStackIn.translate(0F, 0.75F, -0.125F);
 
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-110F));
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(-110F));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180F));
         matrixStackIn.scale(0.8F, 0.8F, 0.8F);
         ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
         renderer.renderItem(entitylivingbaseIn, itemstack, left ? ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, bufferIn, packedLightIn);

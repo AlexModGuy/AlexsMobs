@@ -4,12 +4,12 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.TheEndPortalRenderer;
 import net.minecraft.resources.ResourceLocation;
+import org.joml.Matrix4f;
 
 public class AMRenderTypes extends RenderType {
 
@@ -206,8 +206,8 @@ public class AMRenderTypes extends RenderType {
         long i = Util.getMillis() * time;
         float f = (float)(i % 110000L) / 110000.0F;
         float f1 = (float)(i % 30000L) / 30000.0F;
-        Matrix4f matrix4f = Matrix4f.createTranslateMatrix(0.0F, f1, 0.0F);
-        matrix4f.multiply(Matrix4f.createScaleMatrix(in, in, in));
+        Matrix4f matrix4f = (new Matrix4f()).translation(0, f1, 0.0F);
+        matrix4f.scale(in);
         RenderSystem.setTextureMatrix(matrix4f);
     }
 
@@ -216,8 +216,8 @@ public class AMRenderTypes extends RenderType {
         float f = (float)(i % 110000L) / 110000.0F;
         float f1 = (float)(i % 30000L) / 30000.0F;
         float f2 = (float)Math.sin(i / 30000F);
-        Matrix4f matrix4f = Matrix4f.createTranslateMatrix(f1, f2, 0.0F);
-        matrix4f.multiply(Matrix4f.createScaleMatrix(in, in, in));
+        Matrix4f matrix4f = (new Matrix4f()).translation(f1, f2, 0.0F);
+        matrix4f.scale(in);
         RenderSystem.setTextureMatrix(matrix4f);
     }
 
@@ -227,8 +227,8 @@ public class AMRenderTypes extends RenderType {
         float f1 = (float)(i % 30000L) / 30000.0F;
         float f2 = (float)Math.floor((i % 3000L) / 3000.0F * 4.0F);
         float f3 = (float)Math.sin(i / 30000F) * 0.05F;
-        Matrix4f matrix4f = Matrix4f.createTranslateMatrix(f1, f2 * 0.25F + f3, 0.0F);
-        matrix4f.multiply(Matrix4f.createScaleMatrix(in * 1.5F, in * 0.25F, in));
+        Matrix4f matrix4f = (new Matrix4f()).translation(f1, f2 * 0.25F + f3, 0.0F);
+        matrix4f.scale(in * 1.5F, in * 0.25F, in);
         RenderSystem.setTextureMatrix(matrix4f);
     }
 

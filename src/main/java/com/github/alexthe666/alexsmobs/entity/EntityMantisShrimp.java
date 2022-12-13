@@ -213,7 +213,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.DROWN || source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
     }
 
     public boolean canBreatheUnderwater() {

@@ -203,7 +203,7 @@ public class EntityCentipedeHead extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
     }
 
 

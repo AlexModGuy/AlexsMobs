@@ -3,12 +3,12 @@ package com.github.alexthe666.alexsmobs.misc;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -16,8 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class RecipeMimicreamRepair extends CustomRecipe {
-    public RecipeMimicreamRepair(ResourceLocation idIn) {
-        super(idIn);
+    public RecipeMimicreamRepair(ResourceLocation idIn, CraftingBookCategory category) {
+        super(idIn, category);
     }
 
     /**
@@ -76,7 +76,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
             CompoundTag compoundnbt = damageableStack.getTag().copy();
             ListTag oldNBTList = compoundnbt.getList("Enchantments", 10);
             ListTag newNBTList = new ListTag();
-            ResourceLocation mendingName = Registry.ENCHANTMENT.getKey(Enchantments.MENDING);
+            ResourceLocation mendingName = ForgeRegistries.ENCHANTMENTS.getKey(Enchantments.MENDING);
             for (int i = 0; i < oldNBTList.size(); ++i) {
                 CompoundTag compoundnbt2 = oldNBTList.getCompound(i);
                 ResourceLocation resourcelocation1 = ResourceLocation.tryParse(compoundnbt2.getString("id"));

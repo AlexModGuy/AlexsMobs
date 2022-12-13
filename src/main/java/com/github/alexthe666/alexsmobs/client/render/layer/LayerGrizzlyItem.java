@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelGrizzlyBear;
 import com.github.alexthe666.alexsmobs.client.render.RenderGrizzlyBear;
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -33,8 +33,8 @@ public class LayerGrizzlyItem extends RenderLayer<EntityGrizzlyBear, ModelGrizzl
             translateToHand(false, matrixStackIn);
             matrixStackIn.translate(0.2F, 0.7F, -0.4F);
         }
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(10F));
-        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(100F));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(10F));
+        matrixStackIn.mulPose(Axis.XP.rotationDegrees(100F));
         matrixStackIn.scale(1, 1, 1);
         renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();

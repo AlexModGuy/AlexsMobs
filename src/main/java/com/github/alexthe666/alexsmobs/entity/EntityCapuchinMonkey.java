@@ -427,7 +427,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
