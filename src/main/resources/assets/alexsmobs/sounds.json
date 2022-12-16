@@ -2996,6 +2996,18 @@
     ],
     "subtitle": "alexsmobs.sound.subtitle.caiman_splash"
   },
+  "triops_hurt": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:triops_hurt_0"
+      },
+      {
+        "name": "alexsmobs:triops_hurt_1"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.triops_hurt"
+  },
   "end_pirate_door": {
     "category": "neutral",
     "sounds": [

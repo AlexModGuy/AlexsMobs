@@ -194,10 +194,10 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue bananaSlugSpawnRolls;
     public final ForgeConfigSpec.IntValue blueJaySpawnWeight;
     public final ForgeConfigSpec.IntValue blueJaySpawnRolls;
- 
    public final ForgeConfigSpec.IntValue caimanSpawnWeight;
     public final ForgeConfigSpec.IntValue caimanSpawnRolls;
-
+    public final ForgeConfigSpec.IntValue triopsSpawnWeight;
+    public final ForgeConfigSpec.IntValue triopsSpawnRolls;
     public final ForgeConfigSpec.BooleanValue giveBookOnStartup;
     public final ForgeConfigSpec.BooleanValue mimicubeSpawnInEndCity;
     public final ForgeConfigSpec.BooleanValue mimicreamRepair;
@@ -486,6 +486,8 @@ public class CommonConfig {
         blueJaySpawnRolls = buildInt(builder, "blueJaySpawnRolls", "spawns", AMConfig.blueJaySpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         caimanSpawnWeight = buildInt(builder, "caimanSpawnWeight", "spawns", AMConfig.caimanSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         caimanSpawnRolls = buildInt(builder, "caimanSpawnRolls", "spawns", AMConfig.caimanSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+        triopsSpawnWeight = buildInt(builder, "triopsSpawnWeight", "spawns", AMConfig.triopsSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        triopsSpawnRolls = buildInt(builder, "triopsSpawnRolls", "spawns", AMConfig.triopsSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
         builder.push("uniqueSpawning");
         caveCentipedeSpawnHeight = buildInt(builder, "caveCentipedeSpawnHeight", "all", AMConfig.caveCentipedeSpawnHeight, -64, 320, "Maximum world y-level that cave centipedes can spawn at");
         blobfishSpawnHeight = buildInt(builder, "blobfishSpawnHeight", "all", AMConfig.blobfishSpawnHeight, -64, 320, "Maximum world y-level that blobfish can spawn at");

@@ -438,6 +438,7 @@ public class AMSoundRegistry {
     public static final RegistryObject<SoundEvent> CAIMAN_HURT = createSoundEvent("caiman_hurt");
 
     public static final RegistryObject<SoundEvent> CAIMAN_SPLASH = createSoundEvent("caiman_splash");
+    public static final RegistryObject<SoundEvent> TRIOPS_HURT = createSoundEvent("triops_hurt");
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
     
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
@@ -28,10 +29,12 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Strider;
@@ -70,8 +73,12 @@ public class EntityCrimsonMosquito extends Monster {
     private static final EntityDataAccessor<Float> MOSQUITO_SCALE = SynchedEntityData.defineId(EntityCrimsonMosquito.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> SICK = SynchedEntityData.defineId(EntityCrimsonMosquito.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> LURING_LAVIATHAN = SynchedEntityData.defineId(EntityCrimsonMosquito.class, EntityDataSerializers.INT);
-    private static final Predicate<Animal> WARM_BLOODED = (mob) -> {
-        return !(mob instanceof Strider);
+    private static final EntityDataAccessor<Integer> FLEEING_ENTITY = SynchedEntityData.defineId(EntityCrimsonMosquito.class, EntityDataSerializers.INT);
+    private static final Predicate<LivingEntity> REPELLENT = (mob) -> {
+        return mob.hasEffect(AMEffectRegistry.MOSQUITO_REPELLENT.get()) || mob instanceof EntityTriops;
+    };
+    private static final Predicate<LivingEntity> NO_REPELLENT = (mob) -> {
+        return !mob.hasEffect(AMEffectRegistry.MOSQUITO_REPELLENT.get());
     };
     public float prevFlyProgress;
     public float flyProgress;
@@ -86,7 +93,8 @@ public class EntityCrimsonMosquito extends Monster {
     private int loopSoundTick = 0;
     private int drinkTime = 0;
     public float prevMosquitoScale = 1F;
-
+    private int repellentCheckTime = 0;
+    private Vec3 fleePos = null;
     protected EntityCrimsonMosquito(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.moveControl = new EntityCrimsonMosquito.MoveHelperController(this);
@@ -100,12 +108,12 @@ public class EntityCrimsonMosquito extends Monster {
         return this.entityData.get(LURING_LAVIATHAN) != -1;
     }
 
-    public void onSpawnFromFly(){
+    public void onSpawnFromFly() {
         prevMosquitoScale = 0.2F;
         this.setShrink(false);
         this.setMosquitoScale(0.2F);
         this.setFromFly(true);
-        for(int j = 0; j < 4; ++j) {
+        for (int j = 0; j < 4; ++j) {
             this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + this.random.nextDouble() / 2.0D, this.getY(0.5D), this.getZ() + this.random.nextDouble() / 2.0D, this.random.nextDouble() * 0.5F + 0.5F, 0, 0.0D);
         }
     }
@@ -135,7 +143,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     @Override
-    public boolean canRiderInteract(){
+    public boolean canRiderInteract() {
         return true;
     }
 
@@ -146,14 +154,15 @@ public class EntityCrimsonMosquito extends Monster {
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 32F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, EntityCrimsonMosquito.class, EntityWarpedMosco.class));
-        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, 20, true, false, NO_REPELLENT));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, LivingEntity.class, 50, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.CRIMSON_MOSQUITO_TARGETS)));
+        this.goalSelector.addGoal(3, new AvoidEntityGoal(this, EntityTriops.class, 16, 1.3D, 1.0D));
     }
 
     public static boolean canMosquitoSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {
         BlockPos blockpos = pos.below();
         boolean spawnBlock = worldIn.getBlockState(blockpos).canOcclude();
-        return reason == MobSpawnType.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).isValidSpawn(worldIn, blockpos, typeIn)  && isDarkEnoughToSpawn(worldIn, pos, randomIn) && checkMobSpawnRules(AMEntityRegistry.CRIMSON_MOSQUITO.get(), worldIn, reason, pos, randomIn);
+        return reason == MobSpawnType.SPAWNER || spawnBlock && worldIn.getBlockState(blockpos).isValidSpawn(worldIn, blockpos, typeIn) && isDarkEnoughToSpawn(worldIn, pos, randomIn) && checkMobSpawnRules(AMEntityRegistry.CRIMSON_MOSQUITO.get(), worldIn, reason, pos, randomIn);
     }
 
 
@@ -180,14 +189,14 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     private void spit(LivingEntity target) {
-        if(this.isSick()){
+        if (this.isSick()) {
             return;
         }
         final EntityMosquitoSpit llamaspitentity = new EntityMosquitoSpit(this.level, this);
         final double d0 = target.getX() - this.getX();
         final double d1 = target.getY(0.3333333333333333D) - llamaspitentity.getY();
         final double d2 = target.getZ() - this.getZ();
-        final float f = Mth.sqrt((float)(d0 * d0 + d2 * d2)) * 0.2F;
+        final float f = Mth.sqrt((float) (d0 * d0 + d2 * d2)) * 0.2F;
         llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 10.0F);
         if (!this.isSilent()) {
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
@@ -201,14 +210,14 @@ public class EntityCrimsonMosquito extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL  || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
+        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        if(source.getEntity() != null && this.getRootVehicle() == source.getEntity().getRootVehicle()){
+        if (source.getEntity() != null && this.getRootVehicle() == source.getEntity().getRootVehicle()) {
             return super.hurt(source, amount * 0.333F);
         }
-        if(flightTicks < 0){
+        if (flightTicks < 0) {
             flightTicks = 0;
         }
         return super.hurt(source, amount);
@@ -225,7 +234,7 @@ public class EntityCrimsonMosquito extends Monster {
                 final Entity mount = this.getVehicle();
                 if (mount instanceof final LivingEntity livingEntity) {
                     this.yBodyRot = livingEntity.yBodyRot;
-                    this.setYRot( livingEntity.getYRot());
+                    this.setYRot(livingEntity.getYRot());
                     this.yHeadRot = livingEntity.yHeadRot;
                     this.yRotO = livingEntity.yHeadRot;
                     final float radius = 1F;
@@ -238,15 +247,15 @@ public class EntityCrimsonMosquito extends Monster {
                     }
                     if (!level.isClientSide) {
                         if (drinkTime % 20 == 0 && this.isAlive()) {
-                            final boolean mungus = AMConfig.warpedMoscoTransformation &&  mount instanceof EntityMungus && ((EntityMungus)mount).isWarpedMoscoReady();
-                            if(mount.hurt(DamageSource.mobAttack(this), mungus ? 7F : 2.0F)){
-                                if(mungus){
+                            final boolean mungus = AMConfig.warpedMoscoTransformation && mount instanceof EntityMungus && ((EntityMungus) mount).isWarpedMoscoReady();
+                            if (mount.hurt(DamageSource.mobAttack(this), mungus ? 7F : 2.0F)) {
+                                if (mungus) {
                                     ((EntityMungus) mount).disableExplosion();
                                 }
                                 final boolean sick = this.isNonMungusWarpedTrigger(mount);
-                                if(sick || mungus){
-                                    if(!this.isSick()) {
-                                        for(ServerPlayer serverplayerentity : this.level.getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(40.0D, 25.0D, 40.0D))) {
+                                if (sick || mungus) {
+                                    if (!this.isSick()) {
+                                        for (ServerPlayer serverplayerentity : this.level.getEntitiesOfClass(ServerPlayer.class, this.getBoundingBox().inflate(40.0D, 25.0D, 40.0D))) {
                                             AMAdvancementTriggerRegistry.MOSQUITO_SICK.trigger(serverplayerentity);
                                         }
                                     }
@@ -292,6 +301,7 @@ public class EntityCrimsonMosquito extends Monster {
         this.entityData.define(FROM_FLY, false);
         this.entityData.define(MOSQUITO_SCALE, 1F);
         this.entityData.define(LURING_LAVIATHAN, -1);
+        this.entityData.define(FLEEING_ENTITY, -1);
     }
 
     public boolean isFlying() {
@@ -315,6 +325,14 @@ public class EntityCrimsonMosquito extends Monster {
         this.entityData.set(LURING_LAVIATHAN, lure);
     }
 
+    public int getFleeingEntityId() {
+        return this.entityData.get(FLEEING_ENTITY).intValue();
+    }
+
+    public void setFleeingEntityId(int lure) {
+        this.entityData.set(FLEEING_ENTITY, lure);
+    }
+
     public int getBloodLevel() {
         return Math.min(this.entityData.get(BLOOD_LEVEL).intValue(), 4);
     }
@@ -327,7 +345,9 @@ public class EntityCrimsonMosquito extends Monster {
         return this.entityData.get(SHRINKING).booleanValue();
     }
 
-    public boolean isFromFly() { return this.entityData.get(FROM_FLY).booleanValue(); }
+    public boolean isFromFly() {
+        return this.entityData.get(FROM_FLY).booleanValue();
+    }
 
     public void setShrink(boolean shrink) {
         this.entityData.set(SHRINKING, shrink);
@@ -386,12 +406,50 @@ public class EntityCrimsonMosquito extends Monster {
             } else {
                 this.setNoGravity(false);
             }
-
+            LivingEntity target = this.getTarget();
+            if (this.getFleeingEntityId() == -1) {
+                if (target == null && tickCount - repellentCheckTime > 50) {
+                    repellentCheckTime = tickCount;
+                    LivingEntity closestRepel = null;
+                    for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(30), REPELLENT)) {
+                        if(closestRepel == null || entity.distanceTo(this) < closestRepel.distanceTo(this)){
+                            closestRepel = entity;
+                        }
+                    }
+                    if(closestRepel != null){
+                        this.setFleeingEntityId(closestRepel.getId());
+                    }
+                }
+                if (target != null && REPELLENT.test(target) && this.distanceTo(target) < 20) {
+                    this.setFleeingEntityId(target.getId());
+                }
+            } else {
+                Entity fleeing = level.getEntity(this.getFleeingEntityId());
+                if (fleeing instanceof LivingEntity living && REPELLENT.test(living) && this.distanceTo(living) < 20) {
+                    this.setTarget(null);
+                    this.setLastHurtByMob(null);
+                    if(this.isPassenger()){
+                        this.stopRiding();
+                    }
+                    if(fleePos == null || fleePos.distanceTo(this.position()) < 3 || random.nextInt(40) == 0){
+                        Vec3 vec = LandRandomPos.getPosAway(this, 8, 4, fleeing.position());
+                        if(vec != null){
+                            fleePos = vec;
+                        }
+                    }else{
+                        this.setFlying(true);
+                        this.moveControl.setWantedPosition(fleePos.x, fleePos.y + 1, fleePos.z, 1.2F);
+                    }
+                } else {
+                    this.setFleeingEntityId(-1);
+                }
+            }
             if (hasLuringLaviathan()) {
                 this.setTarget(null);
+                this.setLastHurtByMob(null);
                 final Entity entity = this.level.getEntity(this.getLuringLaviathan());
                 if (entity instanceof EntityLaviathan && ((EntityLaviathan) entity).isChilling()) {
-                    Vec3 vec = ((EntityLaviathan)entity).getLureMosquitoPos();
+                    Vec3 vec = ((EntityLaviathan) entity).getLureMosquitoPos();
                     this.setFlying(true);
                     this.lookAt(entity, 10, 10);
                     this.getMoveControl().setWantedPosition(vec.x, vec.y, vec.z, 0.7F);
@@ -429,12 +487,12 @@ public class EntityCrimsonMosquito extends Monster {
             }
         }
         prevMosquitoScale = this.getMosquitoScale();
-        if(isShrinking()){
-            if(this.getMosquitoScale() > 0.4F){
+        if (isShrinking()) {
+            if (this.getMosquitoScale() > 0.4F) {
                 this.setMosquitoScale(this.getMosquitoScale() - 0.1F);
             }
-        }else{
-            if(this.getMosquitoScale() < 1F && !this.isSick()){
+        } else {
+            if (this.getMosquitoScale() < 1F && !this.isSick()) {
                 this.setMosquitoScale(this.getMosquitoScale() + 0.05F);
             }
         }
@@ -447,13 +505,13 @@ public class EntityCrimsonMosquito extends Monster {
                 this.entityData.set(SHOOTING, false);
             }
         }
-        if(isFlying()){
-            if(loopSoundTick == 0){
+        if (isFlying()) {
+            if (loopSoundTick == 0) {
                 this.gameEvent(GameEvent.ENTITY_ROAR);
                 this.playSound(AMSoundRegistry.MOSQUITO_LOOP.get(), this.getSoundVolume(), this.getVoicePitch());
             }
             loopSoundTick++;
-            if(loopSoundTick > 100){
+            if (loopSoundTick > 100) {
                 loopSoundTick = 0;
             }
         }
@@ -469,23 +527,23 @@ public class EntityCrimsonMosquito extends Monster {
         prevFlyProgress = flyProgress;
         prevShootProgress = shootProgress;
         prevFlying = this.isFlying();
-        if(this.isSick()){
+        if (this.isSick()) {
             sickTicks++;
-            if(this.getTarget() != null && !this.isPassenger()){
+            if (this.getTarget() != null && !this.isPassenger()) {
                 this.setTarget(null);
             }
-            if(sickTicks > 100){
+            if (sickTicks > 100) {
                 this.setShrink(false);
                 this.setMosquitoScale(this.getMosquitoScale() + 0.015F);
-                if(sickTicks > 160){
+                if (sickTicks > 160) {
                     EntityWarpedMosco mosco = AMEntityRegistry.WARPED_MOSCO.get().create(level);
                     mosco.copyPosition(this);
-                    if(!level.isClientSide){
-                        mosco.finalizeSpawn((ServerLevelAccessor)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                    if (!level.isClientSide) {
+                        mosco.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
                     }
 
-                    if(!level.isClientSide){
-                        this.level.broadcastEntityEvent(this, (byte)79);
+                    if (!level.isClientSide) {
+                        this.level.broadcastEntityEvent(this, (byte) 79);
                         level.addFreshEntity(mosco);
                     }
                     this.remove(RemovalReason.DISCARDED);
@@ -498,7 +556,7 @@ public class EntityCrimsonMosquito extends Monster {
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 79) {
-            for(int i = 0; i < 27; ++i) {
+            for (int i = 0; i < 27; ++i) {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
@@ -574,7 +632,7 @@ public class EntityCrimsonMosquito extends Monster {
 
         public boolean canUse() {
             MoveControl movementcontroller = this.parentEntity.getMoveControl();
-            if (!parentEntity.isFlying() || parentEntity.getTarget() != null || parentEntity.hasLuringLaviathan()) {
+            if (!parentEntity.isFlying() || parentEntity.getTarget() != null || parentEntity.hasLuringLaviathan() || parentEntity.getFleeingEntityId() != -1) {
                 return false;
             }
             if (!movementcontroller.hasWanted() || target == null) {
@@ -635,7 +693,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
 
         public void tick() {
-            if(speedModifier >= 1 && parentEntity.isSick()){
+            if (speedModifier >= 1 && parentEntity.isSick()) {
                 speedModifier = 0.35D;
             }
             if (parentEntity.isFlying()) {
@@ -706,14 +764,14 @@ public class EntityCrimsonMosquito extends Monster {
         }
 
         public boolean canUse() {
-            if (!parentEntity.isFlying() || parentEntity.getBloodLevel() > 0 || parentEntity.drinkTime < 0) {
+            if (!parentEntity.isFlying() || parentEntity.getBloodLevel() > 0 || parentEntity.drinkTime < 0 || parentEntity.getFleeingEntityId() != -1) {
                 return false;
             }
             return !parentEntity.isPassenger() && parentEntity.getTarget() != null && !isBittenByMosquito(parentEntity.getTarget());
         }
 
         public boolean canContinueToUse() {
-            return parentEntity.drinkTime >= 0 && parentEntity.getTarget() != null && !isBittenByMosquito(parentEntity.getTarget()) && !parentEntity.horizontalCollision && parentEntity.getBloodLevel() == 0 && parentEntity.isFlying() && parentEntity.getMoveControl().hasWanted();
+            return parentEntity.drinkTime >= 0 && parentEntity.getFleeingEntityId() == -1 && parentEntity.getTarget() != null && !isBittenByMosquito(parentEntity.getTarget()) && !parentEntity.horizontalCollision && parentEntity.getBloodLevel() == 0 && parentEntity.isFlying() && parentEntity.getMoveControl().hasWanted();
         }
 
         public boolean isBittenByMosquito(Entity entity) {
@@ -752,7 +810,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
 
         public boolean canUse() {
-            if (!parentEntity.isFlying() || parentEntity.getBloodLevel() <= 0 && parentEntity.drinkTime >= 0) {
+            if (!parentEntity.isFlying() || parentEntity.getBloodLevel() <= 0 && parentEntity.drinkTime >= 0 || parentEntity.getFleeingEntityId() != -1) {
                 return false;
             }
             if (!parentEntity.isPassenger() && parentEntity.getTarget() != null) {
@@ -763,7 +821,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
 
         public boolean canContinueToUse() {
-            return parentEntity.getTarget() != null &&( parentEntity.getBloodLevel() > 0 || parentEntity.drinkTime < 0) && parentEntity.isFlying() && !parentEntity.horizontalCollision;
+            return parentEntity.getTarget() != null && (parentEntity.getBloodLevel() > 0 || parentEntity.drinkTime < 0) && parentEntity.isFlying() && !parentEntity.horizontalCollision;
         }
 
         public void stop() {
@@ -811,4 +869,5 @@ public class EntityCrimsonMosquito extends Monster {
         final ResourceLocation mobtype = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
         return mobtype != null && !AMConfig.warpedMoscoMobTriggers.isEmpty() && AMConfig.warpedMoscoMobTriggers.contains(mobtype.toString());
     }
+
 }

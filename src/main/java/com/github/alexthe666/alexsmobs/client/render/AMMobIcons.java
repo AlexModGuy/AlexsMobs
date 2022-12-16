@@ -99,6 +99,7 @@ public class AMMobIcons {
         list.add(new Pair<>(AMEntityRegistry.BANANA_SLUG.get(), 1.5F));
         list.add(new Pair<>(AMEntityRegistry.BLUE_JAY.get(), 1.4F));
         list.add(new Pair<>(AMEntityRegistry.CAIMAN.get(), 0.5F));
+        list.add(new Pair<>(AMEntityRegistry.TRIOPS.get(), 0.95F));
     });
 
     public static List<Pair<EntityType, Float>> getMobIcons() {

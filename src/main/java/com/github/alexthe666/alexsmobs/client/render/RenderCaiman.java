@@ -13,7 +13,7 @@ public class RenderCaiman extends MobRenderer<EntityCaiman, ModelCaiman> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/caiman.png");
 
     public RenderCaiman(EntityRendererProvider.Context renderManagerIn) {
-        super(renderManagerIn, new ModelCaiman(), 0.3F);
+        super(renderManagerIn, new ModelCaiman(), 0.4F);
     }
 
     public ResourceLocation getTextureLocation(EntityCaiman entity) {

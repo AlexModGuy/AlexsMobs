@@ -103,6 +103,7 @@ public class BiomeConfig {
 	public static Pair<String, SpawnBiomeData> banana_slug = Pair.of("alexsmobs:banana_slug_spawns", DefaultBiomes.BANANA_SLUG);
 	public static Pair<String, SpawnBiomeData> blue_jay = Pair.of("alexsmobs:blue_jay_spawns", DefaultBiomes.ALL_FOREST);
 	public static Pair<String, SpawnBiomeData> caiman = Pair.of("alexsmobs:caiman_spawns", DefaultBiomes.MANGROVE);
+	public static Pair<String, SpawnBiomeData> triops = Pair.of("alexsmobs:triops_spawns", DefaultBiomes.DESERT);
 
 	private static boolean init = false;
 	private static Map<String, SpawnBiomeData> biomeConfigValues = new HashMap<>();
