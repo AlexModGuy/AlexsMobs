@@ -210,7 +210,7 @@ public class AMItemRegistry {
 
     public static final RegistryObject<Item> STINK_RAY = DEF_REG.register("stink_ray", () -> new ItemStinkRay(new Item.Properties().durability(5)));
     public static final RegistryObject<Item> BANANA_SLUG_SLIME = DEF_REG.register("banana_slug_slime", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> MOSQUITO_REPELLENT_STEW = DEF_REG.register("mosquito_repellent_stew", () -> new BowlFoodItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).alwaysEat().saturationMod(0.3F).effect(() -> new MobEffectInstance(AMEffectRegistry.MOSQUITO_REPELLENT.get(), 12000), 1.0F).build()).stacksTo(1)));
+    public static final RegistryObject<Item> MOSQUITO_REPELLENT_STEW = DEF_REG.register("mosquito_repellent_stew", () -> new BowlFoodItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).alwaysEat().saturationMod(0.3F).effect(() -> new MobEffectInstance(AMEffectRegistry.MOSQUITO_REPELLENT.get(), 24000), 1.0F).build()).stacksTo(1)));
     public static final RegistryObject<Item> TRIOPS_BUCKET = DEF_REG.register("triops_bucket", () -> new ItemModFishBucket(AMEntityRegistry.TRIOPS, Fluids.WATER, new Item.Properties()));
 
     public static final RegistryObject<Item> MUSIC_DISC_THIME = DEF_REG.register("music_disc_thime", () -> new RecordItem(14, AMSoundRegistry.MUSIC_DISC_THIME, new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 191 * 20));

@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Triops are small, shrimp-like crustaceans found in bodies of water in desert biomes.
+They are very primitive creatures, characterized by their hardiness and three compound eyes.
+Triops are well-known for consuming the larva of mosquitoes, and terrify any mosquitoes they encounter.
+<NEWLINE>
+If a carrot is tossed to a Triops, it will look for a mate who has also been fed a carrot in order to breed.
+The Triops will then lay their eggs on the water, which will hatch into baby Triops if given enough time.
+Alternatively, these eggs can be broken and used to create Mosquito Repellent Stew, a food that will make Crimson Mosquitoes avoid those who eat it like the plague.
+<NEWLINE>
+Triops can be captured using a water bucket.

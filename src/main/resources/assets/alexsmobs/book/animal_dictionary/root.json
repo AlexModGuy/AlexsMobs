@@ -1058,6 +1058,18 @@
       "offset_y": -8,
       "linked_page": "caiman.json",
       "hover_text": "entity.alexsmobs.caiman"
+    },
+    {
+      "entity": "alexsmobs:triops",
+      "x": 125,
+      "y": 70,
+      "page" : 2,
+      "scale": 1.2,
+      "entity_scale": 1.8,
+      "offset_x": -18,
+      "offset_y": -20,
+      "linked_page": "triops.json",
+      "hover_text": "entity.alexsmobs.triops"
     }
   ],
   "linked_page_buttons": [

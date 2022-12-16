@@ -274,6 +274,10 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         entity.animationPosition += entity.animationSpeed;
     }
 
+    public MobType getMobType() {
+        return MobType.ARTHROPOD;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 67) {
