@@ -598,7 +598,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     private void damageItem(ItemStack stack) {
         if (stack != null) {
             stack.hurt(1, this.getRandom(), null);
-            if (stack.getDamageValue() < 0) {
+            if (stack.getDamageValue() <= 0) {
                 stack.shrink(1);
             }
         }
