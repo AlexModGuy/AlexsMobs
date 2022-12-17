@@ -6,6 +6,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -13,7 +14,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.Random;
 
-public class ItemBearDust extends Item {
+public class ItemBearDust extends Item  implements CustomTabBehavior{
 
     private Random random = new Random();
 
@@ -28,5 +29,10 @@ public class ItemBearDust extends Item {
         playerIn.getCooldowns().addCooldown(this, 3);
         playerIn.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResultHolder.success(itemstack);
+    }
+
+    @Override
+    public void fillItemCategory(CreativeModeTab.Output contents) {
+
     }
 }

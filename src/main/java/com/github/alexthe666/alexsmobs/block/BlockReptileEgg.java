@@ -148,7 +148,7 @@ public class BlockReptileEgg extends Block {
 
     private boolean canGrow(Level worldIn) {
         float f = worldIn.getTimeOfDay(1.0F);
-        if ((double) f < 0.69D && (double) f > 0.65D) {
+        if ((double) f < 0.8D && (double) f > 0.65D) {
             return true;
         } else {
             return worldIn.random.nextInt(15) == 0;
