@@ -1,10 +1,55 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Raccoons are small mammals native to plains and forests. Although neutral, they will beg for any food if seeing it held.
-They can often be identified at night due to their glowing eyes.
-Although it can be tempting to feed these cute animals, often times there is little benefit. The Raccoon is a known thief that often steals food out of chests and barrels, and, despite its adorable appearance, can be remarkably aggressive.
-One curiosity of the Raccoon is its "washing" behavior. When given food near water, a Raccoon will wash the food item under water, then eat it.
-Raccoons can only be tamed if given a chicken's Egg near water, where they can wash the egg as they see fit. Tamed Raccoons can be made to sit, follow and wander.
-They can be bred with bread.
-When slain, Raccoons have a chance to drop their tails. These tails can be used to make the Frontiersman's Cap, which grants a speed bonus when sneaking.
+    浣熊是生活在平原上和森林里的小
+<NEWLINE>
+型哺乳动物。虽然是中立生物，但是当
+<NEWLINE>
+看见有人拿着食物时，它们就会上前讨
+<NEWLINE>
+食。因为它们有着一双会发光的眼睛，
+<NEWLINE>
+所以在夜晚可以常常被识别出来。
+<NEWLINE>
+    虽然喂养这些可爱的动物是一件很
+<NEWLINE>
+吸引人的事情，但是往往却没有一点好
+<NEWLINE>
+处。浣熊是众所周知的小毛贼，经常会
+<NEWLINE>
+从箱子和木桶中偷取食物，尽管外表很
+<NEWLINE>
+可爱，但是却具有非常明显的攻击性。
+<NEWLINE>
+关于浣熊有一件稀奇且又有趣的事情，
+<NEWLINE>
+那就是它的「浣洗」行为。在给予浣熊
+<NEWLINE>
+食物的时候，如果附近有水，那么它会
+<NEWLINE>
+先将食物洗过之后才会进行食用。
+<NEWLINE>
+    浣熊只有在有水的地方附近得到鸡
+<NEWLINE>
+蛋才可以被驯服，在那里它们可以随心
+<NEWLINE>
+所欲地清洗鸡蛋。玩家可以命令驯服后
+<NEWLINE>
+的浣熊坐下、跟随和游荡。浣熊可以通
+<NEWLINE>
+过喂食面包来进行繁殖。给予驯服后的
+<NEWLINE>
+<NEWLINE>
+浣熊一张地毯，它会将其当作一条围巾
+<NEWLINE>
+来戴上，这条围巾可以用剪刀来剪掉。
+<NEWLINE>
+浣熊偶尔还会从村民的物品栏中偷走物
+<NEWLINE>
+品。浣熊在被杀死之后，会有一定的机
+<NEWLINE>
+会掉落它们的尾巴。
+<NEWLINE>
+    浣熊尾可以用来制作拓荒者之帽，
+<NEWLINE>
+佩戴时可以提升潜行移动速度。
