@@ -9,4 +9,4 @@ te wieloryby nie są zbyt przyjazne - zranienie jednego z nich może sprawić, �
 <NEWLINE>
 Kolor i wygląd orki może się różnić w zależności od tego, czy jej stado pochodzi z południa, północy, wschodu czy zachodu.
 <NEWLINE>
-ływanie ze stadem orek może dać efekt Siła Orki. Efekt ten daje zwiększoną prędkość ataku. Orki często wykorzystują swoją siłę przeciwko Utopcom i Strażnikom.
+Pływanie ze stadem orek może dać efekt Siła Orki. Efekt ten daje zwiększoną prędkość ataku. Orki często wykorzystują swoją siłę przeciwko Utopcom i Strażnikom.
