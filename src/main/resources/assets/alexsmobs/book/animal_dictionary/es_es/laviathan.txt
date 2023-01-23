@@ -1,0 +1,16 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los Leviatáns son reptiles gigantescos y magmáticos cubiertos de Blackstone que se encuentran dentro de los grandes lagos de lava del Nether. Aunque temibles en apariencia, los Leviatáns son completamente pasivos e intentan huir si están heridos.
+<NEWLINE>
+Los Leviatáns se pueden montar y controlar creando y equipando tanto un sillín Straddlite como una tachuela Straddlite.
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+La silla de montar permite hasta cuatro pasajeros, y la tachuela permite controlar el movimiento del Leviatán con Arnés de Straddita. Los Laviathans equipados con ambos tienen menos probabilidades de huir y sumergirse en la lava.
+<NEWLINE>
+Los Leviatanes son conocidos por ser uno de los depredadores más exitosos de los mosquitos carmesí, a menudo atraviesan la superficie de la lava y emiten humo por las rejillas de ventilación en la espalda y la cabeza. Este humo atrae a los insectos, que luego son atrapados rápidamente en el pico del Laviathan.
+<NEWLINE>
+Siendo criaturas de una consistencia Lava-y, uno esperaría que estos reptiles gigantes fueran dañados por el agua. Pero ahora se cree que cuando se exponen al agua, estas bestias se "solidifican" en una forma de obsidiana más fuerte. Los Laviathans pueden criarse con Larva de Mosquito Carmesí y curarse con Crema de Magma.

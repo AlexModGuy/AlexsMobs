@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los bagres (Pez Gato) son peces letárgicos que se encuentran en pantanos y ríos. Aunque el bagre de los ríos puede volverse bastante pesado, solo el más grande de estos peces se puede encontrar en los pantanos.
+<NEWLINE>
+Al ser comedores de fondo, los bagres no son exigentes con su comida. Los bagres pequeños y medianos intentarán aspirar cualquier artículo que vean. En cambio, el bagre grande intentará comerse a cualquier mob más corto que un bloque.
+El bagre pequeño solo puede almacenar tres pilas de artículos en sus vientres, mientras que el bagre mediano puede almacenar nueve. El bagre grande solo puede tener una mafia en su vientre a la vez.
+Los bagres regurgitarán cualquier objeto o mob que hayan comido si se lastiman o si se encuentran con un pepinillo marino, ya que odian el sabor de los pepinillos.
+<NEWLINE>
+Aunque tienen mala visión, algo en la luz intermitente de una linterna de mar atrae a Bagre. Estos se pueden usar para atraer bagres a áreas con o sin artículos.
+<NEWLINE>
+Todos los bagres, incluso los grandes, se pueden capturar con un balde de agua. El contenido de la barriga del pez se conservará, por lo que uno puede usar Catfish de manera efectiva para transportar artículos o una multitud colocándolos en baldes después de alimentarlos.
+Los bagres que han comido artículos o han sido metidos en una cubeta no desaparecerán.

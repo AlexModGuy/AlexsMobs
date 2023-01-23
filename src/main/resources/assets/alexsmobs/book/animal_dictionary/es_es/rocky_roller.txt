@@ -1,0 +1,9 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Rocky Roller es un monstruo gigante y agresivo que se encuentra exclusivamente dentro de las cuevas Dripstone. Equipado con un caparazón cubierto de estalactitas puntiagudas, este monstruo no se lleva bien con los intrusos y trata de aplastarlos rodando hacia ellos a gran velocidad.
+Aunque tienen una salud relativamente baja para un monstruo, tienen una armadura extremadamente gruesa y un gran daño, lo que los convierte en una amenaza para cualquier espeleólogo.
+<NEWLINE>
+Si lo matan, Rocky Roller puede arrojar toba, estalactitas puntiagudas y un Rocky Shell. Este caparazón se puede usar para fabricar una placa pectoral que permite a su portador rodar como un Rocky Roller cuando corre. Esta habilidad rodante le permite a uno viajar rápidamente y embestir a otros para causar una pequeña cantidad de daño.
+El daño por caída también se reduce al usar este artículo, pero si se usa en el agua, uno puede hundirse rápidamente bajo su impresionante peso.

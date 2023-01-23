@@ -1,0 +1,20 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Le Murmur es un alma torturada que solo se puede encontrar en las profundidades de las entrañas del supramundo, incluso más profundo que las Cuevas de Cienpiés.
+Lo que parece ser una persona inofensiva es en realidad un monstruo no muerto con un cuello serpentino, que puede extenderse más de 50 bloques.
+Cuando un Murmur ve una presa, extenderá su cuello hacia arriba para poder verla bien, luego barrerá hacia adelante rápidamente para morder a su presa y retirarse rápidamente.
+Si se golpea la cabeza de Murmur en lugar de su cuerpo, solo recibirá la mitad del daño.
+<NEWLINE>
+Si muere, Le Murmur puede arrojar lana roja, un tendón elástico o, en raras ocasiones, un kimono inquietante.
+Los tendones elásticos se pueden combinar con las garras Dropbear para crear el "Látigo de tendón".
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Esta arma cuerpo a cuerpo de mediano alcance se puede balancear como una espada y causará daño a hasta tres mobs cercanos, con daño descendente. Se puede usar desde más de 8 cuadras de distancia y puede encontrar automáticamente un objetivo.
+El látigo se puede reparar con tendones elásticos.
+<NEWLINE>
+el Kimono Inquietante puede funcionar como peto. Aunque tiene poca armadura y durabilidad, aumenta la distancia de ubicación del usuario en dos bloques y hace que la mayoría de las turbas hostiles no muertas sean neutrales a su presencia, a excepción de otros murmullos y Wither.
+Se puede reparar con lana.

@@ -1,0 +1,8 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los Tucanes son pequeños pájaros coloridos con picos enormes. A menudo se pueden encontrar en árboles en biomas de la jungla. Los tucanes vienen en una variedad de colores deslumbrantes.
+<NEWLINE>
+Estas aves pasivas tienen una gran afinidad por las frutas de todo tipo. Cuando se alimenta con una manzana, un plátano u otra fruta que proviene de un árbol, existe la posibilidad de que un tucán coloque un retoño de este árbol en algún lugar del mundo con su pico. Alimentarlo con una manzana dará como resultado un retoño de roble, y un plátano dará como resultado un retoño de la jungla.
+<NEWLINE>
+Cuando se alimenta con una manzana dorada, un tucán se transformará momentáneamente en un tucán dorado y plantará retoños a un ritmo mucho más rápido. Alimentar a un tucán con una manzana dorada encantada da como resultado un tucán que no necesita ser alimentado constantemente con frutas para colocar retoños. Los tucanes se pueden criar con huevos.

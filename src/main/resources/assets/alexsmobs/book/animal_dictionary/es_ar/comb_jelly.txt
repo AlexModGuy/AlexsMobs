@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los Ctnoforos son simples criaturas gelatinosas que se encuentran en el límite de la definición de vida animal.
+Se pueden encontrar de noche en océanos congelados, donde sus colores prismáticos parpadeantes contrastan con el azul profundo.
+Lejos de ser inteligentes, las medusas peine simplemente flotan en el agua, filtrando presas microscópicas. Se pueden capturar con un balde de agua y vienen en varios colores.
+<NEWLINE>
+Si muere, el Ctnoforos puede arrojar Gelatina Multicolor. Este  se puede usar en casi cualquier mob para colorearlo en un patrón de arco iris intermitente, similar al Ctnoforo.
+Este arcoíris se puede quitar usando una esponja en la criatura. También se puede comer la gelatina para aplicar este efecto a sí mismos.
+<NEWLINE>
+con la Gelatina Multicolor también se puede fabricar con 8 cristales para crear cristal RGB, que cambia de color según su posición en el mundo. A diferencia del vidrio oscuro, el cristal RGB también emite luz.

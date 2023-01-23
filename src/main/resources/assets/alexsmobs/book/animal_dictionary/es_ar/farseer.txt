@@ -1,0 +1,23 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Farseer es un ser que está más allá de las dimensiones, que vive en universos ortogonales al nuestro. Solo pueden cruzar desde sus incomprensibles mundos natales en las mismas fronteras del mundo, lo que lleva a que los encuentros con estas bestias sean extremadamente raros.
+<NEWLINE>
+Sin embargo, esto no significa que sean imposibles de encontrar. Con algo de dedicación, uno puede crear un "Tallador de dimesiones gastado", colocando un "Tallador de dimensiones" en una Cápsida. A diferencia de la variante normal de esta herramienta, el Tallador de dimesiones gastado, creará un portal que lleva un millón de bloques en cualquier dirección.
+El simple uso de esta herramienta varias veces en la misma dirección podría llevar a estar dentro del alcance del Farseer.
+<NEWLINE>
+Cuando la presa está cerca de la frontera del mundo, el Vidente tiene la oportunidad de abrir un portal y aparecer justo al lado, sorprendiéndolo rápidamente.
+<NEWLINE>
+Si se encuentra con un clarividente, sin duda será extremadamente hostil. Intentarán disolver a cualquier oponente en estática pura usando sus garras rápidas o un rayo devastador disparado desde el ojo. Si estos ataques no son esquivados o flanqueados, es muy probable que el Vidente tenga éxito: sus ataques atraviesan la armadura y los encantamientos por igual.
+<NEWLINE>
+Cuando muere, un Vidente puede dejar caer uno de sus muchos brazos. Estos, junto con un poco de obsidiana y una Estrella del Nether, se pueden usar para fabricar una "Mesa de transmutación".
+<NEWLINE>
+<NEWLINE>
+Usando la misma magia que usan los videntes para transformar la materia en nada, esta mesa permite transmutar pilas enteras de elementos en diferentes elementos.
+Cuando se abre, esta mesa tiene una ranura que se puede llenar con cualquier elemento apilable. Una vez hecho esto, aparecerán tres posibilidades, que se pueden seleccionar para transformar toda la pila de elementos en el elemento seleccionado, por un costo de experiencia.
+Cuando un elemento se transmuta en otro, existe una pequeña posibilidad de que las futuras posibilidades de transmutación sean el elemento anterior, lo que aumenta y disminuye según la frecuencia con la que se transmuta ese elemento y la frecuencia con la que se selecciona, respectivamente.
+<NEWLINE>
+La Mesa de transmutación puede comenzar solo con elementos simples y naturales para cambiar la forma de los elementos, pero se puede llenar rápidamente con otros tipos de recursos.
+Si se destruye, la Mesa de transmutación perderá todo su conocimiento previo de los elementos y solo quedará una estrella inferior, seguida de una violenta explosión.

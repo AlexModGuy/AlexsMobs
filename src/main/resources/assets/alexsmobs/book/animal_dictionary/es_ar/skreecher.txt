@@ -1,0 +1,17 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+El Skreecher es un Mob extraño y horriblemente mutado que se encuentra aferrado al techo del bioma profundo y oscuro.
+Dado que su bioma nativo es tan oscuro, a menudo solo se puede distinguir por sus ojos gigantes y brillantes.
+<NEWLINE>
+Aunque se considera un monstruo hostil, Skreecher no puede luchar en ningún sentido típico. En cambio, al detectar presas, comenzará a crear un estruendo extremadamente fuerte, tanto aullando como aplaudiendo con sus dos grandes pies.
+En unos segundos, un ruido tan fuerte en un bioma tan sensible al sonido seguramente despertará a un guardián justo debajo de su objetivo.
+<NEWLINE>
+Por suerte para los aventureros, el Skreecher tiene una salud extremadamente limitada, y cualquier proyectil puede desactivarlo temporalmente para que no llame a un guardián, además de hacerlo caer en picado hacia el suelo.
+La parte más difícil de enfrentarse a estas bestias es identificarlas antes de que te identifiquen a ti.
+<NEWLINE>
+Si muere, un Skreecher tiene la posibilidad de soltar su alma. El Skreecher Soul se puede usar para fabricar un "Sculk Boomer".
+<NEWLINE>
+<NEWLINE>
+Cuando es activado por un sensor de acecho cercano, este bloque emitirá un fuerte estruendo que puede dañar a las turbas cercanas que se encuentren dentro de los 3 bloques horizontales del boomer. Se puede desactivar temporalmente con una señal de redstone, y los propios booms tienen un ligero tiempo de reutilización, lo que hace que Sculk Boomer sea útil para las trampas.
