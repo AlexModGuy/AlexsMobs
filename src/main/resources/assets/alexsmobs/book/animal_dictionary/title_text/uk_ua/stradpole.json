@@ -1,0 +1,28 @@
+{
+  "parent": "root.json",
+  "text": "stradpole.txt",
+  "title": "Довгуля",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:stradpole",
+      "x": 90,
+      "y": 75,
+      "page" : 0,
+      "scale": 2.0,
+      "rot_x": 30,
+      "rot_y": 225,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

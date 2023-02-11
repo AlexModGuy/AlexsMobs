@@ -1,0 +1,72 @@
+{
+  "parent": "root.json",
+  "text": "cave_centipede.txt",
+  "title": "Печерна сороконіжка",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:centipede_tail",
+      "x": 65,
+      "y": 70,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 300,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_body",
+      "x": 87,
+      "y": 68,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 270,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_body",
+      "x": 107,
+      "y": 67,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 250,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_body",
+      "x": 130,
+      "y": 70,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 240,
+      "rot_z": 0,
+      "follow_cursor": false
+    },
+    {
+      "entity": "alexsmobs:centipede_head",
+      "x": 145,
+      "y": 76,
+      "page" : 0,
+      "scale": 0.8,
+      "rot_x": 30,
+      "rot_y": 220,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}

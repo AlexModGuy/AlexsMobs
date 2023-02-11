@@ -1,0 +1,36 @@
+{
+  "parent": "root.json",
+  "text": "komodo_dragon.txt",
+  "title": "Варан",
+  "linked_page_buttons": [
+  ],
+  "images": [
+  ],
+  "item_renders": [
+  ],
+  "recipes": [
+    {
+      "recipe": "alexsmobs:komodo_spit_bottle",
+      "shapeless": true,
+      "x": 210,
+      "y": 130,
+      "page": 1,
+      "scale": 1.1
+    }
+  ],
+  "tabula_renders": [
+  ],
+  "entity_renders": [
+    {
+      "entity": "alexsmobs:komodo_dragon",
+      "x": 110,
+      "y": 93,
+      "page" : 0,
+      "scale": 1.2,
+      "rot_x": 30,
+      "rot_y": 235,
+      "rot_z": 0,
+      "follow_cursor": false
+    }
+  ]
+}
