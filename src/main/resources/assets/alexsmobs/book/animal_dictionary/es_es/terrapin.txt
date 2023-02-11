@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Las Tortugas acuáticas, o Tortugas de río, son pequeños reptiles que ocasionalmente se encuentran sumergidos en biomas de ríos libres de hielo.
+Son completamente pasivos y dependen de su caparazón para protegerse. Las tortugas salvajes se pueden recoger con un balde de agua.
+<NEWLINE>
+Si se salta sobre una tortuga acuática, retrocederá hasta su caparazón. Si se salta de nuevo, la tortuga girará en la dirección del saltador, rebotando en las paredes.
+Si choca con otra mafia, la veloz tortuga infligirá una cantidad decente de daño. Sin embargo, esta mafia podría volverse agresiva con cualquiera que les lanzara una tortuga.
+<NEWLINE>
+Las tortugas acuáticas vienen en una amplia gama de patrones y colores, muchos de los cuales no aparecen en la naturaleza.
+Estas tortugas se pueden criar con pastos marinos para producir de 1 a 4 huevos. Aunque la mayoría de estos huevos deberían ser un cruce directo entre sus padres, existe la posibilidad de que una tortuga bebé mute a un color completamente aleatorio.
+Si la tortuga no está mutada, entonces sus colores pueden ser uno de sus padres o un promedio de los dos.

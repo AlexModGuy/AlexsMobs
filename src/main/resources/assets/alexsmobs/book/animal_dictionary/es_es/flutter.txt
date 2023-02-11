@@ -1,0 +1,10 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Las Volazaleas (Flutter) son pequeñas criaturas plantoides que se encuentran en el exuberante bioma de las cuevas. Son completamente pasivos y evitan la mayoría de los daños flotando en el aire agitando su flor gigante.
+Las Volazaleas tienen un interés curioso por cualquier flor y se pueden domesticar dándoles de 4 a 6 flores. Cada una de estas flores debe ser diferente entre sí, de lo contrario, el aleteo se desinteresará.
+<NEWLINE>
+Cuando se les domestica, se puede hacer que las Volazaleas se queden, sigan o deambulen. Al defender a su dueño de cualquier amenaza, las Volazalea flotará en el cielo y disparará bolas de polen al atacante. Estas bolas de polen pueden apuntar al atacante, lo que hace que varios aleteos sean muy útiles para los exploradores de cuevas.
+Aunque tienen poca salud, las Volazaleas pueden equiparse con una maceta para darles una armadura adicional. Una Volazalea en una maseta también se puede recoger sigilosamente. Los aleteos se pueden curar con flores.
+<NEWLINE>
+Dado que las Volazaleas son plantas, se pueden criar con polvo de huesos. Cuando se reproducen aleteos cerca de arbustos u hojas de azalea, existe la posibilidad de que los arbustos u hojas de azalea florezcan. Si muere, la Volazalea puede soltar una flor de esporas.

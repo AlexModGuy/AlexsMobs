@@ -1,0 +1,12 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los Bajomineros son habitantes raros y fantasmales de pozos de minas abandonados. Debido a su naturaleza etérea, pueden atravesar paredes con facilidad y solo pueden dañarse con magia, como pociones de salpicadura.
+La mayoría de los socavadores solo comenzarán a aparecer si se pasa mucho tiempo en un pozo de mina.
+Sin embargo, no representan una amenaza para los vivos, siempre que no sean atacados primero. Sin embargo, su desconfianza hacia los recién llegados es evidente: desaparecerán temporalmente si se les acerca. Los socavadores se contentan con acechar los pasillos del pozo de la mina, como lo han estado haciendo durante cientos de años.
+<NEWLINE>
+Ocasionalmente, se puede ver a los socavadores minando bloques con sus picos fantasmales. Debido a que existen en el plano espiritual, no pueden destruir estos bloques, pero sus acciones pueden revelar minerales ocultos en las paredes del pozo de mina circundante.
+Si un bloque de mineral específico se deja caer cerca de un socavador, dejará de ser invisible y comenzará a buscar y extraer bloques que ocultan ese bloque de mineral específico oculto en el área circundante, lo que podría revelar vetas de mineral.
+<NEWLINE>
+Si muere usando magia, el Underminer puede dejar caer su Ghostly Pickaxe. Este pico, aunque inmaterial, es decentemente poderoso, pero su verdadero poder es que puede almacenar hasta 9 pilas de bloques extraídos dentro de sí mismo, solo si su usuario tiene un inventario completo. Una vez que haya espacio en el inventario, los artículos se devolverán del pico. El pico fantasmal se puede reparar con membranas fantasma.

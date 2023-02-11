@@ -1,0 +1,7 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los Peces Voladores son peces extraños que se encuentran en la superficie de biomas oceánicos tibios. Estos peces peculiares vienen en algunas variaciones de color y son presa frecuente de delfines y focas.
+Ocasionalmente, se puede ver un Pez Volador saltando fuera del agua y deslizándose por el aire, a veces a una distancia impresionante. Los Peces Voladores se puede capturar en una cubeta de agua.
+<NEWLINE>
+Si se mata, se pueden usar dos peces voladores con dos cuerdas para fabricar botas que permitan al usuario saltar fuera del agua, al igual que el pez. Esta capacidad se mejora si el usuario también tiene un Élytras.

@@ -1,0 +1,14 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los rinocerontes son grandes mamíferos acorazados que se encuentran en grupos dentro de los biomas de la sabana.
+Tienen grandes cuernos en la cabeza que usarán para atacar cualquier amenaza que se acerque demasiado.
+Al rinoceronte le disgustan mucho los saqueadores y los buscará en cuanto los vea.
+Estos animales con cuernos y armaduras pueden infligir grandes cantidades de daño muy rápidamente.
+<NEWLINE>
+Estos animales son inicialmente asustadizos con los jugadores, pero pueden ser pacificados alimentándolos con trigo.
+Si se usa una poción en un rinoceronte, la poción se aplicará a su cuerno. Cualquier criatura atacada por el rinoceronte sufrirá el efecto de la poción.
+Estas pociones durarán de 15 a 20 ataques antes de desaparecer. El rinoceronte entablado amistad puede acudir en ayuda de cualquiera que le haya dado de comer trigo, y deambulará por cualquier pueblo cercano en busca de seguridad.
+<NEWLINE>
+El rinoceronte se puede criar con hierba alta o arbustos muertos.

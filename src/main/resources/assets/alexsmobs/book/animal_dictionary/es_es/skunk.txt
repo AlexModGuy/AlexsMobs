@@ -1,0 +1,13 @@
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+<NEWLINE>
+Los zorrillos (Mofetas) son mamíferos que ocasionalmente se pueden encontrar deambulando por los bosques. Son naturalmente muy asustadizos e intentarán huir de cualquier gran depredador que encuentren.
+Si es perseguida implacablemente por el bosque o es herida de alguna manera, la Mofeta se defenderá liberando un rocío nocivo sobre su perseguidor, infligiendo náuseas.
+<NEWLINE>
+Parte de este spray puede incluso permanecer en el mundo, adhiriéndose a las superficies sobre las que ha rociado la Skunk. Se puede embotellar para obtener "Stink in a Bottle", que se utiliza como combustible para Stink Ray.
+<NEWLINE>
+Stink Ray es una herramienta única y poderosa que se puede usar para distraer enjambres de mobs hostiles o neutrales. Si se dispara a una criatura, las criaturas neutrales y hostiles cercanas la culparán por el horrible olor y comenzarán a atacarla, mientras que los animales pasivos intentarán huir.
+Por lo tanto, Stink Ray se puede usar para causar estragos rápidamente entre un grupo de mobs. Cada botella consumida sólo le sirve para cinco usos.
+<NEWLINE>
+Las mofetas se pueden criar con bayas dulces. Si una mofeta recibe un efecto de poción mientras se rocía, creará una nube persistente del efecto cerca. Solo los zorrillos adultos pueden rociar.
