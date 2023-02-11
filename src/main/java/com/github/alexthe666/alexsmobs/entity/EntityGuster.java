@@ -78,6 +78,9 @@ public class EntityGuster extends Monster {
         return AMSoundRegistry.GUSTER_HURT.get();
     }
 
+    public boolean isSensitiveToWater() {
+        return true;
+    }
 
     @Nullable
     protected ResourceLocation getDefaultLootTable() {
@@ -224,9 +227,6 @@ public class EntityGuster extends Monster {
                 this.setLiftedEntity(closestItem.getId());
                 maxLiftTime = 30 + random.nextInt(30);
             }
-        }
-        if (this.isInWaterOrBubble()) {
-            this.hurt(DamageSource.DROWN, 0.5F);
         }
         float f = (float) this.getY();
         if (this.isAlive()) {
