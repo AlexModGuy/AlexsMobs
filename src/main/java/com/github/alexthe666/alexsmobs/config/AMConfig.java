@@ -23,7 +23,7 @@ public class AMConfig {
     public static int hummingbirdSpawnRolls = 0;
     public static int orcaSpawnWeight = 2;
     public static int orcaSpawnRolls = 6;
-    public static int sunbirdSpawnWeight = 2;
+    public static int sunbirdSpawnWeight = 5;
     public static int sunbirdSpawnRolls = 15;
     public static int gorillaSpawnWeight = 25;
     public static int gorillaSpawnRolls = 0;
