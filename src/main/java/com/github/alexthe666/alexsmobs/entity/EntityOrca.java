@@ -210,9 +210,11 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                             if (block != Blocks.AIR) {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
-                                level.destroyBlock(pos, true);
                                 if (state.is(BlockTags.ICE)) {
+                                    level.destroyBlock(pos, false);
                                     level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
+                                }else{
+                                    level.destroyBlock(pos, true);
                                 }
                             }
                         }
