@@ -316,7 +316,6 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
         }
     }
 
-
     private void transformBiome(BlockPos pos, Holder<Biome> biome) {
         LevelChunk chunk = level.getChunkAt(pos);
         PalettedContainer<Holder<Biome>> container = getChunkBiomes(chunk).recreate();
