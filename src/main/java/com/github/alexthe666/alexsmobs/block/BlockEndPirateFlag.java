@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateFlag;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -77,13 +78,13 @@ public class BlockEndPirateFlag extends BaseEntityBlock {
         return createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_FLAG.get(), TileEntityEndPirateFlag::commonTick);
     }
 
-    public void animateTick(BlockState p_53094_, Level p_53095_, BlockPos p_53096_, Random p_53097_) {
-        double d0 = (double)p_53096_.getX() + 0.55D - (double)(p_53097_.nextFloat() * 0.1F);
-        double d1 = (double)p_53096_.getY() + 0.55D - (double)(p_53097_.nextFloat() * 0.1F);
-        double d2 = (double)p_53096_.getZ() + 0.55D - (double)(p_53097_.nextFloat() * 0.1F);
-        double d3 = (double)(0.4F - (p_53097_.nextFloat() + p_53097_.nextFloat()) * 0.4F);
-        if (p_53097_.nextInt(5) == 0) {
-            p_53095_.addParticle(ParticleTypes.END_ROD, d0, d1 +  d3, d2, p_53097_.nextGaussian() * 0.005D, p_53097_.nextGaussian() * 0.005D, p_53097_.nextGaussian() * 0.005D);
+    public void animateTick(BlockState blockState, Level level, BlockPos pos, RandomSource randomSource) {
+        double d0 = (double)pos.getX() + 0.55D - (double)(randomSource.nextFloat() * 0.1F);
+        double d1 = (double)pos.getY() + 0.55D - (double)(randomSource.nextFloat() * 0.1F);
+        double d2 = (double)pos.getZ() + 0.55D - (double)(randomSource.nextFloat() * 0.1F);
+        double d3 = (double)(0.4F - (randomSource.nextFloat() + randomSource.nextFloat()) * 0.4F);
+        if (randomSource.nextInt(5) == 0) {
+            level.addParticle(ParticleTypes.END_ROD, d0, d1 +  d3, d2, randomSource.nextGaussian() * 0.005D, randomSource.nextGaussian() * 0.005D, randomSource.nextGaussian() * 0.005D);
         }
 
     }

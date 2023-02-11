@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
@@ -111,7 +112,7 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
         }
         if (!this.defaultBlockState().is(block) && flag != state.getValue(POWERED)) {
             if (flag != state.getValue(OPEN)) {
-               // level.gameEvent(flag ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+               level.gameEvent(flag ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos, GameEvent.Context.of(state));
             }
             Direction swap = state.getValue(HINGE) == DoorHingeSide.LEFT ? state.getValue(HORIZONTAL_FACING).getClockWise() : state.getValue(HORIZONTAL_FACING).getCounterClockWise();
             BlockPos relative = pos.relative(swap);

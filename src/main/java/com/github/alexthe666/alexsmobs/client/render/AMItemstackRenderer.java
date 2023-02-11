@@ -255,8 +255,6 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 Minecraft.getInstance().getItemRenderer().renderStatic(inventory, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
             }
         }
-        //TODO reimplement
-        /*
         if(itemStackIn.getItem() == AMBlockRegistry.END_PIRATE_ANCHOR.get().asItem()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(1F, 0F, 0);
@@ -282,7 +280,6 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             SHIP_WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(SHIP_WHEEL_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
-        */
         if (itemStackIn.getItem() == AMItemRegistry.TAB_ICON.get()) {
             Entity fakeEntity = null;
             List<Pair<EntityType, Float>> mobIcons = AMMobIcons.getMobIcons();

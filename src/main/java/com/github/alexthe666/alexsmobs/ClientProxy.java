@@ -10,9 +10,7 @@ import com.github.alexthe666.alexsmobs.client.render.*;
 import com.github.alexthe666.alexsmobs.client.render.item.AMItemRenderProperties;
 import com.github.alexthe666.alexsmobs.client.render.item.CustomArmorRenderProperties;
 import com.github.alexthe666.alexsmobs.client.render.item.GhostlyPickaxeBakedModel;
-import com.github.alexthe666.alexsmobs.client.render.tile.RenderCapsid;
-import com.github.alexthe666.alexsmobs.client.render.tile.RenderTransmutationTable;
-import com.github.alexthe666.alexsmobs.client.render.tile.RenderVoidWormBeak;
+import com.github.alexthe666.alexsmobs.client.render.tile.*;
 import com.github.alexthe666.alexsmobs.client.sound.SoundBearMusicBox;
 import com.github.alexthe666.alexsmobs.client.sound.SoundLaCucaracha;
 import com.github.alexthe666.alexsmobs.client.sound.SoundWormBoss;
@@ -262,6 +260,11 @@ public class ClientProxy extends CommonProxy {
         BlockEntityRenderers.register(AMTileEntityRegistry.CAPSID.get(), RenderCapsid::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.VOID_WORM_BEAK.get(), RenderVoidWormBeak::new);
         BlockEntityRenderers.register(AMTileEntityRegistry.TRANSMUTATION_TABLE.get(), RenderTransmutationTable::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_DOOR.get(), RenderEndPirateDoor::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR.get(), RenderEndPirateAnchor::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), RenderEndPirateAnchorWinch::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_SHIP_WHEEL.get(), RenderEndPirateShipWheel::new);
+        BlockEntityRenderers.register(AMTileEntityRegistry.END_PIRATE_FLAG.get(), RenderEndPirateFlag::new);
         MenuScreens.register(AMMenuRegistry.TRANSMUTATION_TABLE.get(), GUITransmutationTable::new);
     }
 

@@ -83,11 +83,11 @@ public class BlockEnderResidue extends AbstractGlassBlock {
         return true;
     }
 
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_53586_) {
-        p_53586_.add(AGE, SLOW_DECAY);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> blockStateBuilder) {
+        blockStateBuilder.add(AGE, SLOW_DECAY);
     }
 
-    public ItemStack getCloneItemStack(BlockGetter p_53570_, BlockPos p_53571_, BlockState p_53572_) {
+    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState state) {
         return ItemStack.EMPTY;
     }
 }
