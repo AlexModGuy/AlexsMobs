@@ -123,7 +123,7 @@ public class EntityCachalotWhale extends Animal {
         while(up.getY() < iServerWorld.getMaxBuildHeight() && iServerWorld.getFluidState(up).is(FluidTags.WATER)){
             up = up.above();
         }
-        return iServerWorld.getFluidState(up.below()).is(FluidTags.WATER) && iServerWorld.canSeeSky(up);
+        return iServerWorld.getFluidState(up.below()).is(FluidTags.WATER) && up.getY() < iServerWorld.getSeaLevel() + 15 && iServerWorld.canSeeSky(up);
     }
 
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
