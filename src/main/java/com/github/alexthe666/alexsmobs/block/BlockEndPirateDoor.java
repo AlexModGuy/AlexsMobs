@@ -47,7 +47,7 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
     protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
 
     public BlockEndPirateDoor() {
-        super(Properties.of(Material.GLASS).noOcclusion().sound(SoundType.GLASS).lightLevel((state) -> 3).requiresCorrectToolForDrops().strength(1.5F));
+        super(Properties.of(Material.GLASS).noOcclusion().sound(SoundType.WOOD).lightLevel((state) -> 3).requiresCorrectToolForDrops().strength(1.5F));
         this.registerDefaultState(this.stateDefinition.any().setValue(SEGMENT, 0).setValue(OPEN, false).setValue(HINGE, DoorHingeSide.RIGHT).setValue(HORIZONTAL_FACING, Direction.NORTH));
     }
 

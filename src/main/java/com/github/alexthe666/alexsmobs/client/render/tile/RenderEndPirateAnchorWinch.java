@@ -54,9 +54,10 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
                 matrixStackIn.translate(0, (1F - moveDown) * 0.5F, 0);
                 matrixStackIn.scale(modulatedScale, modulatedScale, modulatedScale);
             }
+            float centerScale = (float) Math.sin((i / tileEntityIn.getChainLengthForRender()) * Math.PI);
             float offset1 = (float)Math.sin(ageInTicks * 0.1F + i) * 0.05F;
             float offset3 = -(float)Math.cos(ageInTicks * 0.1F + i) * 0.05F;
-            matrixStackIn.translate(offset1, 0, offset3);
+            matrixStackIn.translate(offset1 * centerScale, 0, offset3 * centerScale);
             CHAIN_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutout(TEXTURE_CHAIN)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
             CHAIN_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(TEXTURE_CHAIN)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
             matrixStackIn.popPose();
@@ -64,7 +65,7 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
         }
         matrixStackIn.popPose();
         WINCH_MODEL.renderAnchor(tileEntityIn, partialTicks, east);
-        WINCH_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutout(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
+        WINCH_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
         WINCH_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
         matrixStackIn.popPose();
         matrixStackIn.popPose();

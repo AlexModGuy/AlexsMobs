@@ -36,7 +36,7 @@ public class BlockEndPirateAnchorWinch extends BaseEntityBlock implements AMSpec
     protected static final VoxelShape FULL_AABB_NS = Block.box(0.0D, 3.0D, 3.0D, 16.0D, 13.0D, 13.0D);
 
     protected BlockEndPirateAnchorWinch() {
-        super(Properties.of(Material.STONE, MaterialColor.COLOR_PURPLE).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
+        super(Properties.of(Material.STONE, MaterialColor.COLOR_PURPLE).friction(0.97F).strength(30.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(POWERED, Boolean.valueOf(false)));
     }
 

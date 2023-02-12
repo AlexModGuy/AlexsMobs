@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down,phase=0": { "model": "alexsmobs:block/dragons_breath_cannon_empty", "x": 90 },
+    "facing=east,phase=0": {"model": "alexsmobs:block/dragons_breath_cannon_empty", "y": 90},
+    "facing=north,phase=0": {"model": "alexsmobs:block/dragons_breath_cannon_empty"},
+    "facing=south,phase=0": {"model": "alexsmobs:block/dragons_breath_cannon_empty", "y": 180},
+    "facing=up,phase=0": {"model": "alexsmobs:block/dragons_breath_cannon_empty", "x":  270},
+    "facing=west,phase=0": {"model": "alexsmobs:block/dragons_breath_cannon_empty", "y": 270},
+    "facing=down,phase=1": { "model": "alexsmobs:block/dragons_breath_cannon_charged", "x": 90 },
+    "facing=east,phase=1": {"model": "alexsmobs:block/dragons_breath_cannon_charged", "y": 90},
+    "facing=north,phase=1": {"model": "alexsmobs:block/dragons_breath_cannon_charged"},
+    "facing=south,phase=1": {"model": "alexsmobs:block/dragons_breath_cannon_charged", "y": 180},
+    "facing=up,phase=1": {"model": "alexsmobs:block/dragons_breath_cannon_charged", "x":  270},
+    "facing=west,phase=1": {"model": "alexsmobs:block/dragons_breath_cannon_charged", "y": 270},
+    "facing=down,phase=2": { "model": "alexsmobs:block/dragons_breath_cannon_firing", "x": 90 },
+    "facing=east,phase=2": {"model": "alexsmobs:block/dragons_breath_cannon_firing", "y": 90},
+    "facing=north,phase=2": {"model": "alexsmobs:block/dragons_breath_cannon_firing"},
+    "facing=south,phase=2": {"model": "alexsmobs:block/dragons_breath_cannon_firing", "y": 180},
+    "facing=up,phase=2": {"model": "alexsmobs:block/dragons_breath_cannon_firing", "x":  270},
+    "facing=west,phase=2": {"model": "alexsmobs:block/dragons_breath_cannon_firing", "y": 270}
+  }
+}

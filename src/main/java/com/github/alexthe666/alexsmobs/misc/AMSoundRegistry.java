@@ -440,7 +440,9 @@ public class AMSoundRegistry {
     public static final RegistryObject<SoundEvent> CAIMAN_SPLASH = createSoundEvent("caiman_splash");
     public static final RegistryObject<SoundEvent> TRIOPS_HURT = createSoundEvent("triops_hurt");
     public static final RegistryObject<SoundEvent> END_PIRATE_DOOR = createSoundEvent("end_pirate_door");
-    
+
+    public static final RegistryObject<SoundEvent> DRAGONS_BREATH_CANNON_CHARGE = createSoundEvent("dragons_breath_cannon_charge");
+
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {
         return DEF_REG.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(AlexsMobs.MODID, soundName)));
     }

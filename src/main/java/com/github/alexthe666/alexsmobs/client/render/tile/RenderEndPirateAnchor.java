@@ -31,7 +31,7 @@ public class RenderEndPirateAnchor<T extends TileEntityEndPirateAnchor> implemen
             matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F));
         }
         ANCHOR_MODEL.renderAnchor(tileEntityIn, partialTicks, east);
-        ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutout(TEXTURE_ANCHOR)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
+        ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE_ANCHOR)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
         ANCHOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(TEXTURE_ANCHOR_GLOW)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
 
         matrixStackIn.popPose();

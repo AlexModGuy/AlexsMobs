@@ -1,0 +1,7 @@
+{
+  "parent": "alexsmobs:block/dragons_breath_cannon",
+  "textures": {
+    "main": "alexsmobs:block/dragons_breath_cannon_firing_main",
+    "extra": "alexsmobs:block/dragons_breath_cannon_firing_extra"
+  }
+}

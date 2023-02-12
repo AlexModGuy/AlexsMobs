@@ -145,7 +145,7 @@ public class AMEntityRegistry {
     public static final RegistryObject<EntityType<EntityBlueJay>> BLUE_JAY = DEF_REG.register("blue_jay", () -> registerEntity(EntityType.Builder.of(EntityBlueJay::new, MobCategory.CREATURE).sized(0.5F, 0.6F), "blue_jay"));
     public static final RegistryObject<EntityType<EntityCaiman>> CAIMAN = DEF_REG.register("caiman", () -> registerEntity(EntityType.Builder.of(EntityCaiman::new, MobCategory.CREATURE).sized(1.3F, 0.6F), "caiman"));
     public static final RegistryObject<EntityType<EntityTriops>> TRIOPS = DEF_REG.register("triops", () -> registerEntity(EntityType.Builder.of(EntityTriops::new, MobCategory.WATER_AMBIENT).sized(0.7F, 0.25F), "triops"));
-
+    public static final RegistryObject<EntityType<EntityDragonsBreathCannonball>> DRAGONS_BREATH_CANNONBALL = DEF_REG.register("dragons_breath_cannonball", () -> registerEntity(EntityType.Builder.of(EntityDragonsBreathCannonball::new, MobCategory.MISC).sized(0.5F, 0.5F).setCustomClientFactory(EntityDragonsBreathCannonball::new).fireImmune(), "dragons_breath_cannonball"));
     private static final EntityType registerEntity(EntityType.Builder builder, String entityName) {
         return (EntityType) builder.build(entityName);
     }

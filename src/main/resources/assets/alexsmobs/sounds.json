@@ -3022,5 +3022,14 @@
       }
     ],
     "subtitle": "alexsmobs.sound.subtitle.end_pirate_door"
+  },
+  "dragons_breath_cannon_charge": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "alexsmobs:dragons_breath_cannon_charge"
+      }
+    ],
+    "subtitle": "alexsmobs.sound.subtitle.dragons_breath_cannon_charge"
   }
 }

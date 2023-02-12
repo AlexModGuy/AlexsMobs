@@ -38,7 +38,7 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock implements AMSpecia
     private static final VoxelShape DOWN_AABB = Block.box(-2, 13, -2, 16, 16, 18);
 
     public BlockEndPirateShipWheel() {
-        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).lightLevel((i) -> 3).noCollission().requiresCorrectToolForDrops());
+        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.WOOD).strength(1.5F).lightLevel((i) -> 3).noCollission().requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

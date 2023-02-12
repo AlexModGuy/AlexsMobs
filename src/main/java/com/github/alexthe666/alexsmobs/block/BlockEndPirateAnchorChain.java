@@ -6,6 +6,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -40,18 +41,21 @@ public class BlockEndPirateAnchorChain extends Block implements SimpleWaterlogge
 
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.fallDistance = 0.0F;
+            livingEntity.resetFallDistance();
             Vec3 motion = livingEntity.getDeltaMovement();
             double d0 = Mth.clamp(motion.x, -0.15F, 0.15F);
             double d1 = Mth.clamp(motion.z, -0.15F, 0.15F);
             double d2 = entity.horizontalCollision ? 0.15D : 0D;
             if (livingEntity.isSuppressingSlidingDownLadder()) {
                 d2 = 0.08D;
-                System.out.println("supress");
             }
             motion = new Vec3(d0, d2, d1);
             livingEntity.setDeltaMovement(motion);
         }
+    }
+
+    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+        return new ItemStack(AMBlockRegistry.END_PIRATE_ANCHOR_WINCH.get());
     }
 
     public boolean isLadder(BlockState state, LevelReader level, BlockPos pos, LivingEntity entity) {

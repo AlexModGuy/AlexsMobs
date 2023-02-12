@@ -51,7 +51,7 @@ public class AMBlockRegistry {
     public static final RegistryObject<Block> PURPUR_PLANKS_SLAB = registerBlockAndItem("purpur_planks_slab", () -> new SlabBlock(PURPUR_PLANKS_PROPERTIES));
     public static final RegistryObject<Block> PURPUR_PLANKS_WALL = registerBlockAndItem("purpur_planks_wall", () -> new WallBlock(PURPUR_PLANKS_PROPERTIES));
     public static final RegistryObject<Block> END_PIRATE_DOOR = registerBlockAndItem("end_pirate_door", () -> new BlockEndPirateDoor());
-    public static final RegistryObject<Block> END_PIRATE_TRAPDOOR = registerBlockAndItem("end_pirate_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.TERRACOTTA_PURPLE).lightLevel((state) -> 3).strength(3.0F).sound(SoundType.GLASS).noOcclusion(), SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN));
+    public static final RegistryObject<Block> END_PIRATE_TRAPDOOR = registerBlockAndItem("end_pirate_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.TERRACOTTA_PURPLE).lightLevel((state) -> 3).strength(3.0F).sound(SoundType.WOOD).noOcclusion(), SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN));
     public static final RegistryObject<Block> END_PIRATE_ANCHOR = registerBlockAndItem("end_pirate_anchor", () -> new BlockEndPirateAnchor(), new Item.Properties(), true);
     public static final RegistryObject<Block> END_PIRATE_ANCHOR_CHAIN = DEF_REG.register("end_pirate_anchor_chain", () -> new BlockEndPirateAnchorChain());
     public static final RegistryObject<Block> END_PIRATE_ANCHOR_WINCH = registerBlockAndItem("end_pirate_anchor_winch", () -> new BlockEndPirateAnchorWinch(), new Item.Properties(), true);
@@ -59,6 +59,7 @@ public class AMBlockRegistry {
     public static final RegistryObject<Block> END_PIRATE_FLAG = registerBlockAndItem("end_pirate_flag", () -> new BlockEndPirateFlag());
     public static final RegistryObject<Block> PHANTOM_SAIL = registerBlockAndItem("phantom_sail", () -> new BlockEndPirateSail(false));
     public static final RegistryObject<Block> SPECTRE_SAIL = registerBlockAndItem("spectre_sail", () -> new BlockEndPirateSail(true));
+    public static final RegistryObject<Block> DRAGONS_BREATH_CANNON = registerBlockAndItem("dragons_breath_cannon", () -> new BlockDragonsBreathCannon());
 
     public static RegistryObject<Block> registerBlockAndItem(String name, Supplier<Block> block) {
         return registerBlockAndItem(name, block, new Item.Properties(), false);

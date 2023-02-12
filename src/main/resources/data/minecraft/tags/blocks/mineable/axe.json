@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "alexsmobs:purpur_planks",
+    "alexsmobs:purpur_planks_stairs",
+    "alexsmobs:purpur_planks_slab",
+    "alexsmobs:purpur_planks_wall",
+    "alexsmobs:end_pirate_door",
+    "alexsmobs:end_pirate_trapdoor",
+    "alexsmobs:end_pirate_ship_wheel",
+    "alexsmobs:phantom_sail",
+    "alexsmobs:spectre_sail"
+    ]
+}

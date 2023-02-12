@@ -44,7 +44,7 @@ public class TileEntityEndPirateAnchor extends BlockEntity {
 
     @OnlyIn(Dist.CLIENT)
     public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-1, 0, -1), worldPosition.offset(1, 3, 1));
+        return new AABB(worldPosition.offset(-2, 0, -2), worldPosition.offset(2, 3, 2));
     }
 
     public static List<BlockPos> getValidBBPositions(boolean eastOrWest){
