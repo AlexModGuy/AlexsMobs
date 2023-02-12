@@ -2,9 +2,16 @@ package com.github.alexthe666.alexsmobs.tileentity;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.block.BlockEndPirateAnchor;
+import com.github.alexthe666.alexsmobs.block.BlockEndPirateAnchorChain;
 import com.github.alexthe666.alexsmobs.block.BlockEndPirateAnchorWinch;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,93 +23,88 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TileEntityEndPirateAnchorWinch extends BlockEntity {
 
     public float clientRoll;
+    public int tickCount = 0;
     public int windCounter = 0;
-    private int prevTargetChainLength;
-    private int targetChainLength = 0;
-    private float prevMaximumChainLength;
     private float chainLength;
     private float prevChainLength;
     private int windTime = 0;
-    private int ticksExisted = 0;
     private float windProgress;
     private float prevWindProgress;
     private boolean draggingAnchor;
     private boolean anchorEW;
-    private boolean pullingUp;
-    private boolean hasPower;
-    private int anchorPlaceCooldown = 0;
+    private boolean prevPowered = false;
+    private boolean droppingChain = false;
+    private boolean pullingChain = false;
 
     public TileEntityEndPirateAnchorWinch(BlockPos pos, BlockState state) {
         super(AMTileEntityRegistry.END_PIRATE_ANCHOR_WINCH.get(), pos, state);
-        prevTargetChainLength = targetChainLength;
     }
 
     public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityEndPirateAnchorWinch entity) {
         entity.tick();
     }
 
-    private int calcChainLength(boolean goBelowAnchor) {
-        BlockPos down = this.getBlockPos().below();
-        while (level != null && down.getY() > level.getMinBuildHeight() && !isAnchorTop(level, down) && (isEmptyBlock(down) || isAnchorChain(level, down))) {
-            down = down.below();
+    private void tickChainLogic(){
+        if (droppingChain) {
+            boolean flag = true;
+            BlockPos chainPos = this.getBlockPos().below((int) Math.floor(chainLength) + 1);
+            if (level.isEmptyBlock(chainPos)) {
+                level.setBlockAndUpdate(chainPos, AMBlockRegistry.END_PIRATE_ANCHOR_CHAIN.get().defaultBlockState().setValue(BlockEndPirateAnchorChain.WATERLOGGED, level.getFluidState(chainPos).is(FluidTags.WATER)));
+            } else if (stopDroppingChainAt(chainPos) || draggingAnchor && stopDroppingChainAt(chainPos.below(3))) {
+                droppingChain = false;
+                if (draggingAnchor && tryPlaceAnchor((int) Math.floor(chainLength))) {
+                    draggingAnchor = false;
+                }
+            }
+            if (flag) {
+                chainLength += 0.1F;
+            }
+            windTime = 2;
         }
-        int i = 0;
-        if (isAnchorTop(level, down) || goBelowAnchor) {
-
-            if (goBelowAnchor&& level.getBlockState(down.below(2)).getBlock() == AMBlockRegistry.END_PIRATE_ANCHOR.get()) {
-                i = this.getBlockPos().getY() - 1 - keepMovingBelowAnchor(down.below(2));
-            } else {
-                i = this.getBlockPos().getY() - 1 - down.getY();
+        if (pullingChain) {
+            BlockPos chainPos = this.getBlockPos().below((int) Math.floor(chainLength) + 1);
+            if (level.getBlockState(chainPos).is(AMBlockRegistry.END_PIRATE_ANCHOR_CHAIN.get())) {
+                level.setBlockAndUpdate(chainPos, Blocks.AIR.defaultBlockState());
+            }
+            if (chainLength > 0) {
+                chainLength -= 0.1F;
+                windTime = 2;
+            }else if (draggingAnchor && tryPlaceAnchor(0)) {
+                chainLength = 0;
+                draggingAnchor = false;
             }
         }
-        if (draggingAnchor) {
-            return i - 3;
-        }
-        return i;
-    }
-
-    private int keepMovingBelowAnchor(BlockPos below) {
-        while (below.getY() > level.getMinBuildHeight() && isEmptyBlock(below)) {
-            below = below.below();
-        }
-        return below.getY();
-    }
-
-    private boolean isEmptyBlock(BlockPos pos) {
-        return level.isEmptyBlock(pos) || isAnchorChain(level, pos) || level.getBlockState(pos).getMaterial().isReplaceable();
-    }
-
-    private boolean isAnchorChain(Level level, BlockPos pos) {
-        return level.getBlockState(pos).getBlock() instanceof BlockEndPirateAnchor && level.getBlockState(pos).getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.CHAIN;
-    }
-
-    private boolean isAnchorTop(Level level, BlockPos pos) {
-        return level.getBlockState(pos).getBlock() instanceof BlockEndPirateAnchor && level.getBlockState(pos.below(2)).getBlock() instanceof BlockEndPirateAnchor && level.getBlockState(pos.below(2)).getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.ANCHOR;
     }
 
     private void tick() {
+        tickCount++;
         prevChainLength = chainLength;
         prevWindProgress = windProgress;
-        prevTargetChainLength = targetChainLength;
-        ticksExisted++;
+        tickChainLogic();
         boolean powered = false;
-        if(getBlockState().getBlock() instanceof BlockEndPirateAnchorWinch){
+        if (getBlockState().getBlock() instanceof BlockEndPirateAnchorWinch) {
             powered = getBlockState().getValue(BlockEndPirateAnchorWinch.POWERED);
         }
-        if(powered && pullingUp){
-            sendDownChains();
-        }
-        if(!powered && !pullingUp){
-            pullUpChains();
-        }
-        if (chainLength < targetChainLength) {
-            chainLength = Math.min(chainLength + 0.1F, targetChainLength);
-        }
-        if (chainLength > targetChainLength) {
-            chainLength = Math.max(chainLength - 0.1F, targetChainLength);
-        }
-        if (Math.abs(targetChainLength - chainLength) > 0.2F) {
-            windTime = 5;
+        if (powered != prevPowered) {
+            prevPowered = powered;
+            if (!draggingAnchor && checkAndBreakAnchor(this.getBlockPos().below((int) Math.floor(chainLength) + 1))) {
+                draggingAnchor = true;
+            }
+            if (powered) {
+                droppingChain = false;
+                pullingChain = true;
+            } else {
+                chainLength = 0;
+                BlockPos.MutableBlockPos checkChainAt = new BlockPos.MutableBlockPos();
+                checkChainAt.set(this.getBlockPos());
+                checkChainAt.move(0, -1, 0);
+                while (level.getBlockState(checkChainAt).is(AMBlockRegistry.END_PIRATE_ANCHOR_CHAIN.get())) {
+                    checkChainAt.move(0, -1, 0);
+                    chainLength++;
+                }
+                droppingChain = true;
+                pullingChain = false;
+            }
         }
         if (windTime > 0) {
             windCounter++;
@@ -116,21 +118,11 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
                 windProgress -= 0.25F;
             }
         }
-        if (anchorPlaceCooldown > 0) {
-            anchorPlaceCooldown--;
-        }
-        if (chainLength != targetChainLength && isWindingUp() && !draggingAnchor) {
-            BlockPos down = this.getBlockPos();
-            if (anchorPlaceCooldown == 0 && (checkAndBreakAnchor(down.below()) || checkAndBreakAnchor(down.below(1 + (int) Math.ceil(chainLength))))) {
-                draggingAnchor = true;
-            }
-        }
-        if (chainLength == targetChainLength && draggingAnchor) {
-            int offset = isWindingUp() ? 0 : targetChainLength;
-            if (anchorPlaceCooldown == 0 && tryPlaceAnchor(offset)) {
-                draggingAnchor = false;
-            }
-        }
+    }
+
+    private boolean stopDroppingChainAt(BlockPos chainPos) {
+        BlockState state = level.getBlockState(chainPos);
+        return chainPos.getY() < level.getMinBuildHeight() || !state.isAir() && !state.is(AMBlockRegistry.END_PIRATE_ANCHOR_CHAIN.get()) && !chainPos.equals(this.getBlockPos());
     }
 
 
@@ -144,8 +136,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
             anchorEW = level.getBlockState(down).getValue(BlockEndPirateAnchor.EASTORWEST);
             BlockPos actualAnchorPos = down.below(2);
             if (level.getBlockState(actualAnchorPos).getBlock() instanceof BlockEndPirateAnchor) {
-                BlockEndPirateAnchor.removeAnchor(level, actualAnchorPos, level.getBlockState(actualAnchorPos));
-                this.removeChainBlocks();
+                BlockEndPirateAnchor.removeAnchor(level, actualAnchorPos, level.getBlockState(actualAnchorPos).getValue(BlockEndPirateAnchor.EASTORWEST));
                 return true;
             }
         }
@@ -155,69 +146,20 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     public boolean tryPlaceAnchor(int offset) {
         BlockPos at = this.getBlockPos().below(3 + offset);
         if (BlockEndPirateAnchor.isClearForPlacement(this.level, at, anchorEW)) {
-            BlockState anchorState =AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW);
+            BlockState anchorState = AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW);
             this.level.setBlock(at, anchorState, 2);
             BlockEndPirateAnchor.placeAnchor(level, at, anchorState);
-            placeChainBlocks(offset);
             return true;
         }
         return false;
     }
 
-
-    private void placeChainBlocks(int offset) {
-        BlockPos at = this.getBlockPos().below(3 + offset);
-        BlockPos chainPos = at.above(3);
-        while (chainPos.getY() < this.getBlockPos().getY() - 1 && isEmptyBlock(chainPos)) {
-            this.level.setBlock(chainPos, AMBlockRegistry.END_PIRATE_ANCHOR.get().defaultBlockState().setValue(BlockEndPirateAnchor.PIECE, BlockEndPirateAnchor.PieceType.CHAIN).setValue(BlockEndPirateAnchor.EASTORWEST, anchorEW), 3);
-            chainPos = chainPos.above();
-        }
-    }
-
-    private void removeChainBlocks() {
-        BlockPos chainPos = this.getBlockPos().below(1 + (int) Math.ceil(chainLength));
-        while (chainPos.getY() < this.getBlockPos().getY()) {
-            if(isAnchorChain(level, chainPos)){
-                this.level.setBlock(chainPos, Blocks.AIR.defaultBlockState(), 3);
-            }
-            chainPos = chainPos.above();
-        }
-    }
-
-    public void recalculateChains() {
-        if (targetChainLength != 0) {
-            prevMaximumChainLength = targetChainLength;
-        }
-        BlockPos at = this.getBlockPos().below(1);
-        if (isAnchorTop(level, at) && anchorPlaceCooldown == 0 && checkAndBreakAnchor(at)) {
-            draggingAnchor = true;
-        }
-        targetChainLength = calcChainLength(draggingAnchor);
-    }
-
-    public void sendDownChains() {
-        recalculateChains();
-        pullingUp = false;
-    }
-
-    public void pullUpChains() {
-        if (targetChainLength != 0) {
-            prevMaximumChainLength = targetChainLength;
-        }
-        targetChainLength = 0;
-        pullingUp = true;
-    }
-
-    public void onInteract(){
-
-    }
-
     public float getChainLengthForRender() {
-        return Math.max(targetChainLength, prevMaximumChainLength);
+        return chainLength - 0.2F;
     }
 
     public float getChainLength(float partialTick) {
-        return prevChainLength + (chainLength - prevChainLength) * partialTick;
+        return prevChainLength + (chainLength - prevChainLength) * partialTick - 0.2F;
     }
 
     public float getWindProgress(float partialTick) {
@@ -233,31 +175,45 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     }
 
     public boolean isWindingUp() {
-        return pullingUp;
+        return prevPowered;
     }
 
     public boolean hasAnchor() {
         return draggingAnchor;
     }
 
-
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        this.pullingUp = compound.getBoolean("PullingUp");
+        this.prevPowered = compound.getBoolean("PullingUp");
         this.draggingAnchor = compound.getBoolean("DraggingAnchor");
         this.anchorEW = compound.getBoolean("EWAnchor");
         this.prevChainLength = this.chainLength = compound.getFloat("ChainLength");
-        this.targetChainLength = compound.getInt("TargetChainLength");
     }
 
     @Override
     protected void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
-        compound.putBoolean("PullingUp", pullingUp);
+        compound.putBoolean("PullingUp", prevPowered);
         compound.putBoolean("DraggingAnchor", draggingAnchor);
         compound.putBoolean("EWAnchor", anchorEW);
         compound.putFloat("ChainLength", chainLength);
-        compound.putInt("TargetChainLength", targetChainLength);
     }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
+        if (packet != null && packet.getTag() != null) {
+            load(packet.getTag());
+        }
+    }
+
+    public CompoundTag getUpdateTag() {
+        return this.saveWithoutMetadata();
+    }
+
 }

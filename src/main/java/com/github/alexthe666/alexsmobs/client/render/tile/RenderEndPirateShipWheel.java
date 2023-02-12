@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.ForgeRenderTypes;
 
 public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> implements BlockEntityRenderer<T> {
 
@@ -43,7 +44,7 @@ public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> im
         matrixStackIn.pushPose();
         WHEEL_MODEL.renderWheel(tileEntityIn, partialTicks);
         WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
-        WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(AMRenderTypes.entityCutoutNoCull(TEXTURE_GLOW)), 240, combinedOverlayIn, 1, 1F, 1, 1);
+        WHEEL_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(ForgeRenderTypes.getUnlitTranslucent(TEXTURE_GLOW)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }

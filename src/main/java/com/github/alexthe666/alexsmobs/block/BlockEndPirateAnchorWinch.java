@@ -66,9 +66,7 @@ public class BlockEndPirateAnchorWinch extends BaseEntityBlock implements AMSpec
     }
 
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity player, ItemStack stack) {
-        if(level.getBlockEntity(pos) instanceof TileEntityEndPirateAnchorWinch winch){
-            winch.recalculateChains();
-        }
+
     }
 
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos p_52780_, boolean p_52781_) {

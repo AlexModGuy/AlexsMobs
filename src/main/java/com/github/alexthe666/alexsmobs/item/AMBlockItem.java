@@ -54,7 +54,7 @@ public class AMBlockItem extends BlockItem implements CustomTabBehavior {
 
     @Override
     public void fillItemCategory(CreativeModeTab.Output contents) {
-        if(blockSupplier.equals(AMBlockRegistry.SAND_CIRCLE) || blockSupplier.equals(AMBlockRegistry.RED_SAND_CIRCLE)){
+        if(blockSupplier.equals(AMBlockRegistry.SAND_CIRCLE) || blockSupplier.equals(AMBlockRegistry.RED_SAND_CIRCLE) || blockSupplier.equals(AMBlockRegistry.END_PIRATE_ANCHOR_CHAIN)){
 
         }else{
             contents.accept(this);

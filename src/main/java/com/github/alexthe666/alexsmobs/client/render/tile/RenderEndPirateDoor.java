@@ -12,10 +12,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Con
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
+import net.minecraftforge.client.ForgeRenderTypes;
 
 public class RenderEndPirateDoor<T extends TileEntityEndPirateDoor> implements BlockEntityRenderer<T> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/door.png");
+    private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/end_pirate/door_glow.png");
     private static final ModelEndPirateDoor DOOR_MODEL = new ModelEndPirateDoor();
 
     public RenderEndPirateDoor(Context rendererDispatcherIn) {
@@ -41,6 +43,7 @@ public class RenderEndPirateDoor<T extends TileEntityEndPirateDoor> implements B
         matrixStackIn.scale(0.999F, 0.999F, 0.999F);
         DOOR_MODEL.renderDoor(tileEntityIn, partialTicks, tileEntityIn.getBlockState().getValue(BlockEndPirateDoor.HINGE) == DoorHingeSide.LEFT);
         DOOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucent(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
+        DOOR_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(ForgeRenderTypes.getUnlitTranslucent(TEXTURE_GLOW)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }

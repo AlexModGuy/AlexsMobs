@@ -34,12 +34,12 @@
     },
     "firstperson_righthand": {
       "rotation": [ 0, 315, 0 ],
-      "translation": [ -1, 7, 0],
+      "translation": [ -1, 4, 0],
       "scale": [ 0.4, 0.4, 0.4 ]
     },
     "firstperson_lefthand": {
       "rotation": [ 0, 315, 0 ],
-      "translation": [ 4, 7, 4],
+      "translation": [ 4, 4, 4],
       "scale": [ 0.4, 0.4, 0.4 ]
     }
   }

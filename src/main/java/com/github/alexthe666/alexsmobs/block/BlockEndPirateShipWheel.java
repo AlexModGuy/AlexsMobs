@@ -101,7 +101,8 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock implements AMSpecia
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        Direction dir = context.getClickedFace();
+        return dir.getAxis().isHorizontal() ? this.defaultBlockState().setValue(FACING, context.getClickedFace()) : null;
     }
 
     public BlockState rotate(BlockState state, Rotation rot) {

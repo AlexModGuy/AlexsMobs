@@ -25,6 +25,7 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
     @Override
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
+        float ageInTicks = tileEntityIn.tickCount + partialTicks;
         boolean east = tileEntityIn.getBlockState().getValue(BlockEndPirateAnchorWinch.EASTORWEST);
         matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         matrixStackIn.pushPose();
@@ -53,6 +54,9 @@ public class RenderEndPirateAnchorWinch<T extends TileEntityEndPirateAnchorWinch
                 matrixStackIn.translate(0, (1F - moveDown) * 0.5F, 0);
                 matrixStackIn.scale(modulatedScale, modulatedScale, modulatedScale);
             }
+            float offset1 = (float)Math.sin(ageInTicks * 0.1F + i) * 0.05F;
+            float offset3 = -(float)Math.cos(ageInTicks * 0.1F + i) * 0.05F;
+            matrixStackIn.translate(offset1, 0, offset3);
             CHAIN_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutout(TEXTURE_CHAIN)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
             CHAIN_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.eyes(TEXTURE_CHAIN)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
             matrixStackIn.popPose();
