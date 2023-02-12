@@ -51,6 +51,7 @@ public class EntityDragonsBreathCannonball extends AbstractHurtingProjectile {
         if(tickCount > 3){
             boom(true);
         }
+        this.setDeltaMovement(this.getDeltaMovement().multiply(0.5F, 0.5F, 0.5F));
     }
 
     private void boom(boolean cloud) {
