@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.block;
 
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityDragonsBreathCannonball;
-import com.github.alexthe666.alexsmobs.entity.EntityGust;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,9 +11,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.DragonFireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -41,8 +38,10 @@ public class BlockDragonsBreathCannon extends Block {
     }
 
     public static Vec3 getDispensePosition(BlockPos coords, Direction dir) {
+        float f = dir.getAxis().isHorizontal() ? 0F : 0.5F;
+        float f2 = dir.getAxis().isHorizontal() ? -0.2F : 0;
         double d0 = coords.getX() + 0.5D + 0.7D * (double) dir.getStepX();
-        double d1 = coords.getY() + 0.15D + 0.7D * (double) dir.getStepY();
+        double d1 = coords.getY() + 0.5D + f * (double) dir.getStepY() + f2;
         double d2 = coords.getZ() + 0.5D + 0.7D * (double) dir.getStepZ();
         return new Vec3(d0, d1, d2);
     }

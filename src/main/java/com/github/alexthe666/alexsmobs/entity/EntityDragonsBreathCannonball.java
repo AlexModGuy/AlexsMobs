@@ -4,11 +4,9 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
@@ -16,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,10 +45,11 @@ public class EntityDragonsBreathCannonball extends AbstractHurtingProjectile {
 
     protected void onHit(HitResult hitResult) {
         super.onHit(hitResult);
-        if(tickCount > 3){
+        if(tickCount > 2){
             boom(true);
+        }else{
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0.1F, 0.1F, 0.1F));
         }
-        this.setDeltaMovement(this.getDeltaMovement().multiply(0.5F, 0.5F, 0.5F));
     }
 
     private void boom(boolean cloud) {

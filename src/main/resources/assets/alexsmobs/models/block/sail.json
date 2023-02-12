@@ -1,6 +1,6 @@
 {
   "parent": "block/block",
-  "render_type": "translucent",
+  "render_type": "cutout",
   "ambientocclusion": false,
     "textures": {
         "particle": "#sail"
