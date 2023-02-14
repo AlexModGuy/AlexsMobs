@@ -12,12 +12,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import java.util.Iterator;
 import java.util.List;
 
 public class EntityDragonsBreathCannonball extends AbstractHurtingProjectile {
+
     public EntityDragonsBreathCannonball(EntityType entityType, Level level) {
         super(entityType, level);
     }
