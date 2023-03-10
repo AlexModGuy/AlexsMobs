@@ -14,4 +14,4 @@ A parte mais difícil de enfrentar essas feras é identificá-las antes que elas
 Se morto, um Chiardor tem a chance de soltar sua alma. A Alma de Chiardor pode ser usado para criar um Sculk Estrondoso.
 <NEWLINE>
 <NEWLINE>
-Quando ativado por um sensor skulk próximo, este bloco emitirá um estrondo alto que pode atingir mobs próximos que estejam a 3 blocos horizontais do Sculk Estrondoso. Ele pode ser desativado temporariamente com um sinal de redstone, e os próprios estrondos têm um leve cooldown, tornando o Sculk Estrondoso útil para armadilhas.
+Quando ativado por um sensor skulk próximo, este bloco emitirá um estrondo alto que pode causar dano nos mobs próximos que estejam a 3 blocos horizontais do Sculk Estrondoso. Ele pode ser desativado temporariamente com um sinal de redstone, e os próprios estrondos têm um leve cooldown, tornando o Sculk Estrondoso útil para armadilhas.
