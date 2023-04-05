@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -108,7 +110,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean checkSpawnObstruction(LevelReader worldIn) {
-        BlockPos pos = new BlockPos(this.getX(), this.getEyeY(), this.getZ());
+        BlockPos pos = AMBlockPos.fromCoords(this.getX(), this.getEyeY(), this.getZ());
         return !worldIn.getBlockState(pos).isSuffocating(worldIn, pos);
     }
 
@@ -325,18 +327,10 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         return below.is(Blocks.MUD);
     }
 
-    public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.walkAnimation.speed()Old = mob.walkAnimation.speed();
-        double d0 = mob.getX() - mob.xo;
-        double d1 = flying ? mob.getY() - mob.yo : 0.0D;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * 8.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        mob.walkAnimation.speed() += (f - mob.walkAnimation.speed()) * 0.4F;
-        mob.animationPosition += mob.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {

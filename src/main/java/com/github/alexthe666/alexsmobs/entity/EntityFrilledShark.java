@@ -228,18 +228,10 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.walkAnimation.speed()Old = p_233629_1_.walkAnimation.speed();
-        double d0 = p_233629_1_.getX() - p_233629_1_.xo;
-        double d1 = p_233629_1_.getY() - p_233629_1_.yo;
-        double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2)) * 8.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        p_233629_1_.walkAnimation.speed() += (f - p_233629_1_.walkAnimation.speed()) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float)Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     public void tick() {

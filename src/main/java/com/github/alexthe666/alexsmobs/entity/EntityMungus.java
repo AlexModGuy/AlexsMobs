@@ -75,7 +75,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     private static final EntityDataAccessor<Integer> MUSHROOM_COUNT = SynchedEntityData.defineId(EntityMungus.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SACK_SWELL = SynchedEntityData.defineId(EntityMungus.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> EXPLOSION_DISABLED = SynchedEntityData.defineId(EntityMungus.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Optional<BlockState>> MUSHROOM_STATE = SynchedEntityData.defineId(EntityMungus.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<Optional<BlockState>> MUSHROOM_STATE = SynchedEntityData.defineId(EntityMungus.class, EntityDataSerializers.OPTIONAL_BLOCK_STATE);
 
     //biome container constants
     private static final int WIDTH_BITS = Mth.ceillog2(16) - 2;

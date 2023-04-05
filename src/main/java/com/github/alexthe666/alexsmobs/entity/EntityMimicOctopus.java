@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
@@ -75,8 +76,8 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     private static final EntityDataAccessor<Integer> PREV_MIMIC_ORDINAL = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MOISTNESS = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Optional<BlockState>> MIMICKED_BLOCK = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.BLOCK_STATE);
-    private static final EntityDataAccessor<Optional<BlockState>> PREV_MIMICKED_BLOCK = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<Optional<BlockState>> MIMICKED_BLOCK = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.OPTIONAL_BLOCK_STATE);
+    private static final EntityDataAccessor<Optional<BlockState>> PREV_MIMICKED_BLOCK = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.OPTIONAL_BLOCK_STATE);
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> LAST_SCARED_MOB_ID = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> UPGRADED_LASER_ENTITY_ID = SynchedEntityData.defineId(EntityMimicOctopus.class, EntityDataSerializers.INT);
@@ -442,18 +443,10 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.walkAnimation.speed()Old = p_233629_1_.walkAnimation.speed();
-        double d0 = p_233629_1_.getX() - p_233629_1_.xo;
-        double d1 = p_233629_1_.getY() - p_233629_1_.yo;
-        double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt((float)(d0 * d0 + d1 * d1 + d2 * d2)) * (groundProgress < 2.5F ? 4.0F : 8.0F);
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        p_233629_1_.walkAnimation.speed() += (f - p_233629_1_.walkAnimation.speed()) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float)Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * (groundProgress < 2.5F ? 4.0F : 8.0F), 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     public boolean canBreatheUnderwater() {
@@ -488,7 +481,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         if (!this.isInWater() && !this.isLandNavigator) {
             switchNavigator(true);
         }
-        BlockPos pos = new BlockPos(this.getX(), this.getEyeY() - 1F, this.getZ());
+        BlockPos pos = AMBlockPos.fromCoords(this.getX(), this.getEyeY() - 1F, this.getZ());
         boolean ground = level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP) && this.getMimicState() != MimicState.GUARDIAN || !this.isInWaterOrBubble() || this.isSitting();
         this.prevTransProgress = transProgress;
         this.prevColorShiftProgress = colorShiftProgress;
@@ -540,7 +533,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                 this.setMoistness(this.getMoistness() - 1);
                 if (this.getMoistness() <= 0 && moistureAttackTime-- <= 0) {
                     this.setOrderedToSit(false);
-                    this.hurt(DamageSource.DRY_OUT, random.nextInt(2) == 0 ? 1.0F : 0F);
+                    this.hurt(damageSources().dryOut(), random.nextInt(2) == 0 ? 1.0F : 0F);
                     moistureAttackTime = 20;
                 }
             }
@@ -645,7 +638,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     private BlockPos getPositionDown() {
-        BlockPos pos = new BlockPos(this.getX(), this.getEyeY(), this.getZ());
+        BlockPos pos = AMBlockPos.fromCoords(this.getX(), this.getEyeY(), this.getZ());
         while (pos.getY() > 1 && (level.isEmptyBlock(pos) || level.getBlockState(pos).getMaterial() == Material.WATER)) {
             pos = pos.below();
         }
@@ -806,7 +799,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             this.setAirSupply(p_209207_1_ - 1);
             if (this.getAirSupply() == -20) {
                 this.setAirSupply(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
+                this.hurt(damageSources().dryOut(), 2.0F);
             }
         } else {
             this.setAirSupply(1200);
@@ -846,14 +839,14 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getOctopusGround(radialPos);
 
         return ground != null ? Vec3.atCenterOf(ground) : null;
     }
 
     private BlockPos getOctopusGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() > 2 && level.getFluidState(position).is(FluidTags.WATER)) {
             position = position.below();
         }
@@ -1227,13 +1220,13 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                     if (EntityMimicOctopus.this.isUpgraded() && EntityMimicOctopus.this.transProgress >= 5.0F) {
                         if (EntityMimicOctopus.this.getMimicState() == MimicState.PUFFERFISH) {
                             if (EntityMimicOctopus.this.getBoundingBox().expandTowards(2, 1.3, 2).intersects(target.getBoundingBox())) {
-                                target.hurt(this.damageSources().mobAttack(EntityMimicOctopus.this), 4);
+                                target.hurt(EntityMimicOctopus.this.damageSources().mobAttack(EntityMimicOctopus.this), 4);
                                 target.addEffect(new MobEffectInstance(MobEffects.POISON, 400, 2));
                             }
                         }
                         if (EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN) {
                             if (EntityMimicOctopus.this.getBoundingBox().expandTowards(1, 1, 1).intersects(target.getBoundingBox())) {
-                                target.hurt(this.damageSources().mobAttack(EntityMimicOctopus.this), 1);
+                                target.hurt(EntityMimicOctopus.this.damageSources().mobAttack(EntityMimicOctopus.this), 1);
                             }
                             EntityMimicOctopus.this.entityData.set(UPGRADED_LASER_ENTITY_ID, target.getId());
                         }

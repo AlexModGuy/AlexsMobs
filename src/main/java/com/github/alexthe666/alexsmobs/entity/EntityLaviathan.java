@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.collect.Sets;
@@ -251,7 +252,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         int playerPosition = -1;
         Player player = null;
         if (this.hasHeadGear() && this.hasBodyGear()) {
@@ -347,7 +348,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
     }
 
     public double getPassengersRidingOffset() {
-        float f = this.animationPosition;
+        float f = this.walkAnimation.position();
         float f1 = this.walkAnimation.speed();
         float f2 = 0;
         return (double) this.getBbHeight() - 0.4F;
@@ -777,7 +778,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             Vec3 vec3 = new Vec3(headPart.getX(), offset, headPart.getZ());
             AABB axisalignedbb = AABB.ofSize(vec3, (double)f, 1.0E-6D, (double)f);
             return this.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
-                BlockPos blockpos = new BlockPos(vec3);
+                BlockPos blockpos = AMBlockPos.fromVec3(vec3);
                 return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
             });
         }
@@ -788,7 +789,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             return false;
         } else {
             float f = 0.8F;
-            BlockPos pos = new BlockPos(headPart.getX(), offset, headPart.getZ());
+            BlockPos pos = AMBlockPos.fromCoords(headPart.getX(), offset, headPart.getZ());
             return !level.getFluidState(pos).isEmpty();
         }
     }

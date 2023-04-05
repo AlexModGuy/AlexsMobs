@@ -556,18 +556,10 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
         return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
-    public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.walkAnimation.speed()Old = mob.walkAnimation.speed();
-        double d0 = mob.getX() - mob.xo;
-        double d1 = flying ? mob.getY() - mob.yo : 0.0D;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * (isSpinning() ? 4.0F : 32.0F);
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        mob.walkAnimation.speed() += (f - mob.walkAnimation.speed()) * 0.4F;
-        mob.animationPosition += mob.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * (isSpinning() ? 4.0F : 32.0F), 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
 

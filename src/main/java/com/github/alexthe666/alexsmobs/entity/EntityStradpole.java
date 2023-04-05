@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.BoneSerpentPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -335,7 +336,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
         if (entity instanceof LivingEntity && !level.isClientSide && raytraceresult.getEntity() instanceof LivingEntity) {
             LivingEntity target = (LivingEntity)raytraceresult.getEntity();
             if(!target.isBlocking()){
-                target.hurt(DamageSource.indirectMobAttack(this, (LivingEntity)entity).setProjectile(), 3.0F);
+                target.hurt(damageSources().mobProjectile(this, (LivingEntity)entity), 3.0F);
                 target.knockback(0.7F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
             }else{
                 if (this.getTarget() instanceof Player) {
@@ -455,7 +456,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             }
             Vec3 vector3d = LandRandomPos.getPos(this.mob, 7, 3);
 
-            for (int i = 0; vector3d != null && !this.mob.level.getFluidState(new BlockPos(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
+            for (int i = 0; vector3d != null && !this.mob.level.getFluidState(AMBlockPos.fromVec3(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
             }
 
             return vector3d;

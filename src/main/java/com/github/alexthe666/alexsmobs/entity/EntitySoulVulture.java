@@ -403,7 +403,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             float angle = (0.01745329251F * 3 * (clockwise ? -circlingTime : circlingTime));
             double extraX = circleDistance * Mth.sin((angle));
             double extraZ = circleDistance * Mth.cos(angle);
-            BlockPos pos = new BlockPos(target.getX() + extraX, target.getY() + 1 + yLevel, target.getZ() + extraZ);
+            BlockPos pos = new BlockPos((int) (target.getX() + extraX), target.getY() + 1 + yLevel, (int) (target.getZ() + extraZ));
             if (vulture.level.isEmptyBlock(pos)) {
                 return pos;
             }
@@ -515,7 +515,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             float angle = (0.01745329251F * renderYawOffset) + 3.15F + (vulture.getRandom().nextFloat() * neg);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(vulture.getX() + extraX, vulture.getY(), vulture.getZ() + extraZ);
+            BlockPos radialPos = new BlockPos((int) (vulture.getX() + extraX), (int) vulture.getY(), (int) (vulture.getZ() + extraZ));
             while(level.isEmptyBlock(radialPos) && radialPos.getY() > 2){
                 radialPos = radialPos.below();
             }
@@ -566,7 +566,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
                 if (vulture.getBoundingBox().inflate(0.3F, 0.3F, 0.3F).intersects(vulture.getTarget().getBoundingBox()) && vulture.tackleCooldown == 0) {
                     tackleCooldown = 100 + random.nextInt(200);
                     float dmg = (float) vulture.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
-                    if(vulture.getTarget().hurt(this.damageSources().mobAttack(vulture), dmg)){
+                    if(vulture.getTarget().hurt(vulture.damageSources().mobAttack(vulture), dmg)){
                         if(vulture.getHealth() < vulture.getMaxHealth() - dmg && vulture.getSoulLevel() < 5){
                             this.vulture.setSoulLevel(vulture.getSoulLevel() + 1);
                             this.vulture.heal(dmg);

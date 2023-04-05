@@ -243,7 +243,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
             } else {
                 this.setMoistness(this.getMoistness() - 1);
                 if (this.getMoistness() <= 0) {
-                    this.hurt(DamageSource.DRY_OUT, 1.0F);
+                    this.hurt(damageSources().dryOut(), 1.0F);
                 }
 
                 if (this.onGround) {

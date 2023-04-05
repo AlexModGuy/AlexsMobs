@@ -179,7 +179,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
             this.setAirSupply(i - 1);
             if (this.getAirSupply() == -20) {
                 this.setAirSupply(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
+                this.hurt(damageSources().dryOut(), 2.0F);
             }
         } else {
             this.setAirSupply(1000);
@@ -376,7 +376,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
 
             while(scale > 2){
                 Vec3 scaled = sub.scale(scale);
-                BlockPos at = surface.offset(scaled.x, 0, scaled.z);
+                BlockPos at = surface.offset((int) scaled.x, 0, (int) scaled.z);
                 if(!level.isWaterAt(at) && level.isWaterAt(at.below()) && fish.canSeeBlock(at)){
                     return at;
                 }

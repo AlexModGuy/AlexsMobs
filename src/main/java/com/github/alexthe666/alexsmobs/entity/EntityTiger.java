@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -436,7 +437,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     public BlockPos getLightPosition() {
-        BlockPos pos = new BlockPos(this.position());
+        BlockPos pos = AMBlockPos.fromVec3(this.position());
         if (!level.getBlockState(pos).canOcclude()) {
             return pos.above();
         }
@@ -519,8 +520,9 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.CAT_EAT, this.getVoicePitch(), this.getSoundVolume());
             this.heal(5);
-            if (e.getThrower() != null && random.nextFloat() < getChanceForEffect(stack) && level.getPlayerByUUID(e.getThrower()) != null) {
-                Player player = level.getPlayerByUUID(e.getThrower());
+            Entity thrower = e.getOwner();
+            if (thrower != null && random.nextFloat() < getChanceForEffect(stack) && level.getPlayerByUUID(thrower.getUUID()) != null) {
+                Player player = level.getPlayerByUUID(thrower.getUUID());
                 player.addEffect(new MobEffectInstance(AMEffectRegistry.TIGERS_BLESSING.get(), 12000));
                 this.setTarget(null);
                 this.setLastHurtByMob(null);
@@ -551,8 +553,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     static class TigerNodeEvaluator extends WalkNodeEvaluator {
-        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, boolean b1, boolean b2, BlockPos pos, BlockPathTypes typeIn) {
-            return typeIn == BlockPathTypes.LEAVES || level.getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, b1, b2, pos, typeIn);
+        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes typeIn) {
+            return typeIn == BlockPathTypes.LEAVES || level.getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
         }
     }
 
@@ -613,7 +615,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                     tiger.setAnimation(tiger.getRandom().nextBoolean() ? ANIMATION_PAW_L : ANIMATION_PAW_R);
                 }
                 if (dist < 4 + target.getBbWidth() && (tiger.getAnimation() == ANIMATION_PAW_L || tiger.getAnimation() == ANIMATION_PAW_R) && tiger.getAnimationTick() == 8) {
-                    target.hurt(this.damageSources().mobAttack(tiger), 7 + tiger.getRandom().nextInt(5));
+                    target.hurt(tiger.damageSources().mobAttack(tiger), 7 + tiger.getRandom().nextInt(5));
                 }
                 if (tiger.getAnimation() == ANIMATION_LEAP) {
                     tiger.getNavigation().stop();
@@ -628,7 +630,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                         this.tiger.setDeltaMovement(vector3d1.x, vector3d1.y + 0.3F + 0.1F * Mth.clamp(target.getEyeY() - this.tiger.getY(), 0, 2), vector3d1.z);
                     }
                     if (dist < target.getBbWidth() + 3 && tiger.getAnimationTick() >= 15) {
-                        target.hurt(this.damageSources().mobAttack(tiger), 2);
+                        target.hurt(tiger.damageSources().mobAttack(tiger), 2);
                         tiger.setRunning(false);
                         tiger.setStealth(false);
                         tiger.setHolding(true);

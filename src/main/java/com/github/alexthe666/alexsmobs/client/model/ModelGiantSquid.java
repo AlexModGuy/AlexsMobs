@@ -500,7 +500,7 @@ public class ModelGiantSquid extends AdvancedEntityModel<EntityGiantSquid> {
     }
 
     private float getArmRot(EntityGiantSquid entity, int offset, float partialTick, boolean pitch) {
-        float rotWrap = Mth.rotWrap(entity.getRingBuffer(offset, partialTick, pitch) - entity.getRingBuffer(0, partialTick, pitch));
+        float rotWrap = Mth.wrapDegrees(entity.getRingBuffer(offset, partialTick, pitch) - entity.getRingBuffer(0, partialTick, pitch));
         return (Mth.clamp(rotWrap, -50, 50) * 0.4F) * ((float) Math.PI / 180F);
     }
 

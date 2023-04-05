@@ -29,6 +29,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -152,7 +153,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
 
     public double getPassengersRidingOffset() {
         float f = Math.min(0.25F, this.walkAnimation.speed());
-        float f1 = this.animationPosition;
+        float f1 = this.walkAnimation.position();
         float sitAdd = 0.01F * this.sitProgress;
         float standAdd = 0.07F * this.standProgress;
         return (double)this.getBbHeight() - 0.3D + (double)(0.12F * Mth.cos(f1 * 0.7F) * 0.7F * f) + sitAdd + standAdd;
@@ -190,7 +191,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.msgId != null && source.msgId.equals("sting") || source.is(DamageTypes.IN_WALL) ||super.isInvulnerableTo(source);
+        return source.getMsgId() != null && source.getMsgId().equals("sting") || source.is(DamageTypes.IN_WALL) ||super.isInvulnerableTo(source);
     }
 
     protected void registerGoals() {
@@ -264,7 +265,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
 
     @Nullable
     @Override
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof Player) {
                 Player player = (Player) passenger;
@@ -532,7 +533,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         } else if (world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, position).getY() > position.getY()) {
             return false;
         } else {
-            return world.getBiome(position).value().getPrecipitation() == Biome.Precipitation.SNOW;
+            return world.getBiome(position).value().getPrecipitationAt(position) == Biome.Precipitation.SNOW;
         }
     }
 
@@ -695,8 +696,9 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
-        if(targetEntity.getItem().getItem() == Items.SALMON && this.isHoneyed()){
-            salmonThrowerID = targetEntity.getThrower();
+        Entity thrower = targetEntity.getOwner();
+        if(targetEntity.getItem().getItem() == Items.SALMON && thrower != null && this.isHoneyed()){
+            salmonThrowerID = thrower.getUUID();
         }else{
             salmonThrowerID = null;
         }

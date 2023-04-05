@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
@@ -276,7 +277,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
         public void start() {
             Vec3 vector3d = this.getRandomLocation();
             if (vector3d != null) {
-                EntityFly.this.navigation.moveTo(EntityFly.this.navigation.createPath(new BlockPos(vector3d), 1), 1.0D);
+                EntityFly.this.navigation.moveTo(EntityFly.this.navigation.createPath(AMBlockPos.fromVec3(vector3d), 1), 1.0D);
             }
 
         }
@@ -358,7 +359,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
                 if(EntityFly.this.distanceToSqr(targetEntity) < 3.0F){
                     if(targetEntity instanceof LivingEntity && ((LivingEntity) targetEntity).getHealth() > 2D){
                         if(cooldown == 0){
-                            targetEntity.hurt(DamageSource.GENERIC, 1);
+                            targetEntity.hurt(damageSources().generic(), 1);
                             cooldown = 100;
                         }
                     }else{

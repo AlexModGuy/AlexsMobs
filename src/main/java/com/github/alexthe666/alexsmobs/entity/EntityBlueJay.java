@@ -560,8 +560,9 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.heal(3);
-        if(e.getOwner() != null && e.getItem().is(Items.GLOW_BERRIES)){
-            this.setLastFeederUUID(e.getOwner().getUUID());
+        Entity itemThrower = e.getOwner();
+        if(itemThrower != null && e.getItem().is(Items.GLOW_BERRIES)){
+            this.setLastFeederUUID(itemThrower.getUUID());
             this.setFeedTime(1200);
             this.stopRiding();
         }

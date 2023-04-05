@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -147,7 +148,7 @@ public class EntityGuster extends Monster {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
-            if (source.isProjectile()) {
+            if (source.is(DamageTypeTags.IS_PROJECTILE)) {
                 amount = (amount + 1.0F) / 3.0F;
             }
             return super.hurt(source, amount);

@@ -431,8 +431,9 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
-        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame() && e.getOwner() != null) {
-            fishThrowerID = e.getOwner().getUUID();
+        Entity itemThrower = e.getOwner();
+        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame() && itemThrower != null) {
+            fishThrowerID = itemThrower.getUUID();
         } else {
             fishThrowerID = null;
         }

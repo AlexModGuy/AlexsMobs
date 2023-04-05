@@ -26,6 +26,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -524,18 +525,10 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity entity, boolean b) {
-        entity.walkAnimation.speed()Old = entity.walkAnimation.speed();
-        double d0 = entity.getX() - entity.xo;
-        double d1 = (entity.getY() - entity.yo) * 2.0F;
-        double d2 = entity.getZ() - entity.zo;
-        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2)) * 6.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        entity.walkAnimation.speed() += (f - entity.walkAnimation.speed()) * 0.4F;
-        entity.animationPosition += entity.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean b) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, (this.getY() - this.yo) * 2, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 6.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     protected PathNavigation createNavigation(Level worldIn) {

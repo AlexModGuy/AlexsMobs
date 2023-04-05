@@ -290,7 +290,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof Player) {
                 Player player = (Player) passenger;
@@ -312,7 +312,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
 
     public double getPassengersRidingOffset() {
         float f = Math.min(0.25F, this.walkAnimation.speed());
-        float f1 = this.animationPosition;
+        float f1 = this.walkAnimation.position();
         return (double)this.getBbHeight() - 0.2D + (double)(0.12F * Mth.cos(f1 * 0.7F) * 0.7F * f);
     }
 

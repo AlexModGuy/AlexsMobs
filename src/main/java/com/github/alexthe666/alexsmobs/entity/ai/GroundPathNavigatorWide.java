@@ -26,7 +26,7 @@ public class GroundPathNavigatorWide extends GroundPathNavigation {
         double d1 = Math.abs(this.mob.getY() - (double)vector3i.getY());
         double d2 = Math.abs(this.mob.getZ() - ((double)vector3i.getZ() + 0.5D));
         boolean flag = d0 < (double)this.maxDistanceToWaypoint && d2 < (double)this.maxDistanceToWaypoint && d1 < 1.0D;
-        if (flag || this.mob.canCutCorner(this.path.getNextNode().type) && this.shouldTargetNextNodeInDirection(vector3d)) {
+        if (flag || this.canCutCorner(this.path.getNextNode().type) && this.shouldTargetNextNodeInDirection(vector3d)) {
             this.path.advance();
         }
 

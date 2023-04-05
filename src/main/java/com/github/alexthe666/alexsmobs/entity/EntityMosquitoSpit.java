@@ -99,7 +99,7 @@ public class EntityMosquitoSpit extends Entity {
         Entity entity = this.getOwner();
         Entity hitEntity = p_213868_1_.getEntity();
         if (entity instanceof LivingEntity) {
-            hitEntity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity)entity).setProjectile(), 4.0F);
+            hitEntity.hurt(damageSources().mobProjectile(this, (LivingEntity)entity), 4.0F);
         }
         if (hitEntity instanceof EntityCrimsonMosquito && !this.level.isClientSide) {
             EntityCrimsonMosquito mosquito = ((EntityCrimsonMosquito)hitEntity);

@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMPointOfInterestRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -153,7 +154,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
         } else {
-            BlockPos ground = new BlockPos(this.getX(), this.getY() - 1.0D, this.getZ());
+            BlockPos ground = AMBlockPos.fromCoords(this.getX(), this.getY() - 1.0D, this.getZ());
             float f = 0.91F;
             if (this.onGround) {
                 f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
@@ -164,14 +165,14 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             if (this.onGround) {
                 f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
             }
-            this.calculateEntityAnimation(this, true);
+            this.calculateEntityAnimation(true);
 
             this.moveRelative(0.2F, travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(f));
         }
 
-        this.calculateEntityAnimation(this, false);
+        this.calculateEntityAnimation(false);
     }
 
     public void tick() {
@@ -427,7 +428,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             double extraX = gatheringCircleDist * Mth.sin((angle));
             double extraZ = gatheringCircleDist * Mth.cos(angle);
             if (orbitPos != null) {
-                BlockPos pos = new BlockPos(orbitPos.getX() + extraX, orbitPos.getY() + parentEntity.random.nextInt(2) + 2, orbitPos.getZ() + extraZ);
+                BlockPos pos = AMBlockPos.fromCoords(orbitPos.getX() + extraX, orbitPos.getY() + parentEntity.random.nextInt(2) + 2, orbitPos.getZ() + extraZ);
                 if (parentEntity.level.isEmptyBlock(new BlockPos(pos))) {
                     return pos;
                 }
@@ -442,7 +443,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             float angle = (0.01745329251F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, 0, parentEntity.getZ() + extraZ);
+            BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, 0, parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
             int distFromGround = (int) parentEntity.getY() - ground.getY();
             int flightHeight = Math.max(ground.getY(), 230 + parentEntity.getRandom().nextInt(40)) - ground.getY();

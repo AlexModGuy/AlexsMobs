@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -573,13 +574,14 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
-        if (e.getItem().is(Items.GLOW_BERRIES) && e.getThrower() != null && bondWithBlueJays(e.getThrower())) {
+        Entity thrower = e.getOwner();
+        if (e.getItem().is(Items.GLOW_BERRIES) && thrower != null && bondWithBlueJays(thrower.getUUID())) {
             this.level.broadcastEntityEvent(this, (byte) 93);
         } else {
             this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
         }
-        if (e.getItem().getItem() == Items.EGG) {
-            eggThrowerUUID = e.getThrower();
+        if (e.getItem().getItem() == Items.EGG && thrower != null) {
+            eggThrowerUUID = thrower.getUUID();
         } else {
             eggThrowerUUID = null;
         }
@@ -645,7 +647,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public BlockPos getLightPosition() {
-        BlockPos pos = new BlockPos(this.position());
+        BlockPos pos = AMBlockPos.fromVec3(this.position());
         if (!level.getBlockState(pos).canOcclude()) {
             return pos.above();
         }
@@ -738,7 +740,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                                     fleeTime = 60 + random.nextInt(60);
                                     raccoon.getNavigation().stop();
                                     lookForWaterBeforeEatingTimer = 120 + random.nextInt(60);
-                                    target.hurt(DamageSource.GENERIC, 0);
+                                    target.hurt(damageSources().generic(), 0);
                                     raccoon.stealCooldown = 24000 + random.nextInt(48000);
                                 }
                             }

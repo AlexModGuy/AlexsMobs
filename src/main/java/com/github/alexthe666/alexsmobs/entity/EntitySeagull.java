@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIRevealTreasure;
 import com.github.alexthe666.alexsmobs.entity.ai.SeagullAIStealFromPlayers;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
@@ -439,11 +440,12 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         stealCooldown += 600 + random.nextInt(1200);
-        if(e.getThrower() != null && (e.getItem().getItem() == AMItemRegistry.LOBSTER_TAIL.get() || e.getItem().getItem() == AMItemRegistry.COOKED_LOBSTER_TAIL.get())){
-            Player player = level.getPlayerByUUID(e.getThrower());
+        Entity thrower = e.getOwner();
+        if(thrower != null && (e.getItem().getItem() == AMItemRegistry.LOBSTER_TAIL.get() || e.getItem().getItem() == AMItemRegistry.COOKED_LOBSTER_TAIL.get())){
+            Player player = level.getPlayerByUUID(thrower.getUUID());
             if(player != null){
                 setDataFromTreasureMap(player);
-                feederUUID = e.getThrower();
+                feederUUID = thrower.getUUID();
             }
         }
         this.setFlying(true);
@@ -457,7 +459,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getSeagullGround(radialPos);
         int distFromGround = (int) this.getY() - ground.getY();
         int flightHeight = 8 + this.getRandom().nextInt(4);
@@ -469,7 +471,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     }
 
     public BlockPos getSeagullGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
@@ -486,7 +488,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getSeagullGround(radialPos);
         if (ground.getY() == 0) {
             return this.position();
@@ -514,7 +516,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (this.orbitPos != null) {
             Vec3 pos = new Vec3(orbitPos.getX() + extraX, orbitPos.getY() + random.nextInt(2), orbitPos.getZ() + extraZ);
-            if (this.level.isEmptyBlock(new BlockPos(pos))) {
+            if (this.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
                 return pos;
             }
         }

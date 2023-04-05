@@ -24,6 +24,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -213,7 +214,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.DROWN || source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public boolean canBreatheUnderwater() {
@@ -307,7 +308,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
                 if (this.getMoistness() <= 0 && moistureAttackTime-- <= 0) {
                     this.setCommand(0);
                     this.setOrderedToSit(false);
-                    this.hurt(DamageSource.DRY_OUT, random.nextInt(2) == 0 ? 1.0F : 0F);
+                    this.hurt(damageSources().dryOut(), random.nextInt(2) == 0 ? 1.0F : 0F);
                     moistureAttackTime = 20;
                 }
             }

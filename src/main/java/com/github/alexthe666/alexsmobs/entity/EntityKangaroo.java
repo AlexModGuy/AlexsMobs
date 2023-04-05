@@ -28,6 +28,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -812,14 +813,14 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
                     }
                     if (stack.getItem() instanceof ArmorItem && !this.isBaby()) {
                         ArmorItem armorItem = (ArmorItem) stack.getItem();
-                        if (armorItem.getSlot() == EquipmentSlot.HEAD) {
+                        if (armorItem.getEquipmentSlot() == EquipmentSlot.HEAD) {
                             double prot = getProtectionForItem(stack, EquipmentSlot.HEAD);
                             if (prot > 0 && prot > helmetArmor) {
                                 helmetArmor = prot;
                                 helmetIndex = i;
                             }
                         }
-                        if (armorItem.getSlot() == EquipmentSlot.CHEST) {
+                        if (armorItem.getEquipmentSlot() == EquipmentSlot.CHEST) {
                             double prot = getProtectionForItem(stack, EquipmentSlot.CHEST);
                             if (prot > 0 && prot > chestplateArmor) {
                                 chestplateArmor = prot;

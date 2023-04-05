@@ -520,10 +520,11 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             if (getRandom().nextInt(4) == 0) {
                 this.spawnAtLocation(new ItemStack(AMBlockRegistry.BANANA_PEEL.get()));
             }
-            if (e.getOwner() != null && !this.isTame()) {
+            Entity itemThrower = e.getOwner();
+            if (itemThrower != null && !this.isTame()) {
                 if (getRandom().nextInt(5) == 0) {
                     this.setTame(true);
-                    this.setOwnerUUID(e.getOwner().getUUID());
+                    this.setOwnerUUID(itemThrower.getUUID());
                     this.level.broadcastEntityEvent(this, (byte) 7);
                 } else {
                     this.level.broadcastEntityEvent(this, (byte) 6);

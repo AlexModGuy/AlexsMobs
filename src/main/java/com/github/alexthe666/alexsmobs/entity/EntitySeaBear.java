@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -226,7 +227,7 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
                 if (EntitySeaBear.this.hasLineOfSight(enemy) && EntitySeaBear.this.distanceTo(enemy) < 3.5F) {
                     EntitySeaBear.this.setAnimation(ANIMATION_ATTACK);
                     if (EntitySeaBear.this.getAnimationTick() % 5 == 0) {
-                        enemy.hurt(this.damageSources().mobAttack(EntitySeaBear.this), 6);
+                        enemy.hurt(EntitySeaBear.this.damageSources().mobAttack(EntitySeaBear.this), 6);
                     }
                 }
             }
@@ -247,10 +248,10 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
 
         public void tick() {
             BlockPos pos = EntitySeaBear.this.lastCircle;
-            if (target == null || EntitySeaBear.this.distanceToSqr(target) < 2 || !EntitySeaBear.this.level.getFluidState(new BlockPos(target).above()).is(FluidTags.WATER)) {
+            if (target == null || EntitySeaBear.this.distanceToSqr(target) < 2 || !EntitySeaBear.this.level.getFluidState(AMBlockPos.fromVec3(target).above()).is(FluidTags.WATER)) {
                 target = DefaultRandomPos.getPosAway(EntitySeaBear.this, 20, 7, Vec3.atCenterOf(pos));
             }
-            if (target != null && EntitySeaBear.this.level.getFluidState(new BlockPos(target).above()).is(FluidTags.WATER)) {
+            if (target != null && EntitySeaBear.this.level.getFluidState(AMBlockPos.fromVec3(target).above()).is(FluidTags.WATER)) {
                 EntitySeaBear.this.getNavigation().moveTo(target.x, target.y, target.z, 1.0D);
             }
         }

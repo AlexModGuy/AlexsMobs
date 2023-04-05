@@ -496,8 +496,9 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
-        if (EntityGorilla.isBanana(targetEntity.getItem()) && !this.isTame()) {
-            bananaThrowerID = targetEntity.getThrower();
+        Entity thrower = targetEntity.getOwner();
+        if (EntityGorilla.isBanana(targetEntity.getItem()) && thrower != null && !this.isTame()) {
+            bananaThrowerID = thrower.getUUID();
         }
     }
 

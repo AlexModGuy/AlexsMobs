@@ -19,6 +19,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -114,7 +115,7 @@ public class EntityRoadrunner extends Animal {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.CACTUS || source.msgId.equals("anvil") || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.CACTUS) || source.getMsgId().equals("anvil") || super.isInvulnerableTo(source);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

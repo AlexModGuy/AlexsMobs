@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlyingAIFollowOwner;
 import com.github.alexthe666.alexsmobs.message.MessageTarantulaHawkSting;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -32,6 +33,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -497,7 +499,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.CACTUS || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.CACTUS) || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -569,7 +571,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getCrowGround(radialPos);
         int distFromGround = (int) this.getY() - ground.getY();
         int flightHeight = 4 + this.getRandom().nextInt(10);
@@ -581,7 +583,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private BlockPos getCrowGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
             position = position.below();
         }
@@ -595,7 +597,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), (int) getY(), (int) (fleePos.z() + extraZ));
         BlockPos ground = this.getCrowGround(radialPos);
         if (ground.getY() == -64) {
             return this.position();
@@ -622,7 +624,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (vector3d != null) {
             Vec3 pos = new Vec3(vector3d.x() + extraX, vector3d.y() + random.nextInt(2) + 4, vector3d.z() + extraZ);
-            if (this.level.isEmptyBlock(new BlockPos(pos))) {
+            if (this.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
                 return pos;
             }
         }

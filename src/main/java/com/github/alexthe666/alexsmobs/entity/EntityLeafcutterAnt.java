@@ -69,7 +69,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     protected static final EntityDimensions QUEEN_SIZE = EntityDimensions.fixed(1.25F, 0.98F);
     public static final ResourceLocation QUEEN_LOOT = new ResourceLocation("alexsmobs", "entities/leafcutter_ant_queen");
     private static final EntityDataAccessor<Optional<BlockPos>> LEAF_HARVESTED_POS = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
-    private static final EntityDataAccessor<Optional<BlockState>> LEAF_HARVESTED_STATE = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<Optional<BlockState>> LEAF_HARVESTED_STATE = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.OPTIONAL_BLOCK_STATE);
     private static final EntityDataAccessor<Boolean> HAS_LEAF = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> ANT_SCALE = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Direction> ATTACHED_FACE = SynchedEntityData.defineId(EntityLeafcutterAnt.class, EntityDataSerializers.DIRECTION);
@@ -598,18 +598,10 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.walkAnimation.speed()Old = p_233629_1_.walkAnimation.speed();
-        double d0 = p_233629_1_.getX() - p_233629_1_.xo;
-        double d1 = (p_233629_1_.getY() - p_233629_1_.yo) * 2.0F;
-        double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
-        float f = Mth.sqrt((float)(d0 * d0 + d1 * d1 + d2 * d2)) * 4.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        p_233629_1_.walkAnimation.speed() += (f - p_233629_1_.walkAnimation.speed()) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float)Mth.length(this.getX() - this.xo, 2 * (this.getY() - this.yo), this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     @Override

@@ -117,7 +117,7 @@ public class EntityTendonSegment  extends Entity {
                         hasTouched = true;
                         Entity entity = getCreatorEntity();
                         if(entity instanceof LivingEntity){
-                            if(current != creator && current.hurt(DamageSource.indirectMobAttack(this, (LivingEntity)entity), (float) getDamageFor((LivingEntity)creator, (LivingEntity)entity))){
+                            if(current != creator && current.hurt(damageSources().mobProjectile(this, (LivingEntity)entity), (float) getDamageFor((LivingEntity)creator, (LivingEntity)entity))){
                                 this.doEnchantDamageEffects((LivingEntity) creator, entity);
                             }
                         }

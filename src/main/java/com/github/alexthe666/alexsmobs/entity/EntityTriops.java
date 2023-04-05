@@ -167,7 +167,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
             this.setAirSupply(i - 1);
             if (this.getAirSupply() == -20) {
                 this.setAirSupply(0);
-                this.hurt(DamageSource.DROWN, random.nextInt(2) == 0 ? 1F : 0F);
+                this.hurt(damageSources().dryOut(), random.nextInt(2) == 0 ? 1F : 0F);
             }
         } else {
             this.setAirSupply(2000);
@@ -247,22 +247,15 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         tail1Yaw = Mth.approachDegrees(this.tail1Yaw, yBodyRot, 7);
         tail2Yaw = Mth.approachDegrees(this.tail2Yaw, this.tail1Yaw, 7);
         if(onLandProgress == 0){
-            float f = (float) (20 * Math.sin(animationPosition) * walkAnimation.speed());
+            float f = (float) (20 * Math.sin(this.walkAnimation.position()) * walkAnimation.speed());
             swimRot = Mth.approachDegrees(this.swimRot, f, 2);
         }
     }
 
-    public void calculateEntityAnimation(LivingEntity entity, boolean flying) {
-        entity.walkAnimation.speed()Old = entity.walkAnimation.speed();
-        double d0 = entity.getX() - entity.xo;
-        double d1 = entity.getY() - entity.yo;
-        double d2 = entity.getZ() - entity.zo;
-        float f = (float)Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * 6.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-        entity.walkAnimation.speed() += (f - entity.walkAnimation.speed()) * 0.4F;
-        entity.animationPosition += entity.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 6, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     public MobType getMobType() {

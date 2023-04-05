@@ -26,7 +26,6 @@ import net.minecraftforge.client.event.RenderNameTagEvent;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 

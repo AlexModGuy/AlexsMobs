@@ -70,7 +70,7 @@ public class EntityGiantSquidPart extends PartEntity<EntityGiantSquid> implement
 
     public boolean hurt(DamageSource source, float amount) {
         if(level.isClientSide && this.getParent() != null && !this.getParent().isInvulnerableTo(source) && !collisionOnly){
-            AlexsMobs.sendMSGToServer(new MessageHurtMultipart(this.getId(), this.getParent().getId(), amount, source.msgId));
+            AlexsMobs.sendMSGToServer(new MessageHurtMultipart(this.getId(), this.getParent().getId(), amount, source.getMsgId()));
         }
         return !collisionOnly && !this.isInvulnerableTo(source) && this.getParent().attackEntityPartFrom(this, source, amount);
     }

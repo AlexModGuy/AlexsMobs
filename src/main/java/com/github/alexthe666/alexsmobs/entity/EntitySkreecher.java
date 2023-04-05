@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -333,7 +334,7 @@ public class EntitySkreecher extends Monster {
     }
 
     protected BlockPos getPositionAbove(float height) {
-        return new BlockPos(this.position().x, this.getBoundingBox().maxY + height + 0.5000001D, this.position().z);
+        return AMBlockPos.fromCoords(this.position().x, this.getBoundingBox().maxY + height + 0.5000001D, this.position().z);
     }
 
     protected PathNavigation createScreecherNavigation(Level level) {
@@ -365,7 +366,7 @@ public class EntitySkreecher extends Monster {
             final Vec3 vec3 = new Vec3(x, y, z);
             final AABB axisAlignedBB = AABB.ofSize(vec3, d, 1.0E-6D, d);
             return this.level.getBlockStates(axisAlignedBB).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
-                BlockPos blockpos = new BlockPos(vec3);
+                BlockPos blockpos = AMBlockPos.fromVec3(vec3);
                 return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisAlignedBB), BooleanOp.AND);
             });
         }
@@ -418,7 +419,7 @@ public class EntitySkreecher extends Monster {
                 int distance = 16;
                 for (int i = 0; i < 15; i++) {
                     Random rand = new Random();
-                    BlockPos randPos = EntitySkreecher.this.blockPosition().offset(rand.nextInt(distance * 2) - distance, -MAX_DIST_TO_CEILING, rand.nextInt(distance * 2) - distance);
+                    BlockPos randPos = EntitySkreecher.this.blockPosition().offset(rand.nextInt(distance * 2) - distance, (int) -MAX_DIST_TO_CEILING, rand.nextInt(distance * 2) - distance);
                     BlockPos lowestPos = EntitySkreecher.this.getCeilingOf(randPos).below(rand.nextInt((int)MAX_DIST_TO_CEILING));
                     return Vec3.atCenterOf(lowestPos);
 

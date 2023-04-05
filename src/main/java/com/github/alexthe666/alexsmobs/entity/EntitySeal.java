@@ -167,18 +167,10 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         return s != null && s.toLowerCase().contains("he was");
     }
 
-    public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.walkAnimation.speed()Old = mob.walkAnimation.speed();
-        double d0 = mob.getX() - mob.xo;
-        double d1 = flying ? mob.getY() - mob.yo : 0.0D;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * (isInWater() ? 4.0F : 48.0F);
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        mob.walkAnimation.speed() += (f - mob.walkAnimation.speed()) * 0.4F;
-        mob.animationPosition += mob.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float) Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * (isInWater() ? 4.0F : 48.0F), 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     public float getSwimAngle() {
@@ -453,8 +445,11 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
             fishFeedings++;
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
+            Entity itemThrower = e.getOwner();
             if (fishFeedings >= 3) {
-                feederUUID = e.getThrower();
+                if(itemThrower != null){
+                    feederUUID = itemThrower.getUUID();
+                }
                 fishFeedings = 0;
             }
         } else {

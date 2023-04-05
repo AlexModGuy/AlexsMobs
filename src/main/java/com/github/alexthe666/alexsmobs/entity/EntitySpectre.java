@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -106,7 +107,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return !source.isMagic() && source != DamageSource.OUT_OF_WORLD && !source.isCreativePlayer() || super.isInvulnerableTo(source);
+        return !source.is(DamageTypes.MAGIC) && !source.is(DamageTypes.OUT_OF_WORLD) && !source.isCreativePlayer() || super.isInvulnerableTo(source);
     }
 
     @Nullable
@@ -345,7 +346,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
                 island = false;
                 return getBlockFromDirection();
             }
-            BlockPos pos = new BlockPos(orbit.getX() + extraX, Math.min(height + 10, orbit.getY() + random.nextInt(3) - random.nextInt(1)), orbit.getZ() + extraZ);
+            BlockPos pos = new BlockPos((int) (orbit.getX() + extraX), Math.min(height + 10, orbit.getY() + random.nextInt(3) - random.nextInt(1)), (int) (orbit.getZ() + extraZ));
             return pos;
         }
 

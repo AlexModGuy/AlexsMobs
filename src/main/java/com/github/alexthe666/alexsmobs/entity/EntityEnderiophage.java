@@ -10,6 +10,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -551,7 +552,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getPhageGround(radialPos);
         int distFromGround = (int) this.getY() - ground.getY();
         int flightHeight = 6 + this.getRandom().nextInt(10);
@@ -563,7 +564,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     private BlockPos getPhageGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
@@ -581,7 +582,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getPhageGround(radialPos);
         if (ground.getY() <= -63) {
             return Vec3.upFromBottomCenterOf(ground, 110 + random.nextInt(20));

@@ -612,8 +612,9 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
-        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame() && e.getOwner() != null) {
-            seedThrowerID = e.getOwner().getUUID();
+        Entity itemThrower = e.getOwner();
+        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame() && itemThrower != null) {
+            seedThrowerID = itemThrower.getUUID();
         } else {
             seedThrowerID = null;
         }

@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -277,7 +278,7 @@ public class EntitySkunk extends Animal {
                             pos = block.getBlockPos().relative(block.getDirection());
                             dir = block.getDirection().getOpposite();
                         } else {
-                            pos = new BlockPos(hitResult.getLocation());
+                            pos = AMBlockPos.fromVec3(hitResult.getLocation());
                             dir = Direction.UP;
                         }
                         BlockState sprayState = ((MultifaceBlock) AMBlockRegistry.SKUNK_SPRAY.get()).getStateForPlacement(level.getBlockState(pos), level, pos, dir);

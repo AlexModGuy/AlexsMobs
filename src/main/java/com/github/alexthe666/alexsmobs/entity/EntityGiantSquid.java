@@ -24,6 +24,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -484,18 +485,10 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     @Override
-    public void calculateEntityAnimation(LivingEntity entity, boolean flying) {
-        entity.walkAnimation.speed()Old = entity.walkAnimation.speed();
-        double d0 = entity.getX() - entity.xo;
-        double d1 = entity.getY() - entity.yo;
-        double d2 = entity.getZ() - entity.zo;
-        float f = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2)) * 8.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        entity.walkAnimation.speed() += (f - entity.walkAnimation.speed()) * 0.4F;
-        entity.animationPosition += entity.walkAnimation.speed();
+    public void calculateEntityAnimation(boolean flying) {
+        float f1 = (float)Mth.length(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     public boolean canBeCollidedWith() {

@@ -146,8 +146,8 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
     }
 
     public double calculateWalkBounce(float partialTick){
-        float limbSwingAmount = Mth.lerp(partialTick, this.walkAnimation.speed()Old, this.walkAnimation.speed());
-        float limbSwing = this.animationPosition - this.walkAnimation.speed() * (1.0F - partialTick);
+        float limbSwingAmount = this.walkAnimation.speed(partialTick);
+        float limbSwing = this.walkAnimation.position() - this.walkAnimation.speed() * (1.0F - partialTick);
         return Math.abs(Math.sin(limbSwing * 0.9F) * limbSwingAmount * 0.25F);
     }
 

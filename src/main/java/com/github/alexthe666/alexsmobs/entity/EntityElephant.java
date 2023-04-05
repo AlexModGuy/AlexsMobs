@@ -830,8 +830,9 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
-        if (duplicate.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get() && e.getOwner() != null) {
-            blossomThrowerUUID = e.getOwner().getUUID();
+        Entity itemThrower = e.getOwner();
+        if (duplicate.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get() && itemThrower != null) {
+            blossomThrowerUUID = itemThrower.getUUID();
         } else {
             blossomThrowerUUID = null;
         }
