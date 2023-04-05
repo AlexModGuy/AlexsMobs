@@ -655,11 +655,8 @@ public class ServerEvents {
             if (event.getEntity().isInPowderSnow) {
                 event.getEntity().setOnGround(true);
                 event.getEntity().setDeltaMovement(event.getEntity().getDeltaMovement().add(0, 0.1F, 0));
-
             }
-
         }
-
         if (event.getEntity().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS.get()) {
             if (event.getEntity().horizontalCollision && !event.getEntity().isInWater()) {
                 event.getEntity().fallDistance = 0.0F;
