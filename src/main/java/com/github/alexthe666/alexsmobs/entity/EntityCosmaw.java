@@ -162,6 +162,11 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         return false;
     }
 
+    @Nullable
+    public LivingEntity getControllingPassenger() {
+        return null;
+    }
+
     public float getClampedCosmawPitch(float partialTick) {
         float f = prevCosmawPitch + (this.getCosmawPitch() - prevCosmawPitch) * partialTick;
         return Mth.clamp(f, -90, 90);

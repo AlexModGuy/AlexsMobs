@@ -14,11 +14,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class RenderTasmanianDevil extends MobRenderer<EntityTasmanianDevil, ModelTasmanianDevil> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/tasmanian_devil.png");
-    private static final ResourceLocation TEXTURE_EYES = new ResourceLocation("alexsmobs:textures/entity/tasmanian_devil_eyes.png");
+    private static final ResourceLocation TEXTURE_ANGRY = new ResourceLocation("alexsmobs:textures/entity/tasmanian_devil_angry.png");
 
     public RenderTasmanianDevil(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelTasmanianDevil(), 0.3F);
-        this.addLayer(new EyeLayer(this));
     }
 
     protected void scale(EntityTasmanianDevil entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
@@ -26,20 +25,7 @@ public class RenderTasmanianDevil extends MobRenderer<EntityTasmanianDevil, Mode
 
 
     public ResourceLocation getTextureLocation(EntityTasmanianDevil entity) {
-        return TEXTURE;
+        return entity.getAnimation() == EntityTasmanianDevil.ANIMATION_HOWL && entity.getAnimationTick() < 34 ? TEXTURE_ANGRY : TEXTURE;
     }
 
-    class EyeLayer extends RenderLayer<EntityTasmanianDevil, ModelTasmanianDevil> {
-
-        public EyeLayer(RenderTasmanianDevil render) {
-            super(render);
-        }
-
-        public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EntityTasmanianDevil entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-          if(entitylivingbaseIn.getAnimation() == EntityTasmanianDevil.ANIMATION_HOWL && entitylivingbaseIn.getAnimationTick() < 34){
-              VertexConsumer ivertexbuilder = bufferIn.getBuffer(RenderType.eyes(TEXTURE_EYES));
-              this.getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
-          }
-        }
-    }
 }

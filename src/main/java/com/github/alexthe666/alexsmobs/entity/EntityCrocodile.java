@@ -435,6 +435,11 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
         }
     }
 
+    @Nullable
+    public LivingEntity getControllingPassenger() {
+        return null;
+    }
+
     public boolean onClimbable() {
         return isInWater() && this.isBesideClimbableBlock();
     }
