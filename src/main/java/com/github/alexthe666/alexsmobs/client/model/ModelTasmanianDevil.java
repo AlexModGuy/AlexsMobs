@@ -14,87 +14,78 @@ import net.minecraft.client.Minecraft;
 public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevil> {
 	private final AdvancedModelBox root;
 	private final AdvancedModelBox body;
-	private final AdvancedModelBox tail;
+	private final AdvancedModelBox armLeft;
+	private final AdvancedModelBox armRight;
+	private final AdvancedModelBox legLeft;
+	private final AdvancedModelBox legRight;
 	private final AdvancedModelBox head;
-	private final AdvancedModelBox ear_left;
-	private final AdvancedModelBox ear_right;
-	private final AdvancedModelBox upper_jaw;
-	private final AdvancedModelBox lower_jaw;
-	private final AdvancedModelBox arm_left;
-	private final AdvancedModelBox arm_right;
-	private final AdvancedModelBox leg_left;
-	private final AdvancedModelBox leg_right;
-	private ModelAnimator animator;
+	private final AdvancedModelBox earLeft;
+	private final AdvancedModelBox earRight;
+	private final AdvancedModelBox tail;
+	public ModelAnimator animator;
 
 	public ModelTasmanianDevil() {
 		texWidth = 64;
 		texHeight = 64;
 
-		root = new AdvancedModelBox(this, "root");
-		root.setPos(0.0F, 24.0F, 0.0F);
-		
+		root = new AdvancedModelBox(this);
+		root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-		body = new AdvancedModelBox(this, "body");
-		body.setPos(0.0F, -5.5F, 0.0F);
+		body = new AdvancedModelBox(this);
+		body.setRotationPoint(0.0F, -6.0F, 0.0F);
 		root.addChild(body);
-		body.setTextureOffset(0, 0).addBox(-2.5F, -2.5F, -6.0F, 5.0F, 5.0F, 12.0F, 0.0F, false);
+		body.setTextureOffset(0, 0).addBox(-3.5F, -3.0F, -5.0F, 7.0F, 6.0F, 11.0F, 0.0F, false);
 
-		tail = new AdvancedModelBox(this, "tail");
-		tail.setPos(0.0F, -0.5F, 6.0F);
-		body.addChild(tail);
-		tail.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 10.0F, 0.0F, false);
+		armLeft = new AdvancedModelBox(this);
+		armLeft.setRotationPoint(2.6F, 3.0F, -3.0F);
+		body.addChild(armLeft);
+		armLeft.setTextureOffset(26, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 4.0F, 2.0F, 0.0F, false);
 
-		head = new AdvancedModelBox(this, "head");
-		head.setPos(-0.5F, -1.5F, -6.0F);
+		armRight = new AdvancedModelBox(this);
+		armRight.setRotationPoint(-2.6F, 3.0F, -3.0F);
+		body.addChild(armRight);
+		armRight.setTextureOffset(26, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 4.0F, 2.0F, 0.0F, true);
+
+		legLeft = new AdvancedModelBox(this);
+		legLeft.setRotationPoint(2.6F, 3.0F, 4.0F);
+		body.addChild(legLeft);
+		legLeft.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 4.0F, 2.0F, 0.0F, false);
+
+		legRight = new AdvancedModelBox(this);
+		legRight.setRotationPoint(-2.6F, 3.0F, 4.0F);
+		body.addChild(legRight);
+		legRight.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 4.0F, 2.0F, 0.0F, true);
+
+		head = new AdvancedModelBox(this);
+		head.setRotationPoint(0.0F, -2.0F, -6.0F);
 		body.addChild(head);
-		head.setTextureOffset(15, 18).addBox(-1.5F, -2.0F, -4.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
+		head.setTextureOffset(0, 18).addBox(-3.0F, -2.0F, -3.0F, 6.0F, 4.0F, 4.0F, 0.0F, false);
+		head.setTextureOffset(26, 0).addBox(-2.0F, -2.0F, -6.0F, 4.0F, 4.0F, 3.0F, 0.0F, false);
 
-		ear_left = new AdvancedModelBox(this, "ear_left");
-		ear_left.setPos(2.5F, -1.0F, -1.0F);
-		head.addChild(ear_left);
-		ear_left.setTextureOffset(2, 9).addBox(-1.0F, -2.0F, 0.0F, 2.0F, 2.0F, 0.0F, 0.0F, false);
+		earLeft = new AdvancedModelBox(this);
+		earLeft.setRotationPoint(2.0F, -1.0F, 0.0F);
+		head.addChild(earLeft);
+		setRotationAngle(earLeft, 0.2182F, 0.0F, 0.3054F);
+		earLeft.setTextureOffset(0, 27).addBox(-1.0F, -3.0F, -1.0F, 3.0F, 3.0F, 1.0F, 0.0F, false);
 
-		ear_right = new AdvancedModelBox(this, "ear_right");
-		ear_right.setPos(-1.5F, -2.0F, -1.0F);
-		head.addChild(ear_right);
-		ear_right.setTextureOffset(2, 9).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 0.0F, 0.0F, true);
+		earRight = new AdvancedModelBox(this);
+		earRight.setRotationPoint(-2.0F, -1.0F, 0.0F);
+		head.addChild(earRight);
+		setRotationAngle(earRight, 0.2182F, 0.0F, -0.3054F);
+		earRight.setTextureOffset(0, 27).addBox(-2.0F, -3.0F, -1.0F, 3.0F, 3.0F, 1.0F, 0.0F, true);
 
-		upper_jaw = new AdvancedModelBox(this, "upper_jaw");
-		upper_jaw.setPos(0.5F, 0.0F, -4.0F);
-		head.addChild(upper_jaw);
-		upper_jaw.setTextureOffset(23, 0).addBox(-1.5F, -1.0F, -3.0F, 3.0F, 2.0F, 3.0F, 0.0F, false);
-
-		lower_jaw = new AdvancedModelBox(this, "lower_jaw");
-		lower_jaw.setPos(0.5F, 1.0F, -4.0F);
-		head.addChild(lower_jaw);
-		lower_jaw.setTextureOffset(23, 6).addBox(-1.5F, 0.0F, -3.0F, 3.0F, 1.0F, 3.0F, 0.0F, false);
-
-		arm_left = new AdvancedModelBox(this, "arm_left");
-		arm_left.setPos(1.4F, 1.5F, -4.0F);
-		body.addChild(arm_left);
-		arm_left.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, 0.0F, false);
-
-		arm_right = new AdvancedModelBox(this, "arm_right");
-		arm_right.setPos(-1.4F, 1.5F, -4.0F);
-		body.addChild(arm_right);
-		arm_right.setTextureOffset(0, 18).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 5.0F, 2.0F, 0.0F, true);
-
-		leg_left = new AdvancedModelBox(this, "leg_left");
-		leg_left.setPos(1.4F, 2.5F, 4.5F);
-		body.addChild(leg_left);
-		leg_left.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 3.0F, 0.0F, false);
-
-		leg_right = new AdvancedModelBox(this, "leg_right");
-		leg_right.setPos(-1.4F, 2.5F, 4.5F);
-		body.addChild(leg_right);
-		leg_right.setTextureOffset(0, 0).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 3.0F, 0.0F, true);
+		tail = new AdvancedModelBox(this);
+		tail.setRotationPoint(0.0F, -2.0F, 6.0F);
+		body.addChild(tail);
+		setRotationAngle(tail, -0.5236F, 0.0F, 0.0F);
+		tail.setTextureOffset(15, 21).addBox(-1.0F, 0.0F, 0.0F, 2.0F, 2.0F, 6.0F, 0.0F, false);
 		this.updateDefaultPose();
 		animator = ModelAnimator.create();
 	}
 
 	@Override
 	public Iterable<AdvancedModelBox> getAllParts() {
-		return ImmutableList.of(root, body, head, ear_right, ear_left, lower_jaw, upper_jaw, tail, arm_left, arm_right, leg_left, leg_right);
+		return ImmutableList.of(root, body, head,  tail, earLeft, earRight, legLeft, legRight, armLeft, armRight);
 	}
 
 	public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4) {
@@ -103,29 +94,18 @@ public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevi
 		animator.setAnimation(EntityTasmanianDevil.ANIMATION_ATTACK);
 		animator.startKeyframe(3);
 		animator.rotate(head, (float)Math.toRadians(10F), 0, 0);
-		animator.move(lower_jaw, 0, 0, 0.5F);
-		animator.rotate(lower_jaw, (float)Math.toRadians(15F), 0, 0);
 		animator.move(head, 0, -1, 1.5F);
 		animator.endKeyframe();
 		animator.startKeyframe(2);
-		animator.move(lower_jaw, 0, 0, 1F);
 		animator.rotate(head, (float)Math.toRadians(-15F), 0, 0);
-		animator.rotate(upper_jaw, (float)Math.toRadians(-5F), 0, 0);
-		animator.rotate(lower_jaw, (float)Math.toRadians(65F), 0, 0);
 		animator.endKeyframe();
 		animator.resetKeyframe(3);
 		animator.endKeyframe();
 		animator.setAnimation(EntityTasmanianDevil.ANIMATION_HOWL);
 		animator.startKeyframe(10);
-		animator.move(lower_jaw, 0, 0, 1F);
-		animator.rotate(upper_jaw, (float)Math.toRadians(-5F), 0, 0);
-		animator.rotate(lower_jaw, (float)Math.toRadians(45F), 0, 0);
 		animator.rotate(head, (float)Math.toRadians(-45F),  (float)Math.toRadians(45F), 0);
 		animator.endKeyframe();
 		animator.startKeyframe(20);
-		animator.move(lower_jaw, 0, 0, 1F);
-		animator.rotate(upper_jaw, (float)Math.toRadians(-5F), 0, 0);
-		animator.rotate(lower_jaw, (float)Math.toRadians(45F), 0, 0);
 		animator.rotate(head, (float)Math.toRadians(-45F),  (float)Math.toRadians(-45F), 0);
 		animator.endKeyframe();
 		animator.setStaticKeyframe(5);
@@ -139,46 +119,46 @@ public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevi
 		float walkDegree = 0.5F;
 		float idleSpeed = 0.1F;
 		float idleDegree = 0.1F;
-		float stillProgress = 1F - limbSwingAmount;
 		float partialTick = Minecraft.getInstance().getFrameTime();
 		float baskProgress0 = entity.prevBaskProgress + (entity.baskProgress - entity.prevBaskProgress) * partialTick;
 		float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
 		float baskProgress = Math.max(0, baskProgress0 - sitProgress);
-		progressRotationPrev(tail, stillProgress, (float)Math.toRadians(-23), 0, 0, 1F);
+		progressRotationPrev(tail, limbSwingAmount, (float)Math.toRadians(10), 0, 0, 1F);
 		progressRotationPrev(body, sitProgress, (float)Math.toRadians(-25), 0, 0, 5F);
-		progressRotationPrev(arm_right, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
-		progressRotationPrev(arm_left, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
+		progressRotationPrev(armRight, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
+		progressRotationPrev(armLeft, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
 		progressRotationPrev(tail, sitProgress, (float)Math.toRadians(40), 0, 0, 5F);
 		progressRotationPrev(head, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
-		progressRotationPrev(leg_right, sitProgress, (float)Math.toRadians(-40),  (float)Math.toRadians(40), 0, 5F);
-		progressRotationPrev(leg_left, sitProgress, (float)Math.toRadians(-40),  (float)Math.toRadians(-40), 0, 5F);
-		progressPositionPrev(arm_right, sitProgress, 0, 1.5F, 1.2F, 5F);
-		progressPositionPrev(arm_left, sitProgress, 0, 1.5F, 1.2F, 5F);
-		progressPositionPrev(leg_left, sitProgress, 1, -1.5F, 0F, 5F);
-		progressPositionPrev(leg_right, sitProgress, -1, -1.5F, 0F, 5F);
-		progressRotationPrev(arm_right, baskProgress, (float)Math.toRadians(-80),  (float)Math.toRadians(40), 0, 5F);
-		progressRotationPrev(arm_left, baskProgress, (float)Math.toRadians(-80),  (float)Math.toRadians(-40), 0, 5F);
-		progressRotationPrev(leg_right, baskProgress, (float)Math.toRadians(80),  (float)Math.toRadians(-20), 0, 5F);
-		progressRotationPrev(leg_left, baskProgress, (float)Math.toRadians(80),  (float)Math.toRadians(20), 0, 5F);
-		progressRotationPrev(tail, baskProgress, (float)Math.toRadians(10), 0, 0, 5F);
+		progressRotationPrev(legRight, sitProgress, (float)Math.toRadians(-40),  (float)Math.toRadians(40), 0, 5F);
+		progressRotationPrev(legLeft, sitProgress, (float)Math.toRadians(-40),  (float)Math.toRadians(-40), 0, 5F);
+		progressPositionPrev(body, sitProgress, 0, 0.5F, 0F, 5F);
+		progressPositionPrev(armRight, sitProgress, 0, 1F, 1.2F, 5F);
+		progressPositionPrev(armLeft, sitProgress, 0, 1F, 1.2F, 5F);
+		progressPositionPrev(legLeft, sitProgress, 1, -1.5F, 0F, 5F);
+		progressPositionPrev(legRight, sitProgress, -1, -1.5F, 0F, 5F);
+		progressRotationPrev(armRight, baskProgress, (float)Math.toRadians(-80),  (float)Math.toRadians(40), 0, 5F);
+		progressRotationPrev(armLeft, baskProgress, (float)Math.toRadians(-80),  (float)Math.toRadians(-40), 0, 5F);
+		progressRotationPrev(legRight, baskProgress, (float)Math.toRadians(80),  (float)Math.toRadians(-20), 0, 5F);
+		progressRotationPrev(legLeft, baskProgress, (float)Math.toRadians(80),  (float)Math.toRadians(20), 0, 5F);
+		progressRotationPrev(tail, baskProgress, (float)Math.toRadians(20), 0, 0, 5F);
 		progressRotationPrev(head, baskProgress, (float)Math.toRadians(10), 0, 0, 5F);
-		progressRotationPrev(ear_right, baskProgress, 0,  (float)Math.toRadians(40), 0, 5F);
-		progressRotationPrev(ear_left, baskProgress, 0,  (float)Math.toRadians(-40), 0, 5F);
-		progressPositionPrev(body, baskProgress, 0, 3F, 0F, 5F);
+		progressRotationPrev(earRight, baskProgress, 0,  (float)Math.toRadians(40), 0, 5F);
+		progressRotationPrev(earLeft, baskProgress, 0,  (float)Math.toRadians(-40), 0, 5F);
+		progressPositionPrev(body, baskProgress, 0, 3, 0F, 5F);
 		progressPositionPrev(head, baskProgress, 0, 1.2F, 0F, 5F);
-		progressPositionPrev(arm_right, baskProgress, 0, -0.2F, -1.2F, 5F);
-		progressPositionPrev(arm_left, baskProgress, 0, -0.2F, -1.2F, 5F);
-		progressPositionPrev(leg_left, baskProgress, 1, -1.5F, 0F, 5F);
-		progressPositionPrev(leg_right, baskProgress, -1, -1.5F, 0F, 5F);
+		progressPositionPrev(armRight, baskProgress, 0, -1, -1.2F, 5F);
+		progressPositionPrev(armLeft, baskProgress, 0, -1, -1.2F, 5F);
+		progressPositionPrev(legLeft, baskProgress, 1, -1, 0F, 5F);
+		progressPositionPrev(legRight, baskProgress, -1, -1, 0F, 5F);
 
-		this.walk(arm_right, walkSpeed, walkDegree * 1.1F, true, 0F, 0F, limbSwing, limbSwingAmount);
-		this.bob(arm_right, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
-		this.walk(arm_left, walkSpeed, walkDegree * 1.1F, false, 0F, 0F, limbSwing, limbSwingAmount);
-		this.bob(arm_left, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
-		this.walk(leg_right, walkSpeed, walkDegree * 1.1F, false, 0F, 0F, limbSwing, limbSwingAmount);
-		this.bob(leg_right, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
-		this.walk(leg_left, walkSpeed, walkDegree * 1.1F, true, 0F, 0F, limbSwing, limbSwingAmount);
-		this.bob(leg_left, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
+		this.walk(armRight, walkSpeed, walkDegree * 1.1F, true, 0F, 0F, limbSwing, limbSwingAmount);
+		this.bob(armRight, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
+		this.walk(armLeft, walkSpeed, walkDegree * 1.1F, false, 0F, 0F, limbSwing, limbSwingAmount);
+		this.bob(armLeft, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
+		this.walk(legRight, walkSpeed, walkDegree * 1.1F, false, 0F, 0F, limbSwing, limbSwingAmount);
+		this.bob(legRight, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
+		this.walk(legLeft, walkSpeed, walkDegree * 1.1F, true, 0F, 0F, limbSwing, limbSwingAmount);
+		this.bob(legLeft, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
 		this.swing(body, walkSpeed, walkDegree * 0.6F, true, 1F, 0F, limbSwing, limbSwingAmount);
 		this.swing(tail, walkSpeed, walkDegree * 0.6F, false, 1F, 0F, limbSwing, limbSwingAmount);
 		this.swing(head, walkSpeed, walkDegree * 0.6F, false, 1F, 0F, limbSwing, limbSwingAmount);
@@ -186,8 +166,8 @@ public class ModelTasmanianDevil extends AdvancedEntityModel<EntityTasmanianDevi
 		this.walk(tail, walkSpeed, walkDegree * 0.6F, true, -1F, 0F, limbSwing, limbSwingAmount);
 		this.bob(body, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
 		this.bob(head, walkSpeed, walkDegree * 0.6F, false, limbSwing, limbSwingAmount);
-		this.swing(ear_right, walkSpeed, walkDegree * 0.6F, false, -1F, 0.3F, limbSwing, limbSwingAmount);
-		this.swing(ear_left, walkSpeed, walkDegree * 0.6F, true, -1F, 0.3F, limbSwing, limbSwingAmount);
+		this.swing(earRight, walkSpeed, walkDegree * 0.6F, false, -1F, 0.3F, limbSwing, limbSwingAmount);
+		this.swing(earLeft, walkSpeed, walkDegree * 0.6F, true, -1F, 0.3F, limbSwing, limbSwingAmount);
 		this.swing(tail, idleSpeed, idleDegree * 0.9F, false, 1F, 0F, ageInTicks, 1);
 		this.faceTarget(netHeadYaw, headPitch, 1, head);
 
