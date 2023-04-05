@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -307,7 +308,9 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
     }
 
     private BlockPos getMoscoGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(),
+                (int) this.getY(),
+                in.getZ());
         while (position.getY() > -62 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
             position = position.below();
         }
@@ -321,7 +324,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getMoscoGround(radialPos);
         if (ground.getY() == -62) {
             return this.position();
@@ -344,7 +347,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getMoscoGround(radialPos);
         int distFromGround = (int) this.getY() - ground.getY();
         int flightHeight = 4 + this.getRandom().nextInt(10);
@@ -589,7 +592,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 if (EntityWarpedMosco.this.isFlying()) {
                     if (EntityWarpedMosco.this.distanceTo(target) < 4.3F) {
                         if (dashCooldown == 0 || target.isOnGround() || target.isInLava() || target.isInWater()) {
-                            target.hurt(this.damageSources().mobAttack(EntityWarpedMosco.this), 5F);
+                            target.hurt(EntityWarpedMosco.this.damageSources().mobAttack(EntityWarpedMosco.this), 5F);
                             EntityWarpedMosco.this.knockbackRidiculous(target, 1.0F);
                             dashCooldown = 30;
                         }
@@ -617,7 +620,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             float angle = (0.01745329251F * (target.yHeadRot + 90F + EntityWarpedMosco.this.getRandom().nextInt(180)));
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
+            BlockPos radialPos = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
             BlockPos ground = radialPos;
             if (EntityWarpedMosco.this.distanceToSqr(Vec3.atCenterOf(ground)) > 30) {
                 if (!EntityWarpedMosco.this.isTargetBlocked(Vec3.atCenterOf(ground)) && EntityWarpedMosco.this.distanceToSqr(Vec3.atCenterOf(ground)) > 6) {

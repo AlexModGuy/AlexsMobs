@@ -117,7 +117,7 @@ public class EntityTossedItem extends ThrowableItemProjectile {
         if(this.getOwner() instanceof EntityCapuchinMonkey){
             EntityCapuchinMonkey boss = (EntityCapuchinMonkey) this.getOwner();
             if(!boss.isAlliedTo(p_213868_1_.getEntity()) || !boss.isTame() && !(p_213868_1_.getEntity() instanceof EntityCapuchinMonkey)){
-                p_213868_1_.getEntity().hurt(DamageSource.thrown(this, boss), isDart() ? 8 : 4);
+                p_213868_1_.getEntity().hurt(damageSources().thrown(this, boss), isDart() ? 8 : 4);
             }
         }
     }

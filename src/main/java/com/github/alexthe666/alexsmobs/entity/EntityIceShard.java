@@ -110,7 +110,7 @@ public class EntityIceShard extends Entity {
     protected void onEntityHit(EntityHitResult p_213868_1_) {
         Entity entity = this.getOwner();
         if (entity instanceof LivingEntity && p_213868_1_.getEntity() != getOwner() && !(p_213868_1_.getEntity() instanceof EntityFroststalker)) {
-            p_213868_1_.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) entity).setProjectile(), 2.0F + random.nextFloat() * 3.0F);
+            p_213868_1_.getEntity().hurt(damageSources().mobProjectile(this, (LivingEntity) entity), 2.0F + random.nextFloat() * 3.0F);
         }
     }
 

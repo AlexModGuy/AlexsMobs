@@ -68,9 +68,9 @@ public class EntitySharkToothArrow extends Arrow {
         if(living.getMobType() == MobType.WATER || living instanceof Drowned || living.getMobType() != MobType.UNDEAD && living.canBreatheUnderwater()){
             DamageSource damagesource;
             if (entity1 == null) {
-                damagesource = DamageSource.arrow(this, this);
+                damagesource = damageSources().arrow(this, this);
             } else {
-                damagesource = DamageSource.arrow(this, entity1);
+                damagesource = damageSources().arrow(this, entity1);
             }
             living.hurt(damagesource, 7);
         }

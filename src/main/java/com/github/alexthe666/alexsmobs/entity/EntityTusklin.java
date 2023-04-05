@@ -132,7 +132,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         if (this.isSaddled()) {
             for (Entity passenger : this.getPassengers()) {
                 if (passenger instanceof Player) {
@@ -195,7 +195,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public double getPassengersRidingOffset() {
-        float f = this.animationPosition;
+        float f = this.walkAnimation.position();
         float f1 = this.walkAnimation.speed();
         float f2 = 0;
         if (this.getAnimation() == ANIMATION_FLING) {

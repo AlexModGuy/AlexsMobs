@@ -42,7 +42,7 @@ public class TileEntityVoidWormBeak extends BlockEntity {
             float k = this.getBlockPos().getZ() + 0.5F;
             float d0 = 0.5F;
             for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, new AABB((double) i - d0, (double) j - d0, (double) k - d0, (double) i + d0, (double) j + d0, (double) k + d0))) {
-                entity.hurt(DamageSource.GENERIC, 5);
+                entity.hurt(entity.damageSources().generic(), 5);
             }
         }
         ticksExisted++;

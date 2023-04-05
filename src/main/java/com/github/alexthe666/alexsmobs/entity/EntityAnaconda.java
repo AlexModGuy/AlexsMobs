@@ -20,6 +20,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -586,7 +587,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
             final LivingEntity target = snake.getTarget();
             if (target != null && target.isAlive()) {
                 if (jumpAttemptCooldown == 0 && snake.distanceTo(target) < 1 + target.getBbWidth() && !snake.isStrangling()) {
-                    target.hurt(this.damageSources().mobAttack(snake), 4);
+                    target.hurt(snake.damageSources().mobAttack(snake), 4);
                     snake.setStrangling(target.getBbWidth() <= 2.0F && !(target instanceof EntityAnaconda));
                     snake.playSound(AMSoundRegistry.ANACONDA_ATTACK.get(), snake.getSoundVolume(), snake.getVoicePitch());
                     jumpAttemptCooldown = 5 + random.nextInt(5);

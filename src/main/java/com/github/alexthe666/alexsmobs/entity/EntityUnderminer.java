@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.EtherealMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.MonsterAIWalkThroughHallsOfStructure;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.ChatFormatting;
@@ -24,6 +25,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -212,11 +214,11 @@ public class EntityUnderminer extends PathfinderMob {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return !source.isMagic() && source != DamageSource.OUT_OF_WORLD && !source.isCreativePlayer() || super.isInvulnerableTo(source);
+        return !source.is(DamageTypes.MAGIC) && source.is(DamageTypes.OUT_OF_WORLD) && !source.isCreativePlayer() || super.isInvulnerableTo(source);
     }
 
     private float calculateDistanceToFloor() {
-        BlockPos floor = new BlockPos(this.getX(), this.getBoundingBox().maxY, this.getZ());
+        BlockPos floor = AMBlockPos.fromCoords(this.getX(), this.getBoundingBox().maxY, this.getZ());
         while (!level.getBlockState(floor).isFaceSturdy(level, floor, Direction.UP) && floor.getY() > level.getMinBuildHeight()) {
             floor = floor.below();
         }

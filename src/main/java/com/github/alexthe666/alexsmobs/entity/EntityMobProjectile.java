@@ -98,7 +98,7 @@ public abstract class EntityMobProjectile extends Entity {
     protected void onEntityHit(EntityHitResult result) {
         Entity entity = this.getShooter();
         if (entity instanceof LivingEntity) {
-            boolean b = result.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) entity).setProjectile(), this.getDamage());
+            boolean b = result.getEntity().hurt(damageSources().mobProjectile(this, (LivingEntity) entity), this.getDamage());
 
         }
         this.remove(RemovalReason.DISCARDED);

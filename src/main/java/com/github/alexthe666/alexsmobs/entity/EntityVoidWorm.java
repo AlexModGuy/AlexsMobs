@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -24,11 +25,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -181,7 +184,7 @@ public class EntityVoidWorm extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.is(DamageTypes.FALL) || source == DamageSource.DROWN || source.is(DamageTypes.IN_WALL)  || source == DamageSource.LAVA || source == DamageSource.OUT_OF_WORLD || source.isFire() || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL)  || source.is(DamageTypes.LAVA) || source.is(DamageTypes.OUT_OF_WORLD) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -384,7 +387,7 @@ public class EntityVoidWorm extends Monster {
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == (this.isSplitter() ? 20 : 80) && !this.level.isClientSide()) {
-            DamageSource source = this.getLastDamageSource() == null ? DamageSource.GENERIC : this.getLastDamageSource();
+            DamageSource source = this.getLastDamageSource() == null ? damageSources().generic() : this.getLastDamageSource();
             Entity entity = source.getEntity();
 
             int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, entity, source);
@@ -581,7 +584,7 @@ public class EntityVoidWorm extends Monster {
     public void createPortalRandomDestination() {
         Vec3 vec = null;
         for (int i = 0; i < 15; i++) {
-            BlockPos pos = new BlockPos(this.getX() + random.nextInt(60) - 30, 0, this.getZ() + random.nextInt(60) - 30);
+            BlockPos pos = AMBlockPos.fromCoords(this.getX() + random.nextInt(60) - 30, 0, this.getZ() + random.nextInt(60) - 30);
             BlockPos height = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos);
             if(height.getY() < 10){
                 height = height.above(50 + random.nextInt(50));
@@ -616,7 +619,7 @@ public class EntityVoidWorm extends Monster {
                 level.addFreshEntity(portal);
             }
             portalTarget = portal;
-            portal.setDestination(new BlockPos(to.x, to.y, to.z), outDir);
+            portal.setDestination(AMBlockPos.fromCoords(to.x, to.y, to.z), outDir);
             makePortalCooldown = 300;
         }
     }
@@ -677,7 +680,7 @@ public class EntityVoidWorm extends Monster {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getGround(radialPos);
         int distFromGround = (int) this.getY() - ground.getY();
         int flightHeight = 10 + this.getRandom().nextInt(20);
@@ -695,7 +698,7 @@ public class EntityVoidWorm extends Monster {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getHeighestAirAbove(radialPos, slamHeight);
         if (!this.isTargetBlocked(Vec3.atCenterOf(ground)) && this.distanceToSqr(Vec3.atCenterOf(ground)) > 1) {
             return Vec3.atCenterOf(ground);
@@ -704,7 +707,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     private BlockPos getHeighestAirAbove(BlockPos radialPos, int limit) {
-        BlockPos position = new BlockPos(radialPos.getX(), this.getY(), radialPos.getZ());
+        BlockPos position = AMBlockPos.fromCoords(radialPos.getX(), this.getY(), radialPos.getZ());
         while (position.getY() < 256 && position.getY() < this.getY() + limit && level.isEmptyBlock(position)) {
             position = position.above();
         }
@@ -712,7 +715,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     private BlockPos getGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = AMBlockPos.fromCoords(in.getX(), this.getY(), in.getZ());
         while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
             position = position.below();
         }
@@ -850,7 +853,7 @@ public class EntityVoidWorm extends Monster {
                     if (EntityVoidWorm.this.isMouthOpen()) {
                         launch(entity, true);
                         flag = true;
-                        wormAttack(entity, this.damageSources().mobAttack(EntityVoidWorm.this), 8.0F + random.nextFloat() * 8.0F);
+                        wormAttack(entity, EntityVoidWorm.this.damageSources().mobAttack(EntityVoidWorm.this), 8.0F + random.nextFloat() * 8.0F);
                     } else {
                         EntityVoidWorm.this.openMouth(15);
                     }

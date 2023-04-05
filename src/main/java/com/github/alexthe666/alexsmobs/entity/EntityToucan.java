@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.FlyingAITargetDroppedItems;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -65,7 +66,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityToucan.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GOLDEN_TIME = SynchedEntityData.defineId(EntityToucan.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ENCHANTED = SynchedEntityData.defineId(EntityToucan.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Optional<BlockState>> SAPLING_STATE = SynchedEntityData.defineId(EntityToucan.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<Optional<BlockState>> SAPLING_STATE = SynchedEntityData.defineId(EntityToucan.class, EntityDataSerializers.OPTIONAL_BLOCK_STATE);
     private static final EntityDataAccessor<Integer> SAPLING_TIME = SynchedEntityData.defineId(EntityToucan.class, EntityDataSerializers.INT);
     private static final HashMap<String, String> FEEDING_DATA = new HashMap<>();
     private static final List<ItemStack> FEEDING_STACKS = new ArrayList<>();
@@ -319,7 +320,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getToucanGround(radialPos);
         int distFromGround = (int) this.getY() - ground.getY();
         int flightHeight = 8 + this.getRandom().nextInt(4);
@@ -336,7 +337,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public BlockPos getToucanGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
@@ -353,7 +354,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getToucanGround(radialPos);
         if (ground.getY() == -64) {
             return this.position();
@@ -748,7 +749,8 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             float angle = (0.01745329251F * 8 * (clockwise ? -encircleTime : encircleTime));
             double extraX = circleDistance * Mth.sin((angle));
             double extraZ = circleDistance * Mth.cos(angle);
-            BlockPos pos = new BlockPos(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);
+            BlockPos pos;
+            pos = new BlockPos((int) (target.getX() + 0.5F + extraX), (int) (target.getY() + 1 + yLevel), (int) (target.getZ() + 0.5F + extraZ));
             if (toucan.level.isEmptyBlock(pos)) {
                 return pos;
             }
@@ -767,7 +769,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         }
 
         private boolean isWithinXZDist(BlockPos blockpos, Vec3 positionVec, double distance) {
-            return blockpos.distSqr(new BlockPos(positionVec.x(), blockpos.getY(), positionVec.z())) < distance * distance;
+            return blockpos.distSqr(new BlockPos((int) positionVec.x(), blockpos.getY(), (int) positionVec.z())) < distance * distance;
         }
 
         private BlockPos getSaplingPlantPos() {

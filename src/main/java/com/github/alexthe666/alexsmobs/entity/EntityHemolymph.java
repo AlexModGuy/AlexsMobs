@@ -117,7 +117,7 @@ public class EntityHemolymph extends Entity {
     protected void onEntityHit(EntityHitResult p_213868_1_) {
         Entity entity = this.getOwner();
         if (entity instanceof LivingEntity) {
-            p_213868_1_.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) entity).setProjectile(), 7.0F);
+            p_213868_1_.getEntity().hurt(damageSources().mobProjectile(this, (LivingEntity) entity), 7.0F);
         }
     }
 
