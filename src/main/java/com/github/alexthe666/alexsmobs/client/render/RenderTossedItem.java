@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Quaternionf;
 
 public class RenderTossedItem  extends EntityRenderer<EntityTossedItem> {
@@ -48,7 +49,7 @@ public class RenderTossedItem  extends EntityRenderer<EntityTossedItem> {
             matrixStackIn.scale(1F, 1F, 1F);
             matrixStackIn.mulPose((new Quaternionf()).rotateZ((float) Math.toRadians(-(entityIn.tickCount + partialTicks) * 30F)));
             matrixStackIn.translate(0, -0.15F, 0);
-            Minecraft.getInstance().getItemRenderer().renderStatic(entityIn.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(entityIn.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level, 0);
         }
         matrixStackIn.popPose();
     }

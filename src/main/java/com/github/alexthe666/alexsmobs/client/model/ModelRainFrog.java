@@ -111,8 +111,8 @@ public class ModelRainFrog extends AdvancedEntityModel<EntityRainFrog> {
     @Override
     public void setupAnim(EntityRainFrog entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
         this.resetToDefaultPose();
-        float walkSpeed = young ? 0.5F : 1.3F;
-        float walkDegree = 0.5f;
+        float walkSpeed = young ? 1F : 2.3F;
+        float walkDegree = 1;
         float digSpeed = 0.8f;
         float digDegree = 0.5f;
         float danceSpeed = 0.8f;

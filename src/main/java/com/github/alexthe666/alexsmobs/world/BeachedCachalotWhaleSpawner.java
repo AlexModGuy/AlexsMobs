@@ -72,7 +72,7 @@ public class BeachedCachalotWhaleSpawner {
         } else if (this.random.nextInt(5) != 0) {
             return false;
         } else {
-            BlockPos blockpos = new BlockPos(playerentity.position());
+            BlockPos blockpos = playerentity.blockPosition();
             BlockPos blockpos2 = this.func_221244_a(blockpos, 84);
             if (blockpos2 != null && this.func_226559_a_(blockpos2) && blockpos2.distSqr(blockpos) > 225) {
                 BlockPos upPos = new BlockPos(blockpos2.getX(), blockpos2.getY() + 2, blockpos2.getZ());

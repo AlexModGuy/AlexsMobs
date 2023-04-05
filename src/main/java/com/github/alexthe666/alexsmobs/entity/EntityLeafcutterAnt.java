@@ -600,7 +600,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     @Override
     public void calculateEntityAnimation(boolean flying) {
         float f1 = (float)Mth.length(this.getX() - this.xo, 2 * (this.getY() - this.yo), this.getZ() - this.zo);
-        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        float f2 = Math.min(f1 * 4.0F, 1.0F);
         this.walkAnimation.update(f2, 0.4F);
     }
 

@@ -107,7 +107,6 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2D, false));
-        this.goalSelector.addGoal(2, new TameableAIRide(this, 2D));
         this.goalSelector.addGoal(3, new TameableAIFollowOwner(this, 1.2D, 6.0F, 3.0F, false));
         this.goalSelector.addGoal(4, new KomodoDragonAIJostle(this));
         this.goalSelector.addGoal(5, new TameableAITempt(this, 1.1D, TEMPTATION_ITEMS, false));
@@ -125,8 +124,30 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.KOMODO_DRAGON_TARGETS)));
     }
 
-    public boolean isControlledByLocalInstance() {
-        return false;
+    protected Vec3 getRiddenInput(LivingEntity player, Vec3 deltaIn) {
+        if (player.zza != 0) {
+            float f = player.zza < 0.0F ? 0.5F : 1.0F;
+            return new Vec3(player.xxa * 0.25F, 0.0D, player.zza * 0.5F * f);
+        } else {
+            this.setSprinting(false);
+        }
+        return Vec3.ZERO;
+    }
+
+    protected void tickRidden(LivingEntity player, Vec3 vec3) {
+        super.tickRidden(player, vec3);
+        if(player.zza != 0 || player.xxa != 0){
+            this.setRot(player.getYRot(), player.getXRot() * 0.25F);
+            this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+            this.maxUpStep = 1;
+            this.getNavigation().stop();
+            this.setTarget(null);
+            this.setSprinting(true);
+        }
+    }
+
+    protected float getRiddenSpeed(LivingEntity rider) {
+        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 2);
     }
 
     public boolean hurt(DamageSource source, float amount) {

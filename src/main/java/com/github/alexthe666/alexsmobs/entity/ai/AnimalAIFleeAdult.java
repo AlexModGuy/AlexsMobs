@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
@@ -53,7 +54,7 @@ public class AnimalAIFleeAdult extends Goal {
                 } else if (this.parentAnimal.distanceToSqr(vec3d.x, vec3d.y, vec3d.z) < this.parentAnimal.distanceToSqr(this.childAnimal)) {
                     return false;
                 } else {
-                    this.path = childAnimal.getNavigation().createPath(new BlockPos(vec3d.x, vec3d.y, vec3d.z), 0);
+                    this.path = childAnimal.getNavigation().createPath(AMBlockPos.fromVec3(vec3d), 0);
                     return this.path != null;
                 }
             }

@@ -96,7 +96,6 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new TameableAIRide(this, 1.2D));
         this.goalSelector.addGoal(1, new EndergradeAIBreakFlowers(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.2D) {
             public void start() {
@@ -138,11 +137,6 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         }
         return null;
     }
-
-    public boolean isControlledByLocalInstance() {
-        return false;
-    }
-
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return AMSoundRegistry.ENDERGRADE_HURT.get();
     }
@@ -289,6 +283,36 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                 this.spawnAtLocation(Items.SADDLE);
             }
         }
+    }
+
+    protected Vec3 getRiddenInput(LivingEntity player, Vec3 deltaIn) {
+        if (player.zza != 0) {
+            this.setSprinting(true);
+            Vec3 lookVec = player.getLookAngle();
+            if (player.zza < 0) {
+                lookVec = lookVec.yRot((float) Math.PI);
+            }
+            double y = lookVec.y * 0.35F;
+            return new Vec3(player.xxa, y, player.zza);
+        } else {
+            this.setSprinting(false);
+        }
+        return Vec3.ZERO;
+    }
+    protected void tickRidden(LivingEntity player, Vec3 vec3) {
+        super.tickRidden(player, vec3);
+        if(player.zza != 0 || player.xxa != 0){
+            this.setRot(player.getYRot(), player.getXRot() * 0.25F);
+            this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+            this.maxUpStep = 1;
+            this.getNavigation().stop();
+            this.setTarget(null);
+            this.setSprinting(true);
+        }
+    }
+
+    protected float getRiddenSpeed(LivingEntity rider) {
+        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.isOnGround() ? 0.2F : 0.8F));
     }
 
     @Override

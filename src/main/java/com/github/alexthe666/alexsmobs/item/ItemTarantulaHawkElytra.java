@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 public class ItemTarantulaHawkElytra extends ArmorItem {
 
     public ItemTarantulaHawkElytra(Item.Properties props, AMArmorMaterial mat) {
-        super(mat, EquipmentSlot.CHEST, props);
+        super(mat, Type.CHESTPLATE, props);
     }
 
     @Override

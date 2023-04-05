@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
 
@@ -113,7 +114,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
                     matrixStackIn.mulPose((new Quaternionf()).rotateX((float)Math.PI));
                     matrixStackIn.mulPose((new Quaternionf()).rotateY((float)Math.PI));
                     matrixStackIn.scale(1.0F, 1.0F, 1.0F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, roo.level, 0);
                 }
                 matrixStackIn.popPose();
             }
@@ -122,7 +123,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
                 ItemStack itemstack = roo.getItemBySlot(EquipmentSlot.CHEST);
                 if (itemstack.getItem() instanceof ArmorItem) {
                     ArmorItem armoritem = (ArmorItem) itemstack.getItem();
-                    if (armoritem.getSlot() == EquipmentSlot.CHEST) {
+                    if (armoritem.getEquipmentSlot() == EquipmentSlot.CHEST) {
                         HumanoidModel a = defaultBipedModel;
                         a = getArmorModelHook(roo, itemstack, EquipmentSlot.CHEST, a);
                         boolean notAVanillaModel = a != defaultBipedModel;

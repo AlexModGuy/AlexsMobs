@@ -18,7 +18,7 @@ public class EffectEnderFlu extends MobEffect {
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (lastDuration == 1) {
             int phages = amplifier + 1;
-            entity.hurt(DamageSource.MAGIC, phages * 10);
+            entity.hurt(entity.damageSources().magic(), phages * 10);
             for (int i = 0; i < phages; i++) {
                 EntityEnderiophage phage = AMEntityRegistry.ENDERIOPHAGE.get().create(entity.level);
                 phage.copyPosition(entity);

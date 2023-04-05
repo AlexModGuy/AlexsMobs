@@ -85,10 +85,10 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
                 for(String print : strings){
                     float f2 = (float)(-font.width(print) / 2);
                     poseStack.translate(0.0D, 0.0D, 0.1D);
-                    font.drawInBatch(widest, widestCenter, (float)i, j, false, matrix4f, bufferSrc, false, j, 240);
+                    font.drawInBatch(widest, widestCenter, (float)i, j, false, matrix4f, bufferSrc, Font.DisplayMode.NORMAL, j, 240);
                     poseStack.translate(0.0D, 0.0D, -0.1D);
-                    font.drawInBatch(print, f2, (float)i, 1, false, matrix4f, bufferSrc, false, j, 240);
-                    font.drawInBatch(print, f2, (float)i, 0, false, matrix4f, bufferSrc, false, 0, numberIn);
+                    font.drawInBatch(print, f2, (float)i, 1, false, matrix4f, bufferSrc, Font.DisplayMode.NORMAL, j, 240);
+                    font.drawInBatch(print, f2, (float)i, 0, false, matrix4f, bufferSrc, Font.DisplayMode.NORMAL, j, 240);
                     i += 10;
                 }
 

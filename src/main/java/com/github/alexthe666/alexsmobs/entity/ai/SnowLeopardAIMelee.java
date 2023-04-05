@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySnowLeopard;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -44,7 +45,7 @@ public class SnowLeopardAIMelee extends Goal {
             double lvt_15_1_ = lvt_11_1_ * Math.cos(lvt_9_2_);
             if (Math.abs(lvt_13_1_) <= (double) p_226343_1_ && Math.abs(lvt_15_1_) <= (double) p_226343_1_) {
                 int lvt_17_1_ = p_226343_0_.nextInt(2 * p_226343_2_ + 1) - p_226343_2_ + p_226343_3_;
-                return new BlockPos(lvt_13_1_, lvt_17_1_, lvt_15_1_);
+                return AMBlockPos.fromCoords(lvt_13_1_, lvt_17_1_, lvt_15_1_);
             } else {
                 return null;
             }
@@ -113,7 +114,7 @@ public class SnowLeopardAIMelee extends Goal {
                 leopard.lookAt(target, 180F, 10F);
                 leopard.yBodyRot = leopard.getYRot();
                 if (this.leopard.distanceTo(target) < 3F && this.leopard.hasLineOfSight(target)) {
-                    target.hurt(this.damageSources().mobAttack(leopard), (float) (leopard.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 2.5F));
+                    target.hurt(this.leopard.damageSources().mobAttack(leopard), (float) (leopard.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 2.5F));
                     this.stalk = false;
                     this.secondPartOfLeap = false;
                 }else if (leopard.isOnGround() && jumpCooldown == 0) {
@@ -205,7 +206,7 @@ public class SnowLeopardAIMelee extends Goal {
                     }
                 }
 
-                lvt_25_2_ = new BlockPos((double) lvt_22_1_ + creature.getX(), (double) lvt_23_1_ + creature.getY(), (double) lvt_24_1_ + creature.getZ());
+                lvt_25_2_ = AMBlockPos.fromCoords((double) lvt_22_1_ + creature.getX(), (double) lvt_23_1_ + creature.getY(), (double) lvt_24_1_ + creature.getZ());
                 if (lvt_25_2_.getY() >= 0 && lvt_25_2_.getY() <= creature.level.getMaxBuildHeight() && (!lvt_15_2_ || leopard.isWithinRestriction(lvt_25_2_)) && (!p_226339_12_ || lvt_13_1_.isStableDestination(lvt_25_2_))) {
                     if (p_226339_9_) {
                         lvt_25_2_ = moveUpToAboveSolid(lvt_25_2_, lvt_14_1_.nextInt(p_226339_10_ + 1) + p_226339_11_, creature.level.getMaxBuildHeight(), (p_226341_1_) -> {

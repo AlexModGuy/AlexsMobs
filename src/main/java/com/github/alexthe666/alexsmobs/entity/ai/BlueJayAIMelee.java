@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBlueJay;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -53,7 +54,7 @@ public class BlueJayAIMelee extends Goal {
         if(target != null){
             if(blueJay.distanceTo(target) < 3){
                 blueJay.peck();
-                target.hurt(DamageSource.GENERIC, 1);
+                target.hurt(target.damageSources().generic(), 1);
                 stop();
             }
             if(circlingTime > maxCircleTime){
@@ -76,7 +77,7 @@ public class BlueJayAIMelee extends Goal {
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
-        if (blueJay.level.isEmptyBlock(new BlockPos(pos))) {
+        if (blueJay.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;
         }
         return null;

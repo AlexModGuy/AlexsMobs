@@ -65,7 +65,7 @@ public class LayerMimicubeHelmet extends RenderLayer<EntityMimicube, ModelMimicu
         float helmetSwap = Mth.lerp(partialTicks, cube.prevHelmetSwapProgress, cube.helmetSwapProgress) * 0.2F;
         if (itemstack.getItem() instanceof ArmorItem) {
             ArmorItem armoritem = (ArmorItem) itemstack.getItem();
-            if (armoritem.getSlot() == EquipmentSlot.HEAD) {
+            if (armoritem.getEquipmentSlot() == EquipmentSlot.HEAD) {
                 HumanoidModel a = defaultBipedModel;
                 a = getArmorModelHook(cube, itemstack, EquipmentSlot.HEAD, a);
                 boolean notAVanillaModel = a != defaultBipedModel;

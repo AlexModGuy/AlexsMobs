@@ -29,7 +29,7 @@ public class ItemModArmor extends ArmorItem {
     private Multimap<Attribute, AttributeModifier> attributeMapFlyingFish;
     private Multimap<Attribute, AttributeModifier> attributeMapKimono;
 
-    public ItemModArmor(AMArmorMaterial armorMaterial, EquipmentSlot slot) {
+    public ItemModArmor(AMArmorMaterial armorMaterial, ArmorItem.Type slot) {
         super(armorMaterial, slot, new Item.Properties());
     }
 
@@ -76,8 +76,8 @@ public class ItemModArmor extends ArmorItem {
 
     private void buildCrocAttributes(AMArmorMaterial materialIn) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
-        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
+        UUID uuid = ARMOR_MODIFIERS[type.ordinal()];
+        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", materialIn.getToughness(), AttributeModifier.Operation.ADDITION));
         builder.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(uuid, "Swim speed", 1, AttributeModifier.Operation.ADDITION));
         if (this.knockbackResistance > 0) {
@@ -88,8 +88,8 @@ public class ItemModArmor extends ArmorItem {
 
     private void buildFlyingFishAttributes(AMArmorMaterial materialIn) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
-        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
+        UUID uuid = ARMOR_MODIFIERS[type.ordinal()];
+        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", materialIn.getToughness(), AttributeModifier.Operation.ADDITION));
         builder.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(uuid, "Swim speed", 0.5, AttributeModifier.Operation.ADDITION));
         attributeMapFlyingFish = builder.build();
@@ -97,8 +97,8 @@ public class ItemModArmor extends ArmorItem {
 
     private void buildMooseAttributes(AMArmorMaterial materialIn) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
-        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
+        UUID uuid = ARMOR_MODIFIERS[type.ordinal()];
+        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", materialIn.getToughness(), AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(uuid, "Knockback", 2, AttributeModifier.Operation.ADDITION));
         if (this.knockbackResistance > 0) {
@@ -109,33 +109,34 @@ public class ItemModArmor extends ArmorItem {
 
     private void buildKimonoAttributes(AMArmorMaterial materialIn) {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        UUID uuid = ARMOR_MODIFIERS[slot.getIndex()];
-        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForSlot(slot), AttributeModifier.Operation.ADDITION));
+        UUID uuid = ARMOR_MODIFIERS[type.ordinal()];
+        builder.put(Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", materialIn.getDefenseForType(this.type), AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(uuid, "Armor toughness", materialIn.getToughness(), AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(uuid, "Reach distance", 2, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(uuid, "Block Reach distance", 2, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(uuid, "Entity Reach distance", 2, AttributeModifier.Operation.ADDITION));
         attributeMapKimono = builder.build();
     }
 
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-        if (getMaterial() == AMItemRegistry.CROCODILE_ARMOR_MATERIAL && equipmentSlot == this.slot) {
+        if (getMaterial() == AMItemRegistry.CROCODILE_ARMOR_MATERIAL && equipmentSlot == this.type.getSlot()) {
             if (attributeMapCroc == null) {
                 buildCrocAttributes(AMItemRegistry.CROCODILE_ARMOR_MATERIAL);
             }
             return attributeMapCroc;
         }
-        if (getMaterial() == AMItemRegistry.MOOSE_ARMOR_MATERIAL && equipmentSlot == this.slot) {
+        if (getMaterial() == AMItemRegistry.MOOSE_ARMOR_MATERIAL && equipmentSlot == this.type.getSlot()) {
             if (attributeMapMoose == null) {
                 buildMooseAttributes(AMItemRegistry.MOOSE_ARMOR_MATERIAL);
             }
             return attributeMapMoose;
         }
-        if (getMaterial() == AMItemRegistry.FLYING_FISH_MATERIAL && equipmentSlot == this.slot) {
+        if (getMaterial() == AMItemRegistry.FLYING_FISH_MATERIAL && equipmentSlot == this.type.getSlot()) {
             if (attributeMapFlyingFish == null) {
                 buildFlyingFishAttributes(AMItemRegistry.FLYING_FISH_MATERIAL);
             }
             return attributeMapFlyingFish;
         }
-        if (getMaterial() == AMItemRegistry.KIMONO_MATERIAL && equipmentSlot == this.slot) {
+        if (getMaterial() == AMItemRegistry.KIMONO_MATERIAL && equipmentSlot == this.type.getSlot()) {
             if (attributeMapKimono == null) {
                 buildKimonoAttributes(AMItemRegistry.KIMONO_MATERIAL);
             }

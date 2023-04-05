@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.effect;
 
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffect;
@@ -16,7 +17,7 @@ public class EffectClinging extends MobEffect {
     }
 
     private static BlockPos getPositionUnderneath(Entity e) {
-        return new BlockPos(e.getX(), e.getBoundingBox().maxY + 1.51F, e.getZ());
+        return AMBlockPos.fromCoords(e.getX(), e.getBoundingBox().maxY + 1.51F, e.getZ());
     }
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {

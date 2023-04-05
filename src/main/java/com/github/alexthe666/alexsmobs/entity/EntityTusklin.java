@@ -127,10 +127,23 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         return this.canAttack(p_21675_);
     }
 
-    public boolean isControlledByLocalInstance() {
-        return false;
+    protected Vec3 getRiddenInput(LivingEntity player, Vec3 deltaIn) {
+        return new Vec3(0, 0, 1);
+    }
+    protected void tickRidden(LivingEntity player, Vec3 vec3) {
+        super.tickRidden(player, vec3);
+        this.setRot(player.getYRot(), player.getXRot() * 0.25F);
+        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+        this.maxUpStep = 1;
+        this.getNavigation().stop();
+        this.setTarget(null);
+        this.setSprinting(true);
     }
 
+
+    protected float getRiddenSpeed(LivingEntity rider) {
+        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+    }
     @Nullable
     public LivingEntity getControllingPassenger() {
         if (this.isSaddled()) {

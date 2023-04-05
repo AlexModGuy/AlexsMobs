@@ -38,7 +38,7 @@ public class BunfungusAIMelee extends Goal {
         if(dist < 2.0D){
             if(hasJumped){
                 if(!chungus.isOnGround()){
-                    chungus.getTarget().hurt(this.damageSources().mobAttack(chungus), 10);
+                    chungus.getTarget().hurt(chungus.damageSources().mobAttack(chungus), 10);
                 }
                 hasJumped = false;
             }else{

@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelLaviathan;
 import com.github.alexthe666.alexsmobs.entity.EntityLaviathan;
 import com.github.alexthe666.alexsmobs.entity.EntityLaviathanPart;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.LightTexture;
@@ -107,8 +108,8 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         float clampedNeckRot = Mth.clamp(-rawHeadHeight, -1, 1);
         float headStillProgress = 1F - Math.abs(clampedNeckRot);
         float swim = Mth.lerp(partialTick, mob.prevSwimProgress, mob.swimProgress);
-        float limbSwingAmount = mob.animationSpeedOld + (mob.animationSpeed - mob.animationSpeedOld) * partialTick;
-        float swing = mob.animationPosition + partialTick;
+        float limbSwingAmount = mob.walkAnimation.speed(partialTick);
+        float swing = mob.walkAnimation.position() + partialTick;
         float swingAmount = limbSwingAmount * swim * 0.2F * headStillProgress;
         float swimSpeed = mob.swimProgress >= 5F ? 0.3F : 0.9F;
         float swimDegree = 0.5F + swim * 0.05F;
@@ -133,7 +134,7 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         if (head == null) {
             return;
         }
-        float limbSwingAmount = mob.animationSpeedOld + (mob.animationSpeed - mob.animationSpeedOld) * partialTick;
+        float limbSwingAmount = mob.walkAnimation.speed(partialTick);
         float shake = getHeadShakeForReins(mob, partialTick);
         float headYaw = Math.abs(mob.getHeadYaw(partialTick)) / 50F;
         float headPitch = 1F - Math.abs((mob.prevHeadHeight + (mob.getHeadHeight() - mob.prevHeadHeight) * partialTick) / 3F);
@@ -153,11 +154,11 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         float f3 = 0.025F;
         VertexConsumer vertexconsumer = p_115465_.getBuffer(RenderType.leash());
         Matrix4f matrix4f = p_115464_.last().pose();
-        float f4 = Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F;
+        float f4 = (float) (Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F);
         float f5 = f2 * f4;
         float f6 = f * f4;
-        BlockPos blockpos = new BlockPos(mob.getEyePosition(partialTick));
-        BlockPos blockpos1 = new BlockPos(rider.getEyePosition(partialTick));
+        BlockPos blockpos = AMBlockPos.fromVec3(mob.getEyePosition(partialTick));
+        BlockPos blockpos1 = AMBlockPos.fromVec3(rider.getEyePosition(partialTick));
         int i = this.getBlockLightLevel(mob, blockpos);
         int j = mob.level.getBrightness(LightLayer.BLOCK, blockpos1);
         int k = mob.level.getBrightness(LightLayer.SKY, blockpos);

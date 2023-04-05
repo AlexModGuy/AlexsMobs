@@ -35,6 +35,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -227,11 +228,11 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
             this.setOrderedToSit(false);
-            passenger.setYRot(this.getYRot());
             if (passenger instanceof EntityGorilla) {
                 EntityGorilla babyGorilla = (EntityGorilla) passenger;
                 babyGorilla.setStanding(this.isStanding());
                 babyGorilla.setOrderedToSit(this.isSitting());
+                babyGorilla.yBodyRot = this.yBodyRot;
             }
             float sitAdd = -0.03F * this.sitProgress;
             float standAdd = -0.03F * this.standProgress;
@@ -241,10 +242,6 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
-    }
-
-    public boolean canBeControlledByRider() {
-        return false;
     }
 
     public double getPassengersRidingOffset() {
@@ -422,8 +419,15 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         if (!this.isStanding() && standProgress > 0) {
             standProgress -= 1;
         }
-        if (this.isPassenger() && this.getVehicle() instanceof EntityGorilla && !this.isBaby()) {
-            this.removeVehicle();
+        if (this.isPassenger() && this.getVehicle() instanceof EntityGorilla) {
+            if(!this.isBaby()){
+                this.removeVehicle();
+            }else{
+                EntityGorilla mount = (EntityGorilla) this.getVehicle();
+                this.setYRot( mount.yBodyRot);
+                this.yHeadRot = mount.yBodyRot;
+                this.yBodyRot = mount.yBodyRot;
+            }
         }
         if (isStanding() && ++standingTime > maxStandTime) {
             this.setStanding(false);
@@ -472,6 +476,20 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             poundChestCooldown--;
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    @Nullable
+    public LivingEntity getControllingPassenger() {
+        return null;
+    }
+
+    public PathNavigation getNavigation() {
+        return this.navigation;
+    }
+
+    @Nullable
+    public Entity getControlledVehicle() {
+        return this.getVehicle() instanceof EntityGorilla ? null : super.getControlledVehicle();
     }
 
     @Override

@@ -124,8 +124,8 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
         float f8 = 0.0F;
         float f5 = 0.0F;
         if (!shouldSit && entityIn.isAlive()) {
-            f8 = Mth.lerp(partialTicks, entityIn.animationSpeedOld, entityIn.animationSpeed);
-            f5 = entityIn.animationPosition - entityIn.animationSpeed * (1.0F - partialTicks);
+            f8 = entityIn.walkAnimation.speed(partialTicks);
+            f5 = entityIn.walkAnimation.position(partialTicks);
             if (entityIn.isBaby()) {
                 f5 *= 3.0F;
             }

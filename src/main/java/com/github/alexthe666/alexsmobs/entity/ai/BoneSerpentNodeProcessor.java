@@ -38,7 +38,7 @@ public class BoneSerpentNodeProcessor extends NodeEvaluator {
         return i;
     }
 
-    public BlockPathTypes getBlockPathType(BlockGetter blockaccessIn, int x, int y, int z, Mob entitylivingIn, int xSize, int ySize, int zSize, boolean canBreakDoorsIn, boolean canEnterDoorsIn) {
+    public BlockPathTypes getBlockPathType(BlockGetter blockaccessIn, int x, int y, int z, Mob entitylivingIn) {
         return this.getBlockPathType(blockaccessIn, x, y, z);
     }
 

@@ -27,9 +27,9 @@ public class ItemShatteredDimensionalCarver extends ItemDimensionalCarver {
         portal.exitDimension = worldIn.dimension();
         BlockPos playerPos = player.blockPosition();
         if (dir == Direction.DOWN) {
-            portal.setDestination(new BlockPos(playerPos.getX(), worldIn.getMinBuildHeight() + 1, player.getZ()));
+            portal.setDestination(new BlockPos(playerPos.getX(), worldIn.getMinBuildHeight() + 1, playerPos.getZ()));
         } else if (dir == Direction.UP) {
-            portal.setDestination(new BlockPos(playerPos.getX(), worldIn.getMaxBuildHeight() - 1, player.getZ()));
+            portal.setDestination(new BlockPos(playerPos.getX(), worldIn.getMaxBuildHeight() - 1, playerPos.getZ()));
         }else{
             double worldBorderDistance = worldIn.getWorldBorder().getDistanceToBorder(playerPos.getX(), playerPos.getZ()) - 5D;
             BlockPos millionPos = playerPos.relative(dir.getOpposite(), (int) Math.min(worldBorderDistance, 1000000));

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.effect;
 
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -44,7 +45,7 @@ public class EffectDebilitatingSting extends MobEffect {
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity.getMobType() != MobType.ARTHROPOD) {
             if (entity.getHealth() > entity.getMaxHealth() * 0.5F) {
-                entity.hurt(DamageSource.MAGIC, 1.0F);
+                entity.hurt(entity.damageSources().magic(), 1.0F);
             }
         } else {
             boolean suf = isEntityInsideOpaqueBlock(entity);
@@ -58,7 +59,7 @@ public class EffectDebilitatingSting extends MobEffect {
                 entity.setDeltaMovement(new Vec3(0, -1, 0));
             }
             if (lastDuration == 1) {
-                entity.hurt(DamageSource.MAGIC, (amplifier + 1) * 30);
+                entity.hurt(entity.damageSources().magic(), (amplifier + 1) * 30);
                 if (amplifier > 0) {
                     BlockPos surface = entity.blockPosition();
                     while (!entity.level.isEmptyBlock(surface) && surface.getY() < 256) {
@@ -83,7 +84,7 @@ public class EffectDebilitatingSting extends MobEffect {
         float f = entity.getDimensions(entity.getPose()).width * 0.8F;
         AABB axisalignedbb = AABB.ofSize(vec3, (double)f, 1.0E-6D, (double)f);
         return entity.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
-            BlockPos blockpos = new BlockPos(vec3);
+            BlockPos blockpos = AMBlockPos.fromVec3(vec3);
             return p_185969_.isSuffocating(entity.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(entity.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
         });
     }

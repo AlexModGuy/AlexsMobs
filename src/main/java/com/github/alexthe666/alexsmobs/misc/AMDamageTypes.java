@@ -4,6 +4,8 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
@@ -15,16 +17,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class AMDamageTypes {
 
-    public static final DeferredRegister<DamageType> DEF_REG = DeferredRegister.create(Registries.DAMAGE_TYPE, AlexsMobs.MODID);
-    public static final RegistryObject<DamageType> BEAR_FREDDY = DEF_REG.register("freddy", () -> new DamageType("freddy", 0.0F));
-    public static final RegistryObject<DamageType> FARSEER = DEF_REG.register("farseer", () -> new DamageType("farseer", 0.0F));
+    public static final ResourceKey<DamageType> FARSEER = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("alexsmobs:farseer"));
+    public static final ResourceKey<DamageType> FREDDY = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("alexsmobs:freddy"));
 
     public static DamageSource causeFarseerDamage(LivingEntity attacker){
-        return new DamageSourceRandomMessages(FARSEER.getHolder().get(), attacker);
+        return new DamageSourceRandomMessages(attacker.level.registryAccess().registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(FARSEER), attacker);
     }
 
     public static DamageSource causeFreddyBearDamage(LivingEntity attacker){
-        return new DamageSource(BEAR_FREDDY.getHolder().get(), attacker);
+        return new DamageSource(attacker.level.registryAccess().registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(FREDDY), attacker);
     }
 
     private static class DamageSourceRandomMessages extends DamageSource {

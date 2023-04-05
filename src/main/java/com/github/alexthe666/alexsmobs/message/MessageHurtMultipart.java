@@ -2,8 +2,14 @@ package com.github.alexthe666.alexsmobs.message;
 
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.IHurtableMultipart;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +60,7 @@ public class MessageHurtMultipart {
         public static void handle(MessageHurtMultipart message, Supplier<NetworkEvent.Context> context) {
             context.get().setPacketHandled(true);
             Player player = context.get().getSender();
-            if(context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT){
+            if (context.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
                 player = AlexsMobs.PROXY.getClientSidePlayer();
             }
 
@@ -62,12 +68,22 @@ public class MessageHurtMultipart {
                 if (player.level != null) {
                     Entity part = player.level.getEntity(message.part);
                     Entity parent = player.level.getEntity(message.parent);
-                    if(part instanceof IHurtableMultipart && parent instanceof LivingEntity){
-                        ((IHurtableMultipart) part).onAttackedFromServer((LivingEntity)parent, message.damage, new DamageSource(message.damageType));
+                    Registry<DamageType> registry = player.level.registryAccess().registry(Registries.DAMAGE_TYPE).get();
+                    DamageType dmg = registry.get(new ResourceLocation(message.damageType));
+                    if (dmg != null) {
+                        Holder<DamageType> holder = registry.getHolder(registry.getId(dmg)).orElseGet(null);
+                        if (holder != null) {
+                            DamageSource source = new DamageSource(registry.getHolder(registry.getId(dmg)).get());
+                            if (part instanceof IHurtableMultipart && parent instanceof LivingEntity) {
+                                ((IHurtableMultipart) part).onAttackedFromServer((LivingEntity) parent, message.damage, source);
+                            }
+                            if (part == null && parent != null && parent.isMultipartEntity()) {
+                                parent.hurt(source, message.damage);
+                            }
+
+                        }
                     }
-                    if(part == null && parent != null && parent.isMultipartEntity()){
-                        parent.hurt(new DamageSource(message.damageType), message.damage);
-                    }
+
                 }
             }
         }

@@ -18,7 +18,7 @@ public class AMItemGroup {
     }
 
     public static void registerTab(CreativeModeTabEvent.Register event){
-        event.registerCreativeModeTab(TAB, builder -> builder.title(Component.translatable("itemGroup.alexsmobs")).icon(AMItemGroup::makeIcon).displayItems((flags, output, isOp) -> {
+        event.registerCreativeModeTab(TAB, builder -> builder.title(Component.translatable("itemGroup.alexsmobs")).icon(AMItemGroup::makeIcon).displayItems((parameter, output) -> {
             for(RegistryObject<Item> item : AMItemRegistry.DEF_REG.getEntries()){
                 if(item.get() instanceof CustomTabBehavior customTabBehavior){
                     customTabBehavior.fillItemCategory(output);

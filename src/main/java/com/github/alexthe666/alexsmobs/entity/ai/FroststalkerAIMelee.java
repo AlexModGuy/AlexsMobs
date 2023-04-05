@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFroststalker;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -98,7 +99,7 @@ public class FroststalkerAIMelee extends Goal {
                 }
             }
             if (froststalker.isTackling() && froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F && froststalker.hasLineOfSight(target)) {
-                target.hurt(this.damageSources().mobAttack(froststalker), (float) froststalker.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                target.hurt(froststalker.damageSources().mobAttack(froststalker), (float) froststalker.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 start();
             }
             if (!flag) {
@@ -126,7 +127,7 @@ public class FroststalkerAIMelee extends Goal {
         float angle = (0.01745329251F * (clockwise ? -orbit : orbit));
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos circlePos = new BlockPos(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);
+        BlockPos circlePos = AMBlockPos.fromCoords(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);
         while (!froststalker.level.getBlockState(circlePos).isAir() && circlePos.getY() < froststalker.level.getMaxBuildHeight()) {
             circlePos = circlePos.above();
         }

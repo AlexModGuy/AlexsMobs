@@ -258,7 +258,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
 
     public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
         float f1 = (float)Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
-        float f2 = Math.min(f1 * 16.0F, 1.0F);
+        float f2 = Math.min(f1 * 128.0F, 1.0F);
         this.walkAnimation.update(f2, 0.4F);
     }
 

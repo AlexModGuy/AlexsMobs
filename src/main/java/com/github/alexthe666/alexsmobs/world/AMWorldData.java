@@ -162,8 +162,8 @@ public class AMWorldData extends SavedData {
         NoiseSettings noisesettings = generator.settings.value().noiseSettings();
         int i = Math.max(noisesettings.minY(), level.getMinBuildHeight());
         int j = Math.min(noisesettings.minY() + noisesettings.height(), level.getMaxBuildHeight());
-        int k = Mth.intFloorDiv(i, noisesettings.getCellHeight());
-        int l = Mth.intFloorDiv(j - i, noisesettings.getCellHeight());
+        int k = Mth.floorDiv(i, noisesettings.getCellHeight());
+        int l = Mth.floorDiv(j - i, noisesettings.getCellHeight());
         return generator.iterateNoiseColumn(level, rand, x, z, null, IS_WATER).orElse(level.getMinBuildHeight());
     }
 }

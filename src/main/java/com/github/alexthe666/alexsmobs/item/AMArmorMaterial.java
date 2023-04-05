@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.item;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -37,14 +38,15 @@ public class AMArmorMaterial implements ArmorMaterial {
         this.knockbackResistance = knockbackResist;
     }
 
+
     @Override
-    public int getDurabilityForSlot(EquipmentSlot slotIn) {
-        return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.durability;
+    public int getDurabilityForType(ArmorItem.Type type) {
+        return MAX_DAMAGE_ARRAY[type.ordinal()] * this.durability;
     }
 
     @Override
-    public int getDefenseForSlot(EquipmentSlot slotIn) {
-        return this.damageReduction[slotIn.getIndex()];
+    public int getDefenseForType(ArmorItem.Type type) {
+        return this.damageReduction[type.ordinal()];
     }
 
     @Override

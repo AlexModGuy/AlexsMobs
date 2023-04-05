@@ -121,6 +121,10 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 22.0D).add(Attributes.FOLLOW_RANGE, 32.0D).add(Attributes.MOVEMENT_SPEED, 0.5F).add(Attributes.ATTACK_DAMAGE, 4F);
     }
 
+    @Nullable
+    public LivingEntity getControllingPassenger() {
+        return null;
+    }
     protected void tickLeash() {
         super.tickLeash();
         Entity lvt_1_1_ = this.getLeashHolder();
@@ -629,11 +633,6 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     public MoveControl getMoveControl() {
         return this.moveControl;
     }
-
-    public boolean isControlledByLocalInstance() {
-        return false;
-    }
-
     public void travel(Vec3 vec3d) {
         if (this.isSitting() || this.getAnimation() == ANIMATION_EAT_GRASS) {
             if (this.getNavigation().getPath() != null) {
@@ -652,6 +651,11 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
     public PathNavigation getNavigation() {
         return this.navigation;
+    }
+
+    @Nullable
+    public Entity getControlledVehicle() {
+        return this.getVehicle() instanceof EntityKangaroo ? null : super.getControlledVehicle();
     }
 
     private void enableJumpControl() {

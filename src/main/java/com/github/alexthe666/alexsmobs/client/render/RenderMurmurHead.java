@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 import com.github.alexthe666.alexsmobs.client.model.ModelMurmurHead;
 import com.github.alexthe666.alexsmobs.client.model.ModelMurmurNeck;
 import com.github.alexthe666.alexsmobs.entity.EntityMurmurHead;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -96,7 +97,7 @@ public class RenderMurmurHead extends MobRenderer<EntityMurmurHead, ModelMurmurH
     }
 
     private int getLightColor(EntityMurmurHead head, Vec3 vec3) {
-        BlockPos blockpos = new BlockPos(vec3);
+        BlockPos blockpos = AMBlockPos.fromVec3(vec3);
         if(head.level.hasChunkAt(blockpos)){
             int i = LevelRenderer.getLightColor(head.level, blockpos);
             int j = LevelRenderer.getLightColor(head.level, blockpos.above());

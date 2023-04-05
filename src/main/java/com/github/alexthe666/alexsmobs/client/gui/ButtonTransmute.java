@@ -22,7 +22,8 @@ public class ButtonTransmute extends Button {
     public void renderToolTip(PoseStack poseStack, int x, int y) {
     }
 
-    public void renderButton(PoseStack poseStack, int x, int y, float partialTick) {
+    @Override
+    public void renderWidget(PoseStack poseStack, int x, int y, float partialTick) {
         int color = 8453920;
         int cost = AMConfig.transmutingExperienceCost;
         if(!canBeTransmuted(cost)){

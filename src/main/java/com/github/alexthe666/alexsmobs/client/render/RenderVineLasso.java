@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.entity.EntityVineLasso;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -95,11 +96,11 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
         float f3 = 0.025F;
         VertexConsumer vertexconsumer = p_115465_.getBuffer(RenderType.leash());
         Matrix4f matrix4f = p_115464_.last().pose();
-        float f4 = Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F;
+        float f4 = (float) (Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F);
         float f5 = f2 * f4;
         float f6 = f * f4;
-        BlockPos blockpos = new BlockPos(mob.getEyePosition(partialTick));
-        BlockPos blockpos1 = new BlockPos(player.getEyePosition(partialTick));
+        BlockPos blockpos = AMBlockPos.fromVec3(mob.getEyePosition(partialTick));
+        BlockPos blockpos1 = AMBlockPos.fromVec3(player.getEyePosition(partialTick));
         int i = getVineLightLevel(mob, blockpos);
         int j = mob.level.getBrightness(LightLayer.BLOCK, blockpos1);
         int k = mob.level.getBrightness(LightLayer.SKY, blockpos);

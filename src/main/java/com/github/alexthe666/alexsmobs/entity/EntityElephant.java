@@ -198,7 +198,6 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new TameableAIRide(this, 1D));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1D, true));
         this.goalSelector.addGoal(2, new EntityElephant.PanicGoal());
@@ -914,8 +913,30 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         }
     }
 
-    public boolean isControlledByLocalInstance() {
-        return false;
+    protected Vec3 getRiddenInput(LivingEntity player, Vec3 deltaIn) {
+        if (player.zza != 0) {
+            float f = player.zza < 0.0F ? 0.5F : 1.0F;
+            return new Vec3(player.xxa * 0.25F, 0.0D, player.zza * 0.5F * f);
+        } else {
+            this.setSprinting(false);
+        }
+        return Vec3.ZERO;
+    }
+
+    protected void tickRidden(LivingEntity player, Vec3 vec3) {
+        super.tickRidden(player, vec3);
+        if(player.zza != 0 || player.xxa != 0){
+            this.setRot(player.getYRot(), player.getXRot() * 0.25F);
+            this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+            this.maxUpStep = 1;
+            this.getNavigation().stop();
+            this.setTarget(null);
+            this.setSprinting(true);
+        }
+    }
+
+    protected float getRiddenSpeed(LivingEntity rider) {
+        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED));
     }
 
     public double getPassengersRidingOffset() {

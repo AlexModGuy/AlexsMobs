@@ -6,6 +6,7 @@ import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,8 +37,9 @@ public class ItemMysteriousWorm extends Item {
                 worm.updatePostSummon = true;
 
                 if(!entity.level.isClientSide){
-                    if(entity.getThrower() != null){
-                        UUID uuid = entity.getThrower();
+                    Entity thrower = entity.getOwner();
+                    if(thrower != null){
+                        UUID uuid = thrower.getUUID();
                         if(entity.level.getPlayerByUUID(uuid) instanceof ServerPlayer){
                             AMAdvancementTriggerRegistry.VOID_WORM_SUMMON.trigger((ServerPlayer)entity.level.getPlayerByUUID(uuid));
                         }

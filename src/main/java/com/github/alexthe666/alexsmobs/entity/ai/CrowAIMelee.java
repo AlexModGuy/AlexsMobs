@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -54,9 +55,9 @@ public class CrowAIMelee extends Goal {
             if(crow.distanceTo(target) < 2){
                crow.peck();
                 if(target.getMobType() == MobType.UNDEAD){
-                    target.hurt(DamageSource.MAGIC, 4);
+                    target.hurt(target.damageSources().generic(), 4);
                 }else{
-                    target.hurt(DamageSource.GENERIC, 1);
+                    target.hurt(target.damageSources().generic(), 1);
                 }
 
                 stop();
@@ -77,7 +78,7 @@ public class CrowAIMelee extends Goal {
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
-        if (crow.level.isEmptyBlock(new BlockPos(pos))) {
+        if (crow.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;
         }
         return null;

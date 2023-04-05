@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.client.model.ModelMurmurNeck;
 import com.github.alexthe666.alexsmobs.client.model.ModelTendonClaw;
 import com.github.alexthe666.alexsmobs.entity.EntityTendonSegment;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
@@ -139,7 +140,7 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
     }
 
     private int getLightColor(Entity head, Vec3 vec3) {
-        BlockPos blockpos = new BlockPos(vec3);
+        BlockPos blockpos = AMBlockPos.fromVec3(vec3);
         if(head.level.hasChunkAt(blockpos)){
             int i = LevelRenderer.getLightColor(head.level, blockpos);
             int j = LevelRenderer.getLightColor(head.level, blockpos.above());
