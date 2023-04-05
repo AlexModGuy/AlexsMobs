@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntityFroststalker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -99,7 +98,7 @@ public class FroststalkerAIMelee extends Goal {
                 }
             }
             if (froststalker.isTackling() && froststalker.distanceTo(target) <= froststalker.getBbWidth() + target.getBbWidth() + 1.1F && froststalker.hasLineOfSight(target)) {
-                target.hurt(DamageSource.mobAttack(froststalker), (float) froststalker.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                target.hurt(this.damageSources().mobAttack(froststalker), (float) froststalker.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 start();
             }
             if (!flag) {

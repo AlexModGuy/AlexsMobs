@@ -13,10 +13,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -107,7 +109,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.OUT_OF_WORLD || source == DamageSource.IN_WALL  || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.OUT_OF_WORLD) || source.is(DamageTypes.IN_WALL)  || source.is(DamageTypes.LAVA) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {

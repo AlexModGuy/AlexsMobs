@@ -184,7 +184,7 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
                 float f1 = this.getYRot() * ((float) Math.PI / 180F);
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
                 target.knockback(0.4F, target.getX() - this.getX(), target.getZ() - this.getZ());
-                target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                target.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
         }
         if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextEgg <= 0) {

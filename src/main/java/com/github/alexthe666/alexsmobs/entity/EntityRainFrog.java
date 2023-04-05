@@ -23,6 +23,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -248,7 +249,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public boolean isSleeping() {
@@ -256,17 +257,9 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     }
 
     public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.animationSpeedOld = mob.animationSpeed;
-        double d0 = mob.getX() - mob.xo;
-        double d1 = flying ? mob.getY() - mob.yo : 0.0D;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * 16.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        mob.animationSpeed += (f - mob.animationSpeed) * 0.4F;
-        mob.animationPosition += mob.animationSpeed;
+        float f1 = (float)Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 16.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     @javax.annotation.Nullable

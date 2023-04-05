@@ -201,7 +201,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
                 this.playSound(AMSoundRegistry.LOBSTER_ATTACK.get(), this.getSoundVolume(), this.getVoicePitch());
             }
             if (this.entityData.get(ATTACK_TICK) == 2 && this.getTarget() != null && this.distanceTo(this.getTarget()) < 1.3D) {
-                this.getTarget().hurt(DamageSource.mobAttack(this), 2);
+                this.getTarget().hurt(this.damageSources().mobAttack(this), 2);
             }
             this.entityData.set(ATTACK_TICK, this.entityData.get(ATTACK_TICK) - 1);
             if (attackProgress < 5F) {

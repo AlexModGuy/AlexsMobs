@@ -16,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -129,7 +130,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             if (this.isAngry() && this.isAlive()) {
                 for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
                     if (!isAlliedTo(entity) && entity != this) {
-                        entity.hurt(DamageSource.mobAttack(this), (isTarget(entity) ? 5.0F : 2.0F) + random.nextFloat() * 2.0F);
+                        entity.hurt(this.damageSources().mobAttack(this), (isTarget(entity) ? 5.0F : 2.0F) + random.nextFloat() * 2.0F);
                         launch(entity, isTarget(entity));
                         if (isTarget(entity)) {
                             maxRollTime = rollCounter + 10;
@@ -184,7 +185,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
                         }
                         if (isHangingDripstone(blockpos1)) {
                             Vec3 vec3 = Vec3.atBottomCenterOf(blockpos1);
-                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, new BlockPos(vec3), level.getBlockState(blockpos1));
+                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, new BlockPos((int) vec3.x, (int) vec3.y, (int) vec3.z), level.getBlockState(blockpos1));
                             this.level.destroyBlock(blockpos1, false);
                             this.level.addFreshEntity(fallingblockentity);
                         }
@@ -311,18 +312,18 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     public boolean hurt(DamageSource dmg, float amount) {
-        if (!this.isMoving() && !dmg.isMagic() && dmg.getDirectEntity() instanceof LivingEntity) {
+        if (!this.isMoving() && !dmg.is(DamageTypes.MAGIC) && dmg.getDirectEntity() instanceof LivingEntity) {
             LivingEntity livingentity = (LivingEntity) dmg.getDirectEntity();
-            if (!dmg.isExplosion()) {
-                livingentity.hurt(DamageSource.thorns(this), 2.0F);
+            if (!dmg.is(DamageTypes.EXPLOSION)) {
+                livingentity.hurt(damageSources().thorns(this), 2.0F);
             }
         }
         return super.hurt(dmg, amount);
     }
 
     static class RockyRollerNodeEvaluator extends WalkNodeEvaluator {
-        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, boolean b1, boolean b2, BlockPos pos, BlockPathTypes typeIn) {
-            return level.getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, b1, b2, pos, typeIn);
+        protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes typeIn) {
+            return level.getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
         }
     }
 
@@ -430,7 +431,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             float angle = (0.01745329251F * orbit);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
-            BlockPos circlePos = new BlockPos(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);
+            BlockPos circlePos = new BlockPos((int) (target.getX() + extraX), (int) target.getEyeY(), (int) (target.getZ() + extraZ));
             while (!EntityRockyRoller.this.level.getBlockState(circlePos).isAir() && circlePos.getY() < EntityRockyRoller.this.level.getMaxBuildHeight()) {
                 circlePos = circlePos.above();
             }

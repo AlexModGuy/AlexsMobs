@@ -311,7 +311,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     public double getPassengersRidingOffset() {
-        float f = Math.min(0.25F, this.animationSpeed);
+        float f = Math.min(0.25F, this.walkAnimation.speed());
         float f1 = this.animationPosition;
         return (double)this.getBbHeight() - 0.2D + (double)(0.12F * Mth.cos(f1 * 0.7F) * 0.7F * f);
     }

@@ -168,7 +168,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.animationSpeedOld = mob.animationSpeed;
+        mob.walkAnimation.speed()Old = mob.walkAnimation.speed();
         double d0 = mob.getX() - mob.xo;
         double d1 = flying ? mob.getY() - mob.yo : 0.0D;
         double d2 = mob.getZ() - mob.zo;
@@ -177,8 +177,8 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
             f = 1.0F;
         }
 
-        mob.animationSpeed += (f - mob.animationSpeed) * 0.4F;
-        mob.animationPosition += mob.animationSpeed;
+        mob.walkAnimation.speed() += (f - mob.walkAnimation.speed()) * 0.4F;
+        mob.animationPosition += mob.walkAnimation.speed();
     }
 
     public float getSwimAngle() {

@@ -284,7 +284,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
     }
 
     public boolean isInvulnerableTo(DamageSource damageSource) {
-        return super.isInvulnerableTo(damageSource) || damageSource == DamageSource.IN_WALL;
+        return super.isInvulnerableTo(damageSource) || damagesource.is(DamageTypes.IN_WALL);
     }
 
     private void moveHair() {
@@ -480,7 +480,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
                     if(dist < 1.5F && EntityMurmurHead.this.hasLineOfSight(target)){
                         EntityMurmurHead.this.playSound(AMSoundRegistry.MURMUR_ATTACK.get(), EntityMurmurHead.this.getSoundVolume(), EntityMurmurHead.this.getVoicePitch());
                         biteCooldown = 5 + EntityMurmurHead.this.getRandom().nextInt(15);
-                        target.hurt(DamageSource.mobAttack(EntityMurmurHead.this), 5.0F);
+                        target.hurt(this.damageSources().mobAttack(EntityMurmurHead.this), 5.0F);
                     }
                 }else{
                     EntityMurmurHead.this.setPulledIn(true);

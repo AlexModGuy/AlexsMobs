@@ -181,7 +181,7 @@ public class EntityVoidWorm extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL  || source == DamageSource.LAVA || source == DamageSource.OUT_OF_WORLD || source.isFire() || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.FALL) || source == DamageSource.DROWN || source.is(DamageTypes.IN_WALL)  || source == DamageSource.LAVA || source == DamageSource.OUT_OF_WORLD || source.isFire() || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -850,7 +850,7 @@ public class EntityVoidWorm extends Monster {
                     if (EntityVoidWorm.this.isMouthOpen()) {
                         launch(entity, true);
                         flag = true;
-                        wormAttack(entity, DamageSource.mobAttack(EntityVoidWorm.this), 8.0F + random.nextFloat() * 8.0F);
+                        wormAttack(entity, this.damageSources().mobAttack(EntityVoidWorm.this), 8.0F + random.nextFloat() * 8.0F);
                     } else {
                         EntityVoidWorm.this.openMouth(15);
                     }

@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.message.MessageCrowDismount;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.google.common.base.Predicate;
@@ -26,6 +27,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -488,7 +490,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL  || source == DamageSource.FALL || source == DamageSource.CACTUS || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL)  || source.is(DamageTypes.FALL) || source.is(DamageTypes.CACTUS) || super.isInvulnerableTo(source);
     }
 
     @Nullable
@@ -524,7 +526,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         final float angle = getAngle1();
         final double extraX = radius * Mth.sin((float) (Math.PI + angle));
         final double extraZ = radius * Mth.cos(angle);
-        final BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         final BlockPos ground = getCrowGround(radialPos);
         final int distFromGround = (int) this.getY() - ground.getY();
 
@@ -543,7 +545,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     }
 
     private BlockPos getCrowGround(BlockPos in){
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
             position = position.below();
         }
@@ -555,7 +557,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         final float angle = getAngle1();
         final double extraX = radius * Mth.sin((float) (Math.PI + angle));
         final double extraZ = radius * Mth.cos(angle);
-        final BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), (int) getY(), (int) (fleePos.z() + extraZ));
         BlockPos ground = this.getCrowGround(radialPos);
         if (ground.getY() == -64) {
             return this.position();
@@ -610,8 +612,8 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
-        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame()) {
-            seedThrowerID = e.getThrower();
+        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame() && e.getOwner() != null) {
+            seedThrowerID = e.getOwner().getUUID();
         } else {
             seedThrowerID = null;
         }
@@ -738,7 +740,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             final double extraX = gatheringCircleDist * Mth.sin((angle));
             final double extraZ = gatheringCircleDist * Mth.cos(angle);
             final Vec3 pos = new Vec3(getPerchPos().getX() + extraX, getPerchPos().getY() + 2, getPerchPos().getZ() + extraZ);
-            if (this.level.isEmptyBlock(new BlockPos(pos))) {
+            if (this.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
                 return pos;
             }
         }

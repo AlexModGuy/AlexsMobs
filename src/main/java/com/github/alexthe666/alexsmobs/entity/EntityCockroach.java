@@ -17,10 +17,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -189,7 +191,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL  || source.isExplosion() || source.msgId.equals("anvil") || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL)  || source.is(DamageTypeTags.IS_EXPLOSION) || source.getMsgId().equals("anvil") || super.isInvulnerableTo(source);
     }
 
     public InteractionResult mobInteract(Player p_230254_1_, InteractionHand p_230254_2_) {
@@ -380,7 +382,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
 
     @Override
     public void shear(SoundSource category) {
-        this.hurt(DamageSource.GENERIC, 0F);
+        this.hurt(damageSources().generic(), 0F);
         level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
         this.gameEvent(GameEvent.ENTITY_INTERACT);
         this.setHeadless(true);
@@ -391,7 +393,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     public java.util.List<ItemStack> onSheared(@javax.annotation.Nullable Player player, @javax.annotation.Nonnull ItemStack item, Level world, BlockPos pos, int fortune) {
         world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundSource.BLOCKS : SoundSource.PLAYERS, 1.0F, 1.0F);
         this.gameEvent(GameEvent.ENTITY_INTERACT);
-        this.hurt(DamageSource.GENERIC, 0F);
+        this.hurt(damageSources().generic(), 0F);
         if (!world.isClientSide) {
             for (int i = 0; i < 3; i++) {
                 ((ServerLevel) this.level).sendParticles(ParticleTypes.SNEEZE, this.getRandomX(0.52F), this.getY(1D), this.getRandomZ(0.52F), 1, 0.0D, 0.0D, 0.0D, 0.0D);

@@ -146,12 +146,12 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
                 float f1 = this.getYRot() * ((float) Math.PI / 180F);
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
                 getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-                this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
             if(this.getAnimation() == ANIMATION_SLASH && this.getAnimationTick() % 5 == 0 && this.getAnimationTick() > 0 && this.getAnimationTick() < 25 && this.hasLineOfSight(this.getTarget())){
                 for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getTarget().getBoundingBox().inflate(2.0D))) {
                     if (!entity.isPassengerOfSameVehicle(this) && entity != this && !entity.isAlliedTo(this)) {
-                        entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() * 0.5F);
+                        entity.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() * 0.5F);
                     }
                 }
             }

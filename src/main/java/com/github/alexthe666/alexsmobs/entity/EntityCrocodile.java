@@ -32,6 +32,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -321,7 +322,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                             this.setStunTicks(25 + random.nextInt(20));
                         }
                     } else {
-                        this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                        this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                     }
                     this.playSound(AMSoundRegistry.CROCODILE_BITE.get(), this.getSoundVolume(), this.getVoicePitch());
 
@@ -333,7 +334,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
                         this.setAnimation(ANIMATION_DEATHROLL);
                     }
                     if (this.getAnimation() == ANIMATION_DEATHROLL && this.getAnimationTick() % 10 == 0 && this.distanceTo(this.getTarget()) < 5D) {
-                        this.getTarget().hurt(DamageSource.mobAttack(this), 5);
+                        this.getTarget().hurt(this.damageSources().mobAttack(this), 5);
                     }
                 }
             }
@@ -429,7 +430,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
             passenger.setPos(this.getX() + extraX, this.getY() + 0.1F, this.getZ() + extraZ);
             passengerTimer++;
             if (this.isAlive() && passengerTimer > 0 && passengerTimer % 40 == 0) {
-                passenger.hurt(DamageSource.mobAttack(this), 2);
+                passenger.hurt(this.damageSources().mobAttack(this), 2);
             }
         }
     }
@@ -469,7 +470,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.DROWN || source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public boolean canBreatheUnderwater() {

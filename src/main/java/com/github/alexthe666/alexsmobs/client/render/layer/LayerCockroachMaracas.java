@@ -13,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -47,7 +46,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90F));
             matrixStackIn.mulPose(Axis.ZP.rotationDegrees(60F));
-            renderer.renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, stack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             matrixStackIn.pushPose();
             translateToHand(1, matrixStackIn);
@@ -55,7 +54,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
             matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-120F));
-            renderer.renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, stack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             matrixStackIn.pushPose();
             translateToHand(2, matrixStackIn);
@@ -63,7 +62,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90F));
             matrixStackIn.mulPose(Axis.ZP.rotationDegrees(60F));
-            renderer.renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, stack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             matrixStackIn.pushPose();
             translateToHand(3, matrixStackIn);
@@ -71,7 +70,7 @@ public class LayerCockroachMaracas extends RenderLayer<EntityCockroach, ModelCoc
             matrixStackIn.scale(1.4F, 1.4F, 1.4F);
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
             matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-120F));
-            renderer.renderItem(entitylivingbaseIn, stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, stack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
             if(!entitylivingbaseIn.isHeadless()){
                 matrixStackIn.pushPose();

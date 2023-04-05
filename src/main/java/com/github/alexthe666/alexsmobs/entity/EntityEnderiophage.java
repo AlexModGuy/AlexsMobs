@@ -233,7 +233,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                         if (target.getHealth() > target.getMaxHealth() * 0.2F) {
                             dmg = 6F;
                         }
-                        if ((target.getHealth() < 1.5D || mount.hurt(DamageSource.mobAttack(this), dmg)) && mount instanceof LivingEntity) {
+                        if ((target.getHealth() < 1.5D || mount.hurt(this.damageSources().mobAttack(this), dmg)) && mount instanceof LivingEntity) {
                             dismountCooldown = 100;
                             if (mount instanceof EnderMan) {
                                 this.setMissingEye(false);

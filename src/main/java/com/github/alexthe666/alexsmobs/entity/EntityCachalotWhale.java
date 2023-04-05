@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -601,7 +602,7 @@ public class EntityCachalotWhale extends Animal {
                         }
                     }
                     if (grabTime % 20 == 0 && grabTime > 30) {
-                        this.getTarget().hurt(DamageSource.mobAttack(this), 4 + random.nextInt(4));
+                        this.getTarget().hurt(this.damageSources().mobAttack(this), 4 + random.nextInt(4));
                     }
                     if (grabTime > 300) {
                         this.setGrabbing(false);
@@ -676,7 +677,7 @@ public class EntityCachalotWhale extends Animal {
                                         this.setGrabbing(true);
                                         this.setHoldingSquidLeft(random.nextBoolean());
                                     } else {
-                                        target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                                        target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                                     }
                                     this.setCharging(false);
                                     if (target.getVehicle() instanceof final Boat boat) {
@@ -687,7 +688,7 @@ public class EntityCachalotWhale extends Animal {
                                             this.spawnAtLocation(Items.STICK);
                                         }
                                         target.removeVehicle();
-                                        boat.hurt(DamageSource.mobAttack(this), 1000);
+                                        boat.hurt(this.damageSources().mobAttack(this), 1000);
                                         boat.remove(RemovalReason.DISCARDED);
                                     }
                                     chargeCooldown = target instanceof Player ? 30 : 100;
@@ -773,6 +774,7 @@ public class EntityCachalotWhale extends Animal {
 
         return new Vec3(x, y, z);
     }
+
 
     public void setTarget(@Nullable LivingEntity entitylivingbaseIn) {
         LivingEntity prev = this.getTarget();
@@ -904,7 +906,7 @@ public class EntityCachalotWhale extends Animal {
 
     public Vec3 getDismountLocationForPassenger(LivingEntity dismount) {
         Vec3 mouth = this.getMouthVec();
-        BlockPos pos = new BlockPos(mouth);
+        BlockPos pos = AMBlockPos.fromVec3(mouth);
         while(!level.isEmptyBlock(pos) && !level.isWaterAt(pos) && pos.getY() < level.getMaxBuildHeight()){
             pos = pos.above();
         }
@@ -946,7 +948,7 @@ public class EntityCachalotWhale extends Animal {
             }
 
             if (lvt_2_1_ == null) {
-                lvt_2_1_ = new BlockPos(EntityCachalotWhale.this.getX(), EntityCachalotWhale.this.getY() + 4.0D, EntityCachalotWhale.this.getZ());
+                lvt_2_1_ = AMBlockPos.fromCoords(EntityCachalotWhale.this.getX(), EntityCachalotWhale.this.getY() + 4.0D, EntityCachalotWhale.this.getZ());
             }
             if (EntityCachalotWhale.this.isEyeInFluid(FluidTags.WATER)) {
                 EntityCachalotWhale.this.setDeltaMovement(EntityCachalotWhale.this.getDeltaMovement().add(0, 0.05F, 0));

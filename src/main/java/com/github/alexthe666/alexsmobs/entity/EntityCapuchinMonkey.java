@@ -27,6 +27,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -224,7 +225,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                 float f1 = this.getYRot() * Maths.piDividedBy180;
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.3F, 0.0D, Mth.cos(f1) * 0.3F));
                 getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-                this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 this.setAttackDecision(this.getTarget());
             }
             if (this.getDartTarget() != null && this.getDartTarget().isAlive() && this.getAnimation() == ANIMATION_THROW && this.getAnimationTick() == 5) {
@@ -427,7 +428,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -519,10 +520,10 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             if (getRandom().nextInt(4) == 0) {
                 this.spawnAtLocation(new ItemStack(AMBlockRegistry.BANANA_PEEL.get()));
             }
-            if (e.getThrower() != null && !this.isTame()) {
+            if (e.getOwner() != null && !this.isTame()) {
                 if (getRandom().nextInt(5) == 0) {
                     this.setTame(true);
-                    this.setOwnerUUID(e.getThrower());
+                    this.setOwnerUUID(e.getOwner().getUUID());
                     this.level.broadcastEntityEvent(this, (byte) 7);
                 } else {
                     this.level.broadcastEntityEvent(this, (byte) 6);

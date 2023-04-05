@@ -384,7 +384,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                 Vec3 minus = new Vec3(this.getX() + extraX - this.getTarget().getX(), this.getY() + extraY - this.getTarget().getY(), this.getZ() + extraZ - this.getTarget().getZ());
                 this.getTarget().setDeltaMovement(minus);
                 if (holdTime % 20 == 0) {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), 5 + this.getRandom().nextInt(2));
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), 5 + this.getRandom().nextInt(2));
                 }
             }
             holdTime++;
@@ -613,7 +613,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                     tiger.setAnimation(tiger.getRandom().nextBoolean() ? ANIMATION_PAW_L : ANIMATION_PAW_R);
                 }
                 if (dist < 4 + target.getBbWidth() && (tiger.getAnimation() == ANIMATION_PAW_L || tiger.getAnimation() == ANIMATION_PAW_R) && tiger.getAnimationTick() == 8) {
-                    target.hurt(DamageSource.mobAttack(tiger), 7 + tiger.getRandom().nextInt(5));
+                    target.hurt(this.damageSources().mobAttack(tiger), 7 + tiger.getRandom().nextInt(5));
                 }
                 if (tiger.getAnimation() == ANIMATION_LEAP) {
                     tiger.getNavigation().stop();
@@ -628,7 +628,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                         this.tiger.setDeltaMovement(vector3d1.x, vector3d1.y + 0.3F + 0.1F * Mth.clamp(target.getEyeY() - this.tiger.getY(), 0, 2), vector3d1.z);
                     }
                     if (dist < target.getBbWidth() + 3 && tiger.getAnimationTick() >= 15) {
-                        target.hurt(DamageSource.mobAttack(tiger), 2);
+                        target.hurt(this.damageSources().mobAttack(tiger), 2);
                         tiger.setRunning(false);
                         tiger.setStealth(false);
                         tiger.setHolding(true);

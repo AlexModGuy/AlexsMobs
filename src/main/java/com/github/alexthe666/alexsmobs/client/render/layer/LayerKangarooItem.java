@@ -8,7 +8,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +34,7 @@ public class LayerKangarooItem extends RenderLayer<EntityKangaroo, ModelKangaroo
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(180F));
         matrixStackIn.scale(0.8F, 0.8F, 0.8F);
         ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
-        renderer.renderItem(entitylivingbaseIn, itemstack, left ? ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, bufferIn, packedLightIn);
+        renderer.renderItem(entitylivingbaseIn, itemstack, left ? ItemDisplayContext.THIRD_PERSON_LEFT_HAND : ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }

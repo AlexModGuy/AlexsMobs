@@ -33,6 +33,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -150,7 +151,7 @@ public class ServerEvents {
         final float f5 = Mth.sin(-x * ((float) Math.PI / 180F));
         final float f6 = f3 * f4;
         final float f7 = f2 * f4;
-        final double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
+        final double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.BLOCK_REACH.get()).getValue();
         Vec3 vector3d1 = vector3d.add(f6 * d0, f5 * d0, f7 * d0);
         return worldIn.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }
@@ -281,7 +282,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onEntityDespawnAttempt(LivingSpawnEvent.AllowDespawn event) {
+    public void onEntityDespawnAttempt(MobSpawnEvent.AllowDespawn event) {
         if (event.getEntity().hasEffect(AMEffectRegistry.DEBILITATING_STING.get()) && event.getEntity().getEffect(AMEffectRegistry.DEBILITATING_STING.get()) != null && event.getEntity().getEffect(AMEffectRegistry.DEBILITATING_STING.get()).getAmplifier() > 0) {
             event.setResult(Event.Result.DENY);
         }
@@ -484,7 +485,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
+    public void onEntityJoinWorld(MobSpawnEvent.FinalizeSpawn event) {
         if (event.getEntity() instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
             Biome biome = event.getLevel().getBiome(event.getEntity().blockPosition()).value();
             if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance
@@ -575,7 +576,7 @@ public class ServerEvents {
                 }
                 if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()) {
                     if (attacker.distanceTo(player) < attacker.getBbWidth() + player.getBbWidth() + 0.5F) {
-                        attacker.hurt(DamageSource.thorns(player), 1F);
+                        attacker.hurt(attacker.damageSources().thorns(player), 1F);
                         attacker.knockback(0.5F, Mth.sin((attacker.getYRot() + 180) * ((float) Math.PI / 180F)),
                             -Mth.cos((attacker.getYRot() + 180) * ((float) Math.PI / 180F)));
                     }
@@ -583,22 +584,22 @@ public class ServerEvents {
             }
         }
         if (!event.getEntity().getItemBySlot(EquipmentSlot.LEGS).isEmpty() && event.getEntity().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.EMU_LEGGINGS.get()) {
-            if (event.getSource().isProjectile() && event.getEntity().getRandom().nextFloat() < AMConfig.emuPantsDodgeChance) {
+            if (event.getSource().is(DamageTypeTags.IS_PROJECTILE) && event.getEntity().getRandom().nextFloat() < AMConfig.emuPantsDodgeChance) {
                 event.setCanceled(true);
             }
         }
     }
 
     @SubscribeEvent
-    public void onLivingSetTargetEvent(LivingSetAttackTargetEvent event) {
-        if (event.getTarget() != null && event.getEntity() instanceof Mob mob) {
+    public void onLivingSetTargetEvent(LivingChangeTargetEvent event) {
+        if (event.getNewTarget() != null && event.getEntity() instanceof Mob mob) {
             if (mob.getMobType() == MobType.ARTHROPOD) {
-                if (event.getTarget().hasEffect(AMEffectRegistry.BUG_PHEROMONES.get()) && event.getEntity().getLastHurtByMob() != event.getTarget()) {
+                if (event.getNewTarget().hasEffect(AMEffectRegistry.BUG_PHEROMONES.get()) && event.getEntity().getLastHurtByMob() != event.getNewTarget()) {
                     mob.setTarget(null);
                 }
             }
             if (mob.getMobType() == MobType.UNDEAD && !mob.getType().is(AMTagRegistry.IGNORES_KIMONO)) {
-                if (event.getTarget().getItemBySlot(EquipmentSlot.CHEST).is(AMItemRegistry.UNSETTLING_KIMONO.get()) && event.getEntity().getLastHurtByMob() != event.getTarget()) {
+                if (event.getNewTarget().getItemBySlot(EquipmentSlot.CHEST).is(AMItemRegistry.UNSETTLING_KIMONO.get()) && event.getEntity().getLastHurtByMob() != event.getNewTarget()) {
                     mob.setTarget(null);
                 }
             }
@@ -645,7 +646,7 @@ public class ServerEvents {
         }
         final ItemStack boots = event.getEntity().getItemBySlot(EquipmentSlot.FEET);
         if (!boots.isEmpty() && boots.hasTag() && boots.getOrCreateTag().contains("BisonFur") && boots.getOrCreateTag().getBoolean("BisonFur")) {
-            BlockPos pos = new BlockPos(event.getEntity().getX(), event.getEntity().getY() - 0.5F, event.getEntity().getZ());
+            BlockPos pos = new BlockPos((int) event.getEntity().getX(), (int) (event.getEntity().getY() - 0.5F), (int) event.getEntity().getZ());
             if (event.getEntity().level.getBlockState(pos).is(Blocks.POWDER_SNOW)) {
                 event.getEntity().setOnGround(true);
                 event.getEntity().setTicksFrozen(0);

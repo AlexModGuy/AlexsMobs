@@ -141,7 +141,7 @@ public class EntityVoidWormShot extends Entity {
     protected void onEntityHit(EntityHitResult p_213868_1_) {
         Entity entity = this.getShooter();
         if (entity instanceof LivingEntity && !(p_213868_1_.getEntity() instanceof EntityVoidWorm || p_213868_1_.getEntity() instanceof EntityVoidWormPart)) {
-            boolean b = wormAttack(p_213868_1_.getEntity(), DamageSource.indirectMobAttack(this, (LivingEntity) entity).setProjectile(), (float) (AMConfig.voidWormDamageModifier * 4F));
+            boolean b = wormAttack(p_213868_1_.getEntity(), damageSources().mobProjectile(this, (LivingEntity) entity), (float) (AMConfig.voidWormDamageModifier * 4F));
             if(b && p_213868_1_.getEntity() instanceof Player){
                 Player player = ((Player)p_213868_1_.getEntity());
                 if(player.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)){

@@ -20,6 +20,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -322,7 +323,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public void travel(Vec3 vec3d) {
@@ -333,7 +334,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     }
 
     public BlockPos getBlueJayGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
@@ -357,7 +358,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), (int) getY(), (int) (fleePos.z() + extraZ));
         BlockPos ground = this.getBlueJayGround(radialPos);
         if (ground.getY() < -64) {
             return null;
@@ -380,7 +381,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
-        BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getBlueJayGround(radialPos);
         int distFromGround = (int) this.getY() - ground.getY();
         int flightHeight = 5 + this.getRandom().nextInt(5);
@@ -559,12 +560,12 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.heal(3);
-        if(e.getThrower() != null && e.getItem().is(Items.GLOW_BERRIES)){
-            this.setLastFeederUUID(e.getThrower());
+        if(e.getOwner() != null && e.getItem().is(Items.GLOW_BERRIES)){
+            this.setLastFeederUUID(e.getOwner().getUUID());
             this.setFeedTime(1200);
             this.stopRiding();
         }
-        if(e.getThrower() != null && e.getItem().is(Tags.Items.SEEDS)){
+        if(e.getOwner() != null && e.getItem().is(Tags.Items.SEEDS)){
             this.setSingTime(40);
         }
     }

@@ -12,10 +12,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -197,7 +199,7 @@ public class EntityBoneSerpent extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL  || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL)  || source.is(DamageTypes.LAVA) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {

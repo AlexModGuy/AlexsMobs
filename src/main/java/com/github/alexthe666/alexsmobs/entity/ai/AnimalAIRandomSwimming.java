@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
@@ -69,12 +70,12 @@ public class AnimalAIRandomSwimming extends RandomStrollGoal {
         }
         Vec3 vector3d = DefaultRandomPos.getPos(this.mob, xzSpread, ySpread);
 
-        for(int i = 0; vector3d != null && !this.mob.level.getBlockState(new BlockPos(vector3d)).isPathfindable(this.mob.level, new BlockPos(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = DefaultRandomPos.getPos(this.mob, 10, ySpread)) {
+        for(int i = 0; vector3d != null && !this.mob.level.getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = DefaultRandomPos.getPos(this.mob, 10, ySpread)) {
         }
         if(submerged && vector3d != null){
-            if(!this.mob.level.getFluidState(new BlockPos(vector3d).above()).is(FluidTags.WATER)){
+            if(!this.mob.level.getFluidState(AMBlockPos.fromVec3(vector3d).above()).is(FluidTags.WATER)){
                 vector3d = vector3d.add(0, -2, 0);
-            }else if(!this.mob.level.getFluidState(new BlockPos(vector3d).above(2)).is(FluidTags.WATER)){
+            }else if(!this.mob.level.getFluidState(AMBlockPos.fromVec3(vector3d).above(2)).is(FluidTags.WATER)){
                 vector3d = vector3d.add(0, -3, 0);
             }
         }

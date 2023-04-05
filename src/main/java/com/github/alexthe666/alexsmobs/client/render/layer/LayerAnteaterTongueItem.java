@@ -11,10 +11,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class LayerAnteaterTongueItem extends RenderLayer<EntityAnteater, ModelAnteater> {
@@ -55,7 +55,7 @@ public class LayerAnteaterTongueItem extends RenderLayer<EntityAnteater, ModelAn
             }else{
                 matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
                 ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
-                renderer.renderItem(anteater, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+                renderer.renderItem(anteater, itemstack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             }
             matrixStackIn.popPose();
             matrixStackIn.popPose();

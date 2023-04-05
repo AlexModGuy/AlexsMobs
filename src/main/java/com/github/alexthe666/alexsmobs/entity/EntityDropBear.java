@@ -18,9 +18,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -126,7 +128,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
     }
 
     public boolean isInvulnerableTo(DamageSource source) {
-        return super.isInvulnerableTo(source) || source == DamageSource.FALL || source == DamageSource.IN_WALL;
+        return super.isInvulnerableTo(source) || source.is(DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL);
     }
 
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
@@ -171,17 +173,17 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
             if (attackTarget != null && distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1 && this.hasLineOfSight(attackTarget)) {
                 if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 6) {
                     attackTarget.knockback(0.5F, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
                 if ((this.getAnimation() == ANIMATION_SWIPE_L) && this.getAnimationTick() == 9) {
                     float rot = getYRot() + 90;
                     attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
                 if ((this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 9) {
                     float rot = getYRot() - 90;
                     attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
             }
             if ((attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && random.nextInt(300) == 0 && this.onGround && !this.isUpsideDown() && this.getY() + 2 < worldHeight.getY()) {
@@ -250,7 +252,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
     }
 
     protected BlockPos getPositionAbove() {
-        return new BlockPos(this.position().x, this.getBoundingBox().maxY + 0.5000001D, this.position().z);
+        return new BlockPos((int) this.position().x, (int) (this.getBoundingBox().maxY + 0.5000001D), (int) this.position().z);
     }
 
     @Override
@@ -304,7 +306,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
             level.broadcastEntityEvent(this, (byte) 39);
             for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.5D))) {
                 if (!isAlliedTo(entity) && !(entity instanceof EntityDropBear) && entity != this) {
-                    entity.hurt(DamageSource.mobAttack(this), 2.0F + random.nextFloat() * 5F);
+                    entity.hurt(this.damageSources().mobAttack(this), 2.0F + random.nextFloat() * 5F);
                     launch(entity, true);
                 }
             }
@@ -342,7 +344,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
                 double extraY = 0.8F;
                 double extraZ = radius * Mth.cos(angle);
-                BlockPos ground = getGroundPosition(new BlockPos(Mth.floor(this.getX() + extraX), this.getY(), Mth.floor(this.getZ() + extraZ)));
+                BlockPos ground = getGroundPosition(new BlockPos(Mth.floor(this.getX() + extraX), (int) this.getY(), Mth.floor(this.getZ() + extraZ)));
                 BlockState BlockState = this.level.getBlockState(ground);
                 if (BlockState.getMaterial() != Material.AIR) {
                     level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, BlockState), true, this.getX() + extraX, ground.getY() + extraY, this.getZ() + extraZ, motionX, motionY, motionZ);
@@ -352,7 +354,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
     }
 
     private BlockPos getGroundPosition(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() > 2 && level.isEmptyBlock(position) && level.getFluidState(position).isEmpty()) {
             position = position.below();
         }
@@ -435,7 +437,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
                     double d0 = EntityDropBear.this.getX() - target.getX();
                     double d2 = EntityDropBear.this.getZ() - target.getZ();
                     double xzDistSqr = d0 * d0 + d2 * d2;
-                    BlockPos ceilingPos = new BlockPos(target.getX(), EntityDropBear.this.getY() - 3 - random.nextInt(3), target.getZ());
+                    BlockPos ceilingPos = new BlockPos((int) target.getX(), (int) (EntityDropBear.this.getY() - 3 - random.nextInt(3)), (int) target.getZ());
                     BlockPos lowestPos = EntityDropBear.getLowestPos(level, ceilingPos);
                     EntityDropBear.this.getMoveControl().setWantedPosition(lowestPos.getX() + 0.5F, ceilingPos.getY(), lowestPos.getZ() + 0.5F, 1.1D);
                     if (xzDistSqr < 2.5F) {

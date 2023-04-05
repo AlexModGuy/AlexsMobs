@@ -261,7 +261,7 @@ public class EntityPotoo extends Animal implements IFalconry {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public void rideTick() {
@@ -726,7 +726,7 @@ public class EntityPotoo extends Animal implements IFalconry {
                         biteCooldown = 10;
                     }
                     if (EntityPotoo.this.mouthProgress >= 4.5F) {
-                        entity.hurt(DamageSource.mobAttack(EntityPotoo.this), 2);
+                        entity.hurt(this.damageSources().mobAttack(EntityPotoo.this), 2);
                         if (entity.getBbWidth() <= 0.5F) {
                             entity.remove(RemovalReason.KILLED);
                         }

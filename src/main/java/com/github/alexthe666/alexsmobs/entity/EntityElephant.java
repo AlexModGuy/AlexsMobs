@@ -230,10 +230,10 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof Player) {
-                return passenger;
+                return (LivingEntity) passenger;
             }
         }
         return null;
@@ -378,7 +378,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 target.knockback(1F, target.getX() - this.getX(), target.getZ() - this.getZ());
                 target.hasImpulse = true;
                 target.setDeltaMovement(target.getDeltaMovement().add(0, 0.7F, 0));
-                target.hurt(DamageSource.mobAttack(this), 2.4F * (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                target.hurt(this.damageSources().mobAttack(this), 2.4F * (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 launch(target, true);
                 this.charging = false;
                 this.chargeCooldown = 400;
@@ -388,11 +388,11 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 target.knockback(1F, target.getX() - this.getX(), target.getZ() - this.getZ());
                 target.setDeltaMovement(target.getDeltaMovement().add(0, 0.3F, 0));
                 launch(target, false);
-                target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                target.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
             if (dist < 4.5D + maxAttackMod && this.getAnimation() == ANIMATION_STOMP && this.getAnimationTick() == 17) {
                 target.knockback(0.3F, target.getX() - this.getX(), target.getZ() - this.getZ());
-                target.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                target.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
         }
         if (!level.isClientSide && this.getTarget() == null && this.getControllingPassenger() == null) {
@@ -416,7 +416,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         if (this.isAlive() && charging) {
             for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
                 if (!(this.isTame() && isAlliedTo(entity)) && !(!this.isTame() && entity instanceof EntityElephant) && entity != this) {
-                    entity.hurt(DamageSource.mobAttack(this), 8.0F + random.nextFloat() * 8.0F);
+                    entity.hurt(this.damageSources().mobAttack(this), 8.0F + random.nextFloat() * 8.0F);
                     launch(entity, true);
                 }
             }
@@ -830,8 +830,8 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
-        if (duplicate.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get()) {
-            blossomThrowerUUID = e.getThrower();
+        if (duplicate.getItem() == AMItemRegistry.ACACIA_BLOSSOM.get() && e.getOwner() != null) {
+            blossomThrowerUUID = e.getOwner().getUUID();
         } else {
             blossomThrowerUUID = null;
         }
@@ -913,19 +913,14 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         }
     }
 
-    public boolean canBeControlledByRider() {
-        return false;
-    }
-
-
     public boolean isControlledByLocalInstance() {
         return false;
     }
 
     public double getPassengersRidingOffset() {
         float scale = this.isBaby() ? 0.5F : this.isTusked() ? 1.1F : 1.0F;
-        float f = Math.min(0.25F, this.animationSpeed);
-        float f1 = this.animationPosition;
+        float f = Math.min(0.25F, this.walkAnimation.speed());
+        float f1 = this.walkAnimation.position();
         float sitAdd = 0.01F * 0;
         float standAdd = 0.07F * 0;
         return (double) this.getBbHeight() - 0.05F - scale * ((double) (0.1F * Mth.cos(f1 * 1.4F) * 1.4F * f) + sitAdd + standAdd);

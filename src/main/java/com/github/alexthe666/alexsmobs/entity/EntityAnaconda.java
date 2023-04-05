@@ -294,7 +294,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 }
                 if (strangleTimer >= 40 && strangleTimer % 20 == 0) {
                     final double health = Mth.clamp(this.getTarget().getMaxHealth(), 4, 50);
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) Math.max(4F, 0.25F * health));
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) Math.max(4F, 0.25F * health));
                 }
                 if (this.getTarget() == null || !this.getTarget().isAlive()) {
                     strangleTimer = 0;
@@ -536,7 +536,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -586,7 +586,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
             final LivingEntity target = snake.getTarget();
             if (target != null && target.isAlive()) {
                 if (jumpAttemptCooldown == 0 && snake.distanceTo(target) < 1 + target.getBbWidth() && !snake.isStrangling()) {
-                    target.hurt(DamageSource.mobAttack(snake), 4);
+                    target.hurt(this.damageSources().mobAttack(snake), 4);
                     snake.setStrangling(target.getBbWidth() <= 2.0F && !(target instanceof EntityAnaconda));
                     snake.playSound(AMSoundRegistry.ANACONDA_ATTACK.get(), snake.getSoundVolume(), snake.getVoicePitch());
                     jumpAttemptCooldown = 5 + random.nextInt(5);

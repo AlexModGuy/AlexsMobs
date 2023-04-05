@@ -225,7 +225,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
                     dmg = 2;
                 }
                 getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-                this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
+                this.getTarget().hurt(this.damageSources().mobAttack(this), dmg);
             }
         }
         if(snowTimer > 0){

@@ -1,43 +1,35 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
-import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 
-public class RecipeBisonUpgrade extends UpgradeRecipe {
+public class RecipeBisonUpgrade extends CustomRecipe {
 
-    public RecipeBisonUpgrade(ResourceLocation id, CraftingBookCategory category) {
-        this(id);
+    public RecipeBisonUpgrade(ResourceLocation idIn, CraftingBookCategory category) {
+        super(idIn, category);
     }
 
-    public RecipeBisonUpgrade(ResourceLocation id) {
-        super(id, Ingredient.EMPTY, Ingredient.EMPTY, ItemStack.EMPTY);
-    }
-
-    @Override
-    public boolean matches(Container container, Level lvl) {
-        return !createBoots(container).isEmpty();
-    }
-
-    @Override
-    public ItemStack assemble(Container container) {
-        return createBoots(container);
-    }
 
     private ItemStack createBoots(Container container){
         ItemStack boots = ItemStack.EMPTY;
-        if(container.getItem(1).is(AMBlockRegistry.BISON_FUR_BLOCK.get().asItem())){
+        int fur = 0;
+        for (int j = 0; j < container.getContainerSize(); ++j) {
+            ItemStack itemstack1 = container.getItem(j);
+            if (itemstack1.is(AMBlockRegistry.BISON_FUR_BLOCK.get().asItem())) {
+                fur++;
+            }
+        }
+        if(fur == 1){
             for (int j = 0; j < container.getContainerSize(); ++j) {
                 ItemStack itemstack1 = container.getItem(j);
                 boolean notFurred = !itemstack1.hasTag() || itemstack1.getTag() != null && !itemstack1.getTag().getBoolean("BisonFur");
@@ -45,15 +37,25 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
                     boots = itemstack1;
                 }
             }
-        }
-        if(!boots.isEmpty()){
-            ItemStack stack = boots.copy();
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.putBoolean("BisonFur", true);
-            stack.setTag(tag);
-            return stack;
+            if(!boots.isEmpty()){
+                ItemStack stack = boots.copy();
+                CompoundTag tag = stack.getOrCreateTag();
+                tag.putBoolean("BisonFur", true);
+                stack.setTag(tag);
+                return stack;
+            }
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean matches(CraftingContainer container, Level level) {
+        return !createBoots(container).isEmpty();
+    }
+
+    @Override
+    public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+        return createBoots(container);
     }
 
     @Override
@@ -62,12 +64,8 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
     }
 
     @Override
-    public ItemStack getResultItem() {
-        return ItemStack.EMPTY;
-    }
-
-    public ItemStack getToastSymbol() {
-        return new ItemStack(Blocks.SMITHING_TABLE);
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
+        return null;
     }
 
     @Override
@@ -77,23 +75,11 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
 
     @Override
     public RecipeType<?> getType() {
-        return RecipeType.SMITHING;
+        return RecipeType.CRAFTING;
     }
 
     public NonNullList<Ingredient> getIngredients() {
-        return NonNullList.of(Ingredient.of(AMItemRegistry.BISON_FUR.get()));
+        return NonNullList.of(Ingredient.of(AMBlockRegistry.BISON_FUR_BLOCK.get()));
     }
 
-    public static class Serializer implements RecipeSerializer<RecipeBisonUpgrade> {
-        public RecipeBisonUpgrade fromJson(ResourceLocation resourceLocation, JsonObject json) {
-            return new RecipeBisonUpgrade(resourceLocation);
-        }
-
-        public RecipeBisonUpgrade fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buf) {
-            return new RecipeBisonUpgrade(resourceLocation);
-        }
-
-        public void toNetwork(FriendlyByteBuf buf, RecipeBisonUpgrade recipeBisonUpgrade) {
-        }
-    }
 }

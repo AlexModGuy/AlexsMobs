@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBunfungus;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
@@ -39,7 +38,7 @@ public class BunfungusAIMelee extends Goal {
         if(dist < 2.0D){
             if(hasJumped){
                 if(!chungus.isOnGround()){
-                    chungus.getTarget().hurt(DamageSource.mobAttack(chungus), 10);
+                    chungus.getTarget().hurt(this.damageSources().mobAttack(chungus), 10);
                 }
                 hasJumped = false;
             }else{

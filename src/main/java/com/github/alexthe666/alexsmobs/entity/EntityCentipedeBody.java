@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,6 +12,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -53,7 +55,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return  source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return  source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public MobType getMobType() {
@@ -275,7 +277,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         if (this.noPhysics) {
             return false;
         } else {
-            return !level.getFluidState(new BlockPos(x, y, z)).isEmpty();
+            return !level.getFluidState(AMBlockPos.fromCoords(x, y, z)).isEmpty();
         }
     }
 
@@ -287,7 +289,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
             final Vec3 vec3 = new Vec3(x, y, z);
             final AABB axisalignedbb = AABB.ofSize(vec3, f, 1.0E-6D, f);
             return this.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
-                final BlockPos blockpos = new BlockPos(vec3);
+                final BlockPos blockpos = AMBlockPos.fromVec3(vec3);
                 return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
             });
         }

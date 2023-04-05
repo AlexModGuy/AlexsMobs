@@ -443,7 +443,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
 
     @Override
     public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.animationSpeedOld = p_233629_1_.animationSpeed;
+        p_233629_1_.walkAnimation.speed()Old = p_233629_1_.walkAnimation.speed();
         double d0 = p_233629_1_.getX() - p_233629_1_.xo;
         double d1 = p_233629_1_.getY() - p_233629_1_.yo;
         double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
@@ -452,8 +452,8 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             f = 1.0F;
         }
 
-        p_233629_1_.animationSpeed += (f - p_233629_1_.animationSpeed) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.animationSpeed;
+        p_233629_1_.walkAnimation.speed() += (f - p_233629_1_.walkAnimation.speed()) * 0.4F;
+        p_233629_1_.animationPosition += p_233629_1_.walkAnimation.speed();
     }
 
     public boolean canBreatheUnderwater() {
@@ -589,7 +589,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                     this.level.addParticle(ParticleTypes.BUBBLE, this.getX() + d0 * d4, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4, 0.0D, 0.0D, 0.0D);
                 }
                 if (guardianLaserTime == 30) {
-                    livingentity.hurt(DamageSource.mobAttack(this), 5);
+                    livingentity.hurt(this.damageSources().mobAttack(this), 5);
                     guardianLaserTime = 0;
                     this.entityData.set(UPGRADED_LASER_ENTITY_ID, -1);
                 }
@@ -870,7 +870,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     private void creeperExplode() {
-        Explosion explosion = new Explosion(level, this,  DamageSource.mobAttack(this), (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Explosion.BlockInteraction.KEEP);
+        Explosion explosion = new Explosion(level, this,  this.damageSources().mobAttack(this), (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Explosion.BlockInteraction.KEEP);
         explosion.explode();
         explosion.finalizeExplosion(true);
     }
@@ -1227,13 +1227,13 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
                     if (EntityMimicOctopus.this.isUpgraded() && EntityMimicOctopus.this.transProgress >= 5.0F) {
                         if (EntityMimicOctopus.this.getMimicState() == MimicState.PUFFERFISH) {
                             if (EntityMimicOctopus.this.getBoundingBox().expandTowards(2, 1.3, 2).intersects(target.getBoundingBox())) {
-                                target.hurt(DamageSource.mobAttack(EntityMimicOctopus.this), 4);
+                                target.hurt(this.damageSources().mobAttack(EntityMimicOctopus.this), 4);
                                 target.addEffect(new MobEffectInstance(MobEffects.POISON, 400, 2));
                             }
                         }
                         if (EntityMimicOctopus.this.getMimicState() == MimicState.GUARDIAN) {
                             if (EntityMimicOctopus.this.getBoundingBox().expandTowards(1, 1, 1).intersects(target.getBoundingBox())) {
-                                target.hurt(DamageSource.mobAttack(EntityMimicOctopus.this), 1);
+                                target.hurt(this.damageSources().mobAttack(EntityMimicOctopus.this), 1);
                             }
                             EntityMimicOctopus.this.entityData.set(UPGRADED_LASER_ENTITY_ID, target.getId());
                         }

@@ -452,7 +452,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
             getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-            this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+            this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }
         if (isSilverback() && !isBaby() && !hasSilverbackAttributes) {
             hasSilverbackAttributes = true;

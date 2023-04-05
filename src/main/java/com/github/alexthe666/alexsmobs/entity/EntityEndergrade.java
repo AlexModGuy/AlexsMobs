@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
 import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -126,7 +127,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof Player) {
                 Player player = (Player) passenger;
@@ -193,8 +194,8 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     public double getPassengersRidingOffset() {
-        float f = Math.min(0.25F, this.animationSpeed);
-        float f1 = this.animationPosition;
+        float f = Math.min(0.25F, this.walkAnimation.speed());
+        float f1 = this.walkAnimation.position();
         return (double) this.getBbHeight() - 0.1D + (double) (0.12F * Mth.cos(f1 * 0.7F) * 0.7F * f);
     }
 
@@ -346,7 +347,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             float angle = (0.01745329251F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
+            BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.getGroundPosition(radialPos);
             BlockPos newPos = ground.above(1 + parentEntity.getRandom().nextInt(6));
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(newPos)) && parentEntity.distanceToSqr(Vec3.atCenterOf(newPos)) > 6) {

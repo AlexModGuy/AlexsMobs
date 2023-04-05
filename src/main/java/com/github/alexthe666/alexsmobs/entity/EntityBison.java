@@ -233,7 +233,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                             dmg += 3;
                             this.setCharging(false);
                         }
-                        attackTarget.hurt(DamageSource.mobAttack(this), dmg);
+                        attackTarget.hurt(this.damageSources().mobAttack(this), dmg);
                     }
                 } else if (!this.isCharging()) {
                     final Animation animation = this.getAnimation();

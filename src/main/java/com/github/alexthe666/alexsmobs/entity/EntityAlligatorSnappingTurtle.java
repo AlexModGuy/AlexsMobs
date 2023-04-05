@@ -172,7 +172,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
 
         if (this.attackProgress == 4 && this.getTarget() != null && this.isAlive() && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 2.3F) {
             final float dmg = this.isBaby() ? 1F : (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-            this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
+            this.getTarget().hurt(this.damageSources().mobAttack(this), dmg);
         }
 
         if (this.attackProgress > 4)

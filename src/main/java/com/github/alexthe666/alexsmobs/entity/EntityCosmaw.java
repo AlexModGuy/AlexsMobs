@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.google.common.base.Predicates;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -193,8 +194,8 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
-            final float f = this.animationPosition;
-            final float f1 = this.animationSpeed;
+            final float f = this.walkAnimation.position();
+            final float f1 = this.walkAnimation.speed();
             final float bob = (float) (Math.sin(f * 0.7F) * (double) f1 * 0.0625F * 1.6F - (f1 * 0.0625F * 1.6F));
             passenger.setPos(this.getX(), this.getY() - bob + 0.3F - this.getPassengersRidingOffset(), this.getZ());
         }
@@ -252,7 +253,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                         fishNbt.putString("DeathLootTable", BuiltInLootTables.EMPTY.toString());
                         fish.readAdditionalSaveData(fishNbt);
                     }
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 }
                 this.entityData.set(ATTACK_TICK, this.entityData.get(ATTACK_TICK) - 1);
             }
@@ -407,7 +408,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     }
 
     private BlockPos getCosmawGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() < 256 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
@@ -430,8 +431,8 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
-        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame()) {
-            fishThrowerID = e.getThrower();
+        if (e.getItem().getItem() == Items.PUMPKIN_SEEDS && !this.isTame() && e.getOwner() != null) {
+            fishThrowerID = e.getOwner().getUUID();
         } else {
             fishThrowerID = null;
         }
@@ -529,7 +530,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             final float angle = (0.0174532925F * renderYawOffset) + 3.15F * (parentEntity.getRandom().nextFloat() * neg);
             final double extraX = radius * Mth.sin((float) (Math.PI + angle));
             final double extraZ = radius * Mth.cos(angle);
-            final BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY(), parentEntity.getZ() + extraZ);
+            final BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY(), parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.getCosmawGround(radialPos);
             if (ground.getY() <= 1) {
                 ground = ground.above(70 + parentEntity.random.nextInt(4));

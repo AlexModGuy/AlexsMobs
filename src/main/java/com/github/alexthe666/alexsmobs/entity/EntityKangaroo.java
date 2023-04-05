@@ -605,7 +605,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public boolean isInvulnerableTo(DamageSource source) {
-        return super.isInvulnerableTo(source) || source == DamageSource.IN_WALL;
+        return super.isInvulnerableTo(source) || source.is(DamageTypes.IN_WALL);
     }
 
     public boolean isAlliedTo(Entity entityIn) {

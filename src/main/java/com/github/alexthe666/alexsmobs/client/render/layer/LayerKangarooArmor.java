@@ -15,7 +15,6 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -74,7 +73,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
             ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
-            renderer.renderItem(roo, haloStack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(roo, haloStack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
         }
         if(!roo.isBaby()) {
@@ -114,7 +113,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
                     matrixStackIn.mulPose((new Quaternionf()).rotateX((float)Math.PI));
                     matrixStackIn.mulPose((new Quaternionf()).rotateY((float)Math.PI));
                     matrixStackIn.scale(1.0F, 1.0F, 1.0F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
                 }
                 matrixStackIn.popPose();
             }

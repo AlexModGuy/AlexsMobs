@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.block.BlockReptileEgg;
-import com.github.alexthe666.alexsmobs.block.BlockTerrapinEgg;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -23,6 +22,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,14 +35,11 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -362,16 +359,9 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
     }
 
     public void calculateEntityAnimation(LivingEntity living, boolean flying) {
-        living.animationSpeedOld = living.animationSpeed;
-        double d0 = living.getX() - living.xo;
-        double d2 = living.getZ() - living.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d2 * d2) * 8.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
-
-        living.animationSpeed += (f - living.animationSpeed) * 0.4F;
-        living.animationPosition += living.animationSpeed;
+        float f1 = (float) Mth.length(this.getX() - this.xo, 0, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 8.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     public boolean canBreatheUnderwater() {

@@ -82,7 +82,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
             this.setAirSupply(p_209207_1_ - 1);
             if (this.getAirSupply() == -20) {
                 this.setAirSupply(0);
-                this.hurt(DamageSource.DROWN, random.nextInt(2) == 0 ? 1F : 0F);
+                this.hurt(damageSources().drown(), random.nextInt(2) == 0 ? 1F : 0F);
             }
         } else {
             this.setAirSupply(2000);

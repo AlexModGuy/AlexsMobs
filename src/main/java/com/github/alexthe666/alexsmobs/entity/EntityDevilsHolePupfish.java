@@ -309,7 +309,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
             this.setAirSupply(i - 1);
             if (this.getAirSupply() == -20) {
                 this.setAirSupply(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
+                this.hurt(damageSources().dryOut(), 2.0F);
             }
         } else {
             this.setAirSupply(getMaxAirSupply());

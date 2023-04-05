@@ -323,7 +323,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                         isStriking[i] = false;
                         this.level.broadcastEntityEvent(this, (byte) (44 + i));
                         if (target != null && distanceTo(target) <= 4F) {
-                            target.hurt(DamageSource.mobAttack(this), 5 + random.nextInt(5));
+                            target.hurt(this.damageSources().mobAttack(this), 5 + random.nextInt(5));
                         }
                     }
                 }
@@ -505,7 +505,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             }
         }
 
-        this.calculateEntityAnimation(this, false);
+        this.calculateEntityAnimation(false);
     }
 
     public boolean isInvulnerableTo(DamageSource dmg) {
@@ -550,7 +550,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         }
 
         private BlockPos getFarseerGround(BlockPos in) {
-            BlockPos position = new BlockPos(in.getX(), parentEntity.getY(), in.getZ());
+            BlockPos position = new BlockPos(in.getX(), (int) parentEntity.getY(), in.getZ());
             while (position.getY() < 256 && !parentEntity.level.getFluidState(position).isEmpty()) {
                 position = position.above();
             }
@@ -567,7 +567,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             float angle = (0.01745329251F * renderYawOffset) + 3.15F * (parentEntity.getRandom().nextFloat() * neg);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
-            BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY(), parentEntity.getZ() + extraZ);
+            BlockPos radialPos = new BlockPos((int) (parentEntity.getX() + extraX), (int) parentEntity.getY(), (int) (parentEntity.getZ() + extraZ));
             BlockPos ground = getFarseerGround(radialPos).above(2 + parentEntity.random.nextInt(2));
 
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(ground.above()))) {

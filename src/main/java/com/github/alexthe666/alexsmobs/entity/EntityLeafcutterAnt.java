@@ -337,7 +337,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             if (attackTarget != null && distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1 && this.hasLineOfSight(attackTarget)) {
                 if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 6) {
                     float damage = (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                    attackTarget.hurt(DamageSource.mobAttack(this), damage);
+                    attackTarget.hurt(this.damageSources().mobAttack(this), damage);
                 }
             }
         }
@@ -599,7 +599,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
 
     @Override
     public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.animationSpeedOld = p_233629_1_.animationSpeed;
+        p_233629_1_.walkAnimation.speed()Old = p_233629_1_.walkAnimation.speed();
         double d0 = p_233629_1_.getX() - p_233629_1_.xo;
         double d1 = (p_233629_1_.getY() - p_233629_1_.yo) * 2.0F;
         double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
@@ -608,8 +608,8 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             f = 1.0F;
         }
 
-        p_233629_1_.animationSpeed += (f - p_233629_1_.animationSpeed) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.animationSpeed;
+        p_233629_1_.walkAnimation.speed() += (f - p_233629_1_.walkAnimation.speed()) * 0.4F;
+        p_233629_1_.animationPosition += p_233629_1_.walkAnimation.speed();
     }
 
     @Override

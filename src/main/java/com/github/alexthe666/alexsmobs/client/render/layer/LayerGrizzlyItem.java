@@ -8,7 +8,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +35,7 @@ public class LayerGrizzlyItem extends RenderLayer<EntityGrizzlyBear, ModelGrizzl
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(10F));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(100F));
         matrixStackIn.scale(1, 1, 1);
-        renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+        renderer.renderItem(entitylivingbaseIn, itemstack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
     }
 

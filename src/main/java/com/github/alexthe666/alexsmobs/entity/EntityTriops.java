@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.block.BlockReptileEgg;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAISwimBottom;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.CreatureAITargetItems;
@@ -16,11 +15,8 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,23 +25,18 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Bucketable;
-import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
@@ -256,13 +247,13 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         tail1Yaw = Mth.approachDegrees(this.tail1Yaw, yBodyRot, 7);
         tail2Yaw = Mth.approachDegrees(this.tail2Yaw, this.tail1Yaw, 7);
         if(onLandProgress == 0){
-            float f = (float) (20 * Math.sin(animationPosition) * animationSpeed);
+            float f = (float) (20 * Math.sin(animationPosition) * walkAnimation.speed());
             swimRot = Mth.approachDegrees(this.swimRot, f, 2);
         }
     }
 
     public void calculateEntityAnimation(LivingEntity entity, boolean flying) {
-        entity.animationSpeedOld = entity.animationSpeed;
+        entity.walkAnimation.speed()Old = entity.walkAnimation.speed();
         double d0 = entity.getX() - entity.xo;
         double d1 = entity.getY() - entity.yo;
         double d2 = entity.getZ() - entity.zo;
@@ -270,8 +261,8 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         if (f > 1.0F) {
             f = 1.0F;
         }
-        entity.animationSpeed += (f - entity.animationSpeed) * 0.4F;
-        entity.animationPosition += entity.animationSpeed;
+        entity.walkAnimation.speed() += (f - entity.walkAnimation.speed()) * 0.4F;
+        entity.animationPosition += entity.walkAnimation.speed();
     }
 
     public MobType getMobType() {

@@ -410,7 +410,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -525,7 +525,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     @Override
     public void calculateEntityAnimation(LivingEntity entity, boolean b) {
-        entity.animationSpeedOld = entity.animationSpeed;
+        entity.walkAnimation.speed()Old = entity.walkAnimation.speed();
         double d0 = entity.getX() - entity.xo;
         double d1 = (entity.getY() - entity.yo) * 2.0F;
         double d2 = entity.getZ() - entity.zo;
@@ -534,8 +534,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             f = 1.0F;
         }
 
-        entity.animationSpeed += (f - entity.animationSpeed) * 0.4F;
-        entity.animationPosition += entity.animationSpeed;
+        entity.walkAnimation.speed() += (f - entity.walkAnimation.speed()) * 0.4F;
+        entity.animationPosition += entity.walkAnimation.speed();
     }
 
     protected PathNavigation createNavigation(Level worldIn) {

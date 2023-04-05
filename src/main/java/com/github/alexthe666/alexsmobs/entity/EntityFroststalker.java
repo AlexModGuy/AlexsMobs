@@ -359,7 +359,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
                     this.getAnimation() == ANIMATION_SLASH_R && this.getAnimationTick() == 7;
             if (this.getTarget() != null && attackAnim) {
                 getTarget().knockback(0.2F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-                this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
         }
         if (fleeFireFlag > 0) {

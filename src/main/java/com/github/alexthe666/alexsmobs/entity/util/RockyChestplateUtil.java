@@ -6,7 +6,6 @@ import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.github.alexthe666.citadel.server.message.PropertiesMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -85,7 +84,7 @@ public class RockyChestplateUtil {
             if(!roller.level.isClientSide){
                 for (Entity entity : roller.level.getEntitiesOfClass(LivingEntity.class, roller.getBoundingBox().inflate(1.0F))) {
                     if (!roller.isAlliedTo(entity) && !entity.isAlliedTo(roller) && entity != roller) {
-                        entity.hurt(DamageSource.mobAttack(roller), 2.0F + roller.getRandom().nextFloat() * 1.0F);
+                        entity.hurt(this.damageSources().mobAttack(roller), 2.0F + roller.getRandom().nextFloat() * 1.0F);
                     }
                 }
             }

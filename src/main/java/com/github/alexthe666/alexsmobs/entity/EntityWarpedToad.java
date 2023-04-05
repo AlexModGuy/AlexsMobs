@@ -425,7 +425,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
                     if (entityIn instanceof EntityCrimsonMosquito) {
                         damage = Float.MAX_VALUE;
                     }
-                    entityIn.hurt(DamageSource.mobAttack(this), damage);
+                    entityIn.hurt(this.damageSources().mobAttack(this), damage);
                 }
             }
 

@@ -19,11 +19,9 @@ import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +29,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.joml.Quaternionf;
 
@@ -156,13 +156,14 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     @Override
-    public void renderByItem(ItemStack itemStackIn, ItemTransforms.TransformType transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void renderByItem(ItemStack itemStackIn, ItemDisplayContext transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         int tick;
         if (Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()) {
             tick = ticksExisted;
         } else {
             tick = Minecraft.getInstance().player.tickCount;
         }
+        Level level = Minecraft.getInstance().level;
         if (itemStackIn.getItem() == AMItemRegistry.SHIELD_OF_THE_DEEP.get()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.4F, -0.75F, 0.5F);
@@ -181,24 +182,24 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         }
         if (itemStackIn.getItem() == AMItemRegistry.FALCONRY_GLOVE.get()) {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
-            if (transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND.get()), transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+            if (transformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || transformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_HAND.get()), transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
             } else {
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY.get()), transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.FALCONRY_GLOVE_INVENTORY.get()), transformType, transformType == ItemDisplayContext.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
             }
         }
         if (itemStackIn.getItem() == AMItemRegistry.VINE_LASSO.get()) {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
-            if (transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
+            if (transformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || transformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
                 if (ItemVineLasso.isItemInUse(itemStackIn)) {
                     if (transformType.firstPerson()) {
-                        matrixStackIn.translate(transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND ? -0.3F : 0.3F, 0.0f, -0.5f);
+                        matrixStackIn.translate(transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND ? -0.3F : 0.3F, 0.0f, -0.5f);
                     }
                     matrixStackIn.mulPose(Axis.YP.rotation(tick + Minecraft.getInstance().getFrameTime()));
                 }
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND.get()), transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_HAND.get()), transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
             } else {
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY.get()), transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(AMItemRegistry.VINE_LASSO_INVENTORY.get()), transformType, transformType == ItemDisplayContext.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
             }
         }
         if (itemStackIn.getItem() == AMItemRegistry.SKELEWAG_SWORD.get()) {
@@ -207,10 +208,10 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             ItemStack handItem = new ItemStack(AMItemRegistry.SKELEWAG_SWORD_HAND.get());
             spriteItem.setTag(itemStackIn.getTag());
             handItem.setTag(itemStackIn.getTag());
-            if (transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
-                Minecraft.getInstance().getItemRenderer().renderStatic(handItem, transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+            if (transformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || transformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
+                Minecraft.getInstance().getItemRenderer().renderStatic(handItem, transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
             } else {
-                Minecraft.getInstance().getItemRenderer().renderStatic(spriteItem, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(spriteItem, transformType, transformType == ItemDisplayContext.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
             }
         }
         if (itemStackIn.getItem() == AMBlockRegistry.TRANSMUTATION_TABLE.get().asItem()) {
@@ -230,7 +231,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             float f = tick + Minecraft.getInstance().getFrameTime();
             List<ItemStack> shards = getDimensionalCarverShards();
             matrixStackIn.pushPose();
-            if(transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND){
+            if(transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND){
                 matrixStackIn.translate(-0.2F, 0, 0);
                 matrixStackIn.scale(1.3F, 1.3F, 1.3F);
                 matrixStackIn.mulPose(Axis.YP.rotationDegrees(180));
@@ -240,7 +241,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 matrixStackIn.pushPose();
                 ItemStack shard = shards.get(i);
                 matrixStackIn.translate((float) Math.sin(f * 0.15F + i * 1F) * 0.035F, -(float) Math.cos(f * 0.15F + i * 1F) * 0.035F, (float) Math.cos(f * 0.15F + i * 0.5F + Math.PI / 2F) * 0.025F);
-                Minecraft.getInstance().getItemRenderer().renderStatic(shard, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(shard, transformType, transformType == ItemDisplayContext.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
                 matrixStackIn.popPose();
             }
             matrixStackIn.popPose();
@@ -249,10 +250,10 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             matrixStackIn.translate(0.5F, 0.5f, 0.5f);
             ItemStack hand = new ItemStack(ItemStinkRay.isUsable(itemStackIn) ? AMItemRegistry.STINK_RAY_HAND.get() : AMItemRegistry.STINK_RAY_EMPTY_HAND.get());
             ItemStack inventory = new ItemStack(ItemStinkRay.isUsable(itemStackIn) ? AMItemRegistry.STINK_RAY_INVENTORY.get() : AMItemRegistry.STINK_RAY_EMPTY_INVENTORY.get());
-            if (transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND) {
-                Minecraft.getInstance().getItemRenderer().renderStatic(hand, transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+            if (transformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || transformType == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
+                Minecraft.getInstance().getItemRenderer().renderStatic(hand, transformType, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
             } else {
-                Minecraft.getInstance().getItemRenderer().renderStatic(inventory, transformType, transformType == ItemTransforms.TransformType.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+                Minecraft.getInstance().getItemRenderer().renderStatic(inventory, transformType, transformType == ItemDisplayContext.GROUND ? combinedLightIn : 240, combinedOverlayIn, matrixStackIn, bufferIn, level, 0);
             }
         }
         //TODO reimplement
@@ -289,7 +290,6 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             int entityIndex = (tick / 40) % (mobIcons.size());
             float scale = 1.0F;
             int flags = 0;
-            ClientLevel level = Minecraft.getInstance().level;
             if (level != null) {
                 if (ItemTabIcon.hasCustomEntityDisplay(itemStackIn)) {
                     flags = itemStackIn.getTag().getInt("DisplayMobFlags");
@@ -395,7 +395,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
                 matrixStackIn.translate(0.5F, 0F, 0);
                 matrixStackIn.mulPose(Axis.XP.rotationDegrees(180F));
                 matrixStackIn.mulPose(Axis.YP.rotationDegrees(180F));
-                if (transformType != ItemTransforms.TransformType.GUI) {
+                if (transformType != ItemDisplayContext.GUI) {
                     mouseX = 0;
                     mouseY = 0;
                 }

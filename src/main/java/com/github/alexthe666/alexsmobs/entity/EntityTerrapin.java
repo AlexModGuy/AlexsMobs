@@ -155,7 +155,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             if (this.isAlive() && spinCounter > 5 && !this.isBaby()) {
                 for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
                     if (!isAlliedTo(entity) && !(entity instanceof EntityTerrapin)) {
-                        entity.hurt(DamageSource.mobAttack(lastLauncher == null ? this : lastLauncher), 4.0F + random.nextFloat() * 4.0F);
+                        entity.hurt(this.damageSources().mobAttack(lastLauncher == null ? this : lastLauncher), 4.0F + random.nextFloat() * 4.0F);
                     }
                 }
             }
@@ -557,7 +557,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.animationSpeedOld = mob.animationSpeed;
+        mob.walkAnimation.speed()Old = mob.walkAnimation.speed();
         double d0 = mob.getX() - mob.xo;
         double d1 = flying ? mob.getY() - mob.yo : 0.0D;
         double d2 = mob.getZ() - mob.zo;
@@ -566,8 +566,8 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             f = 1.0F;
         }
 
-        mob.animationSpeed += (f - mob.animationSpeed) * 0.4F;
-        mob.animationPosition += mob.animationSpeed;
+        mob.walkAnimation.speed() += (f - mob.walkAnimation.speed()) * 0.4F;
+        mob.animationPosition += mob.walkAnimation.speed();
     }
 
 

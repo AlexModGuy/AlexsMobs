@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.util.AnacondaPartIndex;
 import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageHurtMultipart;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -81,7 +83,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public boolean isNoGravity() {
@@ -209,7 +211,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
             final Vec3 vec3 = new Vec3(x, y, z);
             final AABB axisAlignedBB = AABB.ofSize(vec3, d, 1.0E-6D, d);
             return this.level.getBlockStates(axisAlignedBB).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
-                BlockPos blockpos = new BlockPos(vec3);
+                BlockPos blockpos = AMBlockPos.fromVec3(vec3);
                 return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisAlignedBB), BooleanOp.AND);
             });
         }
@@ -227,7 +229,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         if (this.noPhysics) {
             return false;
         } else {
-            return !level.getFluidState(new BlockPos(x, y, z)).isEmpty();
+            return !level.getFluidState(AMBlockPos.fromCoords(x, y, z)).isEmpty();
         }
     }
 

@@ -348,7 +348,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
     public double getPassengersRidingOffset() {
         float f = this.animationPosition;
-        float f1 = this.animationSpeed;
+        float f1 = this.walkAnimation.speed();
         float f2 = 0;
         return (double) this.getBbHeight() - 0.4F;
     }
@@ -658,7 +658,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             for (EntityCrimsonMosquito entity : this.level.getEntitiesOfClass(EntityCrimsonMosquito.class, this.headPart.getBoundingBox().inflate(1.0D), HEALTHY_MOSQUITOES)) {
                 startBiting = true;
                 if (this.biteProgress == 5.0F) {
-                    entity.hurt(DamageSource.mobAttack(this), 1000);
+                    entity.hurt(this.damageSources().mobAttack(this), 1000);
                     entity.setShrink(true);
                     this.setChillTime(0);
                 }

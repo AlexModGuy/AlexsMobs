@@ -221,7 +221,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
                     dmg = 0;
                 }
             }
-            this.getTarget().hurt(DamageSource.mobAttack(this), dmg);
+            this.getTarget().hurt(this.damageSources().mobAttack(this), dmg);
         }
         if (!level.isClientSide) {
             if (this.getTarget() != null && this.getTarget().isAlive()) {

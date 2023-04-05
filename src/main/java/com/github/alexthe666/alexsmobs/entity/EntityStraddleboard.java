@@ -449,7 +449,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
             if (player.isInWall()) {
                 player.removeVehicle();
-                this.hurt(DamageSource.GENERIC, 100);
+                this.hurt(damageSources().generic(), 100);
             }
         }
         this.updateMotion();
@@ -479,7 +479,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
+    public LivingEntity getControllingPassenger() {
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof Player) {
                 Player player = (Player) passenger;
@@ -650,7 +650,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     @Override
-    public boolean canJump(Player player) {
+    public boolean canJump() {
         return this.level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFluidState().is(FluidTags.LAVA);
     }
 

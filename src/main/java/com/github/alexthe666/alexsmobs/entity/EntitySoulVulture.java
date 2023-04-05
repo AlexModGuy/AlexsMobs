@@ -566,7 +566,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
                 if (vulture.getBoundingBox().inflate(0.3F, 0.3F, 0.3F).intersects(vulture.getTarget().getBoundingBox()) && vulture.tackleCooldown == 0) {
                     tackleCooldown = 100 + random.nextInt(200);
                     float dmg = (float) vulture.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
-                    if(vulture.getTarget().hurt(DamageSource.mobAttack(vulture), dmg)){
+                    if(vulture.getTarget().hurt(this.damageSources().mobAttack(vulture), dmg)){
                         if(vulture.getHealth() < vulture.getMaxHealth() - dmg && vulture.getSoulLevel() < 5){
                             this.vulture.setSoulLevel(vulture.getSoulLevel() + 1);
                             this.vulture.heal(dmg);

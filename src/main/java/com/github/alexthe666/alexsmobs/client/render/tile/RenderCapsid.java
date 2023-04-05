@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -80,7 +79,7 @@ public class RenderCapsid<T extends TileEntityCapsid> implements BlockEntityRend
                     }
                 }
 
-                Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, combinedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+                Minecraft.getInstance().getItemRenderer().render(stack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, combinedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
                 matrixStackIn.popPose();
                 if (!flag) {
                     matrixStackIn.translate(0.0, 0.0, 0.09375F);

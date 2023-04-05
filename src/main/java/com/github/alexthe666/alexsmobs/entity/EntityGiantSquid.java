@@ -255,7 +255,7 @@ public class EntityGiantSquid extends WaterAnimal {
             if(!level.isClientSide && target != null){
                 this.entityData.set(GRAB_ENTITY, target.getId());
                 if (holdTime % 20 == 0 && holdTime > 30) {
-                    target.hurt(DamageSource.mobAttack(this), 3 + random.nextInt(5));
+                    target.hurt(this.damageSources().mobAttack(this), 3 + random.nextInt(5));
                 }
             }
             if (target != null && target.isAlive()) {
@@ -485,7 +485,7 @@ public class EntityGiantSquid extends WaterAnimal {
 
     @Override
     public void calculateEntityAnimation(LivingEntity entity, boolean flying) {
-        entity.animationSpeedOld = entity.animationSpeed;
+        entity.walkAnimation.speed()Old = entity.walkAnimation.speed();
         double d0 = entity.getX() - entity.xo;
         double d1 = entity.getY() - entity.yo;
         double d2 = entity.getZ() - entity.zo;
@@ -494,8 +494,8 @@ public class EntityGiantSquid extends WaterAnimal {
             f = 1.0F;
         }
 
-        entity.animationSpeed += (f - entity.animationSpeed) * 0.4F;
-        entity.animationPosition += entity.animationSpeed;
+        entity.walkAnimation.speed() += (f - entity.walkAnimation.speed()) * 0.4F;
+        entity.animationPosition += entity.walkAnimation.speed();
     }
 
     public boolean canBeCollidedWith() {
@@ -551,7 +551,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(source);
     }
 
     public void directPitch(double d0, double d1, double d2, double d3) {
@@ -612,7 +612,7 @@ public class EntityGiantSquid extends WaterAnimal {
         resetCapturedStateIn = 25;
         if (random.nextInt(13) == 0) {
             spawnInk();
-            whale.hurt(DamageSource.mobAttack(this), 4 + random.nextInt(4));
+            whale.hurt(this.damageSources().mobAttack(this), 4 + random.nextInt(4));
             if (random.nextFloat() <= 0.3F) {
                 this.setCaptured(false);
                 if(random.nextFloat() < 0.2F){

@@ -229,7 +229,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
 
     @Override
     public void calculateEntityAnimation(LivingEntity p_233629_1_, boolean p_233629_2_) {
-        p_233629_1_.animationSpeedOld = p_233629_1_.animationSpeed;
+        p_233629_1_.walkAnimation.speed()Old = p_233629_1_.walkAnimation.speed();
         double d0 = p_233629_1_.getX() - p_233629_1_.xo;
         double d1 = p_233629_1_.getY() - p_233629_1_.yo;
         double d2 = p_233629_1_.getZ() - p_233629_1_.zo;
@@ -238,8 +238,8 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
             f = 1.0F;
         }
 
-        p_233629_1_.animationSpeed += (f - p_233629_1_.animationSpeed) * 0.4F;
-        p_233629_1_.animationPosition += p_233629_1_.animationSpeed;
+        p_233629_1_.walkAnimation.speed() += (f - p_233629_1_.walkAnimation.speed()) * 0.4F;
+        p_233629_1_.animationPosition += p_233629_1_.walkAnimation.speed();
     }
 
     public void tick() {
@@ -264,7 +264,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
         if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 12) {
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.06F, 0.0D, Mth.cos(f1) * 0.06F));
-            if (this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
+            if (this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
                 this.getTarget().addEffect(new MobEffectInstance(AMEffectRegistry.EXSANGUINATION.get(), 60, 2));
                 if(random.nextInt(15) == 0 && this.getTarget() instanceof Squid){
                     this.spawnAtLocation(AMItemRegistry.SERRATED_SHARK_TOOTH.get());

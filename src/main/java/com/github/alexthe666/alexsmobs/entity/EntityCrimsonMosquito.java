@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -20,11 +21,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,9 +38,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -210,7 +211,7 @@ public class EntityCrimsonMosquito extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.FALL || source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.LAVA || source.isFire() || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.LAVA) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source);
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -248,7 +249,7 @@ public class EntityCrimsonMosquito extends Monster {
                     if (!level.isClientSide) {
                         if (drinkTime % 20 == 0 && this.isAlive()) {
                             final boolean mungus = AMConfig.warpedMoscoTransformation && mount instanceof EntityMungus && ((EntityMungus) mount).isWarpedMoscoReady();
-                            if (mount.hurt(DamageSource.mobAttack(this), mungus ? 7F : 2.0F)) {
+                            if (mount.hurt(this.damageSources().mobAttack(this), mungus ? 7F : 2.0F)) {
                                 if (mungus) {
                                     ((EntityMungus) mount).disableExplosion();
                                 }
@@ -672,7 +673,7 @@ public class EntityCrimsonMosquito extends Monster {
             final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
             final double extraX = radius * Mth.sin((float) (Math.PI + angle));
             final double extraZ = radius * Mth.cos(angle);
-            final BlockPos radialPos = new BlockPos(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
+            final BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
             final BlockPos ground = parentEntity.getGroundPosition(radialPos);
             final int up = parentEntity.isSick() ? 2 : 6;
             final BlockPos newPos = ground.above(1 + parentEntity.getRandom().nextInt(up));
@@ -855,7 +856,7 @@ public class EntityCrimsonMosquito extends Monster {
             final float angle = (0.0174532925F * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
             final double extraX = radius * Mth.sin((float) (Math.PI + angle));
             final double extraZ = radius * Mth.cos(angle);
-            final BlockPos ground = new BlockPos(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
+            final BlockPos ground = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
             if (parentEntity.distanceToSqr(Vec3.atCenterOf(ground)) > 30) {
                 if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(ground)) && parentEntity.distanceToSqr(Vec3.atCenterOf(ground)) > 6) {
                     return ground;

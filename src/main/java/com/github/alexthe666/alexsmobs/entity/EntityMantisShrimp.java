@@ -213,7 +213,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.DROWN || source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source == DamageSource.DROWN || source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
     }
 
     public boolean canBreatheUnderwater() {
@@ -440,7 +440,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
                 if (!this.getTarget().isInWater()) {
                     this.getTarget().setSecondsOnFire(2);
                 }
-                this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
             if(punchProgress == 1){
                 this.playSound(AMSoundRegistry.MANTIS_SHRIMP_SNAP.get(), this.getVoicePitch(), this.getSoundVolume());

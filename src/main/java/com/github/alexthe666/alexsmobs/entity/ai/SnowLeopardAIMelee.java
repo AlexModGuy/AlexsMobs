@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -114,7 +113,7 @@ public class SnowLeopardAIMelee extends Goal {
                 leopard.lookAt(target, 180F, 10F);
                 leopard.yBodyRot = leopard.getYRot();
                 if (this.leopard.distanceTo(target) < 3F && this.leopard.hasLineOfSight(target)) {
-                    target.hurt(DamageSource.mobAttack(leopard), (float) (leopard.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 2.5F));
+                    target.hurt(this.damageSources().mobAttack(leopard), (float) (leopard.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 2.5F));
                     this.stalk = false;
                     this.secondPartOfLeap = false;
                 }else if (leopard.isOnGround() && jumpCooldown == 0) {

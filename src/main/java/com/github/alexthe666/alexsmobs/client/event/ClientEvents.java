@@ -167,8 +167,8 @@ public class ClientEvents {
         if (RockyChestplateUtil.isRockyRolling(event.getEntity())) {
             event.setCanceled(true);
             event.getPoseStack().pushPose();
-            float limbSwing = event.getEntity().animationPosition - event.getEntity().animationSpeed * (1.0F - event.getPartialTick());
-            float limbSwingAmount = Mth.lerp(event.getPartialTick(), event.getEntity().animationSpeedOld, event.getEntity().animationSpeed);
+            float limbSwing = event.getEntity().walkAnimation.position() - event.getEntity().walkAnimation.speed() * (1.0F - event.getPartialTick());
+            float limbSwingAmount = event.getEntity().walkAnimation.speed(event.getPackedLight());
             float yRot = event.getEntity().yBodyRotO + (event.getEntity().yBodyRot - event.getEntity().yBodyRotO) * event.getPartialTick();
             float roll = event.getEntity().walkDistO + (event.getEntity().walkDist - event.getEntity().walkDistO) * event.getPartialTick();
             VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(event.getMultiBufferSource(), RenderType.armorCutoutNoCull(ROCKY_CHESTPLATE_TEXTURE), false, event.getEntity().getItemBySlot(EquipmentSlot.CHEST).hasFoil());

@@ -228,7 +228,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                             if ((entity == target || entity instanceof Monster) && !entity.getType().is(AMTagRegistry.BUNFUNGUS_IGNORE_AOE_ATTACKS)) {
                                 flag = true;
                                 launch(entity);
-                                entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                                entity.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                             }
                         }
                     } else if (dist < 2.5D && this.getAnimation() == ANIMATION_SLAM) {
@@ -236,7 +236,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                             if ((entity == target || entity instanceof Monster) && !entity.getType().is(AMTagRegistry.BUNFUNGUS_IGNORE_AOE_ATTACKS)) {
                                 flag = true;
                                 entity.knockback(0.2F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
-                                entity.hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                                entity.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                             }
                         }
                     }

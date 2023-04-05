@@ -42,7 +42,7 @@ public class CaimanAIMelee extends Goal {
             if(dist < bbWidth + 2F){
                if(grabTime >= 0){
                    if(grabTime % 25 == 0){
-                       target.hurt(caiman.isTame() ? DamageSource.DROWN : DamageSource.mobAttack(caiman), (float) caiman.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                       target.hurt(caiman.isTame() ? DamageSource.DROWN : this.damageSources().mobAttack(caiman), (float) caiman.getAttributeValue(Attributes.ATTACK_DAMAGE));
                    }
                    grabTime++;
                    Vec3 shakePreyPos = caiman.getShakePreyPos();

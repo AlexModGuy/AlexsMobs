@@ -354,7 +354,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     private void attackWithPotion(LivingEntity target, float dmg) {
         MobEffect potion = this.getPotionEffect();
 
-        target.hurt(DamageSource.mobAttack(this), dmg);
+        target.hurt(this.damageSources().mobAttack(this), dmg);
         if(potion != null){
             MobEffectInstance instance = new MobEffectInstance(potion, this.getPotionDuration(), this.getPotionLevel());
             if (!target.hasEffect(potion) && target.addEffect(instance)) {

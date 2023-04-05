@@ -226,7 +226,7 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
                 if (EntitySeaBear.this.hasLineOfSight(enemy) && EntitySeaBear.this.distanceTo(enemy) < 3.5F) {
                     EntitySeaBear.this.setAnimation(ANIMATION_ATTACK);
                     if (EntitySeaBear.this.getAnimationTick() % 5 == 0) {
-                        enemy.hurt(DamageSource.mobAttack(EntitySeaBear.this), 6);
+                        enemy.hurt(this.damageSources().mobAttack(EntitySeaBear.this), 6);
                     }
                 }
             }

@@ -407,7 +407,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             if(dragTime > 5000){
                 dragTime = 0;
                 for(Entity e : this.getPassengers()){
-                    e.hurt(DamageSource.mobAttack(this), 10);
+                    e.hurt(this.damageSources().mobAttack(this), 10);
                 }
                 this.ejectPassengers();
                 this.setDragging(false);

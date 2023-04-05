@@ -605,7 +605,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
                 food.setDeltaMovement(food.getDeltaMovement().add(delta));
                 if (catfish.distanceTo(food) < eatDist) {
                     if (food instanceof Player) {
-                        food.hurt(DamageSource.mobAttack(catfish), 12000);
+                        food.hurt(catfish.damageSources().mobAttack(catfish), 12000);
                     } else if (catfish.swallowEntity(food)) {
                         catfish.gameEvent(GameEvent.EAT);
                         catfish.playSound(SoundEvents.GENERIC_EAT, catfish.getSoundVolume(), catfish.getVoicePitch());

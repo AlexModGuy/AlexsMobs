@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.misc;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -54,7 +55,7 @@ public class RecipeMimicreamRepair extends CustomRecipe {
     /**
      * Returns an Item that is the result of this recipe
      */
-    public ItemStack assemble(CraftingContainer inv) {
+    public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
         ItemStack damageableStack = ItemStack.EMPTY;
         int mimicreamCount = 0;
 

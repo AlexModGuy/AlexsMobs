@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AnimalAIWanderRanged;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +17,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -118,7 +123,7 @@ public class EntityBananaSlug extends Animal {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -268,7 +273,7 @@ public class EntityBananaSlug extends Animal {
         if(this.isOnGround()){
             Vec3 modelBack = new Vec3(0, -0.1F, isBaby() ? -0.35F : -0.7F).yRot(-this.trailYaw * ((float)Math.PI / 180F));
             Vec3 slugBack = this.position().add(modelBack);
-            BlockPos backPos = new BlockPos(slugBack);
+            BlockPos backPos = AMBlockPos.fromVec3(slugBack);
             BlockState state = level.getBlockState(backPos);
             VoxelShape shape = state.getCollisionShape(level, backPos);
             if(shape.isEmpty()){
@@ -294,18 +299,11 @@ public class EntityBananaSlug extends Animal {
         }
     }
 
-    public void calculateEntityAnimation(LivingEntity mob, boolean flying) {
-        mob.animationSpeedOld = mob.animationSpeed;
-        double d0 = mob.getX() - mob.xo;
-        double d1 = (mob.getY() - mob.yo) * 0.5F;
-        double d2 = mob.getZ() - mob.zo;
-        float f = (float) Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2) * 16.0F;
-        if (f > 1.0F) {
-            f = 1.0F;
-        }
 
-        mob.animationSpeed += (f - mob.animationSpeed) * 0.4F;
-        mob.animationPosition += mob.animationSpeed;
+    public void calculateEntityAnimation( boolean flying) {
+        float f1 = (float)Mth.length(this.getX() - this.xo, 0.5F * this.getY() - this.yo, this.getZ() - this.zo);
+        float f2 = Math.min(f1 * 16.0F, 1.0F);
+        this.walkAnimation.update(f2, 0.4F);
     }
 
     @Nullable

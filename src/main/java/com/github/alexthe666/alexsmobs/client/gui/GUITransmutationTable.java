@@ -75,9 +75,9 @@ public class GUITransmutationTable extends AbstractContainerScreen<MenuTransmuta
         int i = this.leftPos;
         int j = this.topPos;
         if(!this.menu.getSlot(0).getItem().isEmpty()){
-            this.itemRenderer.renderAndDecorateItem(AlexsMobs.PROXY.getDisplayTransmuteResult(0), i + 31, j + 17);
-            this.itemRenderer.renderAndDecorateItem(AlexsMobs.PROXY.getDisplayTransmuteResult(1), i + 31, j + 36);
-            this.itemRenderer.renderAndDecorateItem(AlexsMobs.PROXY.getDisplayTransmuteResult(2), i + 31, j + 55);
+            this.itemRenderer.renderAndDecorateItem(poseStack, AlexsMobs.PROXY.getDisplayTransmuteResult(0), i + 31, j + 17);
+            this.itemRenderer.renderAndDecorateItem(poseStack, AlexsMobs.PROXY.getDisplayTransmuteResult(1), i + 31, j + 36);
+            this.itemRenderer.renderAndDecorateItem(poseStack, AlexsMobs.PROXY.getDisplayTransmuteResult(2), i + 31, j + 55);
         }
     }
 

@@ -9,7 +9,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BlockItem;
@@ -36,7 +35,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
             matrixStackIn.translate(0.0F, -0.7F - f, -0.2F);
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(90F));
             matrixStackIn.scale(1.3F, 1.3F, 1.3F);
-            renderer.renderItem(entitylivingbaseIn, haloStack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+            renderer.renderItem(entitylivingbaseIn, haloStack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
             matrixStackIn.popPose();
         }
         matrixStackIn.pushPose();
@@ -55,7 +54,7 @@ public class LayerGorillaItem extends RenderLayer<EntityGorilla, ModelGorilla> {
         if(itemstack.getItem() instanceof BlockItem){
             matrixStackIn.scale(2, 2, 2);
         }
-        renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
+        renderer.renderItem(entitylivingbaseIn, itemstack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
     }
 

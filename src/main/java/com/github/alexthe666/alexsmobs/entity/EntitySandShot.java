@@ -10,7 +10,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -133,7 +132,7 @@ public class EntitySandShot extends Entity {
     protected void onEntityHit(EntityHitResult p_213868_1_) {
         Entity entity = this.getSandShooter();
         if (entity instanceof LivingEntity) {
-            p_213868_1_.getEntity().hurt(DamageSource.indirectMobAttack(this, (LivingEntity) entity).setProjectile(), 2.5F);
+            p_213868_1_.getEntity().hurt(damageSources().mobProjectile(this, (LivingEntity) entity), 2.5F);
         }
         if (entity instanceof Player && p_213868_1_.getEntity() instanceof LivingEntity) {
             ((LivingEntity)p_213868_1_.getEntity()).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100, 0, true, false));

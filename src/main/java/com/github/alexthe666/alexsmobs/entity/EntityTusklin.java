@@ -196,7 +196,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
 
     public double getPassengersRidingOffset() {
         float f = this.animationPosition;
-        float f1 = this.animationSpeed;
+        float f1 = this.walkAnimation.speed();
         float f2 = 0;
         if (this.getAnimation() == ANIMATION_FLING) {
             if (this.getAnimationTick() <= 3F) {
@@ -380,7 +380,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
             if (this.isAlive() && ridingTime > 0 && this.getDeltaMovement().horizontalDistanceSqr() > 0.1D) {
                 for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
                     if (!(entity instanceof EntityTusklin) && !entity.isPassengerOfSameVehicle(this)) {
-                        entity.hurt(DamageSource.mobAttack(this), 4F + random.nextFloat() * 3.0F);
+                        entity.hurt(this.damageSources().mobAttack(this), 4F + random.nextFloat() * 3.0F);
                         if (entity.isOnGround()) {
                             double d0 = entity.getX() - this.getX();
                             double d1 = entity.getZ() - this.getZ();
@@ -396,15 +396,15 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
             }
             if (this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + this.getBbWidth() + 1.8F) {
                 if (this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() == 6) {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     knockbackTarget(this.getTarget(), 0.9F, 0F);
                 }
                 if ((this.getAnimation() == ANIMATION_GORE_L) && this.getAnimationTick() == 6) {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     knockbackTarget(this.getTarget(), 0.5F, -90F);
                 }
                 if ((this.getAnimation() == ANIMATION_GORE_R) && this.getAnimationTick() == 6) {
-                    this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     knockbackTarget(this.getTarget(), 0.5F, 90F);
                 }
             }

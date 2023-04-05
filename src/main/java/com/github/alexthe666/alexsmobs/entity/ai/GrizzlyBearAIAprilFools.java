@@ -68,10 +68,10 @@ public class GrizzlyBearAIAprilFools extends Goal {
                 if(leapTimer >= 10){
                     bear.setAprilFoolsFlag(0);
                     if(bear.level.getLevelData().isHardcore()){
-                        target.hurt(AMDamageTypes.BEAR_FREDDY, target.getMaxHealth() - 1);
+                        target.hurt(AMDamageTypes.causeFreddyBearDamage(bear), target.getMaxHealth() - 1);
                         target.setHealth(1);
                     }else{
-                        target.hurt(AMDamageTypes.BEAR_FREDDY, target.getMaxHealth() + 1000F);
+                        target.hurt(AMDamageTypes.causeFreddyBearDamage(bear), target.getMaxHealth() + 1000F);
                     }
                     stop();
                     return;

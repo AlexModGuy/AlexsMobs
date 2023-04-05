@@ -8,6 +8,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
+import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -26,6 +27,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -334,7 +336,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(source);
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -585,7 +587,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         final int attackTick = this.entityData.get(ATTACK_TICK);
         if (attackTick > 0) {
             if (attackTick == 2 && this.getTarget() != null && this.distanceTo(this.getTarget()) < this.getTarget().getBbWidth() + 2D) {
-                this.getTarget().hurt(DamageSource.mobAttack(this), 2);
+                this.getTarget().hurt(this.damageSources().mobAttack(this), 2);
             }
             this.entityData.set(ATTACK_TICK, this.entityData.get(ATTACK_TICK) - 1);
             if (attackProgress < 5F) {
@@ -633,7 +635,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         final double extraX = radius * Mth.sin((float) (Math.PI + angle));
         final double extraZ = radius * Mth.cos(angle);
-        final BlockPos radialPos = new BlockPos(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
+        final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         final BlockPos ground = getCrowGround(radialPos);
         final int distFromGround = (int) this.getY() - ground.getY();
         final int flightHeight = 7 + this.getRandom().nextInt(10);
@@ -645,7 +647,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     private BlockPos getCrowGround(BlockPos in) {
-        BlockPos position = new BlockPos(in.getX(), this.getY(), in.getZ());
+        BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
         while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
             position = position.above();
         }
@@ -662,7 +664,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         final double extraX = radius * Mth.sin((float) (Math.PI + angle));
         final double extraZ = radius * Mth.cos(angle);
-        final BlockPos radialPos = new BlockPos(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
+        final BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getCrowGround(radialPos);
         if (ground.getY() == -64) {
             return this.position();
@@ -690,7 +692,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         final double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (this.orbitPos != null) {
             final Vec3 pos = new Vec3(orbitPos.getX() + extraX, orbitPos.getY() + random.nextInt(2) - 2, orbitPos.getZ() + extraZ);
-            if (this.level.isEmptyBlock(new BlockPos(pos))) {
+            if (this.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
                 return pos;
             }
         }
@@ -723,7 +725,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             passenger.setPos(this.getX() + extraX, this.getY() - 0.3F + extraY + passenger.getBbHeight() * 0.3F, this.getZ() + extraZ);
             passengerTimer++;
             if (this.isAlive() && passengerTimer > 0 && passengerTimer % 40 == 0) {
-                passenger.hurt(DamageSource.mobAttack(this), 1);
+                passenger.hurt(this.damageSources().mobAttack(this), 1);
             }
         }
     }
@@ -811,7 +813,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 this.setTackling(true);
                 if (this.distanceTo(over) <= over.getBbWidth() + 2D) {
                     final float speedDamage = (float) Math.ceil(Mth.clamp(this.getDeltaMovement().length() + 0.2, 0, 1.2D) * 3.333);
-                    over.hurt(DamageSource.mobAttack(this), 5 + speedDamage + random.nextInt(2));
+                    over.hurt(this.damageSources().mobAttack(this), 5 + speedDamage + random.nextInt(2));
                     tackleCapCooldown = 22;
                 }
             }
@@ -1158,7 +1160,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                             target.setPos(eagle.getX() + extraX, eagle.getY() - 0.4F + target.getBbHeight() * 0.45F, eagle.getZ() + extraZ);
                             target.startRiding(eagle, true);
                         } else {
-                            target.hurt(DamageSource.mobAttack(eagle), 5);
+                            target.hurt(eagle.damageSources().mobAttack(eagle), 5);
                             eagle.setFlying(false);
                             eagle.orbitPos = target.blockPosition().above(2);
                             circleTime = 0;

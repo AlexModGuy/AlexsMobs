@@ -228,7 +228,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 if (this.getAnimationTick() == 19) {
                     for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D))) {
                         if (!isAlliedTo(entity) && !(entity instanceof EntityWarpedMosco) && entity != this) {
-                            entity.hurt(DamageSource.mobAttack(this), 10.0F + random.nextFloat() * 8.0F);
+                            entity.hurt(this.damageSources().mobAttack(this), 10.0F + random.nextFloat() * 8.0F);
                             launch(entity, true);
                         }
                     }
@@ -237,7 +237,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             }
             if ((this.getAnimation() == ANIMATION_PUNCH_R || this.getAnimation() == ANIMATION_PUNCH_L) && this.getAnimationTick() == 13) {
                 if (this.distanceTo(target) < 4.7F) {
-                    target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                     knockbackRidiculous(target, 0.9F);
                 }
             }
@@ -404,7 +404,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             passenger.setPos(this.getX() + extraX, this.getY() + extraY + 0.1F, this.getZ() + extraZ);
             if ((tick - 10) % 4 == 0) {
                 this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1));
-                passenger.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                passenger.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
             }
         }
     }
@@ -589,7 +589,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 if (EntityWarpedMosco.this.isFlying()) {
                     if (EntityWarpedMosco.this.distanceTo(target) < 4.3F) {
                         if (dashCooldown == 0 || target.isOnGround() || target.isInLava() || target.isInWater()) {
-                            target.hurt(DamageSource.mobAttack(EntityWarpedMosco.this), 5F);
+                            target.hurt(this.damageSources().mobAttack(EntityWarpedMosco.this), 5F);
                             EntityWarpedMosco.this.knockbackRidiculous(target, 1.0F);
                             dashCooldown = 30;
                         }

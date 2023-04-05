@@ -151,7 +151,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public double getPassengersRidingOffset() {
-        float f = Math.min(0.25F, this.animationSpeed);
+        float f = Math.min(0.25F, this.walkAnimation.speed());
         float f1 = this.animationPosition;
         float sitAdd = 0.01F * this.sitProgress;
         float standAdd = 0.07F * this.standProgress;
@@ -190,7 +190,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.msgId != null && source.msgId.equals("sting") || source == DamageSource.IN_WALL ||super.isInvulnerableTo(source);
+        return source.msgId != null && source.msgId.equals("sting") || source.is(DamageTypes.IN_WALL) ||super.isInvulnerableTo(source);
     }
 
     protected void registerGoals() {

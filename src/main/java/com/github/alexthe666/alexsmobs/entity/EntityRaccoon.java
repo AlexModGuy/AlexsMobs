@@ -405,7 +405,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add((double) (-Mth.sin(f1) * -0.06F), 0.0D, (double) (Mth.cos(f1) * -0.06F)));
             this.getTarget().knockback(0.35F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-            this.getTarget().hurt(DamageSource.mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+            this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }
         if (stealCooldown > 0) {
             stealCooldown--;

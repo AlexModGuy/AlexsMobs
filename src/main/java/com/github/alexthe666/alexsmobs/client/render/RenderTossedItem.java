@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -49,7 +48,7 @@ public class RenderTossedItem  extends EntityRenderer<EntityTossedItem> {
             matrixStackIn.scale(1F, 1F, 1F);
             matrixStackIn.mulPose((new Quaternionf()).rotateZ((float) Math.toRadians(-(entityIn.tickCount + partialTicks) * 30F)));
             matrixStackIn.translate(0, -0.15F, 0);
-            Minecraft.getInstance().getItemRenderer().renderStatic(entityIn.getItem(), ItemTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(entityIn.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 0);
         }
         matrixStackIn.popPose();
     }
