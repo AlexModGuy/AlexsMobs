@@ -646,15 +646,18 @@ public class ServerEvents {
         }
         final ItemStack boots = event.getEntity().getItemBySlot(EquipmentSlot.FEET);
         if (!boots.isEmpty() && boots.hasTag() && boots.getOrCreateTag().contains("BisonFur") && boots.getOrCreateTag().getBoolean("BisonFur")) {
-            BlockPos pos = new BlockPos((int) event.getEntity().getX(), (int) (event.getEntity().getY() - 0.5F), (int) event.getEntity().getZ());
-            if (event.getEntity().level.getBlockState(pos).is(Blocks.POWDER_SNOW)) {
+            BlockPos posBelow = new BlockPos((int) event.getEntity().getX(), (int) (event.getEntity().getBoundingBox().minY - 0.1F), (int) event.getEntity().getZ());
+            if (event.getEntity().level.getBlockState(posBelow).is(Blocks.POWDER_SNOW)) {
                 event.getEntity().setOnGround(true);
                 event.getEntity().setTicksFrozen(0);
-
+                event.getEntity().setPos(event.getEntity().getX(), Math.max(event.getEntity().getY(), posBelow.getY() + 1F), event.getEntity().getZ());
             }
             if (event.getEntity().isInPowderSnow) {
-                event.getEntity().setPos(event.getEntity().getX(), pos.getY() + 1, event.getEntity().getZ());
+                event.getEntity().setOnGround(true);
+                event.getEntity().setDeltaMovement(event.getEntity().getDeltaMovement().add(0, 0.1F, 0));
+
             }
+
         }
 
         if (event.getEntity().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS.get()) {

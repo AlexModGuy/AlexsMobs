@@ -49,8 +49,8 @@ public class RecipeBisonUpgrade extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer container, Level level) {
-        return !createBoots(container).isEmpty();
+    public boolean matches(CraftingContainer inv, Level worldIn) {
+        return !createBoots(inv).isEmpty();
     }
 
     @Override
@@ -64,22 +64,7 @@ public class RecipeBisonUpgrade extends CustomRecipe {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
-        return null;
-    }
-
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return AMRecipeRegistry.BISON_UPGRADE.get();
     }
-
-    @Override
-    public RecipeType<?> getType() {
-        return RecipeType.CRAFTING;
-    }
-
-    public NonNullList<Ingredient> getIngredients() {
-        return NonNullList.of(Ingredient.of(AMBlockRegistry.BISON_FUR_BLOCK.get()));
-    }
-
 }
