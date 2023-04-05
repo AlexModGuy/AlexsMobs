@@ -1,40 +1,35 @@
 package com.github.alexthe666.alexsmobs.misc;
 
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.UpgradeRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 
-public class RecipeBisonUpgrade extends UpgradeRecipe {
+public class RecipeBisonUpgrade extends CustomRecipe {
 
-    public RecipeBisonUpgrade(ResourceLocation id) {
-        super(id, Ingredient.EMPTY, Ingredient.EMPTY, ItemStack.EMPTY);
+    public RecipeBisonUpgrade(ResourceLocation idIn) {
+        super(idIn);
     }
 
-    @Override
-    public boolean matches(Container container, Level lvl) {
-        return !createBoots(container).isEmpty();
-    }
-
-    @Override
-    public ItemStack assemble(Container container) {
-        return createBoots(container);
-    }
 
     private ItemStack createBoots(Container container){
         ItemStack boots = ItemStack.EMPTY;
-        if(container.getItem(1).is(AMBlockRegistry.BISON_FUR_BLOCK.get().asItem())){
+        int fur = 0;
+        for (int j = 0; j < container.getContainerSize(); ++j) {
+            ItemStack itemstack1 = container.getItem(j);
+            if (itemstack1.is(AMBlockRegistry.BISON_FUR_BLOCK.get().asItem())) {
+                fur++;
+            }
+        }
+        if(fur == 1){
             for (int j = 0; j < container.getContainerSize(); ++j) {
                 ItemStack itemstack1 = container.getItem(j);
                 boolean notFurred = !itemstack1.hasTag() || itemstack1.getTag() != null && !itemstack1.getTag().getBoolean("BisonFur");
@@ -42,15 +37,25 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
                     boots = itemstack1;
                 }
             }
-        }
-        if(!boots.isEmpty()){
-            ItemStack stack = boots.copy();
-            CompoundTag tag = stack.getOrCreateTag();
-            tag.putBoolean("BisonFur", true);
-            stack.setTag(tag);
-            return stack;
+            if(!boots.isEmpty()){
+                ItemStack stack = boots.copy();
+                CompoundTag tag = stack.getOrCreateTag();
+                tag.putBoolean("BisonFur", true);
+                stack.setTag(tag);
+                return stack;
+            }
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean matches(CraftingContainer inv, Level worldIn) {
+        return !createBoots(inv).isEmpty();
+    }
+
+    @Override
+    public ItemStack assemble(CraftingContainer container) {
+        return createBoots(container);
     }
 
     @Override
@@ -59,25 +64,7 @@ public class RecipeBisonUpgrade extends UpgradeRecipe {
     }
 
     @Override
-    public ItemStack getResultItem() {
-        return ItemStack.EMPTY;
-    }
-
-    public ItemStack getToastSymbol() {
-        return new ItemStack(Blocks.SMITHING_TABLE);
-    }
-
-    @Override
     public RecipeSerializer<?> getSerializer() {
         return AMRecipeRegistry.BISON_UPGRADE.get();
-    }
-
-    @Override
-    public RecipeType<?> getType() {
-        return RecipeType.SMITHING;
-    }
-
-    public NonNullList<Ingredient> getIngredients() {
-        return NonNullList.of(Ingredient.of(AMItemRegistry.BISON_FUR.get()));
     }
 }

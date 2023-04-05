@@ -78,6 +78,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
@@ -150,7 +151,7 @@ public class ServerEvents {
         final float f5 = Mth.sin(-x * ((float) Math.PI / 180F));
         final float f6 = f3 * f4;
         final float f7 = f2 * f4;
-        final double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.REACH_DISTANCE.get()).getValue();
+        final double d0 = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
         Vec3 vector3d1 = vector3d.add(f6 * d0, f5 * d0, f7 * d0);
         return worldIn.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }
@@ -645,15 +646,18 @@ public class ServerEvents {
         }
         final ItemStack boots = event.getEntity().getItemBySlot(EquipmentSlot.FEET);
         if (!boots.isEmpty() && boots.hasTag() && boots.getOrCreateTag().contains("BisonFur") && boots.getOrCreateTag().getBoolean("BisonFur")) {
-            BlockPos pos = new BlockPos(event.getEntity().getX(), event.getEntity().getY() - 0.5F, event.getEntity().getZ());
-            if (event.getEntity().level.getBlockState(pos).is(Blocks.POWDER_SNOW)) {
+            BlockPos posBelow = new BlockPos((int) event.getEntity().getX(), (int) (event.getEntity().getBoundingBox().minY - 0.1F), (int) event.getEntity().getZ());
+            if (event.getEntity().level.getBlockState(posBelow).is(Blocks.POWDER_SNOW)) {
                 event.getEntity().setOnGround(true);
                 event.getEntity().setTicksFrozen(0);
-
+                event.getEntity().setPos(event.getEntity().getX(), Math.max(event.getEntity().getY(), posBelow.getY() + 1F), event.getEntity().getZ());
             }
             if (event.getEntity().isInPowderSnow) {
-                event.getEntity().setPos(event.getEntity().getX(), pos.getY() + 1, event.getEntity().getZ());
+                event.getEntity().setOnGround(true);
+                event.getEntity().setDeltaMovement(event.getEntity().getDeltaMovement().add(0, 0.1F, 0));
+
             }
+
         }
 
         if (event.getEntity().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS.get()) {
