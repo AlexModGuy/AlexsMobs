@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "anteater.txt",
-  "title": "Anteater",
+  "title": "entity.alexsmobs.anteater",
   "linked_page_buttons": [
   ],
   "images": [
