@@ -7,6 +7,7 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.phys.Vec3;
@@ -89,7 +90,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
             if (this.isReachedTarget()) {
                 crow.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5));
                 if (this.idleAtFlowerTime >= 5) {
-                    this.pollinate();
+                    this.destroyCrop();
                     this.stop();
                 } else {
                     crow.peck();
@@ -118,20 +119,23 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
         return this.isAboveDestinationBear;
     }
 
-    private void pollinate() {
+    private void destroyCrop() {
         if(crow.level.getBlockState(blockPos).getBlock() instanceof CropBlock){
-            CropBlock block = (CropBlock)crow.level.getBlockState(blockPos).getBlock();
-            int cropAge = crow.level.getBlockState(blockPos).getValue(block.getAgeProperty());
-            if(cropAge > 0){
-                crow.level.setBlockAndUpdate(blockPos, crow.level.getBlockState(blockPos).setValue(block.getAgeProperty(), cropAge - 1));
-            }else{
+            if(crow.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)){
+                CropBlock block = (CropBlock)crow.level.getBlockState(blockPos).getBlock();
+                int cropAge = crow.level.getBlockState(blockPos).getValue(block.getAgeProperty());
+                if(cropAge > 0){
+                    crow.level.setBlockAndUpdate(blockPos, crow.level.getBlockState(blockPos).setValue(block.getAgeProperty(), cropAge - 1));
+                }else{
+                    crow.level.destroyBlock(blockPos, true);
+                }
+            }
+        }else{
+            if(crow.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
                 crow.level.destroyBlock(blockPos, true);
             }
-            stop();
-        }else{
-            crow.level.destroyBlock(blockPos, true);
-            stop();
         }
+        stop();
         tryTicks = 1200;
     }
 
