@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "catfish.txt",
-  "title": "Catfish",
+  "title": "entity.alexsmobs.catfish",
   "linked_page_buttons": [
   ],
   "images": [
