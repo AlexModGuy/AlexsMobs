@@ -345,8 +345,15 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     }
 
     public boolean isAlliedTo(Entity entityIn) {
-        if (entityIn instanceof EntityRaccoon ) {
-            return this.getRaccoonUUID() != null && this.getRaccoonUUID().equals(entityIn.getUUID());
+        if(this.getRaccoonUUID() != null){
+            if(entityIn instanceof EntityRaccoon && this.getRaccoonUUID().equals(entityIn.getUUID())) {
+                return true;
+            }else{
+                Entity raccoon = getRaccoon();
+                if(raccoon != null && (raccoon.isAlliedTo(entityIn) || entityIn.isAlliedTo(raccoon))){
+                    return true;
+                }
+            }
         }
         return super.isAlliedTo(entityIn);
     }
