@@ -1,11 +1,50 @@
 <NEWLINE>
 <NEWLINE>
 <NEWLINE>
-Crows are noisy birds found in forests and plains. These creatures are considered pests since they can often be found encircling fields and damaging crop growth. A simple carved pumpkin is enough to scare away any crows from a small field.
-These birds will usually scatter and take to the skies whenever closely approached. Crows will pick up any food item they can fit in their beaks and devour it.
+    乌鸦是一种叽叽喳喳的鸟类，通常
 <NEWLINE>
-Despite their broody appearance, Crows can actually be tamed by tossing them some Pumpkin Seeds. Tamed crows are extremely useful creatures with a variety of different uses. They can be made to sit, wander, follow or gather items.
-Any tamed crow sitting on a hay block will slowly regain health. They will also fly around this hay block later, when set to gather items. When a crow picks up an item when set to gather items, it will look for a container, like a chest or furnace, with an item frame on it matching the held item.
+在平原或森林活动。这种害虫经常出现
 <NEWLINE>
-If the item in the frame is the same as the one held in the crow's beak, it will deposit it from that side into the container. When set to follow, crows will fly around their owner, and after a while, attempt to sit on their shoulders.
-Crows can be removed from the shoulders by sneaking. When Crows defend their owner, they peck their attacker, dealing low enough damage not to make the monster aggressive. However, crows deal extra damage towards undead targets.
+在农田周围偷吃庄稼。一个雕刻过的南
+<NEWLINE>
+瓜就可以吓跑一小片地里的乌鸦。
+<NEWLINE>
+    当你靠近时乌鸦会四散而逃，并会
+<NEWLINE>
+把所有能塞进嘴里的食物都吃掉。
+<NEWLINE>
+    尽管乌鸦看起来不近人情，但可以
+<NEWLINE>
+用南瓜种子驯服乌鸦。驯服后的乌鸦非
+<NEWLINE>
+常有用，可以停留、游荡、跟随或收集
+<NEWLINE>
+物品。
+<NEWLINE>
+    被驯服的乌鸦坐在干草块上可以缓
+<NEWLINE>
+慢恢复生命，而且当这只乌鸦被设置为
+<NEWLINE>
+收集物品状态时，也会在这个干草块周
+<NEWLINE>
+围飞行。当乌鸦捡起物品时，如果附近
+<NEWLINE>
+有贴着物品展示框的箱子或熔炉，而且
+<NEWLINE>
+展示框中的物品与乌鸦捡起的物品一致
+<NEWLINE>
+，它会从贴着展示框的一面把物品放进
+<NEWLINE>
+容器。
+<NEWLINE>
+    当乌鸦设定为跟随状态时会绕着主
+<NEWLINE>
+人飞行，并且会尝试坐在主人的肩膀上
+<NEWLINE>
+    下蹲时可以让肩膀上的乌鸦下来。
+<NEWLINE>
+乌鸦还可以啄攻击主人的生物，造成一
+<NEWLINE>
+定低伤害，而且可以对不死生物造成额
+<NEWLINE>
+外伤害。
