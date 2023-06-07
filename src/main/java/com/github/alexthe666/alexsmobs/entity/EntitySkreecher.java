@@ -168,7 +168,7 @@ public class EntitySkreecher extends Monster {
             float gap = Math.max(technicalDistToCeiling - this.getDistanceToCeiling(), 0F);
             if(this.isClinging()){
                 this.setNoGravity(true);
-                if (technicalDistToCeiling > MAX_DIST_TO_CEILING || !isAlive() || clingCooldown > 0) {
+                if (technicalDistToCeiling > MAX_DIST_TO_CEILING || !isAlive() || clingCooldown > 0 || this.isInFluidType()) {
                     this.setClinging(false);
                 }
                 float goal = Math.min(technicalDistToCeiling, MAX_DIST_TO_CEILING);
@@ -388,7 +388,7 @@ public class EntitySkreecher extends Monster {
     }
 
     public void travel(Vec3 travelVector) {
-        if (this.isEffectiveAi() && this.isClinging()) {
+        if (this.isEffectiveAi() && this.isClinging() && !this.isInFluidType()) {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.75D));
