@@ -232,6 +232,9 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
             if (isInWater()) {
                 swimTimer++;
             } else {
+                if(this.isBellowing()){
+                    this.setBellowing(false);
+                }
                 swimTimer--;
             }
             if (this.getTarget() instanceof WaterAnimal && !this.isTame()) {
