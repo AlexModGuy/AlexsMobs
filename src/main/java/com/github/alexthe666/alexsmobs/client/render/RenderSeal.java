@@ -37,10 +37,6 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
         return super.shouldShowName(seal) || seal.isTearsEasterEgg();
     }
 
-    protected void scale(EntitySeal entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
-        matrixStackIn.scale(1.3F, 1.3F, 1.3F);
-    }
-
     public ResourceLocation getTextureLocation(EntitySeal entity) {
         if(entity.isArctic()){
             return entity.isBaby() ? TEXTURE_ARCTIC_BABY : entity.getVariant() == 1 ? TEXTURE_ARCTIC_1 : TEXTURE_ARCTIC_0;

@@ -485,7 +485,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             if(!level.isClientSide){
                 this.setSprinting(true);
             }
-            if (distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 2) {
+            if (distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 2.5F) {
                 if (this.getAnimation() == ANIMATION_MAUL && this.getAnimationTick() % 5 == 0 && this.getAnimationTick() > 3) {
                     doHurtTarget(attackTarget);
                 }
@@ -702,9 +702,6 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    private void playWarningSound() {
-    }
-
     public boolean canTargetItem(ItemStack stack) {
         return stack.is(AMTagRegistry.GRIZZLY_FOODSTUFFS);
     }
@@ -774,22 +771,9 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                 if (getAnimation() == NO_ANIMATION || getAnimation() == ANIMATION_SNIFF) {
                     EntityGrizzlyBear.this.setAnimation(random.nextBoolean() ? ANIMATION_MAUL : random.nextBoolean() ? ANIMATION_SWIPE_L : ANIMATION_SWIPE_R);
                 }
-            } else if (distToEnemySqr <= d0 * 2.0D) {
-                if (this.isTimeToAttack()) {
-                    this.resetAttackCooldown();
-                }
-                if (this.getTicksUntilNextAttack() <= 10) {
-                    EntityGrizzlyBear.this.playWarningSound();
-                }
-            } else {
-                this.resetAttackCooldown();
             }
-
         }
 
-        /**
-         * Reset the task's internal state. Called when this task is interrupted by another one
-         */
         public void stop() {
             EntityGrizzlyBear.this.setStanding(false);
             super.stop();
@@ -814,7 +798,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         }
 
         protected double getFollowDistance() {
-            return 3.0D;
+            return 5.0D;
         }
     }
 
