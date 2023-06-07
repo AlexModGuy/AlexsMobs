@@ -460,7 +460,9 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
     }
 
     public void travel(Vec3 travelVector) {
-        if (this.isEffectiveAi() && this.isInWater()) {
+        if(isSitting()){
+            super.travel(Vec3.ZERO);
+        }else if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
@@ -499,7 +501,7 @@ public class EntityCrocodile extends TamableAnimal implements IAnimatedEntity, I
 
     @Override
     public boolean shouldStopMoving() {
-        return this.getAnimation() == ANIMATION_DEATHROLL;
+        return this.getAnimation() == ANIMATION_DEATHROLL || this.isSitting();
     }
 
     @Override
