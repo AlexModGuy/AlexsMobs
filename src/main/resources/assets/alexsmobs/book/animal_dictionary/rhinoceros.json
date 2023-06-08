@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "rhinoceros.txt",
-  "title": "Rhinoceros",
+  "title": "entity.alexsmobs.rhinoceros",
   "linked_page_buttons": [
   ],
   "images": [

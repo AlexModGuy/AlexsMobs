@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "crocodile.txt",
-  "title": "Crocodile",
+  "title": "entity.alexsmobs.crocodile",
   "linked_page_buttons": [
   ],
   "images": [

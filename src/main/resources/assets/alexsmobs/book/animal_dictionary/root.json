@@ -1,7 +1,7 @@
 {
   "parent": "",
   "text": "root.txt",
-  "title": "Animal Dictionary",
+  "title": "item.alexsmobs.animal_dictionary",
   "entity_buttons": [
     {
       "entity": "alexsmobs:grizzly_bear",

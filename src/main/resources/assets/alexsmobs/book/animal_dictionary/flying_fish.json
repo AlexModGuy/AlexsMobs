@@ -1,7 +1,7 @@
 {
   "parent": "root.json",
   "text": "flying_fish.txt",
-  "title": "Flying Fish",
+  "title": "entity.alexsmobs.flying_fish",
   "linked_page_buttons": [
   ],
   "images": [
