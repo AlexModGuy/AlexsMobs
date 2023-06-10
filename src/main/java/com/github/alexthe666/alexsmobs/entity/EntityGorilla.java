@@ -225,7 +225,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         return isSilverback() && !isBaby() ? SILVERBACK_SIZE.scale(this.getScale()) : super.getDimensions(poseIn);
     }
 
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (this.hasPassenger(passenger)) {
             this.setOrderedToSit(false);
             if (passenger instanceof EntityGorilla) {
@@ -373,7 +373,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
                     double d2 = this.random.nextGaussian() * 0.02D;
                     double d0 = this.random.nextGaussian() * 0.02D;
                     double d1 = this.random.nextGaussian() * 0.02D;
-                    this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                    this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
                 }
             }
             if (eatingTime % 5 == 0) {
@@ -392,9 +392,9 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
                             if (player instanceof ServerPlayer) {
                                 CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer)player, this);
                             }
-                            this.level.broadcastEntityEvent(this, (byte) 7);
+                            this.level().broadcastEntityEvent(this, (byte) 7);
                         } else {
-                            this.level.broadcastEntityEvent(this, (byte) 6);
+                            this.level().broadcastEntityEvent(this, (byte) 6);
                         }
                     }
                     if (stack.hasCraftingRemainingItem()) {
@@ -442,7 +442,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         if (!forcedSit && this.isSitting() && (this.getTarget() != null || this.isStanding()) && !this.isEating()) {
             this.setOrderedToSit(false);
         }
-        if (!level.isClientSide && this.getAnimation() == NO_ANIMATION && !this.isStanding() && !this.isSitting() && random.nextInt(1500) == 0) {
+        if (!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && !this.isStanding() && !this.isSitting() && random.nextInt(1500) == 0) {
             maxSitTime = 300 + random.nextInt(250);
             this.setOrderedToSit(true);
         }
@@ -452,7 +452,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         if (this.isSilverback() && random.nextInt(800) == 0 && poundChestCooldown <= 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && sitProgress == 0 && !this.isNoAi() && this.getMainHandItem().isEmpty()) {
             this.setAnimation(ANIMATION_POUNDCHEST);
         }
-        if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
             getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
@@ -510,7 +510,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     public void onGetItem(ItemEntity targetEntity) {
         ItemStack duplicate = targetEntity.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level().isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);

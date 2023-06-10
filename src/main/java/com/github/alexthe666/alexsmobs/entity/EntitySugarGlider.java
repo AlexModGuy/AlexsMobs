@@ -153,11 +153,11 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     private void switchNavigator(boolean onGround) {
         if (onGround) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new SmartClimbPathNavigator(this, level);
+            this.navigation = new SmartClimbPathNavigator(this, level());
             this.isGlidingNavigator = false;
         } else {
             this.moveControl = new FlightMoveController(this, 0.6F, false);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isGlidingNavigator = true;
         }
     }
@@ -218,7 +218,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         if (forageProgress > 0F && getForagingTime() <= 0) {
             forageProgress--;
         }
-        boolean sitVisual = this.isOrderedToSit() && !this.isInWater() && this.isOnGround();
+        boolean sitVisual = this.isOrderedToSit() && !this.isInWater() && this.onGround();
         if (sitProgress < 5F && sitVisual) {
             sitProgress++;
         }
@@ -233,9 +233,9 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             }
         }
         Vec3 vector3d = this.getDeltaMovement();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.setBesideClimbableBlock(this.horizontalCollision);
-            if (this.isOnGround() || this.isOrderedToSit() || this.isInWaterOrBubble() || this.isInLava() || this.isGliding() || this.isPassenger()) {
+            if (this.onGround() || this.isOrderedToSit() || this.isInWaterOrBubble() || this.isInLava() || this.isGliding() || this.isPassenger()) {
                 this.entityData.set(ATTACHED_FACE, Direction.DOWN);
             } else {
                 Direction closestDirection = Direction.DOWN;
@@ -273,7 +273,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             attachChangeProgress = 1F;
         }
         this.prevAttachDir = this.getAttachmentFacing();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if ((this.getAttachmentFacing() == Direction.UP || this.isGliding()) && !this.isGlidingNavigator) {
                 switchNavigator(false);
             }
@@ -282,8 +282,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             }
         }
         BlockPos on = this.blockPosition().relative(this.getAttachmentFacing());
-        if (shouldForage() && level.getBlockState(on).is(BlockTags.LEAVES)) {
-            BlockState state = level.getBlockState(on);
+        if (shouldForage() && level().getBlockState(on).is(BlockTags.LEAVES)) {
+            BlockState state = level().getBlockState(on);
             if (this.getForagingTime() < 100) {
                 if (random.nextInt(2) == 0) {
                     for (int i = 0; i < 4 + random.nextInt(2); i++) {
@@ -295,7 +295,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                 }
                 this.setForagingTime(this.getForagingTime() + 1);
             } else {
-                if (!level.isClientSide) {
+                if (!this.level().isClientSide) {
                     List<ItemStack> lootList = getForageLoot(state);
                     if (lootList.size() > 0) {
                         for (ItemStack stack : lootList) {
@@ -362,8 +362,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         if (rng < 0.25F && sapling != null) {
             return List.of(new ItemStack(sapling));
         }
-        LootTable loottable = this.level.getServer().getLootTables().get(SUGAR_GLIDER_REWARD);
-        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) this.level)).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.BLOCK_STATE, leafState).withRandom(this.level.random).create(LootContextParamSets.PIGLIN_BARTER));
+        LootTable loottable = this.level().getServer().getLootTables().get(SUGAR_GLIDER_REWARD);
+        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) this.level())).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.BLOCK_STATE, leafState).withRandom(this.level().random).create(LootContextParamSets.PIGLIN_BARTER));
 
     }
 
@@ -481,9 +481,9 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             this.playSound(SoundEvents.FOX_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (getRandom().nextInt(2) == 0) {
                 this.tame(player);
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
         }
@@ -542,11 +542,11 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return AMEntityRegistry.SUGAR_GLIDER.get().create(serverLevel);
+        return AMEntityRegistry.SUGAR_GLIDER.get().create(serverlevel());
     }
 
     private boolean shouldStopGliding() {
-        return this.isOnGround() || this.getAttachmentFacing() != Direction.DOWN;
+        return this.onGround() || this.getAttachmentFacing() != Direction.DOWN;
     }
 
     private boolean shouldForage() {
@@ -560,13 +560,13 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     public void followEntity(TamableAnimal tameable, LivingEntity owner, double followSpeed) {
         if (this.distanceTo(owner) < 5 || this.isBaby()) {
-            this.setGliding(!this.isOnGround());
+            this.setGliding(!this.onGround());
             this.getNavigation().moveTo(owner, followSpeed);
 
         } else {
             Vec3 fly = new Vec3(0, 0, 0);
             float f = 0.5F;
-            if (this.isOnGround()) {
+            if (this.onGround()) {
                 fly = fly.add(0, 0.4, 0);
                 f = 0.9F;
             }
@@ -583,7 +583,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     private boolean canSeeBlock(BlockPos destinationBlock) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
-        BlockHitResult result = this.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        BlockHitResult result = this.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         return result.getBlockPos().equals(destinationBlock);
     }
 
@@ -618,7 +618,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
         @Override
         public boolean canContinueToUse() {
-            return climb != null && !itsOver && climbTimeout < 30 && (!climbing || !level.isEmptyBlock(climb) && !EntitySugarGlider.this.getNavigation().isStuck()) && EntitySugarGlider.this.getForagingTime() <= 0 && !EntitySugarGlider.this.isOrderedToSit();
+            return climb != null && !itsOver && climbTimeout < 30 && (!climbing || !level().isEmptyBlock(climb) && !EntitySugarGlider.this.getNavigation().isStuck()) && EntitySugarGlider.this.getForagingTime() <= 0 && !EntitySugarGlider.this.isOrderedToSit();
         }
 
         public void start() {
@@ -682,7 +682,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                 EntitySugarGlider.this.stopClimbing = false;
                 EntitySugarGlider.this.setGliding(true);
                 double dist = Math.sqrt(EntitySugarGlider.this.distanceToSqr(Vec3.atCenterOf(glide)));
-                if (airtime > 5 && (EntitySugarGlider.this.horizontalCollision || EntitySugarGlider.this.isOnGround() || dist < 1.1F)) {
+                if (airtime > 5 && (EntitySugarGlider.this.horizontalCollision || EntitySugarGlider.this.onGround() || dist < 1.1F)) {
                     EntitySugarGlider.this.setGliding(false);
                     EntitySugarGlider.this.detachCooldown = 20 + random.nextInt(80);
                     itsOver = true;
@@ -722,7 +722,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                 Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(offset);
                 BlockHitResult result = level.clip(new ClipContext(EntitySugarGlider.this.getEyePosition(), blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySugarGlider.this));
                 if (result.getType() != HitResult.Type.MISS && result.getBlockPos().distSqr(mobPos) > 4) {
-                    if (leavesOnly && !level.getBlockState(result.getBlockPos()).is(BlockTags.LEAVES)) {
+                    if (leavesOnly && !level().getBlockState(result.getBlockPos()).is(BlockTags.LEAVES)) {
                         continue;
                     }
                     return result.getBlockPos();
@@ -733,7 +733,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
         private int getDistanceOffGround(BlockPos pos) {
             int dist = 0;
-            while (pos.getY() > -64 && EntitySugarGlider.this.level.isEmptyBlock(pos)) {
+            while (pos.getY() > -64 && EntitySugarGlider.this.level().isEmptyBlock(pos)) {
                 pos = pos.below();
                 dist++;
             }
@@ -742,7 +742,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
         private boolean isPositionEasilyClimbable(BlockPos pos) {
             pos = pos.below();
-            while (pos.getY() > EntitySugarGlider.this.getY() && !EntitySugarGlider.this.level.isEmptyBlock(pos)) {
+            while (pos.getY() > EntitySugarGlider.this.getY() && !EntitySugarGlider.this.level().isEmptyBlock(pos)) {
                 pos = pos.below();
             }
             return pos.getY() <= EntitySugarGlider.this.getY();

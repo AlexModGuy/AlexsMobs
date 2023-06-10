@@ -143,7 +143,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
                 itemstack.shrink(1);
             }
             this.setFedora(true);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         if (redstone && !this.isSensing()) {
             superCharged = itemstack.getItem() == Items.REDSTONE_BLOCK;
@@ -151,7 +151,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
                 itemstack.shrink(1);
             }
             this.setSensing(true);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
@@ -232,9 +232,9 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             double extraY = 0.8F;
             double extraZ = radius * Mth.cos(angle);
             BlockPos ground = this.getBlockPosBelowThatAffectsMyMovement();
-            BlockState BlockState = this.level.getBlockState(ground);
+            BlockState BlockState = this.level().getBlockState(ground);
             if (BlockState.getMaterial() != Material.AIR && BlockState.getMaterial() != Material.WATER) {
-                if (level.isClientSide) {
+                if (this.level().isClientSide) {
                     level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, BlockState), true, this.getX() + extraX, ground.getY() + extraY, this.getZ() + extraZ, motionX, motionY, motionZ);
                 }
             }
@@ -374,7 +374,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         } else {
             this.maxUpStep = 0.6F;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isInWater()) {
                 swimTimer++;
             } else {
@@ -391,7 +391,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
                 double actualZ = radius * Mth.cos(angle);
                 double motX = actualX - extraX;
                 double motZ = actualZ - extraZ;
-                this.level.addParticle(AMParticleRegistry.PLATYPUS_SENSE.get(), this.getX() + extraX, this.getBbHeight() * 0.3F + this.getY(), this.getZ() + extraZ, motX * 0.1F, 0, motZ * 0.1F);
+                this.level().addParticle(AMParticleRegistry.PLATYPUS_SENSE.get(), this.getX() + extraX, this.getBbHeight() * 0.3F + this.getY(), this.getZ() + extraZ, motX * 0.1F, 0, motZ * 0.1F);
             }
         }
     }
@@ -407,11 +407,11 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 1.2F, 1.6F);
-            this.navigation = new SemiAquaticPathNavigator(this, level);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }

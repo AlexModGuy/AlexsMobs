@@ -85,7 +85,7 @@ public class AnimalAILootChests extends MoveToBlockGoal {
         if (raytraceresult instanceof BlockHitResult) {
             BlockHitResult blockRayTraceResult = (BlockHitResult) raytraceresult;
             BlockPos pos = blockRayTraceResult.getBlockPos();
-            return pos.equals(blockPos) || entity.level.isEmptyBlock(pos) || this.entity.level.getBlockEntity(pos) == this.entity.level.getBlockEntity(blockPos);
+            return pos.equals(blockPos) || entity.level().isEmptyBlock(pos) || this.entity.level.getBlockEntity(pos) == this.entity.level.getBlockEntity(blockPos);
         }
         return true;
     }
@@ -127,7 +127,7 @@ public class AnimalAILootChests extends MoveToBlockGoal {
                         } else {
                             ItemStack duplicate = stack.copy();
                             duplicate.setCount(1);
-                            if (!this.entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.entity.level.isClientSide) {
+                            if (!this.entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.entity.this.level().isClientSide) {
                                 this.entity.spawnAtLocation(this.entity.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
                             }
                             this.entity.setItemInHand(InteractionHand.MAIN_HAND, duplicate);

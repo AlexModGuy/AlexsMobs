@@ -46,7 +46,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
 
     private static List<ItemStack> getItemStacks(EntityAnteater anteater) {
         LootTable loottable = anteater.level.getServer().getLootTables().get(ANTEATER_REWARD);
-        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) anteater.level)).withParameter(LootContextParams.THIS_ENTITY, anteater).withRandom(anteater.level.random).create(LootContextParamSets.PIGLIN_BARTER));
+        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) anteater.level())).withParameter(LootContextParams.THIS_ENTITY, anteater).withRandom(anteater.level.random).create(LootContextParamSets.PIGLIN_BARTER));
     }
 
     private void dropDigItems(){
@@ -133,7 +133,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
 
     private void breakHiveEffect(){
         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(anteater.level, anteater)) {
-            BlockState blockstate = anteater.level.getBlockState(this.blockPos);
+            BlockState blockstate = anteater.level().getBlockState(this.blockPos);
             if (blockstate.is(AMBlockRegistry.LEAFCUTTER_ANTHILL.get())) {
                 if (anteater.level.getBlockEntity(this.blockPos) instanceof TileEntityLeafcutterAnthill) {
                     TileEntityLeafcutterAnthill anthill = (TileEntityLeafcutterAnthill) anteater.level.getBlockEntity(this.blockPos);
@@ -153,7 +153,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
 
     private void eatHive() {
         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(anteater.level, anteater)) {
-            BlockState blockstate = anteater.level.getBlockState(this.blockPos);
+            BlockState blockstate = anteater.level().getBlockState(this.blockPos);
             if (blockstate.is(AMBlockRegistry.LEAFCUTTER_ANTHILL.get())) {
                 if (anteater.level.getBlockEntity(this.blockPos) instanceof TileEntityLeafcutterAnthill) {
                     final RandomSource rand = this.anteater.getRandom();
@@ -166,7 +166,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
                             ItemStack stack = new ItemStack(AMItemRegistry.GONGYLIDIA.get());
                             ItemEntity itementity = new ItemEntity(anteater.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                             itementity.setDefaultPickUpDelay();
-                            anteater.level.addFreshEntity(itementity);
+                            anteater.level().addFreshEntity(itementity);
                         }
                         anteater.setAntOnTongue(true);
                     }
@@ -178,7 +178,7 @@ public class AnteaterAIRaidNest extends MoveToBlockGoal {
                     ItemStack stack = new ItemStack(AMItemRegistry.GONGYLIDIA.get());
                     ItemEntity itementity = new ItemEntity(anteater.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                     itementity.setDefaultPickUpDelay();
-                    anteater.level.addFreshEntity(itementity);
+                    anteater.level().addFreshEntity(itementity);
                 }
                 anteater.level.setBlockAndUpdate(blockPos, Blocks.COARSE_DIRT.defaultBlockState());
                 anteater.setAntOnTongue(true);

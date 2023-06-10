@@ -175,11 +175,11 @@ public class EntityBoneSerpent extends Monster {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = this.createNavigation(level);
+            this.navigation = this.createNavigation(level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new BoneSerpentMoveController(this);
-            this.navigation = new BoneSerpentPathNavigator(this, level);
+            this.navigation = new BoneSerpentPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -193,7 +193,7 @@ public class EntityBoneSerpent extends Monster {
 
 
     public void pushEntities() {
-        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
+        final List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         entities.stream().filter(entity -> !(entity instanceof EntityBoneSerpentPart) && entity.isPushable()).forEach(entity -> entity.push(this));
     }
 
@@ -226,8 +226,8 @@ public class EntityBoneSerpent extends Monster {
 
     public Entity getChild() {
         UUID id = getChildId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
@@ -235,7 +235,7 @@ public class EntityBoneSerpent extends Monster {
     public void tick() {
         super.tick();
         isInsidePortal = false;
-        final boolean ground = !this.isInLava() && !this.isInWater() && this.isOnGround();
+        final boolean ground = !this.isInLava() && !this.isInWater() && this.onGround();
         if (jumpCooldown > 0) {
             jumpCooldown--;
             final float f2 = (float) -((float) this.getDeltaMovement().y * Maths.oneEightyDividedByFloatPi);
@@ -250,7 +250,7 @@ public class EntityBoneSerpent extends Monster {
                 switchNavigator(false);
         }
 
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;
@@ -267,13 +267,13 @@ public class EntityBoneSerpent extends Monster {
                     if (i == segments - 1) {
                         part.setTail(true);
                     }
-                    level.addFreshEntity(part);
+                    level().addFreshEntity(part);
                 }
             }
 
             if (boardCheckCooldown <= 0) {
                 boardCheckCooldown = 100 + random.nextInt(150);
-                final List<EntityStraddleboard> list = this.level.getEntitiesOfClass(EntityStraddleboard.class, this.getBoundingBox().inflate(100, 15, 100), STRADDLEBOARD_FRIENDLY);
+                final List<EntityStraddleboard> list = this.level().getEntitiesOfClass(EntityStraddleboard.class, this.getBoundingBox().inflate(100, 15, 100), STRADDLEBOARD_FRIENDLY);
                 EntityStraddleboard closestBoard = null;
                 for (final EntityStraddleboard board : list) {
                     if (closestBoard == null || this.distanceTo(closestBoard) > this.distanceTo(board)) {

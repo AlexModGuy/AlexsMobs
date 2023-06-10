@@ -75,7 +75,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
             }
         }else{
             super.tick();
-            if(crow.isOnGround()){
+            if(crow.onGround()){
                 crow.setFlying(false);
             }
             if (!isWithinXZDist(blockpos, this.mob.position(), this.acceptedDistance())) {
@@ -105,7 +105,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         BlockPos pos = AMBlockPos.fromCoords(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);
-        if (crow.level.isEmptyBlock(pos)) {
+        if (crow.level().isEmptyBlock(pos)) {
             return pos;
         }
         return null;
@@ -120,12 +120,12 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     private void destroyCrop() {
-        if(crow.level.getBlockState(blockPos).getBlock() instanceof CropBlock){
+        if(crow.level().getBlockState(blockPos).getBlock() instanceof CropBlock){
             if(crow.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)){
-                CropBlock block = (CropBlock)crow.level.getBlockState(blockPos).getBlock();
-                int cropAge = crow.level.getBlockState(blockPos).getValue(block.getAgeProperty());
+                CropBlock block = (CropBlock)crow.level().getBlockState(blockPos).getBlock();
+                int cropAge = crow.level().getBlockState(blockPos).getValue(block.getAgeProperty());
                 if(cropAge > 0){
-                    crow.level.setBlockAndUpdate(blockPos, crow.level.getBlockState(blockPos).setValue(block.getAgeProperty(), cropAge - 1));
+                    crow.level.setBlockAndUpdate(blockPos, crow.level().getBlockState(blockPos).setValue(block.getAgeProperty(), cropAge - 1));
                 }else{
                     crow.level.destroyBlock(blockPos, true);
                 }

@@ -20,7 +20,7 @@ public class OrcaAIMeleeJump extends JumpGoal {
     }
 
     public boolean canUse() {
-        if (this.dolphin.getTarget() == null || !dolphin.shouldUseJumpAttack(this.dolphin.getTarget()) || this.dolphin.isOnGround() || !dolphin.isInWater() || dolphin.jumpCooldown > 0) {
+        if (this.dolphin.getTarget() == null || !dolphin.shouldUseJumpAttack(this.dolphin.getTarget()) || this.dolphin.onGround() || !dolphin.isInWater() || dolphin.jumpCooldown > 0) {
             return false;
         } else {
             BlockPos blockpos = this.dolphin.blockPosition();
@@ -29,7 +29,7 @@ public class OrcaAIMeleeJump extends JumpGoal {
     }
     public boolean canContinueToUse() {
         double d0 = this.dolphin.getDeltaMovement().y;
-        return dolphin.getTarget() != null && dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.getXRot() == 0.0F || !(Math.abs(this.dolphin.getXRot()) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.isOnGround();
+        return dolphin.getTarget() != null && dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.getXRot() == 0.0F || !(Math.abs(this.dolphin.getXRot()) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.onGround();
     }
 
     public boolean isInterruptable() {
@@ -67,7 +67,7 @@ public class OrcaAIMeleeJump extends JumpGoal {
     public void tick() {
         boolean flag = this.inWater;
         if (!flag) {
-            FluidState fluidstate = this.dolphin.level.getFluidState(this.dolphin.blockPosition());
+            FluidState fluidstate = this.dolphin.level().getFluidState(this.dolphin.blockPosition());
             this.inWater = fluidstate.is(FluidTags.WATER);
         }
         if(attackCooldown > 0){

@@ -87,7 +87,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     private TileEntityTerrapinEgg.ParentData partnerData;
 
     protected EntityTerrapin(EntityType animal, Level level) {
-        super(animal, level);
+        super(animal, level());
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(true);
@@ -153,7 +153,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
         if (this.isSpinning()) {
             this.handleSpin();
             if (this.isAlive() && spinCounter > 5 && !this.isBaby()) {
-                for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
+                for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
                     if (!isAlliedTo(entity) && !(entity instanceof EntityTerrapin)) {
                         entity.hurt(this.damageSources().mobAttack(lastLauncher == null ? this : lastLauncher), 4.0F + random.nextFloat() * 4.0F);
                     }
@@ -178,7 +178,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
                 changeSpinAngleCooldown--;
             }
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.isInWaterOrBubble() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -189,9 +189,9 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
                 swimTimer = Math.max(0, swimTimer + 1);
             } else {
                 swimTimer = Math.min(0, swimTimer - 1);
-                List<Player> list = this.level.getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(0, 0.15F, 0));
+                List<Player> list = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(0, 0.15F, 0));
                 for (Player player : list) {
-                    if ((player.jumping || !player.isOnGround()) && player.getY() > this.getEyeY()) {
+                    if ((player.jumping || !player.onGround()) && player.getY() > this.getEyeY()) {
                         if (!hasRetreated()) {
                             this.hideInShellTimer += 40 + random.nextInt(40);
                         } else if (!isSpinning()) {
@@ -220,7 +220,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     private Direction collideDirectionAndSound(){
         HitResult raytraceresult = ProjectileUtil.getHitResult(this, entity -> false);
         if(raytraceresult instanceof BlockHitResult){
-            BlockState state = level.getBlockState(((BlockHitResult) raytraceresult).getBlockPos());
+            BlockState state = level().getBlockState(((BlockHitResult) raytraceresult).getBlockPos());
             if(state != null && !this.isSilent()){
             }
             return ((BlockHitResult) raytraceresult).getDirection();
@@ -235,11 +235,11 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level);
+            this.navigation = new GroundPathNavigation(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 2.5F, 1.15F);
-            this.navigation = new SemiAquaticPathNavigator(this, level);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -434,7 +434,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     private void handleSpin() {
         this.setRetreated(true);
         ++this.spinCounter;
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.spinCounter > maxRollTime) {
                 this.setSpinning(false);
                 this.hideInShellTimer = 10 + random.nextInt(30);
@@ -607,8 +607,8 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             this.animal.setAge(6000);
             this.partner.setAge(6000);
             RandomSource random = this.animal.getRandom();
-            if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
+            if (this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                this.level().addFreshEntity(new ExperienceOrb(this.level(), this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
             }
 
         }

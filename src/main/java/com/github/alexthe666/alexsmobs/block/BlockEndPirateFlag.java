@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -30,7 +30,7 @@ public class BlockEndPirateFlag extends BaseEntityBlock {
     private static final VoxelShape AABB = Block.box(6, 0, 6, 10, 16, 10);
 
     public BlockEndPirateFlag() {
-        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.WOOD).strength(1F).lightLevel((i) -> 15).noCollission().requiresCorrectToolForDrops());
+        super(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).noOcclusion().sound(SoundType.WOOD).strength(1F).lightLevel((i) -> 15).noCollission().requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

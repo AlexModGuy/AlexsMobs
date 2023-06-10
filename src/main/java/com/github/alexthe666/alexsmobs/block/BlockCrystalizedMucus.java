@@ -16,8 +16,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 public class BlockCrystalizedMucus extends AbstractGlassBlock {
 
@@ -27,7 +26,7 @@ public class BlockCrystalizedMucus extends AbstractGlassBlock {
     private static final int TICK_DELAY = 1;
 
     protected BlockCrystalizedMucus() {
-        super(Properties.of(Material.GLASS, MaterialColor.COLOR_LIGHT_BLUE).strength(0.1F).sound(SoundType.GLASS).noOcclusion().isSuffocating((s, s1, s2) -> false).isViewBlocking((s, s1, s2) -> false));
+        super(Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(0.1F).sound(SoundType.GLASS).noOcclusion().isSuffocating((s, s1, s2) -> false).isViewBlocking((s, s1, s2) -> false));
         this.registerDefaultState(this.stateDefinition.any().setValue(DISTANCE, Integer.valueOf(7)).setValue(PERSISTENT, Boolean.valueOf(false)));
     }
 

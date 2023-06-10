@@ -127,7 +127,7 @@ public class EntityVoidWorm extends Monster {
 
     public void die(DamageSource cause) {
        super.die(cause);
-       if(!level.isClientSide && !this.isSplitter()){
+       if(!this.level().isClientSide && !this.isSplitter()){
            if(cause != null && cause.getEntity() instanceof ServerPlayer) {
                AMAdvancementTriggerRegistry.VOID_WORM_SLAY_HEAD.trigger((ServerPlayer) cause.getEntity());
            }
@@ -152,7 +152,7 @@ public class EntityVoidWorm extends Monster {
 
     private void placeDropsSafely(Collection<ItemEntity> drops) {
         BlockPos pos = this.blockPosition();
-        while(!level.getBlockState(pos).getMaterial().isReplaceable() && pos.getY() < level.getMaxBuildHeight() - 2){
+        while(!level().getBlockState(pos).getMaterial().isReplaceable() && pos.getY() < level.getMaxBuildHeight() - 2){
             pos = pos.above();
         }
         int radius = 2;
@@ -162,7 +162,7 @@ public class EntityVoidWorm extends Monster {
                 for(int z = -radius; z <= radius; z++){
                     double sq = x * x + y * y + z * z;
                     BlockPos pos1 = pos.offset(x, y, z);
-                    BlockState state = level.getBlockState(pos1);
+                    BlockState state = level().getBlockState(pos1);
                     if(sq <= radius * radius && sq >= (radius * radius) - 2.0F && (state.getMaterial().isReplaceable() || state.is(AMBlockRegistry.ENDER_RESIDUE.get()))){
                         level.setBlockAndUpdate(pos1, residue);
                     }
@@ -177,7 +177,7 @@ public class EntityVoidWorm extends Monster {
             drop.setDefaultPickUpDelay();
             drop.setUnlimitedLifetime();
             drop.setDeltaMovement(Vec3.ZERO);
-            level.addFreshEntity(drop);
+            level().addFreshEntity(drop);
         }
 
     }
@@ -202,7 +202,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     protected PathNavigation createNavigation(Level worldIn) {
-        return new DirectPathNavigator(this, level);
+        return new DirectPathNavigator(this, level());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -244,8 +244,8 @@ public class EntityVoidWorm extends Monster {
 
     public Entity getChild() {
         UUID id = getChildId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
@@ -277,7 +277,7 @@ public class EntityVoidWorm extends Monster {
         } else if (this.getWormAngle() < 0) {
             this.setWormAngle(Math.min(this.getWormAngle() + 20, 0));
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (!fullyThrough) {
                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.9F, 0.9F, 0.9F).add(0, -0.01, 0));
             } else {
@@ -312,7 +312,7 @@ public class EntityVoidWorm extends Monster {
             }
         }
         if (this.isAlive()) {
-            for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
+            for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
                 if (!entity.is(this) && !(entity instanceof EntityVoidWormPart) && !entity.isAlliedTo(this) && entity != this) {
                     launch(entity, false);
                 }
@@ -325,7 +325,7 @@ public class EntityVoidWorm extends Monster {
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
         this.setXRot(f2);
         this.maxUpStep = 2;
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;
@@ -353,7 +353,7 @@ public class EntityVoidWorm extends Monster {
                     }
                     part.setInitialPartPos(this);
                     partParent = part;
-                    level.addFreshEntity(part);
+                    level().addFreshEntity(part);
                 }
             }
         }
@@ -372,8 +372,8 @@ public class EntityVoidWorm extends Monster {
         if (updatePostSummon) {
             updatePostSummon = false;
         }
-        if (!this.isSilent() && !level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte) 67);
+        if (!this.isSilent() && !this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte) 67);
         }
     }
 
@@ -386,7 +386,7 @@ public class EntityVoidWorm extends Monster {
 
     protected void tickDeath() {
         ++this.deathTime;
-        if (this.deathTime == (this.isSplitter() ? 20 : 80) && !this.level.isClientSide()) {
+        if (this.deathTime == (this.isSplitter() ? 20 : 80) && !this.level().isClientSide()) {
             DamageSource source = this.getLastDamageSource() == null ? damageSources().generic() : this.getLastDamageSource();
             Entity entity = source.getEntity();
 
@@ -394,7 +394,7 @@ public class EntityVoidWorm extends Monster {
             this.captureDrops(new java.util.ArrayList<>());
 
             boolean flag = this.lastHurtByPlayerTime > 0;
-            if (this.shouldDropLoot() && this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+            if (this.shouldDropLoot() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 this.dropFromLootTable(source, flag);
                 this.dropCustomDeathLoot(source, i, flag);
             }
@@ -408,7 +408,7 @@ public class EntityVoidWorm extends Monster {
                     this.placeDropsSafely(drops);
                 }
             }
-            this.level.broadcastEntityEvent(this, (byte)60);
+            this.level().broadcastEntityEvent(this, (byte)60);
             this.remove(Entity.RemovalReason.KILLED);
         }
     }
@@ -433,7 +433,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     private void launch(Entity e, boolean huge) {
-        if (e.isOnGround()) {
+        if (e.onGround()) {
             double d0 = e.getX() - this.getX();
             double d1 = e.getZ() - this.getZ();
             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
@@ -443,7 +443,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     public void resetWormScales() {
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             Entity child = getChild();
             if (child == null) {
                 LivingEntity nextPart = this;
@@ -558,7 +558,7 @@ public class EntityVoidWorm extends Monster {
     }
 
     public void pushEntities() {
-        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
         entities.stream().filter(entity -> !(entity instanceof EntityVoidWormPart) && entity.isPushable()).forEach(entity -> entity.push(this));
     }
 
@@ -591,7 +591,7 @@ public class EntityVoidWorm extends Monster {
             }else{
                 height = height.above(random.nextInt(30));
             }
-            if (level.isEmptyBlock(height)) {
+            if (level().isEmptyBlock(height)) {
                 vec = Vec3.atBottomCenterOf(height);
             }
         }
@@ -601,22 +601,22 @@ public class EntityVoidWorm extends Monster {
     }
 
     public void createPortal(Vec3 from, Vec3 to, @Nullable Direction outDir) {
-        if (!level.isClientSide && portalTarget == null) {
+        if (!this.level().isClientSide && portalTarget == null) {
             Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-            HitResult result = this.level.clip(new ClipContext(Vector3d, from, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+            HitResult result = this.level().clip(new ClipContext(Vector3d, from, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             Vec3 vec = result.getLocation() != null ? result.getLocation() : this.position();
             if (result instanceof BlockHitResult) {
                 BlockHitResult result1 = (BlockHitResult) result;
                 vec = vec.add(net.minecraft.world.phys.Vec3.atLowerCornerOf(result1.getDirection().getNormal()));
             }
-            EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(level);
+            EntityVoidPortal portal = AMEntityRegistry.VOID_PORTAL.get().create(level());
             portal.setPos(vec.x, vec.y, vec.z);
             Vec3 dirVec = vec.subtract(this.position());
             Direction dir = Direction.getNearest(dirVec.x, dirVec.y, dirVec.z);
             portal.setAttachmentFacing(dir);
             portal.setLifespan(10000);
-            if (!level.isClientSide) {
-                level.addFreshEntity(portal);
+            if (!this.level().isClientSide) {
+                level().addFreshEntity(portal);
             }
             portalTarget = portal;
             portal.setDestination(AMBlockPos.fromCoords(to.x, to.y, to.z), outDir);
@@ -639,13 +639,13 @@ public class EntityVoidWorm extends Monster {
             return;
         }
         boolean flag = false;
-        if (!level.isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
+        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
                         BlockPos pos = new BlockPos(a, b, c);
-                        BlockState state = level.getBlockState(pos);
-                        FluidState fluidState = level.getFluidState(pos);
+                        BlockState state = level().getBlockState(pos);
+                        FluidState fluidState = level().getFluidState(pos);
                         Block block = state.getBlock();
                         if (!state.isAir() && !state.getShape(level, pos).isEmpty() && state.is(AMTagRegistry.VOID_WORM_BREAKABLES) && fluidState.isEmpty()) {
                             if (block != Blocks.AIR) {
@@ -670,7 +670,7 @@ public class EntityVoidWorm extends Monster {
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
@@ -708,7 +708,7 @@ public class EntityVoidWorm extends Monster {
 
     private BlockPos getHeighestAirAbove(BlockPos radialPos, int limit) {
         BlockPos position = AMBlockPos.fromCoords(radialPos.getX(), this.getY(), radialPos.getZ());
-        while (position.getY() < 256 && position.getY() < this.getY() + limit && level.isEmptyBlock(position)) {
+        while (position.getY() < 256 && position.getY() < this.getY() + limit && level().isEmptyBlock(position)) {
             position = position.above();
         }
         return position;
@@ -716,7 +716,7 @@ public class EntityVoidWorm extends Monster {
 
     private BlockPos getGround(BlockPos in) {
         BlockPos position = AMBlockPos.fromCoords(in.getX(), this.getY(), in.getZ());
-        while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -63 && !level().getBlockState(position).isSolid()) {
             position = position.below();
         }
         if (position.getY() < -62) {
@@ -732,7 +732,7 @@ public class EntityVoidWorm extends Monster {
 
     private void spit(Vec3 shotAt, boolean portal) {
         shotAt = shotAt.yRot(-this.getYRot() * ((float) Math.PI / 180F));
-        EntityVoidWormShot shot = new EntityVoidWormShot(this.level, this);
+        EntityVoidWormShot shot = new EntityVoidWormShot(this.level(), this);
         double d0 = shotAt.x;
         double d1 = shotAt.y;
         double d2 = shotAt.z;
@@ -741,10 +741,10 @@ public class EntityVoidWorm extends Monster {
         shot.shoot(d0, d1 + (double) f, d2, 0.5F, 3.0F);
         if (!this.isSilent()) {
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
-            this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.DROWNED_SHOOT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.DROWNED_SHOOT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
         this.openMouth(5);
-        this.level.addFreshEntity(shot);
+        this.level().addFreshEntity(shot);
     }
 
     private boolean wormAttack(Entity entity, DamageSource source, float dmg) {
@@ -848,7 +848,7 @@ public class EntityVoidWorm extends Monster {
             LivingEntity target = EntityVoidWorm.this.getTarget();
             boolean flag = false;
             float speed = 1;
-            for (Entity entity : EntityVoidWorm.this.level.getEntitiesOfClass(LivingEntity.class, EntityVoidWorm.this.getBoundingBox().inflate(2.0D))) {
+            for (Entity entity : EntityVoidWorm.this.level().getEntitiesOfClass(LivingEntity.class, EntityVoidWorm.this.getBoundingBox().inflate(2.0D))) {
                 if (!entity.is(EntityVoidWorm.this) && !(entity instanceof EntityVoidWormPart) && !entity.isAlliedTo(EntityVoidWorm.this) && entity != EntityVoidWorm.this) {
                     if (EntityVoidWorm.this.isMouthOpen()) {
                         launch(entity, true);

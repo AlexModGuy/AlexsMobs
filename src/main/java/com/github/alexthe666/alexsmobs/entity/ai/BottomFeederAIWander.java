@@ -51,7 +51,7 @@ public class BottomFeederAIWander extends RandomStrollGoal {
             final RandomSource random = this.mob.getRandom();
             for (int i = 0; i < 15; i++) {
                 BlockPos blockPos = this.mob.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-                while ((this.mob.level.isEmptyBlock(blockPos) || this.mob.level.getFluidState(blockPos).is(FluidTags.WATER)) && blockPos.getY() > 1) {
+                while ((this.mob.level().isEmptyBlock(blockPos) || this.mob.level().getFluidState(blockPos).is(FluidTags.WATER)) && blockPos.getY() > 1) {
                     blockPos = blockPos.below();
                 }
                 if (isBottomOfSeafloor(this.mob.level, blockPos.above())) {

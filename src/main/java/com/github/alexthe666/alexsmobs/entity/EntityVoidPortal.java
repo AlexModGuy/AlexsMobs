@@ -119,16 +119,16 @@ public class EntityVoidPortal extends Entity {
         }
         AABB bb = new AABB(this.getX() + minX, this.getY() + minY, this.getZ() + minZ, this.getX() + maxX, this.getY() + maxY, this.getZ() + maxZ);
         this.setBoundingBox(bb);
-        if(random.nextFloat() < 0.5F && level.isClientSide && Math.min(tickCount, this.getLifespan()) >= 20){
+        if(random.nextFloat() < 0.5F && this.level().isClientSide && Math.min(tickCount, this.getLifespan()) >= 20){
             double particleX = this.getBoundingBox().minX + random.nextFloat() * (this.getBoundingBox().maxX - this.getBoundingBox().minX);
             double particleY = this.getBoundingBox().minY + random.nextFloat() * (this.getBoundingBox().maxY - this.getBoundingBox().minY);
             double particleZ = this.getBoundingBox().minZ + random.nextFloat() * (this.getBoundingBox().maxZ - this.getBoundingBox().minZ);
             level.addParticle(AMParticleRegistry.WORM_PORTAL.get(), particleX, particleY, particleZ, 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian());
         }
         List<Entity> entities = new ArrayList<>();
-        entities.addAll(this.level.getEntities(this, bb.deflate(0.2F)));
-        entities.addAll(this.level.getEntitiesOfClass(EntityVoidWorm.class, bb.inflate(1.5F)));
-        if (!level.isClientSide) {
+        entities.addAll(this.level().getEntities(this, bb.deflate(0.2F)));
+        entities.addAll(this.level().getEntitiesOfClass(EntityVoidWorm.class, bb.inflate(1.5F)));
+        if (!this.level().isClientSide) {
             MinecraftServer server = level.getServer();
             if (this.getDestination() != null && this.getLifespan() > 20 && tickCount > 20) {
                 BlockPos offsetPos = this.getDestination().relative(this.getAttachmentFacing().getOpposite(), 2);
@@ -148,7 +148,7 @@ public class EntityVoidPortal extends Entity {
                         boolean flag = true;
                         if(exitDimension != null){
                             ServerLevel dimWorld = server.getLevel(exitDimension);
-                            if (dimWorld != null && this.level.dimension() != exitDimension) {
+                            if (dimWorld != null && this.level().dimension() != exitDimension) {
                                 teleportEntityFromDimension(e, dimWorld, offsetPos, true);
                                 flag = false;
                             }
@@ -244,7 +244,7 @@ public class EntityVoidPortal extends Entity {
 
     public void setDestination(BlockPos destination) {
         this.entityData.set(DESTINATION, Optional.ofNullable(destination));
-        if (this.getSisterId() == null && (exitDimension == null || exitDimension == this.level.dimension())) {
+        if (this.getSisterId() == null && (exitDimension == null || exitDimension == this.level().dimension())) {
             createAndSetSister(level, null);
         }
     }
@@ -255,14 +255,14 @@ public class EntityVoidPortal extends Entity {
         BlockPos safeDestination = this.getDestination();
         portal.teleportToWithTicket(safeDestination.getX() + 0.5f, safeDestination.getY() + 0.5f, safeDestination.getZ() + 0.5f);
         portal.link(this);
-        portal.exitDimension = this.level.dimension();
+        portal.exitDimension = this.level().dimension();
         world.addFreshEntity(portal);
         portal.setShattered(this.isShattered());
     }
 
     public void setDestination(BlockPos destination, Direction dir) {
         this.entityData.set(DESTINATION, Optional.ofNullable(destination));
-        if (this.getSisterId() == null && (exitDimension == null || exitDimension == this.level.dimension())) {
+        if (this.getSisterId() == null && (exitDimension == null || exitDimension == this.level().dimension())) {
             createAndSetSister(level, dir);
         }
     }
@@ -331,8 +331,8 @@ public class EntityVoidPortal extends Entity {
 
     public Entity getSister() {
         UUID id = getSisterId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }

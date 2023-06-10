@@ -21,8 +21,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -46,7 +47,7 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
     protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
 
     public BlockEndPirateDoor() {
-        super(Properties.of(Material.GLASS).noOcclusion().sound(SoundType.GLASS).lightLevel((state) -> 3).requiresCorrectToolForDrops().strength(1.5F));
+        super(Properties.of().mapColor(MapColor.COLOR_PURPLE).noOcclusion().sound(SoundType.GLASS).lightLevel((state) -> 3).requiresCorrectToolForDrops().strength(1.5F));
         this.registerDefaultState(this.stateDefinition.any().setValue(SEGMENT, 0).setValue(OPEN, false).setValue(HINGE, DoorHingeSide.RIGHT).setValue(HORIZONTAL_FACING, Direction.NORTH));
     }
 
@@ -230,7 +231,7 @@ public class BlockEndPirateDoor extends BaseEntityBlock {
         return state.getValue(SEGMENT) == 0 ? createTickerHelper(p_152182_, AMTileEntityRegistry.END_PIRATE_DOOR.get(), TileEntityEndPirateDoor::commonTick) : null;
     }
 
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         return state.getValue(SEGMENT) == 0? super.getDrops(state, builder) : Collections.emptyList();
     }
 }

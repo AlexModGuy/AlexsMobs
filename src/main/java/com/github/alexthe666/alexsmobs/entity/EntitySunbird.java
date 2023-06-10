@@ -157,13 +157,13 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             BlockPos ground = AMBlockPos.fromCoords(this.getX(), this.getY() - 1.0D, this.getZ());
             float f = 0.91F;
             if (this.onGround) {
-                f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
+                f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
             }
 
             float f1 = 0.16277137F / (f * f * f);
             f = 0.91F;
             if (this.onGround) {
-                f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
+                f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
             }
             this.calculateEntityAnimation(true);
 
@@ -181,7 +181,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         prevScorchProgress = this.scorchProgress;
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
         this.birdPitch = f2;
-        if (level.isClientSide) {
+        if (this.level().isClientSide) {
             float radius = 0.35F + random.nextFloat() * 3.5F;
             float angle = (0.01745329251F * ((random.nextBoolean() ? -85F : 85F) + this.yBodyRot));
             float angleMotion = (0.01745329251F * this.yBodyRot);
@@ -190,13 +190,13 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
             double extraZMotion = -0.2F * Mth.cos(angleMotion);
             double yRandom = 0.2F + random.nextFloat() * 0.3F;
-            this.level.addParticle(AMParticleRegistry.SUNBIRD_FEATHER.get(), this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, 0D, extraZMotion);
+            this.level().addParticle(AMParticleRegistry.SUNBIRD_FEATHER.get(), this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, 0D, extraZMotion);
         } else {
             if (this.tickCount % 100 == 0) {
                 if(!this.isScorching() && !getScorchingMobs().isEmpty()){
                     this.setScorching(true);
                 }
-                List<Player> playerList = this.level.getEntitiesOfClass(Player.class, this.getScorchArea(), Predicates.alwaysTrue());
+                List<Player> playerList = this.level().getEntitiesOfClass(Player.class, this.getScorchArea(), Predicates.alwaysTrue());
                 for (Player e : playerList) {
                     if (!e.hasEffect(AMEffectRegistry.SUNBIRD_BLESSING.get()) && !e.hasEffect(AMEffectRegistry.SUNBIRD_CURSE.get())) {
                         e.addEffect(new MobEffectInstance(AMEffectRegistry.SUNBIRD_BLESSING.get(), 600, 0));
@@ -236,7 +236,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         if (!this.isScorching() && scorchProgress > 0F) {
             scorchProgress--;
         }
-        if (this.isScorching() && scorchProgress == 20F && !level.isClientSide) {
+        if (this.isScorching() && scorchProgress == 20F && !this.level().isClientSide) {
             if(fullScorchTime > 30){
                 this.setScorching(false);
             }else if(fullScorchTime % 5 == 0){
@@ -254,7 +254,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     }
 
     private List<LivingEntity> getScorchingMobs(){
-        return this.level.getEntitiesOfClass(LivingEntity.class, this.getScorchArea(), SCORCH_PRED);
+        return this.level().getEntitiesOfClass(LivingEntity.class, this.getScorchArea(), SCORCH_PRED);
     }
 
     public boolean isScorching() {
@@ -302,7 +302,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     private List<BlockPos> getNearbyBeacons(BlockPos blockpos, ServerLevel world, int range) {
@@ -362,7 +362,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
 
             for (int i = 1; i < p_220673_2_; ++i) {
                 axisalignedbb = axisalignedbb.move(p_220673_1_);
-                if (!this.parentEntity.level.noCollision(this.parentEntity, axisalignedbb)) {
+                if (!this.parentEntity.level().noCollision(this.parentEntity, axisalignedbb)) {
                     return false;
                 }
             }
@@ -429,7 +429,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             double extraZ = gatheringCircleDist * Mth.cos(angle);
             if (orbitPos != null) {
                 BlockPos pos = AMBlockPos.fromCoords(orbitPos.getX() + extraX, orbitPos.getY() + parentEntity.random.nextInt(2) + 2, orbitPos.getZ() + extraZ);
-                if (parentEntity.level.isEmptyBlock(new BlockPos(pos))) {
+                if (parentEntity.level().isEmptyBlock(new BlockPos(pos))) {
                     return pos;
                 }
             }

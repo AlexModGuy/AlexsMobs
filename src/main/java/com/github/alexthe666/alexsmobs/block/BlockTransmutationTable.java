@@ -16,6 +16,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,7 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -46,7 +47,7 @@ public class BlockTransmutationTable extends BaseEntityBlock implements AMSpecia
     private static final VoxelShape EW_AABB = Shapes.or(BASE_AABB, ARMS_EW);
 
     public BlockTransmutationTable() {
-        super(Properties.of(Material.HEAVY_METAL).noOcclusion().lightLevel((block) -> 2).emissiveRendering((block, world, pos) -> true).sound(SoundType.STONE).strength(1F).requiresCorrectToolForDrops());
+        super(Properties.of().pushReaction(PushReaction.BLOCK).mapColor(DyeColor.BLACK).noOcclusion().lightLevel((block) -> 2).emissiveRendering((block, world, pos) -> true).sound(SoundType.STONE).strength(1F).requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

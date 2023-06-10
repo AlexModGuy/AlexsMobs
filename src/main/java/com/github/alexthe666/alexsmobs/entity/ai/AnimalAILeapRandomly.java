@@ -27,7 +27,7 @@ public class AnimalAILeapRandomly extends Goal {
 
     @Override
     public boolean canUse() {
-        if(mob.getRandom().nextInt(this.chance) == 0 && mob.isOnGround() && mob.getNavigation().isDone()){
+        if(mob.getRandom().nextInt(this.chance) == 0 && mob.onGround() && mob.getNavigation().isDone()){
             Vec3 found = LandRandomPos.getPos(mob, maxLeapDistance, maxLeapDistance);
             if(found != null && mob.distanceToSqr(found) < maxLeapDistance * maxLeapDistance && hasLineOfSightBlock(found)){
                 leapToPos = found;

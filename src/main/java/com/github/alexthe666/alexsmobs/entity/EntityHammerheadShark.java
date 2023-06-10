@@ -92,7 +92,7 @@ public class EntityHammerheadShark extends WaterAnimal {
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.BLOCK;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.BLOCK;
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -179,7 +179,7 @@ public class EntityHammerheadShark extends WaterAnimal {
             double extraX = circleDistance * Mth.sin((angle));
             double extraZ = circleDistance * Mth.cos(angle);
             BlockPos ground = AMBlockPos.fromCoords(target.getX() + 0.5F + extraX, shark.getY(), target.getZ() + 0.5F + extraZ);
-            if(shark.level.getFluidState(ground).is(FluidTags.WATER)){
+            if(shark.level().getFluidState(ground).is(FluidTags.WATER)){
                 return ground;
 
             }

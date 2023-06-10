@@ -221,7 +221,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
         if(weatherCooldown > 0){
             weatherCooldown--;
         }
-        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15) || !this.level.getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
             this.isJukeboxing = false;
             this.setDanceTime(0);
             this.jukeboxPosition = null;
@@ -286,7 +286,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
-        if (item instanceof ShovelItem && (this.isBurrowed() || !this.isDisturbed()) && !level.isClientSide) {
+        if (item instanceof ShovelItem && (this.isBurrowed() || !this.isDisturbed()) && !this.level().isClientSide) {
             this.ambientSoundTime = 1000;
             if (!player.isCreative()) {
                 itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer) player : null);
@@ -344,10 +344,10 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     private void changeWeather(){
         int time = 24000 + 1200 * random.nextInt(10);
         int type = 0;
-        if(!this.level.isRaining()){
+        if(!this.level().isRaining()){
             type = random.nextInt(1) + 1;
         }
-        if(this.level instanceof ServerLevel serverLevel){
+        if(this.level() instanceof ServerLevel serverLevel){
             if(type == 0){
                 serverLevel.setWeatherParameters(time, 0, false, false);
             }else {
@@ -420,7 +420,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
             BlockPos blockpos = null;
 
             for (BlockPos blockpos1 : BlockPos.betweenClosed(Mth.floor(EntityRainFrog.this.getX() - 4.0D), Mth.floor(EntityRainFrog.this.getY() - 1.0D), Mth.floor(EntityRainFrog.this.getZ() - 4.0D), Mth.floor(EntityRainFrog.this.getX() + 4.0D), EntityRainFrog.this.getBlockY(), Mth.floor(EntityRainFrog.this.getZ() + 4.0D))) {
-                if (EntityRainFrog.this.level.getBlockState(blockpos1).is(BlockTags.SAND)) {
+                if (EntityRainFrog.this.level().getBlockState(blockpos1).is(BlockTags.SAND)) {
                     blockpos = blockpos1;
                     break;
                 }

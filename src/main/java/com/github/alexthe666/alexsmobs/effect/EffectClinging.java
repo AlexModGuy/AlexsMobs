@@ -37,8 +37,8 @@ public class EffectClinging extends MobEffect {
 
     public static boolean isUpsideDown(LivingEntity entity){
         BlockPos pos = getPositionUnderneath(entity);
-        BlockState ground = entity.level.getBlockState(pos);
-        return (entity.verticalCollision || ground.isFaceSturdy(entity.level, pos, Direction.DOWN)) && !entity.isOnGround();
+        BlockState ground = entity.level().getBlockState(pos);
+        return (entity.verticalCollision || ground.isFaceSturdy(entity.level(), pos, Direction.DOWN)) && !entity.onGround();
     }
     public void removeAttributeModifiers(LivingEntity entityLivingBaseIn, AttributeMap attributeMapIn, int amplifier) {
         super.removeAttributeModifiers(entityLivingBaseIn, attributeMapIn, amplifier);

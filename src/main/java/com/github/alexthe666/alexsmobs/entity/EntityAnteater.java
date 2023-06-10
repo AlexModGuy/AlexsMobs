@@ -204,8 +204,8 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     }
 
     protected void customServerAiStep() {
-        if (!this.level.isClientSide) {
-            this.updatePersistentAnger((ServerLevel)this.level, false);
+        if (!this.level().isClientSide) {
+            this.updatePersistentAnger((ServerLevel)this.level(), false);
         }
     }
 
@@ -294,9 +294,9 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
         } else {
             ticksAntOnTongue = 0;
         }
-        if (!level.isClientSide && getTongueStickOut() > 0.6F && !this.hasAntOnTongue() && antsEatenRecently < 3) {
+        if (!this.level().isClientSide && getTongueStickOut() > 0.6F && !this.hasAntOnTongue() && antsEatenRecently < 3) {
             EntityLeafcutterAnt closestAnt = null;
-            for (EntityLeafcutterAnt entity : this.level.getEntitiesOfClass(EntityLeafcutterAnt.class, this.getBoundingBox().inflate(2.6F))) {
+            for (EntityLeafcutterAnt entity : this.level().getEntitiesOfClass(EntityLeafcutterAnt.class, this.getBoundingBox().inflate(2.6F))) {
                 if (closestAnt == null || entity.distanceTo(this) < closestAnt.distanceTo(this) && this.hasLineOfSight(entity)) {
                     closestAnt = entity;
                 }
@@ -325,7 +325,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
             heldItemTime = 0;
         }
 
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (getRandom().nextInt(300) == 0)
                 this.setAnimation(ANIMATION_TOUNGE_IDLE);
 
@@ -371,7 +371,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        return AMEntityRegistry.ANTEATER.get().create(level);
+        return AMEntityRegistry.ANTEATER.get().create(level());
     }
 
     @Override
@@ -403,7 +403,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
     public void onGetItem(ItemEntity e) {
         final ItemStack duplicate = e.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level().isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setAnimation(ANIMATION_TOUNGE_IDLE);

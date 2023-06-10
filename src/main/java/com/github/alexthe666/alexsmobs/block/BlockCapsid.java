@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -31,7 +31,7 @@ public class BlockCapsid extends BaseEntityBlock {
 
     public static final DirectionProperty HORIZONTAL_FACING = HorizontalDirectionalBlock.FACING;
     public BlockCapsid() {
-        super(Properties.of(Material.GLASS).noOcclusion().isValidSpawn(BlockCapsid::spawnOption).isRedstoneConductor(BlockCapsid::isntSolid).sound(SoundType.GLASS).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(1.5F));
+        super(Properties.of().mapColor(MapColor.COLOR_PURPLE).noOcclusion().isValidSpawn(BlockCapsid::spawnOption).isRedstoneConductor(BlockCapsid::isntSolid).sound(SoundType.GLASS).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(1.5F));
     }
 
     public BlockState rotate(BlockState p_185499_1_, Rotation p_185499_2_) {
@@ -75,7 +75,7 @@ public class BlockCapsid extends BaseEntityBlock {
                     heldItem.shrink(1);
                 }
                 return InteractionResult.SUCCESS;
-            }else if(capsid.getItem(0).sameItem(copy) && capsid.getItem(0).getMaxStackSize() > capsid.getItem(0).getCount() + copy.getCount()){
+            }else if(ItemStack.isSameItem(capsid.getItem(0), copy) && capsid.getItem(0).getMaxStackSize() > capsid.getItem(0).getCount() + copy.getCount()){
                 capsid.getItem(0).grow(1);
                 if(!player.isCreative()){
                     heldItem.shrink(1);

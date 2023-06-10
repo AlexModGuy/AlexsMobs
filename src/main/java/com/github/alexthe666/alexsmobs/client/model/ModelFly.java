@@ -78,7 +78,7 @@ public class ModelFly extends AdvancedEntityModel<EntityFly> {
         float idleDegree = 0.8F;
         this.walk(mouth, idleSpeed * 0.2F, idleDegree * 0.1F, false, -1, 0.2F, ageInTicks, 1);
         this.flap(mouth, idleSpeed * 0.2F, idleDegree * 0.05F, false, -2, 0F, ageInTicks, 1);
-        boolean flag = entityIn.isOnGround() && entityIn.getDeltaMovement().lengthSqr() < 1.0E-7D;
+        boolean flag = entityIn.onGround() && entityIn.getDeltaMovement().lengthSqr() < 1.0E-7D;
         if(flag){
             this.left_wing.rotateAngleZ = (float) Math.toRadians(-35);
             this.right_wing.rotateAngleZ = (float) Math.toRadians(35);

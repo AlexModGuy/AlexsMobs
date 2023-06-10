@@ -39,7 +39,7 @@ public class SealAIDiveForItems extends Goal {
 
     private static List<ItemStack> getItemStacks(EntitySeal seal) {
         LootTable loottable = seal.level.getServer().getLootTables().get(SEAL_REWARD);
-        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) seal.level)).withParameter(LootContextParams.ORIGIN, seal.position()).withParameter(LootContextParams.THIS_ENTITY, seal).withRandom(seal.level.random).create(LootContextParamSets.PIGLIN_BARTER));
+        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) seal.level())).withParameter(LootContextParams.ORIGIN, seal.position()).withParameter(LootContextParams.THIS_ENTITY, seal).withRandom(seal.level.random).create(LootContextParamSets.PIGLIN_BARTER));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SealAIDiveForItems extends Goal {
     }
 
     public boolean canContinueToUse() {
-        return seal.getTarget() == null && seal.revengeCooldown == 0 && seal.getLastHurtByMob() == null && thrower != null && seal.feederUUID != null && digPos != null && seal.level.getFluidState(digPos.above()).is(FluidTags.WATER);
+        return seal.getTarget() == null && seal.revengeCooldown == 0 && seal.getLastHurtByMob() == null && thrower != null && seal.feederUUID != null && digPos != null && seal.level().getFluidState(digPos.above()).is(FluidTags.WATER);
     }
 
     public void tick() {
@@ -93,7 +93,7 @@ public class SealAIDiveForItems extends Goal {
                 seal.getNavigation().stop();
                 digTime++;
                 if(digTime  % 5 == 0){
-                    SoundEvent sound = seal.level.getBlockState(digPos).getSoundType().getHitSound();
+                    SoundEvent sound = seal.level().getBlockState(digPos).getSoundType().getHitSound();
                     seal.playSound(sound, 1, 0.5F + seal.getRandom().nextFloat() * 0.5F);
                 }
                 if (digTime >= 100) {
@@ -158,10 +158,10 @@ public class SealAIDiveForItems extends Goal {
         } else {
             for (int i = 0; i < 15; i++) {
                 BlockPos blockpos1 = this.seal.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-                while (this.seal.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
+                while (this.seal.level().isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
                     blockpos1 = blockpos1.below();
                 }
-                if (this.seal.level.getFluidState(blockpos1).is(FluidTags.WATER)) {
+                if (this.seal.level().getFluidState(blockpos1).is(FluidTags.WATER)) {
                     BlockPos pos3 = genSeafloorPos(blockpos1);
                     if (pos3 != null) {
                         return pos3;

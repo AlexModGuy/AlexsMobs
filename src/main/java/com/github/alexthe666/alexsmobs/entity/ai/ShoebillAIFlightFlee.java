@@ -28,16 +28,16 @@ public class ShoebillAIFlightFlee extends Goal {
     }
 
     public boolean canContinueToUse(){
-        return bird.isFlying() && (executionTime < 15 || !bird.isOnGround());
+        return bird.isFlying() && (executionTime < 15 || !bird.onGround());
     }
 
     @Override
     public boolean canUse() {
-        return bird.revengeCooldown > 0 && bird.isOnGround();
+        return bird.revengeCooldown > 0 && bird.onGround();
     }
 
     public void start(){
-        if(bird.isOnGround()){
+        if(bird.onGround()){
             bird.setFlying(true);
         }
     }
@@ -57,7 +57,7 @@ public class ShoebillAIFlightFlee extends Goal {
                 currentTarget = null;
             }
         }
-        if (bird.revengeCooldown == 0 && (bird.isInWater() || !bird.level.isEmptyBlock(bird.blockPosition().below()))) {
+        if (bird.revengeCooldown == 0 && (bird.isInWater() || !bird.level().isEmptyBlock(bird.blockPosition().below()))) {
             stop();
             bird.setFlying(false);
         }

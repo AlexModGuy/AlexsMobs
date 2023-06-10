@@ -107,7 +107,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
             double range = 15;
             int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
-            List<? extends EntityShoebill> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
+            List<? extends EntityShoebill> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntityShoebill gaz : list) {
                 gaz.revengeCooldown = fleeTime;
             }
@@ -118,11 +118,11 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 0.7F, false);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -154,7 +154,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     public boolean causeFallDamage(float distance, float damageMultiplier) {
@@ -184,7 +184,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
         if (revengeCooldown == 0 && this.getLastHurtByMob() != null) {
             this.setLastHurtByMob(null);
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if(fishingCooldown > 0){
                 fishingCooldown--;
             }
@@ -208,7 +208,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
                 this.setNoGravity(false);
             }
         }
-        if (!level.isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 9) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 9) {
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             getTarget().knockback(0.3F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
@@ -221,8 +221,8 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Flying", this.isFlying());
         compound.putInt("FishingTimer", this.fishingCooldown);
-        compound.putInt("FishingLuck", this.luckLevel);
-        compound.putInt("FishingLure", this.lureLevel);
+        compound.putInt("FishingLuck", this.lucklevel());
+        compound.putInt("FishingLure", this.lurelevel());
         compound.putInt("RevengeCooldownTimer", this.revengeCooldown);
     }
 
@@ -291,12 +291,12 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
                      double d2 = this.random.nextGaussian() * 0.02D;
                      double d0 = this.random.nextGaussian() * 0.02D;
                      double d1 = this.random.nextGaussian() * 0.02D;
-                     this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                     this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
                  }
                  this.gameEvent(GameEvent.EAT);
                  this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
                  lvt_3_1_.shrink(1);
-                 return net.minecraft.world.InteractionResult.sidedSuccess(this.level.isClientSide);
+                 return net.minecraft.world.InteractionResult.sidedSuccess(this.level().isClientSide);
              }else{
                  if(this.getAnimation() == NO_ANIMATION){
                      this.setAnimation(ANIMATION_BEAKSHAKE);
@@ -311,12 +311,12 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
                      double d2 = this.random.nextGaussian() * 0.02D;
                      double d0 = this.random.nextGaussian() * 0.02D;
                      double d1 = this.random.nextGaussian() * 0.02D;
-                     this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                     this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
                  }
                  lvt_3_1_.shrink(1);
                  this.gameEvent(GameEvent.EAT);
                  this.playSound(SoundEvents.CAT_EAT, this.getSoundVolume(), this.getVoicePitch());
-                 return net.minecraft.world.InteractionResult.sidedSuccess(this.level.isClientSide);
+                 return net.minecraft.world.InteractionResult.sidedSuccess(this.level().isClientSide);
              }else{
                  if(this.getAnimation() == NO_ANIMATION){
                      this.setAnimation(ANIMATION_BEAKSHAKE);

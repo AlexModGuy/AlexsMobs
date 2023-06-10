@@ -85,7 +85,7 @@ public class EntityUnderminer extends PathfinderMob {
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        return new PathNavigator(this, level);
+        return new PathNavigator(this, level());
     }
 
     public static <T extends Mob> boolean checkUnderminerSpawnRules(EntityType<EntityUnderminer> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
@@ -219,7 +219,7 @@ public class EntityUnderminer extends PathfinderMob {
 
     private float calculateDistanceToFloor() {
         BlockPos floor = AMBlockPos.fromCoords(this.getX(), this.getBoundingBox().maxY, this.getZ());
-        while (!level.getBlockState(floor).isFaceSturdy(level, floor, Direction.UP) && floor.getY() > level.getMinBuildHeight()) {
+        while (!level().getBlockState(floor).isFaceSturdy(level, floor, Direction.UP) && floor.getY() > level.getMinBuildHeight()) {
             floor = floor.below();
         }
         return (float) (this.getBoundingBox().minY - (floor.getY() + 1));
@@ -279,7 +279,7 @@ public class EntityUnderminer extends PathfinderMob {
         if(!this.isHiding() && hidingProgress > 0F){
             hidingProgress--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             double xzSpeed = this.getDeltaMovement().horizontalDistance();
             double distToFloor = Mth.clamp(calculateDistanceToFloor(), -1F, 1F);
             if (Math.abs(distToFloor) > 0.01 && xzSpeed < 0.05 && !this.isActuallyInAWall()) {
@@ -297,7 +297,7 @@ public class EntityUnderminer extends PathfinderMob {
                     this.playSound(SoundEvents.AMBIENT_CAVE.get(), 3F, 0.75F + random.nextFloat() * 0.25F);
                 }
             }
-            Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), AMConfig.underminerDisappearDistance, true);
+            Player player = this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), AMConfig.underminerDisappearDistance, true);
             if(player != null && lastGivenStack == null && (this.getTarget() == null || !this.getTarget().isAlive())){
                 this.setHiding(true);
                 this.lookAt(player, 360F, 360F);
@@ -366,8 +366,8 @@ public class EntityUnderminer extends PathfinderMob {
         float f = this.getDimensions(this.getPose()).width * 0.1F;
         AABB aabb = AABB.ofSize(this.getEyePosition(), f, 1.0E-6D, f);
         return BlockPos.betweenClosedStream(aabb).anyMatch((p_201942_) -> {
-            BlockState blockstate = this.level.getBlockState(p_201942_);
-            return !blockstate.isAir() && blockstate.isSuffocating(this.level, p_201942_) && Shapes.joinIsNotEmpty(blockstate.getCollisionShape(this.level, p_201942_).move(p_201942_.getX(), p_201942_.getY(), p_201942_.getZ()), Shapes.create(aabb), BooleanOp.AND);
+            BlockState blockstate = this.level().getBlockState(p_201942_);
+            return !blockstate.isAir() && blockstate.isSuffocating(this.level(), p_201942_) && Shapes.joinIsNotEmpty(blockstate.getCollisionShape(this.level(), p_201942_).move(p_201942_.getX(), p_201942_.getY(), p_201942_.getZ()), Shapes.create(aabb), BooleanOp.AND);
         });
     }
 
@@ -438,7 +438,7 @@ public class EntityUnderminer extends PathfinderMob {
 
     private BlockPos getObscuringBlockOf(BlockPos target) {
         Vec3 eyes = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        HitResult hitResult = this.level.clip(new ClipContext(eyes, Vec3.atCenterOf(target), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        HitResult hitResult = this.level().clip(new ClipContext(eyes, Vec3.atCenterOf(target), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         if (hitResult instanceof BlockHitResult && !((BlockHitResult) hitResult).getBlockPos().equals(target)) {
             BlockPos pos = ((BlockHitResult) hitResult).getBlockPos();
             return pos.distSqr(target) > 4 ? null : pos;
@@ -453,7 +453,7 @@ public class EntityUnderminer extends PathfinderMob {
     private class PathNavigator extends GroundPathNavigation {
 
         public PathNavigator(EntityUnderminer underminer, Level level) {
-            super(underminer, level);
+            super(underminer, level());
         }
 
         @Override
@@ -502,18 +502,18 @@ public class EntityUnderminer extends PathfinderMob {
 
         @Override
         public boolean canContinueToUse() {
-            return minePretendPos != null && EntityUnderminer.this.hasPick() && !EntityUnderminer.this.isHiding() && !EntityUnderminer.this.mineAIFlag && minePretendStartState != null && minePretendStartState.equals(level.getBlockState(minePretendPos)) && mineTime < 200;
+            return minePretendPos != null && EntityUnderminer.this.hasPick() && !EntityUnderminer.this.isHiding() && !EntityUnderminer.this.mineAIFlag && minePretendStartState != null && minePretendStartState.equals(level().getBlockState(minePretendPos)) && mineTime < 200;
         }
 
         public void start() {
             if (minePretendPos != null) {
-                minePretendStartState = EntityUnderminer.this.level.getBlockState(minePretendPos);
+                minePretendStartState = EntityUnderminer.this.level().getBlockState(minePretendPos);
             }
         }
 
         public void stop() {
-            if(minePretendPos != null && minePretendStartState != null && !minePretendStartState.equals(level.getBlockState(minePretendPos))){
-                for(ServerPlayer serverplayerentity : EntityUnderminer.this.level.getEntitiesOfClass(ServerPlayer.class, EntityUnderminer.this.getBoundingBox().inflate(12.0D, 12.0D, 12.0D))) {
+            if(minePretendPos != null && minePretendStartState != null && !minePretendStartState.equals(level().getBlockState(minePretendPos))){
+                for(ServerPlayer serverplayerentity : EntityUnderminer.this.level().getEntitiesOfClass(ServerPlayer.class, EntityUnderminer.this.getBoundingBox().inflate(12.0D, 12.0D, 12.0D))) {
                     AMAdvancementTriggerRegistry.UNDERMINE_UNDERMINER.trigger(serverplayerentity);
                 }
             }
@@ -547,7 +547,7 @@ public class EntityUnderminer extends PathfinderMob {
                         EntityUnderminer.this.setXRot((float) (Mth.atan2(d3, f) * (double) (180F / (float) Math.PI)) + (float) Math.sin(EntityUnderminer.this.tickCount * 0.1F));
                         EntityUnderminer.this.entityData.set(VISUALLY_MINING, true);
                         if (mineTime % 10 == 0) {
-                            SoundType soundType = minePretendStartState.getBlock().getSoundType(minePretendStartState, EntityUnderminer.this.level, minePretendPos, EntityUnderminer.this);
+                            SoundType soundType = minePretendStartState.getBlock().getSoundType(minePretendStartState, EntityUnderminer.this.level(), minePretendPos, EntityUnderminer.this);
                             EntityUnderminer.this.playSound(soundType.getHitSound());
                         }
                     }

@@ -46,7 +46,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -100,7 +99,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
     }
 
     public static boolean canFrilledSharkSpawn(EntityType<EntityFrilledShark> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
+        return reason == MobSpawnType.SPAWNER || iServerWorld.isWaterAt(pos) && iServerWorld.isWaterAt(pos.above());
     }
 
     @Override
@@ -253,7 +252,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
         if (!isDepressurized() && !clear) {
             this.setDepressurized(true);
         }
-        if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 12) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 12) {
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.06F, 0.0D, Mth.cos(f1) * 0.06F));
             if (this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue())){
@@ -277,7 +276,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
     private boolean hasClearance() {
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
         for (int l1 = 0; l1 < 10; ++l1) {
-            BlockState blockstate = level.getBlockState(blockpos$mutable.set(this.getX(), this.getY() + l1, this.getZ()));
+            BlockState blockstate = level().getBlockState(blockpos$mutable.set(this.getX(), this.getY() + l1, this.getZ()));
             if (!blockstate.getFluidState().is(FluidTags.WATER)) {
                 return false;
             }
@@ -336,7 +335,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
             double x = this.getX() + extraX + d0;
             double y = this.getY() + this.getBbHeight() * 0.15F + d1;
             double z = this.getZ() + extraZ + d2;
-            level.addParticle(AMParticleRegistry.TEETH_GLINT.get(), x, y, z, this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z);
+            level().addParticle(AMParticleRegistry.TEETH_GLINT.get(), x, y, z, this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z);
         } else {
             super.handleEntityEvent(id);
         }
@@ -368,7 +367,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
                         Vec3 mouth = EntityFrilledShark.this.position();
                         float squidSpeed = 0.07F;
                         ((Squid) target).setMovementVector((float) (mouth.x - target.getX()) * squidSpeed, (float) (mouth.y - target.getEyeY()) * squidSpeed, (float) (mouth.z - target.getZ()) * squidSpeed);
-                        EntityFrilledShark.this.level.broadcastEntityEvent(EntityFrilledShark.this, (byte) 68);
+                        EntityFrilledShark.this.level().broadcastEntityEvent(EntityFrilledShark.this, (byte) 68);
                     }
                 }
             }

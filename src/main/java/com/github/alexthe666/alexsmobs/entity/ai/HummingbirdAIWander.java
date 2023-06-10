@@ -60,11 +60,11 @@ public class HummingbirdAIWander extends Goal {
         BlockPos origin = fly.getFeederPos() == null ? this.fly.blockPosition() : fly.getFeederPos();
         for(int i = 0; i < 15; i++){
             BlockPos blockpos1 = origin.offset(random.nextInt(rangeXZ) - rangeXZ/2, 1, random.nextInt(rangeXZ) - rangeXZ/2);
-            while(fly.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 0){
+            while(fly.level().isEmptyBlock(blockpos1) && blockpos1.getY() > 0){
                 blockpos1 = blockpos1.below();
             }
             blockpos1 = blockpos1.above(1 + random.nextInt(3));
-            if(this.fly.level.isEmptyBlock(blockpos1.below()) && this.fly.canBlockBeSeen(blockpos1) && this.fly.level.isEmptyBlock(blockpos1) && !this.fly.level.isEmptyBlock(blockpos1.below(2))){
+            if(this.fly.level().isEmptyBlock(blockpos1.below()) && this.fly.canBlockBeSeen(blockpos1) && this.fly.level().isEmptyBlock(blockpos1) && !this.fly.level().isEmptyBlock(blockpos1.below(2))){
                 blockpos = blockpos1;
             }
         }

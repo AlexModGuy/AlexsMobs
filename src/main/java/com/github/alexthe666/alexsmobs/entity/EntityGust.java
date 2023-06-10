@@ -77,7 +77,7 @@ public class EntityGust extends Entity {
         if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS && tickCount > 4) {
             this.onImpact(raytraceresult);
         }
-        List<Entity> list = this.level.getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(0.1));
+        List<Entity> list = this.level().getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(0.1));
 
         if(pushedEntity != null && this.distanceTo(pushedEntity) > 2){
             pushedEntity = null;
@@ -85,7 +85,7 @@ public class EntityGust extends Entity {
         double d0 = this.getX() + vector3d.x;
         double d1 = this.getY() + vector3d.y;
         double d2 = this.getZ() + vector3d.z;
-        if(this.getY() > this.level.getMaxBuildHeight()){
+        if(this.getY() > this.level().getMaxBuildHeight()){
             this.remove(RemovalReason.DISCARDED);
         }
         this.updateRotation();
@@ -145,8 +145,8 @@ public class EntityGust extends Entity {
     protected void onHitBlock(BlockHitResult p_230299_1_) {
         if( p_230299_1_.getBlockPos() != null){
             BlockPos pos = p_230299_1_.getBlockPos();
-            if(level.getBlockState(pos).getMaterial().isSolid()){
-                if (!this.level.isClientSide) {
+            if(level().getBlockState(pos).getMaterial().isSolid()){
+                if (!this.level().isClientSide) {
                     this.remove(RemovalReason.DISCARDED);
 
                 }

@@ -38,6 +38,7 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -46,6 +47,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -184,19 +186,19 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
             this.setYRot(((float) Mth.atan2(face.z, face.x)) * (180F / (float) Math.PI) - 90F);
             this.yBodyRot = this.getYRot();
             this.yHeadRot = this.getYRot();
-            BlockState state = level.getBlockState(feedingPos);
+            BlockState state = level().getBlockState(feedingPos);
             if(random.nextInt(2) == 0 && !state.isAir()){
                 Vec3 mouth = new Vec3(0, this.getBbHeight() * 0.5F, 0.4F * this.getPupfishScale()).xRot(this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
                 for (int i = 0; i < 4 + random.nextInt(2); i++) {
                     double motX = this.random.nextGaussian() * 0.02D;
                     double motY = 0.1F + random.nextFloat() * 0.2F;
                     double motZ = this.random.nextGaussian() * 0.02D;
-                    level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), this.getX() + mouth.x, this.getY() + mouth.y, this.getZ() + mouth.z, motX, motY, motZ);
+                    level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), this.getX() + mouth.x, this.getY() + mouth.y, this.getZ() + mouth.z, motX, motY, motZ);
                 }
             }
         }
         if(!isInWaterOrBubble() && this.isAlive()){
-            if (this.isOnGround() && random.nextFloat() < 0.5F) {
+            if (this.onGround() && random.nextFloat() < 0.5F) {
                 this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                 this.setYRot(this.random.nextFloat() * 360.0F);
                 this.playSound(SoundEvents.COD_FLOP, this.getSoundVolume(), this.getVoicePitch());
@@ -356,13 +358,13 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     private boolean canSeeBlock(BlockPos destinationBlock) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
-        BlockHitResult result = this.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        BlockHitResult result = this.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         return result.getBlockPos().equals(destinationBlock);
     }
 
     private static List<ItemStack> getFoodLoot(EntityDevilsHolePupfish pupfish) {
-        LootTable loottable = pupfish.level.getServer().getLootTables().get(PUPFISH_REWARD);
-        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) pupfish.level)).withParameter(LootContextParams.THIS_ENTITY, pupfish).withRandom(pupfish.level.random).create(LootContextParamSets.PIGLIN_BARTER));
+        LootTable loottable = pupfish.level().getServer().getLootData().getLootTable(PUPFISH_REWARD);
+        return loottable.getRandomItems((new LootParams.Builder((ServerLevel) pupfish.level())).withParameter(LootContextParams.THIS_ENTITY, pupfish).create(LootContextParamSets.PIGLIN_BARTER));
     }
 
     public boolean removeWhenFarAway(double dist) {
@@ -393,7 +395,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
             }else{
                 executionCooldown = 50 + random.nextInt(50);
                 if(pupfish.chasePartner == null || !pupfish.chasePartner.isAlive()){
-                    List<EntityDevilsHolePupfish> list = pupfish.level.getEntitiesOfClass(EntityDevilsHolePupfish.class, pupfish.getBoundingBox().inflate(10, 8, 10), EntitySelector.NO_SPECTATORS.and(validChasePartner));
+                    List<EntityDevilsHolePupfish> list = pupfish.level().getEntitiesOfClass(EntityDevilsHolePupfish.class, pupfish.getBoundingBox().inflate(10, 8, 10), EntitySelector.NO_SPECTATORS.and(validChasePartner));
                     list.sort(Comparator.comparingDouble(pupfish::distanceToSqr));
                     if(!list.isEmpty()){
                         EntityDevilsHolePupfish closestPupfish = list.get(0);
@@ -457,11 +459,11 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     }
 
     private void spawnBabiesWith(EntityDevilsHolePupfish chasePartner) {
-        EntityDevilsHolePupfish baby = AMEntityRegistry.DEVILS_HOLE_PUPFISH.get().create(level);
+        EntityDevilsHolePupfish baby = AMEntityRegistry.DEVILS_HOLE_PUPFISH.get().create(level());
         baby.copyPosition(this);
         baby.setPupfishScale(0.65F + random.nextFloat() * 0.35F);
         baby.setBabyAge(-24000);
-        level.addFreshEntity(baby);
+        level().addFreshEntity(baby);
     }
 
     private class EatMossGoal extends Goal {
@@ -480,7 +482,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         }
 
         public boolean canContinueToUse() {
-            return destinationBlock != null && isMossBlock(pupfish.level, destinationBlock.mutable()) && isCloseToMoss(16);
+            return destinationBlock != null && isMossBlock(pupfish.level(), destinationBlock.mutable()) && isCloseToMoss(16);
         }
 
         public boolean isCloseToMoss(double dist) {
@@ -553,7 +555,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
                     for (int lvt_7_1_ = 0; lvt_7_1_ <= lvt_6_1_; lvt_7_1_ = lvt_7_1_ > 0 ? -lvt_7_1_ : 1 - lvt_7_1_) {
                         for (int lvt_8_1_ = lvt_7_1_ < lvt_6_1_ && lvt_7_1_ > -lvt_6_1_ ? lvt_6_1_ : 0; lvt_8_1_ <= lvt_6_1_; lvt_8_1_ = lvt_8_1_ > 0 ? -lvt_8_1_ : 1 - lvt_8_1_) {
                             lvt_4_1_.setWithOffset(lvt_3_1_, lvt_7_1_, lvt_5_1_ - 1, lvt_8_1_);
-                            if (this.isMossBlock(pupfish.level, lvt_4_1_) && pupfish.canSeeBlock(lvt_4_1_)) {
+                            if (this.isMossBlock(pupfish.level(), lvt_4_1_) && pupfish.canSeeBlock(lvt_4_1_)) {
                                 this.destinationBlock = lvt_4_1_;
                                 return true;
                             }

@@ -173,7 +173,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     protected void dropEquipment() {
         super.dropEquipment();
         if (this.getColor() != null) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.spawnAtLocation(this.getCarpetItemBeingWorn());
             }
             this.setColor(null);
@@ -209,10 +209,10 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         boolean owner = this.isTame() && isOwnedBy(player);
         if (item == Items.GLOW_BERRIES && bondWithBlueJays(player.getUUID())) {
             this.usePlayerItem(player, hand, itemstack);
-            this.level.broadcastEntityEvent(this, (byte) 93);
+            this.level().broadcastEntityEvent(this, (byte) 93);
             return InteractionResult.SUCCESS;
         } else if (this.isTame() && !this.getMainHandItem().isEmpty()) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.spawnAtLocation(this.getMainHandItem().copy());
             }
             this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
@@ -375,7 +375,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             standingTime = 0;
             maxStandTime = 75 + random.nextInt(50);
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (lookForWaterBeforeEatingTimer > 0) {
                 lookForWaterBeforeEatingTimer--;
             } else if (!isWashing() && canTargetItem(this.getMainHandItem())) {
@@ -395,14 +395,14 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                         double d3 = (this.random.nextDouble());
                         Vec3 vector3d = this.getDeltaMovement();
 
-                        this.level.addParticle(ParticleTypes.SPLASH, washingPos.getX() + d2, (double) (washingPos.getY() + 0.8F), washingPos.getZ() + d3, vector3d.x, vector3d.y, vector3d.z);
+                        this.level().addParticle(ParticleTypes.SPLASH, washingPos.getX() + d2, (double) (washingPos.getY() + 0.8F), washingPos.getZ() + d3, vector3d.x, vector3d.y, vector3d.z);
                     }
                 } else {
                     setWashing(false);
                 }
             }
         }
-        if (!level.isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 4 && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 4 && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5) {
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add((double) (-Mth.sin(f1) * -0.06F), 0.0D, (double) (Mth.cos(f1) * -0.06F)));
             this.getTarget().knockback(0.35F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
@@ -419,7 +419,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
     public void onEatItem() {
         this.heal(10);
-        this.level.broadcastEntityEvent(this, (byte) 92);
+        this.level().broadcastEntityEvent(this, (byte) 92);
         this.gameEvent(GameEvent.EAT);
         this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
     }
@@ -433,9 +433,9 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                 if (player instanceof ServerPlayer) {
                     CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer) player, this);
                 }
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
             }
         }
     }
@@ -447,14 +447,14 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
                 double d2 = this.random.nextGaussian() * 0.02D;
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
         } else if (id == 93) {
             for (int i = 0; i < 6 + random.nextInt(3); i++) {
                 double d2 = this.random.nextGaussian() * 0.02D;
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.GLOW_BERRIES)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.GLOW_BERRIES)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
         } else {
             super.handleEntityEvent(id);
@@ -571,12 +571,12 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         lookForWaterBeforeEatingTimer = 100;
         ItemStack duplicate = e.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level().isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         Entity thrower = e.getOwner();
         if (e.getItem().is(Items.GLOW_BERRIES) && thrower != null && bondWithBlueJays(thrower.getUUID())) {
-            this.level.broadcastEntityEvent(this, (byte) 93);
+            this.level().broadcastEntityEvent(this, (byte) 93);
         } else {
             this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
         }
@@ -595,7 +595,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     private boolean bondWithBlueJays(UUID uuid) {
         AABB allyBox = this.getBoundingBox().inflate(48);
         boolean any = false;
-        for (EntityBlueJay entity : this.level.getEntitiesOfClass(EntityBlueJay.class, allyBox)) {
+        for (EntityBlueJay entity : this.level().getEntitiesOfClass(EntityBlueJay.class, allyBox)) {
             if (entity.getFeedTime() > 0 && entity.getLastFeederUUID() != null && entity.getLastFeederUUID().equals(uuid)) {
                 entity.setRaccoon(this);
                 entity.setFeedTime(0);
@@ -648,7 +648,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
     public BlockPos getLightPosition() {
         BlockPos pos = AMBlockPos.fromVec3(this.position());
-        if (!level.getBlockState(pos).canOcclude()) {
+        if (!level().getBlockState(pos).canOcclude()) {
             return pos.above();
         }
         return pos;

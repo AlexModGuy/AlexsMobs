@@ -21,9 +21,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -42,7 +42,7 @@ public class BlockEndPirateAnchor extends BaseEntityBlock implements AMSpecialRe
     protected static final VoxelShape CHAIN_AABB = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 
     protected BlockEndPirateAnchor() {
-        super(Properties.of(Material.STONE, MaterialColor.COLOR_BLACK).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
+        super(Properties.of().mapColor(MapColor.COLOR_BLACK).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(PIECE, PieceType.ANCHOR));
     }
 
@@ -50,7 +50,7 @@ public class BlockEndPirateAnchor extends BaseEntityBlock implements AMSpecialRe
         List<BlockPos> offsets = TileEntityEndPirateAnchor.getValidBBPositions(eastOrWest);
         for (BlockPos offset : offsets) {
             BlockPos check = center.offset(offset);
-            if (!reader.isEmptyBlock(check) || !reader.getBlockState(check).getMaterial().isReplaceable()) {
+            if (!reader.isEmptyBlock(check) || !reader.getBlockState(check).canBeReplaced()) {
                 return false;
             }
         }
@@ -197,7 +197,7 @@ public class BlockEndPirateAnchor extends BaseEntityBlock implements AMSpecialRe
         return state.getValue(PIECE) == PieceType.ANCHOR_SIDE ? RenderShape.INVISIBLE : RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         return state.getValue(PIECE) == PieceType.ANCHOR ? super.getDrops(state, builder) : Collections.emptyList();
     }
 

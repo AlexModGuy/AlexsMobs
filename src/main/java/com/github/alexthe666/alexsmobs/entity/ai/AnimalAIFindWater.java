@@ -20,7 +20,7 @@ public class AnimalAIFindWater extends Goal {
     }
 
     public boolean canUse() {
-        if (this.creature.isOnGround() && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER)) {
+        if (this.creature.onGround() && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER)) {
             if (this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldEnterWater() && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)) {
                 targetPos = generateTarget();
                 return targetPos != null;
@@ -46,7 +46,7 @@ public class AnimalAIFindWater extends Goal {
             this.creature.getNavigation().stop();
             return false;
         }
-        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER);
+        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER);
     }
 
     public BlockPos generateTarget() {
@@ -55,11 +55,11 @@ public class AnimalAIFindWater extends Goal {
         final int range = this.creature instanceof ISemiAquatic ? ((ISemiAquatic) this.creature).getWaterSearchRange() : 14;
         for(int i = 0; i < 15; i++) {
             BlockPos blockPos = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);
-            while (this.creature.level.isEmptyBlock(blockPos) && blockPos.getY() > 1) {
+            while (this.creature.level().isEmptyBlock(blockPos) && blockPos.getY() > 1) {
                 blockPos = blockPos.below();
             }
 
-            if (this.creature.level.getFluidState(blockPos).is(FluidTags.WATER)) {
+            if (this.creature.level().getFluidState(blockPos).is(FluidTags.WATER)) {
                 blockpos = blockPos;
             }
         }

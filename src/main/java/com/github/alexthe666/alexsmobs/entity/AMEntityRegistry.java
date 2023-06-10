@@ -364,13 +364,13 @@ public class AMEntityRegistry {
     public static boolean createLeavesSpawnPlacement(LevelReader level, BlockPos pos, EntityType<?> type){
         BlockPos blockpos = pos.above();
         BlockPos blockpos1 = pos.below();
-        FluidState fluidstate = level.getFluidState(pos);
-        BlockState blockstate = level.getBlockState(pos);
-        BlockState blockstate1 = level.getBlockState(blockpos1);
+        FluidState fluidstate = level().getFluidState(pos);
+        BlockState blockstate = level().getBlockState(pos);
+        BlockState blockstate1 = level().getBlockState(blockpos1);
         if (!blockstate1.isValidSpawn(level, blockpos1, SpawnPlacements.Type.ON_GROUND, type) && !blockstate1.is(BlockTags.LEAVES)) {
             return false;
         } else {
-            return NaturalSpawner.isValidEmptySpawnBlock(level, pos, blockstate, fluidstate, type) && NaturalSpawner.isValidEmptySpawnBlock(level, blockpos, level.getBlockState(blockpos), level.getFluidState(blockpos), type);
+            return NaturalSpawner.isValidEmptySpawnBlock(level, pos, blockstate, fluidstate, type) && NaturalSpawner.isValidEmptySpawnBlock(level, blockpos, level().getBlockState(blockpos), level().getFluidState(blockpos), type);
         }
     }
 

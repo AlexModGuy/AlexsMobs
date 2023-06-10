@@ -197,7 +197,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
         if(isTackling()){
             this.yBodyRot = this.getYRot();
         }
-        if(!level.isClientSide) {
+        if(!this.level().isClientSide) {
             if (this.getTarget() != null && (this.isSitting() || this.isSleeping())) {
                 this.setSitting(false);
                 this.setSleeping(false);

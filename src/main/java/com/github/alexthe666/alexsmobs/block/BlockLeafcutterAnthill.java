@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -39,7 +38,7 @@ import java.util.List;
 public class BlockLeafcutterAnthill extends BaseEntityBlock {
 
     public BlockLeafcutterAnthill() {
-        super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(0.75F));
+        super(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(0.75F));
     }
 
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {

@@ -28,7 +28,7 @@ public class EffectSunbird extends MobEffect {
                     forceFall = true;
                 }
             }
-            if ((forceFall || !(entity instanceof Player)) && !entity.isOnGround()) {
+            if ((forceFall || !(entity instanceof Player)) && !entity.onGround()) {
                 entity.setDeltaMovement(entity.getDeltaMovement().add(0, -0.2F, 0));
             }
         } else {
@@ -38,7 +38,7 @@ public class EffectSunbird extends MobEffect {
                     float pitchMulti = Math.abs(entity.getXRot()) / 90F;
                     entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.02 + pitchMulti * 0.02, 0));
                 }
-            } else if (!entity.isOnGround() && !entity.isCrouching()) {
+            } else if (!entity.onGround() && !entity.isCrouching()) {
                 Vec3 vector3d = entity.getDeltaMovement();
                 if (vector3d.y < 0.0D) {
                     entity.setDeltaMovement(vector3d.multiply(1.0D, 0.6D, 1.0D));

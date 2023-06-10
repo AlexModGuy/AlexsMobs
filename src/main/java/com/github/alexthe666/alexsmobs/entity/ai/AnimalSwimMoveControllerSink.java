@@ -66,7 +66,7 @@ public class AnimalSwimMoveControllerSink extends MoveControl {
 
             }
         } else {
-            if(entity instanceof EntityMimicOctopus && !entity.isOnGround()){
+            if(entity instanceof EntityMimicOctopus && !entity.onGround()){
                 this.entity.setDeltaMovement(entity.getDeltaMovement().add(0, -0.02, 0));
             }
             this.entity.setSpeed(0.0F);

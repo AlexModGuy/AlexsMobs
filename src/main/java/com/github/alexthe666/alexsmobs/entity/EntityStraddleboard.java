@@ -130,7 +130,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
-        } else if (!this.level.isClientSide && !this.isRemoved()) {
+        } else if (!this.level().isClientSide && !this.isRemoved()) {
             this.setTimeSinceHit(10);
             this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
             this.markHurt();
@@ -145,7 +145,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
                     if (this.getControllingPassenger() != null && this.getControllingPassenger() instanceof Player) {
                         p = (Player) this.getControllingPassenger();
                     }
-                    if(!level.isClientSide && !this.isRemoved()){
+                    if(!this.level().isClientSide && !this.isRemoved()){
                         boolean drop = false;
                         if(this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN.get()) > 0){
                             drop = p != null && !p.addItem(this.getItemBoard());
@@ -231,9 +231,9 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
                     for (int k2 = k; k2 < l; ++k2) {
                         if (j2 <= 0 || k2 != k && k2 != l - 1) {
                             blockpos$mutable.set(l1, k2, i2);
-                            BlockState blockstate = this.level.getBlockState(blockpos$mutable);
-                            if (!(blockstate.getBlock() instanceof WaterlilyBlock) && Shapes.joinIsNotEmpty(blockstate.getBlockSupportShape(this.level, blockpos$mutable).move(l1, k2, i2), voxelshape, BooleanOp.AND)) {
-                                f += blockstate.getFriction(this.level, blockpos$mutable, this);
+                            BlockState blockstate = this.level().getBlockState(blockpos$mutable);
+                            if (!(blockstate.getBlock() instanceof WaterlilyBlock) && Shapes.joinIsNotEmpty(blockstate.getBlockSupportShape(this.level(), blockpos$mutable).move(l1, k2, i2), voxelshape, BooleanOp.AND)) {
+                                f += blockstate.getFriction(this.level(), blockpos$mutable, this);
                                 ++k1;
                             }
                         }
@@ -261,10 +261,10 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             for (int l1 = k; l1 < l; ++l1) {
                 for (int i2 = i1; i2 < j1; ++i2) {
                     blockpos$mutable.set(k1, l1, i2);
-                    FluidState fluidstate = this.level.getFluidState(blockpos$mutable);
+                    FluidState fluidstate = this.level().getFluidState(blockpos$mutable);
                     if (fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA)) {
-                        float f = (float) l1 + fluidstate.getHeight(this.level, blockpos$mutable);
-                        this.waterLevel = Math.max(f, this.waterLevel);
+                        float f = (float) l1 + fluidstate.getHeight(this.level(), blockpos$mutable);
+                        this.waterLevel = Math.max(f, this.waterlevel());
                         flag |= axisalignedbb.minY < (double) f;
                     }
                 }
@@ -351,8 +351,8 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             for (int l1 = k; l1 < l; ++l1) {
                 for (int i2 = i1; i2 < j1; ++i2) {
                     blockpos$mutable.set(k1, l1, i2);
-                    FluidState fluidstate = this.level.getFluidState(blockpos$mutable);
-                    if ((fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA) && d0 < (double) ((float) blockpos$mutable.getY() + fluidstate.getHeight(this.level, blockpos$mutable)))) {
+                    FluidState fluidstate = this.level().getFluidState(blockpos$mutable);
+                    if ((fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA) && d0 < (double) ((float) blockpos$mutable.getY() + fluidstate.getHeight(this.level(), blockpos$mutable)))) {
                         if (!fluidstate.isSource()) {
                             return Boat.Status.UNDER_FLOWING_WATER;
                         }
@@ -463,13 +463,13 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
-        if (!level.isClientSide) {
-            EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.get().create(level);
+        if (!this.level().isClientSide) {
+            EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.get().create(level());
             CompoundTag tag = new CompoundTag();
             this.addAdditionalSaveData(tag);
             copy.readAdditionalSaveData(tag);
             copy.copyPosition(passenger);
-            level.addFreshEntity(copy);
+            level().addFreshEntity(copy);
         }
         this.remove(RemovalReason.DISCARDED);
     }
@@ -490,7 +490,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     private void updateRocking() {
-        if (this.level.isClientSide) {
+        if (this.level().isClientSide) {
             int i = this.getRockingTicks();
             if (i > 0) {
                 this.rockingIntensity += 1F;
@@ -500,7 +500,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
             this.rockingIntensity = Mth.clamp(this.rockingIntensity, 0.0F, 1.0F);
             this.prevRockingAngle = this.rockingAngle;
-            this.rockingAngle = 10.0F * (float) Math.sin(0.5F * (float) this.level.getGameTime()) * this.rockingIntensity;
+            this.rockingAngle = 10.0F * (float) Math.sin(0.5F * (float) this.level().getGameTime()) * this.rockingIntensity;
         } else {
             if (!this.rocking) {
                 this.setRockingTicks(0);
@@ -547,9 +547,9 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             for (int l1 = i; l1 < j; ++l1) {
                 for (int i2 = i1; i2 < j1; ++i2) {
                     blockpos$mutable.set(l1, k1, i2);
-                    FluidState fluidstate = this.level.getFluidState(blockpos$mutable);
+                    FluidState fluidstate = this.level().getFluidState(blockpos$mutable);
                     if (fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA)) {
-                        f = Math.max(f, fluidstate.getHeight(this.level, blockpos$mutable));
+                        f = Math.max(f, fluidstate.getHeight(this.level(), blockpos$mutable));
                     }
 
                     if (f >= 1.0F) {
@@ -571,7 +571,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         if (player.isSecondaryUseActive()) {
             return InteractionResult.PASS;
         } else {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
             } else {
                 return InteractionResult.SUCCESS;
@@ -651,7 +651,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     @Override
     public boolean canJump() {
-        return this.level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFluidState().is(FluidTags.LAVA);
+        return this.level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFluidState().is(FluidTags.LAVA);
     }
 
     @Override

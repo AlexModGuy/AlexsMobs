@@ -29,7 +29,7 @@ public class RockyChestplateUtil {
             lassoedTag.putInt(ROCKY_ROLL_TIMESTAMP, roller.tickCount);
         }
         CitadelEntityData.setCitadelTag(roller, lassoedTag);
-        if (!roller.level.isClientSide) {
+        if (!roller.this.level().isClientSide) {
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, roller.getId()));
         }else{
             Citadel.sendMSGToServer(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, roller.getId()));
@@ -81,7 +81,7 @@ public class RockyChestplateUtil {
             if(roller instanceof Player){
                 ((Player)roller).setForcedPose(Pose.SWIMMING);
             }
-            if(!roller.level.isClientSide){
+            if(!roller.this.level().isClientSide){
                 for (Entity entity : roller.level.getEntitiesOfClass(LivingEntity.class, roller.getBoundingBox().inflate(1.0F))) {
                     if (!roller.isAlliedTo(entity) && !entity.isAlliedTo(roller) && entity != roller) {
                         entity.hurt(entity.damageSources().mobAttack(roller), 2.0F + roller.getRandom().nextFloat() * 1.0F);
@@ -92,7 +92,7 @@ public class RockyChestplateUtil {
                 roller.fallDistance -= 0.5F;
             }
             roller.refreshDimensions();
-            Vec3 vec3 = roller.isOnGround() ? roller.getDeltaMovement() : roller.getDeltaMovement().multiply(0.9D, 1D, 0.9D);
+            Vec3 vec3 = roller.onGround() ? roller.getDeltaMovement() : roller.getDeltaMovement().multiply(0.9D, 1D, 0.9D);
             float f = roller.getYRot() * ((float) Math.PI / 180F);
             float f1 = roller.isInWaterOrBubble() ? 0.05F : 0.15F;
             Vec3 rollDelta = new Vec3(vec3.x + (double) (-Mth.sin(f) * f1), 0.0D, vec3.z + (double) (Mth.cos(f) * f1));
@@ -109,7 +109,7 @@ public class RockyChestplateUtil {
                 update = true;
             }
         }
-        if (!roller.level.isClientSide && update) {
+        if (!roller.this.level().isClientSide && update) {
             CitadelEntityData.setCitadelTag(roller, tag);
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", tag, roller.getId()));
         }

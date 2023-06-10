@@ -87,7 +87,7 @@ public class HummingbirdAIPollinate  extends MoveToBlockGoal {
         bird.setCropsPollinated(bird.getCropsPollinated() + 1);
         bird.pollinateCooldown = 200;
         if(bird.getCropsPollinated() > 3){
-            if(isGrowable(blockPos, (ServerLevel) bird.level)){
+            if(isGrowable(blockPos, (ServerLevel) bird.level())){
                 BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), bird.level, blockPos);
             }
             bird.setCropsPollinated(0);

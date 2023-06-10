@@ -108,7 +108,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
     }
 
     public boolean isInNether() {
-        return this.level.dimension() == Level.NETHER && !this.isNoAi();
+        return this.level().dimension() == Level.NETHER && !this.isNoAi();
     }
 
 
@@ -191,12 +191,12 @@ public class EntityFly extends Animal implements FlyingAnimal {
             this.setNoDespawn(true);
             conversionTime++;
             if(conversionTime > 300){
-                EntityCrimsonMosquito mosquito = AMEntityRegistry.CRIMSON_MOSQUITO.get().create(level);
+                EntityCrimsonMosquito mosquito = AMEntityRegistry.CRIMSON_MOSQUITO.get().create(level());
                 mosquito.copyPosition(this);
-                if(!level.isClientSide){
-                    mosquito.finalizeSpawn((ServerLevelAccessor)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                if(!this.level().isClientSide){
+                    mosquito.finalizeSpawn((ServerLevelAccessor)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.CONVERSION, null, null);
                 }
-                level.addFreshEntity(mosquito);
+                level().addFreshEntity(mosquito);
                 mosquito.onSpawnFromFly();
                 this.remove(RemovalReason.DISCARDED);
             }
@@ -241,7 +241,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        EntityFly fly = AMEntityRegistry.FLY.get().create(level);
+        EntityFly fly = AMEntityRegistry.FLY.get().create(level());
         fly.setNoDespawn(true);
         return fly;
     }
@@ -316,7 +316,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
                 return false;
             }
             if (!this.mustUpdate) {
-                long worldTime = EntityFly.this.level.getGameTime() % 10;
+                long worldTime = EntityFly.this.level().getGameTime() % 10;
                 if (EntityFly.this.getNoActionTime() >= 100 && worldTime != 0) {
                     return false;
                 }
@@ -324,7 +324,7 @@ public class EntityFly extends Animal implements FlyingAnimal {
                     return false;
                 }
             }
-            List<Entity> list = EntityFly.this.level.getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<Entity> list = EntityFly.this.level().getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
             if (list.isEmpty()) {
                 return false;
             } else {

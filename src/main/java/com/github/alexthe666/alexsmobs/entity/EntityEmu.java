@@ -141,7 +141,7 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
             double range = 15;
             int fleeTime = 100 + getRandom().nextInt(5);
             this.revengeCooldown = fleeTime;
-            List<? extends EntityEmu> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
+            List<? extends EntityEmu> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntityEmu emu : list) {
                 emu.revengeCooldown = fleeTime;
                 if(emu.isBaby() && random.nextInt(2) == 0){
@@ -162,12 +162,12 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
 
     public void tick() {
         super.tick();
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.getLastHurtByMob() == null && this.getTarget() == null) {
                 if (this.getDeltaMovement().lengthSqr() < 0.03D && this.getRandom().nextInt(190) == 0 && this.getAnimation() == NO_ANIMATION) {
                     if (getRandom().nextInt(3) == 0) {
                         this.setAnimation(ANIMATION_PUZZLED);
-                    } else if (this.onGround) {
+                    } else if (this.onGround()) {
                         this.setAnimation(ANIMATION_PECK_GROUND);
                     }
                 }
@@ -187,7 +187,7 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
                 target.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
         }
-        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextEgg <= 0) {
+        if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextEgg <= 0) {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
             this.spawnAtLocation(AMItemRegistry.EMU_EGG.get());
             this.timeUntilNextEgg = this.random.nextInt(6000) + 6000;

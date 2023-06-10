@@ -108,11 +108,11 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 1.3F, 1F);
-            this.navigation = new SemiAquaticPathNavigator(this, level);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -132,7 +132,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, LivingEntity.class, 200, false, false, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.ANACONDA_TARGETS)));
         this.targetSelector.addGoal(2, new EntityAINearestTarget3D(this, Player.class, 110, false, true, null) {
             public boolean canUse() {
-                return !isBaby() && passiveFor == 0 && level.getDifficulty() != Difficulty.PEACEFUL && !EntityAnaconda.this.isInLove() && super.canUse();
+                return !isBaby() && passiveFor == 0 && level().getDifficulty() != Difficulty.PEACEFUL && !EntityAnaconda.this.isInLove() && super.canUse();
             }
         });
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
@@ -177,7 +177,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
 
     public void pushEntities() {
-        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
+        final List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         entities.stream().filter(entity -> !(entity instanceof EntityAnacondaPart) && entity.isPushable()).forEach(entity -> entity.push(this));
     }
 
@@ -234,8 +234,8 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
 
     public Entity getChild() {
         UUID id = getChildId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
@@ -278,7 +278,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         this.yHeadRot = Mth.clamp(this.yHeadRot, this.yBodyRot - 70, this.yBodyRot + 70);
 
         if (this.isStrangling()) {
-            if (!level.isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
+            if (!level().isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
                 this.setXRot(0);
                 final LivingEntity target = this.getTarget();
                 final float radius = this.getTarget().getBbWidth() * -0.5F;
@@ -288,7 +288,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 Vec3 targetVec = new Vec3(extraX + target.getX(), target.getY(1.0F), extraZ + target.getZ());
                 Vec3 moveVec = targetVec.subtract(this.position()).scale(1F);
                 this.setDeltaMovement(moveVec);
-                if (!target.isOnGround()) {
+                if (!target.onGround()) {
                     target.setDeltaMovement(new Vec3(0, -0.08F, 0));
                 } else {
                     target.setDeltaMovement(Vec3.ZERO);
@@ -319,7 +319,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         }
         this.ringBuffer[this.ringBufferIndex] = this.getYRot();
 
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final int segments = 7;
             final Entity child = getChild();
             if (child == null) {
@@ -344,7 +344,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                     }
                     part.setPos(part.tickMultipartPosition(this.getId(), partIndex, prevPos, this.getXRot(), prevReqRot, reqRot, false));
                     partParent = part;
-                    level.addFreshEntity(part);
+                    level().addFreshEntity(part);
                     parts[i] = part;
                     partIndex = part.getPartType();
                     prevPos = part.position();
@@ -474,14 +474,14 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
     public ItemEntity spawnItemAtOffset(ItemStack stack, float f, float f1) {
         if (stack.isEmpty()) {
             return null;
-        } else if (this.level.isClientSide) {
+        } else if (this.level().isClientSide) {
             return null;
         } else {
             final Vec3 vec = new Vec3(0, 0, f).yRot(-f * ((float) Math.PI / 180F));
-            final ItemEntity itementity = new ItemEntity(this.level, this.getX() + vec.x, this.getY() + (double) f1, this.getZ() + vec.z, stack);
+            final ItemEntity itementity = new ItemEntity(this.level(), this.getX() + vec.x, this.getY() + (double) f1, this.getZ() + vec.z, stack);
             itementity.setDefaultPickUpDelay();
             if (captureDrops() != null) captureDrops().add(itementity);
-            else this.level.addFreshEntity(itementity);
+            else this.level().addFreshEntity(itementity);
             return itementity;
         }
     }

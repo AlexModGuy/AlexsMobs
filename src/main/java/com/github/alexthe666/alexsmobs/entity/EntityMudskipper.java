@@ -146,11 +146,11 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 1.3F, 1);
-            this.navigation = new SemiAquaticPathNavigator(this, level);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -213,14 +213,14 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         if(mudProgress > 0 && !mud){
             mudProgress -= 0.5f;
         }
-        boolean swim = !this.isOnGround() && this.isInWaterOrBubble();
+        boolean swim = !this.onGround() && this.isInWaterOrBubble();
         if(swimProgress < 5F && swim){
             swimProgress++;
         }
         if(swimProgress > 0 && !swim){
             swimProgress--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isInWaterOrBubble()) {
                 swimTimer++;
             } else {
@@ -230,7 +230,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         if (displayCooldown > 0) {
             displayCooldown--;
         }
-        if(!level.isClientSide){
+        if(!this.level().isClientSide){
             if(this.getDisplayAngle() < nextDisplayAngleFromServer){
                 this.setDisplayAngle(this.getDisplayAngle() + 1);
 
@@ -294,8 +294,8 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     @javax.annotation.Nullable
     public Entity getDisplayingPartner() {
         UUID id = getDisplayingPartnerUUID();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
@@ -309,13 +309,13 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean canDisplayWith(EntityMudskipper mudskipper) {
-        return !mudskipper.isBaby() && !mudskipper.isOrderedToSit() && !mudskipper.shouldFollow() && mudskipper.isOnGround() && mudskipper.getDisplayingPartnerUUID() == null && mudskipper.displayCooldown == 0;
+        return !mudskipper.isBaby() && !mudskipper.isOrderedToSit() && !mudskipper.shouldFollow() && mudskipper.onGround() && mudskipper.getDisplayingPartnerUUID() == null && mudskipper.displayCooldown == 0;
     }
 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return AMEntityRegistry.MUDSKIPPER.get().create(serverLevel);
+        return AMEntityRegistry.MUDSKIPPER.get().create(serverlevel());
     }
 
     public boolean isMouthOpen() {
@@ -323,7 +323,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean onMud() {
-        BlockState below = this.level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement());
+        BlockState below = this.level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement());
         return below.is(Blocks.MUD);
     }
 
@@ -446,9 +446,9 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (getRandom().nextInt(2) == 0) {
                 this.tame(player);
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
         }

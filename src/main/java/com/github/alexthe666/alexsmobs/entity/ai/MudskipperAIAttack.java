@@ -52,9 +52,9 @@ public class MudskipperAIAttack extends Goal {
                 mudball.shoot(d0, d1 + (double) f, d2, 1F, 10.0F);
                 if (!this.entity.isSilent()) {
                     this.entity.gameEvent(GameEvent.PROJECTILE_SHOOT);
-                    this.entity.level.playSound(null, this.entity.getX(), this.entity.getY(), this.entity.getZ(), AMSoundRegistry.MUDSKIPPER_SPIT.get(), this.entity.getSoundSource(), 1.0F, 1.0F + (this.entity.getRandom().nextFloat() - this.entity.getRandom().nextFloat()) * 0.2F);
+                    this.entity.level().playSound(null, this.entity.getX(), this.entity.getY(), this.entity.getZ(), AMSoundRegistry.MUDSKIPPER_SPIT.get(), this.entity.getSoundSource(), 1.0F, 1.0F + (this.entity.getRandom().nextFloat() - this.entity.getRandom().nextFloat()) * 0.2F);
                 }
-                this.entity.level.addFreshEntity(mudball);
+                this.entity.level().addFreshEntity(mudball);
                 shootCooldown = 10 + entity.getRandom().nextInt(10);
                 this.entity.openMouth(10);
             }

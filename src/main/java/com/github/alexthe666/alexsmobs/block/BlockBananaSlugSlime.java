@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -27,7 +26,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
 
     public BlockBananaSlugSlime() {
-        super(BlockBehaviour.Properties.of(Material.CLAY, MaterialColor.COLOR_YELLOW).speedFactor(0.4F).jumpFactor(0.5F).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_YELLOW).speedFactor(0.4F).jumpFactor(0.5F).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion());
     }
 
     public VoxelShape getVisualShape(BlockState p_48735_, BlockGetter p_48736_, BlockPos p_48737_, CollisionContext p_48738_) {
@@ -43,6 +42,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
         entity.setDeltaMovement(entity.getDeltaMovement().scale(0.8));
         super.entityInside(state, level, pos, entity);
     }
+
     @Override
     public boolean isSlimeBlock(BlockState state) {
         return true;
@@ -56,6 +56,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
     public boolean propagatesSkylightDown(BlockState p_48740_, BlockGetter p_48741_, BlockPos p_48742_) {
         return true;
     }
+
     @Override
     public boolean canStickTo(BlockState state, @NotNull BlockState other) {
         return !other.isStickyBlock() || other.getBlock() == this;
@@ -85,16 +86,15 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
         int i = 0;
         BlockState state = level.getBlockState(pos);
 
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             Tuple<BlockPos, Integer> tuple = queue.poll();
             BlockPos blockpos = tuple.getA();
             int j = tuple.getB();
 
-            for(Direction direction : Direction.values()) {
+            for (Direction direction : Direction.values()) {
                 BlockPos blockpos1 = blockpos.relative(direction);
                 BlockState blockstate = level.getBlockState(blockpos1);
-                Material material = blockstate.getMaterial();
-                if (blockstate.getBlock() instanceof BucketPickup && !((BucketPickup)blockstate.getBlock()).pickupBlock(level, blockpos1, blockstate).isEmpty()) {
+                if (blockstate.getBlock() instanceof BucketPickup && !((BucketPickup) blockstate.getBlock()).pickupBlock(level, blockpos1, blockstate).isEmpty()) {
                     ++i;
                     level.setBlock(blockpos1, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState(), 3);
                     if (j < 6) {
@@ -106,7 +106,7 @@ public class BlockBananaSlugSlime extends HalfTransparentBlock {
                     if (j < 6) {
                         queue.add(new Tuple<>(blockpos1, j + 1));
                     }
-                } else if (material == Material.WATER_PLANT || material == Material.REPLACEABLE_WATER_PLANT) {
+                } else if (blockstate.is(Blocks.KELP) || blockstate.is(Blocks.KELP_PLANT) || blockstate.is(Blocks.SEAGRASS) || blockstate.is(Blocks.TALL_SEAGRASS)) {
                     BlockEntity blockentity = blockstate.hasBlockEntity() ? level.getBlockEntity(blockpos1) : null;
                     dropResources(blockstate, level, blockpos1, blockentity);
                     level.setBlock(blockpos1, AMBlockRegistry.CRYSTALIZED_BANANA_SLUG_MUCUS.get().defaultBlockState(), 3);

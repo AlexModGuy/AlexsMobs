@@ -82,7 +82,7 @@ public class EntityTendonSegment  extends Entity {
         if(tickCount < 1){
             onJoinWorld();
         }else if(tickCount == 1){
-            if(!level.isClientSide){
+            if(!this.level().isClientSide){
                 this.playSound(AMSoundRegistry.TENDON_WHIP.get(),1.0F, 0.8F + this.random.nextFloat() * 0.4F);
             }
         }
@@ -112,7 +112,7 @@ public class EntityTendonSegment  extends Entity {
                 Vec3 target = new Vec3(current.getX(), current.getY(0.4F), current.getZ());
                 Vec3 lerp = target.subtract(this.position());
                 this.setDeltaMovement(lerp.scale(0.5F));
-                if(!level.isClientSide){
+                if(!this.level().isClientSide){
                     if(!hasTouched && progress >= MAX_EXTEND_TIME){
                         hasTouched = true;
                         Entity entity = getCreatorEntity();
@@ -126,13 +126,13 @@ public class EntityTendonSegment  extends Entity {
             }
         }
         Vec3 vector3d = this.getDeltaMovement();
-        if(!level.isClientSide){
+        if(!this.level().isClientSide){
             if(!hasChained){
                 if(this.getTargetsHit() > 3){
                     this.setRetracting(true);
                 }else if(creator instanceof LivingEntity && this.getProgress() >= MAX_EXTEND_TIME) {
                     Entity closestValid = null;
-                    for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8.0D))) {
+                    for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8.0D))) {
                         if (!entity.equals(creator) && !previouslyTouched.contains(entity) && isValidTarget((LivingEntity) creator, entity) && this.hasLineOfSight(entity)) {
                             if (closestValid == null || this.distanceTo(entity) < this.distanceTo(closestValid)) {
                                 closestValid = entity;
@@ -184,7 +184,7 @@ public class EntityTendonSegment  extends Entity {
     }
 
     private boolean hasLineOfSight(Entity entity) {
-        if (entity.level != this.level) {
+        if (entity.level != this.level()) {
             return false;
         } else {
             Vec3 vec3 = new Vec3(this.getX(), this.getEyeY(), this.getZ());
@@ -192,7 +192,7 @@ public class EntityTendonSegment  extends Entity {
             if (vec31.distanceTo(vec3) > 128.0D) {
                 return false;
             } else {
-                return this.level.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+                return this.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
             }
         }
     }
@@ -209,7 +209,7 @@ public class EntityTendonSegment  extends Entity {
 
     private void createChain(Entity closestValid) {
         this.entityData.set(HAS_CLAW, false);
-        EntityTendonSegment child = AMEntityRegistry.TENDON_SEGMENT.get().create(this.level);
+        EntityTendonSegment child = AMEntityRegistry.TENDON_SEGMENT.get().create(this.level());
         child.previouslyTouched = new ArrayList<>(previouslyTouched);
         child.previouslyTouched.add(closestValid);
         child.setCreatorEntityUUID(this.getCreatorEntityUUID());
@@ -219,7 +219,7 @@ public class EntityTendonSegment  extends Entity {
         child.setTargetsHit(this.getTargetsHit() + 1);
         updateLastTendon(child);
         child.setHasGlint(this.hasGlint());
-        this.level.addFreshEntity(child);
+        this.level().addFreshEntity(child);
     }
 
     private void onJoinWorld(){
@@ -258,8 +258,8 @@ public class EntityTendonSegment  extends Entity {
 
     public Entity getCreatorEntity() {
         UUID uuid = getCreatorEntityUUID();
-        if(uuid != null && !level.isClientSide){
-            return ((ServerLevel) level).getEntity(uuid);
+        if(uuid != null && !this.level().isClientSide){
+            return ((ServerLevel) level()).getEntity(uuid);
         }
         return null;
     }
@@ -273,7 +273,7 @@ public class EntityTendonSegment  extends Entity {
     }
 
     public Entity getFromEntity() {
-        return getFromEntityID() == -1 ? null : this.level.getEntity(getFromEntityID());
+        return getFromEntityID() == -1 ? null : this.level().getEntity(getFromEntityID());
     }
 
     public int getToEntityID() {
@@ -285,7 +285,7 @@ public class EntityTendonSegment  extends Entity {
     }
 
     public Entity getToEntity() {
-        return getToEntityID() == -1 ? null : this.level.getEntity(getToEntityID());
+        return getToEntityID() == -1 ? null : this.level().getEntity(getToEntityID());
     }
 
     public int getTargetsHit() {

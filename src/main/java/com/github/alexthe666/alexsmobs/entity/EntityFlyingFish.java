@@ -116,7 +116,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         if(prev && source.getEntity() != null){
             double range = 15;
             this.glideIn = 0;
-            List<? extends EntityFlyingFish> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range/2, range));
+            List<? extends EntityFlyingFish> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range/2, range));
             for(EntityFlyingFish fsh : list){
                 fsh.glideIn = 0;
             }
@@ -128,7 +128,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         super.tick();
         this.prevOnLandProgress = onLandProgress;
         this.prevFlyProgress = flyProgress;
-        boolean onLand = !this.isInWaterOrBubble() && this.isOnGround();
+        boolean onLand = !this.isInWaterOrBubble() && this.onGround();
         if (onLand && onLandProgress < 5F) {
             onLandProgress++;
         }
@@ -154,7 +154,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         }
         this.setXRot(rotlerp(this.getXRot(), f2, 9));
         if(!isInWaterOrBubble() && this.isAlive()){
-            if (this.isOnGround() && random.nextFloat() < 0.05F) {
+            if (this.onGround() && random.nextFloat() < 0.05F) {
                 this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                 this.setYRot(this.random.nextFloat() * 360.0F);
                 this.playSound(SoundEvents.COD_FLOP, this.getSoundVolume(), this.getVoicePitch());
@@ -230,7 +230,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     private boolean canSeeBlock(BlockPos destinationBlock) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
-        BlockHitResult result = this.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        BlockHitResult result = this.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         return result.getBlockPos().equals(destinationBlock);
     }
 
@@ -334,7 +334,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         public GlideGoal(EntityFlyingFish fish) {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));
             this.fish = fish;
-            this.level = fish.level;
+            this.level = fish.level();
         }
 
         @Override
@@ -387,7 +387,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
 
         @Override
         public boolean canContinueToUse() {
-            return surface != null && glide != null && (!fish.isOnGround() || fish.isInWaterOrBubble());
+            return surface != null && glide != null && (!fish.onGround() || fish.isInWaterOrBubble());
         }
 
         @Override

@@ -21,8 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -36,7 +35,7 @@ public class BlockEndPirateAnchorWinch extends BaseEntityBlock implements AMSpec
     protected static final VoxelShape FULL_AABB_NS = Block.box(0.0D, 3.0D, 3.0D, 16.0D, 13.0D, 13.0D);
 
     protected BlockEndPirateAnchorWinch() {
-        super(Properties.of(Material.STONE, MaterialColor.COLOR_PURPLE).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
+        super(Properties.of().mapColor(MapColor.COLOR_BLACK).friction(0.97F).strength(10.0F).lightLevel((i) -> 6).sound(SoundType.STONE).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(POWERED, Boolean.valueOf(false)));
     }
 

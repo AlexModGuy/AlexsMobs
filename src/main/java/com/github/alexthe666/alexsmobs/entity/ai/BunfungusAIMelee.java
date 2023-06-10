@@ -37,7 +37,7 @@ public class BunfungusAIMelee extends Goal {
         double dist = chungus.distanceTo(chungus.getTarget()) - chungus.getTarget().getBbWidth();
         if(dist < 2.0D){
             if(hasJumped){
-                if(!chungus.isOnGround()){
+                if(!chungus.onGround()){
                     chungus.getTarget().hurt(chungus.damageSources().mobAttack(chungus), 10);
                 }
                 hasJumped = false;
@@ -52,7 +52,7 @@ public class BunfungusAIMelee extends Goal {
             chungus.getNavigation().moveTo(chungus.getTarget(), 1.0D);
         }else{
             chungus.getNavigation().stop();
-            if(chungus.isOnGround()){
+            if(chungus.onGround()){
                 Vec3 vector3d = this.chungus.getDeltaMovement();
                 Vec3 vector3d1 = new Vec3(chungus.getTarget().getX() - this.chungus.getX(), 0.0D, chungus.getTarget().getZ() - this.chungus.getZ());
                 if (vector3d1.lengthSqr() > 1.0E-7D) {

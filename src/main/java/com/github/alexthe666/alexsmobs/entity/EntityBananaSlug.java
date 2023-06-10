@@ -195,10 +195,10 @@ public class EntityBananaSlug extends Animal {
         }
 
         Vec3 vector3d = this.getDeltaMovement();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.setBesideClimbableBlock(this.horizontalCollision);
-            this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.isOnGround());
-            if (this.isOnGround() || this.isInWaterOrBubble() || this.isInLava()) {
+            this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.onGround());
+            if (this.onGround() || this.isInWaterOrBubble() || this.isInLava()) {
                 this.entityData.set(ATTACHED_FACE, Direction.DOWN);
             } else  if (this.verticalCollision) {
                 this.entityData.set(ATTACHED_FACE, Direction.UP);
@@ -210,7 +210,7 @@ public class EntityBananaSlug extends Animal {
                     BlockPos antPos = new BlockPos(Mth.floor(this.getX()), Mth.floor(this.getY()), Mth.floor(this.getZ()));
                     BlockPos offsetPos = antPos.relative(dir);
                     Vec3 offset = Vec3.atCenterOf(offsetPos);
-                    if (closestDistance > this.position().distanceTo(offset) && level.loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
+                    if (closestDistance > this.position().distanceTo(offset) && level().loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
                         closestDistance = this.position().distanceTo(offset);
                         closestDirection = dir;
                     }
@@ -227,7 +227,7 @@ public class EntityBananaSlug extends Animal {
                     Vec3 vec = Vec3.atLowerCornerOf(this.getAttachmentFacing().getNormal());
                     this.setDeltaMovement(this.getDeltaMovement().add(vec.normalize().multiply(0.1F, 0.1F, 0.1F)));
                 }
-                if (!this.onGround && vector3d.y < 0.0D) {
+                if (!this.onGround() && vector3d.y < 0.0D) {
                     this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.5D, 1.0D));
                     flag = true;
                 }
@@ -244,7 +244,7 @@ public class EntityBananaSlug extends Animal {
                 this.setDeltaMovement(vector3d.multiply(1.0D, 0.4D, 1.0D));
             }
         }
-        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilSlime <= 0) {
+        if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilSlime <= 0) {
             this.spawnAtLocation(AMItemRegistry.BANANA_SLUG_SLIME.get());
             this.timeUntilSlime = this.random.nextInt(12000) + 24000;
         }
@@ -270,12 +270,12 @@ public class EntityBananaSlug extends Animal {
         if(this.isInWaterOrBubble()){
             return false;
         }
-        if(this.isOnGround()){
+        if(this.onGround()){
             Vec3 modelBack = new Vec3(0, -0.1F, isBaby() ? -0.35F : -0.7F).yRot(-this.trailYaw * ((float)Math.PI / 180F));
             Vec3 slugBack = this.position().add(modelBack);
             BlockPos backPos = AMBlockPos.fromVec3(slugBack);
-            BlockState state = level.getBlockState(backPos);
-            VoxelShape shape = state.getCollisionShape(level, backPos);
+            BlockState state = level().getBlockState(backPos);
+            VoxelShape shape = state.getCollisionShape(level(), backPos);
             if(shape.isEmpty()){
                 return false;
             }else{
@@ -284,8 +284,8 @@ public class EntityBananaSlug extends Animal {
             }
         }else if(this.getAttachmentFacing().getAxis() != Direction.Axis.Y){
             BlockPos pos = this.blockPosition().relative(this.getAttachmentFacing()).above(this.getDeltaMovement().y <= -0.001F ? 1 : -1);
-            BlockState state = level.getBlockState(pos);
-            VoxelShape shape = state.getCollisionShape(level, pos);
+            BlockState state = level().getBlockState(pos);
+            VoxelShape shape = state.getCollisionShape(level(), pos);
             return !shape.isEmpty();
         }
         return this.getAttachmentFacing() != Direction.DOWN;
@@ -309,7 +309,7 @@ public class EntityBananaSlug extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        EntityBananaSlug slug = AMEntityRegistry.BANANA_SLUG.get().create(level);
+        EntityBananaSlug slug = AMEntityRegistry.BANANA_SLUG.get().create(level());
         slug.setVariant(this.getVariant());
         return slug;
     }

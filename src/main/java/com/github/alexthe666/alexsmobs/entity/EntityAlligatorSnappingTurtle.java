@@ -184,7 +184,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
         if (chaseTime < 0)
             chaseTime++;
 
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.setBesideClimbableBlock(this.horizontalCollision && this.isInWater());
             if (this.isWaiting()) {
                 waitTime++;
@@ -394,9 +394,9 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
 
     @Override
     public void shear(SoundSource category) {
-        this.level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
+        this.level().playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
         this.gameEvent(GameEvent.ENTITY_INTERACT);
-        if (!this.level.isClientSide()) {
+        if (!this.level().isClientSide()) {
             if (random.nextFloat() < this.getMoss() * 0.05F) {
                 this.spawnAtLocation(AMItemRegistry.SPIKED_SCUTE.get());
             } else {

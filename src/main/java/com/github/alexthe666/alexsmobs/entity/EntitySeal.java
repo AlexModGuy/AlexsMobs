@@ -126,11 +126,11 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AquaticMoveController(this, 1.5F);
-            this.navigation = new SemiAquaticPathNavigator(this, level);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -141,7 +141,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
             double range = 15;
             int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
-            List<? extends EntitySeal> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
+            List<? extends EntitySeal> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntitySeal gaz : list) {
                 gaz.revengeCooldown = fleeTime;
                 gaz.setBasking(false);
@@ -210,9 +210,9 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         if (!dig && digProgress > 0F) {
             digProgress--;
         }
-        if (dig && level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).canOcclude()) {
+        if (dig && level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).canOcclude()) {
             BlockPos posit = this.getBlockPosBelowThatAffectsMyMovement();
-            BlockState understate = level.getBlockState(posit);
+            BlockState understate = level().getBlockState(posit);
             for (int i = 0; i < 4 + random.nextInt(2); i++) {
                 double particleX = posit.getX() + random.nextFloat();
                 double particleY = posit.getY() + 1F;
@@ -223,7 +223,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
                 level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
             }
         }
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isBasking()) {
                 if (this.getLastHurtByMob() != null || isInLove() || revengeCooldown > 0 || this.isInWaterOrBubble() || this.getTarget() != null || baskingTimer > 1000 && this.getRandom().nextInt(100) == 0) {
                     this.setBasking(false);
@@ -276,7 +276,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
             if(this.bobbingProgress > 0F){
                 this.bobbingProgress--;
             }
-            if(!level.isClientSide && random.nextInt(300) == 0 && !this.isInWater() && this.revengeCooldown == 0){
+            if(!this.level().isClientSide && random.nextInt(300) == 0 && !this.isInWater() && this.revengeCooldown == 0){
                 bob = 20 + random.nextInt(20);
                 this.entityData.set(BOB_TICKS, bob);
             }

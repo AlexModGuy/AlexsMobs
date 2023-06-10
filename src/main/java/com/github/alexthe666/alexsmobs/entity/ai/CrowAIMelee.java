@@ -40,7 +40,7 @@ public class CrowAIMelee extends Goal {
         circlingTime = 0;
         maxCircleTime = 20 + crow.getRandom().nextInt(100);
         circleDistance = 1F + crow.getRandom().nextFloat() * 3F;
-        if(crow.isOnGround()){
+        if(crow.onGround()){
             crow.setFlying(false);
         }
     }
@@ -78,7 +78,7 @@ public class CrowAIMelee extends Goal {
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
-        if (crow.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
+        if (crow.level().isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;
         }
         return null;

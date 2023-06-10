@@ -62,15 +62,15 @@ public class EffectDebilitatingSting extends MobEffect {
                 entity.hurt(entity.damageSources().magic(), (amplifier + 1) * 30);
                 if (amplifier > 0) {
                     BlockPos surface = entity.blockPosition();
-                    while (!entity.level.isEmptyBlock(surface) && surface.getY() < 256) {
+                    while (!entity.level().isEmptyBlock(surface) && surface.getY() < 256) {
                         surface = surface.above();
                     }
-                    EntityTarantulaHawk baby = AMEntityRegistry.TARANTULA_HAWK.get().create(entity.level);
+                    EntityTarantulaHawk baby = AMEntityRegistry.TARANTULA_HAWK.get().create(entity.level());
                     baby.setBaby(true);
                     baby.setPos(entity.getX(), surface.getY() + 0.1F, entity.getZ());
-                    if (!entity.level.isClientSide) {
-                        baby.finalizeSpawn((ServerLevelAccessor) entity.level, entity.level.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.BREEDING, null, null);
-                        entity.level.addFreshEntity(baby);
+                    if (!entity.level().isClientSide) {
+                        baby.finalizeSpawn((ServerLevelAccessor) entity.level(), entity.level().getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.BREEDING, null, null);
+                        entity.level().addFreshEntity(baby);
                     }
                 }
                 entity.setNoGravity(false);
@@ -83,9 +83,9 @@ public class EffectDebilitatingSting extends MobEffect {
         Vec3 vec3 = entity.getEyePosition();
         float f = entity.getDimensions(entity.getPose()).width * 0.8F;
         AABB axisalignedbb = AABB.ofSize(vec3, (double)f, 1.0E-6D, (double)f);
-        return entity.level.getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
+        return entity.level().getBlockStates(axisalignedbb).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
             BlockPos blockpos = AMBlockPos.fromVec3(vec3);
-            return p_185969_.isSuffocating(entity.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(entity.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
+            return p_185969_.isSuffocating(entity.level(), blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(entity.level(), blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisalignedbb), BooleanOp.AND);
         });
     }
 

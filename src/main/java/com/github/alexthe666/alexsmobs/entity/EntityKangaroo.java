@@ -128,7 +128,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     protected void tickLeash() {
         super.tickLeash();
         Entity lvt_1_1_ = this.getLeashHolder();
-        if (lvt_1_1_ != null && lvt_1_1_.level == this.level) {
+        if (lvt_1_1_ != null && lvt_1_1_.level == this.level()) {
             this.restrictTo(lvt_1_1_.blockPosition(), 5);
             float lvt_2_1_ = this.distanceTo(lvt_1_1_);
             if (this.isSitting()) {
@@ -229,9 +229,9 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             carrotFeedings++;
             if (carrotFeedings > 10 && getRandom().nextInt(2) == 0 || carrotFeedings > 15) {
                 this.tame(player);
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
         }
@@ -329,7 +329,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public void openGUI(Player playerEntity) {
-        if (!this.level.isClientSide && (!this.hasPassenger(playerEntity))) {
+        if (!this.level().isClientSide && (!this.hasPassenger(playerEntity))) {
             NetworkHooks.openScreen((ServerPlayer) playerEntity, new MenuProvider() {
                 @Override
                 public AbstractContainerMenu createMenu(int p_createMenu_1_, Inventory p_createMenu_2_, Player p_createMenu_3_) {
@@ -474,7 +474,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             sittingTime = 0;
             maxSitTime = 75 + random.nextInt(50);
         }
-        if (!level.isClientSide && this.getAnimation() == NO_ANIMATION && this.getCommand() != 1 && !this.isStanding() && !this.isSitting() && random.nextInt(1500) == 0) {
+        if (!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && this.getCommand() != 1 && !this.isStanding() && !this.isSitting() && random.nextInt(1500) == 0) {
             maxSitTime = 500 + random.nextInt(350);
             this.setOrderedToSit(true);
         }
@@ -488,20 +488,20 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         if (this.forcedSit() && !this.isVehicle() && this.isTame()) {
             this.setOrderedToSit(true);
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (tickCount == 1) {
                 updateClientInventory();
             }
 
             if (!moving && this.getAnimation() == NO_ANIMATION && !this.isSitting() && !this.isStanding()) {
-                if ((getRandom().nextInt(180) == 0 || this.getHealth() < this.getMaxHealth() && getRandom().nextInt(40) == 0) && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK)) {
+                if ((getRandom().nextInt(180) == 0 || this.getHealth() < this.getMaxHealth() && getRandom().nextInt(40) == 0) && level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK)) {
                     this.setAnimation(ANIMATION_EAT_GRASS);
                 }
             }
-            if (this.getAnimation() == ANIMATION_EAT_GRASS && this.getAnimationTick() == 20 && this.getHealth() < this.getMaxHealth() && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK)) {
+            if (this.getAnimation() == ANIMATION_EAT_GRASS && this.getAnimationTick() == 20 && this.getHealth() < this.getMaxHealth() && level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK)) {
                 this.heal(6);
-                this.level.levelEvent(2001, blockPosition().below(), Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
-                this.level.setBlock(blockPosition().below(), Blocks.DIRT.defaultBlockState(), 2);
+                this.level().levelEvent(2001, blockPosition().below(), Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
+                this.level().setBlock(blockPosition().below(), Blocks.DIRT.defaultBlockState(), 2);
             }
             if (this.getHealth() < this.getMaxHealth() && this.isTame() && eatCooldown == 0) {
                 eatCooldown = 20 + random.nextInt(40);
@@ -570,7 +570,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         if (clientArmorCooldown > 0) {
             clientArmorCooldown--;
         }
-        if (tickCount > 5 && !level.isClientSide && clientArmorCooldown == 0 && this.isTame()) {
+        if (tickCount > 5 && !this.level().isClientSide && clientArmorCooldown == 0 && this.isTame()) {
             this.updateClientInventory();
             clientArmorCooldown = 20;
         }
@@ -797,7 +797,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public void resetKangarooSlots() {
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             int swordIndex = -1;
             double swordDamage = 0;
             int helmetIndex = -1;
@@ -842,7 +842,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     private void updateClientInventory() {
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             for (int i = 0; i < 9; i++) {
                 AlexsMobs.sendMSGToAll(new MessageKangarooInventorySync(this.getId(), i, kangarooInventory.getItem(i)));
             }
@@ -943,8 +943,8 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             }
         }
 
-        if (!this.level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte) 1);
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte) 1);
         }
 
     }

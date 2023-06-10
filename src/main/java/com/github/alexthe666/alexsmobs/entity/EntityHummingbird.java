@@ -132,7 +132,7 @@ public class EntityHummingbird extends Animal {
     protected PathNavigation createNavigation(Level worldIn) {
         FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
             public boolean isStableDestination(BlockPos pos) {
-                return !this.level.getBlockState(pos.below(2)).isAir();
+                return !this.level().getBlockState(pos.below(2)).isAir();
             }
         };
         flyingpathnavigator.setCanOpenDoors(false);
@@ -305,7 +305,7 @@ public class EntityHummingbird extends Animal {
                     double d2 = this.random.nextGaussian() * 0.02D;
                     double d0 = this.random.nextGaussian() * 0.02D;
                     double d1 = this.random.nextGaussian() * 0.02D;
-                    this.level.addParticle(ParticleTypes.FALLING_NECTAR, this.getFeederPos().getX() + 0.2F + (double) (this.random.nextFloat() * 0.6F), this.getFeederPos().getY() + 0.1F, this.getFeederPos().getZ() + 0.2F + (double) (this.random.nextFloat() * 0.6F), d0, d1, d2);
+                    this.level().addParticle(ParticleTypes.FALLING_NECTAR, this.getFeederPos().getX() + 0.2F + (double) (this.random.nextFloat() * 0.6F), this.getFeederPos().getY() + 0.1F, this.getFeederPos().getZ() + 0.2F + (double) (this.random.nextFloat() * 0.6F), d0, d1, d2);
                 }
                 this.sippy = true;
             }
@@ -329,7 +329,7 @@ public class EntityHummingbird extends Animal {
         double x = pos.getX() + 0.5F;
         double y = pos.getY() + 0.5F;
         double z = pos.getZ() + 0.5F;
-        HitResult result = this.level.clip(new ClipContext(new Vec3(this.getX(), this.getY() + (double) this.getEyeHeight(), this.getZ()), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        HitResult result = this.level().clip(new ClipContext(new Vec3(this.getX(), this.getY() + (double) this.getEyeHeight(), this.getZ()), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         double dist = result.getLocation().distanceToSqr(x, y, z);
         return dist <= 1.0D || result.getType() == HitResult.Type.MISS;
     }
@@ -357,7 +357,7 @@ public class EntityHummingbird extends Animal {
                runCooldown--;
            }else{
                BlockPos feedPos = getFeederPos();
-               if(feedPos != null && isValidFeeder(level.getBlockState(feedPos))){
+               if(feedPos != null && isValidFeeder(level().getBlockState(feedPos))){
                    localFeeder = feedPos;
                    return true;
                }else{
@@ -365,12 +365,12 @@ public class EntityHummingbird extends Animal {
                    BlockPos closest = null;
                    for (BlockPos pos : beacons) {
                        if (closest == null || EntityHummingbird.this.distanceToSqr(closest.getX(), closest.getY(), closest.getZ()) > EntityHummingbird.this.distanceToSqr(pos.getX(), pos.getY(), pos.getZ())) {
-                           if (isValidFeeder(level.getBlockState(pos))) {
+                           if (isValidFeeder(level().getBlockState(pos))) {
                                closest = pos;
                            }
                        }
                    }
-                   if (closest != null && isValidFeeder(level.getBlockState(closest))) {
+                   if (closest != null && isValidFeeder(level().getBlockState(closest))) {
                        localFeeder = closest;
                        return true;
                    }
@@ -381,12 +381,12 @@ public class EntityHummingbird extends Animal {
         }
 
         public boolean canContinueToUse(){
-            return localFeeder != null && isValidFeeder(level.getBlockState(localFeeder)) && EntityHummingbird.this.sipCooldown == 0;
+            return localFeeder != null && isValidFeeder(level().getBlockState(localFeeder)) && EntityHummingbird.this.sipCooldown == 0;
         }
 
         public void tick(){
-            if(localFeeder != null && isValidFeeder(level.getBlockState(localFeeder))){
-                if(EntityHummingbird.this.getY() > localFeeder.getY() && !EntityHummingbird.this.isOnGround()){
+            if(localFeeder != null && isValidFeeder(level().getBlockState(localFeeder))){
+                if(EntityHummingbird.this.getY() > localFeeder.getY() && !EntityHummingbird.this.onGround()){
                     EntityHummingbird.this.getMoveControl().setWantedPosition(localFeeder.getX() + 0.5F, localFeeder.getY() + 0.1F, localFeeder.getZ() + 0.5F, 1F);
                 }else{
                     EntityHummingbird.this.getMoveControl().setWantedPosition(localFeeder.getX() + random.nextInt(4) - 2, EntityHummingbird.this.getY() + 1F, localFeeder.getZ() + random.nextInt(4) - 2, 1F);
@@ -397,10 +397,10 @@ public class EntityHummingbird extends Animal {
                     EntityHummingbird.this.lookAt(EntityAnchorArgument.Anchor.EYES, vec);
                     idleAtFlowerTime++;
                     EntityHummingbird.this.setFeederPos(localFeeder);
-                    EntityHummingbird.this.level.broadcastEntityEvent(EntityHummingbird.this, (byte)68);
+                    EntityHummingbird.this.level().broadcastEntityEvent(EntityHummingbird.this, (byte)68);
                     if(idleAtFlowerTime > 55){
-                        if(EntityHummingbird.this.getCropsPollinated() > 2 && random.nextInt(25) == 0 && isValidFeeder(level.getBlockState(localFeeder))){
-                            level.setBlockAndUpdate(localFeeder, level.getBlockState(localFeeder).setValue(BlockHummingbirdFeeder.CONTENTS, 0));
+                        if(EntityHummingbird.this.getCropsPollinated() > 2 && random.nextInt(25) == 0 && isValidFeeder(level().getBlockState(localFeeder))){
+                            level.setBlockAndUpdate(localFeeder, level().getBlockState(localFeeder).setValue(BlockHummingbirdFeeder.CONTENTS, 0));
                         }
                         EntityHummingbird.this.setCropsPollinated(EntityHummingbird.this.getCropsPollinated() + 1);
                         EntityHummingbird.this.sipCooldown = 120 + random.nextInt(1200);

@@ -109,7 +109,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level);
+        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level());
         flyingpathnavigation.setCanOpenDoors(false);
         flyingpathnavigation.setCanFloat(true);
         flyingpathnavigation.setCanPassDoors(true);
@@ -199,11 +199,11 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     public LivingEntity getLaserTarget() {
         if (!this.hasLaser()) {
             return null;
-        } else if (this.level.isClientSide) {
+        } else if (this.level().isClientSide) {
             if (this.laserTargetEntity != null) {
                 return this.laserTargetEntity;
             } else {
-                Entity fromID = this.level.getEntity(this.entityData.get(LASER_ENTITY_ID));
+                Entity fromID = this.level().getEntity(this.entityData.get(LASER_ENTITY_ID));
                 if (fromID instanceof LivingEntity) {
                     this.laserTargetEntity = (LivingEntity) fromID;
                     return this.laserTargetEntity;
@@ -282,15 +282,15 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             }
             if (!this.hasEmerged()) {
                 this.setInvisible(true);
-                if(this.level.hasNearbyAlivePlayer(this.getX(), this.getY(), this.getZ(), 9)){
+                if(this.level().hasNearbyAlivePlayer(this.getX(), this.getY(), this.getZ(), 9)){
                     this.setAnimation(ANIMATION_EMERGE);
                 }
             }else{
                 this.setInvisible(this.hasEffect(MobEffects.INVISIBILITY));
             }
             if (this.getAnimation() == ANIMATION_EMERGE) {
-                if(level.isClientSide){
-                    this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getRandomX(0.75F), this.getRandomY(), this.getRandomZ(0.75F), (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
+                if(this.level().isClientSide){
+                    this.level().addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getRandomX(0.75F), this.getRandomY(), this.getRandomZ(0.75F), (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
                 }
                 if(this.getAnimationTick() == 1){
                     this.playSound(AMSoundRegistry.FARSEER_EMERGE.get(), this.getSoundVolume(), this.getVoicePitch());
@@ -303,7 +303,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                         meleeCooldown = 5;
                         int i = random.nextInt(HANDS);
                         this.isStriking[i] = true;
-                        this.level.broadcastEntityEvent(this, (byte) (40 + i));
+                        this.level().broadcastEntityEvent(this, (byte) (40 + i));
                     }
                 }
             }
@@ -321,7 +321,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                     }
                     if (strikeProgress[i] == 5F) {
                         isStriking[i] = false;
-                        this.level.broadcastEntityEvent(this, (byte) (44 + i));
+                        this.level().broadcastEntityEvent(this, (byte) (44 + i));
                         if (target != null && distanceTo(target) <= 4F) {
                             target.hurt(this.damageSources().mobAttack(this), 5 + random.nextInt(5));
                         }
@@ -350,7 +350,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                         double width = d4 / (d3 * progress);
                         double d5 = (random.nextDouble() - 0.5F) * width;
                         double d6 = (random.nextDouble() - 0.5F) * width;
-                        this.level.addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getX() + d0 * d4 + d5, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4 + d6, (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
+                        this.level().addParticle(AMParticleRegistry.STATIC_SPARK.get(), this.getX() + d0 * d4 + d5, this.getEyeY() + d1 * d4, this.getZ() + d2 * d4 + d6, (this.getRandom().nextFloat() - 0.5F) * 0.2F, this.getRandom().nextFloat() * 0.2F, (this.getRandom().nextFloat() - 0.5F) * 0.2F);
                     }
                 }
             }
@@ -479,13 +479,13 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
     private Vec3 calculateLaserHit(Vec3 target) {
         Vec3 eyes = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        HitResult hitResult = this.level.clip(new ClipContext(eyes, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        HitResult hitResult = this.level().clip(new ClipContext(eyes, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         return hitResult.getLocation();
     }
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     public void travel(Vec3 vec3) {
@@ -551,10 +551,10 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
 
         private BlockPos getFarseerGround(BlockPos in) {
             BlockPos position = new BlockPos(in.getX(), (int) parentEntity.getY(), in.getZ());
-            while (position.getY() < 256 && !parentEntity.level.getFluidState(position).isEmpty()) {
+            while (position.getY() < 256 && !parentEntity.level().getFluidState(position).isEmpty()) {
                 position = position.above();
             }
-            while (position.getY() > 1 && parentEntity.level.isEmptyBlock(position)) {
+            while (position.getY() > 1 && parentEntity.level().isEmptyBlock(position)) {
                 position = position.below();
             }
             return position;

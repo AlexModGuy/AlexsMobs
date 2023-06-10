@@ -128,7 +128,7 @@ public class EntityVoidWormShot extends Entity {
         this.updateRotation();
         float f = 0.99F;
         float f1 = 0.06F;
-        if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
+        if (this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
             this.remove(RemovalReason.DISCARDED);
         } else if (this.isInWaterOrBubble()) {
             this.remove(RemovalReason.DISCARDED);
@@ -159,8 +159,8 @@ public class EntityVoidWormShot extends Entity {
 
 
     protected void onHitBlock(BlockHitResult p_230299_1_) {
-        BlockState blockstate = this.level.getBlockState(p_230299_1_.getBlockPos());
-        if (!this.level.isClientSide) {
+        BlockState blockstate = this.level().getBlockState(p_230299_1_.getBlockPos());
+        if (!this.level().isClientSide) {
             this.remove(RemovalReason.DISCARDED);
         }
     }
@@ -187,10 +187,10 @@ public class EntityVoidWormShot extends Entity {
 
     @Nullable
     public Entity getShooter() {
-        if (this.ownerUUID != null && this.level instanceof ServerLevel) {
-            return ((ServerLevel) this.level).getEntity(this.ownerUUID);
+        if (this.ownerUUID != null && this.level() instanceof ServerLevel) {
+            return ((ServerLevel) this.level()).getEntity(this.ownerUUID);
         } else {
-            return this.ownerNetworkId != 0 ? this.level.getEntity(this.ownerNetworkId) : null;
+            return this.ownerNetworkId != 0 ? this.level().getEntity(this.ownerNetworkId) : null;
         }
     }
 
@@ -219,7 +219,7 @@ public class EntityVoidWormShot extends Entity {
     private boolean checkLeftOwner() {
         Entity entity = this.getShooter();
         if (entity != null) {
-            for (Entity entity1 : this.level.getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
+            for (Entity entity1 : this.level().getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
                 return !p_234613_0_.isSpectator() && p_234613_0_.isPickable();
             })) {
                 if (entity1.getRootVehicle() == entity.getRootVehicle()) {

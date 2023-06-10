@@ -31,7 +31,7 @@ public class MantisShrimpAIFryRice extends MoveToBlockGoal {
         cookingTicks = 0;
         if(!wasLitPrior){
             BlockPos blockpos = this.getMoveToTarget().below();
-            BlockState state = mantisShrimp.level.getBlockState(blockpos);
+            BlockState state = mantisShrimp.level().getBlockState(blockpos);
             if(state.getBlock() instanceof AbstractFurnaceBlock && !wasLitPrior){
                 mantisShrimp.level.setBlockAndUpdate(blockpos, state.setValue(AbstractFurnaceBlock.LIT, false));
             }
@@ -43,7 +43,7 @@ public class MantisShrimpAIFryRice extends MoveToBlockGoal {
         super.tick();
         BlockPos blockpos = this.getMoveToTarget().below();
         if(this.isReachedTarget()){
-            BlockState state = mantisShrimp.level.getBlockState(blockpos);
+            BlockState state = mantisShrimp.level().getBlockState(blockpos);
             if(mantisShrimp.punchProgress == 0){
                 mantisShrimp.punch();
             }

@@ -102,13 +102,13 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     public void setCombatTask() {
-        if (this.level != null && !this.level.isClientSide) {
+        if (this.level() != null && !this.level().isClientSide) {
             this.goalSelector.removeGoal(this.aiAttackOnCollide);
             this.goalSelector.removeGoal(this.aiArrowAttack);
             ItemStack itemstack = this.getMainHandItem();
             if (itemstack.getItem() instanceof ProjectileWeaponItem || itemstack.getItem() instanceof TridentItem) {
                 int i = 10;
-                if (this.level.getDifficulty() != Difficulty.HARD) {
+                if (this.level().getDifficulty() != Difficulty.HARD) {
                     i = 30;
                 }
 
@@ -122,15 +122,15 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     public void attackEntityWithRangedAttackTrident(LivingEntity target, float distanceFactor) {
-        ThrownTrident tridententity = new ThrownTrident(this.level, this, new ItemStack(Items.TRIDENT));
+        ThrownTrident tridententity = new ThrownTrident(this.level(), this, new ItemStack(Items.TRIDENT));
         double d0 = target.getX() - this.getX();
         double d1 = target.getY(0.3333333333333333D) - tridententity.getY();
         double d2 = target.getZ() - this.getZ();
         double d3 = Mth.sqrt((float)(d0 * d0 + d2 * d2));
-        tridententity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4));
+        tridententity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
         this.gameEvent(GameEvent.PROJECTILE_SHOOT);
         this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.level.addFreshEntity(tridententity);
+        this.level().addFreshEntity(tridententity);
     }
 
     public void performRangedAttack(LivingEntity target, float distanceFactor) {
@@ -146,10 +146,10 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         double d1 = target.getY(0.3333333333333333D) - abstractarrowentity.getY();
         double d2 = target.getZ() - this.getZ();
         double d3 = Mth.sqrt((float)(d0 * d0 + d2 * d2));
-        abstractarrowentity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4));
+        abstractarrowentity.shoot(d0, d1 + d3 * (double) 0.2F, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
         this.gameEvent(GameEvent.PROJECTILE_SHOOT);
         this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-        this.level.addFreshEntity(abstractarrowentity);
+        this.level().addFreshEntity(abstractarrowentity);
     }
 
     protected AbstractArrow fireArrow(ItemStack arrowStack, float distanceFactor) {
@@ -163,18 +163,18 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     public void setItemSlot(EquipmentSlot slotIn, ItemStack stack) {
         if (slotIn == EquipmentSlot.HEAD && !stack.sameItem(this.getItemBySlot(EquipmentSlot.HEAD))) {
             helmetSwapProgress = 5;
-            this.level.broadcastEntityEvent(this, (byte) 45);
+            this.level().broadcastEntityEvent(this, (byte) 45);
         }
         if (slotIn == EquipmentSlot.MAINHAND && !stack.sameItem(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
             rightSwapProgress = 5;
-            this.level.broadcastEntityEvent(this, (byte) 46);
+            this.level().broadcastEntityEvent(this, (byte) 46);
         }
         if (slotIn == EquipmentSlot.OFFHAND && !stack.sameItem(this.getItemBySlot(EquipmentSlot.OFFHAND))) {
             leftSwapProgress = 5;
-            this.level.broadcastEntityEvent(this, (byte) 47);
+            this.level().broadcastEntityEvent(this, (byte) 47);
         }
         super.setItemSlot(slotIn, stack);
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.setCombatTask();
         }
 
@@ -248,7 +248,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
                 float f1 = this.random.nextFloat() * 0.5F + 0.5F;
                 float f2 = Mth.sin(f) * 0.5F * f1;
                 float f3 = Mth.cos(f) * 0.5F * f1;
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(AMItemRegistry.MIMICREAM.get())), this.getX() + (double)f2, this.getY(), this.getZ() + (double)f3, 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(AMItemRegistry.MIMICREAM.get())), this.getX() + (double)f2, this.getY(), this.getZ() + (double)f3, 0.0D, 0.0D, 0.0D);
             }
 
             this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
@@ -265,7 +265,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
                     double d2 = this.random.nextGaussian() * 0.02D;
                     double d0 = this.random.nextGaussian() * 0.02D;
                     double d1 = this.random.nextGaussian() * 0.02D;
-                    this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.OFF_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                    this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.OFF_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
                 }
                 if (eatingTicks % 6 == 0) {
                     this.gameEvent(GameEvent.EAT);
@@ -286,7 +286,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
                     double d2 = this.random.nextGaussian() * 0.02D;
                     double d0 = this.random.nextGaussian() * 0.02D;
                     double d1 = this.random.nextGaussian() * 0.02D;
-                    this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                    this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
                 }
                 this.gameEvent(GameEvent.EAT);
                 this.playSound(SoundEvents.GENERIC_EAT, this.getSoundVolume(), this.getVoicePitch());
@@ -381,7 +381,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         }
 
         public void tick() {
-            if (this.mob.isOnGround()) {
+            if (this.mob.onGround()) {
                 this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
                 if (this.jumpDelay-- <= 0 && this.operation != Operation.WAIT) {
                     this.jumpDelay = this.slime.getJumpDelay();

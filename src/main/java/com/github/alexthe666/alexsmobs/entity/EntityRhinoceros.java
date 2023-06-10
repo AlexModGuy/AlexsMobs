@@ -131,18 +131,18 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     public void tick() {
         super.tick();
         AnimationHandler.INSTANCE.updateAnimations(this);
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.getAnimation() == NO_ANIMATION && (this.getTarget() == null || !this.getTarget().isAlive())) {
-                if (this.getDeltaMovement().lengthSqr() < 0.03D && (getRandom().nextInt(500) == 0 && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK))) {
+                if (this.getDeltaMovement().lengthSqr() < 0.03D && (getRandom().nextInt(500) == 0 && level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK))) {
                     this.setAnimation(ANIMATION_EAT_GRASS);
                 } else if (getRandom().nextInt(200) == 0) {
                     this.setAnimation(ANIMATION_FLICK_EARS);
                 }
             }
-            if (this.getAnimation() == ANIMATION_EAT_GRASS && this.getAnimationTick() == 30 && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK)) {
+            if (this.getAnimation() == ANIMATION_EAT_GRASS && this.getAnimationTick() == 30 && level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK)) {
                 BlockPos down = this.blockPosition().below();
-                this.level.levelEvent(2001, down, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
-                this.level.setBlock(down, Blocks.DIRT.defaultBlockState(), 2);
+                this.level().levelEvent(2001, down, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
+                this.level().setBlock(down, Blocks.DIRT.defaultBlockState(), 2);
                 this.heal(10);
             }
             if (this.getTarget() != null && this.getTarget().isAlive()) {
@@ -164,7 +164,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
                             }
                             attackWithPotion(this.getTarget(), dmg);
                             launch(this.getTarget(), 0, 1F);
-                            for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
+                            for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
                                 if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != this.getTarget()){
                                     attackWithPotion(entity, Math.max(dmg - 5, 1));
                                     launch(entity, 0, 0.5F);
@@ -178,7 +178,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
                             }
                             attackWithPotion(this.getTarget(), dmg);
                             launch(this.getTarget(), this.getAnimationTick() <= 15 ? -90 : 90, 1F);
-                            for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
+                            for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
                                 if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != this.getTarget()){
                                     attackWithPotion(entity, Math.max(dmg - 5, 1));
                                     launch(entity, this.getAnimationTick() <= 15 ? -90 : 90, 0.5F);
@@ -258,7 +258,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     public int getPotionLevel() {
-        return this.entityData.get(POTION_LEVEL);
+        return this.entityData.get(POTION_level());
     }
 
     public void setPotionLevel(int time) {
@@ -340,7 +340,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return AMEntityRegistry.RHINOCEROS.get().create(serverLevel);
+        return AMEntityRegistry.RHINOCEROS.get().create(serverlevel());
     }
 
     public boolean isAngry() {
@@ -501,8 +501,8 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
 
                 while(var1.hasNext()) {
                     UUID uuid = (UUID)var1.next();
-                    if (uuid != null && EntityRhinoceros.this.level instanceof ServerLevel) {
-                        Entity entity = ((ServerLevel)EntityRhinoceros.this.level).getEntity(uuid);
+                    if (uuid != null && EntityRhinoceros.this.level() instanceof ServerLevel) {
+                        Entity entity = ((ServerLevel)EntityRhinoceros.this.level()).getEntity(uuid);
                         if (entity instanceof LivingEntity) {
                             LivingEntity livingentity = (LivingEntity)entity;
                             this.trusted = livingentity;

@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -32,7 +32,7 @@ public class BlockVoidWormBeak extends BaseEntityBlock {
     private static final VoxelShape AABB_VERTICAL = Block.box(0, 0, 4, 16, 16, 12);
 
     public BlockVoidWormBeak() {
-        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).noCollission().requiresCorrectToolForDrops());
+        super(Properties.of().mapColor(MapColor.COLOR_PURPLE).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).noCollission().requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
     }
 

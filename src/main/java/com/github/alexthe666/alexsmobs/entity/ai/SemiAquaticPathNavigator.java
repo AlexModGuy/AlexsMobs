@@ -31,11 +31,11 @@ public class SemiAquaticPathNavigator extends WaterBoundPathNavigation {
 
     protected boolean canMoveDirectly(Vec3 posVec31, Vec3 posVec32, int sizeX, int sizeY, int sizeZ) {
         Vec3 vector3d = new Vec3(posVec32.x, posVec32.y + (double)this.mob.getBbHeight() * 0.5D, posVec32.z);
-        return this.level.clip(new ClipContext(posVec31, vector3d, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob)).getType() == HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(posVec31, vector3d, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob)).getType() == HitResult.Type.MISS;
     }
 
     public boolean isStableDestination(BlockPos pos) {
-        return  !this.level.getBlockState(pos.below()).isAir();
+        return  !this.level().getBlockState(pos.below()).isAir();
     }
 
     public void setCanFloat(boolean canSwim) {

@@ -198,12 +198,12 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
         if (!this.isSitting() && sitProgress > 0) {
             sitProgress -= 1;
         }
-        if (!level.isClientSide && isSitting() && ++sittingTime > maxSitTime) {
+        if (!this.level().isClientSide && isSitting() && ++sittingTime > maxSitTime) {
             this.setSitting(false);
             sittingTime = 0;
             maxSitTime = 75 + random.nextInt(50);
         }
-        if (!level.isClientSide && this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSitting() && random.nextInt(500) == 0) {
+        if (!this.level().isClientSide && this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isSitting() && random.nextInt(500) == 0) {
             sittingTime = 0;
             maxSitTime = 200 + random.nextInt(550);
             this.setSitting(true);
@@ -211,7 +211,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
         if (this.isSitting() && (this.getTarget() != null || this.isInLove())) {
             this.setSitting(false);
         }
-        if (!level.isClientSide && this.getTarget() != null && (this.getAnimation() == ANIMATION_SWIPE_L || this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 7 && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < this.getBbHeight() + this.getTarget().getBbHeight() + 1) {
+        if (!this.level().isClientSide && this.getTarget() != null && (this.getAnimation() == ANIMATION_SWIPE_L || this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 7 && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < this.getBbHeight() + this.getTarget().getBbHeight() + 1) {
             getTarget().knockback(0.4F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
             if (this.isLeader() && getTarget() instanceof EntityGeladaMonkey monkey) {
@@ -223,7 +223,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
             }
             this.getTarget().hurt(this.damageSources().mobAttack(this), dmg);
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.getTarget() != null && this.getTarget().isAlive()) {
                 this.setAggro(true);
                 if (this.isLeader() && this.getTarget() instanceof EntityGeladaMonkey monkey) {
@@ -351,7 +351,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
         int i = 300 + random.nextInt(300);
         this.setClearGrassTime(i);
         int monky = 0;
-        for (EntityGeladaMonkey entity : this.level.getEntitiesOfClass(EntityGeladaMonkey.class, this.getBoundingBox().inflate(15F))) {
+        for (EntityGeladaMonkey entity : this.level().getEntitiesOfClass(EntityGeladaMonkey.class, this.getBoundingBox().inflate(15F))) {
             if (monky < otherMonkies && entity.getId() != this.getId() && !entity.shouldStopBeingGroomed()) {
                 monky++;
                 entity.setClearGrassTime(i);
@@ -420,7 +420,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
         }
 
         public boolean canContinueToUse() {
-            return target != null && EntityGeladaMonkey.this.level.getBlockState(target).is(AMTagRegistry.GELADA_MONKEY_GRASS);
+            return target != null && EntityGeladaMonkey.this.level().getBlockState(target).is(AMTagRegistry.GELADA_MONKEY_GRASS);
         }
 
         public void tick() {
@@ -430,7 +430,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
                 if(EntityGeladaMonkey.this.getAnimation() == NO_ANIMATION){
                     EntityGeladaMonkey.this.attackAnimation();
                 }else if(EntityGeladaMonkey.this.getAnimationTick() > 7){
-                    EntityGeladaMonkey.this.level.destroyBlock(target, true);
+                    EntityGeladaMonkey.this.level().destroyBlock(target, true);
                 }
             }
         }
@@ -441,10 +441,10 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
             int range = 7;
             for (int i = 0; i < 15; i++) {
                 BlockPos blockpos1 = EntityGeladaMonkey.this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-                while (EntityGeladaMonkey.this.level.isEmptyBlock(blockpos1) && blockpos1.getY() > -63) {
+                while (EntityGeladaMonkey.this.level().isEmptyBlock(blockpos1) && blockpos1.getY() > -63) {
                     blockpos1 = blockpos1.below();
                 }
-                if (EntityGeladaMonkey.this.level.getBlockState(blockpos1).is(AMTagRegistry.GELADA_MONKEY_GRASS)) {
+                if (EntityGeladaMonkey.this.level().getBlockState(blockpos1).is(AMTagRegistry.GELADA_MONKEY_GRASS)) {
                     blockpos = blockpos1;
                 }
             }

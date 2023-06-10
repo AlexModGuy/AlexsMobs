@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -38,7 +38,7 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock implements AMSpecia
     private static final VoxelShape DOWN_AABB = Block.box(-2, 13, -2, 16, 16, 18);
 
     public BlockEndPirateShipWheel() {
-        super(Properties.of(Material.EGG).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).lightLevel((i) -> 3).noCollission().requiresCorrectToolForDrops());
+        super(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).noOcclusion().sound(SoundType.ANCIENT_DEBRIS).strength(1F).lightLevel((i) -> 3).noCollission().requiresCorrectToolForDrops());
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

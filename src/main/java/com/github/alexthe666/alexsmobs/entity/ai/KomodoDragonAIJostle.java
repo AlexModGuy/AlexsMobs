@@ -108,7 +108,7 @@ public class KomodoDragonAIJostle  extends Goal {
                     }
                     this.komodo.getMoveControl().strafe(f * 1, 0.4F);
                 }
-                if(this.komodo.getRandom().nextInt(15) == 0 && this.komodo.isOnGround()){
+                if(this.komodo.getRandom().nextInt(15) == 0 && this.komodo.onGround()){
                     komodo.pushBackJostling(targetKomodoDragon, 0.1F);
                 }
                 komodo.nextJostleAngleFromServer = angle;
@@ -116,10 +116,10 @@ public class KomodoDragonAIJostle  extends Goal {
                 this.targetKomodoDragon.jostleTimer++;
                 if(this.komodo.jostleTimer > 500 || y > 2.0F){
                     komodo.hasImpulse = true;
-                    if(komodo.isOnGround()){
+                    if(komodo.onGround()){
                         komodo.pushBackJostling(targetKomodoDragon, 0.4F);
                     }
-                    if(targetKomodoDragon.isOnGround()){
+                    if(targetKomodoDragon.onGround()){
                         targetKomodoDragon.pushBackJostling(komodo, 0.4F);
                     }
                     this.komodo.jostleTimer = 0;

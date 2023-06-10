@@ -47,7 +47,7 @@ public class EntitySquidGrapple extends Entity {
     }
 
     public EntitySquidGrapple(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(AMEntityRegistry.SQUID_GRAPPLE.get(), level);
+        this(AMEntityRegistry.SQUID_GRAPPLE.get(), level());
     }
 
     protected static float lerpRotation(float f2, float f3) {
@@ -109,8 +109,8 @@ public class EntitySquidGrapple extends Entity {
 
     public Entity getOwner() {
         UUID id = getOwnerId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return getOwnerId() == null ? null : level.getPlayerByUUID(getOwnerId());
     }
@@ -128,7 +128,7 @@ public class EntitySquidGrapple extends Entity {
         this.xRotO = this.getXRot();
         this.yRotO = this.getYRot();
         Entity entity = this.getOwner();
-        if(!level.isClientSide){
+        if(!this.level().isClientSide){
             if(entity == null || !entity.isAlive()){
                 this.discard();
             }else if (entity.isShiftKeyDown()) {
@@ -148,7 +148,7 @@ public class EntitySquidGrapple extends Entity {
                 double d1 = this.getY() + vector3d.y;
                 double d2 = this.getZ() + vector3d.z;
                 float f = Mth.sqrt((float) (move.x * move.x + move.z * move.z));
-                if(!level.isClientSide){
+                if(!this.level().isClientSide){
                     this.setYRot(Mth.wrapDegrees((float) (-Mth.atan2(move.x, move.z) * (double) (180F / (float) Math.PI))) - 180);
                     this.setXRot((float) (Mth.atan2(move.y, f) * (double) (180F / (float) Math.PI)));
                     this.yRotO = this.getYRot();
@@ -158,7 +158,7 @@ public class EntitySquidGrapple extends Entity {
             }else{
                 this.discard();
             }
-        }else if (this.level.isClientSide || this.level.hasChunkAt(this.blockPosition())) {
+        }else if (this.level().isClientSide || this.level().hasChunkAt(this.blockPosition())) {
             if(this.getStuckToPos() == null){
                 super.tick();
                 Vec3 vector3d = this.getDeltaMovement();
@@ -172,7 +172,7 @@ public class EntitySquidGrapple extends Entity {
                 double d2 = this.getZ() + vector3d.z;
                 this.updateRotation();
                 this.setDeltaMovement(vector3d.scale(0.99));
-                if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir) && !this.isInWater()) {
+                if (this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir) && !this.isInWater()) {
                     this.setDeltaMovement(Vec3.ZERO);
 
                 } else {
@@ -182,7 +182,7 @@ public class EntitySquidGrapple extends Entity {
                     this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.1F, 0.0D));
                 }
             }else{
-                BlockState state = this.level.getBlockState(this.getStuckToPos());
+                BlockState state = this.level().getBlockState(this.getStuckToPos());
                 Vec3 vec3 = new Vec3(this.getStuckToPos().getX() + 0.5F, this.getStuckToPos().getY() + 0.5F, this.getStuckToPos().getZ() + 0.5F);
                 Vec3 offset = new Vec3(this.getAttachmentFacing().getStepX() * 0.55F, this.getAttachmentFacing().getStepY() * 0.55F, this.getAttachmentFacing().getStepZ() * 0.55F);
                 this.setPos(vec3.add(offset));
@@ -222,7 +222,7 @@ public class EntitySquidGrapple extends Entity {
                     }
                     Vec3 move = new Vec3(this.getX() - entity.getX(), this.getY() - (double)entity.getEyeHeight() / 2.0D - entity.getY(), this.getZ() - entity.getZ());
                     entity.setDeltaMovement(entity.getDeltaMovement().add(move.normalize().scale(0.2D * entitySwing)));
-                    if(!entity.isOnGround()){
+                    if(!entity.onGround()){
                        entity.fallDistance = 0.0F;
                     }
                 }
@@ -261,7 +261,7 @@ public class EntitySquidGrapple extends Entity {
 
     protected void onImpact(HitResult result) {
         HitResult.Type raytraceresult$type = result.getType();
-        if (!level.isClientSide && raytraceresult$type == HitResult.Type.BLOCK && this.getStuckToPos() == null) {
+        if (!this.level().isClientSide && raytraceresult$type == HitResult.Type.BLOCK && this.getStuckToPos() == null) {
             this.setDeltaMovement(Vec3.ZERO);
             this.setStuckToPos(((BlockHitResult)result).getBlockPos());
             this.setAttachmentFacing(((BlockHitResult)result).getDirection());

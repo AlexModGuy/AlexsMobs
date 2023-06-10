@@ -63,7 +63,7 @@ public class MovementControllerCustomCollisions extends MoveControl {
             this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f9, 90.0F));
             this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
             BlockPos blockpos = this.mob.blockPosition();
-            BlockState blockstate = this.mob.level.getBlockState(blockpos);
+            BlockState blockstate = this.mob.level().getBlockState(blockpos);
             VoxelShape voxelshape = blockstate.getBlockSupportShape(this.mob.level, blockpos);
             if(!(mob instanceof ICustomCollisions && ((ICustomCollisions) mob).canPassThrough(blockpos, blockstate, voxelshape))){
                 if (d2 > (double)this.mob.maxUpStep && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getBbWidth()) || !voxelshape.isEmpty() && this.mob.getY() < voxelshape.max(Direction.Axis.Y) + (double)blockpos.getY() && !blockstate.is(BlockTags.DOORS) && !blockstate.is(BlockTags.FENCES)) {
@@ -73,7 +73,7 @@ public class MovementControllerCustomCollisions extends MoveControl {
             }
         } else if (this.operation == MoveControl.Operation.JUMPING) {
             this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
-            if (this.mob.isOnGround()) {
+            if (this.mob.onGround()) {
                 this.operation = MoveControl.Operation.WAIT;
             }
         } else {

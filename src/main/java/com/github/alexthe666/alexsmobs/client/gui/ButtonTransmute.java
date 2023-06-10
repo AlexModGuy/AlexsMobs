@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -19,25 +20,20 @@ public class ButtonTransmute extends Button {
         this.parent = parent;
     }
 
-    public void renderToolTip(PoseStack poseStack, int x, int y) {
-    }
 
     @Override
-    public void renderWidget(PoseStack poseStack, int x, int y, float partialTick) {
+    public void renderWidget(GuiGraphics guiGraphics, int x, int y, float partialTick) {
         int color = 8453920;
         int cost = AMConfig.transmutingExperienceCost;
         if(!canBeTransmuted(cost)){
             color = 16736352;
         }else if (this.active && this.isHoveredOrFocused()) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShaderTexture(0, GUITransmutationTable.TEXTURE);
-            this.blit(poseStack, this.getX(), this.getY(), 0, 201, 117, 19);
+            guiGraphics.blit(GUITransmutationTable.TEXTURE, this.getX(), this.getY(), 0, 201, 117, 19);
             color = 0XC7FFD0;
         }
-        poseStack.pushPose();
-        drawString(poseStack, Minecraft.getInstance().font, Component.translatable("alexsmobs.container.transmutation_table.cost").append(" " + cost), this.getX() + 21, this.getY() + (this.height - 8) / 2, color);
-        poseStack.popPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.drawString(Minecraft.getInstance().font, Component.translatable("alexsmobs.container.transmutation_table.cost").append(" " + cost), this.getX() + 21, this.getY() + (this.height - 8) / 2, color, false);
+        guiGraphics.pose().popPose();
     }
 
     public boolean canBeTransmuted(int cost){

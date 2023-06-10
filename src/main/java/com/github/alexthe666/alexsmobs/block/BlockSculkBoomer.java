@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.gameevent.GameEventListener;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockSculkBoomer extends BaseEntityBlock {
@@ -28,7 +28,7 @@ public class BlockSculkBoomer extends BaseEntityBlock {
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
     protected BlockSculkBoomer() {
-        super(BlockBehaviour.Properties.of(Material.SCULK).strength(3.0F, 12.0F).sound(SoundType.SCULK_CATALYST));
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).strength(3.0F, 12.0F).sound(SoundType.SCULK_CATALYST));
         this.registerDefaultState(this.stateDefinition.any().setValue(OPEN, false).setValue(POWERED, false));
     }
 

@@ -41,7 +41,7 @@ public class BlueJayAIMelee extends Goal {
         circlingTime = 0;
         maxCircleTime = 20 + blueJay.getRandom().nextInt(20);
         circleDistance = 0.5F + blueJay.getRandom().nextFloat() * 2F;
-        if(blueJay.isOnGround()){
+        if(blueJay.onGround()){
             blueJay.setFlying(false);
         }
     }
@@ -77,7 +77,7 @@ public class BlueJayAIMelee extends Goal {
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
-        if (blueJay.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
+        if (blueJay.level().isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;
         }
         return null;

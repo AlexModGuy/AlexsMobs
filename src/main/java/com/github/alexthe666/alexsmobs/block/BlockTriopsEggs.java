@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.FrogspawnBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 
 public class BlockTriopsEggs extends FrogspawnBlock {
     public BlockTriopsEggs() {
-        super(BlockBehaviour.Properties.of(Material.FROGSPAWN).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN).offsetType(OffsetType.XZ));
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).instabreak().noOcclusion().noCollission().sound(SoundType.FROGSPAWN).offsetType(OffsetType.XZ));
     }
 
     public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {

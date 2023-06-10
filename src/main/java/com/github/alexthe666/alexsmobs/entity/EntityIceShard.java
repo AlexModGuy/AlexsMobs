@@ -73,11 +73,11 @@ public class EntityIceShard extends Entity {
         if (!this.leftOwner) {
             this.leftOwner = this.checkLeftOwner();
         }
-        if(level.isClientSide && random.nextInt(2) == 0){
+        if(this.level().isClientSide && random.nextInt(2) == 0){
             float r1 = (random.nextFloat() - 0.5F) * 0.5F;
             float r2 = (random.nextFloat() - 0.5F) * 0.5F;
             float r3 = (random.nextFloat() - 0.5F) * 0.5F;
-            this.level.addParticle(ParticleTypes.SNOWFLAKE, this.getX() + r1, this.getY() + r2, this.getZ() + r3, r1 * 0.1F, r2 * 0.1F, r3 * 0.1F);
+            this.level().addParticle(ParticleTypes.SNOWFLAKE, this.getX() + r1, this.getY() + r2, this.getZ() + r3, r1 * 0.1F, r2 * 0.1F, r3 * 0.1F);
         }
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();
@@ -93,7 +93,7 @@ public class EntityIceShard extends Entity {
         this.updateRotation();
         float f = 0.99F;
         float f1 = 0.06F;
-        if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
+        if (this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir)) {
             this.remove(RemovalReason.DISCARDED);
         } else if (this.isInWaterOrBubble()) {
             this.remove(RemovalReason.DISCARDED);
@@ -115,8 +115,8 @@ public class EntityIceShard extends Entity {
     }
 
     protected void onHitBlock(BlockHitResult p_230299_1_) {
-        BlockState blockstate = this.level.getBlockState(p_230299_1_.getBlockPos());
-        if (!this.level.isClientSide) {
+        BlockState blockstate = this.level().getBlockState(p_230299_1_.getBlockPos());
+        if (!this.level().isClientSide) {
             this.remove(RemovalReason.DISCARDED);
         }
     }
@@ -134,10 +134,10 @@ public class EntityIceShard extends Entity {
 
     @Nullable
     public Entity getOwner() {
-        if (this.ownerUUID != null && this.level instanceof ServerLevel) {
-            return ((ServerLevel) this.level).getEntity(this.ownerUUID);
+        if (this.ownerUUID != null && this.level() instanceof ServerLevel) {
+            return ((ServerLevel) this.level()).getEntity(this.ownerUUID);
         } else {
-            return this.ownerNetworkId != 0 ? this.level.getEntity(this.ownerNetworkId) : null;
+            return this.ownerNetworkId != 0 ? this.level().getEntity(this.ownerNetworkId) : null;
         }
     }
 
@@ -166,7 +166,7 @@ public class EntityIceShard extends Entity {
     private boolean checkLeftOwner() {
         Entity entity = this.getOwner();
         if (entity != null) {
-            for (Entity entity1 : this.level.getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
+            for (Entity entity1 : this.level().getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
                 return !p_234613_0_.isSpectator() && p_234613_0_.isPickable();
             })) {
                 if (entity1.getRootVehicle() == entity.getRootVehicle()) {
@@ -194,7 +194,7 @@ public class EntityIceShard extends Entity {
         float f2 = Mth.cos(p_234612_3_ * ((float) Math.PI / 180F)) * Mth.cos(p_234612_2_ * ((float) Math.PI / 180F));
         this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
         Vec3 vector3d = p_234612_1_.getDeltaMovement();
-        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
+        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.onGround() ? 0.0D : vector3d.y, vector3d.z));
     }
 
     /**

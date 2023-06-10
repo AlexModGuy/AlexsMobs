@@ -109,11 +109,11 @@ public class EntitySkreecher extends Monster {
     private void switchNavigator(boolean clinging) {
         if (clinging) {
             this.moveControl = new MoveController();
-            this.navigation = createScreecherNavigation(level);
+            this.navigation = createScreecherNavigation(level());
             this.isUpsideDownNavigator = true;
         } else {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level);
+            this.navigation = new GroundPathNavigation(this, level());
             this.isUpsideDownNavigator = false;
         }
     }
@@ -163,7 +163,7 @@ public class EntitySkreecher extends Monster {
         if(!isClapping() && clapProgress > 0F){
             clapProgress--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             float technicalDistToCeiling = calculateDistanceToCeiling();
             float gap = Math.max(technicalDistToCeiling - this.getDistanceToCeiling(), 0F);
             if(this.isClinging()){
@@ -188,17 +188,17 @@ public class EntitySkreecher extends Monster {
                     this.setClinging(true);
                 }
                 this.setDistanceToCeiling(Math.max(0, prevDistanceToCeiling - 0.5F));
-                if(this.onGround && clingCooldown <= 0 && !this.isJumpingUp() && this.isAlive() && random.nextFloat() < 0.0085F && technicalDistToCeiling > MAX_DIST_TO_CEILING && !this.level.canSeeSky(this.blockPosition())){
+                if(this.onGround && clingCooldown <= 0 && !this.isJumpingUp() && this.isAlive() && random.nextFloat() < 0.0085F && technicalDistToCeiling > MAX_DIST_TO_CEILING && !this.level().canSeeSky(this.blockPosition())){
                     this.setJumpingUp(true);
                 }
             }
         }
         if(this.isJumpingUp()){
-            if(this.isAlive() && !this.level.canSeeSky(this.blockPosition()) && (!this.verticalCollision || this.onGround)){
+            if(this.isAlive() && !this.level().canSeeSky(this.blockPosition()) && (!this.verticalCollision || this.onGround)){
                 this.setDistanceToCeiling(1.5F);
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 0.2F, 0));
                 for(int i = 0; i < 3; i++){
-                    this.level.addParticle(ParticleTypes.SCULK_CHARGE_POP, this.getRandomX(0.5F), this.getY() - 0.2F, this.getRandomZ(0.5F), 0, -0.2F, 0);
+                    this.level().addParticle(ParticleTypes.SCULK_CHARGE_POP, this.getRandomX(0.5F), this.getY() - 0.2F, this.getRandomZ(0.5F), 0, -0.2F, 0);
                 }
             }else{
                 this.setJumpingUp(false);
@@ -222,7 +222,7 @@ public class EntitySkreecher extends Monster {
                 this.playSound(AMSoundRegistry.SKREECHER_CLAP.get(), this.getSoundVolume() * 3F, this.getVoicePitch());
                 this.gameEvent(GameEvent.ENTITY_ROAR);
                 angerAllNearbyWardens();
-                this.level.addParticle(AMParticleRegistry.SKULK_BOOM.get(), this.getX(), this.getEyeY(), this.getZ(), 0, dir, 0);
+                this.level().addParticle(AMParticleRegistry.SKULK_BOOM.get(), this.getX(), this.getEyeY(), this.getZ(), 0, dir, 0);
             }else if(clapTick % 15 == 0){
                 this.playSound(AMSoundRegistry.SKREECHER_CALL.get(), this.getSoundVolume() * 4F, this.getVoicePitch());
             }
@@ -230,24 +230,24 @@ public class EntitySkreecher extends Monster {
                 if(!hasAttemptedWardenSpawning && AMConfig.skreechersSummonWarden){
                     hasAttemptedWardenSpawning = true;
                     BlockPos spawnAt = this.blockPosition().below();
-                    while(spawnAt.getY() > -64 && !level.getBlockState(spawnAt).isFaceSturdy(level, spawnAt, Direction.UP)){
+                    while(spawnAt.getY() > -64 && !level().getBlockState(spawnAt).isFaceSturdy(level, spawnAt, Direction.UP)){
                         spawnAt = spawnAt.below();
                     }
                     Holder<Biome> holder = level.getBiome(spawnAt);
-                    if(!level.isClientSide && getNearbyWardens().isEmpty() && holder.is(AMTagRegistry.SKREECHERS_CAN_SPAWN_WARDENS)){
-                        Warden warden = EntityType.WARDEN.create(this.level);
+                    if(!this.level().isClientSide && getNearbyWardens().isEmpty() && holder.is(AMTagRegistry.SKREECHERS_CAN_SPAWN_WARDENS)){
+                        Warden warden = EntityType.WARDEN.create(this.level());
 
                         warden.moveTo(this.getX(), spawnAt.getY() + 1, this.getZ(), this.getYRot(), 0.0F);
                         warden.finalizeSpawn((ServerLevel)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
                         warden.setAttackTarget(this);
                         warden.increaseAngerAt(this, 79, false);
-                        this.level.addFreshEntity(warden);
+                        this.level().addFreshEntity(warden);
 
                     }
                 }
             }
             clapTick++;
-            if(!this.level.isClientSide){
+            if(!this.level().isClientSide){
                 if(this.getTarget() != null && this.getTarget().isAlive() && this.hasLineOfSight(this.getTarget()) && !this.getTarget().hasEffect(MobEffects.INVISIBILITY) && !this.hasEffect(MobEffects.BLINDNESS)) {
                     double horizDist = this.getTarget().position().subtract(this.position()).horizontalDistance();
                     if (horizDist > 20) {
@@ -282,7 +282,7 @@ public class EntitySkreecher extends Monster {
 
     private List<Warden> getNearbyWardens(){
         AABB angerBox = new AABB(this.getX() - 35, this.getY() + (isClinging() ? 5F : 25F), this.getZ() - 35F, this.getX() + 35F, -64, this.getZ() + 35F);
-        return this.level.getEntitiesOfClass(Warden.class, angerBox);
+        return this.level().getEntitiesOfClass(Warden.class, angerBox);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -341,7 +341,7 @@ public class EntitySkreecher extends Monster {
         FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level) {
             public boolean isStableDestination(BlockPos pos) {
                 int airAbove = 0;
-                while(level.getBlockState(pos).isAir() && airAbove < MAX_DIST_TO_CEILING + 2){
+                while(level().getBlockState(pos).isAir() && airAbove < MAX_DIST_TO_CEILING + 2){
                     pos = pos.above();
                     airAbove++;
                 }
@@ -365,9 +365,9 @@ public class EntitySkreecher extends Monster {
             final double d = 0.3F;
             final Vec3 vec3 = new Vec3(x, y, z);
             final AABB axisAlignedBB = AABB.ofSize(vec3, d, 1.0E-6D, d);
-            return this.level.getBlockStates(axisAlignedBB).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
+            return this.level().getBlockStates(axisAlignedBB).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
                 BlockPos blockpos = AMBlockPos.fromVec3(vec3);
-                return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisAlignedBB), BooleanOp.AND);
+                return p_185969_.isSuffocating(this.level(), blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level(), blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisAlignedBB), BooleanOp.AND);
             });
         }
     }
@@ -399,7 +399,7 @@ public class EntitySkreecher extends Monster {
     }
 
     public BlockPos getCeilingOf(BlockPos usPos){
-        while (!level.getBlockState(usPos).isFaceSturdy(level, usPos, Direction.DOWN) && usPos.getY() < level.getMaxBuildHeight()){
+        while (!level().getBlockState(usPos).isFaceSturdy(level, usPos, Direction.DOWN) && usPos.getY() < level.getMaxBuildHeight()){
             usPos = usPos.above();
         }
         return usPos;

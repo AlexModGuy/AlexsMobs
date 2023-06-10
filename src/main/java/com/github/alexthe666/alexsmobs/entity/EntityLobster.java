@@ -284,7 +284,7 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
     protected PathNavigation createNavigation(Level worldIn) {
         SemiAquaticPathNavigator flyingpathnavigator = new SemiAquaticPathNavigator(this, worldIn) {
             public boolean isStableDestination(BlockPos pos) {
-                return this.level.getBlockState(pos).getFluidState().isEmpty();
+                return this.level().getBlockState(pos).getFluidState().isEmpty();
             }
         };
         return flyingpathnavigator;

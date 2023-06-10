@@ -38,9 +38,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -55,7 +54,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
     private static final VoxelShape MULTI_EGG_SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
 
     public BlockTerrapinEgg() {
-        super(Properties.of(Material.EGG, MaterialColor.SAND).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion());
+        super(Properties.of().mapColor(MapColor.SAND).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(HATCH, Integer.valueOf(0)).setValue(EGGS, Integer.valueOf(1)));
     }
 
@@ -186,7 +185,7 @@ public class BlockTerrapinEgg extends BaseEntityBlock {
         }
     }
 
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         ItemStack pickaxe = builder.getOptionalParameter(LootContextParams.TOOL);
         BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         boolean silkTouch = false;

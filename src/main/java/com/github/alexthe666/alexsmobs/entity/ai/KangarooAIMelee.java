@@ -35,7 +35,7 @@ public class KangarooAIMelee extends MeleeAttackGoal {
                     target.setDeltaMovement(target.getDeltaMovement().add(0, -0.09, 0));
                     target.setAirSupply(target.getAirSupply() - 30);
                 }
-                if (waterPos == null || !kangaroo.level.getFluidState(waterPos).is(FluidTags.WATER)) {
+                if (waterPos == null || !kangaroo.level().getFluidState(waterPos).is(FluidTags.WATER)) {
                     kangaroo.setVisualFlag(0);
                     waterCheckTick++;
                     waterPos = generateWaterPos();
@@ -93,10 +93,10 @@ public class KangarooAIMelee extends MeleeAttackGoal {
         int range = 15;
         for (int i = 0; i < 15; i++) {
             BlockPos blockpos1 = this.kangaroo.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-            while (this.kangaroo.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
+            while (this.kangaroo.level().isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
                 blockpos1 = blockpos1.below();
             }
-            if (this.kangaroo.level.getFluidState(blockpos1).is(FluidTags.WATER)) {
+            if (this.kangaroo.level().getFluidState(blockpos1).is(FluidTags.WATER)) {
                 blockpos = blockpos1;
             }
         }

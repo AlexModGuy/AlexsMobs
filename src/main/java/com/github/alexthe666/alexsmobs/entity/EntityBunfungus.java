@@ -173,8 +173,8 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
         prevInterestedProgress = interestedProgress;
         prevTransformTime = this.transformsIn();
 
-        if (!level.isClientSide) {
-            this.entityData.set(JUMP_ACTIVE, !this.isOnGround());
+        if (!this.level().isClientSide) {
+            this.entityData.set(JUMP_ACTIVE, !this.onGround());
         }
 
         if (this.entityData.get(JUMP_ACTIVE) && !isInWaterOrBubble()) {
@@ -214,7 +214,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                 interestedProgress--;
         }
 
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final LivingEntity target = this.getTarget();
             if (target != null && target.isAlive()) {
                 if (this.isSleeping()) {
@@ -224,7 +224,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                 boolean flag = false;
                 if (this.getAnimationTick() == 5) {
                     if (dist < 3.5D && this.getAnimation() == ANIMATION_BELLY) {
-                        for (final LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
+                        for (final LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
                             if ((entity == target || entity instanceof Monster) && !entity.getType().is(AMTagRegistry.BUNFUNGUS_IGNORE_AOE_ATTACKS)) {
                                 flag = true;
                                 launch(entity);
@@ -232,7 +232,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                             }
                         }
                     } else if (dist < 2.5D && this.getAnimation() == ANIMATION_SLAM) {
-                        for (final LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
+                        for (final LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.0D))) {
                             if ((entity == target || entity instanceof Monster) && !entity.getType().is(AMTagRegistry.BUNFUNGUS_IGNORE_AOE_ATTACKS)) {
                                 flag = true;
                                 entity.knockback(0.2F, entity.getX() - this.getX(), entity.getZ() - this.getZ());
@@ -271,17 +271,17 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                     final double d2 = this.random.nextGaussian() * 0.02D;
                     final double d0 = this.random.nextGaussian() * 0.02D;
                     final double d1 = this.random.nextGaussian() * 0.02D;
-                    this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                    this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItemInHand(InteractionHand.MAIN_HAND)), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
                 }
             }
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.transformsIn() > 0) {
                 this.setTransformsIn(this.transformsIn() - 1);
             }
         }
 
-        if (level.isClientSide) {
+        if (this.level().isClientSide) {
             if (isRabbitForm()){
                 for (int i = 0; i < 3; i++) {
                     final double d2 = this.random.nextGaussian() * 0.02D;
@@ -289,7 +289,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                     final double d1 = this.random.nextGaussian() * 0.02D;
                     final float f1 = (EntityBunfungus.MAX_TRANSFORM_TIME - this.transformsIn()) / (float)EntityBunfungus.MAX_TRANSFORM_TIME;
                     final float scale = f1 * 0.5F + 0.15F;
-                    this.level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), this.getRandomX(scale), this.getY(this.random.nextDouble() * scale), this.getRandomZ(scale), d0, d1, d2);
+                    this.level().addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), this.getRandomX(scale), this.getY(this.random.nextDouble() * scale), this.getRandomZ(scale), d0, d1, d2);
                 }
             }
 
@@ -300,10 +300,10 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
                 final double extraX = radius * Mth.sin((float) (Math.PI + angle)) + random.nextFloat() * 0.5F - 0.25F;
                 final double extraZ = radius * Mth.cos(angle) + random.nextFloat() * 0.5F - 0.25F;
                 ParticleOptions data = random.nextFloat() < 0.3F ? AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get() : AMParticleRegistry.FUNGUS_BUBBLE.get();
-                this.level.addParticle(data, this.getX() + extraX, this.getY() + random.nextFloat() * 0.1F, this.getZ() + extraZ, 0, d0, 0);
+                this.level().addParticle(data, this.getX() + extraX, this.getY() + random.nextFloat() * 0.1F, this.getZ() + extraZ, 0, d0, 0);
             }
         } else {
-            if (this.level.isDay() && this.getTarget() == null && !this.isBegging() && !this.isInWaterOrBubble()) {
+            if (this.level().isDay() && this.getTarget() == null && !this.isBegging() && !this.isInWaterOrBubble()) {
                 if (tickCount % 10 == 0 && this.getRandom().nextInt(300) == 0) {
                     this.setSleeping(true);
                 }
@@ -315,7 +315,7 @@ public class EntityBunfungus extends PathfinderMob implements IAnimatedEntity {
     }
 
     private void launch(LivingEntity target) {
-        if (target.isOnGround()) {
+        if (target.onGround()) {
             final double d0 = target.getX() - this.getX();
             final double d1 = target.getZ() - this.getZ();
             final double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);

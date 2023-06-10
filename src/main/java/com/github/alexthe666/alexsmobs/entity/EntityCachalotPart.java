@@ -36,7 +36,7 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
     }
 
     protected void collideWithNearbyEntities() {
-        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
+        final List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         Entity parent = this.getParent();
         if (parent != null) {
             entities.stream().filter(entity -> entity != parent && !(entity instanceof EntityCachalotPart && ((EntityCachalotPart) entity).getParent() == parent) && entity.isPushable()).forEach(entity -> entity.push(parent));
@@ -45,7 +45,7 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
-        if(level.isClientSide && this.getParent() != null){
+        if(this.level().isClientSide && this.getParent() != null){
             AlexsMobs.sendMSGToServer(new MessageInteractMultipart(this.getParent().getId(), hand == InteractionHand.OFF_HAND));
         }
         return this.getParent() == null ? InteractionResult.PASS : this.getParent().mobInteract(player, hand);
@@ -61,8 +61,8 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        if(level.isClientSide && this.getParent() != null && !this.getParent().isInvulnerableTo(source)){
-            ResourceLocation key = this.level.registryAccess().registry(Registries.DAMAGE_TYPE).get().getKey(source.type());
+        if(this.level().isClientSide && this.getParent() != null && !this.getParent().isInvulnerableTo(source)){
+            ResourceLocation key = this.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().getKey(source.type());
             if(key != null){
                 AlexsMobs.sendMSGToServer(new MessageHurtMultipart(this.getId(), this.getParent().getId(), amount, key.toString()));
             }

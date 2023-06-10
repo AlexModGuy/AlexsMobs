@@ -70,12 +70,12 @@ public class AnimalAIRandomSwimming extends RandomStrollGoal {
         }
         Vec3 vector3d = DefaultRandomPos.getPos(this.mob, xzSpread, ySpread);
 
-        for(int i = 0; vector3d != null && !this.mob.level.getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = DefaultRandomPos.getPos(this.mob, 10, ySpread)) {
+        for(int i = 0; vector3d != null && !this.mob.level().getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = DefaultRandomPos.getPos(this.mob, 10, ySpread)) {
         }
         if(submerged && vector3d != null){
-            if(!this.mob.level.getFluidState(AMBlockPos.fromVec3(vector3d).above()).is(FluidTags.WATER)){
+            if(!this.mob.level().getFluidState(AMBlockPos.fromVec3(vector3d).above()).is(FluidTags.WATER)){
                 vector3d = vector3d.add(0, -2, 0);
-            }else if(!this.mob.level.getFluidState(AMBlockPos.fromVec3(vector3d).above(2)).is(FluidTags.WATER)){
+            }else if(!this.mob.level().getFluidState(AMBlockPos.fromVec3(vector3d).above(2)).is(FluidTags.WATER)){
                 vector3d = vector3d.add(0, -3, 0);
             }
         }
@@ -84,16 +84,16 @@ public class AnimalAIRandomSwimming extends RandomStrollGoal {
 
     private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
         BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
-        return this.mob.level.getFluidState(blockpos).is(FluidTags.LAVA) || this.mob.level.getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level.getBlockState(blockpos).getMaterial().blocksMotion();
+        return this.mob.level().getFluidState(blockpos).is(FluidTags.LAVA) || this.mob.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level().getBlockState(blockpos).getMaterial().blocksMotion();
     }
 
     private boolean isAirAbove(BlockPos pos, int dx, int dz, int scale) {
-        return this.mob.level.getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.mob.level.getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
+        return this.mob.level().getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.mob.level().getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
     }
 
     private Vec3 findSurfaceTarget(PathfinderMob creature, int i, int i1) {
         BlockPos upPos = creature.blockPosition();
-        while(creature.level.getFluidState(upPos).is(FluidTags.WATER) || creature.level.getFluidState(upPos).is(FluidTags.LAVA)){
+        while(creature.level().getFluidState(upPos).is(FluidTags.WATER) || creature.level().getFluidState(upPos).is(FluidTags.LAVA)){
             upPos = upPos.above();
         }
         if(isAirAbove(upPos.below(), 0, 0, 0) && canJumpTo(upPos.below(), 0, 0, 0)){

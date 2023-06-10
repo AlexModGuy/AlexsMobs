@@ -68,7 +68,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     }
 
     public EntityAnacondaPart(EntityType t, LivingEntity parent) {
-        super(t, parent.level);
+        super(t, parent.level());
         this.setParent(parent);
     }
 
@@ -102,7 +102,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         if (this.tickCount > 1) {
             final Entity parent = getParent();
             refreshDimensions();
-            if (!level.isClientSide) {
+            if (!this.level().isClientSide) {
                 if (parent == null) {
                     this.remove(RemovalReason.DISCARDED);
                 }
@@ -210,9 +210,9 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
             final double d = 1D;
             final Vec3 vec3 = new Vec3(x, y, z);
             final AABB axisAlignedBB = AABB.ofSize(vec3, d, 1.0E-6D, d);
-            return this.level.getBlockStates(axisAlignedBB).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
+            return this.level().getBlockStates(axisAlignedBB).filter(Predicate.not(BlockBehaviour.BlockStateBase::isAir)).anyMatch((p_185969_) -> {
                 BlockPos blockpos = AMBlockPos.fromVec3(vec3);
-                return p_185969_.isSuffocating(this.level, blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level, blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisAlignedBB), BooleanOp.AND);
+                return p_185969_.isSuffocating(this.level(), blockpos) && Shapes.joinIsNotEmpty(p_185969_.getCollisionShape(this.level(), blockpos).move(vec3.x, vec3.y, vec3.z), Shapes.create(axisAlignedBB), BooleanOp.AND);
             });
         }
     }
@@ -229,13 +229,13 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         if (this.noPhysics) {
             return false;
         } else {
-            return !level.getFluidState(AMBlockPos.fromCoords(x, y, z)).isEmpty();
+            return !level().getFluidState(AMBlockPos.fromCoords(x, y, z)).isEmpty();
         }
     }
 
     public boolean hurtHeadId(DamageSource source, float f) {
         if (headEntityId != -1) {
-            Entity e = level.getEntity(headEntityId);
+            Entity e = level().getEntity(headEntityId);
             if (e instanceof EntityAnaconda) {
                return e.hurt(source, f);
             }
@@ -264,7 +264,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
 
 
     public void pushEntities() {
-        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
+        final List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         final Entity parent = this.getParent();
         if (parent != null) {
             entities.stream().filter(entity -> !entity.is(parent) && !(entity instanceof EntityAnacondaPart || entity instanceof EntityAnaconda) && entity.isPushable()).forEach(entity -> entity.push(parent));
@@ -301,10 +301,10 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     }
 
     public Entity getParent() {
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final UUID id = getParentId();
             if (id != null) {
-                return ((ServerLevel) level).getEntity(id);
+                return ((ServerLevel) level()).getEntity(id);
             }
         }
 
@@ -325,10 +325,10 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
     }
 
     public Entity getChild() {
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final UUID id = getChildId();
             if (id != null) {
-                return ((ServerLevel) level).getEntity(id);
+                return ((ServerLevel) level()).getEntity(id);
             }
         }
 

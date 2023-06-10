@@ -168,7 +168,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
 
     public void tick() {
         super.tick();
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if(this.getSpitTime() > 0){
                 this.setSpitTime(this.getSpitTime() - 1);
             }
@@ -189,7 +189,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             for(int j = -height; j <= height; j++){
                 for(int k = -width; k <= width; k++){
                     pos.set(this.getX() + i, this.getY() + j, this.getZ() + k);
-                    if(level.getBlockState(pos).is(Blocks.SEA_PICKLE)){
+                    if(level().getBlockState(pos).is(Blocks.SEA_PICKLE)){
                         inSeaPickle = true;
                         vomitTo = pos;
                         break;
@@ -335,7 +335,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() == Items.SEA_PICKLE) {
             this.spit();
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
@@ -484,13 +484,13 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             if (this.hasSwallowedEntity()) {
                 EntityType type = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(this.getSwallowedEntityType()));
                 if (type != null) {
-                    Entity entity = type.create(level);
+                    Entity entity = type.create(level());
                     if (entity instanceof final LivingEntity alive) {
                         alive.readAdditionalSaveData(this.getSwallowedData());
                         alive.setHealth(Math.max(2, alive.getMaxHealth() * 0.25F));
                         alive.setYRot(random.nextFloat() * 360 - 180);
                         alive.setPos(this.getMouthVec());
-                        if (level.addFreshEntity(alive)) {
+                        if (level().addFreshEntity(alive)) {
                             this.setHasSwallowedEntity(false);
                             this.setSwallowedEntityType("minecraft:pig");
                             this.setSwallowedData(new CompoundTag());
@@ -513,10 +513,10 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             if (!itemStack.isEmpty()) {
                 final Vec3 vec3 = this.getMouthVec();
                 final Vec3 vec32 = vec3.subtract(position()).normalize().scale(0.14F);
-                final ItemEntity item = new ItemEntity(level, vec3.x, vec3.y, vec3.z, itemStack, vec32.x, vec32.y, vec32.z);
+                final ItemEntity item = new ItemEntity(level(), vec3.x, vec3.y, vec3.z, itemStack, vec32.x, vec32.y, vec32.z);
                 item.setDeltaMovement(Vec3.ZERO);
                 item.setPickUpDelay(30);
-                if (level.addFreshEntity(item) && this.catfishInventory != null) {
+                if (level().addFreshEntity(item) && this.catfishInventory != null) {
                     this.catfishInventory.setItem(index, ItemStack.EMPTY);
                 }
             }
@@ -539,7 +539,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     private boolean canSeeBlock(BlockPos destinationBlock) {
         final Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         final Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
-        final BlockHitResult result = this.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        final BlockHitResult result = this.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         return result.getBlockPos().equals(destinationBlock);
     }
 
@@ -576,7 +576,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             } else {
                 executionCooldown = 50 + random.nextInt(50);
                 if (!this.catfish.isFull()) {
-                    final List<Entity> list = catfish.level.getEntitiesOfClass(Entity.class, catfish.getBoundingBox().inflate(8, 8, 8), EntitySelector.NO_SPECTATORS.and(entity -> entity != catfish && catfish.isFood(entity)));
+                    final List<Entity> list = catfish.level().getEntitiesOfClass(Entity.class, catfish.getBoundingBox().inflate(8, 8, 8), EntitySelector.NO_SPECTATORS.and(entity -> entity != catfish && catfish.isFood(entity)));
                     list.sort(Comparator.comparingDouble(catfish::distanceToSqr));
                     if (!list.isEmpty()) {
                         food = list.get(0);
@@ -633,7 +633,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
         }
 
         public boolean canContinueToUse() {
-            return destinationBlock != null && isSeaLantern(fish.level, destinationBlock.mutable()) && isCloseToLantern(16) && !fish.isFull();
+            return destinationBlock != null && isSeaLantern(fish.level(), destinationBlock.mutable()) && isCloseToLantern(16) && !fish.isFull();
         }
 
         public boolean isCloseToLantern(double dist) {
@@ -686,7 +686,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
                     for (int lvt_7_1_ = 0; lvt_7_1_ <= lvt_6_1_; lvt_7_1_ = lvt_7_1_ > 0 ? -lvt_7_1_ : 1 - lvt_7_1_) {
                         for (int lvt_8_1_ = lvt_7_1_ < lvt_6_1_ && lvt_7_1_ > -lvt_6_1_ ? lvt_6_1_ : 0; lvt_8_1_ <= lvt_6_1_; lvt_8_1_ = lvt_8_1_ > 0 ? -lvt_8_1_ : 1 - lvt_8_1_) {
                             lvt_4_1_.setWithOffset(lvt_3_1_, lvt_7_1_, lvt_5_1_ - 1, lvt_8_1_);
-                            if (this.isSeaLantern(fish.level, lvt_4_1_) && fish.canSeeBlock(lvt_4_1_)) {
+                            if (this.isSeaLantern(fish.level(), lvt_4_1_) && fish.canSeeBlock(lvt_4_1_)) {
                                 this.destinationBlock = lvt_4_1_;
                                 return true;
                             }

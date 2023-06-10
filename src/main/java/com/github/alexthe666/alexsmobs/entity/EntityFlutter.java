@@ -134,11 +134,11 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 1F, false, true);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -262,14 +262,14 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         }
         this.FlutterRotation += this.rotationVelocity;
         if ((double) this.FlutterRotation > (Math.PI * 2D)) {
-            if (this.level.isClientSide) {
+            if (this.level().isClientSide) {
                 this.FlutterRotation = ((float) Math.PI * 2F);
             } else {
                 this.FlutterRotation = (float) ((double) this.FlutterRotation - (Math.PI * 2D));
                 if (this.random.nextInt(10) == 0) {
                     this.rotationVelocity = 1.0F / (this.random.nextFloat() + 1.0F) * 0.5F;
                 }
-                this.level.broadcastEntityEvent(this, (byte) 19);
+                this.level().broadcastEntityEvent(this, (byte) 19);
             }
         }
         if (this.FlutterRotation < (float) Math.PI) {
@@ -287,7 +287,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 randomMotionSpeed = 0.01F;
             }
         }
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -297,14 +297,14 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             if (this.isFlying()) {
                 this.setDeltaMovement(this.getDeltaMovement().x * this.randomMotionSpeed * extraMotionSlow, this.getDeltaMovement().y * this.randomMotionSpeed * extraMotionSlowY, this.getDeltaMovement().z * this.randomMotionSpeed * extraMotionSlow);
                 timeFlying++;
-                if (this.isOnGround() && timeFlying > 20 || this.isSitting()) {
+                if (this.onGround() && timeFlying > 20 || this.isSitting()) {
                     this.setFlying(false);
                 }
             } else {
                 timeFlying = 0;
             }
         }
-        if (!this.onGround && this.getDeltaMovement().y < 0.0D) {
+        if (!this.onGround() && this.getDeltaMovement().y < 0.0D) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.8D, 1.0D));
         }
         if (this.isFlying()) {
@@ -332,7 +332,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         if (shooting) {
             this.incrementFlutterPitch(-30);
         }
-        if (!level.isClientSide && shooting && shootProgress == 5F) {
+        if (!this.level().isClientSide && shooting && shootProgress == 5F) {
             if (this.getTarget() != null) {
                 this.spit(this.getTarget());
             }
@@ -362,7 +362,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
 
 
     private void spit(LivingEntity target) {
-        EntityPollenBall llamaspitentity = new EntityPollenBall(this.level, this);
+        EntityPollenBall llamaspitentity = new EntityPollenBall(this.level(), this);
         double d0 = target.getX() - this.getX();
         double d1 = target.getY(0.3333333333333333D) - llamaspitentity.getY();
         double d2 = target.getZ() - this.getZ();
@@ -370,9 +370,9 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         llamaspitentity.shoot(d0, d1 + (double) f, d2, 0.5F, 13.0F);
         if (!this.isSilent()) {
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
-            this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_SPIT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_SPIT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
-        this.level.addFreshEntity(llamaspitentity);
+        this.level().addFreshEntity(llamaspitentity);
     }
 
     public boolean isShakingHead() {
@@ -390,9 +390,9 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             this.playSound(AMSoundRegistry.FLUTTER_YES.get(), this.getSoundVolume(), this.getVoicePitch());
             if (this.flowersEaten.size() > 3 && getRandom().nextInt(3) == 0 || this.flowersEaten.size() > 6) {
                 this.tame(player);
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
         } else if (!isTame() && itemstack.is(ItemTags.FLOWERS)) {
@@ -422,7 +422,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                     player.drop(fish, false);
                 }
                 this.remove(RemovalReason.DISCARDED);
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
             } else {
                 this.setCommand(this.getCommand() + 1);
                 if (this.getCommand() == 3) {
@@ -452,7 +452,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 if (vec != null) {
                     this.getMoveControl().setWantedPosition(vec.getX(), vec.getY(), vec.getZ(), followSpeed);
                 }
-                if (this.onGround) {
+                if (this.onGround()) {
                     this.setFlying(false);
                 }
             } else {
@@ -469,7 +469,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     protected void dropEquipment() {
         super.dropEquipment();
         if (this.isPotted()) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.spawnAtLocation(Items.FLOWER_POT);
             }
         }
@@ -522,15 +522,15 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -63 && !level().getBlockState(position).isSolid()) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || position.getY() < -63;
+        return !level().getFluidState(position).isEmpty() || position.getY() < -63;
     }
 
     private BlockPos getFlutterGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
-        while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -63 && !level().getBlockState(position).isSolid()) {
             position = position.below();
         }
         if (position.getY() < -62) {
@@ -572,7 +572,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             return Vec3.upFromBottomCenterOf(ground, 110 + random.nextInt(20));
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > -63 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
+            while (ground.getY() > -63 && !level().getBlockState(ground).isSolid()) {
                 ground = ground.below();
             }
         }
@@ -584,7 +584,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
 
@@ -602,7 +602,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mobo) {
-        EntityFlutter baby = AMEntityRegistry.FLUTTER.get().create(level);
+        EntityFlutter baby = AMEntityRegistry.FLUTTER.get().create(level());
         baby.setPersistenceRequired();
         return baby;
     }
@@ -655,7 +655,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
                 if (this.phage.getRandom().nextInt(30) != 0 && !phage.isFlying() && !phage.isInWaterOrBubble()) {
                     return false;
                 }
-                if (this.phage.isOnGround() && !phage.isInWaterOrBubble()) {
+                if (this.phage.onGround() && !phage.isInWaterOrBubble()) {
                     this.flightTarget = random.nextInt(4) == 0 && !phage.isBaby();
                 } else {
                     this.flightTarget = random.nextInt(5) > 0 && phage.timeFlying < 100 && !phage.isBaby();
@@ -678,10 +678,10 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
             } else {
                 this.phage.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && phage.onGround) {
+            if (!flightTarget && isFlying() && phage.onGround()) {
                 phage.setFlying(false);
             }
-            if (isFlying() && phage.onGround && phage.timeFlying > 40) {
+            if (isFlying() && phage.onGround() && phage.timeFlying > 40) {
                 phage.setFlying(false);
             }
         }

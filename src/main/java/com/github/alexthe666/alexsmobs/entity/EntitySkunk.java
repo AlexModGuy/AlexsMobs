@@ -159,7 +159,7 @@ public class EntitySkunk extends Animal {
         if(this.getSprayTime() <= 0 && this.sprayProgress > 0F){
             this.sprayProgress--;
         }
-        if(!level.isClientSide){
+        if(!this.level().isClientSide){
             if(harassedTime > 200 && sprayCooldown == 0 && !this.isBaby()){
                 harassedTime = 0;
                 sprayCooldown = 200 + random.nextInt(200);
@@ -185,7 +185,7 @@ public class EntitySkunk extends Animal {
             float fartDistance = 2.5F;
             Vec3 modelBack = new Vec3(0, 0.4F, -fartDistance).xRot(-this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
             Vec3 fartAt = this.position().add(modelBack);
-            AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level, fartAt.x, fartAt.y, fartAt.z);
+            AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level(), fartAt.x, fartAt.y, fartAt.z);
             areaeffectcloud.setRadius(2.5F);
             areaeffectcloud.setRadiusOnUse(-0.25F);
             areaeffectcloud.setWaitTime(20);
@@ -196,7 +196,7 @@ public class EntitySkunk extends Animal {
                 areaeffectcloud.addEffect(new MobEffectInstance(mobeffectinstance));
             }
 
-            this.level.addFreshEntity(areaeffectcloud);
+            this.level().addFreshEntity(areaeffectcloud);
         }
 
     }
@@ -211,7 +211,7 @@ public class EntitySkunk extends Animal {
                 double d0 = this.random.nextGaussian() * 0.1D;
                 double d1 = this.random.nextGaussian() * 0.1D;
                 double d2 = this.random.nextGaussian() * 0.1D;
-                this.level.addParticle(AMParticleRegistry.SMELLY.get(), particleFrom.x, particleFrom.y, particleFrom.z, particleTo.x + d0, particleTo.y - 0.4F + d1, particleTo.z + d2);
+                this.level().addParticle(AMParticleRegistry.SMELLY.get(), particleFrom.x, particleFrom.y, particleFrom.z, particleTo.x + d0, particleTo.y - 0.4F + d1, particleTo.z + d2);
             }
         } else {
             super.handleEntityEvent(id);
@@ -234,7 +234,7 @@ public class EntitySkunk extends Animal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        return AMEntityRegistry.SKUNK.get().create(level);
+        return AMEntityRegistry.SKUNK.get().create(level());
     }
 
     private class SprayGoal extends Goal {
@@ -270,7 +270,7 @@ public class EntitySkunk extends Animal {
                     float yAdd = random.nextFloat() * 20 - 10;
                     float maxSprayDist = 5F;
                     Vec3 modelBack = new Vec3(0, 0F, -maxSprayDist).xRot((xAdd - EntitySkunk.this.getXRot()) * ((float)Math.PI / 180F)).yRot((yAdd - EntitySkunk.this.getYRot()) * ((float)Math.PI / 180F));
-                    HitResult hitResult = EntitySkunk.this.level.clip(new ClipContext(skunkPos, skunkPos.add(modelBack), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySkunk.this));
+                    HitResult hitResult = EntitySkunk.this.level().clip(new ClipContext(skunkPos, skunkPos.add(modelBack), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySkunk.this));
                     if(hitResult != null) {
                         BlockPos pos;
                         Direction dir;
@@ -281,14 +281,14 @@ public class EntitySkunk extends Animal {
                             pos = AMBlockPos.fromVec3(hitResult.getLocation());
                             dir = Direction.UP;
                         }
-                        BlockState sprayState = ((MultifaceBlock) AMBlockRegistry.SKUNK_SPRAY.get()).getStateForPlacement(level.getBlockState(pos), level, pos, dir);
+                        BlockState sprayState = ((MultifaceBlock) AMBlockRegistry.SKUNK_SPRAY.get()).getStateForPlacement(level().getBlockState(pos), level, pos, dir);
                         if (sprayState != null && sprayState.is(AMBlockRegistry.SKUNK_SPRAY.get())) {
                             level.setBlockAndUpdate(pos, sprayState);
                         }
                         double sprayDist = hitResult.getLocation().subtract(skunkPos).length() / maxSprayDist;
                         AABB poisonBox = new AABB(skunkPos, skunkPos.add(modelBack.scale(sprayDist)).add(0, 1.5F, 0)).inflate(1F);
                         Collection<MobEffectInstance> collection = EntitySkunk.this.getActiveEffects();
-                        for (LivingEntity entity : EntitySkunk.this.level.getEntitiesOfClass(LivingEntity.class, poisonBox)) {
+                        for (LivingEntity entity : EntitySkunk.this.level().getEntitiesOfClass(LivingEntity.class, poisonBox)) {
                             if (!(entity instanceof EntitySkunk)) {
                                 entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 300));
                                 if(entity instanceof ServerPlayer serverPlayer){

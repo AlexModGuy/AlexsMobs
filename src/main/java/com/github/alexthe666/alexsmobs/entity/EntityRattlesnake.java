@@ -142,14 +142,14 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
             curlTime = 0;
             maxCurlTime = 75 + random.nextInt(50);
         }
-        if(!level.isClientSide && this.isCurled() && (this.getTarget() != null && this.getTarget().isAlive())){
+        if(!this.level().isClientSide && this.isCurled() && (this.getTarget() != null && this.getTarget().isAlive())){
             this.setCurled(false);
         }
-        if(!level.isClientSide && this.isRattling()  && this.getTarget() == null){
+        if(!this.level().isClientSide && this.isRattling()  && this.getTarget() == null){
             this.setCurled(true);
 
         }
-        if (!level.isClientSide && !this.isCurled() && this.getTarget() == null && random.nextInt(500) == 0) {
+        if (!this.level().isClientSide && !this.isCurled() && this.getTarget() == null && random.nextInt(500) == 0) {
             maxCurlTime = 300 + random.nextInt(250);
             this.setCurled(true);
         }
@@ -179,7 +179,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
     }
 
     public void travel(Vec3 vec3d) {
-        if (this.isOnGround() && this.isCurled()) {
+        if (this.onGround() && this.isCurled()) {
             if (this.getNavigation().getPath() != null) {
                 this.getNavigation().stop();
             }
@@ -240,7 +240,7 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
         public boolean canUse() {
             if(EntityRattlesnake.this.getRandom().nextInt(executionChance) == 0){
                 double dist = 5D;
-                List<LivingEntity> list = EntityRattlesnake.this.level.getEntitiesOfClass(LivingEntity.class, EntityRattlesnake.this.getBoundingBox().inflate(dist, dist, dist), WARNABLE_PREDICATE);
+                List<LivingEntity> list = EntityRattlesnake.this.level().getEntitiesOfClass(LivingEntity.class, EntityRattlesnake.this.getBoundingBox().inflate(dist, dist, dist), WARNABLE_PREDICATE);
                 double d0 = Double.MAX_VALUE;
                 Entity possibleTarget = null;
                 for(Entity entity : list) {

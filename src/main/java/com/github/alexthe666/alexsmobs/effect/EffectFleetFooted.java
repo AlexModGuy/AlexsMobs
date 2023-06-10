@@ -23,7 +23,7 @@ public class EffectFleetFooted extends MobEffect {
 
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         AttributeInstance modifiableattributeinstance = entity.getAttribute(Attributes.MOVEMENT_SPEED);
-        boolean applyEffect = entity.isSprinting() && !entity.isOnGround() && lastDuration > 2;
+        boolean applyEffect = entity.isSprinting() && !entity.onGround() && lastDuration > 2;
         if(removeEffectAfter > 0){
             removeEffectAfter--;
         }

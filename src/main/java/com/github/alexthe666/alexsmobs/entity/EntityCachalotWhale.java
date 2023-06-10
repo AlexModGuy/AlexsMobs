@@ -225,7 +225,7 @@ public class EntityCachalotWhale extends Animal {
         if (!this.hasCaughtSquid()) {
             return null;
         } else {
-            return this.level.getEntity(this.entityData.get(CAUGHT_ID));
+            return this.level().getEntity(this.entityData.get(CAUGHT_ID));
         }
     }
 
@@ -265,22 +265,22 @@ public class EntityCachalotWhale extends Animal {
             return;
         }
         boolean flag = false;
-        if (!level.isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
+        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level(), this)) {
             final TagKey<Block> breakables = this.isCharging() && this.getTarget() != null && AMConfig.cachalotDestruction ? AMTagRegistry.CACHALOT_WHALE_BREAKABLES : AMTagRegistry.ORCA_BREAKABLES;
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
                         final BlockPos pos = new BlockPos(a, b, c);
-                        final BlockState state = level.getBlockState(pos);
-                        final FluidState fluidState = level.getFluidState(pos);
-                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && state.is(breakables) && fluidState.isEmpty()) {
+                        final BlockState state = level().getBlockState(pos);
+                        final FluidState fluidState = level().getFluidState(pos);
+                        if (!state.isAir() && !state.getShape(level(), pos).isEmpty() && state.is(breakables) && fluidState.isEmpty()) {
                             final Block block = state.getBlock();
                             if (block != Blocks.AIR) {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
-                                level.destroyBlock(pos, true);
+                                level().destroyBlock(pos, true);
                                 if (state.is(BlockTags.ICE)) {
-                                    level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
+                                    level().setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
                                 }
                             }
                         }
@@ -313,7 +313,7 @@ public class EntityCachalotWhale extends Animal {
                 final double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
                 final double motX = this.random.nextGaussian();
                 final double motZ = this.random.nextGaussian();
-                this.level.addParticle(AMParticleRegistry.WHALE_SPLASH.get(), this.headPart.getX() + extraX, this.headPart.getY() + this.headPart.getBbHeight(), this.headPart.getZ() + extraZ, motX * 0.1F + this.getDeltaMovement().x, 2F, motZ * 0.1F + this.getDeltaMovement().z);
+                this.level().addParticle(AMParticleRegistry.WHALE_SPLASH.get(), this.headPart.getX() + extraX, this.headPart.getY() + this.headPart.getBbHeight(), this.headPart.getZ() + extraZ, motX * 0.1F + this.getDeltaMovement().x, 2F, motZ * 0.1F + this.getDeltaMovement().z);
             }
         }
     }
@@ -402,7 +402,7 @@ public class EntityCachalotWhale extends Animal {
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 0.06, 0));
             } else {
                 BlockPos waterPos = this.blockPosition();
-                while (level.getFluidState(waterPos).is(FluidTags.WATER) && waterPos.getY() < 255) {
+                while (level().getFluidState(waterPos).is(FluidTags.WATER) && waterPos.getY() < 255) {
                     waterPos = waterPos.above();
                 }
                 if (waterPos.getY() - this.getY() < (isBaby() ? 7 : 12)) {
@@ -423,7 +423,7 @@ public class EntityCachalotWhale extends Animal {
         } else {
             this.setXRot(Mth.clamp(rPitch, -90, 90));
         }
-        if (this.isOnGround() && !this.isInWaterOrBubble()) {
+        if (this.onGround() && !this.isInWaterOrBubble()) {
             this.setBeached(true);
             this.setXRot(0);
             this.setSleeping(false);
@@ -432,7 +432,7 @@ public class EntityCachalotWhale extends Animal {
             this.whaleSpeedMod = 0;
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.5, 1F, 0.5));
             if (this.isEyeInFluid(FluidTags.WATER)) {
-                Player entity = this.level.getNearestPlayer(REWARD_PLAYER_PREDICATE, this);
+                Player entity = this.level().getNearestPlayer(REWARD_PLAYER_PREDICATE, this);
                 if (this.getLastHurtByMob() != entity) {
                     rewardPlayer = entity;
                 }
@@ -453,11 +453,11 @@ public class EntityCachalotWhale extends Animal {
             this.whaleSpeedMod = 0.1F;
             this.getMoveControl().setWantedPosition(rewardPlayer.getX(), rewardPlayer.getY(), rewardPlayer.getZ(), 0.5D);
             if (this.distanceTo(rewardPlayer) < 10F) {
-                if (!level.isClientSide) {
+                if (!this.level().isClientSide) {
                     final Vec3 vec = this.getMouthVec();
-                    final ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS.get(), 2 + random.nextInt(2)));
+                    final ItemEntity itementity = new ItemEntity(this.level(), vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.AMBERGRIS.get(), 2 + random.nextInt(2)));
                     itementity.setDefaultPickUpDelay();
-                    level.addFreshEntity(itementity);
+                    level().addFreshEntity(itementity);
                 }
                 hasRewardedPlayer = true;
                 rewardPlayer = null;
@@ -571,7 +571,7 @@ public class EntityCachalotWhale extends Animal {
                 this.whaleParts[l].zOld = avector3d[l].z;
             }
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             LivingEntity target = this.getTarget();
             if (target == null || !target.isAlive()) {
                 this.setGrabbing(false);
@@ -623,7 +623,7 @@ public class EntityCachalotWhale extends Animal {
                                 this.playSound(AMSoundRegistry.CACHALOT_WHALE_CLICK.get(), this.getSoundVolume(), this.getVoicePitch());
                                 this.gameEvent(GameEvent.ENTITY_ROAR);
                             }
-                            final EntityCachalotEcho echo = new EntityCachalotEcho(this.level, this);
+                            final EntityCachalotEcho echo = new EntityCachalotEcho(this.level(), this);
                             final float radius = this.headPart.getBbWidth() * 0.5F;
                             final float angle = (0.0174532925F * this.yBodyRot);
                             final double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
@@ -636,7 +636,7 @@ public class EntityCachalotWhale extends Animal {
                             final double d1 = target.getY(0.1D) - y;
                             final double d2 = target.getZ() - z;
                             echo.shoot(d0, d1, d2, 1F, 0.0F);
-                            this.level.addFreshEntity(echo);
+                            this.level().addFreshEntity(echo);
                         }
                         echoTimer++;
                     }
@@ -694,9 +694,9 @@ public class EntityCachalotWhale extends Animal {
                                     chargeCooldown = target instanceof Player ? 30 : 100;
                                     if (random.nextInt(10) == 0) {
                                         Vec3 vec = this.getMouthVec();
-                                        ItemEntity itementity = new ItemEntity(this.level, vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.CACHALOT_WHALE_TOOTH.get()));
+                                        ItemEntity itementity = new ItemEntity(this.level(), vec.x, vec.y, vec.z, new ItemStack(AMItemRegistry.CACHALOT_WHALE_TOOTH.get()));
                                         itementity.setDefaultPickUpDelay();
-                                        level.addFreshEntity(itementity);
+                                        level().addFreshEntity(itementity);
                                     }
                                 }
                             }
@@ -708,7 +708,7 @@ public class EntityCachalotWhale extends Animal {
                 chargeCooldown--;
             }
             if (spoutTimer > 0) {
-                level.broadcastEntityEvent(this, (byte) 67);
+                level().broadcastEntityEvent(this, (byte) 67);
                 spoutTimer--;
                 this.setXRot(0);
                 this.setDeltaMovement(this.getDeltaMovement().multiply(0, 0, 0));
@@ -725,7 +725,7 @@ public class EntityCachalotWhale extends Animal {
         }
 
         if (this.isAlive() && isCharging()) {
-            for (final Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.headPart.getBoundingBox().inflate(1.0D))) {
+            for (final Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.headPart.getBoundingBox().inflate(1.0D))) {
                 if (!isAlliedTo(entity) && !(entity instanceof EntityCachalotPart) && entity != this) {
                     launch(entity, true);
                 }
@@ -734,14 +734,14 @@ public class EntityCachalotWhale extends Animal {
         if (this.isInWater() && !this.isEyeInFluid(FluidTags.WATER) && this.getAirSupply() > 140) {
             this.setDeltaMovement(this.getDeltaMovement().add(0, -0.06, 0));
         }
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.tryDespawn();
         }
         prevEyesInWater = this.isEyeInFluid(FluidTags.WATER);
     }
 
     private void launch(Entity e, boolean huge) {
-        if ((e.isOnGround() || e.isInWater()) && !(e instanceof EntityCachalotWhale)) {
+        if ((e.onGround() || e.isInWater()) && !(e instanceof EntityCachalotWhale)) {
             final double d0 = e.getX() - this.getX();
             final double d1 = e.getZ() - this.getZ();
             final double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
@@ -751,7 +751,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     private boolean isSleepTime() {
-        final long time = level.getDayTime();
+        final long time = level().getDayTime();
         return time > 18000 && time < 22812 && this.isInWaterOrBubble();
     }
 
@@ -882,7 +882,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     protected int increaseAirSupply(int currentAir) {
-        if (!level.isClientSide && prevEyesInWater && spoutTimer <= 0 && !this.isEyeInFluid(FluidTags.WATER) && currentAir < this.getMaxAirSupply() / 2) {
+        if (!this.level().isClientSide && prevEyesInWater && spoutTimer <= 0 && !this.isEyeInFluid(FluidTags.WATER) && currentAir < this.getMaxAirSupply() / 2) {
             spoutTimer = 20 + random.nextInt(10);
         }
         return this.getMaxAirSupply();
@@ -907,7 +907,7 @@ public class EntityCachalotWhale extends Animal {
     public Vec3 getDismountLocationForPassenger(LivingEntity dismount) {
         Vec3 mouth = this.getMouthVec();
         BlockPos pos = AMBlockPos.fromVec3(mouth);
-        while(!level.isEmptyBlock(pos) && !level.isWaterAt(pos) && pos.getY() < level.getMaxBuildHeight()){
+        while(!level().isEmptyBlock(pos) && !level().isWaterAt(pos) && pos.getY() < level().getMaxBuildHeight()){
             pos = pos.above();
         }
         return new Vec3(mouth.x, pos.getY() + 0.5F, mouth.z);
@@ -941,7 +941,7 @@ public class EntityCachalotWhale extends Animal {
             BlockPos lvt_2_1_ = null;
 
             for (final BlockPos lvt_4_1_ : lvt_1_1_) {
-                if (this.canBreatheAt(EntityCachalotWhale.this.level, lvt_4_1_)) {
+                if (this.canBreatheAt(EntityCachalotWhale.this.level(), lvt_4_1_)) {
                     lvt_2_1_ = lvt_4_1_.below((int) (EntityCachalotWhale.this.getBbHeight() * 0.25d));
                     break;
                 }

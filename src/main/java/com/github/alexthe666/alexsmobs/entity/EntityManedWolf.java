@@ -73,7 +73,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     private BlockPos nearestAnthill;
 
     protected EntityManedWolf(EntityType<? extends Animal> animal, Level level) {
-        super(animal, level);
+        super(animal, level());
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -144,7 +144,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
 
     private void attractAnimals() {
         if (this.getShakingTime() % 5 == 0) {
-            List<Animal> list = this.level.getEntitiesOfClass(Animal.class, this.getBoundingBox().inflate(16, 8, 16));
+            List<Animal> list = this.level().getEntitiesOfClass(Animal.class, this.getBoundingBox().inflate(16, 8, 16));
             for (Animal e : list) {
                 if(!(e instanceof EntityManedWolf)){
                     e.setTarget(null);
@@ -227,7 +227,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
             if (heldItemMainhand.getItem() instanceof BlockItem) {
                 data = new BlockParticleOption(ParticleTypes.BLOCK, ((BlockItem) heldItemMainhand.getItem()).getBlock().defaultBlockState());
             }
-            this.level.addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.6F, this.getZ() + extraZ, d0, d1, d2);
+            this.level().addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.6F, this.getZ() + extraZ, d0, d1, d2);
         }
     }
 
@@ -237,11 +237,11 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
         prevEarYaw = this.getEarYaw();
         prevDanceProgress = danceProgress;
         prevShakeProgress = shakeProgress;
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             updateEars();
         }
         boolean dance = isDancing();
-        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15) || !this.level.getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 15) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
             this.isJukeboxing = false;
             this.setDancing(false);
             this.jukeboxPosition = null;
@@ -260,11 +260,11 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
         }
         if (this.isShaking()) {
             this.setShakingTime(this.getShakingTime() - 1);
-            if (this.level.isClientSide) {
+            if (this.level().isClientSide) {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = 0.05F + this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(AMParticleRegistry.SMELLY.get(), this.getRandomX(0.7F), this.getY(0.6F), this.getRandomZ(0.7F), d0, d1, d2);
+                this.level().addParticle(AMParticleRegistry.SMELLY.get(), this.getRandomX(0.7F), this.getY(0.6F), this.getRandomZ(0.7F), d0, d1, d2);
             }else{
                 attractAnimals();
                 findAnthill();

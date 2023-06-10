@@ -82,14 +82,14 @@ public class ShoebillAIFish extends Goal {
 
     public void spawnFishingLoot() {
         double luck = 0D + bird.luckLevel * 0.5F;
-        LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerLevel) this.bird.level);
+        LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerLevel) this.bird.level());
         lootcontext$builder.withLuck((float) luck); // Forge: add player & looted bird to LootContext
         LootContextParamSet.Builder lootparameterset$builder = new LootContextParamSet.Builder();
         List<ItemStack> result = bird.level.getServer().getLootTables().get(BuiltInLootTables.FISHING).getRandomItems(lootcontext$builder.create(lootparameterset$builder.build()));
         for (ItemStack itemstack : result) {
             ItemEntity item = new ItemEntity(this.bird.level, this.bird.getX() + 0.5F, this.bird.getY(), this.bird.getZ(), itemstack);
-            if (!this.bird.level.isClientSide) {
-                this.bird.level.addFreshEntity(item);
+            if (!this.bird.this.level().isClientSide) {
+                this.bird.level().addFreshEntity(item);
             }
         }
     }
@@ -120,7 +120,7 @@ public class ShoebillAIFish extends Goal {
         int range = 32;
         for (int i = 0; i < 15; i++) {
             BlockPos blockpos1 = this.bird.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-            while (this.bird.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
+            while (this.bird.level().isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
                 blockpos1 = blockpos1.below();
             }
             if (isConnectedToLand(blockpos1)) {
@@ -131,10 +131,10 @@ public class ShoebillAIFish extends Goal {
     }
 
     public boolean isConnectedToLand(BlockPos pos) {
-        if (this.bird.level.getFluidState(pos).is(FluidTags.WATER)) {
+        if (this.bird.level().getFluidState(pos).is(FluidTags.WATER)) {
             for (Direction dir : HORIZONTALS) {
                 BlockPos offsetPos = pos.relative(dir);
-                if (this.bird.level.getFluidState(offsetPos).isEmpty() && this.bird.level.getFluidState(offsetPos.above()).isEmpty()) {
+                if (this.bird.level().getFluidState(offsetPos).isEmpty() && this.bird.level().getFluidState(offsetPos.above()).isEmpty()) {
                     return true;
                 }
             }
@@ -143,10 +143,10 @@ public class ShoebillAIFish extends Goal {
     }
 
     public BlockPos getLandPos(BlockPos pos) {
-        if (this.bird.level.getFluidState(pos).is(FluidTags.WATER)) {
+        if (this.bird.level().getFluidState(pos).is(FluidTags.WATER)) {
             for (Direction dir : HORIZONTALS) {
                 BlockPos offsetPos = pos.relative(dir);
-                if (this.bird.level.getFluidState(offsetPos).isEmpty() && this.bird.level.getFluidState(offsetPos.above()).isEmpty()) {
+                if (this.bird.level().getFluidState(offsetPos).isEmpty() && this.bird.level().getFluidState(offsetPos.above()).isEmpty()) {
                     return offsetPos;
                 }
             }

@@ -103,10 +103,10 @@ public class MooseAIJostle extends Goal {
                     }
                     this.moose.getMoveControl().strafe(0, 0.2F);
                 }
-                if(this.moose.getRandom().nextInt(55) == 0 && this.moose.isOnGround()){
+                if(this.moose.getRandom().nextInt(55) == 0 && this.moose.onGround()){
                     moose.pushBackJostling(targetMoose, 0.2F);
                 }
-                if(this.moose.getRandom().nextInt(25) == 0 && this.moose.isOnGround()) {
+                if(this.moose.getRandom().nextInt(25) == 0 && this.moose.onGround()) {
                     moose.playJostleSound();
                 }
                 moose.setJostleAngle(angle);
@@ -117,10 +117,10 @@ public class MooseAIJostle extends Goal {
                 this.targetMoose.jostleTimer++;
                 if(this.moose.jostleTimer > 1000 || f1 > 2.0F){
                     moose.hasImpulse = true;
-                    if(moose.isOnGround()){
+                    if(moose.onGround()){
                         moose.pushBackJostling(targetMoose, 0.9F);
                     }
-                    if(targetMoose.isOnGround()){
+                    if(targetMoose.onGround()){
                         targetMoose.pushBackJostling(moose, 0.9F);
                     }
                     this.moose.jostleTimer = 0;

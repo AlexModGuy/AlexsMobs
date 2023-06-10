@@ -157,11 +157,11 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level);
+            this.navigation = new GroundPathNavigation(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AquaticMoveController(this, 1.1F);
-            this.navigation = new SemiAquaticPathNavigator(this, level);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -228,7 +228,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
         if (!grabbing && holdProgress > 0F) {
             holdProgress -= 2.5F;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isInWater()) {
                 swimTimer++;
             } else {
@@ -250,7 +250,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
                 for (int i = 0; i <= particles; i++) {
                     Vec3 particleVec = new Vec3(0, 0, 1.0F).yRot((i / (float) particles) * ((float) Math.PI) * 2F).add(this.position());
                     double particleY = this.getBoundingBox().minY + getFluidTypeHeight(ForgeMod.WATER_TYPE.get());
-                    this.level.addParticle(ParticleTypes.SPLASH, particleVec.x, particleY, particleVec.z, 0, 0.3F, 0);
+                    this.level().addParticle(ParticleTypes.SPLASH, particleVec.x, particleY, particleVec.z, 0, 0.3F, 0);
                 }
             }
         }
@@ -327,7 +327,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
 
     public Entity getHeldMob() {
         int id = getHeldMobId();
-        return id == -1 ? null : level.getEntity(id);
+        return id == -1 ? null : level().getEntity(id);
     }
 
     public boolean isSitting() {
@@ -501,7 +501,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
             BlockPos blockpos = this.caiman.blockPosition();
             caiman.swimTimer = 1000;
             if (!this.caiman.isInWater() && this.isReachedTarget()) {
-                Level world = this.caiman.level;
+                Level world = this.caiman.level();
                 caiman.gameEvent(GameEvent.BLOCK_PLACE);
                 world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
                 world.setBlock(this.blockPos.above(), AMBlockRegistry.CAIMAN_EGG.get().defaultBlockState().setValue(BlockReptileEgg.EGGS, Integer.valueOf(this.caiman.random.nextInt(1) + 3)), 3);

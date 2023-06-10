@@ -59,13 +59,13 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
     }
 
     protected EntityMurmurHead(EntityMurmur parent) {
-        this(AMEntityRegistry.MURMUR_HEAD.get(), parent.level);
+        this(AMEntityRegistry.MURMUR_HEAD.get(), parent.level());
         this.setBodyId(parent.getUUID());
         this.doSpawnPositioning(parent);
     }
 
     protected PathNavigation createNavigation(Level level) {
-        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level);
+        FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level());
         flyingpathnavigation.setCanOpenDoors(false);
         flyingpathnavigation.setCanFloat(true);
         flyingpathnavigation.setCanPassDoors(true);
@@ -172,12 +172,12 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
     }
 
     public Entity getBody() {
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final UUID id = getBodyId();
-            return id == null ? null : ((ServerLevel) level).getEntity(id);
+            return id == null ? null : ((ServerLevel) level()).getEntity(id);
         }else{
             int id = this.entityData.get(BODY_ID);
-            return id == -1 ? null : level.getEntity(id);
+            return id == -1 ? null : level().getEntity(id);
         }
     }
 
@@ -213,7 +213,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
         }
         moveHair();
         Entity body = getBody();
-        if(!level.isClientSide) {
+        if(!this.level().isClientSide) {
             if (body instanceof EntityMurmur) {
                 EntityMurmur murmur = (EntityMurmur) body;
                 this.entityData.set(BODY_ID, body.getId());

@@ -18,7 +18,7 @@ public class EffectOiled extends MobEffect {
            }else{
                entity.fallDistance = 0;
            }
-           if (!entity.isOnGround()) {
+           if (!entity.onGround()) {
                Vec3 vector3d = entity.getDeltaMovement();
                entity.setDeltaMovement(vector3d.multiply(1.0D, 0.9D, 1.0D));
 

@@ -18,8 +18,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 public class BlockEnderResidue extends AbstractGlassBlock {
 
@@ -27,7 +26,7 @@ public class BlockEnderResidue extends AbstractGlassBlock {
     public static final BooleanProperty SLOW_DECAY = BooleanProperty.create("slow_decay");
 
     public BlockEnderResidue() {
-        super(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.COLOR_PURPLE).noOcclusion().hasPostProcess((i, j, k) -> true).emissiveRendering((i, j, k) -> true).lightLevel((i) -> 3).strength(0.2F).sound(SoundType.AMETHYST).randomTicks().noOcclusion());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).noOcclusion().hasPostProcess((i, j, k) -> true).emissiveRendering((i, j, k) -> true).lightLevel((i) -> 3).strength(0.2F).sound(SoundType.AMETHYST).randomTicks().noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(AGE, Integer.valueOf(0)).setValue(SLOW_DECAY, false));
     }
 

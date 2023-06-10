@@ -87,7 +87,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
 
     private void eatHive() {
         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(bear.level, bear)) {
-            BlockState blockstate = bear.level.getBlockState(this.blockPos);
+            BlockState blockstate = bear.level().getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
                 if (bear.level.getBlockEntity(this.blockPos) instanceof BeehiveBlockEntity) {
                     final RandomSource rand = this.bear.getRandom();
@@ -97,12 +97,12 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
                     ItemStack stack = new ItemStack(Items.HONEYCOMB);
                     int level = 0;
                     if (blockstate.getBlock() instanceof BeehiveBlock) {
-                        level = blockstate.getValue(BeehiveBlock.HONEY_LEVEL);
+                        level = blockstate.getValue(BeehiveBlock.HONEY_level());
                     }
                     for (int i = 0; i < level; i++) {
                         ItemEntity itementity = new ItemEntity(bear.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                         itementity.setDefaultPickUpDelay();
-                        bear.level.addFreshEntity(itementity);
+                        bear.level().addFreshEntity(itementity);
                     }
                     bear.level.destroyBlock(blockPos, false);
                     if (blockstate.getBlock() instanceof BeehiveBlock) {
@@ -124,7 +124,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
         if (worldIn.getBlockState(pos).is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
             if (worldIn.getBlockEntity(pos) instanceof BeehiveBlockEntity && worldIn.getBlockState(pos).getBlock() instanceof BeehiveBlock) {
-                int i = worldIn.getBlockState(pos).getValue(BeehiveBlock.HONEY_LEVEL);
+                int i = worldIn.getBlockState(pos).getValue(BeehiveBlock.HONEY_level());
                 return i > 0;
             }
         }

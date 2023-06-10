@@ -13,7 +13,7 @@ public class FlyingAITempt extends TemptGoal {
 
     public void tick() {
         super.tick();
-        if(mob instanceof ITargetsDroppedItems hasFlyingItemAI && mob.isOnGround()){
+        if(mob instanceof ITargetsDroppedItems hasFlyingItemAI && mob.onGround()){
             hasFlyingItemAI.setFlying(false);
         }
     }

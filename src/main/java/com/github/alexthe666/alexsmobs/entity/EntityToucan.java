@@ -218,7 +218,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         super.tick();
         prevFlyProgress = flyProgress;
         prevPeckProgress = peckProgress;
-        if (this.getGoldenTime() > 0 && !level.isClientSide) {
+        if (this.getGoldenTime() > 0 && !this.level().isClientSide) {
             this.setGoldenTime(this.getGoldenTime() - 1);
         }
         if (isFlying() && flyProgress < 5F) {
@@ -227,7 +227,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         if (!isFlying() && flyProgress > 0F) {
             flyProgress--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -327,7 +327,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         int j = this.getRandom().nextInt(6) + 18;
 
         BlockPos newPos = ground.above(distFromGround > 9 ? flightHeight : j);
-        if (level.getBlockState(ground).is(BlockTags.LEAVES)) {
+        if (level().getBlockState(ground).is(BlockTags.LEAVES)) {
             newPos = ground.above(1 + this.getRandom().nextInt(3));
         }
         if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
@@ -338,10 +338,10 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     public BlockPos getToucanGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
-        while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
+        while (position.getY() < 320 && !level().getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
+        while (position.getY() > -64 && !level().getBlockState(position).isSolid() && level().getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
@@ -360,7 +360,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             return this.position();
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > -62 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
+            while (ground.getY() > -62 && !level().getBlockState(ground).isSolid()) {
                 ground = ground.below();
             }
         }
@@ -373,17 +373,17 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level);
+            this.navigation = new GroundPathNavigation(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 0.6F, false, true);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -403,7 +403,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         super.readAdditionalSaveData(compound);
         BlockState blockstate = null;
         if (compound.contains("SaplingState", 10)) {
-            blockstate = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("SaplingState"));
+            blockstate = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compound.getCompound("SaplingState"));
             if (blockstate.isAir()) {
                 blockstate = null;
             }
@@ -473,7 +473,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        EntityToucan toucan = AMEntityRegistry.TOUCAN.get().create(level);
+        EntityToucan toucan = AMEntityRegistry.TOUCAN.get().create(level());
         toucan.setVariant(this.getVariant());
         return toucan;
     }
@@ -485,18 +485,18 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > -62 && level.isEmptyBlock(position)) {
+        while (position.getY() > -62 && level().isEmptyBlock(position)) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || level.getBlockState(position).is(Blocks.VINE) || position.getY() <= 0;
+        return !level().getFluidState(position).isEmpty() || level().getBlockState(position).is(Blocks.VINE) || position.getY() <= 0;
     }
 
     private boolean isOverLeaves() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > -62 && level.isEmptyBlock(position)) {
+        while (position.getY() > -62 && level().isEmptyBlock(position)) {
             position = position.below();
         }
-        return level.getBlockState(position).is(BlockTags.LEAVES) || level.getBlockState(position).is(Blocks.VINE);
+        return level().getBlockState(position).is(BlockTags.LEAVES) || level().getBlockState(position).is(Blocks.VINE);
     }
 
     @Override
@@ -506,7 +506,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
 
     private void peckBlockEffect() {
         BlockState beneath = this.getBlockStateOn();
-        if (level.isClientSide && !beneath.isAir() && beneath.getFluidState().isEmpty()) {
+        if (this.level().isClientSide && !beneath.isAir() && beneath.getFluidState().isEmpty()) {
             for (int i = 0; i < 2 + random.nextInt(2); i++) {
                 double d2 = this.random.nextGaussian() * 0.02D;
                 double d0 = this.random.nextGaussian() * 0.02D;
@@ -516,7 +516,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
                 double extraZ = radius * Mth.cos(angle);
                 ParticleOptions data = new BlockParticleOption(ParticleTypes.BLOCK, beneath);
-                this.level.addParticle(data, this.getX() + extraX, this.getY() + 0.1F, this.getZ() + extraZ, d0, d1, d2);
+                this.level().addParticle(data, this.getX() + extraX, this.getY() + 0.1F, this.getZ() + extraZ, d0, d1, d2);
             }
         }
     }
@@ -534,7 +534,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             if (heldItemMainhand.getItem() instanceof BlockItem) {
                 data = new BlockParticleOption(ParticleTypes.BLOCK, ((BlockItem) heldItemMainhand.getItem()).getBlock().defaultBlockState());
             }
-            this.level.addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.6F, this.getZ() + extraZ, d0, d1, d2);
+            this.level().addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.6F, this.getZ() + extraZ, d0, d1, d2);
         }
     }
 
@@ -543,7 +543,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     public void onGetItem(ItemEntity e) {
         ItemStack duplicate = e.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level().isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         peck();
@@ -554,7 +554,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     private boolean hasLineOfSightSapling(BlockPos destinationBlock) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
         Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
-        BlockHitResult result = this.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        BlockHitResult result = this.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         return result.getBlockPos().equals(destinationBlock);
     }
 
@@ -579,7 +579,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
                 if (this.toucan.getRandom().nextInt(45) != 0 && !toucan.isFlying()) {
                     return false;
                 }
-                if (this.toucan.isOnGround()) {
+                if (this.toucan.onGround()) {
                     this.flightTarget = random.nextInt(6) == 0;
                 } else {
                     this.flightTarget = random.nextInt(5) != 0 && toucan.timeFlying < 200;
@@ -618,20 +618,20 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
                 flightTarget = true;
             }
             if (flightTarget) {
-                if (toucan.timeFlying > 50 && toucan.isOverLeaves() && !toucan.isOnGround()) {
+                if (toucan.timeFlying > 50 && toucan.isOverLeaves() && !toucan.onGround()) {
                     return toucan.getBlockGrounding(vector3d);
                 } else if (toucan.timeFlying < 200 || toucan.isOverWaterOrVoid()) {
                     return toucan.getBlockInViewAway(vector3d, 0);
                 } else {
                     return toucan.getBlockGrounding(vector3d);
                 }
-            } else if (!toucan.isOnGround()) {
+            } else if (!toucan.onGround()) {
                 return toucan.getBlockGrounding(vector3d);
             } else {
                 if (this.toucan.isOverLeaves()) {
                     for (int i = 0; i < 15; i++) {
                         BlockPos pos = this.toucan.blockPosition().offset(random.nextInt(16) - 8, random.nextInt(8) - 4, random.nextInt(16) - 8);
-                        if (!toucan.level.getBlockState(pos.above()).getMaterial().isSolid() && toucan.level.getBlockState(pos).getMaterial().isSolid() && toucan.getWalkTargetValue(pos) >= 0.0F) {
+                        if (!toucan.level().getBlockState(pos.above()).getMaterial().isSolid() && toucan.level().getBlockState(pos).getMaterial().isSolid() && toucan.getWalkTargetValue(pos) >= 0.0F) {
                             return Vec3.atBottomCenterOf(pos);
                         }
                     }
@@ -718,7 +718,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
                 if (plantTime > 60) {
                     BlockState state = toucan.getSaplingState();
                     if (state != null) {
-                        if (state.canSurvive(toucan.level, pos) && toucan.level.getBlockState(pos).getMaterial().isReplaceable()) {
+                        if (state.canSurvive(toucan.level, pos) && toucan.level().getBlockState(pos).getMaterial().isReplaceable()) {
                             toucan.level.setBlockAndUpdate(pos, state);
                             if (!toucan.isEnchanted()) {
                                 toucan.setSaplingState(null);
@@ -751,7 +751,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             double extraZ = circleDistance * Mth.cos(angle);
             BlockPos pos;
             pos = new BlockPos((int) (target.getX() + 0.5F + extraX), (int) (target.getY() + 1 + yLevel), (int) (target.getZ() + 0.5F + extraZ));
-            if (toucan.level.isEmptyBlock(pos)) {
+            if (toucan.level().isEmptyBlock(pos)) {
                 return pos;
             }
             return null;
@@ -777,7 +777,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             if (state != null) {
                 for (int i = 0; i < 15; i++) {
                     BlockPos pos = this.toucan.blockPosition().offset(random.nextInt(10) - 8, random.nextInt(8) - 4, random.nextInt(16) - 8);
-                    if (state.canSurvive(toucan.level, pos) && toucan.level.isEmptyBlock(pos.above()) && toucan.hasLineOfSightSapling(pos)) {
+                    if (state.canSurvive(toucan.level, pos) && toucan.level().isEmptyBlock(pos.above()) && toucan.hasLineOfSightSapling(pos)) {
                         return pos;
                     }
                 }

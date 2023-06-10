@@ -185,11 +185,11 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AnimalSwimMoveControllerSink(this, 1F, 1F);
-            this.navigation = new SemiAquaticPathNavigator(this, level);
+            this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -329,9 +329,9 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
             fishFeedings++;
             if (fishFeedings > 10 && getRandom().nextInt(6) == 0 || fishFeedings > 30) {
                 this.tame(player);
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
         }
@@ -446,7 +446,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
             if(punchProgress == 1){
                 this.playSound(AMSoundRegistry.MANTIS_SHRIMP_SNAP.get(), this.getVoicePitch(), this.getSoundVolume());
             }
-            if (punchProgress == 2 && level.isClientSide && this.isInWater()) {
+            if (punchProgress == 2 && this.level().isClientSide && this.isInWater()) {
                 for (int i = 0; i < 10 + random.nextInt(8); i++) {
                     double d2 = this.random.nextGaussian() * 0.6D;
                     double d0 = this.random.nextGaussian() * 0.2D;
@@ -456,7 +456,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
                     double extraX = radius * Mth.sin((float) (Math.PI + angle)) + random.nextFloat() * 0.5F - 0.25F;
                     double extraZ = radius * Mth.cos(angle) + random.nextFloat() * 0.5F - 0.25F;
                     ParticleOptions data = ParticleTypes.BUBBLE;
-                    this.level.addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.3F + random.nextFloat() * 0.15F, this.getZ() + extraZ, d0, d1, d2);
+                    this.level().addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.3F + random.nextFloat() * 0.15F, this.getZ() + extraZ, d0, d1, d2);
                 }
             }
             if (punchProgress < 2F) {

@@ -132,7 +132,7 @@ public class EntityRoadrunner extends Animal {
         if (!this.onGround && this.wingRotDelta < 1.0F) {
             this.wingRotDelta = 1.0F;
         }
-        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextFeather <= 0) {
+        if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextFeather <= 0) {
             this.spawnAtLocation(AMItemRegistry.ROADRUNNER_FEATHER.get());
             this.timeUntilNextFeather = this.random.nextInt(24000) + 24000;
         }
@@ -168,14 +168,14 @@ public class EntityRoadrunner extends Animal {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.45F);
             hasMeepSpeed = false;
         }
-        if (this.level.isClientSide && this.isMeep() && this.onGround && !this.isInWaterOrBubble() && this.getDeltaMovement().lengthSqr() > 0.03D) {
+        if (this.level().isClientSide && this.isMeep() && this.onGround && !this.isInWaterOrBubble() && this.getDeltaMovement().lengthSqr() > 0.03D) {
             Vec3 vector3d = this.getViewVector(0.0F);
             float f = Mth.cos(this.getYRot() * ((float) Math.PI / 180F)) * 0.2F;
             float f1 = Mth.sin(this.getYRot() * ((float) Math.PI / 180F)) * 0.2F;
             float f2 = 1.2F - this.random.nextFloat() * 0.7F;
             for (int i = 0; i < 2; ++i) {
-                this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() - vector3d.x * (double) f2 + (double) f, this.getY() + random.nextFloat() * 0.2F, this.getZ() - vector3d.z * (double) f2 + (double) f1, 0.0D, 0.0D, 0.0D);
-                this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() - vector3d.x * (double) f2 - (double) f, this.getY() + random.nextFloat() * 0.2F, this.getZ() - vector3d.z * (double) f2 - (double) f1, 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() - vector3d.x * (double) f2 + (double) f, this.getY() + random.nextFloat() * 0.2F, this.getZ() - vector3d.z * (double) f2 + (double) f1, 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() - vector3d.x * (double) f2 - (double) f, this.getY() + random.nextFloat() * 0.2F, this.getZ() - vector3d.z * (double) f2 - (double) f1, 0.0D, 0.0D, 0.0D);
             }
         }
     }

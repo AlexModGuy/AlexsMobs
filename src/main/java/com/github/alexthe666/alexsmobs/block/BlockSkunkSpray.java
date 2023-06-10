@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class BlockSkunkSpray extends MultifaceBlock implements SimpleWaterlogged
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockSkunkSpray() {
-        super(BlockBehaviour.Properties.of(Material.FROGSPAWN).noOcclusion().randomTicks().noCollission().instabreak().sound(SoundType.FROGSPAWN));
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).noOcclusion().randomTicks().noCollission().instabreak().sound(SoundType.FROGSPAWN));
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(false)).setValue(AGE, 0));
     }
 

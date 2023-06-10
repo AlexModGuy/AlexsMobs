@@ -106,7 +106,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
     }
 
     public boolean isPerchBlock(BlockPos pos, BlockState state) {
-        return level.isEmptyBlock(pos.above()) && level.isEmptyBlock(pos.above(2)) && state.is(AMTagRegistry.SOUL_VULTURE_PERCHES);
+        return level().isEmptyBlock(pos.above()) && level().isEmptyBlock(pos.above(2)) && state.is(AMTagRegistry.SOUL_VULTURE_PERCHES);
     }
 
     protected void registerGoals() {
@@ -132,11 +132,11 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new MoveHelper(this);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -197,7 +197,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
     }
 
     public int getSoulLevel() {
-        return this.entityData.get(SOUL_LEVEL);
+        return this.entityData.get(SOUL_level());
     }
 
     public void setSoulLevel(int tackling) {
@@ -208,14 +208,14 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         super.tick();
         this.prevTackleProgress = tackleProgress;
         this.prevFlyProgress = flyProgress;
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if(perchSearchCooldown > 0){
                 perchSearchCooldown--;
             }
             if(this.getTarget() != null && this.getTarget().isAlive()){
                 this.setPerchPos(this.getTarget().blockPosition().above(7));
             }else{
-                if (this.getPerchPos() != null && !isPerchBlock(this.getPerchPos(), level.getBlockState(this.getPerchPos()))) {
+                if (this.getPerchPos() != null && !isPerchBlock(this.getPerchPos(), level().getBlockState(this.getPerchPos()))) {
                     this.setPerchPos(null);
                 }
             }
@@ -230,7 +230,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
                 this.setFlying(true);
             }
 
-            if(landingCooldown > 0 && isFlying() && this.isOnGround() && this.getTarget() == null){
+            if(landingCooldown > 0 && isFlying() && this.onGround() && this.getTarget() == null){
                 this.setFlying(false);
             }
         }
@@ -263,7 +263,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         } else {
             this.setNoGravity(false);
         }
-        if (level.isClientSide  && hasSoulHeart()) {
+        if (this.level().isClientSide  && hasSoulHeart()) {
             float radius = 0.25F + random.nextFloat() * 1F;
             float fly = this.flyProgress * 0.2F;
             float wingSpread = 15F + 65 * fly + random.nextInt(5);
@@ -275,7 +275,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             double extraXMotion = -mov * Mth.sin((float) (Math.PI + angleMotion));
             double extraZMotion = -mov * Mth.cos(angleMotion);
             double yRandom = 0.2F + random.nextFloat() * 0.3F;
-            this.level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, random.nextFloat() * 0.1F, extraZMotion);
+            this.level().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, random.nextFloat() * 0.1F, extraZMotion);
         }
     }
 
@@ -286,7 +286,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
                 double d2 = this.random.nextGaussian() * 0.02D;
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(ParticleTypes.SOUL, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                this.level().addParticle(ParticleTypes.SOUL, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
         }else{
             super.handleEntityEvent(id);
@@ -294,7 +294,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
     }
 
     public BlockPos findNewPerchPos() {
-        BlockState beneathState = level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement());
+        BlockState beneathState = level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement());
         if(isPerchBlock(this.getBlockPosBelowThatAffectsMyMovement(), beneathState)){
             return this.getBlockPosBelowThatAffectsMyMovement();
         }
@@ -303,10 +303,10 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         int range = 14;
         for (int i = 0; i < 15; i++) {
             BlockPos blockpos1 = this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-            while (this.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
+            while (this.level().isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
                 blockpos1 = blockpos1.below();
             }
-            if (isPerchBlock(blockpos1, level.getBlockState(blockpos1))) {
+            if (isPerchBlock(blockpos1, level().getBlockState(blockpos1))) {
                 blockpos = blockpos1;
             }
         }
@@ -404,7 +404,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             double extraX = circleDistance * Mth.sin((angle));
             double extraZ = circleDistance * Mth.cos(angle);
             BlockPos pos = new BlockPos((int) (target.getX() + extraX), target.getY() + 1 + yLevel, (int) (target.getZ() + extraZ));
-            if (vulture.level.isEmptyBlock(pos)) {
+            if (vulture.level().isEmptyBlock(pos)) {
                 return pos;
             }
             return null;
@@ -413,7 +413,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     class MoveHelper extends MoveControl {
@@ -451,7 +451,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
 
             for (int i = 1; i < p_220673_2_; ++i) {
                 axisalignedbb = axisalignedbb.move(p_220673_1_);
-                if (!this.parentEntity.level.noCollision(this.parentEntity, axisalignedbb)) {
+                if (!this.parentEntity.level().noCollision(this.parentEntity, axisalignedbb)) {
                     return false;
                 }
             }
@@ -516,7 +516,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = new BlockPos((int) (vulture.getX() + extraX), (int) vulture.getY(), (int) (vulture.getZ() + extraZ));
-            while(level.isEmptyBlock(radialPos) && radialPos.getY() > 2){
+            while(level().isEmptyBlock(radialPos) && radialPos.getY() > 2){
                 radialPos = radialPos.below();
             }
             BlockPos newPos = radialPos.above(vulture.getY() - radialPos.getY() > 16 ? 4 : vulture.getRandom().nextInt(5) + 5);

@@ -50,7 +50,7 @@ public class EntityFart extends Entity {
     public void tick(){
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();
-        HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
             this.onImpact(raytraceresult);
         }
@@ -83,9 +83,9 @@ public class EntityFart extends Entity {
         if (result.getEntity() instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 300, 0));
             for(int i = 0; i < 10 + random.nextInt(6); i++){
-                level.addParticle(AMParticleRegistry.SMELLY.get(), living.getRandomX(1.0F), living.getRandomY(), living.getRandomZ(1.0F), 0, 0, 0);
+                level().addParticle(AMParticleRegistry.SMELLY.get(), living.getRandomX(1.0F), living.getRandomY(), living.getRandomZ(1.0F), 0, 0, 0);
             }
-            for (Mob nearby : level.getEntitiesOfClass(Mob.class, living.getBoundingBox().inflate(15))) {
+            for (Mob nearby : level().getEntitiesOfClass(Mob.class, living.getBoundingBox().inflate(15))) {
                 if(nearby == living || nearby.getId() == living.getId() ||nearby.getUUID().equals(living.getUUID()) || nearby.isAlliedTo(living) || living.isAlliedTo(nearby) || living instanceof IHurtableMultipart){
                     continue;
                 }else{
@@ -172,10 +172,10 @@ public class EntityFart extends Entity {
 
     @Nullable
     public Entity getShooter() {
-        if (this.ownerUUID != null && this.level instanceof ServerLevel) {
-            return ((ServerLevel) this.level).getEntity(this.ownerUUID);
+        if (this.ownerUUID != null && this.level() instanceof ServerLevel) {
+            return ((ServerLevel) this.level()).getEntity(this.ownerUUID);
         } else {
-            return this.ownerNetworkId != 0 ? this.level.getEntity(this.ownerNetworkId) : null;
+            return this.ownerNetworkId != 0 ? this.level().getEntity(this.ownerNetworkId) : null;
         }
     }
 
@@ -201,7 +201,7 @@ public class EntityFart extends Entity {
     private boolean checkLeftOwner() {
         Entity entity = this.getShooter();
         if (entity != null) {
-            for (Entity entity1 : this.level.getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
+            for (Entity entity1 : this.level().getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
                 return !p_234613_0_.isSpectator() && p_234613_0_.isPickable();
             })) {
                 if (entity1.getRootVehicle() == entity.getRootVehicle()) {

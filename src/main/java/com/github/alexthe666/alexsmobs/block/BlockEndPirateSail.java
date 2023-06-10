@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -28,7 +27,7 @@ public class BlockEndPirateSail extends Block {
     protected static final VoxelShape NS_AABB = Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 9.0D);
 
     public BlockEndPirateSail(boolean spectre) {
-        super(Properties.of(Material.GLASS).noOcclusion().emissiveRendering((a, b, c) -> true).sound(SoundType.WOOL).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(0.4F).color(MaterialColor.ICE));
+        super(Properties.of().mapColor(MapColor.COLOR_BLUE).noOcclusion().emissiveRendering((a, b, c) -> true).sound(SoundType.WOOL).lightLevel((state) -> 5).requiresCorrectToolForDrops().strength(0.4F));
         this.registerDefaultState(this.stateDefinition.any().setValue(EASTORWEST, Boolean.valueOf(false)).setValue(SAIL, SailType.SINGLE));
     }
 

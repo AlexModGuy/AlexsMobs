@@ -177,7 +177,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         return stack.getItem() == Items.CHORUS_FRUIT;
     }
 
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (this.hasPassenger(passenger)) {
             float radius = -0.25F;
             float angle = (0.01745329251F * this.yBodyRot);
@@ -215,7 +215,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             float angleMotion = (0.01745329251F * this.yBodyRot);
             double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
             double extraZMotion = -0.2F * Mth.cos(angleMotion);
-            this.level.addParticle(ParticleTypes.END_ROD, this.getRandomX(0.5D), this.getY() + 0.3, this.getRandomZ(0.5D), extraXMotion, 0D, extraZMotion);
+            this.level().addParticle(ParticleTypes.END_ROD, this.getRandomX(0.5D), this.getY() + 0.3, this.getRandomZ(0.5D), extraXMotion, 0D, extraZMotion);
         }
         int tick = this.entityData.get(BITE_TICK);
         if (tick > 0) {
@@ -238,18 +238,18 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     private BlockPos getGroundPosition(BlockPos radialPos) {
-        while (radialPos.getY() > 1 && level.isEmptyBlock(radialPos)) {
+        while (radialPos.getY() > 1 && level().isEmptyBlock(radialPos)) {
             radialPos = radialPos.below();
         }
         if (radialPos.getY() <= 1) {
-            return new BlockPos(radialPos.getX(), level.getSeaLevel(), radialPos.getZ());
+            return new BlockPos(radialPos.getX(), level().getSeaLevel(), radialPos.getZ());
         }
         return radialPos;
     }
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     public boolean canTargetItem(ItemStack stack) {
@@ -279,7 +279,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     protected void dropEquipment() {
         super.dropEquipment();
         if (this.isSaddled()) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.spawnAtLocation(Items.SADDLE);
             }
         }
@@ -299,7 +299,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         }
         return Vec3.ZERO;
     }
-    protected void tickRidden(LivingEntity player, Vec3 vec3) {
+    protected void tickRidden(Player player, Vec3 vec3) {
         super.tickRidden(player, vec3);
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
@@ -312,7 +312,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     protected float getRiddenSpeed(LivingEntity rider) {
-        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.isOnGround() ? 0.2F : 0.8F));
+        return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.onGround() ? 0.2F : 0.8F));
     }
 
     @Override
@@ -449,7 +449,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
 
             for (int i = 1; i < p_220673_2_; ++i) {
                 axisalignedbb = axisalignedbb.move(p_220673_1_);
-                if (!this.parentEntity.level.noCollision(this.parentEntity, axisalignedbb)) {
+                if (!this.parentEntity.level().noCollision(this.parentEntity, axisalignedbb)) {
                     return false;
                 }
             }

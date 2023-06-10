@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -32,7 +32,7 @@ public class BlockVoidWormEffigy extends Block {
             Block.box(0.0D, 4.0D, 4.0D, 10.0D, 12.0D, 12.0D));
 
     public BlockVoidWormEffigy() {
-        super(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F));
+        super(Properties.of().mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(1.5F));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

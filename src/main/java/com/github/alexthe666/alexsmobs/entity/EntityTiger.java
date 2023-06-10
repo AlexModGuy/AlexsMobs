@@ -294,8 +294,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     protected void customServerAiStep() {
-        if (!this.level.isClientSide) {
-            this.updatePersistentAnger((ServerLevel) this.level, false);
+        if (!this.level().isClientSide) {
+            this.updatePersistentAnger((ServerLevel) this.level(), false);
         }
     }
 
@@ -337,7 +337,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         if (!isStealth() && stealthProgress > 0F) {
             stealthProgress--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isRunning() && !hasSpedUp) {
                 hasSpedUp = true;
                 maxUpStep = 1F;
@@ -375,7 +375,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         if (this.isHolding()) {
             this.setSprinting(false);
             this.setRunning(false);
-            if (!level.isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
+            if (!this.level().isClientSide && this.getTarget() != null && this.getTarget().isAlive()) {
                 this.setXRot(0);
                 float radius = 1.0F + this.getTarget().getBbWidth() * 0.5F;
                 float angle = (0.01745329251F * this.yBodyRot);
@@ -396,13 +396,13 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         } else {
             holdTime = 0;
         }
-        if (prevScaredMobId != this.entityData.get(LAST_SCARED_MOB_ID) && level.isClientSide) {
-            Entity e = level.getEntity(this.entityData.get(LAST_SCARED_MOB_ID));
+        if (prevScaredMobId != this.entityData.get(LAST_SCARED_MOB_ID) && this.level().isClientSide) {
+            Entity e = level().getEntity(this.entityData.get(LAST_SCARED_MOB_ID));
             if (e != null) {
                 double d2 = this.random.nextGaussian() * 0.1D;
                 double d0 = this.random.nextGaussian() * 0.1D;
                 double d1 = this.random.nextGaussian() * 0.1D;
-                this.level.addParticle(AMParticleRegistry.SHOCKED.get(), e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
+                this.level().addParticle(AMParticleRegistry.SHOCKED.get(), e.getX(), e.getEyeY() + e.getBbHeight() * 0.15F + (double) (this.random.nextFloat() * e.getBbHeight() * 0.15F), e.getZ(), d0, d1, d2);
             }
         }
         if(this.getTarget() != null && this.getTarget().hasEffect(AMEffectRegistry.TIGERS_BLESSING.get())){
@@ -438,7 +438,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
 
     public BlockPos getLightPosition() {
         BlockPos pos = AMBlockPos.fromVec3(this.position());
-        if (!level.getBlockState(pos).canOcclude()) {
+        if (!level().getBlockState(pos).canOcclude()) {
             return pos.above();
         }
         return pos;
@@ -554,7 +554,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
 
     static class TigerNodeEvaluator extends WalkNodeEvaluator {
         protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes typeIn) {
-            return typeIn == BlockPathTypes.LEAVES || level.getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
+            return typeIn == BlockPathTypes.LEAVES || level().getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
         }
     }
 
@@ -607,7 +607,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                         target.addEffect(new MobEffectInstance(AMEffectRegistry.FEAR.get(), 100, 0, true, false));
                     }
                 }
-                if (dist < 12 && tiger.getAnimation() == NO_ANIMATION && tiger.isOnGround() && jumpAttemptCooldown == 0 && !tiger.isHolding()) {
+                if (dist < 12 && tiger.getAnimation() == NO_ANIMATION && tiger.onGround() && jumpAttemptCooldown == 0 && !tiger.isHolding()) {
                     tiger.setAnimation(ANIMATION_LEAP);
                     jumpAttemptCooldown = 70;
                 }
@@ -622,7 +622,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                     Vec3 vec = target.position().subtract(tiger.position());
                     tiger.setYRot(-((float) Mth.atan2(vec.x, vec.z)) * (180F / (float) Math.PI));
                     tiger.yBodyRot = tiger.getYRot();
-                    if (tiger.getAnimationTick() >= 5 && tiger.getAnimationTick() < 11 && tiger.isOnGround()) {
+                    if (tiger.getAnimationTick() >= 5 && tiger.getAnimationTick() < 11 && tiger.onGround()) {
                         Vec3 vector3d1 = new Vec3(target.getX() - this.tiger.getX(), 0.0D, target.getZ() - this.tiger.getZ());
                         if (vector3d1.lengthSqr() > 1.0E-7D) {
                             vector3d1 = vector3d1.normalize().scale(Math.min(dist, 15) * 0.2F);

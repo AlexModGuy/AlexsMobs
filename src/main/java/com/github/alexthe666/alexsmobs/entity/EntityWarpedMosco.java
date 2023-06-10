@@ -123,11 +123,11 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 0.7F, false);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -179,7 +179,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         if ((!this.isFlying() || isDashRight()) && flyLeftProgress > 0F) {
             flyLeftProgress--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -206,13 +206,13 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             timeFlying = 0;
             this.setNoGravity(false);
         }
-        if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+        if (this.horizontalCollision && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
             boolean flag = false;
             AABB axisalignedbb = this.getBoundingBox().inflate(0.2D);
             for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(axisalignedbb.minX), Mth.floor(axisalignedbb.minY), Mth.floor(axisalignedbb.minZ), Mth.floor(axisalignedbb.maxX), Mth.floor(axisalignedbb.maxY), Mth.floor(axisalignedbb.maxZ))) {
-                BlockState blockstate = this.level.getBlockState(blockpos);
+                BlockState blockstate = this.level().getBlockState(blockpos);
                 if (blockstate.is(AMTagRegistry.WARPED_MOSCO_BREAKABLES)) {
-                    flag = this.level.destroyBlock(blockpos, true, this) || flag;
+                    flag = this.level().destroyBlock(blockpos, true, this) || flag;
                 }
             }
             if (!flag && this.onGround) {
@@ -227,7 +227,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             }
             if (this.getAnimation() == ANIMATION_SLAM) {
                 if (this.getAnimationTick() == 19) {
-                    for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D))) {
+                    for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D))) {
                         if (!isAlliedTo(entity) && !(entity instanceof EntityWarpedMosco) && entity != this) {
                             entity.hurt(this.damageSources().mobAttack(this), 10.0F + random.nextFloat() * 8.0F);
                             launch(entity, true);
@@ -262,9 +262,9 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 double extraY = 0.8F;
                 double extraZ = radius * Mth.cos(angle);
                 BlockPos ground = getMoscoGround(new BlockPos(Mth.floor(this.getX() + extraX), Mth.floor(this.getY() + extraY) - 1, Mth.floor(this.getZ() + extraZ)));
-                BlockState BlockState = this.level.getBlockState(ground);
+                BlockState BlockState = this.level().getBlockState(ground);
                 if (BlockState.getMaterial() != Material.AIR) {
-                    if (level.isClientSide) {
+                    if (this.level().isClientSide) {
                         level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, BlockState), true, this.getX() + extraX, ground.getY() + extraY, this.getZ() + extraZ, motionX, motionY, motionZ);
                     }
                 }
@@ -273,7 +273,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
     }
 
     private void launch(Entity e, boolean huge) {
-        if (e.isOnGround()) {
+        if (e.onGround()) {
             double d0 = e.getX() - this.getX();
             double d1 = e.getZ() - this.getZ();
             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
@@ -311,7 +311,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         BlockPos position = new BlockPos(in.getX(),
                 (int) this.getY(),
                 in.getZ());
-        while (position.getY() > -62 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
+        while (position.getY() > -62 && !level().getBlockState(position).isSolid() && level().getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
@@ -330,7 +330,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             return this.position();
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > -62 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
+            while (ground.getY() > -62 && !level().getBlockState(ground).isSolid()) {
                 ground = ground.below();
             }
         }
@@ -367,15 +367,15 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     private boolean isOverLiquid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > 2 && level.isEmptyBlock(position)) {
+        while (position.getY() > 2 && level().isEmptyBlock(position)) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty();
+        return !level().getFluidState(position).isEmpty();
     }
 
     public void travel(Vec3 travelVector) {
@@ -390,7 +390,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         super.travel(travelVector);
     }
 
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         super.positionRider(passenger);
         if (hasPassenger(passenger)) {
             int tick = 5;
@@ -432,7 +432,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         this.lookAt(target, 100, 100);
         this.yBodyRot = yHeadRot;
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
-            EntityHemolymph llamaspitentity = new EntityHemolymph(this.level, this);
+            EntityHemolymph llamaspitentity = new EntityHemolymph(this.level(), this);
             double d0 = target.getX() - this.getX();
             double d1 = target.getY(0.3333333333333333D) - llamaspitentity.getY();
             double d2 = target.getZ() - this.getZ();
@@ -440,9 +440,9 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             llamaspitentity.shoot(d0, d1 + (double) f, d2, 1.5F, 5.0F);
             if (!this.isSilent()) {
                 this.gameEvent(GameEvent.PROJECTILE_SHOOT);
-                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_SPIT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.LLAMA_SPIT, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
             }
-            this.level.addFreshEntity(llamaspitentity);
+            this.level().addFreshEntity(llamaspitentity);
         }
     }
 
@@ -467,7 +467,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 if (this.mosco.getRandom().nextInt(30) != 0 && !mosco.isFlying()) {
                     return false;
                 }
-                if (this.mosco.isOnGround()) {
+                if (this.mosco.onGround()) {
                     this.flightTarget = random.nextInt(8) == 0;
                 } else {
                     this.flightTarget = random.nextInt(5) > 0 && mosco.timeFlying < 200;
@@ -591,7 +591,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 }
                 if (EntityWarpedMosco.this.isFlying()) {
                     if (EntityWarpedMosco.this.distanceTo(target) < 4.3F) {
-                        if (dashCooldown == 0 || target.isOnGround() || target.isInLava() || target.isInWater()) {
+                        if (dashCooldown == 0 || target.onGround() || target.isInLava() || target.isInWater()) {
                             target.hurt(EntityWarpedMosco.this.damageSources().mobAttack(EntityWarpedMosco.this), 5F);
                             EntityWarpedMosco.this.knockbackRidiculous(target, 1.0F);
                             dashCooldown = 30;

@@ -38,7 +38,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
@@ -152,8 +151,8 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     private boolean hasClearance() {
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
         for (int l1 = 0; l1 < 10; ++l1) {
-            BlockState blockstate = level.getBlockState(blockpos$mutable.set(this.getX(), this.getY() + l1, this.getZ()));
-            if (!blockstate.getFluidState().is(FluidTags.WATER) && !blockstate.getMaterial().isSolid()) {
+            BlockState blockstate = level().getBlockState(blockpos$mutable.set(this.getX(), this.getY() + l1, this.getZ()));
+            if (!blockstate.getFluidState().is(FluidTags.WATER) && !blockstate.isSolid()) {
                 return false;
             }
         }
@@ -217,10 +216,10 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
                 final double d2 = this.random.nextGaussian() * 0.02D;
                 final double d0 = this.random.nextGaussian() * 0.02D;
                 final double d1 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, lvt_3_1_), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
             lvt_3_1_.shrink(1);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
@@ -278,7 +277,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
         final float f2 = (float) -((float) this.getDeltaMovement().y * 2.2F * Maths.oneEightyDividedByFloatPi);
         this.setXRot(f2);
         if (!isInWater()) {
-            if (this.onGround) {
+            if (this.onGround()) {
                 if (!this.wasOnGround)
                     this.squishAmount = -0.35F;
             } else {
@@ -286,7 +285,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
                     this.squishAmount = 2F;
             }
         }
-        this.wasOnGround = this.onGround;
+        this.wasOnGround = this.onGround();
 
         this.alterSquishAmount();
         final boolean clear = hasClearance();
@@ -312,7 +311,7 @@ public class EntityBlobfish extends WaterAnimal implements FlyingAnimal, Bucketa
     }
 
     public static boolean canBlobfishSpawn(EntityType<EntityBlobfish> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnHeight && iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
+        return reason == MobSpawnType.SPAWNER || pos.getY() <= AMConfig.blobfishSpawnHeight && iServerWorld.getFluidState(pos).is(FluidTags.WATER) && iServerWorld.getFluidState(pos.above()).is(FluidTags.WATER);
     }
 
     @Override

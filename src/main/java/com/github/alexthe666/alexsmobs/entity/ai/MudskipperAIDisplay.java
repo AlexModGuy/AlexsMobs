@@ -29,7 +29,7 @@ public class MudskipperAIDisplay extends Goal {
 
     @Override
     public boolean canUse() {
-        if (this.mudskipper.isDisplaying() || this.mudskipper.shouldFollow() || this.mudskipper.isOrderedToSit() || this.mudskipper.isInLove()  || this.mudskipper.isVehicle() || mudskipper.isPassenger() || this.mudskipper.isBaby() || this.mudskipper.getTarget() != null || this.mudskipper.isOnGround() || this.mudskipper.displayCooldown > 0) {
+        if (this.mudskipper.isDisplaying() || this.mudskipper.shouldFollow() || this.mudskipper.isOrderedToSit() || this.mudskipper.isInLove()  || this.mudskipper.isVehicle() || mudskipper.isPassenger() || this.mudskipper.isBaby() || this.mudskipper.getTarget() != null || this.mudskipper.onGround() || this.mudskipper.displayCooldown > 0) {
             return false;
         }
         if(this.mudskipper.instantlyTriggerDisplayAI || this.mudskipper.getRandom().nextInt(30) == 0){
@@ -108,7 +108,7 @@ public class MudskipperAIDisplay extends Goal {
                     }
                 }
                 if(distXZ < 0.8F){
-                    if(this.mudskipper.isOnGround() && this.partner.isOnGround()){
+                    if(this.mudskipper.onGround() && this.partner.onGround()){
                         this.mudskipper.lookAt(this.partner, 360, 360);
                         this.setDisplayDirection(!mudskipper.displayDirection);
                         this.mudskipper.openMouth(10 + this.mudskipper.getRandom().nextInt(20));

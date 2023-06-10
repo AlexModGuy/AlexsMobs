@@ -47,7 +47,7 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             for (int i = 0; i < 8; ++i) {
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), this.getX(), this.getY(), this.getZ(), ((double)this.random.nextFloat() - 0.5D) * 0.08D, ((double)this.random.nextFloat() - 0.5D) * 0.08D, ((double)this.random.nextFloat() - 0.5D) * 0.08D);
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()), this.getX(), this.getY(), this.getZ(), ((double)this.random.nextFloat() - 0.5D) * 0.08D, ((double)this.random.nextFloat() - 0.5D) * 0.08D, ((double)this.random.nextFloat() - 0.5D) * 0.08D);
             }
         }
 
@@ -55,18 +55,18 @@ public class EntityCockroachEgg extends ThrowableItemProjectile {
 
     protected void onHit(HitResult result) {
         super.onHit(result);
-        if (!this.level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte)3);
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte)3);
             int i = random.nextInt(3);
             for (int j = 0; j < i; ++j) {
-                final EntityCockroach croc = AMEntityRegistry.COCKROACH.get().create(this.level);
+                final EntityCockroach croc = AMEntityRegistry.COCKROACH.get().create(this.level());
                 croc.setAge(-24000);
                 croc.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                croc.finalizeSpawn((ServerLevel)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
+                croc.finalizeSpawn((ServerLevel)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
                 croc.restrictTo(this.blockPosition(), 20);
-                this.level.addFreshEntity(croc);
+                this.level().addFreshEntity(croc);
             }
-            this.level.broadcastEntityEvent(this, (byte)3);
+            this.level().broadcastEntityEvent(this, (byte)3);
             this.remove(RemovalReason.DISCARDED);
         }
 

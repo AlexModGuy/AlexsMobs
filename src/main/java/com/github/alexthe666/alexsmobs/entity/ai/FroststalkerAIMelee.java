@@ -61,7 +61,7 @@ public class FroststalkerAIMelee extends Goal {
         froststalker.standFor(20);
         LivingEntity target = froststalker.getTarget();
         boolean flag = false;
-        if ((hasJumped || froststalker.isTackling()) && froststalker.isOnGround()) {
+        if ((hasJumped || froststalker.isTackling()) && froststalker.onGround()) {
             hasJumped = false;
             willJump = false;
             froststalker.setTackling(false);
@@ -81,7 +81,7 @@ public class FroststalkerAIMelee extends Goal {
                 froststalker.lookAt(target, 180F, 10F);
                 if (froststalker.distanceTo(target) > 10F) {
                     froststalker.getNavigation().moveTo(target, 1.0F);
-                } else if (froststalker.isOnGround() && froststalker.hasLineOfSight(target)) {
+                } else if (froststalker.onGround() && froststalker.hasLineOfSight(target)) {
                     this.froststalker.setTackling(true);
                     hasJumped = true;
                     Vec3 vector3d = this.froststalker.getDeltaMovement();
@@ -113,7 +113,7 @@ public class FroststalkerAIMelee extends Goal {
                 }
             }
         }
-        if (target != null && !froststalker.isOnGround()) {
+        if (target != null && !froststalker.onGround()) {
             froststalker.lookAt(target, 180F, 10F);
             froststalker.yBodyRot = froststalker.getYRot();
         }
@@ -128,10 +128,10 @@ public class FroststalkerAIMelee extends Goal {
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
         BlockPos circlePos = AMBlockPos.fromCoords(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);
-        while (!froststalker.level.getBlockState(circlePos).isAir() && circlePos.getY() < froststalker.level.getMaxBuildHeight()) {
+        while (!froststalker.level().getBlockState(circlePos).isAir() && circlePos.getY() < froststalker.level.getMaxBuildHeight()) {
             circlePos = circlePos.above();
         }
-        while (!froststalker.level.getBlockState(circlePos.below()).entityCanStandOn(froststalker.level, circlePos.below(), froststalker) && circlePos.getY() > 1) {
+        while (!froststalker.level().getBlockState(circlePos.below()).entityCanStandOn(froststalker.level, circlePos.below(), froststalker) && circlePos.getY() > 1) {
             circlePos = circlePos.below();
         }
         if (froststalker.getWalkTargetValue(circlePos) > -1) {

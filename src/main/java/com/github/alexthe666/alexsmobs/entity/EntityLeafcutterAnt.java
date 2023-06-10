@@ -120,11 +120,11 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     private void switchNavigator(boolean rightsideUp) {
         if (rightsideUp) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new WallClimberNavigation(this, level);
+            this.navigation = new WallClimberNavigation(this, level());
             this.isUpsideDownNavigator = false;
         } else {
             this.moveControl = new FlightMoveController(this, 0.6F, false);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isUpsideDownNavigator = true;
         }
     }
@@ -213,12 +213,12 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 int babies = 1 + random.nextInt(1);
                 pacifyAllNearby();
                 for(int i = 0; i < babies; i++){
-                    EntityLeafcutterAnt leafcutterAnt = AMEntityRegistry.LEAFCUTTER_ANT.get().create(level);
+                    EntityLeafcutterAnt leafcutterAnt = AMEntityRegistry.LEAFCUTTER_ANT.get().create(level());
                     leafcutterAnt.copyPosition(this);
                     leafcutterAnt.setAge(-24000);
-                    if(!level.isClientSide){
+                    if(!this.level().isClientSide){
                         level.broadcastEntityEvent(this, (byte)18);
-                        level.addFreshEntity(leafcutterAnt);
+                        level().addFreshEntity(leafcutterAnt);
                     }
                 }
                 if(!player.isCreative()){
@@ -248,7 +248,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+                this.level().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         } else {
             super.handleEntityEvent(id);
@@ -267,9 +267,9 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         }
         this.maxUpStep = isQueen() ? 1F : 0.5F;
         Vec3 vector3d = this.getDeltaMovement();
-        if (!this.level.isClientSide && !this.isQueen()) {
-            this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.isOnGround());
-            if (this.isOnGround() || this.isInWaterOrBubble() || this.isInLava()) {
+        if (!this.level().isClientSide && !this.isQueen()) {
+            this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.onGround());
+            if (this.onGround() || this.isInWaterOrBubble() || this.isInLava()) {
                 this.entityData.set(ATTACHED_FACE, Direction.DOWN);
             } else  if (this.verticalCollision) {
                 this.entityData.set(ATTACHED_FACE, Direction.UP);
@@ -319,7 +319,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             attachChangeProgress = 1F;
         }
         this.prevAttachDir = this.getAttachmentFacing();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.getAttachmentFacing() == Direction.UP && !this.isUpsideDownNavigator) {
                 switchNavigator(false);
             }
@@ -352,7 +352,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         if (!this.hasHive()) {
             return false;
         } else {
-            BlockEntity tileentity = this.level.getBlockEntity(this.hivePos);
+            BlockEntity tileentity = this.level().getBlockEntity(this.hivePos);
             return tileentity instanceof TileEntityLeafcutterAnthill;
         }
     }
@@ -401,8 +401,8 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     protected void customServerAiStep() {
-        if (!this.level.isClientSide) {
-            this.updatePersistentAnger((ServerLevel)this.level, false);
+        if (!this.level().isClientSide) {
+            this.updatePersistentAnger((ServerLevel)this.level(), false);
         }
     }
 
@@ -483,7 +483,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         this.setAntScale(compound.getFloat("AntScale"));
         BlockState blockstate = null;
         if (compound.contains("HarvestedLeafState", 10)) {
-            blockstate = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("HarvestedLeafState"));
+            blockstate = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compound.getCompound("HarvestedLeafState"));
             if (blockstate.isAir()) {
                 blockstate = null;
             }
@@ -537,13 +537,13 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         if (this.hivePos == null) {
             return false;
         } else {
-            BlockEntity tileentity = this.level.getBlockEntity(this.hivePos);
+            BlockEntity tileentity = this.level().getBlockEntity(this.hivePos);
             return tileentity instanceof TileEntityLeafcutterAnthill && ((TileEntityLeafcutterAnthill) tileentity).isNearFire();
         }
     }
 
     private boolean doesHiveHaveSpace(BlockPos pos) {
-        BlockEntity tileentity = this.level.getBlockEntity(pos);
+        BlockEntity tileentity = this.level().getBlockEntity(pos);
         if (tileentity instanceof TileEntityLeafcutterAnthill) {
             return !((TileEntityLeafcutterAnthill) tileentity).isFullOfAnts();
         } else {
@@ -651,7 +651,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             if (EntityLeafcutterAnt.this.hasLeaf() || EntityLeafcutterAnt.this.isQueen()) {
                 searchCooldown--;
                 BlockPos hive = EntityLeafcutterAnt.this.hivePos;
-                if (hive != null && EntityLeafcutterAnt.this.level.getBlockEntity(hive) instanceof TileEntityLeafcutterAnthill) {
+                if (hive != null && EntityLeafcutterAnt.this.level().getBlockEntity(hive) instanceof TileEntityLeafcutterAnthill) {
                     hivePos = hive;
                     return true;
                 }
@@ -687,7 +687,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         public void tick() {
             double dist = EntityLeafcutterAnt.this.distanceToSqr(Vec3.upFromBottomCenterOf(hivePos, 1));
             if (dist < 1.2F && EntityLeafcutterAnt.this.getBlockPosBelowThatAffectsMyMovement().equals(hivePos)) {
-                BlockEntity tileentity = EntityLeafcutterAnt.this.level.getBlockEntity(hivePos);
+                BlockEntity tileentity = EntityLeafcutterAnt.this.level().getBlockEntity(hivePos);
                 if (tileentity instanceof TileEntityLeafcutterAnthill) {
                     TileEntityLeafcutterAnthill beehivetileentity = (TileEntityLeafcutterAnthill) tileentity;
                     beehivetileentity.tryEnterHive(EntityLeafcutterAnt.this, EntityLeafcutterAnt.this.hasLeaf());

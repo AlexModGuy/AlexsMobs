@@ -167,19 +167,19 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
         if (!this.isBasking() && baskProgress > 0) {
             baskProgress -= 1;
         }
-        if (!level.isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5 && this.hasLineOfSight(this.getTarget())) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5 && this.hasLineOfSight(this.getTarget())) {
             float f1 = this.getYRot() * ((float) Math.PI / 180F);
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
             getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }
-        if (!level.isClientSide && (isSitting() || isBasking()) && ++sittingTime > maxSitTime) {
+        if (!this.level().isClientSide && (isSitting() || isBasking()) && ++sittingTime > maxSitTime) {
             this.setSitting(false);
             this.setBasking(false);
             sittingTime = 0;
             maxSitTime = 75 + random.nextInt(50);
         }
-        if (!level.isClientSide && this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isBasking() && !this.isSitting() && random.nextInt(100) == 0) {
+        if (!this.level().isClientSide && this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isBasking() && !this.isSitting() && random.nextInt(100) == 0) {
             sittingTime = 0;
             maxSitTime = 100 + random.nextInt(550);
             if(this.getRandom().nextBoolean()){
@@ -198,7 +198,7 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
             scareMobsTime = 40;
         }
         if(scareMobsTime > 0) {
-            List<Monster> list = this.level.getEntitiesOfClass(Monster.class, this.getBoundingBox().inflate(16, 8, 16));
+            List<Monster> list = this.level().getEntitiesOfClass(Monster.class, this.getBoundingBox().inflate(16, 8, 16));
             for (Monster e : list) {
                 e.setTarget(null);
                 e.setLastHurtByMob(null);

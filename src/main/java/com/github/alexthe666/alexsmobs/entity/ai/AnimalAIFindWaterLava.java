@@ -26,7 +26,7 @@ public class AnimalAIFindWaterLava extends Goal {
     }
 
     public boolean canUse() {
-        if (this.creature.isOnGround() && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER) && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.LAVA)){
+        if (this.creature.onGround() && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER) && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.LAVA)){
             if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldEnterWater() && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)){
                 targetPos = generateTarget();
                 return targetPos != null;
@@ -52,7 +52,7 @@ public class AnimalAIFindWaterLava extends Goal {
             this.creature.getNavigation().stop();
             return false;
         }
-        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.LAVA) && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER);
+        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.LAVA) && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER);
     }
 
     public BlockPos generateTarget() {
@@ -61,10 +61,10 @@ public class AnimalAIFindWaterLava extends Goal {
         int range = this.creature instanceof ISemiAquatic ? ((ISemiAquatic) this.creature).getWaterSearchRange() : 14;
         for(int i = 0; i < 15; i++){
             BlockPos blockpos1 = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);
-            while(this.creature.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1){
+            while(this.creature.level().isEmptyBlock(blockpos1) && blockpos1.getY() > 1){
                 blockpos1 = blockpos1.below();
             }
-            if(this.creature.level.getFluidState(blockpos1).is(FluidTags.WATER) || this.creature.level.getFluidState(blockpos1).is(FluidTags.LAVA)){
+            if(this.creature.level().getFluidState(blockpos1).is(FluidTags.WATER) || this.creature.level().getFluidState(blockpos1).is(FluidTags.LAVA)){
                 blockpos = blockpos1;
             }
         }

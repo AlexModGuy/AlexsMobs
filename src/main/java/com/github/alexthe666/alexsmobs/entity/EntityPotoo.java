@@ -96,13 +96,13 @@ public class EntityPotoo extends Animal implements IFalconry {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level);
+            this.navigation = new GroundPathNavigation(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 0.6F, false, true);
             this.navigation = new FlyingPathNavigation(this, level) {
                 public boolean isStableDestination(BlockPos pos) {
-                    return !this.level.getBlockState(pos.below(2)).isAir();
+                    return !this.level().getBlockState(pos.below(2)).isAir();
                 }
             };
             navigation.setCanFloat(false);
@@ -179,7 +179,7 @@ public class EntityPotoo extends Animal implements IFalconry {
         if (perchCooldown > 0) {
             perchCooldown--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.entityData.set(TEMP_BRIGHTNESS, level.getMaxLocalRawBrightness(this.blockPosition()));
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
@@ -193,7 +193,7 @@ public class EntityPotoo extends Animal implements IFalconry {
                         this.setDeltaMovement(this.getDeltaMovement().multiply(1F, 0.6F, 1F));
                     }
                 }
-                if (this.isOnGround() && timeFlying > 20) {
+                if (this.onGround() && timeFlying > 20) {
                     this.setFlying(false);
                 }
                 this.timeFlying++;
@@ -201,12 +201,12 @@ public class EntityPotoo extends Animal implements IFalconry {
                 this.timeFlying = 0;
             }
             if (this.isPerching() && !this.isVehicle()) {
-                this.setSleeping(this.level.isDay() && (this.getTarget() == null || !this.getTarget().isAlive()));
+                this.setSleeping(this.level().isDay() && (this.getTarget() == null || !this.getTarget().isAlive()));
             } else if (isSleeping()) {
                 this.setSleeping(false);
             }
             if(isPerching() && this.getPerchPos() != null) {
-                if ((!level.getBlockState(this.getPerchPos()).is(AMTagRegistry.POTOO_PERCHES) || this.distanceToSqr(Vec3.atCenterOf(this.getPerchPos())) > 2.25F)) {
+                if ((!level().getBlockState(this.getPerchPos()).is(AMTagRegistry.POTOO_PERCHES) || this.distanceToSqr(Vec3.atCenterOf(this.getPerchPos())) > 2.25F)) {
                     this.setPerching(false);
                 } else {
                     slideTowardsPerch();
@@ -371,14 +371,14 @@ public class EntityPotoo extends Animal implements IFalconry {
 
     public boolean isValidPerchFromSide(BlockPos pos, Direction direction) {
         BlockPos offset = pos.relative(direction);
-        BlockState state = level.getBlockState(pos);
-        return state.is(AMTagRegistry.POTOO_PERCHES) && (!level.getBlockState(pos.above()).isCollisionShapeFullBlock(level, pos.above()) || level.isEmptyBlock(pos.above())) && (!level.getBlockState(offset).isCollisionShapeFullBlock(level, offset) && !level.getBlockState(offset).is(AMTagRegistry.POTOO_PERCHES) || level.isEmptyBlock(offset));
+        BlockState state = level().getBlockState(pos);
+        return state.is(AMTagRegistry.POTOO_PERCHES) && (!level().getBlockState(pos.above()).isCollisionShapeFullBlock(level, pos.above()) || level().isEmptyBlock(pos.above())) && (!level().getBlockState(offset).isCollisionShapeFullBlock(level, offset) && !level().getBlockState(offset).is(AMTagRegistry.POTOO_PERCHES) || level().isEmptyBlock(offset));
     }
 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return AMEntityRegistry.POTOO.get().create(serverLevel);
+        return AMEntityRegistry.POTOO.get().create(serverlevel());
     }
 
     public float getEyeScale(int bufferOffset, float partialTicks) {
@@ -408,10 +408,10 @@ public class EntityPotoo extends Animal implements IFalconry {
 
     public BlockPos getToucanGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
-        while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
+        while (position.getY() < 320 && !level().getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
+        while (position.getY() > -64 && !level().getBlockState(position).isSolid() && level().getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
@@ -430,7 +430,7 @@ public class EntityPotoo extends Animal implements IFalconry {
             return null;
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > -64 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
+            while (ground.getY() > -64 && !level().getBlockState(ground).isSolid()) {
                 ground = ground.below();
             }
         }
@@ -448,7 +448,7 @@ public class EntityPotoo extends Animal implements IFalconry {
             boardingCooldown = 30;
             this.ejectPassengers();
             this.startRiding(player, true);
-            if (!level.isClientSide) {
+            if (!this.level().isClientSide) {
                 AlexsMobs.sendMSGToAll(new MessageMosquitoMountPlayer(this.getId(), player.getId()));
             }
             return InteractionResult.SUCCESS;
@@ -460,7 +460,7 @@ public class EntityPotoo extends Animal implements IFalconry {
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
@@ -477,7 +477,7 @@ public class EntityPotoo extends Animal implements IFalconry {
         int j = this.getRandom().nextInt(5) + 5;
 
         BlockPos newPos = ground.above(distFromGround > 5 ? flightHeight : j);
-        if (level.getBlockState(ground).is(BlockTags.LEAVES)) {
+        if (level().getBlockState(ground).is(BlockTags.LEAVES)) {
             newPos = ground.above(1 + this.getRandom().nextInt(3));
         }
         if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
@@ -495,10 +495,10 @@ public class EntityPotoo extends Animal implements IFalconry {
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > -65 && level.isEmptyBlock(position)) {
+        while (position.getY() > -65 && level().isEmptyBlock(position)) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || level.getBlockState(position).is(Blocks.VINE) || position.getY() <= -65;
+        return !level().getFluidState(position).isEmpty() || level().getBlockState(position).is(Blocks.VINE) || position.getY() <= -65;
     }
 
     public boolean isFood(ItemStack stack) {
@@ -626,7 +626,7 @@ public class EntityPotoo extends Animal implements IFalconry {
             int range = 14;
             for (int i = 0; i < 15; i++) {
                 BlockPos blockpos1 = EntityPotoo.this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-                while (EntityPotoo.this.level.isEmptyBlock(blockpos1) && blockpos1.getY() > -64) {
+                while (EntityPotoo.this.level().isEmptyBlock(blockpos1) && blockpos1.getY() > -64) {
                     blockpos1 = blockpos1.below();
                 }
                 Direction dir = Direction.from2DDataValue(random.nextInt(3));
@@ -640,7 +640,7 @@ public class EntityPotoo extends Animal implements IFalconry {
 
         @Override
         public boolean canContinueToUse() {
-            return (perchingTime < 300 || EntityPotoo.this.level.isDay()) && (EntityPotoo.this.getTarget() == null || !EntityPotoo.this.getTarget().isAlive()) && !EntityPotoo.this.isPassenger();
+            return (perchingTime < 300 || EntityPotoo.this.level().isDay()) && (EntityPotoo.this.getTarget() == null || !EntityPotoo.this.getTarget().isAlive()) && !EntityPotoo.this.isPassenger();
         }
 
         public void tick() {

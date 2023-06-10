@@ -164,11 +164,11 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level);
+            this.navigation = new GroundPathNavigation(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new MoveController();
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -352,7 +352,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             this.setFlyAngle(Math.min(this.getFlyAngle() + 4, 0));
         }
         this.setFlyAngle(Mth.clamp(this.getFlyAngle(), -30, 30));
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -388,9 +388,9 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 attackProgress--;
             }
         }
-        if (isDigging() && level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).canOcclude()) {
+        if (isDigging() && level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).canOcclude()) {
             BlockPos posit = this.getBlockPosBelowThatAffectsMyMovement();
-            BlockState understate = level.getBlockState(posit);
+            BlockState understate = level().getBlockState(posit);
             for (int i = 0; i < 4 + random.nextInt(2); i++) {
                 double particleX = posit.getX() + random.nextFloat();
                 double particleY = posit.getY() + 1F;
@@ -404,7 +404,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         if(this.tickCount > 0 && tickCount % 300 == 0 && this.getHealth() < this.getMaxHealth()){
             this.heal(1);
         }
-        if(!level.isClientSide && this.isDragging() && this.getPassengers().isEmpty() && !this.isDigging()){
+        if(!this.level().isClientSide && this.isDragging() && this.getPassengers().isEmpty() && !this.isDigging()){
             dragTime++;
             if(dragTime > 5000){
                 dragTime = 0;
@@ -428,9 +428,9 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             spiderFeedings++;
             if (spiderFeedings >= 15 && getRandom().nextInt(6) == 0 || spiderFeedings > 25) {
                 this.tame(player);
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
         }
@@ -546,7 +546,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         }
     }
 
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         this.setXRot(0);
         float radius = 1.0F + passenger.getBbWidth() * 0.5F;
         float angle = (0.01745329251F * (this.yBodyRot - 180));
@@ -558,10 +558,10 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
 
     private boolean isOverWater() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > 0 && level.isEmptyBlock(position)) {
+        while (position.getY() > 0 && level().isEmptyBlock(position)) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || position.getY() <= 0;
+        return !level().getFluidState(position).isEmpty() || position.getY() <= 0;
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
@@ -584,7 +584,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
 
     private BlockPos getCrowGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
-        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
+        while (position.getY() > -64 && !level().getBlockState(position).isSolid() && level().getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
@@ -603,7 +603,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             return this.position();
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > -62 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
+            while (ground.getY() > -62 && !level().getBlockState(ground).isSolid()) {
                 ground = ground.below();
             }
         }
@@ -615,7 +615,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     private Vec3 getOrbitVec(Vec3 vector3d, float gatheringCircleDist, boolean orbitClockwise) {
@@ -624,7 +624,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (vector3d != null) {
             Vec3 pos = new Vec3(vector3d.x() + extraX, vector3d.y() + random.nextInt(2) + 4, vector3d.z() + extraZ);
-            if (this.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
+            if (this.level().isEmptyBlock(AMBlockPos.fromVec3(pos))) {
                 return pos;
             }
         }
@@ -640,7 +640,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private BlockPos genSandPos(BlockPos parent) {
-        LevelAccessor world = this.level;
+        LevelAccessor world = this.level();
         Random random = new Random();
         int range = 24;
         for (int i = 0; i < 15; i++) {
@@ -728,7 +728,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             LivingEntity target = hawk.getTarget();
             boolean paralized = target != null && target.getMobType() == MobType.ARTHROPOD && !target.noPhysics && target.hasEffect(AMEffectRegistry.DEBILITATING_STING.get());
             boolean paralizedWithChild = paralized && target.getEffect(AMEffectRegistry.DEBILITATING_STING.get()).getAmplifier() > 0;
-            if (sandPos == null || !level.getBlockState(sandPos).is(BlockTags.SAND)) {
+            if (sandPos == null || !level().getBlockState(sandPos).is(BlockTags.SAND)) {
                 sandPos = hawk.genSandPos(target.blockPosition());
             }
             if (orbitCooldown > 0) {
@@ -743,7 +743,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                     }
                 }
             } else if (((paralized && !hawk.isTame()) || (paralizedWithChild && hawk.bredBuryFlag)) && sandPos != null) {
-                if (hawk.isOnGround()) {
+                if (hawk.onGround()) {
                     hawk.setFlying(false);
                     hawk.getNavigation().moveTo(target, 1);
                 } else {
@@ -761,7 +761,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 if (target != null && !paralizedWithChild) {
                     double dist = hawk.distanceTo(target);
                     if (dist < 10 && !hawk.isFlying()) {
-                        if (hawk.isOnGround()) {
+                        if (hawk.onGround()) {
                             hawk.setFlying(false);
                         }
                         hawk.getNavigation().moveTo(target, 1);
@@ -781,7 +781,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                                 }
                             }
                             target.addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING.get(), target.getMobType() == MobType.ARTHROPOD ? EntityTarantulaHawk.STING_DURATION : 600, hawk.bredBuryFlag ? 1 : 0));
-                            if (!hawk.level.isClientSide && target.getMobType() == MobType.ARTHROPOD) {
+                            if (!hawk.this.level().isClientSide && target.getMobType() == MobType.ARTHROPOD) {
                                 AlexsMobs.sendMSGToAll(new MessageTarantulaHawkSting(hawk.getId(), target.getId()));
                             }
                             orbitCooldown = target.getMobType() == MobType.ARTHROPOD ? 200 + random.nextInt(200) : 10 + random.nextInt(20);
@@ -826,7 +826,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 if (this.hawk.getRandom().nextInt(30) != 0 && !hawk.isFlying()) {
                     return false;
                 }
-                if (this.hawk.isOnGround()) {
+                if (this.hawk.onGround()) {
                     this.flightTarget = random.nextBoolean();
                 } else {
                     this.flightTarget = random.nextInt(5) > 0 && hawk.timeFlying < 200;
@@ -926,7 +926,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         }
 
         public boolean canContinueToUse() {
-            return hawk.isDragging() && digTime < 200 && hawk.getTarget() != null && buryPos != null && level.getBlockState(buryPos).is(BlockTags.SAND);
+            return hawk.isDragging() && digTime < 200 && hawk.getTarget() != null && buryPos != null && level().getBlockState(buryPos).is(BlockTags.SAND);
         }
 
         public void start() {
@@ -977,7 +977,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         public boolean canUse() {
             if (searchCooldown <= 0) {
                 searchCooldown = 100 + EntityTarantulaHawk.this.random.nextInt(100);
-                List<EntityRoadrunner> list = EntityTarantulaHawk.this.level.getEntitiesOfClass(EntityRoadrunner.class, EntityTarantulaHawk.this.getBoundingBox().inflate(15, 32, 15));
+                List<EntityRoadrunner> list = EntityTarantulaHawk.this.level().getEntitiesOfClass(EntityRoadrunner.class, EntityTarantulaHawk.this.getBoundingBox().inflate(15, 32, 15));
                 for (EntityRoadrunner roadrunner : list) {
                     if (fear == null || EntityTarantulaHawk.this.distanceTo(fear) > EntityTarantulaHawk.this.distanceTo(roadrunner)) {
                         fear = roadrunner;

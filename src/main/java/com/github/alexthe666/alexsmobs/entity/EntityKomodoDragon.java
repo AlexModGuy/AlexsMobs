@@ -134,7 +134,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         return Vec3.ZERO;
     }
 
-    protected void tickRidden(LivingEntity player, Vec3 vec3) {
+    protected void tickRidden(Player player, Vec3 vec3) {
         super.tickRidden(player, vec3);
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
@@ -208,7 +208,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if(slaughterCooldown > 0){
             slaughterCooldown--;
         }
-        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilSpit <= 0) {
+        if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilSpit <= 0) {
             this.spawnAtLocation(AMItemRegistry.KOMODO_SPIT.get());
             this.timeUntilSpit = this.random.nextInt(12000) + 24000;
         }
@@ -253,7 +253,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if (jostleCooldown > 0) {
             jostleCooldown--;
         }
-        if(!level.isClientSide){
+        if(!this.level().isClientSide){
             if(this.getJostleAngle() < nextJostleAngleFromServer){
                 this.setJostleAngle(this.getJostleAngle() + 1);
 
@@ -289,9 +289,9 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if (super.doHurtTarget(entityIn)) {
             if (entityIn instanceof LivingEntity) {
                 int i = 5;
-                if (this.level.getDifficulty() == Difficulty.NORMAL) {
+                if (this.level().getDifficulty() == Difficulty.NORMAL) {
                     i = 10;
-                } else if (this.level.getDifficulty() == Difficulty.HARD) {
+                } else if (this.level().getDifficulty() == Difficulty.HARD) {
                     i = 20;
                 }
                 ((LivingEntity)entityIn).addEffect(new MobEffectInstance(MobEffects.POISON, i * 20, 0));
@@ -321,7 +321,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         return null;
     }
 
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (this.hasPassenger(passenger)) {
             float radius = 0;
             float angle = (0.01745329251F * this.yBodyRot);
@@ -462,8 +462,8 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     @Nullable
     public Entity getJostlingPartner() {
         UUID id = getJostlingPartnerUUID();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
@@ -504,7 +504,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     protected void dropEquipment() {
         super.dropEquipment();
         if (this.isSaddled()) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.spawnAtLocation(Items.SADDLE);
             }
         }

@@ -65,7 +65,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public EntityVoidWormPart(EntityType t, LivingEntity parent, float radius, float angleYaw, float offsetY) {
-        super(t, parent.level);
+        super(t, parent.level());
         this.setParent(parent);
         this.radius = radius;
         this.angleYaw = (angleYaw + 90.0F) * ((float) Math.PI / 180.0F);
@@ -207,7 +207,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         if (this.tickCount > 3) {
             Entity parent = getParent();
             refreshDimensions();
-            if (parent != null && !level.isClientSide) {
+            if (parent != null && !this.level().isClientSide) {
                 this.setNoGravity(true);
                 Vec3 parentVec = parent.position().subtract(parent.xo, parent.yo, parent.zo);
                 double restrictRadius = Mth.clamp(radius - parentVec.lengthSqr() * 0.25F, radius * 0.5F, radius);
@@ -236,14 +236,14 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 this.yHeadRot = this.getYRot();
                 this.yBodyRot = pitch;
                 if (parent instanceof LivingEntity) {
-                    if (!level.isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)) {
+                    if (!this.level().isClientSide && (((LivingEntity) parent).hurtTime > 0 || ((LivingEntity) parent).deathTime > 0)) {
                         AlexsMobs.sendMSGToAll(new MessageHurtMultipart(this.getId(), parent.getId(), 0));
                         this.hurtTime = ((LivingEntity) parent).hurtTime;
                         this.deathTime = ((LivingEntity) parent).deathTime;
                     }
                 }
                 this.pushEntities();
-                if (parent.isRemoved() && !level.isClientSide) {
+                if (parent.isRemoved() && !this.level().isClientSide) {
                     this.remove(RemovalReason.DISCARDED);
                 }
                 if (parent instanceof EntityVoidWorm) {
@@ -251,7 +251,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 } else if (parent instanceof EntityVoidWormPart) {
                     this.setWormAngle(((EntityVoidWormPart) parent).prevWormAngle);
                 }
-            } else if (tickCount > 20 && !level.isClientSide) {
+            } else if (tickCount > 20 && !this.level().isClientSide) {
                 remove(RemovalReason.DISCARDED);
             }
         }
@@ -291,7 +291,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(AMParticleRegistry.WORM_PORTAL.get(), this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
+                this.level().addParticle(AMParticleRegistry.WORM_PORTAL.get(), this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
             }
         }
 
@@ -304,21 +304,21 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
             worm.setSegmentCount(segments);
             if (this.getChild() instanceof EntityVoidWormPart) {
                 EntityVoidWormPart segment = (EntityVoidWormPart) this.getChild();
-                EntityVoidWorm worm2 = AMEntityRegistry.VOID_WORM.get().create(level);
+                EntityVoidWorm worm2 = AMEntityRegistry.VOID_WORM.get().create(level());
                 worm2.copyPosition(this);
                 segment.copyPosition(this);
                 worm2.setChildId(segment.getUUID());
                 worm2.setSegmentCount(segments);
                 segment.setParent(worm2);
-                if (!level.isClientSide) {
-                    level.addFreshEntity(worm2);
+                if (!this.level().isClientSide) {
+                    level().addFreshEntity(worm2);
                 }
                 worm2.setSplitter(true);
                 worm2.setMaxHealth(worm.getMaxHealth() / 2F, true);
                 worm2.setSplitFromUuid(worm.getUUID());
                 worm2.setWormSpeed((float) Mth.clamp(worm.getWormSpeed() * 0.8, 0.4F, 1F));
                 worm2.resetWormScales();
-                if (!level.isClientSide) {
+                if (!this.level().isClientSide) {
                     if (cause != null && cause.getEntity() instanceof ServerPlayer) {
                         AMAdvancementTriggerRegistry.VOID_WORM_SPLIT.trigger((ServerPlayer) cause.getEntity());
                     }
@@ -346,16 +346,16 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
 
     public Entity getChild() {
         UUID id = getChildId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
 
     public Entity getParent() {
         UUID id = getParentId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
@@ -385,7 +385,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public void pushEntities() {
-        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.20000000298023224D, 0.0D, 0.20000000298023224D));
         Entity parent = this.getParent();
         if (parent != null) {
             entities.stream().filter(entity -> !entity.is(parent) && !(entity instanceof EntityVoidWormPart) && entity.isPushable()).forEach(entity -> entity.push(parent));

@@ -102,7 +102,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
         List<BlockPos> allBlocks = new ArrayList<>();
         int radius = 16;
         for (BlockPos pos : BlockPos.betweenClosedStream(this.mantisShrimp.blockPosition().offset(-radius, -radius, -radius), this.mantisShrimp.blockPosition().offset(radius, radius, radius)).map(BlockPos::immutable).collect(Collectors.toList())) {
-            if (!mantisShrimp.level.isEmptyBlock(pos) && shouldMoveTo(mantisShrimp.level, pos)) {
+            if (!mantisShrimp.level().isEmptyBlock(pos) && shouldMoveTo(mantisShrimp.level, pos)) {
                 if(!mantisShrimp.isInWater() || isBlockTouchingWater(pos)){
                     allBlocks.add(pos);
                 }
@@ -122,7 +122,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
 
     private boolean isBlockTouchingWater(BlockPos pos) {
         for(Direction dir : Direction.values()){
-            if(mantisShrimp.level.getFluidState(pos.relative(dir)).is(FluidTags.WATER)){
+            if(mantisShrimp.level().getFluidState(pos.relative(dir)).is(FluidTags.WATER)){
                 return true;
             }
         }
@@ -139,8 +139,8 @@ public class MantisShrimpAIBreakBlocks extends Goal {
 
     private void breakBlock() {
         if (shouldMoveTo(mantisShrimp.level, destinationBlock)) {
-            BlockState state = mantisShrimp.level.getBlockState(destinationBlock);
-            if(!mantisShrimp.level.isEmptyBlock(destinationBlock) && net.minecraftforge.common.ForgeHooks.canEntityDestroy(mantisShrimp.level, destinationBlock, mantisShrimp) && state.getDestroySpeed(mantisShrimp.level, destinationBlock) >= 0){
+            BlockState state = mantisShrimp.level().getBlockState(destinationBlock);
+            if(!mantisShrimp.level().isEmptyBlock(destinationBlock) && net.minecraftforge.common.ForgeHooks.canEntityDestroy(mantisShrimp.level, destinationBlock, mantisShrimp) && state.getDestroySpeed(mantisShrimp.level, destinationBlock) >= 0){
                 mantisShrimp.level.destroyBlock(destinationBlock, true);
             }
         }

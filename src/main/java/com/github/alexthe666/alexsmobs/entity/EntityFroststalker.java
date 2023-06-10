@@ -112,7 +112,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     public static boolean canFroststalkerSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return worldIn.getRawBrightness(pos, 0) > 8 && (worldIn.getBlockState(pos.below()).is(Blocks.ICE) || worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.SNOW_BLOCK));
+        return worldIn.getRawBrightness(pos, 0) > 8 && (worldIn.getBlockState(pos.below()).is(Blocks.ICE) || worldIn.getBlockState(pos.below()).isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.SNOW_BLOCK));
     }
 
     @Nullable
@@ -176,10 +176,10 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
 
     private void jumpUnderwater() {
         BlockPos pos = this.getOnPos();
-        if(this.level.isWaterAt(pos) && !this.level.isWaterAt(pos.above())){
+        if(this.level().isWaterAt(pos) && !this.level().isWaterAt(pos.above())){
             this.setPos(this.getX(), this.getY() + 1, this.getZ());
-            this.level.setBlockAndUpdate(pos, Blocks.FROSTED_ICE.defaultBlockState());
-            this.level.scheduleTick(pos, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
+            this.level().setBlockAndUpdate(pos, Blocks.FROSTED_ICE.defaultBlockState());
+            this.level().scheduleTick(pos, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
         }
         double d0 = 0.2F;
         Vec3 vec3 = this.getDeltaMovement();
@@ -276,7 +276,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
             this.getAttribute(Attributes.ARMOR).setBaseValue(0F);
         }
 
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.tickCount % 200 == 0) {
                 if (isInWaterRainOrBubble() && !this.hasSpikes()) {
                     this.setSpiked(true);
@@ -326,9 +326,9 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
                     int spikeCount = 2 + random.nextInt(4);
                     for (int i = 0; i < spikeCount; i++) {
                         float f = ((i + 1) / (float) spikeCount) * 360F;
-                        EntityIceShard shard = new EntityIceShard(level, this);
+                        EntityIceShard shard = new EntityIceShard(level(), this);
                         shard.shootFromRotation(this, this.getXRot() - random.nextInt(40), f, 0.0F, 0.15F + random.nextFloat() * 0.2F, 1.0F);
-                        level.addFreshEntity(shard);
+                        level().addFreshEntity(shard);
                     }
                 }
                 shakeTime--;
@@ -368,7 +368,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         if (fleeFireFlag > 0) {
             fleeFireFlag--;
         }
-        if(!level.isClientSide){
+        if(!this.level().isClientSide){
             if(resetLeaderCooldown > 0){
                 resetLeaderCooldown--;
             }else{
@@ -382,7 +382,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     private void lookForPlayerLeader() {
        if(!(this.leader instanceof Player)){
            float range = 10;
-           List<Player> playerList = this.level.getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(range, range, range), EntityFroststalker.VALID_LEADER_PLAYERS);
+           List<Player> playerList = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(range, range, range), EntityFroststalker.VALID_LEADER_PLAYERS);
            Player closestPlayer = null;
            for(Player player : playerList){
                if(closestPlayer == null || player.distanceTo(this) < closestPlayer.distanceTo(this)){
@@ -404,13 +404,13 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         if (this.isNoAi()) {
             return false;
         }
-        if (this.level.dimension() == Level.NETHER) {
+        if (this.level().dimension() == Level.NETHER) {
             return true;
         } else {
             int i = Mth.floor(this.getX());
             int j = Mth.floor(this.getY());
             int k = Mth.floor(this.getZ());
-            return this.level.getBiome(new BlockPos(i, 0, k)).is(BiomeTags.SNOW_GOLEM_MELTS);
+            return this.level().getBiome(new BlockPos(i, 0, k)).is(BiomeTags.SNOW_GOLEM_MELTS);
         }
     }
 
@@ -607,7 +607,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     protected void onChangedBlock(BlockPos pos) {
         int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FROST_WALKER, this);
         if (i > 0 || this.hasSpikes()) {
-            FrostWalkerEnchantment.onEntityMoved(this, this.level, pos, i == 0 ? -1 : i);
+            FrostWalkerEnchantment.onEntityMoved(this, this.level(), pos, i == 0 ? -1 : i);
         }
         if (this.shouldRemoveSoulSpeed(this.getBlockStateOn())) {
             this.removeSoulSpeed();
@@ -676,7 +676,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         }
 
         public boolean canContinueToUse() {
-            return destinationBlock != null && isFire(EntityFroststalker.this.level, destinationBlock.mutable()) && isCloseToFire(16);
+            return destinationBlock != null && isFire(EntityFroststalker.this.level(), destinationBlock.mutable()) && isCloseToFire(16);
         }
 
         public boolean isCloseToFire(double dist) {
@@ -734,7 +734,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
                     for (int lvt_7_1_ = 0; lvt_7_1_ <= lvt_6_1_; lvt_7_1_ = lvt_7_1_ > 0 ? -lvt_7_1_ : 1 - lvt_7_1_) {
                         for (int lvt_8_1_ = lvt_7_1_ < lvt_6_1_ && lvt_7_1_ > -lvt_6_1_ ? lvt_6_1_ : 0; lvt_8_1_ <= lvt_6_1_; lvt_8_1_ = lvt_8_1_ > 0 ? -lvt_8_1_ : 1 - lvt_8_1_) {
                             lvt_4_1_.setWithOffset(lvt_3_1_, lvt_7_1_, lvt_5_1_ - 1, lvt_8_1_);
-                            if (this.isFire(EntityFroststalker.this.level, lvt_4_1_)) {
+                            if (this.isFire(EntityFroststalker.this.level(), lvt_4_1_)) {
                                 this.destinationBlock = lvt_4_1_;
                                 return true;
                             }

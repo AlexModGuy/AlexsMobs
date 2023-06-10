@@ -48,7 +48,7 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
     };
 
     protected EntitySeaBear(EntityType entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level());
         this.moveControl = new AquaticMoveController(this, 1F, 10);
     }
 
@@ -68,7 +68,7 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
         if(entity instanceof Player && ((Player) entity).isCreative()){
             return true;
         }
-        BlockState state = entity.level.getBlockState(entity.blockPosition().below());
+        BlockState state = entity.level().getBlockState(entity.blockPosition().below());
         return state.is(AMBlockRegistry.SAND_CIRCLE.get()) || state.is(AMBlockRegistry.RED_SAND_CIRCLE.get());
     }
 
@@ -248,10 +248,10 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
 
         public void tick() {
             BlockPos pos = EntitySeaBear.this.lastCircle;
-            if (target == null || EntitySeaBear.this.distanceToSqr(target) < 2 || !EntitySeaBear.this.level.getFluidState(AMBlockPos.fromVec3(target).above()).is(FluidTags.WATER)) {
+            if (target == null || EntitySeaBear.this.distanceToSqr(target) < 2 || !EntitySeaBear.this.level().getFluidState(AMBlockPos.fromVec3(target).above()).is(FluidTags.WATER)) {
                 target = DefaultRandomPos.getPosAway(EntitySeaBear.this, 20, 7, Vec3.atCenterOf(pos));
             }
-            if (target != null && EntitySeaBear.this.level.getFluidState(AMBlockPos.fromVec3(target).above()).is(FluidTags.WATER)) {
+            if (target != null && EntitySeaBear.this.level().getFluidState(AMBlockPos.fromVec3(target).above()).is(FluidTags.WATER)) {
                 EntitySeaBear.this.getNavigation().moveTo(target.x, target.y, target.z, 1.0D);
             }
         }

@@ -55,7 +55,7 @@ public class EntitySharkToothArrow extends Arrow {
                     this.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
                 }
                 player.stopUsingItem();
-                this.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level.random.nextFloat() * 0.4F);
+                this.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level().random.nextFloat() * 0.4F);
             }
         }
     }

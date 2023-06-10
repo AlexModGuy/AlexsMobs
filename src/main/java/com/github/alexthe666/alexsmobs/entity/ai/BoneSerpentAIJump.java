@@ -40,11 +40,11 @@ public class BoneSerpentAIJump extends JumpGoal {
 
     private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
         BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
-        return (this.dolphin.level.getFluidState(blockpos).is(FluidTags.WATER) || this.dolphin.level.getFluidState(blockpos).is(FluidTags.LAVA)) && !this.dolphin.level.getBlockState(blockpos).getMaterial().blocksMotion();
+        return (this.dolphin.level().getFluidState(blockpos).is(FluidTags.WATER) || this.dolphin.level().getFluidState(blockpos).is(FluidTags.LAVA)) && !this.dolphin.level().getBlockState(blockpos).getMaterial().blocksMotion();
     }
 
     private boolean isAirAbove(BlockPos pos, int dx, int dz, int scale) {
-        return this.dolphin.level.getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.dolphin.level.getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
+        return this.dolphin.level().getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.dolphin.level().getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
     }
 
     /**
@@ -52,7 +52,7 @@ public class BoneSerpentAIJump extends JumpGoal {
      */
     public boolean canContinueToUse() {
         double d0 = this.dolphin.getDeltaMovement().y;
-        return dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.getXRot() == 0.0F || !(Math.abs(this.dolphin.getXRot()) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.isOnGround();
+        return dolphin.jumpCooldown > 0 && (!(d0 * d0 < (double) 0.03F) || this.dolphin.getXRot() == 0.0F || !(Math.abs(this.dolphin.getXRot()) < 10.0F) || !this.dolphin.isInWater()) && !this.dolphin.onGround();
     }
 
     public boolean isInterruptable() {
@@ -83,7 +83,7 @@ public class BoneSerpentAIJump extends JumpGoal {
     public void tick() {
         boolean flag = this.inWater;
         if (!flag) {
-            FluidState fluidstate = this.dolphin.level.getFluidState(this.dolphin.blockPosition());
+            FluidState fluidstate = this.dolphin.level().getFluidState(this.dolphin.blockPosition());
             this.inWater = fluidstate.is(FluidTags.LAVA) || fluidstate.is(FluidTags.WATER);
         }
 

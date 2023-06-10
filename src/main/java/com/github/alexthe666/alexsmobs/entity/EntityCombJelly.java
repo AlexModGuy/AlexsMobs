@@ -27,7 +27,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -68,7 +67,7 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
     }
 
     public static boolean canCombJellySpawn(EntityType<EntityCombJelly> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER && isLightLevelOk(pos, iServerWorld);
+        return reason == MobSpawnType.SPAWNER || iServerWorld.isWaterAt(pos) && iServerWorld.isWaterAt(pos.above()) && isLightLevelOk(pos, iServerWorld);
     }
 
     private static boolean isLightLevelOk(BlockPos pos, ServerLevelAccessor iServerWorld) {
@@ -160,12 +159,12 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
             onLandProgress--;
         }
 
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.isInWater()) {
                 this.setNoGravity(true);
                 if(moveTarget == null || this.random.nextInt(120) == 0 || this.distanceToSqr(moveTarget.getX() + 0.5F, moveTarget.getY() + 0.5F, moveTarget.getZ() + 0.5F) < 5 || tickCount % 10 == 0 && !canBlockPosBeSeen(moveTarget)){
                     BlockPos randPos = this.blockPosition().offset(random.nextInt(10) - 5, random.nextInt(6) - 3, random.nextInt(10) - 5);
-                    if(level.getFluidState(randPos).is(Fluids.WATER) && level.getFluidState(randPos.above()).is(Fluids.WATER)){
+                    if(level().getFluidState(randPos).is(Fluids.WATER) && level().getFluidState(randPos.above()).is(Fluids.WATER)){
                         moveTarget = randPos;
                     }
                 }
@@ -222,7 +221,7 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
         final double x = pos.getX() + 0.5F;
         final double y = pos.getY() + 0.5F;
         final double z = pos.getZ() + 0.5F;
-        final HitResult result = this.level.clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        final HitResult result = this.level().clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         final double dist = result.getLocation().distanceToSqr(x, y, z);
         return dist <= 1.0D || result.getType() == HitResult.Type.MISS;
     }

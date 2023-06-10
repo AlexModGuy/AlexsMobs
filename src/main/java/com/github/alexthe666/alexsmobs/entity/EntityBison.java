@@ -146,7 +146,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        return AMEntityRegistry.BISON.get().create(level);
+        return AMEntityRegistry.BISON.get().create(level());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -176,32 +176,32 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         if (!this.isCharging() && chargeProgress > 0F) {
             chargeProgress--;
         }
-        if (snowTimer == 0 && !level.isClientSide) {
+        if (snowTimer == 0 && !this.level().isClientSide) {
             snowTimer = 200 + random.nextInt(400);
             if (this.isSnowy()) {
                 if (!permSnow) {
-                    if (!this.level.isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !EntityGrizzlyBear.isSnowingAt(level, this.blockPosition().above())) {
+                    if (!this.level().isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !EntityGrizzlyBear.isSnowingAt(level(), this.blockPosition().above())) {
                         this.setSnowy(false);
                     }
                 }
             } else {
-                if (!this.level.isClientSide && EntityGrizzlyBear.isSnowingAt(level, this.blockPosition())) {
+                if (!this.level().isClientSide && EntityGrizzlyBear.isSnowingAt(level(), this.blockPosition())) {
                     this.setSnowy(true);
                 }
             }
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             LivingEntity attackTarget = this.getTarget();
             if (this.getDeltaMovement().lengthSqr() < 0.05D && this.getAnimation() == NO_ANIMATION && (attackTarget == null || !attackTarget.isAlive())) {
-                if ((getRandom().nextInt(600) == 0 && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK))) {
+                if ((getRandom().nextInt(600) == 0 && level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK))) {
                     this.setAnimation(ANIMATION_EAT);
                 }
             }
-            if(this.getAnimation() == ANIMATION_EAT && this.getAnimationTick() == 30 && level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK)){
+            if(this.getAnimation() == ANIMATION_EAT && this.getAnimationTick() == 30 && level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK)){
                 this.feedingsSinceLastShear++;
                 BlockPos down = this.blockPosition().below();
-                this.level.levelEvent(2001, down, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
-                this.level.setBlock(down, Blocks.DIRT.defaultBlockState(), 2);
+                this.level().levelEvent(2001, down, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
+                this.level().setBlock(down, Blocks.DIRT.defaultBlockState(), 2);
             }
 
             if (isCharging()) {
@@ -253,7 +253,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             feedingsSinceLastShear = 0;
             this.setSheared(false);
         }
-        if (!level.isClientSide && this.isCharging() && (this.getTarget() == null && this.chargePartner == null || this.isInWaterOrBubble())) {
+        if (!this.level().isClientSide && this.isCharging() && (this.getTarget() == null && this.chargePartner == null || this.isInWaterOrBubble())) {
             this.setCharging(false);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -299,7 +299,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         final ItemStack itemstack = player.getItemInHand(hand);
         final Item item = itemstack.getItem();
         final InteractionResult type = super.mobInteract(player, hand);
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (item == Items.SNOW && !this.isSnowy()) {
                 this.usePlayerItem(player, hand, itemstack);
                 this.permSnow = true;
@@ -334,17 +334,17 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
             return;
         }
         boolean flag = false;
-        if (!level.isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
+        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level(), this)) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
                         final BlockPos pos = new BlockPos(a, b, c);
-                        final BlockState state = level.getBlockState(pos);
+                        final BlockState state = level().getBlockState(pos);
                         final Block block = state.getBlock();
                         if (block == Blocks.SNOW && state.getValue(SnowLayerBlock.LAYERS) <= 1) {
                             this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                             flag = true;
-                            level.destroyBlock(pos, true);
+                            level().destroyBlock(pos, true);
                         }
                     }
                 }
@@ -387,7 +387,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
 
     @Override
     public void shear(SoundSource category) {
-        level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
+        level().playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1.0F, 1.0F);
         this.gameEvent(GameEvent.ENTITY_INTERACT);
         this.setSheared(true);
         this.feedingsSinceLastShear = 0;
@@ -467,7 +467,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                     return true;
                 } else if (random.nextInt(100) == 0) {
                     EntityBison furthest = null;
-                    for (final EntityBison bison : EntityBison.this.level.getEntitiesOfClass(EntityBison.class, EntityBison.this.getBoundingBox().inflate(15F))) {
+                    for (final EntityBison bison : EntityBison.this.level().getEntitiesOfClass(EntityBison.class, EntityBison.this.getBoundingBox().inflate(15F))) {
                         if (bison.chargeCooldown == 0 && !bison.isBaby() && !bison.is(EntityBison.this)) {
                             if (furthest == null || EntityBison.this.distanceTo(furthest) < EntityBison.this.distanceTo(bison)) {
                                 furthest = bison;
@@ -505,11 +505,11 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                     if (dist < flingAnimAt && EntityBison.this.getAnimation() == ANIMATION_ATTACK) {
                         if (EntityBison.this.getAnimationTick() > 8) {
                             boolean flag = false;
-                            if (EntityBison.this.isOnGround()) {
+                            if (EntityBison.this.onGround()) {
                                 EntityBison.this.pushBackJostling(EntityBison.this.chargePartner, 0.2F);
                                 flag = true;
                             }
-                            if (EntityBison.this.chargePartner.isOnGround()) {
+                            if (EntityBison.this.chargePartner.onGround()) {
                                 EntityBison.this.chargePartner.pushBackJostling(EntityBison.this, 0.9F);
                                 flag = true;
                             }

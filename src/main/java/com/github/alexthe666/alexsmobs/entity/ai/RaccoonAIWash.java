@@ -107,7 +107,7 @@ public class RaccoonAIWash extends Goal {
         int range = 32;
         for (int i = 0; i < 15; i++) {
             BlockPos blockpos1 = this.raccoon.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
-            while (this.raccoon.level.isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
+            while (this.raccoon.level().isEmptyBlock(blockpos1) && blockpos1.getY() > 1) {
                 blockpos1 = blockpos1.below();
             }
             if (isConnectedToLand(blockpos1)) {
@@ -118,10 +118,10 @@ public class RaccoonAIWash extends Goal {
     }
 
     public boolean isConnectedToLand(BlockPos pos) {
-        if (this.raccoon.level.getFluidState(pos).is(FluidTags.WATER)) {
+        if (this.raccoon.level().getFluidState(pos).is(FluidTags.WATER)) {
             for (Direction dir : HORIZONTALS) {
                 BlockPos offsetPos = pos.relative(dir);
-                if (this.raccoon.level.getFluidState(offsetPos).isEmpty() && this.raccoon.level.getFluidState(offsetPos.above()).isEmpty()) {
+                if (this.raccoon.level().getFluidState(offsetPos).isEmpty() && this.raccoon.level().getFluidState(offsetPos.above()).isEmpty()) {
                     return true;
                 }
             }
@@ -130,10 +130,10 @@ public class RaccoonAIWash extends Goal {
     }
 
     public BlockPos getLandPos(BlockPos pos) {
-        if (this.raccoon.level.getFluidState(pos).is(FluidTags.WATER)) {
+        if (this.raccoon.level().getFluidState(pos).is(FluidTags.WATER)) {
             for (Direction dir : HORIZONTALS) {
                 BlockPos offsetPos = pos.relative(dir);
-                if (this.raccoon.level.getFluidState(offsetPos).isEmpty() && this.raccoon.level.getFluidState(offsetPos.above()).isEmpty()) {
+                if (this.raccoon.level().getFluidState(offsetPos).isEmpty() && this.raccoon.level().getFluidState(offsetPos.above()).isEmpty()) {
                     return offsetPos;
                 }
             }

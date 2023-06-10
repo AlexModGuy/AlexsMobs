@@ -157,7 +157,7 @@ public class EntityGuster extends Monster {
 
 
     private void spit(LivingEntity target) {
-        EntitySandShot sghot = new EntitySandShot(this.level, this);
+        EntitySandShot sghot = new EntitySandShot(this.level(), this);
         double d0 = target.getX() - this.getX();
         double d1 = target.getY(0.3333333333333333D) - sghot.getY();
         double d2 = target.getZ() - this.getZ();
@@ -166,9 +166,9 @@ public class EntityGuster extends Monster {
         sghot.setVariant(this.getVariant());
         if (!this.isSilent()) {
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
-            this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SAND_BREAK, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.SAND_BREAK, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
-        this.level.addFreshEntity(sghot);
+        this.level().addFreshEntity(sghot);
     }
 
     public double getEyeY() {
@@ -181,7 +181,7 @@ public class EntityGuster extends Monster {
         if (!this.hasLiftedEntity()) {
             return null;
         } else {
-            return this.level.getEntity(this.entityData.get(LIFT_ENTITY));
+            return this.level().getEntity(this.entityData.get(LIFT_ENTITY));
         }
     }
 
@@ -215,12 +215,12 @@ public class EntityGuster extends Monster {
     public void aiStep() {
         super.aiStep();
         Entity lifted = this.getLiftedEntity();
-        if (lifted == null && !level.isClientSide && tickCount % 15 == 0) {
-            List<ItemEntity> list = this.level.getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(0.8F));
+        if (lifted == null && !this.level().isClientSide && tickCount % 15 == 0) {
+            List<ItemEntity> list = this.level().getEntitiesOfClass(ItemEntity.class, this.getBoundingBox().inflate(0.8F));
             ItemEntity closestItem = null;
             for (int i = 0; i < list.size(); ++i) {
                 ItemEntity entity = list.get(i);
-                if (entity.isOnGround() && (closestItem == null || this.distanceTo(closestItem) > this.distanceTo(entity))) {
+                if (entity.onGround() && (closestItem == null || this.distanceTo(closestItem) > this.distanceTo(entity))) {
                     closestItem = entity;
                 }
             }
@@ -235,7 +235,7 @@ public class EntityGuster extends Monster {
             for (int j = 0; j < 4; ++j) {
                 float f1 = (this.random.nextFloat() * 2.0F - 1.0F) * this.getBbWidth() * 0.95F;
                 float f2 = (this.random.nextFloat() * 2.0F - 1.0F) * this.getBbWidth() * 0.95F;
-                this.level.addParticle(type, this.getX() + (double) f1, f, this.getZ() + (double) f2, this.getX(), this.getY() + random.nextFloat() * this.getBbHeight() + 0.2F, this.getZ());
+                this.level().addParticle(type, this.getX() + (double) f1, f, this.getZ() + (double) f2, this.getX(), this.getY() + random.nextFloat() * this.getBbHeight() + 0.2F, this.getZ());
             }
         }
         if (lifted != null && liftingTime >= 0) {
@@ -266,7 +266,7 @@ public class EntityGuster extends Monster {
             this.setLiftedEntity(this.getTarget().getId());
             maxLiftTime = 30 + random.nextInt(30);
         }
-        if (!level.isClientSide && shootingTicks >= 0) {
+        if (!this.level().isClientSide && shootingTicks >= 0) {
             if (shootingTicks <= 0) {
                 if (this.getTarget() != null && (lifted == null || lifted.getId() != this.getTarget().getId()) && this.isAlive()) {
                     this.spit(this.getTarget());

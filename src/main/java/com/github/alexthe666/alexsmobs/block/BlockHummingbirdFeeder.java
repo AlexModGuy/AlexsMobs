@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -42,7 +42,7 @@ public class BlockHummingbirdFeeder extends Block {
     private static final VoxelShape AABB_HANGING = Block.box(4, 0, 4, 12, 16, 12);
 
     public BlockHummingbirdFeeder() {
-        super(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.LANTERN).strength(0.5F).randomTicks().noOcclusion());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.LANTERN).strength(0.5F).randomTicks().noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(CONTENTS, 0).setValue(HANGING, false));
     }
 
@@ -80,7 +80,7 @@ public class BlockHummingbirdFeeder extends Block {
             if(itemStack.getItem() == Items.SUGAR){
                 setContent = 2;
                 useItem(player, itemStack);
-            }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.tagMatches(waterBottle, itemStack)){
+            }else if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameTags(waterBottle, itemStack)){
                 setContent = 1;
                 useItem(player, itemStack);
             }
@@ -90,7 +90,7 @@ public class BlockHummingbirdFeeder extends Block {
                 useItem(player, itemStack);
             }
         }else if(contents == 2){
-            if(itemStack.getItem() == waterBottle.getItem() && ItemStack.tagMatches(waterBottle, itemStack)){
+            if(itemStack.getItem() == waterBottle.getItem() && ItemStack.isSameItemSameTags(waterBottle, itemStack)){
                 setContent = 3;
                 useItem(player, itemStack);
             }

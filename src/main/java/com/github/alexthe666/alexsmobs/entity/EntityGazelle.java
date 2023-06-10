@@ -86,7 +86,7 @@ public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic
             double range = 15;
             int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
-            List<? extends EntityGazelle> list = this.level.getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range/2, range));
+            List<? extends EntityGazelle> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range/2, range));
             for(EntityGazelle gaz : list){
                 gaz.revengeCooldown = fleeTime;
 
@@ -125,14 +125,14 @@ public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic
 
     public void tick() {
         super.tick();
-        if(!level.isClientSide && this.getAnimation() == NO_ANIMATION && getRandom().nextInt(70) == 0 && (this.getLastHurtByMob() == null || this.distanceTo(this.getLastHurtByMob()) > 30)){
-            if(level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0){
+        if(!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && getRandom().nextInt(70) == 0 && (this.getLastHurtByMob() == null || this.distanceTo(this.getLastHurtByMob()) > 30)){
+            if(level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0){
                 this.setAnimation(ANIMATION_EAT_GRASS);
             }else{
                 this.setAnimation(getRandom().nextBoolean()  ? ANIMATION_FLICK_EARS : ANIMATION_FLICK_TAIL);
             }
         }
-        if(!this.level.isClientSide){
+        if(!this.level().isClientSide){
             if(revengeCooldown >= 0){
                 revengeCooldown--;
             }

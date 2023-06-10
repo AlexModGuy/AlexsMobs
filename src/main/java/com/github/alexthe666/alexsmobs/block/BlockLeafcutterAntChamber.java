@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -38,7 +38,7 @@ public class BlockLeafcutterAntChamber extends Block {
     public static final IntegerProperty FUNGUS = IntegerProperty.create("fungus", 0, 5);
 
     public BlockLeafcutterAntChamber() {
-        super(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.GRAVEL).strength(1.3F).randomTicks());
+        super(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).sound(SoundType.GRAVEL).strength(1.3F).randomTicks());
         this.registerDefaultState(this.stateDefinition.any().setValue(FUNGUS, 0));
     }
 

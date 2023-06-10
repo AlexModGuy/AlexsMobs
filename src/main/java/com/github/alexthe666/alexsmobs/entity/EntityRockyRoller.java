@@ -60,7 +60,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     private int earthquakeCooldown = 0;
 
     protected EntityRockyRoller(EntityType<? extends Monster> monster, Level level) {
-        super(monster, level);
+        super(monster, level());
         this.xpReward = 8;
         this.moveControl = new MovementControllerCustomCollisions(this);
     }
@@ -122,13 +122,13 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         if (!isRolling() && rollProgress > 0F) {
             rollProgress--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.setAngry(this.getTarget() != null && this.getTarget().isAlive() && this.distanceToSqr(this.getTarget()) < 20 * 20);
         }
         if (this.isRolling() && rollCooldown <= 0) {
             this.handleRoll();
             if (this.isAngry() && this.isAlive()) {
-                for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
+                for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.3F))) {
                     if (!isAlliedTo(entity) && entity != this) {
                         entity.hurt(this.damageSources().mobAttack(this), (isTarget(entity) ? 5.0F : 2.0F) + random.nextFloat() * 2.0F);
                         launch(entity, isTarget(entity));
@@ -160,16 +160,16 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
     private void earthquake() {
         boolean flag = false;
-        List<LivingEntity> list = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(6, 8, 6));
+        List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(6, 8, 6));
         for (LivingEntity e : list) {
             if (!(e instanceof EntityRockyRoller) && e.isAlive()) {
                 e.addEffect(new MobEffectInstance(AMEffectRegistry.EARTHQUAKE.get(), 20, 0, false, false, true));
                 flag = true;
             }
         }
-        if (!this.level.canSeeSky(this.blockPosition()) && this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+        if (!this.level().canSeeSky(this.blockPosition()) && this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
             BlockPos ceil = this.blockPosition().offset(0, 2, 0);
-            while ((!level.getBlockState(ceil).getMaterial().isSolid() || level.getBlockState(ceil).getBlock() == Blocks.POINTED_DRIPSTONE) && ceil.getY() < level.getMaxBuildHeight()) {
+            while ((!level().getBlockState(ceil).getMaterial().isSolid() || level().getBlockState(ceil).getBlock() == Blocks.POINTED_DRIPSTONE) && ceil.getY() < level.getMaxBuildHeight()) {
                 ceil = ceil.above();
             }
             int i = 2 + random.nextInt(2);
@@ -178,19 +178,19 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             float f = (float) (i + j + k) * 0.333F + 0.5F;
 
             for (BlockPos blockpos1 : BlockPos.betweenClosed(ceil.offset(-i, -j, -k), ceil.offset(i, j, k))) {
-                if (blockpos1.distSqr(ceil) <= (double) (f * f) && level.getBlockState(blockpos1).getBlock() instanceof Fallable) {
+                if (blockpos1.distSqr(ceil) <= (double) (f * f) && level().getBlockState(blockpos1).getBlock() instanceof Fallable) {
                     if (isHangingDripstone(blockpos1)) {
                         while (isHangingDripstone(blockpos1.above()) && blockpos1.getY() < level.getMaxBuildHeight()) {
                             blockpos1 = blockpos1.above();
                         }
                         if (isHangingDripstone(blockpos1)) {
                             Vec3 vec3 = Vec3.atBottomCenterOf(blockpos1);
-                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, new BlockPos((int) vec3.x, (int) vec3.y, (int) vec3.z), level.getBlockState(blockpos1));
-                            this.level.destroyBlock(blockpos1, false);
-                            this.level.addFreshEntity(fallingblockentity);
+                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, new BlockPos((int) vec3.x, (int) vec3.y, (int) vec3.z), level().getBlockState(blockpos1));
+                            this.level().destroyBlock(blockpos1, false);
+                            this.level().addFreshEntity(fallingblockentity);
                         }
                     } else {
-                        this.level.scheduleTick(blockpos1, level.getBlockState(blockpos1).getBlock(), 2);
+                        this.level().scheduleTick(blockpos1, level().getBlockState(blockpos1).getBlock(), 2);
                     }
                     flag = true;
                 }
@@ -203,7 +203,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     private boolean isHangingDripstone(BlockPos pos) {
-        return level.getBlockState(pos).getBlock() instanceof PointedDripstoneBlock && level.getBlockState(pos).getValue(PointedDripstoneBlock.TIP_DIRECTION) == Direction.DOWN;
+        return level().getBlockState(pos).getBlock() instanceof PointedDripstoneBlock && level().getBlockState(pos).getValue(PointedDripstoneBlock.TIP_DIRECTION) == Direction.DOWN;
     }
 
     private boolean isTarget(Entity entity) {
@@ -228,7 +228,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
     private void handleRoll() {
         ++this.rollCounter;
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.horizontalCollision && earthquakeCooldown == 0 & this.isAngry()) {
                 earthquakeCooldown = maxRollTime;
                 this.earthquake();
@@ -265,7 +265,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     private void launch(Entity e, boolean huge) {
-        if (e.isOnGround()) {
+        if (e.onGround()) {
             double d0 = e.getX() - this.getX();
             double d1 = e.getZ() - this.getZ();
             double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
@@ -323,7 +323,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
     static class RockyRollerNodeEvaluator extends WalkNodeEvaluator {
         protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes typeIn) {
-            return level.getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
+            return level().getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
         }
     }
 
@@ -353,7 +353,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
                         j = (int) ((float) j + f2 / Math.abs(f2));
                     }
 
-                    return rockyRoller.level.getBlockState(rockyRoller.blockPosition().offset(i, -1, j)).isAir();
+                    return rockyRoller.level().getBlockState(rockyRoller.blockPosition().offset(i, -1, j)).isAir();
                 }
             }
             return false;
@@ -421,7 +421,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             Vec3 Vector3d = new Vec3(entity.getX(), entity.getY() + 0.5F, entity.getZ());
             Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
             BlockHitResult result = entity.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
-            return result != null && (result.getBlockPos().equals(destinationBlock) || entity.level.getBlockState(result.getBlockPos()).getBlock() == Blocks.POINTED_DRIPSTONE);
+            return result != null && (result.getBlockPos().equals(destinationBlock) || entity.level().getBlockState(result.getBlockPos()).getBlock() == Blocks.POINTED_DRIPSTONE);
         }
 
 
@@ -432,10 +432,10 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
             BlockPos circlePos = new BlockPos((int) (target.getX() + extraX), (int) target.getEyeY(), (int) (target.getZ() + extraZ));
-            while (!EntityRockyRoller.this.level.getBlockState(circlePos).isAir() && circlePos.getY() < EntityRockyRoller.this.level.getMaxBuildHeight()) {
+            while (!EntityRockyRoller.this.level().getBlockState(circlePos).isAir() && circlePos.getY() < EntityRockyRoller.this.level().getMaxBuildHeight()) {
                 circlePos = circlePos.above();
             }
-            while (!EntityRockyRoller.this.level.getBlockState(circlePos.below()).entityCanStandOn(EntityRockyRoller.this.level, circlePos.below(), EntityRockyRoller.this) && circlePos.getY() > 1) {
+            while (!EntityRockyRoller.this.level().getBlockState(circlePos.below()).entityCanStandOn(EntityRockyRoller.this.level(), circlePos.below(), EntityRockyRoller.this) && circlePos.getY() > 1) {
                 circlePos = circlePos.below();
             }
             if (EntityRockyRoller.this.getWalkTargetValue(circlePos) > -1) {

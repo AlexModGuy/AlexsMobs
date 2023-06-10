@@ -106,7 +106,7 @@ public class EntityCachalotEcho extends Entity {
         }
         super.tick();
         final Vec3 vector3d = this.getDeltaMovement();
-        final HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        final HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (raytraceresult.getType() != HitResult.Type.MISS) {
             this.onImpact(raytraceresult);
         }
@@ -117,7 +117,7 @@ public class EntityCachalotEcho extends Entity {
                 whale.recieveEcho();
             }
         }
-        if (!playerLaunched && !level.isClientSide && !this.isInWaterOrBubble()) {
+        if (!playerLaunched && !this.level().isClientSide && !this.isInWaterOrBubble()) {
             remove(RemovalReason.DISCARDED);
         }
         if (this.tickCount > 100) {
@@ -157,20 +157,20 @@ public class EntityCachalotEcho extends Entity {
                 final double d1 = vec.y() - this.getY();
                 final double d2 = vec.z() - this.getZ();
                 this.setDeltaMovement(Vec3.ZERO);
-                final EntityCachalotEcho echo = new EntityCachalotEcho(this.level, ((EntityCachalotWhale) entity));
+                final EntityCachalotEcho echo = new EntityCachalotEcho(this.level(), ((EntityCachalotWhale) entity));
                 echo.copyPosition(this);
                 this.remove(RemovalReason.DISCARDED);
                 echo.setReturning(true);
                 echo.shoot(d0, d1, d2, 1, 0);
-                if (!level.isClientSide) {
-                    level.addFreshEntity(echo);
+                if (!this.level().isClientSide) {
+                    level().addFreshEntity(echo);
                 }
             }
         }
     }
 
     protected void onHitBlock(BlockHitResult p_230299_1_) {
-        if (!this.level.isClientSide && !playerLaunched) {
+        if (!this.level().isClientSide && !playerLaunched) {
             this.remove(RemovalReason.DISCARDED);
         }
     }
@@ -191,10 +191,10 @@ public class EntityCachalotEcho extends Entity {
 
     @Nullable
     public Entity getOwner() {
-        if (this.ownerUUID != null && this.level instanceof ServerLevel) {
-            return ((ServerLevel) this.level).getEntity(this.ownerUUID);
+        if (this.ownerUUID != null && this.level() instanceof ServerLevel) {
+            return ((ServerLevel) this.level()).getEntity(this.ownerUUID);
         } else {
-            return this.ownerNetworkId != 0 ? this.level.getEntity(this.ownerNetworkId) : null;
+            return this.ownerNetworkId != 0 ? this.level().getEntity(this.ownerNetworkId) : null;
         }
     }
 
@@ -223,7 +223,7 @@ public class EntityCachalotEcho extends Entity {
     private boolean checkLeftOwner() {
         Entity entity = this.getOwner();
         if (entity != null) {
-            for (Entity entity1 : this.level.getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
+            for (Entity entity1 : this.level().getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
                 return !p_234613_0_.isSpectator() && p_234613_0_.isPickable();
             })) {
                 if (entity1.getRootVehicle() == entity.getRootVehicle()) {
@@ -257,7 +257,7 @@ public class EntityCachalotEcho extends Entity {
         final float f2 = Mth.cos(f3) * f0;
         this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
         Vec3 vector3d = p_234612_1_.getDeltaMovement();
-        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
+        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.onGround() ? 0.0D : vector3d.y, vector3d.z));
     }
 
     /**

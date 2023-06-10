@@ -13,8 +13,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 
 public class BlockRainbowGlass extends AbstractGlassBlock {
 
@@ -26,7 +25,7 @@ public class BlockRainbowGlass extends AbstractGlassBlock {
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
 
     protected BlockRainbowGlass() {
-        super(Properties.of(Material.GLASS, MaterialColor.COLOR_LIGHT_BLUE).friction(0.97F).strength(0.2F).lightLevel((i) -> 11).sound(SoundType.GLASS).noOcclusion().isValidSpawn(BlockRainbowGlass::noOption).isRedstoneConductor(BlockRainbowGlass::noOption).isSuffocating(BlockRainbowGlass::noOption).isViewBlocking(BlockRainbowGlass::noOption).emissiveRendering(BlockRainbowGlass::yes));
+        super(Properties.of().mapColor(MapColor.COLOR_PURPLE).friction(0.97F).strength(0.2F).lightLevel((i) -> 11).sound(SoundType.GLASS).noOcclusion().isValidSpawn(BlockRainbowGlass::noOption).isRedstoneConductor(BlockRainbowGlass::noOption).isSuffocating(BlockRainbowGlass::noOption).isViewBlocking(BlockRainbowGlass::noOption).emissiveRendering(BlockRainbowGlass::yes));
         this.registerDefaultState(this.stateDefinition.any().setValue(UP, Boolean.valueOf(false))
                 .setValue(DOWN, Boolean.valueOf(false))
                 .setValue(EAST, Boolean.valueOf(false))

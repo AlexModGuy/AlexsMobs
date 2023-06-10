@@ -79,7 +79,7 @@ public abstract class EntityMobProjectile extends Entity {
         this.updateRotation();
         float f = 0.99F;
         float f1 = 0.06F;
-        if (this.level.getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir) && (!isInWater() || removeInWater())) {
+        if (this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir) && (!isInWater() || removeInWater())) {
             this.remove(RemovalReason.DISCARDED);
         } else if (this.isInWaterOrBubble() && this.removeInWater()) {
             this.remove(RemovalReason.DISCARDED);
@@ -107,18 +107,18 @@ public abstract class EntityMobProjectile extends Entity {
     protected abstract float getDamage();
 
     protected void onHitBlock(BlockHitResult p_230299_1_) {
-        BlockState blockstate = this.level.getBlockState(p_230299_1_.getBlockPos());
-        if (!this.level.isClientSide) {
+        BlockState blockstate = this.level().getBlockState(p_230299_1_.getBlockPos());
+        if (!this.level().isClientSide) {
             this.remove(RemovalReason.DISCARDED);
         }
     }
 
     @Nullable
     public Entity getShooter() {
-        if (this.ownerUUID != null && this.level instanceof ServerLevel) {
-            return ((ServerLevel) this.level).getEntity(this.ownerUUID);
+        if (this.ownerUUID != null && this.level() instanceof ServerLevel) {
+            return ((ServerLevel) this.level()).getEntity(this.ownerUUID);
         } else {
-            return this.ownerNetworkId != 0 ? this.level.getEntity(this.ownerNetworkId) : null;
+            return this.ownerNetworkId != 0 ? this.level().getEntity(this.ownerNetworkId) : null;
         }
     }
 
@@ -152,7 +152,7 @@ public abstract class EntityMobProjectile extends Entity {
     private boolean checkLeftOwner() {
         Entity entity = this.getShooter();
         if (entity != null) {
-            for (Entity entity1 : this.level.getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
+            for (Entity entity1 : this.level().getEntities(this, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), (p_234613_0_) -> {
                 return !p_234613_0_.isSpectator() && p_234613_0_.isPickable();
             })) {
                 if (entity1.getRootVehicle() == entity.getRootVehicle()) {
@@ -180,7 +180,7 @@ public abstract class EntityMobProjectile extends Entity {
         float f2 = Mth.cos(p_234612_3_ * ((float) Math.PI / 180F)) * Mth.cos(p_234612_2_ * ((float) Math.PI / 180F));
         this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
         Vec3 vector3d = p_234612_1_.getDeltaMovement();
-        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
+        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.onGround() ? 0.0D : vector3d.y, vector3d.z));
     }
 
     /**

@@ -149,7 +149,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
                     this.setDeltaMovement(this.getDeltaMovement().multiply(1, 0, 1));
                 }
                 this.onGround = true;
-            }else if (lvt_1_1_.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition().below(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
+            }else if (lvt_1_1_.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition().below(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
                 this.onGround = true;
             } else {
                 this.setDeltaMovement(0, Math.min((d1 - 0.5F), 1) * 0.2F, 0);
@@ -191,14 +191,14 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
         }
 
         for (BlockPos blockpos : set) {
-            if (!this.level.getFluidState(blockpos).is(FluidTags.LAVA)) {
-                double d3 = this.level.getBlockFloorHeight(blockpos);
+            if (!this.level().getFluidState(blockpos).is(FluidTags.LAVA)) {
+                double d3 = this.level().getBlockFloorHeight(blockpos);
                 if (DismountHelper.isBlockFloorValid(d3)) {
                     Vec3 vector3d1 = Vec3.upFromBottomCenterOf(blockpos, d3);
 
                     for (Pose pose : livingEntity.getDismountPoses()) {
                         AABB axisalignedbb = livingEntity.getLocalBoundsForPose(pose);
-                        if (DismountHelper.canDismountTo(this.level, livingEntity, axisalignedbb.move(vector3d1))) {
+                        if (DismountHelper.canDismountTo(this.level(), livingEntity, axisalignedbb.move(vector3d1))) {
                             livingEntity.setPose(pose);
                             return vector3d1;
                         }
@@ -238,7 +238,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
             }
         }
         if (this.getAnimation() == ANIMATION_LAUNCH && this.isAlive() && this.getAnimationTick() == 20 && this.getTarget() != null) {
-            EntityStradpole pole = AMEntityRegistry.STRADPOLE.get().create(level);
+            EntityStradpole pole = AMEntityRegistry.STRADPOLE.get().create(level());
             pole.setParentId(this.getUUID());
             pole.setPos(this.getX(), this.getEyeY(), this.getZ());
             double d0 = this.getTarget().getEyeY() - (double)1.1F;
@@ -252,8 +252,8 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
             pole.shoot(d1, d2 + (double)f3, d3, 2F, 0F);
             pole.setYRot(this.getYRot() % 360.0F);
             pole.setXRot(Mth.clamp(this.getYRot(), -90.0F, 90.0F) % 360.0F);
-            if(!level.isClientSide){
-                this.level.addFreshEntity(pole);
+            if(!this.level().isClientSide){
+                this.level().addFreshEntity(pole);
             }
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -307,7 +307,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
         }
 
         public boolean isStableDestination(BlockPos pos) {
-            return this.level.getBlockState(pos).is(Blocks.LAVA) || super.isStableDestination(pos);
+            return this.level().getBlockState(pos).is(Blocks.LAVA) || super.isStableDestination(pos);
         }
     }
 }

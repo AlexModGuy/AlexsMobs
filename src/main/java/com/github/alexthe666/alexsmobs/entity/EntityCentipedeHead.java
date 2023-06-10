@@ -119,7 +119,7 @@ public class EntityCentipedeHead extends Monster {
         if (super.doHurtTarget(entityIn)) {
             if (entityIn instanceof LivingEntity) {
                 final int i;
-                final Difficulty difficulty = this.level.getDifficulty();
+                final Difficulty difficulty = this.level().getDifficulty();
                 if (difficulty == Difficulty.NORMAL) {
                     i = 10;
                 } else if (difficulty == Difficulty.HARD) {
@@ -156,14 +156,14 @@ public class EntityCentipedeHead extends Monster {
 
     public Entity getChild() {
         final UUID id = getChildId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
 
     public void pushEntities() {
-        final List<Entity> entities = this.level.getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
+        final List<Entity> entities = this.level().getEntities(this, this.getBoundingBox().expandTowards(0.2D, 0.0D, 0.2D));
         entities.stream().filter(entity -> !(entity instanceof EntityCentipedeBody) && entity.isPushable()).forEach(entity -> entity.push(this));
     }
 
@@ -226,7 +226,7 @@ public class EntityCentipedeHead extends Monster {
         }
         this.ringBuffer[this.ringBufferIndex] = this.getYRot();
 
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final Entity child = getChild();
             if (child == null) {
                 LivingEntity partParent = this;
@@ -245,7 +245,7 @@ public class EntityCentipedeHead extends Monster {
                         body.setChildId(part.getUUID());
                     }
                     part.setPos(part.tickMultipartPosition(this.getId(), backOffset, prevPos, this.getXRot(), getYawForPart(i), false));
-                    level.addFreshEntity(part);
+                    level().addFreshEntity(part);
                     parts[i] = part;
                     partParent = part;
                     backOffset = part.getBackOffset();

@@ -61,7 +61,7 @@ public class EntityMudBall extends EntityMobProjectile {
         if (event == 3) {
             ParticleOptions particle = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.MUD.defaultBlockState());
             for(int i = 0; i < 8; ++i) {
-                this.level.addParticle(particle, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+                this.level().addParticle(particle, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }else{
             super.handleEntityEvent(event);
@@ -72,8 +72,8 @@ public class EntityMudBall extends EntityMobProjectile {
 
     @Override
     protected void onImpact(HitResult result) {
-        if (!this.level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte)3);
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte)3);
         }
         super.onImpact(result);
     }

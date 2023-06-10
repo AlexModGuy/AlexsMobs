@@ -95,7 +95,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     }
 
     @Override
-    protected void outOfWorld() {
+    protected void onBelowWorld() {
     }
 
     public boolean doHurtTarget(Entity entityIn) {
@@ -197,7 +197,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     }
 
 
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (this.hasPassenger(passenger)) {
             final float f = this.walkAnimation.position();
             final float f1 = this.walkAnimation.speed();
@@ -225,7 +225,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         prevClutchProgress = clutchProgress;
         prevBiteProgress = biteProgress;
         prevCosmawPitch = this.getCosmawPitch();
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final float f2 = (float) -((float) this.getDeltaMovement().y * Maths.oneEightyDividedByFloatPi);
             this.setCosmawPitch(this.getCosmawPitch() + 0.6F * (this.getCosmawPitch() + f2) - this.getCosmawPitch());
         }
@@ -279,13 +279,13 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                         this.setTame(true);
                         this.setCommand(1);
                         this.setOwnerUUID(this.fishThrowerID);
-                        Player player = level.getPlayerByUUID(fishThrowerID);
+                        Player player = level().getPlayerByUUID(fishThrowerID);
                         if (player instanceof ServerPlayer) {
                             CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer) player, this);
                         }
-                        this.level.broadcastEntityEvent(this, (byte) 7);
+                        this.level().broadcastEntityEvent(this, (byte) 7);
                     } else {
-                        this.level.broadcastEntityEvent(this, (byte) 6);
+                        this.level().broadcastEntityEvent(this, (byte) 6);
                     }
                 }
                 if (this.getMainHandItem().hasCraftingRemainingItem()) {
@@ -296,7 +296,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         } else {
             heldItemTime = 0;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (tickCount % 100 == 0 || lastSafeTpPosition == null) {
                 BlockPos pos = getCosmawGround(this.blockPosition());
                 if (pos.getY() > 1) {
@@ -409,15 +409,15 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        return AMEntityRegistry.COSMAW.get().create(level);
+        return AMEntityRegistry.COSMAW.get().create(level());
     }
 
     private BlockPos getCosmawGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
-        while (position.getY() < 256 && !level.getFluidState(position).isEmpty()) {
+        while (position.getY() < 256 && !level().getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > 1 && level.isEmptyBlock(position)) {
+        while (position.getY() > 1 && level().isEmptyBlock(position)) {
             position = position.below();
         }
         return position;
@@ -432,7 +432,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
     public void onGetItem(ItemEntity e) {
         ItemStack duplicate = e.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level().isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
@@ -446,7 +446,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
 
     public boolean isTargetBlocked(Vec3 target) {
         final Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     @Override
@@ -557,7 +557,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         @Override
         public boolean canUse() {
             if (EntityCosmaw.this.isTame() && EntityCosmaw.this.getOwner() != null && !EntityCosmaw.this.isSitting() && !EntityCosmaw.this.getOwner().isPassenger()) {
-                if (!EntityCosmaw.this.getOwner().isOnGround() && EntityCosmaw.this.getOwner().fallDistance > 4F) {
+                if (!EntityCosmaw.this.getOwner().onGround() && EntityCosmaw.this.getOwner().fallDistance > 4F) {
                     owner = EntityCosmaw.this.getOwner();
                     return true;
                 }

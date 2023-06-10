@@ -85,7 +85,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
                 ant.yBodyRot = ant.getYRot();
                 Vec3 vec = new Vec3(logStartPos.getX() + 0.5, ant.getY(), logStartPos.getZ() + 0.5);
                 vec = vec.subtract(ant.position());
-                if (ant.isOnGround() || ant.onClimbable())
+                if (ant.onGround() || ant.onClimbable())
                     this.ant.setDeltaMovement(vec.normalize().multiply(0.1, 0, 0.1).add(0, ant.getDeltaMovement().y, 0));
 
                 this.ant.getNavigation().moveTo(logStartPos.getX(), ant.getY(), logStartPos.getZ(), 1);
@@ -93,7 +93,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
                     ant.setDeltaMovement(ant.getDeltaMovement().multiply(0D, 1D, 0D));
                     this.ant.getMoveControl().setWantedPosition(logStartPos.getX() + 0.5D, ant.getY() + 2, logStartPos.getZ() + 0.5D, 1);
                     BlockPos test = new BlockPos(logStartPos.getX(), (int) ant.getY(), logStartPos.getZ());
-                    if (!ant.level.getBlockState(test).is(BlockTags.LOGS) && ant.getAttachmentFacing() == Direction.DOWN) {
+                    if (!ant.level().getBlockState(test).is(BlockTags.LOGS) && ant.getAttachmentFacing() == Direction.DOWN) {
                         this.stop();
                         return;
                     }
@@ -101,7 +101,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
             } else {
                 for (int i = 0; i < 15; i++) {
                     BlockPos test = blockPos.offset(6 - ant.getRandom().nextInt(12), -ant.getRandom().nextInt(7), 6 - ant.getRandom().nextInt(12));
-                    if (ant.level.getBlockState(test).is(BlockTags.LOGS)) {
+                    if (ant.level().getBlockState(test).is(BlockTags.LOGS)) {
                         logStartPos = test;
                         break;
                     }
@@ -117,7 +117,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
             ant.setAnimation(EntityLeafcutterAnt.ANIMATION_BITE);
             if (this.idleAtLeavesTime >= 6) {
                 ant.setLeafHarvestedPos(blockPos);
-                ant.setLeafHarvestedState(ant.level.getBlockState(blockPos));
+                ant.setLeafHarvestedState(ant.level().getBlockState(blockPos));
                 if (!ant.hasLeaf()) {
                     this.breakLeaves();
                 }
@@ -132,7 +132,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
     }
 
     private void breakLeaves() {
-        BlockState blockstate = ant.level.getBlockState(this.blockPos);
+        BlockState blockstate = ant.level().getBlockState(this.blockPos);
         if (blockstate.is(AMTagRegistry.LEAFCUTTER_ANT_BREAKABLES)) {
             if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(ant.level, ant)) {
                 ant.level.destroyBlock(blockPos, false);

@@ -184,7 +184,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     public void tick() {
         super.tick();
         this.prevFishPitch = this.getFishPitch();
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             final double ydist = (this.yo - this.getY());//down 0.4 up -0.38
             final float fishDist = (float) ((Math.abs(this.getDeltaMovement().x) + Math.abs(this.getDeltaMovement().z)) * 6F) / getPitchSensitivity();
             this.incrementFishPitch((float) (ydist) * 10 * getPitchSensitivity());
@@ -206,10 +206,10 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         }
         if(teleportIn > 0){
             teleportIn--;
-            if(teleportIn == 0 && !level.isClientSide){
+            if(teleportIn == 0 && !this.level().isClientSide){
                 final double range = 8;
                 final AABB bb = new AABB(this.getX() - range, this.getY() - range, this.getZ() - range, this.getX() + range, this.getY() + range, this.getZ() + range);
-                final List<EntityCosmicCod> list = this.level.getEntitiesOfClass(EntityCosmicCod.class, bb);
+                final List<EntityCosmicCod> list = this.level().getEntitiesOfClass(EntityCosmicCod.class, bb);
                 final Vec3 vec3 = this.teleport();
                 if (vec3 != null) {
                     baitballCooldown = 5;
@@ -288,13 +288,13 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         final double x = pos.getX() + 0.5F;
         final double y = pos.getY() + 0.5F;
         final double z = pos.getZ() + 0.5F;
-        final HitResult result = this.level.clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        final HitResult result = this.level().clip(new ClipContext(this.getEyePosition(), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         final double dist = result.getLocation().distanceToSqr(x, y, z);
         return dist <= 1.0D || result.getType() == HitResult.Type.MISS;
     }
 
     protected Vec3 teleport() {
-        if (!this.level.isClientSide() && this.isAlive()) {
+        if (!this.level().isClientSide() && this.isAlive()) {
             final double d0 = this.getX() + (this.random.nextDouble() - 0.5D) * 64.0D;
             final double d1 = this.getY() + (double) (this.random.nextInt(64) - 32);
             final double d2 = this.getZ() + (this.random.nextDouble() - 0.5D) * 64.0D;
@@ -308,13 +308,13 @@ public class EntityCosmicCod extends Mob implements Bucketable {
 
     private boolean teleport(double x, double y, double z) {
         final BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(x, y, z);
-        final BlockState blockstate = this.level.getBlockState(blockpos$mutableblockpos);
+        final BlockState blockstate = this.level().getBlockState(blockpos$mutableblockpos);
         final boolean flag = blockstate.isAir();
         if (flag && !blockstate.getFluidState().is(FluidTags.WATER)) {
             this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
             net.minecraftforge.event.entity.EntityTeleportEvent.EnderEntity event = net.minecraftforge.event.ForgeEventFactory.onEnderTeleport(this, x, y, z);
             if (event.isCanceled()) return false;
-            level.broadcastEntityEvent(this, (byte) 46);
+            level().broadcastEntityEvent(this, (byte) 46);
             this.teleportTo(event.getTargetX(), event.getTargetY(), event.getTargetZ());
             return true;
         } else {
@@ -419,13 +419,13 @@ public class EntityCosmicCod extends Mob implements Bucketable {
             this.saveToBucketTag(itemstack1);
             final ItemStack itemstack2 = ItemUtils.createFilledResult(itemstack, player, itemstack1, false);
             player.setItemInHand(hand, itemstack2);
-            final Level level = this.level;
-            if (!level.isClientSide) {
+            final Level level = this.level();
+            if (!this.level().isClientSide) {
                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemstack1);
             }
 
             this.discard();
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }

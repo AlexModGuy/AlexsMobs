@@ -198,13 +198,13 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
             return;
         }
         boolean flag = false;
-        if (!level.isClientSide && this.blockBreakCounter == 0) {
+        if (!this.level().isClientSide && this.blockBreakCounter == 0) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
                         BlockPos pos = new BlockPos(a, b, c);
-                        BlockState state = level.getBlockState(pos);
-                        FluidState fluidState = level.getFluidState(pos);
+                        BlockState state = level().getBlockState(pos);
+                        FluidState fluidState = level().getFluidState(pos);
                         Block block = state.getBlock();
                         if (!state.isAir() && !state.getShape(level, pos).isEmpty() && state.is(AMTagRegistry.ORCA_BREAKABLES) && fluidState.isEmpty()) {
                             if (block != Blocks.AIR) {
@@ -254,15 +254,15 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                 }
             }
 
-            if (this.level.isClientSide && this.isInWater() && this.getDeltaMovement().lengthSqr() > 0.03D) {
+            if (this.level().isClientSide && this.isInWater() && this.getDeltaMovement().lengthSqr() > 0.03D) {
                 Vec3 vector3d = this.getViewVector(0.0F);
                 float f = Mth.cos(this.getYRot() * ((float) Math.PI / 180F)) * 0.9F;
                 float f1 = Mth.sin(this.getYRot() * ((float) Math.PI / 180F)) * 0.9F;
                 float f2 = 1.2F - this.random.nextFloat() * 0.7F;
 
                 for (int i = 0; i < 2; ++i) {
-                    this.level.addParticle(ParticleTypes.DOLPHIN, this.getX() - vector3d.x * (double) f2 + (double) f, this.getY() - vector3d.y, this.getZ() - vector3d.z * (double) f2 + (double) f1, 0.0D, 0.0D, 0.0D);
-                    this.level.addParticle(ParticleTypes.DOLPHIN, this.getX() - vector3d.x * (double) f2 - (double) f, this.getY() - vector3d.y, this.getZ() - vector3d.z * (double) f2 - (double) f1, 0.0D, 0.0D, 0.0D);
+                    this.level().addParticle(ParticleTypes.DOLPHIN, this.getX() - vector3d.x * (double) f2 + (double) f, this.getY() - vector3d.y, this.getZ() - vector3d.z * (double) f2 + (double) f1, 0.0D, 0.0D, 0.0D);
+                    this.level().addParticle(ParticleTypes.DOLPHIN, this.getX() - vector3d.x * (double) f2 - (double) f, this.getY() - vector3d.y, this.getZ() - vector3d.z * (double) f2 - (double) f1, 0.0D, 0.0D, 0.0D);
                 }
             }
 
@@ -354,7 +354,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
     public boolean shouldUseJumpAttack(LivingEntity attackTarget) {
         if (attackTarget.isInWater()) {
             BlockPos up = attackTarget.blockPosition().above();
-            return level.getFluidState(up.above()).isEmpty() && level.getFluidState(up.above(2)).isEmpty() && this.jumpCooldown == 0;
+            return level().getFluidState(up.above()).isEmpty() && level().getFluidState(up.above(2)).isEmpty() && this.jumpCooldown == 0;
         } else {
             return this.jumpCooldown == 0;
         }

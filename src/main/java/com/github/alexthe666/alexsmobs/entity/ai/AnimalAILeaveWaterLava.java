@@ -23,7 +23,7 @@ public class AnimalAILeaveWaterLava extends Goal {
     }
 
     public boolean canUse() {
-        if (this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER) || this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.LAVA)){
+        if (this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER) || this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.LAVA)){
             if(this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldLeaveWater() && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)){
                 targetPos = generateTarget();
                 return targetPos != null;
@@ -54,7 +54,7 @@ public class AnimalAILeaveWaterLava extends Goal {
             this.creature.getNavigation().stop();
             return false;
         }
-        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level.getFluidState(targetPos).is(FluidTags.WATER)  && !this.creature.level.getFluidState(targetPos).is(FluidTags.LAVA);
+        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level().getFluidState(targetPos).is(FluidTags.WATER)  && !this.creature.level().getFluidState(targetPos).is(FluidTags.LAVA);
     }
 
     public BlockPos generateTarget() {
@@ -63,7 +63,7 @@ public class AnimalAILeaveWaterLava extends Goal {
         while(vector3d != null && tries < 8){
             boolean waterDetected = false;
             for(BlockPos blockpos1 : BlockPos.betweenClosed(Mth.floor(vector3d.x - 2.0D), Mth.floor(vector3d.y - 1.0D), Mth.floor(vector3d.z - 2.0D), Mth.floor(vector3d.x + 2.0D), Mth.floor(vector3d.y), Mth.floor(vector3d.z + 2.0D))) {
-                if (this.creature.level.getFluidState(blockpos1).is(FluidTags.WATER) || this.creature.level.getFluidState(blockpos1).is(FluidTags.LAVA)) {
+                if (this.creature.level().getFluidState(blockpos1).is(FluidTags.WATER) || this.creature.level().getFluidState(blockpos1).is(FluidTags.LAVA)) {
                     waterDetected = true;
                     break;
                 }

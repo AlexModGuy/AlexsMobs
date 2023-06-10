@@ -101,8 +101,8 @@ public class SquidGrappleUtil {
     }
 
     public static EntitySquidGrapple getHookEntity(Level level, UUID id) {
-        if (id != null && !level.isClientSide) {
-            Entity e = ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            Entity e = ((ServerLevel) level()).getEntity(id);
             return e instanceof EntitySquidGrapple ? (EntitySquidGrapple) e : null;
         }
         return null;

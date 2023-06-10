@@ -37,7 +37,7 @@ public class SeagullAIRevealTreasure extends Goal {
         if(sitPos != null){
             if(seagull.distanceToSqr(new Vec3(sitPos.getX() + 0.5F, seagull.getY(), sitPos.getZ() + 0.5F)) > 2.5F){
                 seagull.getMoveControl().setWantedPosition(sitPos.getX() + 0.5F, sitPos.getY() + 2, sitPos.getZ() + 0.5F, 1F);
-                if(!seagull.isOnGround()){
+                if(!seagull.onGround()){
                     seagull.setFlying(true);
                 }
             }else{

@@ -211,7 +211,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             sittingTime = 0;
             maxSitTime = 75 + random.nextInt(50);
         }
-        if (!level.isClientSide && this.getAnimation() == NO_ANIMATION && !this.isSitting() && this.getCommand() != 1 && random.nextInt(1500) == 0) {
+        if (!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && !this.isSitting() && this.getCommand() != 1 && random.nextInt(1500) == 0) {
             maxSitTime = 300 + random.nextInt(250);
             this.setOrderedToSit(true);
         }
@@ -220,7 +220,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
             this.setOrderedToSit(false);
         }
 
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (this.getTarget() != null && this.getAnimation() == ANIMATION_SCRATCH && this.getAnimationTick() == 10) {
                 float f1 = this.getYRot() * Maths.piDividedBy180;
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.3F, 0.0D, Mth.cos(f1) * 0.3F));
@@ -234,25 +234,25 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                 final double d1 = this.getDartTarget().getEyeY() - (double) 1.1F - this.getY();
                 final double d2 = this.getDartTarget().getZ() + vector3d.z - this.getZ();
                 final float f = Mth.sqrt((float)(d0 * d0 + d2 * d2));
-                EntityTossedItem tossedItem = new EntityTossedItem(this.level, this);
+                EntityTossedItem tossedItem = new EntityTossedItem(this.level(), this);
                 tossedItem.setDart(this.hasDart());
                 tossedItem.setXRot(tossedItem.getXRot() - 20F);
                 tossedItem.shoot(d0, d1 + (double) (f * 0.2F), d2, hasDart() ? 1.15F : 0.75F, 8.0F);
                 if (!this.isSilent()) {
-                    this.level.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.WITCH_THROW, this.getSoundSource(), 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
+                    this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.WITCH_THROW, this.getSoundSource(), 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
                     this.gameEvent(GameEvent.PROJECTILE_SHOOT);
                 }
-                this.level.addFreshEntity(tossedItem);
+                this.level().addFreshEntity(tossedItem);
                 this.setAttackDecision(this.getDartTarget());
             }
         }
         if (rideCooldown > 0) {
             rideCooldown--;
         }
-        if (!level.isClientSide && getAnimation() == NO_ANIMATION && this.getRandom().nextInt(300) == 0) {
+        if (!this.level().isClientSide && getAnimation() == NO_ANIMATION && this.getRandom().nextInt(300) == 0) {
             setAnimation(ANIMATION_HEADTILT);
         }
-        if (!level.isClientSide && this.isSitting()) {
+        if (!this.level().isClientSide && this.isSitting()) {
             this.getNavigation().stop();
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
@@ -362,7 +362,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         if (!this.hasDartTarget()) {
             return this.getTarget();
         } else {
-            Entity entity = this.level.getEntity(this.entityData.get(DART_TARGET));
+            Entity entity = this.level().getEntity(this.entityData.get(DART_TARGET));
             if(entity == null || !entity.isAlive()){
                 return this.getTarget();
             }else{
@@ -438,9 +438,9 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                 this.usePlayerItem(player, hand, itemstack);
                 if (getRandom().nextInt(5) == 0) {
                     this.tame(player);
-                    this.level.broadcastEntityEvent(this, (byte) 7);
+                    this.level().broadcastEntityEvent(this, (byte) 7);
                 } else {
-                    this.level.broadcastEntityEvent(this, (byte) 6);
+                    this.level().broadcastEntityEvent(this, (byte) 6);
                 }
                 return InteractionResult.SUCCESS;
             }
@@ -525,9 +525,9 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                 if (getRandom().nextInt(5) == 0) {
                     this.setTame(true);
                     this.setOwnerUUID(itemThrower.getUUID());
-                    this.level.broadcastEntityEvent(this, (byte) 7);
+                    this.level().broadcastEntityEvent(this, (byte) 7);
                 } else {
-                    this.level.broadcastEntityEvent(this, (byte) 6);
+                    this.level().broadcastEntityEvent(this, (byte) 6);
                 }
             }
         }

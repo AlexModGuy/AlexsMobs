@@ -80,7 +80,7 @@ public class ClientEvents {
     @SubscribeEvent
     public void onOutlineEntityColor(EventGetOutlineColor event) {
         if(event.getEntityIn() instanceof Enemy && AlexsMobs.PROXY.getSingingBlueJayId() != -1){
-            Entity entity = event.getEntityIn().level.getEntity(AlexsMobs.PROXY.getSingingBlueJayId());
+            Entity entity = event.getEntityIn().level().getEntity(AlexsMobs.PROXY.getSingingBlueJayId());
             if(entity instanceof EntityBlueJay jay && jay.isAlive() && jay.isMakingMonstersBlue()){
                 event.setColor(0X4B95FE);
                 event.setResult(Event.Result.ALLOW);
@@ -392,7 +392,7 @@ public class ClientEvents {
                     } else {
                         Minecraft.getInstance().hitResult = null;
                     }
-                    boolean loadChunks = playerEntity.level.getDayTime() % 10 == 0;
+                    boolean loadChunks = playerEntity.level().getDayTime() % 10 == 0;
                     ((EntityBaldEagle) Minecraft.getInstance().getCameraEntity()).directFromPlayer(rotX, rotY, false, over);
                     AlexsMobs.NETWORK_WRAPPER.sendToServer(new MessageUpdateEagleControls(Minecraft.getInstance().getCameraEntity().getId(), rotX, rotY, loadChunks, over == null ? -1 : over.getId()));
                 }

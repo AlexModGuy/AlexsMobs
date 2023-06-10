@@ -119,14 +119,14 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
                 itemstack.shrink(1);
             }
             if(random.nextFloat() < 0.45F){
-                EntityStraddler straddler = AMEntityRegistry.STRADDLER.get().create(level);
+                EntityStraddler straddler = AMEntityRegistry.STRADDLER.get().create(level());
                 straddler.copyPosition(this);
-                if(!level.isClientSide && level.addFreshEntity(straddler)){
+                if(!this.level().isClientSide && level().addFreshEntity(straddler)){
                     this.remove(RemovalReason.DISCARDED);
 
                 }
             }
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         if (itemstack.getItem() == Items.LAVA_BUCKET && this.isAlive()) {
             this.gameEvent(GameEvent.ENTITY_INTERACT);
@@ -135,13 +135,13 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             this.saveToBucketTag(itemstack1);
             ItemStack itemstack2 = ItemUtils.createFilledResult(itemstack, player, itemstack1, false);
             player.setItemInHand(hand, itemstack2);
-            Level level = this.level;
-            if (!level.isClientSide) {
+            Level level = this.level();
+            if (!this.level().isClientSide) {
                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemstack1);
             }
 
             this.discard();
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }
@@ -293,8 +293,8 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             this.onEntityHit((EntityHitResult) raytraceresult);
         } else if (raytraceresult$type == HitResult.Type.BLOCK) {
             BlockHitResult traceResult = (BlockHitResult) raytraceresult;
-            BlockState blockstate = this.level.getBlockState(traceResult.getBlockPos());
-            if (!blockstate.getBlockSupportShape(this.level, traceResult.getBlockPos()).isEmpty()) {
+            BlockState blockstate = this.level().getBlockState(traceResult.getBlockPos());
+            if (!blockstate.getBlockSupportShape(this.level(), traceResult.getBlockPos()).isEmpty()) {
                 Direction face = traceResult.getDirection();
                 Vec3 prevMotion = this.getDeltaMovement();
                 double motionX = prevMotion.x();
@@ -325,15 +325,15 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
 
     public Entity getParent() {
         UUID id = getParentId();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
 
     private void onEntityHit(EntityHitResult raytraceresult) {
         Entity entity = this.getParent();
-        if (entity instanceof LivingEntity && !level.isClientSide && raytraceresult.getEntity() instanceof LivingEntity) {
+        if (entity instanceof LivingEntity && !this.level().isClientSide && raytraceresult.getEntity() instanceof LivingEntity) {
             LivingEntity target = (LivingEntity)raytraceresult.getEntity();
             if(!target.isBlocking()){
                 target.hurt(damageSources().mobProjectile(this, (LivingEntity)entity), 3.0F);
@@ -349,7 +349,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
 
     protected void damageShieldFor(Player holder, float damage) {
         if (holder.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 holder.awardStat(Stats.ITEM_USED.get(holder.getUseItem().getItem()));
             }
 
@@ -366,7 +366,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
                     } else {
                         holder.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
                     }
-                    holder.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level.random.nextFloat() * 0.4F);
+                    holder.playSound(SoundEvents.SHIELD_BREAK, 0.8F, 0.8F + this.level().random.nextFloat() * 0.4F);
                 }
             }
 
@@ -456,7 +456,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             }
             Vec3 vector3d = LandRandomPos.getPos(this.mob, 7, 3);
 
-            for (int i = 0; vector3d != null && !this.mob.level.getFluidState(AMBlockPos.fromVec3(vector3d)).is(FluidTags.LAVA) && !this.mob.level.getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
+            for (int i = 0; vector3d != null && !this.mob.level().getFluidState(AMBlockPos.fromVec3(vector3d)).is(FluidTags.LAVA) && !this.mob.level().getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
             }
 
             return vector3d;
@@ -464,16 +464,16 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
 
         private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
             BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
-            return this.mob.level.getFluidState(blockpos).is(FluidTags.LAVA) || this.mob.level.getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level.getBlockState(blockpos).getMaterial().blocksMotion();
+            return this.mob.level().getFluidState(blockpos).is(FluidTags.LAVA) || this.mob.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level().getBlockState(blockpos).getMaterial().blocksMotion();
         }
 
         private boolean isAirAbove(BlockPos pos, int dx, int dz, int scale) {
-            return this.mob.level.getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.mob.level.getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
+            return this.mob.level().getBlockState(pos.offset(dx * scale, 1, dz * scale)).isAir() && this.mob.level().getBlockState(pos.offset(dx * scale, 2, dz * scale)).isAir();
         }
 
         private Vec3 findSurfaceTarget(PathfinderMob creature, int i, int i1) {
             BlockPos upPos = creature.blockPosition();
-            while (creature.level.getFluidState(upPos).is(FluidTags.WATER) || creature.level.getFluidState(upPos).is(FluidTags.LAVA)) {
+            while (creature.level().getFluidState(upPos).is(FluidTags.WATER) || creature.level().getFluidState(upPos).is(FluidTags.LAVA)) {
                 upPos = upPos.above();
             }
             if (isAirAbove(upPos.below(), 0, 0, 0) && canJumpTo(upPos.below(), 0, 0, 0)) {

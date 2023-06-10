@@ -228,9 +228,9 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
             this.playSound(SoundEvents.STRIDER_EAT, this.getSoundVolume(), this.getVoicePitch());
             if (getRandom().nextInt(3) == 0) {
                 this.tame(player);
-                this.level.broadcastEntityEvent(this, (byte) 7);
+                this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
         }
@@ -295,7 +295,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         if(this.isBaby() && this.getEyeHeight() > this.getBbHeight()){
             this.refreshDimensions();
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isInWater() || isInLava()) {
                 if (swimTimer < 0) {
                     swimTimer = 0;
@@ -313,11 +313,11 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = createNavigation(level);
+            this.navigation = createNavigation(level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new AquaticMoveController(this, 1.2F);
-            this.navigation = new BoneSerpentPathNavigator(this, level);
+            this.navigation = new BoneSerpentPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -370,8 +370,8 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         if (isTongueOut() && attackProgress < 5F) {
             attackProgress++;
         }
-        if (!level.isClientSide) {
-            this.entityData.set(JUMP_ACTIVE, !this.isOnGround());
+        if (!this.level().isClientSide) {
+            this.entityData.set(JUMP_ACTIVE, !this.onGround());
         }
         if (this.entityData.get(JUMP_ACTIVE) && !isInWaterOrBubble()) {
             this.yBodyRot = this.getYRot();
@@ -432,7 +432,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
             if (attackProgress == 5 && (entityIn.getBbHeight() < 0.89D || entityIn instanceof EntityCrimsonMosquito) && !entityIn.hasPassenger(this)) {
             }
         }
-        if (!level.isClientSide && isTongueOut() && attackProgress == 5F) {
+        if (!this.level().isClientSide && isTongueOut() && attackProgress == 5F) {
             setTongueOut(false);
             attackProgress = 4F;
         }

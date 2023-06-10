@@ -163,11 +163,11 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level);
+            this.navigation = new GroundPathNavigation(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 1, false);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -213,7 +213,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         }else{
             this.crestAmount = Mth.approach(this.crestAmount, this.getTargetCrest(), 0.3F);
         }
-        if(!level.isClientSide){
+        if(!this.level().isClientSide){
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -266,15 +266,15 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             if(this.prevSingTime % 15 == 0){
                this.playSound(AMSoundRegistry.BLUE_JAY_SONG.get(), this.getSoundVolume(), this.getVoicePitch());
             }
-            if(level.isClientSide){
-                if(this.getSingTime() % 5 == 0 && this.level.isClientSide){
+            if(this.level().isClientSide){
+                if(this.getSingTime() % 5 == 0 && this.level().isClientSide){
                     Vec3 modelFront = new Vec3(0, 0.2F, 0.3F).scale(this.getScale()).xRot(-this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
                     Vec3 particleFrom = this.position().add(modelFront);
-                    this.level.addParticle(AMParticleRegistry.BIRD_SONG.get(), particleFrom.x, particleFrom.y, particleFrom.z, modelFront.x, modelFront.y, modelFront.z);
+                    this.level().addParticle(AMParticleRegistry.BIRD_SONG.get(), particleFrom.x, particleFrom.y, particleFrom.z, modelFront.x, modelFront.y, modelFront.z);
                 }
             }
         }
-        if(prevSingTime < getSingTime() && !level.isClientSide){
+        if(prevSingTime < getSingTime() && !this.level().isClientSide){
             blueTime = 1200;
             this.entityData.set(BLUE_VISUAL_FLAG, true);
             highlightMonsters();
@@ -283,9 +283,9 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             blueTime--;
             if(blueTime == 0){
                 this.entityData.set(BLUE_VISUAL_FLAG, false);
-                this.level.broadcastEntityEvent(this, (byte) 68);
+                this.level().broadcastEntityEvent(this, (byte) 68);
             }else{
-                this.level.broadcastEntityEvent(this, (byte) 67);
+                this.level().broadcastEntityEvent(this, (byte) 67);
             }
         }
         prevSingTime = getSingTime();
@@ -302,7 +302,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         allyBox = allyBox.setMinY(-64);
         allyBox = allyBox.setMaxY(320);
         boolean any = false;
-        for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, allyBox, HIGHLIGHTS_WITH_SONG)) {
+        for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, allyBox, HIGHLIGHTS_WITH_SONG)) {
             entity.addEffect(new MobEffectInstance(MobEffects.GLOWING, blueTime, 0, true, false));
         }
         return any;
@@ -314,9 +314,9 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     @Override
     public void remove(Entity.RemovalReason removalReason) {
-        if(this.getSingTime() > 0 && !level.isClientSide){
+        if(this.getSingTime() > 0 && !this.level().isClientSide){
             this.entityData.set(BLUE_VISUAL_FLAG, false);
-            this.level.broadcastEntityEvent(this, (byte) 68);
+            this.level().broadcastEntityEvent(this, (byte) 68);
         }
         super.remove(removalReason);
     }
@@ -335,10 +335,10 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     public BlockPos getBlueJayGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
-        while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
+        while (position.getY() < 320 && !level().getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
+        while (position.getY() > -64 && !level().getBlockState(position).isSolid() && level().getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
@@ -371,7 +371,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             return null;
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > -64 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
+            while (ground.getY() > -64 && !level().getBlockState(ground).isSolid()) {
                 ground = ground.below();
             }
         }
@@ -395,7 +395,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         int j = this.getRandom().nextInt(5) + 5;
 
         BlockPos newPos = ground.above(distFromGround > 5 ? flightHeight : j);
-        if (level.getBlockState(ground).is(BlockTags.LEAVES)) {
+        if (level().getBlockState(ground).is(BlockTags.LEAVES)) {
             newPos = ground.above(1 + this.getRandom().nextInt(3));
         }
         if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
@@ -418,7 +418,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -496,8 +496,8 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     @javax.annotation.Nullable
     public Entity getLastFeeder() {
         UUID id = getLastFeederUUID();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
@@ -522,8 +522,8 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
     @javax.annotation.Nullable
     public Entity getRaccoon() {
         UUID id = getRaccoonUUID();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }
@@ -539,16 +539,16 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > -65 && level.isEmptyBlock(position)) {
+        while (position.getY() > -65 && level().isEmptyBlock(position)) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || level.getBlockState(position).is(Blocks.VINE) || position.getY() <= -65;
+        return !level().getFluidState(position).isEmpty() || level().getBlockState(position).is(Blocks.VINE) || position.getY() <= -65;
     }
 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob) {
-        return AMEntityRegistry.BLUE_JAY.get().create(level);
+        return AMEntityRegistry.BLUE_JAY.get().create(level());
     }
 
 
@@ -563,7 +563,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
 
     @Override
     public void onGetItem(ItemEntity e) {
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level().isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         this.heal(3);
@@ -632,7 +632,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
                 if (EntityBlueJay.this.getRandom().nextInt(45) != 0 && !EntityBlueJay.this.isFlying()) {
                     return false;
                 }
-                if (EntityBlueJay.this.isOnGround()) {
+                if (EntityBlueJay.this.onGround()) {
                     this.flightTarget = random.nextBoolean();
                 } else {
                     this.flightTarget = random.nextInt(5) > 0 && EntityBlueJay.this.timeFlying < 200;
@@ -655,10 +655,10 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             } else {
                 EntityBlueJay.this.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && EntityBlueJay.this.onGround) {
+            if (!flightTarget && isFlying() && EntityBlueJay.this.onGround()) {
                 EntityBlueJay.this.setFlying(false);
             }
-            if (isFlying() && EntityBlueJay.this.onGround && EntityBlueJay.this.timeFlying > 10) {
+            if (isFlying() && EntityBlueJay.this.onGround() && EntityBlueJay.this.timeFlying > 10) {
                 EntityBlueJay.this.setFlying(false);
             }
         }
@@ -735,7 +735,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
                 return false;
             }
             if (!this.mustUpdate) {
-                long worldTime = EntityBlueJay.this.level.getGameTime() % 10;
+                long worldTime = EntityBlueJay.this.level().getGameTime() % 10;
                 if (EntityBlueJay.this.getNoActionTime() >= 100 && worldTime != 0) {
                     return false;
                 }
@@ -743,7 +743,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
                     return false;
                 }
             }
-            List<Entity> list = EntityBlueJay.this.level.getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<Entity> list = EntityBlueJay.this.level().getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
             if (list.isEmpty()) {
                 return false;
             } else {
@@ -779,7 +779,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             }
 
             if (targetEntity != null) {
-                if (EntityBlueJay.this.onGround || flightTarget == null || flightTarget != null && EntityBlueJay.this.distanceToSqr(flightTarget) < 3) {
+                if (EntityBlueJay.this.onGround() || flightTarget == null || flightTarget != null && EntityBlueJay.this.distanceToSqr(flightTarget) < 3) {
                     Vec3 vec = EntityBlueJay.this.getBlockInViewAway(targetEntity.position(), 0);
                     if (vec != null && vec.y() > EntityBlueJay.this.getY()) {
                         flightTarget = vec;
@@ -920,7 +920,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
             }else{
                 EntityBlueJay.this.getNavigation().moveTo(this.following.getX(), this.following.getY(), this.following.getZ(), 1);
             }
-            if(EntityBlueJay.this.isFlying() && EntityBlueJay.this.isOnGround() && dist < 3){
+            if(EntityBlueJay.this.isFlying() && EntityBlueJay.this.onGround() && dist < 3){
                 EntityBlueJay.this.setFlying(false);
             }
             if (this.following instanceof EntityRaccoon raccoon) {

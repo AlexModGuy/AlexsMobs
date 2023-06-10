@@ -53,7 +53,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     public float onLandProgress;
 
     protected EntitySkelewag(EntityType<? extends Monster> monster, Level level) {
-        super(monster, level);
+        super(monster, level());
         this.xpReward = 10;
         this.moveControl = new AquaticMoveController(this, 1.0F, 15F);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
@@ -93,7 +93,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-        return level.getFluidState(pos).is(FluidTags.WATER) ? 10.0F + level.getLightLevelDependentMagicValue(pos) - 0.5F : super.getWalkTargetValue(pos, level);
+        return level().getFluidState(pos).is(FluidTags.WATER) ? 10.0F + level.getLightLevelDependentMagicValue(pos) - 0.5F : super.getWalkTargetValue(pos, level());
     }
 
     protected void registerGoals() {
@@ -122,7 +122,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     public void tick(){
         super.tick();
         this.prevOnLandProgress = onLandProgress;
-        boolean onLand = !this.isInWaterOrBubble() && this.isOnGround();
+        boolean onLand = !this.isInWaterOrBubble() && this.onGround();
         if (onLand && onLandProgress < 5F) {
             onLandProgress++;
         }
@@ -140,7 +140,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
             targetXRot = this.getXRot() + 5;
         }
         this.setXRot(targetXRot);
-        if (!level.isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0F + this.getTarget().getBbWidth() / 2) {
+        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0F + this.getTarget().getBbWidth() / 2) {
             this.lookAt(this.getTarget(), 350, 200);
             if(this.getAnimation() == ANIMATION_STAB && this.getAnimationTick() == 7 && this.hasLineOfSight(this.getTarget())){
                 float f1 = this.getYRot() * ((float) Math.PI / 180F);
@@ -149,7 +149,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
                 this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             }
             if(this.getAnimation() == ANIMATION_SLASH && this.getAnimationTick() % 5 == 0 && this.getAnimationTick() > 0 && this.getAnimationTick() < 25 && this.hasLineOfSight(this.getTarget())){
-                for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getTarget().getBoundingBox().inflate(2.0D))) {
+                for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getTarget().getBoundingBox().inflate(2.0D))) {
                     if (!entity.isPassengerOfSameVehicle(this) && entity != this && !entity.isAlliedTo(this)) {
                         entity.hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() * 0.5F);
                     }
@@ -160,7 +160,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
             this.ejectPassengers();
         }
         if(!isInWaterOrBubble()){
-            if (this.isOnGround() && random.nextFloat() < 0.2F) {
+            if (this.onGround() && random.nextFloat() < 0.2F) {
                 this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                 this.setYRot(this.random.nextFloat() * 360.0F);
                 this.playSound(AMSoundRegistry.SKELEWAG_HURT.get(), this.getSoundVolume(), this.getVoicePitch());
@@ -208,7 +208,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
         }
     }
 
-    public void positionRider(Entity passenger) {
+    public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (this.hasPassenger(passenger)) {
             passenger.setYBodyRot(this.yBodyRot);
             Vec3 vec = new Vec3(0, this.getBbHeight() * 0.4F, this.getBbWidth() * -0.2F).xRot(-this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
@@ -225,7 +225,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         this.setVariant(this.getRandom().nextFloat() < 0.3F ? 1 : 0);
         if (this.random.nextFloat() < 0.2F) {
-            Drowned drowned = EntityType.DROWNED.create(level);
+            Drowned drowned = EntityType.DROWNED.create(level());
             drowned.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
             drowned.copyPosition(this);
             drowned.startRiding(this);

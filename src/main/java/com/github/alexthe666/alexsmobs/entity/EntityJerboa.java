@@ -144,8 +144,8 @@ public class EntityJerboa extends Animal {
         this.prevReboundProgress = reboundProgress;
         this.prevSleepProgress = sleepProgress;
         this.prevBegProgress = begProgress;
-        if (!level.isClientSide) {
-            this.entityData.set(JUMP_ACTIVE, !this.isOnGround());
+        if (!this.level().isClientSide) {
+            this.entityData.set(JUMP_ACTIVE, !this.onGround());
         }
         if (this.entityData.get(JUMP_ACTIVE)) {
             if (jumpProgress < 5F) {
@@ -179,8 +179,8 @@ public class EntityJerboa extends Animal {
         if (!this.isSleeping() && sleepProgress > 0F) {
             sleepProgress--;
         }
-        if (!this.level.isClientSide) {
-            if (this.level.isDay() && this.getLastHurtByMob() == null && !this.isBegging()) {
+        if (!this.level().isClientSide) {
+            if (this.level().isDay() && this.getLastHurtByMob() == null && !this.isBegging()) {
                 if (tickCount % 10 == 0 && this.getRandom().nextInt(750) == 0) {
                     this.setSleeping(true);
                 }
@@ -235,7 +235,7 @@ public class EntityJerboa extends Animal {
                 double d2 = this.random.nextGaussian() * 0.02D;
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemstack), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemstack), this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
             if (random.nextFloat() <= 0.3F) {
                 player.addEffect(new MobEffectInstance(AMEffectRegistry.FLEET_FOOTED.get(), 12000));
@@ -313,8 +313,8 @@ public class EntityJerboa extends Animal {
             }
         }
 
-        if (!this.level.isClientSide) {
-            this.level.broadcastEntityEvent(this, (byte) 1);
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte) 1);
         }
 
     }

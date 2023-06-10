@@ -165,11 +165,11 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level);
+            this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 1F, false, true);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -192,11 +192,11 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     public boolean isInOverworld() {
-        return this.level.dimension() == Level.OVERWORLD && !this.isNoAi();
+        return this.level().dimension() == Level.OVERWORLD && !this.isNoAi();
     }
 
     public boolean isInNether() {
-        return this.level.dimension() == Level.NETHER && !this.isNoAi();
+        return this.level().dimension() == Level.NETHER && !this.isNoAi();
     }
 
     public void setStandardFleeTime() {
@@ -228,7 +228,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                         this.removeVehicle();
                     }
                     this.setPhagePitch(0F);
-                    if (!level.isClientSide && attachTime > 15) {
+                    if (!this.level().isClientSide && attachTime > 15) {
                         LivingEntity target = (LivingEntity) mount;
                         float dmg = 1F;
                         if (target.getHealth() > target.getMaxHealth() * 0.2F) {
@@ -266,7 +266,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                                         this.playSound(SoundEvents.ITEM_BREAK, this.getSoundVolume(), this.getVoicePitch());
                                         this.setMissingEye(true);
                                     }
-                                    if (!level.isClientSide) {
+                                    if (!this.level().isClientSide) {
                                         this.setTarget(null);
                                         this.setLastHurtMob(null);
                                         this.setLastHurtByMob(null);
@@ -342,7 +342,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         if (squishCooldown > 0) {
             squishCooldown--;
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (!this.isPassenger() && attachTime != 0) {
                 attachTime = 0;
             }
@@ -373,7 +373,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         this.yHeadRot = this.getYRot();
         this.setPhagePitch(-90F);
         if (this.isAlive() && this.isFlying() && randomMotionSpeed > 0.75F && this.getDeltaMovement().lengthSqr() > 0.02D) {
-            if (level.isClientSide) {
+            if (this.level().isClientSide) {
                 float pitch = -this.getPhagePitch() / 90F;
                 float radius = this.getBbWidth() * 0.2F * -pitch;
                 float angle = (0.01745329251F * this.getYRot());
@@ -383,7 +383,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 double motX = extraX * 8 + random.nextGaussian() * 0.05F;
                 double motY = -0.1F;
                 double motZ = extraZ + random.nextGaussian() * 0.05F;
-                this.level.addParticle(AMParticleRegistry.DNA.get(), this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ, motX, motY, motZ);
+                this.level().addParticle(AMParticleRegistry.DNA.get(), this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ, motX, motY, motZ);
             }
         }
         prevPhagePitch = this.getPhagePitch();
@@ -397,14 +397,14 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         this.lastTentacleAngle = this.tentacleAngle;
         this.phageRotation += this.rotationVelocity;
         if ((double) this.phageRotation > (Math.PI * 2D)) {
-            if (this.level.isClientSide) {
+            if (this.level().isClientSide) {
                 this.phageRotation = ((float) Math.PI * 2F);
             } else {
                 this.phageRotation = (float) ((double) this.phageRotation - (Math.PI * 2D));
                 if (this.random.nextInt(10) == 0) {
                     this.rotationVelocity = 1.0F / (this.random.nextFloat() + 1.0F) * 0.2F;
                 }
-                this.level.broadcastEntityEvent(this, (byte) 19);
+                this.level().broadcastEntityEvent(this, (byte) 19);
             }
         }
         if (this.phageRotation < (float) Math.PI) {
@@ -420,7 +420,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 randomMotionSpeed = 0.01F;
             }
         }
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -430,7 +430,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
             if (this.isFlying()) {
                 this.setDeltaMovement(this.getDeltaMovement().x * this.randomMotionSpeed * extraMotionSlow, this.getDeltaMovement().y * this.randomMotionSpeed * extraMotionSlowY, this.getDeltaMovement().z * this.randomMotionSpeed * extraMotionSlow);
                 timeFlying++;
-                if (this.isOnGround() && timeFlying > 100) {
+                if (this.onGround() && timeFlying > 100) {
                     this.setFlying(false);
                 }
             } else {
@@ -442,7 +442,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 }
             }
         }
-        if (!this.onGround && this.getDeltaMovement().y < 0.0D) {
+        if (!this.onGround() && this.getDeltaMovement().y < 0.0D) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.6D, 1.0D));
         }
         if (this.isFlying()) {
@@ -539,10 +539,10 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -63 && !level().getBlockState(position).isSolid()) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || position.getY() < -63;
+        return !level().getFluidState(position).isEmpty() || position.getY() < -63;
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
@@ -565,7 +565,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
 
     private BlockPos getPhageGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
-        while (position.getY() > -63 && !level.getBlockState(position).getMaterial().isSolidBlocking()) {
+        while (position.getY() > -63 && !level().getBlockState(position).isSolid()) {
             position = position.below();
         }
         if (position.getY() < -62) {
@@ -588,7 +588,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
             return Vec3.upFromBottomCenterOf(ground, 110 + random.nextInt(20));
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > -63 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
+            while (ground.getY() > -63 && !level().getBlockState(ground).isSolid()) {
                 ground = ground.below();
             }
         }
@@ -600,7 +600,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
 
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     public boolean hurt(DamageSource source, float amount) {
@@ -638,7 +638,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 if (this.phage.getRandom().nextInt(30) != 0 && !phage.isFlying() && phage.fleeAfterStealTime == 0) {
                     return false;
                 }
-                if (this.phage.isOnGround()) {
+                if (this.phage.onGround()) {
                     this.flightTarget = random.nextInt(12) == 0;
                 } else {
                     this.flightTarget = random.nextInt(5) > 0 && phage.timeFlying < 100;
@@ -664,10 +664,10 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
             } else {
                 this.phage.getNavigation().moveTo(this.x, this.y, this.z, fleeAfterStealTime == 0 ? 1.3F : 1F);
             }
-            if (!flightTarget && isFlying() && phage.onGround) {
+            if (!flightTarget && isFlying() && phage.onGround()) {
                 phage.setFlying(false);
             }
-            if (isFlying() && phage.onGround && phage.timeFlying > 100 && phage.fleeAfterStealTime == 0) {
+            if (isFlying() && phage.onGround() && phage.timeFlying > 100 && phage.fleeAfterStealTime == 0) {
                 phage.setFlying(false);
             }
         }
@@ -756,7 +756,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 }
                 if (parentEntity.dismountCooldown == 0 && parentEntity.getBoundingBox().inflate(0.3, 0.3, 0.3).intersects(parentEntity.getTarget().getBoundingBox()) && !isBittenByPhage(parentEntity.getTarget())) {
                     parentEntity.startRiding(parentEntity.getTarget(), true);
-                    if (!parentEntity.level.isClientSide) {
+                    if (!parentEntity.level().isClientSide) {
                         AlexsMobs.sendMSGToAll(new MessageMosquitoMountPlayer(parentEntity.getId(), parentEntity.getTarget().getId()));
                     }
                 }

@@ -117,7 +117,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
                 double lvt_4_1_ = this.random.nextGaussian() * 0.02D;
                 double lvt_6_1_ = this.random.nextGaussian() * 0.02D;
                 double lvt_8_1_ = this.random.nextGaussian() * 0.02D;
-                this.level.addParticle(ParticleTypes.SMOKE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), lvt_4_1_, lvt_6_1_, lvt_8_1_);
+                this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), lvt_4_1_, lvt_6_1_, lvt_8_1_);
             }
         } else {
             super.handleEntityEvent(id);
@@ -130,7 +130,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
             if (this.getRandom().nextInt(5) == 0) {
                 return true;
             } else {
-                this.level.broadcastEntityEvent(this, (byte) 6);
+                this.level().broadcastEntityEvent(this, (byte) 6);
                 return false;
             }
         }
@@ -194,8 +194,8 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
         if (jostleCooldown > 0) {
             jostleCooldown--;
         }
-        if (!level.isClientSide && this.getAnimation() == NO_ANIMATION && getRandom().nextInt(120) == 0 && (this.getTarget() == null || !this.getTarget().isAlive()) && !this.isJostling() && this.getJostlingPartnerUUID() == null) {
-            if (level.getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0) {
+        if (!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && getRandom().nextInt(120) == 0 && (this.getTarget() == null || !this.getTarget().isAlive()) && !this.isJostling() && this.getJostlingPartnerUUID() == null) {
+            if (level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0) {
                 this.setAnimation(ANIMATION_EAT_GRASS);
             }
         }
@@ -216,7 +216,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
             if (this.isJostling()) {
                 this.setJostling(false);
             }
-            if (!level.isClientSide && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 8) {
+            if (!this.level().isClientSide && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 8) {
                 float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
                 if (!isAntlered()) {
                     dmg = 3;
@@ -231,16 +231,16 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
         if(snowTimer > 0){
             snowTimer--;
         }
-        if (snowTimer == 0 && !level.isClientSide) {
+        if (snowTimer == 0 && !this.level().isClientSide) {
             snowTimer = 200 + random.nextInt(400);
             if(this.isSnowy()){
                 if(!permSnow){
-                    if (!this.level.isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !EntityGrizzlyBear.isSnowingAt(level, this.blockPosition().above())) {
+                    if (!this.level().isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !EntityGrizzlyBear.isSnowingAt(level, this.blockPosition().above())) {
                         this.setSnowy(false);
                     }
                 }
             }else{
-                if (!this.level.isClientSide && EntityGrizzlyBear.isSnowingAt(level, this.blockPosition())) {
+                if (!this.level().isClientSide && EntityGrizzlyBear.isSnowingAt(level, this.blockPosition())) {
                     this.setSnowy(true);
                 }
             }
@@ -318,7 +318,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
-        if (item == Items.SNOW && !this.isSnowy() && !level.isClientSide) {
+        if (item == Items.SNOW && !this.isSnowy() && !this.level().isClientSide) {
             this.usePlayerItem(player, hand, itemstack);
             this.permSnow = true;
             this.setSnowy(true);
@@ -326,7 +326,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
             this.playSound(SoundEvents.SNOW_PLACE, this.getSoundVolume(), this.getVoicePitch());
             return InteractionResult.SUCCESS;
         }
-        if (item instanceof ShovelItem && this.isSnowy() && !level.isClientSide) {
+        if (item instanceof ShovelItem && this.isSnowy() && !this.level().isClientSide) {
             this.permSnow = false;
             if (!player.isCreative()) {
                 itemstack.hurt(1, this.getRandom(), player instanceof ServerPlayer ? (ServerPlayer) player : null);
@@ -342,8 +342,8 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     @Nullable
     public Entity getJostlingPartner() {
         UUID id = getJostlingPartnerUUID();
-        if (id != null && !level.isClientSide) {
-            return ((ServerLevel) level).getEntity(id);
+        if (id != null && !this.level().isClientSide) {
+            return ((ServerLevel) level()).getEntity(id);
         }
         return null;
     }

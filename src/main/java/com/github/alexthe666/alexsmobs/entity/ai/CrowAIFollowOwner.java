@@ -112,7 +112,7 @@ public class CrowAIFollowOwner extends Goal {
                     crow.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight() + 0.2F, owner.getZ(), 0.7F);
                     if(crow.distanceTo(owner) < 2){
                         crow.startRiding(owner, true);
-                        if (!crow.level.isClientSide) {
+                        if (!crow.this.level().isClientSide) {
                             AlexsMobs.sendMSGToAll(new MessageCrowMountPlayer(crow.getId(), owner.getId()));
                         }
                     }
@@ -135,7 +135,7 @@ public class CrowAIFollowOwner extends Goal {
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
-        if (crow.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
+        if (crow.level().isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;
         }
         return null;

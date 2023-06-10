@@ -46,11 +46,11 @@ public class EntityPollenBall extends EntityMobProjectile {
             shoot(d0, d1, d2, speed, 0);
             this.setYRot(-((float) Mth.atan2(d0, d2)) * (180F / (float) Math.PI));
         }
-        if(level.isClientSide && random.nextInt(2) == 0){
+        if(this.level().isClientSide && random.nextInt(2) == 0){
             float r1 = (random.nextFloat() - 0.5F) * 0.5F;
             float r2 = (random.nextFloat() - 0.5F) * 0.5F;
             float r3 = (random.nextFloat() - 0.5F) * 0.5F;
-            this.level.addParticle(ParticleTypes.FALLING_NECTAR, this.getX() + r1, this.getY() + r2, this.getZ() + r3, r1 * 0.1F, r2 * 0.1F, r3 * 0.1F);
+            this.level().addParticle(ParticleTypes.FALLING_NECTAR, this.getX() + r1, this.getY() + r2, this.getZ() + r3, r1 * 0.1F, r2 * 0.1F, r3 * 0.1F);
         }
     }
 

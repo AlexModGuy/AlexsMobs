@@ -186,11 +186,11 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigation(this, level);
+            this.navigation = new GroundPathNavigation(this, level());
             this.isLandNavigator = true;
         } else {
             this.moveControl = new MoveHelper(this);
-            this.navigation = new DirectPathNavigator(this, level);
+            this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }
     }
@@ -301,7 +301,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                 attackProgress--;
             }
         }
-        if (!level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (isFlying()) {
                 float lookYawDist = Math.abs(this.getFlightLookYaw() - targetFlightLookYaw);
                 if (flightLookCooldown > 0) {
@@ -385,7 +385,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
             if (heldItemMainhand.getItem() instanceof BlockItem) {
                 data = new BlockParticleOption(ParticleTypes.BLOCK, ((BlockItem) heldItemMainhand.getItem()).getBlock().defaultBlockState());
             }
-            this.level.addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.6F, this.getZ() + extraZ, d0, d1, d2);
+            this.level().addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.6F, this.getZ() + extraZ, d0, d1, d2);
         }
     }
 
@@ -436,7 +436,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     public void onGetItem(ItemEntity e) {
         ItemStack duplicate = e.getItem().copy();
         duplicate.setCount(1);
-        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level.isClientSide) {
+        if (!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.level().isClientSide) {
             this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
         }
         stealCooldown += 600 + random.nextInt(1200);
@@ -472,10 +472,10 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
     public BlockPos getSeagullGround(BlockPos in) {
         BlockPos position = new BlockPos(in.getX(), (int) this.getY(), in.getZ());
-        while (position.getY() < 320 && !level.getFluidState(position).isEmpty()) {
+        while (position.getY() < 320 && !level().getFluidState(position).isEmpty()) {
             position = position.above();
         }
-        while (position.getY() > -64 && !level.getBlockState(position).getMaterial().isSolidBlocking() && level.getFluidState(position).isEmpty()) {
+        while (position.getY() > -64 && !level().getBlockState(position).isSolid() && level().getFluidState(position).isEmpty()) {
             position = position.below();
         }
         return position;
@@ -494,7 +494,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
             return this.position();
         } else {
             ground = this.blockPosition();
-            while (ground.getY() > -62 && !level.getBlockState(ground).getMaterial().isSolidBlocking()) {
+            while (ground.getY() > -62 && !level().getBlockState(ground).isSolid()) {
                 ground = ground.below();
             }
         }
@@ -507,7 +507,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
     public boolean isTargetBlocked(Vec3 target) {
         Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
 
-        return this.level.clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
+        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     private Vec3 getOrbitVec(Vec3 vector3d, float gatheringCircleDist) {
@@ -516,7 +516,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (this.orbitPos != null) {
             Vec3 pos = new Vec3(orbitPos.getX() + extraX, orbitPos.getY() + random.nextInt(2), orbitPos.getZ() + extraZ);
-            if (this.level.isEmptyBlock(AMBlockPos.fromVec3(pos))) {
+            if (this.level().isEmptyBlock(AMBlockPos.fromVec3(pos))) {
                 return pos;
             }
         }
@@ -525,10 +525,10 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
     private boolean isOverWaterOrVoid() {
         BlockPos position = this.blockPosition();
-        while (position.getY() > -64 && level.isEmptyBlock(position)) {
+        while (position.getY() > -64 && level().isEmptyBlock(position)) {
             position = position.below();
         }
-        return !level.getFluidState(position).isEmpty() || position.getY() <= -64;
+        return !level().getFluidState(position).isEmpty() || position.getY() <= -64;
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -582,7 +582,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                 return false;
             }
             if (!this.mustUpdate) {
-                long worldTime = EntitySeagull.this.level.getGameTime() % 10;
+                long worldTime = EntitySeagull.this.level().getGameTime() % 10;
                 if (EntitySeagull.this.getNoActionTime() >= 100 && worldTime != 0) {
                     return false;
                 }
@@ -590,7 +590,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                     return false;
                 }
             }
-            List<Entity> list = EntitySeagull.this.level.getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<Entity> list = EntitySeagull.this.level().getEntitiesOfClass(Entity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
             if (list.isEmpty()) {
                 return false;
             } else {
@@ -695,7 +695,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                     this.flightTarget = false;
                 } else if (this.eagle.isInWaterOrBubble()) {
                     this.flightTarget = true;
-                } else if (this.eagle.isOnGround()) {
+                } else if (this.eagle.onGround()) {
                     this.flightTarget = random.nextInt(10) == 0;
                 } else {
                     if (orbitResetCooldown == 0 && random.nextInt(6) == 0) {
@@ -755,7 +755,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
                     orbitResetCooldown = -400 - random.nextInt(400);
                 }
             }
-            if (isFlying() && (!level.isEmptyBlock(eagle.getBlockPosBelowThatAffectsMyMovement()) || eagle.onGround) && !eagle.isInWaterOrBubble() && eagle.timeFlying > 30) {
+            if (isFlying() && (!level().isEmptyBlock(eagle.getBlockPosBelowThatAffectsMyMovement()) || eagle.onGround) && !eagle.isInWaterOrBubble() && eagle.timeFlying > 30) {
                 eagle.setFlying(false);
                 orbitTime = 0;
                 eagle.orbitPos = null;

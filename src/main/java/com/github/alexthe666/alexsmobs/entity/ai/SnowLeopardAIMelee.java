@@ -110,14 +110,14 @@ public class SnowLeopardAIMelee extends Goal {
         }
         if (stalk) {
             if (secondPartOfLeap) {
-                this.leopard.setTackling(!leopard.isOnGround());
+                this.leopard.setTackling(!leopard.onGround());
                 leopard.lookAt(target, 180F, 10F);
                 leopard.yBodyRot = leopard.getYRot();
                 if (this.leopard.distanceTo(target) < 3F && this.leopard.hasLineOfSight(target)) {
                     target.hurt(this.leopard.damageSources().mobAttack(leopard), (float) (leopard.getAttribute(Attributes.ATTACK_DAMAGE).getValue() * 2.5F));
                     this.stalk = false;
                     this.secondPartOfLeap = false;
-                }else if (leopard.isOnGround() && jumpCooldown == 0) {
+                }else if (leopard.onGround() && jumpCooldown == 0) {
                     this.leopard.setSlSneaking(false);
                     jumpCooldown = 10 + leopard.getRandom().nextInt(10);
                     Vec3 vector3d = this.leopard.getDeltaMovement();
@@ -210,11 +210,11 @@ public class SnowLeopardAIMelee extends Goal {
                 if (lvt_25_2_.getY() >= 0 && lvt_25_2_.getY() <= creature.level.getMaxBuildHeight() && (!lvt_15_2_ || leopard.isWithinRestriction(lvt_25_2_)) && (!p_226339_12_ || lvt_13_1_.isStableDestination(lvt_25_2_))) {
                     if (p_226339_9_) {
                         lvt_25_2_ = moveUpToAboveSolid(lvt_25_2_, lvt_14_1_.nextInt(p_226339_10_ + 1) + p_226339_11_, creature.level.getMaxBuildHeight(), (p_226341_1_) -> {
-                            return creature.level.getBlockState(p_226341_1_).getMaterial().isSolid();
+                            return creature.level().getBlockState(p_226341_1_).getMaterial().isSolid();
                         });
                     }
 
-                    if (p_226339_5_ || !creature.level.getFluidState(lvt_25_2_).is(FluidTags.WATER)) {
+                    if (p_226339_5_ || !creature.level().getFluidState(lvt_25_2_).is(FluidTags.WATER)) {
                         BlockPathTypes lvt_26_1_ = WalkNodeEvaluator.getBlockPathTypeStatic(creature.level, lvt_25_2_.mutable());
                         if (leopard.getPathfindingMalus(lvt_26_1_) == 0.0F) {
                             double lvt_27_1_ = p_226339_8_.applyAsDouble(lvt_25_2_);
