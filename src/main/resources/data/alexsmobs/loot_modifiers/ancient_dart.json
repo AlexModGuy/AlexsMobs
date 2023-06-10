@@ -1,0 +1,13 @@
+{
+  "type": "alexsmobs:ancient_dart",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/jungle_temple"
+    },
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/jungle_temple_dispenser"
+    }
+  ]
+}

@@ -319,7 +319,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                     f += f1;
                     ++i;
                 }
-            } else if (!reader.getBlockState(blockpos).getMaterial().isSolid()) {
+            } else if (!reader.getBlockState(blockpos).isSolid()) {
                 ++i;
             }
         }
@@ -391,7 +391,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
             BlockState blockstate = p_203161_.getBlockState(p_203163_.above());
             return p_203162_.isSame(blockstate.getFluidState().getType()) ? 1.0F : p_203165_.getOwnHeight();
         } else {
-            return !p_203164_.getMaterial().isSolid() ? 0.0F : -1.0F;
+            return !p_203164_.isSolid() ? 0.0F : -1.0F;
         }
     }
 }

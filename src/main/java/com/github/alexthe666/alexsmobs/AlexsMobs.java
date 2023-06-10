@@ -78,7 +78,6 @@ public class AlexsMobs {
         modBusEvent.addListener(this::setupClient);
         modBusEvent.addListener(this::onModConfigEvent);
         modBusEvent.addListener(this::setupEntityModelLayers);
-        modBusEvent.addListener(AMItemGroup::registerTab);
         final ModLoadingContext modLoadingContext = ModLoadingContext.get();
         AMBlockRegistry.DEF_REG.register(modBusEvent);
         AMEntityRegistry.DEF_REG.register(modBusEvent);
@@ -96,6 +95,7 @@ public class AlexsMobs {
         AMRecipeRegistry.DEF_REG.register(modBusEvent);
         AMLootRegistry.DEF_REG.register(modBusEvent);
         AMBannerRegistry.DEF_REG.register(modBusEvent);
+        AMCreativeTabRegistry.DEF_REG.register(modBusEvent);
         final DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, AlexsMobs.MODID);
         biomeModifiers.register(modBusEvent);
         biomeModifiers.register("am_mob_spawns", AMMobSpawnBiomeModifier::makeCodec);

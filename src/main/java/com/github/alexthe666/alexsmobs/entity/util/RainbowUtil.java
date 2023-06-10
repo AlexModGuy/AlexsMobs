@@ -22,7 +22,7 @@ public class RainbowUtil {
         CompoundTag tag = CitadelEntityData.getOrCreateCitadelTag(fabulous);
         tag.putInt(RAINBOW_TYPE, type);
         CitadelEntityData.setCitadelTag(fabulous, tag);
-        if (!fabulous.this.level().isClientSide) {
+        if (!fabulous.level().isClientSide) {
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", tag, fabulous.getId()));
         }else{
             Citadel.sendMSGToServer(new PropertiesMessage("CitadelPatreonConfig", tag, fabulous.getId()));

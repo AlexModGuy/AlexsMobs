@@ -23,7 +23,7 @@ public class FlyingFishBootsUtil {
         lassoedTag.putInt(BOOST_TICKS, ticks);
 
         CitadelEntityData.setCitadelTag(entity, lassoedTag);
-        if (!entity.this.level().isClientSide) {
+        if (!entity.level().isClientSide) {
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, entity.getId()));
         }else{
             Citadel.sendMSGToServer(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, entity.getId()));

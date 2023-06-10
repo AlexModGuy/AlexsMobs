@@ -181,8 +181,8 @@ public class RenderUnderminer extends MobRenderer<EntityUnderminer, EntityModel<
             PoseStack.Pose posestack$pose = matrixStackIn.last();
             VertexConsumer vertexconsumer1 = new SheetedDecalTextureGenerator(bufferIn.getBuffer(DESTROY_TYPES.get(progress)), posestack$pose.pose(), posestack$pose.normal(), 1.0F);
 
-            net.minecraftforge.client.model.data.ModelData modelData = entityIn.level.getModelDataManager().getAt(miningPos);
-            Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(entityIn.level.getBlockState(miningPos), miningPos, entityIn.level, matrixStackIn, vertexconsumer1, modelData == null ? net.minecraftforge.client.model.data.ModelData.EMPTY : modelData);
+            net.minecraftforge.client.model.data.ModelData modelData = entityIn.level().getModelDataManager().getAt(miningPos);
+            Minecraft.getInstance().getBlockRenderer().renderBreakingTexture(entityIn.level().getBlockState(miningPos), miningPos, entityIn.level(), matrixStackIn, vertexconsumer1, modelData == null ? net.minecraftforge.client.model.data.ModelData.EMPTY : modelData);
             matrixStackIn.popPose();
         }
     }

@@ -65,10 +65,10 @@ public class MessageHurtMultipart {
             }
 
             if (player != null) {
-                if (player.level != null) {
-                    Entity part = player.level.getEntity(message.part);
-                    Entity parent = player.level.getEntity(message.parent);
-                    Registry<DamageType> registry = player.level.registryAccess().registry(Registries.DAMAGE_TYPE).get();
+                if (player.level() != null) {
+                    Entity part = player.level().getEntity(message.part);
+                    Entity parent = player.level().getEntity(message.parent);
+                    Registry<DamageType> registry = player.level().registryAccess().registry(Registries.DAMAGE_TYPE).get();
                     DamageType dmg = registry.get(new ResourceLocation(message.damageType));
                     if (dmg != null) {
                         Holder<DamageType> holder = registry.getHolder(registry.getId(dmg)).orElseGet(null);

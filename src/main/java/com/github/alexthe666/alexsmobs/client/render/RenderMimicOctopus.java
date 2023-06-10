@@ -44,7 +44,7 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
         LivingEntity livingentity = entityIn.getGuardianLaser();
         if (livingentity != null) {
             float f = entityIn.getLaserAttackAnimationScale(partialTicks);
-            float f1 = (float) entityIn.level.getGameTime() + partialTicks;
+            float f1 = (float) entityIn.level().getGameTime() + partialTicks;
             float f2 = f1 * 0.5F % 1.0F;
             float f3 = entityIn.getEyeHeight();
             matrixStackIn.pushPose();

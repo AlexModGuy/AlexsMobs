@@ -30,7 +30,7 @@ public class ItemRainbowJelly extends Item {
                 double d2 = random.nextGaussian() * 0.02D;
                 double d0 = random.nextGaussian() * 0.02D;
                 double d1 = random.nextGaussian() * 0.02D;
-                playerIn.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), target.getX() + (double) (random.nextFloat() * target.getBbWidth()) - (double) target.getBbWidth() * 0.5F, target.getY() + target.getBbHeight() * 0.5F + (double) (random.nextFloat() * target.getBbHeight() * 0.5F), target.getZ() + (double) (random.nextFloat() * target.getBbWidth()) - (double) target.getBbWidth() * 0.5F, d0, d1, d2);
+                playerIn.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), target.getX() + (double) (random.nextFloat() * target.getBbWidth()) - (double) target.getBbWidth() * 0.5F, target.getY() + target.getBbHeight() * 0.5F + (double) (random.nextFloat() * target.getBbHeight() * 0.5F), target.getZ() + (double) (random.nextFloat() * target.getBbWidth()) - (double) target.getBbWidth() * 0.5F, d0, d1, d2);
             }
             target.gameEvent(GameEvent.ITEM_INTERACT_START);
             target.playSound(SoundEvents.SLIME_SQUISH_SMALL, 1F, target.getVoicePitch());

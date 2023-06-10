@@ -753,27 +753,6 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onChestGenerated(LootTableLoadEvent event) {
-        if (AMConfig.addLootToChests) {
-            if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
-                final var item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART.get()).setQuality(40).setWeight(1);
-                LootPool.Builder builder = new LootPool.Builder().name("am_dart").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 1)).setBonusRolls(UniformGenerator.between(0, 1));
-                event.getTable().addPool(builder.build());
-            }
-            if (event.getName().equals(BuiltInLootTables.JUNGLE_TEMPLE_DISPENSER)) {
-                final var item = LootItem.lootTableItem(AMItemRegistry.ANCIENT_DART.get()).setQuality(20).setWeight(3);
-                LootPool.Builder builder = new LootPool.Builder().name("am_dart_dispenser").add(item).when(LootItemRandomChanceCondition.randomChance(1f)).setRolls(UniformGenerator.between(0, 2)).setBonusRolls(UniformGenerator.between(0, 1));
-                event.getTable().addPool(builder.build());
-            }
-        }
-        if (event.getName().equals(BuiltInLootTables.PIGLIN_BARTERING) && AMConfig.tusklinShoesBarteringChance > 0) {
-            final var item = LootItem.lootTableItem(AMItemRegistry.PIGSHOES.get()).setQuality(5).setWeight(8);
-            LootPool.Builder builder = new LootPool.Builder().name("am_pigshoes").add(item).when(LootItemRandomChanceCondition.randomChance((float) AMConfig.tusklinShoesBarteringChance)).setRolls(ConstantValue.exactly(1));
-            event.getTable().addPool(builder.build());
-        }
-    }
-
-    @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
         CompoundTag tag = event.getItemStack().getTag();
         if (tag != null && tag.contains("BisonFur") && tag.getBoolean("BisonFur")) {

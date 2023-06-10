@@ -38,7 +38,7 @@ public class ItemFalconryGlove extends Item implements ILeftClick {
             Vec3 Vector3d2 = Vector3d.add(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist);
             double d1 = dist;
             Entity pointedEntity = null;
-            List<Entity> list = playerIn.level.getEntities(playerIn, playerIn.getBoundingBox().expandTowards(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist).inflate(1.0D, 1.0D, 1.0D), new Predicate<Entity>() {
+            List<Entity> list = playerIn.level().getEntities(playerIn, playerIn.getBoundingBox().expandTowards(Vector3d1.x * dist, Vector3d1.y * dist, Vector3d1.z * dist).inflate(1.0D, 1.0D, 1.0D), new Predicate<Entity>() {
                 public boolean apply(@Nullable Entity entity) {
                     return entity != null && entity.isPickable() && (entity instanceof Player || (entity instanceof LivingEntity));
                 }
@@ -77,7 +77,7 @@ public class ItemFalconryGlove extends Item implements ILeftClick {
                         Animal animal = (Animal)entity;
                         animal.removeVehicle();
                         animal.moveTo(playerIn.getX(), playerIn.getEyeY(), playerIn.getZ(), animal.getYRot(), animal.getXRot());
-                        if(animal.level.isClientSide){
+                        if(animal.level().isClientSide){
                             AlexsMobs.sendMSGToServer(new MessageSyncEntityPos(animal.getId(), playerIn.getX(), playerIn.getEyeY(), playerIn.getZ()));
                         }else{
                             AlexsMobs.sendMSGToAll(new MessageSyncEntityPos(animal.getId(), playerIn.getX(), playerIn.getEyeY(), playerIn.getZ()));

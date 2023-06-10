@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -50,11 +51,11 @@ public class TileEntityTransmutationTable  extends BlockEntity {
     }
 
     private static ItemStack createFromLootTable(Player player, ResourceLocation loc) {
-        if(player.level.isClientSide){
+        if(player.level().isClientSide){
             return ItemStack.EMPTY;
         }else{
-            LootTable loottable = player.level.getServer().getLootTables().get(loc);
-            List<ItemStack> loots = loottable.getRandomItems((new LootContext.Builder((ServerLevel) player.level)).withParameter(LootContextParams.THIS_ENTITY, player).withRandom(RANDOM).create(LootContextParamSets.EMPTY));
+            LootTable loottable = player.level().getServer().getLootData().getLootTable(loc);
+            List<ItemStack> loots = loottable.getRandomItems((new LootParams.Builder((ServerLevel) player.level())).withParameter(LootContextParams.THIS_ENTITY, player).create(LootContextParamSets.EMPTY));
             return loots.isEmpty() ? ItemStack.EMPTY : loots.get(0);
         }
     }

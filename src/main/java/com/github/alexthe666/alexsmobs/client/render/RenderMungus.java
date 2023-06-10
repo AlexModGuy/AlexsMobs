@@ -104,7 +104,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
         BlockPos target = entityIn.getBeamTarget();
         if (target != null) {
             float f = 1.0F;
-            float f1 = (float) entityIn.level.getGameTime() + partialTicks;
+            float f1 = (float) entityIn.level().getGameTime() + partialTicks;
             float f2 = -1.0F * (f1 * 0.15F % 1.0F);
             float f3 = 1.13F;
             if(entityIn.isBaby()){

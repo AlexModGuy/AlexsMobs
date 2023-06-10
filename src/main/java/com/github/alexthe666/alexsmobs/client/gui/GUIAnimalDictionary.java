@@ -31,18 +31,7 @@ public class GUIAnimalDictionary extends GuiBasicBook {
     }
 
     public void render(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
-        if(this.currentPageJSON.equals(getRootPage()) && currentPageCounter == 0){
-            int k = (this.width - this.xSize) / 2;
-            int l = (this.height - this.ySize + 128) / 2;
-            RenderSystem.applyModelViewMatrix();
-            PoseStack stack = RenderSystem.getModelViewStack();
-            stack.pushPose();
-            stack.translate((double)k, (double)l, 0.0D);
-            stack.scale(2.75F, 2.75F, 2.75F);
-            guiGraphics.renderItem(new ItemStack(AMItemRegistry.TAB_ICON.get()), 25, 14);
-            stack.popPose();
-            RenderSystem.applyModelViewMatrix();
-        }
+
         RenderLaviathan.renderWithoutShaking = true;
         RenderMurmurBody.renderWithHead = true;
         RenderUnderminer.renderWithPickaxe = true;

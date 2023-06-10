@@ -44,8 +44,8 @@ public class MessageSendVisualFlagFromServer {
                 }
 
                 if (player != null) {
-                    if (player.level != null) {
-                        Entity entity = player.level.getEntity(message.entityID);
+                    if (player.level() != null) {
+                        Entity entity = player.level().getEntity(message.entityID);
                         AlexsMobs.PROXY.processVisualFlag(entity, message.flag);
                     }
                 }

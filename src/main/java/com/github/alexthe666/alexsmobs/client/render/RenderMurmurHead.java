@@ -98,9 +98,9 @@ public class RenderMurmurHead extends MobRenderer<EntityMurmurHead, ModelMurmurH
 
     private int getLightColor(EntityMurmurHead head, Vec3 vec3) {
         BlockPos blockpos = AMBlockPos.fromVec3(vec3);
-        if(head.level.hasChunkAt(blockpos)){
-            int i = LevelRenderer.getLightColor(head.level, blockpos);
-            int j = LevelRenderer.getLightColor(head.level, blockpos.above());
+        if(head.level().hasChunkAt(blockpos)){
+            int i = LevelRenderer.getLightColor(head.level(), blockpos);
+            int j = LevelRenderer.getLightColor(head.level(), blockpos.above());
             int k = i & 255;
             int l = j & 255;
             int i1 = i >> 16 & 255;

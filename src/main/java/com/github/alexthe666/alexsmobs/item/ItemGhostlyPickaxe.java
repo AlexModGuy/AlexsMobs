@@ -167,14 +167,14 @@ public class ItemGhostlyPickaxe extends PickaxeItem {
     }
 
     public void onDestroyed(ItemEntity itemEntity) {
-        dropAllContents(itemEntity.level, itemEntity.position(), itemEntity.getItem());
+        dropAllContents(itemEntity.level(), itemEntity.position(), itemEntity.getItem());
     }
 
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
         int i = super.damageItem(stack, amount, entity, onBroken);
         if(i + stack.getDamageValue() >= stack.getMaxDamage() && entity != null){
-            dropAllContents(entity.level, entity.position(), stack);
+            dropAllContents(entity.level(), entity.position(), stack);
         }
         return i;
     }

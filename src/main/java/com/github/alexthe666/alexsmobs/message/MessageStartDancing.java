@@ -49,8 +49,8 @@ public class MessageStartDancing {
                 }
 
                 if (player != null) {
-                    if (player.level != null) {
-                        Entity entity = player.level.getEntity(message.entityID);
+                    if (player.level() != null) {
+                        Entity entity = player.level().getEntity(message.entityID);
                         if (entity instanceof IDancingMob) {
                             ((IDancingMob)entity).setDancing(message.dance);
                             if(message.dance){

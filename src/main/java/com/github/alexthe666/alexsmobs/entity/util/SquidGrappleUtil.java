@@ -23,7 +23,7 @@ public class SquidGrappleUtil {
         int index = getFirstAvailableHookIndex(entity);
         String indexStr = getHookStrFromIndex(index);
         if(tag.contains(indexStr)){
-            EntitySquidGrapple hook = getHookEntity(entity.level, tag.getUUID(indexStr));
+            EntitySquidGrapple hook = getHookEntity(entity.level(), tag.getUUID(indexStr));
             if(hook != null && !hook.isRemoved()){
                 hook.setWithdrawing(true);
             }
@@ -66,16 +66,16 @@ public class SquidGrappleUtil {
 
     public static int getAnyNullHooks(LivingEntity entity) {
         CompoundTag tag = CitadelEntityData.getOrCreateCitadelTag(entity);
-        if (!tag.contains(HOOK_1) || getHookEntity(entity.level, tag.getUUID(HOOK_1)) == null) {
+        if (!tag.contains(HOOK_1) || getHookEntity(entity.level(), tag.getUUID(HOOK_1)) == null) {
             return 0;
         }
-        if (!tag.contains(HOOK_2) || getHookEntity(entity.level, tag.getUUID(HOOK_2)) == null) {
+        if (!tag.contains(HOOK_2) || getHookEntity(entity.level(), tag.getUUID(HOOK_2)) == null) {
             return 1;
         }
-        if (!tag.contains(HOOK_3) || getHookEntity(entity.level, tag.getUUID(HOOK_3)) == null) {
+        if (!tag.contains(HOOK_3) || getHookEntity(entity.level(), tag.getUUID(HOOK_3)) == null) {
             return 2;
         }
-        if (!tag.contains(HOOK_4) || getHookEntity(entity.level, tag.getUUID(HOOK_4)) == null) {
+        if (!tag.contains(HOOK_4) || getHookEntity(entity.level(), tag.getUUID(HOOK_4)) == null) {
             return 3;
         }
         return -1;
@@ -85,24 +85,24 @@ public class SquidGrappleUtil {
     public static int getHookCount(LivingEntity entity) {
         CompoundTag tag = CitadelEntityData.getOrCreateCitadelTag(entity);
         int count = 0;
-        if (tag.contains(HOOK_1) && getHookEntity(entity.level, tag.getUUID(HOOK_1)) != null) {
+        if (tag.contains(HOOK_1) && getHookEntity(entity.level(), tag.getUUID(HOOK_1)) != null) {
             count++;
         }
-        if (tag.contains(HOOK_2) && getHookEntity(entity.level, tag.getUUID(HOOK_2)) != null) {
+        if (tag.contains(HOOK_2) && getHookEntity(entity.level(), tag.getUUID(HOOK_2)) != null) {
             count++;
         }
-        if (tag.contains(HOOK_3) && getHookEntity(entity.level, tag.getUUID(HOOK_3)) != null) {
+        if (tag.contains(HOOK_3) && getHookEntity(entity.level(), tag.getUUID(HOOK_3)) != null) {
             count++;
         }
-        if (tag.contains(HOOK_4) && getHookEntity(entity.level, tag.getUUID(HOOK_4)) != null) {
+        if (tag.contains(HOOK_4) && getHookEntity(entity.level(), tag.getUUID(HOOK_4)) != null) {
             count++;
         }
         return count;
     }
 
     public static EntitySquidGrapple getHookEntity(Level level, UUID id) {
-        if (id != null && !this.level().isClientSide) {
-            Entity e = ((ServerLevel) level()).getEntity(id);
+        if (id != null && !level.isClientSide) {
+            Entity e = ((ServerLevel) level).getEntity(id);
             return e instanceof EntitySquidGrapple ? (EntitySquidGrapple) e : null;
         }
         return null;

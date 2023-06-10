@@ -72,7 +72,7 @@ public class ItemBloodSprayer extends Item {
     }
 
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.sameItem(newStack);
+        return !ItemStack.isSameItem(oldStack, newStack);
     }
     
     public boolean isBarVisible(ItemStack itemStack) {

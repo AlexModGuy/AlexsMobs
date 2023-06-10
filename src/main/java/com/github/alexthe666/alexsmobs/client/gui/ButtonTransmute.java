@@ -27,7 +27,7 @@ public class ButtonTransmute extends Button {
         int cost = AMConfig.transmutingExperienceCost;
         if(!canBeTransmuted(cost)){
             color = 16736352;
-        }else if (this.active && this.isHoveredOrFocused()) {
+        }else if (this.active && this.isHovered) {
             guiGraphics.blit(GUITransmutationTable.TEXTURE, this.getX(), this.getY(), 0, 201, 117, 19);
             color = 0XC7FFD0;
         }
@@ -50,5 +50,7 @@ public class ButtonTransmute extends Button {
         if(canBeTransmuted(AMConfig.transmutingExperienceCost)){
             super.onPress();
         }
+        this.isHovered = false;
+        this.setFocused(false);
     }
 }

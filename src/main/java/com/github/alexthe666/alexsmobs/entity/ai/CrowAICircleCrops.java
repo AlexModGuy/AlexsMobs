@@ -123,9 +123,9 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
         if(crow.level().getBlockState(blockPos).getBlock() instanceof CropBlock){
             if(crow.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)){
                 CropBlock block = (CropBlock)crow.level().getBlockState(blockPos).getBlock();
-                int cropAge = crow.level().getBlockState(blockPos).getValue(block.getAgeProperty());
+                int cropAge = block.getAge(crow.level().getBlockState(blockPos));
                 if(cropAge > 0){
-                    crow.level().setBlockAndUpdate(blockPos, crow.level().getBlockState(blockPos).setValue(block.getAgeProperty(), cropAge - 1));
+                    crow.level().setBlockAndUpdate(blockPos, block.getStateForAge(Math.max(0, cropAge - 1)));
                 }else{
                     crow.level().destroyBlock(blockPos, true);
                 }

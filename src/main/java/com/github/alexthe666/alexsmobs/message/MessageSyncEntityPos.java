@@ -51,8 +51,8 @@ public class MessageSyncEntityPos {
                     player = AlexsMobs.PROXY.getClientSidePlayer();
                 }
                 if (player != null) {
-                    if (player.level != null) {
-                        Entity entity = player.level.getEntity(message.eagleId);
+                    if (player.level() != null) {
+                        Entity entity = player.level().getEntity(message.eagleId);
                         if (entity instanceof IFalconry || entity instanceof EntityStraddleboard) {
                             entity.setPos(message.posX, message.posY, message.posZ);
                             entity.teleportToWithTicket(message.posX, message.posY, message.posZ);

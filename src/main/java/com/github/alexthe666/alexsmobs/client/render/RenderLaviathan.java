@@ -160,9 +160,9 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         BlockPos blockpos = AMBlockPos.fromVec3(mob.getEyePosition(partialTick));
         BlockPos blockpos1 = AMBlockPos.fromVec3(rider.getEyePosition(partialTick));
         int i = this.getBlockLightLevel(mob, blockpos);
-        int j = mob.level.getBrightness(LightLayer.BLOCK, blockpos1);
-        int k = mob.level.getBrightness(LightLayer.SKY, blockpos);
-        int l = mob.level.getBrightness(LightLayer.SKY, blockpos1);
+        int j = mob.level().getBrightness(LightLayer.BLOCK, blockpos1);
+        int k = mob.level().getBrightness(LightLayer.SKY, blockpos);
+        int l = mob.level().getBrightness(LightLayer.SKY, blockpos1);
         float width = 0.05F;
         for (int i1 = 0; i1 <= 24; ++i1) {
             addVertexPairAlex(vertexconsumer, matrix4f, f, f1, f2, i, j, k, l, width, width, f5, f6, i1, false);

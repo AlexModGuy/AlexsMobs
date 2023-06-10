@@ -21,11 +21,11 @@ public class AMDamageTypes {
     public static final ResourceKey<DamageType> FREDDY = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("alexsmobs:freddy"));
 
     public static DamageSource causeFarseerDamage(LivingEntity attacker){
-        return new DamageSourceRandomMessages(attacker.level.registryAccess().registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(FARSEER), attacker);
+        return new DamageSourceRandomMessages(attacker.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(FARSEER), attacker);
     }
 
     public static DamageSource causeFreddyBearDamage(LivingEntity attacker){
-        return new DamageSource(attacker.level.registryAccess().registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(FREDDY), attacker);
+        return new DamageSource(attacker.level().registryAccess().registry(Registries.DAMAGE_TYPE).get().getHolderOrThrow(FREDDY), attacker);
     }
 
     private static class DamageSourceRandomMessages extends DamageSource {

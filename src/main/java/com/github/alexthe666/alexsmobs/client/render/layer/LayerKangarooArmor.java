@@ -114,7 +114,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
                     matrixStackIn.mulPose((new Quaternionf()).rotateX((float)Math.PI));
                     matrixStackIn.mulPose((new Quaternionf()).rotateY((float)Math.PI));
                     matrixStackIn.scale(1.0F, 1.0F, 1.0F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, roo.level, 0);
+                    Minecraft.getInstance().getItemRenderer().renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, roo.level(), 0);
                 }
                 matrixStackIn.popPose();
             }

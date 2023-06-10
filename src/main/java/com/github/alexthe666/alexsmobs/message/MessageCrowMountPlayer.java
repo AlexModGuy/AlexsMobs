@@ -44,9 +44,9 @@ public class MessageCrowMountPlayer {
             }
 
             if (player != null) {
-                if (player.level != null) {
-                    Entity entity = player.level.getEntity(message.rider);
-                    Entity mountEntity = player.level.getEntity(message.mount);
+                if (player.level() != null) {
+                    Entity entity = player.level().getEntity(message.rider);
+                    Entity mountEntity = player.level().getEntity(message.mount);
                     if (entity instanceof EntityCrow && mountEntity instanceof Player && entity.distanceTo(mountEntity) < 16D) {
                         entity.startRiding(mountEntity, true);
                     }

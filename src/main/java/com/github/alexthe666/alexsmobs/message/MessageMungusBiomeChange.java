@@ -64,15 +64,15 @@ public class MessageMungusBiomeChange {
                 }
 
                 if (player != null) {
-                    if (player.level != null) {
-                        Entity entity = player.level.getEntity(message.mungusID);
-                        Registry<Biome> registry = player.level.registryAccess().registryOrThrow(Registries.BIOME);
+                    if (player.level() != null) {
+                        Entity entity = player.level().getEntity(message.mungusID);
+                        Registry<Biome> registry = player.level().registryAccess().registryOrThrow(Registries.BIOME);
                         Biome biome = registry.get(new ResourceLocation(message.biomeOption));
                         ResourceKey<Biome> resourceKey = registry.getResourceKey(biome).orElse(null);
                         Holder<Biome> holder = registry.getHolder(resourceKey).orElse(null);
                         if (AMConfig.mungusBiomeTransformationType == 2) {
                             if (entity instanceof EntityMungus && entity.distanceToSqr(message.posX, entity.getY(), message.posZ) < 1000 && biome != null) {
-                                LevelChunk chunk = player.level.getChunkAt(new BlockPos(message.posX, 0, message.posZ));
+                                LevelChunk chunk = player.level().getChunkAt(new BlockPos(message.posX, 0, message.posZ));
                                 int i = QuartPos.fromBlock(chunk.getMinBuildHeight());
                                 int k = i + QuartPos.fromBlock(chunk.getHeight()) - 1;
                                 int l = Mth.clamp(QuartPos.fromBlock((int)entity.getY()), i, k);

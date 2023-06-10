@@ -162,8 +162,8 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
         BlockPos blockpos1 = AMBlockPos.fromVec3(p_115466_.getEyePosition(p_115463_));
         int i = this.getBlockLightLevel(tiger, blockpos);
         int j = this.getBlockLightLevel(tiger, blockpos1);
-        int k = tiger.level.getBrightness(LightLayer.SKY, blockpos);
-        int l = tiger.level.getBrightness(LightLayer.SKY, blockpos1);
+        int k = tiger.level().getBrightness(LightLayer.SKY, blockpos);
+        int l = tiger.level().getBrightness(LightLayer.SKY, blockpos1);
 
         for(int i1 = 0; i1 <= 24; ++i1) {
             addVertexPair(vertexconsumer, matrix4f, f, f1, f2, i, j, k, l, 0.025F, 0.025F, f5, f6, i1, false);
@@ -177,7 +177,7 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
     }
 
     protected int getBlockLightLevel(EntityTiger p_114496_, BlockPos p_114497_) {
-        return p_114496_.isOnFire() ? 15 : p_114496_.level.getBrightness(LightLayer.BLOCK, p_114497_);
+        return p_114496_.isOnFire() ? 15 : p_114496_.level().getBrightness(LightLayer.BLOCK, p_114497_);
     }
 
     private static void addVertexPair(VertexConsumer p_174308_, Matrix4f p_174309_, float p_174310_, float p_174311_, float p_174312_, int p_174313_, int p_174314_, int p_174315_, int p_174316_, float p_174317_, float p_174318_, float p_174319_, float p_174320_, int p_174321_, boolean p_174322_) {
@@ -196,7 +196,7 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
         p_174308_.vertex(p_174309_, f5 + p_174319_, f6 + p_174317_ - p_174318_, f7 - p_174320_).color(f2, f3, f4, 1.0F).uv2(k).endVertex();
     }
     protected int getBlockLight2(Entity entityIn, BlockPos partialTicks) {
-        return entityIn.isOnFire() ? 15 : entityIn.level.getBrightness(LightLayer.BLOCK, partialTicks);
+        return entityIn.isOnFire() ? 15 : entityIn.level().getBrightness(LightLayer.BLOCK, partialTicks);
     }
 
     @Nullable

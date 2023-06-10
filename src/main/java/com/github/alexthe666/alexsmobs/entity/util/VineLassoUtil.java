@@ -35,7 +35,7 @@ public class VineLassoUtil {
         }
         lassoedTag.putBoolean(LASSO_PACKET, true);
         CitadelEntityData.setCitadelTag(lassoed, lassoedTag);
-        if(!lassoed.this.level().isClientSide){
+        if(!lassoed.level().isClientSide){
             Citadel.sendMSGToAll(new PropertiesMessage("CitadelPatreonConfig", lassoedTag, lassoed.getId()));
         }
     }
@@ -51,7 +51,7 @@ public class VineLassoUtil {
             return null;
         }
         if (hasLassoData(lassoed)) {
-            if (lassoed.this.level().isClientSide && lassoedTag.contains(LASSOED_TO_ENTITY_ID_TAG)) {
+            if (lassoed.level().isClientSide && lassoedTag.contains(LASSOED_TO_ENTITY_ID_TAG)) {
                 int i = lassoedTag.getInt(LASSOED_TO_ENTITY_ID_TAG);
                 if (i != -1) {
                     Entity found = lassoed.level().getEntity(i);
@@ -60,11 +60,11 @@ public class VineLassoUtil {
                     } else {
                         UUID uuid = lassoedTag.getUUID(LASSOED_TO_TAG);
                         if (uuid != null) {
-                            return lassoed.level.getPlayerByUUID(uuid);
+                            return lassoed.level().getPlayerByUUID(uuid);
                         }
                     }
                 }
-            } else if (lassoed.level instanceof ServerLevel) {
+            } else if (lassoed.level() instanceof ServerLevel) {
                 UUID uuid = lassoedTag.getUUID(LASSOED_TO_TAG);
                 if (uuid != null) {
                     Entity found = ((ServerLevel) lassoed.level()).getEntity(uuid);
@@ -80,7 +80,7 @@ public class VineLassoUtil {
 
     public static void tickLasso(LivingEntity lassoed) {
         CompoundTag tag = CitadelEntityData.getOrCreateCitadelTag(lassoed);
-        if (!lassoed.this.level().isClientSide) {
+        if (!lassoed.level().isClientSide) {
             if (tag.contains(LASSO_PACKET) || tag.getBoolean(LASSO_REMOVED)) {
                 tag.putBoolean(LASSO_PACKET, false);
                 CitadelEntityData.setCitadelTag(lassoed, tag);

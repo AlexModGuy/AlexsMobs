@@ -39,7 +39,7 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
 
     public static boolean isActive(ItemStack stack, LivingEntity holder) {
         if (holder != null && (holder.getMainHandItem() == stack || holder.getOffhandItem() == stack)) {
-            return !TendonWhipUtil.canLaunchTendons(holder.level, holder);
+            return !TendonWhipUtil.canLaunchTendons(holder.level(), holder);
         }
         return false;
     }
@@ -60,7 +60,7 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
 
     public boolean onLeftClick(ItemStack stack, LivingEntity playerIn){
         if(stack.is(AMItemRegistry.TENDON_WHIP.get()) && (!(playerIn instanceof Player) || isCharged((Player)playerIn, stack))){
-            Level worldIn = playerIn.level;
+            Level worldIn = playerIn.level();
             Entity closestValid = null;
             Vec3 playerEyes = playerIn.getEyePosition(1.0F);
             HitResult hitresult = worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(12.0D)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
@@ -89,7 +89,7 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
     }
 
     public boolean launchTendonsAt(ItemStack stack, LivingEntity playerIn, Entity closestValid) {
-        Level worldIn = playerIn.level;
+        Level worldIn = playerIn.level();
         if (TendonWhipUtil.canLaunchTendons(worldIn, playerIn)) {
             TendonWhipUtil.retractFarTendons(worldIn, playerIn);
             if (!worldIn.isClientSide) {
@@ -116,7 +116,7 @@ public class ItemTendonWhip extends SwordItem implements ILeftClick {
     }
 
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.sameItem(newStack);
+        return !ItemStack.isSameItem(oldStack, newStack);
     }
 
     public int getMaxDamage(ItemStack stack) {

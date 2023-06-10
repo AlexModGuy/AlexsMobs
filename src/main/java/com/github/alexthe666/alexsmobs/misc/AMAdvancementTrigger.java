@@ -12,7 +12,7 @@ public class AMAdvancementTrigger extends SimpleCriterionTrigger<AMAdvancementTr
         this.resourceLocation = resourceLocation;
     }
 
-    public AMAdvancementTrigger.Instance createInstance(JsonObject p_230241_1_, EntityPredicate.Composite p_230241_2_, DeserializationContext p_230241_3_) {
+    public AMAdvancementTrigger.Instance createInstance(JsonObject p_230241_1_, ContextAwarePredicate p_230241_2_, DeserializationContext p_230241_3_) {
         return new AMAdvancementTrigger.Instance(p_230241_2_, resourceLocation);
     }
 
@@ -30,12 +30,12 @@ public class AMAdvancementTrigger extends SimpleCriterionTrigger<AMAdvancementTr
 
     public static class Instance extends AbstractCriterionTriggerInstance {
 
-        public Instance(EntityPredicate.Composite p_i231507_1_, ResourceLocation res) {
+        public Instance(ContextAwarePredicate p_i231507_1_, ResourceLocation res) {
             super(res, p_i231507_1_);
         }
 
         public static ConstructBeaconTrigger.TriggerInstance forLevel(MinMaxBounds.Ints p_203912_0_) {
-            return new ConstructBeaconTrigger.TriggerInstance(EntityPredicate.Composite.ANY, p_203912_0_);
+            return new ConstructBeaconTrigger.TriggerInstance(ContextAwarePredicate.ANY, p_203912_0_);
         }
 
 

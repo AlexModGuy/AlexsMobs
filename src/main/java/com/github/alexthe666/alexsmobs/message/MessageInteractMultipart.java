@@ -46,8 +46,8 @@ public class MessageInteractMultipart {
             }
 
             if (player != null) {
-                if (player.level != null) {
-                    Entity parent = player.level.getEntity(message.parent);
+                if (player.level() != null) {
+                    Entity parent = player.level().getEntity(message.parent);
                     if(player.distanceTo(parent) < 20 && parent instanceof Mob){
                         player.interactOn(parent, message.offhand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
                     }

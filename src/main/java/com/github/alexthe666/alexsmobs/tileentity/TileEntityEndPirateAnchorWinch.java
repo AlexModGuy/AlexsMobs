@@ -68,7 +68,7 @@ public class TileEntityEndPirateAnchorWinch extends BlockEntity {
     }
 
     private boolean isEmptyBlock(BlockPos pos) {
-        return level.isEmptyBlock(pos) || isAnchorChain(level, pos) || level.getBlockState(pos).getMaterial().isReplaceable();
+        return level.isEmptyBlock(pos) || isAnchorChain(level, pos) || level.getBlockState(pos).canBeReplaced();
     }
 
     private boolean isAnchorChain(Level level, BlockPos pos) {

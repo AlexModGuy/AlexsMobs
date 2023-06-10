@@ -49,7 +49,7 @@ public class RenderTossedItem  extends EntityRenderer<EntityTossedItem> {
             matrixStackIn.scale(1F, 1F, 1F);
             matrixStackIn.mulPose((new Quaternionf()).rotateZ((float) Math.toRadians(-(entityIn.tickCount + partialTicks) * 30F)));
             matrixStackIn.translate(0, -0.15F, 0);
-            Minecraft.getInstance().getItemRenderer().renderStatic(entityIn.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level, 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(entityIn.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level(), 0);
         }
         matrixStackIn.popPose();
     }

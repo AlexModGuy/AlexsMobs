@@ -46,9 +46,9 @@ public class MessageMosquitoDismount {
             }
 
             if (player != null) {
-                if (player.level != null) {
-                    Entity entity = player.level.getEntity(message.rider);
-                    Entity mountEntity = player.level.getEntity(message.mount);
+                if (player.level() != null) {
+                    Entity entity = player.level().getEntity(message.rider);
+                    Entity mountEntity = player.level().getEntity(message.mount);
                     if ((entity instanceof EntityCrimsonMosquito || entity instanceof EntityBaldEagle || entity instanceof EntityEnderiophage) && mountEntity != null) {
                         entity.stopRiding();
                     }

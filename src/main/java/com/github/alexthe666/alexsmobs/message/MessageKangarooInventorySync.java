@@ -48,8 +48,8 @@ public class MessageKangarooInventorySync {
             }
 
             if (player != null) {
-                if (player.level != null) {
-                    Entity entity = player.level.getEntity(message.kangaroo);
+                if (player.level() != null) {
+                    Entity entity = player.level().getEntity(message.kangaroo);
                     if(entity instanceof EntityKangaroo && ((EntityKangaroo) entity).kangarooInventory != null){
                         if(message.slotId < 0){
 

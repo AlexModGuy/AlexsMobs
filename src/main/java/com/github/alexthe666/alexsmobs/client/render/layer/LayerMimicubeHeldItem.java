@@ -42,7 +42,7 @@ public class LayerMimicubeHeldItem extends RenderLayer<EntityMimicube, ModelMimi
             matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-10));
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(360 * rightSwap));
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(-40 * attackprogress));
-            Minecraft.getInstance().getItemRenderer().renderStatic(itemRight, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, rightSwap > 0 ? (int) (-100 * rightSwap) : packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), matrixStackIn, bufferIn, entitylivingbaseIn.level, 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(itemRight, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, rightSwap > 0 ? (int) (-100 * rightSwap) : packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), matrixStackIn, bufferIn, entitylivingbaseIn.level(), 0);
             matrixStackIn.popPose();
         }
         if (!itemLeft.isEmpty()) {
@@ -59,7 +59,7 @@ public class LayerMimicubeHeldItem extends RenderLayer<EntityMimicube, ModelMimi
             }
             matrixStackIn.mulPose(Axis.ZP.rotationDegrees(10));
             matrixStackIn.mulPose(Axis.XP.rotationDegrees(360 * leftSwap));
-            Minecraft.getInstance().getItemRenderer().renderStatic(itemLeft, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, leftSwap > 0 ? (int) (-100 * leftSwap) : packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), matrixStackIn, bufferIn, entitylivingbaseIn.level, 0);
+            Minecraft.getInstance().getItemRenderer().renderStatic(itemLeft, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, leftSwap > 0 ? (int) (-100 * leftSwap) : packedLightIn, LivingEntityRenderer.getOverlayCoords(entitylivingbaseIn, 0.0F), matrixStackIn, bufferIn, entitylivingbaseIn.level(), 0);
             matrixStackIn.popPose();
         }
     }
