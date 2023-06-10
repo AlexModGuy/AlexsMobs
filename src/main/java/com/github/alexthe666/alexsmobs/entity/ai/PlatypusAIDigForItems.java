@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -38,8 +39,8 @@ public class PlatypusAIDigForItems extends Goal {
     }
 
     private static List<ItemStack> getItemStacks(EntityPlatypus platypus) {
-        LootTable loottable = platypus.level.getServer().getLootTables().get(platypus.superCharged ? PLATYPUS_REWARD_CHARGED : PLATYPUS_REWARD);
-        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) platypus.level())).withParameter(LootContextParams.THIS_ENTITY, platypus).withRandom(platypus.level.random).create(LootContextParamSets.PIGLIN_BARTER));
+        LootTable loottable = platypus.level().getServer().getLootData().getLootTable(platypus.superCharged ? PLATYPUS_REWARD_CHARGED : PLATYPUS_REWARD);
+        return loottable.getRandomItems((new LootParams.Builder((ServerLevel) platypus.level())).withParameter(LootContextParams.THIS_ENTITY, platypus).create(LootContextParamSets.PIGLIN_BARTER));
     }
 
     @Override
@@ -115,7 +116,7 @@ public class PlatypusAIDigForItems extends Goal {
     }
 
     private BlockPos genSeafloorPos(BlockPos parent) {
-        LevelAccessor world = platypus.level;
+        LevelAccessor world = platypus.level();
         final RandomSource random = this.platypus.getRandom();
         int range = 15;
         for (int i = 0; i < 15; i++) {

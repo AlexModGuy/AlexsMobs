@@ -47,7 +47,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -117,7 +116,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public static boolean canGiantSquidSpawn(EntityType<EntityGiantSquid> entityType, ServerLevelAccessor iServerWorld, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return reason == MobSpawnType.SPAWNER || iServerWorld.getBlockState(pos).getMaterial() == Material.WATER && iServerWorld.getBlockState(pos.above()).getMaterial() == Material.WATER;
+        return reason == MobSpawnType.SPAWNER || iServerWorld.isWaterAt(pos) && iServerWorld.isWaterAt(pos.above());
     }
 
 
@@ -505,7 +504,7 @@ public class EntityGiantSquid extends WaterAnimal {
             boolean flag = movement.x != vec3.x;
             boolean flag1 = movement.y != vec3.y;
             boolean flag2 = movement.z != vec3.z;
-            boolean flag3 = this.onGround || flag1 && movement.y < 0.0D;
+            boolean flag3 = this.onGround() || flag1 && movement.y < 0.0D;
             if (this.maxUpStep > 0.0F && flag3 && (flag || flag2)) {
                 Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, this.maxUpStep, movement.z), aabb, this.level(), list);
                 Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, this.maxUpStep, 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level(), list);
@@ -587,7 +586,7 @@ public class EntityGiantSquid extends WaterAnimal {
         int waterLevelAbove = 0;
         while (waterLevelAbove < 10) {
             BlockState blockstate = level().getBlockState(blockpos$mutable.set(this.getX(), this.getY() + waterLevelAbove, this.getZ()));
-            if (!blockstate.getFluidState().is(FluidTags.WATER) && !blockstate.getMaterial().isSolid()) {
+            if (!blockstate.getFluidState().is(FluidTags.WATER) && !blockstate.isSolid()) {
                 break;
             } else {
                 waterLevelAbove++;

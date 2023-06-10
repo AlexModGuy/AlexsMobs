@@ -156,13 +156,13 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
         } else {
             BlockPos ground = AMBlockPos.fromCoords(this.getX(), this.getY() - 1.0D, this.getZ());
             float f = 0.91F;
-            if (this.onGround) {
+            if (this.onGround()) {
                 f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
             }
 
             float f1 = 0.16277137F / (f * f * f);
             f = 0.91F;
-            if (this.onGround) {
+            if (this.onGround()) {
                 f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
             }
             this.calculateEntityAnimation(true);
@@ -208,8 +208,8 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             }
             if (beaconSearchCooldown <= 0) {
                 beaconSearchCooldown = 100 + random.nextInt(200);
-                if (level instanceof ServerLevel) {
-                    List<BlockPos> beacons = this.getNearbyBeacons(this.blockPosition(), (ServerLevel) level, 64);
+                if (level() instanceof ServerLevel) {
+                    List<BlockPos> beacons = this.getNearbyBeacons(this.blockPosition(), (ServerLevel) level(), 64);
                     BlockPos closest = null;
                     for (BlockPos pos : beacons) {
                         if (closest == null || this.distanceToSqr(closest.getX(), closest.getY(), closest.getZ()) > this.distanceToSqr(pos.getX(), pos.getY(), pos.getZ())) {
@@ -312,7 +312,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
     }
 
     private boolean isValidBeacon(BlockPos pos) {
-        BlockEntity te = level.getBlockEntity(pos);
+        BlockEntity te = level().getBlockEntity(pos);
         return te instanceof BeaconBlockEntity && !((BeaconBlockEntity) te).getBeamSections().isEmpty();
     }
 
@@ -444,7 +444,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, 0, parentEntity.getZ() + extraZ);
-            BlockPos ground = parentEntity.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
+            BlockPos ground = parentEntity.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
             int distFromGround = (int) parentEntity.getY() - ground.getY();
             int flightHeight = Math.max(ground.getY(), 230 + parentEntity.getRandom().nextInt(40)) - ground.getY();
             BlockPos newPos = radialPos.above(distFromGround > 16 ? flightHeight : (int) parentEntity.getY() + parentEntity.getRandom().nextInt(16) + 1);

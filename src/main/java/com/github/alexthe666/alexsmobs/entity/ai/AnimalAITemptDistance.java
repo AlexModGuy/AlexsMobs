@@ -38,7 +38,7 @@ public class AnimalAITemptDistance extends Goal {
             --this.calmDown;
             return false;
         } else {
-            this.player = this.mob.level.getNearestPlayer(this.targetingConditions, this.mob);
+            this.player = this.mob.level().getNearestPlayer(this.targetingConditions, this.mob);
             return this.player != null;
         }
     }

@@ -161,15 +161,15 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
     }
 
     public void setItemSlot(EquipmentSlot slotIn, ItemStack stack) {
-        if (slotIn == EquipmentSlot.HEAD && !stack.sameItem(this.getItemBySlot(EquipmentSlot.HEAD))) {
+        if (slotIn == EquipmentSlot.HEAD && !ItemStack.isSameItem(stack, this.getItemBySlot(EquipmentSlot.HEAD))) {
             helmetSwapProgress = 5;
             this.level().broadcastEntityEvent(this, (byte) 45);
         }
-        if (slotIn == EquipmentSlot.MAINHAND && !stack.sameItem(this.getItemBySlot(EquipmentSlot.MAINHAND))) {
+        if (slotIn == EquipmentSlot.MAINHAND && !ItemStack.isSameItem(stack, this.getItemBySlot(EquipmentSlot.MAINHAND))) {
             rightSwapProgress = 5;
             this.level().broadcastEntityEvent(this, (byte) 46);
         }
-        if (slotIn == EquipmentSlot.OFFHAND && !stack.sameItem(this.getItemBySlot(EquipmentSlot.OFFHAND))) {
+        if (slotIn == EquipmentSlot.OFFHAND && !ItemStack.isSameItem(stack, this.getItemBySlot(EquipmentSlot.OFFHAND))) {
             leftSwapProgress = 5;
             this.level().broadcastEntityEvent(this, (byte) 47);
         }
@@ -241,7 +241,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         if (helmetSwapProgress > 0F) {
             helmetSwapProgress -= 0.5F;
         }
-        if (this.onGround && !this.wasOnGround) {
+        if (this.onGround() && !this.wasOnGround) {
 
             for (int j = 0; j < 8; ++j) {
                 float f = this.random.nextFloat() * ((float) Math.PI * 2F);
@@ -253,7 +253,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
 
             this.playSound(this.getSquishSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F) / 0.8F);
             this.squishAmount = -0.35F;
-        } else if (!this.onGround && this.wasOnGround) {
+        } else if (!this.onGround() && this.wasOnGround) {
             this.squishAmount = 2F;
         }
         if(this.isInWater()){
@@ -305,7 +305,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         } else {
             eatingTicks = 0;
         }
-        this.wasOnGround = this.onGround;
+        this.wasOnGround = this.onGround();
         this.alterSquishAmount();
         LivingEntity livingentity = this.getTarget();
         if (livingentity != null && this.distanceToSqr(livingentity) < 144D) {

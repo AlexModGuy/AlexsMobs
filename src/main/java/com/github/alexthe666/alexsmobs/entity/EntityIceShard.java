@@ -81,7 +81,7 @@ public class EntityIceShard extends Entity {
         }
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();
-        HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
             this.onImpact(raytraceresult);
         }

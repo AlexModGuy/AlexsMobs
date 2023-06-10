@@ -30,7 +30,7 @@ public class FlyingAIFollowOwner extends Goal {
 
     public FlyingAIFollowOwner(TamableAnimal tameable, double speed, float minDist, float maxDist, boolean teleportToLeaves) {
         this.tameable = tameable;
-        this.world = tameable.level;
+        this.world = tameable.level();
         this.followSpeed = speed;
         this.navigator = tameable.getNavigation();
         this.minDist = minDist;

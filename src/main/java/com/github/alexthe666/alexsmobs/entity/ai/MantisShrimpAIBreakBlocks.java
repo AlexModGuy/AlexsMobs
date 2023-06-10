@@ -102,7 +102,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
         List<BlockPos> allBlocks = new ArrayList<>();
         int radius = 16;
         for (BlockPos pos : BlockPos.betweenClosedStream(this.mantisShrimp.blockPosition().offset(-radius, -radius, -radius), this.mantisShrimp.blockPosition().offset(radius, radius, radius)).map(BlockPos::immutable).collect(Collectors.toList())) {
-            if (!mantisShrimp.level().isEmptyBlock(pos) && shouldMoveTo(mantisShrimp.level, pos)) {
+            if (!mantisShrimp.level().isEmptyBlock(pos) && shouldMoveTo(mantisShrimp.level(), pos)) {
                 if(!mantisShrimp.isInWater() || isBlockTouchingWater(pos)){
                     allBlocks.add(pos);
                 }
@@ -138,10 +138,10 @@ public class MantisShrimpAIBreakBlocks extends Goal {
     }
 
     private void breakBlock() {
-        if (shouldMoveTo(mantisShrimp.level, destinationBlock)) {
+        if (shouldMoveTo(mantisShrimp.level(), destinationBlock)) {
             BlockState state = mantisShrimp.level().getBlockState(destinationBlock);
-            if(!mantisShrimp.level().isEmptyBlock(destinationBlock) && net.minecraftforge.common.ForgeHooks.canEntityDestroy(mantisShrimp.level, destinationBlock, mantisShrimp) && state.getDestroySpeed(mantisShrimp.level, destinationBlock) >= 0){
-                mantisShrimp.level.destroyBlock(destinationBlock, true);
+            if(!mantisShrimp.level().isEmptyBlock(destinationBlock) && net.minecraftforge.common.ForgeHooks.canEntityDestroy(mantisShrimp.level(), destinationBlock, mantisShrimp) && state.getDestroySpeed(mantisShrimp.level(), destinationBlock) >= 0){
+                mantisShrimp.level().destroyBlock(destinationBlock, true);
             }
         }
     }
@@ -149,7 +149,7 @@ public class MantisShrimpAIBreakBlocks extends Goal {
     private boolean hasLineOfSightBlock(BlockPos destinationBlock) {
         Vec3 Vector3d = new Vec3(mantisShrimp.getX(), mantisShrimp.getEyeY(), mantisShrimp.getZ());
         Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
-        BlockHitResult result = mantisShrimp.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mantisShrimp));
+        BlockHitResult result = mantisShrimp.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mantisShrimp));
         return result.getBlockPos().equals(destinationBlock);
     }
 

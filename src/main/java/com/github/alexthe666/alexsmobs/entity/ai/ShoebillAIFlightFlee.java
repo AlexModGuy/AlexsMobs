@@ -70,7 +70,7 @@ public class ShoebillAIFlightFlee extends Goal {
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
-        BlockPos ground = bird.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
+        BlockPos ground = bird.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
         int distFromGround = (int) bird.getY() - ground.getY();
         int flightHeight = 4 + bird.getRandom().nextInt(10);
         BlockPos newPos = radialPos.above(distFromGround > 8 ? flightHeight : (int) bird.getY() + bird.getRandom().nextInt(6) + 1);
@@ -88,7 +88,7 @@ public class ShoebillAIFlightFlee extends Goal {
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
-        BlockPos ground = bird.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
+        BlockPos ground = bird.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
         if (!bird.isTargetBlocked(Vec3.atCenterOf(ground.above()))) {
             return ground;
         }

@@ -214,12 +214,12 @@ public class EntityUnderminer extends PathfinderMob {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return !source.is(DamageTypes.MAGIC) && source.is(DamageTypes.OUT_OF_WORLD) && !source.isCreativePlayer() || super.isInvulnerableTo(source);
+        return !source.is(DamageTypes.MAGIC) && source.is(DamageTypes.FELL_OUT_OF_WORLD) && !source.isCreativePlayer() || super.isInvulnerableTo(source);
     }
 
     private float calculateDistanceToFloor() {
         BlockPos floor = AMBlockPos.fromCoords(this.getX(), this.getBoundingBox().maxY, this.getZ());
-        while (!level().getBlockState(floor).isFaceSturdy(level, floor, Direction.UP) && floor.getY() > level.getMinBuildHeight()) {
+        while (!level().getBlockState(floor).isFaceSturdy(level(), floor, Direction.UP) && floor.getY() > level().getMinBuildHeight()) {
             floor = floor.below();
         }
         return (float) (this.getBoundingBox().minY - (floor.getY() + 1));
@@ -293,7 +293,7 @@ public class EntityUnderminer extends PathfinderMob {
             if(lastPosition != null && lastPosition.distSqr(this.blockPosition()) > 2.5F && Math.abs(distToFloor) < 0.5){
                 this.playSound(AMSoundRegistry.UNDERMINER_STEP.get(), 1F, 0.75F + random.nextFloat() * 0.25F);
                 lastPosition = this.blockPosition();
-                if(random.nextFloat() < 0.015F && !level.canSeeSky(lastPosition)){
+                if(random.nextFloat() < 0.015F && !level().canSeeSky(lastPosition)){
                     this.playSound(SoundEvents.AMBIENT_CAVE.get(), 3F, 0.75F + random.nextFloat() * 0.25F);
                 }
             }
@@ -339,7 +339,7 @@ public class EntityUnderminer extends PathfinderMob {
             this.onItemPickup(itemEntity);
             this.take(itemEntity, itemstack.getCount());
             itemEntity.discard();
-            this.mineAIFlag = this.lastGivenStack == null || !this.lastGivenStack.sameItem(itemEntity.getItem());
+            this.mineAIFlag = this.lastGivenStack == null || !ItemStack.isSameItem(this.lastGivenStack, itemEntity.getItem());
             this.lastGivenStack = itemEntity.getItem();
             this.resetStackTime = 2000 + random.nextInt(1200);
             this.mineCooldown = 0;
@@ -398,7 +398,7 @@ public class EntityUnderminer extends PathfinderMob {
             for (int j = 0; j <= range && j >= -range; j = (j <= 0 ? 1 : 0) - j) {
                 for (int k = 0; k <= range && k >= -range; k = (k <= 0 ? 1 : 0) - k) {
                     BlockPos offset = blockpos.offset(j, i, k);
-                    BlockState state = this.getLevel().getBlockState(offset);
+                    BlockState state = this.level().getBlockState(offset);
                     if (isValidMiningBlock(state)) {
                         if (obscuredBlocks.size() < maxOres) {
                             BlockPos obscured = getObscuringBlockOf(offset);

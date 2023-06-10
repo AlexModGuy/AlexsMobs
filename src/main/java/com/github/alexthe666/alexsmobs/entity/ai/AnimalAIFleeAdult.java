@@ -28,7 +28,7 @@ public class AnimalAIFleeAdult extends Goal {
         if (this.childAnimal.getAge() >= 0) {
             return false;
         } else {
-            List<? extends Animal> list = this.childAnimal.level.getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(fleeDistance, 4.0D, fleeDistance));
+            List<? extends Animal> list = this.childAnimal.level().getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(fleeDistance, 4.0D, fleeDistance));
             Animal animalentity = null;
             double d0 = Double.MAX_VALUE;
 

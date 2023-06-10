@@ -21,7 +21,7 @@ public class KomodoDragonAIJostle  extends Goal {
     public KomodoDragonAIJostle(EntityKomodoDragon moose) {
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.TARGET));
         this.komodo = moose;
-        this.world = moose.level;
+        this.world = moose.level();
     }
 
     @Override

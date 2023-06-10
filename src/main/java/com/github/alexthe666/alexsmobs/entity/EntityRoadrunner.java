@@ -127,9 +127,9 @@ public class EntityRoadrunner extends Animal {
         this.oFlap = this.wingRotation;
         this.prevAttackProgress = attackProgress;
         this.oFlapSpeed = this.destPos;
-        this.destPos = (float) ((double) this.destPos + (double) (this.onGround ? -1 : 4) * 0.3D);
+        this.destPos = (float) ((double) this.destPos + (double) (this.onGround() ? -1 : 4) * 0.3D);
         this.destPos = Mth.clamp(this.destPos, 0.0F, 1.0F);
-        if (!this.onGround && this.wingRotDelta < 1.0F) {
+        if (!this.onGround() && this.wingRotDelta < 1.0F) {
             this.wingRotDelta = 1.0F;
         }
         if (!this.level().isClientSide && this.isAlive() && !this.isBaby() && --this.timeUntilNextFeather <= 0) {
@@ -138,7 +138,7 @@ public class EntityRoadrunner extends Animal {
         }
         this.wingRotDelta = (float) ((double) this.wingRotDelta * 0.9D);
         Vec3 vector3d = this.getDeltaMovement();
-        if (!this.onGround && vector3d.y < 0.0D) {
+        if (!this.onGround() && vector3d.y < 0.0D) {
             this.setDeltaMovement(vector3d.multiply(1.0D, 0.8D, 1.0D));
         }
         this.wingRotation += this.wingRotDelta * 2.0F;
@@ -168,7 +168,7 @@ public class EntityRoadrunner extends Animal {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.45F);
             hasMeepSpeed = false;
         }
-        if (this.level().isClientSide && this.isMeep() && this.onGround && !this.isInWaterOrBubble() && this.getDeltaMovement().lengthSqr() > 0.03D) {
+        if (this.level().isClientSide && this.isMeep() && this.onGround() && !this.isInWaterOrBubble() && this.getDeltaMovement().lengthSqr() > 0.03D) {
             Vec3 vector3d = this.getViewVector(0.0F);
             float f = Mth.cos(this.getYRot() * ((float) Math.PI / 180F)) * 0.2F;
             float f1 = Mth.sin(this.getYRot() * ((float) Math.PI / 180F)) * 0.2F;

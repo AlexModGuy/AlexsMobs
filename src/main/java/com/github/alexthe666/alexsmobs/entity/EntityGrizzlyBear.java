@@ -422,7 +422,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                        if(getRandom().nextFloat() < 0.3F){
                            this.setTame(true);
                            this.setOwnerUUID(this.salmonThrowerID);
-                           Player player = level.getPlayerByUUID(salmonThrowerID);
+                           Player player = level().getPlayerByUUID(salmonThrowerID);
                            if (player instanceof ServerPlayer) {
                                CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer)player, this);
                            }
@@ -527,12 +527,12 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             snowTimer = 200 + random.nextInt(400);
             if(this.isSnowy()){
                if(!permSnow){
-                   if (!this.level().isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !isSnowingAt(level, this.blockPosition().above())) {
+                   if (!this.level().isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !isSnowingAt(level(), this.blockPosition().above())) {
                        this.setSnowy(false);
                    }
                }
             }else{
-                if (!this.level().isClientSide &&  isSnowingAt(level, this.blockPosition())) {
+                if (!this.level().isClientSide &&  isSnowingAt(level(), this.blockPosition())) {
                     this.setSnowy(true);
                 }
             }

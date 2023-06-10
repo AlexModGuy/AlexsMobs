@@ -26,7 +26,7 @@ public class ElephantAIFollowCaravan extends Goal {
         }
         if (!this.elephant.isTusked() && !this.elephant.inCaravan() && !elephant.isSitting()) {
             double dist = 32D;
-            List<EntityElephant> list = elephant.level.getEntitiesOfClass(EntityElephant.class, elephant.getBoundingBox().inflate(dist, dist / 2, dist));
+            List<EntityElephant> list = elephant.level().getEntitiesOfClass(EntityElephant.class, elephant.getBoundingBox().inflate(dist, dist / 2, dist));
             EntityElephant elephant = null;
             double d0 = Double.MAX_VALUE;
 

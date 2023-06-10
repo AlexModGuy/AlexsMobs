@@ -398,7 +398,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 double motX = this.random.nextGaussian() * 0.02D;
                 double motY = 0.1F + random.nextFloat() * 0.2F;
                 double motZ = this.random.nextGaussian() * 0.02D;
-                level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
+                level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
             }
         }
         if(this.tickCount > 0 && tickCount % 300 == 0 && this.getHealth() < this.getMaxHealth()){
@@ -532,7 +532,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             this.setFlying(true);
             this.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getBbHeight(), owner.getZ(), followSpeed);
         } else {
-            if (this.onGround) {
+            if (this.onGround()) {
                 this.setFlying(false);
             }
             if (this.isFlying() && !this.isOverWater()) {
@@ -781,7 +781,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                                 }
                             }
                             target.addEffect(new MobEffectInstance(AMEffectRegistry.DEBILITATING_STING.get(), target.getMobType() == MobType.ARTHROPOD ? EntityTarantulaHawk.STING_DURATION : 600, hawk.bredBuryFlag ? 1 : 0));
-                            if (!hawk.this.level().isClientSide && target.getMobType() == MobType.ARTHROPOD) {
+                            if (!hawk.level().isClientSide && target.getMobType() == MobType.ARTHROPOD) {
                                 AlexsMobs.sendMSGToAll(new MessageTarantulaHawkSting(hawk.getId(), target.getId()));
                             }
                             orbitCooldown = target.getMobType() == MobType.ARTHROPOD ? 200 + random.nextInt(200) : 10 + random.nextInt(20);
@@ -849,10 +849,10 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
             } else {
                 this.hawk.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && hawk.onGround) {
+            if (!flightTarget && isFlying() && hawk.onGround()) {
                 hawk.setFlying(false);
             }
-            if (isFlying() && hawk.onGround && hawk.timeFlying > 10) {
+            if (isFlying() && hawk.onGround() && hawk.timeFlying > 10) {
                 hawk.setFlying(false);
             }
         }

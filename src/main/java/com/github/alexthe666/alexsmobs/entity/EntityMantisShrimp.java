@@ -607,7 +607,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
 
         public FollowOwner(EntityMantisShrimp p_i225711_1_, double p_i225711_2_, float p_i225711_4_, float p_i225711_5_, boolean p_i225711_6_) {
             this.tameable = p_i225711_1_;
-            this.world = p_i225711_1_.level;
+            this.world = p_i225711_1_.level();
             this.followSpeed = p_i225711_2_;
             this.minDist = p_i225711_4_;
             this.maxDist = p_i225711_5_;

@@ -47,7 +47,7 @@ public class EntitySquidGrapple extends Entity {
     }
 
     public EntitySquidGrapple(PlayMessages.SpawnEntity spawnEntity, Level level) {
-        this(AMEntityRegistry.SQUID_GRAPPLE.get(), level());
+        this(AMEntityRegistry.SQUID_GRAPPLE.get(), level);
     }
 
     protected static float lerpRotation(float f2, float f3) {
@@ -112,7 +112,7 @@ public class EntitySquidGrapple extends Entity {
         if (id != null && !this.level().isClientSide) {
             return ((ServerLevel) level()).getEntity(id);
         }
-        return getOwnerId() == null ? null : level.getPlayerByUUID(getOwnerId());
+        return getOwnerId() == null ? null : level().getPlayerByUUID(getOwnerId());
     }
 
 
@@ -162,7 +162,7 @@ public class EntitySquidGrapple extends Entity {
             if(this.getStuckToPos() == null){
                 super.tick();
                 Vec3 vector3d = this.getDeltaMovement();
-                HitResult raytraceresult = ProjectileUtil.getHitResult(this, newentity -> false);
+                HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, newentity -> false);
                 if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
                     this.onImpact(raytraceresult);
                 }

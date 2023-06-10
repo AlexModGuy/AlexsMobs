@@ -152,7 +152,7 @@ public class EntityVoidWorm extends Monster {
 
     private void placeDropsSafely(Collection<ItemEntity> drops) {
         BlockPos pos = this.blockPosition();
-        while(!level().getBlockState(pos).getMaterial().isReplaceable() && pos.getY() < level.getMaxBuildHeight() - 2){
+        while(!level().getBlockState(pos).canBeReplaced() && pos.getY() < level().getMaxBuildHeight() - 2){
             pos = pos.above();
         }
         int radius = 2;
@@ -163,13 +163,13 @@ public class EntityVoidWorm extends Monster {
                     double sq = x * x + y * y + z * z;
                     BlockPos pos1 = pos.offset(x, y, z);
                     BlockState state = level().getBlockState(pos1);
-                    if(sq <= radius * radius && sq >= (radius * radius) - 2.0F && (state.getMaterial().isReplaceable() || state.is(AMBlockRegistry.ENDER_RESIDUE.get()))){
-                        level.setBlockAndUpdate(pos1, residue);
+                    if(sq <= radius * radius && sq >= (radius * radius) - 2.0F && (state.canBeReplaced() || state.is(AMBlockRegistry.ENDER_RESIDUE.get()))){
+                        level().setBlockAndUpdate(pos1, residue);
                     }
                 }
             }
         }
-        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+        level().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         for(ItemEntity drop : drops){
             drop.setPos(Vec3.atBottomCenterOf(pos));
             drop.setGlowingTag(true);
@@ -184,7 +184,7 @@ public class EntityVoidWorm extends Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL)  || source.is(DamageTypes.LAVA) || source.is(DamageTypes.OUT_OF_WORLD) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.FALL) || source.is(DamageTypes.DROWN) || source.is(DamageTypes.IN_WALL)  || source.is(DamageTypes.LAVA) || source.is(DamageTypes.FELL_OUT_OF_WORLD) || source.is(DamageTypeTags.IS_FIRE) || super.isInvulnerableTo(source);
     }
 
     @Override
@@ -571,7 +571,7 @@ public class EntityVoidWorm extends Monster {
         if (this.getTarget() != null) {
             createPortal(this.getTarget().position().add(random.nextInt(8) - 4, 2 + random.nextInt(3), random.nextInt(8) - 4));
         } else {
-            Vec3 vec = Vec3.atCenterOf(level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, this.blockPosition().above(random.nextInt(10) + 10)));
+            Vec3 vec = Vec3.atCenterOf(level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, this.blockPosition().above(random.nextInt(10) + 10)));
             createPortal(vec);
         }
     }
@@ -585,7 +585,7 @@ public class EntityVoidWorm extends Monster {
         Vec3 vec = null;
         for (int i = 0; i < 15; i++) {
             BlockPos pos = AMBlockPos.fromCoords(this.getX() + random.nextInt(60) - 30, 0, this.getZ() + random.nextInt(60) - 30);
-            BlockPos height = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos);
+            BlockPos height = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos);
             if(height.getY() < 10){
                 height = height.above(50 + random.nextInt(50));
             }else{
@@ -639,7 +639,7 @@ public class EntityVoidWorm extends Monster {
             return;
         }
         boolean flag = false;
-        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
+        if (!this.level().isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level(), this)) {
             for (int a = (int) Math.round(this.getBoundingBox().minX); a <= (int) Math.round(this.getBoundingBox().maxX); a++) {
                 for (int b = (int) Math.round(this.getBoundingBox().minY) - 1; (b <= (int) Math.round(this.getBoundingBox().maxY) + 1) && (b <= 127); b++) {
                     for (int c = (int) Math.round(this.getBoundingBox().minZ); c <= (int) Math.round(this.getBoundingBox().maxZ); c++) {
@@ -647,13 +647,13 @@ public class EntityVoidWorm extends Monster {
                         BlockState state = level().getBlockState(pos);
                         FluidState fluidState = level().getFluidState(pos);
                         Block block = state.getBlock();
-                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && state.is(AMTagRegistry.VOID_WORM_BREAKABLES) && fluidState.isEmpty()) {
+                        if (!state.isAir() && !state.getShape(level(), pos).isEmpty() && state.is(AMTagRegistry.VOID_WORM_BREAKABLES) && fluidState.isEmpty()) {
                             if (block != Blocks.AIR) {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
-                                level.destroyBlock(pos, true);
+                                level().destroyBlock(pos, true);
                                 if (state.is(BlockTags.ICE)) {
-                                    level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
+                                    level().setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
                                 }
                             }
                         }

@@ -45,7 +45,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
@@ -232,10 +231,10 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             double extraY = 0.8F;
             double extraZ = radius * Mth.cos(angle);
             BlockPos ground = this.getBlockPosBelowThatAffectsMyMovement();
-            BlockState BlockState = this.level().getBlockState(ground);
-            if (BlockState.getMaterial() != Material.AIR && BlockState.getMaterial() != Material.WATER) {
+            BlockState state = this.level().getBlockState(ground);
+            if (state.isSolid()) {
                 if (this.level().isClientSide) {
-                    level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, BlockState), true, this.getX() + extraX, ground.getY() + extraY, this.getZ() + extraZ, motionX, motionY, motionZ);
+                    level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), true, this.getX() + extraX, ground.getY() + extraY, this.getZ() + extraZ, motionX, motionY, motionZ);
                 }
             }
         }
@@ -366,7 +365,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         if (!this.isInWaterOrBubble() && !this.isLandNavigator) {
             switchNavigator(true);
         }
-        if (this.onGround && isDigging()) {
+        if (this.onGround() && isDigging()) {
             spawnGroundEffects();
         }
         if (inWaterProgress > 0) {

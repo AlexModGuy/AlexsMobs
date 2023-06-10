@@ -86,18 +86,18 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
     }
 
     private void breakLeaves() {
-        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(elephant.level, elephant)) {
+        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(elephant.level(), elephant)) {
             BlockState blockstate = elephant.level().getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.ELEPHANT_FOODBLOCKS)) {
-                elephant.level.destroyBlock(blockPos, false);
+                elephant.level().destroyBlock(blockPos, false);
                 final RandomSource rand = this.elephant.getRandom();
                 ItemStack stack = new ItemStack(blockstate.getBlock().asItem());
-                ItemEntity itementity = new ItemEntity(elephant.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
+                ItemEntity itementity = new ItemEntity(elephant.level(), blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();
                 elephant.level().addFreshEntity(itementity);
                 if(blockstate.is(AMTagRegistry.DROPS_ACACIA_BLOSSOMS) && rand.nextInt(30) == 0){
                     ItemStack banana = new ItemStack(AMItemRegistry.ACACIA_BLOSSOM.get());
-                    ItemEntity itementity2 = new ItemEntity(elephant.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
+                    ItemEntity itementity2 = new ItemEntity(elephant.level(), blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
                     itementity2.setDefaultPickUpDelay();
                     elephant.level().addFreshEntity(itementity2);
                 }

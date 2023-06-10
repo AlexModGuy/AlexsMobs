@@ -48,7 +48,7 @@ public class AnimalAIHerdPanic extends Goal {
             return false;
         } else {
             if (this.creature.isOnFire() && !this.creature.fireImmune()) {
-                BlockPos blockpos = this.getRandPos(this.creature.level, this.creature, 5, 4);
+                BlockPos blockpos = this.getRandPos(this.creature.level(), this.creature, 5, 4);
                 if (blockpos != null) {
                     this.randPosX = blockpos.getX();
                     this.randPosY = blockpos.getY();
@@ -57,7 +57,7 @@ public class AnimalAIHerdPanic extends Goal {
                 }
             }
             if (this.creature.getLastHurtByMob() != null && this.creature instanceof IHerdPanic && ((IHerdPanic) this.creature).canPanic()) {
-                List<? extends PathfinderMob> list = this.creature.level.getEntitiesOfClass(this.creature.getClass(), this.getTargetableArea(), this.targetEntitySelector);
+                List<? extends PathfinderMob> list = this.creature.level().getEntitiesOfClass(this.creature.getClass(), this.getTargetableArea(), this.targetEntitySelector);
                 for (PathfinderMob creatureEntity : list) {
                     creatureEntity.setLastHurtByMob(this.creature.getLastHurtByMob());
                 }

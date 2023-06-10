@@ -429,7 +429,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             if (getRandom().nextFloat() < 0.3F) {
                 this.setTame(true);
                 this.setOwnerUUID(eggThrowerUUID);
-                Player player = level.getPlayerByUUID(eggThrowerUUID);
+                Player player = level().getPlayerByUUID(eggThrowerUUID);
                 if (player instanceof ServerPlayer) {
                     CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer) player, this);
                 }
@@ -755,13 +755,13 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
 
         @Nullable
         private boolean isGolemNearby() {
-            List<IronGolem> lvt_1_1_ = raccoon.level.getNearbyEntities(IronGolem.class, IRON_GOLEM_PREDICATE, raccoon, raccoon.getBoundingBox().inflate(25.0D));
+            List<IronGolem> lvt_1_1_ = raccoon.level().getNearbyEntities(IronGolem.class, IRON_GOLEM_PREDICATE, raccoon, raccoon.getBoundingBox().inflate(25.0D));
             return !lvt_1_1_.isEmpty();
         }
 
         @Nullable
         private AbstractVillager getNearbyVillagers() {
-            List<AbstractVillager> lvt_1_1_ = raccoon.level.getNearbyEntities(AbstractVillager.class, VILLAGER_STEAL_PREDICATE, raccoon, raccoon.getBoundingBox().inflate(20.0D));
+            List<AbstractVillager> lvt_1_1_ = raccoon.level().getNearbyEntities(AbstractVillager.class, VILLAGER_STEAL_PREDICATE, raccoon, raccoon.getBoundingBox().inflate(20.0D));
             double lvt_2_1_ = 10000;
             AbstractVillager lvt_4_1_ = null;
             Iterator var5 = lvt_1_1_.iterator();

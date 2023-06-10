@@ -206,15 +206,15 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                         BlockState state = level().getBlockState(pos);
                         FluidState fluidState = level().getFluidState(pos);
                         Block block = state.getBlock();
-                        if (!state.isAir() && !state.getShape(level, pos).isEmpty() && state.is(AMTagRegistry.ORCA_BREAKABLES) && fluidState.isEmpty()) {
+                        if (!state.isAir() && !state.getShape(level(), pos).isEmpty() && state.is(AMTagRegistry.ORCA_BREAKABLES) && fluidState.isEmpty()) {
                             if (block != Blocks.AIR) {
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                                 flag = true;
                                 if (state.is(BlockTags.ICE)) {
-                                    level.destroyBlock(pos, false);
-                                    level.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
+                                    level().destroyBlock(pos, false);
+                                    level().setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
                                 }else{
-                                    level.destroyBlock(pos, true);
+                                    level().destroyBlock(pos, true);
                                 }
                             }
                         }
@@ -246,10 +246,10 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                     this.hurt(damageSources().dryOut(), 1.0F);
                 }
 
-                if (this.onGround) {
+                if (this.onGround()) {
                     this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
                     this.setYRot( this.random.nextFloat() * 360.0F);
-                    this.onGround = false;
+                    this.setOnGround(false);
                     this.hasImpulse = true;
                 }
             }
@@ -435,7 +435,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         }
 
         public boolean canUse() {
-            this.targetPlayer = this.dolphin.level.getNearestPlayer(EntityOrca.PLAYER_PREDICATE, this.dolphin);
+            this.targetPlayer = this.dolphin.level().getNearestPlayer(EntityOrca.PLAYER_PREDICATE, this.dolphin);
             if (this.targetPlayer == null) {
                 return false;
             } else {
@@ -463,7 +463,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                 this.dolphin.getNavigation().moveTo(this.targetPlayer, this.speed);
             }
 
-            if (this.targetPlayer.isSwimming() && this.targetPlayer.level.random.nextInt(6) == 0) {
+            if (this.targetPlayer.isSwimming() && this.targetPlayer.level().random.nextInt(6) == 0) {
                 this.targetPlayer.addEffect(new MobEffectInstance(AMEffectRegistry.ORCAS_MIGHT.get(), 1000));
             }
         }

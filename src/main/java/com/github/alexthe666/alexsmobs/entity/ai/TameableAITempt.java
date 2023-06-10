@@ -32,7 +32,7 @@ public class TameableAITempt extends TemptGoal {
             --this.calmDown;
             return false;
         } else {
-            this.player = this.mob.level.getNearestPlayer(this.targetingConditions, this.mob);
+            this.player = this.mob.level().getNearestPlayer(this.targetingConditions, this.mob);
             return  (!(tameable instanceof TamableAnimal) || !((TamableAnimal)tameable).isTame()) && this.player != null;
         }
     }

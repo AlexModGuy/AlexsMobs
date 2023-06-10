@@ -33,7 +33,7 @@ public class MantisShrimpAIFryRice extends MoveToBlockGoal {
             BlockPos blockpos = this.getMoveToTarget().below();
             BlockState state = mantisShrimp.level().getBlockState(blockpos);
             if(state.getBlock() instanceof AbstractFurnaceBlock && !wasLitPrior){
-                mantisShrimp.level.setBlockAndUpdate(blockpos, state.setValue(AbstractFurnaceBlock.LIT, false));
+                mantisShrimp.level().setBlockAndUpdate(blockpos, state.setValue(AbstractFurnaceBlock.LIT, false));
             }
         }
         super.stop();
@@ -48,7 +48,7 @@ public class MantisShrimpAIFryRice extends MoveToBlockGoal {
                 mantisShrimp.punch();
             }
             if(state.getBlock() instanceof AbstractFurnaceBlock && !wasLitPrior){
-                mantisShrimp.level.setBlockAndUpdate(blockpos, state.setValue(AbstractFurnaceBlock.LIT, true));
+                mantisShrimp.level().setBlockAndUpdate(blockpos, state.setValue(AbstractFurnaceBlock.LIT, true));
             }
             cookingTicks++;
             if(cookingTicks > 200){

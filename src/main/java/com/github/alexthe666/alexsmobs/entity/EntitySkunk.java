@@ -263,7 +263,7 @@ public class EntitySkunk extends Animal {
             float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
             EntitySkunk.this.setSprayYaw(f);
             if(EntitySkunk.this.sprayProgress >= 5F){
-                level.broadcastEntityEvent(EntitySkunk.this, (byte)48);
+                level().broadcastEntityEvent(EntitySkunk.this, (byte)48);
                 if(actualSprayTime > 10 && random.nextInt(2) == 0){
                     Vec3 skunkPos = new Vec3(EntitySkunk.this.getX(), EntitySkunk.this.getEyeY(), EntitySkunk.this.getZ());
                     float xAdd = random.nextFloat() * 20 - 10;
@@ -281,9 +281,9 @@ public class EntitySkunk extends Animal {
                             pos = AMBlockPos.fromVec3(hitResult.getLocation());
                             dir = Direction.UP;
                         }
-                        BlockState sprayState = ((MultifaceBlock) AMBlockRegistry.SKUNK_SPRAY.get()).getStateForPlacement(level().getBlockState(pos), level, pos, dir);
+                        BlockState sprayState = ((MultifaceBlock) AMBlockRegistry.SKUNK_SPRAY.get()).getStateForPlacement(level().getBlockState(pos), level(), pos, dir);
                         if (sprayState != null && sprayState.is(AMBlockRegistry.SKUNK_SPRAY.get())) {
-                            level.setBlockAndUpdate(pos, sprayState);
+                            level().setBlockAndUpdate(pos, sprayState);
                         }
                         double sprayDist = hitResult.getLocation().subtract(skunkPos).length() / maxSprayDist;
                         AABB poisonBox = new AABB(skunkPos, skunkPos.add(modelBack.scale(sprayDist)).add(0, 1.5F, 0)).inflate(1F);

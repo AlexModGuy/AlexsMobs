@@ -26,7 +26,7 @@ public class GeladaAIGroom extends Goal {
         }else{
             groomCooldown = 200 + monkey.getRandom().nextInt(1000);
             EntityGeladaMonkey nearestMonkey = null;
-            for (EntityGeladaMonkey entity : monkey.level.getEntitiesOfClass(EntityGeladaMonkey.class, monkey.getBoundingBox().inflate(15F))) {
+            for (EntityGeladaMonkey entity : monkey.level().getEntitiesOfClass(EntityGeladaMonkey.class, monkey.getBoundingBox().inflate(15F))) {
                 if (entity.getId() != monkey.getId() && monkey.canBeGroomed() && (nearestMonkey == null || monkey.distanceTo(nearestMonkey) > monkey.distanceTo(entity))) {
                     nearestMonkey = entity;
                 }

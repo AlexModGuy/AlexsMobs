@@ -22,7 +22,7 @@ public class LeafcutterAntAIFollowCaravan extends Goal {
     }
 
     public boolean canUse() {
-        long worldTime = this.ant.level.getGameTime() % 10;
+        long worldTime = this.ant.level().getGameTime() % 10;
         if (this.ant.getNoActionTime() >= 100 && worldTime != 0) {
             return false;
         }
@@ -31,7 +31,7 @@ public class LeafcutterAntAIFollowCaravan extends Goal {
         }
         if (!this.ant.shouldLeadCaravan() && !ant.isBaby() && !this.ant.isQueen() && !this.ant.inCaravan() && !this.ant.hasLeaf()) {
             double dist = 15D;
-            List<EntityLeafcutterAnt> list = ant.level.getEntitiesOfClass(EntityLeafcutterAnt.class, ant.getBoundingBox().inflate(dist, dist/2, dist));
+            List<EntityLeafcutterAnt> list = ant.level().getEntitiesOfClass(EntityLeafcutterAnt.class, ant.getBoundingBox().inflate(dist, dist/2, dist));
             EntityLeafcutterAnt LeafcutterAnt = null;
             double d0 = Double.MAX_VALUE;
 

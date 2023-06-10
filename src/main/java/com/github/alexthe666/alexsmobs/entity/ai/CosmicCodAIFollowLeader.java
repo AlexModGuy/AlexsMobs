@@ -35,7 +35,7 @@ public class CosmicCodAIFollowLeader extends Goal {
             Predicate<EntityCosmicCod> predicate = (p_25258_) -> {
                 return p_25258_.canGroupGrow() || !p_25258_.hasGroupLeader();
             };
-            List<EntityCosmicCod> list = this.mob.level.getEntitiesOfClass(EntityCosmicCod.class, this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), predicate);
+            List<EntityCosmicCod> list = this.mob.level().getEntitiesOfClass(EntityCosmicCod.class, this.mob.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), predicate);
             EntityCosmicCod cc = DataFixUtils.orElse(list.stream().filter(EntityCosmicCod::canGroupGrow).findAny(), this.mob);
             cc.createFromStream(list.stream().filter((p_25255_) -> {
                 return !p_25255_.hasGroupLeader();

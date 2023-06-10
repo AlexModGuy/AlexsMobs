@@ -37,7 +37,7 @@ public class FroststalkerAIFollowLeader  extends Goal {
                 return p_25258_.canBeFollowed() || !p_25258_.isFollower();
             };
             float range = 60F;
-            List<Player> playerList = this.mob.level.getEntitiesOfClass(Player.class, this.mob.getBoundingBox().inflate(range, range, range), EntityFroststalker.VALID_LEADER_PLAYERS);
+            List<Player> playerList = this.mob.level().getEntitiesOfClass(Player.class, this.mob.getBoundingBox().inflate(range, range, range), EntityFroststalker.VALID_LEADER_PLAYERS);
             Player closestPlayer = null;
             for(Player player : playerList){
                 if(closestPlayer == null || player.distanceTo(mob) < closestPlayer.distanceTo(mob)){
@@ -45,7 +45,7 @@ public class FroststalkerAIFollowLeader  extends Goal {
                 }
             }
             if(closestPlayer == null){
-                List<EntityFroststalker> list = this.mob.level.getEntitiesOfClass(EntityFroststalker.class, this.mob.getBoundingBox().inflate(range, range, range), froststalkerPredicate);
+                List<EntityFroststalker> list = this.mob.level().getEntitiesOfClass(EntityFroststalker.class, this.mob.getBoundingBox().inflate(range, range, range), froststalkerPredicate);
                 EntityFroststalker entityFroststalker = DataFixUtils.orElse(list.stream().filter(EntityFroststalker::canBeFollowed).findAny(), this.mob);
                 entityFroststalker.addFollowers(list.stream().filter((p_25255_) -> {
                     return !p_25255_.isFollower();

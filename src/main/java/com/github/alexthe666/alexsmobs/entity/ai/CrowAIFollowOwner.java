@@ -37,7 +37,7 @@ public class CrowAIFollowOwner extends Goal {
 
     public CrowAIFollowOwner(EntityCrow p_i225711_1_, double p_i225711_2_, float p_i225711_4_, float p_i225711_5_, boolean p_i225711_6_) {
         this.crow = p_i225711_1_;
-        this.world = p_i225711_1_.level;
+        this.world = p_i225711_1_.level();
         this.followSpeed = p_i225711_2_;
         this.navigator = p_i225711_1_.getNavigation();
         this.minDist = p_i225711_4_;
@@ -112,7 +112,7 @@ public class CrowAIFollowOwner extends Goal {
                     crow.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + owner.getEyeHeight() + 0.2F, owner.getZ(), 0.7F);
                     if(crow.distanceTo(owner) < 2){
                         crow.startRiding(owner, true);
-                        if (!crow.this.level().isClientSide) {
+                        if (!crow.level().isClientSide) {
                             AlexsMobs.sendMSGToAll(new MessageCrowMountPlayer(crow.getId(), owner.getId()));
                         }
                     }

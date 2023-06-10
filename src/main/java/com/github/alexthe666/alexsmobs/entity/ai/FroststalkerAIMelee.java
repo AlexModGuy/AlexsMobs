@@ -128,10 +128,10 @@ public class FroststalkerAIMelee extends Goal {
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
         BlockPos circlePos = AMBlockPos.fromCoords(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);
-        while (!froststalker.level().getBlockState(circlePos).isAir() && circlePos.getY() < froststalker.level.getMaxBuildHeight()) {
+        while (!froststalker.level().getBlockState(circlePos).isAir() && circlePos.getY() < froststalker.level().getMaxBuildHeight()) {
             circlePos = circlePos.above();
         }
-        while (!froststalker.level().getBlockState(circlePos.below()).entityCanStandOn(froststalker.level, circlePos.below(), froststalker) && circlePos.getY() > 1) {
+        while (!froststalker.level().getBlockState(circlePos.below()).entityCanStandOn(froststalker.level(), circlePos.below(), froststalker) && circlePos.getY() > 1) {
             circlePos = circlePos.below();
         }
         if (froststalker.getWalkTargetValue(circlePos) > -1) {

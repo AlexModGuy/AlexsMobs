@@ -72,7 +72,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public static boolean canTusklinSpawn(EntityType<? extends Animal> animal, LevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return worldIn.getRawBrightness(pos, 0) > 8 && (worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.SNOW_BLOCK));
+        return worldIn.getRawBrightness(pos, 0) > 8 && (worldIn.getBlockState(pos.below()).isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.SNOW_BLOCK));
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -425,8 +425,8 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         if (this.getAnimation() == ANIMATION_RUT && this.getAnimationTick() == 23) {
             if (level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0) {
                 if (this.isBaby()) {
-                    if (level().getBlockState(this.blockPosition()).getMaterial().isReplaceable() && random.nextInt(3) == 0) {
-                        level.setBlockAndUpdate(this.blockPosition(), Blocks.BROWN_MUSHROOM.defaultBlockState());
+                    if (level().getBlockState(this.blockPosition()).canBeReplaced() && random.nextInt(3) == 0) {
+                        level().setBlockAndUpdate(this.blockPosition(), Blocks.BROWN_MUSHROOM.defaultBlockState());
                         this.gameEvent(GameEvent.BLOCK_DESTROY);
                         this.playSound(SoundEvents.CROP_PLANTED, this.getSoundVolume(), this.getVoicePitch());
                     }

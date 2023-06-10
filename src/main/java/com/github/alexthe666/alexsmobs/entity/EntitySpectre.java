@@ -107,7 +107,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return !source.is(DamageTypes.MAGIC) && !source.is(DamageTypes.OUT_OF_WORLD) && !source.isCreativePlayer() || super.isInvulnerableTo(source);
+        return !source.is(DamageTypes.MAGIC) && !source.is(DamageTypes.FELL_OUT_OF_WORLD) && !source.isCreativePlayer() || super.isInvulnerableTo(source);
     }
 
     @Nullable
@@ -296,7 +296,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
             if (islandCheckTime-- <= 0) {
                 islandCheckTime = 20;
                 if (circlingTime == 0) {
-                    island = this.parentEntity.level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, parentEntity.blockPosition()).getY() > 2;
+                    island = this.parentEntity.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, parentEntity.blockPosition()).getY() > 2;
                     if (island) {
                         parentEntity.randomizeDirection();
                     }
@@ -329,10 +329,10 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
             float radius = 15;
             BlockPos forwards = parentEntity.blockPosition().relative(parentEntity.getCardinalDirection(), (int) Math.ceil(radius));
             int height = 0;
-            if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, forwards).getY() < 15) {
+            if (level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, forwards).getY() < 15) {
                 height = 70 + random.nextInt(2);
             } else {
-                height = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, forwards).getY() + 10 + random.nextInt(10);
+                height = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, forwards).getY() + 10 + random.nextInt(10);
             }
             return new BlockPos(forwards.getX(), height, forwards.getZ());
         }
@@ -341,7 +341,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
             float angle = (0.01745329251F * 3 * (clockwise ? -circlingTime : circlingTime));
             double extraX = circleDistance * Mth.sin((angle));
             double extraZ = circleDistance * Mth.cos(angle);
-            int height = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, orbit).getY();
+            int height = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, orbit).getY();
             if (height < 3) {
                 island = false;
                 return getBlockFromDirection();
@@ -375,7 +375,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
                 --this.delayTemptCounter;
                 return false;
             } else {
-                this.closestPlayer = this.creature.level.getNearestPlayer(ENTITY_PREDICATE, this.creature);
+                this.closestPlayer = this.creature.level().getNearestPlayer(ENTITY_PREDICATE, this.creature);
                 if (this.closestPlayer == null || this.creature.getLeashHolder() == closestPlayer) {
                     return false;
                 } else {

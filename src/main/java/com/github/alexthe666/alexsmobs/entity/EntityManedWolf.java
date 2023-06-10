@@ -73,7 +73,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     private BlockPos nearestAnthill;
 
     protected EntityManedWolf(EntityType<? extends Animal> animal, Level level) {
-        super(animal, level());
+        super(animal, level);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -160,19 +160,19 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     }
 
     private void pollinateAnthill(){
-        if(nearestAnthill != null && level.getBlockEntity(nearestAnthill) instanceof TileEntityLeafcutterAnthill){
+        if(nearestAnthill != null && level().getBlockEntity(nearestAnthill) instanceof TileEntityLeafcutterAnthill){
             if(this.getShakingTime() % 5 == 0){
                 this.getNavigation().moveTo(nearestAnthill.getX() + 0.5F, nearestAnthill.getY() + 1F, nearestAnthill.getZ() + 0.5F, 1F);
             }
             if(nearestAnthill.closerToCenterThan(this.position(), 6) && this.getShakingTime() % 20 == 0){
-                ((TileEntityLeafcutterAnthill)level.getBlockEntity(nearestAnthill)).growFungus();
+                ((TileEntityLeafcutterAnthill)level().getBlockEntity(nearestAnthill)).growFungus();
             }
         }
     }
 
     private void findAnthill(){
-        if(nearestAnthill == null || !(level.getBlockEntity(nearestAnthill) instanceof TileEntityLeafcutterAnthill)){
-            PoiManager pointofinterestmanager = ((ServerLevel) level).getPoiManager();
+        if(nearestAnthill == null || !(level().getBlockEntity(nearestAnthill) instanceof TileEntityLeafcutterAnthill)){
+            PoiManager pointofinterestmanager = ((ServerLevel) level()).getPoiManager();
             Stream<BlockPos> stream = pointofinterestmanager.findAll((poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.getKey())), Predicates.alwaysTrue(), this.blockPosition(), 10, PoiManager.Occupancy.ANY);
             List<BlockPos> listOfHives = stream.collect(Collectors.toList());
             BlockPos nearest = null;

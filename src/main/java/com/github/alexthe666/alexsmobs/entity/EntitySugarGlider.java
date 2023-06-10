@@ -53,6 +53,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -244,7 +245,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                     BlockPos antPos = new BlockPos(Mth.floor(this.getX()), Mth.floor(this.getY()), Mth.floor(this.getZ()));
                     BlockPos offsetPos = antPos.relative(dir);
                     Vec3 offset = Vec3.atCenterOf(offsetPos);
-                    if (closestDistance > this.position().distanceTo(offset) && level.loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
+                    if (closestDistance > this.position().distanceTo(offset) && level().loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
                         closestDistance = this.position().distanceTo(offset);
                         closestDirection = dir;
                     }
@@ -258,7 +259,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                 Vec3 vec = Vec3.atLowerCornerOf(this.getAttachmentFacing().getNormal());
                 this.setDeltaMovement(vector3d.add(vec.normalize().multiply(0.1F, 0.1F, 0.1F)));
             }
-            if (!this.onGround && vector3d.y < 0.0D) {
+            if (!this.onGround() && vector3d.y < 0.0D) {
                 this.setDeltaMovement(vector3d.multiply(1.0D, 0.5D, 1.0D));
                 flag = true;
             }
@@ -290,7 +291,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                         double motX = this.random.nextGaussian() * 0.02D;
                         double motY = this.random.nextGaussian() * 0.02D;
                         double motZ = this.random.nextGaussian() * 0.02D;
-                        level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), on.getX() + random.nextFloat(), on.getY() + random.nextFloat(), on.getZ() + random.nextFloat(), motX, motY, motZ);
+                        level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), on.getX() + random.nextFloat(), on.getY() + random.nextFloat(), on.getZ() + random.nextFloat(), motX, motY, motZ);
                     }
                 }
                 this.setForagingTime(this.getForagingTime() + 1);
@@ -362,8 +363,8 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         if (rng < 0.25F && sapling != null) {
             return List.of(new ItemStack(sapling));
         }
-        LootTable loottable = this.level().getServer().getLootTables().get(SUGAR_GLIDER_REWARD);
-        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) this.level())).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.BLOCK_STATE, leafState).withRandom(this.level().random).create(LootContextParamSets.PIGLIN_BARTER));
+        LootTable loottable = this.level().getServer().getLootData().getLootTable(SUGAR_GLIDER_REWARD);
+        return loottable.getRandomItems((new LootParams.Builder((ServerLevel) this.level())).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.BLOCK_STATE, leafState).create(LootContextParamSets.PIGLIN_BARTER));
 
     }
 
@@ -542,7 +543,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return AMEntityRegistry.SUGAR_GLIDER.get().create(serverlevel());
+        return AMEntityRegistry.SUGAR_GLIDER.get().create(serverLevel);
     }
 
     private boolean shouldStopGliding() {
@@ -706,7 +707,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                 double d2 = offset.getZ() + 0.5F - EntitySugarGlider.this.getZ();
                 double xzDistSqr = d0 * d0 + d2 * d2;
                 Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(offset);
-                BlockHitResult result = level.clip(new ClipContext(EntitySugarGlider.this.getEyePosition(), blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySugarGlider.this));
+                BlockHitResult result = level().clip(new ClipContext(EntitySugarGlider.this.getEyePosition(), blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySugarGlider.this));
                 if (result.getType() != HitResult.Type.MISS && xzDistSqr > 4 && result.getDirection().getAxis() != Direction.Axis.Y && getDistanceOffGround(result.getBlockPos().relative(result.getDirection())) > 3 && isPositionEasilyClimbable(result.getBlockPos())) {
                     climbOffset = result.getDirection();
                     return result.getBlockPos();
@@ -720,7 +721,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
             for (int i = 0; i < 15; i++) {
                 BlockPos offset = mobPos.offset(EntitySugarGlider.this.random.nextInt(32) - 16, -1 - random.nextInt(4), EntitySugarGlider.this.random.nextInt(32) - 16);
                 Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(offset);
-                BlockHitResult result = level.clip(new ClipContext(EntitySugarGlider.this.getEyePosition(), blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySugarGlider.this));
+                BlockHitResult result = level().clip(new ClipContext(EntitySugarGlider.this.getEyePosition(), blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySugarGlider.this));
                 if (result.getType() != HitResult.Type.MISS && result.getBlockPos().distSqr(mobPos) > 4) {
                     if (leavesOnly && !level().getBlockState(result.getBlockPos()).is(BlockTags.LEAVES)) {
                         continue;

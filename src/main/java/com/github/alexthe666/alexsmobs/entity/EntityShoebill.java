@@ -198,7 +198,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
                 switchNavigator(true);
             }
             if (this.revengeCooldown > 0 && !this.isFlying()) {
-                if (this.onGround || this.isInWater()) {
+                if (this.onGround() || this.isInWater()) {
                     this.setFlying(false);
                 }
             }
@@ -221,8 +221,8 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
         super.addAdditionalSaveData(compound);
         compound.putBoolean("Flying", this.isFlying());
         compound.putInt("FishingTimer", this.fishingCooldown);
-        compound.putInt("FishingLuck", this.lucklevel());
-        compound.putInt("FishingLure", this.lurelevel());
+        compound.putInt("FishingLuck", this.luckLevel);
+        compound.putInt("FishingLure", this.lureLevel);
         compound.putInt("RevengeCooldownTimer", this.revengeCooldown);
     }
 

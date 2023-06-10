@@ -23,7 +23,7 @@ public class GorillaAIFollowCaravan extends Goal {
     public boolean canUse() {
         if (!this.gorilla.isSilverback() && !this.gorilla.inCaravan() && !gorilla.isSitting()) {
             double dist = 15D;
-            List<EntityGorilla> list = gorilla.level.getEntitiesOfClass(EntityGorilla.class, gorilla.getBoundingBox().inflate(dist, dist / 2, dist));
+            List<EntityGorilla> list = gorilla.level().getEntitiesOfClass(EntityGorilla.class, gorilla.getBoundingBox().inflate(dist, dist / 2, dist));
             EntityGorilla gorilla = null;
             double d0 = Double.MAX_VALUE;
 

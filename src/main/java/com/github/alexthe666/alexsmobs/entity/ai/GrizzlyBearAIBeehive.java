@@ -86,30 +86,30 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
     }
 
     private void eatHive() {
-        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(bear.level, bear)) {
+        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(bear.level(), bear)) {
             BlockState blockstate = bear.level().getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
-                if (bear.level.getBlockEntity(this.blockPos) instanceof BeehiveBlockEntity) {
+                if (bear.level().getBlockEntity(this.blockPos) instanceof BeehiveBlockEntity) {
                     final RandomSource rand = this.bear.getRandom();
-                    BeehiveBlockEntity beehivetileentity = (BeehiveBlockEntity) bear.level.getBlockEntity(this.blockPos);
+                    BeehiveBlockEntity beehivetileentity = (BeehiveBlockEntity) bear.level().getBlockEntity(this.blockPos);
                     beehivetileentity.emptyAllLivingFromHive(null, blockstate, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
-                    bear.level.updateNeighbourForOutputSignal(this.blockPos, blockstate.getBlock());
+                    bear.level().updateNeighbourForOutputSignal(this.blockPos, blockstate.getBlock());
                     ItemStack stack = new ItemStack(Items.HONEYCOMB);
                     int level = 0;
                     if (blockstate.getBlock() instanceof BeehiveBlock) {
-                        level = blockstate.getValue(BeehiveBlock.HONEY_level());
+                        level = blockstate.getValue(BeehiveBlock.HONEY_LEVEL);
                     }
                     for (int i = 0; i < level; i++) {
-                        ItemEntity itementity = new ItemEntity(bear.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
+                        ItemEntity itementity = new ItemEntity(bear.level(), blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                         itementity.setDefaultPickUpDelay();
                         bear.level().addFreshEntity(itementity);
                     }
-                    bear.level.destroyBlock(blockPos, false);
+                    bear.level().destroyBlock(blockPos, false);
                     if (blockstate.getBlock() instanceof BeehiveBlock) {
-                        bear.level.setBlockAndUpdate(blockPos, blockstate.setValue(BeehiveBlock.HONEY_LEVEL, 0));
+                        bear.level().setBlockAndUpdate(blockPos, blockstate.setValue(BeehiveBlock.HONEY_LEVEL, 0));
                     }
                     double d0 = 15;
-                    for (Bee bee : bear.level.getEntitiesOfClass(Bee.class, new AABB((double) blockPos.getX() - d0, (double) blockPos.getY() - d0, (double) blockPos.getZ() - d0, (double) blockPos.getX() + d0, (double) blockPos.getY() + d0, (double) blockPos.getZ() + d0))) {
+                    for (Bee bee : bear.level().getEntitiesOfClass(Bee.class, new AABB((double) blockPos.getX() - d0, (double) blockPos.getY() - d0, (double) blockPos.getZ() - d0, (double) blockPos.getX() + d0, (double) blockPos.getY() + d0, (double) blockPos.getZ() + d0))) {
                         bee.setRemainingPersistentAngerTime(100);
                         bee.setTarget(bear);
                         bee.setStayOutOfHiveCountdown(400);
@@ -124,7 +124,7 @@ public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
     protected boolean isValidTarget(LevelReader worldIn, BlockPos pos) {
         if (worldIn.getBlockState(pos).is(AMTagRegistry.GRIZZLY_BEEHIVE)) {
             if (worldIn.getBlockEntity(pos) instanceof BeehiveBlockEntity && worldIn.getBlockState(pos).getBlock() instanceof BeehiveBlock) {
-                int i = worldIn.getBlockState(pos).getValue(BeehiveBlock.HONEY_level());
+                int i = worldIn.getBlockState(pos).getValue(BeehiveBlock.HONEY_LEVEL);
                 return i > 0;
             }
         }

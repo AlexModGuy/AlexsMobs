@@ -68,7 +68,7 @@ public class AnimalAILootChests extends MoveToBlockGoal {
             return false;
         }
         if (this.nextStartTick <= 0) {
-            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.level, this.entity)) {
+            if (!net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.level(), this.entity)) {
                 return false;
             }
         }
@@ -81,11 +81,11 @@ public class AnimalAILootChests extends MoveToBlockGoal {
     }
 
     public boolean hasLineOfSightChest() {
-        HitResult raytraceresult = entity.level.clip(new ClipContext(entity.getEyePosition(1.0F), new Vec3(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+        HitResult raytraceresult = entity.level().clip(new ClipContext(entity.getEyePosition(1.0F), new Vec3(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
         if (raytraceresult instanceof BlockHitResult) {
             BlockHitResult blockRayTraceResult = (BlockHitResult) raytraceresult;
             BlockPos pos = blockRayTraceResult.getBlockPos();
-            return pos.equals(blockPos) || entity.level().isEmptyBlock(pos) || this.entity.level.getBlockEntity(pos) == this.entity.level.getBlockEntity(blockPos);
+            return pos.equals(blockPos) || entity.level().isEmptyBlock(pos) || this.entity.level().getBlockEntity(pos) == this.entity.level().getBlockEntity(blockPos);
         }
         return true;
     }
@@ -114,20 +114,20 @@ public class AnimalAILootChests extends MoveToBlockGoal {
     if(this.blockPos == null){
         return;
     }else {
-            BlockEntity te = this.entity.level.getBlockEntity(this.blockPos);
+            BlockEntity te = this.entity.level().getBlockEntity(this.blockPos);
             if (te instanceof Container) {
                 Container feeder = (Container) te;
                 double distance = this.entity.distanceToSqr(this.blockPos.getX() + 0.5F, this.blockPos.getY() + 0.5F, this.blockPos.getZ() + 0.5F);
                 if (hasLineOfSightChest()) {
                     if (this.isReachedTarget() && distance <= 3) {
                         toggleChest(feeder, false);
-                        ItemStack stack = getFoodFromInventory(feeder, this.entity.level.random);
+                        ItemStack stack = getFoodFromInventory(feeder, this.entity.level().random);
                         if (stack == ItemStack.EMPTY) {
                             this.stop();
                         } else {
                             ItemStack duplicate = stack.copy();
                             duplicate.setCount(1);
-                            if (!this.entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.entity.this.level().isClientSide) {
+                            if (!this.entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !this.entity.level().isClientSide) {
                                 this.entity.spawnAtLocation(this.entity.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
                             }
                             this.entity.setItemInHand(InteractionHand.MAIN_HAND, duplicate);
@@ -155,7 +155,7 @@ public class AnimalAILootChests extends MoveToBlockGoal {
     public void stop() {
         super.stop();
         if (this.blockPos != null) {
-            BlockEntity te = this.entity.level.getBlockEntity(this.blockPos);
+            BlockEntity te = this.entity.level().getBlockEntity(this.blockPos);
             if (te instanceof Container) {
                 toggleChest((Container) te, false);
             }
@@ -174,12 +174,12 @@ public class AnimalAILootChests extends MoveToBlockGoal {
         if (te instanceof ChestBlockEntity) {
             ChestBlockEntity chest = (ChestBlockEntity) te;
             if (open) {
-                this.entity.level.blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 1);
+                this.entity.level().blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 1);
             } else {
-                this.entity.level.blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 0);
+                this.entity.level().blockEvent(this.blockPos, chest.getBlockState().getBlock(), 1, 0);
             }
-            this.entity.level.updateNeighborsAt(blockPos, chest.getBlockState().getBlock());
-            this.entity.level.updateNeighborsAt(blockPos.below(), chest.getBlockState().getBlock());
+            this.entity.level().updateNeighborsAt(blockPos, chest.getBlockState().getBlock());
+            this.entity.level().updateNeighborsAt(blockPos.below(), chest.getBlockState().getBlock());
         }
     }
 }

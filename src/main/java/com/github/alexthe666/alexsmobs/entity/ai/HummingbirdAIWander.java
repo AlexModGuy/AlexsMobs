@@ -75,7 +75,7 @@ public class HummingbirdAIWander extends Goal {
         double x = pos.getX() + 0.5F;
         double y = pos.getY() + 0.5F;
         double z = pos.getZ() + 0.5F;
-        HitResult result = fly.level.clip(new ClipContext(new Vec3(fly.getX(), fly.getY() + (double) fly.getEyeHeight(), fly.getZ()), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, fly));
+        HitResult result = fly.level().clip(new ClipContext(new Vec3(fly.getX(), fly.getY() + (double) fly.getEyeHeight(), fly.getZ()), new Vec3(x, y, z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, fly));
         double dist = result.getLocation().distanceToSqr(x, y, z);
         return dist <= 1.0D || result.getType() == HitResult.Type.MISS;
     }

@@ -48,7 +48,7 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
     };
 
     protected EntitySeaBear(EntityType entityType, Level level) {
-        super(entityType, level());
+        super(entityType, level);
         this.moveControl = new AquaticMoveController(this, 1F, 10);
     }
 
@@ -111,10 +111,10 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
         if (this.isInWater() && onLandProgress > 0F) {
             onLandProgress--;
         }
-        if (this.onGround && !this.isInWater()) {
+        if (this.onGround() && !this.isInWater()) {
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setYRot(this.random.nextFloat() * 360.0F);
-            this.onGround = false;
+            this.setOnGround(false);
             this.hasImpulse = true;
         }
         if (circleCooldown > 0) {

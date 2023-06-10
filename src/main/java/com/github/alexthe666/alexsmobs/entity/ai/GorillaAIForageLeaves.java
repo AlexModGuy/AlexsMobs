@@ -81,18 +81,18 @@ public class GorillaAIForageLeaves extends MoveToBlockGoal {
     }
 
     private void breakLeaves() {
-        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(gorilla.level, gorilla)) {
+        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(gorilla.level(), gorilla)) {
             BlockState blockstate = gorilla.level().getBlockState(this.blockPos);
             if (blockstate.is(AMTagRegistry.GORILLA_BREAKABLES)) {
-                gorilla.level.destroyBlock(blockPos, false);
+                gorilla.level().destroyBlock(blockPos, false);
                 final RandomSource rand = this.gorilla.getRandom();
                 ItemStack stack = new ItemStack(blockstate.getBlock().asItem());
-                ItemEntity itementity = new ItemEntity(gorilla.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
+                ItemEntity itementity = new ItemEntity(gorilla.level(), blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();
                 gorilla.level().addFreshEntity(itementity);
                 if(blockstate.is(AMTagRegistry.DROPS_BANANAS) && rand.nextInt(30) == 0){
                     ItemStack banana = new ItemStack(AMItemRegistry.BANANA.get());
-                    ItemEntity itementity2 = new ItemEntity(gorilla.level, blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
+                    ItemEntity itementity2 = new ItemEntity(gorilla.level(), blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
                     itementity2.setDefaultPickUpDelay();
                     gorilla.level().addFreshEntity(itementity2);
 

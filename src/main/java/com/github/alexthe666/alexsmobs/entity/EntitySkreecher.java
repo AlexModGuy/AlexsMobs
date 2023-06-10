@@ -188,13 +188,13 @@ public class EntitySkreecher extends Monster {
                     this.setClinging(true);
                 }
                 this.setDistanceToCeiling(Math.max(0, prevDistanceToCeiling - 0.5F));
-                if(this.onGround && clingCooldown <= 0 && !this.isJumpingUp() && this.isAlive() && random.nextFloat() < 0.0085F && technicalDistToCeiling > MAX_DIST_TO_CEILING && !this.level().canSeeSky(this.blockPosition())){
+                if(this.onGround() && clingCooldown <= 0 && !this.isJumpingUp() && this.isAlive() && random.nextFloat() < 0.0085F && technicalDistToCeiling > MAX_DIST_TO_CEILING && !this.level().canSeeSky(this.blockPosition())){
                     this.setJumpingUp(true);
                 }
             }
         }
         if(this.isJumpingUp()){
-            if(this.isAlive() && !this.level().canSeeSky(this.blockPosition()) && (!this.verticalCollision || this.onGround)){
+            if(this.isAlive() && !this.level().canSeeSky(this.blockPosition()) && (!this.verticalCollision || this.onGround())){
                 this.setDistanceToCeiling(1.5F);
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 0.2F, 0));
                 for(int i = 0; i < 3; i++){
@@ -230,15 +230,15 @@ public class EntitySkreecher extends Monster {
                 if(!hasAttemptedWardenSpawning && AMConfig.skreechersSummonWarden){
                     hasAttemptedWardenSpawning = true;
                     BlockPos spawnAt = this.blockPosition().below();
-                    while(spawnAt.getY() > -64 && !level().getBlockState(spawnAt).isFaceSturdy(level, spawnAt, Direction.UP)){
+                    while(spawnAt.getY() > -64 && !level().getBlockState(spawnAt).isFaceSturdy(level(), spawnAt, Direction.UP)){
                         spawnAt = spawnAt.below();
                     }
-                    Holder<Biome> holder = level.getBiome(spawnAt);
+                    Holder<Biome> holder = level().getBiome(spawnAt);
                     if(!this.level().isClientSide && getNearbyWardens().isEmpty() && holder.is(AMTagRegistry.SKREECHERS_CAN_SPAWN_WARDENS)){
                         Warden warden = EntityType.WARDEN.create(this.level());
 
                         warden.moveTo(this.getX(), spawnAt.getY() + 1, this.getZ(), this.getYRot(), 0.0F);
-                        warden.finalizeSpawn((ServerLevel)level, level.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
+                        warden.finalizeSpawn((ServerLevel)level(), level().getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.TRIGGERED, (SpawnGroupData)null, (CompoundTag)null);
                         warden.setAttackTarget(this);
                         warden.increaseAngerAt(this, 79, false);
                         this.level().addFreshEntity(warden);
@@ -399,7 +399,7 @@ public class EntitySkreecher extends Monster {
     }
 
     public BlockPos getCeilingOf(BlockPos usPos){
-        while (!level().getBlockState(usPos).isFaceSturdy(level, usPos, Direction.DOWN) && usPos.getY() < level.getMaxBuildHeight()){
+        while (!level().getBlockState(usPos).isFaceSturdy(level(), usPos, Direction.DOWN) && usPos.getY() < level().getMaxBuildHeight()){
             usPos = usPos.above();
         }
         return usPos;

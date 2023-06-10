@@ -59,7 +59,7 @@ public class MonsterAIWalkThroughHallsOfStructure extends RandomStrollGoal {
     }
 
     private StructureStart getNearestStructure(BlockPos pos){
-        ServerLevel serverlevel = (ServerLevel)this.mob.level;
+        ServerLevel serverlevel = (ServerLevel)this.mob.level();
         StructureStart start = serverlevel.structureManager().getStructureWithPieceAt(pos, structureTagKey);
         if(start.isValid()){
             return start;

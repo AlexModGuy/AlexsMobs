@@ -41,7 +41,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -215,7 +214,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                     flag = this.level().destroyBlock(blockpos, true, this) || flag;
                 }
             }
-            if (!flag && this.onGround) {
+            if (!flag && this.onGround()) {
                 this.jumpFromGround();
             }
         }
@@ -262,10 +261,10 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 double extraY = 0.8F;
                 double extraZ = radius * Mth.cos(angle);
                 BlockPos ground = getMoscoGround(new BlockPos(Mth.floor(this.getX() + extraX), Mth.floor(this.getY() + extraY) - 1, Mth.floor(this.getZ() + extraZ)));
-                BlockState BlockState = this.level().getBlockState(ground);
-                if (BlockState.getMaterial() != Material.AIR) {
+                BlockState state = this.level().getBlockState(ground);
+                if (state.isSolid()) {
                     if (this.level().isClientSide) {
-                        level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, BlockState), true, this.getX() + extraX, ground.getY() + extraY, this.getZ() + extraZ, motionX, motionY, motionZ);
+                        level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), true, this.getX() + extraX, ground.getY() + extraY, this.getZ() + extraZ, motionX, motionY, motionZ);
                     }
                 }
             }
@@ -490,10 +489,10 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             } else {
                 this.mosco.getNavigation().moveTo(this.x, this.y, this.z, 1F);
             }
-            if (!flightTarget && isFlying() && mosco.onGround) {
+            if (!flightTarget && isFlying() && mosco.onGround()) {
                 mosco.setFlying(false);
             }
-            if (isFlying() && mosco.onGround && mosco.timeFlying > 10) {
+            if (isFlying() && mosco.onGround() && mosco.timeFlying > 10) {
                 mosco.setFlying(false);
             }
         }

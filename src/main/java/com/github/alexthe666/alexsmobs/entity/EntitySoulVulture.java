@@ -197,7 +197,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
     }
 
     public int getSoulLevel() {
-        return this.entityData.get(SOUL_level());
+        return this.entityData.get(SOUL_LEVEL);
     }
 
     public void setSoulLevel(int tackling) {
@@ -570,7 +570,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
                         if(vulture.getHealth() < vulture.getMaxHealth() - dmg && vulture.getSoulLevel() < 5){
                             this.vulture.setSoulLevel(vulture.getSoulLevel() + 1);
                             this.vulture.heal(dmg);
-                            this.vulture.level.broadcastEntityEvent(vulture, (byte)68);
+                            this.vulture.level().broadcastEntityEvent(vulture, (byte)68);
                         }
                     }
                     stop();

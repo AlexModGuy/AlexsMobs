@@ -184,7 +184,7 @@ public class EntityTendonSegment  extends Entity {
     }
 
     private boolean hasLineOfSight(Entity entity) {
-        if (entity.level != this.level()) {
+        if (entity.level() != this.level()) {
             return false;
         } else {
             Vec3 vec3 = new Vec3(this.getX(), this.getEyeY(), this.getZ());
@@ -200,7 +200,7 @@ public class EntityTendonSegment  extends Entity {
     private void updateLastTendon(EntityTendonSegment lastTendon){
         Entity creator = getCreatorEntity();
         if(creator == null){
-            creator = level.getPlayerByUUID(this.getCreatorEntityUUID());
+            creator = level().getPlayerByUUID(this.getCreatorEntityUUID());
         }
         if(creator instanceof LivingEntity){
             TendonWhipUtil.setLastTendon((LivingEntity)creator, lastTendon);
@@ -225,7 +225,7 @@ public class EntityTendonSegment  extends Entity {
     private void onJoinWorld(){
         Entity creator = getCreatorEntity();
         if(creator == null){
-            creator = level.getPlayerByUUID(this.getCreatorEntityUUID());
+            creator = level().getPlayerByUUID(this.getCreatorEntityUUID());
         }
         Entity prior = getFromEntity();
         if(creator instanceof Player){

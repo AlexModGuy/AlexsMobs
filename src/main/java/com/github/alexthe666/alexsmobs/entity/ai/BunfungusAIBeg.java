@@ -28,7 +28,7 @@ public class BunfungusAIBeg extends Goal {
             --this.delayTemptCounter;
             return false;
         } else {
-            this.closestPlayer = this.jerboa.level.getNearestPlayer(ENTITY_PREDICATE, this.jerboa);
+            this.closestPlayer = this.jerboa.level().getNearestPlayer(ENTITY_PREDICATE, this.jerboa);
             if (this.closestPlayer == null) {
                 return false;
             } else {

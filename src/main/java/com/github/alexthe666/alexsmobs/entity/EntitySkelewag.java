@@ -53,7 +53,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     public float onLandProgress;
 
     protected EntitySkelewag(EntityType<? extends Monster> monster, Level level) {
-        super(monster, level());
+        super(monster, level);
         this.xpReward = 10;
         this.moveControl = new AquaticMoveController(this, 1.0F, 15F);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);

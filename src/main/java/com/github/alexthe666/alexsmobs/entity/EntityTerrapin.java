@@ -87,7 +87,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     private TileEntityTerrapinEgg.ParentData partnerData;
 
     protected EntityTerrapin(EntityType animal, Level level) {
-        super(animal, level());
+        super(animal, level);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(true);
@@ -218,7 +218,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     private Direction collideDirectionAndSound(){
-        HitResult raytraceresult = ProjectileUtil.getHitResult(this, entity -> false);
+        HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> false);
         if(raytraceresult instanceof BlockHitResult){
             BlockState state = level().getBlockState(((BlockHitResult) raytraceresult).getBlockPos());
             if(state != null && !this.isSilent()){
@@ -607,8 +607,8 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             this.animal.setAge(6000);
             this.partner.setAge(6000);
             RandomSource random = this.animal.getRandom();
-            if (this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                this.level().addFreshEntity(new ExperienceOrb(this.level(), this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
+            if (this.level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                this.level.addFreshEntity(new ExperienceOrb(this.level, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
             }
 
         }
@@ -644,7 +644,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
             BlockPos blockpos = this.turtle.blockPosition();
             turtle.swimTimer = 1000;
             if (!this.turtle.isInWater() && this.isReachedTarget()) {
-                Level world = this.turtle.level;
+                Level world = this.turtle.level();
                 turtle.gameEvent(GameEvent.BLOCK_PLACE);
                 world.playSound(null, blockpos, SoundEvents.TURTLE_LAY_EGG, SoundSource.BLOCKS, 0.3F, 0.9F + world.random.nextFloat() * 0.2F);
                 world.setBlock(this.blockPos.above(), AMBlockRegistry.TERRAPIN_EGG.get().defaultBlockState().setValue(BlockTerrapinEgg.EGGS, Integer.valueOf(this.turtle.random.nextInt(1) + 3)), 3);

@@ -128,7 +128,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     protected void tickLeash() {
         super.tickLeash();
         Entity lvt_1_1_ = this.getLeashHolder();
-        if (lvt_1_1_ != null && lvt_1_1_.level == this.level()) {
+        if (lvt_1_1_ != null && lvt_1_1_.level() == this.level()) {
             this.restrictTo(lvt_1_1_.blockPosition(), 5);
             float lvt_2_1_ = this.distanceTo(lvt_1_1_);
             if (this.isSitting()) {
@@ -694,7 +694,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             --this.currentMoveTypeDuration;
         }
 
-        if (this.onGround) {
+        if (this.onGround()) {
             if (!this.wasOnGround) {
                 this.setJumping(false);
                 this.checkLandingDelay();
@@ -726,7 +726,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
             }
         }
 
-        this.wasOnGround = this.onGround;
+        this.wasOnGround = this.onGround();
     }
 
     public float getJumpCompletion(float partialTicks) {
@@ -993,7 +993,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         }
 
         public void tick() {
-            if (this.kangaroo.hasJumper() && this.kangaroo.onGround && !this.kangaroo.jumping && !((EntityKangaroo.JumpHelperController) this.kangaroo.jumpControl).getIsJumping()) {
+            if (this.kangaroo.hasJumper() && this.kangaroo.onGround() && !this.kangaroo.jumping && !((EntityKangaroo.JumpHelperController) this.kangaroo.jumpControl).getIsJumping()) {
                 this.kangaroo.setMovementSpeed(0.0D);
             } else if (this.hasWanted()) {
                 this.kangaroo.setMovementSpeed(this.nextJumpSpeed);

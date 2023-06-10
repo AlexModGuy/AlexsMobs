@@ -29,7 +29,7 @@ public class RaccoonAIBeg extends Goal {
             if(!this.raccoon.getMainHandItem().isEmpty()){
                 return false;
             }
-            this.closestPlayer = this.raccoon.level.getNearestPlayer(ENTITY_PREDICATE, this.raccoon);
+            this.closestPlayer = this.raccoon.level().getNearestPlayer(ENTITY_PREDICATE, this.raccoon);
             if (this.closestPlayer == null) {
                 return false;
             } else {

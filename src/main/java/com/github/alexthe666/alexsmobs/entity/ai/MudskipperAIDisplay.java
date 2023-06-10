@@ -24,7 +24,7 @@ public class MudskipperAIDisplay extends Goal {
     public MudskipperAIDisplay(EntityMudskipper mudskipper) {
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.TARGET));
         this.mudskipper = mudskipper;
-        this.world = mudskipper.level;
+        this.world = mudskipper.level();
     }
 
     @Override

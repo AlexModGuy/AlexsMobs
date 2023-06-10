@@ -220,7 +220,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
                 double motX = this.random.nextGaussian() * 0.02D;
                 double motY = 0.1F + random.nextFloat() * 0.2F;
                 double motZ = this.random.nextGaussian() * 0.02D;
-                level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
+                level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, understate), particleX, particleY, particleZ, motX, motY, motZ);
             }
         }
         if (!this.level().isClientSide) {

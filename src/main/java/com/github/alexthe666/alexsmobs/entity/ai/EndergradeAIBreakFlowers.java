@@ -71,7 +71,7 @@ public class EndergradeAIBreakFlowers extends MoveToBlockGoal {
     }
 
     private void pollinate() {
-        endergrade.level.destroyBlock(blockPos, true);
+        endergrade.level().destroyBlock(blockPos, true);
         stop();
     }
 

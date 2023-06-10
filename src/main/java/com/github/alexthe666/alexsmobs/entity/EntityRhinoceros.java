@@ -258,7 +258,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     public int getPotionLevel() {
-        return this.entityData.get(POTION_level());
+        return this.entityData.get(POTION_LEVEL);
     }
 
     public void setPotionLevel(int time) {
@@ -340,7 +340,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return AMEntityRegistry.RHINOCEROS.get().create(serverlevel());
+        return AMEntityRegistry.RHINOCEROS.get().create(serverLevel);
     }
 
     public boolean isAngry() {

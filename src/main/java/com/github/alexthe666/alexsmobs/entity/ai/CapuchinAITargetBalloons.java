@@ -61,7 +61,7 @@ public class CapuchinAITargetBalloons extends Goal {
 
     protected void findNearestTarget() {
         Entity closest = null;
-        for(Entity bloon : this.monkey.level.getEntitiesOfClass(Entity.class, getTargetableArea(getTargetDistance()), TARGET_BLOON)){
+        for(Entity bloon : this.monkey.level().getEntitiesOfClass(Entity.class, getTargetableArea(getTargetDistance()), TARGET_BLOON)){
             if(closest == null || closest.distanceTo(monkey) > bloon.distanceTo(monkey)){
                 closest = bloon;
             }

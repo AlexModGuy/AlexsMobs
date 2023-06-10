@@ -198,7 +198,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
 
     private void pacifyAllNearby(){
         stopBeingAngry();
-        List<EntityLeafcutterAnt> list = level.getEntitiesOfClass(EntityLeafcutterAnt.class, this.getBoundingBox().inflate(20D, 6.0D, 20D));
+        List<EntityLeafcutterAnt> list = level().getEntitiesOfClass(EntityLeafcutterAnt.class, this.getBoundingBox().inflate(20D, 6.0D, 20D));
         for(EntityLeafcutterAnt ant : list){
             ant.stopBeingAngry();
         }
@@ -217,7 +217,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                     leafcutterAnt.copyPosition(this);
                     leafcutterAnt.setAge(-24000);
                     if(!this.level().isClientSide){
-                        level.broadcastEntityEvent(this, (byte)18);
+                        level().broadcastEntityEvent(this, (byte)18);
                         level().addFreshEntity(leafcutterAnt);
                     }
                 }
@@ -231,7 +231,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 if(!player.isCreative()){
                     itemstack.shrink(1);
                 }
-                level.broadcastEntityEvent(this, (byte)48);
+                level().broadcastEntityEvent(this, (byte)48);
                 this.heal(3);
             }
 
@@ -281,7 +281,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                     BlockPos antPos = new BlockPos(Mth.floor(this.getX()), Mth.floor(this.getY()), Mth.floor(this.getZ()));
                     BlockPos offsetPos = antPos.relative(dir);
                     Vec3 offset = Vec3.atCenterOf(offsetPos);
-                    if (closestDistance > this.position().distanceTo(offset) && level.loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
+                    if (closestDistance > this.position().distanceTo(offset) && level().loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
                         closestDistance = this.position().distanceTo(offset);
                         closestDirection = dir;
                     }
@@ -298,7 +298,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                     Vec3 vec = Vec3.atLowerCornerOf(this.getAttachmentFacing().getNormal());
                     this.setDeltaMovement(this.getDeltaMovement().add(vec.normalize().multiply(0.1F, 0.1F, 0.1F)));
                 }
-                if (!this.onGround && vector3d.y < 0.0D) {
+                if (!this.onGround() && vector3d.y < 0.0D) {
                     this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.5D, 1.0D));
                     flag = true;
                 }
@@ -657,7 +657,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 }
                 if (searchCooldown <= 0) {
                     searchCooldown = 400;
-                    PoiManager pointofinterestmanager = ((ServerLevel) level).getPoiManager();
+                    PoiManager pointofinterestmanager = ((ServerLevel) level()).getPoiManager();
                     Stream<BlockPos> stream = pointofinterestmanager.findAll(poiTypeHolder -> poiTypeHolder.is(AMPointOfInterestRegistry.LEAFCUTTER_ANT_HILL.getKey()), Predicates.alwaysTrue(), EntityLeafcutterAnt.this.blockPosition(), 100, PoiManager.Occupancy.ANY);
                     List<BlockPos> listOfHives = stream.collect(Collectors.toList());
                     BlockPos ret = null;

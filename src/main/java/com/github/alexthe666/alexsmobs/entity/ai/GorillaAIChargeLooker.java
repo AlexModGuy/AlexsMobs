@@ -27,7 +27,7 @@ public class GorillaAIChargeLooker extends Goal {
     public boolean canUse() {
         if (this.gorilla.isSilverback() && !this.gorilla.isTame() && runDelay-- == 0) {
             runDelay = 100 + gorilla.getRandom().nextInt(200);
-            List<Player> playerList = this.gorilla.level.getEntitiesOfClass(Player.class, this.gorilla.getBoundingBox().inflate(range, range, range), EntitySelector.NO_SPECTATORS);
+            List<Player> playerList = this.gorilla.level().getEntitiesOfClass(Player.class, this.gorilla.getBoundingBox().inflate(range, range, range), EntitySelector.NO_SPECTATORS);
             Player closestPlayer = null;
             for (Player player : playerList) {
                 if (isLookingAtMe(player)) {

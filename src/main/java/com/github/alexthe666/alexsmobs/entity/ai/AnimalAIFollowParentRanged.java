@@ -24,7 +24,7 @@ public class AnimalAIFollowParentRanged  extends Goal {
         if (this.childAnimal.getAge() >= 0) {
             return false;
         } else {
-            List<? extends Animal> lvt_1_1_ = this.childAnimal.level.getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(range, range * 0.5D, range));
+            List<? extends Animal> lvt_1_1_ = this.childAnimal.level().getEntitiesOfClass(this.childAnimal.getClass(), this.childAnimal.getBoundingBox().inflate(range, range * 0.5D, range));
             Animal lvt_2_1_ = null;
             double lvt_3_1_ = 1.7976931348623157E308D;
             Iterator var5 = lvt_1_1_.iterator();

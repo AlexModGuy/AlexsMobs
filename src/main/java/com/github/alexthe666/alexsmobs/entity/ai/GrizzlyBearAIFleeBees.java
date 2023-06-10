@@ -46,7 +46,7 @@ public class GrizzlyBearAIFleeBees extends Goal {
         if(this.entity.isSitting()){
             return false;
         }
-        List<Bee> beeEntities = this.entity.level.getEntitiesOfClass(Bee.class, this.entity.getBoundingBox().inflate((double) avoidDistance, 8.0D, (double) avoidDistance), this.avoidTargetSelector);
+        List<Bee> beeEntities = this.entity.level().getEntitiesOfClass(Bee.class, this.entity.getBoundingBox().inflate((double) avoidDistance, 8.0D, (double) avoidDistance), this.avoidTargetSelector);
         if (beeEntities.isEmpty()) {
             return false;
         } else {

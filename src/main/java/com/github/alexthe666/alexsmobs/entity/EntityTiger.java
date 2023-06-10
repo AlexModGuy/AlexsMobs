@@ -521,8 +521,8 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
             this.playSound(SoundEvents.CAT_EAT, this.getVoicePitch(), this.getSoundVolume());
             this.heal(5);
             Entity thrower = e.getOwner();
-            if (thrower != null && random.nextFloat() < getChanceForEffect(stack) && level.getPlayerByUUID(thrower.getUUID()) != null) {
-                Player player = level.getPlayerByUUID(thrower.getUUID());
+            if (thrower != null && random.nextFloat() < getChanceForEffect(stack) && level().getPlayerByUUID(thrower.getUUID()) != null) {
+                Player player = level().getPlayerByUUID(thrower.getUUID());
                 player.addEffect(new MobEffectInstance(AMEffectRegistry.TIGERS_BLESSING.get(), 12000));
                 this.setTarget(null);
                 this.setLastHurtByMob(null);
@@ -554,7 +554,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
 
     static class TigerNodeEvaluator extends WalkNodeEvaluator {
         protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes typeIn) {
-            return typeIn == BlockPathTypes.LEAVES || level().getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
+            return typeIn == BlockPathTypes.LEAVES || level.getBlockState(pos).getBlock() == Blocks.BAMBOO ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
         }
     }
 

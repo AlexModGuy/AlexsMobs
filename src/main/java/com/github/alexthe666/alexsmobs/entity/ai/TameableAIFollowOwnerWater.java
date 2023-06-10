@@ -29,7 +29,7 @@ public class TameableAIFollowOwnerWater extends Goal {
 
     public TameableAIFollowOwnerWater(TamableAnimal tamed, double speed, float minDist, float maxDist, boolean leaves) {
         this.tameable = tamed;
-        this.world = tamed.level;
+        this.world = tamed.level();
         this.followSpeed = speed;
         this.minDist = minDist;
         this.maxDist = maxDist;

@@ -83,12 +83,12 @@ public class HummingbirdAIPollinate  extends MoveToBlockGoal {
     }
 
     private void pollinate() {
-        bird.level.levelEvent(2005, blockPos, 0);
+        bird.level().levelEvent(2005, blockPos, 0);
         bird.setCropsPollinated(bird.getCropsPollinated() + 1);
         bird.pollinateCooldown = 200;
         if(bird.getCropsPollinated() > 3){
             if(isGrowable(blockPos, (ServerLevel) bird.level())){
-                BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), bird.level, blockPos);
+                BoneMealItem.growCrop(new ItemStack(Items.BONE_MEAL), bird.level(), blockPos);
             }
             bird.setCropsPollinated(0);
         }

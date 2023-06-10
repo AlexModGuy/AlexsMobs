@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -38,16 +39,16 @@ public class SealAIDiveForItems extends Goal {
     }
 
     private static List<ItemStack> getItemStacks(EntitySeal seal) {
-        LootTable loottable = seal.level.getServer().getLootTables().get(SEAL_REWARD);
-        return loottable.getRandomItems((new LootContext.Builder((ServerLevel) seal.level())).withParameter(LootContextParams.ORIGIN, seal.position()).withParameter(LootContextParams.THIS_ENTITY, seal).withRandom(seal.level.random).create(LootContextParamSets.PIGLIN_BARTER));
+        LootTable loottable = seal.level().getServer().getLootData().getLootTable(SEAL_REWARD);
+        return loottable.getRandomItems((new LootParams.Builder((ServerLevel) seal.level())).withParameter(LootContextParams.THIS_ENTITY, seal).create(LootContextParamSets.PIGLIN_BARTER));
     }
 
     @Override
     public boolean canUse() {
-        if (seal.feederUUID == null || seal.level.getPlayerByUUID(seal.feederUUID) == null || seal.revengeCooldown > 0) {
+        if (seal.feederUUID == null || seal.level().getPlayerByUUID(seal.feederUUID) == null || seal.revengeCooldown > 0) {
             return false;
         }
-        thrower = seal.level.getPlayerByUUID(seal.feederUUID);
+        thrower = seal.level().getPlayerByUUID(seal.feederUUID);
         digPos = genDigPos();
         return thrower != null && digPos != null;
     }
@@ -134,7 +135,7 @@ public class SealAIDiveForItems extends Goal {
     }
 
     private BlockPos genSeafloorPos(BlockPos parent) {
-        LevelAccessor world = seal.level;
+        LevelAccessor world = seal.level();
         final RandomSource random = this.seal.getRandom();
         int range = 15;
         for (int i = 0; i < 15; i++) {

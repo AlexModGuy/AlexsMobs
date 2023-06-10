@@ -100,9 +100,9 @@ public class EntityPotoo extends Animal implements IFalconry {
             this.isLandNavigator = true;
         } else {
             this.moveControl = new FlightMoveController(this, 0.6F, false, true);
-            this.navigation = new FlyingPathNavigation(this, level) {
+            this.navigation = new FlyingPathNavigation(this, level()) {
                 public boolean isStableDestination(BlockPos pos) {
-                    return !this.level().getBlockState(pos.below(2)).isAir();
+                    return !this.level.getBlockState(pos.below(2)).isAir();
                 }
             };
             navigation.setCanFloat(false);
@@ -180,7 +180,7 @@ public class EntityPotoo extends Animal implements IFalconry {
             perchCooldown--;
         }
         if (!this.level().isClientSide) {
-            this.entityData.set(TEMP_BRIGHTNESS, level.getMaxLocalRawBrightness(this.blockPosition()));
+            this.entityData.set(TEMP_BRIGHTNESS, level().getMaxLocalRawBrightness(this.blockPosition()));
             if (isFlying() && this.isLandNavigator) {
                 switchNavigator(false);
             }
@@ -188,7 +188,7 @@ public class EntityPotoo extends Animal implements IFalconry {
                 switchNavigator(true);
             }
             if (this.isFlying()) {
-                if (this.isFlying() && !this.onGround) {
+                if (this.isFlying() && !this.onGround()) {
                     if (!this.isInWaterOrBubble()) {
                         this.setDeltaMovement(this.getDeltaMovement().multiply(1F, 0.6F, 1F));
                     }
@@ -372,13 +372,13 @@ public class EntityPotoo extends Animal implements IFalconry {
     public boolean isValidPerchFromSide(BlockPos pos, Direction direction) {
         BlockPos offset = pos.relative(direction);
         BlockState state = level().getBlockState(pos);
-        return state.is(AMTagRegistry.POTOO_PERCHES) && (!level().getBlockState(pos.above()).isCollisionShapeFullBlock(level, pos.above()) || level().isEmptyBlock(pos.above())) && (!level().getBlockState(offset).isCollisionShapeFullBlock(level, offset) && !level().getBlockState(offset).is(AMTagRegistry.POTOO_PERCHES) || level().isEmptyBlock(offset));
+        return state.is(AMTagRegistry.POTOO_PERCHES) && (!level().getBlockState(pos.above()).isCollisionShapeFullBlock(level(), pos.above()) || level().isEmptyBlock(pos.above())) && (!level().getBlockState(offset).isCollisionShapeFullBlock(level(), offset) && !level().getBlockState(offset).is(AMTagRegistry.POTOO_PERCHES) || level().isEmptyBlock(offset));
     }
 
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return AMEntityRegistry.POTOO.get().create(serverlevel());
+        return AMEntityRegistry.POTOO.get().create(serverLevel);
     }
 
     public float getEyeScale(int bufferOffset, float partialTicks) {
@@ -543,7 +543,7 @@ public class EntityPotoo extends Animal implements IFalconry {
 
         public void tick() {
             EntityPotoo.this.getMoveControl().setWantedPosition(this.x, this.y, this.z, 1F);
-            if (isFlying() && EntityPotoo.this.onGround && EntityPotoo.this.timeFlying > 10) {
+            if (isFlying() && EntityPotoo.this.onGround() && EntityPotoo.this.timeFlying > 10) {
                 EntityPotoo.this.setFlying(false);
             }
         }

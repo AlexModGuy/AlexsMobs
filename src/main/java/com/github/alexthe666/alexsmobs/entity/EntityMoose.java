@@ -235,12 +235,12 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
             snowTimer = 200 + random.nextInt(400);
             if(this.isSnowy()){
                 if(!permSnow){
-                    if (!this.level().isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !EntityGrizzlyBear.isSnowingAt(level, this.blockPosition().above())) {
+                    if (!this.level().isClientSide || this.getRemainingFireTicks() > 0 || this.isInWaterOrBubble() || !EntityGrizzlyBear.isSnowingAt(level(), this.blockPosition().above())) {
                         this.setSnowy(false);
                     }
                 }
             }else{
-                if (!this.level().isClientSide && EntityGrizzlyBear.isSnowingAt(level, this.blockPosition())) {
+                if (!this.level().isClientSide && EntityGrizzlyBear.isSnowingAt(level(), this.blockPosition())) {
                     this.setSnowy(true);
                 }
             }

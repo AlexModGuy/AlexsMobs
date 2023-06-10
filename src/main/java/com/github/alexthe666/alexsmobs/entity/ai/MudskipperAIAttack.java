@@ -44,7 +44,7 @@ public class MudskipperAIAttack extends Goal {
                 strafed = true;
             }
             if(dist < 8 && shootCooldown == 0){
-                EntityMudBall mudball = new EntityMudBall(this.entity.level, this.entity);
+                EntityMudBall mudball = new EntityMudBall(this.entity.level(), this.entity);
                 double d0 = target.getX() - mudball.getX();
                 double d1 = target.getY(0.3F) - mudball.getY();
                 double d2 = target.getZ() - mudball.getZ();

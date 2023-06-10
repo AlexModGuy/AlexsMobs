@@ -49,7 +49,7 @@ public class LavaAndWaterAIRandomSwimming extends RandomStrollGoal {
         }
         Vec3 vector3d = DefaultRandomPos.getPos(this.mob, 32, 16);
 
-        for(int i = 0; vector3d != null && !this.mob.level().getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 10; vector3d = DefaultRandomPos.getPos(this.mob, 10, 7)) {
+        for(int i = 0; vector3d != null && !this.mob.level().getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level(), AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 10; vector3d = DefaultRandomPos.getPos(this.mob, 10, 7)) {
         }
 
         return vector3d;
@@ -57,7 +57,7 @@ public class LavaAndWaterAIRandomSwimming extends RandomStrollGoal {
 
     private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
         BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
-        return (this.mob.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level().getBlockState(blockpos).getMaterial().blocksMotion() || this.mob.level().getFluidState(blockpos).is(FluidTags.LAVA));
+        return (this.mob.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level().getBlockState(blockpos).blocksMotion() || this.mob.level().getFluidState(blockpos).is(FluidTags.LAVA));
     }
 
     private boolean isAirAbove(BlockPos pos, int dx, int dz, int scale) {

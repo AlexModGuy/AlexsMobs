@@ -60,7 +60,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     private int earthquakeCooldown = 0;
 
     protected EntityRockyRoller(EntityType<? extends Monster> monster, Level level) {
-        super(monster, level());
+        super(monster, level);
         this.xpReward = 8;
         this.moveControl = new MovementControllerCustomCollisions(this);
     }
@@ -71,7 +71,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
 
     public static boolean checkRockyRollerSpawnRules(EntityType<? extends Monster> animal, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && (worldIn.getBlockState(pos.below()).is(Blocks.POINTED_DRIPSTONE) || worldIn.getBlockState(pos.below()).getMaterial().isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.DRIPSTONE_BLOCK));
+        return worldIn.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(worldIn, pos, random) && (worldIn.getBlockState(pos.below()).is(Blocks.POINTED_DRIPSTONE) || worldIn.getBlockState(pos.below()).isSolid() || worldIn.getBlockState(pos.below()).is(Blocks.DRIPSTONE_BLOCK));
     }
 
 
@@ -169,7 +169,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         }
         if (!this.level().canSeeSky(this.blockPosition()) && this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
             BlockPos ceil = this.blockPosition().offset(0, 2, 0);
-            while ((!level().getBlockState(ceil).getMaterial().isSolid() || level().getBlockState(ceil).getBlock() == Blocks.POINTED_DRIPSTONE) && ceil.getY() < level.getMaxBuildHeight()) {
+            while ((!level().getBlockState(ceil).isSolid() || level().getBlockState(ceil).getBlock() == Blocks.POINTED_DRIPSTONE) && ceil.getY() < level().getMaxBuildHeight()) {
                 ceil = ceil.above();
             }
             int i = 2 + random.nextInt(2);
@@ -180,12 +180,12 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             for (BlockPos blockpos1 : BlockPos.betweenClosed(ceil.offset(-i, -j, -k), ceil.offset(i, j, k))) {
                 if (blockpos1.distSqr(ceil) <= (double) (f * f) && level().getBlockState(blockpos1).getBlock() instanceof Fallable) {
                     if (isHangingDripstone(blockpos1)) {
-                        while (isHangingDripstone(blockpos1.above()) && blockpos1.getY() < level.getMaxBuildHeight()) {
+                        while (isHangingDripstone(blockpos1.above()) && blockpos1.getY() < level().getMaxBuildHeight()) {
                             blockpos1 = blockpos1.above();
                         }
                         if (isHangingDripstone(blockpos1)) {
                             Vec3 vec3 = Vec3.atBottomCenterOf(blockpos1);
-                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level, new BlockPos((int) vec3.x, (int) vec3.y, (int) vec3.z), level().getBlockState(blockpos1));
+                            FallingBlockEntity fallingblockentity = FallingBlockEntity.fall(level(), new BlockPos((int) vec3.x, (int) vec3.y, (int) vec3.z), level().getBlockState(blockpos1));
                             this.level().destroyBlock(blockpos1, false);
                             this.level().addFreshEntity(fallingblockentity);
                         }
@@ -323,7 +323,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
 
     static class RockyRollerNodeEvaluator extends WalkNodeEvaluator {
         protected BlockPathTypes evaluateBlockPathType(BlockGetter level, BlockPos pos, BlockPathTypes typeIn) {
-            return level().getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
+            return level.getBlockState(pos).getBlock() instanceof PointedDripstoneBlock ? BlockPathTypes.OPEN : super.evaluateBlockPathType(level, pos, typeIn);
         }
     }
 
@@ -336,7 +336,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         }
 
         public boolean canUse() {
-            if (this.rockyRoller.onGround) {
+            if (this.rockyRoller.onGround()) {
                 if (rockyRoller.isRolling() || rockyRoller.rollCooldown > 0 || rockyRoller.getTarget() != null && rockyRoller.getTarget().isAlive()) {
                     return false;
                 } else {
@@ -420,7 +420,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         private boolean canEntitySeePosition(LivingEntity entity, BlockPos destinationBlock) {
             Vec3 Vector3d = new Vec3(entity.getX(), entity.getY() + 0.5F, entity.getZ());
             Vec3 blockVec = net.minecraft.world.phys.Vec3.atCenterOf(destinationBlock);
-            BlockHitResult result = entity.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
+            BlockHitResult result = entity.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity));
             return result != null && (result.getBlockPos().equals(destinationBlock) || entity.level().getBlockState(result.getBlockPos()).getBlock() == Blocks.POINTED_DRIPSTONE);
         }
 

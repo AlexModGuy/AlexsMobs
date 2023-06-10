@@ -264,7 +264,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
                     FluidState fluidstate = this.level().getFluidState(blockpos$mutable);
                     if (fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA)) {
                         float f = (float) l1 + fluidstate.getHeight(this.level(), blockpos$mutable);
-                        this.waterLevel = Math.max(f, this.waterlevel());
+                        this.waterLevel = Math.max(f, this.waterLevel);
                         flag |= axisalignedbb.minY < (double) f;
                     }
                 }

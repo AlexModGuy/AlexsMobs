@@ -55,7 +55,6 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
@@ -482,7 +481,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
             switchNavigator(true);
         }
         BlockPos pos = AMBlockPos.fromCoords(this.getX(), this.getEyeY() - 1F, this.getZ());
-        boolean ground = level().getBlockState(pos).isFaceSturdy(level, pos, Direction.UP) && this.getMimicState() != MimicState.GUARDIAN || !this.isInWaterOrBubble() || this.isSitting();
+        boolean ground = level().getBlockState(pos).isFaceSturdy(level(), pos, Direction.UP) && this.getMimicState() != MimicState.GUARDIAN || !this.isInWaterOrBubble() || this.isSitting();
         this.prevTransProgress = transProgress;
         this.prevColorShiftProgress = colorShiftProgress;
         this.prevGroundProgress = groundProgress;
@@ -639,7 +638,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
 
     private BlockPos getPositionDown() {
         BlockPos pos = AMBlockPos.fromCoords(this.getX(), this.getEyeY(), this.getZ());
-        while (pos.getY() > 1 && (level().isEmptyBlock(pos) || level().getBlockState(pos).getMaterial() == Material.WATER)) {
+        while (pos.getY() > 1 && (level().isEmptyBlock(pos) || level().isWaterAt(pos))) {
             pos = pos.below();
         }
         return pos;
@@ -863,7 +862,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     private void creeperExplode() {
-        Explosion explosion = new Explosion(level, this,  this.damageSources().mobAttack(this), (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Explosion.BlockInteraction.KEEP);
+        Explosion explosion = new Explosion(level(), this,  this.damageSources().mobAttack(this), (ExplosionDamageCalculator)null, this.getX(), this.getY(), this.getZ(), 1 + random.nextFloat(), false, Explosion.BlockInteraction.KEEP);
         explosion.explode();
         explosion.finalizeExplosion(true);
     }

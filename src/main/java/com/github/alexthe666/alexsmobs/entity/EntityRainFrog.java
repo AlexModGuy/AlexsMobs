@@ -214,7 +214,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
         if (this.getDanceTime() > 0) {
             this.setBurrowed(false);
             this.setDanceTime(this.getDanceTime() - 1);
-            if(this.getDanceTime() == 1 && weatherCooldown <= 0 && level.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)){
+            if(this.getDanceTime() == 1 && weatherCooldown <= 0 && level().getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)){
                 changeWeather();
             }
         }

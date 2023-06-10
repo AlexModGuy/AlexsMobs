@@ -132,7 +132,7 @@ public class EntityHummingbird extends Animal {
     protected PathNavigation createNavigation(Level worldIn) {
         FlyingPathNavigation flyingpathnavigator = new FlyingPathNavigation(this, worldIn) {
             public boolean isStableDestination(BlockPos pos) {
-                return !this.level().getBlockState(pos.below(2)).isAir();
+                return !this.level.getBlockState(pos.below(2)).isAir();
             }
         };
         flyingpathnavigator.setCanOpenDoors(false);
@@ -248,7 +248,7 @@ public class EntityHummingbird extends Animal {
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();
         boolean flag = this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z >= 1.0E-3D;
-        if (!this.onGround && vector3d.y < 0.0D) {
+        if (!this.onGround() && vector3d.y < 0.0D) {
             this.setDeltaMovement(vector3d.multiply(1.0D, 0.4D, 1.0D));
         }
         this.setFlying(true);
@@ -361,7 +361,7 @@ public class EntityHummingbird extends Animal {
                    localFeeder = feedPos;
                    return true;
                }else{
-                   List<BlockPos> beacons = getNearbyFeeders(EntityHummingbird.this.blockPosition(), (ServerLevel) level, 64);
+                   List<BlockPos> beacons = getNearbyFeeders(EntityHummingbird.this.blockPosition(), (ServerLevel) level(), 64);
                    BlockPos closest = null;
                    for (BlockPos pos : beacons) {
                        if (closest == null || EntityHummingbird.this.distanceToSqr(closest.getX(), closest.getY(), closest.getZ()) > EntityHummingbird.this.distanceToSqr(pos.getX(), pos.getY(), pos.getZ())) {
@@ -400,7 +400,7 @@ public class EntityHummingbird extends Animal {
                     EntityHummingbird.this.level().broadcastEntityEvent(EntityHummingbird.this, (byte)68);
                     if(idleAtFlowerTime > 55){
                         if(EntityHummingbird.this.getCropsPollinated() > 2 && random.nextInt(25) == 0 && isValidFeeder(level().getBlockState(localFeeder))){
-                            level.setBlockAndUpdate(localFeeder, level().getBlockState(localFeeder).setValue(BlockHummingbirdFeeder.CONTENTS, 0));
+                            level().setBlockAndUpdate(localFeeder, level().getBlockState(localFeeder).setValue(BlockHummingbirdFeeder.CONTENTS, 0));
                         }
                         EntityHummingbird.this.setCropsPollinated(EntityHummingbird.this.getCropsPollinated() + 1);
                         EntityHummingbird.this.sipCooldown = 120 + random.nextInt(1200);

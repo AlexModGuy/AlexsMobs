@@ -57,7 +57,7 @@ public class EndergradeAITargetItems<T extends ItemEntity> extends TargetGoal {
             return false;
         }
         if (!this.mustUpdate) {
-            long worldTime = this.mob.level.getGameTime() % 10;
+            long worldTime = this.mob.level().getGameTime() % 10;
             if (this.mob.getNoActionTime() >= 100 && worldTime != 0) {
                 return false;
             }
@@ -65,7 +65,7 @@ public class EndergradeAITargetItems<T extends ItemEntity> extends TargetGoal {
                 return false;
             }
         }
-        List<ItemEntity> list = this.mob.level.getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(this.getFollowDistance()), this.targetEntitySelector);
+        List<ItemEntity> list = this.mob.level().getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(this.getFollowDistance()), this.targetEntitySelector);
         if (list.isEmpty()) {
             return false;
         } else {
@@ -108,7 +108,7 @@ public class EndergradeAITargetItems<T extends ItemEntity> extends TargetGoal {
             ItemStack duplicate = this.targetEntity.getItem().copy();
             endergrade.bite();
             duplicate.setCount(1);
-            if (!mob.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !mob.this.level().isClientSide) {
+            if (!mob.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !mob.level().isClientSide) {
                 mob.spawnAtLocation(mob.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
             }
             mob.setItemInHand(InteractionHand.MAIN_HAND, duplicate);

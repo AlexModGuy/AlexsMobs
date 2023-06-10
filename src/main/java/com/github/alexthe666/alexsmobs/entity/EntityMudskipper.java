@@ -315,7 +315,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return AMEntityRegistry.MUDSKIPPER.get().create(serverlevel());
+        return AMEntityRegistry.MUDSKIPPER.get().create(serverLevel);
     }
 
     public boolean isMouthOpen() {

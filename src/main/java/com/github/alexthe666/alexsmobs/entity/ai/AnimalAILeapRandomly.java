@@ -44,7 +44,7 @@ public class AnimalAILeapRandomly extends Goal {
 
     private boolean hasLineOfSightBlock(Vec3 blockVec) {
         Vec3 Vector3d = new Vec3(mob.getX(), mob.getEyeY(), mob.getZ());
-        BlockHitResult result = mob.level.clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mob));
+        BlockHitResult result = mob.level().clip(new ClipContext(Vector3d, blockVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mob));
         return blockVec.distanceTo(result.getLocation()) < 1.2F;
     }
 

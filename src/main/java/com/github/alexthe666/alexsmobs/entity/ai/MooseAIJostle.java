@@ -21,7 +21,7 @@ public class MooseAIJostle extends Goal {
     public MooseAIJostle(EntityMoose moose) {
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.TARGET));
         this.moose = moose;
-        this.world = moose.level;
+        this.world = moose.level();
     }
 
     @Override

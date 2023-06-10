@@ -40,7 +40,7 @@ public class OrcaAIJump extends JumpGoal {
 
     private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
         BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
-        return this.dolphin.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.dolphin.level().getBlockState(blockpos).getMaterial().blocksMotion();
+        return this.dolphin.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.dolphin.level().getBlockState(blockpos).blocksMotion();
     }
 
     private boolean isAirAbove(BlockPos pos, int dx, int dz, int scale) {

@@ -171,7 +171,7 @@ public class ServerEvents {
     public static void onEntityResize(EntityEvent.Size event) {
         if (event.getEntity() instanceof Player entity) {
             final var potions = entity.getActiveEffectsMap();
-            if (event.getEntity().level != null && potions != null && !potions.isEmpty()
+            if (event.getEntity().level() != null && potions != null && !potions.isEmpty()
                 && potions.containsKey(AMEffectRegistry.CLINGING)) {
                 if (EffectClinging.isUpsideDown(entity)) {
                     float minus = event.getOldSize().height - event.getOldEyeHeight();
@@ -222,8 +222,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onStruckByLightning(EntityStruckByLightningEvent event) {
-        if (event.getEntity().getType() == EntityType.SQUID && !event.getEntity().getLevel().isClientSide) {
-            ServerLevel level = (ServerLevel) event.getEntity().getLevel();
+        if (event.getEntity().getType() == EntityType.SQUID && !event.getEntity().level().isClientSide) {
+            ServerLevel level = (ServerLevel) event.getEntity().level();
             event.setCanceled(true);
             EntityGiantSquid squid = AMEntityRegistry.GIANT_SQUID.get().create(level);
             squid.moveTo(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity().getYRot(), event.getEntity().getXRot());
@@ -242,7 +242,7 @@ public class ServerEvents {
     @SubscribeEvent
     public void onProjectileHit(ProjectileImpactEvent event) {
         if (event.getRayTraceResult() instanceof EntityHitResult hitResult
-            && hitResult.getEntity() instanceof EntityEmu emu && !event.getEntity().level.isClientSide) {
+            && hitResult.getEntity() instanceof EntityEmu emu && !event.getEntity().level().isClientSide) {
             if (event.getEntity() instanceof AbstractArrow arrow) {
                 //fixes soft crash with vanilla
                 arrow.setPierceLevel((byte) 0);
@@ -268,7 +268,7 @@ public class ServerEvents {
                 if (!emu.horizontalCollision) {
                     emu.move(MoverType.SELF, new Vec3(vector3d2.x() * 0.25F, 0.1F, vector3d2.z() * 0.25F));
                 }
-                if (!event.getEntity().level.isClientSide) {
+                if (!event.getEntity().level().isClientSide) {
                     if (event.getEntity() instanceof Projectile projectile) {
                         if (projectile.getOwner() instanceof ServerPlayer serverPlayer) {
                             AMAdvancementTriggerRegistry.EMU_DODGE.trigger(serverPlayer);
@@ -373,7 +373,7 @@ public class ServerEvents {
     public void onInteractWithEntity(PlayerInteractEvent.EntityInteract event) {
         if (event.getTarget() instanceof LivingEntity living) {
             if (!event.getEntity().isShiftKeyDown() && VineLassoUtil.hasLassoData(living)) {
-                if (!event.getEntity().level.isClientSide) {
+                if (!event.getEntity().level().isClientSide) {
                     event.getTarget().spawnAtLocation(new ItemStack(AMItemRegistry.VINE_LASSO.get()));
                 }
                 VineLassoUtil.lassoTo(null, living);
@@ -411,10 +411,10 @@ public class ServerEvents {
             if (living instanceof Rabbit rabbit && event.getItemStack().getItem() == AMItemRegistry.MUNGAL_SPORES.get()
                     && AMConfig.bunfungusTransformation) {
                 final var random = ThreadLocalRandom.current();
-                if (!event.getEntity().level.isClientSide && random.nextFloat() < 0.15F) {
+                if (!event.getEntity().level().isClientSide && random.nextFloat() < 0.15F) {
                     final EntityBunfungus bunfungus = rabbit.convertTo(AMEntityRegistry.BUNFUNGUS.get(), true);
                     if (bunfungus != null) {
-                        event.getEntity().level.addFreshEntity(bunfungus);
+                        event.getEntity().level().addFreshEntity(bunfungus);
                         bunfungus.setTransformsIn(EntityBunfungus.MAX_TRANSFORM_TIME);
                     }
                 } else {
@@ -422,7 +422,7 @@ public class ServerEvents {
                         final double d0 = random.nextGaussian() * 0.02D;
                         final double d1 = 0.05F + random.nextGaussian() * 0.02D;
                         final double d2 = random.nextGaussian() * 0.02D;
-                        event.getTarget().level.addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), event.getTarget().getRandomX(0.7F), event.getTarget().getY(0.6F), event.getTarget().getRandomZ(0.7F), d0, d1, d2);
+                        event.getTarget().level().addParticle(AMParticleRegistry.BUNFUNGUS_TRANSFORMATION.get(), event.getTarget().getRandomX(0.7F), event.getTarget().getY(0.6F), event.getTarget().getRandomZ(0.7F), d0, d1, d2);
                     }
                 }
                 if (!event.getEntity().isCreative()) {
@@ -457,14 +457,14 @@ public class ServerEvents {
     public void onUseItemOnBlock(PlayerInteractEvent.RightClickBlock event) {
         if (AlexsMobs.isAprilFools() && event.getItemStack().is(Items.STICK)
             && !event.getEntity().getCooldowns().isOnCooldown(Items.STICK)) {
-            BlockState state = event.getEntity().level.getBlockState(event.getPos());
+            BlockState state = event.getEntity().level().getBlockState(event.getPos());
             boolean flag = false;
             if (state.is(Blocks.SAND)) {
                 flag = true;
-                event.getEntity().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.SAND_CIRCLE.get().defaultBlockState());
+                event.getEntity().level().setBlockAndUpdate(event.getPos(), AMBlockRegistry.SAND_CIRCLE.get().defaultBlockState());
             } else if (state.is(Blocks.RED_SAND)) {
                 flag = true;
-                event.getEntity().getLevel().setBlockAndUpdate(event.getPos(), AMBlockRegistry.RED_SAND_CIRCLE.get().defaultBlockState());
+                event.getEntity().level().setBlockAndUpdate(event.getPos(), AMBlockRegistry.RED_SAND_CIRCLE.get().defaultBlockState());
             }
             if (flag) {
                 event.setCanceled(true);
@@ -480,7 +480,7 @@ public class ServerEvents {
     public void onEntityDrops(LivingDropsEvent event) {
         if (VineLassoUtil.hasLassoData(event.getEntity())) {
             VineLassoUtil.lassoTo(null, event.getEntity());
-            event.getDrops().add(new ItemEntity(event.getEntity().level, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), new ItemStack(AMItemRegistry.VINE_LASSO.get())));
+            event.getDrops().add(new ItemEntity(event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), new ItemStack(AMItemRegistry.VINE_LASSO.get())));
         }
     }
 
@@ -490,13 +490,13 @@ public class ServerEvents {
             Biome biome = event.getLevel().getBiome(event.getEntity().blockPosition()).value();
             if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance
                 && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
-                EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(trader.level);
+                EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(trader.level());
                 elephant.copyPosition(trader);
                 if (elephant.canSpawnWithTraderHere()) {
                     elephant.setTrader(true);
                     elephant.setChested(true);
                     if (!event.getLevel().isClientSide()) {
-                        trader.level.addFreshEntity(elephant);
+                        trader.level().addFreshEntity(elephant);
                         trader.startRiding(elephant, true);
                     }
                     elephant.addElephantLoot(null, RAND.nextInt());
@@ -547,7 +547,7 @@ public class ServerEvents {
             if (event.getEntity().hasEffect(AMEffectRegistry.TIGERS_BLESSING.get())
                     && !event.getTarget().isAlliedTo(event.getEntity()) && !(event.getTarget() instanceof EntityTiger)) {
                 AABB bb = new AABB(event.getEntity().getX() - 32, event.getEntity().getY() - 32, event.getEntity().getZ() - 32, event.getEntity().getZ() + 32, event.getEntity().getY() + 32, event.getEntity().getZ() + 32);
-                final var tigers = event.getEntity().level.getEntitiesOfClass(EntityTiger.class, bb,
+                final var tigers = event.getEntity().level().getEntitiesOfClass(EntityTiger.class, bb,
                         EntitySelector.ENTITY_STILL_ALIVE);
                 for (EntityTiger tiger : tigers) {
                     if (!tiger.isBaby()) {
@@ -615,7 +615,7 @@ public class ServerEvents {
             final var attributes = event.getEntity().getAttribute(Attributes.MOVEMENT_SPEED);
             if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS.get()
                 || attributes.hasModifier(SAND_SPEED_BONUS)) {
-                final boolean sand = player.level.getBlockState(getDownPos(player.blockPosition(), player.level))
+                final boolean sand = player.level().getBlockState(getDownPos(player.blockPosition(), player.level()))
                     .is(BlockTags.SAND);
                 if (sand && !attributes.hasModifier(SAND_SPEED_BONUS)) {
                     attributes.addPermanentModifier(SAND_SPEED_BONUS);
@@ -647,7 +647,7 @@ public class ServerEvents {
         final ItemStack boots = event.getEntity().getItemBySlot(EquipmentSlot.FEET);
         if (!boots.isEmpty() && boots.hasTag() && boots.getOrCreateTag().contains("BisonFur") && boots.getOrCreateTag().getBoolean("BisonFur")) {
             BlockPos posBelow = new BlockPos((int) event.getEntity().getX(), (int) (event.getEntity().getBoundingBox().minY - 0.1F), (int) event.getEntity().getZ());
-            if (event.getEntity().level.getBlockState(posBelow).is(Blocks.POWDER_SNOW)) {
+            if (event.getEntity().level().getBlockState(posBelow).is(Blocks.POWDER_SNOW)) {
                 event.getEntity().setOnGround(true);
                 event.getEntity().setTicksFrozen(0);
                 event.getEntity().setPos(event.getEntity().getX(), Math.max(event.getEntity().getY(), posBelow.getY() + 1F), event.getEntity().getZ());
@@ -669,14 +669,14 @@ public class ServerEvents {
                 event.getEntity().setDeltaMovement(motion);
             }
         }
-        if (event.getEntity().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SOMBRERO.get() && !event.getEntity().level.isClientSide && AlexsMobs.isAprilFools() && event.getEntity().isInWaterOrBubble()) {
+        if (event.getEntity().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SOMBRERO.get() && !event.getEntity().level().isClientSide && AlexsMobs.isAprilFools() && event.getEntity().isInWaterOrBubble()) {
             RandomSource random = event.getEntity().getRandom();
             if (random.nextInt(245) == 0 && !EntitySeaBear.isMobSafe(event.getEntity())) {
                 final int dist = 32;
-                final var nearbySeabears = event.getEntity().level.getEntitiesOfClass(EntitySeaBear.class,
+                final var nearbySeabears = event.getEntity().level().getEntitiesOfClass(EntitySeaBear.class,
                     event.getEntity().getBoundingBox().inflate(dist, dist, dist));
                 if (nearbySeabears.isEmpty()) {
-                    final EntitySeaBear bear = AMEntityRegistry.SEA_BEAR.get().create(event.getEntity().level);
+                    final EntitySeaBear bear = AMEntityRegistry.SEA_BEAR.get().create(event.getEntity().level());
                     final BlockPos at = event.getEntity().blockPosition();
                     BlockPos farOff = null;
                     for (int i = 0; i < 15; i++) {
@@ -684,7 +684,7 @@ public class ServerEvents {
                         final int f2 = (int) Math.signum(random.nextInt() - 0.5F);
                         final BlockPos pos1 = at.offset(f1 * (10 + random.nextInt(dist - 10)), random.nextInt(1),
                             f2 * (10 + random.nextInt(dist - 10)));
-                        if (event.getEntity().level.isWaterAt(pos1)) {
+                        if (event.getEntity().level().isWaterAt(pos1)) {
                             farOff = pos1;
                         }
                     }
@@ -692,7 +692,7 @@ public class ServerEvents {
                         bear.setPos(farOff.getX() + 0.5F, farOff.getY() + 0.5F, farOff.getZ() + 0.5F);
                         bear.setYRot(random.nextFloat() * 360F);
                         bear.setTarget(event.getEntity());
-                        event.getEntity().level.addFreshEntity(bear);
+                        event.getEntity().level().addFreshEntity(bear);
                     }
                 } else {
                     for (EntitySeaBear bear : nearbySeabears) {

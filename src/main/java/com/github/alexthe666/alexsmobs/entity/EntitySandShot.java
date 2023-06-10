@@ -98,11 +98,11 @@ public class EntitySandShot extends Entity {
         ParticleOptions type = this.getVariant() == 2 ? AMParticleRegistry.GUSTER_SAND_SHOT_SOUL.get() : this.getVariant() == 1 ? AMParticleRegistry.GUSTER_SAND_SHOT_RED.get() : AMParticleRegistry.GUSTER_SAND_SHOT.get();
         for (int i = 0; i < 3 + random.nextInt(6); ++i) {
             double d0 = 0.1D + 0.3D * (double) i;
-            level.addParticle(type, this.getX() + 0.25F * (random.nextFloat() - 0.5F), this.getY() + 0.25F * (random.nextFloat() - 0.5F), this.getZ() + 0.25F * (random.nextFloat() - 0.5F), this.getDeltaMovement().x * d0, this.getDeltaMovement().y, this.getDeltaMovement().z * d0);
+            level().addParticle(type, this.getX() + 0.25F * (random.nextFloat() - 0.5F), this.getY() + 0.25F * (random.nextFloat() - 0.5F), this.getZ() + 0.25F * (random.nextFloat() - 0.5F), this.getDeltaMovement().x * d0, this.getDeltaMovement().y, this.getDeltaMovement().z * d0);
         }
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();
-        HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
             this.onImpact(raytraceresult);
         }

@@ -127,7 +127,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     }
 
     protected void playSwimSound(float f) {
-        if(random.nextInt(2) == 0){
+        if (random.nextInt(2) == 0) {
             this.playSound(this.getSwimSound(), 0.2F, 1.3F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
         }
     }
@@ -190,7 +190,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         this.entityData.set(TRIOPS_SCALE, scale);
     }
 
-    public boolean isBaby(){
+    public boolean isBaby() {
         return getBabyAge() < 0;
     }
 
@@ -241,12 +241,12 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         if (!onLand && onLandProgress > 0F) {
             onLandProgress--;
         }
-        if(breedCooldown > 0){
+        if (breedCooldown > 0) {
             breedCooldown--;
         }
         tail1Yaw = Mth.approachDegrees(this.tail1Yaw, yBodyRot, 7);
         tail2Yaw = Mth.approachDegrees(this.tail2Yaw, this.tail1Yaw, 7);
-        if(onLandProgress == 0){
+        if (onLandProgress == 0) {
             float f = (float) (20 * Math.sin(this.walkAnimation.position()) * walkAnimation.speed());
             swimRot = Mth.approachDegrees(this.swimRot, f, 2);
         }
@@ -265,12 +265,12 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     @OnlyIn(Dist.CLIENT)
     public void handleEntityEvent(byte id) {
         if (id == 67) {
-            for(int i = 0; i < 5; i++){
-                level.addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(0.5F), this.getY(0.8F), this.getRandomZ(0.5F), 0.0D, 0.0D, 0.0D);
+            for (int i = 0; i < 5; i++) {
+                level().addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(0.5F), this.getY(0.8F), this.getRandomZ(0.5F), 0.0D, 0.0D, 0.0D);
             }
-        } else  if (id == 68) {
-            level.addParticle(ParticleTypes.HEART, this.getX(), this.getY(0.8F), this.getZ(), 0.0D, 0.0D, 0.0D);
-        } {
+        } else if (id == 68) {
+            level().addParticle(ParticleTypes.HEART, this.getX(), this.getY(0.8F), this.getZ(), 0.0D, 0.0D, 0.0D);
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -287,8 +287,8 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.CAT_EAT, this.getVoicePitch(), this.getSoundVolume());
             this.heal(5);
-            if(!this.level().isClientSide){
-                if(breedCooldown == 0 && !fedCarrot){
+            if (!this.level().isClientSide) {
+                if (breedCooldown == 0 && !fedCarrot) {
                     this.fedCarrot = true;
                     this.level().broadcastEntityEvent(this, (byte) 67);
                 }
@@ -299,16 +299,16 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         InteractionResult type = super.mobInteract(player, hand);
-        if(!type.consumesAction() && canTargetItem(itemstack) && !this.fedCarrot){
+        if (!type.consumesAction() && canTargetItem(itemstack) && !this.fedCarrot) {
             if (!player.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
             this.gameEvent(GameEvent.EAT);
             this.playSound(SoundEvents.CAT_EAT, this.getVoicePitch(), this.getSoundVolume());
             this.heal(5);
-            if(itemstack.is(Tags.Items.CROPS_CARROT)){
-                if(!this.level().isClientSide){
-                    if(breedCooldown == 0){
+            if (itemstack.is(Tags.Items.CROPS_CARROT)) {
+                if (!this.level().isClientSide) {
+                    if (breedCooldown == 0) {
                         this.level().broadcastEntityEvent(this, (byte) 67);
                     }
                 }
@@ -319,7 +319,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         return Bucketable.bucketMobPickup(player, hand, this).orElse(type);
     }
 
-    public boolean isSearchingForMate(){
+    public boolean isSearchingForMate() {
         return this.isAlive() && this.isInWaterOrBubble() && this.fedCarrot && this.breedCooldown <= 0;
     }
 
@@ -372,18 +372,18 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
 
         @Override
         public boolean canUse() {
-            if(!EntityTriops.this.isInWaterOrBubble() || !EntityTriops.this.fedCarrot || EntityTriops.this.breedCooldown > 0 || EntityTriops.this.breedWith != null){
+            if (!EntityTriops.this.isInWaterOrBubble() || !EntityTriops.this.fedCarrot || EntityTriops.this.breedCooldown > 0 || EntityTriops.this.breedWith != null) {
                 return false;
             }
-            if(executionCooldown > 0){
+            if (executionCooldown > 0) {
                 executionCooldown--;
-            }else{
+            } else {
                 executionCooldown = 50 + random.nextInt(50);
                 List<EntityTriops> list = EntityTriops.this.level().getEntitiesOfClass(EntityTriops.class, EntityTriops.this.getBoundingBox().inflate(10, 8, 10), EntitySelector.NO_SPECTATORS.and(validBreedPartner));
                 list.sort(Comparator.comparingDouble(EntityTriops.this::distanceToSqr));
-                if(!list.isEmpty()){
+                if (!list.isEmpty()) {
                     EntityTriops closestPupfish = list.get(0);
-                    if(closestPupfish != null){
+                    if (closestPupfish != null) {
                         breedPartner = closestPupfish;
                         breedPartner.breedWith = EntityTriops.this;
                         return true;
@@ -413,7 +413,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         public void tick() {
             EntityTriops.this.getNavigation().moveTo(breedPartner, 1D);
             breedPartner.getNavigation().moveTo(EntityTriops.this, 1D);
-            if(EntityTriops.this.distanceTo(breedPartner) < 1.2F){
+            if (EntityTriops.this.distanceTo(breedPartner) < 1.2F) {
                 EntityTriops.this.level().broadcastEntityEvent(EntityTriops.this, (byte) 68);
                 EntityTriops.this.pregnant = true;
             }
@@ -432,9 +432,9 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         }
 
         public boolean canUse() {
-            if(EntityTriops.this.pregnant && EntityTriops.this.getRandom().nextInt(30) == 0){
+            if (EntityTriops.this.pregnant && EntityTriops.this.getRandom().nextInt(30) == 0) {
                 BlockPos egg = getEggLayPos();
-                if(egg != null){
+                if (egg != null) {
                     eggPos = egg;
                     return true;
                 }
@@ -446,19 +446,19 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
             return eggPos != null && EntityTriops.this.pregnant && EntityTriops.this.level().getBlockState(eggPos).isAir();
         }
 
-        public boolean isValidPos(BlockPos pos){
+        public boolean isValidPos(BlockPos pos) {
             BlockState state = EntityTriops.this.level().getBlockState(pos);
             FluidState stateBelow = EntityTriops.this.level().getFluidState(pos.below());
             return stateBelow.is(FluidTags.WATER) && state.isAir();
         }
 
-        public BlockPos getEggLayPos(){
-            for(int i = 0; i < 10; i++){
+        public BlockPos getEggLayPos() {
+            for (int i = 0; i < 10; i++) {
                 BlockPos offset = EntityTriops.this.blockPosition().offset(EntityTriops.this.getRandom().nextInt(10) - 5, 10, EntityTriops.this.getRandom().nextInt(10) - 5);
-                while(level().getBlockState(offset.below()).isAir() && offset.getY() > EntityTriops.this.level().getMinBuildHeight()){
+                while (level().getBlockState(offset.below()).isAir() && offset.getY() > EntityTriops.this.level().getMinBuildHeight()) {
                     offset = offset.below();
                 }
-                if(isValidPos(offset)){
+                if (isValidPos(offset)) {
                     return offset;
                 }
             }
@@ -468,7 +468,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         public void tick() {
             super.tick();
             EntityTriops.this.getNavigation().moveTo(eggPos.getX(), eggPos.getY(), eggPos.getZ(), 1);
-            if(EntityTriops.this.distanceToSqr(Vec3.atBottomCenterOf(eggPos)) < 2.0F){
+            if (EntityTriops.this.distanceToSqr(Vec3.atBottomCenterOf(eggPos)) < 2.0F) {
                 EntityTriops.this.pregnant = false;
                 EntityTriops.this.level().setBlockAndUpdate(eggPos, AMBlockRegistry.TRIOPS_EGGS.get().defaultBlockState());
             }

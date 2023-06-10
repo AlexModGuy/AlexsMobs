@@ -33,7 +33,7 @@ public class GrizzlyBearAIAprilFools extends Goal {
     public boolean canUse() {
         if(!bear.isBaby() && AlexsMobs.isAprilFools() && runDelay-- <= 0 && bear.getRandom().nextInt(30) == 0){
             runDelay = 400 + bear.getRandom().nextInt(350);
-            Player nearestPlayer = bear.level.getNearestPlayer(bear.getX(), bear.getY(), bear.getZ(), maxDistance, entity -> {
+            Player nearestPlayer = bear.level().getNearestPlayer(bear.getX(), bear.getY(), bear.getZ(), maxDistance, entity -> {
                 return bear.hasLineOfSight(entity) &&(!(entity instanceof Player) || !((Player) entity).hasEffect(AMEffectRegistry.POWER_DOWN.get()));
             });
             if(nearestPlayer != null){
@@ -67,7 +67,7 @@ public class GrizzlyBearAIAprilFools extends Goal {
                 }
                 if(leapTimer >= 10){
                     bear.setAprilFoolsFlag(0);
-                    if(bear.level.getLevelData().isHardcore()){
+                    if(bear.level().getLevelData().isHardcore()){
                         target.hurt(AMDamageTypes.causeFreddyBearDamage(bear), target.getMaxHealth() - 1);
                         target.setHealth(1);
                     }else{
@@ -89,12 +89,12 @@ public class GrizzlyBearAIAprilFools extends Goal {
                 }
             }else{
                 if(musicBoxTimer == 0){
-                    bear.level.broadcastEntityEvent(bear, (byte) 67);
+                    bear.level().broadcastEntityEvent(bear, (byte) 67);
                 }
                 musicBoxTimer++;
                 if (musicBoxTimer >= maxMusicBoxTime) {
                     if(bear.getAprilFoolsFlag() != 5){
-                        bear.level.broadcastEntityEvent(bear, (byte) 68);
+                        bear.level().broadcastEntityEvent(bear, (byte) 68);
                         bear.setAprilFoolsFlag(5);
                         bear.gameEvent(GameEvent.ENTITY_ROAR);
                         bear.playSound(AMSoundRegistry.APRIL_FOOLS_SCREAM.get(), 3, 1);

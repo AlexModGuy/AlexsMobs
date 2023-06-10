@@ -148,9 +148,9 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
                 if(this.getDeltaMovement().y < 0){
                     this.setDeltaMovement(this.getDeltaMovement().multiply(1, 0, 1));
                 }
-                this.onGround = true;
+                this.setOnGround(true);
             }else if (lvt_1_1_.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition().below(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.LAVA)) {
-                this.onGround = true;
+                this.setOnGround(true);
             } else {
                 this.setDeltaMovement(0, Math.min((d1 - 0.5F), 1) * 0.2F, 0);
             }
@@ -307,7 +307,7 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
         }
 
         public boolean isStableDestination(BlockPos pos) {
-            return this.level().getBlockState(pos).is(Blocks.LAVA) || super.isStableDestination(pos);
+            return this.level.getBlockState(pos).is(Blocks.LAVA) || super.isStableDestination(pos);
         }
     }
 }

@@ -123,13 +123,13 @@ public class EntityVoidPortal extends Entity {
             double particleX = this.getBoundingBox().minX + random.nextFloat() * (this.getBoundingBox().maxX - this.getBoundingBox().minX);
             double particleY = this.getBoundingBox().minY + random.nextFloat() * (this.getBoundingBox().maxY - this.getBoundingBox().minY);
             double particleZ = this.getBoundingBox().minZ + random.nextFloat() * (this.getBoundingBox().maxZ - this.getBoundingBox().minZ);
-            level.addParticle(AMParticleRegistry.WORM_PORTAL.get(), particleX, particleY, particleZ, 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian());
+            level().addParticle(AMParticleRegistry.WORM_PORTAL.get(), particleX, particleY, particleZ, 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian());
         }
         List<Entity> entities = new ArrayList<>();
         entities.addAll(this.level().getEntities(this, bb.deflate(0.2F)));
         entities.addAll(this.level().getEntitiesOfClass(EntityVoidWorm.class, bb.inflate(1.5F)));
         if (!this.level().isClientSide) {
-            MinecraftServer server = level.getServer();
+            MinecraftServer server = level().getServer();
             if (this.getDestination() != null && this.getLifespan() > 20 && tickCount > 20) {
                 BlockPos offsetPos = this.getDestination().relative(this.getAttachmentFacing().getOpposite(), 2);
                 for (Entity e : entities) {
@@ -185,7 +185,7 @@ public class EntityVoidPortal extends Entity {
             }
         } else {
             entity.unRide();
-            entity.level = endpointWorld;
+            entity.setLevel(endpointWorld);
             Entity teleportedEntity = entity.getType().create(endpointWorld);
             if (teleportedEntity != null) {
                 teleportedEntity.restoreFrom(entity);
@@ -206,7 +206,7 @@ public class EntityVoidPortal extends Entity {
                     for (int j = -1; j <= -1; j++){
                         for (int k = -1; k <= -1; k++){
                             BlockPos toAir = this.getDestination().offset(i, j, k);
-                            level.destroyBlock(toAir, true);
+                            level().destroyBlock(toAir, true);
                         }
                     }
                 }
@@ -245,7 +245,7 @@ public class EntityVoidPortal extends Entity {
     public void setDestination(BlockPos destination) {
         this.entityData.set(DESTINATION, Optional.ofNullable(destination));
         if (this.getSisterId() == null && (exitDimension == null || exitDimension == this.level().dimension())) {
-            createAndSetSister(level, null);
+            createAndSetSister(level(), null);
         }
     }
 
@@ -263,7 +263,7 @@ public class EntityVoidPortal extends Entity {
     public void setDestination(BlockPos destination, Direction dir) {
         this.entityData.set(DESTINATION, Optional.ofNullable(destination));
         if (this.getSisterId() == null && (exitDimension == null || exitDimension == this.level().dimension())) {
-            createAndSetSister(level, dir);
+            createAndSetSister(level(), dir);
         }
     }
 

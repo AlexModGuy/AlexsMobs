@@ -255,7 +255,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
         float f = 1.0F;
         if (entityData.get(LAUNCHED)) {
             this.yBodyRot = this.getYRot();
-            HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+            HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
             if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS) {
                 this.onImpact(raytraceresult);
             }
@@ -267,10 +267,10 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
 
         float f2 = (float) -((float) this.getDeltaMovement().y * (liquid ? 2.5F : f) * (double) (180F / (float) Math.PI));
         this.swimPitch = f2;
-        if (this.onGround && !this.isInWater() && !this.isInLava()) {
+        if (this.onGround() && !this.isInWater() && !this.isInLava()) {
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setYRot( this.random.nextFloat() * 360.0F);
-            this.onGround = false;
+            this.setOnGround(false);
             this.hasImpulse = true;
         }
         this.setNoGravity(false);
@@ -456,7 +456,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             }
             Vec3 vector3d = LandRandomPos.getPos(this.mob, 7, 3);
 
-            for (int i = 0; vector3d != null && !this.mob.level().getFluidState(AMBlockPos.fromVec3(vector3d)).is(FluidTags.LAVA) && !this.mob.level().getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level, AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
+            for (int i = 0; vector3d != null && !this.mob.level().getFluidState(AMBlockPos.fromVec3(vector3d)).is(FluidTags.LAVA) && !this.mob.level().getBlockState(AMBlockPos.fromVec3(vector3d)).isPathfindable(this.mob.level(), AMBlockPos.fromVec3(vector3d), PathComputationType.WATER) && i++ < 15; vector3d = LandRandomPos.getPos(this.mob, 10, 7)) {
             }
 
             return vector3d;
@@ -464,7 +464,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
 
         private boolean canJumpTo(BlockPos pos, int dx, int dz, int scale) {
             BlockPos blockpos = pos.offset(dx * scale, 0, dz * scale);
-            return this.mob.level().getFluidState(blockpos).is(FluidTags.LAVA) || this.mob.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level().getBlockState(blockpos).getMaterial().blocksMotion();
+            return this.mob.level().getFluidState(blockpos).is(FluidTags.LAVA) || this.mob.level().getFluidState(blockpos).is(FluidTags.WATER) && !this.mob.level().getBlockState(blockpos).blocksMotion();
         }
 
         private boolean isAirAbove(BlockPos pos, int dx, int dz, int scale) {

@@ -277,7 +277,7 @@ public class EntityGuster extends Monster {
             }
         }
         Vec3 vector3d = this.getDeltaMovement();
-        if (!this.onGround && vector3d.y < 0.0D) {
+        if (!this.onGround() && vector3d.y < 0.0D) {
             this.setDeltaMovement(vector3d.multiply(1.0D, 0.6D, 1.0D));
         }
     }

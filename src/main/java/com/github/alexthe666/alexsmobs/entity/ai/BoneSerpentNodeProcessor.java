@@ -65,13 +65,13 @@ public class BoneSerpentNodeProcessor extends NodeEvaluator {
     @Nullable
     protected Node getNode(int x, int y, int z) {
         Node pathpoint = null;
-        BlockPathTypes pathnodetype = this.getBlockPathType(this.mob.level, x, y, z);
+        BlockPathTypes pathnodetype = this.getBlockPathType(this.mob.level(), x, y, z);
         float f = this.mob.getPathfindingMalus(pathnodetype);
         if (f >= 0.0F) {
             pathpoint = super.getNode(x, y, z);
             pathpoint.type = pathnodetype;
             pathpoint.costMalus = Math.max(pathpoint.costMalus, f);
-            if (this.level().getFluidState(new BlockPos(x, y, z)).isEmpty()) {
+            if (this.level.getFluidState(new BlockPos(x, y, z)).isEmpty()) {
                 pathpoint.costMalus += 8.0F;
             }
         }
@@ -85,9 +85,9 @@ public class BoneSerpentNodeProcessor extends NodeEvaluator {
         for(int i = p_186327_1_; i < p_186327_1_ + this.entityWidth; ++i) {
             for(int j = p_186327_2_; j < p_186327_2_ + this.entityHeight; ++j) {
                 for(int k = p_186327_3_; k < p_186327_3_ + this.entityDepth; ++k) {
-                    FluidState fluidstate = this.level().getFluidState(blockpos$mutable.set(i, j, k));
-                    BlockState blockstate = this.level().getBlockState(blockpos$mutable.set(i, j, k));
-                    if (fluidstate.isEmpty() && blockstate.isPathfindable(this.level(), blockpos$mutable.below(), PathComputationType.WATER) && blockstate.isAir()) {
+                    FluidState fluidstate = this.level.getFluidState(blockpos$mutable.set(i, j, k));
+                    BlockState blockstate = this.level.getBlockState(blockpos$mutable.set(i, j, k));
+                    if (fluidstate.isEmpty() && blockstate.isPathfindable(this.level, blockpos$mutable.below(), PathComputationType.WATER) && blockstate.isAir()) {
                         return BlockPathTypes.BREACH;
                     }
 
@@ -98,7 +98,7 @@ public class BoneSerpentNodeProcessor extends NodeEvaluator {
             }
         }
 
-        BlockState blockstate1 = this.level().getBlockState(blockpos$mutable);
-        return blockstate1.getFluidState().is(FluidTags.LAVA) || blockstate1.isPathfindable(this.level(), blockpos$mutable, PathComputationType.WATER) ? BlockPathTypes.WATER : BlockPathTypes.BLOCKED;
+        BlockState blockstate1 = this.level.getBlockState(blockpos$mutable);
+        return blockstate1.getFluidState().is(FluidTags.LAVA) || blockstate1.isPathfindable(this.level, blockpos$mutable, PathComputationType.WATER) ? BlockPathTypes.WATER : BlockPathTypes.BLOCKED;
     }
 }

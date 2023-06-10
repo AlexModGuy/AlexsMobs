@@ -75,7 +75,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
             return false;
         }
         if (!this.mustUpdate) {
-            long worldTime = this.mob.level.getGameTime() % 10;
+            long worldTime = this.mob.level().getGameTime() % 10;
             if (this.mob.getNoActionTime() >= 100 && worldTime != 0) {
                 return false;
             }
@@ -83,7 +83,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
                 return false;
             }
         }
-        List<ItemEntity> list = this.mob.level.getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(this.getFollowDistance()), this.targetEntitySelector);
+        List<ItemEntity> list = this.mob.level().getEntitiesOfClass(ItemEntity.class, this.getTargetableArea(this.getFollowDistance()), this.targetEntitySelector);
         if (list.isEmpty()) {
             return false;
         } else {

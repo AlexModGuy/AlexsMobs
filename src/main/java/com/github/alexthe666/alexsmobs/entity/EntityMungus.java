@@ -219,11 +219,11 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             this.level().addParticle(ParticleTypes.EXPLOSION, this.getX() + r1, this.getY() + 0.5F + r2, this.getZ() + r3, r1 * 4, r2 * 4, r3 * 4);
         }
         if(!this.level().isClientSide){
-            ServerLevel serverLevel = (ServerLevel) level;
+            ServerLevel serverLevel = (ServerLevel) level();
             final int radius = 3;
-            final int j = radius + level.random.nextInt(1);
-            final int k = (radius + level.random.nextInt(1));
-            final int l = radius + level.random.nextInt(1);
+            final int j = radius + level().random.nextInt(1);
+            final int k = (radius + level().random.nextInt(1));
+            final int l = radius + level().random.nextInt(1);
             final float f = (float) (j + k + l) * 0.333F + 0.5F;
             final float ff = f * f;
             final double ffDouble = ff;
@@ -262,12 +262,12 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
             if (!isReverting()) {
                 BlockPos.betweenClosedStream(center.offset(-j, -k, -l), center.offset(j, k, l)).forEach(blockpos -> {
                     if (blockpos.distSqr(center) <= ffDouble) {
-                        if (level.random.nextFloat() > (float) blockpos.distSqr(center) / ff) {
+                        if (level().random.nextFloat() > (float) blockpos.distSqr(center) / ff) {
                             if (level().getBlockState(blockpos).is(finalTransformReplace) && !level().getBlockState(blockpos.above()).canOcclude()) {
-                                level.setBlockAndUpdate(blockpos, finalTransformState);
+                                level().setBlockAndUpdate(blockpos, finalTransformState);
                             }
-                            if (level.random.nextInt(4) == 0 && level().getBlockState(blockpos).getMaterial().isSolid() && level().getFluidState(blockpos.above()).isEmpty() && !level().getBlockState(blockpos.above()).canOcclude()) {
-                                level.setBlockAndUpdate(blockpos.above(), this.getMushroomState());
+                            if (level().random.nextInt(4) == 0 && level().getBlockState(blockpos).isSolid() && level().getFluidState(blockpos.above()).isEmpty() && !level().getBlockState(blockpos.above()).canOcclude()) {
+                                level().setBlockAndUpdate(blockpos.above(), this.getMushroomState());
                             }
                         }
                     }
@@ -317,17 +317,17 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
     }
 
     private void transformBiome(BlockPos pos, Holder<Biome> biome) {
-        LevelChunk chunk = level.getChunkAt(pos);
+        LevelChunk chunk = level().getChunkAt(pos);
         PalettedContainer<Holder<Biome>> container = getChunkBiomes(chunk).recreate();
         if (this.entityData.get(REVERTING)) {
             int lvt_4_1_ = chunk.getPos().getMinBlockX() >> 2;
             int yChunk = (int)this.getY() >> 2;
             int lvt_5_1_ = chunk.getPos().getMinBlockZ() >> 2;
-            ChunkGenerator chunkgenerator = ((ServerLevel) level).getChunkSource().getGenerator();
+            ChunkGenerator chunkgenerator = ((ServerLevel) level()).getChunkSource().getGenerator();
             for(int k = 0; k < 4; ++k) {
                 for(int l = 0; l < 4; ++l) {
                     for(int i1 = 0; i1 < 4; ++i1) {
-                        container.getAndSetUnchecked(k, l, i1, ((ServerLevel) level).getUncachedNoiseBiome(lvt_4_1_ + k, yChunk + l, lvt_5_1_ + i1));
+                        container.getAndSetUnchecked(k, l, i1, ((ServerLevel) level()).getUncachedNoiseBiome(lvt_4_1_ + k, yChunk + l, lvt_5_1_ + i1));
                     }
                 }
             }
@@ -508,7 +508,7 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                                 BlockPos pos = t.offset(random.nextInt(10) - 5, random.nextInt(4) - 2, random.nextInt(10) - 5);
                                 if (grown < maxGrow) {
                                     if (level().getBlockState(pos).isAir() && level().getBlockState(pos.below()).canOcclude()) {
-                                        level.setBlockAndUpdate(pos, state);
+                                        level().setBlockAndUpdate(pos, state);
                                         grown++;
                                     }
                                 }

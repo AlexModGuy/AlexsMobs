@@ -388,7 +388,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
                         if (getRandom().nextFloat() < 0.3F) {
                             this.setTame(true);
                             this.setOwnerUUID(this.bananaThrowerID);
-                            Player player = level.getPlayerByUUID(bananaThrowerID);
+                            Player player = level().getPlayerByUUID(bananaThrowerID);
                             if (player instanceof ServerPlayer) {
                                 CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer)player, this);
                             }

@@ -70,10 +70,10 @@ public class EntityGust extends Entity {
             this.remove(RemovalReason.DISCARDED);
         }
         for (int i = 0; i < 1 + random.nextInt(1); ++i) {
-            level.addParticle(AMParticleRegistry.GUSTER_SAND_SPIN.get(), this.getX() + 0.5F * (random.nextFloat() - 0.5F), this.getY() + 0.5F * (random.nextFloat() - 0.5F), this.getZ() + 0.5F * (random.nextFloat() - 0.5F), this.getX(), this.getY() + 0.5F, this.getZ());
+            level().addParticle(AMParticleRegistry.GUSTER_SAND_SPIN.get(), this.getX() + 0.5F * (random.nextFloat() - 0.5F), this.getY() + 0.5F * (random.nextFloat() - 0.5F), this.getZ() + 0.5F * (random.nextFloat() - 0.5F), this.getX(), this.getY() + 0.5F, this.getZ());
         }
         Vec3 vector3d = new Vec3(this.entityData.get(X_DIR), this.entityData.get(Y_DIR), this.entityData.get(Z_DIR));
-        HitResult raytraceresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+        HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (raytraceresult != null && raytraceresult.getType() != HitResult.Type.MISS && tickCount > 4) {
             this.onImpact(raytraceresult);
         }
@@ -145,7 +145,7 @@ public class EntityGust extends Entity {
     protected void onHitBlock(BlockHitResult p_230299_1_) {
         if( p_230299_1_.getBlockPos() != null){
             BlockPos pos = p_230299_1_.getBlockPos();
-            if(level().getBlockState(pos).getMaterial().isSolid()){
+            if(level().isWaterAt(pos)){
                 if (!this.level().isClientSide) {
                     this.remove(RemovalReason.DISCARDED);
 
