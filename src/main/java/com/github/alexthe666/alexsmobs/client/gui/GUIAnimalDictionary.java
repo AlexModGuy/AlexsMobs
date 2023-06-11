@@ -31,7 +31,6 @@ public class GUIAnimalDictionary extends GuiBasicBook {
     }
 
     public void render(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
-
         RenderLaviathan.renderWithoutShaking = true;
         RenderMurmurBody.renderWithHead = true;
         RenderUnderminer.renderWithPickaxe = true;

@@ -18,3 +18,5 @@ The whip can be repaired with Elastic Tendons.
 <NEWLINE>
 the Unsettling Kimono can be work as a chestplate. Although it has low armor and durability, it increases the wearer's placement distance by two blocks, and makes most undead hostile mobs neutral to their presence - except for other murmurs and the Wither.
 It can be repaired with wool.
+<NEWLINE>
+Although Murmurs can usually be found at great depths, they can also rarely appear at the surface in Cherry Groves.
