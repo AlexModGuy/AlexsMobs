@@ -3,7 +3,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 import com.github.alexthe666.alexsmobs.entity.EntityGrizzlyBear;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.google.common.base.Predicate;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Bee;

@@ -4,7 +4,6 @@ import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.alexthe666.alexsmobs.entity.EntityTarantulaHawk;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.*;

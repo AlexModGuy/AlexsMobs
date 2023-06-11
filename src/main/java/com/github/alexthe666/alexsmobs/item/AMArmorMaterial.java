@@ -1,7 +1,6 @@
 package com.github.alexthe666.alexsmobs.item;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;

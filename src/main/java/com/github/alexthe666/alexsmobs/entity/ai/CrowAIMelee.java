@@ -2,9 +2,7 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.goal.Goal;

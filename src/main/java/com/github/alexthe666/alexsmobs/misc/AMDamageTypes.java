@@ -1,6 +1,5 @@
 package com.github.alexthe666.alexsmobs.misc;
 
-import com.github.alexthe666.alexsmobs.AlexsMobs;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -11,8 +10,6 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 public class AMDamageTypes {

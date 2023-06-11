@@ -36,7 +36,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:yosemite_lowlands", 22)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:bryce_canyon", 23)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 24)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:redwood_forest", 25);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:redwood_forest", 25)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:cherry_grove", 26);
+
 
     public static final SpawnBiomeData ROADRUNNER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_badlands", 0)
@@ -101,7 +103,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:orchid_swamp", 18)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 19)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 20)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 21);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_summer", 21)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:cherry_grove", 22);
+
 
     public static final SpawnBiomeData ORCA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_ocean", 0)
@@ -278,7 +282,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:temperate_highlands", 19)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_autumn", 20)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:mirage_isles", 21)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:redwood_forest", 22);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:redwood_forest", 22)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:cherry_grove", 23);
+
 
     public static final SpawnBiomeData DEEP_SEA = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_deep_ocean", 0);
@@ -391,7 +397,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_spring", 30)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:skylands_winter", 31)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:mirage_isles", 32)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cloud_forest", 33);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:cloud_forest", 33)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:cherry_grove", 34);
+
 
     public static final SpawnBiomeData ALLIGATOR_SNAPPING_TURTLE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_overworld", 0)
@@ -529,7 +537,7 @@ public class DefaultBiomes {
     public static final SpawnBiomeData TIGER = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:bamboo_jungle", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:bamboo_grove", 1)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "biomesoplenty:cherry_blossom_grove", 2)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:cherry_grove", 2)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 3)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 4)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:amethyst_canyon", 5)
@@ -768,7 +776,9 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:moonlight_valley", 7)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_grove", 8)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:sakura_valley", 9)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:temperate_highlands", 10);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "terralith:temperate_highlands", 10)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:cherry_grove", 11);
+
 
     public static final SpawnBiomeData BANANA_SLUG = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:old_growth_pine_taiga", 0)

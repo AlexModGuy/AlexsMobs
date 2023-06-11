@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.tileentity;
 
 import com.github.alexthe666.alexsmobs.block.BlockVoidWormBeak;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;

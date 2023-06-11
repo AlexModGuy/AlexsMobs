@@ -5,7 +5,6 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
-import com.github.alexthe666.alexsmobs.entity.ai.TameableAIRide;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;

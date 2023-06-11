@@ -2,7 +2,6 @@ package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCaiman;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
