@@ -35,6 +35,8 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
 
     private static final EntityDataAccessor<Optional<UUID>> HEAD_UUID = SynchedEntityData.defineId(EntityMurmur.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> HEAD_ID = SynchedEntityData.defineId(EntityMurmur.class, EntityDataSerializers.INT);
+    private boolean renderFakeHead = true;
+
 
     protected EntityMurmur(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -115,8 +117,13 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
         }
     }
 
+    public boolean shouldRenderFakeHead() {
+        return this.renderFakeHead;
+    }
+
     public void tick() {
         super.tick();
+        if (this.renderFakeHead) this.renderFakeHead = false;
         this.yBodyRot = this.getYRot();
         this.yHeadRot = Mth.clamp(this.yHeadRot, this.yBodyRot - 70, this.yBodyRot + 70);
         if (!this.level().isClientSide) {
