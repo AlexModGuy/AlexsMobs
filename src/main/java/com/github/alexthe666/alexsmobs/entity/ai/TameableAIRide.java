@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;

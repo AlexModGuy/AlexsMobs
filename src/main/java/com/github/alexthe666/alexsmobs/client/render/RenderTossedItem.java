@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelAncientDart;
 import com.github.alexthe666.alexsmobs.entity.EntityTossedItem;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -47,7 +48,7 @@ public class RenderTossedItem  extends EntityRenderer<EntityTossedItem> {
             matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
             matrixStackIn.translate(0, 0.5F, 0);
             matrixStackIn.scale(1F, 1F, 1F);
-            matrixStackIn.mulPose((new Quaternionf()).rotateZ((float) Math.toRadians(-(entityIn.tickCount + partialTicks) * 30F)));
+            matrixStackIn.mulPose((new Quaternionf()).rotateZ(Maths.rad(-(entityIn.tickCount + partialTicks) * 30F)));
             matrixStackIn.translate(0, -0.15F, 0);
             Minecraft.getInstance().getItemRenderer().renderStatic(entityIn.getItem(), ItemDisplayContext.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.level(), 0);
         }

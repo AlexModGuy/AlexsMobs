@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityTriops;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -102,12 +103,12 @@ public class ModelTriops extends AdvancedEntityModel<EntityTriops> {
         float yaw = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO) * partialTick;
         float tail1Rot = Mth.wrapDegrees(entity.prevTail1Yaw + (entity.tail1Yaw - entity.prevTail1Yaw) * partialTick - yaw) * 0.35F;
         float tail2Rot = Mth.wrapDegrees(entity.prevTail2Yaw + (entity.tail2Yaw - entity.prevTail2Yaw) * partialTick - yaw) * 0.35F;
-        progressRotationPrev(body, landProgress, 0, 0, (float) Math.toRadians(-180), 5F);
+        progressRotationPrev(body, landProgress, 0, 0, Maths.rad(-180), 5F);
         progressPositionPrev(body, limbSwingAmount, 0, -3, 0, 1F);
-        progressRotationPrev(leftAntenna, 1F - limbSwingAmount, 0, (float) Math.toRadians(20), 0, 1F);
-        progressRotationPrev(rightAntenna, 1F - limbSwingAmount, 0, (float) Math.toRadians(-20), 0, 1F);
+        progressRotationPrev(leftAntenna, 1F - limbSwingAmount, 0, Maths.rad(20), 0, 1F);
+        progressRotationPrev(rightAntenna, 1F - limbSwingAmount, 0, Maths.rad(-20), 0, 1F);
         this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD * swimAmount;
-        this.body.rotateAngleZ += (float)Math.toRadians(swimRot);
+        this.body.rotateAngleZ += Maths.rad(swimRot);
         this.swing(rightAntenna, idleSpeed, idleDegree, false, 1F, -0.2F, ageInTicks, 1);
         this.swing(leftAntenna, idleSpeed, idleDegree, true, 1F, -0.2F, ageInTicks, 1);
         this.walk(leftTailFlipper, idleSpeed, idleDegree, false, 3F, 0.1F, ageInTicks, 1);
@@ -123,7 +124,7 @@ public class ModelTriops extends AdvancedEntityModel<EntityTriops> {
         this.walk(tail2, idleSpeed, idleDegree * 1.5F, false, 0, -0.3F, ageInTicks, landProgress * 0.2F);
         this.walk(leftTailFlipper, idleSpeed, idleDegree, false, 0F, -0.3F, ageInTicks, landProgress * 0.2F);
         this.walk(rightTailFlipper, idleSpeed, idleDegree, false, 0F, -0.3F, ageInTicks, landProgress * 0.2F);
-        tail1.rotateAngleY += (float) Math.toRadians(tail1Rot);
-        tail2.rotateAngleY += (float) Math.toRadians(tail2Rot);
+        tail1.rotateAngleY += Maths.rad(tail1Rot);
+        tail2.rotateAngleY += Maths.rad(tail2Rot);
     }
 }

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBison;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -105,7 +106,7 @@ public class ModelBisonBaby extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         eatPose();
@@ -113,7 +114,7 @@ public class ModelBisonBaby extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         eatPose();
@@ -121,17 +122,17 @@ public class ModelBisonBaby extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
     }
 
     private void eatPose(){
-        animator.rotate(head, (float) Math.toRadians(-10), 0, 0);
-        animator.rotate(torso, (float) Math.toRadians(15), 0, 0);
+        animator.rotate(head, Maths.rad(-10), 0, 0);
+        animator.rotate(torso, Maths.rad(15), 0, 0);
         animator.move(torso, 0, 0, 2);
-        animator.rotate(left_arm, (float) Math.toRadians(-15), 0, 0);
-        animator.rotate(right_arm, (float) Math.toRadians(-15), 0, 0);
+        animator.rotate(left_arm, Maths.rad(-15), 0, 0);
+        animator.rotate(right_arm, Maths.rad(-15), 0, 0);
         animator.move(left_arm, 0, -2.5F, 0);
         animator.move(right_arm, 0, -2.5F, 0);
         animator.move(head, 0, 4, 0);

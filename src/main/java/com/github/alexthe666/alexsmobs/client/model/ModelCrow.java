@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -96,24 +97,24 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 		float sitProgress = entity.prevSitProgress + (entity.sitProgress - entity.prevSitProgress) * partialTick;
 		float runProgress = Math.max(0, (limbSwingAmount * 5F) - flyProgress);
 		float biteProgress = entity.prevAttackProgress + (entity.attackProgress - entity.prevAttackProgress) * partialTick;
-		progressRotationPrev(head, biteProgress, (float)Math.toRadians(60), 0, 0, 5F);
-		progressRotationPrev(body, biteProgress, (float) Math.toRadians(25), 0, 0, 5F);
-		progressRotationPrev(leg_left, biteProgress, (float) Math.toRadians(-25), 0, 0, 5F);
-		progressRotationPrev(leg_right, biteProgress, (float) Math.toRadians(-25), 0, 0, 5F);
+		progressRotationPrev(head, biteProgress, Maths.rad(60), 0, 0, 5F);
+		progressRotationPrev(body, biteProgress, Maths.rad(25), 0, 0, 5F);
+		progressRotationPrev(leg_left, biteProgress, Maths.rad(-25), 0, 0, 5F);
+		progressRotationPrev(leg_right, biteProgress, Maths.rad(-25), 0, 0, 5F);
 		this.walk(head, idleSpeed * 0.7F, idleDegree, false, -1F, 0.05F, ageInTicks, 1);
 		this.walk(tail, idleSpeed * 0.7F, idleDegree, false, 1F, 0.05F, ageInTicks, 1);
-		progressRotationPrev(body, flyProgress, (float) Math.toRadians(20), 0, 0, 5F);
-		progressRotationPrev(head, flyProgress, (float) Math.toRadians(-15), 0, 0, 5F);
-		progressRotationPrev(leg_left, flyProgress, (float) Math.toRadians(55), 0, 0, 5F);
-		progressRotationPrev(leg_right, flyProgress, (float) Math.toRadians(55), 0, 0, 5F);
-		progressRotationPrev(wing_right, flyProgress,  (float) Math.toRadians(-90),  (float) Math.toRadians(90),  0, 5F);
-		progressRotationPrev(wing_left, flyProgress,  (float) Math.toRadians(-90),  (float) Math.toRadians(-90), 0, 5F);
+		progressRotationPrev(body, flyProgress, Maths.rad(20), 0, 0, 5F);
+		progressRotationPrev(head, flyProgress, Maths.rad(-15), 0, 0, 5F);
+		progressRotationPrev(leg_left, flyProgress, Maths.rad(55), 0, 0, 5F);
+		progressRotationPrev(leg_right, flyProgress, Maths.rad(55), 0, 0, 5F);
+		progressRotationPrev(wing_right, flyProgress,  Maths.rad(-90),  Maths.rad(90),  0, 5F);
+		progressRotationPrev(wing_left, flyProgress,  Maths.rad(-90),  Maths.rad(-90), 0, 5F);
 		progressPositionPrev(wing_right, flyProgress, 0F, 2F, 1F, 5f);
 		progressPositionPrev(wing_left, flyProgress, 0F, 2F, 1F, 5f);
-		progressRotationPrev(body, runProgress, (float)Math.toRadians(15), 0, 0, 5F);
-		progressRotationPrev(head, runProgress, (float)Math.toRadians(-20), 0, 0, 5F);
-		progressRotationPrev(leg_left, runProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-		progressRotationPrev(leg_right, runProgress, (float)Math.toRadians(-15), 0, 0, 5F);
+		progressRotationPrev(body, runProgress, Maths.rad(15), 0, 0, 5F);
+		progressRotationPrev(head, runProgress, Maths.rad(-20), 0, 0, 5F);
+		progressRotationPrev(leg_left, runProgress, Maths.rad(-15), 0, 0, 5F);
+		progressRotationPrev(leg_right, runProgress, Maths.rad(-15), 0, 0, 5F);
 		if(flyProgress > 0) {
 			this.swing(wing_right, flapSpeed, flapDegree * 5, true, 0F, 0F, ageInTicks, 1);
 			this.swing(wing_left, flapSpeed, flapDegree * 5, false, 0F, 0F, ageInTicks, 1);
@@ -128,10 +129,10 @@ public class ModelCrow extends AdvancedEntityModel<EntityCrow> {
 			this.flap(tail, walkSpeed, walkDegree * 0.2F, false, 1F, 0F, limbSwing, limbSwingAmount);
 
 		}
-		progressRotationPrev(body, sitProgress, (float)Math.toRadians(-25), 0, 0, 5F);
-		progressRotationPrev(leg_left, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
-		progressRotationPrev(leg_right, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
-		progressRotationPrev(head, sitProgress, (float)Math.toRadians(25), 0, 0, 5F);
+		progressRotationPrev(body, sitProgress, Maths.rad(-25), 0, 0, 5F);
+		progressRotationPrev(leg_left, sitProgress, Maths.rad(25), 0, 0, 5F);
+		progressRotationPrev(leg_right, sitProgress, Maths.rad(25), 0, 0, 5F);
+		progressRotationPrev(head, sitProgress, Maths.rad(25), 0, 0, 5F);
 		head.rotateAngleY += netHeadYaw / 57.295776F;
 		head.rotateAngleZ += headPitch / 57.295776F;
 

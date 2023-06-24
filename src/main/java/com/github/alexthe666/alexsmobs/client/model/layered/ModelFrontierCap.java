@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model.layered;
 
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -36,9 +37,9 @@ public class ModelFrontierCap extends HumanoidModel {
         float partialTick = Minecraft.getInstance().getFrameTime();
         float limbSwingAmount = entity.walkAnimation.speed(partialTick);
         float limbSwing = entity.walkAnimation.position() + partialTick;
-        tail.xRot = 0.1956514098143546F + limbSwingAmount * (float) Math.toRadians(80) + Mth.cos(limbSwing * 0.3F) * 0.2F * limbSwingAmount;
-        tail.yRot = -0.03909537541112055F + limbSwingAmount * (float) Math.toRadians(10) - Mth.cos(limbSwing * 0.4F) * 0.3F * limbSwingAmount;
-        tail.zRot = -0.11728612207217244F + limbSwingAmount * (float) Math.toRadians(10);
+        tail.xRot = 0.1956514098143546F + limbSwingAmount * Maths.rad(80) + Mth.cos(limbSwing * 0.3F) * 0.2F * limbSwingAmount;
+        tail.yRot = -0.03909537541112055F + limbSwingAmount * Maths.rad(10) - Mth.cos(limbSwing * 0.4F) * 0.3F * limbSwingAmount;
+        tail.zRot = -0.11728612207217244F + limbSwingAmount * Maths.rad(10);
         return  this;
     }
 

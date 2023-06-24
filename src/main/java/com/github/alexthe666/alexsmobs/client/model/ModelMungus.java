@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -117,7 +118,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 		this.flap(nose, idleSpeed, idleDegree, false, 0F, 0F, ageInTicks, 1);
 		sack.setScale(glowyBob, glowyBob, glowyBob + swell * 0.2F);
 		this.sack.rotationPointZ += swell * 0.02F;
-		progressRotationPrev(hair, limbSwingAmount, (float)Math.toRadians(-23), 0, 0, 1F);
+		progressRotationPrev(hair, limbSwingAmount, Maths.rad(-23), 0, 0, 1F);
 		this.walk(leg_right, walkSpeed, walkDegree * 1.1F, true, 1, 0F, limbSwing, limbSwingAmount);
 		this.bob(leg_right, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
 		this.walk(leg_left, walkSpeed, walkDegree * 1.1F, false, 1, 0F, limbSwing, limbSwingAmount);

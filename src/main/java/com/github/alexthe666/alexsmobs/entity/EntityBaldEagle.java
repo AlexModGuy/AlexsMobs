@@ -192,7 +192,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
         } else {
-            this.moveControl = new EntityBaldEagle.MoveHelper(this);
+            this.moveControl = new MoveHelper(this);
             this.navigation = new DirectPathNavigator(this, level());
             this.isLandNavigator = false;
         }

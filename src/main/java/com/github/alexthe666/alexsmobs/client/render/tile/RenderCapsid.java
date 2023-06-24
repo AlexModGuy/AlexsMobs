@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.render.tile;
 
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityCapsid;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -48,7 +49,7 @@ public class RenderCapsid<T extends TileEntityCapsid> implements BlockEntityRend
             int j = this.getModelCount(stack);
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F + floatProgress, 0.5F);
-            matrixStackIn.mulPose((new Quaternionf()).rotateY((float) Math.toRadians(entity.getBlockAngle() + yaw)));
+            matrixStackIn.mulPose((new Quaternionf()).rotateY(Maths.rad(entity.getBlockAngle() + yaw)));
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, -0.1F, 0);
             if(entity.vibratingThisTick && entity.getLevel() != null){

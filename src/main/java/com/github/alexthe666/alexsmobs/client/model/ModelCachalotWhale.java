@@ -4,6 +4,7 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.8
 
 
 import com.github.alexthe666.alexsmobs.entity.EntityCachalotWhale;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -116,15 +117,15 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		float swimDegree = 0.4F;
 		float beachedSpeed = 0.05F;
 		float beachedIdle = 0.4F;
-		progressRotationPrev(jaw, Math.max(chargeProgress, grabProgress * 0.8F), (float)Math.toRadians(30), 0, 0, 10F);
-		progressRotationPrev(jaw, beachedProgress, (float)Math.toRadians(20), (float)Math.toRadians(5), 0, 10F);
-		progressRotationPrev(body, beachedProgress, 0, 0,  (float)Math.toRadians(80), 10F);
-		progressRotationPrev(tail1, beachedProgress, (float)Math.toRadians(-30), (float)Math.toRadians(10),  0, 10F);
-		progressRotationPrev(tail2, beachedProgress, (float)Math.toRadians(-30), (float)Math.toRadians(-30),  (float)Math.toRadians(-30), 10F);
-		progressRotationPrev(tail3, beachedProgress, 0, (float)Math.toRadians(-10),  (float)Math.toRadians(-60), 10F);
-		progressRotationPrev(head, beachedProgress, 0, (float)Math.toRadians(-10), 0, 10F);
-		progressRotationPrev(arm_right, beachedProgress, 0, 0,  (float)Math.toRadians(-110), 10F);
-		progressRotationPrev(arm_left, beachedProgress, 0, 0,  (float)Math.toRadians(110), 10F);
+		progressRotationPrev(jaw, Math.max(chargeProgress, grabProgress * 0.8F), Maths.rad(30), 0, 0, 10F);
+		progressRotationPrev(jaw, beachedProgress, Maths.rad(20), Maths.rad(5), 0, 10F);
+		progressRotationPrev(body, beachedProgress, 0, 0,  Maths.rad(80), 10F);
+		progressRotationPrev(tail1, beachedProgress, Maths.rad(-30), Maths.rad(10),  0, 10F);
+		progressRotationPrev(tail2, beachedProgress, Maths.rad(-30), Maths.rad(-30),  Maths.rad(-30), 10F);
+		progressRotationPrev(tail3, beachedProgress, 0, Maths.rad(-10),  Maths.rad(-60), 10F);
+		progressRotationPrev(head, beachedProgress, 0, Maths.rad(-10), 0, 10F);
+		progressRotationPrev(arm_right, beachedProgress, 0, 0,  Maths.rad(-110), 10F);
+		progressRotationPrev(arm_left, beachedProgress, 0, 0,  Maths.rad(110), 10F);
 		progressPositionPrev(tail1, beachedProgress, -2F, -1F, -10F, 10F);
 		progressPositionPrev(tail2, beachedProgress, 0F, -1F, -4F, 10F);
 		progressPositionPrev(tail3, beachedProgress, 0F, 2F, 0F, 10F);

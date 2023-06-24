@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityJerboa;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -102,24 +103,24 @@ public class ModelJerboa extends AdvancedEntityModel<EntityJerboa> {
         this.walk(tail, idleSpeed, idleDegree * 0.5F, true, 1F, -0.05F, ageInTicks, 1);
         this.walk(leftEar, idleSpeed, idleDegree * 0.5F, false,0F, 0F, ageInTicks, 1);
         this.walk(rightEar, idleSpeed, idleDegree * 0.5F, false, 0F, 0F, ageInTicks, 1);
-        progressRotationPrev(legs, jumpProgress, (float)Math.toRadians(65), 0, 0, 5F);
-        progressRotationPrev(body, jumpProgress, (float)Math.toRadians(-5), 0, 0, 5F);
-        progressRotationPrev(tail, jumpProgress, (float)Math.toRadians(-20), 0, 0, 5F);
+        progressRotationPrev(legs, jumpProgress, Maths.rad(65), 0, 0, 5F);
+        progressRotationPrev(body, jumpProgress, Maths.rad(-5), 0, 0, 5F);
+        progressRotationPrev(tail, jumpProgress, Maths.rad(-20), 0, 0, 5F);
         progressPositionPrev(body, jumpProgress, 0, -2, 0, 5F);
-        progressRotationPrev(legs, reboundProgress, (float)Math.toRadians(-30), 0, 0, 5F);
-        progressRotationPrev(body, reboundProgress, (float)Math.toRadians(20), 0, 0, 5F);
-        progressRotationPrev(tail, reboundProgress, (float)Math.toRadians(35), 0, 0, 5F);
-        progressRotationPrev(leftEar, reboundProgress, 0,  (float)Math.toRadians(35), 0, 5F);
-        progressRotationPrev(rightEar, reboundProgress, 0,  (float)Math.toRadians(-35), 0, 5F);
+        progressRotationPrev(legs, reboundProgress, Maths.rad(-30), 0, 0, 5F);
+        progressRotationPrev(body, reboundProgress, Maths.rad(20), 0, 0, 5F);
+        progressRotationPrev(tail, reboundProgress, Maths.rad(35), 0, 0, 5F);
+        progressRotationPrev(leftEar, reboundProgress, 0,  Maths.rad(35), 0, 5F);
+        progressRotationPrev(rightEar, reboundProgress, 0,  Maths.rad(-35), 0, 5F);
         progressPositionPrev(body, reboundProgress, 0, -1, 0, 5F);
         progressPositionPrev(body, sleepProgress, 0, 5F, 0, 5F);
         progressPositionPrev(legs, sleepProgress, 0, -2.2F, 0, 5F);
-        progressRotationPrev(legs, sleepProgress, (float)Math.toRadians(-30), 0, 0, 5F);
-        progressRotationPrev(tail, sleepProgress, (float)Math.toRadians(50), 0, (float)Math.toRadians(90), 5F);
-        progressRotationPrev(leftEar, sleepProgress, 0,  (float)Math.toRadians(35), 0, 5F);
-        progressRotationPrev(rightEar, sleepProgress, 0,  (float)Math.toRadians(-35), 0, 5F);
-        progressRotationPrev(leftArm, begProgress, (float)Math.toRadians(-15),  0, 0, 5F);
-        progressRotationPrev(rightArm, begProgress, (float)Math.toRadians(-15), 0, 0, 5F);
+        progressRotationPrev(legs, sleepProgress, Maths.rad(-30), 0, 0, 5F);
+        progressRotationPrev(tail, sleepProgress, Maths.rad(50), 0, Maths.rad(90), 5F);
+        progressRotationPrev(leftEar, sleepProgress, 0,  Maths.rad(35), 0, 5F);
+        progressRotationPrev(rightEar, sleepProgress, 0,  Maths.rad(-35), 0, 5F);
+        progressRotationPrev(leftArm, begProgress, Maths.rad(-15),  0, 0, 5F);
+        progressRotationPrev(rightArm, begProgress, Maths.rad(-15), 0, 0, 5F);
 
         if (begProgress > 0) {
             float f = body.rotateAngleX;

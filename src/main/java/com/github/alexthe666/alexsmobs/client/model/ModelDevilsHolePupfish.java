@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityDevilsHolePupfish;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -67,11 +68,11 @@ public class ModelDevilsHolePupfish extends AdvancedEntityModel<EntityDevilsHole
         float partialTick = ageInTicks - entity.tickCount;
         float landProgress = entity.prevOnLandProgress + (entity.onLandProgress - entity.prevOnLandProgress) * partialTick;
         float feedingProgress = entity.prevFeedProgress + (entity.feedProgress - entity.prevFeedProgress) * partialTick;
-        this.progressRotationPrev(dorsal_fin, limbSwingAmount, (float) Math.toRadians(-20), 0, 0, 1F);
+        this.progressRotationPrev(dorsal_fin, limbSwingAmount, Maths.rad(-20), 0, 0, 1F);
         this.progressPositionPrev(dorsal_fin, limbSwingAmount,0, 0.5F, 0, 1F);
-        this.progressRotationPrev(bottom_fin, limbSwingAmount, (float) Math.toRadians(10), 0, 0, 1F);
+        this.progressRotationPrev(bottom_fin, limbSwingAmount, Maths.rad(10), 0, 0, 1F);
         this.progressPositionPrev(bottom_fin, limbSwingAmount,0, -0.5F, -0.5F, 1F);
-        this.progressRotationPrev(body, landProgress, 0, 0, (float) Math.toRadians(90), 5F);
+        this.progressRotationPrev(body, landProgress, 0, 0, Maths.rad(90), 5F);
         this.bob(body, idleSpeed, idleDegree, false, ageInTicks, 1F);
         this.swing(body, idleSpeed, idleDegree * 0.1F, false, 1F, 0, ageInTicks, 1F);
         this.swing(tail, idleSpeed, idleDegree * 0.3F, false, -1F, 0, ageInTicks, 1F);

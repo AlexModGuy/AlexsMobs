@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityTendonSegment;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -58,11 +59,11 @@ public class ModelTendonClaw extends AdvancedEntityModel<EntityTendonSegment> {
     public void setAttributes(float rotX, float rotY, float open){
         this.resetToDefaultPose();
         this.resetToDefaultPose();
-        this.root.rotateAngleX = (float)Math.toRadians(rotX);
-        this.root.rotateAngleY = (float)Math.toRadians(rotY);
-        progressRotationPrev(claw1, open, (float) Math.toRadians(45F), 0, 0, 1);
-        progressRotationPrev(claw2, open, (float) Math.toRadians(45F), 0, 0, 1);
-        progressRotationPrev(claw3, open, (float) Math.toRadians(45F), 0, 0, 1);
+        this.root.rotateAngleX = Maths.rad(rotX);
+        this.root.rotateAngleY = Maths.rad(rotY);
+        progressRotationPrev(claw1, open, Maths.rad(45F), 0, 0, 1);
+        progressRotationPrev(claw2, open, Maths.rad(45F), 0, 0, 1);
+        progressRotationPrev(claw3, open, Maths.rad(45F), 0, 0, 1);
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {

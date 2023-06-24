@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -162,29 +163,29 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         animator.setAnimation(EntityCrocodile.ANIMATION_LUNGE);
         animator.startKeyframe(2);
         animator.move(body, 0, 0, 2);
-        animator.rotate(head, (float)Math.toRadians(-55), 0, 0);
-        animator.rotate(jaw, (float)Math.toRadians(60), 0, 0);
+        animator.rotate(head, Maths.rad(-55), 0, 0);
+        animator.rotate(jaw, Maths.rad(60), 0, 0);
         animator.endKeyframe();
         animator.setStaticKeyframe(1);
         animator.startKeyframe(5);
         animator.move(body, 0, 0, -14);
-        animator.rotate(head, (float)Math.toRadians(-15), 0, 0);
-        animator.rotate(jaw, (float)Math.toRadians(20), 0, 0);
-        animator.rotate(right_arm, (float)Math.toRadians(45), 0, 0);
-        animator.rotate(left_arm, (float)Math.toRadians(45), 0, 0);
-        animator.rotate(right_leg, (float)Math.toRadians(45), 0, 0);
-        animator.rotate(left_leg, (float)Math.toRadians(45), 0, 0);
+        animator.rotate(head, Maths.rad(-15), 0, 0);
+        animator.rotate(jaw, Maths.rad(20), 0, 0);
+        animator.rotate(right_arm, Maths.rad(45), 0, 0);
+        animator.rotate(left_arm, Maths.rad(45), 0, 0);
+        animator.rotate(right_leg, Maths.rad(45), 0, 0);
+        animator.rotate(left_leg, Maths.rad(45), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         animator.move(body, 0, 0, 3);
-        animator.rotate(head, (float)Math.toRadians(-10), 0, 0);
-        animator.rotate(jaw, (float)Math.toRadians(15), 0, 0);
+        animator.rotate(head, Maths.rad(-10), 0, 0);
+        animator.rotate(jaw, Maths.rad(15), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(10);
         animator.setAnimation(EntityCrocodile.ANIMATION_DEATHROLL);
         animator.startKeyframe(30);
         int rolls = 3;
-        animator.rotate(body, 0, 0, (float)Math.toRadians(-360 * rolls));
+        animator.rotate(body, 0, 0, Maths.rad(-360 * rolls));
         animator.endKeyframe();
 
     }
@@ -205,24 +206,24 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         if (!swimAnimate && grabProgress <= 0) {
             this.faceTarget(netHeadYaw, headPitch, 2, neck, head);
         }
-        progressRotationPrev(jaw, grabProgress, (float) Math.toRadians(30), 0, 0, 10F);
-        progressRotationPrev(head, grabProgress, (float) Math.toRadians(-10), 0, 0, 10F);
+        progressRotationPrev(jaw, grabProgress, Maths.rad(30), 0, 0, 10F);
+        progressRotationPrev(head, grabProgress, Maths.rad(-10), 0, 0, 10F);
         if (entityIn.baskingType == 0) {
-            progressRotationPrev(body, baskProgress, 0, (float) Math.toRadians(-7), 0, 10F);
-            progressRotationPrev(tail1, baskProgress, 0, (float) Math.toRadians(30), 0, 10F);
-            progressRotationPrev(tail2, baskProgress, 0, (float) Math.toRadians(20), 0, 10F);
-            progressRotationPrev(tail3, baskProgress, 0, (float) Math.toRadians(30), 0, 10F);
-            progressRotationPrev(neck, baskProgress, 0, (float) Math.toRadians(-10), 0, 10F);
-            progressRotationPrev(head, baskProgress, (float) Math.toRadians(-60), (float) Math.toRadians(-10), 0, 10F);
-            progressRotationPrev(jaw, baskProgress, (float) Math.toRadians(60), 0, 0, 10F);
+            progressRotationPrev(body, baskProgress, 0, Maths.rad(-7), 0, 10F);
+            progressRotationPrev(tail1, baskProgress, 0, Maths.rad(30), 0, 10F);
+            progressRotationPrev(tail2, baskProgress, 0, Maths.rad(20), 0, 10F);
+            progressRotationPrev(tail3, baskProgress, 0, Maths.rad(30), 0, 10F);
+            progressRotationPrev(neck, baskProgress, 0, Maths.rad(-10), 0, 10F);
+            progressRotationPrev(head, baskProgress, Maths.rad(-60), Maths.rad(-10), 0, 10F);
+            progressRotationPrev(jaw, baskProgress, Maths.rad(60), 0, 0, 10F);
         } else if (entityIn.baskingType == 1) {
-            progressRotationPrev(body, baskProgress, 0, (float) Math.toRadians(7), 0, 10F);
-            progressRotationPrev(tail1, baskProgress, 0, (float) Math.toRadians(-30), 0, 10F);
-            progressRotationPrev(tail2, baskProgress, 0, (float) Math.toRadians(-20), 0, 10F);
-            progressRotationPrev(tail3, baskProgress, 0, (float) Math.toRadians(-30), 0, 10F);
-            progressRotationPrev(neck, baskProgress, 0, (float) Math.toRadians(10), 0, 10F);
-            progressRotationPrev(head, baskProgress, (float) Math.toRadians(-60), (float) Math.toRadians(10), 0, 10F);
-            progressRotationPrev(jaw, baskProgress, (float) Math.toRadians(60), 0, 0, 10F);
+            progressRotationPrev(body, baskProgress, 0, Maths.rad(7), 0, 10F);
+            progressRotationPrev(tail1, baskProgress, 0, Maths.rad(-30), 0, 10F);
+            progressRotationPrev(tail2, baskProgress, 0, Maths.rad(-20), 0, 10F);
+            progressRotationPrev(tail3, baskProgress, 0, Maths.rad(-30), 0, 10F);
+            progressRotationPrev(neck, baskProgress, 0, Maths.rad(10), 0, 10F);
+            progressRotationPrev(head, baskProgress, Maths.rad(-60), Maths.rad(10), 0, 10F);
+            progressRotationPrev(jaw, baskProgress, Maths.rad(60), 0, 0, 10F);
         }
         progressPositionPrev(body, baskProgress, 0, 3, -3, 10F);
         progressPositionPrev(tail1, baskProgress, 0, 0, -3, 10F);
@@ -231,30 +232,30 @@ public class ModelCrocodile extends AdvancedEntityModel<EntityCrocodile> {
         progressPositionPrev(right_arm, baskProgress, 0, -3, 0, 10F);
         progressPositionPrev(left_arm, baskProgress, 0, -3, 0, 10F);
         progressPositionPrev(right_arm, swimProgress, 0, 2, 0, 10F);
-        progressRotationPrev(left_arm, baskProgress, 0, 0, (float) Math.toRadians(-30), 10F);
-        progressRotationPrev(left_hand, baskProgress, 0, 0, (float) Math.toRadians(30), 10F);
-        progressRotationPrev(right_arm, baskProgress, 0, 0, (float) Math.toRadians(30), 10F);
-        progressRotationPrev(right_hand, baskProgress, 0, 0, (float) Math.toRadians(-30), 10F);
-        progressRotationPrev(left_leg, baskProgress, 0, 0, (float) Math.toRadians(-30), 10F);
-        progressRotationPrev(left_foot, baskProgress, 0, 0, (float) Math.toRadians(30), 10F);
-        progressRotationPrev(right_leg, baskProgress, 0, 0, (float) Math.toRadians(30), 10F);
-        progressRotationPrev(right_foot, baskProgress, 0, 0, (float) Math.toRadians(-30), 10F);
+        progressRotationPrev(left_arm, baskProgress, 0, 0, Maths.rad(-30), 10F);
+        progressRotationPrev(left_hand, baskProgress, 0, 0, Maths.rad(30), 10F);
+        progressRotationPrev(right_arm, baskProgress, 0, 0, Maths.rad(30), 10F);
+        progressRotationPrev(right_hand, baskProgress, 0, 0, Maths.rad(-30), 10F);
+        progressRotationPrev(left_leg, baskProgress, 0, 0, Maths.rad(-30), 10F);
+        progressRotationPrev(left_foot, baskProgress, 0, 0, Maths.rad(30), 10F);
+        progressRotationPrev(right_leg, baskProgress, 0, 0, Maths.rad(30), 10F);
+        progressRotationPrev(right_foot, baskProgress, 0, 0, Maths.rad(-30), 10F);
 
-        progressRotationPrev(right_arm, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(90), 10F);
+        progressRotationPrev(right_arm, swimProgress, Maths.rad(75), 0, Maths.rad(90), 10F);
         progressPositionPrev(left_arm, swimProgress, 0, 2, 0, 10F);
-        progressRotationPrev(left_arm, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(-90), 10F);
+        progressRotationPrev(left_arm, swimProgress, Maths.rad(75), 0, Maths.rad(-90), 10F);
         progressPositionPrev(right_leg, swimProgress, 0, 2, 0, 10F);
-        progressRotationPrev(right_leg, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(90), 10F);
+        progressRotationPrev(right_leg, swimProgress, Maths.rad(75), 0, Maths.rad(90), 10F);
         progressPositionPrev(left_leg, swimProgress, 0, 2, 0, 10F);
-        progressRotationPrev(left_leg, swimProgress, (float) Math.toRadians(75), 0, (float) Math.toRadians(-90), 10F);
+        progressRotationPrev(left_leg, swimProgress, Maths.rad(75), 0, Maths.rad(-90), 10F);
         progressPositionPrev(left_foot, swimProgress, -2, 0, 0, 10F);
-        progressRotationPrev(left_foot, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
+        progressRotationPrev(left_foot, swimProgress, Maths.rad(75), 0, 0, 10F);
         progressPositionPrev(right_foot, swimProgress, 2, 0, 0, 10F);
-        progressRotationPrev(right_foot, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
+        progressRotationPrev(right_foot, swimProgress, Maths.rad(75), 0, 0, 10F);
         progressPositionPrev(left_hand, swimProgress, -1, 0, 0, 10F);
-        progressRotationPrev(left_hand, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
+        progressRotationPrev(left_hand, swimProgress, Maths.rad(75), 0, 0, 10F);
         progressPositionPrev(right_hand, swimProgress, 1, 0, 0, 10F);
-        progressRotationPrev(right_hand, swimProgress, (float) Math.toRadians(75), 0, 0, 10F);
+        progressRotationPrev(right_hand, swimProgress, Maths.rad(75), 0, 0, 10F);
         AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{tail1, tail2, tail3};
         if (swimAnimate) {
             this.walk(right_arm, swimSpeed, swimDegree, false, 0F, -0.25F, limbSwing, limbSwingAmount);

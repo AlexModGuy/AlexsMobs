@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityOrca;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -96,17 +97,17 @@ public class ModelOrca extends AdvancedEntityModel<EntityOrca> {
         animator.setAnimation(EntityOrca.ANIMATION_BITE);
         animator.startKeyframe(5);
         animator.move(body, 0, 0, -5);
-        animator.rotate(head, (float) Math.toRadians(-25), 0, 0);
-        animator.rotate(jaw, (float) Math.toRadians(60), 0, 0);
+        animator.rotate(head, Maths.rad(-25), 0, 0);
+        animator.rotate(jaw, Maths.rad(60), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(3);
         animator.setAnimation(EntityOrca.ANIMATION_TAILSWING);
         animator.startKeyframe(5);
         animator.move(body, 0, -6, 15);
-        animator.rotate(body, (float) Math.toRadians(-140), 0, 0);
-        animator.rotate(tail1, (float) Math.toRadians(-35), 0, 0);
-        animator.rotate(tail2, (float) Math.toRadians(-35), 0, 0);
-        animator.rotate(tailend, (float) Math.toRadians(-25), 0, 0);
+        animator.rotate(body, Maths.rad(-140), 0, 0);
+        animator.rotate(tail1, Maths.rad(-35), 0, 0);
+        animator.rotate(tail2, Maths.rad(-35), 0, 0);
+        animator.rotate(tailend, Maths.rad(-25), 0, 0);
         animator.endKeyframe();
         animator.setStaticKeyframe(3);
         animator.resetKeyframe(12);

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMurmurHead;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -88,9 +89,9 @@ public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
                 f2 = 0.0F;
             }
             f1 += Mth.sin(Mth.lerp(partialTicks, entity.walkDistO, entity.walkDist) * 6.0F) * 32.0F * 1F;
-            float hairX = (float)Math.toRadians(6.0F + f2 / 2.0F + f1 - 180);
-            float hairY = (float) Math.toRadians(f3 / 2.0F);
-            float hairZ = (float) Math.toRadians(180.0F - f3 / 2.0F);
+            float hairX = Maths.rad(6.0F + f2 / 2.0F + f1 - 180);
+            float hairY = Maths.rad(f3 / 2.0F);
+            float hairZ = Maths.rad(180.0F - f3 / 2.0F);
             this.backHair.rotateAngleX -= hairX;
             this.backHair.rotateAngleY -= hairY;
             this.backHair.rotateAngleZ -= hairZ;
@@ -103,9 +104,9 @@ public class ModelMurmurHead extends AdvancedEntityModel<EntityMurmurHead> {
         }
         this.animateHair(ageInTicks);
         this.faceTarget(netHeadYaw, headPitch, 1, head);
-        progressRotationPrev(this.backHair, angerProgress, (float)Math.toRadians(-20F), 0, 0, 5F);
-        progressRotationPrev(this.rightHair, angerProgress, (float)Math.toRadians(-10F), 0, (float)Math.toRadians(25F), 5F);
-        progressRotationPrev(this.leftHair, angerProgress, (float)Math.toRadians(-10F), 0, (float)Math.toRadians(-25F), 5F);
+        progressRotationPrev(this.backHair, angerProgress, Maths.rad(-20F), 0, 0, 5F);
+        progressRotationPrev(this.rightHair, angerProgress, Maths.rad(-10F), 0, Maths.rad(25F), 5F);
+        progressRotationPrev(this.leftHair, angerProgress, Maths.rad(-10F), 0, Maths.rad(-25F), 5F);
 
     }
 }

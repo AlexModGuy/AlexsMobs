@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityManedWolf;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -167,23 +168,23 @@ public class ModelManedWolf extends AdvancedEntityModel<EntityManedWolf> {
         this.right_ear_pivot.rotateAngleY -= earYaw * Mth.DEG_TO_RAD;
         this.head.rotateAngleY += netHeadYaw * 0.5F * Mth.DEG_TO_RAD;
 
-        progressRotationPrev(tail, runProgress, (float) Math.toRadians(35), 0, 0, 5f);
-        progressRotationPrev(neck, runProgress, (float) Math.toRadians(40), 0, 0, 5f);
-        progressRotationPrev(head, runProgress, (float) Math.toRadians(-40), 0, 0, 5f);
+        progressRotationPrev(tail, runProgress, Maths.rad(35), 0, 0, 5f);
+        progressRotationPrev(neck, runProgress, Maths.rad(40), 0, 0, 5f);
+        progressRotationPrev(head, runProgress, Maths.rad(-40), 0, 0, 5f);
 
-        progressRotationPrev(body, danceProgress, (float) Math.toRadians(-40), 0, 0, 5f);
-        progressRotationPrev(left_arm, danceProgress, (float) Math.toRadians(20), 0, 0, 5f);
-        progressRotationPrev(right_arm, danceProgress, (float) Math.toRadians(20), 0, 0, 5f);
-        progressRotationPrev(left_leg, danceProgress, (float) Math.toRadians(-30), 0, (float) Math.toRadians(-15), 5f);
-        progressRotationPrev(right_leg, danceProgress, (float) Math.toRadians(-30), 0, (float) Math.toRadians(15), 5f);
-        progressRotationPrev(head, danceProgress, (float) Math.toRadians(-20), 0, 0, 5f);
-        progressRotationPrev(tail, danceProgress, (float) Math.toRadians(20), (float) Math.toRadians(20),  0, 5f);
+        progressRotationPrev(body, danceProgress, Maths.rad(-40), 0, 0, 5f);
+        progressRotationPrev(left_arm, danceProgress, Maths.rad(20), 0, 0, 5f);
+        progressRotationPrev(right_arm, danceProgress, Maths.rad(20), 0, 0, 5f);
+        progressRotationPrev(left_leg, danceProgress, Maths.rad(-30), 0, Maths.rad(-15), 5f);
+        progressRotationPrev(right_leg, danceProgress, Maths.rad(-30), 0, Maths.rad(15), 5f);
+        progressRotationPrev(head, danceProgress, Maths.rad(-20), 0, 0, 5f);
+        progressRotationPrev(tail, danceProgress, Maths.rad(20), Maths.rad(20),  0, 5f);
         progressPositionPrev(body, danceProgress, 0, 6, 0, 5f);
         progressPositionPrev(left_arm, danceProgress, 0, -2, 1, 5f);
         progressPositionPrev(right_arm, danceProgress, 0, -2, 1, 5f);
-        progressRotationPrev(neck, shakeProgress, (float) Math.toRadians(30), 0, 0, 5f);
-        progressRotationPrev(head, shakeProgress, (float) Math.toRadians(-30), 0, 0, 5f);
-        progressRotationPrev(tail, shakeProgress, (float) Math.toRadians(20), 0, 0, 5f);
+        progressRotationPrev(neck, shakeProgress, Maths.rad(30), 0, 0, 5f);
+        progressRotationPrev(head, shakeProgress, Maths.rad(-30), 0, 0, 5f);
+        progressRotationPrev(tail, shakeProgress, Maths.rad(20), 0, 0, 5f);
         this.swing(body, 0.25F, 0.5F, false, 0F, 0, ageInTicks, danceProgress * 0.2F);
         this.walk(body, 0.5F, 0.3F, false, 0F, 0, ageInTicks, danceProgress * 0.2F);
         this.walk(left_leg, 0.5F, -0.3F, false, 0F, 0, ageInTicks, danceProgress * 0.2F);

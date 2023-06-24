@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMimicOctopus;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -160,33 +161,33 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             this.body.rotationPointY += Math.abs(rot) * -7;
             this.body.rotateAngleX -= rot;
         }
-        progressRotationPrev(mantle, sitProgress, (float) Math.toRadians(10), 0, 0, 5F);
-        progressRotationPrev(leftFrontArm1, sitProgress,  0,  (float)Math.toRadians(10),  0, 5F);
-        progressRotationPrev(leftFrontArm2, sitProgress,  0,   (float)Math.toRadians(-5),  0, 5F);
-        progressRotationPrev(leftBackArm1, sitProgress,  0,  (float)Math.toRadians(-10),  0, 5F);
-        progressRotationPrev(leftBackArm2, sitProgress,  0,   (float)Math.toRadians(-15),  0, 5F);
-        progressRotationPrev(rightFrontArm1, sitProgress,  0,  (float)Math.toRadians(-10),  0, 5F);
-        progressRotationPrev(rightFrontArm2, sitProgress,  0,   (float)Math.toRadians(5),  0, 5F);
-        progressRotationPrev(rightBackArm1, sitProgress,  0,  (float)Math.toRadians(10),  0, 5F);
-        progressRotationPrev(rightBackArm2, sitProgress,  0,   (float)Math.toRadians(15),  0, 5F);
+        progressRotationPrev(mantle, sitProgress, Maths.rad(10), 0, 0, 5F);
+        progressRotationPrev(leftFrontArm1, sitProgress,  0,  Maths.rad(10),  0, 5F);
+        progressRotationPrev(leftFrontArm2, sitProgress,  0,   Maths.rad(-5),  0, 5F);
+        progressRotationPrev(leftBackArm1, sitProgress,  0,  Maths.rad(-10),  0, 5F);
+        progressRotationPrev(leftBackArm2, sitProgress,  0,   Maths.rad(-15),  0, 5F);
+        progressRotationPrev(rightFrontArm1, sitProgress,  0,  Maths.rad(-10),  0, 5F);
+        progressRotationPrev(rightFrontArm2, sitProgress,  0,   Maths.rad(5),  0, 5F);
+        progressRotationPrev(rightBackArm1, sitProgress,  0,  Maths.rad(10),  0, 5F);
+        progressRotationPrev(rightBackArm2, sitProgress,  0,   Maths.rad(15),  0, 5F);
 
     }
 
     public void animateForMimicWater(EntityMimicOctopus.MimicState state, EntityMimicOctopus entity, float limbSwing, float limbSwingAmount, float ageInTicks, float swimProgress) {
         limbSwingAmount = limbSwingAmount * swimProgress * 0.2F;
-        progressRotationPrev(body, swimProgress, 0, (float) Math.toRadians(-180), 0, 5F);
-        progressRotationPrev(leftFrontArm1, swimProgress, (float) Math.toRadians(-90),  (float) Math.toRadians(10), (float) Math.toRadians(-50), 5F);
-        progressRotationPrev(leftFrontArm2, swimProgress, (float) Math.toRadians(-90),  (float) Math.toRadians(20), (float) Math.toRadians(-20), 5F);
-        progressRotationPrev(leftBackArm1, swimProgress, (float) Math.toRadians(-90),  (float) Math.toRadians(50), (float) Math.toRadians(20), 5F);
-        progressRotationPrev(leftBackArm2, swimProgress, (float) Math.toRadians(-90), (float) Math.toRadians(70), (float) Math.toRadians(50), 5F);
+        progressRotationPrev(body, swimProgress, 0, Maths.rad(-180), 0, 5F);
+        progressRotationPrev(leftFrontArm1, swimProgress, Maths.rad(-90),  Maths.rad(10), Maths.rad(-50), 5F);
+        progressRotationPrev(leftFrontArm2, swimProgress, Maths.rad(-90),  Maths.rad(20), Maths.rad(-20), 5F);
+        progressRotationPrev(leftBackArm1, swimProgress, Maths.rad(-90),  Maths.rad(50), Maths.rad(20), 5F);
+        progressRotationPrev(leftBackArm2, swimProgress, Maths.rad(-90), Maths.rad(70), Maths.rad(50), 5F);
         progressPositionPrev(leftFrontArm1, swimProgress, -1, -1, 1, 5F);
         progressPosition(leftFrontArm2, swimProgress, leftFrontArm1.rotationPointX, leftFrontArm1.rotationPointY, leftFrontArm1.rotationPointZ, 5F);
         progressPosition(leftBackArm1, swimProgress, leftFrontArm1.rotationPointX, leftFrontArm1.rotationPointY, leftFrontArm1.rotationPointZ, 5F);
         progressPosition(leftBackArm2, swimProgress, leftFrontArm1.rotationPointX, leftFrontArm1.rotationPointY, leftFrontArm1.rotationPointZ, 5F);
-        progressRotationPrev(rightFrontArm1, swimProgress, (float) Math.toRadians(-90),  (float) Math.toRadians(-10), (float) Math.toRadians(50), 5F);
-        progressRotationPrev(rightFrontArm2, swimProgress, (float) Math.toRadians(-90),  (float) Math.toRadians(-20), (float) Math.toRadians(20), 5F);
-        progressRotationPrev(rightBackArm1, swimProgress, (float) Math.toRadians(-90),  (float) Math.toRadians(-50), (float) Math.toRadians(-20), 5F);
-        progressRotationPrev(rightBackArm2, swimProgress, (float) Math.toRadians(-90), (float) Math.toRadians(-70), (float) Math.toRadians(-50), 5F);
+        progressRotationPrev(rightFrontArm1, swimProgress, Maths.rad(-90),  Maths.rad(-10), Maths.rad(50), 5F);
+        progressRotationPrev(rightFrontArm2, swimProgress, Maths.rad(-90),  Maths.rad(-20), Maths.rad(20), 5F);
+        progressRotationPrev(rightBackArm1, swimProgress, Maths.rad(-90),  Maths.rad(-50), Maths.rad(-20), 5F);
+        progressRotationPrev(rightBackArm2, swimProgress, Maths.rad(-90), Maths.rad(-70), Maths.rad(-50), 5F);
         progressPositionPrev(rightFrontArm1, swimProgress, 1, -1, 1, 5F);
         progressPosition(rightFrontArm2, swimProgress, rightFrontArm1.rotationPointX, rightFrontArm1.rotationPointY, rightFrontArm1.rotationPointZ, 5F);
         progressPosition(rightBackArm1, swimProgress, rightFrontArm1.rotationPointX, rightFrontArm1.rotationPointY, rightFrontArm1.rotationPointZ, 5F);
@@ -200,22 +201,22 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             if(swimProgress > 0){
                 this.mantle.setScale(1F + swimProgress * 0.1F, 1F + swimProgress * 0.1F, 1F + swimProgress * 0.1F);
             }
-            progressRotationPrev(leftFrontArm1, swimProgress, (float) Math.toRadians(90),  (float) Math.toRadians(45), (float) Math.toRadians(50), 5F);
-            progressRotationPrev(rightFrontArm1, swimProgress, (float) Math.toRadians(-90),  (float) Math.toRadians(-45), (float) Math.toRadians(-50), 5F);
+            progressRotationPrev(leftFrontArm1, swimProgress, Maths.rad(90),  Maths.rad(45), Maths.rad(50), 5F);
+            progressRotationPrev(rightFrontArm1, swimProgress, Maths.rad(-90),  Maths.rad(-45), Maths.rad(-50), 5F);
             progressPositionPrev(leftFrontArm1, swimProgress, -1, -1, 0, 5F);
             progressPositionPrev(rightFrontArm1, swimProgress, 1, 1, 0, 5F);
 
-            progressRotationPrev(leftFrontArm2, swimProgress, (float) Math.toRadians(90),  (float) Math.toRadians(-40), (float) Math.toRadians(-15), 5F);
+            progressRotationPrev(leftFrontArm2, swimProgress, Maths.rad(90),  Maths.rad(-40), Maths.rad(-15), 5F);
             progressPositionPrev(leftFrontArm2, swimProgress, 0, 1, 5, 5F);
-            progressRotationPrev(leftBackArm1, swimProgress, (float) Math.toRadians(90),  (float) Math.toRadians(-20), (float) Math.toRadians(10), 5F);
+            progressRotationPrev(leftBackArm1, swimProgress, Maths.rad(90),  Maths.rad(-20), Maths.rad(10), 5F);
             progressPositionPrev(leftBackArm1, swimProgress, -1, 0, 2, 5F);
-            progressRotationPrev(leftBackArm2, swimProgress, (float) Math.toRadians(90),  (float) Math.toRadians(-70), (float) Math.toRadians(-15), 5F);
+            progressRotationPrev(leftBackArm2, swimProgress, Maths.rad(90),  Maths.rad(-70), Maths.rad(-15), 5F);
             progressPositionPrev(leftBackArm2, swimProgress, 0, 1, 5, 5F);
-            progressRotationPrev(rightFrontArm2, swimProgress, (float) Math.toRadians(90),  (float) Math.toRadians(40), (float) Math.toRadians(15), 5F);
+            progressRotationPrev(rightFrontArm2, swimProgress, Maths.rad(90),  Maths.rad(40), Maths.rad(15), 5F);
             progressPositionPrev(rightFrontArm2, swimProgress, 0, 1, 5, 5F);
-            progressRotationPrev(rightBackArm1, swimProgress, (float) Math.toRadians(90),  (float) Math.toRadians(20), (float) Math.toRadians(-10), 5F);
+            progressRotationPrev(rightBackArm1, swimProgress, Maths.rad(90),  Maths.rad(20), Maths.rad(-10), 5F);
             progressPositionPrev(rightBackArm1, swimProgress, 1, 0, 2, 5F);
-            progressRotationPrev(rightBackArm2, swimProgress, (float) Math.toRadians(90),  (float) Math.toRadians(70), (float) Math.toRadians(15), 5F);
+            progressRotationPrev(rightBackArm2, swimProgress, Maths.rad(90),  Maths.rad(70), Maths.rad(15), 5F);
             progressPositionPrev(rightBackArm2, swimProgress, 0, 1, 5, 5F);
             this.swing(leftFrontArm1, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
             this.swing(rightFrontArm1, speed, degree * 0.25F, true, 0, 0.1F, limbSwing, limbSwingAmount);
@@ -224,7 +225,7 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             if(state == EntityMimicOctopus.MimicState.CREEPER){
                 progressPositionPrev(body, swimProgress, 0, -3, -2, 5F);
                 progressPositionPrev(mantle, swimProgress, 0, -2, 1, 5F);
-                progressRotationPrev(mantle, swimProgress, (float)Math.toRadians(-60), 0, 0, 5F);
+                progressRotationPrev(mantle, swimProgress, Maths.rad(-60), 0, 0, 5F);
                 f = 0.5F;
             }
             float degree = 1.6F;
@@ -260,34 +261,34 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
         float degree = 0.8F;
         float speed = 0.8F;
         if(state == EntityMimicOctopus.MimicState.CREEPER){
-            progressRotationPrev(body, groundProgress, 0, (float)Math.toRadians(-180), 0, 5F);
-            progressRotationPrev(mantle, groundProgress, (float)Math.toRadians(-80), 0, 0, 5F);
+            progressRotationPrev(body, groundProgress, 0, Maths.rad(-180), 0, 5F);
+            progressRotationPrev(mantle, groundProgress, Maths.rad(-80), 0, 0, 5F);
             progressPositionPrev(mantle, groundProgress, 0, -3, -1, 5F);
             progressPositionPrev(body, groundProgress, 0, -13, -2, 5F);
-            progressRotationPrev(leftFrontArm1, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(55),  (float)Math.toRadians(-20), 5F);
+            progressRotationPrev(leftFrontArm1, groundProgress,  Maths.rad(-20),  Maths.rad(55),  Maths.rad(-20), 5F);
             progressPositionPrev(leftFrontArm1, groundProgress,  -1, 0,  0, 5F);
-            progressRotationPrev(rightFrontArm1, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(-55),  (float)Math.toRadians(20), 5F);
+            progressRotationPrev(rightFrontArm1, groundProgress,  Maths.rad(-20),  Maths.rad(-55),  Maths.rad(20), 5F);
             progressPositionPrev(rightFrontArm1, groundProgress,  1, 0,  0, 5F);
-            progressRotationPrev(leftFrontArm2, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(73),  (float)Math.toRadians(-20), 5F);
+            progressRotationPrev(leftFrontArm2, groundProgress,  Maths.rad(-20),  Maths.rad(73),  Maths.rad(-20), 5F);
             progressPositionPrev(leftFrontArm2, groundProgress,  1F, 0,  -1.65F, 5F);
-            progressRotationPrev(rightFrontArm2, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(-73),  (float)Math.toRadians(20), 5F);
+            progressRotationPrev(rightFrontArm2, groundProgress,  Maths.rad(-20),  Maths.rad(-73),  Maths.rad(20), 5F);
             progressPositionPrev(rightFrontArm2, groundProgress,  -1F, 0,  -1.65F, 5F);
 
-            progressRotationPrev(leftBackArm1, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(-78),  (float)Math.toRadians(20), 5F);
+            progressRotationPrev(leftBackArm1, groundProgress,  Maths.rad(-20),  Maths.rad(-78),  Maths.rad(20), 5F);
             progressPositionPrev(leftBackArm1, groundProgress,  -1, 0,  0, 5F);
-            progressRotationPrev(rightBackArm1, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(78),  (float)Math.toRadians(-20), 5F);
+            progressRotationPrev(rightBackArm1, groundProgress,  Maths.rad(-20),  Maths.rad(78),  Maths.rad(-20), 5F);
             progressPositionPrev(rightBackArm1, groundProgress,  1, 0,  0, 5F);
-            progressRotationPrev(leftBackArm2, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(-51),  (float)Math.toRadians(20), 5F);
+            progressRotationPrev(leftBackArm2, groundProgress,  Maths.rad(-20),  Maths.rad(-51),  Maths.rad(20), 5F);
             progressPositionPrev(leftBackArm2, groundProgress,  1, 0,  -2, 5F);
-            progressRotationPrev(rightBackArm2, groundProgress,  (float)Math.toRadians(-20),  (float)Math.toRadians(51),  (float)Math.toRadians(-20), 5F);
+            progressRotationPrev(rightBackArm2, groundProgress,  Maths.rad(-20),  Maths.rad(51),  Maths.rad(-20), 5F);
             progressPositionPrev(rightBackArm2, groundProgress,  -1, 0,  -2, 5F);
-            progressRotationPrev(creeperPivots1, groundProgress,  (float)Math.toRadians(90),  0,  0, 5F);
+            progressRotationPrev(creeperPivots1, groundProgress,  Maths.rad(90),  0,  0, 5F);
             progressPositionPrev(creeperPivots1, groundProgress,  0, -2,  -5, 5F);
-            progressRotationPrev(creeperPivots3, groundProgress,  (float)Math.toRadians(90),  0,  0, 5F);
+            progressRotationPrev(creeperPivots3, groundProgress,  Maths.rad(90),  0,  0, 5F);
             progressPositionPrev(creeperPivots3, groundProgress,  0, -2,  -5, 5F);
-            progressRotationPrev(creeperPivots2, groundProgress,  (float)Math.toRadians(-90),  0,  0, 5F);
+            progressRotationPrev(creeperPivots2, groundProgress,  Maths.rad(-90),  0,  0, 5F);
             progressPositionPrev(creeperPivots2, groundProgress,  0, 3,  2, 5F);
-            progressRotationPrev(creeperPivots4, groundProgress,  (float)Math.toRadians(-90),  0,  0, 5F);
+            progressRotationPrev(creeperPivots4, groundProgress,  Maths.rad(-90),  0,  0, 5F);
             progressPositionPrev(creeperPivots4, groundProgress,  0, 3,  2, 5F);
             this.walk(creeperPivots1, speed, degree * 0.25F, true, 1, 0.1F, limbSwing, limbSwingAmount);
             this.walk(creeperPivots4, speed, degree * 0.25F, true, 1, -0.1F, limbSwing, limbSwingAmount);
@@ -319,7 +320,7 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
             this.swing(rightBackArm1, speed, degree * 0.3F, false, -3, -0.1F, limbSwing, limbSwingAmount);
             this.swing(rightBackArm2, speed, degree * 0.3F, false, -4, 0.2F, limbSwing, limbSwingAmount);
             if(entity.hasGuardianLaser()){
-                progressRotationPrev(body, groundProgress, 0, (float)Math.toRadians(180), 0, 5F);
+                progressRotationPrev(body, groundProgress, 0, Maths.rad(180), 0, 5F);
             }
         }
 

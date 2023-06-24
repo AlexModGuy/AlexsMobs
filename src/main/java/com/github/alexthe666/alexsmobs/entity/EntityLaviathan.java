@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
@@ -602,8 +603,8 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
             for (int l = 0; l < this.theEntireNeck.length; ++l) {
                 float f = l / ((float) this.theEntireNeck.length);
                 float f1 = -(2.2F + l - f * neckContraction);
-                float f2 = Mth.sin(yaw + (float) Math.toRadians(f * getHeadYaw(0))) * (1 - Math.abs((this.getXRot()) / 90F));
-                float f3 = Mth.cos(yaw + (float) Math.toRadians(f * getHeadYaw(0))) * (1 - Math.abs((this.getXRot()) / 90F));
+                float f2 = Mth.sin(yaw + Maths.rad(f * getHeadYaw(0))) * (1 - Math.abs((this.getXRot()) / 90F));
+                float f3 = Mth.cos(yaw + Maths.rad(f * getHeadYaw(0))) * (1 - Math.abs((this.getXRot()) / 90F));
                 this.setPartPosition(this.theEntireNeck[l], f2 * f1, neckBase + Math.sin(f * Math.PI * 0.5F) * (getHeadHeight() * 1.1F), -f3 * f1);
             }
             this.setPartPosition(this.seat1, getXForPart(yaw, 145) * 0.75F, 2F, getZForPart(yaw, 145) * 0.75F);

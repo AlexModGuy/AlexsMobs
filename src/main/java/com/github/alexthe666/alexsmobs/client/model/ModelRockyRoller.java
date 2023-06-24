@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityRockyRoller;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -134,9 +135,9 @@ public class ModelRockyRoller extends AdvancedEntityModel<EntityRockyRoller> {
         float rollDegree = 0.2F;
         float timeRolling = entity.rollCounter + partialTick;
         progressPositionPrev(body, rollProgress, 0, 6F, 0, 5f);
-        progressRotationPrev(left_arm, walkProgress * limbSwingAmount, (float)Math.toRadians(30), 0, 0, 5F);
-        progressRotationPrev(right_arm, walkProgress * limbSwingAmount, (float)Math.toRadians(30), 0, 0, 5F);
-        progressRotationPrev(tail, walkProgress * limbSwingAmount, (float)Math.toRadians(30), 0, 0, 5F);
+        progressRotationPrev(left_arm, walkProgress * limbSwingAmount, Maths.rad(30), 0, 0, 5F);
+        progressRotationPrev(right_arm, walkProgress * limbSwingAmount, Maths.rad(30), 0, 0, 5F);
+        progressRotationPrev(tail, walkProgress * limbSwingAmount, Maths.rad(30), 0, 0, 5F);
         progressPositionPrev(tail, walkProgress * limbSwingAmount, 0, -1, -1, 5f);
         if(entity.isRolling()){
             body.rotateAngleX = timeRolling * 0.2F * rollProgress * rollDegree;
@@ -144,7 +145,7 @@ public class ModelRockyRoller extends AdvancedEntityModel<EntityRockyRoller> {
             this.bob(body, rollDegree, 10, true, timeRolling, 0.2F * rollProgress);
         }else{
             float rollDeg = (float)Mth.wrapDegrees(Math.toDegrees(entity.clientRoll));
-            body.rotateAngleX = rollProgress * 0.2F * (float)Math.toRadians(rollDeg);
+            body.rotateAngleX = rollProgress * 0.2F * Maths.rad(rollDeg);
         }
         this.swing(tail, idleSpeed, idleDegree, false, 1F, 0F, ageInTicks, 1);
         this.bob(head, idleSpeed * 0.5F, idleDegree * 1.5F, false, ageInTicks, 1);

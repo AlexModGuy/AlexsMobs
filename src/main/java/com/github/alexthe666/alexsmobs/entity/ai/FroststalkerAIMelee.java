@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFroststalker;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -121,8 +122,8 @@ public class FroststalkerAIMelee extends Goal {
 
     public BlockPos getBlockNearTarget(LivingEntity target) {
         float radius = froststalker.getRandom().nextInt(5) + 3 + target.getBbWidth();
-        float neg = froststalker.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = froststalker.yBodyRot;
+//        float neg = froststalker.getRandom().nextBoolean() ? 1 : -1;
+//        float renderYawOffset = froststalker.yBodyRot;
         int orbit = (int) (startingOrbit + (pursuitTime / (float) maxPursuitTime) * 360);
         float angle = (Maths.STARTING_ANGLE * (clockwise ? -orbit : orbit));
         double extraX = radius * Mth.sin((float) (Math.PI + angle));

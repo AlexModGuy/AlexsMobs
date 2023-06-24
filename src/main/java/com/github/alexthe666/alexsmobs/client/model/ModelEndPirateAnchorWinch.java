@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.tileentity.TileEntityEndPirateAnchorWinch;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -50,7 +51,7 @@ public class ModelEndPirateAnchorWinch extends AdvancedEntityModel<Entity> {
             anchor.clientRoll = chains.rotateAngleX;
         }else{
             float rollDeg = (float) Mth.wrapDegrees(Math.toDegrees(anchor.clientRoll));
-            chains.rotateAngleX = f1 * f * 0.2F * (float)Math.toRadians(rollDeg);
+            chains.rotateAngleX = f1 * f * 0.2F * Maths.rad(rollDeg);
         }
     }
 

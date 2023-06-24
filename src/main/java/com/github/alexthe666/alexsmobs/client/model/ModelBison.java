@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBison;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -115,34 +116,34 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         animator.update(entity);
         animator.setAnimation(EntityBison.ANIMATION_PREPARE_CHARGE);
         animator.startKeyframe(5);
-        animator.rotate(head, 0, (float) Math.toRadians(-20), 0);
-        animator.rotate(torso, 0, (float) Math.toRadians(15), 0);
-        animator.rotate(body, 0, (float) Math.toRadians(5), 0);
-        animator.rotate(right_arm, (float) Math.toRadians(30), 0, 0);
+        animator.rotate(head, 0, Maths.rad(-20), 0);
+        animator.rotate(torso, 0, Maths.rad(15), 0);
+        animator.rotate(body, 0, Maths.rad(5), 0);
+        animator.rotate(right_arm, Maths.rad(30), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
         animator.startKeyframe(5);
-        animator.rotate(head, 0, (float) Math.toRadians(20), 0);
-        animator.rotate(torso, 0, (float) Math.toRadians(-15), 0);
-        animator.rotate(body, 0, (float) Math.toRadians(-5), 0);
-        animator.rotate(left_arm, (float) Math.toRadians(30), 0, 0);
+        animator.rotate(head, 0, Maths.rad(20), 0);
+        animator.rotate(torso, 0, Maths.rad(-15), 0);
+        animator.rotate(body, 0, Maths.rad(-5), 0);
+        animator.rotate(left_arm, Maths.rad(30), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
 
         animator.startKeyframe(5);
-        animator.rotate(head, (float) Math.toRadians(40), (float) Math.toRadians(-20), 0);
-        animator.rotate(torso, 0, (float) Math.toRadians(15), 0);
-        animator.rotate(body, 0, (float) Math.toRadians(5), 0);
-        animator.rotate(right_arm, (float) Math.toRadians(30), 0, 0);
+        animator.rotate(head, Maths.rad(40), Maths.rad(-20), 0);
+        animator.rotate(torso, 0, Maths.rad(15), 0);
+        animator.rotate(body, 0, Maths.rad(5), 0);
+        animator.rotate(right_arm, Maths.rad(30), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
-        animator.rotate(head, (float) Math.toRadians(40), 0, 0);
+        animator.rotate(head, Maths.rad(40), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
-        animator.rotate(head, (float) Math.toRadians(40), (float) Math.toRadians(20), 0);
-        animator.rotate(torso, 0, (float) Math.toRadians(-15), 0);
-        animator.rotate(body, 0, (float) Math.toRadians(-5), 0);
-        animator.rotate(left_arm, (float) Math.toRadians(30), 0, 0);
+        animator.rotate(head, Maths.rad(40), Maths.rad(20), 0);
+        animator.rotate(torso, 0, Maths.rad(-15), 0);
+        animator.rotate(body, 0, Maths.rad(-5), 0);
+        animator.rotate(left_arm, Maths.rad(30), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
         animator.setAnimation(EntityBison.ANIMATION_EAT);
@@ -152,7 +153,7 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         eatPose();
@@ -160,7 +161,7 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         eatPose();
@@ -168,36 +169,36 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
         animator.setAnimation(EntityBison.ANIMATION_ATTACK);
         animator.startKeyframe(5);
         animator.move(head, 0, 2, 1);
-        animator.rotate(head, (float) Math.toRadians(30), 0, 0);
+        animator.rotate(head, Maths.rad(30), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         animator.move(body, 0, -2, 0);
         animator.move(left_arm, 0, -1, 0);
         animator.move(right_arm, 0, -1, 0);
-        animator.rotate(head, (float) Math.toRadians(-30), 0, 0);
-        animator.rotate(body, (float) Math.toRadians(-10), 0, 0);
-        animator.rotate(left_leg, (float) Math.toRadians(10), 0, 0);
-        animator.rotate(right_leg, (float) Math.toRadians(10), 0, 0);
-        animator.rotate(left_arm, (float) Math.toRadians(20), 0, 0);
-        animator.rotate(right_arm, (float) Math.toRadians(20), 0, 0);
+        animator.rotate(head, Maths.rad(-30), 0, 0);
+        animator.rotate(body, Maths.rad(-10), 0, 0);
+        animator.rotate(left_leg, Maths.rad(10), 0, 0);
+        animator.rotate(right_leg, Maths.rad(10), 0, 0);
+        animator.rotate(left_arm, Maths.rad(20), 0, 0);
+        animator.rotate(right_arm, Maths.rad(20), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
 
     }
 
     private void eatPose(){
-        animator.rotate(head, (float) Math.toRadians(-10), 0, 0);
-        animator.rotate(torso, (float) Math.toRadians(15), 0, 0);
+        animator.rotate(head, Maths.rad(-10), 0, 0);
+        animator.rotate(torso, Maths.rad(15), 0, 0);
         animator.move(torso, 0, 0, 2);
-        animator.rotate(left_arm, (float) Math.toRadians(-15), 0, 0);
-        animator.rotate(right_arm, (float) Math.toRadians(-15), 0, 0);
-        animator.rotate(beard, (float) Math.toRadians(20), 0, 0);
+        animator.rotate(left_arm, Maths.rad(-15), 0, 0);
+        animator.rotate(right_arm, Maths.rad(-15), 0, 0);
+        animator.rotate(beard, Maths.rad(20), 0, 0);
         animator.move(left_arm, 0, -5F, -1F);
         animator.move(right_arm, 0, -5F, -1F);
         animator.move(head, 0, 4, 1);
@@ -213,7 +214,7 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         float partialTick = ageInTicks - entity.tickCount;
         float runProgress = entity.prevChargeProgress + (entity.chargeProgress - entity.prevChargeProgress) * partialTick;
         progressPositionPrev(head, runProgress, 0, 1, -3.5F, 5F);
-        progressRotationPrev(head, runProgress, (float) Math.toRadians(30), 0, 0, 5F);
+        progressRotationPrev(head, runProgress, Maths.rad(30), 0, 0, 5F);
         if (runProgress > 0) {
             this.walk(right_arm, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);
             this.walk(left_arm, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);

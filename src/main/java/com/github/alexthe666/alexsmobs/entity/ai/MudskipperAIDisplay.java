@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMudskipper;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;

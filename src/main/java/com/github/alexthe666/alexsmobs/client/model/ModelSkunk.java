@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySkunk;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -83,11 +84,11 @@ public class ModelSkunk extends AdvancedEntityModel<EntitySkunk> {
         float partialTicks = ageInTicks - entity.tickCount;
         float sprayProgress = entity.prevSprayProgress + (entity.sprayProgress - entity.prevSprayProgress) * partialTicks;
         float legsStill = Math.max(sprayProgress * 0.2F, limbSwingAmount);
-        progressRotationPrev(leftArm, sprayProgress, (float) Math.toRadians(80F), 0, 0, 5F);
-        progressRotationPrev(rightArm, sprayProgress, (float) Math.toRadians(80F), 0, 0, 5F);
-        progressRotationPrev(leftLeg, sprayProgress, (float) Math.toRadians(100F), 0, 0, 5F);
-        progressRotationPrev(rightLeg, sprayProgress, (float) Math.toRadians(100F), 0, 0, 5F);
-        progressRotationPrev(tail, sprayProgress, (float) Math.toRadians(30F), 0, 0, 5F);
+        progressRotationPrev(leftArm, sprayProgress, Maths.rad(80F), 0, 0, 5F);
+        progressRotationPrev(rightArm, sprayProgress, Maths.rad(80F), 0, 0, 5F);
+        progressRotationPrev(leftLeg, sprayProgress, Maths.rad(100F), 0, 0, 5F);
+        progressRotationPrev(rightLeg, sprayProgress, Maths.rad(100F), 0, 0, 5F);
+        progressRotationPrev(tail, sprayProgress, Maths.rad(30F), 0, 0, 5F);
         progressPositionPrev(body, sprayProgress, 0, -2.4F, 0, 5F);
         progressPositionPrev(tail, sprayProgress, 0, -2F, -1F, 5F);
         this.walk(body, 0.5F, 0.2F, true, 4F, 0F, ageInTicks, sprayProgress * 0.2F);
@@ -104,10 +105,10 @@ public class ModelSkunk extends AdvancedEntityModel<EntitySkunk> {
         this.swing(rightLeg, 0.5F, 0.2F, false, 1.5F, 0F, ageInTicks, sprayProgress * 0.2F);
         this.flap(tail, 0.5F, 0.5F, false, 2.5F, 0F, ageInTicks, sprayProgress * 0.2F);
         this.walk(tail, idleSpeed, idleDegree, false, 1F, 0F, ageInTicks, 1);
-        progressRotationPrev(leftArm, Math.min(legsStill, 0.5F), 0, (float) Math.toRadians(30F), 0, 0.5F);
-        progressRotationPrev(rightArm, Math.min(legsStill, 0.5F), 0, (float) Math.toRadians(-30F), 0, 0.5F);
-        progressRotationPrev(leftLeg, Math.min(legsStill, 0.5F), 0, (float) Math.toRadians(40F), 0, 0.5F);
-        progressRotationPrev(rightLeg, Math.min(legsStill, 0.5F), 0, (float) Math.toRadians(-40F), 0, 0.5F);
+        progressRotationPrev(leftArm, Math.min(legsStill, 0.5F), 0, Maths.rad(30F), 0, 0.5F);
+        progressRotationPrev(rightArm, Math.min(legsStill, 0.5F), 0, Maths.rad(-30F), 0, 0.5F);
+        progressRotationPrev(leftLeg, Math.min(legsStill, 0.5F), 0, Maths.rad(40F), 0, 0.5F);
+        progressRotationPrev(rightLeg, Math.min(legsStill, 0.5F), 0, Maths.rad(-40F), 0, 0.5F);
         progressPositionPrev(head, Math.min(legsStill, 0.5F), 0, -1F, 0, 0.5F);
         this.swing(body, walkSpeed, walkDegree * 0.5F, false, 3F, 0F, limbSwing, limbSwingAmount);
         this.swing(head, walkSpeed, walkDegree * 0.5F, true, 2F, 0F, limbSwing, limbSwingAmount);

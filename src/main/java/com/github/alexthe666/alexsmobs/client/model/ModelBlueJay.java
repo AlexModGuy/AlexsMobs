@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBlueJay;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -97,21 +98,21 @@ public class ModelBlueJay extends AdvancedEntityModel<EntityBlueJay> {
         float crestAmount = entity.prevCrestAmount + (entity.crestAmount - entity.prevCrestAmount) * partialTick;
         float biteProgress = entity.prevAttackProgress + (entity.attackProgress - entity.prevAttackProgress) * partialTick;
         float birdPitch = entity.prevBirdPitch + (entity.birdPitch - entity.prevBirdPitch) * partialTick;
-        progressRotationPrev(rightWing, flyProgress,  (float) Math.toRadians(-20),  0,  (float) Math.toRadians(20), 5F);
-        progressRotationPrev(leftWing, flyProgress,  (float) Math.toRadians(-20),  0,  (float) Math.toRadians(-20), 5F);
-        progressRotationPrev(body, flyProgress,  (float) Math.toRadians(10),  0,  0, 5F);
-        progressRotationPrev(leftLeg, flyProgress,  (float) Math.toRadians(40),  0,  0, 5F);
-        progressRotationPrev(rightLeg, flyProgress,  (float) Math.toRadians(40),  0,  0, 5F);
+        progressRotationPrev(rightWing, flyProgress,  Maths.rad(-20),  0,  Maths.rad(20), 5F);
+        progressRotationPrev(leftWing, flyProgress,  Maths.rad(-20),  0,  Maths.rad(-20), 5F);
+        progressRotationPrev(body, flyProgress,  Maths.rad(10),  0,  0, 5F);
+        progressRotationPrev(leftLeg, flyProgress,  Maths.rad(40),  0,  0, 5F);
+        progressRotationPrev(rightLeg, flyProgress,  Maths.rad(40),  0,  0, 5F);
         progressPositionPrev(head, flyProgress, 0, 1F, -1F, 5f);
         progressPositionPrev(body, flyProgress, 0, 1F, 0F, 5f);
         progressPositionPrev(rightWing, flyProgress, 0, 1F, 1F, 5f);
         progressPositionPrev(leftWing, flyProgress, 0, 1F, 1F, 5f);
         progressPositionPrev(rightLeg, flyProgress, 0, -2F, 0F, 5f);
         progressPositionPrev(leftLeg, flyProgress, 0, -2F, 0F, 5f);
-        progressRotationPrev(rightWing, flapAmount,  (float) Math.toRadians(-70),  0,  (float) Math.toRadians(70), 1F);
-        progressRotationPrev(leftWing, flapAmount,  (float) Math.toRadians(-70),  0,  (float) Math.toRadians(-70), 1F);
-        progressRotationPrev(crest, crestAmount,  (float) Math.toRadians(20),  0, 0, 1F);
-        progressRotationPrev(head, biteProgress, (float)Math.toRadians(60), 0, 0, 5F);
+        progressRotationPrev(rightWing, flapAmount,  Maths.rad(-70),  0,  Maths.rad(70), 1F);
+        progressRotationPrev(leftWing, flapAmount,  Maths.rad(-70),  0,  Maths.rad(-70), 1F);
+        progressRotationPrev(crest, crestAmount,  Maths.rad(20),  0, 0, 1F);
+        progressRotationPrev(head, biteProgress, Maths.rad(60), 0, 0, 5F);
         leftWing.setScale(1F + flyProgress * 0.1F, 1F + flyProgress * 0.1F, 1F + flyProgress * 0.1F);
         rightWing.setScale(1F + flyProgress * 0.1F, 1F + flyProgress * 0.1F, 1F + flyProgress * 0.1F);
         this.flap(leftWing, flapSpeed, flapDegree * 5, true, -1F, 0F, ageInTicks, flapAmount);

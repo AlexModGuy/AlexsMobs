@@ -546,7 +546,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
 
         protected boolean searchForDestination() {
             int lvt_1_1_ = this.searchLength;
-            int lvt_2_1_ = this.verticalSearchRange;
+            //int lvt_2_1_ = this.verticalSearchRange;
             BlockPos lvt_3_1_ = pupfish.blockPosition();
             BlockPos.MutableBlockPos lvt_4_1_ = new BlockPos.MutableBlockPos();
 

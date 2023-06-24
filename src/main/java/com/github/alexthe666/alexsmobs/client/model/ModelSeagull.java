@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.model;
 
 
 import com.github.alexthe666.alexsmobs.entity.EntitySeagull;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -123,19 +124,19 @@ public class ModelSeagull extends AdvancedEntityModel<EntitySeagull> {
 		progressPositionPrev(body, sitProgress, 0F, 4, 0F, 5f);
 		progressPositionPrev(right_leg, sitProgress, 0F, -4, 0F, 5f);
 		progressPositionPrev(left_leg, sitProgress, 0F, -4, 0F, 5f);
-		progressRotationPrev(head, biteProgress, (float)Math.toRadians(60), 0, 0, 5F);
+		progressRotationPrev(head, biteProgress, Maths.rad(60), 0, 0, 5F);
 		progressPositionPrev(head, flyProgress, 0F, 1F, -1F, 5f);
-		progressRotationPrev(left_leg, flyProgress, (float) Math.toRadians(85), 0, 0, 5F);
-		progressRotationPrev(right_leg, flyProgress, (float) Math.toRadians(85), 0, 0, 5F);
-		progressRotationPrev(right_wing, flyProgress,  (float) Math.toRadians(-90),  0,  (float) Math.toRadians(90), 5F);
-		progressRotationPrev(left_wing, flyProgress,  (float) Math.toRadians(-90),  0,  (float) Math.toRadians(-90), 5F);
+		progressRotationPrev(left_leg, flyProgress, Maths.rad(85), 0, 0, 5F);
+		progressRotationPrev(right_leg, flyProgress, Maths.rad(85), 0, 0, 5F);
+		progressRotationPrev(right_wing, flyProgress,  Maths.rad(-90),  0,  Maths.rad(90), 5F);
+		progressRotationPrev(left_wing, flyProgress,  Maths.rad(-90),  0,  Maths.rad(-90), 5F);
 		progressPositionPrev(right_wing, flyProgress, -1F, 0, 2F, 5f);
 		progressPositionPrev(left_wing, flyProgress, 1F, 0, 2F, 5f);
 		progressPositionPrev(right_wingtip, flyProgress, 0, 0, 2, 5f);
 		progressPositionPrev(left_wingtip, flyProgress, 0, 0, 2, 5f);
-		progressRotationPrev(left_wingtip, flyProgress, (float) Math.toRadians(-10), 0, 0, 5F);
-		progressRotationPrev(right_wingtip, flyProgress, (float) Math.toRadians(-10), 0, 0, 5F);
-		progressRotationPrev(tail, flyProgress, (float) Math.toRadians(20), 0, 0, 5F);
+		progressRotationPrev(left_wingtip, flyProgress, Maths.rad(-10), 0, 0, 5F);
+		progressRotationPrev(right_wingtip, flyProgress, Maths.rad(-10), 0, 0, 5F);
+		progressRotationPrev(tail, flyProgress, Maths.rad(20), 0, 0, 5F);
 		if(flyProgress > 0) {
 			this.flap(left_wing, flapSpeed, flapDegree * 5, true, 0F, 0F, ageInTicks, flapAmount);
 			this.flap(right_wing, flapSpeed, flapDegree * 5, false, 0F, 0F, ageInTicks, flapAmount);
