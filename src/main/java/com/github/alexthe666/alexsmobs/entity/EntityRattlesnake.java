@@ -142,16 +142,19 @@ public class EntityRattlesnake extends Animal implements IAnimatedEntity {
             curlTime = 0;
             maxCurlTime = 75 + random.nextInt(50);
         }
-        if(!this.level().isClientSide && this.isCurled() && (this.getTarget() != null && this.getTarget().isAlive())){
-            this.setCurled(false);
-        }
-        if(!this.level().isClientSide && this.isRattling()  && this.getTarget() == null){
-            this.setCurled(true);
 
-        }
-        if (!this.level().isClientSide && !this.isCurled() && this.getTarget() == null && random.nextInt(500) == 0) {
-            maxCurlTime = 300 + random.nextInt(250);
-            this.setCurled(true);
+        if (!this.level().isClientSide) {
+            if (this.isCurled() && (this.getTarget() != null && this.getTarget().isAlive())) {
+                this.setCurled(false);
+            }
+            if (this.isRattling() && this.getTarget() == null) {
+                this.setCurled(true);
+
+            }
+            if (!this.isCurled() && this.getTarget() == null && random.nextInt(500) == 0) {
+                maxCurlTime = 300 + random.nextInt(250);
+                this.setCurled(true);
+            }
         }
         if(this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 4){
              this.playSound(AMSoundRegistry.RATTLESNAKE_ATTACK.get(), getSoundVolume(), getVoicePitch());

@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 	private final AdvancedModelBox root;
@@ -61,7 +62,7 @@ public class ModelStradpole extends AdvancedEntityModel<EntityStradpole> {
 		this.faceTarget(netHeadYaw, headPitch, 1.2F, body);
 		float partialTick = Minecraft.getInstance().getFrameTime();
 		float birdPitch = entity.prevSwimPitch + (entity.swimPitch - entity.prevSwimPitch) * partialTick;
-		this.body.rotateAngleX += birdPitch * ((float)Math.PI / 180F);
+		this.body.rotateAngleX += birdPitch * Mth.DEG_TO_RAD;
 
 	}
 

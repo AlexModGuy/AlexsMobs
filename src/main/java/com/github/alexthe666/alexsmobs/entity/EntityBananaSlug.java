@@ -271,7 +271,7 @@ public class EntityBananaSlug extends Animal {
             return false;
         }
         if(this.onGround()){
-            Vec3 modelBack = new Vec3(0, -0.1F, isBaby() ? -0.35F : -0.7F).yRot(-this.trailYaw * ((float)Math.PI / 180F));
+            Vec3 modelBack = new Vec3(0, -0.1F, isBaby() ? -0.35F : -0.7F).yRot(-this.trailYaw * Mth.DEG_TO_RAD);
             Vec3 slugBack = this.position().add(modelBack);
             BlockPos backPos = AMBlockPos.fromVec3(slugBack);
             BlockState state = level().getBlockState(backPos);

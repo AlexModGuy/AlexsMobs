@@ -52,14 +52,14 @@ public class BlockEndPirateAnchorWinch extends BaseEntityBlock implements AMSpec
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        LevelReader levelreader = context.getLevel();
-        BlockPos blockpos = context.getClickedPos();
-        BlockPos actualPos = context.getClickedPos().relative(context.getClickedFace().getOpposite());
-        BlockPos u = blockpos.above();
-        BlockPos d = blockpos.below();
-        BlockState clickState = levelreader.getBlockState(actualPos);
-        BlockState upState = levelreader.getBlockState(u);
-        BlockState downState = levelreader.getBlockState(d);
+//        LevelReader levelreader = context.getLevel();
+//        BlockPos blockpos = context.getClickedPos();
+//        BlockPos actualPos = context.getClickedPos().relative(context.getClickedFace().getOpposite());
+//        BlockPos u = blockpos.above();
+//        BlockPos d = blockpos.below();
+//        BlockState clickState = levelreader.getBlockState(actualPos);
+//        BlockState upState = levelreader.getBlockState(u);
+//        BlockState downState = levelreader.getBlockState(d);
         boolean axis = context.getClickedFace().getAxis() == Direction.Axis.Y ? context.getHorizontalDirection().getAxis() == Direction.Axis.X : context.getClickedFace().getAxis() != Direction.Axis.X;
         return defaultBlockState().setValue(EASTORWEST, axis);
     }

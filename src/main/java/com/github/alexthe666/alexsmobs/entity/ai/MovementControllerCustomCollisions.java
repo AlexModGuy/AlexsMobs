@@ -35,8 +35,8 @@ public class MovementControllerCustomCollisions extends MoveControl {
             f4 = f1 / f4;
             f2 = f2 * f4;
             f3 = f3 * f4;
-            float f5 = Mth.sin(this.mob.getYRot() * ((float)Math.PI / 180F));
-            float f6 = Mth.cos(this.mob.getYRot() * ((float)Math.PI / 180F));
+            float f5 = Mth.sin(this.mob.getYRot() * Mth.DEG_TO_RAD);
+            float f6 = Mth.cos(this.mob.getYRot() * Mth.DEG_TO_RAD);
             float f7 = f2 * f6 - f3 * f5;
             float f8 = f3 * f6 + f2 * f5;
             if (!this.isWalkable(f7, f8)) {
@@ -59,7 +59,7 @@ public class MovementControllerCustomCollisions extends MoveControl {
                 return;
             }
 
-            float f9 = (float)(Mth.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+            float f9 = (float)(Mth.atan2(d1, d0) * (double)Mth.RAD_TO_DEG) - 90.0F;
             this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f9, 90.0F));
             this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
             BlockPos blockpos = this.mob.blockPosition();

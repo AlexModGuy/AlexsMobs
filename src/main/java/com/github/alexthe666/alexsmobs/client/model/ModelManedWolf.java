@@ -161,11 +161,11 @@ public class ModelManedWolf extends AdvancedEntityModel<EntityManedWolf> {
         float shakeProgress = entity.prevShakeProgress + (entity.shakeProgress - entity.prevShakeProgress) * partialTick;
         float earPitch = entity.prevEarPitch + (entity.getEarPitch() - entity.prevEarPitch) * partialTick;
         float earYaw = entity.prevEarYaw + (entity.getEarYaw() - entity.prevEarYaw) * partialTick;
-        this.left_ear_pivot.rotateAngleX += earPitch * ((float)Math.PI / 180F);
-        this.left_ear_pivot.rotateAngleY += earYaw * ((float)Math.PI / 180F);
-        this.right_ear_pivot.rotateAngleX += earPitch * ((float)Math.PI / 180F);
-        this.right_ear_pivot.rotateAngleY -= earYaw * ((float)Math.PI / 180F);
-        this.head.rotateAngleY += netHeadYaw * 0.5F * ((float)Math.PI / 180F);
+        this.left_ear_pivot.rotateAngleX += earPitch * Mth.DEG_TO_RAD;
+        this.left_ear_pivot.rotateAngleY += earYaw * Mth.DEG_TO_RAD;
+        this.right_ear_pivot.rotateAngleX += earPitch * Mth.DEG_TO_RAD;
+        this.right_ear_pivot.rotateAngleY -= earYaw * Mth.DEG_TO_RAD;
+        this.head.rotateAngleY += netHeadYaw * 0.5F * Mth.DEG_TO_RAD;
 
         progressRotationPrev(tail, runProgress, (float) Math.toRadians(35), 0, 0, 5f);
         progressRotationPrev(neck, runProgress, (float) Math.toRadians(40), 0, 0, 5f);

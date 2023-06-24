@@ -80,7 +80,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
             if (logStartPos != null) {
                 double xDif = logStartPos.getX() + 0.5 - ant.getX();
                 double zDif = logStartPos.getZ() + 0.5 - ant.getZ();
-                float f = (float) (Mth.atan2(zDif, xDif) * (double) (180F / (float) Math.PI)) - 90.0F;
+                float f = (float) (Mth.atan2(zDif, xDif) * (double) Mth.RAD_TO_DEG) - 90.0F;
                 ant.setYRot(f);
                 ant.yBodyRot = ant.getYRot();
                 Vec3 vec = new Vec3(logStartPos.getX() + 0.5, ant.getY(), logStartPos.getZ() + 0.5);

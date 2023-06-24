@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 	public final AdvancedModelBox root;
@@ -166,12 +167,12 @@ public class ModelMantisShrimp extends AdvancedEntityModel<EntityMantisShrimp> {
 		float rightEyePitch = entity.prevRightPitch + (entity.getEyePitch(false) - entity.prevRightPitch) * partialTick;
 		float leftEyeYaw = entity.prevLeftYaw + (entity.getEyeYaw(true) - entity.prevLeftYaw) * partialTick;
 		float rightEyeYaw = entity.prevRightYaw + (entity.getEyeYaw(false) - entity.prevRightYaw) * partialTick;
-		this.eye_left.rotateAngleX += leftEyePitch * ((float)Math.PI / 180F);
-		this.eye_left.rotateAngleY += leftEyeYaw * ((float)Math.PI / 180F);
-		this.eye_right.rotateAngleX += rightEyePitch * ((float)Math.PI / 180F);
-		this.eye_right.rotateAngleY += rightEyeYaw * ((float)Math.PI / 180F);
-		this.head.rotateAngleY += netHeadYaw * 0.5F * ((float)Math.PI / 180F);
-		this.head.rotateAngleX += headPitch * 0.8F * ((float)Math.PI / 180F);
+		this.eye_left.rotateAngleX += leftEyePitch * Mth.DEG_TO_RAD;
+		this.eye_left.rotateAngleY += leftEyeYaw * Mth.DEG_TO_RAD;
+		this.eye_right.rotateAngleX += rightEyePitch * Mth.DEG_TO_RAD;
+		this.eye_right.rotateAngleY += rightEyeYaw * Mth.DEG_TO_RAD;
+		this.head.rotateAngleY += netHeadYaw * 0.5F * Mth.DEG_TO_RAD;
+		this.head.rotateAngleX += headPitch * 0.8F * Mth.DEG_TO_RAD;
 		this.walk(whisker_left, idleSpeed * 1.5F, idleDegree, false, 0F, -0.25F, ageInTicks, 1);
 		this.walk(whisker_right, idleSpeed * 1.5F, idleDegree, true, 0F, 0.25F, ageInTicks, 1);
 		this.swing(whisker_left, idleSpeed * 1F, idleDegree * 0.75F, false, 1F, 0F, ageInTicks, 1);

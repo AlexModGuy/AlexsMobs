@@ -9,6 +9,7 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.util.Mth;
 
 public class ModelRhinoceros extends AdvancedEntityModel<EntityRhinoceros> {
     private final AdvancedModelBox root;
@@ -228,8 +229,8 @@ public class ModelRhinoceros extends AdvancedEntityModel<EntityRhinoceros> {
         this.walk(head, idleSpeed, idleDegree * 0.5F, false, 0F, 0.05F, ageInTicks, 1);
         this.flap(leftEar, idleSpeed, idleDegree, false, -1F, 0F, ageInTicks, 1);
         this.walk(rightEar, idleSpeed, idleDegree, false, -1F, 0F, ageInTicks, 1);
-        this.head.rotateAngleY += netHeadYaw * 0.8F * ((float)Math.PI / 180F);
-        this.head.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleY += netHeadYaw * 0.8F * Mth.DEG_TO_RAD;
+        this.head.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
     }
 
     public void setRotationAngle(AdvancedModelBox AdvancedModelBox, float x, float y, float z) {

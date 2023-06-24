@@ -195,8 +195,8 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             this.eye.showModel = true;
         }
         if(entity.isPassenger()){
-            this.body.rotateAngleX += Math.PI/2F;
-            this.body.rotateAngleY += Math.PI/2F * entity.passengerIndex;
+            this.body.rotateAngleX += Mth.HALF_PI;
+            this.body.rotateAngleY += Mth.HALF_PI * entity.passengerIndex;
             this.sheath.setScale(1F, (float) (0.85F + Math.sin(ageInTicks) * 0.15F), 1F);
             this.collar.rotationPointY -= (float) (Math.sin(ageInTicks) * 0.15F - 0.15F) * 12F;
             this.capsid.setScale((float) (0.85F + Math.sin(ageInTicks + 2F) * 0.15F), (float) (1F + Math.sin(ageInTicks) * 0.15F), (float) (0.85F + Math.sin(ageInTicks + 2F) * 0.15F));

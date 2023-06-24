@@ -105,12 +105,15 @@ public class EntitySeaBear extends WaterAnimal implements IAnimatedEntity {
     public void tick() {
         super.tick();
         this.prevOnLandProgress = onLandProgress;
-        if (!this.isInWater() && onLandProgress < 5F) {
-            onLandProgress++;
+
+        if (this.isInWater()) {
+            if (onLandProgress > 0F)
+                onLandProgress--;
+        } else {
+            if (onLandProgress < 5F)
+                onLandProgress++;
         }
-        if (this.isInWater() && onLandProgress > 0F) {
-            onLandProgress--;
-        }
+
         if (this.onGround() && !this.isInWater()) {
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setYRot(this.random.nextFloat() * 360.0F);

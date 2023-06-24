@@ -7,6 +7,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -322,7 +323,7 @@ public class EntityVoidWorm extends Monster {
             this.setDeltaMovement(new Vec3(0, 0.03F, 0));
         }
         yBodyRot = getYRot();
-        float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+        final float f2 = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
         this.setXRot(f2);
         this.maxUpStep = 2;
         if (!this.level().isClientSide) {
@@ -390,10 +391,10 @@ public class EntityVoidWorm extends Monster {
             DamageSource source = this.getLastDamageSource() == null ? damageSources().generic() : this.getLastDamageSource();
             Entity entity = source.getEntity();
 
-            int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, entity, source);
+            final int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, entity, source);
             this.captureDrops(new java.util.ArrayList<>());
 
-            boolean flag = this.lastHurtByPlayerTime > 0;
+            final boolean flag = this.lastHurtByPlayerTime > 0;
             if (this.shouldDropLoot() && this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 this.dropFromLootTable(source, flag);
                 this.dropCustomDeathLoot(source, i, flag);
@@ -434,10 +435,10 @@ public class EntityVoidWorm extends Monster {
 
     private void launch(Entity e, boolean huge) {
         if (e.onGround()) {
-            double d0 = e.getX() - this.getX();
-            double d1 = e.getZ() - this.getZ();
-            double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
-            float f = huge ? 2F : 0.5F;
+            final double d0 = e.getX() - this.getX();
+            final double d1 = e.getZ() - this.getZ();
+            final double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+            final float f = huge ? 2F : 0.5F;
             e.push(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
         }
     }
@@ -447,14 +448,14 @@ public class EntityVoidWorm extends Monster {
             Entity child = getChild();
             if (child == null) {
                 LivingEntity nextPart = this;
-                int tailstart = Math.min(3 + random.nextInt(2), getSegmentCount());
-                int segments = getSegmentCount();
+                final int tailstart = Math.min(3 + random.nextInt(2), getSegmentCount());
+                final int segments = getSegmentCount();
                 int i = 0;
                 while (nextPart instanceof EntityVoidWormPart) {
                     EntityVoidWormPart part = ((EntityVoidWormPart) ((EntityVoidWormPart) nextPart).getChild());
                     i++;
-                    float scale = 1F + (i / (float) segments) * 0.5F;
-                    boolean tail = i >= segments - tailstart;
+                    final float scale = 1F + (i / (float) segments) * 0.5F;
+                    final boolean tail = i >= segments - tailstart;
                     part.setTail(tail);
                     part.setWormScale(scale);
                     part.radius = 1.0F + (scale * (tail ? 0.65F : 0.3F)) + (i == 0 ? 0.8F : 0F);
@@ -542,19 +543,19 @@ public class EntityVoidWorm extends Monster {
     }
 
     public int getPortalTicks() {
-        return this.entityData.get(PORTAL_TICKS).intValue();
+        return this.entityData.get(PORTAL_TICKS);
     }
 
     public void setPortalTicks(int ticks) {
-        this.entityData.set(PORTAL_TICKS, Integer.valueOf(ticks));
+        this.entityData.set(PORTAL_TICKS, ticks);
     }
 
     public int getSegmentCount() {
-        return this.entityData.get(SEGMENT_COUNT).intValue();
+        return this.entityData.get(SEGMENT_COUNT);
     }
 
     public void setSegmentCount(int command) {
-        this.entityData.set(SEGMENT_COUNT, Integer.valueOf(command));
+        this.entityData.set(SEGMENT_COUNT, command);
     }
 
     public void pushEntities() {
@@ -674,16 +675,16 @@ public class EntityVoidWorm extends Monster {
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
-        float radius = (0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24)) * radiusAdd;
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
+        final float radius = (0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24)) * radiusAdd;
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getGround(radialPos);
-        int distFromGround = (int) this.getY() - ground.getY();
-        int flightHeight = 10 + this.getRandom().nextInt(20);
+        final int distFromGround = (int) this.getY() - ground.getY();
+        final int flightHeight = 10 + this.getRandom().nextInt(20);
         BlockPos newPos = ground.above(distFromGround > 8 ? flightHeight : this.getRandom().nextInt(10) + 15);
         if (!this.isTargetBlocked(Vec3.atCenterOf(newPos)) && this.distanceToSqr(Vec3.atCenterOf(newPos)) > 1) {
             return Vec3.atCenterOf(newPos);
@@ -692,12 +693,12 @@ public class EntityVoidWorm extends Monster {
     }
 
     public Vec3 getBlockInViewAwaySlam(Vec3 fleePos, int slamHeight) {
-        float radius = 3 + random.nextInt(3);
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
+        final float radius = 3 + random.nextInt(3);
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getHeighestAirAbove(radialPos, slamHeight);
         if (!this.isTargetBlocked(Vec3.atCenterOf(ground)) && this.distanceToSqr(Vec3.atCenterOf(ground)) > 1) {
@@ -731,12 +732,12 @@ public class EntityVoidWorm extends Monster {
     }
 
     private void spit(Vec3 shotAt, boolean portal) {
-        shotAt = shotAt.yRot(-this.getYRot() * ((float) Math.PI / 180F));
+        shotAt = shotAt.yRot(-this.getYRot() * Mth.DEG_TO_RAD);
         EntityVoidWormShot shot = new EntityVoidWormShot(this.level(), this);
-        double d0 = shotAt.x;
-        double d1 = shotAt.y;
-        double d2 = shotAt.z;
-        float f = Mth.sqrt((float) (d0 * d0 + d2 * d2)) * 0.35F;
+        final double d0 = shotAt.x;
+        final double d1 = shotAt.y;
+        final double d2 = shotAt.z;
+        final float f = Mth.sqrt((float) (d0 * d0 + d2 * d2)) * 0.35F;
 
         shot.shoot(d0, d1 + (double) f, d2, 0.5F, 3.0F);
         if (!this.isSilent()) {

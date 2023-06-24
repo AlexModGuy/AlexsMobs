@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.CosmicCodAIFollowLeader;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -490,9 +491,10 @@ public class EntityCosmicCod extends Mob implements Bucketable {
 
         public Vec3 getSharkCirclePos(BlockPos target) {
             final float prog = 1F - (cod.circleTime / (float) cod.maxCircleTime);
-            final float angle = (0.0174532925F * 10 * (clockwise ? -cod.circleTime : cod.circleTime));
-            final double extraX = (circleDistance * prog + 0.75F) * Mth.sin((angle));
-            final double extraZ =  (circleDistance * prog + 0.75F) * prog * Mth.cos(angle);
+            final float angle = (Maths.STARTING_ANGLE * 10 * (clockwise ? -cod.circleTime : cod.circleTime));
+            final float circleDistanceTimesProg = circleDistance * prog;
+            final double extraX = (circleDistanceTimesProg + 0.75F) * Mth.sin((angle));
+            final double extraZ =  (circleDistanceTimesProg + 0.75F) * prog * Mth.cos(angle);
             return new Vec3(target.getX() + 0.5F + extraX, Math.max(target.getY() + cod.random.nextInt(4) - 2, -62), target.getZ() + 0.5F + extraZ);
         }
     }

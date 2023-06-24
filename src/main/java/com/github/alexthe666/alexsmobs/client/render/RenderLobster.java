@@ -24,19 +24,13 @@ public class RenderLobster extends MobRenderer<EntityLobster, ModelLobster> {
 
 
     public ResourceLocation getTextureLocation(EntityLobster entity) {
-        switch (entity.getVariant()){
-            case 1:
-                return TEXTURE_BLUE;
-            case 2:
-                return TEXTURE_YELLOW;
-            case 3:
-                return TEXTURE_REDBLUE;
-            case 4:
-                return TEXTURE_BLACK;
-            case 5:
-                return TEXTURE_WHITE;
-            default:
-                return TEXTURE_RED;
-        }
+        return switch (entity.getVariant()) {
+            case 1 -> TEXTURE_BLUE;
+            case 2 -> TEXTURE_YELLOW;
+            case 3 -> TEXTURE_REDBLUE;
+            case 4 -> TEXTURE_BLACK;
+            case 5 -> TEXTURE_WHITE;
+            default -> TEXTURE_RED;
+        };
     }
 }

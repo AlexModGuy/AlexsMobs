@@ -70,7 +70,6 @@ public class SwimmerJumpPathNavigator  extends PathNavigation {
                 f1 = (float)((double)f1 * vector3d1.length() * 6.0D);
             }
 
-            int i = 6;
             Vec3 vector3d2 = Vec3.atBottomCenterOf(this.path.getNextNodePos());
             if (Math.abs(this.mob.getX() - vector3d2.x) < (double)f1 && Math.abs(this.mob.getZ() - vector3d2.z) < (double)f1 && Math.abs(this.mob.getY() - vector3d2.y) < (double)(f1 * 2.0F)) {
                 this.path.advance();

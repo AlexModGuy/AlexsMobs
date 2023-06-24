@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
     public final AdvancedModelBox root;
@@ -201,7 +202,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
             this.swing(rightArm, walkSpeed, walkDegree, false, 2F, -0.2F, limbSwing, limbSwingAmount);
             this.swing(leftArm, walkSpeed, walkDegree, true, 2F, -0.2F, limbSwing, limbSwingAmount);
         } else {
-            this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+            this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
             this.body.rotationPointY += (float) (Math.sin(limbSwing * swimSpeed) * (double) limbSwingAmount * (double) swimDegree * 9D - (limbSwingAmount * swimDegree * 9D));
             this.chainWave(bodyParts, swimSpeed, swimDegree, -3F, limbSwing, limbSwingAmount);
             this.flap(rightArm, swimSpeed, swimDegree * 2.5F, true, 3F, 0, limbSwing, limbSwingAmount);

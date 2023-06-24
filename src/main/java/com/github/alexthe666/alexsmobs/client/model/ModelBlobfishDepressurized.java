@@ -73,7 +73,7 @@ public class ModelBlobfishDepressurized extends AdvancedEntityModel<EntityBlobfi
     public void setupAnim(EntityBlobfish entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
         this.resetToDefaultPose();
         if(!entity.onGround()){
-            this.body.rotateAngleX = headPitch * ((float)Math.PI / 180F);
+            this.body.rotateAngleX = headPitch * Mth.DEG_TO_RAD;
         }
         float swimSpeed = 1.5F;
         float swimDegree = 0.85F;

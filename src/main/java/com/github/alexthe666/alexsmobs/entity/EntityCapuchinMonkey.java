@@ -222,7 +222,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
 
         if (!this.level().isClientSide) {
             if (this.getTarget() != null && this.getAnimation() == ANIMATION_SCRATCH && this.getAnimationTick() == 10) {
-                float f1 = this.getYRot() * Maths.piDividedBy180;
+                float f1 = this.getYRot() * Mth.DEG_TO_RAD;
                 this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.3F, 0.0D, Mth.cos(f1) * 0.3F));
                 getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
                 this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
@@ -304,7 +304,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                     this.yHeadRot = player.yHeadRot;
                     this.yRotO = player.yHeadRot;
                     final float radius = 0F;
-                    final float angle = (0.0174532925F * (((LivingEntity) mount).yBodyRot - 180F));
+                    final float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot - 180F));
                     final double extraX = radius * Mth.sin((float) (Math.PI + angle));
                     final double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() + 0.1, mount.getY()), mount.getZ() + extraZ);

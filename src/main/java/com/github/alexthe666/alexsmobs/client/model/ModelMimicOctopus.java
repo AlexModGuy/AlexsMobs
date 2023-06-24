@@ -156,7 +156,7 @@ public class ModelMimicOctopus extends AdvancedEntityModel<EntityMimicOctopus> {
         animateForMimicWater(entity.getMimicState(), entity, limbSwing, limbSwingAmount, ageInTicks, notSitProgress * transProgress * (1 - groundProgressNorm));
 
         if(swimProgress > 0.0F){
-            float rot = headPitch * ((float)Math.PI / 180F);
+            float rot = headPitch * Mth.DEG_TO_RAD;
             this.body.rotationPointY += Math.abs(rot) * -7;
             this.body.rotateAngleX -= rot;
         }

@@ -60,7 +60,7 @@ public class BunfungusAIMelee extends Goal {
                 }
                 this.chungus.onJump();
                 this.chungus.setDeltaMovement(vector3d1.x, 0.6F, vector3d1.z);
-                chungus.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                chungus.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                 chungus.yBodyRot = chungus.getYRot();
                 hasJumped = true;
                 jumpCooldown = 10;

@@ -44,12 +44,12 @@ public class FlightMoveController extends MoveControl {
                 }
                 if (parentEntity.getTarget() == null || !shouldLookAtTarget) {
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                     parentEntity.yBodyRot = parentEntity.getYRot();
                 } else {
                     double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                     double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
                     parentEntity.yBodyRot = parentEntity.getYRot();
                 }
             }

@@ -138,10 +138,10 @@ public class ServerEvents {
         final float x = player.getXRot();
         final float y = player.getYRot();
         Vec3 vector3d = player.getEyePosition(1.0F);
-        final float f2 = Mth.cos(-y * ((float) Math.PI / 180F) - (float) Math.PI);
-        final float f3 = Mth.sin(-y * ((float) Math.PI / 180F) - (float) Math.PI);
-        final float f4 = -Mth.cos(-x * ((float) Math.PI / 180F));
-        final float f5 = Mth.sin(-x * ((float) Math.PI / 180F));
+        final float f2 = Mth.cos(-y * Mth.DEG_TO_RAD - Mth.PI);
+        final float f3 = Mth.sin(-y * Mth.DEG_TO_RAD - Mth.PI);
+        final float f4 = -Mth.cos(-x * Mth.DEG_TO_RAD);
+        final float f5 = Mth.sin(-x * Mth.DEG_TO_RAD);
         final float f6 = f3 * f4;
         final float f7 = f2 * f4;
         final double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.BLOCK_REACH.get()).getValue();
@@ -246,8 +246,8 @@ public class ServerEvents {
             if (emu.getAnimation() != EntityEmu.ANIMATION_DODGE_RIGHT && emu.getAnimation() != EntityEmu.ANIMATION_DODGE_LEFT) {
                 boolean left = true;
                 Vec3 arrowPos = event.getEntity().position();
-                Vec3 rightVector = emu.getLookAngle().yRot(0.5F * (float) Math.PI).add(emu.position());
-                Vec3 leftVector = emu.getLookAngle().yRot(-0.5F * (float) Math.PI).add(emu.position());
+                Vec3 rightVector = emu.getLookAngle().yRot(0.5F * Mth.PI).add(emu.position());
+                Vec3 leftVector = emu.getLookAngle().yRot(-0.5F * Mth.PI).add(emu.position());
                 if (arrowPos.distanceTo(rightVector) < arrowPos.distanceTo(leftVector)) {
                     left = false;
                 } else if (arrowPos.distanceTo(rightVector) > arrowPos.distanceTo(leftVector)) {
@@ -534,8 +534,8 @@ public class ServerEvents {
     public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
         if (event.getTarget() instanceof LivingEntity living) {
             if (event.getEntity().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR.get()) {
-                living.knockback(1F, Mth.sin(event.getEntity().getYRot() * ((float) Math.PI / 180F)),
-                        -Mth.cos(event.getEntity().getYRot() * ((float) Math.PI / 180F)));
+                living.knockback(1F, Mth.sin(event.getEntity().getYRot() * Mth.DEG_TO_RAD),
+                        -Mth.cos(event.getEntity().getYRot() * Mth.DEG_TO_RAD));
             }
             if (event.getEntity().hasEffect(AMEffectRegistry.TIGERS_BLESSING.get())
                     && !event.getTarget().isAlliedTo(event.getEntity()) && !(event.getTarget() instanceof EntityTiger)) {
@@ -570,8 +570,8 @@ public class ServerEvents {
                 if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()) {
                     if (attacker.distanceTo(player) < attacker.getBbWidth() + player.getBbWidth() + 0.5F) {
                         attacker.hurt(attacker.damageSources().thorns(player), 1F);
-                        attacker.knockback(0.5F, Mth.sin((attacker.getYRot() + 180) * ((float) Math.PI / 180F)),
-                            -Mth.cos((attacker.getYRot() + 180) * ((float) Math.PI / 180F)));
+                        attacker.knockback(0.5F, Mth.sin((attacker.getYRot() + 180) * Mth.DEG_TO_RAD),
+                            -Mth.cos((attacker.getYRot() + 180) * Mth.DEG_TO_RAD));
                     }
                 }
             }

@@ -25,14 +25,11 @@ public class RenderEndPirateFlag<T extends TileEntityEndPirateFlag> implements B
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
         Direction dir = tileEntityIn.getBlockState().getValue(BlockEndPirateFlag.FACING);
-        if(dir == Direction.NORTH){
-            matrixStackIn.translate(0.5, 1.5F, 0.5F);
-        }else if(dir == Direction.EAST){
-            matrixStackIn.translate(0.5F, 1.5F, 0.5F);
-        }else if(dir == Direction.SOUTH){
-            matrixStackIn.translate(0.5, 1.5F, 0.5F);
-        }else if(dir == Direction.WEST){
-            matrixStackIn.translate(0.5F, 1.5F, 0.5F);
+        switch (dir) {
+            case NORTH -> matrixStackIn.translate(0.5, 1.5F, 0.5F);
+            case EAST -> matrixStackIn.translate(0.5F, 1.5F, 0.5F);
+            case SOUTH -> matrixStackIn.translate(0.5, 1.5F, 0.5F);
+            case WEST -> matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         }
         matrixStackIn.mulPose(dir.getOpposite().getRotation());
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -225,34 +226,41 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
                 }
             }
         }
-        if (isJostling() && !hasJostlingSize){
+        if (!hasJostlingSize && isJostling()){
             refreshDimensions();
             hasJostlingSize = true;
         }
-        if (!isJostling() && hasJostlingSize){
+        if (hasJostlingSize && !isJostling()){
             refreshDimensions();
             hasJostlingSize = false;
         }
-        if (this.isJostling() && jostleProgress < 5F) {
-            jostleProgress++;
+
+        if (this.isJostling()) {
+            if (jostleProgress < 5F)
+                jostleProgress++;
+        } else {
+            if (jostleProgress > 0F)
+                jostleProgress--;
         }
-        if (!this.isJostling() && jostleProgress > 0F) {
-            jostleProgress--;
+
+        if (this.isOrderedToSit()) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (this.isOrderedToSit() && sitProgress < 5F) {
-            sitProgress++;
-        }
-        if (!this.isOrderedToSit() && sitProgress > 0F) {
-            sitProgress--;
-        }
+
         if(this.getCommand() == 2 && !this.isVehicle()){
             this.setOrderedToSit(true);
         }else{
             this.setOrderedToSit(false);
         }
+
         if (jostleCooldown > 0) {
             jostleCooldown--;
         }
+
         if(!this.level().isClientSide){
             if(this.getJostleAngle() < nextJostleAngleFromServer){
                 this.setJostleAngle(this.getJostleAngle() + 1);
@@ -324,7 +332,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (this.hasPassenger(passenger)) {
             float radius = 0;
-            float angle = (0.01745329251F * this.yBodyRot);
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);

@@ -43,7 +43,7 @@ public class AnimalAILeaveWaterLava extends Goal {
             this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
         if(this.creature.horizontalCollision && (this.creature.isInWater() || this.creature.isInLava())){
-            float f1 = creature.getYRot() * ((float)Math.PI / 180F);
+            float f1 = creature.getYRot() * Mth.DEG_TO_RAD;
             creature.setDeltaMovement(creature.getDeltaMovement().add((double)(-Mth.sin(f1) * 0.2F), 0.1D, (double)(Mth.cos(f1) * 0.2F)));
 
         }

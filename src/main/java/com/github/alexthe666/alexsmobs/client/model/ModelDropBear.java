@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
     private final AdvancedModelBox root;
@@ -188,8 +189,8 @@ public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
         this.flap(ear_right, idleSpeed, idleDegree, false, -1F, 0, ageInTicks, 1);
         this.flap(ear_left, idleSpeed, idleDegree, true, -1F, 0, ageInTicks, 1);
         this.flap(nose, idleSpeed * 0.5F, idleDegree, false, 0F, 0F, ageInTicks, 1);
-        this.head.rotateAngleY += netHeadYaw * 0.9F * invert * ((float)Math.PI / 180F);
-        this.head.rotateAngleX += headPitch * 0.9F *invert * ((float)Math.PI / 180F);
+        this.head.rotateAngleY += netHeadYaw * 0.9F * invert * Mth.DEG_TO_RAD;
+        this.head.rotateAngleX += headPitch * 0.9F *invert * Mth.DEG_TO_RAD;
 
     }
 

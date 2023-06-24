@@ -72,7 +72,7 @@ public class CrowAIMelee extends Goal {
     }
 
     public Vec3 getVultureCirclePos(Vec3 target) {
-        float angle = (0.01745329251F * 8 * (clockwise ? -circlingTime : circlingTime));
+        float angle = (Maths.STARTING_ANGLE * 8 * (clockwise ? -circlingTime : circlingTime));
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);

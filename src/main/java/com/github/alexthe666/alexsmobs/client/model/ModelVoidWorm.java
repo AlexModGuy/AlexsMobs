@@ -91,7 +91,7 @@ public class ModelVoidWorm extends AdvancedEntityModel<EntityVoidWorm> {
 	@Override
 	public void setupAnim(EntityVoidWorm entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
-		this.root.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+		this.root.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
 		this.root.rotationPointY += -3 - Mth.clamp(headPitch * -0.125F, -10, 10) * 0.3F;
 		this.root.rotationPointZ += -15 + (limbSwingAmount * 10);
 		float yawAmount = (entityIn.prevWormAngle + (entityIn.getWormAngle() - entityIn.prevWormAngle) * (ageInTicks - entityIn.tickCount)) / 57.295776F * 0.5F;

@@ -452,7 +452,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                     this.setYRot(Mth.wrapDegrees(mount.getYRot() + birdYaw));
                     this.yHeadRot = Mth.wrapDegrees(((LivingEntity) mount).yHeadRot + birdYaw);
                     float radius = 0.6F;
-                    float angle = (0.0174532925F * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));
+                    float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));
                     double extraX = radius * Mth.sin((float) (Math.PI + angle));
                     double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() * 0.45F, mount.getY()), mount.getZ() + extraZ);
@@ -476,7 +476,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         this.prevFlapAmount = flapAmount;
         this.prevSwoopProgress = swoopProgress;
         this.prevSitProgress = sitProgress;
-        float yMot = (float) -((float) this.getDeltaMovement().y * Maths.oneEightyDividedByFloatPi);
+        float yMot = (float) -((float) this.getDeltaMovement().y * Mth.RAD_TO_DEG);
         this.birdPitch = yMot;
 
         if (isFlying()) {
@@ -632,7 +632,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         final float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24) - radiusAdd;
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
-        final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         final double extraX = radius * Mth.sin((float) (Math.PI + angle));
         final double extraZ = radius * Mth.cos(angle);
         final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
@@ -661,7 +661,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         final float radius = 0.75F * (0.7F * 6) * -3 - this.getRandom().nextInt(24);
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
-        final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
         final double extraX = radius * Mth.sin((float) (Math.PI + angle));
         final double extraZ = radius * Mth.cos(angle);
         final BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
@@ -687,7 +687,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     }
 
     private Vec3 getOrbitVec(Vec3 vector3d, float gatheringCircleDist) {
-        final float angle = (0.0174532925F * (float) this.orbitDist * (orbitClockwise ? -tickCount : tickCount));
+        final float angle = (Maths.STARTING_ANGLE * (float) this.orbitDist * (orbitClockwise ? -tickCount : tickCount));
         final double extraX = gatheringCircleDist * Mth.sin((angle));
         final double extraZ = gatheringCircleDist * Mth.cos(angle);
         if (this.orbitPos != null) {
@@ -710,7 +710,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (this.hasPassenger(passenger)) {
             final float radius = 0.3F;
-            final float angle = (0.0174532925F * this.yBodyRot);
+            final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             final double extraX = radius * Mth.sin((float) (Math.PI + angle));
             final double extraZ = radius * Mth.cos(angle);
             passenger.setYRot(this.yBodyRot + 90F);
@@ -790,7 +790,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
             if (returnControlTime > 0) {
                 this.getMoveControl().setWantedPosition(owner.getX(), owner.getY() + 10, owner.getZ(), speed);
             } else {
-                this.getMoveControl().setWantedPosition(this.getX() + rad * 1.5F * Math.cos(yawOffset * Maths.piDividedBy180), this.getY() - rad * Math.sin(rotationPitch * Maths.piDividedBy180), this.getZ() + rad * Math.sin(yawOffset * Maths.piDividedBy180), speed);
+                this.getMoveControl().setWantedPosition(this.getX() + rad * 1.5F * Math.cos(yawOffset * Mth.DEG_TO_RAD), this.getY() - rad * Math.sin(rotationPitch * Mth.DEG_TO_RAD), this.getZ() + rad * Math.sin(yawOffset * Mth.DEG_TO_RAD), speed);
             }
             if (loadChunk) {
                 loadChunkOnServer(this.blockPosition());
@@ -913,7 +913,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                 } else {
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d5)));
                     final Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (float) Maths.oneEightyDividedByFloatPi);
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (float) Mth.RAD_TO_DEG);
                     parentEntity.yBodyRot = parentEntity.getYRot();
                 }
             }
@@ -1149,7 +1149,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                             eagle.setFlying(true);
                             eagle.timeFlying = 0;
                             final float radius = 0.3F;
-                            final float angle = (0.0174532925F * eagle.yBodyRot);
+                            final float angle = (Maths.STARTING_ANGLE * eagle.yBodyRot);
                             final double extraX = radius * Mth.sin((float) (Math.PI + angle));
                             final double extraZ = radius * Mth.cos(angle);
                             target.setYRot(eagle.yBodyRot + 90F);

@@ -274,7 +274,7 @@ public class ModelGiantSquid extends AdvancedEntityModel<EntityGiantSquid> {
         float capturedProgress = entity.prevCapturedProgress + (entity.capturedProgress - entity.prevCapturedProgress) * partialTick;
         float grabProgress = entity.prevGrabProgress + (entity.grabProgress - entity.prevGrabProgress) * partialTick;
         float pitch = entity.prevSquidPitch + (entity.getSquidPitch() - entity.prevSquidPitch) * partialTick;
-        float f = (pitch - 90) * ((float) Math.PI / 180F);
+        float f = (pitch - 90) * Mth.DEG_TO_RAD;
         float f1 = (float) Math.sin(swimSpeed * limbSwing) * swimDegree * limbSwingAmount;
         float stretchy = 0.9F + 0.2F * f1;
         float stretchyXZ = 0.95F - 0.1F * f1;
@@ -501,7 +501,7 @@ public class ModelGiantSquid extends AdvancedEntityModel<EntityGiantSquid> {
 
     private float getArmRot(EntityGiantSquid entity, int offset, float partialTick, boolean pitch) {
         float rotWrap = Mth.wrapDegrees(entity.getRingBuffer(offset, partialTick, pitch) - entity.getRingBuffer(0, partialTick, pitch));
-        return (Mth.clamp(rotWrap, -50, 50) * 0.4F) * ((float) Math.PI / 180F);
+        return (Mth.clamp(rotWrap, -50, 50) * 0.4F) * Mth.DEG_TO_RAD;
     }
 
     @Override

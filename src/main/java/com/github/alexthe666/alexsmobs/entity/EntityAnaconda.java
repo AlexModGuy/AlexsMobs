@@ -282,7 +282,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 this.setXRot(0);
                 final LivingEntity target = this.getTarget();
                 final float radius = this.getTarget().getBbWidth() * -0.5F;
-                final float angle = (0.0174532925F * (target.yBodyRot - 45F));
+                final float angle = (Maths.STARTING_ANGLE * (target.yBodyRot - 45F));
                 final double extraX = radius * Mth.sin((float) (Math.PI + angle));
                 final double extraZ = radius * Mth.cos(angle);
                 Vec3 targetVec = new Vec3(extraX + target.getX(), target.getY(1.0F), extraZ + target.getZ());
@@ -477,7 +477,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
         } else if (this.level().isClientSide) {
             return null;
         } else {
-            final Vec3 vec = new Vec3(0, 0, f).yRot(-f * ((float) Math.PI / 180F));
+            final Vec3 vec = new Vec3(0, 0, f).yRot(-f * Mth.DEG_TO_RAD);
             final ItemEntity itementity = new ItemEntity(this.level(), this.getX() + vec.x, this.getY() + (double) f1, this.getZ() + vec.z, stack);
             itementity.setDefaultPickUpDelay();
             if (captureDrops() != null) captureDrops().add(itementity);

@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.util.Mth;
 
 public class ModelBlueJay extends AdvancedEntityModel<EntityBlueJay> {
 
@@ -133,7 +134,7 @@ public class ModelBlueJay extends AdvancedEntityModel<EntityBlueJay> {
         this.walk(crest, idleSpeed, idleDegree, false, 2F, 0F, ageInTicks, 1);
         this.bob(head, idleSpeed, idleDegree * 1.5F, true, ageInTicks, 1);
         this.faceTarget(netHeadYaw, headPitch, 1.3F, head);
-        this.body.rotateAngleX += birdPitch * flyProgress * 0.2F * ((float)Math.PI / 180F);
+        this.body.rotateAngleX += birdPitch * flyProgress * 0.2F * Mth.DEG_TO_RAD;
         if(entity.getFeedTime() > 0){
             this.flap(head, 0.4F, 0.4F, false, 1F, 0F, ageInTicks, 1);
         }

@@ -146,8 +146,8 @@ public class ModelOrca extends AdvancedEntityModel<EntityOrca> {
         this.swing(fin_right, swimSpeed, swimDegree * 0.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
         this.flap(fin_left, swimSpeed, swimDegree * 1.4F, true, 3F, 0F, limbSwing, limbSwingAmount);
         this.flap(fin_right, swimSpeed, swimDegree * 1.4F, false, 3F, 0F, limbSwing, limbSwingAmount);
-        this.body.rotateAngleX += headPitch * ((float) Math.PI / 180F);
-        this.body.rotateAngleY += netHeadYaw * ((float) Math.PI / 180F);
+        this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
+        this.body.rotateAngleY += netHeadYaw * Mth.DEG_TO_RAD;
         if (horizontalMag(entityIn.getDeltaMovement()) > 1.0E-7D) {
             this.body.rotateAngleX += -0.05F + -0.05F * Mth.cos(ageInTicks * 0.3F);
             this.tail1.rotateAngleX += -0.1F * Mth.cos(ageInTicks * 0.3F);

@@ -70,12 +70,12 @@ public class SealAIDiveForItems extends Goal {
                     double d2 = thrower.getZ() - this.seal.getZ();
                     double lvt_7_1_ = Mth.sqrt((float) (d0 * d0 + d2 * d2));
                     float pitch = (float) (-(Mth.atan2(d1, lvt_7_1_) * 57.2957763671875D));
-                    float yaw = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                    float f8 = Mth.sin(pitch * ((float) Math.PI / 180F));
-                    float f2 = Mth.cos(pitch * ((float) Math.PI / 180F));
-                    float f3 = Mth.sin(yaw * ((float) Math.PI / 180F));
-                    float f4 = Mth.cos(yaw * ((float) Math.PI / 180F));
-                    float f5 = seal.getRandom().nextFloat() * ((float) Math.PI * 2F);
+                    float yaw = (float) (Mth.atan2(d2, d0) * (double) Mth.RAD_TO_DEG) - 90.0F;
+                    float f8 = Mth.sin(pitch * Mth.DEG_TO_RAD);
+                    float f2 = Mth.cos(pitch * Mth.DEG_TO_RAD);
+                    float f3 = Mth.sin(yaw * Mth.DEG_TO_RAD);
+                    float f4 = Mth.cos(yaw * Mth.DEG_TO_RAD);
+                    float f5 = seal.getRandom().nextFloat() * Mth.TWO_PI;
                     float f6 = 0.02F * seal.getRandom().nextFloat();
                     item.setDeltaMovement((double) (-f3 * f2 * 0.5F) + Math.cos(f5) * (double) f6, -f8 * 0.2F + 0.1F + (seal.getRandom().nextFloat() - seal.getRandom().nextFloat()) * 0.1F, (double) (f4 * f2 * 0.5F) + Math.sin(f5) * (double) f6);
                 }

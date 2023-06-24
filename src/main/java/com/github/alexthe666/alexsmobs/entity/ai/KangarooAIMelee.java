@@ -107,7 +107,7 @@ public class KangarooAIMelee extends MeleeAttackGoal {
         double d0 = this.getAttackReachSqr(enemy) + 5D;
         if (distToEnemySqr <= d0) {
             if(kangaroo.isInWater()){
-                float f1 = kangaroo.getYRot() * ((float)Math.PI / 180F);
+                float f1 = kangaroo.getYRot() * Mth.DEG_TO_RAD;
                 kangaroo.setDeltaMovement(kangaroo.getDeltaMovement().add((double)(-Mth.sin(f1) * 0.3F), 0.0D, (double)(Mth.cos(f1) * 0.3F)));
                 enemy.knockback(1F, enemy.getX() - kangaroo.getX(), enemy.getZ() - kangaroo.getZ());
 

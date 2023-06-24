@@ -158,16 +158,18 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         if(chaseCooldown > 0){
             chaseCooldown--;
         }
-        if (!this.isInWaterOrBubble() && onLandProgress < 5F) {
+        final boolean inWaterOrBubble = this.isInWaterOrBubble();
+        if (!inWaterOrBubble && onLandProgress < 5F) {
             onLandProgress++;
         }
-        if (this.isInWaterOrBubble() && onLandProgress > 0F) {
+        if (inWaterOrBubble && onLandProgress > 0F) {
             onLandProgress--;
         }
-        if (this.getFeedingTime() > 0 && feedProgress < 5F) {
+        final int feedingTime = this.getFeedingTime();
+        if (feedingTime > 0 && feedProgress < 5F) {
             feedProgress++;
         }
-        if (this.getFeedingTime() <= 0 && feedProgress > 0F) {
+        if (feedingTime <= 0 && feedProgress > 0F) {
             feedProgress--;
         }
         if(this.isBaby()){
@@ -175,18 +177,18 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         }
         BlockPos feedingPos = this.entityData.get(FEEDING_POS).orElse(null);
         if(feedingPos == null){
-            float f2 = (float) -((float) this.getDeltaMovement().y * 2.2F * (double) (180F / (float) Math.PI));
+            float f2 = (float) -((float) this.getDeltaMovement().y * 2.2F * (double) Mth.RAD_TO_DEG);
             this.setXRot(f2);
         }else if(this.getFeedingTime() > 0){
             Vec3 face = Vec3.atCenterOf(feedingPos).subtract(this.position());
             double d0 = face.horizontalDistance();
-            this.setXRot((float)(-Mth.atan2(face.y, d0) * (double)(180F / (float)Math.PI)));
-            this.setYRot(((float) Mth.atan2(face.z, face.x)) * (180F / (float) Math.PI) - 90F);
+            this.setXRot((float)(-Mth.atan2(face.y, d0) * (double)Mth.RAD_TO_DEG));
+            this.setYRot(((float) Mth.atan2(face.z, face.x)) * Mth.RAD_TO_DEG - 90F);
             this.yBodyRot = this.getYRot();
             this.yHeadRot = this.getYRot();
             BlockState state = level().getBlockState(feedingPos);
             if(random.nextInt(2) == 0 && !state.isAir()){
-                Vec3 mouth = new Vec3(0, this.getBbHeight() * 0.5F, 0.4F * this.getPupfishScale()).xRot(this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
+                Vec3 mouth = new Vec3(0, this.getBbHeight() * 0.5F, 0.4F * this.getPupfishScale()).xRot(this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
                 for (int i = 0; i < 4 + random.nextInt(2); i++) {
                     double motX = this.random.nextGaussian() * 0.02D;
                     double motY = 0.1F + random.nextFloat() * 0.2F;
@@ -518,7 +520,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
                         destinationBlock = null;
                         if(random.nextInt(3) == 0){
                             List<ItemStack> lootList = getFoodLoot(pupfish);
-                            if (lootList.size() > 0) {
+                            if (!lootList.isEmpty()) {
                                 for (ItemStack stack : lootList) {
                                     ItemEntity e = pupfish.spawnAtLocation(stack.copy());
                                     e.hasImpulse = true;

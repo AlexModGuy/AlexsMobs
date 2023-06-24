@@ -157,12 +157,16 @@ public class EntitySkreecher extends Monster {
         if (!clingVisually && clingProgress > 0F && this.getDistanceToCeiling() == 0) {
             clingProgress--;
         }
-        if(isClapping() && clapProgress < 5F){
-            clapProgress++;
+
+        final boolean clapping = this.isClapping();
+        if (clapping) {
+            if (clapProgress < 5F)
+                clapProgress++;
+        } else {
+            if (clapProgress > 0F)
+                clapProgress--;
         }
-        if(!isClapping() && clapProgress > 0F){
-            clapProgress--;
-        }
+
         if (!this.level().isClientSide) {
             float technicalDistToCeiling = calculateDistanceToCeiling();
             float gap = Math.max(technicalDistToCeiling - this.getDistanceToCeiling(), 0F);
@@ -307,7 +311,7 @@ public class EntitySkreecher extends Monster {
     }
 
     public boolean isClinging() {
-        return this.entityData.get(CLINGING).booleanValue();
+        return this.entityData.get(CLINGING);
     }
 
     public void setClinging(boolean upsideDown) {
@@ -315,7 +319,7 @@ public class EntitySkreecher extends Monster {
     }
 
     public boolean isClapping() {
-        return this.entityData.get(CLAPPING).booleanValue();
+        return this.entityData.get(CLAPPING);
     }
 
     public void setClapping(boolean clapping) {
@@ -326,7 +330,7 @@ public class EntitySkreecher extends Monster {
     }
 
     public boolean isJumpingUp() {
-        return this.entityData.get(JUMPING_UP).booleanValue();
+        return this.entityData.get(JUMPING_UP);
     }
 
     public void setJumpingUp(boolean jumping) {
@@ -472,11 +476,11 @@ public class EntitySkreecher extends Monster {
                     double d3 = parentEntity.getTarget().getY() - parentEntity.getY();
                     double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                     float f = Mth.sqrt((float)(d2 * d2 + d1 * d1));
-                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
-                    parentEntity.setXRot((float) (Mth.atan2(d3, f) * (double) (180F / (float) Math.PI)));
+                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
+                    parentEntity.setXRot((float) (Mth.atan2(d3, f) * (double) Mth.RAD_TO_DEG));
                     parentEntity.yBodyRot = parentEntity.getYRot();
                 }else if (d0 >= width) {
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                 }
             }
         }

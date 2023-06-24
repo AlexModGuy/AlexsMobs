@@ -58,7 +58,7 @@ public class TameableAIRide extends Goal {
             tameableEntity.setSprinting(true);
             Vec3 lookVec = player.getLookAngle();
             if (shouldMoveBackwards()) {
-                lookVec = lookVec.yRot((float) Math.PI);
+                lookVec = lookVec.yRot(Mth.PI);
             }
             x += lookVec.x * 10;
             z += lookVec.z * 10;

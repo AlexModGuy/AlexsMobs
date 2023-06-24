@@ -248,7 +248,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
             if (this.isInWaterOrBubble() && this.isBellowing()) {
                 int particles = 4 + getRandom().nextInt(3);
                 for (int i = 0; i <= particles; i++) {
-                    Vec3 particleVec = new Vec3(0, 0, 1.0F).yRot((i / (float) particles) * ((float) Math.PI) * 2F).add(this.position());
+                    Vec3 particleVec = new Vec3(0, 0, 1.0F).yRot((i / (float) particles) * (Mth.PI) * 2F).add(this.position());
                     double particleY = this.getBoundingBox().minY + getFluidTypeHeight(ForgeMod.WATER_TYPE.get());
                     this.level().addParticle(ParticleTypes.SPLASH, particleVec.x, particleY, particleVec.z, 0, 0.3F, 0);
                 }
@@ -261,7 +261,6 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
         if (isTame() && itemstack.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
             this.usePlayerItem(player, hand, itemstack);
@@ -403,7 +402,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
 
     public Vec3 getShakePreyPos() {
         Vec3 jaw = new Vec3(0, -0.1, 1F);
-        Vec3 head = jaw.xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-this.getYHeadRot() * ((float) Math.PI / 180F));
+        Vec3 head = jaw.xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYHeadRot() * Mth.DEG_TO_RAD);
         return this.getEyePosition().add(head);
     }
 

@@ -87,20 +87,14 @@ public class EntityLobster extends WaterAnimal implements ISemiAquatic, Bucketab
     }
 
     public static String getVariantName(int variant) {
-        switch (variant) {
-            case 1:
-                return "blue";
-            case 2:
-                return "yellow";
-            case 3:
-                return "redblue";
-            case 4:
-                return "black";
-            case 5:
-                return "white";
-            default:
-                return "red";
-        }
+        return switch (variant) {
+            case 1 -> "blue";
+            case 2 -> "yellow";
+            case 3 -> "redblue";
+            case 4 -> "black";
+            case 5 -> "white";
+            default -> "red";
+        };
     }
 
     protected void registerGoals() {

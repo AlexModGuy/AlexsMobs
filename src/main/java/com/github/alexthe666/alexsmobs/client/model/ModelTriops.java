@@ -106,7 +106,7 @@ public class ModelTriops extends AdvancedEntityModel<EntityTriops> {
         progressPositionPrev(body, limbSwingAmount, 0, -3, 0, 1F);
         progressRotationPrev(leftAntenna, 1F - limbSwingAmount, 0, (float) Math.toRadians(20), 0, 1F);
         progressRotationPrev(rightAntenna, 1F - limbSwingAmount, 0, (float) Math.toRadians(-20), 0, 1F);
-        this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F) * swimAmount;
+        this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD * swimAmount;
         this.body.rotateAngleZ += (float)Math.toRadians(swimRot);
         this.swing(rightAntenna, idleSpeed, idleDegree, false, 1F, -0.2F, ageInTicks, 1);
         this.swing(leftAntenna, idleSpeed, idleDegree, true, 1F, -0.2F, ageInTicks, 1);

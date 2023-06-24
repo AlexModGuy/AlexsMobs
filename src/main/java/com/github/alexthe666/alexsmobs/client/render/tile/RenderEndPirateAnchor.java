@@ -24,7 +24,7 @@ public class RenderEndPirateAnchor<T extends TileEntityEndPirateAnchor> implemen
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
         boolean east = tileEntityIn.getBlockState().getValue(BlockEndPirateAnchor.EASTORWEST);
-        boolean isChain = tileEntityIn.getBlockState().getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.CHAIN;
+        //boolean isChain = tileEntityIn.getBlockState().getValue(BlockEndPirateAnchor.PIECE) == BlockEndPirateAnchor.PieceType.CHAIN;
         matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(180.0F));

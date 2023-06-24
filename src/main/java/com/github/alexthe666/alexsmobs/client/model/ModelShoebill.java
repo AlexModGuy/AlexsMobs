@@ -8,6 +8,7 @@ import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
     private final AdvancedModelBox root;
@@ -238,7 +239,7 @@ public class ModelShoebill extends AdvancedEntityModel<EntityShoebill> {
             this.walk(head, walkSpeed, walkDegree * 0.85F, true, 2F, 0F, limbSwing, limbSwingAmount);
             this.walk(tail, walkSpeed * 0.5F, walkDegree * 0.15F, true, -2F, 0.2F, limbSwing, limbSwingAmount);
         }
-        this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);
+        this.head.rotateAngleY += netHeadYaw * Mth.DEG_TO_RAD;
 
     }
 

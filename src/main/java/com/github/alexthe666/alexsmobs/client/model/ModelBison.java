@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelBison extends AdvancedEntityModel<EntityBison> {
     private final AdvancedModelBox root;
@@ -239,8 +240,8 @@ public class ModelBison extends AdvancedEntityModel<EntityBison> {
         this.swing(right_ear, idleSpeed, idleDegree * 0.5F, true, 3F, 0.2F, ageInTicks, 1);
         this.walk(tail, idleSpeed, idleDegree, false, 1F, 0.1F, ageInTicks, 1);
         this.bob(head, idleSpeed, idleDegree, false, ageInTicks, 1);
-        this.head.rotateAngleY += netHeadYaw * 0.35F * ((float)Math.PI / 180F);
-        this.head.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleY += netHeadYaw * 0.35F * Mth.DEG_TO_RAD;
+        this.head.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
 
     }
 

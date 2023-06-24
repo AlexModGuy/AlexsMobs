@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
     private final AdvancedModelBox root;
@@ -156,8 +157,8 @@ public class ModelSkelewag extends AdvancedEntityModel<EntitySkelewag> {
         this.bob(left_fin, swimSpeed, -1.5F * swimDegree, false, limbSwing, limbSwingAmount);
         this.bob(right_fin, swimSpeed, -1.5F * swimDegree, false, limbSwing, limbSwingAmount);
         this.swing(flag, swimSpeed, swimDegree * 0.6F, false, 2, 0.3F, limbSwing, limbSwingAmount);
-        this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
-        this.head.rotateAngleX -= headPitch * 0.5F * ((float)Math.PI / 180F);
+        this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
+        this.head.rotateAngleX -= headPitch * 0.5F * Mth.DEG_TO_RAD;
 
     }
 

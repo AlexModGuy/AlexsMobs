@@ -87,8 +87,8 @@ public class RenderMurmurHead extends MobRenderer<EntityMurmurHead, ModelMurmurH
     public static void renderNeckCube(Vec3 from, Vec3 to, PoseStack poseStack, VertexConsumer buffer, int packedLightIn, int overlayCoords, float additionalYaw) {
         Vec3 sub = from.subtract(to);
         double d = sub.horizontalDistance();
-        float rotY = (float) (Mth.atan2(sub.x, sub.z) * (double) (180F / (float) Math.PI));
-        float rotX = (float) (-(Mth.atan2(sub.y, d) * (double) (180F / (float) Math.PI))) - 90.0F;
+        float rotY = (float) (Mth.atan2(sub.x, sub.z) * (double) Mth.RAD_TO_DEG);
+        float rotX = (float) (-(Mth.atan2(sub.y, d) * (double) Mth.RAD_TO_DEG)) - 90.0F;
         poseStack.pushPose();
         poseStack.translate(from.x, from.y, from.z);
         NECK_MODEL.setAttributes((float) sub.length(), rotX, rotY, additionalYaw);

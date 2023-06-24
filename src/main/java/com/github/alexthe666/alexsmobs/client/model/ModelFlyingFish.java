@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelFlyingFish extends AdvancedEntityModel<EntityFlyingFish> {
     private final AdvancedModelBox root;
@@ -100,7 +101,7 @@ public class ModelFlyingFish extends AdvancedEntityModel<EntityFlyingFish> {
         this.flap(right_pectoralFin, swimSpeed * 2F, swimDegree * 0.2F, false, 1, 0.1F, ageInTicks, flyProgress * 0.2F);
         this.flap(left_pelvicFin, swimSpeed * 2F, swimDegree * 0.2F, true, 1, 0.3F, ageInTicks, flyProgress * 0.2F);
         this.flap(right_pelvicFin, swimSpeed * 2F, swimDegree * 0.2F, false, 1, 0.3F, ageInTicks, flyProgress * 0.2F);
-        this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+        this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
     }
 
     @Override

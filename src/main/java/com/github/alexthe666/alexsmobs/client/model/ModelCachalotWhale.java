@@ -108,7 +108,7 @@ public class ModelCachalotWhale extends AdvancedEntityModel<EntityCachalotWhale>
 		float f = Mth.clamp((float)entity.getMovementOffsets(7, partialTicks)[0] - renderYaw, -50, 50);
 		this.tail1.rotateAngleY += (float) Mth.clamp((float)entity.getMovementOffsets(15, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
 		this.tail2.rotateAngleY += (float) Mth.clamp((float)entity.getMovementOffsets(17, partialTicks)[0] - renderYaw, -50, 50)  * 0.017453292F;
-		this.body.rotateAngleX += Math.min(properPitch, sleepProgress * -9) * ((float)Math.PI / 180F);
+		this.body.rotateAngleX += Math.min(properPitch, sleepProgress * -9) * Mth.DEG_TO_RAD;
 		this.body.rotateAngleZ += f * 0.017453292F;
 		this.head.rotateAngleY += Math.sin((entity.grabTime + partialTicks) * 0.3F) * 0.1F * grabProgress;
 		AdvancedModelBox[] tailBoxes = new AdvancedModelBox[]{tail1, tail2, tail3};

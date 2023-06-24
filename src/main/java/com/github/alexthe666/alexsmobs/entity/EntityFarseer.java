@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageSendVisualFlagFromServer;
 import com.github.alexthe666.alexsmobs.misc.AMDamageTypes;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -392,7 +393,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         double d1 = Mth.lerp(partialTick, this.yOld, this.getY());
         double d2 = Mth.lerp(partialTick, this.zOld, this.getZ());
         float renderYaw = (float) this.getLatencyVar(offset, 3, partialTick);
-        return new Vec3(this.getLatencyVar(offset, 0, partialTick) - d0, this.getLatencyVar(offset, 1, partialTick) - d1, this.getLatencyVar(offset, 2, partialTick) - d2).yRot(renderYaw * ((float) Math.PI / 180F));
+        return new Vec3(this.getLatencyVar(offset, 0, partialTick) - d0, this.getLatencyVar(offset, 1, partialTick) - d1, this.getLatencyVar(offset, 2, partialTick) - d2).yRot(renderYaw * Mth.DEG_TO_RAD);
     }
 
     public Vec3 calculateAfterimagePos(float partialTick, boolean flip, float speed) {
@@ -564,7 +565,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             float radius = 5 + parentEntity.getRandom().nextInt(10);
             float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             float renderYawOffset = parentEntity.getYRot();
-            float angle = (0.01745329251F * renderYawOffset) + 3.15F * (parentEntity.getRandom().nextFloat() * neg);
+            float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F * (parentEntity.getRandom().nextFloat() * neg);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = new BlockPos((int) (parentEntity.getX() + extraX), (int) parentEntity.getY(), (int) (parentEntity.getZ() + extraZ));
@@ -689,7 +690,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         }
 
         public void tick() {
-            float angle = (0.01745329251F * (parentEntity.yBodyRot + 90));
+            float angle = (Maths.STARTING_ANGLE * (parentEntity.yBodyRot + 90));
             float radius = (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraY = radius * -Math.cos(angle - Math.PI / 2);
@@ -710,7 +711,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
                 Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.05D / d0);
                 parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d1.add(strafPlus.scale(0.003D * Math.min(d0, 100)).add(shimmy))));
                 if (d0 >= width) {
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                     if (EntityFarseer.this.hasLaser()) {
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     }

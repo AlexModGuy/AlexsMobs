@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.util.Mth;
 
 public class ModelBaldEagle extends AdvancedEntityModel<EntityBaldEagle> {
     private final AdvancedModelBox root;
@@ -224,7 +225,7 @@ public class ModelBaldEagle extends AdvancedEntityModel<EntityBaldEagle> {
             head.rotateAngleZ += headPitch / 57.295776F;
         }
         float birdPitch = entity.prevBirdPitch + (entity.birdPitch - entity.prevBirdPitch) * partialTicks;
-        this.body.rotateAngleX += birdPitch * flyProgress * 0.2F * ((float)Math.PI / 180F);
+        this.body.rotateAngleX += birdPitch * flyProgress * 0.2F * Mth.DEG_TO_RAD;
 
     }
 

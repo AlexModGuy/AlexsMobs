@@ -555,19 +555,25 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         prevBiteProgress = biteProgress;
         prevHeadHeight = this.getHeadHeight();
         this.yBodyRot = this.getYRot();
-        if (shouldSwim() && swimProgress < 5F) {
-            swimProgress++;
+
+        if (shouldSwim()) {
+            if (swimProgress < 5F)
+                swimProgress++;
+        } else {
+            if (swimProgress > 0F)
+                swimProgress--;
         }
-        if (!shouldSwim() && swimProgress > 0F) {
-            swimProgress--;
-        }
-        if (this.isObsidian() && !hasObsidianArmor) {
-            hasObsidianArmor = true;
-            this.getAttribute(Attributes.ARMOR).setBaseValue(30F);
-        }
-        if (!this.isObsidian() && hasObsidianArmor) {
-            hasObsidianArmor = false;
-            this.getAttribute(Attributes.ARMOR).setBaseValue(10F);
+
+        if (this.isObsidian()) {
+            if (!hasObsidianArmor) {
+                hasObsidianArmor = true;
+                this.getAttribute(Attributes.ARMOR).setBaseValue(30F);
+            }
+        } else {
+            if (hasObsidianArmor) {
+                hasObsidianArmor = false;
+                this.getAttribute(Attributes.ARMOR).setBaseValue(10F);
+            }
         }
 
         if (!this.level().isClientSide) {
@@ -590,7 +596,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                 this.allParts[j].collideWithNearbyEntities();
                 avector3d[j] = new Vec3(this.allParts[j].getX(), this.allParts[j].getY(), this.allParts[j].getZ());
             }
-            float yaw = this.getYRot() * ((float) Math.PI / 180F);
+            float yaw = this.getYRot() * Mth.DEG_TO_RAD;
             float neckContraction = 2.0F * Math.abs(getHeadHeight() / 3) + 0.5F * Math.abs(getHeadYaw(0) / 50F);
 
             for (int l = 0; l < this.theEntireNeck.length; ++l) {
@@ -1086,9 +1092,9 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
                     float lvt_9_1_ = (float) (Mth.atan2(lvt_5_1_, lvt_1_1_) * 57.2957763671875D) - 90.0F;
                     this.laviathan.setYRot(this.rotlerp(this.laviathan.getYRot(), lvt_9_1_, 5F));
                     this.laviathan.setYHeadRot(this.rotlerp(this.laviathan.getYHeadRot(), lvt_9_1_, 90.0F));
-                    BlockPos blockpos = this.mob.blockPosition();
-                    BlockState blockstate = this.mob.level().getBlockState(blockpos);
-                    VoxelShape voxelshape = blockstate.getCollisionShape(this.mob.level(), blockpos);
+                    //BlockPos blockpos = this.mob.blockPosition();
+                    //BlockState blockstate = this.mob.level().getBlockState(blockpos);
+                    //VoxelShape voxelshape = blockstate.getCollisionShape(this.mob.level(), blockpos);
                     if (lvt_3_1_ >= 0 && laviathan.horizontalCollision) {
                         laviathan.setDeltaMovement(laviathan.getDeltaMovement().add(0.0D, 0.5D, 0.0D));
                     } else {

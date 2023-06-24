@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -237,7 +238,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             float sitAdd = -0.03F * this.sitProgress;
             float standAdd = -0.03F * this.standProgress;
             float radius = standAdd + sitAdd;
-            float angle = (0.01745329251F * this.yBodyRot);
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
@@ -407,18 +408,23 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         }
         prevSitProgress = sitProgress;
         prevStandProgress = standProgress;
-        if (this.isSitting() && sitProgress < 10) {
-            sitProgress += 1;
+
+        if (this.isSitting()) {
+            if (sitProgress < 10F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (!this.isSitting() && sitProgress > 0) {
-            sitProgress -= 1;
+
+        if (this.isStanding()) {
+            if (standProgress < 10F)
+                standProgress++;
+        } else {
+            if (standProgress > 0F)
+                standProgress--;
         }
-        if (this.isStanding() && standProgress < 10) {
-            standProgress += 1;
-        }
-        if (!this.isStanding() && standProgress > 0) {
-            standProgress -= 1;
-        }
+
         if (this.isPassenger() && this.getVehicle() instanceof EntityGorilla) {
             if(!this.isBaby()){
                 this.removeVehicle();
@@ -434,7 +440,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             standingTime = 0;
             maxStandTime = 75 + random.nextInt(50);
         }
-        if (isSitting() && !forcedSit && ++sittingTime > maxSitTime) {
+        if (!forcedSit && isSitting() && ++sittingTime > maxSitTime) {
             this.setOrderedToSit(false);
             sittingTime = 0;
             maxSitTime = 75 + random.nextInt(50);
@@ -449,23 +455,23 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
         if (this.forcedSit && !this.isVehicle() && this.isTame()) {
             this.setOrderedToSit(true);
         }
-        if (this.isSilverback() && random.nextInt(800) == 0 && poundChestCooldown <= 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && sitProgress == 0 && !this.isNoAi() && this.getMainHandItem().isEmpty()) {
+        if (sitProgress == 0 && poundChestCooldown <= 0 && this.isSilverback() && random.nextInt(800) == 0 && this.getAnimation() == NO_ANIMATION && !this.isSitting() && !this.isNoAi() && this.getMainHandItem().isEmpty()) {
             this.setAnimation(ANIMATION_POUNDCHEST);
         }
         if (!this.level().isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 10) {
-            float f1 = this.getYRot() * ((float) Math.PI / 180F);
+            float f1 = this.getYRot() * Mth.DEG_TO_RAD;
             this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
             getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }
-        if (isSilverback() && !isBaby() && !hasSilverbackAttributes) {
+        if (!hasSilverbackAttributes && isSilverback() && !isBaby()) {
             hasSilverbackAttributes = true;
             refreshDimensions();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(50F);
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10F);
             this.heal(50F);
         }
-        if (!isSilverback() && !isBaby() && hasSilverbackAttributes) {
+        if (hasSilverbackAttributes && !isSilverback() && !isBaby()) {
             hasSilverbackAttributes = false;
             refreshDimensions();
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(30F);
@@ -563,7 +569,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
 
     public boolean isDonkeyKong() {
         String s = ChatFormatting.stripFormatting(this.getName().getString());
-        return s != null && (s.toLowerCase().contains("donkey") && s.toLowerCase().contains("kong") || s.toLowerCase().equals("dk"));
+        return s != null && (s.toLowerCase().contains("donkey") && s.toLowerCase().contains("kong") || s.equalsIgnoreCase("dk"));
     }
 
     public boolean isFunkyKong() {

@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
@@ -239,7 +240,7 @@ public class EntityCrimsonMosquito extends Monster {
                     this.yHeadRot = livingEntity.yHeadRot;
                     this.yRotO = livingEntity.yHeadRot;
                     final float radius = 1F;
-                    final float angle = (0.0174532925F * livingEntity.yBodyRot);
+                    final float angle = (Maths.STARTING_ANGLE * livingEntity.yBodyRot);
                     final double extraX = radius * Mth.sin((float) (Math.PI + angle));
                     final double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getEyeHeight() * 0.25F, mount.getY()), mount.getZ() + extraZ);
@@ -561,7 +562,6 @@ public class EntityCrimsonMosquito extends Monster {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                double d3 = 10.0D;
                 this.level().addParticle(ParticleTypes.EXPLOSION, this.getRandomX(1.6D), this.getY() + random.nextFloat() * 3.4F, this.getRandomZ(1.6D), d0, d1, d2);
             }
         } else {
@@ -670,7 +670,7 @@ public class EntityCrimsonMosquito extends Monster {
             final float radius = 1 + parentEntity.getRandom().nextInt(5);
             final float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             final float renderYawOffset = parentEntity.yBodyRot;
-            final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
+            final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
             final double extraX = radius * Mth.sin((float) (Math.PI + angle));
             final double extraZ = radius * Mth.cos(angle);
             final BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
@@ -722,12 +722,12 @@ public class EntityCrimsonMosquito extends Monster {
                         parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                         if (parentEntity.getTarget() == null) {
                             final Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                            parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                            parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                             parentEntity.yBodyRot = parentEntity.getYRot();
                         } else {
                             final double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                             final double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                            parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                            parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
                             parentEntity.yBodyRot = parentEntity.getYRot();
                         }
                     }
@@ -853,7 +853,7 @@ public class EntityCrimsonMosquito extends Monster {
 
         public BlockPos getBlockInTargetsViewMosquito(LivingEntity target) {
             final float radius = 4 + parentEntity.getRandom().nextInt(5);
-            final float angle = (0.0174532925F * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
+            final float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
             final double extraX = radius * Mth.sin((float) (Math.PI + angle));
             final double extraZ = radius * Mth.cos(angle);
             final BlockPos ground = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);

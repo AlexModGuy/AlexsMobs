@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelStraddler extends AdvancedEntityModel<EntityStraddler> {
     public final AdvancedModelBox root;
@@ -142,9 +143,9 @@ public class ModelStraddler extends AdvancedEntityModel<EntityStraddler> {
         this.swing(hair_right, walkSpeed, walkDegree * 0.8F, false, -1, 0F, limbSwing, limbSwingAmount);
 
         if (entity.getPassengers().size() <= 0) {
-            this.body.rotateAngleX += headPitch * 0.5F * ((float) Math.PI / 180F);
-            this.leg_right.rotateAngleX -= headPitch * 0.5F * ((float) Math.PI / 180F);
-            this.leg_left.rotateAngleX -= headPitch * 0.5F * ((float) Math.PI / 180F);
+            this.body.rotateAngleX += headPitch * 0.5F * Mth.DEG_TO_RAD;
+            this.leg_right.rotateAngleX -= headPitch * 0.5F * Mth.DEG_TO_RAD;
+            this.leg_left.rotateAngleX -= headPitch * 0.5F * Mth.DEG_TO_RAD;
         }
     }
 

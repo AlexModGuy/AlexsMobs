@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelBoneSerpentHead extends AdvancedEntityModel<EntityBoneSerpent> {
     private final AdvancedModelBox head;
@@ -55,7 +56,7 @@ public class ModelBoneSerpentHead extends AdvancedEntityModel<EntityBoneSerpent>
     @Override
     public void setupAnim(EntityBoneSerpent entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.resetToDefaultPose();
-        this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleX = headPitch * Mth.DEG_TO_RAD;
         float walkSpeed = 0.35F;
         float walkDegree = 3F;
         float idleSpeed = 0.1F;

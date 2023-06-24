@@ -135,20 +135,23 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         if (!onLand && onLandProgress > 0F) {
             onLandProgress--;
         }
-        if (isGliding() && flyProgress < 5F) {
-            flyProgress++;
+
+        if (isGliding()) {
+            if (flyProgress < 5F)
+                flyProgress++;
+
+            if (!this.isInWaterOrBubble() && this.getDeltaMovement().y < 0.0)
+                this.setDeltaMovement(this.getDeltaMovement().multiply(1.0F, 0.5F, 1.0F));
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isGliding() && flyProgress > 0F) {
-            flyProgress--;
-        }
-        if(isGliding() && !this.isInWaterOrBubble() && this.getDeltaMovement().y < 0.0){
-            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0F, 0.5F, 1.0F));
-        }
+
         if(glideIn > 0){
             glideIn--;
         }
         this.yBodyRot = this.getYRot();
-        float f2 = (float) -((float) this.getDeltaMovement().y * 3F * (double) (180F / (float) Math.PI));
+        float f2 = (float) -((float) this.getDeltaMovement().y * 3F * (double) Mth.RAD_TO_DEG);
         if(this.isGliding()){
             f2 = -f2;
         }
@@ -425,8 +428,8 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
                 Vec3 move = fish.getDeltaMovement().add(target.x, y, (double) (target.y));
                 fish.setDeltaMovement(move);
                 double d0 = move.horizontalDistance();
-                fish.setXRot((float)(-Mth.atan2(move.y, d0) * (double)(180F / (float)Math.PI)));
-                fish.setYRot(((float) Mth.atan2(move.z, move.x)) * (180F / (float) Math.PI) - 90F);
+                fish.setXRot((float)(-Mth.atan2(move.y, d0) * (double)Mth.RAD_TO_DEG));
+                fish.setYRot(((float) Mth.atan2(move.z, move.x)) * Mth.RAD_TO_DEG - 90F);
                 fish.setGliding(true);
             }
         }

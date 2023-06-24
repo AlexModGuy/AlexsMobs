@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelBlobfish extends AdvancedEntityModel<EntityBlobfish> {
     private final AdvancedModelBox root;
@@ -70,7 +71,7 @@ public class ModelBlobfish extends AdvancedEntityModel<EntityBlobfish> {
     @Override
     public void setupAnim(EntityBlobfish entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
         this.resetToDefaultPose();
-        this.body.rotateAngleX = headPitch * ((float)Math.PI / 180F);
+        this.body.rotateAngleX = headPitch * Mth.DEG_TO_RAD;
         float swimSpeed = 1.5F;
         float swimDegree = 0.85F;
         this.swing(tail, swimSpeed, swimDegree, false, 0, 0, limbSwing, limbSwingAmount);

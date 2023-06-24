@@ -205,8 +205,8 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
             if(vomitTo != null){
                 final Vec3 face = Vec3.atCenterOf(vomitTo).subtract(this.getMouthVec());
                 final double d0 = face.horizontalDistance();
-                this.setXRot((float)(-Mth.atan2(face.y, d0) * Maths.oneEightyDividedByFloatPi));
-                this.setYRot(((float) Mth.atan2(face.z, face.x)) * (float) Maths.oneEightyDividedByFloatPi - 90F);
+                this.setXRot((float)(-Mth.atan2(face.y, d0) * Mth.RAD_TO_DEG));
+                this.setYRot(((float) Mth.atan2(face.z, face.x)) * (float) Mth.RAD_TO_DEG - 90F);
                 this.yBodyRot = this.getYRot();
                 this.yHeadRot = this.getYRot();
             }
@@ -524,7 +524,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
     }
 
     private Vec3 getMouthVec(){
-        final Vec3 vec3 = new Vec3(0, this.getBbHeight() * 0.25F, this.getBbWidth() * 0.8F).xRot(this.getXRot() * Maths.piDividedBy180).yRot(-this.getYRot() * Maths.piDividedBy180);
+        final Vec3 vec3 = new Vec3(0, this.getBbHeight() * 0.25F, this.getBbWidth() * 0.8F).xRot(this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
         return this.position().add(vec3);
     }
 
@@ -677,7 +677,7 @@ public class EntityCatfish extends WaterAnimal implements FlyingAnimal, Bucketab
 
         protected boolean searchForDestination() {
             int lvt_1_1_ = this.searchLength;
-            int lvt_2_1_ = this.verticalSearchRange;
+            //int lvt_2_1_ = this.verticalSearchRange;
             BlockPos lvt_3_1_ = fish.blockPosition();
             BlockPos.MutableBlockPos lvt_4_1_ = new BlockPos.MutableBlockPos();
 

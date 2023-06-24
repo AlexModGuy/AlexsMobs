@@ -236,43 +236,58 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         this.prevTackleProgress = tackleProgress;
         this.prevSpikeShakeProgress = spikeShakeProgress;
         this.prevTurnAngle = getTurnAngle();
-        if (this.isBipedal() && bipedProgress < 5.0F) {
-            bipedProgress++;
+
+        if (this.isBipedal()) {
+            if (bipedProgress < 5.0F)
+                bipedProgress++;
+        } else {
+            if (bipedProgress > 0F)
+                bipedProgress--;
         }
-        if (!this.isBipedal() && bipedProgress > 0.0F) {
-            bipedProgress--;
+
+        if (this.isTackling()) {
+            if (tackleProgress < 5.0F)
+                tackleProgress++;
+        } else {
+            if (tackleProgress > 0F)
+                tackleProgress--;
         }
-        if (this.isTackling() && tackleProgress < 5.0F) {
-            tackleProgress++;
+
+        if (this.isSpikeShaking()) {
+            if (spikeShakeProgress < 5.0F)
+                spikeShakeProgress++;
+
+            if (currentSpeedMode != 2) {
+                currentSpeedMode = 2;
+                this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F);
+            }
+        } else {
+            if (spikeShakeProgress > 0F)
+                spikeShakeProgress--;
+
+            if (isBipedal()) {
+                if (currentSpeedMode != 0) {
+                    currentSpeedMode = 0;
+                    this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
+                }
+            } else {
+                if (currentSpeedMode != 1) {
+                    currentSpeedMode = 1;
+                    this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
+                }
+            }
         }
-        if (!this.isTackling() && tackleProgress > 0.0F) {
-            tackleProgress--;
-        }
-        if (this.isSpikeShaking() && spikeShakeProgress < 5.0F) {
-            spikeShakeProgress++;
-        }
-        if (!this.isSpikeShaking() && spikeShakeProgress > 0.0F) {
-            spikeShakeProgress--;
-        }
-        if (this.isSpikeShaking() && currentSpeedMode != 2) {
-            currentSpeedMode = 2;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F);
-        }
-        if (!this.isSpikeShaking() && isBipedal() && currentSpeedMode != 0) {
-            currentSpeedMode = 0;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
-        }
-        if (!this.isSpikeShaking() && !isBipedal() && currentSpeedMode != 1) {
-            currentSpeedMode = 1;
-            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
-        }
-        if (this.hasSpikes() && !hasSpikedArmor) {
-            hasSpikedArmor = true;
-            this.getAttribute(Attributes.ARMOR).setBaseValue(12F);
-        }
-        if (!this.hasSpikes() && hasSpikedArmor) {
-            hasSpikedArmor = false;
-            this.getAttribute(Attributes.ARMOR).setBaseValue(0F);
+
+        if (this.hasSpikes()) {
+            if (!hasSpikedArmor) {
+                hasSpikedArmor = true;
+                this.getAttribute(Attributes.ARMOR).setBaseValue(12F);
+            }
+        } else {
+            if (hasSpikedArmor) {
+                hasSpikedArmor = false;
+                this.getAttribute(Attributes.ARMOR).setBaseValue(0F);
+            }
         }
 
         if (!this.level().isClientSide) {
@@ -312,11 +327,12 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
             if (standingTime < 0) {
                 standingTime++;
             }
-            if (this.isBipedal() && standingTime <= 0) {
+
+            if (standingTime <= 0 && this.isBipedal()) {
                 standingTime = -200 - random.nextInt(400);
                 this.setBipedal(false);
             }
-            if (!this.isBipedal() && standingTime == 0 && this.getDeltaMovement().lengthSqr() >= 0.03D) {
+            if (standingTime == 0 && !this.isBipedal() && this.getDeltaMovement().lengthSqr() >= 0.03D) {
                 standingTime = 200 + random.nextInt(600);
                 this.setBipedal(true);
             }
@@ -332,7 +348,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
                 }
                 shakeTime--;
             }
-            if (this.isSpikeShaking() && shakeTime == 0) {
+            if (shakeTime == 0 && this.isSpikeShaking()) {
                 this.setSpikeShaking(false);
                 if (random.nextInt(2) == 0) {
                     this.setSpiked(false);
@@ -407,7 +423,6 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
             return true;
         } else {
             int i = Mth.floor(this.getX());
-            int j = Mth.floor(this.getY());
             int k = Mth.floor(this.getZ());
             return this.level().getBiome(new BlockPos(i, 0, k)).is(BiomeTags.SNOW_GOLEM_MELTS);
         }
@@ -428,7 +443,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
         double d0 = (double) this.getJumpPower() + this.getJumpBoostPower();
         Vec3 vec3 = this.getDeltaMovement();
         this.setDeltaMovement(vec3.x, d0, vec3.z);
-        float f = this.getYRot() * ((float) Math.PI / 180F);
+        float f = this.getYRot() * Mth.DEG_TO_RAD;
         this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * 0.2F, 0, Mth.cos(f) * 0.2F));
         this.hasImpulse = true;
         net.minecraftforge.common.ForgeHooks.onLivingJump(this);
@@ -520,15 +535,12 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
 
     public boolean doHurtTarget(Entity entityIn) {
         if (this.getAnimation() == NO_ANIMATION) {
-            int anim = this.random.nextInt(4);
-            if (anim == 0) {
-                this.setAnimation(ANIMATION_SHOVE);
-            } else if (anim == 1) {
-                this.setAnimation(ANIMATION_BITE);
-            } else if (anim == 2) {
-                this.setAnimation(ANIMATION_SLASH_L);
-            } else if (anim == 3) {
-                this.setAnimation(ANIMATION_SLASH_R);
+            final int anim = this.random.nextInt(4);
+            switch (anim) {
+                case 0 -> this.setAnimation(ANIMATION_SHOVE);
+                case 1 -> this.setAnimation(ANIMATION_BITE);
+                case 2 -> this.setAnimation(ANIMATION_SLASH_L);
+                case 3 -> this.setAnimation(ANIMATION_SLASH_R);
             }
         }
         return true;

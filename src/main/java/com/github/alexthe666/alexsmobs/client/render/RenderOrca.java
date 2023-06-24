@@ -23,16 +23,11 @@ public class RenderOrca extends MobRenderer<EntityOrca, ModelOrca> {
 
 
     public ResourceLocation getTextureLocation(EntityOrca entity) {
-        switch (entity.getVariant()){
-            case 0:
-                return TEXTURE_NE;
-            case 1:
-                return TEXTURE_NW;
-            case 2:
-                return TEXTURE_SE;
-            case 3:
-            default:
-                return TEXTURE_SW;
-        }
+        return switch (entity.getVariant()) {
+            case 0 -> TEXTURE_NE;
+            case 1 -> TEXTURE_NW;
+            case 2 -> TEXTURE_SE;
+            default -> TEXTURE_SW;
+        };
     }
 }

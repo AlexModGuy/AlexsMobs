@@ -164,7 +164,7 @@ public class EntityAnacondaPart extends LivingEntity implements IHurtableMultipa
         }
         final double partYDest = Mth.clamp(this.getScale() * prevHeight, -0.6F, 0.6F);
         final float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
-        final float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * Maths.oneEightyDividedByFloatPi)));
+        final float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * Mth.RAD_TO_DEG)));
         final float f2 = this.limitAngle(this.getXRot(), rawAngle, 10F);
         this.setXRot(f2);
         this.setYRot(f);

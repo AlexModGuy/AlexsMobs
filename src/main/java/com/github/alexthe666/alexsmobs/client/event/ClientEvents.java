@@ -303,9 +303,9 @@ public class ClientEvents {
             InteractionHand hand = MoreObjects.firstNonNull(Minecraft.getInstance().player.swingingArm, InteractionHand.MAIN_HAND);
             float f = Minecraft.getInstance().player.getAttackAnim(event.getPartialTick());
             float f1 = Mth.lerp(event.getPartialTick(), Minecraft.getInstance().player.xRotO, Minecraft.getInstance().player.getXRot());
-            float f5 = -0.4F * Mth.sin(Mth.sqrt(f) * (float) Math.PI);
-            float f6 = 0.2F * Mth.sin(Mth.sqrt(f) * ((float) Math.PI * 2F));
-            float f10 = -0.2F * Mth.sin(f * (float) Math.PI);
+            float f5 = -0.4F * Mth.sin(Mth.sqrt(f) * Mth.PI);
+            float f6 = 0.2F * Mth.sin(Mth.sqrt(f) * Mth.TWO_PI);
+            float f10 = -0.2F * Mth.sin(f * Mth.PI);
             HumanoidArm handside = hand == InteractionHand.MAIN_HAND ? Minecraft.getInstance().player.getMainArm() : Minecraft.getInstance().player.getMainArm().getOpposite();
             boolean flag3 = handside == HumanoidArm.RIGHT;
             int l = flag3 ? 1 : -1;

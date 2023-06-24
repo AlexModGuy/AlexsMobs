@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.github.alexthe666.citadel.server.message.PropertiesMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,7 +49,7 @@ public class FlyingFishBootsUtil {
             if(fishy.getFluidHeight(FluidTags.WATER) < 0.2F && fishy.jumping &&( !(fishy instanceof Player) || !((Player) fishy).getAbilities().flying)){
                 final RandomSource rand = fishy.getRandom();
                 boostTime = MIN_BOOST_TIME;
-                Vec3 forward = new Vec3(0, 0.0F, 0.5F + rand.nextFloat() * 1.2F).xRot(-fishy.getXRot() * ((float) Math.PI / 180F)).yRot(-fishy.getYHeadRot() * ((float) Math.PI / 180F));
+                Vec3 forward = new Vec3(0, 0.0F, 0.5F + rand.nextFloat() * 1.2F).xRot(-fishy.getXRot() * Mth.DEG_TO_RAD).yRot(-fishy.getYHeadRot() * Mth.DEG_TO_RAD);
                 Vec3 delta = fishy.getDeltaMovement().add(forward);
                 fishy.setDeltaMovement(delta.x, 0.3 + rand.nextFloat() * 0.3F, delta.z);
                 fishy.setYRot(fishy.getYHeadRot());

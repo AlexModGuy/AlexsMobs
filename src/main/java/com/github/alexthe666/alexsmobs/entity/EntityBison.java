@@ -278,8 +278,8 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
         final float rot = 180F + this.getYRot();
         final float hugeScale = huge ? 4F : 0.6F;
         final float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
-        final float x = Mth.sin(rot * Maths.piDividedBy180);
-        final float z = -Mth.cos(rot * Maths.piDividedBy180);
+        final float x = Mth.sin(rot * Mth.DEG_TO_RAD);
+        final float z = -Mth.cos(rot * Mth.DEG_TO_RAD);
         launch.hasImpulse = true;
         final Vec3 vec3 = this.getDeltaMovement();
         final Vec3 vec31 = vec3.add((new Vec3(x, 0.0D, z)).normalize().scale(strength));
@@ -291,7 +291,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
     private void knockbackTarget(LivingEntity entity, float strength, float angle) {
         float rot = getYRot() + angle;
         if(entity != null){
-            entity.knockback(strength, Mth.sin(rot * Maths.piDividedBy180), -Mth.cos(rot * Maths.piDividedBy180));
+            entity.knockback(strength, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
         }
     }
 

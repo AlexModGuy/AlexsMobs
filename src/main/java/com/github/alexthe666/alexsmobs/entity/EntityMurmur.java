@@ -141,7 +141,7 @@ public class EntityMurmur extends Monster implements ISemiAquatic {
             if (f > 1.0F) {
                 f = 1.0F;
             }
-            rotatedOnDeath = rotatedOnDeath.add(f * 0.1F, f * 0.4F, 0).zRot((float) (f * Math.PI / 2F)).yRot(-this.yBodyRot * ((float)Math.PI / 180F));
+            rotatedOnDeath = rotatedOnDeath.add(f * 0.1F, f * 0.4F, 0).zRot((float) (f * Math.PI / 2F)).yRot(-this.yBodyRot * Mth.DEG_TO_RAD);
         }
         return new Vec3(d0, d1, d2).add(rotatedOnDeath);
     }

@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
@@ -153,18 +154,23 @@ public class EntityPotoo extends Animal implements IFalconry {
         this.prevPerchProgress = perchProgress;
         this.prevMouthProgress = mouthProgress;
         this.prevFlyProgress = flyProgress;
-        if (this.isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        if (this.isFlying()) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!this.isFlying() && flyProgress > 0F) {
-            flyProgress--;
+
+        if (this.isPerching()) {
+            if (perchProgress < 5F)
+                perchProgress++;
+        } else {
+            if (perchProgress > 0F)
+                perchProgress--;
         }
-        if (this.isPerching() && perchProgress < 5F) {
-            perchProgress++;
-        }
-        if (!this.isPerching() && perchProgress > 0F) {
-            perchProgress--;
-        }
+
         if (this.ringBufferIndex < 0) {
             //initial population of buffer
             for (int i = 0; i < this.ringBuffer.length; ++i) {
@@ -181,19 +187,20 @@ public class EntityPotoo extends Animal implements IFalconry {
         }
         if (!this.level().isClientSide) {
             this.entityData.set(TEMP_BRIGHTNESS, level().getMaxLocalRawBrightness(this.blockPosition()));
-            if (isFlying() && this.isLandNavigator) {
-                switchNavigator(false);
+            if (isFlying()) {
+                if (this.isLandNavigator)
+                    switchNavigator(false);
+            } else {
+                if (!this.isLandNavigator)
+                    switchNavigator(true);
             }
-            if (!isFlying() && !this.isLandNavigator) {
-                switchNavigator(true);
-            }
+
             if (this.isFlying()) {
-                if (this.isFlying() && !this.onGround()) {
+                if (!this.onGround()) {
                     if (!this.isInWaterOrBubble()) {
                         this.setDeltaMovement(this.getDeltaMovement().multiply(1F, 0.6F, 1F));
                     }
-                }
-                if (this.onGround() && timeFlying > 20) {
+                } else if (timeFlying > 20) {
                     this.setFlying(false);
                 }
                 this.timeFlying++;
@@ -293,7 +300,7 @@ public class EntityPotoo extends Animal implements IFalconry {
                     this.setYRot(Mth.wrapDegrees(mount.getYRot() + birdYaw));
                     this.yHeadRot = Mth.wrapDegrees(((LivingEntity) mount).yHeadRot + birdYaw);
                     float radius = 0.6F;
-                    float angle = (0.01745329251F * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));
+                    float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));
                     double extraX = radius * Mth.sin((float) (Math.PI + angle));
                     double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() * 0.45F, mount.getY()), mount.getZ() + extraZ);
@@ -397,7 +404,7 @@ public class EntityPotoo extends Animal implements IFalconry {
         float f = (float)diff.length();
         float f1 = f > 1F ? 0.25F : f * 0.1F;
         Vec3 sub = diff.normalize().scale(f1);
-        float f2 = -(float) (Mth.atan2(look.x, look.z) * (double) (180F / (float) Math.PI));
+        float f2 = -(float) (Mth.atan2(look.x, look.z) * (double) Mth.RAD_TO_DEG);
         EntityPotoo.this.setYRot(f2);
         EntityPotoo.this.yHeadRot = f2;
         EntityPotoo.this.yBodyRot = f2;
@@ -418,12 +425,12 @@ public class EntityPotoo extends Animal implements IFalconry {
     }
 
     public Vec3 getBlockGrounding(Vec3 fleePos) {
-        float radius = 10 + this.getRandom().nextInt(15);
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
+        final float radius = 10 + this.getRandom().nextInt(15);
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getToucanGround(radialPos);
         if (ground.getY() < -64) {
@@ -464,12 +471,12 @@ public class EntityPotoo extends Animal implements IFalconry {
     }
 
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
-        float radius = 5 + radiusAdd + this.getRandom().nextInt(5);
-        float neg = this.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = this.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
+        final float radius = 5 + radiusAdd + this.getRandom().nextInt(5);
+        final float neg = this.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = this.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getToucanGround(radialPos);
         int distFromGround = (int) this.getY() - ground.getY();
@@ -649,7 +656,7 @@ public class EntityPotoo extends Animal implements IFalconry {
                 EntityPotoo.this.getNavigation().stop();
                 Vec3 block = Vec3.upFromBottomCenterOf(EntityPotoo.this.getPerchPos(), 1.0F);
                 Vec3 onBlock = block.add(EntityPotoo.this.getPerchDirection().getStepX() * 0.35F, 0F, EntityPotoo.this.getPerchDirection().getStepZ() * 0.35F);
-                double dist = EntityPotoo.this.distanceToSqr(onBlock);
+                final double dist = EntityPotoo.this.distanceToSqr(onBlock);
                 Vec3 dirVec = block.subtract(EntityPotoo.this.position());
                 if (perchingTime > 10 && (dist > 2.3F || !EntityPotoo.this.isValidPerchFromSide(EntityPotoo.this.getPerchPos(), EntityPotoo.this.getPerchDirection()))) {
                     EntityPotoo.this.setPerching(false);
@@ -658,7 +665,7 @@ public class EntityPotoo extends Animal implements IFalconry {
                     if (EntityPotoo.this.getPerchPos().getY() + 1.2F > EntityPotoo.this.getBoundingBox().minY) {
                         EntityPotoo.this.setDeltaMovement(EntityPotoo.this.getDeltaMovement().add(0, 0.2F, 0));
                     }
-                    float f = -(float) (Mth.atan2(dirVec.x, dirVec.z) * (double) (180F / (float) Math.PI));
+                    final float f = -(float) (Mth.atan2(dirVec.x, dirVec.z) * (double) Mth.RAD_TO_DEG);
                     EntityPotoo.this.setYRot(f);
                     EntityPotoo.this.yHeadRot = f;
                     EntityPotoo.this.yBodyRot = f;
@@ -667,8 +674,8 @@ public class EntityPotoo extends Animal implements IFalconry {
                 if (EntityPotoo.this.distanceToSqr(Vec3.atCenterOf(perch)) > 100) {
                     EntityPotoo.this.setFlying(true);
                 }
-                double distX = perch.getX() + 0.5F - EntityPotoo.this.getX();
-                double distZ = perch.getZ() + 0.5F - EntityPotoo.this.getZ();
+                final double distX = perch.getX() + 0.5F - EntityPotoo.this.getX();
+                final double distZ = perch.getZ() + 0.5F - EntityPotoo.this.getZ();
                 if (distX * distX + distZ * distZ < 1F || !EntityPotoo.this.isFlying()) {
                     EntityPotoo.this.getNavigation().moveTo(perch.getX() + 0.5F, perch.getY() + 1.5F, perch.getZ() + 0.5F, 1F);
                     if(EntityPotoo.this.getNavigation().isDone()){

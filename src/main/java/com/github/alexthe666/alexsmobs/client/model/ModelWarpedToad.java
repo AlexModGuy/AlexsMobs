@@ -218,7 +218,7 @@ public class ModelWarpedToad extends AdvancedEntityModel<EntityWarpedToad> {
         this.right_foot_pivot.rotationPointZ -= 1.5F * rightLegs;
 
         if (attackProgress > 0) {
-            this.tongue.rotateAngleX += headPitch * ((float) Math.PI / 180F);
+            this.tongue.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
         }
         progressRotationPrev(body, fallProgress, (float) Math.toRadians(15), 0, 0, 5f);
         progressRotationPrev(left_arm, fallProgress, (float) Math.toRadians(-35), 0, 0, 5f);

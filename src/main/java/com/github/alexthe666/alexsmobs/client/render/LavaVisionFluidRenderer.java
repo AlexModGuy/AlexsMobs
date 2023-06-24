@@ -134,7 +134,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                             f25 = f22;
                         } else {
                             TextureAtlasSprite textureatlassprite = atextureatlassprite[1];
-                            float f26 = (float)Mth.atan2(vec3.z, vec3.x) - ((float)Math.PI / 2F);
+                            float f26 = (float)Mth.atan2(vec3.z, vec3.x) - Mth.HALF_PI;
                             float f27 = Mth.sin(f26) * 0.25F;
                             float f28 = Mth.cos(f26) * 0.25F;
                             float f29 = 8.0F;

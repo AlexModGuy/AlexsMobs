@@ -68,7 +68,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         super(t, parent.level());
         this.setParent(parent);
         this.radius = radius;
-        this.angleYaw = (angleYaw + 90.0F) * ((float) Math.PI / 180.0F);
+        this.angleYaw = (angleYaw + 90.0F) * Mth.DEG_TO_RAD;
         this.offsetY = offsetY;
     }
 
@@ -214,19 +214,19 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
                 if (parent instanceof EntityVoidWorm) {
                     restrictRadius *= (isTail() ? 0.8F : 0.4F);
                 }
-                double x = parent.getX() + restrictRadius * Math.cos(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw);
-                double yStretch = Math.abs(parent.getY() - parent.yo) > this.getBbWidth() ? parent.getY() : parent.yo;
-                double y = yStretch + this.offsetY * getWormScale();
-                double z = parent.getZ() + restrictRadius * Math.sin(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw);
+                final double x = parent.getX() + restrictRadius * Math.cos(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw);
+                final double yStretch = Math.abs(parent.getY() - parent.yo) > this.getBbWidth() ? parent.getY() : parent.yo;
+                final double y = yStretch + this.offsetY * getWormScale();
+                final double z = parent.getZ() + restrictRadius * Math.sin(parent.getYRot() * (Math.PI / 180.0F) + this.angleYaw);
 
-                double d0 = parent.xo - this.getX();
-                double d1 = parent.yo - this.getY();
-                double d2 = parent.zo - this.getZ();
-                float yaw = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                float pitch = parent.getXRot();
+                final double d0 = parent.xo - this.getX();
+                final double d1 = parent.yo - this.getY();
+                final double d2 = parent.zo - this.getZ();
+                final float yaw = (float) (Mth.atan2(d2, d0) * (double) Mth.RAD_TO_DEG) - 90.0F;
+                final float pitch = parent.getXRot();
                 if (this.getPortalTicks() <= 1 && !doesParentControlPos) {
-                    double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                    float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float) (d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
+                    //double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+                    final float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float) (d0 * d0 + d2 * d2))) * (double) Mth.RAD_TO_DEG));
                     this.setPos(x, y, z);
                     this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F));
                     this.setYRot(yaw);
@@ -288,9 +288,9 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
         if (this.deathTime == 20) {
             this.remove(RemovalReason.DISCARDED); //Forge keep data until we revive player
             for (int i = 0; i < 30; ++i) {
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                double d2 = this.random.nextGaussian() * 0.02D;
+                final double d0 = this.random.nextGaussian() * 0.02D;
+                final double d1 = this.random.nextGaussian() * 0.02D;
+                final double d2 = this.random.nextGaussian() * 0.02D;
                 this.level().addParticle(AMParticleRegistry.WORM_PORTAL.get(), this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
             }
         }
@@ -300,7 +300,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     public void die(DamageSource cause) {
         EntityVoidWorm worm = this.getWorm();
         if (worm != null) {
-            int segments = Math.max(worm.getSegmentCount() / 2 - 1, 1);
+            final int segments = Math.max(worm.getSegmentCount() / 2 - 1, 1);
             worm.setSegmentCount(segments);
             if (this.getChild() instanceof EntityVoidWormPart) {
                 EntityVoidWormPart segment = (EntityVoidWormPart) this.getChild();

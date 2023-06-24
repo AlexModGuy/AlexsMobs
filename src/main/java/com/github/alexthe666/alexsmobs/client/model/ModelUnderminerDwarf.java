@@ -93,17 +93,17 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
     public void setupHumanoidAnims(EntityUnderminer entityIn, float p_102867_, float p_102868_, float p_102869_, float p_102870_, float p_102871_) {
         boolean flag = entityIn.getFallFlyingTicks() > 4;
         boolean flag1 = entityIn.isVisuallySwimming();
-        this.head.rotateAngleY = p_102870_ * ((float)Math.PI / 180F);
+        this.head.rotateAngleY = p_102870_ * Mth.DEG_TO_RAD;
         if (flag) {
             this.head.rotateAngleX = (-(float)Math.PI / 4F);
         } else if (this.swimAmount > 0.0F) {
             if (flag1) {
                 this.head.rotateAngleX = this.rotlerpRad(this.swimAmount, this.head.rotateAngleX, (-(float)Math.PI / 4F));
             } else {
-                this.head.rotateAngleX = this.rotlerpRad(this.swimAmount, this.head.rotateAngleX, p_102871_ * ((float)Math.PI / 180F));
+                this.head.rotateAngleX = this.rotlerpRad(this.swimAmount, this.head.rotateAngleX, p_102871_ * Mth.DEG_TO_RAD);
             }
         } else {
-            this.head.rotateAngleX = p_102871_ * ((float)Math.PI / 180F);
+            this.head.rotateAngleX = p_102871_ * Mth.DEG_TO_RAD;
         }
         float f = 1.0F;
         if (flag) {
@@ -190,16 +190,16 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
                     this.rightArm.rotateAngleZ = Mth.lerp(f1, this.rightArm.rotateAngleZ, (float)Math.PI - 1.8707964F * this.quadraticArmUpdate(f5) / this.quadraticArmUpdate(14.0F));
                 } else if (f5 >= 14.0F && f5 < 22.0F) {
                     float f6 = (f5 - 14.0F) / 8.0F;
-                    this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, ((float)Math.PI / 2F) * f6);
-                    this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, ((float)Math.PI / 2F) * f6);
+                    this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, Mth.HALF_PI * f6);
+                    this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, Mth.HALF_PI * f6);
                     this.leftArm.rotateAngleY = this.rotlerpRad(f2, this.leftArm.rotateAngleY, (float)Math.PI);
                     this.rightArm.rotateAngleY = Mth.lerp(f1, this.rightArm.rotateAngleY, (float)Math.PI);
                     this.leftArm.rotateAngleZ = this.rotlerpRad(f2, this.leftArm.rotateAngleZ, 5.012389F - 1.8707964F * f6);
                     this.rightArm.rotateAngleZ = Mth.lerp(f1, this.rightArm.rotateAngleZ, 1.2707963F + 1.8707964F * f6);
                 } else if (f5 >= 22.0F && f5 < 26.0F) {
                     float f3 = (f5 - 22.0F) / 4.0F;
-                    this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, ((float)Math.PI / 2F) - ((float)Math.PI / 2F) * f3);
-                    this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, ((float)Math.PI / 2F) - ((float)Math.PI / 2F) * f3);
+                    this.leftArm.rotateAngleX = this.rotlerpRad(f2, this.leftArm.rotateAngleX, Mth.HALF_PI - Mth.HALF_PI * f3);
+                    this.rightArm.rotateAngleX = Mth.lerp(f1, this.rightArm.rotateAngleX, Mth.HALF_PI - Mth.HALF_PI * f3);
                     this.leftArm.rotateAngleY = this.rotlerpRad(f2, this.leftArm.rotateAngleY, (float)Math.PI);
                     this.rightArm.rotateAngleY = Mth.lerp(f1, this.rightArm.rotateAngleY, (float)Math.PI);
                     this.leftArm.rotateAngleZ = this.rotlerpRad(f2, this.leftArm.rotateAngleZ, (float)Math.PI);
@@ -295,7 +295,7 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
             HumanoidArm humanoidarm = this.getAttackArm(p_102858_);
             AdvancedModelBox modelpart = this.getArm(humanoidarm);
             float f = this.attackTime;
-            this.body.rotateAngleY = Mth.sin(Mth.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
+            this.body.rotateAngleY = Mth.sin(Mth.sqrt(f) * Mth.TWO_PI) * 0.2F;
             if (humanoidarm == HumanoidArm.LEFT) {
                 this.body.rotateAngleY *= -1.0F;
             }
@@ -316,13 +316,13 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
     }
 
     protected float rotlerpRad(float p_102836_, float p_102837_, float p_102838_) {
-        float f = (p_102838_ - p_102837_) % ((float)Math.PI * 2F);
+        float f = (p_102838_ - p_102837_) % Mth.TWO_PI;
         if (f < -(float)Math.PI) {
-            f += ((float)Math.PI * 2F);
+            f += Mth.TWO_PI;
         }
 
         if (f >= (float)Math.PI) {
-            f -= ((float)Math.PI * 2F);
+            f -= Mth.TWO_PI;
         }
 
         return p_102837_ + p_102836_ * f;

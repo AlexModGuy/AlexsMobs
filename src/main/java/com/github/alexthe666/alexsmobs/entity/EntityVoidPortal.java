@@ -95,34 +95,31 @@ public class EntityVoidPortal extends Entity {
         float maxY = 0.15F;
         float maxZ = 0.15F;
         switch (direction2) {
-            case NORTH:
-            case SOUTH:
+            case NORTH, SOUTH -> {
                 minX = -1.5F;
                 maxX = 1.5F;
                 minY = -1.5F;
                 maxY = 1.5F;
-                break;
-            case EAST:
-            case WEST:
+            }
+            case EAST, WEST -> {
                 minZ = -1.5F;
                 maxZ = 1.5F;
                 minY = -1.5F;
                 maxY = 1.5F;
-                break;
-            case UP:
-            case DOWN:
+            }
+            case UP, DOWN -> {
                 minX = -1.5F;
                 maxX = 1.5F;
                 minZ = -1.5F;
                 maxZ = 1.5F;
-                break;
+            }
         }
         AABB bb = new AABB(this.getX() + minX, this.getY() + minY, this.getZ() + minZ, this.getX() + maxX, this.getY() + maxY, this.getZ() + maxZ);
         this.setBoundingBox(bb);
-        if(random.nextFloat() < 0.5F && this.level().isClientSide && Math.min(tickCount, this.getLifespan()) >= 20){
-            double particleX = this.getBoundingBox().minX + random.nextFloat() * (this.getBoundingBox().maxX - this.getBoundingBox().minX);
-            double particleY = this.getBoundingBox().minY + random.nextFloat() * (this.getBoundingBox().maxY - this.getBoundingBox().minY);
-            double particleZ = this.getBoundingBox().minZ + random.nextFloat() * (this.getBoundingBox().maxZ - this.getBoundingBox().minZ);
+        if(this.level().isClientSide && random.nextFloat() < 0.5F && Math.min(tickCount, this.getLifespan()) >= 20){
+            final double particleX = this.getBoundingBox().minX + random.nextFloat() * (this.getBoundingBox().maxX - this.getBoundingBox().minX);
+            final double particleY = this.getBoundingBox().minY + random.nextFloat() * (this.getBoundingBox().maxY - this.getBoundingBox().minY);
+            final double particleZ = this.getBoundingBox().minZ + random.nextFloat() * (this.getBoundingBox().maxZ - this.getBoundingBox().minZ);
             level().addParticle(AMParticleRegistry.WORM_PORTAL.get(), particleX, particleY, particleZ, 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian());
         }
         List<Entity> entities = new ArrayList<>();
@@ -292,9 +289,9 @@ public class EntityVoidPortal extends Entity {
             this.setShattered(compound.getBoolean("Shattered"));
         }
         if (compound.contains("DX")) {
-            int i = compound.getInt("DX");
-            int j = compound.getInt("DY");
-            int k = compound.getInt("DZ");
+            final int i = compound.getInt("DX");
+            final int j = compound.getInt("DY");
+            final int k = compound.getInt("DZ");
             this.entityData.set(DESTINATION, Optional.of(new BlockPos(i, j, k)));
         } else {
             this.entityData.set(DESTINATION, Optional.empty());

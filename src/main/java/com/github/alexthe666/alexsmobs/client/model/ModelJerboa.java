@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.util.Mth;
 
 public class ModelJerboa extends AdvancedEntityModel<EntityJerboa> {
     private final AdvancedModelBox root;
@@ -132,8 +133,8 @@ public class ModelJerboa extends AdvancedEntityModel<EntityJerboa> {
             this.walk(leftArm, 0.7F, 1.2F, false, 0F, -1.0F, ageInTicks, begProgress * 0.2F);
             this.flap(leftArm, 0.7F, 0.25F, true, -1F, 0.2F, ageInTicks, begProgress * 0.2F);
         }
-        float headY = netHeadYaw * 0.35F * ((float)Math.PI / 180F);
-        float headZ = headPitch * 0.65F * ((float)Math.PI / 180F);
+        float headY = netHeadYaw * 0.35F * Mth.DEG_TO_RAD;
+        float headZ = headPitch * 0.65F * Mth.DEG_TO_RAD;
         if(Math.max(sleepProgress, begProgress) == 0){
             this.body.rotateAngleY += headY;
             this.legs.rotateAngleY -= headY * 0.6F;

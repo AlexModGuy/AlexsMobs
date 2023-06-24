@@ -185,12 +185,15 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
         super.tick();
         prevJostleProgress = jostleProgress;
         prevJostleAngle = this.getJostleAngle();
-        if (this.isJostling() && jostleProgress < 5F) {
-            jostleProgress++;
+
+        if (this.isJostling()) {
+            if (jostleProgress < 5F)
+                jostleProgress++;
+        } else {
+            if (jostleProgress > 0F)
+                jostleProgress--;
         }
-        if (!this.isJostling() && jostleProgress > 0F) {
-            jostleProgress--;
-        }
+
         if (jostleCooldown > 0) {
             jostleCooldown--;
         }

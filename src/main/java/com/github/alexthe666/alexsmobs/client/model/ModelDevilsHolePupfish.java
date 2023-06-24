@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelDevilsHolePupfish extends AdvancedEntityModel<EntityDevilsHolePupfish> {
     private final AdvancedModelBox root;
@@ -78,7 +79,7 @@ public class ModelDevilsHolePupfish extends AdvancedEntityModel<EntityDevilsHole
         this.swing(body, swimSpeed, swimDegree * 0.3F, false, 1F, 0, limbSwing, limbSwingAmount);
         this.swing(left_fin, swimSpeed, swimDegree, false, 3F, 0.6F, limbSwing, limbSwingAmount);
         this.swing(right_fin, swimSpeed, swimDegree, true, 3F, 0.6F, limbSwing, limbSwingAmount);
-        this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+        this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
         this.body.rotateAngleX += feedingProgress * Math.cos(ageInTicks * 0.3F) * 0.2F * Math.PI * 0.1F;
         this.body.rotationPointZ += feedingProgress * Math.abs(Math.sin(ageInTicks * 0.3F));
 

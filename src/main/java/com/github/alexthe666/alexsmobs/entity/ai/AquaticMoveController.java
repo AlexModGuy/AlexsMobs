@@ -39,7 +39,6 @@ public class AquaticMoveController extends MoveControl {
             double d1 = this.wantedY - this.entity.getY();
             double d2 = this.wantedZ - this.entity.getZ();
             double d3 = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
-            double d4 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
             d1 /= d3;
             float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
             if (entity instanceof EntityGiantSquid) {

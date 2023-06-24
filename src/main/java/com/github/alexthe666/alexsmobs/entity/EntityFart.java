@@ -40,7 +40,7 @@ public class EntityFart extends Entity {
         this(AMEntityRegistry.FART.get(), worldIn);
         this.setShooter(p_i47273_2_);
         float rot = p_i47273_2_.yHeadRot + (right ? 60 : -60);
-        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.sin(rot * ((float) Math.PI / 180F)), p_i47273_2_.getEyeY() - (double) 0.2F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.cos(rot * ((float) Math.PI / 180F)));
+        this.setPos(p_i47273_2_.getX() - (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.sin(rot * Mth.DEG_TO_RAD), p_i47273_2_.getEyeY() - (double) 0.2F, p_i47273_2_.getZ() + (double) (p_i47273_2_.getBbWidth()) * 0.5D * (double) Mth.cos(rot * Mth.DEG_TO_RAD));
     }
 
     public EntityFart(PlayMessages.SpawnEntity spawnEntity, Level world) {
@@ -124,8 +124,8 @@ public class EntityFart extends Entity {
     protected void updateRotation() {
         Vec3 vector3d = this.getDeltaMovement().normalize();
         float f = Mth.sqrt((float) vector3d.horizontalDistanceSqr());
-        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI))));
-        this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI))));
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG)));
+        this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG)));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -133,8 +133,8 @@ public class EntityFart extends Entity {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
             float f = Mth.sqrt((float) (x * x + z * z));
-            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI)));
-            this.setYRot( (float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI)));
+            this.setXRot((float) (Mth.atan2(y, f) * (double) Mth.RAD_TO_DEG));
+            this.setYRot( (float) (Mth.atan2(x, z) * (double) Mth.RAD_TO_DEG));
             this.xRotO = this.getXRot();
             this.yRotO = this.getYRot();
             this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -191,8 +191,8 @@ public class EntityFart extends Entity {
         Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
         this.setDeltaMovement(vector3d);
         float f = Mth.sqrt((float) vector3d.horizontalDistanceSqr());
-        this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
-        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
+        this.setYRot( (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG));
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
     }

@@ -244,7 +244,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         if (this.onGround() && !this.wasOnGround) {
 
             for (int j = 0; j < 8; ++j) {
-                float f = this.random.nextFloat() * ((float) Math.PI * 2F);
+                float f = this.random.nextFloat() * Mth.TWO_PI;
                 float f1 = this.random.nextFloat() * 0.5F + 0.5F;
                 float f2 = Mth.sin(f) * 0.5F * f1;
                 float f3 = Mth.cos(f) * 0.5F * f1;
@@ -367,7 +367,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         public MimicubeMoveHelper(EntityMimicube slimeIn) {
             super(slimeIn);
             this.slime = slimeIn;
-            this.yRot = 180.0F * slimeIn.getYRot() / (float) Math.PI;
+            this.yRot = 180.0F * slimeIn.getYRot() / Mth.PI;
         }
 
         public void setDirection(float yRotIn, boolean aggressive) {

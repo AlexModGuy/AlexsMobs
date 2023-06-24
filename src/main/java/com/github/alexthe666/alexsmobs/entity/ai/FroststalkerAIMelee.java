@@ -124,7 +124,7 @@ public class FroststalkerAIMelee extends Goal {
         float neg = froststalker.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = froststalker.yBodyRot;
         int orbit = (int) (startingOrbit + (pursuitTime / (float) maxPursuitTime) * 360);
-        float angle = (0.01745329251F * (clockwise ? -orbit : orbit));
+        float angle = (Maths.STARTING_ANGLE * (clockwise ? -orbit : orbit));
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
         BlockPos circlePos = AMBlockPos.fromCoords(target.getX() + extraX, target.getEyeY(), target.getZ() + extraZ);

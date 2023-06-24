@@ -24,17 +24,12 @@ public class RenderCapuchinMonkey extends MobRenderer<EntityCapuchinMonkey, Mode
     }
 
     public ResourceLocation getTextureLocation(EntityCapuchinMonkey entity) {
-        switch (entity.getVariant()){
-            case 0:
-                return TEXTURE_0;
-            case 1:
-                return TEXTURE_1;
-            case 2:
-                return TEXTURE_2;
-            case 3:
-                return TEXTURE_3;
-            default:
-                return TEXTURE_0;
-        }
+        return switch (entity.getVariant()) {
+            case 0 -> TEXTURE_0;
+            case 1 -> TEXTURE_1;
+            case 2 -> TEXTURE_2;
+            case 3 -> TEXTURE_3;
+            default -> TEXTURE_0;
+        };
     }
 }

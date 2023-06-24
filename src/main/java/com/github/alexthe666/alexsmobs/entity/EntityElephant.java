@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -263,18 +264,23 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         super.tick();
         prevSitProgress = sitProgress;
         prevStandProgress = standProgress;
-        if (isSitting() && this.sitProgress < 5F) {
-            this.sitProgress++;
+
+        if (isSitting()) {
+            if (this.sitProgress < 5F)
+                this.sitProgress++;
+        } else {
+            if (this.sitProgress > 0F)
+                this.sitProgress--;
         }
-        if (!isSitting() && this.sitProgress > 0F) {
-            this.sitProgress--;
+
+        if (isStanding()) {
+            if (this.standProgress < 5F)
+                this.standProgress += 0.5F;
+        } else {
+            if (this.standProgress > 0F)
+                this.standProgress -= 0.5F;
         }
-        if (this.isStanding() && standProgress < 5) {
-            standProgress += 0.5F;
-        }
-        if (!this.isStanding() && standProgress > 0) {
-            standProgress -= 0.5F;
-        }
+
         if (isStanding() && ++standingTime > maxStandTime) {
             this.setStanding(false);
             standingTime = 0;
@@ -294,10 +300,10 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
             hasChestVarChanged = false;
         }
-        if (isTusked() && !isBaby() && !hasTuskedAttributes) {
+        if (!hasTuskedAttributes && isTusked() && !isBaby()) {
             refreshDimensions();
         }
-        if (!isTusked() && !isBaby() && hasTuskedAttributes) {
+        if (hasTuskedAttributes && !isTusked() && !isBaby()) {
             refreshDimensions();
         }
         if (charging) {
@@ -483,7 +489,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             double d0 = this.random.nextGaussian() * 0.02D;
             double d1 = this.random.nextGaussian() * 0.02D;
             float radius = this.getBbWidth() * 0.65F;
-            float angle = (0.01745329251F * this.yBodyRot);
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraZ = radius * Mth.cos(angle);
             ParticleOptions data = new ItemParticleOption(ParticleTypes.ITEM, heldItemMainhand);
@@ -896,7 +902,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 scaleY -= 0.3F;
             }
             float radius = scale * (0.5F + standAdd);
-            float angle = (0.01745329251F * this.yBodyRot);
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
                 float sinWave = Mth.sin((float) (Math.PI * (this.getAnimationTick() / 25F)));
                 radius += sinWave * 0.2F * scale;

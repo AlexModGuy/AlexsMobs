@@ -96,7 +96,7 @@ public class BoneSerpentAIJump extends JumpGoal {
             this.dolphin.setXRot(Mth.rotLerp(this.dolphin.getXRot(), 0.0F, 0.2F));
         } else {
             double d0 = Math.sqrt(vector3d.horizontalDistanceSqr());
-            double d1 = Math.signum(-vector3d.y) * Math.acos(d0 / vector3d.length()) * (double) (180F / (float) Math.PI);
+            double d1 = Math.signum(-vector3d.y) * Math.acos(d0 / vector3d.length()) * (double) Mth.RAD_TO_DEG;
             this.dolphin.setXRot((float) d1);
         }
 

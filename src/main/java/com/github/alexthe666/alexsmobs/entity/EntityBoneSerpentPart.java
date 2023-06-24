@@ -51,7 +51,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
         super(t, parent.level());
         this.setParent(parent);
         this.radius = radius;
-        this.angleYaw = (angleYaw + 90.0F) * Maths.piDividedBy180;
+        this.angleYaw = (angleYaw + 90.0F) * Mth.DEG_TO_RAD;
         this.offsetY = offsetY;
     }
 
@@ -110,7 +110,7 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
     }
 
     public void setInitialPartPos(Entity parent) {
-        this.setPos(parent.xo + this.radius * Math.cos(parent.getYRot() * Maths.piDividedBy180 + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.getYRot() * Maths.piDividedBy180 + this.angleYaw));
+        this.setPos(parent.xo + this.radius * Math.cos(parent.getYRot() * Mth.DEG_TO_RAD + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.getYRot() * Mth.DEG_TO_RAD + this.angleYaw));
     }
 
     @Override
@@ -121,11 +121,11 @@ public class EntityBoneSerpentPart extends LivingEntity implements IHurtableMult
             refreshDimensions();
             if (parent != null && !this.level().isClientSide) {
                 this.setNoGravity(true);
-                this.setPos(parent.xo + this.radius * Math.cos(parent.yRotO * Maths.piDividedBy180 + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.yRotO * Maths.piDividedBy180 + this.angleYaw));
+                this.setPos(parent.xo + this.radius * Math.cos(parent.yRotO * Mth.DEG_TO_RAD + this.angleYaw), parent.yo + this.offsetY, parent.zo + this.radius * Math.sin(parent.yRotO * Mth.DEG_TO_RAD + this.angleYaw));
                 final double d0 = parent.getX() - this.getX();
                 final double d1 = parent.getY() - this.getY();
                 final double d2 = parent.getZ() - this.getZ();
-                final float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * Maths.oneEightyDividedByFloatPi));
+                final float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * Mth.RAD_TO_DEG));
                 this.setXRot(this.limitAngle(this.getXRot(), f2, 5.0F));
                 this.markHurt();
                 this.setYRot(parent.yRotO);

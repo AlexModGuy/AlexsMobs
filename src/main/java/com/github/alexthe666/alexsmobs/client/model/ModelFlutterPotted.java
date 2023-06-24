@@ -128,7 +128,7 @@ public class ModelFlutterPotted extends AdvancedEntityModel<EntityFlutter> {
             this.eyes.rotationPointY = f1;
             Vec3 vector3d2 = entity.getViewVector(0.0F);
             vector3d2 = new Vec3(vector3d2.x, 0.0D, vector3d2.z);
-            Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot(((float) Math.PI / 2F));
+            Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot((Mth.PI / 2F));
             double d1 = vector3d2.dot(vector3d3);
             this.eyes.rotationPointX += Mth.sqrt((float) Math.abs(d1)) * 1.5F * (float) Math.signum(d1);
         } else {

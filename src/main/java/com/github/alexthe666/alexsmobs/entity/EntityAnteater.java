@@ -336,11 +336,11 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
                         if (this.getAnimation() == ANIMATION_SLASH_L) {
                             doHurtTarget(attackTarget);
                             final float rot = getYRot() + 90;
-                            attackTarget.knockback(0.5F, Mth.sin(rot * Maths.piDividedBy180), -Mth.cos(rot * Maths.piDividedBy180));
+                            attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                         } else if (this.getAnimation() == ANIMATION_SLASH_R) {
                             doHurtTarget(attackTarget);
                             final float rot = getYRot() - 90;
-                            attackTarget.knockback(0.5F, Mth.sin(rot * Maths.piDividedBy180), -Mth.cos(rot * Maths.piDividedBy180));
+                            attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                         }
                     }
                 }
@@ -483,7 +483,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
                 final double x = enemy.getX() - EntityAnteater.this.getX();
                 final double z = enemy.getZ() - EntityAnteater.this.getZ();
 //                double d3 = (double)Mth.sqrt((float) (x * x + z * z));
-                final float f = (float) (Mth.atan2(z, x) * Maths.oneEightyDividedByFloatPi) - 90.0F;
+                final float f = (float) (Mth.atan2(z, x) * Mth.RAD_TO_DEG) - 90.0F;
                 EntityAnteater.this.setYRot(f);
                 EntityAnteater.this.yBodyRot = f;
                 EntityAnteater.this.setStanding(true);

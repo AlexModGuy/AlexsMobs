@@ -117,7 +117,7 @@ public class TileEntitySculkBoomer extends BlockEntity implements GameEventListe
         Vec3 vec31 = new Vec3((double)Mth.floor(vec2.x) + 0.5D, (double)Mth.floor(vec2.y) + 0.5D, (double)Mth.floor(vec2.z) + 0.5D);
 
         for(Direction direction : Direction.values()) {
-            Vec3 vec32 = vec3.relative(direction, (double)1.0E-5F);
+            Vec3 vec32 = vec3.relative(direction, (double)Mth.EPSILON);
             if (level.isBlockInLine(new ClipBlockStateContext(vec32, vec31, (p_223780_) -> {
                 return p_223780_.is(BlockTags.OCCLUDES_VIBRATION_SIGNALS);
             })).getType() != HitResult.Type.BLOCK) {

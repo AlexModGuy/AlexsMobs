@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
     private final AdvancedModelBox root;
@@ -465,8 +466,8 @@ public class ModelWarpedMosco extends AdvancedEntityModel<EntityWarpedMosco> {
             this.bob(body, flySpeed, flyDegree * 5, false, ageInTicks, 1);
         }
         if(entity.getAnimation() != EntityWarpedMosco.ANIMATION_SUCK){
-            this.head.rotateAngleY += netHeadYaw * 0.6F * ((float)Math.PI / 180F);
-            this.head.rotateAngleX += headPitch * 0.9F * ((float)Math.PI / 180F);
+            this.head.rotateAngleY += netHeadYaw * 0.6F * Mth.DEG_TO_RAD;
+            this.head.rotateAngleX += headPitch * 0.9F * Mth.DEG_TO_RAD;
         }
     }
 

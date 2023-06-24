@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.FlightMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -171,17 +172,17 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
             LivingEntity attackTarget = this.getTarget();
             if (attackTarget != null && distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1 && this.hasLineOfSight(attackTarget)) {
                 if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 6) {
-                    attackTarget.knockback(0.5F, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.5F, Mth.sin(this.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(this.getYRot() * Mth.DEG_TO_RAD));
                     this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
                 if ((this.getAnimation() == ANIMATION_SWIPE_L) && this.getAnimationTick() == 9) {
                     float rot = getYRot() + 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                     this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
                 if ((this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 9) {
                     float rot = getYRot() - 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                     this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
                 }
             }
@@ -228,11 +229,13 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
                     this.setUpsideDown(true);
                 }
             }
-            if (this.isUpsideDown() && !this.isUpsideDownNavigator) {
-                switchNavigator(false);
-            }
-            if (!this.isUpsideDown() && this.isUpsideDownNavigator) {
-                switchNavigator(true);
+
+            if (this.isUpsideDown()) {
+                if (!this.isUpsideDownNavigator)
+                    switchNavigator(false);
+            } else {
+                if (this.isUpsideDownNavigator)
+                    switchNavigator(true);
             }
         }
     }
@@ -339,7 +342,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
                 double motionX = getRandom().nextGaussian() * 0.07D;
                 double motionY = getRandom().nextGaussian() * 0.07D;
                 double motionZ = getRandom().nextGaussian() * 0.07D;
-                float angle = (0.01745329251F * this.yBodyRot) + i1;
+                float angle = (Maths.STARTING_ANGLE * this.yBodyRot) + i1;
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
                 double extraY = 0.8F;
                 double extraZ = radius * Mth.cos(angle);

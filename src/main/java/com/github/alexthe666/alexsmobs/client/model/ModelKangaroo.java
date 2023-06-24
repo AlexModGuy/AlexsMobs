@@ -320,9 +320,9 @@ public class ModelKangaroo extends AdvancedEntityModel<EntityKangaroo> {
 				this.arm_right.rotateAngleX -= 25 * 0.017453292F;
 			}
 		}
-		this.head.rotateAngleY += netHeadYaw * 0.35F * ((float)Math.PI / 180F);
-		this.head.rotateAngleX += headPitch * 0.65F * ((float)Math.PI / 180F);
-		this.neck.rotateAngleY += netHeadYaw * 0.15F * ((float)Math.PI / 180F);
+		this.head.rotateAngleY += netHeadYaw * 0.35F * Mth.DEG_TO_RAD;
+		this.head.rotateAngleX += headPitch * 0.65F * Mth.DEG_TO_RAD;
+		this.neck.rotateAngleY += netHeadYaw * 0.15F * Mth.DEG_TO_RAD;
 		if(entity.isBaby() && entity.isPassenger() && entity.getVehicle() instanceof EntityKangaroo) {
 			this.head.rotateAngleX -= 50 * 0.017453292F;
 			this.neck.rotateAngleX += 120 * 0.017453292F;

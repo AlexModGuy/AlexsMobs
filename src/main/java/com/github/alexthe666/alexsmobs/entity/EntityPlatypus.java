@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.client.particle.AMParticleRegistry;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -226,7 +227,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             double motionX = getRandom().nextGaussian() * 0.07D;
             double motionY = getRandom().nextGaussian() * 0.07D;
             double motionZ = getRandom().nextGaussian() * 0.07D;
-            float angle = (0.01745329251F * this.yBodyRot) + i1;
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot) + i1;
             double extraX = radius * Mth.sin((float) (Math.PI + angle));
             double extraY = 0.8F;
             double extraZ = radius * Mth.cos(angle);
@@ -353,18 +354,21 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         if (!dig && digProgress > 0F) {
             digProgress--;
         }
-        if (this.isInWaterOrBubble() && inWaterProgress < 5F) {
-            inWaterProgress++;
+
+        if (this.isInWaterOrBubble()) {
+            if (inWaterProgress < 5F)
+                inWaterProgress++;
+
+            if (this.isLandNavigator)
+                switchNavigator(false);
+        } else {
+            if (inWaterProgress > 0F)
+                inWaterProgress--;
+
+            if (!this.isLandNavigator)
+                switchNavigator(true);
         }
-        if (!this.isInWaterOrBubble() && inWaterProgress > 0F) {
-            inWaterProgress--;
-        }
-        if (this.isInWaterOrBubble() && this.isLandNavigator) {
-            switchNavigator(false);
-        }
-        if (!this.isInWaterOrBubble() && !this.isLandNavigator) {
-            switchNavigator(true);
-        }
+
         if (this.onGround() && isDigging()) {
             spawnGroundEffects();
         }
@@ -383,7 +387,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
         if (this.isAlive() && (this.isSensing() || this.isSensingVisual())) {
             for (int j = 0; j < 2; ++j) {
                 float radius = this.getBbWidth() * 0.65F;
-                float angle = (0.01745329251F * this.yBodyRot);
+                float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
                 double extraX = (radius * (1.5F + random.nextFloat() * 0.3F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
                 double extraZ = (radius * (1.5F + random.nextFloat() * 0.3F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
                 double actualX = radius * Mth.sin((float) (Math.PI + angle));

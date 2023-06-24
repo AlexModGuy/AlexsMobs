@@ -93,7 +93,7 @@ public class RockyChestplateUtil {
             }
             roller.refreshDimensions();
             Vec3 vec3 = roller.onGround() ? roller.getDeltaMovement() : roller.getDeltaMovement().multiply(0.9D, 1D, 0.9D);
-            float f = roller.getYRot() * ((float) Math.PI / 180F);
+            float f = roller.getYRot() * Mth.DEG_TO_RAD;
             float f1 = roller.isInWaterOrBubble() ? 0.05F : 0.15F;
             Vec3 rollDelta = new Vec3(vec3.x + (double) (-Mth.sin(f) * f1), 0.0D, vec3.z + (double) (Mth.cos(f) * f1));
             double rollY = roller.isInWaterOrBubble() || roller.isShiftKeyDown() ? -0.1F : rollCounter >= MAX_ROLL_TICKS ? 0.27D : vec3.y;

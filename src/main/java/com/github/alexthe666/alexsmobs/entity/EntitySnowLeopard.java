@@ -127,7 +127,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setSitting(boolean bar) {
@@ -135,7 +135,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
     }
 
     public boolean isTackling() {
-        return this.entityData.get(TACKLING).booleanValue();
+        return this.entityData.get(TACKLING);
     }
 
     public void setTackling(boolean bar) {
@@ -143,7 +143,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
     }
 
     public boolean isSLSneaking() {
-        return this.entityData.get(SL_SNEAKING).booleanValue();
+        return this.entityData.get(SL_SNEAKING);
     }
 
     public void setSlSneaking(boolean bar) {
@@ -162,39 +162,61 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
         this.prevSneakProgress = sneakProgress;
         this.prevTackleProgress = tackleProgress;
         this.prevSleepProgress = sleepProgress;
-        if (this.isSitting() && sitProgress < 5F) {
-            sitProgress += 0.5F;
+
+        final boolean sitting = isSitting();
+        final boolean slSneaking = isSLSneaking();
+        final boolean tackling = isTackling();
+        final boolean sleeping = isSleeping();
+
+        if (sitting) {
+            if (sitProgress < 5F) {
+                sitProgress += 0.5F;
+            }
+        } else {
+            if (sitProgress > 0F) {
+                sitProgress -= 0.5F;
+            }
         }
-        if (!isSitting() && sitProgress > 0F) {
-            sitProgress -= 0.5F;
+
+        if (slSneaking) {
+            if (sneakProgress < 5F) {
+                sneakProgress += 0.5F;
+            }
+        } else {
+            if (sneakProgress > 0F) {
+                sneakProgress -= 0.5F;
+            }
         }
-        if (this.isSLSneaking() && sneakProgress < 5F) {
-            sneakProgress++;
+
+        if (tackling) {
+            if (tackleProgress < 3F) {
+                tackleProgress++;
+            }
+        } else {
+            if (tackleProgress > 0F) {
+                tackleProgress--;
+            }
         }
-        if (!isSLSneaking() && sneakProgress > 0F) {
-            sneakProgress--;
+
+        if (sleeping) {
+            if (sleepProgress < 5F) {
+                sleepProgress += 0.5F;
+            }
+        } else {
+            if (sleepProgress > 0F) {
+                sleepProgress -= 0.5F;
+            }
         }
-        if (this.isTackling() && tackleProgress < 3F) {
-            tackleProgress++;
-        }
-        if (!isTackling() && tackleProgress > 0F) {
-            tackleProgress--;
-        }
-        if (this.isSleeping() && sleepProgress < 5F) {
-            sleepProgress += 0.5F;
-        }
-        if (!isSleeping() && sleepProgress > 0F) {
-            sleepProgress -= 0.5F;
-        }
-        if(isSLSneaking() && !hasSlowedDown){
+
+        if(slSneaking && !hasSlowedDown){
             hasSlowedDown = true;
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
         }
-        if(!isSLSneaking() && hasSlowedDown){
+        if(!slSneaking && hasSlowedDown){
             hasSlowedDown = false;
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.35F);
         }
-        if(isTackling()){
+        if(tackling){
             this.yBodyRot = this.getYRot();
         }
         if(!this.level().isClientSide) {
@@ -227,12 +249,12 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
                 if (this.getAnimation() == ANIMATION_ATTACK_L && this.getAnimationTick() == 7) {
                     doHurtTarget(attackTarget);
                     float rot = getYRot() + 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                 }
                 if (this.getAnimation() == ANIMATION_ATTACK_R && this.getAnimationTick() == 7) {
                     doHurtTarget(attackTarget);
                     float rot = getYRot() - 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                 }
 
             }
@@ -241,7 +263,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        boolean prev = super.hurt(source, amount);
+        final boolean prev = super.hurt(source, amount);
         if (prev) {
             sittingTime = 0;
             this.setSleeping(false);

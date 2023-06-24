@@ -117,7 +117,7 @@ public class MudskipperAIDisplay extends Goal {
                 }
                 Vec3 circle = getCirclingPosOf(center, 1.5F + mudskipper.getRandom().nextFloat());
                 Vec3 dirVec = circle.subtract(mudskipper.position());
-                float headAngle = -(float) (Mth.atan2(dirVec.x, dirVec.z) * (double) (180F / (float) Math.PI));
+                float headAngle = -(float) (Mth.atan2(dirVec.x, dirVec.z) * (double) Mth.RAD_TO_DEG);
                 this.mudskipper.getNavigation().moveTo(circle.x, circle.y, circle.z, speed);
                 mudskipper.setYRot(headAngle);
                 mudskipper.yHeadRot = headAngle;
@@ -141,7 +141,7 @@ public class MudskipperAIDisplay extends Goal {
     }
 
     public Vec3 getCirclingPosOf(Vec3 center, double circleDistance) {
-        float cir = (0.01745329251F * angle);
+        float cir = (Maths.STARTING_ANGLE * angle);
         double extraX = circleDistance * Mth.sin((cir));
         double extraZ = circleDistance * Mth.cos(cir);
         return center.add(extraX, 0, extraZ);

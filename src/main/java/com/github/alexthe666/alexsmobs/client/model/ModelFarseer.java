@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
@@ -442,8 +443,8 @@ public class ModelFarseer extends AdvancedEntityModel<EntityFarseer> {
         this.walk(rightUpperMask, idleSpeed * 8, 0.05F, true, 2, 0.2F, ageInTicks, angryProgress * 0.2F);
         this.walk(rightLowerMask, idleSpeed * 8, 0.05F, false, 3, 0.2F, ageInTicks, angryProgress * 0.2F);
         this.walk(leftLowerMask, idleSpeed * 8, 0.05F, false, 4, 0.2F, ageInTicks, angryProgress * 0.2F);
-        float headY = netHeadYaw * invPortalDegree * ((float)Math.PI / 180F);
-        float headZ = headPitch * invPortalDegree * ((float)Math.PI / 180F);
+        float headY = netHeadYaw * invPortalDegree * Mth.DEG_TO_RAD;
+        float headZ = headPitch * invPortalDegree * Mth.DEG_TO_RAD;
         this.head.rotateAngleY += headY;
         this.head.rotateAngleX += headZ;
 

@@ -231,7 +231,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
         super.tick();
         if (jumpCooldown > 0) {
             jumpCooldown--;
-            float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+            float f2 = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
             this.setXRot(f2);
         }
         if (this.isNoAi()) {
@@ -256,8 +256,8 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
 
             if (this.level().isClientSide && this.isInWater() && this.getDeltaMovement().lengthSqr() > 0.03D) {
                 Vec3 vector3d = this.getViewVector(0.0F);
-                float f = Mth.cos(this.getYRot() * ((float) Math.PI / 180F)) * 0.9F;
-                float f1 = Mth.sin(this.getYRot() * ((float) Math.PI / 180F)) * 0.9F;
+                float f = Mth.cos(this.getYRot() * Mth.DEG_TO_RAD) * 0.9F;
+                float f1 = Mth.sin(this.getYRot() * Mth.DEG_TO_RAD) * 0.9F;
                 float f2 = 1.2F - this.random.nextFloat() * 0.7F;
 
                 for (int i = 0; i < 2; ++i) {
@@ -290,7 +290,7 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                     this.doEnchantDamageEffects(this, attackTarget);
                     this.playSound(SoundEvents.DOLPHIN_ATTACK, 1.0F, 1.0F);
                 }
-                attackTarget.knockback(1F, Mth.sin(getYRot() * ((float) Math.PI / 180F)), -Mth.cos(getYRot() * ((float) Math.PI / 180F)));
+                attackTarget.knockback(1F, Mth.sin(getYRot() * Mth.DEG_TO_RAD), -Mth.cos(getYRot() * Mth.DEG_TO_RAD));
                 float knockbackResist = (float) Mth.clamp((1.0D - this.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)), 0, 1);
                 this.getTarget().setDeltaMovement(this.getTarget().getDeltaMovement().add(0, knockbackResist * 0.4F, 0));
 
@@ -490,18 +490,18 @@ public class EntityOrca extends TamableAnimal implements IAnimatedEntity {
                 if (d3 < (double) 2.5000003E-7F) {
                     this.mob.setZza(0.0F);
                 } else {
-                    float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
+                    float f = (float) (Mth.atan2(d2, d0) * (double) Mth.RAD_TO_DEG) - 90.0F;
                     this.dolphin.setYRot(this.rotlerp(this.dolphin.getYRot(), f, 10.0F));
                     this.dolphin.yBodyRot = this.dolphin.getYRot();
                     this.dolphin.yHeadRot = this.dolphin.getYRot();
                     float f1 = (float) (this.speedModifier * this.dolphin.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     if (this.dolphin.isInWater()) {
                         this.dolphin.setSpeed(f1 * 0.02F);
-                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float) (d0 * d0 + d2 * d2))) * (double) (180F / (float) Math.PI)));
+                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float) (d0 * d0 + d2 * d2))) * (double) Mth.RAD_TO_DEG));
                         f2 = Mth.clamp(Mth.wrapDegrees(f2), -85.0F, 85.0F);
                         this.dolphin.setXRot(this.rotlerp(this.dolphin.getXRot(), f2, 5.0F));
-                        float f3 = Mth.cos(this.dolphin.getXRot() * ((float) Math.PI / 180F));
-                        float f4 = Mth.sin(this.dolphin.getXRot() * ((float) Math.PI / 180F));
+                        float f3 = Mth.cos(this.dolphin.getXRot() * Mth.DEG_TO_RAD);
+                        float f4 = Mth.sin(this.dolphin.getXRot() * Mth.DEG_TO_RAD);
                         this.dolphin.zza = f3 * f1;
                         this.dolphin.yya = -f4 * f1;
                     } else {

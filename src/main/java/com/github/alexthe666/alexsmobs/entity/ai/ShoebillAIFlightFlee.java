@@ -66,7 +66,7 @@ public class ShoebillAIFlightFlee extends Goal {
         float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
         float neg = bird.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = bird.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
@@ -84,7 +84,7 @@ public class ShoebillAIFlightFlee extends Goal {
         float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
         float neg = bird.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = bird.yBodyRot;
-        float angle = (0.01745329251F * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
+        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
         double extraX = radius * Mth.sin((float) (Math.PI + angle));
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);

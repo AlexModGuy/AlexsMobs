@@ -182,8 +182,8 @@ public class EntitySkunk extends Animal {
     private void spawnLingeringCloud() {
         Collection<MobEffectInstance> collection = this.getActiveEffects();
         if (!collection.isEmpty()) {
-            float fartDistance = 2.5F;
-            Vec3 modelBack = new Vec3(0, 0.4F, -fartDistance).xRot(-this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
+            final float fartDistance = 2.5F;
+            Vec3 modelBack = new Vec3(0, 0.4F, -fartDistance).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
             Vec3 fartAt = this.position().add(modelBack);
             AreaEffectCloud areaeffectcloud = new AreaEffectCloud(this.level(), fartAt.x, fartAt.y, fartAt.z);
             areaeffectcloud.setRadius(2.5F);
@@ -203,14 +203,14 @@ public class EntitySkunk extends Animal {
 
     public void handleEntityEvent(byte id) {
         if (id == 48) {
-            Vec3 modelBack = new Vec3(0, 0.4F, -0.4F).xRot(-this.getXRot() * ((float)Math.PI / 180F)).yRot(-this.getYRot() * ((float)Math.PI / 180F));
+            Vec3 modelBack = new Vec3(0, 0.4F, -0.4F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.getYRot() * Mth.DEG_TO_RAD);
             Vec3 particleFrom = this.position().add(modelBack);
-            float scale = random.nextFloat() * 0.5F + 1F;
+            final float scale = random.nextFloat() * 0.5F + 1F;
             Vec3 particleTo = modelBack.multiply(scale, 1F, scale);
             for(int i = 0; i < 3; ++i) {
-                double d0 = this.random.nextGaussian() * 0.1D;
-                double d1 = this.random.nextGaussian() * 0.1D;
-                double d2 = this.random.nextGaussian() * 0.1D;
+                final double d0 = this.random.nextGaussian() * 0.1D;
+                final double d1 = this.random.nextGaussian() * 0.1D;
+                final double d2 = this.random.nextGaussian() * 0.1D;
                 this.level().addParticle(AMParticleRegistry.SMELLY.get(), particleFrom.x, particleFrom.y, particleFrom.z, particleTo.x + d0, particleTo.y - 0.4F + d1, particleTo.z + d2);
             }
         } else {
@@ -258,18 +258,18 @@ public class EntitySkunk extends Animal {
         public void tick(){
             EntitySkunk.this.getNavigation().stop();
             Vec3 sprayAt = getSprayAt();
-            double d0 = EntitySkunk.this.getX() - sprayAt.x;
-            double d2 = EntitySkunk.this.getZ() - sprayAt.z;
-            float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+            final double d0 = EntitySkunk.this.getX() - sprayAt.x;
+            final double d2 = EntitySkunk.this.getZ() - sprayAt.z;
+            final float f = (float)(Mth.atan2(d2, d0) * (double)Mth.RAD_TO_DEG) - 90.0F;
             EntitySkunk.this.setSprayYaw(f);
             if(EntitySkunk.this.sprayProgress >= 5F){
                 level().broadcastEntityEvent(EntitySkunk.this, (byte)48);
                 if(actualSprayTime > 10 && random.nextInt(2) == 0){
                     Vec3 skunkPos = new Vec3(EntitySkunk.this.getX(), EntitySkunk.this.getEyeY(), EntitySkunk.this.getZ());
-                    float xAdd = random.nextFloat() * 20 - 10;
-                    float yAdd = random.nextFloat() * 20 - 10;
-                    float maxSprayDist = 5F;
-                    Vec3 modelBack = new Vec3(0, 0F, -maxSprayDist).xRot((xAdd - EntitySkunk.this.getXRot()) * ((float)Math.PI / 180F)).yRot((yAdd - EntitySkunk.this.getYRot()) * ((float)Math.PI / 180F));
+                    final float xAdd = random.nextFloat() * 20 - 10;
+                    final float yAdd = random.nextFloat() * 20 - 10;
+                    final float maxSprayDist = 5F;
+                    Vec3 modelBack = new Vec3(0, 0F, -maxSprayDist).xRot((xAdd - EntitySkunk.this.getXRot()) * Mth.DEG_TO_RAD).yRot((yAdd - EntitySkunk.this.getYRot()) * Mth.DEG_TO_RAD);
                     HitResult hitResult = EntitySkunk.this.level().clip(new ClipContext(skunkPos, skunkPos.add(modelBack), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, EntitySkunk.this));
                     if(hitResult != null) {
                         BlockPos pos;
@@ -312,7 +312,7 @@ public class EntitySkunk extends Animal {
             }else if(last != null){
                 return last.position();
             }else{
-                Vec3 modelBack = new Vec3(0, 0.4F, -1).xRot(-EntitySkunk.this.getXRot() * ((float)Math.PI / 180F)).yRot(-EntitySkunk.this.getYRot() * ((float)Math.PI / 180F));
+                Vec3 modelBack = new Vec3(0, 0.4F, -1).xRot(-EntitySkunk.this.getXRot() * Mth.DEG_TO_RAD).yRot(-EntitySkunk.this.getYRot() * Mth.DEG_TO_RAD);
                 return EntitySkunk.this.position().add(modelBack);
             }
         }

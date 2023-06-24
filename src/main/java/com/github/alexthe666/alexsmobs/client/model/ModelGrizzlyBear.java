@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
     public final AdvancedModelBox root;
@@ -220,11 +221,11 @@ public class ModelGrizzlyBear extends AdvancedEntityModel<EntityGrizzlyBear> {
         progressRotationPrev(right_arm, sitProgress, (float)Math.toRadians(25), (float)Math.toRadians(-10), 0, 10F);
         progressPositionPrev(head, sitProgress, 0, 4, -1, 10F);
         if(Math.max(standProgress, sitProgress) > 5F){
-            this.head.rotateAngleZ += netHeadYaw * ((float)Math.PI / 180F);
+            this.head.rotateAngleZ += netHeadYaw * Mth.DEG_TO_RAD;
         }else{
-            this.head.rotateAngleY += netHeadYaw * ((float)Math.PI / 180F);
+            this.head.rotateAngleY += netHeadYaw * Mth.DEG_TO_RAD;
         }
-        this.head.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
         if(entityIn.isFreddy()){
             if(standProgress > 0){
                 this.walk(right_arm, walkSpeed, walkDegree, false, 0F, 0F, limbSwing, limbSwingAmount);

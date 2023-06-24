@@ -101,7 +101,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     public BlockPos getVultureCirclePos(BlockPos target) {
-        float angle = (0.01745329251F * 8 * (clockwise ? -circlingTime : circlingTime));
+        float angle = (Maths.STARTING_ANGLE * 8 * (clockwise ? -circlingTime : circlingTime));
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         BlockPos pos = AMBlockPos.fromCoords(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);

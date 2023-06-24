@@ -136,12 +136,12 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             ItemStack itemstack2 = ItemUtils.createFilledResult(itemstack, player, itemstack1, false);
             player.setItemInHand(hand, itemstack2);
             Level level = this.level();
-            if (!this.level().isClientSide) {
+            if (!level.isClientSide) {
                 CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer)player, itemstack1);
             }
 
             this.discard();
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return super.mobInteract(player, hand);
     }
@@ -262,11 +262,10 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
             f = 0.1F;
         }
         super.tick();
-        boolean liquid = this.isInWater() || this.isInLava();
+        final boolean liquid = this.isInWater() || this.isInLava();
         prevSwimPitch = this.swimPitch;
 
-        float f2 = (float) -((float) this.getDeltaMovement().y * (liquid ? 2.5F : f) * (double) (180F / (float) Math.PI));
-        this.swimPitch = f2;
+        this.swimPitch = (float) -((float) this.getDeltaMovement().y * (liquid ? 2.5F : f) * (double) Mth.RAD_TO_DEG);
         if (this.onGround() && !this.isInWater() && !this.isInLava()) {
             this.setDeltaMovement(this.getDeltaMovement().add((this.random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5D, (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             this.setYRot( this.random.nextFloat() * 360.0F);
@@ -300,18 +299,10 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
                 double motionX = prevMotion.x();
                 double motionY = prevMotion.y();
                 double motionZ = prevMotion.z();
-                switch(face){
-                    case EAST:
-                    case WEST:
-                        motionX = -motionX;
-                        break;
-                    case SOUTH:
-                    case NORTH:
-                        motionZ = -motionZ;
-                        break;
-                    default:
-                        motionY = -motionY;
-                        break;
+                switch (face) {
+                    case EAST, WEST -> motionX = -motionX;
+                    case SOUTH, NORTH -> motionZ = -motionZ;
+                    default -> motionY = -motionY;
                 }
                 this.setDeltaMovement(motionX, motionY, motionZ);
                 if (this.tickCount > 200 || ricochetCount > 20) {
@@ -333,8 +324,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
 
     private void onEntityHit(EntityHitResult raytraceresult) {
         Entity entity = this.getParent();
-        if (entity instanceof LivingEntity && !this.level().isClientSide && raytraceresult.getEntity() instanceof LivingEntity) {
-            LivingEntity target = (LivingEntity)raytraceresult.getEntity();
+        if (entity instanceof LivingEntity && !this.level().isClientSide && raytraceresult.getEntity() instanceof LivingEntity target) {
             if(!target.isBlocking()){
                 target.hurt(damageSources().mobProjectile(this, (LivingEntity)entity), 3.0F);
                 target.knockback(0.7F, entity.getX() - this.getX(), entity.getZ() - this.getZ());

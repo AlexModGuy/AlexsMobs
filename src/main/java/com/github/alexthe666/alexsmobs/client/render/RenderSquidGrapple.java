@@ -64,7 +64,7 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
         float bodyRot = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRot : mob.getYRot();
         float bodyRot0 = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRotO : mob.yRotO;
         Vec3 vec3 = player.getRopeHoldPosition(partialTick);
-        double d0 = (double) (Mth.lerp(partialTick, bodyRot, bodyRot0) * ((float) Math.PI / 180F)) + (Math.PI / 2D);
+        double d0 = (double) (Mth.lerp(partialTick, bodyRot, bodyRot0) * Mth.DEG_TO_RAD) + (Math.PI / 2D);
         Vec3 vec31 = new Vec3(0, 0F, 0);
         double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
         double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;

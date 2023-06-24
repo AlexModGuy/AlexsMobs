@@ -175,15 +175,19 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
         prevDanceProgress = danceProgress;
         prevAttackProgress = attackProgress;
         prevStanceProgress = stanceProgress;
-        if (this.isBurrowed() && burrowProgress < 5F) {
-            burrowProgress += 0.5F;
+
+        if (this.isBurrowed()) {
+            if (burrowProgress < 5F)
+                burrowProgress += 0.5F;
+        } else {
+            if (burrowProgress > 0F)
+                burrowProgress -= 0.5F;
         }
-        if (!this.isBurrowed() && burrowProgress > 0F) {
-            burrowProgress -= 0.5F;
-        }
+
         if (this.burrowCooldown > 0) {
             this.burrowCooldown--;
         }
+
         if (this.getStanceTime() > 0) {
             this.setStanceTime(this.getStanceTime() - 1);
             if (this.stanceProgress < 5F) {
@@ -194,6 +198,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
                 this.stanceProgress--;
             }
         }
+
         if (this.getAttackTime() > 0) {
             this.setAttackTime(this.getAttackTime() - 1);
             if (this.attackProgress < 5F) {
@@ -204,13 +209,18 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
                 this.attackProgress -= 0.5F;
             }
         }
+
         boolean dancing = this.getDanceTime() > 0 || this.isJukeboxing;
-        if(dancing && this.danceProgress < 5f){
-            this.danceProgress++;
+        if (dancing) {
+            if (this.danceProgress < 5F) {
+                this.danceProgress++;
+            }
+        } else {
+            if (this.danceProgress > 0F) {
+                this.danceProgress--;
+            }
         }
-        if (!dancing && this.danceProgress > 0F) {
-            this.danceProgress--;
-        }
+
         if (this.getDanceTime() > 0) {
             this.setBurrowed(false);
             this.setDanceTime(this.getDanceTime() - 1);

@@ -197,14 +197,14 @@ public class RenderFarseer extends MobRenderer<EntityFarseer, ModelFarseer> {
         if(entityIn.hasLaser() && laserTarget != null && !laserTarget.isRemoved()){
             float laserProgress = (entityIn.prevLaserLvl + (entityIn.getLaserAttackLvl() - entityIn.prevLaserLvl) * partialTicks) / (float)EntityFarseer.LASER_ATTACK_DURATION;
             float laserHeight = entityIn.getEyeHeight();
-            float angryProgress = entityIn.prevAngryProgress + (entityIn.angryProgress - entityIn.prevAngryProgress) * partialTicks;
+            //float angryProgress = entityIn.prevAngryProgress + (entityIn.angryProgress - entityIn.prevAngryProgress) * partialTicks;
             Vec3 angryShake = Vec3.ZERO;
             double d0 = Mth.lerp(partialTicks, laserTarget.xo, laserTarget.getX()) - Mth.lerp(partialTicks, entityIn.xo, entityIn.getX()) - angryShake.x;
             double d1 = Mth.lerp(partialTicks, laserTarget.yo, laserTarget.getY()) + laserTarget.getEyeHeight() - Mth.lerp(partialTicks, entityIn.yo, entityIn.getY()) - angryShake.y - laserHeight;
             double d2 = Mth.lerp(partialTicks, laserTarget.zo, laserTarget.getZ()) - Mth.lerp(partialTicks, entityIn.zo, entityIn.getZ()) - angryShake.z;
             double d4 = Math.sqrt(d0 * d0 + d2 * d2);
-            float laserY = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-            float laserX = (float) (-(Mth.atan2(d1, d4) * (double) (180F / (float) Math.PI)));
+            float laserY = (float) (Mth.atan2(d2, d0) * (double) Mth.RAD_TO_DEG) - 90.0F;
+            float laserX = (float) (-(Mth.atan2(d1, d4) * (double) Mth.RAD_TO_DEG));
             VertexConsumer beamStatic = bufferIn.getBuffer(AMRenderTypes.getFarseerBeam());
             matrixStackIn.pushPose();
             matrixStackIn.translate(0, laserHeight, 0);

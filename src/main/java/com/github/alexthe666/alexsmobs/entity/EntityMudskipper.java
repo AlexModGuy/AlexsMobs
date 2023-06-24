@@ -207,12 +207,14 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         }
         //so the model does not sink in mud
         boolean mud = onMud();
-        if(mudProgress < 1F && mud){
-            mudProgress += 0.5f;
+        if (mud) {
+            if (mudProgress < 1F)
+                mudProgress += 0.5f;
+        } else {
+            if (mudProgress > 0)
+                mudProgress -= 0.5f;
         }
-        if(mudProgress > 0 && !mud){
-            mudProgress -= 0.5f;
-        }
+
         boolean swim = !this.onGround() && this.isInWaterOrBubble();
         if(swimProgress < 5F && swim){
             swimProgress++;
@@ -354,7 +356,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean isOrderedToSit() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
