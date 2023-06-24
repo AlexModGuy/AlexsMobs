@@ -237,8 +237,7 @@ public class ModelUnderminerDwarf extends AdvancedEntityModel<EntityUnderminer> 
                 this.rightArm.rotateAngleX = (-(float)Math.PI / 2F) + this.head.rotateAngleX;
                 this.leftArm.rotateAngleX = (-(float)Math.PI / 2F) + this.head.rotateAngleX;
                 break;
-            case CROSSBOW_CHARGE:
-                break;
+            case CROSSBOW_CHARGE: // fallthrough
             case CROSSBOW_HOLD:
                 break;
             case SPYGLASS:

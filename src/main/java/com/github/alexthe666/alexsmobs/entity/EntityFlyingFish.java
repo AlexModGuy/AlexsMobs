@@ -317,7 +317,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
         return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
-    public class FlyingFishGroupData extends AgeableMob.AgeableMobGroupData {
+    public static class FlyingFishGroupData extends AgeableMob.AgeableMobGroupData {
 
         public final int variant;
 

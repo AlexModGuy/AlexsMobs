@@ -536,7 +536,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         return this.getCommand() == 1;
     }
 
-    public class TongueAttack extends Goal {
+    public static class TongueAttack extends Goal {
         private final EntityWarpedToad parentEntity;
         private int spitCooldown = 0;
         private BlockPos shootPos = null;
@@ -581,7 +581,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         }
     }
 
-    public class FollowOwner extends Goal {
+    public static class FollowOwner extends Goal {
         private final EntityWarpedToad tameable;
         private final LevelReader world;
         private final double followSpeed;

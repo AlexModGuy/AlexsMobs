@@ -75,7 +75,7 @@ public class RenderBaldEagle extends MobRenderer<EntityBaldEagle, ModelBaldEagle
         return TEXTURE;
     }
 
-    class CapLayer extends RenderLayer<EntityBaldEagle, ModelBaldEagle> {
+    static class CapLayer extends RenderLayer<EntityBaldEagle, ModelBaldEagle> {
 
         public CapLayer(RenderBaldEagle p_i50928_1_) {
             super(p_i50928_1_);

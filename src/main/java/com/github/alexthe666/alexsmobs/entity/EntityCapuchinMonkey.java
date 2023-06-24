@@ -547,7 +547,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
         return super.finalizeSpawn(world, diff, spawnType, data, tag);
     }
 
-    public class CapuchinGroupData extends AgeableMobGroupData {
+    public static class CapuchinGroupData extends AgeableMobGroupData {
 
         public final int variant;
 

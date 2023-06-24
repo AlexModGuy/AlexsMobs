@@ -30,7 +30,7 @@ public class RenderCrocodile extends MobRenderer<EntityCrocodile, ModelCrocodile
         return entity.isDesert() ? TEXTURE_1 : TEXTURE_0;
     }
 
-    class CrownLayer extends RenderLayer<EntityCrocodile, ModelCrocodile> {
+    static class CrownLayer extends RenderLayer<EntityCrocodile, ModelCrocodile> {
 
         public CrownLayer(RenderCrocodile p_i50928_1_) {
             super(p_i50928_1_);

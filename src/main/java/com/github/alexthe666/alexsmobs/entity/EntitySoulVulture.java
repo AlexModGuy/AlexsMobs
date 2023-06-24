@@ -422,7 +422,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
-    class MoveHelper extends MoveControl {
+    static class MoveHelper extends MoveControl {
         private final EntitySoulVulture parentEntity;
 
         public MoveHelper(EntitySoulVulture bird) {

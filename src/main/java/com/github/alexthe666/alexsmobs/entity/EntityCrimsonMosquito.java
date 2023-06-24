@@ -150,8 +150,8 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new EntityCrimsonMosquito.FlyTowardsTarget(this));
-        this.goalSelector.addGoal(2, new EntityCrimsonMosquito.FlyAwayFromTarget(this));
+        this.goalSelector.addGoal(2, new FlyTowardsTarget(this));
+        this.goalSelector.addGoal(2, new FlyAwayFromTarget(this));
         this.goalSelector.addGoal(3, new EntityCrimsonMosquito.RandomFlyGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 32F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -756,7 +756,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
     }
 
-    public class FlyTowardsTarget extends Goal {
+    public static class FlyTowardsTarget extends Goal {
         private final EntityCrimsonMosquito parentEntity;
 
         public FlyTowardsTarget(EntityCrimsonMosquito mosquito) {
@@ -800,7 +800,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
     }
 
-    public class FlyAwayFromTarget extends Goal {
+    public static class FlyAwayFromTarget extends Goal {
         private final EntityCrimsonMosquito parentEntity;
         private int spitCooldown = 0;
         private BlockPos shootPos = null;

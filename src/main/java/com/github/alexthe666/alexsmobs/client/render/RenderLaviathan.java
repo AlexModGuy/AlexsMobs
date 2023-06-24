@@ -203,7 +203,7 @@ public class RenderLaviathan extends MobRenderer<EntityLaviathan, ModelLaviathan
         }
     }
 
-    class LayerOverlays extends RenderLayer<EntityLaviathan, ModelLaviathan> {
+    static class LayerOverlays extends RenderLayer<EntityLaviathan, ModelLaviathan> {
 
         public LayerOverlays(RenderLaviathan render) {
             super(render);

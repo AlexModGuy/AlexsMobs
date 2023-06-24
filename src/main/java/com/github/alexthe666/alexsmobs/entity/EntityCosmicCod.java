@@ -440,7 +440,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
         }
     }
 
-    private class AISwimIdle extends Goal {
+    private static class AISwimIdle extends Goal {
 
         private final EntityCosmicCod cod;
         float circleDistance = 5;

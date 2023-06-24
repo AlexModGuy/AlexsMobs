@@ -895,7 +895,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         }
     }
 
-    class MoveHelper extends MoveControl {
+    static class MoveHelper extends MoveControl {
         private final EntityBaldEagle parentEntity;
 
         public MoveHelper(EntityBaldEagle bird) {

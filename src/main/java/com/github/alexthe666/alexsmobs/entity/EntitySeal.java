@@ -473,7 +473,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         return !isBasking();
     }
 
-    public class SealGroupData extends AgeableMobGroupData {
+    public static class SealGroupData extends AgeableMobGroupData {
 
         public final int variant;
 

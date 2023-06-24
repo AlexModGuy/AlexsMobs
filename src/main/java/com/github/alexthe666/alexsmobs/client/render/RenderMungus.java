@@ -180,7 +180,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
         return TEXTURE;
     }
 
-    class MungusSackLayer extends RenderLayer<EntityMungus, ModelMungus> {
+    static class MungusSackLayer extends RenderLayer<EntityMungus, ModelMungus> {
 
         public MungusSackLayer(RenderMungus p_i50928_1_) {
             super(p_i50928_1_);
@@ -207,7 +207,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
         }
     }
 
-    class MungusMushroomLayer extends RenderLayer<EntityMungus, ModelMungus> {
+    static class MungusMushroomLayer extends RenderLayer<EntityMungus, ModelMungus> {
 
         public MungusMushroomLayer(RenderMungus p_i50928_1_) {
             super(p_i50928_1_);

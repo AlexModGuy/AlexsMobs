@@ -718,7 +718,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         }
     }
 
-    public class FlyTowardsTarget extends Goal {
+    public static class FlyTowardsTarget extends Goal {
         private final EntityEnderiophage parentEntity;
 
         public FlyTowardsTarget(EntityEnderiophage phage) {

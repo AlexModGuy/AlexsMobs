@@ -51,7 +51,7 @@ public class RenderCombJelly extends MobRenderer<EntityCombJelly, ModelCombJelly
         return entity.getVariant() == 0 ? TEXTURE_0 : entity.getVariant() == 1 ? TEXTURE_1 : TEXTURE_2;
     }
 
-    class RainbowLayer extends RenderLayer<EntityCombJelly, ModelCombJelly> {
+    static class RainbowLayer extends RenderLayer<EntityCombJelly, ModelCombJelly> {
 
         public RainbowLayer(RenderCombJelly render) {
             super(render);

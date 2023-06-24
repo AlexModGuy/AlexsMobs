@@ -358,7 +358,7 @@ public class EntityMimicube extends Monster implements RangedAttackMob {
         return this.getMainHandItem().getItem() instanceof ProjectileWeaponItem || this.getMainHandItem().getItem() instanceof TridentItem;
     }
 
-    private class MimicubeMoveHelper extends MoveControl {
+    private static class MimicubeMoveHelper extends MoveControl {
         private final EntityMimicube slime;
         private float yRot;
         private int jumpDelay;

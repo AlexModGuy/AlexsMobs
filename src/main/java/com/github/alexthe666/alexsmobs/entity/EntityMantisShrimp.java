@@ -612,7 +612,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
 
 
 
-    public class FollowOwner extends Goal {
+    public static class FollowOwner extends Goal {
         private final EntityMantisShrimp tameable;
         private final LevelReader world;
         private final double followSpeed;

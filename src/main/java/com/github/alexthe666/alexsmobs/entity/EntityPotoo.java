@@ -49,6 +49,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Optional;
 
@@ -173,9 +174,7 @@ public class EntityPotoo extends Animal implements IFalconry {
 
         if (this.ringBufferIndex < 0) {
             //initial population of buffer
-            for (int i = 0; i < this.ringBuffer.length; ++i) {
-                this.ringBuffer[i] = 15;
-            }
+            Arrays.fill(this.ringBuffer, 15);
         }
         this.ringBufferIndex++;
         if (this.ringBufferIndex == this.ringBuffer.length) {

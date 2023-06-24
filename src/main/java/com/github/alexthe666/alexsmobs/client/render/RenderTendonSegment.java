@@ -148,7 +148,7 @@ public class RenderTendonSegment extends EntityRenderer<EntityTendonSegment> {
             int l = j & 255;
             int i1 = i >> 16 & 255;
             int j1 = j >> 16 & 255;
-            return (k > l ? k : l) | (i1 > j1 ? i1 : j1) << 16;
+            return (Math.max(k, l)) | (Math.max(i1, j1)) << 16;
         }else{
             return 0;
         }

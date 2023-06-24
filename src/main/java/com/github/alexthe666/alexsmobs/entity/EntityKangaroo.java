@@ -107,7 +107,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     protected EntityKangaroo(EntityType type, Level world) {
         super(type, world);
         initKangarooInventory();
-        this.jumpControl = new EntityKangaroo.JumpHelperController(this);
+        this.jumpControl = new JumpHelperController(this);
         this.moveControl = new EntityKangaroo.MoveHelperController(this);
 
     }
@@ -168,7 +168,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
 
     public boolean isRoger() {
         String s = ChatFormatting.stripFormatting(this.getName().getString());
-        return s != null && s.toLowerCase().equals("roger");
+        return s != null && s.equalsIgnoreCase("roger");
     }
 
     public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
@@ -1025,7 +1025,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
         }
     }
 
-    public class JumpHelperController extends JumpControl {
+    public static class JumpHelperController extends JumpControl {
         private final EntityKangaroo kangaroo;
         private boolean canJump;
 

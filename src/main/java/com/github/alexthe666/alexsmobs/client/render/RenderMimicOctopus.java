@@ -148,7 +148,7 @@ public class RenderMimicOctopus extends MobRenderer<EntityMimicOctopus, ModelMim
         return TEXTURE;
     }
 
-    class OverlayLayer extends RenderLayer<EntityMimicOctopus, ModelMimicOctopus> {
+    static class OverlayLayer extends RenderLayer<EntityMimicOctopus, ModelMimicOctopus> {
 
 
         public OverlayLayer(RenderMimicOctopus render) {

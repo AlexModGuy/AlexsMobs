@@ -480,7 +480,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     private boolean trustsAny() {
-        return !this.entityData.get(DATA_TRUSTED_ID_0).isEmpty() || !this.entityData.get(DATA_TRUSTED_ID_1).isEmpty();
+        return this.entityData.get(DATA_TRUSTED_ID_0).isPresent() || this.entityData.get(DATA_TRUSTED_ID_1).isPresent();
     }
 
     class DefendTrustedTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {

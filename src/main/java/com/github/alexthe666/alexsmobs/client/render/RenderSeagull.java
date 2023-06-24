@@ -31,7 +31,7 @@ public class RenderSeagull extends MobRenderer<EntitySeagull, ModelSeagull> {
         return entity.isWingull() ? TEXTURE_WINGULL : TEXTURE;
     }
 
-    class LayerHeldItem extends RenderLayer<EntitySeagull, ModelSeagull> {
+    static class LayerHeldItem extends RenderLayer<EntitySeagull, ModelSeagull> {
 
         public LayerHeldItem(RenderSeagull render) {
             super(render);

@@ -409,7 +409,7 @@ public class EntityStradpole extends WaterAnimal implements Bucketable {
         this.entityData.set(LAUNCHED, true);
     }
 
-    class StradpoleAISwim extends RandomStrollGoal {
+    static class StradpoleAISwim extends RandomStrollGoal {
         public StradpoleAISwim(EntityStradpole creature, double speed, int chance) {
             super(creature, speed, chance, false);
         }

@@ -350,7 +350,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
 
     }
 
-    class TemptHeartGoal extends Goal {
+    static class TemptHeartGoal extends Goal {
         protected final EntitySpectre creature;
         private final TargetingConditions ENTITY_PREDICATE = TargetingConditions.forNonCombat().range(64D).ignoreInvisibilityTesting().ignoreLineOfSight();
         private final double speed;

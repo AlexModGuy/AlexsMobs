@@ -30,7 +30,7 @@ public class RenderAlligatorSnappingTurtle extends MobRenderer<EntityAlligatorSn
         return TEXTURE;
     }
 
-    class AlligatorSnappingTurtleMossLayer extends RenderLayer<EntityAlligatorSnappingTurtle, ModelAlligatorSnappingTurtle> {
+    static class AlligatorSnappingTurtleMossLayer extends RenderLayer<EntityAlligatorSnappingTurtle, ModelAlligatorSnappingTurtle> {
 
         public AlligatorSnappingTurtleMossLayer(RenderAlligatorSnappingTurtle p_i50928_1_) {
             super(p_i50928_1_);

@@ -75,7 +75,7 @@ public class RenderTerrapin extends MobRenderer<EntityTerrapin, ModelTerrapin> {
         }
     }
 
-    class TurtleOverlayLayer extends RenderLayer<EntityTerrapin, ModelTerrapin> {
+    static class TurtleOverlayLayer extends RenderLayer<EntityTerrapin, ModelTerrapin> {
 
         private int layer;
 

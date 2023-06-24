@@ -450,7 +450,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
         }
     }
 
-    class Navigator extends GroundPathNavigatorWide {
+    static class Navigator extends GroundPathNavigatorWide {
 
         public Navigator(Mob mob, Level world) {
             super(mob, world, 0.75F);

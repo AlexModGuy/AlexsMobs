@@ -946,7 +946,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     }
 
-    private class AITargetItems extends CreatureAITargetItems {
+    private static class AITargetItems extends CreatureAITargetItems {
 
         public AITargetItems(PathfinderMob creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
             super(creature, checkSight, onlyNearby, tickThreshold, radius);

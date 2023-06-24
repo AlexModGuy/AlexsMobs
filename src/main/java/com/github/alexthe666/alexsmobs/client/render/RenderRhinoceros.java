@@ -29,7 +29,7 @@ public class RenderRhinoceros extends MobRenderer<EntityRhinoceros, ModelRhinoce
         return entity.isAngry() ? TEXTURE_ANGRY : TEXTURE;
     }
 
-    private class PotionLayer extends RenderLayer<EntityRhinoceros, ModelRhinoceros> {
+    private static class PotionLayer extends RenderLayer<EntityRhinoceros, ModelRhinoceros> {
         public PotionLayer(RenderRhinoceros parent) {
             super(parent);
         }

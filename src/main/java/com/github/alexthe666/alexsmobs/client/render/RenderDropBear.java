@@ -29,7 +29,7 @@ public class RenderDropBear extends MobRenderer<EntityDropBear, ModelDropBear> {
         return TEXTURE;
     }
 
-    class EyeLayer extends RenderLayer<EntityDropBear, ModelDropBear> {
+    static class EyeLayer extends RenderLayer<EntityDropBear, ModelDropBear> {
 
         public EyeLayer(RenderDropBear render) {
             super(render);

@@ -95,7 +95,7 @@ public class RenderSeal extends MobRenderer<EntitySeal, ModelSeal> {
         }
     }
 
-    class SealTearsLayer extends RenderLayer<EntitySeal, ModelSeal> {
+    static class SealTearsLayer extends RenderLayer<EntitySeal, ModelSeal> {
 
         public SealTearsLayer(RenderSeal p_i50928_1_) {
             super(p_i50928_1_);

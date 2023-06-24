@@ -513,7 +513,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         return super.isInvulnerableTo(dmg) || this.getAnimation() == ANIMATION_EMERGE;
     }
 
-    private class RandomFlyGoal extends Goal {
+    private static class RandomFlyGoal extends Goal {
         private final EntityFarseer parentEntity;
         private BlockPos target = null;
         private float speed = 0.6F;

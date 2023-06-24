@@ -821,7 +821,7 @@ public class EntityBlueJay extends Animal implements ITargetsDroppedItems{
         return this.getFeedTime() > 0 || this.getSingTime() > 0 || this.getRaccoonUUID() != null || aiItemFlag;
     }
 
-    private class AITargetItems extends CreatureAITargetItems {
+    private static class AITargetItems extends CreatureAITargetItems {
 
         public AITargetItems(PathfinderMob creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
             super(creature, checkSight, onlyNearby, tickThreshold, radius);

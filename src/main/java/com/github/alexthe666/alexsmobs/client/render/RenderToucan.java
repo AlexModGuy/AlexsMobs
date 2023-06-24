@@ -29,8 +29,8 @@ public class RenderToucan extends MobRenderer<EntityToucan, ModelToucan> {
 
     public RenderToucan(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelToucan(), 0.2F);
-        this.addLayer(new RenderToucan.LayerGlint(this));
-        this.addLayer(new RenderToucan.LayerHeldItem(this));
+        this.addLayer(new LayerGlint(this));
+        this.addLayer(new LayerHeldItem(this));
     }
 
     protected void scale(EntityToucan entitylivingbaseIn, PoseStack matrixStackIn, float partialTickTime) {
@@ -56,7 +56,7 @@ public class RenderToucan extends MobRenderer<EntityToucan, ModelToucan> {
         }
     }
 
-    class LayerGlint extends RenderLayer<EntityToucan, ModelToucan> {
+    static class LayerGlint extends RenderLayer<EntityToucan, ModelToucan> {
 
         public LayerGlint(RenderToucan render) {
             super(render);
@@ -70,7 +70,7 @@ public class RenderToucan extends MobRenderer<EntityToucan, ModelToucan> {
         }
     }
 
-    class LayerHeldItem extends RenderLayer<EntityToucan, ModelToucan> {
+    static class LayerHeldItem extends RenderLayer<EntityToucan, ModelToucan> {
 
         public LayerHeldItem(RenderToucan render) {
             super(render);

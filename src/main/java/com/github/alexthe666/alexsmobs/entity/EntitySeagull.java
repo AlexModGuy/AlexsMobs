@@ -437,7 +437,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
 
     public boolean isWingull() {
         String s = ChatFormatting.stripFormatting(this.getName().getString());
-        return s != null && s.toLowerCase().equals("wingull");
+        return s != null && s.equalsIgnoreCase("wingull");
     }
 
     @Override
@@ -808,7 +808,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         }
     }
 
-    class MoveHelper extends MoveControl {
+    static class MoveHelper extends MoveControl {
         private final EntitySeagull parentEntity;
 
         public MoveHelper(EntitySeagull bird) {
@@ -835,7 +835,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         }
     }
 
-    private class AITargetItems extends CreatureAITargetItems {
+    private static class AITargetItems extends CreatureAITargetItems {
 
         public AITargetItems(PathfinderMob creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
             super(creature, checkSight, onlyNearby, tickThreshold, radius);

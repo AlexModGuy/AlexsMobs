@@ -66,7 +66,7 @@ public class RenderSunbird extends MobRenderer<EntitySunbird, ModelSunbird> {
         return TEXTURE;
     }
 
-    class LayerScorch extends RenderLayer<EntitySunbird, ModelSunbird> {
+    static class LayerScorch extends RenderLayer<EntitySunbird, ModelSunbird> {
 
         public LayerScorch(RenderSunbird p_i50928_1_) {
             super(p_i50928_1_);

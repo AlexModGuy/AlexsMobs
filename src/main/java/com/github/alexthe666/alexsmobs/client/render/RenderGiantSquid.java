@@ -51,7 +51,7 @@ public class RenderGiantSquid extends MobRenderer<EntityGiantSquid, ModelGiantSq
         return entity.isBlue() ? TEXTURE_BLUE : TEXTURE;
     }
 
-    class LayerDepressurization extends RenderLayer<EntityGiantSquid, ModelGiantSquid> {
+    static class LayerDepressurization extends RenderLayer<EntityGiantSquid, ModelGiantSquid> {
 
         public LayerDepressurization(RenderGiantSquid render) {
             super(render);

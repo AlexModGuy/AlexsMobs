@@ -30,7 +30,7 @@ public class RenderStraddler extends MobRenderer<EntityStraddler, ModelStraddler
         return TEXTURE;
     }
 
-    class StradpoleLayer extends RenderLayer<EntityStraddler, ModelStraddler> {
+    static class StradpoleLayer extends RenderLayer<EntityStraddler, ModelStraddler> {
 
         public StradpoleLayer(RenderStraddler p_i50928_1_) {
             super(p_i50928_1_);

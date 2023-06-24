@@ -70,7 +70,7 @@ public class EntityJerboa extends Animal {
     protected EntityJerboa(EntityType<? extends Animal> jerboa, Level lvl) {
         super(jerboa, lvl);
         this.moveControl = new EntityJerboa.MoveHelperController(this);
-        this.jumpControl = new EntityJerboa.JumpHelperController(this);
+        this.jumpControl = new JumpHelperController(this);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -489,7 +489,7 @@ public class EntityJerboa extends Animal {
         }
     }
 
-    public class JumpHelperController extends JumpControl {
+    public static class JumpHelperController extends JumpControl {
         private final EntityJerboa jerboa;
         private boolean canJump;
 

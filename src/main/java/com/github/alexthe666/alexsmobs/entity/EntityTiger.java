@@ -573,7 +573,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         }
     }
 
-    class Navigator extends GroundPathNavigatorWide {
+    static class Navigator extends GroundPathNavigatorWide {
 
         public Navigator(Mob mob, Level world) {
             super(mob, world, 1.2F);

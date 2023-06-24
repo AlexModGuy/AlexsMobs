@@ -1121,7 +1121,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         }
     }
 
-    private class LaviathanBodyRotationControl extends BodyRotationControl {
+    private static class LaviathanBodyRotationControl extends BodyRotationControl {
         private final EntityLaviathan laviathan;
 
         public LaviathanBodyRotationControl(EntityLaviathan laviathan) {
