@@ -14,8 +14,8 @@ public class KomodoDragonAIJostle  extends Goal {
 
     private static final TargetingConditions JOSTLE_PREDICATE = TargetingConditions.forNonCombat().range(16D).ignoreLineOfSight();
     protected EntityKomodoDragon targetKomodoDragon;
-    private EntityKomodoDragon komodo;
-    private Level world;
+    private final EntityKomodoDragon komodo;
+    private final Level world;
     private float angle;
 
     public KomodoDragonAIJostle(EntityKomodoDragon moose) {

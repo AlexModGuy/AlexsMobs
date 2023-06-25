@@ -329,8 +329,8 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     }
 
     private class GlideGoal extends Goal {
-        private EntityFlyingFish fish;
-        private Level level;
+        private final EntityFlyingFish fish;
+        private final Level level;
         private BlockPos surface;
         private BlockPos glide;
 

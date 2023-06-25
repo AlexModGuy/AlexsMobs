@@ -118,7 +118,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     public SimpleContainer elephantInventory;
     private int animationTick;
     private Animation currentAnimation;
-    private boolean hasTuskedAttributes = false;
+    private final boolean hasTuskedAttributes = false;
     private int standingTime = 0;
     @Nullable
     private EntityElephant caravanHead;

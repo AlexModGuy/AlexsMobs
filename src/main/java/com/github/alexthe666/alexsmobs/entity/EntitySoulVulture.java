@@ -406,7 +406,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         }
 
         public BlockPos getVultureCirclePos(BlockPos target) {
-            final float angle = (Maths.STARTING_ANGLE * 3 * (clockwise ? -circlingTime : circlingTime));
+            final float angle = (Maths.THREE_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
             final double extraX = circleDistance * Mth.sin((angle));
             final double extraZ = circleDistance * Mth.cos(angle);
             BlockPos pos = new BlockPos((int) (target.getX() + extraX), target.getY() + 1 + yLevel, (int) (target.getZ() + extraZ));

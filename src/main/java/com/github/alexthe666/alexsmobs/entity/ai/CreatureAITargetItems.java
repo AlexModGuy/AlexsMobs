@@ -25,7 +25,7 @@ public class CreatureAITargetItems<T extends ItemEntity> extends TargetGoal {
     protected boolean mustUpdate;
     protected ItemEntity targetEntity;
     protected ITargetsDroppedItems hunter;
-    private int tickThreshold;
+    private final int tickThreshold;
     private float radius = 9F;
     private int walkCooldown = 0;
 

@@ -27,8 +27,7 @@ public class SoundBearMusicBox extends AbstractTickableSoundInstance {
     }
 
     public boolean isOnlyMusicBox() {
-        for(Map.Entry<Integer, SoundBearMusicBox> entry : ClientProxy.BEAR_MUSIC_BOX_SOUND_MAP.entrySet()){
-            SoundBearMusicBox s = entry.getValue();
+        for(SoundBearMusicBox s : ClientProxy.BEAR_MUSIC_BOX_SOUND_MAP.values()){
             if(s != this && distanceSq(s.x, s.y, s.z) < 16 && s.canPlaySound()){
                 return false;
             }

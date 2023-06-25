@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class ElephantAIForageLeaves extends MoveToBlockGoal {
 
-    private EntityElephant elephant;
+    private final EntityElephant elephant;
     private int idleAtLeavesTime = 0;
     private boolean isAboveDestinationBear;
 

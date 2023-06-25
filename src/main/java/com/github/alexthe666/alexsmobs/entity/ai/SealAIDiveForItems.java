@@ -26,7 +26,7 @@ import java.util.List;
 
 public class SealAIDiveForItems extends Goal {
 
-    private EntitySeal seal;
+    private final EntitySeal seal;
     private Player thrower;
     private BlockPos digPos;
     private boolean returnToPlayer = false;

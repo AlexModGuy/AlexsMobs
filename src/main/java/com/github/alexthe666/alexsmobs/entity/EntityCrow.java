@@ -89,7 +89,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     private UUID seedThrowerID;
     private int heldItemTime = 0;
     private int checkPerchCooldown = 0;
-    private boolean gatheringClockwise = false;
+    private final boolean gatheringClockwise = false;
 
     protected EntityCrow(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -738,7 +738,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     private Vec3 getGatheringVec(Vec3 vector3d, float gatheringCircleDist) {
         if (this.getPerchPos() != null) {
-            final float angle = (Maths.STARTING_ANGLE * 8 * (gatheringClockwise ? -tickCount : tickCount));
+            final float angle = (Maths.EIGHT_STARTING_ANGLE * (gatheringClockwise ? -tickCount : tickCount));
             final double extraX = gatheringCircleDist * Mth.sin((angle));
             final double extraZ = gatheringCircleDist * Mth.cos(angle);
             final Vec3 pos = new Vec3(getPerchPos().getX() + extraX, getPerchPos().getY() + 2, getPerchPos().getZ() + extraZ);

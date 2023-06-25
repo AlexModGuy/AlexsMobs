@@ -22,6 +22,8 @@ import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
 import com.github.alexthe666.alexsmobs.item.*;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -56,17 +58,17 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-    public static final Map<Integer, SoundBearMusicBox> BEAR_MUSIC_BOX_SOUND_MAP = new HashMap<>();
-    public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
-    public static final Map<Integer, SoundWormBoss> WORMBOSS_SOUND_MAP = new HashMap<>();
-    public static List<UUID> currentUnrenderedEntities = new ArrayList<>();
+    public static final Int2ObjectMap<SoundBearMusicBox> BEAR_MUSIC_BOX_SOUND_MAP = new Int2ObjectOpenHashMap<>();
+    public static final Int2ObjectMap<SoundLaCucaracha> COCKROACH_SOUND_MAP = new Int2ObjectOpenHashMap<>();
+    public static final Int2ObjectMap<SoundWormBoss> WORMBOSS_SOUND_MAP = new Int2ObjectOpenHashMap<>();
+    public static final List<UUID> currentUnrenderedEntities = new ArrayList<>();
     public static int voidPortalCreationTime = 0;
     public CameraType prevPOV = CameraType.FIRST_PERSON;
     public boolean initializedRainbowBuffers = false;
     private int pupfishChunkX = 0;
     private int pupfishChunkZ = 0;
     private int singingBlueJayId = -1;
-    private ItemStack[] transmuteStacks = new ItemStack[3];
+    private final ItemStack[] transmuteStacks = new ItemStack[3];
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)

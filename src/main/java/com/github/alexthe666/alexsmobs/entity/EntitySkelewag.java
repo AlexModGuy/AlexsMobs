@@ -267,7 +267,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     private class AttackGoal extends Goal {
-        private EntitySkelewag fish;
+        private final EntitySkelewag fish;
         private boolean isCharging = false;
 
         public AttackGoal(EntitySkelewag skelewag) {

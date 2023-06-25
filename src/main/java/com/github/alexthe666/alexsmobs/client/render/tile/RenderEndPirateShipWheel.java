@@ -16,7 +16,7 @@ public class RenderEndPirateShipWheel<T extends TileEntityEndPirateShipWheel> im
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/ship_wheel.png");
     private static final ResourceLocation TEXTURE_GLOW = new ResourceLocation("alexsmobs:textures/entity/end_pirate/ship_wheel_glow.png");
-    private static ModelEndPirateShipWheel WHEEL_MODEL = new ModelEndPirateShipWheel();
+    private static final ModelEndPirateShipWheel WHEEL_MODEL = new ModelEndPirateShipWheel();
 
     public RenderEndPirateShipWheel(Context rendererDispatcherIn) {
     }

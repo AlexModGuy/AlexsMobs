@@ -25,7 +25,7 @@ public class ModelDropBear extends AdvancedEntityModel<EntityDropBear> {
     private final AdvancedModelBox claws_left;
     private final AdvancedModelBox arm_right;
     private final AdvancedModelBox claws_right;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelDropBear() {
         texWidth = 128;

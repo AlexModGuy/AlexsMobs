@@ -21,6 +21,8 @@ import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -104,7 +106,7 @@ public class ServerEvents {
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER, "frontier cap speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final Map<ServerLevel, BeachedCachalotWhaleSpawner> BEACHED_CACHALOT_WHALE_SPAWNER_MAP = new HashMap<>();
-    public static List<Triple<ServerPlayer, ServerLevel, BlockPos>> teleportPlayers = new ArrayList<>();
+    public static final ObjectList<Triple<ServerPlayer, ServerLevel, BlockPos>> teleportPlayers = new ObjectArrayList<>();
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.LevelTickEvent tick) {
@@ -114,19 +116,21 @@ public class ServerEvents {
             BeachedCachalotWhaleSpawner spawner = BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld);
             spawner.tick();
 
-            for (final var triple : teleportPlayers) {
-                ServerPlayer player = triple.a;
-                ServerLevel endpointWorld = triple.b;
-                BlockPos endpoint = triple.c;
-                int heightFromMap = endpointWorld.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, endpoint.getX(), endpoint.getZ());
-                endpoint = new BlockPos(endpoint.getX(), Math.max(heightFromMap, endpoint.getY()), endpoint.getZ());
-                player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.getYRot(), player.getXRot());
-                ChunkPos chunkpos = new ChunkPos(endpoint);
-                endpointWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, player.getId());
-                player.connection.send(new ClientboundSetExperiencePacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
+            if (!teleportPlayers.isEmpty()) {
+                for (final var triple : teleportPlayers) {
+                    ServerPlayer player = triple.a;
+                    ServerLevel endpointWorld = triple.b;
+                    BlockPos endpoint = triple.c;
+                    final int heightFromMap = endpointWorld.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, endpoint.getX(), endpoint.getZ());
+                    endpoint = new BlockPos(endpoint.getX(), Math.max(heightFromMap, endpoint.getY()), endpoint.getZ());
+                    player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.getYRot(), player.getXRot());
+                    ChunkPos chunkpos = new ChunkPos(endpoint);
+                    endpointWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, player.getId());
+                    player.connection.send(new ClientboundSetExperiencePacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
 
+                }
+                teleportPlayers.clear();
             }
-            teleportPlayers.clear();
         }
         AMWorldData data = AMWorldData.get(tick.level);
         if (data != null) {
@@ -200,15 +204,15 @@ public class ServerEvents {
         boolean flag = false;
         ItemStack leftItem = event.getEntity().getOffhandItem();
         ItemStack rightItem = event.getEntity().getMainHandItem();
-        if(leftItem.getItem() instanceof ILeftClick){
-            ((ILeftClick)leftItem.getItem()).onLeftClick(leftItem, event.getEntity());
+        if(leftItem.getItem() instanceof final ILeftClick iLeftClick){
+            iLeftClick.onLeftClick(leftItem, event.getEntity());
             flag = true;
         }
-        if(rightItem.getItem() instanceof ILeftClick){
-            ((ILeftClick)rightItem.getItem()).onLeftClick(rightItem, event.getEntity());
+        if(rightItem.getItem() instanceof final ILeftClick iLeftClick){
+            iLeftClick.onLeftClick(rightItem, event.getEntity());
             flag = true;
         }
-        if (event.getLevel().isClientSide && flag) {
+        if (flag && event.getLevel().isClientSide) {
             AlexsMobs.sendMSGToServer(MessageSwingArm.INSTANCE);
         }
     }
@@ -479,8 +483,9 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onEntityJoinWorld(MobSpawnEvent.FinalizeSpawn event) {
-        if (event.getEntity() instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
-            Biome biome = event.getLevel().getBiome(event.getEntity().blockPosition()).value();
+        final var entity = event.getEntity();
+        if (entity instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
+            Biome biome = event.getLevel().getBiome(entity.blockPosition()).value();
             if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance
                 && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
                 EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(trader.level());
@@ -497,31 +502,31 @@ public class ServerEvents {
             }
         }
         try {
-            if (event.getEntity() instanceof final Spider spider && AMConfig.spidersAttackFlies) {
+            if (AMConfig.spidersAttackFlies && entity instanceof final Spider spider) {
                 spider.targetSelector.addGoal(4,
                     new NearestAttackableTargetGoal<>(spider, EntityFly.class, 1, true, false, null));
             }
-            else if (event.getEntity() instanceof final Wolf wolf && AMConfig.wolvesAttackMoose) {
+            else if (AMConfig.wolvesAttackMoose && entity instanceof final Wolf wolf) {
                 wolf.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(wolf, EntityMoose.class, false, null));
             }
-            else if (event.getEntity() instanceof final PolarBear bear && AMConfig.polarBearsAttackSeals) {
+            else if (AMConfig.polarBearsAttackSeals && entity instanceof final PolarBear bear) {
                 bear.targetSelector.addGoal(6,
                     new NearestAttackableTargetGoal<>(bear, EntitySeal.class, 15, true, true, null));
             }
-            else if (event.getEntity() instanceof final Creeper creeper) {
+            else if (entity instanceof final Creeper creeper) {
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntitySnowLeopard.class, 6.0F, 1.0D, 1.2D));
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntityTiger.class, 6.0F, 1.0D, 1.2D));
             }
-            else if ((event.getEntity() instanceof Fox || event.getEntity() instanceof Cat
-                || event.getEntity() instanceof Ocelot) && AMConfig.catsAndFoxesAttackJerboas) {
-                Mob mb = (Mob) event.getEntity();
+            else if (AMConfig.catsAndFoxesAttackJerboas
+                    && (entity instanceof Fox || entity instanceof Cat || entity instanceof Ocelot)) {
+                Mob mb = (Mob) entity;
                 mb.targetSelector.addGoal(6,
                     new NearestAttackableTargetGoal<>(mb, EntityJerboa.class, 45, true, true, null));
             }
-            else if (event.getEntity() instanceof final Rabbit rabbit && AMConfig.bunfungusTransformation) {
+            else if (AMConfig.bunfungusTransformation && entity instanceof final Rabbit rabbit) {
                 rabbit.goalSelector.addGoal(3, new TemptGoal(rabbit, 1.0D, Ingredient.of(AMItemRegistry.MUNGAL_SPORES.get()), false));
             }
-            else if (event.getEntity() instanceof final Dolphin dolphin && AMConfig.dolphinsAttackFlyingFish) {
+            else if (AMConfig.dolphinsAttackFlyingFish && entity instanceof final Dolphin dolphin) {
                 dolphin.targetSelector.addGoal(2,
                     new NearestAttackableTargetGoal<>(dolphin, EntityFlyingFish.class, 70, true, true, null));
             }

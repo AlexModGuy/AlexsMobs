@@ -10,7 +10,7 @@ import java.util.EnumSet;
 
 public class CaimanAIBellow extends Goal {
 
-    private EntityCaiman caiman;
+    private final EntityCaiman caiman;
     private int bellowTime = 0;
 
     public CaimanAIBellow(EntityCaiman caiman) {

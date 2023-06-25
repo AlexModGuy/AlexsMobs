@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class KangarooAIMelee extends MeleeAttackGoal {
 
-    private EntityKangaroo kangaroo;
+    private final EntityKangaroo kangaroo;
     private BlockPos waterPos;
     private int waterCheckTick = 0;
     private int waterTimeout = 0;

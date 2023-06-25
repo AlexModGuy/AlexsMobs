@@ -24,7 +24,7 @@ public class ModelTiger extends AdvancedEntityModel<EntityTiger> {
     private final AdvancedModelBox legright;
     private final AdvancedModelBox armleft;
     private final AdvancedModelBox armright;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelTiger() {
         texWidth = 64;

@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class CrowAICircleCrops extends MoveToBlockGoal {
 
-    private EntityCrow crow;
+    private final EntityCrow crow;
     private int idleAtFlowerTime = 0;
     private boolean isAboveDestinationBear;
     float circlingTime = 0;
@@ -102,7 +102,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     public BlockPos getVultureCirclePos(BlockPos target) {
-        float angle = (Maths.STARTING_ANGLE * 8 * (clockwise ? -circlingTime : circlingTime));
+        float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         BlockPos pos = AMBlockPos.fromCoords(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);

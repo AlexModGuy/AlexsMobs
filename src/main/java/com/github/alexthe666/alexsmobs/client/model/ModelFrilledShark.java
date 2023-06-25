@@ -20,7 +20,7 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 	private final AdvancedModelBox pelvicfin_left;
 	private final AdvancedModelBox pelvicfin_right;
 	private final AdvancedModelBox tail2;
-	private ModelAnimator animator;
+	private final ModelAnimator animator;
 
 	public ModelFrilledShark() {
 		texWidth = 128;

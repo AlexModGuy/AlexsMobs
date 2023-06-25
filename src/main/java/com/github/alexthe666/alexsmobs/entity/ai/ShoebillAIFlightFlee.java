@@ -13,7 +13,7 @@ import java.util.EnumSet;
 
 public class ShoebillAIFlightFlee extends Goal {
 
-    private EntityShoebill bird;
+    private final EntityShoebill bird;
     private BlockPos currentTarget = null;
     private int executionTime = 0;
 

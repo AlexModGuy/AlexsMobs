@@ -360,7 +360,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     }
 
     private class BreedGoal extends Goal {
-        private Predicate<Entity> validBreedPartner;
+        private final Predicate<Entity> validBreedPartner;
         private EntityTriops breedPartner;
 
         private int executionCooldown = 50;

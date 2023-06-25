@@ -17,7 +17,7 @@ import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 
 public class RenderVoidWormShot extends EntityRenderer<EntityVoidWormShot> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/void_worm/void_worm_shot.png");
-    private static ModelVoidWormShot MODEL = new ModelVoidWormShot();
+    private static final ModelVoidWormShot MODEL = new ModelVoidWormShot();
 
     public RenderVoidWormShot(EntityRendererProvider.Context renderManager) {
         super(renderManager);

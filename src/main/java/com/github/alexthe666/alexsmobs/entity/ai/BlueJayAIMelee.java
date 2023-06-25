@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
 public class BlueJayAIMelee extends Goal {
-    private EntityBlueJay blueJay;
+    private final EntityBlueJay blueJay;
     float circlingTime = 0;
     float circleDistance = 1;
     float yLevel = 2;

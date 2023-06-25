@@ -337,7 +337,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
         }
 
         public BlockPos getIslandPos(BlockPos orbit) {
-            final float angle = (Maths.STARTING_ANGLE * 3 * (clockwise ? -circlingTime : circlingTime));
+            final float angle = (Maths.THREE_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
             final double extraX = circleDistance * Mth.sin((angle));
             final double extraZ = circleDistance * Mth.cos(angle);
             final int height = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, orbit).getY();

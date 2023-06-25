@@ -132,9 +132,9 @@ public class CrowAIFollowOwner extends Goal {
     }
 
     public Vec3 getVultureCirclePos(Vec3 target) {
-        float angle = (Maths.STARTING_ANGLE * 8 * (clockwise ? -circlingTime : circlingTime));
-        double extraX = circleDistance * Mth.sin((angle));
-        double extraZ = circleDistance * Mth.cos(angle);
+        final float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
+        final double extraX = circleDistance * Mth.sin((angle));
+        final double extraZ = circleDistance * Mth.cos(angle);
         Vec3 pos = new Vec3(target.x() + extraX, target.y() + yLevel, target.z() + extraZ);
         if (crow.level().isEmptyBlock(AMBlockPos.fromVec3(pos))) {
             return pos;

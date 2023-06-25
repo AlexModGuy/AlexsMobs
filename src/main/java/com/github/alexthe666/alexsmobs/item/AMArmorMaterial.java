@@ -8,12 +8,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 public class AMArmorMaterial implements ArmorMaterial {
 
     protected static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
-    private String name;
-    private int durability;
-    private int[] damageReduction;
-    private int encantability;
-    private SoundEvent sound;
-    private float toughness;
+    private final String name;
+    private final int durability;
+    private final int[] damageReduction;
+    private final int encantability;
+    private final SoundEvent sound;
+    private final float toughness;
     private Ingredient ingredient = null;
     public float knockbackResistance = 0.0F;
 

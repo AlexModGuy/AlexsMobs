@@ -516,7 +516,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     private static class RandomFlyGoal extends Goal {
         private final EntityFarseer parentEntity;
         private BlockPos target = null;
-        private float speed = 0.6F;
+        private final float speed = 0.6F;
         public RandomFlyGoal(EntityFarseer mosquito) {
             this.parentEntity = mosquito;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE));

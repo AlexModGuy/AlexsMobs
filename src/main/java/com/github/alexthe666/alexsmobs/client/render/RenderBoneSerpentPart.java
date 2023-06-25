@@ -12,8 +12,8 @@ import net.minecraft.resources.ResourceLocation;
 public class RenderBoneSerpentPart extends LivingEntityRenderer<EntityBoneSerpentPart, AdvancedEntityModel<EntityBoneSerpentPart>> {
     private static final ResourceLocation TEXTURE_BODY = new ResourceLocation("alexsmobs:textures/entity/bone_serpent_mid.png");
     private static final ResourceLocation TEXTURE_TAIL = new ResourceLocation("alexsmobs:textures/entity/bone_serpent_tail.png");
-    private ModelBoneSerpentBody bodyModel = new ModelBoneSerpentBody();
-    private ModelBoneSerpentTail tailModel = new ModelBoneSerpentTail();
+    private final ModelBoneSerpentBody bodyModel = new ModelBoneSerpentBody();
+    private final ModelBoneSerpentTail tailModel = new ModelBoneSerpentTail();
 
     public RenderBoneSerpentPart(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelBoneSerpentBody(), 0.3F);

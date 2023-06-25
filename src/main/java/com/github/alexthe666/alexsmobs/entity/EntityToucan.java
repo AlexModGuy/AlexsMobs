@@ -752,7 +752,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         }
 
         public BlockPos getVultureCirclePos(BlockPos target, float circleDistance, double yLevel) {
-            final float angle = (Maths.STARTING_ANGLE * 8 * (clockwise ? -encircleTime : encircleTime));
+            final float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -encircleTime : encircleTime));
             final double extraX = circleDistance * Mth.sin((angle));
             final double extraZ = circleDistance * Mth.cos(angle);
             BlockPos pos;

@@ -18,7 +18,7 @@ import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 public class RenderStraddleboard extends EntityRenderer<EntityStraddleboard> {
     private static final ResourceLocation TEXTURE_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/straddleboard_overlay.png");
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/straddleboard.png");
-    private static ModelStraddleboard BOARD_MODEL = new ModelStraddleboard();
+    private static final ModelStraddleboard BOARD_MODEL = new ModelStraddleboard();
 
     public RenderStraddleboard(EntityRendererProvider.Context renderManager) {
         super(renderManager);

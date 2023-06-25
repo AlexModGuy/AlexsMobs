@@ -586,7 +586,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
     }
 
     private class AIMelee extends Goal {
-        private EntityTiger tiger;
+        private final EntityTiger tiger;
         private int jumpAttemptCooldown = 0;
 
         public AIMelee() {

@@ -56,13 +56,13 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation TRANSMUTATION_TABLE_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table.png");
     private static final ResourceLocation TRANSMUTATION_TABLE_GLOW_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table_glow.png");
     private static final ResourceLocation TRANSMUTATION_TABLE_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table_overlay.png");
-    private static ModelTransmutationTable TRANSMUTATION_TABLE_MODEL = new ModelTransmutationTable(0F);
-    private static ModelTransmutationTable TRANSMUTATION_TABLE_OVERLAY_MODEL = new ModelTransmutationTable(0.01F);
+    private static final ModelTransmutationTable TRANSMUTATION_TABLE_MODEL = new ModelTransmutationTable(0F);
+    private static final ModelTransmutationTable TRANSMUTATION_TABLE_OVERLAY_MODEL = new ModelTransmutationTable(0.01F);
     private static List<ItemStack> DIMENSIONAL_CARVER_SHARDS;
 
 
-    private Map<String, Entity> renderedEntites = new HashMap();
-    private List<EntityType> blockedRenderEntities = new ArrayList<>();
+    private final Map<String, Entity> renderedEntites = new HashMap<>();
+    private final List<EntityType> blockedRenderEntities = new ArrayList<>();
 
     public AMItemstackRenderer() {
         super(null, null);

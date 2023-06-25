@@ -15,7 +15,7 @@ import java.util.EnumSet;
 public class AnimalAILeaveWaterLava extends Goal {
     private final PathfinderMob creature;
     private BlockPos targetPos;
-    private int executionChance = 30;
+    private final int executionChance = 30;
 
     public AnimalAILeaveWaterLava(PathfinderMob creature) {
         this.creature = creature;

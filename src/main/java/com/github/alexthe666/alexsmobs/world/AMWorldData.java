@@ -35,7 +35,7 @@ public class AMWorldData extends SavedData {
     private ChunkPos pupfishChunk;
     private int pupfishChunkTime = 0;
     private int pupfishSeedAddition = 0;
-    private static Map<Level, AMWorldData> dataMap = new HashMap<>();
+    private static final Map<Level, AMWorldData> dataMap = new HashMap<>();
     private static final Predicate<BlockState> IS_WATER = (state -> state.is(Blocks.WATER));
 
     public AMWorldData() {

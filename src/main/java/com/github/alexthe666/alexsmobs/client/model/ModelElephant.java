@@ -32,7 +32,7 @@ public class ModelElephant extends AdvancedEntityModel<EntityElephant> {
     public final AdvancedModelBox right_ear;
     public final AdvancedModelBox trunk1;
     public final AdvancedModelBox trunk2;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelElephant(float f) {
         texWidth = 256;

@@ -26,7 +26,7 @@ public class FlyingAIFollowOwner extends Goal {
     private final float minDist;
     private float oldWaterCost;
     private final boolean teleportToLeaves;
-    private IFollower follower;
+    private final IFollower follower;
 
     public FlyingAIFollowOwner(TamableAnimal tameable, double speed, float minDist, float maxDist, boolean teleportToLeaves) {
         this.tameable = tameable;

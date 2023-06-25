@@ -26,7 +26,7 @@ public class ModelEmu extends AdvancedEntityModel<EntityEmu> {
     private final AdvancedModelBox head;
     private final AdvancedModelBox beak;
     private final AdvancedModelBox tail;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelEmu() {
         texWidth = 128;

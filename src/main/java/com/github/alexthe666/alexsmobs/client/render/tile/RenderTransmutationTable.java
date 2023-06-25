@@ -23,8 +23,8 @@ public class RenderTransmutationTable<T extends TileEntityTransmutationTable> im
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table.png");
     private static final ResourceLocation OVERLAY = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table_overlay.png");
     private static final ResourceLocation GLOW_TEXTURE = new ResourceLocation("alexsmobs:textures/entity/farseer/transmutation_table_glow.png");
-    private static ModelTransmutationTable MODEL = new ModelTransmutationTable(0F);
-    private static ModelTransmutationTable OVERLAY_MODEL = new ModelTransmutationTable(0.01F);
+    private static final ModelTransmutationTable MODEL = new ModelTransmutationTable(0F);
+    private static final ModelTransmutationTable OVERLAY_MODEL = new ModelTransmutationTable(0.01F);
 
     public RenderTransmutationTable(BlockEntityRendererProvider.Context rendererDispatcherIn) {
     }

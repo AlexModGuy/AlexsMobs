@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 
 public class SnowLeopardAIMelee extends Goal {
-    private EntitySnowLeopard leopard;
+    private final EntitySnowLeopard leopard;
     private LivingEntity target;
     private boolean secondPartOfLeap = false;
     private Vec3 leapPos = null;

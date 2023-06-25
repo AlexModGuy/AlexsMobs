@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 public class RenderEndPirateFlag<T extends TileEntityEndPirateFlag> implements BlockEntityRenderer<T> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/end_pirate/flag.png");
-    private static ModelEndPirateFlag FLAG_MODEL = new ModelEndPirateFlag();
+    private static final ModelEndPirateFlag FLAG_MODEL = new ModelEndPirateFlag();
 
 
     public RenderEndPirateFlag(Context rendererDispatcherIn) {

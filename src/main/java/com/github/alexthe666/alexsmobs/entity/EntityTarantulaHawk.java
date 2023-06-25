@@ -717,7 +717,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private class AIMelee extends Goal {
-        private EntityTarantulaHawk hawk;
+        private final EntityTarantulaHawk hawk;
         private int orbitCooldown = 0;
         private boolean clockwise = false;
         private Vec3 orbitVec = null;
@@ -917,7 +917,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     private class AIBury extends Goal {
-        private EntityTarantulaHawk hawk;
+        private final EntityTarantulaHawk hawk;
         private BlockPos buryPos = null;
         private int digTime = 0;
         private double stageX;

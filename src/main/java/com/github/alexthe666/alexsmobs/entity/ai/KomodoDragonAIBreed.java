@@ -6,7 +6,7 @@ import net.minecraft.world.entity.ai.goal.BreedGoal;
 
 public class KomodoDragonAIBreed extends BreedGoal {
     boolean withPartner;
-    private EntityKomodoDragon komodo;
+    private final EntityKomodoDragon komodo;
     int selfBreedTime = 0;
 
     public KomodoDragonAIBreed(EntityKomodoDragon entityKomodoDragon, double v) {

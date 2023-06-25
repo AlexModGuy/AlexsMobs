@@ -33,7 +33,7 @@ public class LayerKangarooArmor extends RenderLayer<EntityKangaroo, ModelKangaro
 
     private static final Map<String, ResourceLocation> ARMOR_TEXTURE_RES_MAP = Maps.newHashMap();
     private final HumanoidModel defaultBipedModel;
-    private RenderKangaroo renderer;
+    private final RenderKangaroo renderer;
 
     public LayerKangarooArmor(RenderKangaroo render, EntityRendererProvider.Context context) {
         super(render);

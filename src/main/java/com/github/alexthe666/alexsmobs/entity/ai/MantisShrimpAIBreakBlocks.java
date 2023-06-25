@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class MantisShrimpAIBreakBlocks extends Goal {
 
-    private EntityMantisShrimp mantisShrimp;
+    private final EntityMantisShrimp mantisShrimp;
     private int idleAtFlowerTime = 0;
     private int timeoutCounter = 0;
     private int searchCooldown = 0;

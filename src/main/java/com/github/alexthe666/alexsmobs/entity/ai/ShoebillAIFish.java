@@ -23,11 +23,11 @@ import java.util.List;
 
 public class ShoebillAIFish extends Goal {
 
-    private EntityShoebill bird;
+    private final EntityShoebill bird;
     private BlockPos waterPos = null;
     private BlockPos targetPos = null;
     private int executionChance = 0;
-    private Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
+    private final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
     private int idleTime = 0;
     private int navigateTime = 0;
 

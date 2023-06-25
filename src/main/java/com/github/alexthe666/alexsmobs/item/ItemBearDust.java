@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class ItemBearDust extends Item  implements CustomTabBehavior{
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public ItemBearDust(Item.Properties props) {
         super(props);

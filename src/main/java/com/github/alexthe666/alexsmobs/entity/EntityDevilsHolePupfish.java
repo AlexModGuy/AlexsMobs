@@ -372,8 +372,8 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
     }
 
     private class ChaseGoal extends Goal {
-        private EntityDevilsHolePupfish pupfish;
-        private Predicate<Entity> validChasePartner;
+        private final EntityDevilsHolePupfish pupfish;
+        private final Predicate<Entity> validChasePartner;
         private int executionCooldown = 50;
 
         public ChaseGoal(EntityDevilsHolePupfish pupfish) {
@@ -470,7 +470,7 @@ public class EntityDevilsHolePupfish extends WaterAnimal implements FlyingAnimal
         private final int searchLength;
         private final int verticalSearchRange;
         protected BlockPos destinationBlock;
-        private EntityDevilsHolePupfish pupfish;
+        private final EntityDevilsHolePupfish pupfish;
         private int runDelay = 70;
         private int maxFeedTime = 200;
 

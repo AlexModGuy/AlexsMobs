@@ -28,7 +28,7 @@ public class ModelBunfungus extends AdvancedEntityModel<EntityBunfungus> {
     public final AdvancedModelBox left_foot;
     public final AdvancedModelBox right_leg;
     public final AdvancedModelBox right_foot;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelBunfungus() {
         texWidth = 256;

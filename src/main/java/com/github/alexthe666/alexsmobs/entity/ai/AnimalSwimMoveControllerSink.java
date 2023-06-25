@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 
 public class AnimalSwimMoveControllerSink extends MoveControl {
     private final PathfinderMob entity;
-    private float speedMulti;
+    private final float speedMulti;
     private float ySpeedMod = 1;
     private float yawLimit = 10.0F;
 

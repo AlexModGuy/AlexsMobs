@@ -33,7 +33,7 @@ import java.util.List;
 public class AnteaterAIRaidNest extends MoveToBlockGoal {
 
     public static final ResourceLocation ANTEATER_REWARD = new ResourceLocation("alexsmobs", "gameplay/anteater_reward");
-    private EntityAnteater anteater;
+    private final EntityAnteater anteater;
     private int idleAtHiveTime = 0;
     private boolean isAboveDestinationAnteater;
     private boolean shootTongue;

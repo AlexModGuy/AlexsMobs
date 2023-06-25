@@ -16,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleInvertDig extends SimpleAnimatedParticle {
 
-    private Entity creator;
+    private final Entity creator;
 
     protected ParticleInvertDig(ClientLevel world, double x, double y, double z, SpriteSet spriteWithAge, double creatorId) {
         super(world, x, y, z, spriteWithAge, 0);
@@ -43,10 +43,10 @@ public class ParticleInvertDig extends SimpleAnimatedParticle {
         if (this.age++ >= lifetime || creator == null) {
             this.remove();
         } else {
-            if (creator instanceof Player) {
-                ItemStack item = ((Player) creator).getUseItem();
+            if (creator instanceof final Player player) {
+                ItemStack item = player.getUseItem();
                 if (item.getItem() instanceof ItemDimensionalCarver) {
-                    this.age = Mth.clamp(lifetime - ((Player) creator).getUseItemRemainingTicks(), 0, lifetime);
+                    this.age = Mth.clamp(lifetime - player.getUseItemRemainingTicks(), 0, lifetime);
                     live = true;
                 }
             }

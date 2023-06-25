@@ -47,13 +47,12 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
     public void tesselate(BlockAndTintGetter lightReaderIn, BlockPos posIn, VertexConsumer vertexBuilderIn, BlockState blockstateIn, FluidState fluidStateIn) {
         try {
             if (fluidStateIn.is(FluidTags.LAVA)) {
-                boolean flag = fluidStateIn.is(FluidTags.LAVA);
                 TextureAtlasSprite[] atextureatlassprite = net.minecraftforge.client.ForgeHooksClient.getFluidSprites(lightReaderIn, posIn, fluidStateIn);
-                int i = net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions.of(fluidStateIn).getTintColor(fluidStateIn, lightReaderIn, posIn);
-                float alpha = (float) AMConfig.lavaOpacity;
-                float f = (float)(i >> 16 & 255) / 255.0F;
-                float f1 = (float)(i >> 8 & 255) / 255.0F;
-                float f2 = (float)(i & 255) / 255.0F;
+                final int i = net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions.of(fluidStateIn).getTintColor(fluidStateIn, lightReaderIn, posIn);
+                final float alpha = (float) AMConfig.lavaOpacity;
+                final float f = (float)(i >> 16 & 255) / 255.0F;
+                final float f1 = (float)(i >> 8 & 255) / 255.0F;
+                final float f2 = (float)(i & 255) / 255.0F;
                 BlockState blockstate = lightReaderIn.getBlockState(posIn.relative(Direction.DOWN));
                 FluidState fluidstate = blockstate.getFluidState();
                 BlockState blockstate1 = lightReaderIn.getBlockState(posIn.relative(Direction.UP));
@@ -75,7 +74,6 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                 if (!flag1 && !flag2 && !flag6 && !flag5 && !flag3 && !flag4) {
                     return;
                 } else {
-                    boolean flag7 = false;
                     float f3 = lightReaderIn.getShade(Direction.DOWN, true);
                     float f4 = lightReaderIn.getShade(Direction.UP, true);
                     float f5 = lightReaderIn.getShade(Direction.NORTH, true);
@@ -105,10 +103,8 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                     double d1 = (double)(posIn.getX() & 15);
                     double d2 = (double)(posIn.getY() & 15);
                     double d0 = (double)(posIn.getZ() & 15);
-                    float f16 = 0.001F;
                     float f17 = flag2 ? 0.001F : 0.0F;
                     if (flag1 && !isFaceOccludedByNeighborVanilla(lightReaderIn, posIn, Direction.UP, Math.min(Math.min(f8, f10), Math.min(f9, f7)), blockstate1)) {
-                        flag7 = true;
                         f8 -= 0.001F;
                         f10 -= 0.001F;
                         f9 -= 0.001F;
@@ -137,7 +133,6 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                             float f26 = (float)Mth.atan2(vec3.z, vec3.x) - Mth.HALF_PI;
                             float f27 = Mth.sin(f26) * 0.25F;
                             float f28 = Mth.cos(f26) * 0.25F;
-                            float f29 = 8.0F;
                             f18 = textureatlassprite.getU((double)(8.0F + (-f28 - f27) * 16.0F));
                             f22 = textureatlassprite.getV((double)(8.0F + (-f28 + f27) * 16.0F));
                             f19 = textureatlassprite.getU((double)(8.0F + (-f28 + f27) * 16.0F));
@@ -192,7 +187,6 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                         this.vertexVanilla(vertexBuilderIn, d1, d2 + (double)f17, d0, f46, f47, f48, alpha, f40, f42, l);
                         this.vertexVanilla(vertexBuilderIn, d1 + 1.0D, d2 + (double)f17, d0, f46, f47, f48, alpha, f41, f42, l);
                         this.vertexVanilla(vertexBuilderIn, d1 + 1.0D, d2 + (double)f17, d0 + 1.0D, f46, f47, f48, alpha, f41, f43, l);
-                        flag7 = true;
                     }
 
                     int k = this.getCombinedAverageLight(lightReaderIn, posIn);
@@ -205,46 +199,46 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                         double d5;
                         double d6;
                         boolean flag8;
-                        switch(direction) {
-                            case NORTH:
+                        switch (direction) {
+                            case NORTH -> {
                                 f44 = f8;
                                 f45 = f7;
                                 d3 = d1;
                                 d5 = d1 + 1.0D;
-                                d4 = d0 + (double)0.001F;
-                                d6 = d0 + (double)0.001F;
+                                d4 = d0 + (double) 0.001F;
+                                d6 = d0 + (double) 0.001F;
                                 flag8 = flag3;
-                                break;
-                            case SOUTH:
+                            }
+                            case SOUTH -> {
                                 f44 = f9;
                                 f45 = f10;
                                 d3 = d1 + 1.0D;
                                 d5 = d1;
-                                d4 = d0 + 1.0D - (double)0.001F;
-                                d6 = d0 + 1.0D - (double)0.001F;
+                                d4 = d0 + 1.0D - (double) 0.001F;
+                                d6 = d0 + 1.0D - (double) 0.001F;
                                 flag8 = flag4;
-                                break;
-                            case WEST:
+                            }
+                            case WEST -> {
                                 f44 = f10;
                                 f45 = f8;
-                                d3 = d1 + (double)0.001F;
-                                d5 = d1 + (double)0.001F;
+                                d3 = d1 + (double) 0.001F;
+                                d5 = d1 + (double) 0.001F;
                                 d4 = d0 + 1.0D;
                                 d6 = d0;
                                 flag8 = flag5;
-                                break;
-                            default:
+                            }
+                            default -> {
                                 f44 = f7;
                                 f45 = f9;
-                                d3 = d1 + 1.0D - (double)0.001F;
-                                d5 = d1 + 1.0D - (double)0.001F;
+                                d3 = d1 + 1.0D - (double) 0.001F;
+                                d5 = d1 + 1.0D - (double) 0.001F;
                                 d4 = d0;
                                 d6 = d0 + 1.0D;
                                 flag8 = flag6;
+                            }
                         }
 
                         if (flag8 && !isFaceOccludedByNeighborVanilla(lightReaderIn, posIn, direction, Math.max(f44, f45), lightReaderIn.getBlockState(posIn.relative(direction)))) {
-                            flag7 = true;
                             BlockPos blockpos = posIn.relative(direction);
                             TextureAtlasSprite textureatlassprite2 = atextureatlassprite[1];
                             if (atextureatlassprite[2] != null) {

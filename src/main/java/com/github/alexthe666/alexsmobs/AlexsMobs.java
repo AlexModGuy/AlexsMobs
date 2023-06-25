@@ -55,7 +55,7 @@ public class AlexsMobs {
     public static final String MODID = "alexsmobs";
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
-    public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+    public static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     private static int packetsRegistered;
     private static boolean isAprilFools = false;
     private static boolean isHalloween = false;

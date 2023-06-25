@@ -8,6 +8,8 @@ import com.github.alexthe666.alexsmobs.entity.EntityVoidWormPart;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -26,7 +28,7 @@ import java.util.Map;
 public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLayer<T, EntityModel<T>>  {
 
     private final ResourceManager resourceManager;
-    private final Map<ResourceLocation, Boolean> mcmetaData;
+    private final Object2BooleanMap<ResourceLocation> mcmetaData;
     private EntityModel<T> layerModel;
     private final EntityModel bodyModel = new ModelVoidWormBody(1.001F);
     private final EntityModel tailModel = new ModelVoidWormTail(1.001F);
@@ -34,7 +36,7 @@ public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLa
     public LayerVoidWormGlow(RenderLayerParent<T, EntityModel<T>> renderer, ResourceManager resourceManager, EntityModel<T> layerModel) {
         super(renderer);
         this.resourceManager = resourceManager;
-        this.mcmetaData = new HashMap<>();
+        this.mcmetaData = new Object2BooleanOpenHashMap<>();
         this.layerModel = layerModel;
     }
 
@@ -64,7 +66,7 @@ public abstract class LayerVoidWormGlow<T extends LivingEntity> extends RenderLa
 
     private boolean isSpecialRenderer(ResourceLocation resourceLocation){
         if(mcmetaData.containsKey(resourceLocation)){
-            return mcmetaData.get(resourceLocation);
+            return mcmetaData.getBoolean(resourceLocation);
         }
         if(this.resourceManager.getResource(resourceLocation).isPresent()){
             Resource resource = this.resourceManager.getResource(resourceLocation).get();

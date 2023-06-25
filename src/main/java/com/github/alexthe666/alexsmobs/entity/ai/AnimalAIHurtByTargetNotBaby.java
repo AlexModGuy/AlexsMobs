@@ -7,7 +7,7 @@ import net.minecraft.world.entity.animal.Animal;
 
 public class AnimalAIHurtByTargetNotBaby extends HurtByTargetGoal {
 
-    private Animal animal;
+    private final Animal animal;
 
     public AnimalAIHurtByTargetNotBaby(Animal creatureIn, Class<?>... excludeReinforcementTypes) {
         super(creatureIn, excludeReinforcementTypes);
