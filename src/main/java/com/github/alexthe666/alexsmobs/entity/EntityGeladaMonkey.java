@@ -151,9 +151,9 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(LEADER, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(HAS_TARGET, Boolean.valueOf(false));
+        this.entityData.define(LEADER, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(HAS_TARGET, false);
         this.entityData.define(GRASS_TIME, 0);
     }
 
@@ -166,7 +166,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setSitting(boolean sit) {
@@ -174,7 +174,7 @@ public class EntityGeladaMonkey extends Animal implements IAnimatedEntity, IHerd
     }
 
     public boolean isAggro() {
-        return this.entityData.get(HAS_TARGET).booleanValue();
+        return this.entityData.get(HAS_TARGET);
     }
 
     public void setAggro(boolean sit) {

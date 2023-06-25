@@ -215,7 +215,7 @@ public class EntityFlyingFish extends WaterAnimal implements FlyingAnimal, Bucke
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {

@@ -146,7 +146,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             float standAdd = -0.07F * this.standProgress;
             float radius = standAdd + sitAdd;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -586,23 +586,23 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(HONEYED, Boolean.valueOf(false));
-        this.entityData.define(SNOWY, Boolean.valueOf(false));
-        this.entityData.define(EATING, Boolean.valueOf(false));
+        this.entityData.define(STANDING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(HONEYED, false);
+        this.entityData.define(SNOWY, false);
+        this.entityData.define(EATING, false);
         this.entityData.define(APRIL_FOOLS_MODE, 0);
         this.entityData.define(COMMAND, 0);
     }
 
     public boolean isEating() {
-        return this.entityData.get(EATING).booleanValue();
+        return this.entityData.get(EATING);
     }
 
     public void setEating(boolean eating) {
@@ -610,7 +610,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean isHoneyed() {
-        return this.entityData.get(HONEYED).booleanValue();
+        return this.entityData.get(HONEYED);
     }
 
     public void setHoneyed(boolean honeyed) {
@@ -618,7 +618,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean isSnowy() {
-        return this.entityData.get(SNOWY).booleanValue();
+        return this.entityData.get(SNOWY);
     }
 
     public void setSnowy(boolean honeyed) {
@@ -626,7 +626,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
@@ -651,7 +651,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {

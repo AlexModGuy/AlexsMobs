@@ -81,10 +81,10 @@ public class EntityJerboa extends Animal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(JUMP_ACTIVE, Boolean.valueOf(false));
-        this.entityData.define(BEGGING, Boolean.valueOf(false));
-        this.entityData.define(SLEEPING, Boolean.valueOf(false));
-        this.entityData.define(BEFRIENDED, Boolean.valueOf(false));
+        this.entityData.define(JUMP_ACTIVE, false);
+        this.entityData.define(BEGGING, false);
+        this.entityData.define(SLEEPING, false);
+        this.entityData.define(BEFRIENDED, false);
     }
 
     protected void registerGoals() {
@@ -196,7 +196,7 @@ public class EntityJerboa extends Animal {
     }
 
     public boolean isBegging() {
-        return this.entityData.get(BEGGING).booleanValue();
+        return this.entityData.get(BEGGING);
     }
 
     public void setBegging(boolean begging) {
@@ -204,7 +204,7 @@ public class EntityJerboa extends Animal {
     }
 
     public boolean isSleeping() {
-        return this.entityData.get(SLEEPING).booleanValue();
+        return this.entityData.get(SLEEPING);
     }
 
     public void setSleeping(boolean sleeping) {
@@ -212,7 +212,7 @@ public class EntityJerboa extends Animal {
     }
 
     public boolean isBefriended() {
-        return this.entityData.get(BEFRIENDED).booleanValue();
+        return this.entityData.get(BEFRIENDED);
     }
 
     public void setBefriended(boolean befriended) {

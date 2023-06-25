@@ -453,7 +453,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                     this.yHeadRot = Mth.wrapDegrees(((LivingEntity) mount).yHeadRot + birdYaw);
                     float radius = 0.6F;
                     float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot - 180F + yawAdd));
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    double extraX = radius * Mth.sin(Mth.PI + angle);
                     double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() * 0.45F, mount.getY()), mount.getZ() + extraZ);
                 }
@@ -633,7 +633,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
         final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         final BlockPos ground = getCrowGround(radialPos);
@@ -662,7 +662,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
         final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         final BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getCrowGround(radialPos);
@@ -711,7 +711,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
         if (this.hasPassenger(passenger)) {
             final float radius = 0.3F;
             final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             passenger.setYRot(this.yBodyRot + 90F);
             if (passenger instanceof LivingEntity) {
@@ -1150,7 +1150,7 @@ public class EntityBaldEagle extends TamableAnimal implements IFollower, IFalcon
                             eagle.timeFlying = 0;
                             final float radius = 0.3F;
                             final float angle = (Maths.STARTING_ANGLE * eagle.yBodyRot);
-                            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                            final double extraX = radius * Mth.sin(Mth.PI + angle);
                             final double extraZ = radius * Mth.cos(angle);
                             target.setYRot(eagle.yBodyRot + 90F);
                             if (target instanceof LivingEntity) {

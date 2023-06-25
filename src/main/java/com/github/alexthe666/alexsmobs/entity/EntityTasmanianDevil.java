@@ -123,19 +123,19 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(BASKING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(BASKING, false);
+        this.entityData.define(SITTING, false);
     }
 
 
     public boolean isBasking() {
-        return this.entityData.get(BASKING).booleanValue();
+        return this.entityData.get(BASKING);
     }
 
     public void setBasking(boolean basking) {

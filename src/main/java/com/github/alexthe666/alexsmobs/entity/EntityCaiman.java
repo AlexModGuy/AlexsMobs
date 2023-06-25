@@ -301,7 +301,7 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -325,12 +325,12 @@ public class EntityCaiman extends TamableAnimal implements ISemiAquatic,IFollowe
     }
 
     public Entity getHeldMob() {
-        int id = getHeldMobId();
+        final int id = getHeldMobId();
         return id == -1 ? null : level().getEntity(id);
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {

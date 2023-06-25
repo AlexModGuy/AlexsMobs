@@ -80,11 +80,11 @@ public class EntityFly extends Animal implements FlyingAnimal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(NO_DESPAWN, Boolean.valueOf(false));
+        this.entityData.define(NO_DESPAWN, false);
     }
 
         public boolean isNoDespawn() {
-        return this.entityData.get(NO_DESPAWN).booleanValue();
+        return this.entityData.get(NO_DESPAWN);
     }
 
     public void setNoDespawn(boolean despawn) {

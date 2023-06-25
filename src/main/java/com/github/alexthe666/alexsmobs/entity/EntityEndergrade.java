@@ -92,7 +92,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(BITE_TICK, 0);
-        this.entityData.define(SADDLED, Boolean.valueOf(false));
+        this.entityData.define(SADDLED, false);
     }
 
     protected void registerGoals() {
@@ -181,7 +181,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         if (this.hasPassenger(passenger)) {
             float radius = -0.25F;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -198,7 +198,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     public boolean isSaddled() {
-        return this.entityData.get(SADDLED).booleanValue();
+        return this.entityData.get(SADDLED);
     }
 
     public void setSaddled(boolean saddled) {
@@ -369,7 +369,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             float renderYawOffset = parentEntity.yBodyRot;
             float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.getGroundPosition(radialPos);

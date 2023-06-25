@@ -263,7 +263,7 @@ public class EntityCosmicCod extends Mob implements Bucketable {
     }
 
     public float getFishPitch() {
-        return entityData.get(FISH_PITCH).floatValue();
+        return entityData.get(FISH_PITCH);
     }
 
     public void setFishPitch(float pitch) {

@@ -80,14 +80,14 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(COMMAND, 0);
-        this.entityData.define(JOSTLING, Boolean.valueOf(false));
-        this.entityData.define(SADDLED, Boolean.valueOf(false));
+        this.entityData.define(JOSTLING, false);
+        this.entityData.define(SADDLED, false);
         this.entityData.define(JOSTLE_ANGLE, 0F);
         this.entityData.define(JOSTLER_UUID, Optional.empty());
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -333,7 +333,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         if (this.hasPassenger(passenger)) {
             float radius = 0;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -435,7 +435,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     public boolean isSaddled() {
-        return this.entityData.get(SADDLED).booleanValue();
+        return this.entityData.get(SADDLED);
     }
 
     public void setSaddled(boolean saddled) {
@@ -443,7 +443,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
     }
 
     public boolean isJostling() {
-        return this.entityData.get(JOSTLING).booleanValue();
+        return this.entityData.get(JOSTLING);
     }
 
     public void setJostling(boolean jostle) {

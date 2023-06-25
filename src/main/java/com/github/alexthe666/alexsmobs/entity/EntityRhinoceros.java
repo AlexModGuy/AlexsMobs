@@ -298,11 +298,12 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     private void launch(Entity launch, float angle, float scale) {
-        float rot = 180F + angle + this.getYRot();
-        float hugeScale = 1.0F + random.nextFloat() * 0.5F * scale;
-        float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
-        float x = Mth.sin(rot * Mth.DEG_TO_RAD);
-        float z = -Mth.cos(rot * Mth.DEG_TO_RAD);
+        final float rot = 180F + angle + this.getYRot();
+        final float hugeScale = 1.0F + random.nextFloat() * 0.5F * scale;
+        final float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
+        final float rotRad = rot * Mth.DEG_TO_RAD;
+        final float x = Mth.sin(rotRad);
+        final float z = -Mth.cos(rotRad);
         launch.hasImpulse = true;
         Vec3 vec3 = this.getDeltaMovement();
         Vec3 vec31 = vec3.add((new Vec3(x, 0.0D, z)).normalize().scale(strength));

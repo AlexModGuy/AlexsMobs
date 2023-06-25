@@ -153,9 +153,9 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ANTLERED, Boolean.valueOf(true));
-        this.entityData.define(JOSTLING, Boolean.valueOf(false));
-        this.entityData.define(SNOWY, Boolean.valueOf(false));
+        this.entityData.define(ANTLERED, true);
+        this.entityData.define(JOSTLING, false);
+        this.entityData.define(SNOWY, false);
         this.entityData.define(JOSTLE_ANGLE, 0F);
         this.entityData.define(JOSTLER_UUID, Optional.empty());
     }
@@ -277,7 +277,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
 
 
     public boolean isAntlered() {
-        return this.entityData.get(ANTLERED).booleanValue();
+        return this.entityData.get(ANTLERED);
     }
 
     public void setAntlered(boolean anters) {
@@ -285,7 +285,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     }
 
     public boolean isJostling() {
-        return this.entityData.get(JOSTLING).booleanValue();
+        return this.entityData.get(JOSTLING);
     }
 
     public void setJostling(boolean jostle) {
@@ -310,7 +310,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
     }
 
     public boolean isSnowy() {
-        return this.entityData.get(SNOWY).booleanValue();
+        return this.entityData.get(SNOWY);
     }
 
     public void setSnowy(boolean honeyed) {

@@ -98,7 +98,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
 
 
     public boolean isBurrowed() {
-        return this.entityData.get(BURROWED).booleanValue();
+        return this.entityData.get(BURROWED);
     }
 
     public void setBurrowed(boolean burrowed) {
@@ -106,7 +106,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     }
 
     public boolean isDisturbed() {
-        return this.entityData.get(DISTURBED).booleanValue();
+        return this.entityData.get(DISTURBED);
     }
 
     public void setDisturbed(boolean burrowed) {
@@ -114,7 +114,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -122,7 +122,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     }
 
     public int getStanceTime() {
-        return this.entityData.get(STANCE_TIME).intValue();
+        return this.entityData.get(STANCE_TIME);
     }
 
     public void setStanceTime(int stanceTime) {
@@ -130,7 +130,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     }
 
     public int getAttackTime() {
-        return this.entityData.get(ATTACK_TIME).intValue();
+        return this.entityData.get(ATTACK_TIME);
     }
 
     public void setAttackTime(int attackTime) {
@@ -138,7 +138,7 @@ public class EntityRainFrog extends Animal implements ITargetsDroppedItems,IDanc
     }
 
     public int getDanceTime() {
-        return this.entityData.get(DANCE_TIME).intValue();
+        return this.entityData.get(DANCE_TIME);
     }
 
     public void setDanceTime(int danceTime) {

@@ -331,7 +331,7 @@ public class EntityFrilledShark extends WaterAnimal implements IAnimatedEntity, 
             double d1 = this.random.nextGaussian() * 0.1D;
             float radius = this.getBbWidth() * 0.8F;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             double x = this.getX() + extraX + d0;
             double y = this.getY() + this.getBbHeight() * 0.15F + d1;

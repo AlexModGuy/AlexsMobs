@@ -175,8 +175,9 @@ public class EntityRoadrunner extends Animal {
 
         if (this.level().isClientSide && this.isMeep() && this.onGround() && !this.isInWaterOrBubble() && this.getDeltaMovement().lengthSqr() > 0.03D) {
             Vec3 vector3d = this.getViewVector(0.0F);
-            float f = Mth.cos(this.getYRot() * Mth.DEG_TO_RAD) * 0.2F;
-            float f1 = Mth.sin(this.getYRot() * Mth.DEG_TO_RAD) * 0.2F;
+            final float yRotRad = this.getYRot() * Mth.DEG_TO_RAD;
+            float f = Mth.cos(yRotRad) * 0.2F;
+            float f1 = Mth.sin(yRotRad) * 0.2F;
             float f2 = 1.2F - this.random.nextFloat() * 0.7F;
             for (int i = 0; i < 2; ++i) {
                 this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX() - vector3d.x * (double) f2 + (double) f, this.getY() + random.nextFloat() * 0.2F, this.getZ() - vector3d.z * (double) f2 + (double) f1, 0.0D, 0.0D, 0.0D);

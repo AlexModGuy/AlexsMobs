@@ -38,7 +38,7 @@ public class ParticleSunbirdFeather extends SimpleAnimatedParticle {
         } else {
             this.oRoll = this.roll;
             if (!this.onGround) {
-                float dist = -initialRoll / (this.lifetime - 6) * Math.min(this.age, this.lifetime - 6);
+                //float dist = -initialRoll / (this.lifetime - 6) * Math.min(this.age, this.lifetime - 6);
                 this.roll += 0 + (float)Math.sin(age * 0.3F) * 0.5F * (this.age / (float)lifetime);
             }
             this.move(this.xd, this.yd, this.zd);

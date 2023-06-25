@@ -308,7 +308,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -316,7 +316,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public static boolean isRaccoonFood(ItemStack stack) {
@@ -475,7 +475,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
@@ -483,7 +483,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public boolean isBegging() {
-        return this.entityData.get(BEGGING).booleanValue();
+        return this.entityData.get(BEGGING);
     }
 
     public void setBegging(boolean begging) {
@@ -491,7 +491,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public boolean isWashing() {
-        return this.entityData.get(WASHING).booleanValue();
+        return this.entityData.get(WASHING);
     }
 
     public void setWashing(boolean washing) {
@@ -501,10 +501,10 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(BEGGING, Boolean.valueOf(false));
-        this.entityData.define(WASHING, Boolean.valueOf(false));
+        this.entityData.define(STANDING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(BEGGING, false);
+        this.entityData.define(WASHING, false);
         this.entityData.define(CARPET_COLOR, -1);
         this.entityData.define(COMMAND, 0);
         this.entityData.define(WASH_POS, Optional.empty());

@@ -451,7 +451,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     public boolean hasLeaf() {
-        return this.entityData.get(HAS_LEAF).booleanValue();
+        return this.entityData.get(HAS_LEAF);
     }
 
     public void setLeaf(boolean leaf) {
@@ -459,7 +459,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     public boolean isQueen() {
-        return this.entityData.get(QUEEN).booleanValue();
+        return this.entityData.get(QUEEN);
     }
 
     public void setQueen(boolean queen) {

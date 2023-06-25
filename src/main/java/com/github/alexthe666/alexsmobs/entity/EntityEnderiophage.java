@@ -129,7 +129,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -222,7 +222,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                     this.yRotO = ((LivingEntity) mount).yHeadRot;
                     float radius = mount.getBbWidth();
                     float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot + passengerIndex * 90F));
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    double extraX = radius * Mth.sin(Mth.PI + angle);
                     double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getEyeHeight() * 0.25F, mount.getY()), mount.getZ() + extraZ);
                     if (!mount.isAlive() || mount instanceof Player && ((Player) mount).isCreative()) {
@@ -378,7 +378,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
                 float pitch = -this.getPhagePitch() / 90F;
                 float radius = this.getBbWidth() * 0.2F * -pitch;
                 float angle = (Maths.STARTING_ANGLE * this.getYRot());
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                double extraX = radius * Mth.sin(Mth.PI + angle);
                 double extraY = 0.2F - (1 - pitch) * 0.15F;
                 double extraZ = radius * Mth.cos(angle);
                 double motX = extraX * 8 + random.nextGaussian() * 0.05F;
@@ -518,7 +518,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
     }
 
     public float getPhagePitch() {
-        return entityData.get(PHAGE_PITCH).floatValue();
+        return entityData.get(PHAGE_PITCH);
     }
 
     public void setPhagePitch(float pitch) {
@@ -556,7 +556,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getPhageGround(radialPos);
@@ -586,7 +586,7 @@ public class EntityEnderiophage extends Animal implements Enemy, FlyingAnimal {
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getPhageGround(radialPos);

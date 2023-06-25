@@ -165,7 +165,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -173,7 +173,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -551,7 +551,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + (this.getRandom().nextFloat() * neg) * 0.2F;
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getFlutterGround(radialPos);
@@ -570,7 +570,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getFlutterGround(radialPos);
@@ -777,7 +777,7 @@ public class EntityFlutter extends TamableAnimal implements IFollower, FlyingAni
         public BlockPos getShootFromPos(LivingEntity target) {
             float radius = 3 + parentEntity.getRandom().nextInt(5);
             float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 2, target.getZ() + extraZ);
             if (!parentEntity.isTargetBlocked(Vec3.atCenterOf(radialPos))) {

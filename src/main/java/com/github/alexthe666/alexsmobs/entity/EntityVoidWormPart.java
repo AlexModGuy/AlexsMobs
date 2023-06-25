@@ -190,7 +190,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public int getPortalTicks() {
-        return this.entityData.get(PORTAL_TICKS).intValue();
+        return this.entityData.get(PORTAL_TICKS);
     }
 
     public void setPortalTicks(int ticks) {
@@ -435,7 +435,7 @@ public class EntityVoidWormPart extends LivingEntity implements IHurtableMultipa
     }
 
     public boolean isTail() {
-        return this.entityData.get(TAIL).booleanValue();
+        return this.entityData.get(TAIL);
     }
 
     public void setTail(boolean tail) {

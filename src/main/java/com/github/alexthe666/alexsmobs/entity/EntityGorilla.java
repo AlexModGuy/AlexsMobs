@@ -239,7 +239,7 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
             float standAdd = -0.03F * this.standProgress;
             float radius = standAdd + sitAdd;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -252,14 +252,14 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(SILVERBACK, Boolean.valueOf(false));
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(EATING, Boolean.valueOf(false));
+        this.entityData.define(SILVERBACK, false);
+        this.entityData.define(STANDING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(EATING, false);
     }
 
     public boolean isSilverback() {
-        return this.entityData.get(SILVERBACK).booleanValue();
+        return this.entityData.get(SILVERBACK);
     }
 
     public void setSilverback(boolean silver) {
@@ -267,27 +267,27 @@ public class EntityGorilla extends TamableAnimal implements IAnimatedEntity, ITa
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
-        this.entityData.set(STANDING, Boolean.valueOf(standing));
+        this.entityData.set(STANDING, standing);
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     public boolean isEating() {
-        return this.entityData.get(EATING).booleanValue();
+        return this.entityData.get(EATING);
     }
 
     public void setEating(boolean eating) {
-        this.entityData.set(EATING, Boolean.valueOf(eating));
+        this.entityData.set(EATING, eating);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {

@@ -28,7 +28,7 @@ public class ParticleSkulkBoom extends Particle {
     private float size;
     private float prevSize;
     private float prevAlpha;
-    private float alphaDecrease;
+    private final float alphaDecrease;
 
 
     private ParticleSkulkBoom(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ) {

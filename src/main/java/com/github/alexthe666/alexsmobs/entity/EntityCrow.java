@@ -213,7 +213,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
                 final int i = riding.getPassengers().indexOf(this);
                 final float radius = 0.43F;
                 final float angle = (Maths.STARTING_ANGLE * (((Player) riding).yBodyRot + (i == 0 ? -90 : 90)));
-                final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
                 final double extraZ = radius * Mth.cos(angle);
                 final double extraY = (riding.isShiftKeyDown() ? 1.25D : 1.45D);
                 this.yHeadRot = ((Player) riding).yHeadRot;
@@ -525,7 +525,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
         final float radius = 3.15F * -3 - this.getRandom().nextInt(24) - radiusAdd;
         final float angle = getAngle1();
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         final BlockPos ground = getCrowGround(radialPos);
@@ -556,7 +556,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     public Vec3 getBlockGrounding(Vec3 fleePos) {
         final float radius = 3.15F * -3 - this.getRandom().nextInt(24);
         final float angle = getAngle1();
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), (int) getY(), (int) (fleePos.z() + extraZ));
         BlockPos ground = this.getCrowGround(radialPos);

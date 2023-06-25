@@ -241,7 +241,7 @@ public class EntityCrimsonMosquito extends Monster {
                     this.yRotO = livingEntity.yHeadRot;
                     final float radius = 1F;
                     final float angle = (Maths.STARTING_ANGLE * livingEntity.yBodyRot);
-                    final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    final double extraX = radius * Mth.sin(Mth.PI + angle);
                     final double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getEyeHeight() * 0.25F, mount.getY()), mount.getZ() + extraZ);
                     if (!mount.isAlive() || mount instanceof Player && ((Player) mount).isCreative()) {
@@ -307,7 +307,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public boolean isFlying() {
-        return this.entityData.get(FLYING).booleanValue();
+        return this.entityData.get(FLYING);
     }
 
     public void setFlying(boolean flying) {
@@ -320,7 +320,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public int getLuringLaviathan() {
-        return this.entityData.get(LURING_LAVIATHAN).intValue();
+        return this.entityData.get(LURING_LAVIATHAN);
     }
 
     public void setLuringLaviathan(int lure) {
@@ -328,7 +328,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public int getFleeingEntityId() {
-        return this.entityData.get(FLEEING_ENTITY).intValue();
+        return this.entityData.get(FLEEING_ENTITY);
     }
 
     public void setFleeingEntityId(int lure) {
@@ -344,11 +344,11 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public boolean isShrinking() {
-        return this.entityData.get(SHRINKING).booleanValue();
+        return this.entityData.get(SHRINKING);
     }
 
     public boolean isFromFly() {
-        return this.entityData.get(FROM_FLY).booleanValue();
+        return this.entityData.get(FROM_FLY);
     }
 
     public void setShrink(boolean shrink) {
@@ -369,7 +369,7 @@ public class EntityCrimsonMosquito extends Monster {
 
 
     public boolean isSick() {
-        return this.entityData.get(SICK).booleanValue();
+        return this.entityData.get(SICK);
     }
 
     public void setSick(boolean shrink) {
@@ -671,7 +671,7 @@ public class EntityCrimsonMosquito extends Monster {
             final float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             final float renderYawOffset = parentEntity.yBodyRot;
             final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             final BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
             final BlockPos ground = parentEntity.getGroundPosition(radialPos);
@@ -854,7 +854,7 @@ public class EntityCrimsonMosquito extends Monster {
         public BlockPos getBlockInTargetsViewMosquito(LivingEntity target) {
             final float radius = 4 + parentEntity.getRandom().nextInt(5);
             final float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             final BlockPos ground = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
             if (parentEntity.distanceToSqr(Vec3.atCenterOf(ground)) > 30) {

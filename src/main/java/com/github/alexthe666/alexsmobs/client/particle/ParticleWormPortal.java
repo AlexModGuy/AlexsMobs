@@ -31,8 +31,8 @@ public class ParticleWormPortal extends SimpleAnimatedParticle {
         this.xd *= 0.8D;
         this.yd *= 0.8D;
         this.zd *= 0.8D;
-        double lvt_1_1_ = this.x - this.xo;
-        double lvt_5_1_ = this.z - this.zo;
+//        double lvt_1_1_ = this.x - this.xo;
+//        double lvt_5_1_ = this.z - this.zo;
         this.roll += 0.25F;
         this.setSpriteFromAge(this.sprites);
         this.quadSize = 0.35F * (1F - (this.age / (float)this.lifetime));

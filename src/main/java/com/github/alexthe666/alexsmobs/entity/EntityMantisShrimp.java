@@ -231,7 +231,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         this.entityData.define(PUNCH_TICK, 0);
         this.entityData.define(COMMAND, Integer.valueOf(0));
         this.entityData.define(VARIANT, Integer.valueOf(0));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(SITTING, false);
         this.entityData.define(MOISTNESS, Integer.valueOf(60000));
     }
 
@@ -266,7 +266,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -274,7 +274,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -282,7 +282,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int command) {
@@ -457,7 +457,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
                     double d1 = this.random.nextGaussian() * 0.6D;
                     float radius = this.getBbWidth() * 0.85F;
                     float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle)) + random.nextFloat() * 0.5F - 0.25F;
+                    double extraX = radius * Mth.sin(Mth.PI + angle) + random.nextFloat() * 0.5F - 0.25F;
                     double extraZ = radius * Mth.cos(angle) + random.nextFloat() * 0.5F - 0.25F;
                     ParticleOptions data = ParticleTypes.BUBBLE;
                     this.level().addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.3F + random.nextFloat() * 0.15F, this.getZ() + extraZ, d0, d1, d2);

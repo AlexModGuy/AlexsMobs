@@ -78,7 +78,7 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public boolean isReturning() {
-        return this.entityData.get(RETURNING).booleanValue();
+        return this.entityData.get(RETURNING);
     }
 
     public void setReturning(boolean returning) {
@@ -86,7 +86,7 @@ public class EntityCachalotEcho extends Entity {
     }
 
     public boolean isFasterAnimation() {
-        return this.entityData.get(FASTER_ANIM).booleanValue();
+        return this.entityData.get(FASTER_ANIM);
     }
 
     public void setFasterAnimation(boolean anim) {

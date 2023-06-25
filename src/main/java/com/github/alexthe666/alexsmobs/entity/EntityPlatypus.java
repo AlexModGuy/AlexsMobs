@@ -228,7 +228,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             double motionY = getRandom().nextGaussian() * 0.07D;
             double motionZ = getRandom().nextGaussian() * 0.07D;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot) + i1;
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraY = 0.8F;
             double extraZ = radius * Mth.cos(angle);
             BlockPos ground = this.getBlockPosBelowThatAffectsMyMovement();
@@ -265,8 +265,8 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DIGGING, false);
-        this.entityData.define(SENSING, Boolean.valueOf(false));
-        this.entityData.define(SENSING_VISUAL, Boolean.valueOf(false));
+        this.entityData.define(SENSING, false);
+        this.entityData.define(SENSING_VISUAL, false);
         this.entityData.define(FEDORA, false);
         this.entityData.define(FROM_BUCKET, false);
     }
@@ -280,7 +280,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     }
 
     public boolean isSensing() {
-        return this.entityData.get(SENSING).booleanValue();
+        return this.entityData.get(SENSING);
     }
 
     public void setSensing(boolean sensing) {
@@ -288,7 +288,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     }
 
     public boolean isSensingVisual() {
-        return this.entityData.get(SENSING_VISUAL).booleanValue();
+        return this.entityData.get(SENSING_VISUAL);
     }
 
     public void setSensingVisual(boolean sensing) {
@@ -296,7 +296,7 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
     }
 
     public boolean hasFedora() {
-        return this.entityData.get(FEDORA).booleanValue();
+        return this.entityData.get(FEDORA);
     }
 
     public void setFedora(boolean sensing) {
@@ -388,9 +388,9 @@ public class EntityPlatypus extends Animal implements ISemiAquatic, ITargetsDrop
             for (int j = 0; j < 2; ++j) {
                 float radius = this.getBbWidth() * 0.65F;
                 float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-                double extraX = (radius * (1.5F + random.nextFloat() * 0.3F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
+                double extraX = (radius * (1.5F + random.nextFloat() * 0.3F)) * Mth.sin(Mth.PI + angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
                 double extraZ = (radius * (1.5F + random.nextFloat() * 0.3F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
-                double actualX = radius * Mth.sin((float) (Math.PI + angle));
+                double actualX = radius * Mth.sin(Mth.PI + angle);
                 double actualZ = radius * Mth.cos(angle);
                 double motX = actualX - extraX;
                 double motZ = actualZ - extraZ;

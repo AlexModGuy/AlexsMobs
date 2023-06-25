@@ -64,12 +64,12 @@ public class ShoebillAIFlightFlee extends Goal {
         }
     }
     public BlockPos getBlockInViewAway(Vec3 fleePos) {
-        float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
-        float neg = bird.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = bird.yBodyRot;
-        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
+        final float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
+        final float neg = bird.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = bird.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
+        final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = bird.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
         int distFromGround = (int) bird.getY() - ground.getY();
@@ -82,12 +82,12 @@ public class ShoebillAIFlightFlee extends Goal {
     }
 
     public BlockPos getBlockGrounding(Vec3 fleePos) {
-        float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
-        float neg = bird.getRandom().nextBoolean() ? 1 : -1;
-        float renderYawOffset = bird.yBodyRot;
-        float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
-        double extraZ = radius * Mth.cos(angle);
+        final float radius = 0.75F * (0.7F * 6) * -3 - bird.getRandom().nextInt(24);
+        final float neg = bird.getRandom().nextBoolean() ? 1 : -1;
+        final float renderYawOffset = bird.yBodyRot;
+        final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (bird.getRandom().nextFloat() * neg);
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
+        final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = bird.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);
         if (!bird.isTargetBlocked(Vec3.atCenterOf(ground.above()))) {

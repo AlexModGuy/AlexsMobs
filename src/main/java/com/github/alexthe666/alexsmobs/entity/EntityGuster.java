@@ -205,7 +205,7 @@ public class EntityGuster extends Monster {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -249,7 +249,7 @@ public class EntityGuster extends Monster {
                 radius = 0.2F + (liftingTime * 0.025F);
             }
             float angle = liftingTime * -0.25F;
-            double extraX = this.getX() + radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = this.getX() + radius * Mth.sin(Mth.PI + angle);
             double extraZ = this.getZ() + radius * Mth.cos(angle);
             double d0 = (extraX - lifted.getX()) * resist;
             double d1 = (extraZ - lifted.getZ()) * resist;

@@ -458,7 +458,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public boolean isGrabbing() {
-        return this.entityData.get(GRABBING).booleanValue();
+        return this.entityData.get(GRABBING);
     }
 
     public void setGrabbing(boolean running) {
@@ -466,7 +466,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public boolean isCaptured() {
-        return this.entityData.get(CAPTURED).booleanValue();
+        return this.entityData.get(CAPTURED);
     }
 
     public void setCaptured(boolean running) {
@@ -474,7 +474,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public boolean isBlue() {
-        return this.entityData.get(BLUE).booleanValue();
+        return this.entityData.get(BLUE);
     }
 
     public void setBlue(boolean t) {

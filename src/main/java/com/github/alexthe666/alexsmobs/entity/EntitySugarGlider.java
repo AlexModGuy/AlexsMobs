@@ -148,7 +148,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
         this.entityData.define(GLIDING, false);
         this.entityData.define(FORAGING_TIME, 0);
         this.entityData.define(COMMAND, Integer.valueOf(0));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(SITTING, false);
     }
 
     private void switchNavigator(boolean onGround) {
@@ -337,7 +337,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
                     this.yRotO = ((LivingEntity) mount).yHeadRot;
                     final float radius = 0F;
                     final float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot - 180F));
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    double extraX = radius * Mth.sin(Mth.PI + angle);
                     double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() + 0.1, mount.getY()), mount.getZ() + extraZ);
                     if (!mount.isAlive() || rideCooldown == 0 && mount.isShiftKeyDown()) {
@@ -440,7 +440,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     }
 
     public boolean isGliding() {
-        return this.entityData.get(GLIDING).booleanValue();
+        return this.entityData.get(GLIDING);
     }
 
     public void setGliding(boolean gliding) {
@@ -457,7 +457,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     @Override
     public boolean isOrderedToSit() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -465,7 +465,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {

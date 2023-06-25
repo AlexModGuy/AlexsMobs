@@ -200,7 +200,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         } else if (this.checkInWater()) {
             return Boat.Status.IN_WATER;
         } else {
-            float f = this.getBoatGlide();
+            final float f = this.getBoatGlide();
             if (f > 0.0F) {
                 this.boatGlide = f;
                 return Boat.Status.ON_LAND;
@@ -285,21 +285,25 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             this.lastYd = 0.0D;
             this.status = Boat.Status.IN_WATER;
         } else {
-            if (this.status == Boat.Status.IN_WATER) {
-                d2 = (this.waterLevel - this.getY()) / (double) this.getBbHeight();
-                this.momentum = 0.9F;
-            } else if (this.status == Boat.Status.UNDER_FLOWING_WATER) {
-                d1 = -7.0E-4D;
-                this.momentum = 0.9F;
-            } else if (this.status == Boat.Status.UNDER_WATER) {
-                d2 = 0.01F;
-                this.momentum = 0.45F;
-            } else if (this.status == Boat.Status.IN_AIR) {
-                this.momentum = 0.9F;
-            } else if (this.status == Boat.Status.ON_LAND) {
-                this.momentum = this.boatGlide;
-                if (this.getControllingPassenger() instanceof Player) {
-                    this.boatGlide /= 2.0F;
+            switch (this.status) {
+                case IN_WATER -> {
+                    d2 = (this.waterLevel - this.getY()) / (double) this.getBbHeight();
+                    this.momentum = 0.9F;
+                }
+                case UNDER_FLOWING_WATER -> {
+                    d1 = -7.0E-4D;
+                    this.momentum = 0.9F;
+                }
+                case UNDER_WATER -> {
+                    d2 = 0.01F;
+                    this.momentum = 0.45F;
+                }
+                case IN_AIR -> this.momentum = 0.9F;
+                case ON_LAND -> {
+                    this.momentum = this.boatGlide;
+                    if (this.getControllingPassenger() instanceof Player) {
+                        this.boatGlide /= 2.0F;
+                    }
                 }
             }
 
@@ -314,7 +318,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     public boolean isDefaultColor() {
-        return this.entityData.get(DEFAULT_COLOR).booleanValue();
+        return this.entityData.get(DEFAULT_COLOR);
     }
 
     public void setDefaultColor(boolean bar) {
@@ -414,12 +418,10 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             }
 
             Vec3 vector3d1 = player.getLookAngle();
-            final float f = player.getXRot() * Mth.DEG_TO_RAD;
+
             final double d1 = Math.sqrt(vector3d1.x * vector3d1.x + vector3d1.z * vector3d1.z);
             final double d3 = Math.sqrt((float) vector3d.horizontalDistanceSqr());
-            final double d4 = vector3d1.length();
-            float f1 = Mth.cos(f);
-            f1 = (float) ((double) f1 * (double) f1 * Math.min(1.0D, d4 / 0.4D));
+
             float slow = player.zza < 0 ? 0 : player.zza * 0.115F;
             final float threshold = 0.05F;
             if (this.yRotO - this.getYRot() > threshold) {

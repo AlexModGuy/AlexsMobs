@@ -52,7 +52,7 @@ public class ModelCombJelly extends AdvancedEntityModel<EntityCombJelly> {
         this.body.setScale(squishedScale, heightScale, widthScale);
         this.inner_body.setScale(squishedScale, heightScale, widthScale);
         this.body.rotateAngleX = birdPitch * Mth.DEG_TO_RAD * (1F - landProgress * 0.2F);
-        this.body.rotateAngleZ = landProgress * 0.2F * ((float)Math.PI / 2);
+        this.body.rotateAngleZ = landProgress * 0.2F * Mth.HALF_PI;
         this.body.rotationPointY += landProgress * 1.85F;
         this.body.rotationPointY += Math.abs(birdPitch * 0.07F);
         this.body.rotationPointX += landProgress;

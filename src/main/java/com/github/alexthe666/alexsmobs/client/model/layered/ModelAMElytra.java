@@ -1,11 +1,13 @@
 package com.github.alexthe666.alexsmobs.client.model.layered;
 
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -29,9 +31,9 @@ public class ModelAMElytra extends HumanoidModel {
     }
 
     public ModelAMElytra withAnimations(LivingEntity entity){
-        float partialTick = Minecraft.getInstance().getFrameTime();
-        float limbSwingAmount = entity.walkAnimation.speed(partialTick);
-        float limbSwing = entity.walkAnimation.position() + partialTick;
+        final float partialTick = Minecraft.getInstance().getFrameTime();
+        final float limbSwingAmount = entity.walkAnimation.speed(partialTick);
+        final float limbSwing = entity.walkAnimation.position() + partialTick;
         setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);
         return  this;
     }
@@ -50,10 +52,10 @@ public class ModelAMElytra extends HumanoidModel {
             }
 
             f = f4 * 0.34906584F + (1.0F - f4) * f;
-            f1 = f4 * (-(float)Math.PI / 2F) + (1.0F - f4) * f1;
+            f1 = f4 * (-Mth.HALF_PI) + (1.0F - f4) * f1;
         } else if (entityIn.isCrouching()) {
             f = 0.6981317F;
-            f1 = (-(float)Math.PI / 4F);
+            f1 = -Maths.QUARTER_PI;
             f2 = -1.0F;
             f3 = 0.08726646F;
         }

@@ -158,8 +158,8 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DISPLAYING, Boolean.valueOf(false));
-        this.entityData.define(FROM_BUCKET, Boolean.valueOf(false));
+        this.entityData.define(DISPLAYING, false);
+        this.entityData.define(FROM_BUCKET, false);
         this.entityData.define(DISPLAY_ANGLE, 0F);
         this.entityData.define(DISPLAYER_UUID, Optional.empty());
         this.entityData.define(MOUTH_TICKS, 0);
@@ -261,7 +261,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean isDisplaying() {
-        return this.entityData.get(DISPLAYING).booleanValue();
+        return this.entityData.get(DISPLAYING);
     }
 
     public void setDisplaying(boolean display) {
@@ -348,7 +348,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {

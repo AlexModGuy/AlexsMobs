@@ -196,10 +196,10 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(TURN_ANGLE, 0F);
-        this.entityData.define(SPIKES, Boolean.valueOf(true));
-        this.entityData.define(BIPEDAL, Boolean.valueOf(false));
-        this.entityData.define(SPIKE_SHAKING, Boolean.valueOf(false));
-        this.entityData.define(TACKLING, Boolean.valueOf(false));
+        this.entityData.define(SPIKES, true);
+        this.entityData.define(BIPEDAL, false);
+        this.entityData.define(SPIKE_SHAKING, false);
+        this.entityData.define(TACKLING, false);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -487,7 +487,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     public boolean hasSpikes() {
-        return this.entityData.get(SPIKES).booleanValue();
+        return this.entityData.get(SPIKES);
     }
 
     public void setSpiked(boolean bar) {
@@ -495,7 +495,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     public boolean isTackling() {
-        return this.entityData.get(TACKLING).booleanValue();
+        return this.entityData.get(TACKLING);
     }
 
     public void setTackling(boolean bar) {
@@ -503,7 +503,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     public boolean isBipedal() {
-        return this.entityData.get(BIPEDAL).booleanValue();
+        return this.entityData.get(BIPEDAL);
     }
 
     public void setBipedal(boolean bar) {
@@ -511,7 +511,7 @@ public class EntityFroststalker extends Animal implements IAnimatedEntity, ISemi
     }
 
     public boolean isSpikeShaking() {
-        return this.entityData.get(SPIKE_SHAKING).booleanValue();
+        return this.entityData.get(SPIKE_SHAKING);
     }
 
     public void setSpikeShaking(boolean bar) {

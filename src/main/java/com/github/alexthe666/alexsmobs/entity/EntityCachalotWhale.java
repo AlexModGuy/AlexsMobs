@@ -309,7 +309,7 @@ public class EntityCachalotWhale extends Animal {
             final float radius = this.headPart.getBbWidth() * 0.5F;
             for (int j = 0; j < 5 + random.nextInt(4); ++j) {
                 final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-                final double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
+                final double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin(Mth.PI + angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
                 final double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
                 final double motX = this.random.nextGaussian();
                 final double motZ = this.random.nextGaussian();
@@ -327,7 +327,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public boolean isSleeping() {
-        return this.entityData.get(SLEEPING).booleanValue();
+        return this.entityData.get(SLEEPING);
     }
 
     public void setSleeping(boolean charging) {
@@ -335,7 +335,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public boolean isBeached() {
-        return this.entityData.get(BEACHED).booleanValue();
+        return this.entityData.get(BEACHED);
     }
 
     public void setBeached(boolean charging) {
@@ -343,7 +343,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public boolean isGrabbing() {
-        return this.entityData.get(GRABBING).booleanValue();
+        return this.entityData.get(GRABBING);
     }
 
     public void setGrabbing(boolean charging) {
@@ -351,7 +351,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public boolean isHoldingSquidLeft() {
-        return this.entityData.get(HOLDING_SQUID_LEFT).booleanValue();
+        return this.entityData.get(HOLDING_SQUID_LEFT);
     }
 
     public void setHoldingSquidLeft(boolean charging) {
@@ -359,7 +359,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public boolean isAlbino() {
-        return this.entityData.get(ALBINO).booleanValue();
+        return this.entityData.get(ALBINO);
     }
 
     public void setAlbino(boolean albino) {
@@ -376,7 +376,7 @@ public class EntityCachalotWhale extends Animal {
     }
 
     public boolean isDespawnBeach() {
-        return this.entityData.get(DESPAWN_BEACH).booleanValue();
+        return this.entityData.get(DESPAWN_BEACH);
     }
 
     public void setDespawnBeach(boolean despawn) {
@@ -627,7 +627,7 @@ public class EntityCachalotWhale extends Animal {
                             final EntityCachalotEcho echo = new EntityCachalotEcho(this.level(), this);
                             final float radius = this.headPart.getBbWidth() * 0.5F;
                             final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-                            final double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
+                            final double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin(Mth.PI + angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
                             final double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
                             final double x = this.headPart.getX() + extraX;
                             final double y = this.headPart.getY() + this.headPart.getBbHeight() * 0.5D;
@@ -767,7 +767,7 @@ public class EntityCachalotWhale extends Animal {
     private Vec3 getVec(final double yShift) {
         final float radius = this.headPart.getBbWidth() * 0.5F;
         final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-        final double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin((float) (Math.PI + angle)) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
+        final double extraX = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.sin(Mth.PI + angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * 2F;
         final double extraZ = (radius * (1F + random.nextFloat() * 0.13F)) * Mth.cos(angle) + (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * 2F;
         final double x = this.headPart.getX() + extraX;
         final double y = this.headPart.getY() + yShift;

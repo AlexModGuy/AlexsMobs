@@ -324,7 +324,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
         final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getToucanGround(radialPos);
@@ -358,7 +358,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
         final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getToucanGround(radialPos);
@@ -426,7 +426,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -434,7 +434,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public int getSaplingTime() {
-        return this.entityData.get(SAPLING_TIME).intValue();
+        return this.entityData.get(SAPLING_TIME);
     }
 
     public void setSaplingTime(int time) {
@@ -446,7 +446,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public int getGoldenTime() {
-        return this.entityData.get(GOLDEN_TIME).intValue();
+        return this.entityData.get(GOLDEN_TIME);
     }
 
     public void setGoldenTime(int goldenTime) {
@@ -454,7 +454,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
     }
 
     public boolean isEnchanted() {
-        return this.entityData.get(ENCHANTED).booleanValue();
+        return this.entityData.get(ENCHANTED);
     }
 
     public void setEnchanted(boolean enchanted) {
@@ -519,7 +519,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
                 final double d1 = this.random.nextGaussian() * 0.02D;
                 final float radius = this.getBbWidth() * 0.65F;
                 final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-                final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
                 final double extraZ = radius * Mth.cos(angle);
                 ParticleOptions data = new BlockParticleOption(ParticleTypes.BLOCK, beneath);
                 this.level().addParticle(data, this.getX() + extraX, this.getY() + 0.1F, this.getZ() + extraZ, d0, d1, d2);
@@ -534,7 +534,7 @@ public class EntityToucan extends Animal implements ITargetsDroppedItems {
             final double d1 = this.random.nextGaussian() * 0.02D;
             final float radius = this.getBbWidth() * 0.65F;
             final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             ParticleOptions data = new ItemParticleOption(ParticleTypes.ITEM, heldItemMainhand);
             if (heldItemMainhand.getItem() instanceof BlockItem) {

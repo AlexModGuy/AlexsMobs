@@ -200,7 +200,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
                 }
             }
             final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -309,7 +309,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
     public boolean isSaddled() {
-        return this.entityData.get(SADDLED).booleanValue();
+        return this.entityData.get(SADDLED);
     }
 
     public void setSaddled(boolean saddled) {

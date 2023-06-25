@@ -221,7 +221,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     public boolean isDancing() {
-        return this.entityData.get(DANCING).booleanValue();
+        return this.entityData.get(DANCING);
     }
 
     public void setDancing(boolean dancing) {
@@ -229,7 +229,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     public boolean isHeadless() {
-        return this.entityData.get(HEADLESS).booleanValue();
+        return this.entityData.get(HEADLESS);
     }
 
     public void setHeadless(boolean head) {
@@ -237,7 +237,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     public boolean hasMaracas() {
-        return this.entityData.get(MARACAS).booleanValue();
+        return this.entityData.get(MARACAS);
     }
 
     public void setMaracas(boolean head) {
@@ -245,7 +245,7 @@ public class EntityCockroach extends Animal implements Shearable, net.minecraftf
     }
 
     public boolean isBreaded() {
-        return this.entityData.get(BREADED).booleanValue();
+        return this.entityData.get(BREADED);
     }
 
     public void setBreaded(boolean breaded) {

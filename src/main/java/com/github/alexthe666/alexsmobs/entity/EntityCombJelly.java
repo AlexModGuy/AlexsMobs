@@ -94,7 +94,7 @@ public class EntityCombJelly extends WaterAnimal implements Bucketable {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {

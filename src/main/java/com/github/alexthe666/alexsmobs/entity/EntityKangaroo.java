@@ -345,7 +345,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -353,7 +353,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
@@ -361,7 +361,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -369,7 +369,7 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     }
 
     public int getVisualFlag() {
-        return this.entityData.get(VISUAL_FLAG).intValue();
+        return this.entityData.get(VISUAL_FLAG);
     }
 
     public void setVisualFlag(int visualFlag) {
@@ -379,9 +379,9 @@ public class EntityKangaroo extends TamableAnimal implements ContainerListener, 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(FORCED_SIT, Boolean.valueOf(false));
+        this.entityData.define(STANDING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(FORCED_SIT, false);
         this.entityData.define(COMMAND, Integer.valueOf(0));
         this.entityData.define(VISUAL_FLAG, Integer.valueOf(0));
         this.entityData.define(POUCH_TICK, Integer.valueOf(0));

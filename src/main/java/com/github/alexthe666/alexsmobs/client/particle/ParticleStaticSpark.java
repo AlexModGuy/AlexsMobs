@@ -84,7 +84,7 @@ public class ParticleStaticSpark extends Particle {
         VertexConsumer portalStatic = VertexMultiConsumer.create(multibuffersource$buffersource.getBuffer(AMRenderTypes.STATIC_PARTICLE), multibuffersource$buffersource.getBuffer(RenderType.entityTranslucent(TEXTURES[textureIndex])));
         PoseStack posestack = new PoseStack();
         PoseStack.Pose posestack$pose = posestack.last();
-        Matrix4f matrix4f = posestack$pose.pose();
+        //Matrix4f matrix4f = posestack$pose.pose();
         Matrix3f matrix3f = posestack$pose.normal();
 
         Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);

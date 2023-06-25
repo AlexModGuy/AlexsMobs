@@ -216,7 +216,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     public boolean isRolling() {
-        return this.entityData.get(ROLLING).booleanValue();
+        return this.entityData.get(ROLLING);
     }
 
     public void setRolling(boolean rolling) {
@@ -224,7 +224,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
     }
 
     public boolean isAngry() {
-        return this.entityData.get(ANGRY).booleanValue();
+        return this.entityData.get(ANGRY);
     }
 
     public void setAngry(boolean angry) {
@@ -434,7 +434,7 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             float radius = EntityRockyRoller.this.getRandom().nextInt(2) + 6 + target.getBbWidth();
             int orbit = EntityRockyRoller.this.getRandom().nextInt(360);
             float angle = (Maths.STARTING_ANGLE * orbit);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             BlockPos circlePos = new BlockPos((int) (target.getX() + extraX), (int) target.getEyeY(), (int) (target.getZ() + extraZ));
             while (!EntityRockyRoller.this.level().getBlockState(circlePos).isAir() && circlePos.getY() < EntityRockyRoller.this.level().getMaxBuildHeight()) {

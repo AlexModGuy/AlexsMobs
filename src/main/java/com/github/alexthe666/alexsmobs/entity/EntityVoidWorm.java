@@ -679,7 +679,7 @@ public class EntityVoidWorm extends Monster {
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
         final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getGround(radialPos);
@@ -697,7 +697,7 @@ public class EntityVoidWorm extends Monster {
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
         final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, 0, fleePos.z() + extraZ);
         BlockPos ground = getHeighestAirAbove(radialPos, slamHeight);

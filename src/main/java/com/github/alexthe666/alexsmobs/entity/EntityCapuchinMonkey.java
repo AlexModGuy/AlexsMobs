@@ -305,7 +305,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
                     this.yRotO = player.yHeadRot;
                     final float radius = 0F;
                     final float angle = (Maths.STARTING_ANGLE * (((LivingEntity) mount).yBodyRot - 180F));
-                    final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    final double extraX = radius * Mth.sin(Mth.PI + angle);
                     final double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getBbHeight() + 0.1, mount.getY()), mount.getZ() + extraZ);
                     attackDecision = true;
@@ -391,7 +391,7 @@ public class EntityCapuchinMonkey extends TamableAnimal implements IAnimatedEnti
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {

@@ -201,7 +201,7 @@ public class EntityHummingbird extends Animal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(FLYING, Boolean.valueOf(false));
+        this.entityData.define(FLYING, false);
         this.entityData.define(VARIANT, 0);
         this.entityData.define(CROPS_POLLINATED, 0);
         this.entityData.define(FEEDER_POS, Optional.empty());
@@ -221,7 +221,7 @@ public class EntityHummingbird extends Animal {
 
 
     public boolean isFlying() {
-        return this.entityData.get(FLYING).booleanValue();
+        return this.entityData.get(FLYING);
     }
 
     public void setFlying(boolean flying) {
@@ -229,7 +229,7 @@ public class EntityHummingbird extends Animal {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -237,7 +237,7 @@ public class EntityHummingbird extends Animal {
     }
 
     public int getCropsPollinated() {
-        return this.entityData.get(CROPS_POLLINATED).intValue();
+        return this.entityData.get(CROPS_POLLINATED);
     }
 
     public void setCropsPollinated(int crops) {

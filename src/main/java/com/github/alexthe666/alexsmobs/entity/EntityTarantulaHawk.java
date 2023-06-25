@@ -259,7 +259,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public boolean isNether() {
-        return this.entityData.get(NETHER).booleanValue();
+        return this.entityData.get(NETHER);
     }
 
     public void setNether(boolean sit) {
@@ -267,7 +267,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public boolean isScared() {
-        return this.entityData.get(SCARED).booleanValue();
+        return this.entityData.get(SCARED);
     }
 
     public void setScared(boolean sit) {
@@ -275,7 +275,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -283,7 +283,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public boolean isDragging() {
-        return this.entityData.get(DRAGGING).booleanValue();
+        return this.entityData.get(DRAGGING);
     }
 
     public void setDragging(boolean sit) {
@@ -291,7 +291,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public boolean isDigging() {
-        return this.entityData.get(DIGGING).booleanValue();
+        return this.entityData.get(DIGGING);
     }
 
     public void setDigging(boolean sit) {
@@ -565,7 +565,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         this.setXRot(0);
         float radius = 1.0F + passenger.getBbWidth() * 0.5F;
         float angle = (Maths.STARTING_ANGLE * (this.yBodyRot - 180));
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         double extraY = 0;
         passenger.setPos(this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ);
@@ -584,7 +584,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getCrowGround(radialPos);
@@ -610,7 +610,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), (int) getY(), (int) (fleePos.z() + extraZ));
         BlockPos ground = this.getCrowGround(radialPos);
@@ -647,7 +647,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -700,7 +700,7 @@ public class EntityTarantulaHawk extends TamableAnimal implements IFollower {
                 } else {
                     final float angle = (Maths.STARTING_ANGLE * (parentEntity.yBodyRot + 90));
                     final float radius = (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
-                    final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    final double extraX = radius * Mth.sin(Mth.PI + angle);
                     final double extraZ = radius * Mth.cos(angle);
                     Vec3 vector3d1 = vector3d.scale(this.speedModifier * 0.05D / d0);
                     Vec3 strafPlus = new Vec3(extraX, 0, extraZ).scale(0.003D * Math.min(d0, 100));

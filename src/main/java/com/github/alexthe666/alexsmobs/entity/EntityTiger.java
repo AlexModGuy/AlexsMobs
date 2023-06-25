@@ -394,7 +394,7 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
                 this.setXRot(0);
                 final float radius = 1.0F + this.getTarget().getBbWidth() * 0.5F;
                 final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-                final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
                 final double extraZ = radius * Mth.cos(angle);
                 final double extraY = -0.5F;
                 Vec3 minus = new Vec3(this.getX() + extraX - this.getTarget().getX(), this.getY() + extraY - this.getTarget().getY(), this.getZ() + extraZ - this.getTarget().getZ());

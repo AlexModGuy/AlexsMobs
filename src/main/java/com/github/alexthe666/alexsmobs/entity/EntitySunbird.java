@@ -186,7 +186,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             final float radius = 0.35F + random.nextFloat() * 3.5F;
             final float angle = (Maths.STARTING_ANGLE * ((random.nextBoolean() ? -85F : 85F) + this.yBodyRot));
             final float angleMotion = (Maths.STARTING_ANGLE * this.yBodyRot);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             final double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
             final double extraZMotion = -0.2F * Mth.cos(angleMotion);
@@ -446,7 +446,7 @@ public class EntitySunbird extends Animal implements FlyingAnimal {
             final float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             final float renderYawOffset = parentEntity.yBodyRot;
             final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, 0, parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, radialPos);

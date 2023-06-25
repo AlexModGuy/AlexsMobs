@@ -103,7 +103,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
         this.entityData.define(EAR_PITCH, 0F);
         this.entityData.define(EAR_YAW, 0F);
         this.entityData.define(SHAKING_TIME, 0);
-        this.entityData.define(DANCING, Boolean.valueOf(false));
+        this.entityData.define(DANCING, false);
     }
 
     public float getEarYaw() {
@@ -123,7 +123,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
     }
 
     public boolean isDancing() {
-        return this.entityData.get(DANCING).booleanValue();
+        return this.entityData.get(DANCING);
     }
 
     public void setDancing(boolean dancing) {
@@ -222,7 +222,7 @@ public class EntityManedWolf extends Animal implements ITargetsDroppedItems, IDa
             double d1 = this.random.nextGaussian() * 0.02D;
             float radius = this.getBbWidth() * 0.65F;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             ParticleOptions data = new ItemParticleOption(ParticleTypes.ITEM, heldItemMainhand);
             if (heldItemMainhand.getItem() instanceof BlockItem) {

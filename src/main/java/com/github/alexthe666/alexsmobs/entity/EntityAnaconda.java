@@ -284,7 +284,7 @@ public class EntityAnaconda extends Animal implements ISemiAquatic {
                 final LivingEntity target = this.getTarget();
                 final float radius = this.getTarget().getBbWidth() * -0.5F;
                 final float angle = (Maths.STARTING_ANGLE * (target.yBodyRot - 45F));
-                final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
                 final double extraZ = radius * Mth.cos(angle);
                 Vec3 targetVec = new Vec3(extraX + target.getX(), target.getY(1.0F), extraZ + target.getZ());
                 Vec3 moveVec = targetVec.subtract(this.position()).scale(1F);

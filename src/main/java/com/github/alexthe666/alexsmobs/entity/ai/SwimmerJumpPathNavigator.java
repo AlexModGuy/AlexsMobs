@@ -63,7 +63,7 @@ public class SwimmerJumpPathNavigator  extends PathNavigation {
     protected void followThePath() {
         if (this.path != null) {
             Vec3 vector3d = this.getTempMobPos();
-            float f = this.mob.getBbWidth();
+            final float f = this.mob.getBbWidth();
             float f1 = f > 0.75F ? f * 0.75F : 0.75F - f / 2.0F;
             Vec3 vector3d1 = this.mob.getDeltaMovement();
             if (Math.abs(vector3d1.x) > 0.2D || Math.abs(vector3d1.z) > 0.2D) {

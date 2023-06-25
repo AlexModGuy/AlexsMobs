@@ -217,8 +217,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
                 this.setNoGravity(false);
             }
         }
-        if (!this.level().isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 9) {
-            float f1 = this.getYRot() * Mth.DEG_TO_RAD;
+        if (!this.level().isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 9 && this.hasLineOfSight(this.getTarget())) {
             getTarget().knockback(0.3F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }

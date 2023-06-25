@@ -419,7 +419,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
                 this.setXRot(0);
                 final float radius = attackProgress * 0.2F * 1.2F * (getTongueLength() - getTongueLength() * 0.4F);
                 final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-                final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
                 final double extraZ = radius * Mth.cos(angle);
                 final double yHelp = entityIn.getBbHeight();
                 Vec3 minus = new Vec3(this.getX() + extraX - this.getTarget().getX(), this.getEyeHeight() - yHelp - this.getTarget().getY(), this.getZ() + extraZ - this.getTarget().getZ());

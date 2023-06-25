@@ -256,7 +256,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
                 final double motionY = getRandom().nextGaussian() * 0.07D;
                 final double motionZ = getRandom().nextGaussian() * 0.07D;
                 final float angle = (Maths.STARTING_ANGLE * this.yBodyRot) + i1;
-                final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
                 final double extraZ = radius * Mth.cos(angle);
                 BlockPos ground = getMoscoGround(new BlockPos(Mth.floor(this.getX() + extraX), Mth.floor(this.getY() + extraY) - 1, Mth.floor(this.getZ() + extraZ)));
                 BlockState state = this.level().getBlockState(ground);
@@ -319,7 +319,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getMoscoGround(radialPos);
@@ -342,7 +342,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getMoscoGround(radialPos);
@@ -398,7 +398,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             }
             float radius = 2F;
             float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             double extraY = tick < 10 ? 0 : 0.15F * Mth.clamp(tick - 10, 0, 15);
             passenger.setPos(this.getX() + extraX, this.getY() + extraY + 0.1F, this.getZ() + extraZ);
@@ -615,7 +615,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
             final float radius = 10 + EntityWarpedMosco.this.getRandom().nextInt(8);
             //float neg = EntityWarpedMosco.this.getRandom().nextBoolean() ? 1 : -1;
             final float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + EntityWarpedMosco.this.getRandom().nextInt(180)));
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
             BlockPos ground = radialPos;

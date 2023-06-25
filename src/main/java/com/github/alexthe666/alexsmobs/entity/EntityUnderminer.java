@@ -92,7 +92,6 @@ public class EntityUnderminer extends PathfinderMob {
         if (reason == MobSpawnType.SPAWNER) {
             return true;
         }else{
-            int i = iServerWorld.getMaxLocalRawBrightness(pos);
             int j = 3;
             if(pos.getY() >= iServerWorld.getSeaLevel()){
                 return false;
@@ -102,6 +101,7 @@ public class EntityUnderminer extends PathfinderMob {
                 return false;
             }
 
+            final int i = iServerWorld.getMaxLocalRawBrightness(pos);
             return i > random.nextInt(j) ? false : checkMobSpawnRules(entityType, iServerWorld, reason, pos, random);
         }
     }

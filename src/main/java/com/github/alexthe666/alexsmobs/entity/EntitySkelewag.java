@@ -170,7 +170,7 @@ public class EntitySkelewag extends Monster implements IAnimatedEntity {
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int command) {

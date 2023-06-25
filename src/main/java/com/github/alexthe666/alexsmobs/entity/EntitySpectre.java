@@ -86,7 +86,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     }
 
     public int getCardinalInt() {
-        return this.entityData.get(CARDINAL_ORDINAL).intValue();
+        return this.entityData.get(CARDINAL_ORDINAL);
     }
 
     public void setCardinalInt(int command) {

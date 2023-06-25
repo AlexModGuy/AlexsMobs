@@ -275,7 +275,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             final float wingSpread = 15F + 65 * fly + random.nextInt(5);
             final float angle = (Maths.STARTING_ANGLE * ((random.nextBoolean() ? -1 : 1) * (wingSpread + 180) + this.yBodyRot));
             final float angleMotion = (Maths.STARTING_ANGLE * this.yBodyRot);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             final double mov = this.getDeltaMovement().length();
             final double extraXMotion = -mov * Mth.sin((float) (Math.PI + angleMotion));
@@ -515,7 +515,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             final float neg = vulture.getRandom().nextBoolean() ? 1 : -1;
             final float renderYawOffset = vulture.yBodyRot;
             final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (vulture.getRandom().nextFloat() * neg);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = new BlockPos((int) (vulture.getX() + extraX), (int) vulture.getY(), (int) (vulture.getZ() + extraZ));
             while(level().isEmptyBlock(radialPos) && radialPos.getY() > 2){

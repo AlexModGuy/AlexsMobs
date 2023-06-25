@@ -387,7 +387,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
             final double d1 = this.random.nextGaussian() * 0.02D;
             final float radius = this.getBbWidth() * 0.65F;
             final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             ParticleOptions data = new ItemParticleOption(ParticleTypes.ITEM, heldItemMainhand);
             if (heldItemMainhand.getItem() instanceof BlockItem) {
@@ -465,7 +465,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
         final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getSeagullGround(radialPos);
@@ -494,7 +494,7 @@ public class EntitySeagull extends Animal implements ITargetsDroppedItems {
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
         final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = AMBlockPos.fromCoords(fleePos.x() + extraX, getY(), fleePos.z() + extraZ);
         BlockPos ground = this.getSeagullGround(radialPos);

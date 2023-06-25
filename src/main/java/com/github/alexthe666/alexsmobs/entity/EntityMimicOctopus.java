@@ -430,7 +430,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -671,7 +671,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -695,7 +695,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     public boolean isUpgraded() {
-        return this.entityData.get(FROM_BUCKET).booleanValue();
+        return this.entityData.get(FROM_BUCKET);
     }
 
     public void setUpgraded(boolean sit) {
@@ -703,7 +703,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
     }
 
     public boolean isStopChange() {
-        return this.entityData.get(STOP_CHANGE).booleanValue();
+        return this.entityData.get(STOP_CHANGE);
     }
 
     public void setStopChange(boolean sit) {
@@ -844,7 +844,7 @@ public class EntityMimicOctopus extends TamableAnimal implements ISemiAquatic, I
         float neg = this.getRandom().nextBoolean() ? 1 : -1;
         float renderYawOffset = this.yBodyRot;
         float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
-        double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = radius * Mth.sin(Mth.PI + angle);
         double extraZ = radius * Mth.cos(angle);
         BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         BlockPos ground = getOctopusGround(radialPos);

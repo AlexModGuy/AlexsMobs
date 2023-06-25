@@ -87,7 +87,7 @@ public class EntityEmu extends Animal implements IAnimatedEntity, IHerdPanic {
     }
     
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {

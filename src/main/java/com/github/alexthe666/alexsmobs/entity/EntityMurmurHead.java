@@ -375,7 +375,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
             }
             float angle = (Maths.STARTING_ANGLE * (parentEntity.yBodyRot + 90));
             float radius = (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraY = radius * -Math.cos(angle - Math.PI / 2);
             double extraZ = radius * Mth.cos(angle);
             Vec3 strafPlus = new Vec3(extraX, extraY, extraZ);
@@ -474,7 +474,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
                         float circleDistance = 2.5F;
                         float circlingTime = 30 * time;
                         float angle = (Maths.STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
-                        double extraX = circleDistance * Mth.sin((float) (Math.PI + angle));
+                        double extraX = circleDistance * Mth.sin(Mth.PI + angle);
                         double extraZ = circleDistance * Mth.cos(angle);
                         double y = Math.max(emergeFrom.y + 2, target.getEyeY());
                         Vec3 vec3 = new Vec3(emergeFrom.x + extraX, y, emergeFrom.z + extraZ);

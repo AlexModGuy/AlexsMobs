@@ -171,19 +171,24 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
             boolean validBelowState = belowState.isFaceSturdy(level(), this.getBlockPosBelowThatAffectsMyMovement(), Direction.UP);
             LivingEntity attackTarget = this.getTarget();
             if (attackTarget != null && distanceTo(attackTarget) < attackTarget.getBbWidth() + this.getBbWidth() + 1 && this.hasLineOfSight(attackTarget)) {
-                if (this.getAnimation() == ANIMATION_BITE && this.getAnimationTick() == 6) {
-                    attackTarget.knockback(0.5F, Mth.sin(this.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(this.getYRot() * Mth.DEG_TO_RAD));
-                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-                }
-                if ((this.getAnimation() == ANIMATION_SWIPE_L) && this.getAnimationTick() == 9) {
-                    float rot = getYRot() + 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
-                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-                }
-                if ((this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 9) {
-                    float rot = getYRot() - 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
-                    this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                if (this.getAnimationTick() == 6) {
+                    if (this.getAnimation() == ANIMATION_BITE) {
+                        final float yRotRad = this.getYRot() * Mth.DEG_TO_RAD;
+                        attackTarget.knockback(0.5F, Mth.sin(yRotRad), -Mth.cos(yRotRad));
+                        this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    }
+                } else if (this.getAnimationTick() == 9) {
+                    if (this.getAnimation() == ANIMATION_SWIPE_L) {
+                        final float rot = getYRot() + 90;
+                        final float rotRad = rot * Mth.DEG_TO_RAD;
+                        attackTarget.knockback(0.5F, Mth.sin(rotRad), -Mth.cos(rotRad));
+                        this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    } else if (this.getAnimation() == ANIMATION_SWIPE_R) {
+                        final float rot = getYRot() - 90;
+                        final float rotRad = rot * Mth.DEG_TO_RAD;
+                        attackTarget.knockback(0.5F, Mth.sin(rotRad), -Mth.cos(rotRad));
+                        this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+                    }
                 }
             }
             if ((attackTarget == null || attackTarget != null && !attackTarget.isAlive()) && random.nextInt(300) == 0 && this.onGround() && !this.isUpsideDown() && this.getY() + 2 < worldHeight.getY()) {
@@ -201,7 +206,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
             if (this.isUpsideDown()) {
                 jumpingUp = false;
                 this.setNoGravity(!this.onGround());
-                float f = 0.91F;
+                final float f = 0.91F;
                 this.setDeltaMovement(this.getDeltaMovement().multiply(f, 1F, f));
                 if (!this.verticalCollision) {
                     if (this.onGround() || validBelowState || upwardsFallingTicks > 5) {
@@ -246,11 +251,11 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
     }
 
     public boolean isUpsideDown() {
-        return this.entityData.get(UPSIDE_DOWN).booleanValue();
+        return this.entityData.get(UPSIDE_DOWN);
     }
 
     public void setUpsideDown(boolean upsideDown) {
-        this.entityData.set(UPSIDE_DOWN, Boolean.valueOf(upsideDown));
+        this.entityData.set(UPSIDE_DOWN, upsideDown);
     }
 
     protected BlockPos getPositionAbove() {
@@ -317,10 +322,10 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
 
     private void launch(Entity e, boolean huge) {
         if (e.onGround()) {
-            double d0 = e.getX() - this.getX();
-            double d1 = e.getZ() - this.getZ();
-            double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
-            float f = 0.5F;
+            final double d0 = e.getX() - this.getX();
+            final double d1 = e.getZ() - this.getZ();
+            final double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+            final float f = 0.5F;
             e.push(d0 / d2 * f, huge ? 0.5D : 0.2F, d1 / d2 * f);
         }
     }
@@ -343,7 +348,7 @@ public class EntityDropBear extends Monster implements IAnimatedEntity {
                 double motionY = getRandom().nextGaussian() * 0.07D;
                 double motionZ = getRandom().nextGaussian() * 0.07D;
                 float angle = (Maths.STARTING_ANGLE * this.yBodyRot) + i1;
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                double extraX = radius * Mth.sin(Mth.PI + angle);
                 double extraY = 0.8F;
                 double extraZ = radius * Mth.cos(angle);
                 BlockPos ground = getGroundPosition(new BlockPos(Mth.floor(this.getX() + extraX), (int) this.getY(), Mth.floor(this.getZ() + extraZ)));

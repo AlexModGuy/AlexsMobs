@@ -170,7 +170,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     }
 
     public boolean isAngry() {
-        return this.entityData.get(ANGRY).booleanValue();
+        return this.entityData.get(ANGRY);
     }
 
     public void setAngry(boolean angry) {
@@ -218,7 +218,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
     }
 
     public boolean hasEmerged() {
-        return this.entityData.get(HAS_EMERGED).booleanValue();
+        return this.entityData.get(HAS_EMERGED);
     }
 
     public void setHasEmerged(boolean emerged) {
@@ -566,7 +566,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
             float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             float renderYawOffset = parentEntity.getYRot();
             float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F * (parentEntity.getRandom().nextFloat() * neg);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = new BlockPos((int) (parentEntity.getX() + extraX), (int) parentEntity.getY(), (int) (parentEntity.getZ() + extraZ));
             BlockPos ground = getFarseerGround(radialPos).above(2 + parentEntity.random.nextInt(2));
@@ -692,7 +692,7 @@ public class EntityFarseer extends Monster implements IAnimatedEntity {
         public void tick() {
             float angle = (Maths.STARTING_ANGLE * (parentEntity.yBodyRot + 90));
             float radius = (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraY = radius * -Math.cos(angle - Math.PI / 2);
             double extraZ = radius * Mth.cos(angle);
             Vec3 strafPlus = new Vec3(extraX, extraY, extraZ);

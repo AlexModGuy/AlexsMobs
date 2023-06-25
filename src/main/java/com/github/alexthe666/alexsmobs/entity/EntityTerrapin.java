@@ -337,7 +337,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public int getShellType() {
-        return this.entityData.get(SHELL_TYPE).intValue();
+        return this.entityData.get(SHELL_TYPE);
     }
 
     public void setShellType(int i) {
@@ -345,7 +345,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public int getSkinType() {
-        return this.entityData.get(SKIN_TYPE).intValue();
+        return this.entityData.get(SKIN_TYPE);
     }
 
     public void setSkinType(int i) {
@@ -353,7 +353,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public int getShellColor() {
-        return this.entityData.get(SHELL_COLOR).intValue();
+        return this.entityData.get(SHELL_COLOR);
     }
 
     public void setShellColor(int i) {
@@ -361,7 +361,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public int getSkinColor() {
-        return this.entityData.get(SKIN_COLOR).intValue();
+        return this.entityData.get(SKIN_COLOR);
     }
 
     public void setSkinColor(int i) {
@@ -369,7 +369,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public int getTurtleColor() {
-        return this.entityData.get(TURTLE_COLOR).intValue();
+        return this.entityData.get(TURTLE_COLOR);
     }
 
     public void setTurtleColor(int i) {
@@ -385,7 +385,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public boolean isSpinning() {
-        return this.entityData.get(SPINNING).booleanValue();
+        return this.entityData.get(SPINNING);
     }
 
     public void setSpinning(boolean b) {
@@ -393,7 +393,7 @@ public class EntityTerrapin extends Animal implements ISemiAquatic, Bucketable {
     }
 
     public boolean hasRetreated() {
-        return this.entityData.get(RETREATED).booleanValue();
+        return this.entityData.get(RETREATED);
     }
 
     public void setRetreated(boolean b) {
