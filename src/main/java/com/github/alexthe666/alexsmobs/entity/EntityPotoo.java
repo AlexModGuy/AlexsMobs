@@ -589,6 +589,8 @@ public class EntityPotoo extends Animal implements IFalconry {
         private int perchingTime = 0;
         private int runCooldown = 0;
 
+        private int pathRecalcTime = 0;
+
         public AIPerch() {
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Flag.LOOK));
         }
@@ -632,6 +634,9 @@ public class EntityPotoo extends Animal implements IFalconry {
             int range = 14;
             for (int i = 0; i < 15; i++) {
                 BlockPos blockpos1 = EntityPotoo.this.blockPosition().offset(random.nextInt(range) - range / 2, 3, random.nextInt(range) - range / 2);
+                if(!EntityPotoo.this.level().isLoaded(blockpos1)){
+                    continue;
+                }
                 while (EntityPotoo.this.level().isEmptyBlock(blockpos1) && blockpos1.getY() > -64) {
                     blockpos1 = blockpos1.below();
                 }
@@ -642,6 +647,10 @@ public class EntityPotoo extends Animal implements IFalconry {
                     break;
                 }
             }
+        }
+
+        public void start(){
+            pathRecalcTime = 0;
         }
 
         @Override
@@ -676,13 +685,18 @@ public class EntityPotoo extends Animal implements IFalconry {
                 final double distX = perch.getX() + 0.5F - EntityPotoo.this.getX();
                 final double distZ = perch.getZ() + 0.5F - EntityPotoo.this.getZ();
                 if (distX * distX + distZ * distZ < 1F || !EntityPotoo.this.isFlying()) {
-                    EntityPotoo.this.getNavigation().moveTo(perch.getX() + 0.5F, perch.getY() + 1.5F, perch.getZ() + 0.5F, 1F);
+                    if(pathRecalcTime <= 0){
+                        pathRecalcTime = EntityPotoo.this.getRandom().nextInt(30) + 30;
+                        EntityPotoo.this.getNavigation().moveTo(perch.getX() + 0.5F, perch.getY() + 1.5F, perch.getZ() + 0.5F, 1F);
+                    }
                     if(EntityPotoo.this.getNavigation().isDone()){
                         EntityPotoo.this.getMoveControl().setWantedPosition(perch.getX() + 0.5F, perch.getY() + 1.5F, perch.getZ() + 0.5F, 1F);
-
                     }
                 } else {
-                    EntityPotoo.this.getNavigation().moveTo(perch.getX() + 0.5F, perch.getY() + 2.5F, perch.getZ() + 0.5F, 1F);
+                    if(pathRecalcTime <= 0) {
+                        pathRecalcTime = EntityPotoo.this.getRandom().nextInt(30) + 30;
+                        EntityPotoo.this.getNavigation().moveTo(perch.getX() + 0.5F, perch.getY() + 2.5F, perch.getZ() + 0.5F, 1F);
+                    }
                 }
                 if (EntityPotoo.this.getBlockPosBelowThatAffectsMyMovement().equals(perch)) {
                     EntityPotoo.this.setDeltaMovement(Vec3.ZERO);
@@ -695,6 +709,9 @@ public class EntityPotoo extends Animal implements IFalconry {
                 } else {
                     EntityPotoo.this.setPerching(false);
                 }
+            }
+            if(pathRecalcTime > 0){
+                pathRecalcTime--;
             }
         }
 
