@@ -87,7 +87,7 @@ public class ItemDimensionalCarver extends Item {
         return 100F;
     }
 
-    public void onUsingTick(ItemStack itemstack, LivingEntity player, int count) {
+    public void onUseTick(Level level, LivingEntity player, ItemStack itemstack, int count) {
         player.swing(player.getUsedItemHand());
         RandomSource random = player.getRandom();
         if (count % 5 == 0) {
