@@ -147,27 +147,28 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
                 this.level().setBlock(down, Blocks.DIRT.defaultBlockState(), 2);
                 this.heal(10);
             }
-            if (this.getTarget() != null && this.getTarget().isAlive()) {
-                this.setAngry(this.distanceTo(this.getTarget()) < 20);
-                double dist = this.distanceTo(this.getTarget());
-                if (hasLineOfSight(this.getTarget())) {
-                    this.lookAt(this.getTarget(), 30, 30);
+            LivingEntity target = this.getTarget();
+            if (target != null && target.isAlive()) {
+                this.setAngry(this.distanceTo(target) < 20);
+                double dist = this.distanceTo(target);
+                if (hasLineOfSight(target)) {
+                    this.lookAt(target, 30, 30);
                     this.yBodyRot = this.getYRot();
                 }
                 if (dist < this.getBbWidth() + 3.0F) {
                     if (this.getAnimation() == NO_ANIMATION) {
                         this.setAnimation(random.nextBoolean() ? ANIMATION_SLASH : ANIMATION_FLING);
                     }
-                    if(dist < this.getBbWidth() + 1.5F && this.hasLineOfSight(this.getTarget())){
+                    if(dist < this.getBbWidth() + 1.5F && this.hasLineOfSight(target)){
                         if (this.getAnimation() == ANIMATION_FLING && this.getAnimationTick() >= 5 && this.getAnimationTick() <= 8) {
                             float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-                            if (this.getTarget() instanceof Raider) {
+                            if (target instanceof Raider) {
                                 dmg = 10;
                             }
-                            attackWithPotion(this.getTarget(), dmg);
-                            launch(this.getTarget(), 0, 1F);
+                            attackWithPotion(target, dmg);
+                            launch(target, 0, 1F);
                             for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
-                                if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != this.getTarget()){
+                                if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != target){
                                     attackWithPotion(entity, Math.max(dmg - 5, 1));
                                     launch(entity, 0, 0.5F);
                                 }
@@ -175,13 +176,13 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
                         }
                         if (this.getAnimation() == ANIMATION_SLASH && (this.getAnimationTick() >= 9 && this.getAnimationTick() <= 11 || this.getAnimationTick() >= 19 && this.getAnimationTick() <= 21)) {
                             float dmg = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-                            if (this.getTarget() instanceof Raider) {
+                            if (target instanceof Raider) {
                                 dmg = 10;
                             }
-                            attackWithPotion(this.getTarget(), dmg);
-                            launch(this.getTarget(), this.getAnimationTick() <= 15 ? -90 : 90, 1F);
+                            attackWithPotion(target, dmg);
+                            launch(target, this.getAnimationTick() <= 15 ? -90 : 90, 1F);
                             for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.0D))) {
-                                if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != this.getTarget()){
+                                if(!(entity instanceof Animal) && !trusts(entity.getUUID()) && entity != target){
                                     attackWithPotion(entity, Math.max(dmg - 5, 1));
                                     launch(entity, this.getAnimationTick() <= 15 ? -90 : 90, 0.5F);
                                 }

@@ -438,7 +438,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         return false;
     }
 
-    protected Vec3 getRiddenInput(LivingEntity player, Vec3 deltaIn) {
+    protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
         if (player.zza != 0) {
             float f = player.zza < 0.0F ? 0.5F : 1.0F;
             Vec3 lookVec = player.getLookAngle();
@@ -475,7 +475,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         }
     }
 
-    protected float getRiddenSpeed(LivingEntity rider) {
+    protected float getRiddenSpeed(Player rider) {
         return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED));
     }
 

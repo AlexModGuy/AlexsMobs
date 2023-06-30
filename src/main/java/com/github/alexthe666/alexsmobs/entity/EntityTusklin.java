@@ -128,7 +128,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
         return this.canAttack(p_21675_);
     }
 
-    protected Vec3 getRiddenInput(LivingEntity player, Vec3 deltaIn) {
+    protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
         return new Vec3(0, 0, 1);
     }
     protected void tickRidden(Player player, Vec3 vec3) {
@@ -142,7 +142,7 @@ public class EntityTusklin extends Animal implements IAnimatedEntity {
     }
 
 
-    protected float getRiddenSpeed(LivingEntity rider) {
+    protected float getRiddenSpeed(Player rider) {
         return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED));
     }
     @Nullable

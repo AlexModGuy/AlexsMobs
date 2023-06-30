@@ -125,7 +125,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         this.targetSelector.addGoal(8, new EntityAINearestTarget3D(this, LivingEntity.class, 180, false, true, AMEntityRegistry.buildPredicateFromTag(AMTagRegistry.KOMODO_DRAGON_TARGETS)));
     }
 
-    protected Vec3 getRiddenInput(LivingEntity player, Vec3 deltaIn) {
+    protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
         if (player.zza != 0) {
             float f = player.zza < 0.0F ? 0.5F : 1.0F;
             return new Vec3(player.xxa * 0.25F, 0.0D, player.zza * 0.5F * f);
@@ -147,7 +147,7 @@ public class EntityKomodoDragon extends TamableAnimal implements ITargetsDropped
         }
     }
 
-    protected float getRiddenSpeed(LivingEntity rider) {
+    protected float getRiddenSpeed(Player rider) {
         return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 2);
     }
 

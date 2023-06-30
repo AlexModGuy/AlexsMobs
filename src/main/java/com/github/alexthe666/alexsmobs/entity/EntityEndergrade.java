@@ -285,7 +285,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         }
     }
 
-    protected Vec3 getRiddenInput(LivingEntity player, Vec3 deltaIn) {
+    protected Vec3 getRiddenInput(Player player, Vec3 deltaIn) {
         if (player.zza != 0) {
             this.setSprinting(true);
             Vec3 lookVec = player.getLookAngle();
@@ -311,7 +311,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         }
     }
 
-    protected float getRiddenSpeed(LivingEntity rider) {
+    protected float getRiddenSpeed(Player rider) {
         return (float)(this.getAttributeValue(Attributes.MOVEMENT_SPEED) * (this.onGround() ? 0.2F : 0.8F));
     }
 
