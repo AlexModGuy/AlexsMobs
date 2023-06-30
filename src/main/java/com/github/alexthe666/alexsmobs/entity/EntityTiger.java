@@ -340,13 +340,13 @@ public class EntityTiger extends Animal implements ICustomCollisions, IAnimatedE
         if (!this.level().isClientSide) {
             if (isRunning() && !hasSpedUp) {
                 hasSpedUp = true;
-                maxUpStep = 1F;
+                this.setMaxUpStep(1F);
                 this.setSprinting(true);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.4F);
             }
             if (!isRunning() && hasSpedUp) {
                 hasSpedUp = false;
-                maxUpStep = 0.6F;
+                this.setMaxUpStep(0.6F);
                 this.setSprinting(false);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25F);
             }

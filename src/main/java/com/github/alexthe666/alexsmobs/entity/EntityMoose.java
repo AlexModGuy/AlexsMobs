@@ -76,7 +76,7 @@ public class EntityMoose extends Animal implements IAnimatedEntity {
 
     protected EntityMoose(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.maxUpStep = 1.1F;
+        this.setMaxUpStep(1.1F);
     }
 
     public static boolean canMooseSpawn(EntityType<? extends Mob> typeIn, ServerLevelAccessor worldIn, MobSpawnType reason, BlockPos pos, RandomSource randomIn) {

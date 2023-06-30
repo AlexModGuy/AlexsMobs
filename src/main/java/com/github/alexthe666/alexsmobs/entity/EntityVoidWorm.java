@@ -317,14 +317,14 @@ public class EntityVoidWorm extends Monster {
                     launch(entity, false);
                 }
             }
-            maxUpStep = 2;
+            this.setMaxUpStep(2F);
         }else{
             this.setDeltaMovement(new Vec3(0, 0.03F, 0));
         }
         yBodyRot = getYRot();
         float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
         this.setXRot(f2);
-        this.maxUpStep = 2;
+        this.setMaxUpStep(2F);
         if (!this.level().isClientSide) {
             Entity child = getChild();
             if (child == null) {

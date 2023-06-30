@@ -71,7 +71,7 @@ public class EntityAlligatorSnappingTurtle extends Animal implements ISemiAquati
         super(type, worldIn);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
-        maxUpStep = 1F;
+        this.setMaxUpStep(1);
     }
 
     protected SoundEvent getAmbientSound() {

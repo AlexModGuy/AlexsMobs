@@ -135,7 +135,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     protected EntityElephant(EntityType type, Level world) {
         super(type, world);
         initElephantInventory();
-        this.maxUpStep = 1.1F;
+        this.setMaxUpStep(1.1F);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -419,9 +419,9 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                     launch(entity, true);
                 }
             }
-            maxUpStep = 2F;
+            this.setMaxUpStep(2F);
         }else{
-            maxUpStep = 1.1F;
+            this.setMaxUpStep(1.1F);
         }
         if (!isTame() && isTrader()) {
             if (!this.level().isClientSide) {
@@ -928,7 +928,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         if(player.zza != 0 || player.xxa != 0){
             this.setRot(player.getYRot(), player.getXRot() * 0.25F);
             this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-            this.maxUpStep = 1;
+            this.setMaxUpStep(1);
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);

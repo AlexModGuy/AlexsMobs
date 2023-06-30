@@ -63,7 +63,7 @@ public class EntitySnowLeopard extends Animal implements IAnimatedEntity, ITarge
 
     protected EntitySnowLeopard(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.maxUpStep = 2F;
+        this.setMaxUpStep(2F);
     }
 
 

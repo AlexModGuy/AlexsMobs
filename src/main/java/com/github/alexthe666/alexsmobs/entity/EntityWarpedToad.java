@@ -358,7 +358,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         prevSwimProgress = swimProgress;
         prevJumpProgress = jumpProgress;
         prevReboundProgress = reboundProgress;
-        this.maxUpStep = 1;
+        this.setMaxUpStep(1);
 
         boolean isTechnicalBlinking = this.tickCount % 50 > 42;
         if (isTechnicalBlinking && blinkProgress < 5F) {

@@ -505,10 +505,10 @@ public class EntityGiantSquid extends WaterAnimal {
             boolean flag1 = movement.y != vec3.y;
             boolean flag2 = movement.z != vec3.z;
             boolean flag3 = this.onGround() || flag1 && movement.y < 0.0D;
-            if (this.maxUpStep > 0.0F && flag3 && (flag || flag2)) {
-                Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, this.maxUpStep, movement.z), aabb, this.level(), list);
-                Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, this.maxUpStep, 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level(), list);
-                if (vec32.y < (double) this.maxUpStep) {
+            if (this.getStepHeight() > 0.0F && flag3 && (flag || flag2)) {
+                Vec3 vec31 = collideBoundingBox(this, new Vec3(movement.x, this.getStepHeight(), movement.z), aabb, this.level(), list);
+                Vec3 vec32 = collideBoundingBox(this, new Vec3(0.0D, this.getStepHeight(), 0.0D), aabb.expandTowards(movement.x, 0.0D, movement.z), this.level(), list);
+                if (vec32.y < (double) this.getStepHeight()) {
                     Vec3 vec33 = collideBoundingBox(this, new Vec3(movement.x, 0.0D, movement.z), aabb.move(vec32), this.level(), list).add(vec32);
                     if (vec33.horizontalDistanceSqr() > vec31.horizontalDistanceSqr()) {
                         vec31 = vec33;

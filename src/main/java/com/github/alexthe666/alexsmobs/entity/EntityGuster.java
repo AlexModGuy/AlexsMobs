@@ -59,7 +59,7 @@ public class EntityGuster extends Monster {
 
     protected EntityGuster(EntityType type, Level worldIn) {
         super(type, worldIn);
-        this.maxUpStep = 1;
+        this.setMaxUpStep(1);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
     }
 

@@ -76,7 +76,7 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
 
     protected EntityBison(EntityType<? extends Animal> animal, Level lvl) {
         super(animal, lvl);
-        this.maxUpStep = 1.1F;
+        this.setMaxUpStep(1.1F);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

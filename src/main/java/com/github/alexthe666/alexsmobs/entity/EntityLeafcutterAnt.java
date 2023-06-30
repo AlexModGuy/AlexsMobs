@@ -265,7 +265,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         if (attachChangeProgress > 0F) {
             attachChangeProgress -= 0.25F;
         }
-        this.maxUpStep = isQueen() ? 1F : 0.5F;
+        this.setMaxUpStep(isQueen() ? 1F : 0.5F);
         Vec3 vector3d = this.getDeltaMovement();
         if (!this.level().isClientSide && !this.isQueen()) {
             this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.onGround());

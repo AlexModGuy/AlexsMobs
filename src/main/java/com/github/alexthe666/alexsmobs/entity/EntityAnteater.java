@@ -77,7 +77,7 @@ public class EntityAnteater extends Animal implements NeutralMob, IAnimatedEntit
 
     protected EntityAnteater(EntityType type, Level world) {
         super(type, world);
-        this.maxUpStep = 1;
+        this.setMaxUpStep(1);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

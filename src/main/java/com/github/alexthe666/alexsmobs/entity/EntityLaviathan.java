@@ -113,7 +113,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
 
     protected EntityLaviathan(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
-        maxUpStep = 1.3F;
+        this.setMaxUpStep(1.3F);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
@@ -467,7 +467,7 @@ public class EntityLaviathan extends Animal implements ISemiAquatic, IHerdPanic 
         }
         if(player.zza != 0 || player.xxa != 0){
             this.setYRot(player.getYRot());
-            this.maxUpStep = 1;
+            this.setMaxUpStep(1);
             this.getNavigation().stop();
             this.setTarget(null);
             this.setSprinting(true);

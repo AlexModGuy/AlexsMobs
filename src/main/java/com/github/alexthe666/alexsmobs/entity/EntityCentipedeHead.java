@@ -51,7 +51,7 @@ public class EntityCentipedeHead extends Monster {
     protected EntityCentipedeHead(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.xpReward = 13;
-        this.maxUpStep = 3;
+        this.setMaxUpStep(3);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {

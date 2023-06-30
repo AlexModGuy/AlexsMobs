@@ -141,9 +141,9 @@ public class EntityRockyRoller extends Monster implements ICustomCollisions {
             if (this.rollCounter > 2 && !this.isMoving() || !this.isAlive()) {
                 this.setRolling(false);
             }
-            maxUpStep = 1;
+            this.setMaxUpStep(1F);
         } else {
-            maxUpStep = 0.66F;
+            this.setMaxUpStep(0.66F);
             this.rollCounter = 0;
         }
         if (rollCooldown > 0) {

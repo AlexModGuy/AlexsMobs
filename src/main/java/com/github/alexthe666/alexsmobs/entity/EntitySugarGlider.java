@@ -197,7 +197,7 @@ public class EntitySugarGlider extends TamableAnimal implements IFollower {
 
     public void tick() {
         super.tick();
-        maxUpStep = 1F;
+        this.setMaxUpStep(1F);
         prevGlideProgress = glideProgress;
         prevAttachChangeProgress = attachChangeProgress;
         prevForageProgress = forageProgress;

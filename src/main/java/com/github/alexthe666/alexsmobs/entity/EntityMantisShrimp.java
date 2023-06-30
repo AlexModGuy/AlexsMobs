@@ -92,7 +92,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(false);
-        this.maxUpStep = 1;
+        this.setMaxUpStep(1);
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
