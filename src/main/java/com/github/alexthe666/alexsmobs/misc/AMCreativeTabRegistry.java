@@ -19,6 +19,7 @@ public class AMCreativeTabRegistry {
 
     public static final RegistryObject<CreativeModeTab> TAB = DEF_REG.register(AlexsMobs.MODID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + AlexsMobs.MODID))
+            .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .icon(() -> new ItemStack(AMItemRegistry.TAB_ICON.get()))
             .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
             .displayItems((enabledFeatures, output) -> {

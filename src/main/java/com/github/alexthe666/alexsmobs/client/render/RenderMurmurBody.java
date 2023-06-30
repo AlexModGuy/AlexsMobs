@@ -29,7 +29,7 @@ public class RenderMurmurBody extends MobRenderer<EntityMurmur, ModelMurmurBody>
 
     public void render(EntityMurmur body, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         super.render(body, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-        if(renderWithHead){
+        if (renderWithHead || body.shouldRenderFakeHead()) {
             float f = Mth.rotLerp(partialTicks, body.yBodyRotO, body.yBodyRot);
             float f7 = this.getBob(body, partialTicks);
             ResourceLocation loc = this.getTextureLocation(body);
