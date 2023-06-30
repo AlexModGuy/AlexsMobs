@@ -388,7 +388,7 @@ public class EntityWarpedMosco extends Monster implements IAnimatedEntity {
     }
 
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
-        super.positionRider(passenger);
+        super.positionRider(passenger, moveFunc);
         if (hasPassenger(passenger)) {
             int tick = 5;
             if (this.getAnimation() == ANIMATION_SUCK) {
