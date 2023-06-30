@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 
 public class DirectPathNavigator extends GroundPathNavigation {
 
-    private Mob mob;
+    private final Mob mob;
     private float yMobOffset = 0;
 
     public DirectPathNavigator(Mob mob, Level world) {

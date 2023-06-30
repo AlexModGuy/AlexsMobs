@@ -141,7 +141,7 @@ public class RenderTiger extends MobRenderer<EntityTiger, ModelTiger> {
     private <E extends Entity> void renderLeash(EntityTiger tiger, float p_115463_, PoseStack p_115464_, MultiBufferSource p_115465_, E p_115466_) {
         p_115464_.pushPose();
         Vec3 vec3 = p_115466_.getRopeHoldPosition(p_115463_);
-        double d0 = (double)(Mth.lerp(p_115463_, tiger.yBodyRot, tiger.yBodyRotO) * ((float)Math.PI / 180F)) + (Math.PI / 2D);
+        double d0 = (double)(Mth.lerp(p_115463_, tiger.yBodyRot, tiger.yBodyRotO) * Mth.DEG_TO_RAD) + (Math.PI / 2D);
         Vec3 vec31 = tiger.getLeashOffset(p_115463_);
         double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
         double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;

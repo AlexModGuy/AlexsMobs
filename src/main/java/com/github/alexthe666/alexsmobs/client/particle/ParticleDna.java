@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -45,7 +46,7 @@ public class ParticleDna extends SimpleAnimatedParticle {
         }
         this.alpha = subAlpha;
         this.setSpriteFromAge(this.sprites);
-        this.roll += (float)Math.random() * ((float)Math.PI * 0.3F * alpha);
+        this.roll += (float)Math.random() * (Mth.PI * 0.3F * alpha);
     }
 
     @Override

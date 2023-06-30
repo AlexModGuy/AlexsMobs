@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityRainFrog;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -132,11 +133,11 @@ public class ModelRainFrog extends AdvancedEntityModel<EntityRainFrog> {
         progressPositionPrev(body, burrowProgress, 0F, 5F, 0F, 5f);
         progressPositionPrev(tongue, 5f - attackProgress, 0F, 0, 3F, 5f);
         progressPositionPrev(body, attackProgress, 0F, 0, -2F, 5f);
-        progressRotationPrev(body, attackProgress, (float)Math.toRadians(-10F), 0, 0, 5f);
-        progressRotationPrev(right_leg, attackProgress, (float)Math.toRadians(10F), 0, 0, 5f);
-        progressRotationPrev(left_leg, attackProgress, (float)Math.toRadians(10F), 0, 0, 5f);
-        progressRotationPrev(left_arm, attackProgress, (float)Math.toRadians(10F), 0, 0, 5f);
-        progressRotationPrev(right_arm, attackProgress, (float)Math.toRadians(10F), 0, 0, 5f);
+        progressRotationPrev(body, attackProgress, Maths.rad(-10F), 0, 0, 5f);
+        progressRotationPrev(right_leg, attackProgress, Maths.rad(10F), 0, 0, 5f);
+        progressRotationPrev(left_leg, attackProgress, Maths.rad(10F), 0, 0, 5f);
+        progressRotationPrev(left_arm, attackProgress, Maths.rad(10F), 0, 0, 5f);
+        progressRotationPrev(right_arm, attackProgress, Maths.rad(10F), 0, 0, 5f);
         progressPositionPrev(left_leg, attackProgress, 0F, -1, 0F, 5f);
         progressPositionPrev(right_leg, attackProgress, 0F, -1, 0F, 5f);
         progressPositionPrev(body, stanceProgress, 0F, -2F, 0F, 5f);

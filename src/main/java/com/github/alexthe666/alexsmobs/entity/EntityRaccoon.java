@@ -308,7 +308,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -316,7 +316,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public static boolean isRaccoonFood(ItemStack stack) {
@@ -346,30 +346,39 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
         this.prevBegProgress = this.begProgress;
         this.prevWashProgress = this.washProgress;
         this.prevSitProgress = this.sitProgress;
-        if (this.isStanding() && standProgress < 5) {
-            standProgress += 1;
+
+        if (this.isStanding()) {
+            if (standProgress < 5F)
+                standProgress++;
+        } else {
+            if (standProgress > 0F)
+                standProgress--;
         }
-        if (!this.isStanding() && standProgress > 0) {
-            standProgress -= 1;
+
+        if (this.isBegging()) {
+            if (begProgress < 5F)
+                begProgress++;
+        } else {
+            if (begProgress > 0F)
+                begProgress--;
         }
-        if (this.isBegging() && begProgress < 5) {
-            begProgress += 1;
+
+        if (this.isWashing()) {
+            if (washProgress < 5F)
+                washProgress++;
+        } else {
+            if (washProgress > 0F)
+                washProgress--;
         }
-        if (!this.isBegging() && begProgress > 0) {
-            begProgress -= 1;
+
+        if (this.isSitting()) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (this.isWashing() && washProgress < 5) {
-            washProgress += 1;
-        }
-        if (!this.isWashing() && washProgress > 0) {
-            washProgress -= 1;
-        }
-        if (this.isSitting() && sitProgress < 5) {
-            sitProgress += 1;
-        }
-        if (!this.isSitting() && sitProgress > 0) {
-            sitProgress -= 1;
-        }
+
         if (isStanding() && ++standingTime > maxStandTime) {
             this.setStanding(false);
             standingTime = 0;
@@ -403,7 +412,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
             }
         }
         if (!this.level().isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.distanceTo(this.getTarget()) < 4 && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5) {
-            float f1 = this.getYRot() * ((float) Math.PI / 180F);
+            float f1 = this.getYRot() * Mth.DEG_TO_RAD;
             this.setDeltaMovement(this.getDeltaMovement().add((double) (-Mth.sin(f1) * -0.06F), 0.0D, (double) (Mth.cos(f1) * -0.06F)));
             this.getTarget().knockback(0.35F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
@@ -466,7 +475,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
@@ -474,7 +483,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public boolean isBegging() {
-        return this.entityData.get(BEGGING).booleanValue();
+        return this.entityData.get(BEGGING);
     }
 
     public void setBegging(boolean begging) {
@@ -482,7 +491,7 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     }
 
     public boolean isWashing() {
-        return this.entityData.get(WASHING).booleanValue();
+        return this.entityData.get(WASHING);
     }
 
     public void setWashing(boolean washing) {
@@ -492,10 +501,10 @@ public class EntityRaccoon extends TamableAnimal implements IAnimatedEntity, IFo
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(BEGGING, Boolean.valueOf(false));
-        this.entityData.define(WASHING, Boolean.valueOf(false));
+        this.entityData.define(STANDING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(BEGGING, false);
+        this.entityData.define(WASHING, false);
         this.entityData.define(CARPET_COLOR, -1);
         this.entityData.define(COMMAND, 0);
         this.entityData.define(WASH_POS, Optional.empty());

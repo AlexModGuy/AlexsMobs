@@ -80,9 +80,9 @@ public class EntityTossedItem extends ThrowableItemProjectile {
     public void lerpMotion(double x, double y, double z) {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
-            float f = Mth.sqrt((float) (x * x + z * z));
-            this.setXRot((float)(Mth.atan2(y, (double)f) * (double)(180F / (float)Math.PI)));
-            this.setYRot( (float)(Mth.atan2(x, z) * (double)(180F / (float)Math.PI)));
+            final float f = Mth.sqrt((float) (x * x + z * z));
+            this.setXRot((float)(Mth.atan2(y, (double)f) * (double)Mth.RAD_TO_DEG));
+            this.setYRot( (float)(Mth.atan2(x, z) * (double)Mth.RAD_TO_DEG));
             this.xRotO = this.getXRot();
             this.yRotO = this.getYRot();
             this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -94,8 +94,8 @@ public class EntityTossedItem extends ThrowableItemProjectile {
         super.tick();
         Vec3 vector3d = this.getDeltaMovement();
         float f = Mth.sqrt((float) vector3d.horizontalDistanceSqr());
-        this.setXRot(lerpRotation(this.xRotO, (float)(Mth.atan2(vector3d.y, (double)f) * (double)(180F / (float)Math.PI))));
-        this.setYRot( lerpRotation(this.yRotO, (float)(Mth.atan2(vector3d.x, vector3d.z) * (double)(180F / (float)Math.PI))));
+        this.setXRot(lerpRotation(this.xRotO, (float)(Mth.atan2(vector3d.y, (double)f) * (double)Mth.RAD_TO_DEG)));
+        this.setYRot( lerpRotation(this.yRotO, (float)(Mth.atan2(vector3d.x, vector3d.z) * (double)Mth.RAD_TO_DEG)));
     }
 
     protected static float lerpRotation(float p_234614_0_, float p_234614_1_) {

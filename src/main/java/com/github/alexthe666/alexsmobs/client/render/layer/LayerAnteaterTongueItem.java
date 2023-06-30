@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 public class LayerAnteaterTongueItem extends RenderLayer<EntityAnteater, ModelAnteater> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/leafcutter_ant.png");
-    private ModelLeafcutterAnt ANT_MODEL = new ModelLeafcutterAnt();
+    private final ModelLeafcutterAnt ANT_MODEL = new ModelLeafcutterAnt();
 
     public LayerAnteaterTongueItem(RenderAnteater render) {
         super(render);

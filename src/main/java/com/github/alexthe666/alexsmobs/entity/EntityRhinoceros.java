@@ -10,6 +10,8 @@ import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -70,7 +72,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     private static final EntityDataAccessor<Optional<UUID>> DATA_TRUSTED_ID_0 = SynchedEntityData.defineId(EntityRhinoceros.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Optional<UUID>> DATA_TRUSTED_ID_1 = SynchedEntityData.defineId(EntityRhinoceros.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> ANGRY = SynchedEntityData.defineId(EntityRhinoceros.class, EntityDataSerializers.BOOLEAN);
-    private static final HashMap<String, Integer> potionToColor = new HashMap<String, Integer>();
+    private static final Object2IntMap<String> potionToColor = new Object2IntOpenHashMap<>();
     private int animationTick;
     private Animation currentAnimation;
 
@@ -231,7 +233,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
         if (s.isEmpty()) {
             return -1;
         } else {
-            if (potionToColor.get(s) == null) {
+            if (!potionToColor.containsKey(s)) {
                 MobEffect effect = getPotionEffect();
                 if (effect != null) {
                     int color = effect.getColor();
@@ -240,7 +242,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
                 }
                 return -1;
             } else {
-                return potionToColor.get(s);
+                return potionToColor.getInt(s);
             }
         }
     }
@@ -296,11 +298,12 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     private void launch(Entity launch, float angle, float scale) {
-        float rot = 180F + angle + this.getYRot();
-        float hugeScale = 1.0F + random.nextFloat() * 0.5F * scale;
-        float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
-        float x = Mth.sin(rot * ((float) Math.PI / 180F));
-        float z = -Mth.cos(rot * ((float) Math.PI / 180F));
+        final float rot = 180F + angle + this.getYRot();
+        final float hugeScale = 1.0F + random.nextFloat() * 0.5F * scale;
+        final float strength = (float) (hugeScale *  (1.0D - ((LivingEntity) launch).getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)));
+        final float rotRad = rot * Mth.DEG_TO_RAD;
+        final float x = Mth.sin(rotRad);
+        final float z = -Mth.cos(rotRad);
         launch.hasImpulse = true;
         Vec3 vec3 = this.getDeltaMovement();
         Vec3 vec31 = vec3.add((new Vec3(x, 0.0D, z)).normalize().scale(strength));
@@ -344,7 +347,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     public boolean isAngry() {
-        return this.entityData.get(ANGRY).booleanValue();
+        return this.entityData.get(ANGRY);
     }
 
     public void setAngry(boolean angry) {
@@ -480,7 +483,7 @@ public class EntityRhinoceros extends Animal implements IAnimatedEntity {
     }
 
     private boolean trustsAny() {
-        return !this.entityData.get(DATA_TRUSTED_ID_0).isEmpty() || !this.entityData.get(DATA_TRUSTED_ID_1).isEmpty();
+        return this.entityData.get(DATA_TRUSTED_ID_0).isPresent() || this.entityData.get(DATA_TRUSTED_ID_1).isPresent();
     }
 
     class DefendTrustedTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {

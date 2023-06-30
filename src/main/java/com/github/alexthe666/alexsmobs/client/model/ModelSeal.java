@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntitySeal;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -8,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
     public final AdvancedModelBox root;
@@ -105,11 +107,11 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         float diggingProgress = entity.prevDigProgress + (entity.digProgress - entity.prevDigProgress) * partialTick;
         float bobbingProgress = entity.prevBobbingProgress + (entity.bobbingProgress - entity.prevBobbingProgress) * partialTick;
         int baskType = entity.isTearsEasterEgg() ? -1 : entity.getId() % 5;
-        progressRotationPrev(body, diggingProgress,  (float) Math.toRadians(70), 0, 0, 5F);
-        progressRotationPrev(head, diggingProgress,  (float) Math.toRadians(10), 0, 0, 5F);
-        progressRotationPrev(tail, diggingProgress,  (float) Math.toRadians(-10), 0, 0, 5F);
-        progressRotationPrev(leftArm, diggingProgress, 0,  (float) Math.toRadians(30), 0, 5F);
-        progressRotationPrev(rightArm, diggingProgress,  0,  (float) Math.toRadians(-30), 0, 5F);
+        progressRotationPrev(body, diggingProgress,  Maths.rad(70), 0, 0, 5F);
+        progressRotationPrev(head, diggingProgress,  Maths.rad(10), 0, 0, 5F);
+        progressRotationPrev(tail, diggingProgress,  Maths.rad(-10), 0, 0, 5F);
+        progressRotationPrev(leftArm, diggingProgress, 0,  Maths.rad(30), 0, 5F);
+        progressRotationPrev(rightArm, diggingProgress,  0,  Maths.rad(-30), 0, 5F);
         progressPositionPrev(body, diggingProgress, 0, -12F, 2, 5F);
         progressPositionPrev(leftArm, diggingProgress, -1, 0, -2, 5F);
         progressPositionPrev(rightArm, diggingProgress, 1, 0, -2, 5F);
@@ -124,13 +126,13 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
         if (baskProgress > 0 && !entity.isTearsEasterEgg()) {
             this.walk(head, 0.05F, 0.2F, true, 1F, -0.1F, ageInTicks, 1);
             if (baskType == 0) {
-                progressRotationPrev(body, baskProgress, 0, 0, (float) Math.toRadians(70), 5F);
-                progressRotationPrev(head, baskProgress, 0, (float) Math.toRadians(-20), (float) Math.toRadians(20), 5F);
-                progressRotationPrev(leftArm, baskProgress, 0, 0, (float) Math.toRadians(110), 5F);
-                progressRotationPrev(rightArm, baskProgress, 0, 0, (float) Math.toRadians(-120), 5F);
-                progressRotationPrev(tail, baskProgress, 0, (float) Math.toRadians(15), (float) Math.toRadians(-20), 5F);
-                progressRotationPrev(leftLeg, baskProgress, 0, (float) Math.toRadians(-15), 0, 5F);
-                progressRotationPrev(rightLeg, baskProgress, 0, (float) Math.toRadians(35), (float) Math.toRadians(30), 5F);
+                progressRotationPrev(body, baskProgress, 0, 0, Maths.rad(70), 5F);
+                progressRotationPrev(head, baskProgress, 0, Maths.rad(-20), Maths.rad(20), 5F);
+                progressRotationPrev(leftArm, baskProgress, 0, 0, Maths.rad(110), 5F);
+                progressRotationPrev(rightArm, baskProgress, 0, 0, Maths.rad(-120), 5F);
+                progressRotationPrev(tail, baskProgress, 0, Maths.rad(15), Maths.rad(-20), 5F);
+                progressRotationPrev(leftLeg, baskProgress, 0, Maths.rad(-15), 0, 5F);
+                progressRotationPrev(rightLeg, baskProgress, 0, Maths.rad(35), Maths.rad(30), 5F);
                 progressPositionPrev(leftArm, baskProgress, -2, 0, 0, 5F);
                 progressPositionPrev(rightArm, baskProgress, 1, 0, 0, 5F);
                 progressPositionPrev(head, baskProgress, 0, 0, 1, 5F);
@@ -138,13 +140,13 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
                 this.flap(rightArm, 0.05F, 0.2F, true, 3F, -0.1F, ageInTicks, 1);
                 this.flap(leftArm, 0.05F, 0.2F, true, 3F, -0.1F, ageInTicks, 1);
             } else if (baskType == 1) {
-                progressRotationPrev(body, baskProgress, 0, 0, (float) Math.toRadians(-70), 5F);
-                progressRotationPrev(head, baskProgress, 0, (float) Math.toRadians(20), (float) Math.toRadians(-20), 5F);
-                progressRotationPrev(rightArm, baskProgress, 0, 0, (float) Math.toRadians(-110), 5F);
-                progressRotationPrev(leftArm, baskProgress, 0, 0, (float) Math.toRadians(120), 5F);
-                progressRotationPrev(tail, baskProgress, 0, (float) Math.toRadians(-15), (float) Math.toRadians(20), 5F);
-                progressRotationPrev(rightLeg, baskProgress, 0, (float) Math.toRadians(15), 0, 5F);
-                progressRotationPrev(leftLeg, baskProgress, 0, (float) Math.toRadians(-35), (float) Math.toRadians(-30), 5F);
+                progressRotationPrev(body, baskProgress, 0, 0, Maths.rad(-70), 5F);
+                progressRotationPrev(head, baskProgress, 0, Maths.rad(20), Maths.rad(-20), 5F);
+                progressRotationPrev(rightArm, baskProgress, 0, 0, Maths.rad(-110), 5F);
+                progressRotationPrev(leftArm, baskProgress, 0, 0, Maths.rad(120), 5F);
+                progressRotationPrev(tail, baskProgress, 0, Maths.rad(-15), Maths.rad(20), 5F);
+                progressRotationPrev(rightLeg, baskProgress, 0, Maths.rad(15), 0, 5F);
+                progressRotationPrev(leftLeg, baskProgress, 0, Maths.rad(-35), Maths.rad(-30), 5F);
                 progressPositionPrev(rightArm, baskProgress, 2, 0, 0, 5F);
                 progressPositionPrev(leftArm, baskProgress, -1, 0, 0, 5F);
                 progressPositionPrev(head, baskProgress, 0, 0, 1, 5F);
@@ -152,36 +154,36 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
                 this.flap(rightArm, 0.05F, 0.2F, false, 3F, -0.1F, ageInTicks, 1);
                 this.flap(leftArm, 0.05F, 0.2F, false, 3F, -0.1F, ageInTicks, 1);
             } else if (baskType == 2) {
-                progressRotationPrev(rightArm, baskProgress, 0, 0, (float) Math.toRadians(30), 5F);
-                progressRotationPrev(leftArm, baskProgress, 0, 0, (float) Math.toRadians(-40), 5F);
-                progressRotationPrev(body, baskProgress, 0, 0, (float) Math.toRadians(160), 5F);
-                progressRotationPrev(tail, baskProgress, (float) Math.toRadians(15), 0, 0, 5F);
-                progressRotationPrev(head, baskProgress, (float) Math.toRadians(-10), (float) Math.toRadians(20), (float) Math.toRadians(30), 5F);
+                progressRotationPrev(rightArm, baskProgress, 0, 0, Maths.rad(30), 5F);
+                progressRotationPrev(leftArm, baskProgress, 0, 0, Maths.rad(-40), 5F);
+                progressRotationPrev(body, baskProgress, 0, 0, Maths.rad(160), 5F);
+                progressRotationPrev(tail, baskProgress, Maths.rad(15), 0, 0, 5F);
+                progressRotationPrev(head, baskProgress, Maths.rad(-10), Maths.rad(20), Maths.rad(30), 5F);
                 progressPositionPrev(body, baskProgress, 0, -4, 0, 5F);
                 progressPositionPrev(rightArm, baskProgress, 1, 0, 0, 5F);
                 progressPositionPrev(leftArm, baskProgress, -1, 0, 0, 5F);
                 this.flap(rightArm, 0.05F, 0.2F, true, 3F, -0.1F, ageInTicks, 1);
                 this.flap(leftArm, 0.05F, 0.2F, false, 3F, -0.1F, ageInTicks, 1);
             } else if (baskType == 3) {
-                progressRotationPrev(body, baskProgress, 0, (float) Math.toRadians(20), 0, 5F);
-                progressRotationPrev(tail, baskProgress, 0, (float) Math.toRadians(25), 0, 5F);
-                progressRotationPrev(head, baskProgress, 0, (float) Math.toRadians(-20), (float) Math.toRadians(25), 5F);
-                progressRotationPrev(rightArm, baskProgress, 0, (float) Math.toRadians(-20), 0, 5F);
-                progressRotationPrev(leftArm, baskProgress, 0, (float) Math.toRadians(30), 0, 5F);
-                progressRotationPrev(leftLeg, baskProgress, 0, (float) Math.toRadians(30), 0, 5F);
-                progressRotationPrev(rightLeg, baskProgress, 0, (float) Math.toRadians(30), 0, 5F);
+                progressRotationPrev(body, baskProgress, 0, Maths.rad(20), 0, 5F);
+                progressRotationPrev(tail, baskProgress, 0, Maths.rad(25), 0, 5F);
+                progressRotationPrev(head, baskProgress, 0, Maths.rad(-20), Maths.rad(25), 5F);
+                progressRotationPrev(rightArm, baskProgress, 0, Maths.rad(-20), 0, 5F);
+                progressRotationPrev(leftArm, baskProgress, 0, Maths.rad(30), 0, 5F);
+                progressRotationPrev(leftLeg, baskProgress, 0, Maths.rad(30), 0, 5F);
+                progressRotationPrev(rightLeg, baskProgress, 0, Maths.rad(30), 0, 5F);
                 progressPositionPrev(head, baskProgress, 0, -1, 0, 5F);
                 this.flap(rightArm, 0.05F, 0.2F, true, 3F, -0.1F, ageInTicks, 1);
                 this.flap(leftArm, 0.05F, 0.2F, false, 3F, -0.1F, ageInTicks, 1);
             } else if (baskType == 4) {
-                progressRotationPrev(body, baskProgress, 0, (float) Math.toRadians(-20), 0, 5F);
-                progressRotationPrev(tail, baskProgress, 0, (float) Math.toRadians(-25), 0, 5F);
-                progressRotationPrev(head, baskProgress, 0, (float) Math.toRadians(20), (float) Math.toRadians(-25), 5F);
-                progressRotationPrev(rightArm, baskProgress, 0, (float) Math.toRadians(30), 0, 5F);
-                progressRotationPrev(leftArm, baskProgress, 0, (float) Math.toRadians(-20), 0, 5F);
+                progressRotationPrev(body, baskProgress, 0, Maths.rad(-20), 0, 5F);
+                progressRotationPrev(tail, baskProgress, 0, Maths.rad(-25), 0, 5F);
+                progressRotationPrev(head, baskProgress, 0, Maths.rad(20), Maths.rad(-25), 5F);
+                progressRotationPrev(rightArm, baskProgress, 0, Maths.rad(30), 0, 5F);
+                progressRotationPrev(leftArm, baskProgress, 0, Maths.rad(-20), 0, 5F);
                 progressPositionPrev(head, baskProgress, 0, -1, 0, 5F);
-                progressRotationPrev(leftLeg, baskProgress, 0, (float) Math.toRadians(-30), 0, 5F);
-                progressRotationPrev(rightLeg, baskProgress, 0, (float) Math.toRadians(-30), 0, 5F);
+                progressRotationPrev(leftLeg, baskProgress, 0, Maths.rad(-30), 0, 5F);
+                progressRotationPrev(rightLeg, baskProgress, 0, Maths.rad(-30), 0, 5F);
                 this.flap(rightArm, 0.05F, 0.2F, true, 3F, -0.1F, ageInTicks, 1);
                 this.flap(leftArm, 0.05F, 0.2F, false, 3F, -0.1F, ageInTicks, 1);
             }
@@ -201,7 +203,7 @@ public class ModelSeal extends AdvancedEntityModel<EntitySeal> {
             this.swing(rightArm, walkSpeed, walkDegree, false, 2F, -0.2F, limbSwing, limbSwingAmount);
             this.swing(leftArm, walkSpeed, walkDegree, true, 2F, -0.2F, limbSwing, limbSwingAmount);
         } else {
-            this.body.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+            this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
             this.body.rotationPointY += (float) (Math.sin(limbSwing * swimSpeed) * (double) limbSwingAmount * (double) swimDegree * 9D - (limbSwingAmount * swimDegree * 9D));
             this.chainWave(bodyParts, swimSpeed, swimDegree, -3F, limbSwing, limbSwingAmount);
             this.flap(rightArm, swimSpeed, swimDegree * 2.5F, true, 3F, 0, limbSwing, limbSwingAmount);

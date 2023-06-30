@@ -36,7 +36,7 @@ public abstract class EntityMobProjectile extends Entity {
     }
 
     protected Vec3 calcOffsetVec(Vec3 offset, float xRot, float yRot){
-        return offset.xRot(xRot * ((float)Math.PI / 180F)).yRot(-yRot * ((float)Math.PI / 180F));
+        return offset.xRot(xRot * Mth.DEG_TO_RAD).yRot(-yRot * Mth.DEG_TO_RAD);
     }
 
     protected static float lerpRotation(float f, float f1) {
@@ -76,8 +76,6 @@ public abstract class EntityMobProjectile extends Entity {
         double d1 = this.getY() + vector3d.y;
         double d2 = this.getZ() + vector3d.z;
         this.updateRotation();
-        float f = 0.99F;
-        float f1 = 0.06F;
         if (this.level().getBlockStates(this.getBoundingBox()).noneMatch(BlockBehaviour.BlockStateBase::isAir) && (!isInWater() || removeInWater())) {
             this.remove(RemovalReason.DISCARDED);
         } else if (this.isInWaterOrBubble() && this.removeInWater()) {
@@ -167,16 +165,16 @@ public abstract class EntityMobProjectile extends Entity {
         Vec3 vector3d = (new Vec3(x, y, z)).normalize().add(this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy, this.random.nextGaussian() * (double) 0.0075F * (double) inaccuracy).scale(velocity);
         this.setDeltaMovement(vector3d);
         float f = Mth.sqrt((float) vector3d.horizontalDistanceSqr());
-        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI)));
-        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI)));
+        this.setYRot((float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG));
+        this.setXRot((float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG));
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
     }
 
     public void shootFromRotation(Entity p_234612_1_, float p_234612_2_, float p_234612_3_, float p_234612_4_, float p_234612_5_, float p_234612_6_) {
-        float f = -Mth.sin(p_234612_3_ * ((float) Math.PI / 180F)) * Mth.cos(p_234612_2_ * ((float) Math.PI / 180F));
-        float f1 = -Mth.sin((p_234612_2_ + p_234612_4_) * ((float) Math.PI / 180F));
-        float f2 = Mth.cos(p_234612_3_ * ((float) Math.PI / 180F)) * Mth.cos(p_234612_2_ * ((float) Math.PI / 180F));
+        float f = -Mth.sin(p_234612_3_ * Mth.DEG_TO_RAD) * Mth.cos(p_234612_2_ * Mth.DEG_TO_RAD);
+        float f1 = -Mth.sin((p_234612_2_ + p_234612_4_) * Mth.DEG_TO_RAD);
+        float f2 = Mth.cos(p_234612_3_ * Mth.DEG_TO_RAD) * Mth.cos(p_234612_2_ * Mth.DEG_TO_RAD);
         this.shoot(f, f1, f2, p_234612_5_, p_234612_6_);
         Vec3 vector3d = p_234612_1_.getDeltaMovement();
         this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, p_234612_1_.onGround() ? 0.0D : vector3d.y, vector3d.z));
@@ -199,8 +197,8 @@ public abstract class EntityMobProjectile extends Entity {
         this.setDeltaMovement(x, y, z);
         if (this.xRotO == 0.0F && this.yRotO == 0.0F) {
             float f = Mth.sqrt((float) (x * x + z * z));
-            this.setXRot((float) (Mth.atan2(y, f) * (double) (180F / (float) Math.PI)));
-            this.setYRot((float) (Mth.atan2(x, z) * (double) (180F / (float) Math.PI)));
+            this.setXRot((float) (Mth.atan2(y, f) * (double) Mth.RAD_TO_DEG));
+            this.setYRot((float) (Mth.atan2(x, z) * (double) Mth.RAD_TO_DEG));
             this.xRotO = this.getXRot();
             this.yRotO = this.getYRot();
             this.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
@@ -232,8 +230,8 @@ public abstract class EntityMobProjectile extends Entity {
     protected void updateRotation() {
         Vec3 vector3d = this.getDeltaMovement();
         float f = Mth.sqrt((float) vector3d.horizontalDistance());
-        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) (180F / (float) Math.PI))));
-        this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) (180F / (float) Math.PI))));
+        this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vector3d.y, f) * (double) Mth.RAD_TO_DEG)));
+        this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vector3d.x, vector3d.z) * (double) Mth.RAD_TO_DEG)));
     }
 }
 

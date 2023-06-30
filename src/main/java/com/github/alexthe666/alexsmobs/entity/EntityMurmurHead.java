@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
@@ -148,7 +149,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
         if(body instanceof EntityMurmur){
             EntityMurmur murmur = (EntityMurmur) body;
             Vec3 bodyBase = murmur.getNeckBottom(partialTick);
-            double sub = top.subtract(bodyBase).horizontalDistance();
+            final double sub = top.subtract(bodyBase).horizontalDistance();
             return sub <= 0.06 ? new Vec3(top.x, bodyBase.y, top.z) : bodyBase;
         }
         return top.add(0, -0.5F, 0);
@@ -295,7 +296,7 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
         double d0 = this.getX() - this.xHair;
         double d1 = this.getY() - this.yHair;
         double d2 = this.getZ() - this.zHair;
-        double d3 = 10.0D;
+
         if (d0 > 10.0D) {
             this.xHair = this.getX();
             this.prevXHair = this.xHair;
@@ -372,9 +373,9 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
             if(EntityMurmurHead.this.isPulledIn()){
                 return;
             }
-            float angle = (0.01745329251F * (parentEntity.yBodyRot + 90));
+            float angle = (Maths.STARTING_ANGLE * (parentEntity.yBodyRot + 90));
             float radius = (float) Math.sin(parentEntity.tickCount * 0.2F) * 2;
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraY = radius * -Math.cos(angle - Math.PI / 2);
             double extraZ = radius * Mth.cos(angle);
             Vec3 strafPlus = new Vec3(extraX, extraY, extraZ);
@@ -396,13 +397,13 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
                 if (attackTarget == null) {
                     if(d0 >= width){
                         Vec3 deltaMovement = parentEntity.getDeltaMovement();
-                        parentEntity.setYRot(-((float) Mth.atan2(deltaMovement.x, deltaMovement.z)) * (180F / (float) Math.PI));
+                        parentEntity.setYRot(-((float) Mth.atan2(deltaMovement.x, deltaMovement.z)) * Mth.RAD_TO_DEG);
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     }
                 } else {
                     double d2 = attackTarget.getX() - parentEntity.getX();
                     double d1 = attackTarget.getZ() - parentEntity.getZ();
-                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
                     parentEntity.yBodyRot = parentEntity.getYRot();
                 }
             } else if (this.operation == MoveControl.Operation.WAIT) {
@@ -472,8 +473,8 @@ public class EntityMurmurHead extends Monster implements FlyingAnimal {
                         boolean clockwise = false;
                         float circleDistance = 2.5F;
                         float circlingTime = 30 * time;
-                        float angle = (0.01745329251F * (clockwise ? -circlingTime : circlingTime));
-                        double extraX = circleDistance * Mth.sin((float) (Math.PI + angle));
+                        float angle = (Maths.STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
+                        double extraX = circleDistance * Mth.sin(Mth.PI + angle);
                         double extraZ = circleDistance * Mth.cos(angle);
                         double y = Math.max(emergeFrom.y + 2, target.getEyeY());
                         Vec3 vec3 = new Vec3(emergeFrom.x + extraX, y, emergeFrom.z + extraZ);

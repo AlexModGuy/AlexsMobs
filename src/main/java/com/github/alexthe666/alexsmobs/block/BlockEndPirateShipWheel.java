@@ -47,20 +47,14 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock implements AMSpecia
     }
 
     public VoxelShape getShape(BlockState p_54561_, BlockGetter p_54562_, BlockPos p_54563_, CollisionContext p_54564_) {
-        switch(p_54561_.getValue(FACING)) {
-            case NORTH:
-                return NORTH_AABB;
-            case SOUTH:
-                return SOUTH_AABB;
-            case EAST:
-                return EAST_AABB;
-            case WEST:
-                return WEST_AABB;
-            case UP:
-                return UP_AABB;
-            default:
-                return DOWN_AABB;
-        }
+        return switch (p_54561_.getValue(FACING)) {
+            case NORTH -> NORTH_AABB;
+            case SOUTH -> SOUTH_AABB;
+            case EAST -> EAST_AABB;
+            case WEST -> WEST_AABB;
+            case UP -> UP_AABB;
+            default -> DOWN_AABB;
+        };
     }
 
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
@@ -74,19 +68,11 @@ public class BlockEndPirateShipWheel extends BaseEntityBlock implements AMSpecia
         if(worldIn.getBlockEntity(pos) instanceof TileEntityEndPirateShipWheel wheel){
             boolean clockwise = false;
             Vec3 offset = hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
-            switch (state.getValue(FACING)){
-                case NORTH:
-                    clockwise = offset.x <= 0.5F;
-                    break;
-                case SOUTH:
-                    clockwise = offset.x >= 0.5F;
-                    break;
-                case EAST:
-                    clockwise = offset.z <= 0.5F;
-                    break;
-                case WEST:
-                    clockwise = offset.z >= 0.5F;
-                    break;
+            switch (state.getValue(FACING)) {
+                case NORTH -> clockwise = offset.x <= 0.5F;
+                case SOUTH -> clockwise = offset.x >= 0.5F;
+                case EAST -> clockwise = offset.z <= 0.5F;
+                case WEST -> clockwise = offset.z >= 0.5F;
             }
             wheel.rotate(clockwise);
             return InteractionResult.SUCCESS;

@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -156,7 +157,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(1, new EntityWarpedToad.TongueAttack(this));
+        this.goalSelector.addGoal(1, new TongueAttack(this));
         this.goalSelector.addGoal(2, new FollowOwner(this, 1.3D, 4.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new AnimalAIFindWater(this));
         this.goalSelector.addGoal(3, new AnimalAILeaveWater(this));
@@ -287,7 +288,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
     }
 
     private void calculateRotationYaw(double x, double z) {
-        this.setYRot( (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F);
+        this.setYRot( (float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) Mth.RAD_TO_DEG) - 90.0F);
     }
 
     public void aiStep() {
@@ -327,27 +328,27 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         super.defineSynchedData();
         this.entityData.define(TONGUE_LENGTH, 1F);
         this.entityData.define(TONGUE_OUT, false);
-        this.entityData.define(COMMAND, Integer.valueOf(0));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(JUMP_ACTIVE, Boolean.valueOf(false));
+        this.entityData.define(COMMAND, 0);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(JUMP_ACTIVE, false);
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.entityData.set(COMMAND, Integer.valueOf(command));
+        this.entityData.set(COMMAND, command);
     }
 
     @Override
     public boolean isOrderedToSit() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     @Override
     public void setOrderedToSit(boolean sit) {
-        this.entityData.set(SITTING, Boolean.valueOf(sit));
+        this.entityData.set(SITTING, sit);
     }
 
     public void tick() {
@@ -360,14 +361,17 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         prevReboundProgress = reboundProgress;
         this.setMaxUpStep(1);
 
-        boolean isTechnicalBlinking = this.tickCount % 50 > 42;
-        if (isTechnicalBlinking && blinkProgress < 5F) {
-            blinkProgress++;
+        final boolean isTechnicalBlinking = this.tickCount % 50 > 42;
+        if (isTechnicalBlinking) {
+            if (blinkProgress < 5F)
+                blinkProgress++;
+        } else {
+            if (blinkProgress > 0F)
+                blinkProgress--;
         }
-        if (!isTechnicalBlinking && blinkProgress > 0F) {
-            blinkProgress--;
-        }
-        if (isTongueOut() && attackProgress < 5F) {
+
+        final boolean isTongueOut = isTongueOut();
+        if (isTongueOut && attackProgress < 5F) {
             attackProgress++;
         }
         if (!this.level().isClientSide) {
@@ -398,12 +402,12 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         LivingEntity entityIn = this.getTarget();
         if (entityIn != null && attackProgress > 0) {
             if (isTongueOut()) {
-                double d0 = entityIn.getX() - this.getX();
-                double d2 = entityIn.getZ() - this.getZ();
-                double d1 = entityIn.getEyeY() - this.getEyeY();
-                double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-                float f = (float) (Mth.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
-                float f1 = (float) (-(Mth.atan2(d1, d3) * (double) (180F / (float) Math.PI)));
+                final double d0 = entityIn.getX() - this.getX();
+                final double d2 = entityIn.getZ() - this.getZ();
+                final double d1 = entityIn.getEyeY() - this.getEyeY();
+                final double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
+                final float f = (float) (Mth.atan2(d2, d0) * (double) Mth.RAD_TO_DEG) - 90.0F;
+                final float f1 = (float) (-(Mth.atan2(d1, d3) * (double) Mth.RAD_TO_DEG));
                 this.setXRot(f1);
                 this.setYRot( f);
                 this.yBodyRot = this.getYRot();
@@ -413,11 +417,11 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
                     ((EntityCrimsonMosquito) entityIn).setShrink(true);
                 }
                 this.setXRot(0);
-                float radius = attackProgress * 0.2F * 1.2F * (getTongueLength() - getTongueLength() * 0.4F);
-                float angle = (0.01745329251F * this.yBodyRot);
-                double extraX = radius * Mth.sin((float) (Math.PI + angle));
-                double extraZ = radius * Mth.cos(angle);
-                double yHelp = entityIn.getBbHeight();
+                final float radius = attackProgress * 0.2F * 1.2F * (getTongueLength() - getTongueLength() * 0.4F);
+                final float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
+                final double extraZ = radius * Mth.cos(angle);
+                final double yHelp = entityIn.getBbHeight();
                 Vec3 minus = new Vec3(this.getX() + extraX - this.getTarget().getX(), this.getEyeHeight() - yHelp - this.getTarget().getY(), this.getZ() + extraZ - this.getTarget().getZ());
                 this.getTarget().setDeltaMovement(minus);
                 if (attackProgress == 0.5F) {
@@ -429,33 +433,37 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
                 }
             }
 
-            if (attackProgress == 5 && (entityIn.getBbHeight() < 0.89D || entityIn instanceof EntityCrimsonMosquito) && !entityIn.hasPassenger(this)) {
-            }
+//            if (attackProgress == 5 && (entityIn.getBbHeight() < 0.89D || entityIn instanceof EntityCrimsonMosquito) && !entityIn.hasPassenger(this)) {
+//            }
         }
-        if (!this.level().isClientSide && isTongueOut() && attackProgress == 5F) {
+        if (!this.level().isClientSide && attackProgress == 5F && isTongueOut) {
             setTongueOut(false);
             attackProgress = 4F;
         }
-        if (!isTongueOut() && attackProgress > 0F) {
+        if (attackProgress > 0F && !isTongueOut()) {
             attackProgress -= 0.5F;
         }
-        if (isOrderedToSit() && sitProgress < 5F) {
-            sitProgress++;
+
+        if (isOrderedToSit()) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (!isOrderedToSit() && sitProgress > 0F) {
-            sitProgress--;
-        }
-        if (shouldSwim() && this.isLandNavigator) {
-            switchNavigator(false);
-        }
-        if (!shouldSwim() && !this.isLandNavigator) {
-            switchNavigator(true);
-        }
-        if (shouldSwim() && swimProgress < 5F) {
-            swimProgress++;
-        }
-        if (!shouldSwim() && swimProgress > 0F) {
-            swimProgress--;
+
+        if (shouldSwim()) {
+            if (this.isLandNavigator)
+                switchNavigator(false);
+
+            if (swimProgress < 5F)
+                swimProgress++;
+        } else {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
+
+            if (swimProgress > 0F)
+                swimProgress--;
         }
     }
 
@@ -528,7 +536,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         return this.getCommand() == 1;
     }
 
-    public class TongueAttack extends Goal {
+    public static class TongueAttack extends Goal {
         private final EntityWarpedToad parentEntity;
         private int spitCooldown = 0;
         private BlockPos shootPos = null;
@@ -558,7 +566,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
             }
             Entity entityIn = parentEntity.getTarget();
             if (entityIn != null) {
-                double dist = parentEntity.distanceTo(entityIn);
+                final double dist = parentEntity.distanceTo(entityIn);
                 if (dist < 8 && this.parentEntity.hasLineOfSight(entityIn)) {
                     if (!parentEntity.isTongueOut() && parentEntity.attackProgress == 0 && spitCooldown == 0) {
                         this.parentEntity.setTongueLength((float) Math.max(1F, dist + 2F));
@@ -573,7 +581,7 @@ public class EntityWarpedToad extends TamableAnimal implements ITargetsDroppedIt
         }
     }
 
-    public class FollowOwner extends Goal {
+    public static class FollowOwner extends Goal {
         private final EntityWarpedToad tameable;
         private final LevelReader world;
         private final double followSpeed;

@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityOrca;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -96,17 +97,17 @@ public class ModelOrca extends AdvancedEntityModel<EntityOrca> {
         animator.setAnimation(EntityOrca.ANIMATION_BITE);
         animator.startKeyframe(5);
         animator.move(body, 0, 0, -5);
-        animator.rotate(head, (float) Math.toRadians(-25), 0, 0);
-        animator.rotate(jaw, (float) Math.toRadians(60), 0, 0);
+        animator.rotate(head, Maths.rad(-25), 0, 0);
+        animator.rotate(jaw, Maths.rad(60), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(3);
         animator.setAnimation(EntityOrca.ANIMATION_TAILSWING);
         animator.startKeyframe(5);
         animator.move(body, 0, -6, 15);
-        animator.rotate(body, (float) Math.toRadians(-140), 0, 0);
-        animator.rotate(tail1, (float) Math.toRadians(-35), 0, 0);
-        animator.rotate(tail2, (float) Math.toRadians(-35), 0, 0);
-        animator.rotate(tailend, (float) Math.toRadians(-25), 0, 0);
+        animator.rotate(body, Maths.rad(-140), 0, 0);
+        animator.rotate(tail1, Maths.rad(-35), 0, 0);
+        animator.rotate(tail2, Maths.rad(-35), 0, 0);
+        animator.rotate(tailend, Maths.rad(-25), 0, 0);
         animator.endKeyframe();
         animator.setStaticKeyframe(3);
         animator.resetKeyframe(12);
@@ -146,8 +147,8 @@ public class ModelOrca extends AdvancedEntityModel<EntityOrca> {
         this.swing(fin_right, swimSpeed, swimDegree * 0.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
         this.flap(fin_left, swimSpeed, swimDegree * 1.4F, true, 3F, 0F, limbSwing, limbSwingAmount);
         this.flap(fin_right, swimSpeed, swimDegree * 1.4F, false, 3F, 0F, limbSwing, limbSwingAmount);
-        this.body.rotateAngleX += headPitch * ((float) Math.PI / 180F);
-        this.body.rotateAngleY += netHeadYaw * ((float) Math.PI / 180F);
+        this.body.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
+        this.body.rotateAngleY += netHeadYaw * Mth.DEG_TO_RAD;
         if (horizontalMag(entityIn.getDeltaMovement()) > 1.0E-7D) {
             this.body.rotateAngleX += -0.05F + -0.05F * Mth.cos(ageInTicks * 0.3F);
             this.tail1.rotateAngleX += -0.1F * Mth.cos(ageInTicks * 0.3F);

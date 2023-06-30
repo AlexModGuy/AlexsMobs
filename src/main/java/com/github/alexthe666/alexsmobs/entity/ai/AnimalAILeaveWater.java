@@ -44,7 +44,7 @@ public class AnimalAILeaveWater extends Goal {
             this.creature.getNavigation().moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1D);
         }
         if (this.creature.horizontalCollision && this.creature.isInWater()) {
-            final float f1 = creature.getYRot() * Maths.piDividedBy180;
+            final float f1 = creature.getYRot() * Mth.DEG_TO_RAD;
             creature.setDeltaMovement(creature.getDeltaMovement().add(-Mth.sin(f1) * 0.2F, 0.1D, Mth.cos(f1) * 0.2F));
 
         }

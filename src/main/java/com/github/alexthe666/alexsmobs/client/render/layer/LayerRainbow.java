@@ -16,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class LayerRainbow extends RenderLayer {
 
-    private RenderLayerParent parent;
+    private final RenderLayerParent parent;
 
     public LayerRainbow(RenderLayerParent parent) {
         super(parent);
@@ -37,21 +37,14 @@ public class LayerRainbow extends RenderLayer {
     }
 
     private RenderType getRenderType(ItemRainbowJelly.RainbowType rainbowType) {
-        switch (rainbowType){
-            case TRANS:
-                return AMRenderTypes.TRANS_GLINT;
-            case NONBI:
-                return AMRenderTypes.NONBI_GLINT;
-            case BI:
-                return AMRenderTypes.BI_GLINT;
-            case ACE:
-                return AMRenderTypes.ACE_GLINT;
-            case WEEZER:
-                return AMRenderTypes.WEEZER_GLINT;
-            case BRAZIL:
-                return AMRenderTypes.BRAZIL_GLINT;
-            default:
-                return AMRenderTypes.RAINBOW_GLINT;
-        }
+        return switch (rainbowType) {
+            case TRANS -> AMRenderTypes.TRANS_GLINT;
+            case NONBI -> AMRenderTypes.NONBI_GLINT;
+            case BI -> AMRenderTypes.BI_GLINT;
+            case ACE -> AMRenderTypes.ACE_GLINT;
+            case WEEZER -> AMRenderTypes.WEEZER_GLINT;
+            case BRAZIL -> AMRenderTypes.BRAZIL_GLINT;
+            default -> AMRenderTypes.RAINBOW_GLINT;
+        };
     }
 }

@@ -1,5 +1,6 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -58,7 +59,7 @@ public class TameableAIRide extends Goal {
             tameableEntity.setSprinting(true);
             Vec3 lookVec = player.getLookAngle();
             if (shouldMoveBackwards()) {
-                lookVec = lookVec.yRot((float) Math.PI);
+                lookVec = lookVec.yRot(Mth.PI);
             }
             x += lookVec.x * 10;
             z += lookVec.z * 10;

@@ -238,18 +238,23 @@ public class EntityGiantSquid extends WaterAnimal {
         if (this.isInWater() && dryProgress > 0F) {
             dryProgress--;
         }
-        if (this.isGrabbing() && grabProgress < 5F) {
-            grabProgress += 0.25F;
+
+        if (this.isGrabbing()) {
+            if (grabProgress < 5F)
+                grabProgress += 0.25F;
+        } else {
+            if (grabProgress > 0F)
+                grabProgress -= 0.25F;
         }
-        if (!this.isGrabbing() && grabProgress > 0F) {
-            grabProgress -= 0.25F;
+
+        if (this.isCaptured()) {
+            if (capturedProgress < 5F)
+                capturedProgress += 0.5F;
+        } else {
+            if (capturedProgress > 0F)
+                capturedProgress -= 0.5F;
         }
-        if (this.isCaptured() && capturedProgress < 5F) {
-            capturedProgress += 0.5F;
-        }
-        if (!this.isCaptured() && capturedProgress > 0F) {
-            capturedProgress -= 0.5F;
-        }
+
         if (this.isGrabbing()) {
             Entity target = getGrabbedEntity();
             if(!this.level().isClientSide && target != null){
@@ -261,7 +266,7 @@ public class EntityGiantSquid extends WaterAnimal {
             if (target != null && target.isAlive()) {
                 this.setXRot(0);
                 float invert = 1F - grabProgress * 0.2F;
-                Vec3 extraVec = new Vec3(0, 0, 2F + invert * 7F).xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-this.yBodyRot * ((float) Math.PI / 180F));
+                Vec3 extraVec = new Vec3(0, 0, 2F + invert * 7F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.yBodyRot * Mth.DEG_TO_RAD);
                 Vec3 minus = new Vec3(this.getX() + extraVec.x - target.getX(), this.getY() + extraVec.y - target.getY(), this.getZ() + extraVec.z - target.getZ());
                 target.setDeltaMovement(minus);
             }
@@ -279,8 +284,7 @@ public class EntityGiantSquid extends WaterAnimal {
                 this.allParts[j].collideWithNearbyEntities();
                 avector3d[j] = new Vec3(this.allParts[j].getX(), this.allParts[j].getY(), this.allParts[j].getZ());
             }
-            float yaw = this.getYRot() * ((float) Math.PI / 180F);
-            float pitch = this.getXRot() * ((float) Math.PI / 180F) * 0.8F;
+            final float pitch = this.getXRot() * Mth.DEG_TO_RAD * 0.8F;
             this.mantleCollisionPart.setPos(this.getX(), this.getY() - ((this.mantleCollisionPart.getBbHeight() - this.getEyeHeight()) * 0.5F) * (1F - dryProgress * 0.2F), this.getZ());
             this.setPartPositionFromBuffer(this.mantlePart1, pitch, 0.9F, 0);
             this.setPartPositionFromBuffer(this.mantlePart2, pitch, 1.6F, 0);
@@ -376,8 +380,8 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     private void setPartPositionFromBuffer(EntityGiantSquidPart part, float pitch, float offsetScale, int ringBufferOffset) {
-        float f2 = Mth.sin(getRingBuffer(ringBufferOffset, 1.0F, false) * ((float) Math.PI / 180F)) * (1 - Math.abs((this.getXRot()) / 90F));
-        float f3 = Mth.cos(getRingBuffer(ringBufferOffset, 1.0F, false) * ((float) Math.PI / 180F)) * (1 - Math.abs((this.getXRot()) / 90F));
+        float f2 = Mth.sin(getRingBuffer(ringBufferOffset, 1.0F, false) * Mth.DEG_TO_RAD) * (1 - Math.abs((this.getXRot()) / 90F));
+        float f3 = Mth.cos(getRingBuffer(ringBufferOffset, 1.0F, false) * Mth.DEG_TO_RAD) * (1 - Math.abs((this.getXRot()) / 90F));
         setPartPosition(part, f2, pitch, -f3, offsetScale);
     }
 
@@ -454,7 +458,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public boolean isGrabbing() {
-        return this.entityData.get(GRABBING).booleanValue();
+        return this.entityData.get(GRABBING);
     }
 
     public void setGrabbing(boolean running) {
@@ -462,7 +466,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public boolean isCaptured() {
-        return this.entityData.get(CAPTURED).booleanValue();
+        return this.entityData.get(CAPTURED);
     }
 
     public void setCaptured(boolean running) {
@@ -470,7 +474,7 @@ public class EntityGiantSquid extends WaterAnimal {
     }
 
     public boolean isBlue() {
-        return this.entityData.get(BLUE).booleanValue();
+        return this.entityData.get(BLUE);
     }
 
     public void setBlue(boolean t) {
@@ -637,7 +641,7 @@ public class EntityGiantSquid extends WaterAnimal {
         this.gameEvent(GameEvent.ENTITY_INTERACT);
         this.playSound(SoundEvents.SQUID_SQUIRT, this.getSoundVolume(), 0.5F * this.getVoicePitch());
         if (!this.level().isClientSide) {
-            Vec3 inkDirection = new Vec3(0, 0, 1.2F).xRot(-this.getXRot() * ((float) Math.PI / 180F)).yRot(-this.yBodyRot * ((float) Math.PI / 180F));
+            Vec3 inkDirection = new Vec3(0, 0, 1.2F).xRot(-this.getXRot() * Mth.DEG_TO_RAD).yRot(-this.yBodyRot * Mth.DEG_TO_RAD);
             Vec3 vec3 = this.position().add(inkDirection);
             for (int i = 0; i < 30; ++i) {
                 Vec3 vec32 = inkDirection.add(random.nextFloat() - 0.5F, random.nextFloat() - 0.5F, random.nextFloat() - 0.5F).scale(0.8D + (double) (this.random.nextFloat() * 2.0F));

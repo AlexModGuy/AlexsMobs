@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMAdvancementTriggerRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -117,7 +118,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     public SimpleContainer elephantInventory;
     private int animationTick;
     private Animation currentAnimation;
-    private boolean hasTuskedAttributes = false;
+    private final boolean hasTuskedAttributes = false;
     private int standingTime = 0;
     @Nullable
     private EntityElephant caravanHead;
@@ -251,11 +252,11 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(TUSKED, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(CHESTED, Boolean.valueOf(false));
-        this.entityData.define(TRADER, Boolean.valueOf(false));
+        this.entityData.define(TUSKED, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(STANDING, false);
+        this.entityData.define(CHESTED, false);
+        this.entityData.define(TRADER, false);
         this.entityData.define(CARPET_COLOR, -1);
     }
 
@@ -263,18 +264,23 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
         super.tick();
         prevSitProgress = sitProgress;
         prevStandProgress = standProgress;
-        if (isSitting() && this.sitProgress < 5F) {
-            this.sitProgress++;
+
+        if (isSitting()) {
+            if (this.sitProgress < 5F)
+                this.sitProgress++;
+        } else {
+            if (this.sitProgress > 0F)
+                this.sitProgress--;
         }
-        if (!isSitting() && this.sitProgress > 0F) {
-            this.sitProgress--;
+
+        if (isStanding()) {
+            if (this.standProgress < 5F)
+                this.standProgress += 0.5F;
+        } else {
+            if (this.standProgress > 0F)
+                this.standProgress -= 0.5F;
         }
-        if (this.isStanding() && standProgress < 5) {
-            standProgress += 0.5F;
-        }
-        if (!this.isStanding() && standProgress > 0) {
-            standProgress -= 0.5F;
-        }
+
         if (isStanding() && ++standingTime > maxStandTime) {
             this.setStanding(false);
             standingTime = 0;
@@ -294,10 +300,10 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             }
             hasChestVarChanged = false;
         }
-        if (isTusked() && !isBaby() && !hasTuskedAttributes) {
+        if (!hasTuskedAttributes && isTusked() && !isBaby()) {
             refreshDimensions();
         }
-        if (!isTusked() && !isBaby() && hasTuskedAttributes) {
+        if (hasTuskedAttributes && !isTusked() && !isBaby()) {
             refreshDimensions();
         }
         if (charging) {
@@ -483,8 +489,8 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
             double d0 = this.random.nextGaussian() * 0.02D;
             double d1 = this.random.nextGaussian() * 0.02D;
             float radius = this.getBbWidth() * 0.65F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             ParticleOptions data = new ItemParticleOption(ParticleTypes.ITEM, heldItemMainhand);
             if (heldItemMainhand.getItem() instanceof BlockItem) {
@@ -741,7 +747,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
 
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
@@ -749,7 +755,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -801,7 +807,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     public boolean isTusked() {
-        return this.entityData.get(TUSKED).booleanValue();
+        return this.entityData.get(TUSKED);
     }
 
     public void setTusked(boolean tusked) {
@@ -896,7 +902,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 scaleY -= 0.3F;
             }
             float radius = scale * (0.5F + standAdd);
-            float angle = (0.01745329251F * this.yBodyRot);
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
             if (this.getAnimation() == ANIMATION_CHARGE_PREPARE) {
                 float sinWave = Mth.sin((float) (Math.PI * (this.getAnimationTick() / 25F)));
                 radius += sinWave * 0.2F * scale;
@@ -906,7 +912,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
                 radius -= sinWave * 1.0F * scale;
                 scaleY += sinWave * 0.7F * scale;
             }
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
 
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + scaleY + passenger.getMyRidingOffset(), this.getZ() + extraZ);
@@ -992,7 +998,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     public boolean isTrader() {
-        return this.entityData.get(TRADER).booleanValue();
+        return this.entityData.get(TRADER);
     }
 
     public void setTrader(boolean trader) {

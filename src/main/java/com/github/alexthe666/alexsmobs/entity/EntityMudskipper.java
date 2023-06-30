@@ -158,8 +158,8 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DISPLAYING, Boolean.valueOf(false));
-        this.entityData.define(FROM_BUCKET, Boolean.valueOf(false));
+        this.entityData.define(DISPLAYING, false);
+        this.entityData.define(FROM_BUCKET, false);
         this.entityData.define(DISPLAY_ANGLE, 0F);
         this.entityData.define(DISPLAYER_UUID, Optional.empty());
         this.entityData.define(MOUTH_TICKS, 0);
@@ -207,12 +207,14 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
         }
         //so the model does not sink in mud
         boolean mud = onMud();
-        if(mudProgress < 1F && mud){
-            mudProgress += 0.5f;
+        if (mud) {
+            if (mudProgress < 1F)
+                mudProgress += 0.5f;
+        } else {
+            if (mudProgress > 0)
+                mudProgress -= 0.5f;
         }
-        if(mudProgress > 0 && !mud){
-            mudProgress -= 0.5f;
-        }
+
         boolean swim = !this.onGround() && this.isInWaterOrBubble();
         if(swimProgress < 5F && swim){
             swimProgress++;
@@ -259,7 +261,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean isDisplaying() {
-        return this.entityData.get(DISPLAYING).booleanValue();
+        return this.entityData.get(DISPLAYING);
     }
 
     public void setDisplaying(boolean display) {
@@ -346,7 +348,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -354,7 +356,7 @@ public class EntityMudskipper extends TamableAnimal implements IFollower, ISemiA
     }
 
     public boolean isOrderedToSit() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {

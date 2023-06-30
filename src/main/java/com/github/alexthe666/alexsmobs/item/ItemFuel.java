@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemFuel extends Item {
 
-    private int burnTime;
+    private final int burnTime;
 
     public ItemFuel(Properties props, int burnTime) {
         super(props);

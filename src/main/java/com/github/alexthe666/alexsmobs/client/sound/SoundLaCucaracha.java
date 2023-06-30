@@ -27,8 +27,7 @@ public class SoundLaCucaracha extends AbstractTickableSoundInstance {
     }
 
     public boolean isOnlyCockroach() {
-        for(Map.Entry<Integer, SoundLaCucaracha> entry : ClientProxy.COCKROACH_SOUND_MAP.entrySet()){
-            SoundLaCucaracha cucaracha = entry.getValue();
+        for(SoundLaCucaracha cucaracha : ClientProxy.COCKROACH_SOUND_MAP.values()){
             if(cucaracha != this && distanceSq(cucaracha.x, cucaracha.y, cucaracha.z) < 16 && cucaracha.canPlaySound()){
                 return false;
             }

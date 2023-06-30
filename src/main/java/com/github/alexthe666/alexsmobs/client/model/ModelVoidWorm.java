@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -91,14 +92,14 @@ public class ModelVoidWorm extends AdvancedEntityModel<EntityVoidWorm> {
 	@Override
 	public void setupAnim(EntityVoidWorm entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.resetToDefaultPose();
-		this.root.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+		this.root.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
 		this.root.rotationPointY += -3 - Mth.clamp(headPitch * -0.125F, -10, 10) * 0.3F;
 		this.root.rotationPointZ += -15 + (limbSwingAmount * 10);
 		float yawAmount = (entityIn.prevWormAngle + (entityIn.getWormAngle() - entityIn.prevWormAngle) * (ageInTicks - entityIn.tickCount)) / 57.295776F * 0.5F;
 		neck.rotateAngleZ += yawAmount;
 		float jawProgress = entityIn.prevJawProgress + (entityIn.jawProgress - entityIn.prevJawProgress) * (ageInTicks - entityIn.tickCount);
-		progressRotationPrev(bottomjaw, jawProgress, (float) Math.toRadians(60), 0, 0, 5F);
-		progressRotationPrev(topjaw, jawProgress, (float) Math.toRadians(-60), 0, 0, 5F);
+		progressRotationPrev(bottomjaw, jawProgress, Maths.rad(60), 0, 0, 5F);
+		progressRotationPrev(topjaw, jawProgress, Maths.rad(-60), 0, 0, 5F);
 		progressPositionPrev(bottomjaw, jawProgress, 0, 2, -5, 5F);
 		progressPositionPrev(topjaw, jawProgress, 0, -2, -5, 5F);
 

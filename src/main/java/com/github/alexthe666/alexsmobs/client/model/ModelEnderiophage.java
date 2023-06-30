@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityEnderiophage;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -141,8 +142,8 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
         float walkSpeed = 2F;
         float walkDegree = 0.6F;
         float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTicks;
-        float phagePitch = (float) Math.toRadians(Mth.rotLerp(partialTicks, entity.prevPhagePitch, entity.getPhagePitch()));
-        float totalYaw = (float) Math.toRadians(Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot));
+        float phagePitch = Maths.rad(Mth.rotLerp(partialTicks, entity.prevPhagePitch, entity.getPhagePitch()));
+        float totalYaw = Maths.rad(Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot));
         float tentacleProgress = (5F - limbSwingAmount * 10F) * flyProgress * 0.2F;
 
         this.bob(eye, idleSpeed, idleDegree * -8, false, ageInTicks, 1);
@@ -183,10 +184,10 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             this.walk(tailback_right, walkSpeed, walkDegree * -1.6F, true, -5, 0.3F, limbSwing, limbSwingAmount);
             this.walk(tailback_left, walkSpeed, walkDegree * -1.6F, false, -5, -0.3F, limbSwing, limbSwingAmount);
             this.bob(body, walkSpeed * 1.5F, walkDegree * 6, false, limbSwing, limbSwingAmount);
-            progressRotationPrev(body, limbSwingAmount, (float) Math.toRadians(-15), 0, 0, 1F);
-            progressRotationPrev(sheath, limbSwingAmount, (float) Math.toRadians(-15), 0, 0, 1F);
-            progressRotationPrev(tailfront_left, limbSwingAmount, (float) Math.toRadians(15), 0, 0, 1F);
-            progressRotationPrev(tailfront_right, limbSwingAmount, (float) Math.toRadians(15), 0, 0, 1F);
+            progressRotationPrev(body, limbSwingAmount, Maths.rad(-15), 0, 0, 1F);
+            progressRotationPrev(sheath, limbSwingAmount, Maths.rad(-15), 0, 0, 1F);
+            progressRotationPrev(tailfront_left, limbSwingAmount, Maths.rad(15), 0, 0, 1F);
+            progressRotationPrev(tailfront_right, limbSwingAmount, Maths.rad(15), 0, 0, 1F);
         }
 
         if(entity.isMissingEye()){
@@ -195,8 +196,8 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             this.eye.showModel = true;
         }
         if(entity.isPassenger()){
-            this.body.rotateAngleX += Math.PI/2F;
-            this.body.rotateAngleY += Math.PI/2F * entity.passengerIndex;
+            this.body.rotateAngleX += Mth.HALF_PI;
+            this.body.rotateAngleY += Mth.HALF_PI * entity.passengerIndex;
             this.sheath.setScale(1F, (float) (0.85F + Math.sin(ageInTicks) * 0.15F), 1F);
             this.collar.rotationPointY -= (float) (Math.sin(ageInTicks) * 0.15F - 0.15F) * 12F;
             this.capsid.setScale((float) (0.85F + Math.sin(ageInTicks + 2F) * 0.15F), (float) (1F + Math.sin(ageInTicks) * 0.15F), (float) (0.85F + Math.sin(ageInTicks + 2F) * 0.15F));
@@ -208,12 +209,12 @@ public class ModelEnderiophage extends AdvancedEntityModel<EntityEnderiophage> {
             this.body.rotateAngleX -= phagePitch * flyProgress * 0.2F;
         }
         progressPositionPrev(body, tentacleProgress, 0, -6, 0, 5F);
-        progressRotationPrev(tailfront_left, tentacleProgress, 0, 0, (float) Math.toRadians(-45), 5F);
-        progressRotationPrev(tailmid_left, tentacleProgress, 0, 0, (float) Math.toRadians(-45), 5F);
-        progressRotationPrev(tailback_left, tentacleProgress, 0, 0, (float) Math.toRadians(-45), 5F);
-        progressRotationPrev(tailfront_right, tentacleProgress, 0, 0, (float) Math.toRadians(45), 5F);
-        progressRotationPrev(tailmid_right, tentacleProgress, 0, 0, (float) Math.toRadians(45), 5F);
-        progressRotationPrev(tailback_right, tentacleProgress, 0, 0, (float) Math.toRadians(45), 5F);
+        progressRotationPrev(tailfront_left, tentacleProgress, 0, 0, Maths.rad(-45), 5F);
+        progressRotationPrev(tailmid_left, tentacleProgress, 0, 0, Maths.rad(-45), 5F);
+        progressRotationPrev(tailback_left, tentacleProgress, 0, 0, Maths.rad(-45), 5F);
+        progressRotationPrev(tailfront_right, tentacleProgress, 0, 0, Maths.rad(45), 5F);
+        progressRotationPrev(tailmid_right, tentacleProgress, 0, 0, Maths.rad(45), 5F);
+        progressRotationPrev(tailback_right, tentacleProgress, 0, 0, Maths.rad(45), 5F);
 
         if (look != null) {
             Vec3 vector3d = look.getEyePosition(partialTicks);

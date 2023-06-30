@@ -64,7 +64,7 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
         float bodyRot = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRot : mob.getYRot();
         float bodyRot0 = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRotO : mob.yRotO;
         Vec3 vec3 = player.getRopeHoldPosition(partialTick);
-        double d0 = (double) (Mth.lerp(partialTick, bodyRot, bodyRot0) * ((float) Math.PI / 180F)) + (Math.PI / 2D);
+        double d0 = (double) (Mth.lerp(partialTick, bodyRot, bodyRot0) * Mth.DEG_TO_RAD) + (Math.PI / 2D);
         Vec3 vec31 = new Vec3(0, 0F, 0);
         double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
         double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;
@@ -75,7 +75,6 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
         float f = (float) (vec3.x - d3);
         float f1 = (float) (vec3.y - d4);
         float f2 = (float) (vec3.z - d5);
-        float f3 = 0.025F;
         VertexConsumer vertexconsumer = p_115465_.getBuffer(RenderType.leash());
         Matrix4f matrix4f = p_115464_.last().pose();
         float f4 = (float) (Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F);
@@ -114,11 +113,10 @@ public class RenderSquidGrapple extends EntityRenderer<EntitySquidGrapple> {
         SQUID_MODEL.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1.0F);
         matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-        if (entityIn.getOwner() instanceof LivingEntity) {
-            LivingEntity holder = (LivingEntity) entityIn.getOwner();
-            double d0 = Mth.lerp(partialTicks, entityIn.xOld, entityIn.getX());
-            double d1 = Mth.lerp(partialTicks, entityIn.yOld, entityIn.getY());
-            double d2 = Mth.lerp(partialTicks, entityIn.zOld, entityIn.getZ());
+        if (entityIn.getOwner() instanceof LivingEntity holder) {
+            final double d0 = Mth.lerp(partialTicks, entityIn.xOld, entityIn.getX());
+            final double d1 = Mth.lerp(partialTicks, entityIn.yOld, entityIn.getY());
+            final double d2 = Mth.lerp(partialTicks, entityIn.zOld, entityIn.getZ());
             matrixStackIn.pushPose();
             matrixStackIn.translate(-d0, -d1, -d2);
             renderTentacle(entityIn, partialTicks, matrixStackIn, bufferIn, holder, holder.getMainArm() != HumanoidArm.LEFT, -0.1F);

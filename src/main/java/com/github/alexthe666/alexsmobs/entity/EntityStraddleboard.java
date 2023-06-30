@@ -135,7 +135,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
             this.markHurt();
             this.setRockingTicks(25);
-            boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
+            final boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
             if (flag || this.getDamageTaken() > 40.0F) {
                 if (!flag) {
                     Player p = null;
@@ -200,7 +200,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         } else if (this.checkInWater()) {
             return Boat.Status.IN_WATER;
         } else {
-            float f = this.getBoatGlide();
+            final float f = this.getBoatGlide();
             if (f > 0.0F) {
                 this.boatGlide = f;
                 return Boat.Status.ON_LAND;
@@ -213,12 +213,12 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     public float getBoatGlide() {
         AABB axisalignedbb = this.getBoundingBox();
         AABB axisalignedbb1 = new AABB(axisalignedbb.minX, axisalignedbb.minY - 0.001D, axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-        int i = Mth.floor(axisalignedbb1.minX) - 1;
-        int j = Mth.ceil(axisalignedbb1.maxX) + 1;
-        int k = Mth.floor(axisalignedbb1.minY) - 1;
-        int l = Mth.ceil(axisalignedbb1.maxY) + 1;
-        int i1 = Mth.floor(axisalignedbb1.minZ) - 1;
-        int j1 = Mth.ceil(axisalignedbb1.maxZ) + 1;
+        final int i = Mth.floor(axisalignedbb1.minX) - 1;
+        final int j = Mth.ceil(axisalignedbb1.maxX) + 1;
+        final int k = Mth.floor(axisalignedbb1.minY) - 1;
+        final int l = Mth.ceil(axisalignedbb1.maxY) + 1;
+        final int i1 = Mth.floor(axisalignedbb1.minZ) - 1;
+        final int j1 = Mth.ceil(axisalignedbb1.maxZ) + 1;
         VoxelShape voxelshape = Shapes.create(axisalignedbb1);
         float f = 0.0F;
         int k1 = 0;
@@ -247,12 +247,12 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     private boolean checkInWater() {
         AABB axisalignedbb = this.getBoundingBox();
-        int i = Mth.floor(axisalignedbb.minX);
-        int j = Mth.ceil(axisalignedbb.maxX);
-        int k = Mth.floor(axisalignedbb.minY);
-        int l = Mth.ceil(axisalignedbb.minY - 0.001D);
-        int i1 = Mth.floor(axisalignedbb.minZ);
-        int j1 = Mth.ceil(axisalignedbb.maxZ);
+        final int i = Mth.floor(axisalignedbb.minX);
+        final int j = Mth.ceil(axisalignedbb.maxX);
+        final int k = Mth.floor(axisalignedbb.minY);
+        final int l = Mth.ceil(axisalignedbb.minY - 0.001D);
+        final int i1 = Mth.floor(axisalignedbb.minZ);
+        final int j1 = Mth.ceil(axisalignedbb.maxZ);
         boolean flag = false;
         this.waterLevel = Double.MIN_VALUE;
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
@@ -275,7 +275,6 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     private void updateMotion() {
-        double d0 = -0.04F;
         double d1 = this.isNoGravity() ? 0.0D : (double) -0.04F;
         double d2 = 0.0D;
         this.momentum = 0.05F;
@@ -286,21 +285,25 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             this.lastYd = 0.0D;
             this.status = Boat.Status.IN_WATER;
         } else {
-            if (this.status == Boat.Status.IN_WATER) {
-                d2 = (this.waterLevel - this.getY()) / (double) this.getBbHeight();
-                this.momentum = 0.9F;
-            } else if (this.status == Boat.Status.UNDER_FLOWING_WATER) {
-                d1 = -7.0E-4D;
-                this.momentum = 0.9F;
-            } else if (this.status == Boat.Status.UNDER_WATER) {
-                d2 = 0.01F;
-                this.momentum = 0.45F;
-            } else if (this.status == Boat.Status.IN_AIR) {
-                this.momentum = 0.9F;
-            } else if (this.status == Boat.Status.ON_LAND) {
-                this.momentum = this.boatGlide;
-                if (this.getControllingPassenger() instanceof Player) {
-                    this.boatGlide /= 2.0F;
+            switch (this.status) {
+                case IN_WATER -> {
+                    d2 = (this.waterLevel - this.getY()) / (double) this.getBbHeight();
+                    this.momentum = 0.9F;
+                }
+                case UNDER_FLOWING_WATER -> {
+                    d1 = -7.0E-4D;
+                    this.momentum = 0.9F;
+                }
+                case UNDER_WATER -> {
+                    d2 = 0.01F;
+                    this.momentum = 0.45F;
+                }
+                case IN_AIR -> this.momentum = 0.9F;
+                case ON_LAND -> {
+                    this.momentum = this.boatGlide;
+                    if (this.getControllingPassenger() instanceof Player) {
+                        this.boatGlide /= 2.0F;
+                    }
                 }
             }
 
@@ -315,7 +318,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     }
 
     public boolean isDefaultColor() {
-        return this.entityData.get(DEFAULT_COLOR).booleanValue();
+        return this.entityData.get(DEFAULT_COLOR);
     }
 
     public void setDefaultColor(boolean bar) {
@@ -337,13 +340,13 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     @Nullable
     private Boat.Status getUnderwaterStatus() {
         AABB axisalignedbb = this.getBoundingBox();
-        double d0 = axisalignedbb.maxY + 0.001D;
-        int i = Mth.floor(axisalignedbb.minX);
-        int j = Mth.ceil(axisalignedbb.maxX);
-        int k = Mth.floor(axisalignedbb.maxY);
-        int l = Mth.ceil(d0);
-        int i1 = Mth.floor(axisalignedbb.minZ);
-        int j1 = Mth.ceil(axisalignedbb.maxZ);
+        final double d0 = axisalignedbb.maxY + 0.001D;
+        final int i = Mth.floor(axisalignedbb.minX);
+        final int j = Mth.ceil(axisalignedbb.maxX);
+        final int k = Mth.floor(axisalignedbb.maxY);
+        final int l = Mth.ceil(d0);
+        final int i1 = Mth.floor(axisalignedbb.minZ);
+        final int j1 = Mth.ceil(axisalignedbb.maxZ);
         boolean flag = false;
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
@@ -391,7 +394,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         } else {
             this.setNoGravity(false);
         }
-        float f2 = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) (180F / (float) Math.PI));
+        float f2 = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) Mth.RAD_TO_DEG);
         this.setXRot(f2);
 
         if (extinguishTimer > 0) {
@@ -399,8 +402,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         }
         this.updateRocking();
         Entity controller = getControllingPassenger();
-        if (controller instanceof Player) {
-            Player player = (Player) controller;
+        if (controller instanceof Player player) {
             if (this.tickCount % 50 == 0) {
                 if (getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX.get()) > 0) {
                     player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
@@ -416,15 +418,12 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             }
 
             Vec3 vector3d1 = player.getLookAngle();
-            float f = player.getXRot() * ((float) Math.PI / 180F);
-            double d1 = Math.sqrt(vector3d1.x * vector3d1.x + vector3d1.z * vector3d1.z);
-            double d3 = Math.sqrt((float) vector3d.horizontalDistanceSqr());
-            double d4 = vector3d1.length();
-            float f1 = Mth.cos(f);
-            f1 = (float) ((double) f1 * (double) f1 * Math.min(1.0D, d4 / 0.4D));
-            double d5 = vector3d.y * -0.1D * (double) f1;
+
+            final double d1 = Math.sqrt(vector3d1.x * vector3d1.x + vector3d1.z * vector3d1.z);
+            final double d3 = Math.sqrt((float) vector3d.horizontalDistanceSqr());
+
             float slow = player.zza < 0 ? 0 : player.zza * 0.115F;
-            float threshold = 0.05F;
+            final float threshold = 0.05F;
             if (this.yRotO - this.getYRot() > threshold) {
                 boardRot = boardRot + 2;
                 slow *= 0;
@@ -491,7 +490,7 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     private void updateRocking() {
         if (this.level().isClientSide) {
-            int i = this.getRockingTicks();
+            final int i = this.getRockingTicks();
             if (i > 0) {
                 this.rockingIntensity += 1F;
             } else {
@@ -510,8 +509,8 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
             if (k > 0) {
                 --k;
                 this.setRockingTicks(k);
-                int j = 60 - k - 1;
-                if (j > 0 && k == 0) {
+                final int j = 60 - k - 1;
+                if (k == 0 && j > 0) {
                     this.setRockingTicks(0);
                     Vec3 vector3d = this.getDeltaMovement();
                     if (this.downwards) {

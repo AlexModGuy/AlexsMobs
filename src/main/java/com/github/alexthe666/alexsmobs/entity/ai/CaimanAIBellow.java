@@ -10,7 +10,7 @@ import java.util.EnumSet;
 
 public class CaimanAIBellow extends Goal {
 
-    private EntityCaiman caiman;
+    private final EntityCaiman caiman;
     private int bellowTime = 0;
 
     public CaimanAIBellow(EntityCaiman caiman) {
@@ -36,10 +36,10 @@ public class CaimanAIBellow extends Goal {
 
     public void tick(){
         if(caiman.isInWaterOrBubble()){
-            double d1 = caiman.getFluidTypeHeight(ForgeMod.WATER_TYPE.get());
+            final double d1 = caiman.getFluidTypeHeight(ForgeMod.WATER_TYPE.get());
             caiman.getNavigation().stop();
             if(d1 > 0.3F){
-                double d2 = Math.pow(d1 - 0.3F, 2);
+                final double d2 = Math.pow(d1 - 0.3F, 2);
                 caiman.setDeltaMovement(new Vec3(caiman.getDeltaMovement().x, Math.min(d2 * 0.08F, 0.04F), caiman.getDeltaMovement().z));
             }else{
                 caiman.setDeltaMovement(new Vec3(caiman.getDeltaMovement().x, -0.02F, caiman.getDeltaMovement().z));

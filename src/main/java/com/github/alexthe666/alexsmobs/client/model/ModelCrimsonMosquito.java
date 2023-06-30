@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
@@ -143,19 +144,19 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 		this.walk(antennaR, flySpeed, flyDegree * 0.15F, false, 0, 0.1F, ageInTicks, 1);
 		this.walk(antennaL, flySpeed, flyDegree * 0.15F, false, 0, 0.1F, ageInTicks, 1);
 		boolean flappingWings = flyProgress > 0 || entityIn.randomWingFlapTick > 0;
-		progressRotationPrev(head, shootProgress,   (float) Math.toRadians(-10), 0, 0, 5F);
-		progressRotationPrev(mouth, shootProgress,   (float) Math.toRadians(-20), 0, 0, 5F);
+		progressRotationPrev(head, shootProgress,   Maths.rad(-10), 0, 0, 5F);
+		progressRotationPrev(mouth, shootProgress,   Maths.rad(-20), 0, 0, 5F);
 		if(entityIn.isPassenger()){
-			progressRotationPrev(body, 5F,   (float) Math.toRadians(-90), (float) Math.toRadians(180), 0, 5F);
-			progressRotationPrev(head, 5F,   (float) Math.toRadians(40), 0, 0, 5F);
-			progressRotationPrev(mouth, 5F,   (float) Math.toRadians(10), 0, 0, 5F);
+			progressRotationPrev(body, 5F,   Maths.rad(-90), Maths.rad(180), 0, 5F);
+			progressRotationPrev(head, 5F,   Maths.rad(40), 0, 0, 5F);
+			progressRotationPrev(mouth, 5F,   Maths.rad(10), 0, 0, 5F);
 			float legRot = 50;
-			progressRotationPrev(legR1, 5F,   0, 0, (float) Math.toRadians(-legRot), 5F);
-			progressRotationPrev(legR2, 5F,   0, 0, (float) Math.toRadians(-legRot), 5F);
-			progressRotationPrev(legR3, 5F,   0, 0, (float) Math.toRadians(-legRot), 5F);
-			progressRotationPrev(legL1, 5F,   0, 0, (float) Math.toRadians(legRot), 5F);
-			progressRotationPrev(legL2, 5F,   0, 0, (float) Math.toRadians(legRot), 5F);
-			progressRotationPrev(legL3, 5F,   0, 0, (float) Math.toRadians(legRot), 5F);
+			progressRotationPrev(legR1, 5F,   0, 0, Maths.rad(-legRot), 5F);
+			progressRotationPrev(legR2, 5F,   0, 0, Maths.rad(-legRot), 5F);
+			progressRotationPrev(legR3, 5F,   0, 0, Maths.rad(-legRot), 5F);
+			progressRotationPrev(legL1, 5F,   0, 0, Maths.rad(legRot), 5F);
+			progressRotationPrev(legL2, 5F,   0, 0, Maths.rad(legRot), 5F);
+			progressRotationPrev(legL3, 5F,   0, 0, Maths.rad(legRot), 5F);
 			this.mouth.setScale(1F, (float) (0.85F + Math.sin(ageInTicks) * 0.15F), 1F);
 		}else{
 			this.mouth.setScale(1F, 1F, 1F);
@@ -167,19 +168,19 @@ public class ModelCrimsonMosquito extends AdvancedEntityModel<EntityCrimsonMosqu
 			this.flap(wingL, flySpeed * 3.3F, flyDegree, true, 0, 0.2F, ageInTicks, 1);
 			this.flap(wingR, flySpeed * 3.3F, flyDegree, false, 0, 0.2F, ageInTicks, 1);
 		}else{
-			this.wingR.rotateAngleX = (float) Math.toRadians(30);
-			this.wingR.rotateAngleY = (float) Math.toRadians(70);
-			this.wingL.rotateAngleX = (float) Math.toRadians(30);
-			this.wingL.rotateAngleY = (float) Math.toRadians(-70);
+			this.wingR.rotateAngleX = Maths.rad(30);
+			this.wingR.rotateAngleY = Maths.rad(70);
+			this.wingL.rotateAngleX = Maths.rad(30);
+			this.wingL.rotateAngleY = Maths.rad(-70);
 		}
 		if(flyProgress > 0){
 			progressPositionPrev(body, flyProgress, 0, -10F, 0F, 5F);
-			progressRotationPrev(legL1, flyProgress,  0, (float) Math.toRadians(-30), (float) Math.toRadians(60), 5F);
-			progressRotationPrev(legR1, flyProgress, 0, (float) Math.toRadians(30), (float) Math.toRadians(-60), 5F);
-			progressRotationPrev(legL2, flyProgress, 0, (float) Math.toRadians(-20), (float) Math.toRadians(60), 5F);
-			progressRotationPrev(legR2, flyProgress, 0, (float) Math.toRadians(20), (float) Math.toRadians(-60), 5F);
-			progressRotationPrev(legL3, flyProgress, 0, (float) Math.toRadians(-5), (float) Math.toRadians(60), 5F);
-			progressRotationPrev(legR3, flyProgress, 0, (float) Math.toRadians(5), (float) Math.toRadians(-60), 5F);
+			progressRotationPrev(legL1, flyProgress,  0, Maths.rad(-30), Maths.rad(60), 5F);
+			progressRotationPrev(legR1, flyProgress, 0, Maths.rad(30), Maths.rad(-60), 5F);
+			progressRotationPrev(legL2, flyProgress, 0, Maths.rad(-20), Maths.rad(60), 5F);
+			progressRotationPrev(legR2, flyProgress, 0, Maths.rad(20), Maths.rad(-60), 5F);
+			progressRotationPrev(legL3, flyProgress, 0, Maths.rad(-5), Maths.rad(60), 5F);
+			progressRotationPrev(legR3, flyProgress, 0, Maths.rad(5), Maths.rad(-60), 5F);
 			this.bob(body, flySpeed * 0.5F, flyDegree * 5, false, ageInTicks, 1);
 			this.flap(legL1, flySpeed, flyDegree * 0.5F, true, 1, 0.1F, ageInTicks, 1);
 			this.flap(legR1, flySpeed, flyDegree * 0.5F, false, 1, 0.1F, ageInTicks, 1);

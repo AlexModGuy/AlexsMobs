@@ -18,7 +18,7 @@ import static net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
 public class RenderStraddleboard extends EntityRenderer<EntityStraddleboard> {
     private static final ResourceLocation TEXTURE_OVERLAY = new ResourceLocation("alexsmobs:textures/entity/straddleboard_overlay.png");
     private static final ResourceLocation TEXTURE = new ResourceLocation("alexsmobs:textures/entity/straddleboard.png");
-    private static ModelStraddleboard BOARD_MODEL = new ModelStraddleboard();
+    private static final ModelStraddleboard BOARD_MODEL = new ModelStraddleboard();
 
     public RenderStraddleboard(EntityRendererProvider.Context renderManager) {
         super(renderManager);
@@ -32,7 +32,7 @@ public class RenderStraddleboard extends EntityRenderer<EntityStraddleboard> {
     @Override
     public void render(EntityStraddleboard entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         matrixStackIn.pushPose();
-        matrixStackIn.mulPose(new Quaternionf().rotateY(180F * ((float)Math.PI / 180F)));
+        matrixStackIn.mulPose(new Quaternionf().rotateY(180F * Mth.DEG_TO_RAD));
         matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entityIn.yRotO, entityIn.getYRot())));
         matrixStackIn.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot())));
         matrixStackIn.pushPose();

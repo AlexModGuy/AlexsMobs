@@ -5,7 +5,7 @@ import net.minecraft.world.entity.animal.Animal;
 
 public class AnimalAIPanicBaby extends PanicGoal {
 
-    private Animal animal;
+    private final Animal animal;
 
     public AnimalAIPanicBaby(Animal creatureIn, double speed) {
         super(creatureIn, speed);

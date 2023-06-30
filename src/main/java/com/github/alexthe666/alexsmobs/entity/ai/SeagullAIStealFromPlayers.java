@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SeagullAIStealFromPlayers extends Goal {
 
-    private EntitySeagull seagull;
+    private final EntitySeagull seagull;
     private Vec3 fleeVec = null;
     private Player target;
     private int fleeTime = 0;

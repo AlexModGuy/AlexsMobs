@@ -27,7 +27,7 @@ public class EtherealMoveController extends MoveControl {
             if(d0 > parentEntity.getBbWidth()){
                 parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(0.0D, (double) parentEntity.getSpeed() * speedGeneral * Mth.clamp(yAdd, -1, 1) * 0.6F, 0.0D));
                 Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                 parentEntity.yBodyRot = parentEntity.getYRot();
             }
         } else if (this.operation == Operation.STRAFE || this.operation == Operation.JUMPING) {

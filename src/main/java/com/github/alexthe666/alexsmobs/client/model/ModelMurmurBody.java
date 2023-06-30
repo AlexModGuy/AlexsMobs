@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMurmur;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -52,8 +53,8 @@ public class ModelMurmurBody extends AdvancedEntityModel<EntityMurmur> {
         float idleDegree = 0.1F;
         this.body.rotationPointY -= Math.abs(Math.sin(0.9F * limbSwing) * limbSwingAmount * 4F);
         this.walk(arms, walkSpeed * 2F, walkDegree * 0.3F, false, -1, 0.15F, limbSwing, limbSwingAmount);
-        this.swing(arms, walkSpeed * 1F, walkDegree * 0.3F, false, -3F, 0F, limbSwing, limbSwingAmount);
-        progressRotationPrev(this.body, limbSwingAmount, (float)Math.toRadians(15), 0, 0, 1F);
+        this.swing(arms, walkSpeed, walkDegree * 0.3F, false, -3F, 0F, limbSwing, limbSwingAmount);
+        progressRotationPrev(this.body, limbSwingAmount, Maths.rad(15), 0, 0, 1F);
         progressPositionPrev(this.body, limbSwingAmount, 0, 2F, 4F, 1F);
         this.walk(arms, idleSpeed, idleDegree, false, -1, 0.15F, ageInTicks, 1);
     }

@@ -23,11 +23,11 @@ import java.util.List;
 
 public class ShoebillAIFish extends Goal {
 
-    private EntityShoebill bird;
+    private final EntityShoebill bird;
     private BlockPos waterPos = null;
     private BlockPos targetPos = null;
     private int executionChance = 0;
-    private Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
+    private final Direction[] HORIZONTALS = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
     private int idleTime = 0;
     private int navigateTime = 0;
 
@@ -51,7 +51,7 @@ public class ShoebillAIFish extends Goal {
                 navigateTime = 0;
                 double d0 = waterPos.getX() + 0.5D - bird.getX();
                 double d2 = waterPos.getZ() + 0.5D - bird.getZ();
-                float yaw = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                float yaw = (float)(Mth.atan2(d2, d0) * (double)Mth.RAD_TO_DEG) - 90.0F;
                 bird.setYRot(yaw);
                 bird.yHeadRot = yaw;
                 bird.yBodyRot = yaw;

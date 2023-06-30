@@ -32,16 +32,18 @@ public class ItemDimensionalCarver extends Item {
     }
 
     protected static BlockHitResult rayTracePortal(Level worldIn, Player player, ClipContext.Fluid fluidMode) {
-        float f = player.getXRot();
-        float f1 = player.getYRot();
+        final float f = player.getXRot();
+        final float f1 = player.getYRot();
         Vec3 vector3d = player.getEyePosition(1.0F);
-        float f2 = Mth.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f3 = Mth.sin(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
-        float f4 = -Mth.cos(-f * ((float) Math.PI / 180F));
-        float f5 = Mth.sin(-f * ((float) Math.PI / 180F));
-        float f6 = f3 * f4;
-        float f7 = f2 * f4;
-        double d0 = 1.5F;
+        final float f11 = -f1 * Mth.DEG_TO_RAD - Mth.PI;
+        final float f12 = -f * Mth.DEG_TO_RAD;
+        final float f2 = Mth.cos(f11);
+        final float f3 = Mth.sin(f11);
+        final float f4 = -Mth.cos(f12);
+        final float f5 = Mth.sin(f12);
+        final float f6 = f3 * f4;
+        final float f7 = f2 * f4;
+        final double d0 = 1.5F;
         Vec3 vector3d1 = vector3d.add((double) f6 * d0, (double) f5 * d0, (double) f7 * d0);
         return worldIn.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.OUTLINE, fluidMode, player));
     }

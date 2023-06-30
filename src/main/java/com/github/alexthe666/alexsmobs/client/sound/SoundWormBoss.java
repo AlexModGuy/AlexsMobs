@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.client.sound;
 import com.github.alexthe666.alexsmobs.ClientProxy;
 import com.github.alexthe666.alexsmobs.entity.EntityVoidWorm;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
+import it.unimi.dsi.fastutil.objects.ObjectCollection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundSource;
@@ -29,8 +30,7 @@ public class SoundWormBoss extends AbstractTickableSoundInstance {
 
     public boolean isNearest() {
         float dist = 400;
-        for(Map.Entry<Integer, SoundWormBoss> entry : ClientProxy.WORMBOSS_SOUND_MAP.entrySet()){
-            SoundWormBoss wormBoss = entry.getValue();
+        for(SoundWormBoss wormBoss : ClientProxy.WORMBOSS_SOUND_MAP.values()){
             if(wormBoss != this && distanceSq(wormBoss.x, wormBoss.y, wormBoss.z) < dist * dist && wormBoss.canPlaySound()){
                 return false;
             }

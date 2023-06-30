@@ -172,12 +172,17 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
             this.setMaxUpStep(0.6F);
         }
         prevFlyProgress = flyProgress;
-        if (isFlying() && flyProgress < 5F) {
-            flyProgress++;
+
+        final boolean flying = isFlying();
+
+        if (flying) {
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
-        }
+
         if (revengeCooldown > 0) {
             revengeCooldown--;
         }
@@ -191,25 +196,28 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
             if(this.getAnimation() == NO_ANIMATION && this.getRandom().nextInt(700) == 0){
                 this.setAnimation(ANIMATION_BEAKSHAKE);
             }
-            if (isFlying() && this.isLandNavigator) {
-                switchNavigator(false);
+
+            if (flying) {
+                if (this.isLandNavigator)
+                    switchNavigator(false);
+            } else {
+                if (!this.isLandNavigator)
+                    switchNavigator(true);
             }
-            if (!isFlying() && !this.isLandNavigator) {
-                switchNavigator(true);
-            }
+
             if (this.revengeCooldown > 0 && !this.isFlying()) {
                 if (this.onGround() || this.isInWater()) {
                     this.setFlying(false);
                 }
             }
+
             if (isFlying()) {
                 this.setNoGravity(true);
             } else {
                 this.setNoGravity(false);
             }
         }
-        if (!this.level().isClientSide && this.getTarget() != null && this.hasLineOfSight(this.getTarget()) && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 9) {
-            float f1 = this.getYRot() * ((float) Math.PI / 180F);
+        if (!this.level().isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 9 && this.hasLineOfSight(this.getTarget())) {
             getTarget().knockback(0.3F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
             this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
         }
@@ -351,7 +359,7 @@ public class EntityShoebill extends Animal implements IAnimatedEntity, ITargetsD
         if(e.getItem().getItem() == AMItemRegistry.BLOBFISH.get()){
             luckLevel = Mth.clamp(luckLevel + 1, 0, 10);
         }
-        if(e.getItem().getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem()){
+        else if(e.getItem().getItem() == AMBlockRegistry.CROCODILE_EGG.get().asItem()){
             lureLevel = Mth.clamp(lureLevel + 1, 0, 10);
         }
         this.heal(5);

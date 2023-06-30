@@ -98,11 +98,11 @@ public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(RUNNING, Boolean.valueOf(false));
+        this.entityData.define(RUNNING, false);
     }
 
     public boolean isRunning() {
-        return this.entityData.get(RUNNING).booleanValue();
+        return this.entityData.get(RUNNING);
     }
 
     public void setRunning(boolean running) {
@@ -125,14 +125,14 @@ public class EntityGazelle extends Animal implements IAnimatedEntity, IHerdPanic
 
     public void tick() {
         super.tick();
-        if(!this.level().isClientSide && this.getAnimation() == NO_ANIMATION && getRandom().nextInt(70) == 0 && (this.getLastHurtByMob() == null || this.distanceTo(this.getLastHurtByMob()) > 30)){
-            if(level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0){
-                this.setAnimation(ANIMATION_EAT_GRASS);
-            }else{
-                this.setAnimation(getRandom().nextBoolean()  ? ANIMATION_FLICK_EARS : ANIMATION_FLICK_TAIL);
-            }
-        }
         if(!this.level().isClientSide){
+            if(this.getAnimation() == NO_ANIMATION && getRandom().nextInt(70) == 0 && (this.getLastHurtByMob() == null || this.distanceTo(this.getLastHurtByMob()) > 30)){
+                if(level().getBlockState(this.blockPosition().below()).is(Blocks.GRASS_BLOCK) && getRandom().nextInt(3) == 0){
+                    this.setAnimation(ANIMATION_EAT_GRASS);
+                }else{
+                    this.setAnimation(getRandom().nextBoolean()  ? ANIMATION_FLICK_EARS : ANIMATION_FLICK_TAIL);
+                }
+            }
             if(revengeCooldown >= 0){
                 revengeCooldown--;
             }

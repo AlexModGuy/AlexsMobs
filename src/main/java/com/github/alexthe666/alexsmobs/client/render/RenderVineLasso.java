@@ -82,7 +82,7 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
         float bodyRot = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRot : mob.getYRot();
         float bodyRot0 = mob instanceof LivingEntity ? ((LivingEntity) mob).yBodyRotO : mob.yRotO;
         Vec3 vec3 = player.getRopeHoldPosition(partialTick);
-        double d0 = (double) (Mth.lerp(partialTick, bodyRot, bodyRot0) * ((float) Math.PI / 180F)) + (Math.PI / 2D);
+        double d0 = (double) (Mth.lerp(partialTick, bodyRot, bodyRot0) * Mth.DEG_TO_RAD) + (Math.PI / 2D);
         Vec3 vec31 = new Vec3((left ? -0.05F : 0.05F), mob.getEyeHeight(), zOffset);
         double d1 = Math.cos(d0) * vec31.z + Math.sin(d0) * vec31.x;
         double d2 = Math.sin(d0) * vec31.z - Math.cos(d0) * vec31.x;
@@ -93,7 +93,6 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
         float f = (float) (vec3.x - d3);
         float f1 = (float) (vec3.y - d4);
         float f2 = (float) (vec3.z - d5);
-        float f3 = 0.025F;
         VertexConsumer vertexconsumer = p_115465_.getBuffer(RenderType.leash());
         Matrix4f matrix4f = p_115464_.last().pose();
         float f4 = (float) (Mth.fastInvSqrt(f * f + f2 * f2) * 0.025F / 2.0F);
@@ -122,8 +121,8 @@ public class RenderVineLasso extends EntityRenderer<EntityVineLasso> {
 
     private static Vec3 getVinePosition(LivingEntity entity, float p_36374_, boolean left, float shake) {
         double d0 = 0.4D * (left ? -1.0D : 1.0D) - 0;
-        float f = Mth.lerp(p_36374_ * 0.5F, entity.getXRot(), entity.xRotO) * ((float) Math.PI / 180F);
-        float f1 = Mth.lerp(p_36374_, entity.yBodyRotO, entity.yBodyRot) * ((float) Math.PI / 180F);
+        float f = Mth.lerp(p_36374_ * 0.5F, entity.getXRot(), entity.xRotO) * Mth.DEG_TO_RAD;
+        float f1 = Mth.lerp(p_36374_, entity.yBodyRotO, entity.yBodyRot) * Mth.DEG_TO_RAD;
         if (!entity.isFallFlying() && !entity.isAutoSpinAttack()) {
             if (entity.isVisuallySwimming()) {
                 return entity.getPosition(p_36374_).add((new Vec3(d0, 0.3D, -0.34D)).xRot(-f).yRot(-f1));

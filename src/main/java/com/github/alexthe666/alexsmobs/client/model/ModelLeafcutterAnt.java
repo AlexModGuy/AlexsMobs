@@ -5,6 +5,7 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.8
 
 import com.github.alexthe666.alexsmobs.entity.EntityAnteater;
 import com.github.alexthe666.alexsmobs.entity.EntityLeafcutterAnt;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -161,14 +162,14 @@ public class ModelLeafcutterAnt extends AdvancedEntityModel<EntityLeafcutterAnt>
 		animator.setAnimation(EntityLeafcutterAnt.ANIMATION_BITE);
 		animator.startKeyframe(5);
 		animator.move(body, 0, 0, -5);
-		animator.rotate(head, (float)Math.toRadians(-25), 0, 0);
-		animator.rotate(abdomen, (float)Math.toRadians(25), 0, 0);
-		animator.rotate(antenna_left, (float)Math.toRadians(-25), (float)Math.toRadians(-25), 0);
-		animator.rotate(antenna_right, (float)Math.toRadians(-25), (float)Math.toRadians(25), 0);
+		animator.rotate(head, Maths.rad(-25), 0, 0);
+		animator.rotate(abdomen, Maths.rad(25), 0, 0);
+		animator.rotate(antenna_left, Maths.rad(-25), Maths.rad(-25), 0);
+		animator.rotate(antenna_right, Maths.rad(-25), Maths.rad(25), 0);
 		animator.endKeyframe();
 		animator.startKeyframe(5);
 		animator.move(body, 0, 0, 2);
-		animator.rotate(head, (float)Math.toRadians(25), 0, 0);
+		animator.rotate(head, Maths.rad(25), 0, 0);
 		animator.endKeyframe();
 		animator.resetKeyframe(3);
 

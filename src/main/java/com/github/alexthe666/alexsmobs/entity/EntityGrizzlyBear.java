@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -144,8 +145,8 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             float sitAdd = -0.065F * this.sitProgress;
             float standAdd = -0.07F * this.standProgress;
             float radius = standAdd + sitAdd;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -368,18 +369,23 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
         }
         this.prevStandProgress = this.standProgress;
         this.prevSitProgress = this.sitProgress;
-        if (this.isSitting() && sitProgress < 10) {
-            sitProgress += 1;
+
+        if (this.isSitting()) {
+            if (sitProgress < 10F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (!this.isSitting() && sitProgress > 0) {
-            sitProgress -= 1;
+
+        if (this.isStanding()) {
+            if (standProgress < 10F)
+                standProgress++;
+        } else {
+            if (standProgress > 0F)
+                standProgress--;
         }
-        if (this.isStanding() && standProgress < 10) {
-            standProgress += 1;
-        }
-        if (!this.isStanding() && standProgress > 0) {
-            standProgress -= 1;
-        }
+
         if(!this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && this.canTargetItem(this.getItemInHand(InteractionHand.MAIN_HAND))){
             this.setEating(true);
             this.setOrderedToSit(true);
@@ -389,6 +395,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
             recalcSize = false;
             this.refreshDimensions();
         }
+
         if(isEating() && !this.canTargetItem(this.getItemInHand(InteractionHand.MAIN_HAND))){
             this.setEating(false);
             eatingTime = 0;
@@ -492,12 +499,12 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
                 if ((this.getAnimation() == ANIMATION_SWIPE_L) && this.getAnimationTick() == 7) {
                     doHurtTarget(attackTarget);
                     float rot = getYRot() + 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                 }
                 if ((this.getAnimation() == ANIMATION_SWIPE_R) && this.getAnimationTick() == 7) {
                     doHurtTarget(attackTarget);
                     float rot = getYRot() - 90;
-                    attackTarget.knockback(0.5F, Mth.sin(rot * ((float) Math.PI / 180F)), -Mth.cos(rot * ((float) Math.PI / 180F)));
+                    attackTarget.knockback(0.5F, Mth.sin(rot * Mth.DEG_TO_RAD), -Mth.cos(rot * Mth.DEG_TO_RAD));
                 }
 
             }
@@ -579,23 +586,23 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(STANDING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
-        this.entityData.define(HONEYED, Boolean.valueOf(false));
-        this.entityData.define(SNOWY, Boolean.valueOf(false));
-        this.entityData.define(EATING, Boolean.valueOf(false));
+        this.entityData.define(STANDING, false);
+        this.entityData.define(SITTING, false);
+        this.entityData.define(HONEYED, false);
+        this.entityData.define(SNOWY, false);
+        this.entityData.define(EATING, false);
         this.entityData.define(APRIL_FOOLS_MODE, 0);
         this.entityData.define(COMMAND, 0);
     }
 
     public boolean isEating() {
-        return this.entityData.get(EATING).booleanValue();
+        return this.entityData.get(EATING);
     }
 
     public void setEating(boolean eating) {
@@ -603,7 +610,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean isHoneyed() {
-        return this.entityData.get(HONEYED).booleanValue();
+        return this.entityData.get(HONEYED);
     }
 
     public void setHoneyed(boolean honeyed) {
@@ -611,7 +618,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean isSnowy() {
-        return this.entityData.get(SNOWY).booleanValue();
+        return this.entityData.get(SNOWY);
     }
 
     public void setSnowy(boolean honeyed) {
@@ -619,7 +626,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public boolean isStanding() {
-        return this.entityData.get(STANDING).booleanValue();
+        return this.entityData.get(STANDING);
     }
 
     public void setStanding(boolean standing) {
@@ -644,7 +651,7 @@ public class EntityGrizzlyBear extends TamableAnimal implements NeutralMob, IAni
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {

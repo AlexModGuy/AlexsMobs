@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity.ai;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCrow;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -14,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class CrowAICircleCrops extends MoveToBlockGoal {
 
-    private EntityCrow crow;
+    private final EntityCrow crow;
     private int idleAtFlowerTime = 0;
     private boolean isAboveDestinationBear;
     float circlingTime = 0;
@@ -101,7 +102,7 @@ public class CrowAICircleCrops extends MoveToBlockGoal {
     }
 
     public BlockPos getVultureCirclePos(BlockPos target) {
-        float angle = (0.01745329251F * 8 * (clockwise ? -circlingTime : circlingTime));
+        float angle = (Maths.EIGHT_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
         double extraX = circleDistance * Mth.sin((angle));
         double extraZ = circleDistance * Mth.cos(angle);
         BlockPos pos = AMBlockPos.fromCoords(target.getX() + 0.5F + extraX, target.getY() + 1 + yLevel, target.getZ() + 0.5F + extraZ);

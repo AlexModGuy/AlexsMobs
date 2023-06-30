@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class GorillaAIForageLeaves extends MoveToBlockGoal {
 
-    private EntityGorilla gorilla;
+    private final EntityGorilla gorilla;
     private int idleAtLeavesTime = 0;
     private boolean isAboveDestinationBear;
 

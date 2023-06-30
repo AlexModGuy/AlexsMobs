@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.render;
 
 import com.github.alexthe666.alexsmobs.client.model.ModelMungus;
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -119,8 +120,8 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             vector3d2 = vector3d2.normalize();
             float f5 = (float) Math.acos(vector3d2.y);
             float f6 = (float) Math.atan2(vector3d2.z, vector3d2.x);
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
-            matrixStackIn.mulPose(Axis.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
+            matrixStackIn.mulPose(Axis.YP.rotationDegrees(((Mth.PI / 2F) - f6) * Mth.RAD_TO_DEG));
+            matrixStackIn.mulPose(Axis.XP.rotationDegrees(f5 * Mth.RAD_TO_DEG));
             int i = 1;
             float f7 = f1 * 0.05F * 1.5F;
             float f8 = 1F;
@@ -131,20 +132,20 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
             float f10 = 0.282F;
             float f11 = Mth.cos(0 + 2.3561945F) * 0.8F;
             float f12 = Mth.sin(0 + 2.3561945F) * 0.8F;
-            float f13 = Mth.cos(0 + ((float) Math.PI / 4F)) * 0.8F;
-            float f14 = Mth.sin(0 + ((float) Math.PI / 4F)) * 0.8F;
+            float f13 = Mth.cos(0 + Maths.QUARTER_PI) * 0.8F;
+            float f14 = Mth.sin(0 + Maths.QUARTER_PI) * 0.8F;
             float f15 = Mth.cos(0 + 3.926991F) * 0.8F;
             float f16 = Mth.sin(0 + 3.926991F) * 0.8F;
             float f17 = Mth.cos(0 + 5.4977875F) * 0.8F;
             float f18 = Mth.sin(0 + 5.4977875F) * 0.8F;
-            float f19 = Mth.cos(0 + (float) Math.PI) * 0.4F;
-            float f20 = Mth.sin(0 + (float) Math.PI) * 0.4F;
+            float f19 = Mth.cos(0 + Mth.PI) * 0.4F;
+            float f20 = Mth.sin(0 + Mth.PI) * 0.4F;
             float f21 = Mth.cos(0 + 0.0F) * 0.4F;
             float f22 = Mth.sin(0 + 0.0F) * 0.4F;
-            float f23 = Mth.cos(0 + ((float) Math.PI / 2F)) * 0.4F;
-            float f24 = Mth.sin(0 + ((float) Math.PI / 2F)) * 0.4F;
-            float f25 = Mth.cos(0 + ((float) Math.PI * 1.5F)) * 0.4F;
-            float f26 = Mth.sin(0 + ((float) Math.PI * 1.5F)) * 0.4F;
+            float f23 = Mth.cos(0 + (Mth.PI / 2F)) * 0.4F;
+            float f24 = Mth.sin(0 + (Mth.PI / 2F)) * 0.4F;
+            float f25 = Mth.cos(0 + (Mth.PI * 1.5F)) * 0.4F;
+            float f26 = Mth.sin(0 + (Mth.PI * 1.5F)) * 0.4F;
             float f27 = 0.0F;
             float f28 = 0.4999F;
             float f29 = -1.0F + f2;
@@ -179,7 +180,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
         return TEXTURE;
     }
 
-    class MungusSackLayer extends RenderLayer<EntityMungus, ModelMungus> {
+    static class MungusSackLayer extends RenderLayer<EntityMungus, ModelMungus> {
 
         public MungusSackLayer(RenderMungus p_i50928_1_) {
             super(p_i50928_1_);
@@ -206,7 +207,7 @@ public class RenderMungus extends MobRenderer<EntityMungus, ModelMungus> {
         }
     }
 
-    class MungusMushroomLayer extends RenderLayer<EntityMungus, ModelMungus> {
+    static class MungusMushroomLayer extends RenderLayer<EntityMungus, ModelMungus> {
 
         public MungusMushroomLayer(RenderMungus p_i50928_1_) {
             super(p_i50928_1_);

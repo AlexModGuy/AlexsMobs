@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoDismount;
 import com.github.alexthe666.alexsmobs.message.MessageMosquitoMountPlayer;
@@ -149,8 +150,8 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new EntityCrimsonMosquito.FlyTowardsTarget(this));
-        this.goalSelector.addGoal(2, new EntityCrimsonMosquito.FlyAwayFromTarget(this));
+        this.goalSelector.addGoal(2, new FlyTowardsTarget(this));
+        this.goalSelector.addGoal(2, new FlyAwayFromTarget(this));
         this.goalSelector.addGoal(3, new EntityCrimsonMosquito.RandomFlyGoal(this));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 32F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -239,8 +240,8 @@ public class EntityCrimsonMosquito extends Monster {
                     this.yHeadRot = livingEntity.yHeadRot;
                     this.yRotO = livingEntity.yHeadRot;
                     final float radius = 1F;
-                    final float angle = (0.0174532925F * livingEntity.yBodyRot);
-                    final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                    final float angle = (Maths.STARTING_ANGLE * livingEntity.yBodyRot);
+                    final double extraX = radius * Mth.sin(Mth.PI + angle);
                     final double extraZ = radius * Mth.cos(angle);
                     this.setPos(mount.getX() + extraX, Math.max(mount.getY() + mount.getEyeHeight() * 0.25F, mount.getY()), mount.getZ() + extraZ);
                     if (!mount.isAlive() || mount instanceof Player && ((Player) mount).isCreative()) {
@@ -306,7 +307,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public boolean isFlying() {
-        return this.entityData.get(FLYING).booleanValue();
+        return this.entityData.get(FLYING);
     }
 
     public void setFlying(boolean flying) {
@@ -319,7 +320,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public int getLuringLaviathan() {
-        return this.entityData.get(LURING_LAVIATHAN).intValue();
+        return this.entityData.get(LURING_LAVIATHAN);
     }
 
     public void setLuringLaviathan(int lure) {
@@ -327,7 +328,7 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public int getFleeingEntityId() {
-        return this.entityData.get(FLEEING_ENTITY).intValue();
+        return this.entityData.get(FLEEING_ENTITY);
     }
 
     public void setFleeingEntityId(int lure) {
@@ -343,11 +344,11 @@ public class EntityCrimsonMosquito extends Monster {
     }
 
     public boolean isShrinking() {
-        return this.entityData.get(SHRINKING).booleanValue();
+        return this.entityData.get(SHRINKING);
     }
 
     public boolean isFromFly() {
-        return this.entityData.get(FROM_FLY).booleanValue();
+        return this.entityData.get(FROM_FLY);
     }
 
     public void setShrink(boolean shrink) {
@@ -368,7 +369,7 @@ public class EntityCrimsonMosquito extends Monster {
 
 
     public boolean isSick() {
-        return this.entityData.get(SICK).booleanValue();
+        return this.entityData.get(SICK);
     }
 
     public void setSick(boolean shrink) {
@@ -561,7 +562,6 @@ public class EntityCrimsonMosquito extends Monster {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                double d3 = 10.0D;
                 this.level().addParticle(ParticleTypes.EXPLOSION, this.getRandomX(1.6D), this.getY() + random.nextFloat() * 3.4F, this.getRandomZ(1.6D), d0, d1, d2);
             }
         } else {
@@ -670,8 +670,8 @@ public class EntityCrimsonMosquito extends Monster {
             final float radius = 1 + parentEntity.getRandom().nextInt(5);
             final float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             final float renderYawOffset = parentEntity.yBodyRot;
-            final float angle = (0.0174532925F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             final BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
             final BlockPos ground = parentEntity.getGroundPosition(radialPos);
@@ -722,12 +722,12 @@ public class EntityCrimsonMosquito extends Monster {
                         parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                         if (parentEntity.getTarget() == null) {
                             final Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                            parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                            parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                             parentEntity.yBodyRot = parentEntity.getYRot();
                         } else {
                             final double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                             final double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                            parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                            parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
                             parentEntity.yBodyRot = parentEntity.getYRot();
                         }
                     }
@@ -756,7 +756,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
     }
 
-    public class FlyTowardsTarget extends Goal {
+    public static class FlyTowardsTarget extends Goal {
         private final EntityCrimsonMosquito parentEntity;
 
         public FlyTowardsTarget(EntityCrimsonMosquito mosquito) {
@@ -800,7 +800,7 @@ public class EntityCrimsonMosquito extends Monster {
         }
     }
 
-    public class FlyAwayFromTarget extends Goal {
+    public static class FlyAwayFromTarget extends Goal {
         private final EntityCrimsonMosquito parentEntity;
         private int spitCooldown = 0;
         private BlockPos shootPos = null;
@@ -853,8 +853,8 @@ public class EntityCrimsonMosquito extends Monster {
 
         public BlockPos getBlockInTargetsViewMosquito(LivingEntity target) {
             final float radius = 4 + parentEntity.getRandom().nextInt(5);
-            final float angle = (0.0174532925F * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final float angle = (Maths.STARTING_ANGLE * (target.yHeadRot + 90F + parentEntity.getRandom().nextInt(180)));
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             final BlockPos ground = AMBlockPos.fromCoords(target.getX() + extraX, target.getY() + 1, target.getZ() + extraZ);
             if (parentEntity.distanceToSqr(Vec3.atCenterOf(ground)) > 30) {

@@ -233,8 +233,8 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
         this.prevSwimRot = swimRot;
         this.prevTail1Yaw = tail1Yaw;
         this.prevTail2Yaw = tail2Yaw;
-        boolean onLand = !this.isInWaterOrBubble() && this.onGround();
-        this.setXRot((float) -((float) this.getDeltaMovement().y * 2.2F * Maths.oneEightyDividedByFloatPi));
+        final boolean onLand = !this.isInWaterOrBubble() && this.onGround();
+        this.setXRot((float) -((float) this.getDeltaMovement().y * 2.2F * Mth.RAD_TO_DEG));
         if (onLand && onLandProgress < 5F) {
             onLandProgress++;
         }
@@ -360,7 +360,7 @@ public class EntityTriops extends WaterAnimal implements ITargetsDroppedItems, B
     }
 
     private class BreedGoal extends Goal {
-        private Predicate<Entity> validBreedPartner;
+        private final Predicate<Entity> validBreedPartner;
         private EntityTriops breedPartner;
 
         private int executionCooldown = 50;

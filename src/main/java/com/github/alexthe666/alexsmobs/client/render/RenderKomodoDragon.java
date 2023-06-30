@@ -28,7 +28,7 @@ public class RenderKomodoDragon extends MobRenderer<EntityKomodoDragon, ModelKom
         return TEXTURE;
     }
 
-    class LayerSaddle extends RenderLayer<EntityKomodoDragon, ModelKomodoDragon> {
+    static class LayerSaddle extends RenderLayer<EntityKomodoDragon, ModelKomodoDragon> {
 
         private static final ModelKomodoDragon MAID_MODEL = new ModelKomodoDragon(0.3F);
         private static final ModelKomodoDragon SADDLE_MODEL = new ModelKomodoDragon(0.5F);

@@ -22,6 +22,8 @@ import com.github.alexthe666.alexsmobs.inventory.AMMenuRegistry;
 import com.github.alexthe666.alexsmobs.item.*;
 import com.github.alexthe666.alexsmobs.tileentity.AMTileEntityRegistry;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -56,17 +58,17 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = AlexsMobs.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-    public static final Map<Integer, SoundBearMusicBox> BEAR_MUSIC_BOX_SOUND_MAP = new HashMap<>();
-    public static final Map<Integer, SoundLaCucaracha> COCKROACH_SOUND_MAP = new HashMap<>();
-    public static final Map<Integer, SoundWormBoss> WORMBOSS_SOUND_MAP = new HashMap<>();
-    public static List<UUID> currentUnrenderedEntities = new ArrayList<UUID>();
+    public static final Int2ObjectMap<SoundBearMusicBox> BEAR_MUSIC_BOX_SOUND_MAP = new Int2ObjectOpenHashMap<>();
+    public static final Int2ObjectMap<SoundLaCucaracha> COCKROACH_SOUND_MAP = new Int2ObjectOpenHashMap<>();
+    public static final Int2ObjectMap<SoundWormBoss> WORMBOSS_SOUND_MAP = new Int2ObjectOpenHashMap<>();
+    public static final List<UUID> currentUnrenderedEntities = new ArrayList<>();
     public static int voidPortalCreationTime = 0;
     public CameraType prevPOV = CameraType.FIRST_PERSON;
     public boolean initializedRainbowBuffers = false;
     private int pupfishChunkX = 0;
     private int pupfishChunkZ = 0;
     private int singingBlueJayId = -1;
-    private ItemStack[] transmuteStacks = new ItemStack[3];
+    private final ItemStack[] transmuteStacks = new ItemStack[3];
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
@@ -320,49 +322,48 @@ public class ClientProxy extends CommonProxy {
 
     @OnlyIn(Dist.CLIENT)
     public void onEntityStatus(Entity entity, byte updateKind) {
-        if (entity instanceof EntityCockroach && entity.isAlive() && updateKind == 67) {
-            SoundLaCucaracha sound;
-            if (COCKROACH_SOUND_MAP.get(entity.getId()) == null) {
-                sound = new SoundLaCucaracha((EntityCockroach) entity);
-                COCKROACH_SOUND_MAP.put(entity.getId(), sound);
-            } else {
-                sound = COCKROACH_SOUND_MAP.get(entity.getId());
-            }
-            if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound() && sound.isOnlyCockroach()) {
-                Minecraft.getInstance().getSoundManager().play(sound);
-            }
-        }
-        if (entity instanceof EntityVoidWorm && entity.isAlive() && updateKind == 67) {
-            float f2 = Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.MUSIC);
-            if (f2 <= 0) {
-                WORMBOSS_SOUND_MAP.clear();
-            } else {
-                SoundWormBoss sound;
-                if (WORMBOSS_SOUND_MAP.get(entity.getId()) == null) {
-                    sound = new SoundWormBoss((EntityVoidWorm) entity);
-                    WORMBOSS_SOUND_MAP.put(entity.getId(), sound);
+        if (updateKind == 67) {
+            if (entity instanceof EntityCockroach && entity.isAlive()) {
+                SoundLaCucaracha sound;
+                if (COCKROACH_SOUND_MAP.get(entity.getId()) == null) {
+                    sound = new SoundLaCucaracha((EntityCockroach) entity);
+                    COCKROACH_SOUND_MAP.put(entity.getId(), sound);
                 } else {
-                    sound = WORMBOSS_SOUND_MAP.get(entity.getId());
+                    sound = COCKROACH_SOUND_MAP.get(entity.getId());
                 }
-                if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.isNearest()) {
+                if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound() && sound.isOnlyCockroach()) {
                     Minecraft.getInstance().getSoundManager().play(sound);
                 }
+            } else if (entity instanceof EntityVoidWorm && entity.isAlive()) {
+                final float f2 = Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.MUSIC);
+                if (f2 <= 0) {
+                    WORMBOSS_SOUND_MAP.clear();
+                } else {
+                    SoundWormBoss sound;
+                    if (WORMBOSS_SOUND_MAP.get(entity.getId()) == null) {
+                        sound = new SoundWormBoss((EntityVoidWorm) entity);
+                        WORMBOSS_SOUND_MAP.put(entity.getId(), sound);
+                    } else {
+                        sound = WORMBOSS_SOUND_MAP.get(entity.getId());
+                    }
+                    if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.isNearest()) {
+                        Minecraft.getInstance().getSoundManager().play(sound);
+                    }
+                }
+            } else if (entity instanceof EntityGrizzlyBear && entity.isAlive()) {
+                SoundBearMusicBox sound;
+                if (BEAR_MUSIC_BOX_SOUND_MAP.get(entity.getId()) == null) {
+                    sound = new SoundBearMusicBox((EntityGrizzlyBear) entity);
+                    BEAR_MUSIC_BOX_SOUND_MAP.put(entity.getId(), sound);
+                } else {
+                    sound = BEAR_MUSIC_BOX_SOUND_MAP.get(entity.getId());
+                }
+                if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound() && sound.isOnlyMusicBox()) {
+                    Minecraft.getInstance().getSoundManager().play(sound);
+                }
+            } else if (entity instanceof EntityBlueJay && entity.isAlive()) {
+                singingBlueJayId = entity.getId();
             }
-        }
-        if (entity instanceof EntityGrizzlyBear && entity.isAlive() && updateKind == 67) {
-            SoundBearMusicBox sound;
-            if (BEAR_MUSIC_BOX_SOUND_MAP.get(entity.getId()) == null) {
-                sound = new SoundBearMusicBox((EntityGrizzlyBear) entity);
-                BEAR_MUSIC_BOX_SOUND_MAP.put(entity.getId(), sound);
-            } else {
-                sound = BEAR_MUSIC_BOX_SOUND_MAP.get(entity.getId());
-            }
-            if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound() && sound.isOnlyMusicBox()) {
-                Minecraft.getInstance().getSoundManager().play(sound);
-            }
-        }
-        if (entity instanceof EntityBlueJay && entity.isAlive() && updateKind == 67) {
-            singingBlueJayId = entity.getId();
         }
         if (entity instanceof EntityBlueJay && entity.isAlive() && updateKind == 68) {
             singingBlueJayId = -1;

@@ -136,10 +136,10 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     public boolean hurt(DamageSource source, float amount) {
-        boolean prev = super.hurt(source, amount);
+        final boolean prev = super.hurt(source, amount);
         if (prev) {
-            double range = 15;
-            int fleeTime = 100 + getRandom().nextInt(150);
+            final double range = 15;
+            final int fleeTime = 100 + getRandom().nextInt(150);
             this.revengeCooldown = fleeTime;
             List<? extends EntitySeal> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(range, range / 2, range));
             for (EntitySeal gaz : list) {
@@ -188,28 +188,33 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         prevBobbingProgress = bobbingProgress;
         prevSwimAngle = this.getSwimAngle();
         boolean dig = isDigging() && isInWaterOrBubble();
-        float f2 = (float) -((float) this.getDeltaMovement().y * (double) (180F / (float) Math.PI));
+        float f2 = (float) -((float) this.getDeltaMovement().y * (double) Mth.RAD_TO_DEG);
         if (isInWater()) {
             this.setXRot(f2 * 2.5F);
+
+            if (this.isLandNavigator)
+                switchNavigator(false);
+        } else {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
         }
-        if (isInWater() && this.isLandNavigator) {
-            switchNavigator(false);
+
+        if (isBasking()) {
+            if (baskProgress < 5F)
+                baskProgress++;
+        } else {
+            if (baskProgress > 0F)
+                baskProgress--;
         }
-        if (!isInWater() && !this.isLandNavigator) {
-            switchNavigator(true);
+
+        if (dig) {
+            if (digProgress < 5F)
+                digProgress++;
+        } else {
+            if (digProgress > 0F)
+                digProgress--;
         }
-        if (isBasking() && baskProgress < 5F) {
-            baskProgress++;
-        }
-        if (!isBasking() && baskProgress > 0F) {
-            baskProgress--;
-        }
-        if (dig && digProgress < 5F) {
-            digProgress++;
-        }
-        if (!dig && digProgress > 0F) {
-            digProgress--;
-        }
+
         if (dig && level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).canOcclude()) {
             BlockPos posit = this.getBlockPosBelowThatAffectsMyMovement();
             BlockState understate = level().getBlockState(posit);
@@ -284,7 +289,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -468,7 +473,7 @@ public class EntitySeal extends Animal implements ISemiAquatic, IHerdPanic, ITar
         return !isBasking();
     }
 
-    public class SealGroupData extends AgeableMobGroupData {
+    public static class SealGroupData extends AgeableMobGroupData {
 
         public final int variant;
 

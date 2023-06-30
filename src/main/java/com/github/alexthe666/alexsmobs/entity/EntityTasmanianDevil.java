@@ -123,19 +123,19 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(BASKING, Boolean.valueOf(false));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(BASKING, false);
+        this.entityData.define(SITTING, false);
     }
 
 
     public boolean isBasking() {
-        return this.entityData.get(BASKING).booleanValue();
+        return this.entityData.get(BASKING);
     }
 
     public void setBasking(boolean basking) {
@@ -155,39 +155,46 @@ public class EntityTasmanianDevil extends Animal implements IAnimatedEntity, ITa
         super.tick();
         this.prevBaskProgress = this.baskProgress;
         this.prevSitProgress = this.sitProgress;
-        if (this.isSitting() && sitProgress < 5) {
-            sitProgress += 1;
+
+        if (this.isSitting()) {
+            if (sitProgress < 5F)
+                sitProgress++;
+        } else {
+            if (sitProgress > 0F)
+                sitProgress--;
         }
-        if (!this.isSitting() && sitProgress > 0) {
-            sitProgress -= 1;
+
+        if (this.isBasking()) {
+            if (baskProgress < 5F)
+                baskProgress++;
+        } else {
+            if (baskProgress > 0F)
+                baskProgress--;
         }
-        if (this.isBasking() && baskProgress < 5) {
-            baskProgress += 1;
-        }
-        if (!this.isBasking() && baskProgress > 0) {
-            baskProgress -= 1;
-        }
-        if (!this.level().isClientSide && this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5 && this.hasLineOfSight(this.getTarget())) {
-            float f1 = this.getYRot() * ((float) Math.PI / 180F);
-            this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
-            getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
-            this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
-        }
-        if (!this.level().isClientSide && (isSitting() || isBasking()) && ++sittingTime > maxSitTime) {
-            this.setSitting(false);
-            this.setBasking(false);
-            sittingTime = 0;
-            maxSitTime = 75 + random.nextInt(50);
-        }
-        if (!this.level().isClientSide && this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isBasking() && !this.isSitting() && random.nextInt(100) == 0) {
-            sittingTime = 0;
-            maxSitTime = 100 + random.nextInt(550);
-            if(this.getRandom().nextBoolean()){
-                this.setSitting(true);
-                this.setBasking(false);
-            }else{
+
+        if (!this.level().isClientSide) {
+            if (this.getTarget() != null && this.getAnimation() == ANIMATION_ATTACK && this.getAnimationTick() == 5 && this.hasLineOfSight(this.getTarget())) {
+                float f1 = this.getYRot() * Mth.DEG_TO_RAD;
+                this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f1) * 0.02F, 0.0D, Mth.cos(f1) * 0.02F));
+                getTarget().knockback(1F, getTarget().getX() - this.getX(), getTarget().getZ() - this.getZ());
+                this.getTarget().hurt(this.damageSources().mobAttack(this), (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
+            }
+            if ((isSitting() || isBasking()) && ++sittingTime > maxSitTime) {
                 this.setSitting(false);
-                this.setBasking(true);
+                this.setBasking(false);
+                sittingTime = 0;
+                maxSitTime = 75 + random.nextInt(50);
+            }
+            if (this.getDeltaMovement().lengthSqr() < 0.03D && this.getAnimation() == NO_ANIMATION && !this.isBasking() && !this.isSitting() && random.nextInt(100) == 0) {
+                sittingTime = 0;
+                maxSitTime = 100 + random.nextInt(550);
+                if (this.getRandom().nextBoolean()) {
+                    this.setSitting(true);
+                    this.setBasking(false);
+                } else {
+                    this.setSitting(false);
+                    this.setBasking(true);
+                }
             }
         }
         if(this.getAnimation() == ANIMATION_HOWL && this.getAnimationTick() == 1){

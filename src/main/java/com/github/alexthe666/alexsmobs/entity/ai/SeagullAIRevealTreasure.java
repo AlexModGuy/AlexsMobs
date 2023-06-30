@@ -9,7 +9,7 @@ import java.util.EnumSet;
 
 public class SeagullAIRevealTreasure extends Goal {
 
-    private EntitySeagull seagull;
+    private final EntitySeagull seagull;
     private BlockPos sitPos;
 
     public SeagullAIRevealTreasure(EntitySeagull entitySeagull) {

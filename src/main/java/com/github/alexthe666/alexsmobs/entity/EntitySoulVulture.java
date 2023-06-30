@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.GroundPathNavigatorWide;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -234,24 +235,29 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
                 this.setFlying(false);
             }
         }
-        if (isFlying() && this.isLandNavigator) {
-            switchNavigator(false);
+        final boolean flying = isFlying();
+        if (flying) {
+            if (this.isLandNavigator)
+                switchNavigator(false);
+
+            if (flyProgress < 5F)
+                flyProgress++;
+        } else {
+            if (!this.isLandNavigator)
+                switchNavigator(true);
+
+            if (flyProgress > 0F)
+                flyProgress--;
         }
-        if (!isFlying() && !this.isLandNavigator) {
-            switchNavigator(true);
+
+        if (this.isTackling()) {
+            if (tackleProgress < 5F)
+                tackleProgress++;
+        } else {
+            if (tackleProgress > 0F)
+                tackleProgress--;
         }
-        if (this.isFlying() && flyProgress < 5F) {
-            flyProgress++;
-        }
-        if (!isFlying() && flyProgress > 0F) {
-            flyProgress--;
-        }
-        if (this.isTackling() && tackleProgress < 5F) {
-            tackleProgress++;
-        }
-        if (!isTackling() && tackleProgress > 0F) {
-            tackleProgress--;
-        }
+
         if(landingCooldown > 0){
             landingCooldown--;
         }
@@ -264,17 +270,17 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             this.setNoGravity(false);
         }
         if (this.level().isClientSide  && hasSoulHeart()) {
-            float radius = 0.25F + random.nextFloat() * 1F;
-            float fly = this.flyProgress * 0.2F;
-            float wingSpread = 15F + 65 * fly + random.nextInt(5);
-            float angle = (0.01745329251F * ((random.nextBoolean() ? -1 : 1) * (wingSpread + 180) + this.yBodyRot));
-            float angleMotion = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
-            double mov = this.getDeltaMovement().length();
-            double extraXMotion = -mov * Mth.sin((float) (Math.PI + angleMotion));
-            double extraZMotion = -mov * Mth.cos(angleMotion);
-            double yRandom = 0.2F + random.nextFloat() * 0.3F;
+            final float radius = 0.25F + random.nextFloat() * 1F;
+            final float fly = this.flyProgress * 0.2F;
+            final float wingSpread = 15F + 65 * fly + random.nextInt(5);
+            final float angle = (Maths.STARTING_ANGLE * ((random.nextBoolean() ? -1 : 1) * (wingSpread + 180) + this.yBodyRot));
+            final float angleMotion = (Maths.STARTING_ANGLE * this.yBodyRot);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
+            final double extraZ = radius * Mth.cos(angle);
+            final double mov = this.getDeltaMovement().length();
+            final double extraXMotion = -mov * Mth.sin((float) (Math.PI + angleMotion));
+            final double extraZMotion = -mov * Mth.cos(angleMotion);
+            final double yRandom = 0.2F + random.nextFloat() * 0.3F;
             this.level().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getX() + extraX, this.getY() + yRandom, this.getZ() + extraZ, extraXMotion, random.nextFloat() * 0.1F, extraZMotion);
         }
     }
@@ -283,9 +289,9 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
     public void handleEntityEvent(byte id) {
         if(id == 68){
             for (int i = 0; i < 6 + random.nextInt(3); i++) {
-                double d2 = this.random.nextGaussian() * 0.02D;
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
+                final double d2 = this.random.nextGaussian() * 0.02D;
+                final double d0 = this.random.nextGaussian() * 0.02D;
+                final double d1 = this.random.nextGaussian() * 0.02D;
                 this.level().addParticle(ParticleTypes.SOUL, this.getX() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, this.getY() + this.getBbHeight() * 0.5F + (double) (this.random.nextFloat() * this.getBbHeight() * 0.5F), this.getZ() + (double) (this.random.nextFloat() * this.getBbWidth()) - (double) this.getBbWidth() * 0.5F, d0, d1, d2);
             }
         }else{
@@ -400,9 +406,9 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         }
 
         public BlockPos getVultureCirclePos(BlockPos target) {
-            float angle = (0.01745329251F * 3 * (clockwise ? -circlingTime : circlingTime));
-            double extraX = circleDistance * Mth.sin((angle));
-            double extraZ = circleDistance * Mth.cos(angle);
+            final float angle = (Maths.THREE_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
+            final double extraX = circleDistance * Mth.sin((angle));
+            final double extraZ = circleDistance * Mth.cos(angle);
             BlockPos pos = new BlockPos((int) (target.getX() + extraX), target.getY() + 1 + yLevel, (int) (target.getZ() + extraZ));
             if (vulture.level().isEmptyBlock(pos)) {
                 return pos;
@@ -416,7 +422,7 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
-    class MoveHelper extends MoveControl {
+    static class MoveHelper extends MoveControl {
         private final EntitySoulVulture parentEntity;
 
         public MoveHelper(EntitySoulVulture bird) {
@@ -427,18 +433,14 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         public void tick() {
             if (this.operation == MoveControl.Operation.MOVE_TO) {
                 Vec3 vector3d = new Vec3(this.wantedX - parentEntity.getX(), this.wantedY - parentEntity.getY(), this.wantedZ - parentEntity.getZ());
-                double d5 = vector3d.length();
+                final double d5 = vector3d.length();
                 if (d5 < 0.3) {
                     this.operation = MoveControl.Operation.WAIT;
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().scale(0.5D));
                 } else {
-                    double d0 = this.wantedX - this.parentEntity.getX();
-                    double d1 = this.wantedY - this.parentEntity.getY();
-                    double d2 = this.wantedZ - this.parentEntity.getZ();
-                    double d3 = (double)Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d5)));
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                     parentEntity.yBodyRot = parentEntity.getYRot();
 
                 }
@@ -509,12 +511,12 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
         }
 
         public BlockPos getBlockInViewVulture() {
-            float radius = 0.75F * (0.7F * 6) * -3 - vulture.getRandom().nextInt(10);
-            float neg = vulture.getRandom().nextBoolean() ? 1 : -1;
-            float renderYawOffset = vulture.yBodyRot;
-            float angle = (0.01745329251F * renderYawOffset) + 3.15F + (vulture.getRandom().nextFloat() * neg);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
-            double extraZ = radius * Mth.cos(angle);
+            final float radius = 0.75F * (0.7F * 6) * -3 - vulture.getRandom().nextInt(10);
+            final float neg = vulture.getRandom().nextBoolean() ? 1 : -1;
+            final float renderYawOffset = vulture.yBodyRot;
+            final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (vulture.getRandom().nextFloat() * neg);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
+            final double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = new BlockPos((int) (vulture.getX() + extraX), (int) vulture.getY(), (int) (vulture.getZ() + extraZ));
             while(level().isEmptyBlock(radialPos) && radialPos.getY() > 2){
                 radialPos = radialPos.below();
@@ -557,10 +559,9 @@ public class EntitySoulVulture extends Monster implements FlyingAnimal {
             }
             if (vulture.getTarget() != null) {
                 this.vulture.getMoveControl().setWantedPosition(vulture.getTarget().getX(), vulture.getTarget().getY() + vulture.getTarget().getEyeHeight(), vulture.getTarget().getZ(), 2.0D);
-                double d0 = this.vulture.getX() - this.vulture.getTarget().getX();
-                double d2 = this.vulture.getZ() - this.vulture.getTarget().getZ();
-                double d3 = (double)Mth.sqrt((float) (d0 * d0 + d2 * d2));
-                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+                final double d0 = this.vulture.getX() - this.vulture.getTarget().getX();
+                final double d2 = this.vulture.getZ() - this.vulture.getTarget().getZ();
+                final float f = (float)(Mth.atan2(d2, d0) * (double)Mth.RAD_TO_DEG) - 90.0F;
                 vulture.setYRot(f);
                 vulture.yBodyRot = vulture.getYRot();
                 if (vulture.getBoundingBox().inflate(0.3F, 0.3F, 0.3F).intersects(vulture.getTarget().getBoundingBox()) && vulture.tackleCooldown == 0) {

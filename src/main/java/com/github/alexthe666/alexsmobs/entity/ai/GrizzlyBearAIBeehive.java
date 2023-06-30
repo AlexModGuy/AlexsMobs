@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class GrizzlyBearAIBeehive extends MoveToBlockGoal {
 
-    private EntityGrizzlyBear bear;
+    private final EntityGrizzlyBear bear;
     private int idleAtHiveTime = 0;
     private boolean isAboveDestinationBear;
 

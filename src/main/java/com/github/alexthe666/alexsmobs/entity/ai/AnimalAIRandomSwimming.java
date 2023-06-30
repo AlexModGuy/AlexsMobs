@@ -12,8 +12,8 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 
 public class AnimalAIRandomSwimming extends RandomStrollGoal {
-    private int xzSpread;
-    private boolean submerged;
+    private final int xzSpread;
+    private final boolean submerged;
     private int ySpread = 3;
 
     public AnimalAIRandomSwimming(PathfinderMob creature, double speed, int chance, int xzSpread) {

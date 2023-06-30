@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityTerrapin;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -120,23 +121,23 @@ public class ModelTerrapin extends AdvancedEntityModel<EntityTerrapin> {
         float swimProgress = (entity.prevSwimProgress + (entity.swimProgress - entity.prevSwimProgress) * partialTick) * (5F - retreatProgress) * 0.2F;
         float standUnderwaterProgress = Math.max(0, (1F - Math.min(limbSwingAmount * 3F, 1F)) * swimProgress - retreatProgress);
         float spinDegree = 0.6F;
-        progressRotationPrev(left_arm, swimProgress, (float) Math.toRadians(-20), 0,  (float) Math.toRadians(-70), 5F);
-        progressRotationPrev(left_hand, swimProgress, 0, 0,  (float) Math.toRadians(70), 5F);
-        progressRotationPrev(right_arm, swimProgress, (float) Math.toRadians(-20), 0,  (float) Math.toRadians(70), 5F);
-        progressRotationPrev(right_hand, swimProgress, 0, 0,  (float) Math.toRadians(-70), 5F);
-        progressRotationPrev(left_leg, swimProgress,  (float) Math.toRadians(30), 0,  (float) Math.toRadians(-70), 5F);
-        progressRotationPrev(left_foot, swimProgress, 0, 0,  (float) Math.toRadians(70), 5F);
-        progressRotationPrev(right_leg, swimProgress,  (float) Math.toRadians(30), 0,  (float) Math.toRadians(70), 5F);
-        progressRotationPrev(right_foot, swimProgress, 0, 0,  (float) Math.toRadians(-70), 5F);
-        progressRotationPrev(body, standUnderwaterProgress,  (float) Math.toRadians(-30), 0,  0, 5F);
-        progressRotationPrev(head, standUnderwaterProgress,  (float) Math.toRadians(30), 0,  0, 5F);
-        progressRotationPrev(tail, standUnderwaterProgress,  (float) Math.toRadians(30), 0,  0, 5F);
+        progressRotationPrev(left_arm, swimProgress, Maths.rad(-20), 0,  Maths.rad(-70), 5F);
+        progressRotationPrev(left_hand, swimProgress, 0, 0,  Maths.rad(70), 5F);
+        progressRotationPrev(right_arm, swimProgress, Maths.rad(-20), 0,  Maths.rad(70), 5F);
+        progressRotationPrev(right_hand, swimProgress, 0, 0,  Maths.rad(-70), 5F);
+        progressRotationPrev(left_leg, swimProgress,  Maths.rad(30), 0,  Maths.rad(-70), 5F);
+        progressRotationPrev(left_foot, swimProgress, 0, 0,  Maths.rad(70), 5F);
+        progressRotationPrev(right_leg, swimProgress,  Maths.rad(30), 0,  Maths.rad(70), 5F);
+        progressRotationPrev(right_foot, swimProgress, 0, 0,  Maths.rad(-70), 5F);
+        progressRotationPrev(body, standUnderwaterProgress,  Maths.rad(-30), 0,  0, 5F);
+        progressRotationPrev(head, standUnderwaterProgress,  Maths.rad(30), 0,  0, 5F);
+        progressRotationPrev(tail, standUnderwaterProgress,  Maths.rad(30), 0,  0, 5F);
         progressPositionPrev(body, standUnderwaterProgress,  0, -1F,  0, 5F);
         progressPositionPrev(tail, swimProgress,  0, -0.5F,  1, 5F);
-        progressRotationPrev(left_arm, retreatProgress, 0, 0,  (float) Math.toRadians(-90), 5F);
-        progressRotationPrev(right_arm, retreatProgress, 0, 0,  (float) Math.toRadians(90), 5F);
-        progressRotationPrev(left_leg, retreatProgress, 0, 0,  (float) Math.toRadians(-90), 5F);
-        progressRotationPrev(right_leg, retreatProgress, 0, 0,  (float) Math.toRadians(90), 5F);
+        progressRotationPrev(left_arm, retreatProgress, 0, 0,  Maths.rad(-90), 5F);
+        progressRotationPrev(right_arm, retreatProgress, 0, 0,  Maths.rad(90), 5F);
+        progressRotationPrev(left_leg, retreatProgress, 0, 0,  Maths.rad(-90), 5F);
+        progressRotationPrev(right_leg, retreatProgress, 0, 0,  Maths.rad(90), 5F);
         progressPositionPrev(body, retreatProgress,  0, 1,  0, 5F);
         progressPositionPrev(head, retreatProgress,  0, 1,  3, 5F);
         progressPositionPrev(tail, retreatProgress,  0, -0.1F,  -4, 5F);
@@ -155,7 +156,7 @@ public class ModelTerrapin extends AdvancedEntityModel<EntityTerrapin> {
             this.bob(body, spinDegree, 1, true, timeSpinning, 0.2F * spinProgress);
         }else{
             float rollDeg = (float) Mth.wrapDegrees(Math.toDegrees(entity.clientSpin));
-            body.rotateAngleY = spinProgress * 0.2F * (float)Math.toRadians(rollDeg);
+            body.rotateAngleY = spinProgress * 0.2F * Maths.rad(rollDeg);
             if (swimProgress <= 0F ) {
                 this.flap(body, walkSpeed, walkDegree * 0.5F, false, 0F, 0F, limbSwing, limbSwingAmount);
                 this.swing(body, walkSpeed, walkDegree * 0.5F, false, 1F, 0F, limbSwing, limbSwingAmount);

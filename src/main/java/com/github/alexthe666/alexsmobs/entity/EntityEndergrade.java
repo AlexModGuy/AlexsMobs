@@ -5,6 +5,7 @@ import com.github.alexthe666.alexsmobs.effect.AMEffectRegistry;
 import com.github.alexthe666.alexsmobs.entity.ai.DirectPathNavigator;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAIBreakFlowers;
 import com.github.alexthe666.alexsmobs.entity.ai.EndergradeAITargetItems;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -91,7 +92,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(BITE_TICK, 0);
-        this.entityData.define(SADDLED, Boolean.valueOf(false));
+        this.entityData.define(SADDLED, false);
     }
 
     protected void registerGoals() {
@@ -179,8 +180,8 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (this.hasPassenger(passenger)) {
             float radius = -0.25F;
-            float angle = (0.01745329251F * this.yBodyRot);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             passenger.setPos(this.getX() + extraX, this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() + extraZ);
         }
@@ -197,7 +198,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
     }
 
     public boolean isSaddled() {
-        return this.entityData.get(SADDLED).booleanValue();
+        return this.entityData.get(SADDLED);
     }
 
     public void setSaddled(boolean saddled) {
@@ -208,10 +209,10 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
         super.tick();
         prevTartigradePitch = this.tartigradePitch;
         prevBiteProgress = this.biteProgress;
-        float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) (180F / (float) Math.PI));
+        float f2 = (float) -((float) this.getDeltaMovement().y * 3 * (double) Mth.RAD_TO_DEG);
         this.tartigradePitch = f2;
         if (this.getDeltaMovement().lengthSqr() > 0.005F) {
-            float angleMotion = (0.01745329251F * this.yBodyRot);
+            float angleMotion = (Maths.STARTING_ANGLE * this.yBodyRot);
             double extraXMotion = -0.2F * Mth.sin((float) (Math.PI + angleMotion));
             double extraZMotion = -0.2F * Mth.cos(angleMotion);
             this.level().addParticle(ParticleTypes.END_ROD, this.getRandomX(0.5D), this.getY() + 0.3, this.getRandomZ(0.5D), extraXMotion, 0D, extraZMotion);
@@ -289,7 +290,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             this.setSprinting(true);
             Vec3 lookVec = player.getLookAngle();
             if (player.zza < 0) {
-                lookVec = lookVec.yRot((float) Math.PI);
+                lookVec = lookVec.yRot(Mth.PI);
             }
             double y = lookVec.y * 0.35F;
             return new Vec3(player.xxa, y, player.zza);
@@ -367,8 +368,8 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
             float radius = 1 + parentEntity.getRandom().nextInt(5);
             float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             float renderYawOffset = parentEntity.yBodyRot;
-            float angle = (0.01745329251F * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
-            double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (parentEntity.getRandom().nextFloat() * neg);
+            double extraX = radius * Mth.sin(Mth.PI + angle);
             double extraZ = radius * Mth.cos(angle);
             BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY() + 2, parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.getGroundPosition(radialPos);
@@ -395,20 +396,7 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                 parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(0, vector3d.scale(this.speedModifier * 0.05D / d0).y(), 0));
                 float f = (float) this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
                 float f1 = (float) this.speedModifier * f;
-                float f2 = this.strafeForwards;
-                float f3 = this.strafeRight;
-                float f4 = Mth.sqrt(f2 * f2 + f3 * f3);
-                if (f4 < 1.0F) {
-                    f4 = 1.0F;
-                }
 
-                f4 = f1 / f4;
-                f2 = f2 * f4;
-                f3 = f3 * f4;
-                float f5 = Mth.sin(this.mob.getYRot() * ((float) Math.PI / 180F));
-                float f6 = Mth.cos(this.mob.getYRot() * ((float) Math.PI / 180F));
-                float f7 = f2 * f6 - f3 * f5;
-                float f8 = f3 * f6 + f2 * f5;
                 this.strafeForwards = 1.0F;
                 this.strafeRight = 0.0F;
 
@@ -430,12 +418,12 @@ public class EntityEndergrade extends Animal implements FlyingAnimal {
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(localSpeed * 0.005D / d0)));
                     if (parentEntity.getTarget() == null) {
                         Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                        parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                        parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     } else {
                         double d2 = parentEntity.getTarget().getX() - parentEntity.getX();
                         double d1 = parentEntity.getTarget().getZ() - parentEntity.getZ();
-                        parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
+                        parentEntity.setYRot(-((float) Mth.atan2(d2, d1)) * Mth.RAD_TO_DEG);
                         parentEntity.yBodyRot = parentEntity.getYRot();
                     }
                 }

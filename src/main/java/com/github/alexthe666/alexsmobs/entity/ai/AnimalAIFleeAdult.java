@@ -13,7 +13,7 @@ public class AnimalAIFleeAdult extends Goal {
     private final Animal childAnimal;
     private Animal parentAnimal;
     private final double moveSpeed;
-    private double fleeDistance;
+    private final double fleeDistance;
     private int delayCounter;
     private Path path;
 

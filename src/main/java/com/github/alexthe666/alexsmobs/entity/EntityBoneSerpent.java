@@ -238,7 +238,7 @@ public class EntityBoneSerpent extends Monster {
         final boolean ground = !this.isInLava() && !this.isInWater() && this.onGround();
         if (jumpCooldown > 0) {
             jumpCooldown--;
-            final float f2 = (float) -((float) this.getDeltaMovement().y * Maths.oneEightyDividedByFloatPi);
+            final float f2 = (float) -((float) this.getDeltaMovement().y * Mth.RAD_TO_DEG);
             this.setXRot(f2);
 
         }
@@ -331,19 +331,19 @@ public class EntityBoneSerpent extends Monster {
                 if (d3 < (double) 2.5000003E-7F) {
                     this.mob.setZza(0.0F);
                 } else {
-                    float f = (float) (Mth.atan2(d2, d0) * Maths.oneEightyDividedByFloatPi) - 90.0F;
+                    float f = (float) (Mth.atan2(d2, d0) * Mth.RAD_TO_DEG) - 90.0F;
                     this.dolphin.setYRot(this.rotlerp(this.dolphin.getYRot(), f, 10.0F));
                     this.dolphin.yBodyRot = this.dolphin.getYRot();
                     this.dolphin.yHeadRot = this.dolphin.getYRot();
                     float f1 = (float) (this.speedModifier * this.dolphin.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     if (this.dolphin.isInWater() || this.dolphin.isInLava()) {
                         this.dolphin.setSpeed(f1 * 0.02F);
-                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * Maths.oneEightyDividedByFloatPi));
+                        float f2 = -((float) (Mth.atan2(d1, Mth.sqrt((float)(d0 * d0 + d2 * d2))) * Mth.RAD_TO_DEG));
                         f2 = Mth.clamp(Mth.wrapDegrees(f2), -85.0F, 85.0F);
                         this.dolphin.setDeltaMovement(this.dolphin.getDeltaMovement().add(0.0D, (double) this.dolphin.getSpeed() * d1 * 0.6D, 0.0D));
                         this.dolphin.setXRot(this.rotlerp(this.dolphin.getXRot(), f2, 1.0F));
-                        final float f3 = Mth.cos(this.dolphin.getXRot() * Maths.piDividedBy180);
-                        final float f4 = Mth.sin(this.dolphin.getXRot() * Maths.piDividedBy180);
+                        final float f3 = Mth.cos(this.dolphin.getXRot() * Mth.DEG_TO_RAD);
+                        final float f4 = Mth.sin(this.dolphin.getXRot() * Mth.DEG_TO_RAD);
                         this.dolphin.zza = f3 * f1;
                         this.dolphin.yya = -f4 * f1;
                     } else {

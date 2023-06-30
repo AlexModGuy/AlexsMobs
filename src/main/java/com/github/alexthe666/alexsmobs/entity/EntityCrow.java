@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.entity;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.message.MessageCrowDismount;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
@@ -88,7 +89,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     private UUID seedThrowerID;
     private int heldItemTime = 0;
     private int checkPerchCooldown = 0;
-    private boolean gatheringClockwise = false;
+    private final boolean gatheringClockwise = false;
 
     protected EntityCrow(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -211,8 +212,8 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
             if (this.isPassenger()) {
                 final int i = riding.getPassengers().indexOf(this);
                 final float radius = 0.43F;
-                final float angle = (0.0174532925F * (((Player) riding).yBodyRot + (i == 0 ? -90 : 90)));
-                final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+                final float angle = (Maths.STARTING_ANGLE * (((Player) riding).yBodyRot + (i == 0 ? -90 : 90)));
+                final double extraX = radius * Mth.sin(Mth.PI + angle);
                 final double extraZ = radius * Mth.cos(angle);
                 final double extraY = (riding.isShiftKeyDown() ? 1.25D : 1.45D);
                 this.yHeadRot = ((Player) riding).yHeadRot;
@@ -524,7 +525,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     public Vec3 getBlockInViewAway(Vec3 fleePos, float radiusAdd) {
         final float radius = 3.15F * -3 - this.getRandom().nextInt(24) - radiusAdd;
         final float angle = getAngle1();
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), 0, (int) (fleePos.z() + extraZ));
         final BlockPos ground = getCrowGround(radialPos);
@@ -555,7 +556,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     public Vec3 getBlockGrounding(Vec3 fleePos) {
         final float radius = 3.15F * -3 - this.getRandom().nextInt(24);
         final float angle = getAngle1();
-        final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+        final double extraX = radius * Mth.sin(Mth.PI + angle);
         final double extraZ = radius * Mth.cos(angle);
         final BlockPos radialPos = new BlockPos((int) (fleePos.x() + extraX), (int) getY(), (int) (fleePos.z() + extraZ));
         BlockPos ground = this.getCrowGround(radialPos);
@@ -576,7 +577,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
     private float getAngle1() {
         final float neg = this.getRandom().nextBoolean() ? 1 : -1;
         final float renderYawOffset = this.yBodyRot;
-        return (0.0174532925F * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
+        return (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F + (this.getRandom().nextFloat() * neg);
     }
 
     private boolean isOverWater() {
@@ -737,7 +738,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     private Vec3 getGatheringVec(Vec3 vector3d, float gatheringCircleDist) {
         if (this.getPerchPos() != null) {
-            final float angle = (0.0174532925F * 8 * (gatheringClockwise ? -tickCount : tickCount));
+            final float angle = (Maths.EIGHT_STARTING_ANGLE * (gatheringClockwise ? -tickCount : tickCount));
             final double extraX = gatheringCircleDist * Mth.sin((angle));
             final double extraZ = gatheringCircleDist * Mth.cos(angle);
             final Vec3 pos = new Vec3(getPerchPos().getX() + extraX, getPerchPos().getY() + 2, getPerchPos().getZ() + extraZ);
@@ -843,13 +844,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         }
 
 
-        public class Sorter implements Comparator<Entity> {
-            private final Entity theEntity;
-
-            public Sorter(Entity theEntityIn) {
-                this.theEntity = theEntityIn;
-            }
-
+        public record Sorter(Entity theEntity) implements Comparator<Entity> {
             public int compare(Entity p_compare_1_, Entity p_compare_2_) {
                 final double d0 = this.theEntity.distanceToSqr(p_compare_1_);
                 final double d1 = this.theEntity.distanceToSqr(p_compare_2_);
@@ -924,7 +919,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
         protected boolean searchForDestination() {
             int lvt_1_1_ = this.searchLength;
-            int lvt_2_1_ = this.verticalSearchRange;
+            //int lvt_2_1_ = this.verticalSearchRange;
             BlockPos lvt_3_1_ = EntityCrow.this.blockPosition();
             BlockPos.MutableBlockPos lvt_4_1_ = new BlockPos.MutableBlockPos();
 
@@ -951,7 +946,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
 
     }
 
-    private class AITargetItems extends CreatureAITargetItems {
+    private static class AITargetItems extends CreatureAITargetItems {
 
         public AITargetItems(PathfinderMob creature, boolean checkSight, boolean onlyNearby, int tickThreshold, int radius) {
             super(creature, checkSight, onlyNearby, tickThreshold, radius);
@@ -1132,13 +1127,7 @@ public class EntityCrow extends TamableAnimal implements ITargetsDroppedItems {
         }
 
 
-        public class Sorter implements Comparator<Entity> {
-            private final Entity theEntity;
-
-            public Sorter(Entity theEntityIn) {
-                this.theEntity = theEntityIn;
-            }
-
+        public record Sorter(Entity theEntity) implements Comparator<Entity> {
             public int compare(Entity p_compare_1_, Entity p_compare_2_) {
                 final double d0 = this.theEntity.distanceToSqr(p_compare_1_);
                 final double d1 = this.theEntity.distanceToSqr(p_compare_2_);

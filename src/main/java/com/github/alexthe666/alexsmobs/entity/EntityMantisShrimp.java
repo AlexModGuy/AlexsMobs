@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.*;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
@@ -230,7 +231,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         this.entityData.define(PUNCH_TICK, 0);
         this.entityData.define(COMMAND, Integer.valueOf(0));
         this.entityData.define(VARIANT, Integer.valueOf(0));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(SITTING, false);
         this.entityData.define(MOISTNESS, Integer.valueOf(60000));
     }
 
@@ -265,7 +266,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     public int getCommand() {
-        return this.entityData.get(COMMAND).intValue();
+        return this.entityData.get(COMMAND);
     }
 
     public void setCommand(int command) {
@@ -273,7 +274,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     public boolean isSitting() {
-        return this.entityData.get(SITTING).booleanValue();
+        return this.entityData.get(SITTING);
     }
 
     public void setOrderedToSit(boolean sit) {
@@ -281,7 +282,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
     }
 
     public int getVariant() {
-        return this.entityData.get(VARIANT).intValue();
+        return this.entityData.get(VARIANT);
     }
 
     public void setVariant(int command) {
@@ -414,18 +415,21 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
         if (this.isSitting() && this.getNavigation().isDone()) {
             this.getNavigation().stop();
         }
-        if (this.isInWater() && inWaterProgress < 5F) {
-            inWaterProgress++;
+
+        if (this.isInWater()) {
+            if (inWaterProgress < 5F)
+                inWaterProgress++;
+
+            if (this.isLandNavigator)
+                switchNavigator(false);
+        } else {
+            if (inWaterProgress > 0F)
+                inWaterProgress--;
+
+            if (!this.isLandNavigator)
+                switchNavigator(true);
         }
-        if (!this.isInWater() && inWaterProgress > 0F) {
-            inWaterProgress--;
-        }
-        if (this.isInWater() && this.isLandNavigator) {
-            switchNavigator(false);
-        }
-        if (!this.isInWater() && !this.isLandNavigator) {
-            switchNavigator(true);
-        }
+
         if (this.entityData.get(PUNCH_TICK) > 0) {
             if (this.entityData.get(PUNCH_TICK) == 2 && this.getTarget() != null && this.distanceTo(this.getTarget()) < 2.8D) {
                 if (this.getTarget() instanceof AbstractFish && !this.isTame()) {
@@ -452,8 +456,8 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
                     double d0 = this.random.nextGaussian() * 0.2D;
                     double d1 = this.random.nextGaussian() * 0.6D;
                     float radius = this.getBbWidth() * 0.85F;
-                    float angle = (0.01745329251F * this.yBodyRot);
-                    double extraX = radius * Mth.sin((float) (Math.PI + angle)) + random.nextFloat() * 0.5F - 0.25F;
+                    float angle = (Maths.STARTING_ANGLE * this.yBodyRot);
+                    double extraX = radius * Mth.sin(Mth.PI + angle) + random.nextFloat() * 0.5F - 0.25F;
                     double extraZ = radius * Mth.cos(angle) + random.nextFloat() * 0.5F - 0.25F;
                     ParticleOptions data = ParticleTypes.BUBBLE;
                     this.level().addParticle(data, this.getX() + extraX, this.getY() + this.getBbHeight() * 0.3F + random.nextFloat() * 0.15F, this.getZ() + extraZ, d0, d1, d2);
@@ -502,33 +506,47 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
             targetLeftYaw = Mth.clamp(random.nextFloat() * 60F - 30, -30, 30);
             leftLookCooldown = 3 + random.nextInt(15);
         }
-        if (this.getEyePitch(true) < this.targetLeftPitch && leftPitchDist > 0.5F) {
-            this.setEyePitch(true, this.getEyePitch(true) + Math.min(leftPitchDist, 4F));
+
+        if (leftPitchDist > 0.5F) {
+            if (this.getEyePitch(true) < this.targetLeftPitch) {
+                this.setEyePitch(true, this.getEyePitch(true) + Math.min(leftPitchDist, 4F));
+            }
+            if (this.getEyePitch(true) > this.targetLeftPitch) {
+                this.setEyePitch(true, this.getEyePitch(true) - Math.min(leftPitchDist, 4F));
+            }
         }
-        if (this.getEyePitch(true) > this.targetLeftPitch && leftPitchDist > 0.5F) {
-            this.setEyePitch(true, this.getEyePitch(true) - Math.min(leftPitchDist, 4F));
+
+        if (rightPitchDist > 0.5F) {
+            if (this.getEyePitch(false) < this.targetRightPitch) {
+                this.setEyePitch(false, this.getEyePitch(false) + Math.min(rightPitchDist, 4F));
+            }
+            if (this.getEyePitch(false) > this.targetRightPitch) {
+                this.setEyePitch(false, this.getEyePitch(false) - Math.min(rightPitchDist, 4F));
+            }
         }
-        if (this.getEyePitch(false) < this.targetRightPitch && rightPitchDist > 0.5F) {
-            this.setEyePitch(false, this.getEyePitch(false) + Math.min(rightPitchDist, 4F));
+
+        if (leftYawDist > 0.5F) {
+            if (this.getEyeYaw(true) < this.targetLeftYaw) {
+                this.setEyeYaw(true, this.getEyeYaw(true) + Math.min(leftYawDist, 4F));
+            }
+            if (this.getEyeYaw(true) > this.targetLeftYaw) {
+                this.setEyeYaw(true, this.getEyeYaw(true) - Math.min(leftYawDist, 4F));
+            }
         }
-        if (this.getEyePitch(false) > this.targetRightPitch && rightPitchDist > 0.5F) {
-            this.setEyePitch(false, this.getEyePitch(false) - Math.min(rightPitchDist, 4F));
+
+        if (rightYawDist > 0.5F) {
+            if (this.getEyeYaw(false) < this.targetRightYaw) {
+                this.setEyeYaw(false, this.getEyeYaw(false) + Math.min(rightYawDist, 4F));
+            }
+            if (this.getEyeYaw(false) > this.targetRightYaw) {
+                this.setEyeYaw(false, this.getEyeYaw(false) - Math.min(rightYawDist, 4F));
+            }
         }
-        if (this.getEyeYaw(true) < this.targetLeftYaw && leftYawDist > 0.5F) {
-            this.setEyeYaw(true, this.getEyeYaw(true) + Math.min(leftYawDist, 4F));
-        }
-        if (this.getEyeYaw(true) > this.targetLeftYaw && leftYawDist > 0.5F) {
-            this.setEyeYaw(true, this.getEyeYaw(true) - Math.min(leftYawDist, 4F));
-        }
-        if (this.getEyeYaw(false) < this.targetRightYaw && rightYawDist > 0.5F) {
-            this.setEyeYaw(false, this.getEyeYaw(false) + Math.min(rightYawDist, 4F));
-        }
-        if (this.getEyeYaw(false) > this.targetRightYaw && rightYawDist > 0.5F) {
-            this.setEyeYaw(false, this.getEyeYaw(false) - Math.min(rightYawDist, 4F));
-        }
+
         if (rightLookCooldown > 0) {
             rightLookCooldown--;
         }
+
         if (leftLookCooldown > 0) {
             leftLookCooldown--;
         }
@@ -594,7 +612,7 @@ public class EntityMantisShrimp extends TamableAnimal implements ISemiAquatic, I
 
 
 
-    public class FollowOwner extends Goal {
+    public static class FollowOwner extends Goal {
         private final EntityMantisShrimp tameable;
         private final LevelReader world;
         private final double followSpeed;

@@ -4,6 +4,7 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7
 
 
 import com.github.alexthe666.alexsmobs.entity.EntityAlligatorSnappingTurtle;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -119,15 +120,15 @@ public class ModelAlligatorSnappingTurtle extends AdvancedEntityModel<EntityAlli
         float partialTicks = Minecraft.getInstance().getFrameTime();
         float openProgress = entityIn.prevOpenMouthProgress + (entityIn.openMouthProgress - entityIn.prevOpenMouthProgress) * partialTicks;
         float snapProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTicks;
-        progressRotationPrev(neck, openProgress, (float) Math.toRadians(-10), 0, 0, 5F);
-        progressRotationPrev(head, openProgress, (float) Math.toRadians(-35), 0, 0, 5F);
-        progressRotationPrev(jaw, openProgress, (float) Math.toRadians(65), 0, 0, 5F);
+        progressRotationPrev(neck, openProgress, Maths.rad(-10), 0, 0, 5F);
+        progressRotationPrev(head, openProgress, Maths.rad(-35), 0, 0, 5F);
+        progressRotationPrev(jaw, openProgress, Maths.rad(65), 0, 0, 5F);
         progressPositionPrev(jaw, openProgress, 0, -1, 0, 5F);
         progressPositionPrev(neck, snapProgress, 0, 0, 0, 5F);
         neck.setScale((1 - snapProgress * 0.05F), (1 - snapProgress * 0.05F), (1 + snapProgress * 0.5F));
         head.rotationPointZ -= 1.45F * snapProgress;
-        progressRotationPrev(head, snapProgress, (float) Math.toRadians(10), 0, 0, 5F);
-        progressRotationPrev(jaw, snapProgress, (float) Math.toRadians(-10), 0, 0, 5F);
+        progressRotationPrev(head, snapProgress, Maths.rad(10), 0, 0, 5F);
+        progressRotationPrev(jaw, snapProgress, Maths.rad(-10), 0, 0, 5F);
         this.swing(tail, idleSpeed, idleDegree * 1.15F, false, 3, 0F, ageInTicks, 1);
         this.swing(leg_right, walkSpeed, walkDegree, true, 1, 0F, limbSwing, limbSwingAmount);
         this.swing(leg_left, walkSpeed, walkDegree, false, 1, 0F, limbSwing, limbSwingAmount);

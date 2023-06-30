@@ -24,7 +24,7 @@ public class RenderGuster extends MobRenderer<EntityGuster, ModelGuster> {
 
     public RenderGuster(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelGuster(), 0.25F);
-        this.addLayer(new RenderGuster.GusterEyesLayer(this));
+        this.addLayer(new GusterEyesLayer(this));
     }
 
     @Nullable
@@ -44,7 +44,7 @@ public class RenderGuster extends MobRenderer<EntityGuster, ModelGuster> {
         return entity.isGooglyEyes() ? TEXTURE_GOOGLY : entity.getVariant() == 2 ? TEXTURE_SOUL : entity.getVariant() == 1 ? TEXTURE_RED : TEXTURE;
     }
 
-    class GusterEyesLayer extends EyesLayer<EntityGuster, ModelGuster> {
+    static class GusterEyesLayer extends EyesLayer<EntityGuster, ModelGuster> {
 
         public GusterEyesLayer(RenderGuster p_i50928_1_) {
             super(p_i50928_1_);

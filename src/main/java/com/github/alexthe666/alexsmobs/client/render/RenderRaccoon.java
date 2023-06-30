@@ -35,7 +35,7 @@ public class RenderRaccoon extends MobRenderer<EntityRaccoon, ModelRaccoon> {
         return entity.isRigby() ? TEXTURE_RIGBY : TEXTURE;
     }
 
-    private class BandanaLayer extends RenderLayer<EntityRaccoon, ModelRaccoon> {
+    private static class BandanaLayer extends RenderLayer<EntityRaccoon, ModelRaccoon> {
         public BandanaLayer(RenderRaccoon renderRaccoon) {
             super(renderRaccoon);
         }

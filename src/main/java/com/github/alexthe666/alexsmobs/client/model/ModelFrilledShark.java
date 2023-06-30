@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFrilledShark;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -19,7 +20,7 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 	private final AdvancedModelBox pelvicfin_left;
 	private final AdvancedModelBox pelvicfin_right;
 	private final AdvancedModelBox tail2;
-	private ModelAnimator animator;
+	private final ModelAnimator animator;
 
 	public ModelFrilledShark() {
 		texWidth = 128;
@@ -88,16 +89,16 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 		animator.update(entity);
 		animator.setAnimation(EntityFrilledShark.ANIMATION_ATTACK);
 		animator.startKeyframe(5);
-		animator.rotate(jaw, (float) Math.toRadians(-20), 0, 0);
+		animator.rotate(jaw, Maths.rad(-20), 0, 0);
 		animator.move(head, 0, 0.5F, 3);
 		animator.endKeyframe();
 		animator.startKeyframe(5);
-		animator.rotate(head, (float) Math.toRadians(-10), 0, 0);
-		animator.rotate(jaw, (float) Math.toRadians(40), 0, 0);
+		animator.rotate(head, Maths.rad(-10), 0, 0);
+		animator.rotate(jaw, Maths.rad(40), 0, 0);
 		animator.endKeyframe();
 		animator.startKeyframe(5);
-		animator.rotate(head, (float) Math.toRadians(5), 0, 0);
-		animator.rotate(jaw, (float) Math.toRadians(-20), 0, 0);
+		animator.rotate(head, Maths.rad(5), 0, 0);
+		animator.rotate(jaw, Maths.rad(-20), 0, 0);
 		animator.endKeyframe();
 		animator.resetKeyframe(2);
 	}
@@ -112,9 +113,9 @@ public class ModelFrilledShark extends AdvancedEntityModel<EntityFrilledShark> {
 		float swimSpeed = 0.8F;
 		float swimDegree = 0.75F;
 		float landProgress = entityIn.prevOnLandProgress + (entityIn.onLandProgress - entityIn.prevOnLandProgress) * (ageInTicks - entityIn.tickCount);
-		progressRotationPrev(body, landProgress, 0, 0, (float) Math.toRadians(-100), 5F);
-		progressRotationPrev(pectoralfin_right, landProgress, 0, 0, (float) Math.toRadians(-50), 5F);
-		progressRotationPrev(pectoralfin_left, landProgress, 0, 0, (float) Math.toRadians(50), 5F);
+		progressRotationPrev(body, landProgress, 0, 0, Maths.rad(-100), 5F);
+		progressRotationPrev(pectoralfin_right, landProgress, 0, 0, Maths.rad(-50), 5F);
+		progressRotationPrev(pectoralfin_left, landProgress, 0, 0, Maths.rad(50), 5F);
 		this.walk(this.jaw, idleSpeed, idleDegree, true, 1F, -0.1F, ageInTicks, 1);
 		if(landProgress >= 5F){
 			this.chainWave(tailBoxes, idleSpeed, idleDegree * 0.9F, -3, ageInTicks, 1);

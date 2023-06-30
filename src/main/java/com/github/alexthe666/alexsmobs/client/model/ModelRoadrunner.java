@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityRoadrunner;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -132,14 +133,14 @@ public class ModelRoadrunner extends AdvancedEntityModel<EntityRoadrunner> {
         float partialTick = Minecraft.getInstance().getFrameTime();
         boolean spinnyLegs = limbSwingAmount > 0.5F && entityIn.isMeep();
         float biteProgress = entityIn.prevAttackProgress + (entityIn.attackProgress - entityIn.prevAttackProgress) * partialTick;
-        progressRotationPrev(neck, biteProgress, (float)Math.toRadians(55), 0, 0, 5F);
-        progressRotationPrev(body, runProgress, (float)Math.toRadians(-5), 0, 0, 5F);
-        progressRotationPrev(neck, runProgress, (float)Math.toRadians(25), 0, 0, 5F);
-        progressRotationPrev(right_leg, runProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-        progressRotationPrev(left_leg, runProgress, (float)Math.toRadians(-15), 0, 0, 5F);
-        progressRotationPrev(tail, runProgress, (float)Math.toRadians(-10), 0, 0, 5F);
-        progressRotationPrev(right_wing, runProgress, (float)Math.toRadians(-10),  (float)Math.toRadians(-30),  (float)Math.toRadians(40), 5F);
-        progressRotationPrev(left_wing, runProgress, (float)Math.toRadians(-10),  (float)Math.toRadians(30),  (float)Math.toRadians(-40), 5F);
+        progressRotationPrev(neck, biteProgress, Maths.rad(55), 0, 0, 5F);
+        progressRotationPrev(body, runProgress, Maths.rad(-5), 0, 0, 5F);
+        progressRotationPrev(neck, runProgress, Maths.rad(25), 0, 0, 5F);
+        progressRotationPrev(right_leg, runProgress, Maths.rad(-15), 0, 0, 5F);
+        progressRotationPrev(left_leg, runProgress, Maths.rad(-15), 0, 0, 5F);
+        progressRotationPrev(tail, runProgress, Maths.rad(-10), 0, 0, 5F);
+        progressRotationPrev(right_wing, runProgress, Maths.rad(-10),  Maths.rad(-30),  Maths.rad(40), 5F);
+        progressRotationPrev(left_wing, runProgress, Maths.rad(-10),  Maths.rad(30),  Maths.rad(-40), 5F);
         this.swing(tail, idleSpeed, idleDegree, false, 0F, 0F, ageInTicks, 1);
         this.walk(neck, idleSpeed, idleDegree * 0.2F, false, 0F, -0.1F, ageInTicks, 1);
         this.walk(right_leg, walkSpeed, walkDegree * 1.2F, false, 0F, 0F, limbSwing, limbSwingAmount);

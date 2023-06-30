@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class MantisShrimpAIBreakBlocks extends Goal {
 
-    private EntityMantisShrimp mantisShrimp;
+    private final EntityMantisShrimp mantisShrimp;
     private int idleAtFlowerTime = 0;
     private int timeoutCounter = 0;
     private int searchCooldown = 0;
@@ -159,24 +159,18 @@ public class MantisShrimpAIBreakBlocks extends Goal {
         return mantisShrimp.getMainHandItem().getItem() == blockItem;
     }
 
-    public class BlockSorter implements Comparator<BlockPos> {
-        private final Entity entity;
-
-        public BlockSorter(Entity entity) {
-            this.entity = entity;
-        }
-
+    public record BlockSorter(Entity entity) implements Comparator<BlockPos> {
         @Override
         public int compare(BlockPos pos1, BlockPos pos2) {
-            double distance1 = this.getDistance(pos1);
-            double distance2 = this.getDistance(pos2);
+            final double distance1 = this.getDistance(pos1);
+            final double distance2 = this.getDistance(pos2);
             return Double.compare(distance1, distance2);
         }
 
         private double getDistance(BlockPos pos) {
-            double deltaX = this.entity.getX() - (pos.getX() + 0.5);
-            double deltaY = this.entity.getY() + this.entity.getEyeHeight() - (pos.getY() + 0.5);
-            double deltaZ = this.entity.getZ() - (pos.getZ() + 0.5);
+            final double deltaX = this.entity.getX() - (pos.getX() + 0.5);
+            final double deltaY = this.entity.getY() + this.entity.getEyeHeight() - (pos.getY() + 0.5);
+            final double deltaZ = this.entity.getZ() - (pos.getZ() + 0.5);
             return deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
         }
     }

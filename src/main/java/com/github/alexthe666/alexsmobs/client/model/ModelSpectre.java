@@ -6,6 +6,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 
 public class ModelSpectre extends AdvancedEntityModel<EntitySpectre> {
     private final AdvancedModelBox root;
@@ -83,7 +84,7 @@ public class ModelSpectre extends AdvancedEntityModel<EntitySpectre> {
         this.walk(root, flySpeed, flyDegree * 0.15F, true, 7.3F, 0, ageInTicks, 1);
         float partialTick = Minecraft.getInstance().getFrameTime();
         float birdPitch = entity.prevBirdPitch + (entity.birdPitch - entity.prevBirdPitch) * partialTick;
-        this.root.rotateAngleX += birdPitch * ((float)Math.PI / 180F);
+        this.root.rotateAngleX += birdPitch * Mth.DEG_TO_RAD;
 
     }
 

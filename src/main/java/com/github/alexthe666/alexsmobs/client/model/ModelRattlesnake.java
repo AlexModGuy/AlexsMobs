@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityRattlesnake;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
@@ -68,11 +69,11 @@ public class ModelRattlesnake extends AdvancedEntityModel<EntityRattlesnake> {
         animator.setAnimation(EntityRattlesnake.ANIMATION_BITE);
         animator.startKeyframe(7);
         animator.move(body, 0, 0, 2);
-        animator.rotate(neck1, (float)Math.toRadians(-45), 0, 0);
-        animator.rotate(neck2, (float)Math.toRadians(15), 0, 0);
-        animator.rotate(tail1, 0, (float)Math.toRadians(15), 0);
-        animator.rotate(tail2, 0, (float)Math.toRadians(-15), 0);
-        animator.rotate(head, (float)Math.toRadians(20), 0, 0);
+        animator.rotate(neck1, Maths.rad(-45), 0, 0);
+        animator.rotate(neck2, Maths.rad(15), 0, 0);
+        animator.rotate(tail1, 0, Maths.rad(15), 0);
+        animator.rotate(tail2, 0, Maths.rad(-15), 0);
+        animator.rotate(head, Maths.rad(20), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         animator.move(body, 0, 0, -2);
@@ -115,11 +116,11 @@ public class ModelRattlesnake extends AdvancedEntityModel<EntityRattlesnake> {
         AdvancedModelBox[] bodyParts = new AdvancedModelBox[]{neck1, neck2, body, tail1, tail2};
         float curlProgress = entity.prevCurlProgress + (entity.curlProgress - entity.prevCurlProgress) * partialTick;
         progressPositionPrev(body, curlProgress, 0, 0, 3, 5F);
-        progressRotationPrev(body, curlProgress, 0, (float) Math.toRadians(-90), 0, 5F);
-        progressRotationPrev(tail1, curlProgress, (float) Math.toRadians(-10), (float) Math.toRadians(-70), 0, 5F);
-        progressRotationPrev(neck1, curlProgress, (float) Math.toRadians(-20), (float) Math.toRadians(60), 0, 5F);
-        progressRotationPrev(neck2, curlProgress, (float) Math.toRadians(-20), (float) Math.toRadians(60), 0, 5F);
-        progressRotationPrev(head, curlProgress, (float) Math.toRadians(20), (float) Math.toRadians(-30), (float) Math.toRadians(10), 5F);
+        progressRotationPrev(body, curlProgress, 0, Maths.rad(-90), 0, 5F);
+        progressRotationPrev(tail1, curlProgress, Maths.rad(-10), Maths.rad(-70), 0, 5F);
+        progressRotationPrev(neck1, curlProgress, Maths.rad(-20), Maths.rad(60), 0, 5F);
+        progressRotationPrev(neck2, curlProgress, Maths.rad(-20), Maths.rad(60), 0, 5F);
+        progressRotationPrev(head, curlProgress, Maths.rad(20), Maths.rad(-30), Maths.rad(10), 5F);
         if (entity.randomToungeTick > 0) {
             tongue.showModel = true;
         }else{
@@ -127,11 +128,11 @@ public class ModelRattlesnake extends AdvancedEntityModel<EntityRattlesnake> {
 		}
         this.walk(tongue, 1, 0.5F, false, 1F, 0f, ageInTicks, 1);
         if (entity.isRattling()) {
-            progressRotationPrev(tail2, curlProgress, (float) Math.toRadians(70), (float) Math.toRadians(-60), 0, 5F);
+            progressRotationPrev(tail2, curlProgress, Maths.rad(70), Maths.rad(-60), 0, 5F);
             this.walk(tail2, 18, 0.1F, false, 1F, 0.2F, ageInTicks, 1);
             this.swing(tail2, 18, 0.1F, false, 0f, 0f, ageInTicks, 1);
         } else {
-            progressRotationPrev(tail2, curlProgress, (float) Math.toRadians(10), (float) Math.toRadians(-90), 0, 5F);
+            progressRotationPrev(tail2, curlProgress, Maths.rad(10), Maths.rad(-90), 0, 5F);
         }
         this.faceTarget(netHeadYaw, headPitch, 2, neck2, head);
         this.chainSwing(bodyParts, walkSpeed, walkDegree, -5, limbSwing, limbSwingAmount);

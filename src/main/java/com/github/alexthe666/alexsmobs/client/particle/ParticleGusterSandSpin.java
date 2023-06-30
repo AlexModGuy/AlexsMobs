@@ -52,7 +52,7 @@ public class ParticleGusterSandSpin extends TextureSheetParticle {
         super.tick();
         float radius = 2;
         float angle = age * 2;
-        double extraX = this.targetX + radius * Mth.sin((float) (Math.PI + angle));
+        double extraX = this.targetX + radius * Mth.sin(Mth.PI + angle);
         double extraZ = this.targetZ + radius * Mth.cos(angle);
         double d2 = extraX - this.x;
         double d3 = this.targetY - this.y;

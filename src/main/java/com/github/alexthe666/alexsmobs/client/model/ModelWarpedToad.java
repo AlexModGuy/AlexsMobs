@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityWarpedToad;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -154,26 +155,26 @@ public class ModelWarpedToad extends AdvancedEntityModel<EntityWarpedToad> {
         tongue.setScale(toungeScaleCorners, toungeScaleCorners, toungeScale);
         progressPositionPrev(right_eye, blinkProgress, 0.1F, 1.5F, 0, 5f);
         progressPositionPrev(left_eye, blinkProgress, -0.1F, 1.5F, 0, 5f);
-        progressRotationPrev(head, attackProgress, (float) Math.toRadians(-45), 0, 0, 5f);
-        progressRotationPrev(tongue, attackProgress, (float) Math.toRadians(-5), 0, 0, 5f);
+        progressRotationPrev(head, attackProgress, Maths.rad(-45), 0, 0, 5f);
+        progressRotationPrev(tongue, attackProgress, Maths.rad(-5), 0, 0, 5f);
         progressPositionPrev(head, attackProgress, 0, 0, -1.3F, 5f);
 
         progressPositionPrev(left_arm, sitProgress, 0, 1, 0F, 5f);
         progressPositionPrev(right_arm, sitProgress, 0, 1, 0F, 5f);
         progressPositionPrev(left_leg, sitProgress, 0, -2, 0F, 5f);
         progressPositionPrev(right_leg, sitProgress, 0, -2, 0F, 5f);
-        progressRotationPrev(body, sitProgress, (float) Math.toRadians(-15), 0, 0, 5f);
-        progressRotationPrev(left_arm, sitProgress, (float) Math.toRadians(15), 0, 0, 5f);
-        progressRotationPrev(right_arm, sitProgress, (float) Math.toRadians(15), 0, 0, 5f);
-        progressRotationPrev(left_leg, sitProgress, (float) Math.toRadians(15), 0, 0, 5f);
-        progressRotationPrev(right_leg, sitProgress, (float) Math.toRadians(15), 0, 0, 5f);
+        progressRotationPrev(body, sitProgress, Maths.rad(-15), 0, 0, 5f);
+        progressRotationPrev(left_arm, sitProgress, Maths.rad(15), 0, 0, 5f);
+        progressRotationPrev(right_arm, sitProgress, Maths.rad(15), 0, 0, 5f);
+        progressRotationPrev(left_leg, sitProgress, Maths.rad(15), 0, 0, 5f);
+        progressRotationPrev(right_leg, sitProgress, Maths.rad(15), 0, 0, 5f);
 
-        progressRotationPrev(left_leg, swimProgress, (float) Math.toRadians(90), (float) Math.toRadians(-20), 0, 5f);
-        progressRotationPrev(right_leg, swimProgress, (float) Math.toRadians(90), (float) Math.toRadians(20), 0, 5f);
+        progressRotationPrev(left_leg, swimProgress, Maths.rad(90), Maths.rad(-20), 0, 5f);
+        progressRotationPrev(right_leg, swimProgress, Maths.rad(90), Maths.rad(20), 0, 5f);
         progressPositionPrev(left_leg, swimProgress, 3F, -1F, 1F, 5f);
         progressPositionPrev(right_leg, swimProgress, -3F, -1F, 1F, 5f);
-        progressRotationPrev(left_arm, swimProgress, (float) Math.toRadians(-90), (float) Math.toRadians(-60), (float) Math.toRadians(30), 5f);
-        progressRotationPrev(right_arm, swimProgress, (float) Math.toRadians(-90), (float) Math.toRadians(60), (float) Math.toRadians(-30), 5f);
+        progressRotationPrev(left_arm, swimProgress, Maths.rad(-90), Maths.rad(-60), Maths.rad(30), 5f);
+        progressRotationPrev(right_arm, swimProgress, Maths.rad(-90), Maths.rad(60), Maths.rad(-30), 5f);
         progressPositionPrev(left_arm, swimProgress, 0, 0F, 1, 5f);
         progressPositionPrev(right_arm, swimProgress, 0, 0F, 1, 5f);
         progressPositionPrev(body, swimProgress, 0, 1F, 0F, 5f);
@@ -191,8 +192,8 @@ public class ModelWarpedToad extends AdvancedEntityModel<EntityWarpedToad> {
         this.swing(left_arm, swimSpeed, swimDegree, true, -2.5F, 0.3F, limbSwing, swimSwingAmount);
         this.swing(body, swimSpeed, swimDegree * 0.1F, false, 0, 0F, limbSwing, swimSwingAmount);
 
-        progressRotationPrev(left_foot, Math.min(walkSwingAmount, 0.5F), 0, (float) Math.toRadians(80), 0, 0.5F);
-        progressRotationPrev(right_foot, Math.min(walkSwingAmount, 0.5F), 0, (float) Math.toRadians(-80), 0, 0.5F);
+        progressRotationPrev(left_foot, Math.min(walkSwingAmount, 0.5F), 0, Maths.rad(80), 0, 0.5F);
+        progressRotationPrev(right_foot, Math.min(walkSwingAmount, 0.5F), 0, Maths.rad(-80), 0, 0.5F);
         this.flap(body, walkSpeed, walkDegree * 0.35F, false, 0F, 0F, limbSwing, walkSwingAmount);
         this.swing(body, walkSpeed, walkDegree * 0.35F, false, 1F, 0F, limbSwing, walkSwingAmount);
         this.walk(left_arm, walkSpeed, walkDegree, false, -2.5F, -0.3F, limbSwing, walkSwingAmount);
@@ -218,28 +219,28 @@ public class ModelWarpedToad extends AdvancedEntityModel<EntityWarpedToad> {
         this.right_foot_pivot.rotationPointZ -= 1.5F * rightLegs;
 
         if (attackProgress > 0) {
-            this.tongue.rotateAngleX += headPitch * ((float) Math.PI / 180F);
+            this.tongue.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
         }
-        progressRotationPrev(body, fallProgress, (float) Math.toRadians(15), 0, 0, 5f);
-        progressRotationPrev(left_arm, fallProgress, (float) Math.toRadians(-35), 0, 0, 5f);
-        progressRotationPrev(right_arm, fallProgress, (float) Math.toRadians(-35), 0, 0, 5f);
-        progressRotationPrev(left_leg, fallProgress, (float) Math.toRadians(35), 0, 0, 5f);
-        progressRotationPrev(right_leg, fallProgress, (float) Math.toRadians(15), 0, 0, 5f);
-        progressRotationPrev(left_foot_pivot, fallProgress, (float) Math.toRadians(-35), 0, 0, 5f);
-        progressRotationPrev(right_foot_pivot, fallProgress, (float) Math.toRadians(-35), 0, 0, 5f);
-        progressRotationPrev(left_foot, fallProgress, 0, (float) Math.toRadians(70), 0, 5F);
-        progressRotationPrev(right_foot, fallProgress, 0, (float) Math.toRadians(-70), 0, 5F);
+        progressRotationPrev(body, fallProgress, Maths.rad(15), 0, 0, 5f);
+        progressRotationPrev(left_arm, fallProgress, Maths.rad(-35), 0, 0, 5f);
+        progressRotationPrev(right_arm, fallProgress, Maths.rad(-35), 0, 0, 5f);
+        progressRotationPrev(left_leg, fallProgress, Maths.rad(35), 0, 0, 5f);
+        progressRotationPrev(right_leg, fallProgress, Maths.rad(15), 0, 0, 5f);
+        progressRotationPrev(left_foot_pivot, fallProgress, Maths.rad(-35), 0, 0, 5f);
+        progressRotationPrev(right_foot_pivot, fallProgress, Maths.rad(-35), 0, 0, 5f);
+        progressRotationPrev(left_foot, fallProgress, 0, Maths.rad(70), 0, 5F);
+        progressRotationPrev(right_foot, fallProgress, 0, Maths.rad(-70), 0, 5F);
         progressPositionPrev(left_foot_pivot, fallProgress, 0, 1, -1, 5f);
         progressPositionPrev(right_foot_pivot, fallProgress, 0, 1, -1, 5f);
-        progressRotationPrev(body, jumpProgress, (float) Math.toRadians(-35), 0, 0, 5f);
-        progressRotationPrev(left_arm, jumpProgress, (float) Math.toRadians(-35), 0, 0, 5f);
-        progressRotationPrev(right_arm, jumpProgress, (float) Math.toRadians(-35), 0, 0, 5f);
-        progressRotationPrev(left_leg, jumpProgress, (float) Math.toRadians(150F), 0, 0, 5f);
-        progressRotationPrev(right_leg, jumpProgress, (float) Math.toRadians(150F), 0, 0, 5f);
-        progressRotationPrev(left_foot_pivot, fallProgress, (float) Math.toRadians(35), 0, 0, 5f);
-        progressRotationPrev(right_foot_pivot, fallProgress, (float) Math.toRadians(35), 0, 0, 5f);
-        progressRotationPrev(left_foot, jumpProgress, (float) Math.toRadians(20F), (float) Math.toRadians(70), 0, 5F);
-        progressRotationPrev(right_foot, jumpProgress, (float) Math.toRadians(20F), (float) Math.toRadians(-70), 0, 5F);
+        progressRotationPrev(body, jumpProgress, Maths.rad(-35), 0, 0, 5f);
+        progressRotationPrev(left_arm, jumpProgress, Maths.rad(-35), 0, 0, 5f);
+        progressRotationPrev(right_arm, jumpProgress, Maths.rad(-35), 0, 0, 5f);
+        progressRotationPrev(left_leg, jumpProgress, Maths.rad(150F), 0, 0, 5f);
+        progressRotationPrev(right_leg, jumpProgress, Maths.rad(150F), 0, 0, 5f);
+        progressRotationPrev(left_foot_pivot, fallProgress, Maths.rad(35), 0, 0, 5f);
+        progressRotationPrev(right_foot_pivot, fallProgress, Maths.rad(35), 0, 0, 5f);
+        progressRotationPrev(left_foot, jumpProgress, Maths.rad(20F), Maths.rad(70), 0, 5F);
+        progressRotationPrev(right_foot, jumpProgress, Maths.rad(20F), Maths.rad(-70), 0, 5F);
         progressPositionPrev(left_leg, jumpProgress, 0, 1, 2, 5f);
         progressPositionPrev(right_leg, jumpProgress, 0, 1, 2, 5f);
         progressPositionPrev(left_arm, jumpProgress, 0, 1, 0, 5f);

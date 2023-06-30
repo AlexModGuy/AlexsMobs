@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.config.AMConfig;
 import com.github.alexthe666.alexsmobs.entity.ai.AquaticMoveController;
 import com.github.alexthe666.alexsmobs.entity.ai.EntityAINearestTarget3D;
 import com.github.alexthe666.alexsmobs.entity.ai.SemiAquaticPathNavigator;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMBlockPos;
 import net.minecraft.core.BlockPos;
@@ -175,7 +176,7 @@ public class EntityHammerheadShark extends WaterAnimal {
         }
 
         public BlockPos getSharkCirclePos(LivingEntity target) {
-            float angle = (0.01745329251F * (clockwise ? -circlingTime : circlingTime));
+            float angle = (Maths.STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
             double extraX = circleDistance * Mth.sin((angle));
             double extraZ = circleDistance * Mth.cos(angle);
             BlockPos ground = AMBlockPos.fromCoords(target.getX() + 0.5F + extraX, shark.getY(), target.getZ() + 0.5F + extraZ);

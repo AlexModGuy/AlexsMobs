@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
 public class CapuchinAIMelee extends MeleeAttackGoal {
 
-    private EntityCapuchinMonkey monkey;
+    private final EntityCapuchinMonkey monkey;
 
     public CapuchinAIMelee(EntityCapuchinMonkey monkey, double speedIn, boolean useLongMemory) {
         super(monkey, speedIn, useLongMemory);

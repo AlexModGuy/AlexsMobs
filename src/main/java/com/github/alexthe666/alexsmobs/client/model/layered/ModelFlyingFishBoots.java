@@ -2,6 +2,7 @@ package com.github.alexthe666.alexsmobs.client.model.layered;
 
 
 import com.github.alexthe666.alexsmobs.entity.util.FlyingFishBootsUtil;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -65,8 +66,8 @@ public class ModelFlyingFishBoots extends HumanoidModel {
         rightWingInner.yRot = 0.5672F + fly2;
         leftWingInner.yRot = -0.5672F - fly2;
         if(flying || entity.getPose() == Pose.SWIMMING){
-            leftFish.xRot = (float) Math.toRadians(-45);
-            rightFish.xRot = (float) Math.toRadians(-45);
+            leftFish.xRot = Maths.rad(-45);
+            rightFish.xRot = Maths.rad(-45);
             rightFish.y = 11.0F;
             leftFish.y = 11.0F;
             rightFish.z = -1.5F;

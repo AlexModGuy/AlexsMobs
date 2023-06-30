@@ -21,6 +21,8 @@ import com.github.alexthe666.alexsmobs.misc.EmeraldsForItemsTrade;
 import com.github.alexthe666.alexsmobs.misc.ItemsForEmeraldsTrade;
 import com.github.alexthe666.alexsmobs.world.AMWorldData;
 import com.github.alexthe666.alexsmobs.world.BeachedCachalotWhaleSpawner;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -104,7 +106,7 @@ public class ServerEvents {
     private static final AttributeModifier SAND_SPEED_BONUS = new AttributeModifier(SAND_SPEED_MODIFIER, "roadrunner speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final AttributeModifier SNEAK_SPEED_BONUS = new AttributeModifier(SNEAK_SPEED_MODIFIER, "frontier cap speed bonus", 0.1F, AttributeModifier.Operation.ADDITION);
     private static final Map<ServerLevel, BeachedCachalotWhaleSpawner> BEACHED_CACHALOT_WHALE_SPAWNER_MAP = new HashMap<>();
-    public static List<Triple<ServerPlayer, ServerLevel, BlockPos>> teleportPlayers = new ArrayList<>();
+    public static final ObjectList<Triple<ServerPlayer, ServerLevel, BlockPos>> teleportPlayers = new ObjectArrayList<>();
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.LevelTickEvent tick) {
@@ -114,19 +116,21 @@ public class ServerEvents {
             BeachedCachalotWhaleSpawner spawner = BEACHED_CACHALOT_WHALE_SPAWNER_MAP.get(serverWorld);
             spawner.tick();
 
-            for (final var triple : teleportPlayers) {
-                ServerPlayer player = triple.a;
-                ServerLevel endpointWorld = triple.b;
-                BlockPos endpoint = triple.c;
-                int heightFromMap = endpointWorld.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, endpoint.getX(), endpoint.getZ());
-                endpoint = new BlockPos(endpoint.getX(), Math.max(heightFromMap, endpoint.getY()), endpoint.getZ());
-                player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.getYRot(), player.getXRot());
-                ChunkPos chunkpos = new ChunkPos(endpoint);
-                endpointWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, player.getId());
-                player.connection.send(new ClientboundSetExperiencePacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
+            if (!teleportPlayers.isEmpty()) {
+                for (final var triple : teleportPlayers) {
+                    ServerPlayer player = triple.a;
+                    ServerLevel endpointWorld = triple.b;
+                    BlockPos endpoint = triple.c;
+                    final int heightFromMap = endpointWorld.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, endpoint.getX(), endpoint.getZ());
+                    endpoint = new BlockPos(endpoint.getX(), Math.max(heightFromMap, endpoint.getY()), endpoint.getZ());
+                    player.teleportTo(endpointWorld, endpoint.getX() + 0.5D, endpoint.getY() + 0.5D, endpoint.getZ() + 0.5D, player.getYRot(), player.getXRot());
+                    ChunkPos chunkpos = new ChunkPos(endpoint);
+                    endpointWorld.getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 1, player.getId());
+                    player.connection.send(new ClientboundSetExperiencePacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
 
+                }
+                teleportPlayers.clear();
             }
-            teleportPlayers.clear();
         }
         AMWorldData data = AMWorldData.get(tick.level);
         if (data != null) {
@@ -138,10 +142,12 @@ public class ServerEvents {
         final float x = player.getXRot();
         final float y = player.getYRot();
         Vec3 vector3d = player.getEyePosition(1.0F);
-        final float f2 = Mth.cos(-y * ((float) Math.PI / 180F) - (float) Math.PI);
-        final float f3 = Mth.sin(-y * ((float) Math.PI / 180F) - (float) Math.PI);
-        final float f4 = -Mth.cos(-x * ((float) Math.PI / 180F));
-        final float f5 = Mth.sin(-x * ((float) Math.PI / 180F));
+        final float f0 = -y * Mth.DEG_TO_RAD - Mth.PI;
+        final float f1 = -x * Mth.DEG_TO_RAD;
+        final float f2 = Mth.cos(f0);
+        final float f3 = Mth.sin(f0);
+        final float f4 = -Mth.cos(f1);
+        final float f5 = Mth.sin(f1);
         final float f6 = f3 * f4;
         final float f7 = f2 * f4;
         final double d0 = player.getAttribute(net.minecraftforge.common.ForgeMod.BLOCK_REACH.get()).getValue();
@@ -182,11 +188,11 @@ public class ServerEvents {
             CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
             if (data != null && !data.getBoolean("alexsmobs_has_book")) {
                 ItemHandlerHelper.giveItemToPlayer(event.getEntity(), new ItemStack(AMItemRegistry.ANIMAL_DICTIONARY.get()));
-                if (Objects.equals(event.getEntity().getUUID(), ALEX_UUID)
-                        || Objects.equals(event.getEntity().getUUID(), CARRO_UUID)) {
+                final boolean isAlex = Objects.equals(event.getEntity().getUUID(), ALEX_UUID);
+                if (isAlex || Objects.equals(event.getEntity().getUUID(), CARRO_UUID)) {
                     ItemHandlerHelper.giveItemToPlayer(event.getEntity(), new ItemStack(AMItemRegistry.BEAR_DUST.get()));
                 }
-                if (Objects.equals(event.getEntity().getUUID(), ALEX_UUID)) {
+                if (isAlex) {
                     ItemHandlerHelper.giveItemToPlayer(event.getEntity(), new ItemStack(AMItemRegistry.NOVELTY_HAT.get()));
                 }
                 data.putBoolean("alexsmobs_has_book", true);
@@ -200,15 +206,15 @@ public class ServerEvents {
         boolean flag = false;
         ItemStack leftItem = event.getEntity().getOffhandItem();
         ItemStack rightItem = event.getEntity().getMainHandItem();
-        if(leftItem.getItem() instanceof ILeftClick){
-            ((ILeftClick)leftItem.getItem()).onLeftClick(leftItem, event.getEntity());
+        if(leftItem.getItem() instanceof final ILeftClick iLeftClick){
+            iLeftClick.onLeftClick(leftItem, event.getEntity());
             flag = true;
         }
-        if(rightItem.getItem() instanceof ILeftClick){
-            ((ILeftClick)rightItem.getItem()).onLeftClick(rightItem, event.getEntity());
+        if(rightItem.getItem() instanceof final ILeftClick iLeftClick){
+            iLeftClick.onLeftClick(rightItem, event.getEntity());
             flag = true;
         }
-        if (event.getLevel().isClientSide && flag) {
+        if (flag && event.getLevel().isClientSide) {
             AlexsMobs.sendMSGToServer(MessageSwingArm.INSTANCE);
         }
     }
@@ -246,8 +252,8 @@ public class ServerEvents {
             if (emu.getAnimation() != EntityEmu.ANIMATION_DODGE_RIGHT && emu.getAnimation() != EntityEmu.ANIMATION_DODGE_LEFT) {
                 boolean left = true;
                 Vec3 arrowPos = event.getEntity().position();
-                Vec3 rightVector = emu.getLookAngle().yRot(0.5F * (float) Math.PI).add(emu.position());
-                Vec3 leftVector = emu.getLookAngle().yRot(-0.5F * (float) Math.PI).add(emu.position());
+                Vec3 rightVector = emu.getLookAngle().yRot(0.5F * Mth.PI).add(emu.position());
+                Vec3 leftVector = emu.getLookAngle().yRot(-0.5F * Mth.PI).add(emu.position());
                 if (arrowPos.distanceTo(rightVector) < arrowPos.distanceTo(leftVector)) {
                     left = false;
                 } else if (arrowPos.distanceTo(rightVector) > arrowPos.distanceTo(leftVector)) {
@@ -479,8 +485,9 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onEntityJoinWorld(MobSpawnEvent.FinalizeSpawn event) {
-        if (event.getEntity() instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
-            Biome biome = event.getLevel().getBiome(event.getEntity().blockPosition()).value();
+        final var entity = event.getEntity();
+        if (entity instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
+            Biome biome = event.getLevel().getBiome(entity.blockPosition()).value();
             if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance
                 && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
                 EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(trader.level());
@@ -497,31 +504,31 @@ public class ServerEvents {
             }
         }
         try {
-            if (event.getEntity() instanceof final Spider spider && AMConfig.spidersAttackFlies) {
+            if (AMConfig.spidersAttackFlies && entity instanceof final Spider spider) {
                 spider.targetSelector.addGoal(4,
                     new NearestAttackableTargetGoal<>(spider, EntityFly.class, 1, true, false, null));
             }
-            else if (event.getEntity() instanceof final Wolf wolf && AMConfig.wolvesAttackMoose) {
+            else if (AMConfig.wolvesAttackMoose && entity instanceof final Wolf wolf) {
                 wolf.targetSelector.addGoal(6, new NonTameRandomTargetGoal<>(wolf, EntityMoose.class, false, null));
             }
-            else if (event.getEntity() instanceof final PolarBear bear && AMConfig.polarBearsAttackSeals) {
+            else if (AMConfig.polarBearsAttackSeals && entity instanceof final PolarBear bear) {
                 bear.targetSelector.addGoal(6,
                     new NearestAttackableTargetGoal<>(bear, EntitySeal.class, 15, true, true, null));
             }
-            else if (event.getEntity() instanceof final Creeper creeper) {
+            else if (entity instanceof final Creeper creeper) {
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntitySnowLeopard.class, 6.0F, 1.0D, 1.2D));
                 creeper.targetSelector.addGoal(3, new AvoidEntityGoal<>(creeper, EntityTiger.class, 6.0F, 1.0D, 1.2D));
             }
-            else if ((event.getEntity() instanceof Fox || event.getEntity() instanceof Cat
-                || event.getEntity() instanceof Ocelot) && AMConfig.catsAndFoxesAttackJerboas) {
-                Mob mb = (Mob) event.getEntity();
+            else if (AMConfig.catsAndFoxesAttackJerboas
+                    && (entity instanceof Fox || entity instanceof Cat || entity instanceof Ocelot)) {
+                Mob mb = (Mob) entity;
                 mb.targetSelector.addGoal(6,
                     new NearestAttackableTargetGoal<>(mb, EntityJerboa.class, 45, true, true, null));
             }
-            else if (event.getEntity() instanceof final Rabbit rabbit && AMConfig.bunfungusTransformation) {
+            else if (AMConfig.bunfungusTransformation && entity instanceof final Rabbit rabbit) {
                 rabbit.goalSelector.addGoal(3, new TemptGoal(rabbit, 1.0D, Ingredient.of(AMItemRegistry.MUNGAL_SPORES.get()), false));
             }
-            else if (event.getEntity() instanceof final Dolphin dolphin && AMConfig.dolphinsAttackFlyingFish) {
+            else if (AMConfig.dolphinsAttackFlyingFish && entity instanceof final Dolphin dolphin) {
                 dolphin.targetSelector.addGoal(2,
                     new NearestAttackableTargetGoal<>(dolphin, EntityFlyingFish.class, 70, true, true, null));
             }
@@ -534,8 +541,8 @@ public class ServerEvents {
     public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
         if (event.getTarget() instanceof LivingEntity living) {
             if (event.getEntity().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.MOOSE_HEADGEAR.get()) {
-                living.knockback(1F, Mth.sin(event.getEntity().getYRot() * ((float) Math.PI / 180F)),
-                        -Mth.cos(event.getEntity().getYRot() * ((float) Math.PI / 180F)));
+                living.knockback(1F, Mth.sin(event.getEntity().getYRot() * Mth.DEG_TO_RAD),
+                        -Mth.cos(event.getEntity().getYRot() * Mth.DEG_TO_RAD));
             }
             if (event.getEntity().hasEffect(AMEffectRegistry.TIGERS_BLESSING.get())
                     && !event.getTarget().isAlliedTo(event.getEntity()) && !(event.getTarget() instanceof EntityTiger)) {
@@ -570,8 +577,8 @@ public class ServerEvents {
                 if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SPIKED_TURTLE_SHELL.get()) {
                     if (attacker.distanceTo(player) < attacker.getBbWidth() + player.getBbWidth() + 0.5F) {
                         attacker.hurt(attacker.damageSources().thorns(player), 1F);
-                        attacker.knockback(0.5F, Mth.sin((attacker.getYRot() + 180) * ((float) Math.PI / 180F)),
-                            -Mth.cos((attacker.getYRot() + 180) * ((float) Math.PI / 180F)));
+                        attacker.knockback(0.5F, Mth.sin((attacker.getYRot() + 180) * Mth.DEG_TO_RAD),
+                            -Mth.cos((attacker.getYRot() + 180) * Mth.DEG_TO_RAD));
                     }
                 }
             }
@@ -601,11 +608,12 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
-        if (event.getEntity() instanceof Player player) {
+        final var entity = event.getEntity();
+        if (entity instanceof Player player) {
             if (player.getEyeHeight() < player.getBbHeight() * 0.5D) {
                 player.refreshDimensions();
             }
-            final var attributes = event.getEntity().getAttribute(Attributes.MOVEMENT_SPEED);
+            final var attributes = entity.getAttribute(Attributes.MOVEMENT_SPEED);
             if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == AMItemRegistry.ROADDRUNNER_BOOTS.get()
                 || attributes.hasModifier(SAND_SPEED_BONUS)) {
                 final boolean sand = player.level().getBlockState(getDownPos(player.blockPosition(), player.level()))
@@ -637,71 +645,71 @@ public class ServerEvents {
                 }
             }
         }
-        final ItemStack boots = event.getEntity().getItemBySlot(EquipmentSlot.FEET);
+        final ItemStack boots = entity.getItemBySlot(EquipmentSlot.FEET);
         if (!boots.isEmpty() && boots.hasTag() && boots.getOrCreateTag().contains("BisonFur") && boots.getOrCreateTag().getBoolean("BisonFur")) {
-            BlockPos posBelow = new BlockPos((int) event.getEntity().getX(), (int) (event.getEntity().getBoundingBox().minY - 0.1F), (int) event.getEntity().getZ());
-            if (event.getEntity().level().getBlockState(posBelow).is(Blocks.POWDER_SNOW)) {
-                event.getEntity().setOnGround(true);
-                event.getEntity().setTicksFrozen(0);
-                event.getEntity().setPos(event.getEntity().getX(), Math.max(event.getEntity().getY(), posBelow.getY() + 1F), event.getEntity().getZ());
+            BlockPos posBelow = new BlockPos((int) event.getEntity().getX(), (int) (entity.getBoundingBox().minY - 0.1F), (int) entity.getZ());
+            if (entity.level().getBlockState(posBelow).is(Blocks.POWDER_SNOW)) {
+                entity.setOnGround(true);
+                entity.setTicksFrozen(0);
+                entity.setPos(entity.getX(), Math.max(entity.getY(), posBelow.getY() + 1F), entity.getZ());
             }
-            if (event.getEntity().isInPowderSnow) {
-                event.getEntity().setOnGround(true);
-                event.getEntity().setDeltaMovement(event.getEntity().getDeltaMovement().add(0, 0.1F, 0));
+            if (entity.isInPowderSnow) {
+                entity.setOnGround(true);
+                entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.1F, 0));
             }
         }
-        if (event.getEntity().getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS.get()) {
-            if (event.getEntity().horizontalCollision && !event.getEntity().isInWater()) {
-                event.getEntity().fallDistance = 0.0F;
-                Vec3 motion = event.getEntity().getDeltaMovement();
+        if (entity.getItemBySlot(EquipmentSlot.LEGS).getItem() == AMItemRegistry.CENTIPEDE_LEGGINGS.get()) {
+            if (entity.horizontalCollision && !entity.isInWater()) {
+                entity.fallDistance = 0.0F;
+                Vec3 motion = entity.getDeltaMovement();
                 double d2 = 0.1D;
-                if (event.getEntity().isShiftKeyDown() || !event.getEntity().getFeetBlockState().isScaffolding(event.getEntity()) && event.getEntity().isSuppressingSlidingDownLadder()) {
+                if (entity.isShiftKeyDown() || !entity.getFeetBlockState().isScaffolding(entity) && entity.isSuppressingSlidingDownLadder()) {
                     d2 = 0.0D;
                 }
                 motion = new Vec3(Mth.clamp(motion.x, -0.15F, 0.15F), d2, Mth.clamp(motion.z, -0.15F, 0.15F));
-                event.getEntity().setDeltaMovement(motion);
+                entity.setDeltaMovement(motion);
             }
         }
-        if (event.getEntity().getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SOMBRERO.get() && !event.getEntity().level().isClientSide && AlexsMobs.isAprilFools() && event.getEntity().isInWaterOrBubble()) {
-            RandomSource random = event.getEntity().getRandom();
-            if (random.nextInt(245) == 0 && !EntitySeaBear.isMobSafe(event.getEntity())) {
+        if (entity.getItemBySlot(EquipmentSlot.HEAD).getItem() == AMItemRegistry.SOMBRERO.get() && !entity.level().isClientSide && AlexsMobs.isAprilFools() && entity.isInWaterOrBubble()) {
+            RandomSource random = entity.getRandom();
+            if (random.nextInt(245) == 0 && !EntitySeaBear.isMobSafe(entity)) {
                 final int dist = 32;
-                final var nearbySeabears = event.getEntity().level().getEntitiesOfClass(EntitySeaBear.class,
-                    event.getEntity().getBoundingBox().inflate(dist, dist, dist));
+                final var nearbySeabears = entity.level().getEntitiesOfClass(EntitySeaBear.class,
+                    entity.getBoundingBox().inflate(dist, dist, dist));
                 if (nearbySeabears.isEmpty()) {
-                    final EntitySeaBear bear = AMEntityRegistry.SEA_BEAR.get().create(event.getEntity().level());
-                    final BlockPos at = event.getEntity().blockPosition();
+                    final EntitySeaBear bear = AMEntityRegistry.SEA_BEAR.get().create(entity.level());
+                    final BlockPos at = entity.blockPosition();
                     BlockPos farOff = null;
                     for (int i = 0; i < 15; i++) {
                         final int f1 = (int) Math.signum(random.nextInt() - 0.5F);
                         final int f2 = (int) Math.signum(random.nextInt() - 0.5F);
                         final BlockPos pos1 = at.offset(f1 * (10 + random.nextInt(dist - 10)), random.nextInt(1),
                             f2 * (10 + random.nextInt(dist - 10)));
-                        if (event.getEntity().level().isWaterAt(pos1)) {
+                        if (entity.level().isWaterAt(pos1)) {
                             farOff = pos1;
                         }
                     }
                     if (farOff != null) {
                         bear.setPos(farOff.getX() + 0.5F, farOff.getY() + 0.5F, farOff.getZ() + 0.5F);
                         bear.setYRot(random.nextFloat() * 360F);
-                        bear.setTarget(event.getEntity());
-                        event.getEntity().level().addFreshEntity(bear);
+                        bear.setTarget(entity);
+                        entity.level().addFreshEntity(bear);
                     }
                 } else {
                     for (EntitySeaBear bear : nearbySeabears) {
-                        bear.setTarget(event.getEntity());
+                        bear.setTarget(entity);
                     }
                 }
             }
         }
-        if (VineLassoUtil.hasLassoData(event.getEntity())) {
-            VineLassoUtil.tickLasso(event.getEntity());
+        if (VineLassoUtil.hasLassoData(entity)) {
+            VineLassoUtil.tickLasso(entity);
         }
-        if (RockyChestplateUtil.isWearing(event.getEntity())) {
-            RockyChestplateUtil.tickRockyRolling(event.getEntity());
+        if (RockyChestplateUtil.isWearing(entity)) {
+            RockyChestplateUtil.tickRockyRolling(entity);
         }
-        if (FlyingFishBootsUtil.isWearing(event.getEntity())) {
-            FlyingFishBootsUtil.tickFlyingFishBoots(event.getEntity());
+        if (FlyingFishBootsUtil.isWearing(entity)) {
+            FlyingFishBootsUtil.tickFlyingFishBoots(entity);
         }
     }
 

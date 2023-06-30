@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -130,11 +131,11 @@ public class ModelCockroach extends AdvancedEntityModel<EntityCockroach> {
         float walkDegree = 0.5F;
         float partialTick = Minecraft.getInstance().getFrameTime();
         float danceProgress = entity.prevDanceProgress + (entity.danceProgress - entity.prevDanceProgress) * partialTick;
-        progressRotationPrev(abdomen, danceProgress, (float) Math.toRadians(-70), 0, 0, 5F);
-        progressRotationPrev(left_leg_front, danceProgress, 0, (float) Math.toRadians(-10), 0, 5F);
-        progressRotationPrev(right_leg_front, danceProgress, 0, (float) Math.toRadians(10), 0, 5F);
-        progressRotationPrev(left_leg_mid, danceProgress, 0, (float) Math.toRadians(-10), 0, 5F);
-        progressRotationPrev(right_leg_mid, danceProgress, 0, (float) Math.toRadians(10), 0, 5F);
+        progressRotationPrev(abdomen, danceProgress, Maths.rad(-70), 0, 0, 5F);
+        progressRotationPrev(left_leg_front, danceProgress, 0, Maths.rad(-10), 0, 5F);
+        progressRotationPrev(right_leg_front, danceProgress, 0, Maths.rad(10), 0, 5F);
+        progressRotationPrev(left_leg_mid, danceProgress, 0, Maths.rad(-10), 0, 5F);
+        progressRotationPrev(right_leg_mid, danceProgress, 0, Maths.rad(10), 0, 5F);
         progressPositionPrev(abdomen, danceProgress, 0, -15, 2, 5F);
         if (danceProgress > 0) {
             this.walk(left_antenna, 0.5F, 0.5F, false, -1, -0.05F, ageInTicks, 1);

@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class HummingbirdAIPollinate  extends MoveToBlockGoal {
 
-    private EntityHummingbird bird;
+    private final EntityHummingbird bird;
     private int idleAtFlowerTime = 0;
     private boolean isAboveDestinationBear;
 

@@ -40,7 +40,7 @@ public class BlockReptileEgg extends Block {
     public static final IntegerProperty EGGS = BlockStateProperties.EGGS;
     private static final VoxelShape ONE_EGG_SHAPE = Block.box(3.0D, 0.0D, 3.0D, 12.0D, 7.0D, 12.0D);
     private static final VoxelShape MULTI_EGG_SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D);
-    private RegistryObject<EntityType> births;
+    private final RegistryObject<EntityType> births;
 
     public BlockReptileEgg(RegistryObject births) {
         super(BlockBehaviour.Properties.of().mapColor(MapColor.SAND).strength(0.5F).sound(SoundType.METAL).randomTicks().noOcclusion());

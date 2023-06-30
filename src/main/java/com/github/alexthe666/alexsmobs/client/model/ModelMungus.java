@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityMungus;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -92,7 +93,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 
 				Vec3 vector3d2 = entity.getViewVector(0.0F);
 				vector3d2 = new Vec3(vector3d2.x, 0.0D, vector3d2.z);
-				Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot(((float) Math.PI / 2F));
+				Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot((Mth.PI / 2F));
 				double d1 = vector3d2.dot(vector3d3);
 				this.eye.rotationPointX += Mth.sqrt((float) Math.abs(d1)) * 2.0F * (float) Math.signum(d1);
 			}
@@ -108,7 +109,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 
 			Vec3 vector3d2 = entity.getViewVector(0.0F);
 			vector3d2 = new Vec3(vector3d2.x, 0.0D, vector3d2.z);
-			Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot(((float) Math.PI / 2F));
+			Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot((Mth.PI / 2F));
 			double d1 = vector3d2.dot(vector3d3);
 			this.eye.rotationPointX += Mth.sqrt((float) Math.abs(d1)) * 2.0F * (float) Math.signum(d1);
 
@@ -117,7 +118,7 @@ public class ModelMungus extends AdvancedEntityModel<EntityMungus> {
 		this.flap(nose, idleSpeed, idleDegree, false, 0F, 0F, ageInTicks, 1);
 		sack.setScale(glowyBob, glowyBob, glowyBob + swell * 0.2F);
 		this.sack.rotationPointZ += swell * 0.02F;
-		progressRotationPrev(hair, limbSwingAmount, (float)Math.toRadians(-23), 0, 0, 1F);
+		progressRotationPrev(hair, limbSwingAmount, Maths.rad(-23), 0, 0, 1F);
 		this.walk(leg_right, walkSpeed, walkDegree * 1.1F, true, 1, 0F, limbSwing, limbSwingAmount);
 		this.bob(leg_right, walkSpeed, walkDegree, false, limbSwing, limbSwingAmount);
 		this.walk(leg_left, walkSpeed, walkDegree * 1.1F, false, 1, 0F, limbSwing, limbSwingAmount);

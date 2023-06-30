@@ -241,12 +241,11 @@ public class EntityStraddler extends Monster implements IAnimatedEntity {
             EntityStradpole pole = AMEntityRegistry.STRADPOLE.get().create(level());
             pole.setParentId(this.getUUID());
             pole.setPos(this.getX(), this.getEyeY(), this.getZ());
-            double d0 = this.getTarget().getEyeY() - (double)1.1F;
-            double d1 = this.getTarget().getX() - this.getX();
-            double d2 = d0 - pole.getY();
-            double d3 = this.getTarget().getZ() - this.getZ();
-            float f = Mth.sqrt((float) (d1 * d1 + d3 * d3)) * 0.4F;
-            float f3 = Mth.sqrt((float) (d1 * d1 + d2 * d2 + d3 * d3)) * 0.2F;
+            final double d0 = this.getTarget().getEyeY() - (double)1.1F;
+            final double d1 = this.getTarget().getX() - this.getX();
+            final double d2 = d0 - pole.getY();
+            final double d3 = this.getTarget().getZ() - this.getZ();
+            final float f3 = Mth.sqrt((float) (d1 * d1 + d2 * d2 + d3 * d3)) * 0.2F;
             this.gameEvent(GameEvent.PROJECTILE_SHOOT);
             this.playSound(SoundEvents.CROSSBOW_LOADING_END, 2F, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             pole.shoot(d1, d2 + (double)f3, d3, 2F, 0F);

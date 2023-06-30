@@ -233,7 +233,7 @@ public class EntityCentipedeBody extends Mob implements IHurtableMultipart {
         }
         final double partYDest = Mth.clamp(prevHeight, -0.4F, 0.4F);
         final float f = (float) (Mth.atan2(d2, d0) * 57.2957763671875D) - 90.0F;
-        final float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * Maths.oneEightyDividedByFloatPi)));
+        final float rawAngle = Mth.wrapDegrees((float) (-(Mth.atan2(partYDest, d3) * Mth.RAD_TO_DEG)));
         final float f2 = this.limitAngle(this.getXRot(), rawAngle, 10);
         this.setXRot(f2);
         this.entityData.set(BODY_XROT, f2);

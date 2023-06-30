@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityFlutter;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -123,7 +124,7 @@ public class ModelFlutter extends AdvancedEntityModel<EntityFlutter> {
         float groundProgress = (5F - flyProgress) * 0.2F;
         float tentacleProgress = (5F - limbSwingAmount * 5F) * flyProgress * 0.2F;
         float invertTentacle = (entity.prevTentacleProgress + (entity.tentacleProgress - entity.prevTentacleProgress) * partialTicks) * flyProgress * 0.2F;
-        float flutterPitch = (float) Math.toRadians(Mth.rotLerp(partialTicks, entity.prevFlutterPitch, entity.getFlutterPitch()));
+        float flutterPitch = Maths.rad(Mth.rotLerp(partialTicks, entity.prevFlutterPitch, entity.getFlutterPitch()));
         Entity look = Minecraft.getInstance().getCameraEntity();
         if(entity.isShakingHead()){
             this.eyes.rotationPointX += Math.sin(ageInTicks);
@@ -137,7 +138,7 @@ public class ModelFlutter extends AdvancedEntityModel<EntityFlutter> {
             this.eyes.rotationPointY = f1;
             Vec3 vector3d2 = entity.getViewVector(0.0F);
             vector3d2 = new Vec3(vector3d2.x, 0.0D, vector3d2.z);
-            Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot(((float) Math.PI / 2F));
+            Vec3 vector3d3 = (new Vec3(vector3d1.x - vector3d.x, 0.0D, vector3d1.z - vector3d.z)).normalize().yRot((Mth.PI / 2F));
             double d1 = vector3d2.dot(vector3d3);
             this.eyes.rotationPointX += Mth.sqrt((float) Math.abs(d1)) * 1.5F * (float) Math.signum(d1);
         }else{
@@ -154,33 +155,33 @@ public class ModelFlutter extends AdvancedEntityModel<EntityFlutter> {
         this.walk(back_petal, idleSpeed, idleDegree, true, 1, 0.1F, ageInTicks, 1);
         this.flap(right_petal, idleSpeed, idleDegree, false, 1, 0.1F, ageInTicks, 1);
         this.flap(left_petal, idleSpeed, idleDegree, true, 1, 0.1F, ageInTicks, 1);
-        progressRotationPrev(front_petal, Math.max(shootProgress, invertTentacle),  (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(back_petal, Math.max(shootProgress, invertTentacle),  (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(right_petal, Math.max(shootProgress, invertTentacle),  0, 0, (float) Math.toRadians(45), 5F);
-        progressRotationPrev(left_petal, Math.max(shootProgress, invertTentacle), 0, 0, (float) Math.toRadians(-45), 5F);
-        progressRotationPrev(front_petal, Math.max(invertTentacle - shootProgress, 0),  (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(back_petal, Math.max(invertTentacle - shootProgress, 0),  (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(right_petal, Math.max(invertTentacle - shootProgress, 0),  0, 0, (float) Math.toRadians(45), 5F);
-        progressRotationPrev(left_petal, Math.max(invertTentacle - shootProgress, 0), 0, 0, (float) Math.toRadians(-45), 5F);
-        progressRotationPrev(front_petal, flyProgress,  (float) Math.toRadians(15), 0, 0, 5F);
-        progressRotationPrev(back_petal, flyProgress,  (float) Math.toRadians(15), 0, 0, 5F);
-        progressRotationPrev(right_petal, flyProgress,  0, 0, (float) Math.toRadians(-15), 5F);
-        progressRotationPrev(left_petal, flyProgress, 0, 0, (float) Math.toRadians(15), 5F);
+        progressRotationPrev(front_petal, Math.max(shootProgress, invertTentacle),  Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(back_petal, Math.max(shootProgress, invertTentacle),  Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(right_petal, Math.max(shootProgress, invertTentacle),  0, 0, Maths.rad(45), 5F);
+        progressRotationPrev(left_petal, Math.max(shootProgress, invertTentacle), 0, 0, Maths.rad(-45), 5F);
+        progressRotationPrev(front_petal, Math.max(invertTentacle - shootProgress, 0),  Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(back_petal, Math.max(invertTentacle - shootProgress, 0),  Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(right_petal, Math.max(invertTentacle - shootProgress, 0),  0, 0, Maths.rad(45), 5F);
+        progressRotationPrev(left_petal, Math.max(invertTentacle - shootProgress, 0), 0, 0, Maths.rad(-45), 5F);
+        progressRotationPrev(front_petal, flyProgress,  Maths.rad(15), 0, 0, 5F);
+        progressRotationPrev(back_petal, flyProgress,  Maths.rad(15), 0, 0, 5F);
+        progressRotationPrev(right_petal, flyProgress,  0, 0, Maths.rad(-15), 5F);
+        progressRotationPrev(left_petal, flyProgress, 0, 0, Maths.rad(15), 5F);
         progressPositionPrev(body, tentacleProgress, 0, -3, 0, 5F);
-        progressRotationPrev(right_leg, tentacleProgress, (float) Math.toRadians(105), 0, 0, 5F);
-        progressRotationPrev(left_leg, tentacleProgress, (float) Math.toRadians(105), 0, 0, 5F);
-        progressRotationPrev(right_arm, tentacleProgress, (float) Math.toRadians(105), 0, 0, 5F);
-        progressRotationPrev(left_arm, tentacleProgress, (float) Math.toRadians(105), 0, 0, 5F);
-        progressRotationPrev(front_petal, tentacleProgress, (float) Math.toRadians(5), 0, 0, 5F);
-        progressRotationPrev(back_petal, tentacleProgress, (float) Math.toRadians(5), 0, 0, 5F);
-        progressRotationPrev(right_petal, tentacleProgress, (float) Math.toRadians(5), 0, 0, 5F);
-        progressRotationPrev(left_petal, tentacleProgress, (float) Math.toRadians(5), 0, 0, 5F);
+        progressRotationPrev(right_leg, tentacleProgress, Maths.rad(105), 0, 0, 5F);
+        progressRotationPrev(left_leg, tentacleProgress, Maths.rad(105), 0, 0, 5F);
+        progressRotationPrev(right_arm, tentacleProgress, Maths.rad(105), 0, 0, 5F);
+        progressRotationPrev(left_arm, tentacleProgress, Maths.rad(105), 0, 0, 5F);
+        progressRotationPrev(front_petal, tentacleProgress, Maths.rad(5), 0, 0, 5F);
+        progressRotationPrev(back_petal, tentacleProgress, Maths.rad(5), 0, 0, 5F);
+        progressRotationPrev(right_petal, tentacleProgress, Maths.rad(5), 0, 0, 5F);
+        progressRotationPrev(left_petal, tentacleProgress, Maths.rad(5), 0, 0, 5F);
 
         progressPositionPrev(body, sitProgress, 0, 2, 0, 5F);
-        progressRotationPrev(right_leg, sitProgress, (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(left_leg, sitProgress, (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(right_arm, sitProgress, (float) Math.toRadians(-45), 0, 0, 5F);
-        progressRotationPrev(left_arm, sitProgress, (float) Math.toRadians(-45), 0, 0, 5F);
+        progressRotationPrev(right_leg, sitProgress, Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(left_leg, sitProgress, Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(right_arm, sitProgress, Maths.rad(-45), 0, 0, 5F);
+        progressRotationPrev(left_arm, sitProgress, Maths.rad(-45), 0, 0, 5F);
         this.root.rotateAngleX -= flutterPitch * flyProgress * 0.2F;
         this.body.rotateAngleY += Math.toRadians(Mth.wrapDegrees(shootProgress * 360 * 0.2F));
         float petalScale = 1 + invertTentacle * 0.05F;

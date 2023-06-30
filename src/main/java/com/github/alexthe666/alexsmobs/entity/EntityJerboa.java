@@ -70,7 +70,7 @@ public class EntityJerboa extends Animal {
     protected EntityJerboa(EntityType<? extends Animal> jerboa, Level lvl) {
         super(jerboa, lvl);
         this.moveControl = new EntityJerboa.MoveHelperController(this);
-        this.jumpControl = new EntityJerboa.JumpHelperController(this);
+        this.jumpControl = new JumpHelperController(this);
     }
 
     public static AttributeSupplier.Builder bakeAttributes() {
@@ -81,10 +81,10 @@ public class EntityJerboa extends Animal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(JUMP_ACTIVE, Boolean.valueOf(false));
-        this.entityData.define(BEGGING, Boolean.valueOf(false));
-        this.entityData.define(SLEEPING, Boolean.valueOf(false));
-        this.entityData.define(BEFRIENDED, Boolean.valueOf(false));
+        this.entityData.define(JUMP_ACTIVE, false);
+        this.entityData.define(BEGGING, false);
+        this.entityData.define(SLEEPING, false);
+        this.entityData.define(BEFRIENDED, false);
     }
 
     protected void registerGoals() {
@@ -167,18 +167,23 @@ public class EntityJerboa extends Animal {
                 jumpProgress = Math.max(jumpProgress - 1F, 0);
             }
         }
-        if (this.isBegging() && begProgress < 5F) {
-            begProgress++;
+
+        if (this.isBegging()) {
+            if (begProgress < 5F)
+                begProgress++;
+        } else {
+            if (begProgress > 0F)
+                begProgress--;
         }
-        if (!this.isBegging() && begProgress > 0F) {
-            begProgress--;
+
+        if (this.isSleeping()) {
+            if (sleepProgress < 5F)
+                sleepProgress++;
+        } else {
+            if (sleepProgress > 0F)
+                sleepProgress--;
         }
-        if (this.isSleeping() && sleepProgress < 5F) {
-            sleepProgress++;
-        }
-        if (!this.isSleeping() && sleepProgress > 0F) {
-            sleepProgress--;
-        }
+
         if (!this.level().isClientSide) {
             if (this.level().isDay() && this.getLastHurtByMob() == null && !this.isBegging()) {
                 if (tickCount % 10 == 0 && this.getRandom().nextInt(750) == 0) {
@@ -191,7 +196,7 @@ public class EntityJerboa extends Animal {
     }
 
     public boolean isBegging() {
-        return this.entityData.get(BEGGING).booleanValue();
+        return this.entityData.get(BEGGING);
     }
 
     public void setBegging(boolean begging) {
@@ -199,7 +204,7 @@ public class EntityJerboa extends Animal {
     }
 
     public boolean isSleeping() {
-        return this.entityData.get(SLEEPING).booleanValue();
+        return this.entityData.get(SLEEPING);
     }
 
     public void setSleeping(boolean sleeping) {
@@ -207,7 +212,7 @@ public class EntityJerboa extends Animal {
     }
 
     public boolean isBefriended() {
-        return this.entityData.get(BEFRIENDED).booleanValue();
+        return this.entityData.get(BEFRIENDED);
     }
 
     public void setBefriended(boolean befriended) {
@@ -336,7 +341,7 @@ public class EntityJerboa extends Animal {
     }
 
     private void calculateRotationYaw(double x, double z) {
-        this.setYRot((float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) (180F / (float) Math.PI)) - 90.0F);
+        this.setYRot((float) (Mth.atan2(z - this.getZ(), x - this.getX()) * (double) Mth.RAD_TO_DEG) - 90.0F);
     }
 
     private void enableJumpControl() {
@@ -484,7 +489,7 @@ public class EntityJerboa extends Animal {
         }
     }
 
-    public class JumpHelperController extends JumpControl {
+    public static class JumpHelperController extends JumpControl {
         private final EntityJerboa jerboa;
         private boolean canJump;
 

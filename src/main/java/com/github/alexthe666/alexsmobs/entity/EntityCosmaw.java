@@ -90,7 +90,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         this.entityData.define(COSMAW_PITCH, 0.0F);
         this.entityData.define(ATTACK_TICK, 0);
         this.entityData.define(COMMAND, Integer.valueOf(0));
-        this.entityData.define(SITTING, Boolean.valueOf(false));
+        this.entityData.define(SITTING, false);
 
     }
 
@@ -226,7 +226,7 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
         prevBiteProgress = biteProgress;
         prevCosmawPitch = this.getCosmawPitch();
         if (!this.level().isClientSide) {
-            final float f2 = (float) -((float) this.getDeltaMovement().y * Maths.oneEightyDividedByFloatPi);
+            final float f2 = (float) -((float) this.getDeltaMovement().y * Mth.RAD_TO_DEG);
             this.setCosmawPitch(this.getCosmawPitch() + 0.6F * (this.getCosmawPitch() + f2) - this.getCosmawPitch());
         }
 
@@ -317,8 +317,8 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
                             this.stuckRot = Mth.wrapDegrees(this.stuckRot + 90);
 
                         }
-                        final float angle = (0.0174532925F * stuckRot);
-                        final double extraX = -2 * Mth.sin((float) (Math.PI + angle));
+                        final float angle = (Maths.STARTING_ANGLE * stuckRot);
+                        final double extraX = -2 * Mth.sin(Mth.PI + angle);
                         final double extraZ = -2 * Mth.cos(angle);
                         this.getMoveControl().setWantedPosition(this.getX() + extraX, this.getY() + 2, this.getZ() + extraZ, speed);
                     } else if (lastSafeTpPosition.getY() > this.getY() + 2.3F) {
@@ -533,8 +533,8 @@ public class EntityCosmaw extends TamableAnimal implements ITargetsDroppedItems,
             final float radius = 5 + parentEntity.getRandom().nextInt(10);
             final float neg = parentEntity.getRandom().nextBoolean() ? 1 : -1;
             final float renderYawOffset = parentEntity.getYRot();
-            final float angle = (0.0174532925F * renderYawOffset) + 3.15F * (parentEntity.getRandom().nextFloat() * neg);
-            final double extraX = radius * Mth.sin((float) (Math.PI + angle));
+            final float angle = (Maths.STARTING_ANGLE * renderYawOffset) + 3.15F * (parentEntity.getRandom().nextFloat() * neg);
+            final double extraX = radius * Mth.sin(Mth.PI + angle);
             final double extraZ = radius * Mth.cos(angle);
             final BlockPos radialPos = AMBlockPos.fromCoords(parentEntity.getX() + extraX, parentEntity.getY(), parentEntity.getZ() + extraZ);
             BlockPos ground = parentEntity.getCosmawGround(radialPos);

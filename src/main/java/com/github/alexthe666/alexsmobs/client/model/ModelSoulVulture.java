@@ -4,6 +4,7 @@ package com.github.alexthe666.alexsmobs.client.model;// Made with Blockbench 3.7
 
 
 import com.github.alexthe666.alexsmobs.entity.EntitySoulVulture;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
@@ -115,24 +116,24 @@ public class ModelSoulVulture extends AdvancedEntityModel<EntitySoulVulture> {
 		float partialTick = ageInTicks - entity.tickCount;
 		float flyProgress = entity.prevFlyProgress + (entity.flyProgress - entity.prevFlyProgress) * partialTick;
 		float tackleProgress = entity.prevTackleProgress + (entity.tackleProgress - entity.prevTackleProgress) * partialTick;
-		progressRotationPrev(body, flyProgress, (float) Math.toRadians(15), 0, 0, 5F);
-		progressRotationPrev(neck, flyProgress, (float) Math.toRadians(-35), 0, 0, 5F);
-		progressRotationPrev(head, flyProgress, (float) Math.toRadians(25), 0, 0, 5F);
-		progressRotationPrev(leftLeg, flyProgress, (float) Math.toRadians(55), 0, 0, 5F);
-		progressRotationPrev(rightLeg, flyProgress, (float) Math.toRadians(55), 0, 0, 5F);
-		progressRotationPrev(rightWing, flyProgress,  (float) Math.toRadians(-70), (float) Math.toRadians(-90),  0, 5F);
-		progressRotationPrev(leftWing, flyProgress,  (float) Math.toRadians(-70), (float) Math.toRadians(90),  0, 5F);
+		progressRotationPrev(body, flyProgress, Maths.rad(15), 0, 0, 5F);
+		progressRotationPrev(neck, flyProgress, Maths.rad(-35), 0, 0, 5F);
+		progressRotationPrev(head, flyProgress, Maths.rad(25), 0, 0, 5F);
+		progressRotationPrev(leftLeg, flyProgress, Maths.rad(55), 0, 0, 5F);
+		progressRotationPrev(rightLeg, flyProgress, Maths.rad(55), 0, 0, 5F);
+		progressRotationPrev(rightWing, flyProgress,  Maths.rad(-70), Maths.rad(-90),  0, 5F);
+		progressRotationPrev(leftWing, flyProgress,  Maths.rad(-70), Maths.rad(90),  0, 5F);
 		progressPositionPrev(rightWing, flyProgress, 0F, -2, -1, 5f);
 		progressPositionPrev(leftWing, flyProgress, 0F, -2, -1, 5f);
 		progressPositionPrev(body, flyProgress, 0F, 2F, 0, 5f);
 		progressPositionPrev(leftLeg, flyProgress, 0F, -3, 1, 5f);
 		progressPositionPrev(rightLeg, flyProgress, 0F, -3, 1, 5f);
 		progressPositionPrev(head, flyProgress, 0F, 3F, -2F, 5f);
-		progressRotationPrev(body, tackleProgress, -(float) Math.toRadians(55), 0, 0, 5F);
-		progressRotationPrev(neck, tackleProgress, (float) Math.toRadians(-35), 0, 0, 5F);
-		progressRotationPrev(head, tackleProgress, (float) Math.toRadians(90), 0, 0, 5F);
-		progressRotationPrev(rightLeg, tackleProgress, (float) Math.toRadians(-100), 0, 0, 5F);
-		progressRotationPrev(leftLeg, tackleProgress, (float) Math.toRadians(-100), 0, 0, 5F);
+		progressRotationPrev(body, tackleProgress, -Maths.rad(55), 0, 0, 5F);
+		progressRotationPrev(neck, tackleProgress, Maths.rad(-35), 0, 0, 5F);
+		progressRotationPrev(head, tackleProgress, Maths.rad(90), 0, 0, 5F);
+		progressRotationPrev(rightLeg, tackleProgress, Maths.rad(-100), 0, 0, 5F);
+		progressRotationPrev(leftLeg, tackleProgress, Maths.rad(-100), 0, 0, 5F);
 		progressPositionPrev(leftLeg, tackleProgress, 0F, 3, -2, 5f);
 		progressPositionPrev(rightLeg, tackleProgress, 0F, 3, -2, 5f);
 		if(flyProgress > 0){

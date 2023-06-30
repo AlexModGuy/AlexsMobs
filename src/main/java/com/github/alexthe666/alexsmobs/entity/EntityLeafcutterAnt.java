@@ -274,9 +274,8 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             } else  if (this.verticalCollision) {
                 this.entityData.set(ATTACHED_FACE, Direction.UP);
             }else {
-                boolean flag = false;
                 Direction closestDirection = Direction.DOWN;
-                double closestDistance = 100;
+                double closestDistance = 100D;
                 for (Direction dir : HORIZONTALS) {
                     BlockPos antPos = new BlockPos(Mth.floor(this.getX()), Mth.floor(this.getY()), Mth.floor(this.getZ()));
                     BlockPos offsetPos = antPos.relative(dir);
@@ -290,12 +289,13 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             }
         }
         boolean flag = false;
-        if (this.getAttachmentFacing() != Direction.DOWN) {
-            if(this.getAttachmentFacing() == Direction.UP){
+        final Direction attachmentFacing = this.getAttachmentFacing();
+        if (attachmentFacing != Direction.DOWN) {
+            if(attachmentFacing == Direction.UP){
                 this.setDeltaMovement(this.getDeltaMovement().add(0, 1, 0));
             }else{
-                if (!this.horizontalCollision && this.getAttachmentFacing() != Direction.UP) {
-                    Vec3 vec = Vec3.atLowerCornerOf(this.getAttachmentFacing().getNormal());
+                if (!this.horizontalCollision && attachmentFacing != Direction.UP) {
+                    Vec3 vec = Vec3.atLowerCornerOf(attachmentFacing.getNormal());
                     this.setDeltaMovement(this.getDeltaMovement().add(vec.normalize().multiply(0.1F, 0.1F, 0.1F)));
                 }
                 if (!this.onGround() && vector3d.y < 0.0D) {
@@ -304,7 +304,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 }
             }
         }
-        if(this.getAttachmentFacing() == Direction.UP) {
+        if(attachmentFacing == Direction.UP) {
             this.setNoGravity(true);
             this.setDeltaMovement(vector3d.multiply(0.7D, 1D, 0.7D));
         }else{
@@ -315,15 +315,15 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                 this.setDeltaMovement(vector3d.multiply(1.0D, 0.4D, 1.0D));
             }
         }
-        if (prevAttachDir != this.getAttachmentFacing()) {
+        if (prevAttachDir != attachmentFacing) {
             attachChangeProgress = 1F;
         }
-        this.prevAttachDir = this.getAttachmentFacing();
+        this.prevAttachDir = attachmentFacing;
         if (!this.level().isClientSide) {
-            if (this.getAttachmentFacing() == Direction.UP && !this.isUpsideDownNavigator) {
+            if (attachmentFacing == Direction.UP && !this.isUpsideDownNavigator) {
                 switchNavigator(false);
             }
-            if (this.getAttachmentFacing() != Direction.UP && this.isUpsideDownNavigator) {
+            if (attachmentFacing != Direction.UP && this.isUpsideDownNavigator) {
                 switchNavigator(true);
             }
             if (this.stayOutOfHiveCountdown > 0) {
@@ -451,7 +451,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     public boolean hasLeaf() {
-        return this.entityData.get(HAS_LEAF).booleanValue();
+        return this.entityData.get(HAS_LEAF);
     }
 
     public void setLeaf(boolean leaf) {
@@ -459,7 +459,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
     }
 
     public boolean isQueen() {
-        return this.entityData.get(QUEEN).booleanValue();
+        return this.entityData.get(QUEEN);
     }
 
     public void setQueen(boolean queen) {

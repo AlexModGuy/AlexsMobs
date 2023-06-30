@@ -1,12 +1,14 @@
 package com.github.alexthe666.alexsmobs.client.model;
 
 import com.github.alexthe666.alexsmobs.entity.EntityBison;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.util.Mth;
 
 public class ModelBisonBaby extends AdvancedEntityModel<EntityBison> {
     private final AdvancedModelBox root;
@@ -104,7 +106,7 @@ public class ModelBisonBaby extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         eatPose();
@@ -112,7 +114,7 @@ public class ModelBisonBaby extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.startKeyframe(5);
         eatPose();
@@ -120,17 +122,17 @@ public class ModelBisonBaby extends AdvancedEntityModel<EntityBison> {
         animator.startKeyframe(5);
         eatPose();
         animator.move(head, 0, 1, 1);
-        animator.rotate(head, (float) Math.toRadians(10), 0, 0);
+        animator.rotate(head, Maths.rad(10), 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
     }
 
     private void eatPose(){
-        animator.rotate(head, (float) Math.toRadians(-10), 0, 0);
-        animator.rotate(torso, (float) Math.toRadians(15), 0, 0);
+        animator.rotate(head, Maths.rad(-10), 0, 0);
+        animator.rotate(torso, Maths.rad(15), 0, 0);
         animator.move(torso, 0, 0, 2);
-        animator.rotate(left_arm, (float) Math.toRadians(-15), 0, 0);
-        animator.rotate(right_arm, (float) Math.toRadians(-15), 0, 0);
+        animator.rotate(left_arm, Maths.rad(-15), 0, 0);
+        animator.rotate(right_arm, Maths.rad(-15), 0, 0);
         animator.move(left_arm, 0, -2.5F, 0);
         animator.move(right_arm, 0, -2.5F, 0);
         animator.move(head, 0, 4, 0);
@@ -165,8 +167,8 @@ public class ModelBisonBaby extends AdvancedEntityModel<EntityBison> {
         this.swing(right_ear, idleSpeed, idleDegree * 0.5F, true, 3F, 0.2F, ageInTicks, 1);
         this.walk(tail, idleSpeed, idleDegree, false, 1F, 0.1F, ageInTicks, 1);
         this.bob(head, idleSpeed, idleDegree, false, ageInTicks, 1);
-        this.head.rotateAngleY += netHeadYaw * 0.75F * ((float)Math.PI / 180F);
-        this.head.rotateAngleX += headPitch * ((float)Math.PI / 180F);
+        this.head.rotateAngleY += netHeadYaw * 0.75F * Mth.DEG_TO_RAD;
+        this.head.rotateAngleX += headPitch * Mth.DEG_TO_RAD;
     }
 
 }

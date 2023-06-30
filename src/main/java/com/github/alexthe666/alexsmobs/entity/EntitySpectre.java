@@ -1,6 +1,7 @@
 package com.github.alexthe666.alexsmobs.entity;
 
 import com.github.alexthe666.alexsmobs.config.AMConfig;
+import com.github.alexthe666.alexsmobs.entity.util.Maths;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.alexthe666.alexsmobs.misc.AMSoundRegistry;
 import net.minecraft.core.BlockPos;
@@ -85,7 +86,7 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     }
 
     public int getCardinalInt() {
-        return this.entityData.get(CARDINAL_ORDINAL).intValue();
+        return this.entityData.get(CARDINAL_ORDINAL);
     }
 
     public void setCardinalInt(int command) {
@@ -136,20 +137,19 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
     public void tick() {
         super.tick();
         Vec3 vector3d1 = this.getDeltaMovement();
-        this.setYRot( -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+        this.setYRot( -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
         this.yBodyRot = this.getYRot();
 
         prevBirdPitch = this.birdPitch;
         noPhysics = true;
-        float f2 = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) (180F / (float) Math.PI));
-        this.birdPitch = f2;
+        this.birdPitch = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) Mth.RAD_TO_DEG);
         if (this.getLeashHolder() != null && !(this.getLeashHolder() instanceof LeashFenceKnotEntity)) {
             Entity entity = this.getLeashHolder();
             float f = this.distanceTo(entity);
             if (f > 10) {
-                double d0 = (this.getX() - entity.getX()) / (double) f;
-                double d1 = (this.getY() - entity.getY()) / (double) f;
-                double d2 = (this.getZ() - entity.getZ()) / (double) f;
+                final double d0 = (this.getX() - entity.getX()) / (double) f;
+                final double d1 = (this.getY() - entity.getY()) / (double) f;
+                final double d2 = (this.getZ() - entity.getZ()) / (double) f;
                 entity.setDeltaMovement(entity.getDeltaMovement().add(Math.copySign(d0 * d0 * 0.4D, d0), Math.copySign(d1 * d1 * 0.4D, d1), Math.copySign(d2 * d2 * 0.4D, d2)));
             }
             entity.fallDistance = 0.0F;
@@ -222,10 +222,9 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
                     double d0 = this.wantedX - this.parentEntity.getX();
                     double d1 = this.wantedY - this.parentEntity.getY();
                     double d2 = this.wantedZ - this.parentEntity.getZ();
-                    double d3 = Mth.sqrt((float) (d0 * d0 + d1 * d1 + d2 * d2));
                     parentEntity.setDeltaMovement(parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d5)));
                     Vec3 vector3d1 = parentEntity.getDeltaMovement();
-                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI));
+                    parentEntity.setYRot(-((float) Mth.atan2(vector3d1.x, vector3d1.z)) * Mth.RAD_TO_DEG);
                     parentEntity.yBodyRot = parentEntity.getYRot();
 
                 }
@@ -338,21 +337,20 @@ public class EntitySpectre extends Animal implements FlyingAnimal {
         }
 
         public BlockPos getIslandPos(BlockPos orbit) {
-            float angle = (0.01745329251F * 3 * (clockwise ? -circlingTime : circlingTime));
-            double extraX = circleDistance * Mth.sin((angle));
-            double extraZ = circleDistance * Mth.cos(angle);
-            int height = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, orbit).getY();
+            final float angle = (Maths.THREE_STARTING_ANGLE * (clockwise ? -circlingTime : circlingTime));
+            final double extraX = circleDistance * Mth.sin((angle));
+            final double extraZ = circleDistance * Mth.cos(angle);
+            final int height = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, orbit).getY();
             if (height < 3) {
                 island = false;
                 return getBlockFromDirection();
             }
-            BlockPos pos = new BlockPos((int) (orbit.getX() + extraX), Math.min(height + 10, orbit.getY() + random.nextInt(3) - random.nextInt(1)), (int) (orbit.getZ() + extraZ));
-            return pos;
+            return new BlockPos((int) (orbit.getX() + extraX), Math.min(height + 10, orbit.getY() + random.nextInt(3) - random.nextInt(1)), (int) (orbit.getZ() + extraZ));
         }
 
     }
 
-    class TemptHeartGoal extends Goal {
+    static class TemptHeartGoal extends Goal {
         protected final EntitySpectre creature;
         private final TargetingConditions ENTITY_PREDICATE = TargetingConditions.forNonCombat().range(64D).ignoreInvisibilityTesting().ignoreLineOfSight();
         private final double speed;

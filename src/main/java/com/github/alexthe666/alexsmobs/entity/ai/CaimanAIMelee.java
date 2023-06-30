@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 
 public class CaimanAIMelee extends Goal {
-    private EntityCaiman caiman;
+    private final EntityCaiman caiman;
     private int grabTime = 0;
 
     public CaimanAIMelee(EntityCaiman caiman) {
