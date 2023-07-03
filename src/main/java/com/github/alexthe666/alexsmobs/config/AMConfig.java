@@ -508,6 +508,8 @@ public class AMConfig {
             transmutingWeightAddStep = ConfigHolder.COMMON.transmutingWeightAddStep.get();
             transmutingWeightRemoveStep = ConfigHolder.COMMON.transmutingWeightRemoveStep.get();
             underminerDisappearDistance = ConfigHolder.COMMON.underminerDisappearDistance.get();
+            elephantTraderSpawnChance = ConfigHolder.COMMON.elephantTraderSpawnChance.get();
+            limitElephantTraderBiomes = ConfigHolder.COMMON.limitElephantTraderBiomes.get();
         } catch (Exception e) {
             AlexsMobs.LOGGER.warn("An exception was caused trying to load the config for Alex's Mobs.");
             e.printStackTrace();

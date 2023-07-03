@@ -68,6 +68,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -483,8 +484,16 @@ public class ServerEvents {
         }
     }
 
+    private static LevelChunk tryGetEventChunk(LivingSpawnEvent.SpecialSpawn event) {
+        BlockPos blockPos = new BlockPos(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ());
+        ChunkPos chunkPos = new ChunkPos(blockPos);
+        LevelAccessor level = event.getLevel();
+        return level.getChunkSource().getChunkNow(chunkPos.x, chunkPos.z);
+    }
     @SubscribeEvent
     public void onEntityJoinWorld(LivingSpawnEvent.SpecialSpawn event) {
+        // Prevent worldgen hangs
+        if(tryGetEventChunk(event) == null) { return; }
         if (event.getEntity() instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
             Biome biome = event.getLevel().getBiome(event.getEntity().blockPosition()).value();
             if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance

@@ -252,6 +252,10 @@ public class CommonConfig {
     public ForgeConfigSpec.DoubleValue underminerDisappearDistance;
     public final ForgeConfigSpec.BooleanValue skreechersSummonWarden;
 
+    public final ForgeConfigSpec.DoubleValue elephantTraderSpawnChance;
+
+    public final ForgeConfigSpec.BooleanValue limitElephantTraderBiomes;
+
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("general");
         giveBookOnStartup = buildBoolean(builder, "giveBookOnStartup", "all", true, "Whether all players should get an Animal Dictionary when joining the world for the first time.");
@@ -309,6 +313,8 @@ public class CommonConfig {
         transmutingWeightRemoveStep = buildDouble(builder, "transmutingWeightRemoveStep", "all", 4.0F, 1.0F, 10000.0F, "The step value that an item looses when selecting it as the transmutation result. Keep this number higher than the one above for balance reasons. Higher number = less likely to appear after transmuting multiple times.");
         skreechersSummonWarden = buildBoolean(builder, "skreechersSummonWarden", "all", true, "True if skreechers can summon a new warden, when applicable.");
         underminerDisappearDistance = buildDouble(builder, "underminerDisappearDistance", "all", 8.0F, 1.0F, 10000.0F, "The distance in blocks that will cause an underminer to dissapear when approached by a player.");
+        elephantTraderSpawnChance = buildDouble(builder, "elephantTraderSpawnChance", "all", AMConfig.elephantTraderSpawnChance, 0.0, 1.0, "Chance for a wandering trader to spawn on an elephant.");
+        limitElephantTraderBiomes = buildBoolean(builder, "limitElephantTraderSpawnBiomes", "all", AMConfig.limitElephantTraderBiomes, "Limit elephant traders to warm biomes");
         builder.push("spawning");
         grizzlyBearSpawnWeight = buildInt(builder, "grizzlyBearSpawnWeight", "spawns", AMConfig.grizzlyBearSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         grizzlyBearSpawnRolls = buildInt(builder, "grizzlyBearSpawnRolls", "spawns", AMConfig.grizzlyBearSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
