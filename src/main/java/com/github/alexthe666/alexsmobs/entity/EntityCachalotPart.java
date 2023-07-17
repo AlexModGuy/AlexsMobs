@@ -79,7 +79,7 @@ public class EntityCachalotPart extends PartEntity<EntityCachalotWhale> {
     }
 
     public EntityDimensions getDimensions(Pose poseIn) {
-        return this.size.scale(scale);
+        return this.size == null ? EntityDimensions.scalable(0, 0) : this.size.scale(scale);
     }
 
     @Override
