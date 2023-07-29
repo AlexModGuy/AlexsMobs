@@ -145,9 +145,11 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
                         p = (Player) this.getControllingPassenger();
                     }
                     if(!level.isClientSide && !this.isRemoved()){
-                        boolean drop = false;
+                        boolean drop;
                         if(this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN.get()) > 0){
                             drop = p != null && !p.addItem(this.getItemBoard());
+                        } else {
+                            drop = true;
                         }
                         if (drop) {
                             this.spawnAtLocation(this.getItemBoard());
