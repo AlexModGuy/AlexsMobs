@@ -110,6 +110,12 @@ public class EntitySkunk extends Animal {
         return stack.is(Items.SWEET_BERRIES);
     }
 
+	@Override
+	public boolean isInvulnerableTo(@Nonnull DamageSource source) {
+		return super.isInvulnerableTo(source) ||
+			source == DamageSource.SWEET_BERRY_BUSH
+	}
+    
     public float getSprayYaw() {
         return entityData.get(SPRAY_YAW);
     }
