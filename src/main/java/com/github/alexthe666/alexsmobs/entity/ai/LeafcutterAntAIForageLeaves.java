@@ -22,6 +22,7 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
     private BlockPos logTopPos = null;
     private final int searchRange;
     private final int verticalSearchRange;
+    private int moveToCooldown = 0;
 
     public LeafcutterAntAIForageLeaves(EntityLeafcutterAnt LeafcutterAnt) {
         super(LeafcutterAnt, 1D, 15, 3);
@@ -44,6 +45,10 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
         logTopPos = null;
     }
 
+    public void start() {
+        moveToCooldown = 10 + ant.getRandom().nextInt(10);
+    }
+
     public double acceptedDistance() {
         return 2.0D;
     }
@@ -53,6 +58,9 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
     }
 
     public void tick() {
+        if(moveToCooldown > 0){
+            moveToCooldown--;
+        }
         if (randomLeafCheckCooldown > 0) {
             randomLeafCheckCooldown--;
         } else {
@@ -87,8 +95,10 @@ public class LeafcutterAntAIForageLeaves extends MoveToBlockGoal {
                 vec = vec.subtract(ant.position());
                 if (ant.onGround() || ant.onClimbable())
                     this.ant.setDeltaMovement(vec.normalize().multiply(0.1, 0, 0.1).add(0, ant.getDeltaMovement().y, 0));
-
-                this.ant.getNavigation().moveTo(logStartPos.getX(), ant.getY(), logStartPos.getZ(), 1);
+                if(moveToCooldown <= 0){
+                    moveToCooldown = 20 + ant.getRandom().nextInt(30);
+                    this.ant.getNavigation().moveTo(logStartPos.getX(), ant.getY(), logStartPos.getZ(), 1);
+                }
                 if (Math.abs(xDif) < 0.6 && Math.abs(zDif) < 0.6) {
                     ant.setDeltaMovement(ant.getDeltaMovement().multiply(0D, 1D, 0D));
                     this.ant.getMoveControl().setWantedPosition(logStartPos.getX() + 0.5D, ant.getY() + 2, logStartPos.getZ() + 0.5D, 1);

@@ -639,6 +639,7 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
         private int searchCooldown = 1;
         private BlockPos hivePos;
         private int approachTime = 0;
+        private int moveToCooldown = 0;
 
         public ReturnToHiveGoal() {
         }
@@ -684,7 +685,17 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
             this.approachTime = 0;
         }
 
+        public void start() {
+            this.hivePos = null;
+            this.searchCooldown = 20;
+            this.approachTime = 0;
+            moveToCooldown = 10 + random.nextInt(10);
+        }
+
         public void tick() {
+            if(moveToCooldown > 0){
+                moveToCooldown--;
+            }
             double dist = EntityLeafcutterAnt.this.distanceToSqr(Vec3.upFromBottomCenterOf(hivePos, 1));
             if (dist < 1.2F && EntityLeafcutterAnt.this.getBlockPosBelowThatAffectsMyMovement().equals(hivePos)) {
                 BlockEntity tileentity = EntityLeafcutterAnt.this.level().getBlockEntity(hivePos);
@@ -710,16 +721,22 @@ public class EntityLeafcutterAnt extends Animal implements NeutralMob, IAnimated
                     }
                    EntityLeafcutterAnt.this.getMoveControl().setWantedPosition((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.5F, (double) hivePos.getZ() + 0.5F, 1.0D);
                 }
-                EntityLeafcutterAnt.this.navigation.resetMaxVisitedNodesMultiplier();
-                EntityLeafcutterAnt.this.navigation.moveTo((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.6F, (double) hivePos.getZ() + 0.5F, 1.0D);
+                if(moveToCooldown <= 0){
+                    moveToCooldown = 50 + random.nextInt(30);
+                    EntityLeafcutterAnt.this.navigation.resetMaxVisitedNodesMultiplier();
+                    EntityLeafcutterAnt.this.navigation.moveTo((double) hivePos.getX() + 0.5F, (double) hivePos.getY() + 1.6F, (double) hivePos.getZ() + 0.5F, 1.0D);
+                }
             } else {
                 startMovingToFar(this.hivePos);
             }
         }
 
         private boolean startMovingToFar(BlockPos pos) {
-            EntityLeafcutterAnt.this.navigation.setMaxVisitedNodesMultiplier(10.0F);
-            EntityLeafcutterAnt.this.navigation.moveTo(pos.getX(), pos.getY(), pos.getZ(), 1.0D);
+            if(moveToCooldown <= 0){
+                moveToCooldown = 50 + random.nextInt(30);
+                EntityLeafcutterAnt.this.navigation.setMaxVisitedNodesMultiplier(10.0F);
+                EntityLeafcutterAnt.this.navigation.moveTo(pos.getX(), pos.getY(), pos.getZ(), 1.0D);
+            }
             return EntityLeafcutterAnt.this.navigation.getPath() != null && EntityLeafcutterAnt.this.navigation.getPath().canReach();
         }
 
