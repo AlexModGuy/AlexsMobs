@@ -21,6 +21,8 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
     private int idleAtLeavesTime = 0;
     private boolean isAboveDestinationBear;
 
+    private int moveCooldown = 0;
+
     public ElephantAIForageLeaves(EntityElephant elephant) {
         super(elephant, 0.7D, 32, 5);
         this.elephant = elephant;
@@ -34,22 +36,34 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
         idleAtLeavesTime = 0;
     }
 
+    public void start() {
+        super.start();
+        moveCooldown = 30 + elephant.getRandom().nextInt(50);
+    }
+
     public double acceptedDistance() {
         return 4D;
     }
 
+    public boolean shouldRecalculatePath() {
+        return moveCooldown == 0;
+    }
+
     public void tick() {
-        super.tick();
+        if (moveCooldown > 0) {
+            moveCooldown--;
+        }
         BlockPos blockpos = this.getMoveToTarget();
         if (!isWithinXZDist(blockpos, this.mob.position(), this.acceptedDistance())) {
             this.isAboveDestinationBear = false;
             ++this.tryTicks;
             if (this.shouldRecalculatePath()) {
+                moveCooldown = 30 + elephant.getRandom().nextInt(50);
                 this.mob.getNavigation().moveTo((double) ((float) blockpos.getX()) + 0.5D, blockpos.getY(), (double) ((float) blockpos.getZ()) + 0.5D, this.speedModifier);
             }
         } else {
             this.isAboveDestinationBear = true;
-            --this.tryTicks;
+            this.tryTicks = 0;
         }
 
         if (this.isReachedTarget() && Math.abs(elephant.getY() - blockPos.getY()) <= 3) {
@@ -73,6 +87,9 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
 
     }
 
+    @Override
+    protected void moveMobToBlock() {}
+
     protected int nextStartTick(PathfinderMob p_203109_1_) {
         return 100 + p_203109_1_.getRandom().nextInt(200);
     }
@@ -95,7 +112,7 @@ public class ElephantAIForageLeaves extends MoveToBlockGoal {
                 ItemEntity itementity = new ItemEntity(elephant.level(), blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), stack);
                 itementity.setDefaultPickUpDelay();
                 elephant.level().addFreshEntity(itementity);
-                if(blockstate.is(AMTagRegistry.DROPS_ACACIA_BLOSSOMS) && rand.nextInt(30) == 0){
+                if (blockstate.is(AMTagRegistry.DROPS_ACACIA_BLOSSOMS) && rand.nextInt(30) == 0) {
                     ItemStack banana = new ItemStack(AMItemRegistry.ACACIA_BLOSSOM.get());
                     ItemEntity itementity2 = new ItemEntity(elephant.level(), blockPos.getX() + rand.nextFloat(), blockPos.getY() + rand.nextFloat(), blockPos.getZ() + rand.nextFloat(), banana);
                     itementity2.setDefaultPickUpDelay();
