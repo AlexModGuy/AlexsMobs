@@ -347,9 +347,11 @@ public class EntityMungus extends Animal implements ITargetsDroppedItems, Sheara
                         }
                     }
                 }
-                int id = this.getId();
                 setChunkBiomes(chunk, container);
-                AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), ForgeRegistries.BIOMES.getKey(biome.value()).toString()));
+                ResourceLocation biomeKey = ForgeRegistries.BIOMES.getKey(biome.value());
+                if(biomeKey != null){
+                    AlexsMobs.sendMSGToAll(new MessageMungusBiomeChange(this.getId(), pos.getX(), pos.getZ(), biomeKey.toString()));
+                }
             }
         }
 
