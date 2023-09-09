@@ -488,8 +488,7 @@ public class ServerEvents {
         final var entity = event.getEntity();
         if (entity instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
             Biome biome = event.getLevel().getBiome(entity.blockPosition()).value();
-            if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance
-                && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
+            if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
                 EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(trader.level());
                 elephant.copyPosition(trader);
                 if (elephant.canSpawnWithTraderHere()) {

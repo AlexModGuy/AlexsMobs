@@ -1016,7 +1016,7 @@ public class EntityElephant extends TamableAnimal implements ITargetsDroppedItem
     }
 
     public boolean canSpawnWithTraderHere() {
-        return this.checkSpawnObstruction(level()) && level().isEmptyBlock(this.blockPosition().above(4));
+        return this.level().isLoaded(this.blockPosition()) && this.checkSpawnObstruction(level()) && level().isEmptyBlock(this.blockPosition().above(4));
     }
 
     private class AIWalkIdle extends RandomStrollGoal {
