@@ -488,7 +488,8 @@ public class DefaultBiomes {
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_cold/overworld", 0)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:lukewarm_ocean", 1)
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_ocean", 2)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_lukewarm_ocean", 3);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_lukewarm_ocean", 3)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "alexscaves:abyssal_chasm", 4);
 
     public static final SpawnBiomeData BEACHED_CACHALOT_WHALE = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_overworld", 0)
@@ -664,7 +665,8 @@ public class DefaultBiomes {
         
     public static final SpawnBiomeData COMB_JELLY = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:frozen_ocean", 0)
-            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 1);
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:deep_frozen_ocean", 1)
+            .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "alexscaves:abyssal_chasm", 2);
 
     public static final SpawnBiomeData COSMIC_COD = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "minecraft:is_end", 0);

@@ -222,7 +222,7 @@ public class AMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             TRANSMUTATION_TABLE_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TRANSMUTATION_TABLE_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             TRANSMUTATION_TABLE_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityTranslucentEmissive(TRANSMUTATION_TABLE_GLOW_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             TRANSMUTATION_TABLE_OVERLAY_MODEL.resetToDefaultPose();
-            VertexConsumer staticyOverlay = VertexMultiConsumer.create(bufferIn.getBuffer(AMRenderTypes.STATIC_PORTAL), bufferIn.getBuffer(RenderType.entityCutoutNoCull(TRANSMUTATION_TABLE_OVERLAY)));
+            VertexConsumer staticyOverlay = bufferIn.getBuffer(RenderType.eyes(TRANSMUTATION_TABLE_OVERLAY));
             TRANSMUTATION_TABLE_OVERLAY_MODEL.renderToBuffer(matrixStackIn, staticyOverlay, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
