@@ -3,6 +3,7 @@ package com.github.alexthe666.alexsmobs.block;
 import com.github.alexthe666.alexsmobs.entity.EntityCrocodile;
 import com.github.alexthe666.alexsmobs.misc.AMTagRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -120,6 +122,7 @@ public class BlockReptileEgg extends Block {
                         animal.setAge(-24000);
                         animal.restrictTo(pos, 20);
                     }
+                    Holder<Biome> biome = worldIn.getBiome(pos);
                     fromType.moveTo((double) pos.getX() + 0.3D + (double) j * 0.2D, pos.getY(), (double) pos.getZ() + 0.3D, 0.0F, 0.0F);
                     if (!worldIn.isClientSide) {
                         Player closest = worldIn.getNearestPlayer(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 20, EntitySelector.NO_SPECTATORS);
@@ -128,6 +131,9 @@ public class BlockReptileEgg extends Block {
                                 tamableAnimal.setTame(true);
                                 tamableAnimal.setOrderedToSit(true);
                                 tamableAnimal.tame(closest);
+                            }
+                            if(fromType instanceof EntityCrocodile crocodile){
+                                crocodile.setDesert(biome.is(AMTagRegistry.SPAWNS_DESERT_CROCODILES));
                             }
                         }
                         worldIn.addFreshEntity(fromType);
