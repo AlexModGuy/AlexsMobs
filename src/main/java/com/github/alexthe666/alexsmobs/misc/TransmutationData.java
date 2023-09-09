@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class TransmutationData {
     private final Object2DoubleMap<ItemStack> itemstackData = new Object2DoubleOpenHashMap<>();
@@ -52,7 +53,7 @@ public class TransmutationData {
     }
 
     @Nullable
-    public ItemStack getRandomItem(RandomSource random) {
+    public ItemStack getRandomItem(Random random) {
         ItemStack result = null;
         double bestValue = Double.MAX_VALUE;
         for(Object2DoubleMap.Entry<ItemStack> entry : itemstackData.object2DoubleEntrySet()){

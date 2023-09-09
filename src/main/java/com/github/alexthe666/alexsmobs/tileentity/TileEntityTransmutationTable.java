@@ -25,10 +25,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class TileEntityTransmutationTable  extends BlockEntity {
 
@@ -39,7 +36,7 @@ public class TileEntityTransmutationTable  extends BlockEntity {
     private int totalTransmuteCount = 0;
     private final Map<UUID, TransmutationData> playerToData = new HashMap<>();
     private final ItemStack[] possiblities = new ItemStack[3];
-    private static final RandomSource RANDOM = RandomSource.createThreadSafe();
+    private static final Random RANDOM = new Random();
 
     public TileEntityTransmutationTable(BlockPos pos, BlockState state) {
         super(AMTileEntityRegistry.TRANSMUTATION_TABLE.get(), pos, state);

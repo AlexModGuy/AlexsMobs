@@ -15,7 +15,7 @@ description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[2.4.1,)" #mandatory
+    versionRange="[2.4.4,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="AFTER"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -25,6 +25,6 @@ description='''New, original, engaging, and aesthetic mobs for Minecraft.'''
 [[dependencies.alexsmobs]]
     modId="forge"
     mandatory=true
-    versionRange="[46.0.12,)"
+    versionRange="[47.1.65,)"
     ordering="NONE"
     side="BOTH"
