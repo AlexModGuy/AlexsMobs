@@ -238,7 +238,10 @@ public class EntityBison extends Animal implements IAnimatedEntity, Shearable, n
                     }
                 } else if (!this.isCharging()) {
                     final Animation animation = this.getAnimation();
-                    if (animation == NO_ANIMATION || animation == ANIMATION_PREPARE_CHARGE) {
+                    if(animation == NO_ANIMATION){
+                        this.setAnimation(ANIMATION_PREPARE_CHARGE);
+                    }
+                    else if (animation == ANIMATION_PREPARE_CHARGE) {
                         this.getNavigation().stop();
                         if (this.getAnimationTick() > 30) {
                             this.setCharging(true);
