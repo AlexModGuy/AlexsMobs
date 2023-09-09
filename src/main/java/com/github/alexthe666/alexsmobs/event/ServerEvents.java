@@ -489,16 +489,19 @@ public class ServerEvents {
         if (entity instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
             Biome biome = event.getLevel().getBiome(entity.blockPosition()).value();
             if (RAND.nextFloat() <= AMConfig.elephantTraderSpawnChance && (!AMConfig.limitElephantTraderBiomes || biome.getBaseTemperature() >= 1.0F)) {
-                EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(trader.level());
-                elephant.copyPosition(trader);
-                if (elephant.canSpawnWithTraderHere()) {
-                    elephant.setTrader(true);
-                    elephant.setChested(true);
-                    if (!event.getLevel().isClientSide()) {
-                        trader.level().addFreshEntity(elephant);
-                        trader.startRiding(elephant, true);
+                ChunkPos chunkPos = new ChunkPos(trader.blockPosition());
+                if(event.getLevel().getChunkSource().getChunkNow(chunkPos.x, chunkPos.z) != null) {
+                    EntityElephant elephant = AMEntityRegistry.ELEPHANT.get().create(trader.level());
+                    elephant.copyPosition(trader);
+                    if (elephant.canSpawnWithTraderHere()) {
+                        elephant.setTrader(true);
+                        elephant.setChested(true);
+                        if (!event.getLevel().isClientSide()) {
+                            trader.level().addFreshEntity(elephant);
+                            trader.startRiding(elephant, true);
+                        }
+                        elephant.addElephantLoot(null, RAND.nextInt());
                     }
-                    elephant.addElephantLoot(null, RAND.nextInt());
                 }
             }
         }
