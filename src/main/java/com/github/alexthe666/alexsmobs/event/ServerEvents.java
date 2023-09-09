@@ -78,6 +78,7 @@ import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -484,7 +485,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onEntityJoinWorld(MobSpawnEvent.FinalizeSpawn event) {
+    public void onEntityFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
         final var entity = event.getEntity();
         if (entity instanceof WanderingTrader trader && AMConfig.elephantTraderSpawnChance > 0) {
             Biome biome = event.getLevel().getBiome(entity.blockPosition()).value();

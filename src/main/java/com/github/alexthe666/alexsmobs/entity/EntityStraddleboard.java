@@ -20,19 +20,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.WaterlilyBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
@@ -43,26 +35,33 @@ import javax.annotation.Nullable;
 public class EntityStraddleboard extends Entity implements PlayerRideableJumping {
     private static final EntityDataAccessor<ItemStack> ITEMSTACK = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Integer> TIME_SINCE_HIT = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> DAMAGE_TAKEN = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> ROCKING_TICKS = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DEFAULT_COLOR = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.BOOLEAN);
-    public float boardRot = 0;
+    private static final EntityDataAccessor<Float> BOARD_ROT = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> REMOVE_SOON = SynchedEntityData.defineId(EntityStraddleboard.class, EntityDataSerializers.BOOLEAN);
     public float prevBoardRot = 0;
-    private double lastYd;
     private boolean rocking;
-    private boolean downwards;
     private float rockingIntensity;
     private float rockingAngle;
     private float prevRockingAngle;
-    private boolean jumpOutOfLava = false;
-    private float outOfControlTicks;
-    private Boat.Status status;
-    private Boat.Status previousStatus;
-    private float momentum;
-    private double waterLevel;
-    private float boatGlide;
     private int extinguishTimer = 0;
+
+    private int jumpFor = 0;
+    private int lSteps;
+    private double lx;
+    private double ly;
+    private double lz;
+    private double lyr;
+    private double lxr;
+    private double lxd;
+    private double lyd;
+    private double lzd;
+
+    private int rideForTicks = 0;
+
+    private float boardForwards = 0.0F;
+    private int removeIn;
+    private Player returnToPlayer = null;
 
     public EntityStraddleboard(EntityType<?> p_i48580_1_, Level p_i48580_2_) {
         super(p_i48580_1_, p_i48580_2_);
@@ -90,17 +89,13 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return sizeIn.height;
     }
 
-    protected boolean isMovementNoisy() {
-        return false;
-    }
-
     protected void defineSynchedData() {
         this.entityData.define(TIME_SINCE_HIT, 0);
         this.entityData.define(ITEMSTACK, new ItemStack(AMItemRegistry.STRADDLEBOARD.get()));
-        this.entityData.define(ROCKING_TICKS, 0);
         this.entityData.define(DEFAULT_COLOR, true);
         this.entityData.define(COLOR, 0);
-        this.entityData.define(DAMAGE_TAKEN, 0.0F);
+        this.entityData.define(BOARD_ROT, 0F);
+        this.entityData.define(REMOVE_SOON, false);
     }
 
     public boolean shouldRiderSit() {
@@ -111,57 +106,27 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return canVehicleCollide(this, entity);
     }
 
-    public boolean canBeCollidedWith() {
-        return true;
-    }
-
-    public boolean isPushable() {
-        return true;
-    }
-
     protected Vec3 getRelativePortalPosition(Direction.Axis axis, BlockUtil.FoundRectangle result) {
         return LivingEntity.resetForwardDirectionOfRelativePortalPosition(super.getRelativePortalPosition(axis, result));
     }
 
     public double getPassengersRidingOffset() {
-        return 0.9D;
+        return 0.5D;
+    }
+
+    public float getBoardRot(){
+        return this.entityData.get(BOARD_ROT);
+    }
+
+    public void setBoardRot(float f){
+        this.entityData.set(BOARD_ROT, f);
     }
 
     public boolean hurt(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
         } else if (!this.level().isClientSide && !this.isRemoved()) {
-            this.setTimeSinceHit(10);
-            this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
-            this.markHurt();
-            this.setRockingTicks(25);
-            final boolean flag = source.getEntity() instanceof Player && ((Player) source.getEntity()).getAbilities().instabuild;
-            if (flag || this.getDamageTaken() > 40.0F) {
-                if (!flag) {
-                    Player p = null;
-                    if (source.getEntity() instanceof Player) {
-                        p = (Player) source.getEntity();
-                    }
-                    if (this.getControllingPassenger() != null && this.getControllingPassenger() instanceof Player) {
-                        p = (Player) this.getControllingPassenger();
-                    }
-                    if(!this.level().isClientSide && !this.isRemoved()){
-                        boolean drop;
-                        if(this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN.get()) > 0){
-                            drop = p != null && !p.addItem(this.getItemBoard());
-                        }else{
-                            drop = true;
-                        }
-                        if (drop) {
-                            this.spawnAtLocation(this.getItemBoard());
-                        }
-                        this.remove(RemovalReason.DISCARDED);
-                    }
-                }
-
-                this.remove(RemovalReason.DISCARDED);
-            }
-
+            this.entityData.set(REMOVE_SOON, true);
             return true;
         } else {
             return true;
@@ -171,7 +136,6 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
     private ItemStack getItemBoard() {
         return this.getItemStack();
     }
-
 
     public void push(Entity entityIn) {
         if (entityIn instanceof EntityStraddleboard) {
@@ -184,139 +148,28 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void animateHurt() {
-        this.setTimeSinceHit(10);
-        this.setDamageTaken(this.getDamageTaken() * 11.0F);
+    public boolean isRemoveLogic() {
+        return this.entityData.get(REMOVE_SOON) || this.isRemoved();
+    }
+
+    public boolean canBeCollidedWith() {
+        return !this.isRemoveLogic();
+    }
+
+    public boolean isPushable() {
+        return !this.isRemoveLogic();
     }
 
     public boolean isPickable() {
-        return !this.isRemoved();
+        return !this.isRemoveLogic();
     }
 
-    private Boat.Status getBoatStatus() {
-        Boat.Status boatentity$status = this.getUnderwaterStatus();
-        if (boatentity$status != null) {
-            this.waterLevel = this.getBoundingBox().maxY;
-            return boatentity$status;
-        } else if (this.checkInWater()) {
-            return Boat.Status.IN_WATER;
-        } else {
-            final float f = this.getBoatGlide();
-            if (f > 0.0F) {
-                this.boatGlide = f;
-                return Boat.Status.ON_LAND;
-            } else {
-                return Boat.Status.IN_AIR;
-            }
-        }
+    public boolean shouldBeSaved() {
+        return !this.isRemoveLogic();
     }
 
-    public float getBoatGlide() {
-        AABB axisalignedbb = this.getBoundingBox();
-        AABB axisalignedbb1 = new AABB(axisalignedbb.minX, axisalignedbb.minY - 0.001D, axisalignedbb.minZ, axisalignedbb.maxX, axisalignedbb.minY, axisalignedbb.maxZ);
-        final int i = Mth.floor(axisalignedbb1.minX) - 1;
-        final int j = Mth.ceil(axisalignedbb1.maxX) + 1;
-        final int k = Mth.floor(axisalignedbb1.minY) - 1;
-        final int l = Mth.ceil(axisalignedbb1.maxY) + 1;
-        final int i1 = Mth.floor(axisalignedbb1.minZ) - 1;
-        final int j1 = Mth.ceil(axisalignedbb1.maxZ) + 1;
-        VoxelShape voxelshape = Shapes.create(axisalignedbb1);
-        float f = 0.0F;
-        int k1 = 0;
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
-
-        for (int l1 = i; l1 < j; ++l1) {
-            for (int i2 = i1; i2 < j1; ++i2) {
-                int j2 = (l1 != i && l1 != j - 1 ? 0 : 1) + (i2 != i1 && i2 != j1 - 1 ? 0 : 1);
-                if (j2 != 2) {
-                    for (int k2 = k; k2 < l; ++k2) {
-                        if (j2 <= 0 || k2 != k && k2 != l - 1) {
-                            blockpos$mutable.set(l1, k2, i2);
-                            BlockState blockstate = this.level().getBlockState(blockpos$mutable);
-                            if (!(blockstate.getBlock() instanceof WaterlilyBlock) && Shapes.joinIsNotEmpty(blockstate.getBlockSupportShape(this.level(), blockpos$mutable).move(l1, k2, i2), voxelshape, BooleanOp.AND)) {
-                                f += blockstate.getFriction(this.level(), blockpos$mutable, this);
-                                ++k1;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return f / (float) k1;
-    }
-
-    private boolean checkInWater() {
-        AABB axisalignedbb = this.getBoundingBox();
-        final int i = Mth.floor(axisalignedbb.minX);
-        final int j = Mth.ceil(axisalignedbb.maxX);
-        final int k = Mth.floor(axisalignedbb.minY);
-        final int l = Mth.ceil(axisalignedbb.minY - 0.001D);
-        final int i1 = Mth.floor(axisalignedbb.minZ);
-        final int j1 = Mth.ceil(axisalignedbb.maxZ);
-        boolean flag = false;
-        this.waterLevel = Double.MIN_VALUE;
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
-
-        for (int k1 = i; k1 < j; ++k1) {
-            for (int l1 = k; l1 < l; ++l1) {
-                for (int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.set(k1, l1, i2);
-                    FluidState fluidstate = this.level().getFluidState(blockpos$mutable);
-                    if (fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA)) {
-                        float f = (float) l1 + fluidstate.getHeight(this.level(), blockpos$mutable);
-                        this.waterLevel = Math.max(f, this.waterLevel);
-                        flag |= axisalignedbb.minY < (double) f;
-                    }
-                }
-            }
-        }
-
-        return flag;
-    }
-
-    private void updateMotion() {
-        double d1 = this.isNoGravity() ? 0.0D : (double) -0.04F;
-        double d2 = 0.0D;
-        this.momentum = 0.05F;
-        if (this.previousStatus == Boat.Status.IN_AIR && this.status != Boat.Status.IN_AIR && this.status != Boat.Status.ON_LAND) {
-            this.waterLevel = this.getY(1.0D);
-            this.setPos(this.getX(), (double) (this.getWaterLevelAbove() - this.getBbHeight()) + 0.25, this.getZ());
-            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 1D, 1.0D));
-            this.lastYd = 0.0D;
-            this.status = Boat.Status.IN_WATER;
-        } else {
-            switch (this.status) {
-                case IN_WATER -> {
-                    d2 = (this.waterLevel - this.getY()) / (double) this.getBbHeight();
-                    this.momentum = 0.9F;
-                }
-                case UNDER_FLOWING_WATER -> {
-                    d1 = -7.0E-4D;
-                    this.momentum = 0.9F;
-                }
-                case UNDER_WATER -> {
-                    d2 = 0.01F;
-                    this.momentum = 0.45F;
-                }
-                case IN_AIR -> this.momentum = 0.9F;
-                case ON_LAND -> {
-                    this.momentum = this.boatGlide;
-                    if (this.getControllingPassenger() instanceof Player) {
-                        this.boatGlide /= 2.0F;
-                    }
-                }
-            }
-
-            Vec3 vector3d = this.getDeltaMovement();
-            this.setDeltaMovement(vector3d.x * (double) this.momentum, vector3d.y + d1, vector3d.z * (double) this.momentum);
-            if (d2 > 0.0D) {
-                Vec3 vector3d1 = this.getDeltaMovement();
-                this.setDeltaMovement(vector3d1.x, (vector3d1.y + d2 * 0.06153846016296973D) * 0.75D, vector3d1.z);
-            }
-        }
-
+    public boolean isAttackable() {
+        return !this.isRemoveLogic();
     }
 
     public boolean isDefaultColor() {
@@ -338,233 +191,197 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         this.entityData.set(COLOR, index);
     }
 
-
-    @Nullable
-    private Boat.Status getUnderwaterStatus() {
-        AABB axisalignedbb = this.getBoundingBox();
-        final double d0 = axisalignedbb.maxY + 0.001D;
-        final int i = Mth.floor(axisalignedbb.minX);
-        final int j = Mth.ceil(axisalignedbb.maxX);
-        final int k = Mth.floor(axisalignedbb.maxY);
-        final int l = Mth.ceil(d0);
-        final int i1 = Mth.floor(axisalignedbb.minZ);
-        final int j1 = Mth.ceil(axisalignedbb.maxZ);
-        boolean flag = false;
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
-
-        for (int k1 = i; k1 < j; ++k1) {
-            for (int l1 = k; l1 < l; ++l1) {
-                for (int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.set(k1, l1, i2);
-                    FluidState fluidstate = this.level().getFluidState(blockpos$mutable);
-                    if ((fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA) && d0 < (double) ((float) blockpos$mutable.getY() + fluidstate.getHeight(this.level(), blockpos$mutable)))) {
-                        if (!fluidstate.isSource()) {
-                            return Boat.Status.UNDER_FLOWING_WATER;
-                        }
-
-                        flag = true;
-                    }
-                }
-            }
-        }
-
-        return flag ? Boat.Status.UNDER_WATER : null;
-    }
-
-
     public void tick() {
-        prevBoardRot = this.boardRot;
         super.tick();
-        this.previousStatus = this.status;
-        this.status = this.getBoatStatus();
-        this.floatStrider();
-        this.checkInsideBlocks();
-        if (this.isInWall()) {
-            this.moveTowardsClosestSpace(this.getX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getZ());
+        float boardRot = this.getBoardRot();
+        if(jumpFor > 0){
+            jumpFor--;
         }
         if (this.getTimeSinceHit() > 0) {
             this.setTimeSinceHit(this.getTimeSinceHit() - 1);
         }
-        if (this.getDamageTaken() > 0.0F) {
-            this.setDamageTaken(this.getDamageTaken() - 1.0F);
-        }
-        if (isInLava()) {
-            this.setNoGravity(true);
-            if (this.fluidHeight.getDouble(FluidTags.LAVA) >= this.getBbHeight()) {
-                this.setDeltaMovement(0, 0.1, 0);
-            }
-        } else {
-            this.setNoGravity(false);
-        }
-        float f2 = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) Mth.RAD_TO_DEG);
-        this.setXRot(f2);
-
         if (extinguishTimer > 0) {
             extinguishTimer--;
         }
-        this.updateRocking();
-        Entity controller = getControllingPassenger();
-        if (controller instanceof Player player) {
-            if (this.tickCount % 50 == 0) {
-                if (getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX.get()) > 0) {
-                    player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
+        if (this.entityData.get(REMOVE_SOON)) {
+            this.removeIn--;
+            this.setBoardRot((float) Math.sin(this.removeIn * 0.3F * Math.PI) * 50F);
+            if (this.removeIn <= 0 && !this.level().isClientSide) {
+                this.removeIn = 0;
+                boolean drop;
+                if(this.getEnchant(AMEnchantmentRegistry.STRADDLE_BOARDRETURN.get()) > 0){
+                    drop = returnToPlayer != null && !returnToPlayer.addItem(this.getItemBoard());
+                }else{
+                    drop = true;
                 }
-            }
-            if (player.getRemainingFireTicks() > 0 && extinguishTimer == 0) {
-                player.clearFire();
-            }
-            this.setYRot(player.yRotO);
-            Vec3 vector3d = this.getDeltaMovement();
-            if (vector3d.y > -0.5D) {
-                this.fallDistance = 1.0F;
-            }
-
-            Vec3 vector3d1 = player.getLookAngle();
-
-            final double d1 = Math.sqrt(vector3d1.x * vector3d1.x + vector3d1.z * vector3d1.z);
-            final double d3 = Math.sqrt((float) vector3d.horizontalDistanceSqr());
-
-            float slow = player.zza < 0 ? 0 : player.zza * 0.115F;
-            final float threshold = 0.05F;
-            if (this.yRotO - this.getYRot() > threshold) {
-                boardRot = boardRot + 2;
-                slow *= 0;
-            } else if (this.yRotO - this.getYRot() < -threshold) {
-                boardRot = boardRot - 2;
-                slow *= 0;
-            } else if (boardRot > 0) {
-                boardRot = (Math.max(boardRot - 10, 0));
-            } else if (boardRot < 0) {
-                boardRot = (Math.min(boardRot + 10, 0));
-            }
-            boardRot = (Mth.clamp(boardRot, -25, 25));
-
-            vector3d = vector3d.add(vector3d1.x * slow / d1, 0.0D, vector3d1.z * slow / d1);
-
-
-            if (d1 > 0.0D) {
-                vector3d = vector3d.add((vector3d1.x / d1 * d3 - vector3d.x) * 0.1D, 0.0D, (vector3d1.z / d1 * d3 - vector3d.z) * 0.1D);
-            }
-
-            this.setDeltaMovement(vector3d.multiply(0.99F, 1F, 0.99F));
-
-            if (player.isInWall()) {
-                player.removeVehicle();
-                this.hurt(damageSources().generic(), 100);
+                if(drop){
+                    spawnAtLocation(this.getItemStack().copy());
+                }
+                this.discard();
             }
         }
-        this.updateMotion();
-        this.move(MoverType.SELF, this.getDeltaMovement());
+        Entity controller = getControllingPlayer();
+        if (this.level().isClientSide) {
+            if (this.lSteps > 0) {
+                double d5 = this.getX() + (this.lx - this.getX()) / (double) this.lSteps;
+                double d6 = this.getY() + (this.ly - this.getY())  / (double) this.lSteps;
+                double d7 = this.getZ() + (this.lz - this.getZ()) / (double) this.lSteps;
+                this.setYRot(Mth.wrapDegrees((float) this.lyr));
+                this.setXRot(this.getXRot() + (float) (this.lxr - (double) this.getXRot()) / (float) this.lSteps);
+                --this.lSteps;
+                this.setPos(d5, d6, d7);
+                this.setRot(this.getYRot(), this.getXRot());
+            } else {
+                this.reapplyPosition();
+                this.setRot(this.getYRot(), this.getXRot());
+            }
+        } else {
+            this.checkInsideBlocks();
+            float slowdown = this.isInWaterOrBubble() || onGround() ? 0.05F : 0.98F;
+            tickMovement();
+            this.move(MoverType.SELF, this.getDeltaMovement());
+            this.setDeltaMovement(this.getDeltaMovement().multiply(slowdown, slowdown, slowdown));
+            float f2 = (float) -((float) this.getDeltaMovement().y * 0.5F * (double) Mth.RAD_TO_DEG);
+            this.setXRot(Mth.approachDegrees(this.getXRot(), f2, 5));
+
+            if (controller instanceof Player player) {
+                returnToPlayer = player;
+                rideForTicks++;
+                if (this.tickCount % 50 == 0) {
+                    if (getEnchant(AMEnchantmentRegistry.STRADDLE_LAVAWAX.get()) > 0) {
+                        player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
+                    }
+                }
+                if (player.getRemainingFireTicks() > 0 && extinguishTimer == 0) {
+                    player.clearFire();
+                }
+                this.setYRot(Mth.approachDegrees(this.getYRot(), player.getYRot(), 6));
+                Vec3 deltaMovement = this.getDeltaMovement();
+                if (deltaMovement.y > -0.5D) {
+                    this.fallDistance = 1.0F;
+                }
+
+                float slow = player.zza < 0 ? 0 : player.zza * 0.115F;
+
+                float threshold = 3F;
+                boolean flag = false;
+                float boardRot1 = boardRot;
+                if (this.yRotO - this.getYRot() > threshold) {
+                    boardRot1 += 10;
+                    flag = true;
+                }
+                if (this.yRotO - this.getYRot() < -threshold) {
+                    boardRot1 -= 10;
+                    flag = true;
+                }
+                if (!flag) {
+                    if (boardRot1 > 0) {
+                        boardRot1 = Math.max(boardRot1 - 5, 0);
+                    }
+                    if (boardRot1 < 0) {
+                        boardRot1 = Math.min(boardRot1 + 5, 0);
+                    }
+                }
+
+                this.setBoardRot(Mth.approachDegrees(boardRot, Mth.clamp(boardRot1, -25, 25), 5));
+
+                boardForwards = slow;
+
+                if(player.isShiftKeyDown() || !this.isAlive() || this.entityData.get(REMOVE_SOON)){
+                    this.ejectPassengers();
+                }
+                if (player.isInWall()) {
+                    this.ejectPassengers();
+                    this.hurt(damageSources().generic(), 100);
+                }
+            }else{
+                rideForTicks = 0;
+            }
+        }
+        prevBoardRot = boardRot;
+    }
+
+    private void tickMovement() {
+        this.hasImpulse = true;
+        float moveForwards = Math.min(boardForwards, 1.0F);
+        float yRot = this.getYRot();
+        Vec3 prev = this.getDeltaMovement();
+        float gravity = isOnLava() ? 0.0F : isInLava() ? 0.1F : -1;
+        float f1 = -Mth.sin(yRot * ((float) Math.PI / 180F));
+        float f2 = Mth.cos(yRot * ((float) Math.PI / 180F));
+        Vec3 moveVec = new Vec3(f1, 0, f2).scale(moveForwards);
+        Vec3 vec31 = prev.scale(0.975F).add(moveVec);
+        float jumpGravity = gravity;
+        if(jumpFor > 0){
+            float jumpRunsOutIn = jumpFor < 5 ? jumpFor / 5F : 1F;
+            jumpGravity += jumpRunsOutIn + jumpRunsOutIn * 1F;
+        }
+        this.setDeltaMovement(vec31.x, jumpGravity, vec31.z);
+    }
+
+    private boolean isOnLava() {
+        BlockPos ourPos = BlockPos.containing(this.getX(), this.getY() + 0.4F, this.getZ());
+        BlockPos underPos = this.getOnPos();
+        return this.level().getFluidState(underPos).is(FluidTags.LAVA) && !this.level().getFluidState(ourPos).is(FluidTags.LAVA);
+    }
+
+    @Override
+    public void lerpTo(double x, double y, double z, float yr, float xr, int steps, boolean b) {
+        this.lx = x;
+        this.ly = y;
+        this.lz = z;
+        this.lyr = yr;
+        this.lxr = xr;
+        this.lSteps = steps;
+        this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
+    }
+
+    @Override
+    public void lerpMotion(double lerpX, double lerpY, double lerpZ) {
+        this.lxd = lerpX;
+        this.lyd = lerpY;
+        this.lzd = lerpZ;
+        this.setDeltaMovement(this.lxd, this.lyd, this.lzd);
     }
 
     public double getEyeY() {
         return this.getY() + 0.3F;
     }
 
-
-    protected void removePassenger(Entity passenger) {
-        super.removePassenger(passenger);
-        if (!this.level().isClientSide) {
-            EntityStraddleboard copy = AMEntityRegistry.STRADDLEBOARD.get().create(level());
-            CompoundTag tag = new CompoundTag();
-            this.addAdditionalSaveData(tag);
-            copy.readAdditionalSaveData(tag);
-            copy.copyPosition(passenger);
-            level().addFreshEntity(copy);
-        }
-        this.remove(RemovalReason.DISCARDED);
-    }
-
-    private void floatStrider() {
-
+    @Nullable
+    public LivingEntity getControllingPassenger() {
+        return getControllingPlayer();
     }
 
     @Nullable
-    public LivingEntity getControllingPassenger() {
+    public boolean isControlledByLocalInstance() {
+        return false;
+    }
+
+    @Nullable
+    public Player getControllingPlayer(){
         for (Entity passenger : this.getPassengers()) {
             if (passenger instanceof Player) {
-                Player player = (Player) passenger;
-                return player;
+                return (Player) passenger;
             }
         }
         return null;
     }
 
-    private void updateRocking() {
-        if (this.level().isClientSide) {
-            final int i = this.getRockingTicks();
-            if (i > 0) {
-                this.rockingIntensity += 1F;
-            } else {
-                this.rockingIntensity -= 0.1F;
-            }
-
-            this.rockingIntensity = Mth.clamp(this.rockingIntensity, 0.0F, 1.0F);
-            this.prevRockingAngle = this.rockingAngle;
-            this.rockingAngle = 10.0F * (float) Math.sin(0.5F * (float) this.level().getGameTime()) * this.rockingIntensity;
-        } else {
-            if (!this.rocking) {
-                this.setRockingTicks(0);
-            }
-
-            int k = this.getRockingTicks();
-            if (k > 0) {
-                --k;
-                this.setRockingTicks(k);
-                final int j = 60 - k - 1;
-                if (k == 0 && j > 0) {
-                    this.setRockingTicks(0);
-                    Vec3 vector3d = this.getDeltaMovement();
-                    if (this.downwards) {
-                        this.setDeltaMovement(vector3d.add(0.0D, -0.7D, 0.0D));
-                        this.ejectPassengers();
-                    } else {
-                        this.setDeltaMovement(vector3d.x, this.hasPassenger((p_150274_) -> {
-                            return p_150274_ instanceof Player;
-                        }) ? 2.7D : 0.6D, vector3d.z);
-                    }
-                }
-
-                this.rocking = false;
-            }
+    @Override
+    protected void addPassenger(Entity passenger) {
+        super.addPassenger(passenger);
+        if (this.isControlledByLocalInstance() && this.lSteps > 0) {
+            this.lSteps = 0;
+            this.absMoveTo(this.lx, this.ly, this.lz, (float) this.lyr, (float) this.lxr);
         }
-
     }
 
-    public float getWaterLevelAbove() {
-        AABB axisalignedbb = this.getBoundingBox();
-        int i = Mth.floor(axisalignedbb.minX);
-        int j = Mth.ceil(axisalignedbb.maxX);
-        int k = Mth.floor(axisalignedbb.maxY);
-        int l = Mth.ceil(axisalignedbb.maxY - this.lastYd);
-        int i1 = Mth.floor(axisalignedbb.minZ);
-        int j1 = Mth.ceil(axisalignedbb.maxZ);
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
-
-        label39:
-        for (int k1 = k; k1 < l; ++k1) {
-            float f = 0.0F;
-
-            for (int l1 = i; l1 < j; ++l1) {
-                for (int i2 = i1; i2 < j1; ++i2) {
-                    blockpos$mutable.set(l1, k1, i2);
-                    FluidState fluidstate = this.level().getFluidState(blockpos$mutable);
-                    if (fluidstate.is(FluidTags.WATER) || fluidstate.is(FluidTags.LAVA)) {
-                        f = Math.max(f, fluidstate.getHeight(this.level(), blockpos$mutable));
-                    }
-
-                    if (f >= 1.0F) {
-                        continue label39;
-                    }
-                }
-            }
-
-            if (f < 1.0F) {
-                return (float) blockpos$mutable.getY() + f;
-            }
+    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+        super.onSyncedDataUpdated(entityDataAccessor);
+        if (REMOVE_SOON.equals(entityDataAccessor)) {
+            this.removeIn = 5;
         }
-
-        return (float) (l + 1);
     }
 
     @Override
@@ -580,16 +397,6 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         }
     }
 
-    /**
-     * Gets the damage taken from the last hit.
-     */
-    public float getDamageTaken() {
-        return this.entityData.get(DAMAGE_TAKEN);
-    }
-
-    public void setDamageTaken(float damageTaken) {
-        this.entityData.set(DAMAGE_TAKEN, damageTaken);
-    }
 
     /**
      * Gets the time since the last hit.
@@ -605,14 +412,6 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         this.entityData.set(TIME_SINCE_HIT, timeSinceHit);
     }
 
-    private int getRockingTicks() {
-        return this.entityData.get(ROCKING_TICKS);
-    }
-
-    private void setRockingTicks(int ticks) {
-        this.entityData.set(ROCKING_TICKS, ticks);
-    }
-
     @OnlyIn(Dist.CLIENT)
     public float getRockingAngle(float partialTicks) {
         return Mth.lerp(partialTicks, this.prevRockingAngle, this.rockingAngle);
@@ -623,6 +422,11 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
         return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
     }
 
+
+    @Override
+    protected Entity.MovementEmission getMovementEmission() {
+        return MovementEmission.EVENTS;
+    }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
@@ -652,15 +456,16 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     @Override
     public boolean canJump() {
-        return this.level().getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFluidState().is(FluidTags.LAVA);
+        return isOnLava();
     }
 
     @Override
     public void handleStartJump(int i) {
-        jumpOutOfLava = true;
         this.hasImpulse = true;
-        float scaled = i * 0.01F + 0.1F * getEnchant(AMEnchantmentRegistry.STRADDLE_JUMP.get());
-        this.setDeltaMovement(this.getDeltaMovement().add(0, scaled * 1.5F, 0));
+        if(canJump()){
+            float f = 0.075F + getEnchant(AMEnchantmentRegistry.STRADDLE_JUMP.get()) * 0.05F;
+            jumpFor = 5 + (int)(i * f);
+        }
     }
 
     private int getEnchant(Enchantment enchantment) {
@@ -669,6 +474,10 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     public boolean shouldSerpentFriend() {
         return getEnchant(AMEnchantmentRegistry.STRADDLE_SERPENTFRIEND.get()) > 0;
+    }
+
+    public Vec3 getDismountLocationForPassenger(LivingEntity entity) {
+        return new Vec3(this.getX(), this.getY() + 2F, this.getZ());
     }
 
     @Override
@@ -682,13 +491,5 @@ public class EntityStraddleboard extends Entity implements PlayerRideableJumping
 
     public void setItemStack(ItemStack item) {
         this.entityData.set(ITEMSTACK, item);
-    }
-
-    public enum Status {
-        IN_WATER,
-        UNDER_WATER,
-        UNDER_FLOWING_WATER,
-        ON_LAND,
-        IN_AIR
     }
 }
